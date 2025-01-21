@@ -329,26 +329,7 @@ Try out the above `nearText` query again, with these changes.
 - When using the groupBy argument, the additional property groupedBy is made available, helping to identify the group that the result belongs to.
 
 import Quiz from '/src/components/Academy/quiz.js'
-const varName = [{
-  questionText: 'questionText',
-  answerOptions: [
-    {
-      answerText: 'answerOne',
-      isCorrect: false,
-      feedback: 'feedbackOne',
-    },
-    {
-      answerText: 'answerTwo',
-      isCorrect: false,
-      feedback: 'feedbackTwo',
-    },
-    {
-      answerText: 'answerThree',
-      isCorrect: false,
-      feedback: 'feedbackThree',
-    },
-  ]
-}];
+import { varName } from './_quizData/40_aggregate.js';
 
 ## Questions and feedback
 

@@ -1,10 +1,10 @@
-const visit = require('unist-util-visit');
-const fs = require('fs');
+import {visit} from 'unist-util-visit'
+import { readFileSync } from 'node:fs';
 
 // Read file config, which contains weaviate_version, etc.
 const readSiteConfig = () => {
   console.log('Loading site config:');
-  const config = JSON.parse(fs.readFileSync('versions-config.json'));
+  const config = JSON.parse(readFileSync('versions-config.json'));
 
   console.log(config)
   return config;
@@ -50,4 +50,5 @@ const plugin = (options) => {
   return transformer;
 };
 
-module.exports = plugin;
+//module.exports = plugin;
+export default plugin;

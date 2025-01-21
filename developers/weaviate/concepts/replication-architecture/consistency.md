@@ -27,7 +27,7 @@ The strength of consistency can be determined by applying the following conditio
     * r is the consistency level of read operations
     * w is the consistency level of write operations
     * n is the replication factor (number of replicas)
-* If r + w <= n, then eventual consistency is the best that can be reached in this scenario.
+* If r + w &lt;= n, then eventual consistency is the best that can be reached in this scenario.
 :::
 
 ## Cluster metadata
