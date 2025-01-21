@@ -1,12 +1,10 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-require('dotenv').config();
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-const remarkReplace = require('./src/remark/remark-replace');
+import remarkReplace from './src/remark/remark-replace';
+const lightCodeTheme = require('prism-react-renderer').themes.github;
+const darkCodeTheme = require('prism-react-renderer').themes.dracula;
 const siteRedirects = require('./site.redirects');
-const path = require('path');
 
 
 // Math equation plugins
@@ -277,6 +275,7 @@ const config = {
                     editUrl:
                         'https://github.com/weaviate/weaviate-io/tree/main/',
                     remarkPlugins: [remarkReplace, math],
+                    //remarkPlugins: [math],
                     rehypePlugins: [katex],
                 },
                 blog: {

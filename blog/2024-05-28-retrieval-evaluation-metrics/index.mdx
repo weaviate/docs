@@ -46,8 +46,8 @@ Additionally, the following evaluation metrics can be categorized into not rank-
 The **precision@K** metric measures how many of the retrieved items are relevant. This metric is not rank-aware and thus only considers the number of relevant results but not their order. You can calculate precision@K by dividing the number of relevant items within the top K results by K. 
 
 $$
-\text{Precision@K} = \frac{TP}{TP+FP}= \frac{TP}{K}
-=\frac{\text{Number of relevant items in K}}{\text{Total number of items in K}}
+\text\{Precision@K} = \frac\{TP}\{TP+FP}= \frac\{TP}\{K}
+=\frac\{\text\{Number of relevant items in K}}\{\text\{Total number of items in K}}
 $$
 
 ![precision.jpg](./img/precision.jpg)
@@ -91,8 +91,8 @@ results = evaluator.evaluate(run)
 The **recall@K** metric measures how many relevant items were successfully retrieved from the entire dataset. This metric is not rank-aware and thus only considers the number of relevant results but not their order. You can calculate the recall@K by dividing the number of relevant items within the top K results by the total number of relevant items in the entire dataset. 
 
 $$
-\text{Recall@K} = \frac{TP}{TP+FN}
-=\frac{\text{Number of relevant items in K}}{\text{Total number of relevant items}}
+\text\{Recall@K} = \frac\{TP}\{TP+FN}
+=\frac\{\text\{Number of relevant items in K}}\{\text\{Total number of relevant items}}
 $$
 
 ![recall](./img/recall.jpg)
@@ -117,13 +117,13 @@ results = evaluator.evaluate(run)
 The **Mean Reciprocal Rank@K (MRR@K)** metric measures how well the system finds a relevant result as the top result. This metric only considers the order of the first relevant results but not the number or order of the other relevant results. You can calculate the MRR@K by averaging the Reciprocal Ranks (RR) across multiple queries (in case of information retrieval) or users (in case of recommendations) `U` in the evaluated dataset.
 
 $$
-\text{MRR@K} = \frac{1}{U}\sum_{u=1}^{U}\frac{1}{\text{RR}_u}
+\text\{MRR@K} = \frac\{1}\{U}\sum_\{u=1}^\{U}\frac\{1}\{\text\{RR}_u}
 $$
 
 The Reciprocal Rank is calculated as follows:
 
 $$
-\text{RR} = \frac{1}{\text{Rank of the first relevant item}}
+\text\{RR} = \frac\{1}\{\text\{Rank of the first relevant item}}
 $$
 
 ![mrr](./img/mrr.jpg)
@@ -135,13 +135,13 @@ Note that the MRR metric is not available in the `pytrec_eval` package as of thi
 The **Mean Average Precision@K (MAP@K)** metric measures the system's ability to return relevant items in the top K results while placing more relevant items at the top. You can calculate the MAP@K metric by averaging the average precision at K across multiple queries (in case of information retrieval) or users (in case of recommendations) `U` in the evaluated dataset.
 
 $$
-\text{MAP@K} = \frac{1}{U}\sum_{u=1}^{U}AP@K_u
+\text\{MAP@K} = \frac\{1}\{U}\sum_\{u=1}^\{U}AP@K_u
 $$
 
 The average precision@K (AP@K) metric measures the precision values at all the relevant positions within K and averages them.
 
 $$
-\text{AP@K} = \frac{1}{N}\sum_{k=1}^{K}\text{Precision(k)}\times \text{rel(k)}
+\text\{AP@K} = \frac\{1}\{N}\sum_\{k=1}^\{K}\text\{Precision(k)}\times \text\{rel(k)}
 $$
 
 ![map](./img/map.jpg)
@@ -188,13 +188,13 @@ The **Normalized Discounted Cumulative Gain@K (NDCG@K)** metric measures the sys
 You can calculate the NDCG@K by calculating the discounted cumulative gain (DCG) and then normalizing it over the ideal discounted cumulative gain (IDCG).
 
 $$
-\text{NDCG@K} = \frac{\text{DCG@K}}{\text{IDCG@K}}
+\text\{NDCG@K} = \frac\{\text\{DCG@K}}\{\text\{IDCG@K}}
 $$
 
 The DCG is calculated as follows:
 
 $$
-\text{DCG@K} = \sum_{k=1}^K\frac{\text{rel}_i}{\log_2(i+1)}
+\text\{DCG@K} = \sum_\{k=1}^K\frac\{\text\{rel}_i}\{\log_2(i+1)}
 $$
 
 ![ndcg](./img/ndcg.jpg)
