@@ -1,4 +1,0 @@
-Sitemap: https://weaviate.io/sitemap.xml
-User-agent: *
-Allow: /
-Disallow: /*?*
