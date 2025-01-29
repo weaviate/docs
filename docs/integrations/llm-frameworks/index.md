@@ -7,10 +7,10 @@ image: og/integrations/home.jpg
 These Large Language Model (LLM) frameworks have tools to help developers build applications with generative models.
 
 Learn how Weaviate integrates with these solutions:
-* [Composio](/developers/integrations/llm-frameworks/composio/)
-* [DSPy](/developers/integrations/llm-frameworks/dspy/)
-* [Haystack](/developers/integrations/llm-frameworks/haystack/)
-* [LangChain](/developers/integrations/llm-frameworks/langchain/)
-* [LlamaIndex](/developers/integrations/llm-frameworks/llamaindex/)
-* [Semantic Kernel](/developers/integrations/llm-frameworks/semantic-kernel/)
+* [Composio](/docs/integrations/llm-frameworks/composio/)
+* [DSPy](/docs/integrations/llm-frameworks/dspy/)
+* [Haystack](/docs/integrations/llm-frameworks/haystack/)
+* [LangChain](/docs/integrations/llm-frameworks/langchain/)
+* [LlamaIndex](/docs/integrations/llm-frameworks/llamaindex/)
+* [Semantic Kernel](/docs/integrations/llm-frameworks/semantic-kernel/)
 
