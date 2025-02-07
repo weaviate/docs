@@ -129,7 +129,7 @@ A BM25 query can optionally specify which object properties are to be included i
 
 By default, all `text` properties are included in a BM25 calculation. There are two ways to vary this:
 
-- In the collection configuration, [set `indexSearchable` for a property to `false`](../../manage-data/collections.mdx/docs/wcs/). This property will then be ignored in all BM25 searches.
+- In the collection configuration, [set `indexSearchable` for a property to `false`](../../manage-data/collections.mdx#property-level-settings). This property will then be ignored in all BM25 searches.
 - [Specify which properties to search at query time](../../search/bm25.md#search-on-selected-properties-only). This will only apply for that particular query.
 
 ### Property Boosting

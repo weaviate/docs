@@ -32,5 +32,5 @@ The resources are broken into two categories:
 ### Read and Listen 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Enriching and Ingesting Data into Weaviate with Aryn | Demo on how to ingest PDFs into Weaviate using Aryn. | [Blog](/blog/sycamore-and-weaviate) |
+| Enriching and Ingesting Data into Weaviate with Aryn | Demo on how to ingest PDFs into Weaviate using Aryn. | [Blog](https://weaviate.io/blog/sycamore-and-weaviate) |
 

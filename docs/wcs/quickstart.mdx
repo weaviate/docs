@@ -77,7 +77,7 @@ To get the cluster URL and authentication details, follow these steps:
 
 ## Install a client library
 
-The WCD console includes a query interface, but most most WCD interactions rely on a [Weaviate client](/docs/weaviate/client-libraries/index.md). Clients are available in several programming languages. Chose one that makes sense for your project.
+The WCD console includes a query interface, but most most WCD interactions rely on a [Weaviate client](/weaviate/client-libraries/index.md). Clients are available in several programming languages. Chose one that makes sense for your project.
 
 To install a client, follow these steps for your language:
 
@@ -104,7 +104,7 @@ If you are connected, the server returns `True`.
 
 ## Define a collection
 
-Weaviate stores objects in collections. Every collection has a [schema](/docs/weaviate/config-refs/schema). Collection schemas are highly configurable, but some properties cannot be changed after you create the collection. For best results, define a collection schema before you import your data.
+Weaviate stores objects in collections. Every collection has a [schema](/weaviate/config-refs/schema). Collection schemas are highly configurable, but some properties cannot be changed after you create the collection. For best results, define a collection schema before you import your data.
 
 To create a schema for the `Question` collection, follow these steps in your client code:
 
@@ -138,7 +138,7 @@ import CodeAutoschemaImport from '/_includes/code/quickstart/import.mdx'
 
 ## Query your data
 
-Weaviate supports a variety of [search methods](/docs/weaviate/search). A `near_text` search vectorizes the search string and returns objects that have vectors that are most similar to it. This example performs a `nearText` search on the `Question` [data collection](#load-data).
+Weaviate supports a variety of [search methods](/weaviate/search). A `near_text` search vectorizes the search string and returns objects that have vectors that are most similar to it. This example performs a `nearText` search on the `Question` [data collection](#load-data).
 
 To search for objects in the `Question` collection that have vectors that are similar to the vector for `biology`, run this example code:
 

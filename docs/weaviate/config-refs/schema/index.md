@@ -247,7 +247,7 @@ This configuration allows stopwords to be configured by collection. If not set, 
 
 As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverted index, but not in the tokenized query. As a result, when the BM25 algorithm is applied, stopwords are ignored in the input for relevance ranking but will affect the score.
 
-Stopwords can now be configured at runtime. You can use the RESTful API to [update](/docs/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D) the list of stopwords after your data has been indexed.
+Stopwords can now be configured at runtime. You can use the RESTful API to [update](/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D) the list of stopwords after your data has been indexed.
 
 Note that stopwords are only removed when [tokenization](#tokenization) is set to `word`.
 
@@ -451,7 +451,7 @@ This feature was introduced in `v1.12.0`.
 
 You can customize how `text` data is tokenized and indexed in the inverted index. Tokenization influences the results returned by the [`bm25`](../../api/graphql/search-operators.md#bm25) and [`hybrid`](../../api/graphql/search-operators.md#hybrid) operators, and [`where` filters](../../api/graphql/filters.md).
 
-Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../../manage-data/collections.mdx/docs/wcs/)
+Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../../manage-data/collections.mdx#property-level-settings)
 
 <details>
   <summary>Example property configuration</summary>
@@ -602,13 +602,13 @@ import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.m
 
 ## Configure semantic indexing
 
-Weaviate can generate vector embeddings for objects using [model provider integrations](/docs/weaviate/model-providers/).
+Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
 
 For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
 
 Unless specified otherwise in the collection definition, the default behavior is to:
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skip](/docs/weaviate/manage-data/collections#property-level-settings)ped)
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skip](/weaviate/manage-data/collections#property-level-settings)ped)
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
@@ -653,9 +653,9 @@ client.schema.create_class(collection_obj)
 
 ## Related pages
 - [Tutorial: Schema](../../starter-guides/schema.md)
-- [How to: Configure a schema](/docs/weaviate/manage-data/collections)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
-- [Concepts: Data Structure](/docs/weaviate/concepts/data)
+- [How to: Configure a schema](/weaviate/manage-data/collections)
+- [References: REST API: Schema](/weaviate/api/rest#tag/schema)
+- [Concepts: Data Structure](/weaviate/concepts/data)
 
 ## Questions and feedback
 

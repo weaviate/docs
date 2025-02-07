@@ -178,7 +178,7 @@ You can also select a fine-tuned reranker model_id, such as:
 
 - `500df123-afr3-...`
 
-See [this blog post](/blog/fine-tuning-coheres-reranker) for more information.
+See [this blog post](https://weaviate.io/blog/fine-tuning-coheres-reranker) for more information.
 
 For further details on model parameters, see the [Cohere API documentation](https://docs.cohere.com/reference/rerank).
 

@@ -240,7 +240,7 @@ Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud in
 
 ## Configure the vectorizer
 
-[Configure a Weaviate index](/docs/weaviate/manage-data/collections#specify-a-vectorizer) as follows to use a Weaviate Embeddings model:
+[Configure a Weaviate index](/weaviate/manage-data/collections#specify-a-vectorizer) as follows to use a Weaviate Embeddings model:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -283,11 +283,11 @@ Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud in
 
 Once your collection is configured, you can start using Weaviate Embeddings to generate embeddings for your data and queries.
 
-Refer to the [Model Provider Integrations page](/docs/weaviate/model-providers/weaviate/embeddings) for further examples, on:
-- [How to use custom parameters](/docs/weaviate/model-providers/weaviate/embeddings#vectorizer-parameters)
-- [Import data](/docs/weaviate/model-providers/weaviate/embeddings#data-import)
-- [Perform searches](/docs/weaviate/model-providers/weaviate/embeddings#searches)
+Refer to the [Model Provider Integrations page](/weaviate/model-providers/weaviate/embeddings) for further examples, on:
+- [How to use custom parameters](/weaviate/model-providers/weaviate/embeddings#vectorizer-parameters)
+- [Import data](/weaviate/model-providers/weaviate/embeddings#data-import)
+- [Perform searches](/weaviate/model-providers/weaviate/embeddings#searches)
 
 ## Additional Resources
 
-- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings)
+- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings)

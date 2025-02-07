@@ -12,7 +12,7 @@ A vector embedding captures semantic meaning of an object in a vector space. It 
 A vector search compares [vectors of the stored objects](#object-vectors) against the [query vector(s)](#query-vectors) to find the closest matches, before returning the top `n` results.
 
 :::tip An introduction to vector search
-New to vector search? Check out our blog, ["Vector Search Explained"](/blog/vector-search-explained) for an introduction to vector search concepts and use cases.
+New to vector search? Check out our blog, ["Vector Search Explained"](https://weaviate.io/blog/vector-search-explained) for an introduction to vector search concepts and use cases.
 :::
 
 ## Object vectors

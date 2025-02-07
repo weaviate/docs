@@ -221,7 +221,7 @@ Search by sums of weighted, **normalized** distances to each target vector.
 
 Each distance is normalized against other results for that target vector. Each normalized distance between the query vector and the target vector is multiplied by the specified weight. The resulting weighted distances are summed for each object to produce a combined distance. The search results are sorted by this combined distance.
 
-For a more detailed explanation of how scores are normalized, see the blog post on [hybrid relative score fusion](/blog/hybrid-search-fusion-algorithms#relative-score-fusion)
+For a more detailed explanation of how scores are normalized, see the blog post on [hybrid relative score fusion](https://weaviate.io/blog/hybrid-search-fusion-algorithms#relative-score-fusion)
 </details>
 
 <Tabs groupId="languages">
@@ -245,7 +245,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 
 ## Questions and feedback
 

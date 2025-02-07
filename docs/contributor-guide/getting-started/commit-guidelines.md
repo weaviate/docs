@@ -162,7 +162,7 @@ fix typo in getting started docker compose example
 
 What's being changed:
 
-This PR corrects a typo in developers/weaviate/current/getting-started/
+This PR corrects a typo in docs/weaviate/current/getting-started/
 installation.md, where the docker-compose.yml example lacks a '. The
 docker-compose.yml file previously did not work, but it now does.
 

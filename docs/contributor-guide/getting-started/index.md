@@ -38,11 +38,11 @@ You can also contribute by working on existing issues. Check the issues pages in
 
 ## Background reading
 
-Navigating a new project can be difficult, and it takes time to become acquainted with the codebase. If you haven't yet, we suggest going through the [Weaviate getting started guide](/docs/weaviate/quickstart/index.md).
+Navigating a new project can be difficult, and it takes time to become acquainted with the codebase. If you haven't yet, we suggest going through the [Weaviate getting started guide](/weaviate/quickstart/index.md).
 
 Here are additional resources that will help you familiarize with Weaviate and its applications:
 
-* [Weaviate Blog](/blog) – a series of blog around Weaviate and the overall vector search space.
+* [Weaviate Blog](https://weaviate.io/blog) – a series of blog around Weaviate and the overall vector search space.
 * [Weaviate Newsletter](https://newsletter.weaviate.io) – bi-weekly newsletter with updates on the latest and greatest announcements.
 * [Awesome Weaviate](https://github.com/weaviate/awesome-weaviate) – a list of curated examples and tutorials on how to use Weaviate.
 * [Weaviate Examples](https://github.com/weaviate/weaviate-examples) – a repository of various example projects created by the community. Each example shows a different Weaviate use case. You can add your own examples too!

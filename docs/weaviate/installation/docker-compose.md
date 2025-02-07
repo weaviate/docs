@@ -183,7 +183,7 @@ Note that transformer models are neural networks built to run on GPUs. Running W
 
 For more information on how to set up the environment with the
 `text2vec-transformers` integration, see [this
-page](/docs/weaviate/model-providers/transformers/embeddings.md).
+page](/weaviate/model-providers/transformers/embeddings.md).
 
 The `text2vec-transformers` module requires at least Weaviate version `v1.2.0`.
 
@@ -374,7 +374,7 @@ services:
 
 ## Related pages
 
-- If you are new to Docker, see [Docker Introduction for Weaviate Users](/blog/docker-and-containers-with-weaviate).
+- If you are new to Docker, see [Docker Introduction for Weaviate Users](https://weaviate.io/blog/docker-and-containers-with-weaviate).
 
 ## Questions and feedback
 

@@ -1012,7 +1012,7 @@ For a list of filter operators, see [the reference page](../api/graphql/filters.
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: Filters](../api/graphql/filters.md)
 
 ## Questions and feedback

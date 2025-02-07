@@ -100,14 +100,14 @@ The [gRPC API](../api/grpc.md) is faster than the REST API. Use the gRPC API to 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
 
-The Python client uses gRPC by default. See the client page for additional batch import [configuration options](/docs/weaviate/client-libraries/python#batch-imports).
+The Python client uses gRPC by default. See the client page for additional batch import [configuration options](/weaviate/client-libraries/python#batch-imports).
 
 <br/>The legacy Python client does not support gRPC.
 
 </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
 
-The [TypeScript client v3](/docs/weaviate/client-libraries/typescript/typescript-v3#batch-inserts) uses gRPC by default.
+The [TypeScript client v3](/weaviate/client-libraries/typescript/typescript-v3#batch-inserts) uses gRPC by default.
 
 <br/>The legacy TypeScript client does not support gRPC.
 
@@ -507,7 +507,7 @@ Data imports can be resource intensive. Consider the following when you import l
 Available starting in `v1.22`. This is an experimental feature. Use with caution.
 :::
 
-To maximize import speed, enable [asynchronous indexing](/docs/weaviate/config-refs/schema/vector-index#asynchronous-indexing).
+To maximize import speed, enable [asynchronous indexing](/weaviate/config-refs/schema/vector-index#asynchronous-indexing).
 
 To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration file.
 
@@ -526,15 +526,15 @@ import AutoTenant from '/_includes/auto-tenant.mdx';
 
 <AutoTenant/>
 
-For details, see [auto-tenant](/docs/weaviate/manage-data/multi-tenancy#automatically-add-new-tenants).
+For details, see [auto-tenant](/weaviate/manage-data/multi-tenancy#automatically-add-new-tenants).
 
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How-to: Create objects](./create.mdx)
-- [References: REST - /v1/batch](/docs/weaviate/api/rest#tag/batch)
-- [Configuration: Indexes](/docs/weaviate/config-refs/schema/vector-index#asynchronous-indexing)
+- [References: REST - /v1/batch](/weaviate/api/rest#tag/batch)
+- [Configuration: Indexes](/weaviate/config-refs/schema/vector-index#asynchronous-indexing)
 
 ## Questions and feedback
 

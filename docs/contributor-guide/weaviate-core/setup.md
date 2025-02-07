@@ -54,7 +54,7 @@ tools/dev/restart_dev_environment.sh --prometheus && tools/dev/run_dev_server.sh
 ```
 
 :::info
-This setup is for contributors to the Weaviate code base. If you are an end-user of Weaviate looking for a Prometheus-enabled example, please see [this documentation page](/docs/weaviate/configuration/monitoring.md) or this [example](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
+This setup is for contributors to the Weaviate code base. If you are an end-user of Weaviate looking for a Prometheus-enabled example, please see [this documentation page](/weaviate/configuration/monitoring.md) or this [example](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
 :::
 
 Below are more examples of running Weaviate with Docker.

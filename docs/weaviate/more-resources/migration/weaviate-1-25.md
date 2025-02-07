@@ -55,7 +55,7 @@ If your deployment is on another namespace, modify the instructions below accord
 
 ### (Optional) Backup
 
-Before proceeding with the upgrade, we recommend making a [backup](/docs/weaviate/configuration/backups.md) of your Weaviate database. If a backup is not possible, you can explore other options, such as manually [exporting your data](/docs/weaviate/manage-data/migrate.mdx)
+Before proceeding with the upgrade, we recommend making a [backup](/weaviate/configuration/backups.md) of your Weaviate database. If a backup is not possible, you can explore other options, such as manually [exporting your data](/weaviate/manage-data/migrate.mdx)
 
 ### 1. Delete StatefulSet
 

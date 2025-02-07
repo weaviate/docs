@@ -434,7 +434,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <a href="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/developers/academy">Weaviate Academy</a> unit on <a href="/docs/academy/py/standalone/chunking">chunking</a>.
+            Check out the <a href="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/academy">Weaviate Academy</a> unit on <a href="/academy/py/standalone/chunking">chunking</a>.
           </p>
         </div>
       </div>

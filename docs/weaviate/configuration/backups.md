@@ -713,7 +713,7 @@ For example, consider the following situation: You would like to do a load test 
 - If a backup module is misconfigured, such as having an invalid backup path, it can cause Weaviate to not start. Review the system logs for any errors.
 
 ## Related pages
-- [References: REST API: Backups](/docs/weaviate/api/rest#tag/backups)
+- [References: REST API: Backups](/weaviate/api/rest#tag/backups)
 
 ## Questions and feedback
 

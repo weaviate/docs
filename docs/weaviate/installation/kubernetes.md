@@ -72,7 +72,7 @@ Starting in Helm chart version 17.0.1, constraints on module resources are comme
 
 Starting in Helm chart version 17.0.0, the gRPC service is enabled by default. If you use an older Helm chart, edit your `values.yaml` file to enable gRPC.
 
-Check that the `enabled` field is set to `true` and the `type` field to `LoadBalancer`. These settings allow you to access the [gRPC API](/blog/grpc-performance-improvements) from outside the Kubernetes cluster.
+Check that the `enabled` field is set to `true` and the `type` field to `LoadBalancer`. These settings allow you to access the [gRPC API](https://weaviate.io/blog/grpc-performance-improvements) from outside the Kubernetes cluster.
 
 ```yaml
 grpcService:

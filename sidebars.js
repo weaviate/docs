@@ -17,7 +17,7 @@ const sidebars = {
     // Normal syntax:
     {
       type: 'doc',
-      id: 'weaviate/intro', // document ID
+      id: 'weaviate/index', // document ID
       label: 'Overview', // sidebar label
     },
     {

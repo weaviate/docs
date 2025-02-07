@@ -160,7 +160,7 @@ The `explainScore` will be the hybrid score of the result, broken down into its 
 
 ### Classification
 
-When a data-object has been [subjected to classification](/docs/weaviate/api/rest#tag/classifications), you can get additional information about how the object was classified by running the following command:
+When a data-object has been [subjected to classification](/weaviate/api/rest#tag/classifications), you can get additional information about how the object was classified by running the following command:
 
 import GraphQLUnderscoreClassification from '/_includes/code/graphql.underscoreproperties.classification.mdx';
 

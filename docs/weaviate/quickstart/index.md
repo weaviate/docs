@@ -380,7 +380,7 @@ flowchart LR
 :::info Where did the vectors come from?
 Weaviate used the Cohere API key to generate a vector embedding for each object during import. During the query, Weaviate similarly converted the query (`biology`) into a vector.
 
-As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/docs/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
+As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
 :::
 
 :::tip More search types available
@@ -518,7 +518,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <a href="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/developers/academy">Weaviate Academy</a> unit on <a href="/docs/academy/py/standalone/chunking">chunking</a>.
+            Check out the <a href="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/academy">Weaviate Academy</a> unit on <a href="/academy/py/standalone/chunking">chunking</a>.
           </p>
         </div>
       </div>

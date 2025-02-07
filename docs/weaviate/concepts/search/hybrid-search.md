@@ -182,7 +182,7 @@ This is because BM25 scores are not normalized or bounded like vector distances,
 
 - [How-to: Search](../../search/index.md)
 - [How-to: Hybrid search](../../search/hybrid.md)
-- [Blog: A deep dive into Weaviate's fusion algorithms](/blog/hybrid-search-fusion-algorithms)
+- [Blog: A deep dive into Weaviate's fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms)
 
 ## Questions and feedback
 

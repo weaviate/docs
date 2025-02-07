@@ -641,9 +641,9 @@ Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will on
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How to: Configure a schema](../manage-data/collections.mdx)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- [References: REST API: Schema](/weaviate/api/rest#tag/schema)
 - [Concepts: Data Structure: Multi-tenancy](../concepts/data.md#multi-tenancy)
 
 ## Questions and feedback

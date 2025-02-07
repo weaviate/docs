@@ -639,7 +639,7 @@ For more specific results, use a `filter` to narrow your search.
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: GraphQL: Aggregate](../api/graphql/aggregate.md)
 
 ## Questions and feedback

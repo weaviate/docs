@@ -29,4 +29,4 @@ The resources are broken into two categories:
 ### Read and Listen 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Ingesting PDFs into Weaviate | Learn how to load and transform PDF documents into Weaviate. | [Blog](/blog/ingesting-pdfs-into-weaviate) |
+| Ingesting PDFs into Weaviate | Learn how to load and transform PDF documents into Weaviate. | [Blog](https://weaviate.io/blog/ingesting-pdfs-into-weaviate) |

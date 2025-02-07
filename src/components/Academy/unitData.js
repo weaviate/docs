@@ -3,7 +3,7 @@ export const unitData = {
     title: "Set up Weaviate",
     body: "Set up a Weaviate instance and connect to it.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_text_data/setup_weaviate",
+    buttonURL: "/academy/py/starter_text_data/setup_weaviate",
     badgeType: "practical",
     learningGoals: [
       "Set up a Weaviate instance and connect to it with the Python client."
@@ -18,7 +18,7 @@ export const unitData = {
     title: "Set up Weaviate",
     body: "Set up a Weaviate instance and connect to it.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_text_data/setup_weaviate",
+    buttonURL: "/academy/js/starter_text_data/setup_weaviate",
     badgeType: "practical",
     learningGoals: [
       "Set up a Weaviate instance and connect to it with the JavaScript/Typescript client."
@@ -33,7 +33,7 @@ export const unitData = {
     title: "Populate the database",
     body: "Create a collection and import data, and have Weaviate create vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_text_data/text_collections",
+    buttonURL: "/academy/py/starter_text_data/text_collections",
     badgeType: "practical",
     learningGoals: [
       "Configure and create a collection then import text data using batch imports."
@@ -48,7 +48,7 @@ export const unitData = {
     title: "Populate the database",
     body: "Create a collection and import data, and have Weaviate create vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_text_data/text_collections",
+    buttonURL: "/academy/js/starter_text_data/text_collections",
     badgeType: "practical",
     learningGoals: [
       "Configure and create a collection then import text data using batch imports."
@@ -63,7 +63,7 @@ export const unitData = {
     title: "Perform searches",
     body: "Learn how to use search functions in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_text_data/text_searches",
+    buttonURL: "/academy/py/starter_text_data/text_searches",
     badgeType: "practical",
     learningGoals: [
       "Perform semantic, keyword and hybrid searches."
@@ -79,7 +79,7 @@ export const unitData = {
     title: "Perform searches",
     body: "Learn how to use search functions in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_text_data/text_searches",
+    buttonURL: "/academy/js/starter_text_data/text_searches",
     badgeType: "practical",
     learningGoals: [
       "Perform semantic, keyword and hybrid searches."
@@ -95,7 +95,7 @@ export const unitData = {
     title: "LLMs and Weaviate (RAG)",
     body: "Use large language models to augment and transform retrieved data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_text_data/text_rag",
+    buttonURL: "/academy/py/starter_text_data/text_rag",
     badgeType: "practical",
     learningGoals: [
       "Use AI (large language models) to augment and transform retrieved data."
@@ -110,7 +110,7 @@ export const unitData = {
     title: "LLMs and Weaviate (RAG)",
     body: "Use large language models to augment and transform retrieved data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_text_data/text_rag",
+    buttonURL: "/academy/js/starter_text_data/text_rag",
     badgeType: "practical",
     learningGoals: [
       "Use AI (large language models) to augment and transform retrieved data."
@@ -125,7 +125,7 @@ export const unitData = {
     title: "Set up Weaviate",
     body: "Set up a Weaviate instance and connect to it.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_custom_vectors/setup_weaviate",
+    buttonURL: "/academy/py/starter_custom_vectors/setup_weaviate",
     badgeType: "practical",
     learningGoals: [
       "Set up a Weaviate instance and connect to it with the Python client."
@@ -140,7 +140,7 @@ export const unitData = {
     title: "Populate the database",
     body: "Create a collection and import data with your own vectors.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_custom_vectors/object_collections",
+    buttonURL: "/academy/py/starter_custom_vectors/object_collections",
     badgeType: "practical",
     learningGoals: [
       "Configure and create a collection then import text data with your own vectors using batch imports."
@@ -155,7 +155,7 @@ export const unitData = {
     title: "Perform searches",
     body: "Learn how to use search functions in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_custom_vectors/object_searches",
+    buttonURL: "/academy/py/starter_custom_vectors/object_searches",
     badgeType: "practical",
     learningGoals: [
       "Perform semantic, keyword and hybrid searches."
@@ -171,7 +171,7 @@ export const unitData = {
     title: "LLMs and Weaviate (RAG)",
     body: "Use large language models to augment and transform retrieved data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_custom_vectors/object_rag",
+    buttonURL: "/academy/py/starter_custom_vectors/object_rag",
     badgeType: "practical",
     learningGoals: [
       "Use AI (large language models) to augment and transform retrieved data."
@@ -186,7 +186,7 @@ export const unitData = {
     title: "Weaviate for multimodal data",
     body: "Create a local Weaviate instance for multimodal data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_multimodal_data/setup_weaviate",
+    buttonURL: "/academy/py/starter_multimodal_data/setup_weaviate",
     badgeType: "practical",
     learningGoals: [
       "Set up a local Weaviate instance with a multimodal module."
@@ -201,7 +201,7 @@ export const unitData = {
     title: "Weaviate for multimodal data",
     body: "Create a Weaviate instance for multimodal data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_multimodal_data/setup_weaviate",
+    buttonURL: "/academy/js/starter_multimodal_data/setup_weaviate",
     badgeType: "practical",
     learningGoals: [
       "Set up a Weaviate instance with a multimodal module."
@@ -216,7 +216,7 @@ export const unitData = {
     title: "Populate the database",
     body: "Create a collection and import multimodal data, and have Weaviate create vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_multimodal_data/mm_collections",
+    buttonURL: "/academy/py/starter_multimodal_data/mm_collections",
     badgeType: "practical",
     learningGoals: [
       "Configure and create a collection then import multimodal data using batch imports."
@@ -231,7 +231,7 @@ export const unitData = {
     title: "Populate the database",
     body: "Create a collection and import multimodal data, and have Weaviate create vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_multimodal_data/mm_collections",
+    buttonURL: "/academy/js/starter_multimodal_data/mm_collections",
     badgeType: "practical",
     learningGoals: [
       "Configure and create a collection then import multimodal data using batch imports."
@@ -246,7 +246,7 @@ export const unitData = {
     title: "Perform searches",
     body: "Learn how to use search functions in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_multimodal_data/mm_searches",
+    buttonURL: "/academy/py/starter_multimodal_data/mm_searches",
     badgeType: "practical",
     learningGoals: [
       "Perform multimodal searches."
@@ -260,7 +260,7 @@ export const unitData = {
     title: "Perform searches",
     body: "Learn how to use search functions in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_multimodal_data/mm_searches",
+    buttonURL: "/academy/js/starter_multimodal_data/mm_searches",
     badgeType: "practical",
     learningGoals: [
       "Perform multimodal searches."
@@ -274,7 +274,7 @@ export const unitData = {
     title: "LLMs and Weaviate (RAG)",
     body: "Use large language models to augment and transform retrieved data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/starter_multimodal_data/mm_rag",
+    buttonURL: "/academy/py/starter_multimodal_data/mm_rag",
     badgeType: "practical",
     learningGoals: [
       "Use AI (large language models) to augment and transform retrieved data."
@@ -289,7 +289,7 @@ export const unitData = {
     title: "LLMs and Weaviate (RAG)",
     body: "Use large language models to augment and transform retrieved data.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/starter_multimodal_data/mm_rag",
+    buttonURL: "/academy/js/starter_multimodal_data/mm_rag",
     badgeType: "practical",
     learningGoals: [
       "Use AI (large language models) to augment and transform retrieved data."
@@ -304,7 +304,7 @@ export const unitData = {
     title: "Populate the database",
     body: "Create a collection with multiple named vectors and import data objects.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/named_vectors/nv_collections",
+    buttonURL: "/academy/py/named_vectors/nv_collections",
     badgeType: "practical",
     learningGoals: [
       "Configure and create a collection with multiple named vectors then import data using batch imports."
@@ -318,7 +318,7 @@ export const unitData = {
     title: "Perform queries",
     body: "Learn how to use query functions in Weaviate with named vectors.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/named_vectors/nv_queries",
+    buttonURL: "/academy/py/named_vectors/nv_queries",
     badgeType: "practical",
     learningGoals: [
       "How queries change for collections with named vectors."
@@ -333,7 +333,7 @@ export const unitData = {
     title: "Product quantization",
     body: "What is product quantization (PQ), and how do you use it?",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/compression/pq",
+    buttonURL: "/academy/py/compression/pq",
     badgeType: "practical",
     learningGoals: [
       "Learn what PQ is and how to use it."
@@ -347,7 +347,7 @@ export const unitData = {
     title: "Binary quantization",
     body: "What is binary quantization (BQ), and how do you use it?",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/compression/bq",
+    buttonURL: "/academy/py/compression/bq",
     badgeType: "practical",
     learningGoals: [
       "Learn what BQ is and how to use it."
@@ -361,7 +361,7 @@ export const unitData = {
     title: "Compression strategy",
     body: "What compression algorithm and settings are right for me?",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/compression/strategy",
+    buttonURL: "/academy/py/compression/strategy",
     badgeType: "theory",
     learningGoals: [
       "Learn what compression algorithm might work best for your use case."
@@ -375,7 +375,7 @@ export const unitData = {
     title: "Vector index: Overview",
     body: "What is a vector index, and why is it important?",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/vector_index/overview",
+    buttonURL: "/academy/py/vector_index/overview",
     badgeType: "practical",
     learningGoals: [
       "Learn what a vector index is and how it affects your vector searches."
@@ -389,7 +389,7 @@ export const unitData = {
     title: "HNSW index in depth",
     body: "Learn about the HNSW index type, and how to tune it for your use case.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/vector_index/hnsw",
+    buttonURL: "/academy/py/vector_index/hnsw",
     badgeType: "practical",
     learningGoals: [
       "How the HNSW index works and how to tune it for your use case."
@@ -403,7 +403,7 @@ export const unitData = {
     title: "Flat index in depth",
     body: "Learn about the flat index type, and how to tune it for your use case.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/vector_index/flat",
+    buttonURL: "/academy/py/vector_index/flat",
     badgeType: "practical",
     learningGoals: [
       "How the flat index works and how to tune it for your use case."
@@ -417,7 +417,7 @@ export const unitData = {
     title: "Dynamic index in depth",
     body: "Learn about the dynamic index type, and how to tune it for your use case.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/vector_index/dynamic",
+    buttonURL: "/academy/py/vector_index/dynamic",
     badgeType: "practical",
     learningGoals: [
       "How the dynamic index works and how to tune it for your use case."
@@ -431,7 +431,7 @@ export const unitData = {
     title: "Overview of tokenization",
     body: "What is tokenization, and why is it important?",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/tokenization/basics",
+    buttonURL: "/academy/py/tokenization/basics",
     badgeType: "theory",
     learningGoals: [
       "What tokenization is and its impact."
@@ -445,7 +445,7 @@ export const unitData = {
     title: "Available tokenization options",
     body: "What tokenization options are available in Weaviate?",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/tokenization/options",
+    buttonURL: "/academy/py/tokenization/options",
     badgeType: "theory",
     learningGoals: [
       "Review the available tokenization options in Weaviate."
@@ -460,7 +460,7 @@ export const unitData = {
     title: "Tokenization and filters",
     body: "See how tokenization impacts filters.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/tokenization/filters",
+    buttonURL: "/academy/py/tokenization/filters",
     badgeType: "practical",
     learningGoals: [
       "The impact of tokenization on filters."
@@ -474,7 +474,7 @@ export const unitData = {
     title: "Tokenization and searches",
     body: "See how tokenization impacts searches.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/tokenization/searches",
+    buttonURL: "/academy/py/tokenization/searches",
     badgeType: "practical",
     learningGoals: [
       "The impact of tokenization on query results."
@@ -488,7 +488,7 @@ export const unitData = {
     "title": "An overview of multi-tenancy",
     "body": "Learn what multi-tenancy is and how it helps to build scalable production applications.",
     "buttonType": "Click here",
-    "buttonURL": "/docs/academy/py/multitenancy/overview",
+    "buttonURL": "/academy/py/multitenancy/overview",
     "badgeType": "theory",
     "learningGoals": [
       "Understand multi-tenancy in Weaviate and its benefits",
@@ -507,7 +507,7 @@ export const unitData = {
     "title": "Multi-tenant setup",
     "body": "Set up a Weaviate instance and configure collections for multi-tenant usage.",
     "buttonType": "Click here",
-    "buttonURL": "/docs/academy/py/multitenancy/setup",
+    "buttonURL": "/academy/py/multitenancy/setup",
     "badgeType": "practical",
     "learningGoals": [
       "Learn how to set up a Weaviate instance and configure collections for multi-tenant usage."
@@ -525,7 +525,7 @@ export const unitData = {
     "title": "Work with tenants and data",
     "body": "Learn how to manage tenants and their data in a multi-tenant collection.",
     "buttonType": "Click here",
-    "buttonURL": "/docs/academy/py/multitenancy/tenant_data",
+    "buttonURL": "/academy/py/multitenancy/tenant_data",
     "badgeType": "practical",
     "learningGoals": [
       "Understand how to create and manage tenants as well their data in a multi-tenant environment"
@@ -543,7 +543,7 @@ export const unitData = {
     "title": "Manage tenant states and resources",
     "body": "Learn how to efficiently manage tenant states and optimize resource usage.",
     "buttonType": "Click here",
-    "buttonURL": "/docs/academy/py/multitenancy/manage_tenants",
+    "buttonURL": "/academy/py/multitenancy/manage_tenants",
     "badgeType": "practical",
     "learningGoals": [
       "Understand tenant activity statuses and their implications, and learn how to manage tenant states for optimal resource usage"
@@ -562,7 +562,7 @@ export const unitData = {
     title: "Hello, Weaviate",
     body: "Start here: Learn what Weaviate is, and about its key capabilities and features, as well as about vectors that power Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/zero_to_mvp/hello_weaviate",
+    buttonURL: "/academy/py/zero_to_mvp/hello_weaviate",
     badgeType: "mixed",
     learningGoals: [
       "What Weaviate is, and what it does.",
@@ -585,7 +585,7 @@ export const unitData = {
     body: "Learn how queries work in Weaviate, how to use similarity searches and use filters, as well as how search works under the hood.",
     buttonType: "Click here",
     badgeType: "practical",
-    buttonURL: "/docs/academy/py/zero_to_mvp/queries_1",
+    buttonURL: "/academy/py/zero_to_mvp/queries_1",
     learningGoals: [
       "How to retrieve objects and properties.",
       "The structure of returned responses from Weaviate.",
@@ -610,7 +610,7 @@ export const unitData = {
     body: "Learn what role the schema plays in Weaviate, and how to define it, before learning how to effectively populate Weaviate with data.",
     buttonType: "Click here",
     badgeType: "mixed",
-    buttonURL: "/docs/academy/py/zero_to_mvp/schema_and_imports",
+    buttonURL: "/academy/py/zero_to_mvp/schema_and_imports",
     learningGoals: [
       "How Weaviate organizes and stores data.",
       "An overview of indexes used in Weaviate.",
@@ -634,7 +634,7 @@ export const unitData = {
     body: "Learn about even more query types, from hybrid searches that combine keyword and vector searches to generative searches that transform your data at retrieval.",
     buttonType: "Click here",
     badgeType: "practical",
-    buttonURL: "/docs/academy/py/zero_to_mvp/queries_2",
+    buttonURL: "/academy/py/zero_to_mvp/queries_2",
     learningGoals: [
       "How to formulate and perform keyword or BM25 searches.",
       "What Hybrid searches are, how they are ranked and how to use them.",
@@ -656,7 +656,7 @@ export const unitData = {
     body: "Weaviate offers many search types (vector, keyword and hybrid), and options. Let's discuss some good, baseline search strategies.",
     buttonType: "Click here",
     badgeType: "mixed",
-    buttonURL: "/docs/academy/py/standalone/which_search",
+    buttonURL: "/academy/py/standalone/which_search",
     learningGoals: [
       "Impact of search type on search quality.",
       "Impact of search type on search performance.",
@@ -678,7 +678,7 @@ export const unitData = {
     body: "How to design your collection data structure. Whether to use classes or multi-tenancy, or cross-references.",
     buttonType: "TBD",
     badgeType: "theory",
-    // buttonURL: "/docs/academy/py/building_with_weaviate/schema_design",
+    // buttonURL: "/academy/py/building_with_weaviate/schema_design",
     learningGoals: [
       "Starting suggestions for selecting appropriate data structures to have Weaviate work for your needs.",
     ],
@@ -696,7 +696,7 @@ export const unitData = {
     body: "The basics on how to select a good baseline vectorizer for given data and task types.",
     buttonType: "TBD",
     badgeType: "theory",
-    // buttonURL: "/docs/academy/py/building_with_weaviate/vectorizer_selection",
+    // buttonURL: "/academy/py/building_with_weaviate/vectorizer_selection",
     learningGoals: [
       "Theory and heuristics for selecting appropriate, robust vectorizers for the data type and task at hand and how to set the vectorizer appropriately in Weaviate.",
     ],
@@ -738,7 +738,7 @@ export const unitData = {
   //   body: "Learn about vectors including how to create and use them.",
   //   buttonType: "Click here",
   //   badgeType: "mixed",
-  //   buttonURL: "/docs/academy/py/units/vectorization_essentials",
+  //   buttonURL: "/academy/py/units/vectorization_essentials",
   //   learningGoals: [
   //     "Various options for providing vector embeddings.",
   //     "Important class and property parameters, including cross-references.",
@@ -765,7 +765,7 @@ export const unitData = {
   //   body: "How to efficiently import data into Weaviate.",
   //   buttonType: "Click here",
   //   badgeType: "practical",
-  //   buttonURL: "/docs/academy/py/units/data_import",
+  //   buttonURL: "/academy/py/units/data_import",
   //   learningGoals: [
   //     "The ability to populate Weaviate with data, including an understanding of suggested best practices such as batching, error diagnoses and handling.",
   //   ],
@@ -782,7 +782,7 @@ export const unitData = {
   //   title: "Modules",
   //   body: "What roles modules play, and how to enable and use them, including examples.",
   //   buttonType: "TBD",
-  //   buttonURL: "/docs/academy/py/units/modules",
+  //   buttonURL: "/academy/py/units/modules",
   //   badgeType: "mixed",
   //   learningGoals: [
   //     "Learn that Weaviate is fully modularized",
@@ -983,7 +983,7 @@ export const unitData = {
     title: "Document chunking - why and how?",
     body: "Chunking is essential for working with longer texts in vector databases. This unit covers how to use it as well as tips and best practices.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/py/standalone/chunking",
+    buttonURL: "/academy/py/standalone/chunking",
     badgeType: "practical",
     learningGoals: [
       "What chunking is",
@@ -1051,7 +1051,7 @@ export const unitData = {
     title: "Introduction to Weaviate with TS (or JS)",
     body: "A practical course where you can learn how to add Weaviate to a TypeScript (or JavaScript) app.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/intro_weaviate_typescript",
+    buttonURL: "/academy/js/intro_weaviate_typescript",
     badgeType: "practical",
     learningGoals: [
       "The basics of Weaviate, and how to integrate it to a TypeScript (or JavaScript) app."
@@ -1070,7 +1070,7 @@ export const unitData = {
     title: "Building client-server applications",
     body: "Learn how to build fullstack applications with the Weaviate Typescript client that use the client-server approach with modern web tools.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/standalone/client-server",
+    buttonURL: "/academy/js/standalone/client-server",
     badgeType: "practical",
     learningGoals: [
       "What the client-server approach is and why we use it.",
@@ -1089,7 +1089,7 @@ export const unitData = {
     title: "Using Machine Learning Models",
     body: "Understand the fundamental concepts of generative and embedding models, their configuration and application in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/standalone/using-ml-models",
+    buttonURL: "/academy/js/standalone/using-ml-models",
     badgeType: "mixed",
     learningGoals: [
       "A high level understanding of embedding and generative models.",
@@ -1109,7 +1109,7 @@ export const unitData = {
     title: "Understanding the WANT stack?",
     body: "Chunking is essential for working with longer texts in vector databases. This unit covers how to use it as well as tips and best practices.",
     buttonType: "Click here",
-    buttonURL: "/docs/academy/js/standalone/want-stack",
+    buttonURL: "/academy/js/standalone/want-stack",
     badgeType: "practical",
     learningGoals: [
       "What chunking is",
@@ -1126,7 +1126,7 @@ export const unitData = {
     body: "Weaviate offers many search types (vector, keyword and hybrid), and options. Let's discuss some good, baseline search strategies.",
     buttonType: "Click here",
     badgeType: "mixed",
-    buttonURL: "/docs/academy/js/standalone/which-search",
+    buttonURL: "/academy/js/standalone/which-search",
     learningGoals: [
       "Impact of search type on search quality.",
       "Impact of search type on search performance.",

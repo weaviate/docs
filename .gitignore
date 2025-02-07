@@ -23,9 +23,6 @@ jeopardy_1k.csv
 .docusaurus
 .cache-loader
 
-# Ignore Academy for now
-# /developers/academy
-
 # IDEs
 .idea
 

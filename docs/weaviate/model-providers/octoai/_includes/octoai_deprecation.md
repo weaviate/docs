@@ -43,7 +43,7 @@ You can also select a new model with any embedding model provider. This will req
 If you are only using the generative AI integration, you do not need to migrate your data to a new collection.
 <br/>
 
-Follow [this how-to](/docs/weaviate/manage-data/collections#update-the-generative-model-integration) to re-configure your collection with a new generative AI model provider. Note this requires Weaviate `v1.25.23`, `v1.26.8`, `v1.27.1`, or later.
+Follow [this how-to](/weaviate/manage-data/collections#update-the-generative-model-integration) to re-configure your collection with a new generative AI model provider. Note this requires Weaviate `v1.25.23`, `v1.26.8`, `v1.27.1`, or later.
 <br/>
 
 You can select any model provider that offers generative AI models.

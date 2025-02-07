@@ -42,7 +42,7 @@ import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 
 ## Download the dataset
 
-We will use this [Simple English](https://simple.wikipedia.org/wiki/Simple_English_Wikipedia) Wikipedia [dataset hosted by OpenAI](https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip) (~700MB zipped, 1.7GB CSV file) that includes vector embeddings. These are the columns of interest, where `content_vector` is a [vector embedding](/blog/vector-embeddings-explained) with [1536 elements (dimensions)](https://openai.com/blog/new-and-improved-embedding-model), generated using OpenAI's `text-embedding-ada-002` model:
+We will use this [Simple English](https://simple.wikipedia.org/wiki/Simple_English_Wikipedia) Wikipedia [dataset hosted by OpenAI](https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip) (~700MB zipped, 1.7GB CSV file) that includes vector embeddings. These are the columns of interest, where `content_vector` is a [vector embedding](https://weaviate.io/blog/vector-embeddings-explained) with [1536 elements (dimensions)](https://openai.com/blog/new-and-improved-embedding-model), generated using OpenAI's `text-embedding-ada-002` model:
 
 | id | url | title | text | content_vector |
 |----|-----|-------|------|----------------|

@@ -13,7 +13,7 @@ As the reranker works on a smaller subset of data after retrieval, different, po
 
 ## Reranking in Weaviate
 
-With our reranker modules, you can conveniently perform [multi-stage searches](/blog/cross-encoders-as-reranker) without leaving Weaviate.
+With our reranker modules, you can conveniently perform [multi-stage searches](https://weaviate.io/blog/cross-encoders-as-reranker) without leaving Weaviate.
 
 In other words, you can perform a search - for example, a vector search - and then use a reranker to re-rank the results of that search. Our reranker modules are compatible with all of vector, bm25, and hybrid searches.
 

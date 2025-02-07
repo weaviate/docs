@@ -65,7 +65,7 @@ const DocHomePage = () => {
                 <li>(Optional) Zero-downtime updates</li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/docs/wcs/create-instance">
+                <a href="/wcs/create-instance">
                   Set up a WCD instance
                 </a>
               </button>
@@ -173,9 +173,9 @@ const DocHomePage = () => {
                 </span>
                 <span>
                 <p>
-                  <a href="/docs/academy/py/starter_text_data/">
+                  <a href="/academy/py/starter_text_data/">
                   Python
-                </a> / <a href="/docs/academy/js/starter_text_data/">
+                </a> / <a href="/academy/js/starter_text_data/">
                   JavaScript
                 </a>
                 </p>
@@ -188,18 +188,18 @@ const DocHomePage = () => {
               </p>
               <p>
                 Just{' '}
-                <a href="/docs/academy/py/starter_text_data/text_collections/">
+                <a href="/academy/py/starter_text_data/text_collections/">
                   populate Weaviate
                 </a>{' '}
                 with your text data and start using powerful{' '}
-                <a href="/docs/academy/py/starter_text_data/text_searches/">
+                <a href="/academy/py/starter_text_data/text_searches/">
                   vector, keyword and hybrid search capabilities
                 </a>
                 .
               </p>
               <p>
                 And use our integrations to{' '}
-                <a href="/docs/academy/py/starter_text_data/text_rag/">
+                <a href="/academy/py/starter_text_data/text_rag/">
                   build generative ai tools
                 </a>{' '}
                 with your data.
@@ -218,18 +218,18 @@ const DocHomePage = () => {
               <p>Do you prefer to work with your own vectors? No problem.</p>
               <p>
                 You can{' '}
-                <a href="/docs/academy/py/starter_custom_vectors/object_collections/">
+                <a href="/academy/py/starter_custom_vectors/object_collections/">
                   add your own vectors to Weaviate
                 </a>{' '}
                 and still benefit from{' '}
-                <a href="/docs/academy/py/starter_custom_vectors/object_searches/">
+                <a href="/academy/py/starter_custom_vectors/object_searches/">
                   all of its indexing and search capabilities.
                 </a>
                 .
               </p>
               <p>
                 Our integrations to{' '}
-                <a href="/docs/academy/py/starter_custom_vectors/object_rag/">
+                <a href="/academy/py/starter_custom_vectors/object_rag/">
                   build generative ai tools
                 </a>{' '}
                 work just as well with your data and vectors.
@@ -245,9 +245,9 @@ const DocHomePage = () => {
                 </span>
                 <span>
                 <p>
-                  <a href="/docs/academy/py/starter_multimodal_data">
+                  <a href="/academy/py/starter_multimodal_data">
                   Python
-                </a> / <a href="/docs/academy/js/starter_multimodal_data">
+                </a> / <a href="/academy/js/starter_multimodal_data">
                   JavaScript
                 </a>
                 </p>
@@ -258,18 +258,18 @@ const DocHomePage = () => {
               <p>For many, data comes in multiple forms beyond text.</p>
               <p>
                 Weaviate's multimodal modules{' '}
-                <a href="/docs/academy/py/starter_multimodal_data/mm_collections/">
+                <a href="/academy/py/starter_multimodal_data/mm_collections/">
                   can import text, audio and video and more
                 </a>{' '}
                 as well as{' '}
-                <a href="/docs/academy/py/starter_multimodal_data/mm_searches/">
+                <a href="/academy/py/starter_multimodal_data/mm_searches/">
                   perform multimodal searches
                 </a>
                 .
               </p>
               <p>
                 Use these modules to{' '}
-                <a href="/docs/academy/py/starter_multimodal_data/mm_rag/">
+                <a href="/academy/py/starter_multimodal_data/mm_rag/">
                   build generative ai tools
                 </a>{' '}
                 from your entire dataset.
@@ -353,20 +353,20 @@ const DocHomePage = () => {
           <h3>Client Libraries</h3>
           <div className={styles.tabRow}>
             <div className={`${styles.secondaryTabs} ${styles.python}`}>
-              <a href="/docs/weaviate/client-libraries/python">Python</a>
+              <a href="/weaviate/client-libraries/python">Python</a>
             </div>
             <div className={`${styles.secondaryTabs} ${styles.ts}`}>
-              <a href="/docs/weaviate/client-libraries/typescript">
+              <a href="/weaviate/client-libraries/typescript">
                 JS/TS
               </a>
             </div>
           </div>
 
           <div className={`${styles.secondaryTabs} ${styles.go}`}>
-            <a href="/docs/weaviate/client-libraries/go">Go</a>
+            <a href="/weaviate/client-libraries/go">Go</a>
           </div>
           <div className={`${styles.secondaryTabs} ${styles.java}`}>
-            <a href="/docs/weaviate/client-libraries/java">Java</a>
+            <a href="/weaviate/client-libraries/java">Java</a>
           </div>
         </div>
       </div>

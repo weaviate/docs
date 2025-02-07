@@ -26,7 +26,7 @@ To begin, select the `Collections` tool from the left hand menu.
 
 After you select the collection tool, the `Clusters` panel lists the clusters that are available. Select a cluster from the list to create a new collection or to see the collections that are already in the cluster.
 
-If you don't see any available clusters, select the `Clusters` option from the left hand menu and follow the steps to [create a new cluster](/docs/wcs/create-instance).
+If you don't see any available clusters, select the `Clusters` option from the left hand menu and follow the steps to [create a new cluster](/wcs/create-instance).
 
 <center><img src={WCDEdPick} width="75%" alt="Select cluster"/></center>
 
@@ -50,11 +50,11 @@ The name can only contain letters, numbers, and the under-score (_) character. S
 
 #### Select multi-tenancy
 
-[Multi-tenant collections](/docs/weaviate/manage-data/multi-tenancy) are useful if you have multiple users or need data isolation. By default, collections are single tenant. Set the `Multi-tenancy` toggle to enable multi-tenancy.
+[Multi-tenant collections](/weaviate/manage-data/multi-tenancy) are useful if you have multiple users or need data isolation. By default, collections are single tenant. Set the `Multi-tenancy` toggle to enable multi-tenancy.
 
 #### Set a default vectorizer
 
-Set a [vectorizer](/docs/weaviate/config-refs/schema#vectorizer) for the collection. Weaviate uses the default vectorizer when you import unvectorized data and when Weaviate queries external APIs that require vectorized inputs.
+Set a [vectorizer](/weaviate/config-refs/schema#vectorizer) for the collection. Weaviate uses the default vectorizer when you import unvectorized data and when Weaviate queries external APIs that require vectorized inputs.
 
 The `Vectorizer` setting is a drop-down list. After you select a vectorizer, the editor expands to let you configure the model. The tool only shows the configuration options that are relevant for the vectorizer that you select.
 
@@ -124,12 +124,12 @@ Enter the collection name in the text box to confirm, then press `Delete` to rem
 
 ## Additional considerations
 
-Weaviate collection schemas are highly configurable and can be tuned in many ways. Some schema elements are modifiable after you create the collection, but many properties cannot be modified. For additional details, see [Collection schema](/docs/weaviate/config-refs/schema).
+Weaviate collection schemas are highly configurable and can be tuned in many ways. Some schema elements are modifiable after you create the collection, but many properties cannot be modified. For additional details, see [Collection schema](/weaviate/config-refs/schema).
 
 ## More resources
 
-- [Collection schema](/docs/weaviate/config-refs/schema)
-- [Starter guide: collection schemas](/docs/weaviate/starter-guides/schema)
+- [Collection schema](/weaviate/config-refs/schema)
+- [Starter guide: collection schemas](/weaviate/starter-guides/schema)
 
 ## Support
 

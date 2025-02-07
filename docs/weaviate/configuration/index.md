@@ -14,7 +14,7 @@ This section shows you how to configure Weaviate.
   - [data types](../config-refs/datatypes.md)
   - [distance metrics](../config-refs/distances.md)
 
-- Manage performance and cost with [vector index properties](/docs/weaviate/config-refs/schema/vector-index)
+- Manage performance and cost with [vector index properties](/weaviate/config-refs/schema/vector-index)
 - [Back up](./backups.md) your Weaviate instance
 - Control access
   - [authentication](./authentication.md)

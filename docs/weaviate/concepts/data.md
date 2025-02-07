@@ -303,7 +303,7 @@ Cross-references like these are not supported:
 
 :::info Related pages
 - [How-to: Manage Data | Multi-tenancy operations](../manage-data/multi-tenancy.md)
-- [Multi-tenancy blog](/blog/multi-tenancy-vector-search)
+- [Multi-tenancy blog](https://weaviate.io/blog/multi-tenancy-vector-search)
 :::
 
 ### Monitoring metrics

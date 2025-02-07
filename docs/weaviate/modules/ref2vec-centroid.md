@@ -48,7 +48,7 @@ services:html
 
 ## How to configure
 
-In your Weaviate schema, you must define how you want this module to vectorize your data. If you are new to Weaviate schemas, you might want to check out the [tutorial on the Weaviate schema](/docs/weaviate/starter-guides/schema.md) first.
+In your Weaviate schema, you must define how you want this module to vectorize your data. If you are new to Weaviate schemas, you might want to check out the [tutorial on the Weaviate schema](/weaviate/starter-guides/schema.md) first.
 
 For example, here is an `Article` class which is configured to use ref2vec-centroid. Doing so requires only a class-level `moduleConfig`, containing two fields:
 
@@ -143,7 +143,7 @@ An object whose class is configured to use ref2vec-centroid will have its vector
 
 ### Making queries
 
-This module can be used with the existing [nearVector](/docs/weaviate/api/graphql/search-operators.md#nearvector) and [`nearObject`](/docs/weaviate/api/graphql/search-operators.md#nearobject) filters. It does not add any additional GraphQL extensions like `nearText`.
+This module can be used with the existing [nearVector](/weaviate/api/graphql/search-operators.md#nearvector) and [`nearObject`](/weaviate/api/graphql/search-operators.md#nearobject) filters. It does not add any additional GraphQL extensions like `nearText`.
 
 ## Additional information
 

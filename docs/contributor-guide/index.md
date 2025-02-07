@@ -30,7 +30,7 @@ This guide also includes the following sections on specific areas. You can think
 
 A lot of community chat happens on the [Weaviate Community Slack](https://weaviate.io/slack), with longer-form discussions taking place on the [forum](https://forum.weaviate.io)
 
-Many members of our community help us by giving feedback, asking questions, or proposing ideas. To get involved in our community, please make sure to familiarize yourself with the project's [Code of Conduct](/service/code-of-conduct).
+Many members of our community help us by giving feedback, asking questions, or proposing ideas. To get involved in our community, please make sure to familiarize yourself with the project's [Code of Conduct](https://weaviate.io/service/code-of-conduct).
 
 Please set your forum or Slack workspace display name to your name. This will make it easier to connect with other community members. Then reach out to members of the community, introduce yourself, and share your ideas/questions. Tell us about your areas of interest and what technologies you are using to build your projects. The more we know about you, the better we will be able to match project requirements to your interests and abilities.
 

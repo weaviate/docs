@@ -102,7 +102,7 @@ to obtain the metric for the entire Weaviate instance.
 | `index_queue_vectors_dequeued` | Number of vectors sent to the workers per tick. | `class_name`, `shard_name`, `target_vector` | `Gauge` |
 | `index_queue_wait_duration_ms` | Duration of waiting for the workers to finish. | `class_name`, `shard_name`, `target_vector` | `Summary` |
 
-Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/developers/contributor-guide).
+Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).
 
 ### Versioning
 

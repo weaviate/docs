@@ -28,7 +28,7 @@ Further details on each data type are provided below.
 
 Use this type for any text data.
 
-- Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../manage-data/collections.mdx/docs/wcs/).
+- Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../../manage-data/collections.mdx#property-level-settings).
 - If using [named vectors](../concepts/data.md#multiple-vectors-named-vectors), the property vectorization is defined in the [named vector definition](../manage-data/collections.mdx#define-multiple-named-vectors).
 - Text properties are tokenized prior to being indexed for keyword/BM25 searches. See [collection definition: tokenization](../config-refs/schema/index.md#property-tokenization) for more information.
 
@@ -608,7 +608,7 @@ For more information on cross-references, see the [cross-references](../concepts
 :::info Related pages
 - [How-to: Manage collections](../manage-data/collections.mdx)
 - [Concepts: Data Structure](../concepts/data.md)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- [References: REST API: Schema](/weaviate/api/rest#tag/schema)
 :::
 
 ### Notes

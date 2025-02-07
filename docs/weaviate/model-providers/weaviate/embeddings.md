@@ -40,7 +40,7 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 To use Weaviate Embeddings, you need:
 
 - A Weaviate Cloud instance running at least Weaviate `1.27.6`
-- To have [enabled "Weaviate Embeddings"](/docs/wcs/embeddings/index.md#administration) in your Weaviate Cloud organisation
+- To have [enabled "Weaviate Embeddings"](/wcs/embeddings/index.md#administration) in your Weaviate Cloud organisation
 - A Weaviate client library that supports Weaviate Embeddings:
     - Python client version `4.9.5` or higher
     - JavaScript/TypeScript client version `3.2.5` or higher
@@ -415,7 +415,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### Further resources
 
-- Weaviate Embeddings [Documentation](/docs/wcs/embeddings)
+- Weaviate Embeddings [Documentation](/wcs/embeddings)
 
 ## Questions and feedback
 

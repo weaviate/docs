@@ -33,4 +33,4 @@ The resources are broken into two categories:
 ### Read and Listen
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Make Real-Time AI a Reality with Weaviate + Confluent | Learn how to build an application using Weaviate and Confluent. | [Blog](/blog/confluent-and-weaviate) |
+| Make Real-Time AI a Reality with Weaviate + Confluent | Learn how to build an application using Weaviate and Confluent. | [Blog](https://weaviate.io/blog/confluent-and-weaviate) |

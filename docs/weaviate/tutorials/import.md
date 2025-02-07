@@ -48,7 +48,7 @@ Each Weaviate data object is structured as follows:
 
 Most commonly, Weaviate users import data through a Weaviate client library.
 
-It is worth noting, however, that data is ultimately added through the RESTful API, either through the [`objects` endpoint](/docs/weaviate/api/rest#tag/objects) or the [`batch` endpoint](/docs/weaviate/api/rest#tag/batch).
+It is worth noting, however, that data is ultimately added through the RESTful API, either through the [`objects` endpoint](/weaviate/api/rest#tag/objects) or the [`batch` endpoint](/weaviate/api/rest#tag/batch).
 
 As the names suggest, the use of these endpoints depend on whether objects are being imported as batches or individually.
 
@@ -159,7 +159,7 @@ A request with a `200` response may still include object-level errors, which is 
 - [Tutorial: Schemas in detail](../starter-guides/schema.md)
 - [Tutorial: Queries in detail](./query.md)
 - [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/docs/wcs/tools/query-tool.mdx)
+- [Tutorial: Introduction to Weaviate Console](/wcs/tools/query-tool.mdx)
 
 ### Other object operations
 
