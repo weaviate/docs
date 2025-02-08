@@ -1,3 +1,8 @@
+.defaultNavbar {
+  position: sticky;
+  z-index: 1000; /* Below modal but above content */
+}
+
 .secondaryNavbar {
   display: flex;
   align-items: center;
@@ -5,16 +10,32 @@
   background-color: #fff;
   padding: 0px 0px 0px 10px;
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #E5E7EB;
-  position: relative;
-  z-index: 1; /* Ensures navbar is above other elements */
-  height: 50px; /* Increase height */
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  width: 100%;
+  height: 60px;
+  z-index: 999; /* Below modal but above content */
+}
+
+/* Placeholder element to prevent content shift */
+.secondaryNavbarPlaceholder {
+  height: 60px; /* Same height as .secondaryNavbar */
+  display: none; /* Initially hidden */
+}
+
+.secondaryNavbar.fixOnTop {
+  position: fixed;
+}
+
+/* When navbar is fixed, make placeholder visible */
+.secondaryNavbar.fixOnTop + .secondaryNavbarPlaceholder {
+  display: block;
 }
 
 .modalButton {
-  background-color: #F9FAFB; /* Slightly darker grey than navbar */
+  background-color: #f9fafb; /* Slightly darker grey than navbar */
   color: #374151; /* Dark grey text */
-  border: 1px solid #E5E7EB; /* Dark grey border */
+  border: 1px solid #e5e7eb; /* Dark grey border */
   padding: 8px 16px;
   font-size: 14px;
   cursor: pointer;
@@ -35,12 +56,12 @@
 .optionIcon {
   font-size: 14px;
   margin-right: 4px; /* Space between icon and text */
-  color: #555; /* Slightly darker grey */
+  color: #374151; /* Slightly darker grey */
 }
 
 .arrowIcon {
   font-size: 14px;
-  color: #888; /* Light grey arrow */
+  color: #374151; /* Light grey arrow */
 }
 
 .secondaryNavLinks {
@@ -88,7 +109,7 @@
   border-radius: 8px;
   width: 90% !important; /* Use a percentage for flexibility */
   max-width: 650px !important; /* Set a clear max-width */
-  text-align: center;
+  text-align: left;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1001; /* Ensures content is above overlay */
   position: relative;
@@ -96,7 +117,7 @@
 
 .modalOptionsContainer {
   display: grid;
-  gap: 10px;
+  gap: 30px;
   grid-template-columns: 1fr; /* Default: single column */
 }
 
@@ -118,8 +139,17 @@
 /* Style the icon */
 .modalIcon {
   font-size: 20px;
-  color: #555;
+  color: #374151 !important;
   margin-top: 3px; /* Adjust vertical alignment */
+}
+
+/* Style for title */
+.modalTitle strong {
+  display: block;
+  font-size: 18px;
+  color: #374151;
+  font-weight: 600;
+  margin-bottom: 20px; /* Increase space between title and description */
 }
 
 /* Container for text (title + description) */
@@ -128,17 +158,18 @@
   flex-direction: column;
 }
 
-/* Style for title */
+/* Style for option */
 .modalText strong {
   display: block;
-  font-size: 16px;
-  color: #333;
+  font-size: 18px;
+  color: #374151;
+  font-weight: 500;
 }
 
 /* Style for description */
 .modalText p {
   font-size: 14px;
-  color: #666;
+  color: #374151;
   margin: 4px 0 0 0;
 }
 
@@ -167,4 +198,43 @@
 
 .closeIcon:hover {
   color: #000;
+}
+
+@media (max-width: 599px) {
+  .modalContent {
+    position: fixed;
+    top: 10%;
+    left: 5%;
+    right: 5%;
+    width: 90vw !important; /* Allow it to naturally size within left/right constraints */
+    max-width: 100% !important; /* Ensure it doesn't exceed screen width */
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .modalOptionsContainer {
+    grid-template-columns: 1fr; /* Force single-column layout */
+  }
+}
+
+@media (max-width: 599px) {
+  .secondaryNavbar {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    white-space: nowrap; /* Prevents items from wrapping */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding-bottom: 5px; /* Ensures space for scrollbar */
+  }
+
+  .secondaryNavLinks {
+    display: flex;
+    flex-wrap: nowrap; /* Prevents items from wrapping */
+    gap: 20px; /* Adjust spacing between links */
+  }
+
+  .navLink {
+    flex-shrink: 0; /* Prevents links from squeezing */
+    padding: 10px; /* Improves tap target */
+  }
 }

@@ -1,6 +1,6 @@
 import OriginalNavbar from "@theme-original/Navbar";
 import styles from "./styles.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,18 +33,15 @@ const secondaryNavOptions = {
   academy: {
     title: "Academy",
     icon: faGraduationCap,
-    description: "Learn about vector search and Weaviate through structured courses.",
-    links: [
-      { label: "Getting Started", link: "/academy" },
-    ],
+    description:
+      "Learn about vector search and Weaviate through structured courses.",
+    links: [{ label: "Getting Started", link: "/academy" }],
   },
   integrations: {
     title: "Integrations",
     icon: faPuzzlePiece,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
-    links: [
-      { label: "Getting Started", link: "/integrations" },
-    ],
+    links: [{ label: "Getting Started", link: "/integrations" }],
   },
 };
 
@@ -53,6 +50,33 @@ export default function NavbarWrapper(props) {
   const location = useLocation();
   const [selectedOption, setSelectedOption] = useState("build");
   const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const defaultNavbar = document.querySelector(`.${styles.defaultNavbar}`);
+    const secondaryNavbar = document.querySelector(
+      `.${styles.secondaryNavbar}`
+    );
+    const placeholder = document.createElement("div");
+
+    placeholder.classList.add(styles.secondaryNavbarPlaceholder);
+
+    if (secondaryNavbar) {
+      secondaryNavbar.insertAdjacentElement("afterend", placeholder);
+    }
+
+    const handleScroll = () => {
+      if (window.scrollY > defaultNavbar.offsetHeight) {
+        secondaryNavbar.classList.add(styles.fixOnTop);
+        placeholder.style.display = "block";
+      } else {
+        secondaryNavbar.classList.remove(styles.fixOnTop);
+        placeholder.style.display = "none";
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -68,63 +92,83 @@ export default function NavbarWrapper(props) {
   return (
     <>
       {/* Default Docusaurus Navbar */}
-      <OriginalNavbar {...props} />
+      <div className={`${styles.defaultNavbar}`}>
+        <OriginalNavbar {...props} />
+      </div>
 
       {/* Secondary Navbar */}
-      <div className={styles.secondaryNavbar}>
-      <button className={styles.modalButton} onClick={() => setModalOpen(true)}>
-      <FontAwesomeIcon icon={secondaryNavOptions[selectedOption]?.icon} className={styles.optionIcon} />
-      {secondaryNavOptions[selectedOption]?.title}
-        <FontAwesomeIcon icon={faChevronDown} className={styles.arrowIcon} />
-      </button>
+      <div className={`${styles.secondaryNavbar}`}>
+        <button
+          className={styles.modalButton}
+          onClick={() => setModalOpen(true)}
+        >
+          <FontAwesomeIcon
+            icon={secondaryNavOptions[selectedOption]?.icon}
+            className={styles.optionIcon}
+          />
+          {secondaryNavOptions[selectedOption]?.title}
+          <FontAwesomeIcon icon={faChevronDown} className={styles.arrowIcon} />
+        </button>
 
         <nav className={styles.secondaryNavLinks}>
           {secondaryNavOptions[selectedOption]?.links.map((item, index) => (
             <Link
-            key={index}
-            to={item.link}
-            className={
-              location.pathname === item.link
-                ? `${styles.navLink} ${styles.activeNavLink}` 
-                : styles.navLink
-            }
-          >
-            {item.label}
-          </Link>
+              key={index}
+              to={item.link}
+              className={
+                location.pathname === item.link
+                  ? `${styles.navLink} ${styles.activeNavLink}`
+                  : styles.navLink
+              }
+            >
+              {item.label}
+            </Link>
           ))}
         </nav>
       </div>
 
-{/* Modal for Category Selection */}
-{isModalOpen && (
-  <div className={styles.modalOverlay} onClick={() => setModalOpen(false)}>
-    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-      {/* Close Button (X) in Upper Right */}
-      <button className={styles.closeIcon} onClick={() => setModalOpen(false)}>
-        ✕
-      </button>
-
-      <h3>Select a Category</h3>
-      <div className={styles.modalOptionsContainer}>
-        {Object.entries(secondaryNavOptions).map(([key, value]) => (
+      {/* Modal for Category Selection */}
+      {isModalOpen && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setModalOpen(false)}
+        >
           <div
-            key={key}
-            className={styles.modalOption}
-            onClick={() => handleOptionSelect(key)}
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
           >
-            <FontAwesomeIcon icon={value.icon} className={styles.modalIcon} />
-            <div className={styles.modalText}>
-              <strong>{value.title}</strong>
-              <p>{value.description}</p>
+            {/* Close Button (X) in Upper Right */}
+            <button
+              className={styles.closeIcon}
+              onClick={() => setModalOpen(false)}
+            >
+              ✕
+            </button>
+
+            <div className={styles.modalTitle}>
+              <strong>Go to documentation:</strong>
+            </div>
+            <div className={styles.modalOptionsContainer}>
+              {Object.entries(secondaryNavOptions).map(([key, value]) => (
+                <div
+                  key={key}
+                  className={styles.modalOption}
+                  onClick={() => handleOptionSelect(key)}
+                >
+                  <FontAwesomeIcon
+                    icon={value.icon}
+                    className={styles.modalIcon}
+                  />
+                  <div className={styles.modalText}>
+                    <strong>{value.title}</strong>
+                    <p>{value.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  </div>
-)}
-
-
+        </div>
+      )}
     </>
   );
 }
