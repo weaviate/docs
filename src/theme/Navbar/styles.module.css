@@ -1,0 +1,107 @@
+.secondaryNavbar {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  position: relative;
+  z-index: 1; /* Ensures navbar is above other elements */
+}
+
+.modalButton {
+  background-color: #ececec; /* Slightly darker grey than navbar */
+  color: #333; /* Dark grey text */
+  border: 1px solid #555; /* Dark grey border */
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 15px;
+  z-index: 2; /* Ensures button is clickable */
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between text and icon */
+}
+
+.modalButton:hover {
+  background-color: #d6d6d6; /* Slightly darker on hover */
+}
+
+.optionIcon {
+  font-size: 18px;
+  margin-right: 8px; /* Space between icon and text */
+  color: #555; /* Slightly darker grey */
+}
+
+.arrowIcon {
+  font-size: 14px;
+  color: #888; /* Light grey arrow */
+}
+
+
+.secondaryNavLinks {
+  display: flex;
+  gap: 15px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #374151;
+}
+
+.activeNavLink {
+  color: #0ca307 !important;
+}
+
+/* MODAL STYLES */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures modal is on top */
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Ensures content is above overlay */
+  position: relative;
+}
+
+.modalOption {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.modalOption:hover {
+  background-color: #f0f0f0;
+}
+
+.closeButton {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.closeButton:hover {
+  background: #c82333;
+}
