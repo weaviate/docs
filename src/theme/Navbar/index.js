@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCode, faCloud, faGraduationCap, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
+import { faCode, faCloud, faGraduationCap, faChevronDown, faPuzzlePiece } from "@fortawesome/free-solid-svg-icons";
 
 const secondaryNavOptions = {
   build: {
@@ -37,6 +36,14 @@ const secondaryNavOptions = {
     description: "Learn about vector search and Weaviate through structured courses.",
     links: [
       { label: "Getting Started", link: "/academy" },
+    ],
+  },
+  integrations: {
+    title: "Integrations",
+    icon: faPuzzlePiece,
+    description: "For hyperscalers, data platforms, LLM frameworks, etc.",
+    links: [
+      { label: "Getting Started", link: "/integrations" },
     ],
   },
 };
@@ -88,27 +95,36 @@ export default function NavbarWrapper(props) {
         </nav>
       </div>
 
-      {/* Modal for Category Selection */}
-      {isModalOpen && (
-        <div className={styles.modalOverlay} onClick={() => setModalOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3>Select a Category</h3>
-            {Object.entries(secondaryNavOptions).map(([key, value]) => (
-              <div
-                key={key}
-                className={styles.modalOption}
-                onClick={() => handleOptionSelect(key)}
-              >
-                <strong>{value.title}</strong>
-                <p>{value.description}</p>
-              </div>
-            ))}
-            <button className={styles.closeButton} onClick={() => setModalOpen(false)}>
-              Close
-            </button>
+{/* Modal for Category Selection */}
+{isModalOpen && (
+  <div className={styles.modalOverlay} onClick={() => setModalOpen(false)}>
+    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      {/* Close Button (X) in Upper Right */}
+      <button className={styles.closeIcon} onClick={() => setModalOpen(false)}>
+        ✕
+      </button>
+
+      <h3>Select a Category</h3>
+      <div className={styles.modalOptionsContainer}>
+        {Object.entries(secondaryNavOptions).map(([key, value]) => (
+          <div
+            key={key}
+            className={styles.modalOption}
+            onClick={() => handleOptionSelect(key)}
+          >
+            <FontAwesomeIcon icon={value.icon} className={styles.modalIcon} />
+            <div className={styles.modalText}>
+              <strong>{value.title}</strong>
+              <p>{value.description}</p>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+
     </>
   );
 }
