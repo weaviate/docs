@@ -66,7 +66,7 @@ Try varying the boost factor, and the query string. What happens to the results?
 
 ### <i class="fa-solid fa-chalkboard"></i> Why tokenization matters
 
-In an earlier unit, we briefly discussed [the inverted index](../103_schema_and_imports/10_data_structure.mdx#inverted-indexes), and that it stores a "tokenized" index of data.
+In an earlier unit, we briefly discussed [the inverted index](../103_schema_and_imports/10_data_structure.mdx#-inverted-index), and that it stores a "tokenized" index of data.
 
 When a BM25 query is submitted, Weaviate will search each property according to its tokenization property. For example, if a property is tokenized with the `word` tokenization option, it will tokenize the query string into its constituent, lowercase, words, and search for each word in the index. On the other hand, if a property uses a `field` tokenization, Weaviate will look for the entire query string in the index.
 
@@ -142,7 +142,7 @@ Try changing the query to `Jeopardy!`. What happens to the results?
 
 ### <i class="fa-solid fa-chalkboard"></i> Rules of thumb
 
-The [full list of tokenization options](/weaviate/config-refs/schema/index.md#property-tokenization) are `word`, `whitespace`, `lowercase` and `field`. A rule of thumb on when to use each option is to use `word` for long text where you want to retrieve partial matches, and `field` for short text where you only want to retrieve exact matches. The others are somewhere in between, and may be useful in specific situations, where for example you want case to matter (`whitespace`) or special characters to be respected (`lowercase`).
+The [full list of tokenization options](/weaviate/config-refs/schema/index.md#tokenization) are `word`, `whitespace`, `lowercase` and `field`. A rule of thumb on when to use each option is to use `word` for long text where you want to retrieve partial matches, and `field` for short text where you only want to retrieve exact matches. The others are somewhere in between, and may be useful in specific situations, where for example you want case to matter (`whitespace`) or special characters to be respected (`lowercase`).
 
 ## <i class="fa-solid fa-square-chevron-right"></i> BM25F scoring
 

@@ -415,7 +415,7 @@ import GraphQLFiltersHybridVector from '/_includes/code/graphql.filters.hybrid.v
 :::info Added in `v1.18.0`
 :::
 
-A [conditional (`where`) filter](../graphql/filters.md#where-filter) can be used with `hybrid`.
+A [conditional (`where`) filter](../graphql/filters.md) can be used with `hybrid`.
 
 import GraphQLFiltersHybridFilterExample from '/_includes/code/graphql.filters.hybrid.filter.example.mdx';
 
@@ -451,7 +451,7 @@ The search is case-insensitive, and case matching does not confer a score advant
 
 ### Schema configuration
 
-The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/schema/index.md#invertedindexconfig--bm25) for more details.
+The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/schema/index.md#bm25) for more details.
 
 ### Variables
 The `bm25` operator supports the following variables:
@@ -505,7 +505,7 @@ import GraphQLFiltersBM25 from '/_includes/code/graphql.filters.bm25.mdx';
 :::info Added in `v1.18`
 :::
 
-A [conditional (`where`) filter](../graphql/filters.md#where-filter) can be used with `bm25`.
+A [conditional (`where`) filter](../graphql/filters.md) can be used with `bm25`.
 
 import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm25.filter.example.mdx';
 

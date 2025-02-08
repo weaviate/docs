@@ -1,10 +1,10 @@
 ---
-title: How to build a custom module
+title: Module creation in a nutshell
+label: How to build a custom module
 sidebar_position: 3
 image: og/contributor-guide/weaviate-modules.jpg
 # tags: ['contributor-guide', 'weaviate module system', 'custom module']
 ---
-# Module creation in a nutshell
 
 If you have your own vectorizer, machine learning or other model that you want to use with Weaviate, you can build your own Weaviate Module.
 
@@ -25,13 +25,11 @@ On this page, you'll find how to create a complete new module (option B), so bui
 
 ![Weaviate module APIs overview](/img/contributor-guide/weaviate-modules/weaviate-module-apis.svg "Weaviate module APIs overview")
 
-# Prerequisites
+## Prerequisites
 
 This requires some programming in Golang, since you'll need to build the module for Weaviate, which is written in Go. You don't need to be a very experienced Go programmer, but you'll need some basic understanding of how this statically typed language works. You can view and copy code from other modules to your own project, which is explained later. You'll build a custom module ([part 1 of this image](./architecture.md#visualization)), as well as a custom inference service ([part 2](./architecture.md#visualization)). It is recommended to understand the module architecture of Weaviate which you can read [here](./overview.md) (overview) and [here](./architecture.md) (architecture), before you start building your own module.
 
 If you want to make a pull request to Weaviate with your custom module, make sure to adhere to the [code structure](../weaviate-core/structure.md).
-
-# How to get started
 
 ## Design the internal Weaviate Module (part 1)
 
@@ -51,20 +49,20 @@ The inference model is a service that provides at least four API endpoints:
 
 You can always ask us on [the forum](https://forum.weaviate.io/), [Slack](https://weaviate.io/slack) or [GitHub](https://github.com/weaviate/weaviate/issues) to get help with the design.
 
-# How to build a custom module - guidelines
+## How to build a custom module - guidelines
 
 Once you are happy with the design, you can [fork the latest Weaviate version](https://github.com/weaviate/weaviate) and make a new branch from master.
 Ideally, you create an [issue on GitHub](https://github.com/weaviate/weaviate/issues) with the module. Now you can refer to this issue in you commits, as well as ask for feedback from us and the community.
 
 These guidelines follow the example of the [QnA module](https://github.com/weaviate/weaviate/tree/master/modules/qna-transformers). This is a module with an additional feature, no vectorization module. It adds information in the GraphQL `_additional` field by examining the data in Weaviate.
 
-## 1. First files
+### 1. First files
 
 1. In the `/modules` folder, make a new folder with the name of your module. Make sure to adhere to the [naming convention](./overview.md#module-characteristics).
 2. Add a file `config.go` ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/config.go)). This file describes some configuration of the module to Weaviate. You can copy/paste most of the example file, make sure to adapt the functions' receiver names.
 2. Add a file `module.go` ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/module.go)). This file describes the module as a whole and its capabilities. You will, again, be able to copy most of an example file to your project. Make sure to define which `modulecapabilities` (from [here](https://github.com/weaviate/weaviate/tree/master/entities/modulecapabilities)) you want to use (this will be explained later).
 
-## 2. Add GraphQL additional query, filter and result fields
+### 2. Add GraphQL additional query, filter and result fields
 
 If you want to add GraphQL query and results field with your module, you can add them in the `_additional` field (note, filters may also appear on higher level, see [above](#design-the-internal-weaviate-module-part-1)). Information in this field contains additional information per data objects that is returned by the GraphQL query. If you are making a vectorization module, you might not need a new `_additional` field, so follow these steps only if you made a new field in your design.
 
@@ -82,7 +80,7 @@ It is recommended to [test](#running-and-testing-weaviate-during-development) wh
 
 Make sure to also write tests for the GraphQL field and for the result (e.g. [this](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/additional/answer/answer_graphql_field_test.go) and [this](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/additional/answer/answer_test.go)).
 
-## 3. Add GraphQL filter (other than in `_additional`)
+### 3. Add GraphQL filter (other than in `_additional`)
 
 If you choose to add a filter outside the `_additional` GraphQL field, you need to take a slightly different approach to add the filter arguments as explained in the previous step. That is because you can't include the filter arguments in the `/additional` GraphQL field. For example, the QnA module has the filter `ask` on class level (click [here](/weaviate/modules/qna-transformers.md#graphql-ask-search) for an example). This argument was created in a new folder inside the new module folder in Weaviate ([example](https://github.com/weaviate/weaviate/tree/master/modules/qna-transformers/ask)). To achieve this, make sure to follow these steps:
 1. Create a new folder inside your new module folder with the name of the filter (e.g. [`/ask`](https://github.com/weaviate/weaviate/tree/master/modules/qna-transformers/ask)). In this folder:
@@ -93,7 +91,7 @@ If you choose to add a filter outside the `_additional` GraphQL field, you need 
 6. Make sure to let Weaviate know about this new filter and arguments in a file in the new module folder ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/ask.go)).
 7. Again, you can first fill the filter arguments with some hardcoded values to test, before you use the filter's values to compute the GraphQL result (which you do for example [here](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/additional/answer/answer_result.go#L28)).
 
-## 4. Design the client for communication with the inference app
+### 4. Design the client for communication with the inference app
 
 The internal Weaviate module makes `http` requests to a service that does the actual inference or computation. You need to define this connection in the Weaviate module.
 
@@ -103,23 +101,23 @@ The internal Weaviate module makes `http` requests to a service that does the ac
 4. Create a file (e.g. [`qna.go`](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/clients/qna.go)) that calls the inference service and returns results that you want to add to the GraphQL result. You can use the arguments and GraphQL results, and your custom inference container to return the module's results in the `_additional {}` field. The result should be in the format (struct) you define in `/ent/<module>_result.go` (e.g. [`/ent/vectorization_result.go`](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/ent/vectorization_result.go)). For now, you can return any hardcoded data (and not make an actual call to the inference API), to test whether this function works.
 5. Create tests: testing `meta` ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/clients/qna_meta_test.go)) and `startup` ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/clients/startup_test.go)).
 
-## 5. Create the inference container
+### 5. Create the inference container
 
 So far we've programmed the module inside Weaviate. Now, let's work on the inference container, which takes care of the actual machine learning or data enhancement. This should be a service, that is running when Weaviate is using the module or can be packed in a container (which is recommended). The service API should have at least 4 endpoints, described above. Make sure that the body of the actual inference endpoint(s) accepts JSON with data that is sent by Weaviate (which you defined in e.g. [`qna.go`](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/clients/qna.go)), and that it returns JSON that Weaviate understands (as you defined in e.g. [`qna.go`: `answersResponse`](https://github.com/weaviate/weaviate/blob/7036332051486b393d83f9ea2ffb0ca1b2269328/modules/qna-transformers/clients/qna.go#L94)).
 
 How you build the inference service is up to you. For example, if you have your own machine learning model, you could write a Python wrapper around it, using for example [`FastAPI`](https://fastapi.tiangolo.com/).
 
-## 6. Call the inference container
+### 6. Call the inference container
 
 Now it is time to replace any hardcoded data from previous steps with results from an API call.
 1. Call the inference container in the dedicated script you wrote in the `/client` folder (e.g. [`qna.go`](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/clients/qna.go)).
 2. Finish your `/additional/<fieldname>_result.go` function by replacing hardcoded return values with values you get from the inference API (e.g. [`answer_result.go`](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/additional/answer/answer_result.go)).
 
-## 7. Add user-specific configuration
+### 7. Add user-specific configuration
 
 Add user-specific configuration to both the Weaviate module and the inference API that you omitted for simplification in the previous steps.
 
-# Running and testing Weaviate during development
+## Running and testing Weaviate during development
 
 During development of the new Module, you can run Weaviate locally. Make sure to have the following set:
 1. Your module should be present in the (local) [`/modules` folder](https://github.com/weaviate/weaviate/tree/master/modules).

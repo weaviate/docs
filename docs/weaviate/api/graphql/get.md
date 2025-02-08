@@ -215,7 +215,7 @@ For further information see:
 
 :::tip Read more
 - [References: GraphQL: Additional properties](./additional-properties.md)
-- [How-to search: Specify fetched properties](../../search/basics.md#specify-the-fetched-properties)
+- [How-to search: Specify fetched properties](../../search/basics.md#specify-object-properties)
 :::
 
 

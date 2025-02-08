@@ -16,7 +16,7 @@ In Weaviate, a hybrid search performs the following steps:
 1. Executes both searches in parallel:
    - Vector search to find semantically similar content
    - BM25 search to find keyword matches
-1. Combines the normalized scores using a [fusion method](#fusion-method)
+1. Combines the normalized scores using a [fusion method](#fusion-strategies)
 1. Returns results ranked by the combined scores
 
 ```mermaid

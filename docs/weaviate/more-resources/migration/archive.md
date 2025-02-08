@@ -367,7 +367,7 @@ Weaviate version 1.0.0 was released on 12 January 2021, and consists of the majo
 
 Weaviate release 1.0.0 from 0.23.2 comes with a significant amount of breaking changes in the data schema, API and clients. Here is an overview of all (breaking) changes.
 
-For client library specific changes, take a look at the change logs of the specific client ([Go](/weaviate/client-libraries/go.md#change-logs), [Python](/weaviate/client-libraries/python/index.md#change-logs) and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx#changelog).
+For client library specific changes, take a look at the change logs of the specific client: [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx#change-logs).
 
 Moreover, a new version of the Console is released. Visit the Console documentation for more information.
 
@@ -627,8 +627,8 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
     * The `vectorizer` indicates which module (if any) are responsible for vectorization.
     * The `moduleConfig` allows configuration per module (by name).
       * See [here](#text2vec-contextionary) for Contextionary specific property configuration.
-    * The `vectorIndexType` allows the choosing the vector index (defaults to [HNSW](/weaviate/concepts/vector-index.md#hnsw))
-    * The `vectorIndexConfig` is an arbitrary object passed to the index for config (defaults can be found [here](/weaviate/config-refs/schema/vector-index.md#how-to-configure-hnsw) )
+    * The `vectorIndexType` allows the choosing the vector index (defaults to [HNSW](/weaviate/concepts/vector-index.md#hierarchical-navigable-small-world-hnsw-index))
+    * The `vectorIndexConfig` is an arbitrary object passed to the index for config (defaults can be found [here](/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) )
 
     All changes are in this example:
 

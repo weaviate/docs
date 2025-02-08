@@ -133,7 +133,7 @@ The results here are similar to the filter example, but more nuanced and quite i
 
 Under `word` tokenization, the search for `computer mouse` produces identical results to the search for `a computer mouse`. This is because the stop word `a` is not considered in the search.
 
-But note that the scores are different for returned objects where the only differences are stopwords, such as `"computer mouse"` and `"a computer mouse"`. This is because the BM25f algorithm does [index stopwords](../../../weaviate/config-refs/schema/index.md#invertedindexconfig--stopwords-stopword-lists), and they do impact the score.
+But note that the scores are different for returned objects where the only differences are stopwords, such as `"computer mouse"` and `"a computer mouse"`. This is because the BM25f algorithm does [index stopwords](../../../weaviate/config-refs/schema/index.md#stopwords-stopword-lists), and they do impact the score.
 
 As a user, you should keep this in mind, and you can configure the stop words in the collection definition to suit your desired behavior.
 
@@ -179,7 +179,7 @@ These results are once again similar to the filter example. If your data contain
 
 That's it for keyword searches and tokenization. Similarly to filters, the choice of tokenization method is a big part of your overall search strategy.
 
-Our generally advice for tokenization in keyword searching is similar to [our advice for filtering](./300_filters.mdx#discussions). Start with `word`, and consider others such as `lowercase` or `whitespace` if symbols, or cases encode important information in your data.
+Our generally advice for tokenization in keyword searching is similar to [our advice for filtering](./300_filters.mdx#-discussions). Start with `word`, and consider others such as `lowercase` or `whitespace` if symbols, or cases encode important information in your data.
 
 Using `field` tokenization may be too strict for keyword searches, as it will not match any
 objects that do not contain the exact string in the exact order.

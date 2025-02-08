@@ -461,7 +461,7 @@ Run this code to perform the query. Here is one possible response (your response
 🦢 2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new species! 🦢🌿 #ScienceFacts #DNA #SpeciesClassification
 ```
 
-The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#semantic-search) section.
+The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#31-semantic-search) section.
 
 The power of RAG comes from the ability to transform your own data. Weaviate helps you in this journey by making it easy to perform a combined search & generation in just a few lines of code.
 
@@ -648,7 +648,7 @@ Where you should be able to confirm that you have imported all `10` objects.
 
 To perform text-based (`nearText`) similarity searches, you need to have a vectorizer enabled, and configured in your collection.
 
-Make sure the vectorizer is configured [like this](#define-a-data-collection).
+Make sure the vectorizer is configured [like this](#21-define-a-collection).
 
 If the search still doesn't work, [contact us](#questions-and-feedback)!
 

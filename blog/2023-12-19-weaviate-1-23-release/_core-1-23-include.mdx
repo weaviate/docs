@@ -102,7 +102,7 @@ Some of the changes in this release include:
 
 ## Performance improvements
 
-* [Lazy shard loading](/weaviate/concepts/data#lazy-shard-loading) allows you to start working with your data sooner. After a restart, shards load in the background. If the shard you want to query is already loaded, you can get your results right away. If the shard is not loaded yet, Weaviate prioritizes loading that shard and returns a response when it is ready.
+* [Lazy shard loading](/weaviate/concepts/storage#lazy-shard-loading) allows you to start working with your data sooner. After a restart, shards load in the background. If the shard you want to query is already loaded, you can get your results right away. If the shard is not loaded yet, Weaviate prioritizes loading that shard and returns a response when it is ready.
 
 * You can now enable an option to [auto-limit available resources](/weaviate/concepts/resources#limit-available-resources) in Weaviate. In applicable systems, you can set the `LIMIT_RESOURCES` [environment variable](/weaviate/config-refs/env-vars).
 

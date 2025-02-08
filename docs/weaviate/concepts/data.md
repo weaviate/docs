@@ -274,7 +274,7 @@ When a tenant is offloaded, the entire tenant shard is moved to cloud storage. T
 ### Backups
 
 :::caution Backups do not include inactive or offloaded tenants
-Backups of multi-tenant collections will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](../manage-data/multi-tenancy.md#activate-tenant) before creating a backup to ensure all data is included.
+Backups of multi-tenant collections will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](/weaviate/manage-data/tenant-states#activate-tenant) before creating a backup to ensure all data is included.
 :::
 
 ### Tenancy and IDs

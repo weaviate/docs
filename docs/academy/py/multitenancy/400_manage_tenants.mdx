@@ -146,7 +146,7 @@ The backup module will first try to authenticate itself using AWS IAM. If the au
 | `AWS_SECRET_ACCESS_KEY` | The secret AWS access key for the desired account. |
 | `AWS_REGION` | (Optional) The AWS Region. If not provided, the module will try to parse `AWS_DEFAULT_REGION`. |
 
-Once the `offload-s3` module is enabled, you can offload tenants to the S3 bucket by [setting their activity status](#update-tenants) to `OFFLOADED`, or load them back to local storage by setting their status to `ACTIVE` or `INACTIVE`.
+Once the `offload-s3` module is enabled, you can offload tenants to the S3 bucket by [setting their activity status](#offload-tenants) to `OFFLOADED`, or load them back to local storage by setting their status to `ACTIVE` or `INACTIVE`.
 
 </details>
 
@@ -165,7 +165,7 @@ And then, `MyPrivateJournal` can activate tenants as required. For example, they
 
 There may also be cases where a user attempts to perform a query on an `INACTIVE` tenant.
 
-This may sound like a problem, but Weaviate can automatically activate the tenant for the query, if the collection was created with `auto_tenant_activation` enabled (which [we did do earlier](./200_setup.mdx#create-a-collection)).
+This may sound like a problem, but Weaviate can automatically activate the tenant for the query, if the collection was created with `auto_tenant_activation` enabled (which [we did do earlier](./200_setup.mdx#-create-a-collection)).
 
 ## <i class="fa-solid fa-square-chevron-right"></i> Offboard users
 

@@ -248,7 +248,7 @@ For OIDC authentication with the Client Credentials flow, use the `AuthClientCre
 
 For OIDC authentication with the Refresh Token flow, use the `AuthBearerToken` class.
 
-If the helper functions do not provide the customization you need, use the [`WeaviateClient`](#explicit-client-instantiation) class to instantiate the client.
+If the helper functions do not provide the customization you need, use the `WeaviateClient` class to instantiate the client.
 
 ### Explicit instantiation
 

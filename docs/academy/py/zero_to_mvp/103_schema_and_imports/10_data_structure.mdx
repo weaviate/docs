@@ -70,7 +70,7 @@ Each object is represented by one vector, and each class has one vector index. T
 
 In other words, all objects in the class will be stored in what is called the same vector space. This is important to keep in mind when designing your data schema in Weaviate. A vector search can only be performed within a single vector space, for reasons that a vector of different lengths, or even those of the same length but with different meanings, cannot be compared.
 
-Going back to our [color analogy](../101_hello_weaviate/15_overview_vectors.mdx#how-do-numbers-represent-meaning) that you saw earlier - you wouldn't be able to compare an RGB value to an CMYK value, right? The same applies to vector embeddings that represent text.
+Going back to our [color analogy](../101_hello_weaviate/15_overview_vectors.mdx#-how-do-numbers-represent-meaning) that you saw earlier - you wouldn't be able to compare an RGB value to an CMYK value, right? The same applies to vector embeddings that represent text.
 
 So in Weaviate, a vector search can only search one class at a time. As a result, it is important to design your schema such that objects that you want to search together are in the same class.
 
