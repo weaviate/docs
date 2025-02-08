@@ -78,6 +78,21 @@ export default function NavbarWrapper(props) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Loop through categories and update the selected one based on the current URL
+    let foundOption = null;
+    for (const [key, value] of Object.entries(secondaryNavOptions)) {
+      if (value.links.some((link) => location.pathname.includes(link.link))) {
+        foundOption = key;
+        break;
+      }
+    }
+
+    if (foundOption) {
+      setSelectedOption(foundOption);
+    }
+  }, [location.pathname]); // Runs whenever the URL changes
+
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     setModalOpen(false);
@@ -116,7 +131,7 @@ export default function NavbarWrapper(props) {
               key={index}
               to={item.link}
               className={
-                location.pathname === item.link
+                location.pathname.includes(item.link)
                   ? `${styles.navLink} ${styles.activeNavLink}`
                   : styles.navLink
               }
