@@ -81,7 +81,6 @@
 }
 
 .navLink {
-  text-decoration: none;
   color: var(--ifm-navbar-link-color);
   padding: 10px 0;
   display: flex;
@@ -126,7 +125,7 @@
 /* Modal Content: animate its opacity and vertical position */
 .modalContent {
   background: var(--docs-modal-bg);
-  padding: 20px  20px  40px  20px;
+  padding: 20px 20px 40px 20px;
   border-radius: 8px;
   width: 100% !important;
   max-width: 650px !important;
@@ -229,31 +228,31 @@
     position: relative;
     width: 90vw;
     max-width: 90vw;
-    margin: 0 5% 0 5%;  
+    margin: 0 5% 0 5%;
     margin-top: 10vh;
     height: auto;
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: var(--modal-shadow);
   }
-  
+
   .modalOptionsContainer {
     grid-template-columns: 1fr;
   }
-  
+
   .secondaryNavbar {
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 5px;
   }
-  
+
   .secondaryNavLinks {
     display: flex;
     flex-wrap: nowrap;
     gap: 20px;
   }
-  
+
   .navLink {
     flex-shrink: 0;
     padding: 10px;
