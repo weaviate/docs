@@ -3,13 +3,14 @@ import {
   faCloud,
   faGraduationCap,
   faPuzzlePiece,
+  faEdit
 } from "@fortawesome/free-solid-svg-icons";
 
 const secondaryNavbarItems = {
   build: {
     title: "Build",
     icon: faCode,
-    description: "Develop applications using Weaviate's APIs and tools.",
+    description: "Develop AI applications using Weaviate's APIs and tools",
     links: [
       { label: "Get Started", link: "/", sidebar: "getStartedSidebar" },
       {
@@ -47,14 +48,14 @@ const secondaryNavbarItems = {
   cloud: {
     title: "Cloud",
     icon: faCloud,
-    description: "Manage and scale Weaviate in the cloud.",
+    description: "Manage and scale Weaviate in the cloud",
     links: [{ label: "Getting Started", link: "/wcs", sidebar: "wcsSidebar" }],
   },
   academy: {
     title: "Academy",
     icon: faGraduationCap,
     description:
-      "Learn about vector search and Weaviate through structured courses.",
+      "Learn about vector search and Weaviate through structured courses",
     links: [
       { label: "Getting Started", link: "/academy", sidebar: "academySidebar" },
     ],
@@ -68,6 +69,38 @@ const secondaryNavbarItems = {
         label: "Getting Started",
         link: "/integrations",
         sidebar: "integrationsSidebar",
+      },
+    ],
+  },
+  contributor: {
+    title: "Contributor guide",
+    icon: faEdit,
+    description: "Learn how to contribute to Weaviate's open-source projects",
+    links: [
+      {
+        label: "Getting Started",
+        link: "/contributor-guide",
+        sidebar: "contributorGetStartedSidebar",
+      },
+      {
+        label: "Weaviate Core",
+        link: "/contributor-guide/weaviate-core",
+        sidebar: "contributorCoreSidebar",
+      },
+      {
+        label: "Weaviate Modules",
+        link: "/contributor-guide/weaviate-modules",
+        sidebar: "contributorModulesSidebar",
+      },
+      {
+        label: "Weaviate Clients",
+        link: "/contributor-guide/weaviate-clients",
+        sidebar: "contributorClientsSidebar",
+      },
+      {
+        label: "Contextionary",
+        link: "/contributor-guide/contextionary",
+        sidebar: "contributorContextionarySidebar",
       },
     ],
   },
