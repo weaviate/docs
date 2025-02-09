@@ -124,10 +124,7 @@ export default function NavbarWrapper(props) {
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     setModalOpen(false);
-    const firstItem = secondaryNavOptions[option]?.links[0];
-    if (firstItem) {
-      history.push(firstItem.link);
-    }
+    history.push(secondaryNavOptions[option].link);
   };
 
   return (
