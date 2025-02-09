@@ -67,7 +67,7 @@ Note that API key and OIDC authentication can be both enabled at the same time.
 The way to configure authentication differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
 
 :::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](../connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/wcs/platform/manage-api-keys).
+For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](../connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/cloud/platform/manage-api-keys).
 :::
 
 ## API Key Authentication
@@ -345,7 +345,7 @@ OIDC authentication flows are outside the scope of this documentation, but here 
     - Validated using Okta and Azure as identity providers; GCP does not support client credentials grant flow (as of December 2022).
     - Weaviate's Python client directly supports this method.
     - Client credential flows usually do not come with a refresh token and the credentials are saved in the respective clients to acquire a new access token on expiration of the old one.
-1. Use the `resource owner password flow` for trusted applications like [Weaviate Cloud](/wcs/connect.mdx).
+1. Use the `resource owner password flow` for trusted applications like [Weaviate Cloud](/cloud/connect.mdx).
 1. Use `hybrid flow` if Azure is your token issuer or if you would like to prevent exposing passwords.
 
 ### Support for Weaviate clients

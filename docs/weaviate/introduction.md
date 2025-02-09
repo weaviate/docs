@@ -26,7 +26,7 @@ Have their own sections, and others such as the
 And more can be found in the [More Resources](./more-resources/index.md) section.
 
 :::tip Looking for Weaviate Cloud docs?
-The Weaviate Cloud (WCD) documentation now has its own section! [Check it out here](../wcs/index.mdx).
+The Weaviate Cloud (WCD) documentation now has its own section! [Check it out here](../cloud/index.mdx).
 :::
 
 ### For new users

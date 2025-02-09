@@ -65,7 +65,7 @@ const DocHomePage = () => {
                 <li>(Optional) Zero-downtime updates</li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/wcs/create-instance">
+                <a href="/cloud/create-instance">
                   Set up a WCD instance
                 </a>
               </button>
