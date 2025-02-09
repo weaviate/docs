@@ -1,41 +1,60 @@
-import OriginalNavbar from "@theme-original/Navbar";
-import styles from "./styles.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
+import OriginalNavbar from "@theme-original/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import styles from "./styles.module.scss";
 import secondaryNavOptions from "/secondaryNavbar.js";
+import { normalizePath, findPathInItems } from "./navbarUtils";
 
+const DEFAULT_OPTION = Object.keys(secondaryNavOptions)[0]; // WARNING: Using the first key in secondaryNavOptions as the default option.
 const sidebars = require("/sidebars.js");
 
 export default function NavbarWrapper(props) {
   const history = useHistory();
   const location = useLocation();
-  const [selectedOption, setSelectedOption] = useState("build");
+  const [selectedOption, setSelectedOption] = useState(DEFAULT_OPTION);
   const [isModalOpen, setModalOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("");
 
+  // Use refs for DOM elements.
+  const defaultNavbarRef = useRef(null);
+  const secondaryNavbarRef = useRef(null);
+  const placeholderRef = useRef(null);
+
   useEffect(() => {
-    const defaultNavbar = document.querySelector(`.${styles.defaultNavbar}`);
-    const secondaryNavbar = document.querySelector(
+    // Get references to navbar elements
+    defaultNavbarRef.current = document.querySelector(
+      `.${styles.defaultNavbar}`
+    );
+    secondaryNavbarRef.current = document.querySelector(
       `.${styles.secondaryNavbar}`
     );
-    const placeholder = document.createElement("div");
 
-    placeholder.classList.add(styles.secondaryNavbarPlaceholder);
-
-    if (secondaryNavbar) {
-      secondaryNavbar.insertAdjacentElement("afterend", placeholder);
+    // Create a placeholder after the secondary navbar if it doesn't exist
+    if (secondaryNavbarRef.current && !placeholderRef.current) {
+      const placeholder = document.createElement("div");
+      placeholder.classList.add(styles.secondaryNavbarPlaceholder);
+      placeholderRef.current = placeholder;
+      secondaryNavbarRef.current.insertAdjacentElement("afterend", placeholder);
     }
 
     const handleScroll = () => {
-      if (window.scrollY > defaultNavbar.offsetHeight) {
-        secondaryNavbar.classList.add(styles.fixOnTop);
-        placeholder.style.display = "block";
+      if (
+        !defaultNavbarRef.current ||
+        !secondaryNavbarRef.current ||
+        !placeholderRef.current
+      )
+        return;
+
+      // If the page has been scrolled beyond the height of the default navbar...
+      if (window.scrollY > defaultNavbarRef.current.offsetHeight) {
+        secondaryNavbarRef.current.classList.add(styles.fixOnTop); // ...add a CSS class to the secondary navbar to fix it to the top.
+        placeholderRef.current.style.display = "block"; // ...display the placeholder to maintain layout spacing.
       } else {
-        secondaryNavbar.classList.remove(styles.fixOnTop);
-        placeholder.style.display = "none";
+        secondaryNavbarRef.current.classList.remove(styles.fixOnTop); // Otherwise, remove the fixed positioning from the secondary navbar...
+        placeholderRef.current.style.display = "none"; // ...and hide the placeholder.
       }
     };
 
@@ -44,89 +63,39 @@ export default function NavbarWrapper(props) {
   }, []);
 
   useEffect(() => {
-    let currentPath = location.pathname;
-    if (currentPath.startsWith("/")) {
-      currentPath = currentPath.slice(1);
-    }
-    // If currentPath is empty (i.e. homepage), set to default
+    let currentPath = normalizePath(location.pathname);
+
+    // If on homepage (empty path), use the default option.
     if (!currentPath) {
-      const firstOptionKey = Object.keys(secondaryNavOptions)[0];
-      setSelectedOption(firstOptionKey);
-      setActiveLink(secondaryNavOptions[firstOptionKey].links[0].sidebar);
+      setSelectedOption(DEFAULT_OPTION);
+      setActiveLink(secondaryNavOptions[DEFAULT_OPTION].links[0].sidebar);
       return;
     }
 
-    for (const [key, value] of Object.entries(secondaryNavOptions)) {
-      if (
+    // Determine the selected option by checking the link paths.
+    const matchedOption = Object.entries(secondaryNavOptions).find(
+      ([, value]) =>
         value.links.some(
           (link) =>
-            currentPath.includes(link.link.slice(1)) && link.link !== "/"
+            currentPath.includes(normalizePath(link.link)) && link.link !== "/"
         )
-      ) {
-        setSelectedOption(key);
-        break;
-      }
-    }
+    );
+    setSelectedOption(matchedOption ? matchedOption[0] : DEFAULT_OPTION);
 
-    function findPathInItems(items, currentPath) {
-      for (const item of items) {
-        // If the item is a string, then it represents a doc id.
-        if (typeof item === "string") {
-          if (item.includes(currentPath)) {
-            return true;
-          }
-        }
-        // If the item is a document type object.
-        else if (item.type === "doc") {
-          if (item.id.includes(currentPath)) {
-            return true;
-          }
-        }
-        // If the item is a autogenerated type object.
-        else if (item.type === "autogenerated") {
-          if (currentPath.includes(item.dirName)) {
-            return true;
-          }
-        }
-        // If the item is a category type object.
-        else if (item.type === "category") {
-          // Optionally check if the category’s link is a doc that matches.
-          if (
-            item.link &&
-            item.link.type === "doc" &&
-            item.link.id.includes(currentPath)
-          ) {
-            return true;
-          }
-          // Recursively check in its child items.
-          if (
-            Array.isArray(item.items) &&
-            findPathInItems(item.items, currentPath)
-          ) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    // Loop over each sidebar defined in the sidebars configuration.
+    // Find the active sidebar based on the current path.
+    let foundSidebar = null;
     for (const [sidebarName, items] of Object.entries(sidebars)) {
-      const matchFound = findPathInItems(items, currentPath);
-      if (matchFound) {
-        setActiveLink(sidebarName);
+      if (findPathInItems(items, currentPath)) {
+        foundSidebar = sidebarName;
         break;
-      } else {
-        setActiveLink(null);
       }
     }
-  }, [location.pathname]); // Re-run the effect whenever the pathname changes
+    setActiveLink(foundSidebar);
+  }, [location.pathname]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     setModalOpen(false);
-
-    // Navigate to the first item in the selected category
     const firstItem = secondaryNavOptions[option]?.links[0];
     if (firstItem) {
       history.push(firstItem.link);
@@ -135,13 +104,13 @@ export default function NavbarWrapper(props) {
 
   return (
     <>
-      {/* Default Docusaurus Navbar */}
-      <div className={`${styles.defaultNavbar}`}>
+      {/* Default Navbar */}
+      <div className={styles.defaultNavbar}>
         <OriginalNavbar {...props} />
       </div>
 
       {/* Secondary Navbar */}
-      <div className={`${styles.secondaryNavbar}`}>
+      <div className={styles.secondaryNavbar}>
         <button
           className={styles.modalButton}
           onClick={() => setModalOpen(true)}
@@ -153,10 +122,9 @@ export default function NavbarWrapper(props) {
           {secondaryNavOptions[selectedOption]?.title}
           <FontAwesomeIcon icon={faChevronDown} className={styles.arrowIcon} />
         </button>
-
         <nav className={styles.secondaryNavLinks}>
           {secondaryNavOptions[selectedOption]?.links.map((item, index) => {
-            const isActive = activeLink && item.sidebar == activeLink;
+            const isActive = activeLink && item.sidebar === activeLink;
             return (
               <Link
                 key={index}
@@ -174,48 +142,44 @@ export default function NavbarWrapper(props) {
         </nav>
       </div>
 
-      {/* Modal for Category Selection */}
-      {isModalOpen && (
+      {/* Modal for Category Selection*/}
+      <div
+        className={`${styles.modalOverlay} ${isModalOpen ? styles.active : ""}`}
+        onClick={() => setModalOpen(false)}
+      >
         <div
-          className={styles.modalOverlay}
-          onClick={() => setModalOpen(false)}
+          className={styles.modalContent}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
+          <button
+            className={styles.closeIcon}
+            onClick={() => setModalOpen(false)}
           >
-            {/* Close Button (X) in Upper Right */}
-            <button
-              className={styles.closeIcon}
-              onClick={() => setModalOpen(false)}
-            >
-              ✕
-            </button>
-
-            <div className={styles.modalTitle}>
-              <strong>Go to documentation:</strong>
-            </div>
-            <div className={styles.modalOptionsContainer}>
-              {Object.entries(secondaryNavOptions).map(([key, value]) => (
-                <div
-                  key={key}
-                  className={styles.modalOption}
-                  onClick={() => handleOptionSelect(key)}
-                >
-                  <FontAwesomeIcon
-                    icon={value.icon}
-                    className={styles.modalIcon}
-                  />
-                  <div className={styles.modalText}>
-                    <strong>{value.title}</strong>
-                    <p>{value.description}</p>
-                  </div>
+            ✕
+          </button>
+          <div className={styles.modalTitle}>
+            <strong>Go to documentation:</strong>
+          </div>
+          <div className={styles.modalOptionsContainer}>
+            {Object.entries(secondaryNavOptions).map(([key, value]) => (
+              <div
+                key={key}
+                className={styles.modalOption}
+                onClick={() => handleOptionSelect(key)}
+              >
+                <FontAwesomeIcon
+                  icon={value.icon}
+                  className={styles.modalIcon}
+                />
+                <div className={styles.modalText}>
+                  <strong>{value.title}</strong>
+                  <p>{value.description}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
