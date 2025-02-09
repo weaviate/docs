@@ -223,6 +223,33 @@
   color: var(--ifm-navbar-hover-link-color);
 }
 
+@media (max-width: 999px) {
+  .secondaryNavbar {
+    /* Always show the horizontal scrollbar */
+    overflow-x: scroll;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+
+    /* Optional: style the scrollbar for Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--ifm-navbar-link-active-color);
+    scrollbar-gutter: stable; /* Reserves space for the scrollbar */
+  }
+  
+  /* Optional: style the scrollbar for WebKit-based browsers */
+  .secondaryNavbar::-webkit-scrollbar {
+    height: 6px; /* Adjust the scrollbar height as needed */
+  }
+  .secondaryNavbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .secondaryNavbar::-webkit-scrollbar-thumb {
+    background-color: var(--ifm-navbar-link-active-color);
+    border-radius: 3px;
+  }
+}
+
 @media (max-width: 599px) {
   .modalContent {
     position: relative;
@@ -238,13 +265,6 @@
 
   .modalOptionsContainer {
     grid-template-columns: 1fr;
-  }
-
-  .secondaryNavbar {
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 5px;
   }
 
   .secondaryNavLinks {
