@@ -124,7 +124,7 @@ Two quick sanity checks that the import went as expected:
 1. Get the number of articles
 2. Get 5 articles
 
-- Open the [Weaviate Query app](https://weaviate.io/docs/wcs/tools/query-tool)
+- Open the [Weaviate Query app](https://weaviate.io/docs/cloud/tools/query-tool)
 - Connect to your Weaviate endpoint, either `http://localhost:8080` or `https://WEAVIATE_INSTANCE_URL`. (Replace WEAVIATE_INSTANCE_URL with your instance URL.)
 - Run this GraphQL query:
 

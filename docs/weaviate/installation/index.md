@@ -13,7 +13,7 @@ If you are upgrading from a previous version of Weaviate, see the [Migration Gui
 
 To install and configure Weaviate, see the following:
 
-- **[Weaviate Cloud](../../wcs/quickstart.mdx)**: Managed services for development and production environments.
+- **[Weaviate Cloud](../../cloud/quickstart.mdx)**: Managed services for development and production environments.
 - **[Docker Compose](./docker-compose.md#starter-docker-compose-file)**: Docker containers are well suited for development and testing.
 - **[Kubernetes](./kubernetes.md)**: Kubernetes is ideal for scalable, production deployments.
 - **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
@@ -39,7 +39,7 @@ When you try upcoming features, please provide [feedback](https://github.com/wea
 ## Related pages
 - [Connect to Weaviate](../connections/index.mdx)
 - [Weaviate Quickstart](../quickstart/index.md)
-- [Weaviate Cloud Quickstart](../../wcs/quickstart.mdx)
+- [Weaviate Cloud Quickstart](../../cloud/quickstart.mdx)
 - [References: Configuration](../configuration/index.md)
 
 ## Questions and feedback
