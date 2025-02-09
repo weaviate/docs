@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
 import OriginalNavbar from "@theme-original/Navbar";
@@ -8,15 +8,46 @@ import styles from "./styles.module.scss";
 import secondaryNavOptions from "/secondaryNavbar.js";
 import { normalizePath, findPathInItems } from "./navbarUtils";
 
-const DEFAULT_OPTION = Object.keys(secondaryNavOptions)[0]; // WARNING: Using the first key in secondaryNavOptions as the default option.
+const DEFAULT_OPTION = Object.keys(secondaryNavOptions)[0]; // Using the first key in secondaryNavOptions as the default option.
 const sidebars = require("/sidebars.js");
 
 export default function NavbarWrapper(props) {
   const history = useHistory();
   const location = useLocation();
-  const [selectedOption, setSelectedOption] = useState(DEFAULT_OPTION);
+
+  // Compute the initial secondaryNavbar state based on the current location synchronously.
+  const initialState = useMemo(() => {
+    let currentPath = normalizePath(location.pathname);
+    if (!currentPath) {
+      return {
+        selectedOption: DEFAULT_OPTION,
+        activeLink: secondaryNavOptions[DEFAULT_OPTION].links[0].sidebar,
+      };
+    }
+    const matchedOption = Object.entries(secondaryNavOptions).find(
+      ([, value]) =>
+        value.links.some(
+          (link) =>
+            currentPath.includes(normalizePath(link.link)) && link.link !== "/"
+        )
+    );
+    const selectedOption = matchedOption ? matchedOption[0] : DEFAULT_OPTION;
+
+    let foundSidebar = null;
+    for (const [sidebarName, items] of Object.entries(sidebars)) {
+      if (findPathInItems(items, currentPath)) {
+        foundSidebar = sidebarName;
+        break;
+      }
+    }
+    return { selectedOption, activeLink: foundSidebar };
+  }, [location.pathname]);
+
+  const [selectedOption, setSelectedOption] = useState(
+    initialState.selectedOption
+  );
+  const [activeLink, setActiveLink] = useState(initialState.activeLink);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("");
 
   // Use refs for DOM elements.
   const defaultNavbarRef = useRef(null);
@@ -24,7 +55,7 @@ export default function NavbarWrapper(props) {
   const placeholderRef = useRef(null);
 
   useEffect(() => {
-    // Get references to navbar elements
+    // Get references to navbar elements.
     defaultNavbarRef.current = document.querySelector(
       `.${styles.defaultNavbar}`
     );
@@ -32,7 +63,7 @@ export default function NavbarWrapper(props) {
       `.${styles.secondaryNavbar}`
     );
 
-    // Create a placeholder after the secondary navbar if it doesn't exist
+    // Create a placeholder after the secondary navbar if it doesn't exist.
     if (secondaryNavbarRef.current && !placeholderRef.current) {
       const placeholder = document.createElement("div");
       placeholder.classList.add(styles.secondaryNavbarPlaceholder);
@@ -50,11 +81,11 @@ export default function NavbarWrapper(props) {
 
       // If the page has been scrolled beyond the height of the default navbar...
       if (window.scrollY > defaultNavbarRef.current.offsetHeight) {
-        secondaryNavbarRef.current.classList.add(styles.fixOnTop); // ...add a CSS class to the secondary navbar to fix it to the top.
-        placeholderRef.current.style.display = "block"; // ...display the placeholder to maintain layout spacing.
+        secondaryNavbarRef.current.classList.add(styles.fixOnTop);
+        placeholderRef.current.style.display = "block";
       } else {
-        secondaryNavbarRef.current.classList.remove(styles.fixOnTop); // Otherwise, remove the fixed positioning from the secondary navbar...
-        placeholderRef.current.style.display = "none"; // ...and hide the placeholder.
+        secondaryNavbarRef.current.classList.remove(styles.fixOnTop);
+        placeholderRef.current.style.display = "none";
       }
     };
 
@@ -62,17 +93,15 @@ export default function NavbarWrapper(props) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Update state if location.pathname changes.
   useEffect(() => {
     let currentPath = normalizePath(location.pathname);
-
-    // If on homepage (empty path), use the default option.
     if (!currentPath) {
       setSelectedOption(DEFAULT_OPTION);
       setActiveLink(secondaryNavOptions[DEFAULT_OPTION].links[0].sidebar);
       return;
     }
 
-    // Determine the selected option by checking the link paths.
     const matchedOption = Object.entries(secondaryNavOptions).find(
       ([, value]) =>
         value.links.some(
@@ -82,7 +111,6 @@ export default function NavbarWrapper(props) {
     );
     setSelectedOption(matchedOption ? matchedOption[0] : DEFAULT_OPTION);
 
-    // Find the active sidebar based on the current path.
     let foundSidebar = null;
     for (const [sidebarName, items] of Object.entries(sidebars)) {
       if (findPathInItems(items, currentPath)) {
@@ -142,7 +170,7 @@ export default function NavbarWrapper(props) {
         </nav>
       </div>
 
-      {/* Modal for Category Selection*/}
+      {/* Modal for Category Selection */}
       <div
         className={`${styles.modalOverlay} ${isModalOpen ? styles.active : ""}`}
         onClick={() => setModalOpen(false)}

@@ -3,7 +3,7 @@ import {
   faCloud,
   faGraduationCap,
   faPuzzlePiece,
-  faEdit
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 
 const secondaryNavbarItems = {
@@ -46,10 +46,12 @@ const secondaryNavbarItems = {
     ],
   },
   cloud: {
-    title: "Cloud",
+    title: "Weaviate Cloud",
     icon: faCloud,
     description: "Manage and scale Weaviate in the cloud",
-    links: [{ label: "Getting Started", link: "/wcs", sidebar: "wcsSidebar" }],
+    links: [
+      { label: "Getting Started", link: "/cloud", sidebar: "cloudSidebar" },
+    ],
   },
   academy: {
     title: "Academy",
