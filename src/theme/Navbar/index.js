@@ -24,14 +24,6 @@ export default function NavbarWrapper(props) {
         activeLink: secondaryNavOptions[DEFAULT_OPTION].links[0].sidebar,
       };
     }
-    const matchedOption = Object.entries(secondaryNavOptions).find(
-      ([, value]) =>
-        value.links.some(
-          (link) =>
-            currentPath.includes(normalizePath(link.link)) && link.link !== "/"
-        )
-    );
-    const selectedOption = matchedOption ? matchedOption[0] : DEFAULT_OPTION;
 
     let foundSidebar = null;
     for (const [sidebarName, items] of Object.entries(sidebars)) {
@@ -40,6 +32,14 @@ export default function NavbarWrapper(props) {
         break;
       }
     }
+
+    // Use foundSidebar to determine the selected option.
+    // Check which option has a link with a sidebar field that matches foundSidebar.
+    const matchedOption = Object.entries(secondaryNavOptions).find(
+      ([, value]) => value.links.some((link) => link.sidebar === foundSidebar)
+    );
+    const selectedOption = matchedOption ? matchedOption[0] : DEFAULT_OPTION;
+    
     return { selectedOption, activeLink: foundSidebar };
   }, [location.pathname]);
 
@@ -102,15 +102,6 @@ export default function NavbarWrapper(props) {
       return;
     }
 
-    const matchedOption = Object.entries(secondaryNavOptions).find(
-      ([, value]) =>
-        value.links.some(
-          (link) =>
-            currentPath.includes(normalizePath(link.link)) && link.link !== "/"
-        )
-    );
-    setSelectedOption(matchedOption ? matchedOption[0] : DEFAULT_OPTION);
-
     let foundSidebar = null;
     for (const [sidebarName, items] of Object.entries(sidebars)) {
       if (findPathInItems(items, currentPath)) {
@@ -118,16 +109,21 @@ export default function NavbarWrapper(props) {
         break;
       }
     }
+
+    // Use foundSidebar to determine the selected option.
+    // Check which option has a link with a sidebar field that matches foundSidebar.
+    const matchedOption = Object.entries(secondaryNavOptions).find(
+      ([, value]) => value.links.some((link) => link.sidebar === foundSidebar)
+    );
+    setSelectedOption(matchedOption ? matchedOption[0] : DEFAULT_OPTION);
     setActiveLink(foundSidebar);
   }, [location.pathname]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     setModalOpen(false);
-    const firstItem = secondaryNavOptions[option]?.links[0];
-    if (firstItem) {
-      history.push(firstItem.link);
-    }
+    // Use the top-level link field to navigate
+    history.push(secondaryNavOptions[option].link);
   };
 
   return (

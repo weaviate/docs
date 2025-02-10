@@ -11,6 +11,7 @@ const secondaryNavbarItems = {
     title: "Build",
     icon: faCode,
     description: "Develop AI applications using Weaviate's APIs and tools",
+    link: "/",
     links: [
       { label: "Get Started", link: "/", sidebar: "getStartedSidebar" },
       {
@@ -49,6 +50,7 @@ const secondaryNavbarItems = {
     title: "Weaviate Cloud",
     icon: faCloud,
     description: "Manage and scale Weaviate in the cloud",
+    link: "/cloud",
     links: [
       { label: "Getting Started", link: "/cloud", sidebar: "cloudSidebar" },
     ],
@@ -58,6 +60,7 @@ const secondaryNavbarItems = {
     icon: faGraduationCap,
     description:
       "Learn about vector search and Weaviate through structured courses",
+    link: "/academy",
     links: [
       { label: "Getting Started", link: "/academy", sidebar: "academySidebar" },
     ],
@@ -66,6 +69,7 @@ const secondaryNavbarItems = {
     title: "Integrations",
     icon: faPuzzlePiece,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
+    link: "/integrations",
     links: [
       {
         label: "Getting Started",
@@ -78,6 +82,7 @@ const secondaryNavbarItems = {
     title: "Contributor guide",
     icon: faEdit,
     description: "Learn how to contribute to Weaviate's open-source projects",
+    link: "/contributor-guide",
     links: [
       {
         label: "Getting Started",
