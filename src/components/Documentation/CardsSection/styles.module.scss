@@ -33,6 +33,10 @@
     box-shadow: 0px 20px 30px 0px rgba(22, 27, 45, 0.1);
     color: var(--site-font-accent-color);
     text-decoration: none;
+
+    .cardHeader {
+      text-decoration: underline;
+    }
   }
 
   @media screen and (max-width: 450px) {
