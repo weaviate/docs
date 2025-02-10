@@ -98,6 +98,7 @@ const config = {
           srcDark: "/img/site/weaviate-logo-horizontal-dark-1.svg",
         },
         items: [
+          /*
           {
             type: 'docSidebar',
             position: 'left',
@@ -140,6 +141,7 @@ const config = {
             sidebarId: 'othersSidebar',
             label: 'Others',
           },
+          */
           {
             type: "dropdown",
             label: "Product",

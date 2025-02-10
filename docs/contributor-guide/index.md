@@ -1,12 +1,10 @@
 ---
-title: Contributor Guide
+title: Open-source at Weaviate
 sidebar_position: 0
 image: og/contributor-guide/welcome.jpg
 # tags: ['index', 'contributor-guide']
 ---
 ![Contributor Guide](/img/contributor-guide/Weaviate.jpg)
-
-# Welcome
 
 🎉 First off, thank you for taking the time to contribute! 🎉
 
