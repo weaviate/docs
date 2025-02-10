@@ -29,6 +29,8 @@
   --docs-modal-button-bg: #ffffff;
   --docs-modal-bg: #ffffff;
   --docs-cards-bg: #f6f6f6;
+  --docs-cards-border-color: var(--ifm-color-emphasis-400);
+  --docs-cards-border-hover-color: var(--ifm-color-emphasis-700);
 }
 [data-theme='dark'] {
   --site-base-color: #f7f9fd;
@@ -55,6 +57,8 @@
   --docs-modal-button-bg: #1c305e;
   --docs-modal-bg: #17274d;
   --docs-cards-bg: #1c305e;
+  --docs-cards-border-color: var(--ifm-color-emphasis-400);
+  --docs-cards-border-hover-color: var(--ifm-color-emphasis-700);
 }
 
 //********************* FONTS *********************

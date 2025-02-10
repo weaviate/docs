@@ -14,7 +14,7 @@ const welcomeCardsData = [
     description: (
       <>
         Start with the{' '}
-        <span className={styles.highlight}>Quickstart tutorial</span> - an end-to-ssend demo that takes 15–30 minutes.
+        <span className={styles.highlight}>Quickstart tutorial</span> - an end-to-end demo that takes 15–30 minutes.
       </>
     ),
     link: '/weaviate/quickstart',
@@ -23,7 +23,7 @@ const welcomeCardsData = [
   {
     id: 'questions',
     title: 'Questions',
-    description: "Please visit our forun. The Weaviate team and our awesome community can help.",
+    description: "Please visit our forum. The Weaviate team and our awesome community can help.",
     link: 'https://forum.weaviate.io/c/support/',
     icon: faComments, 
   },
