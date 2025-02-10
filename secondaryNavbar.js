@@ -25,7 +25,7 @@ const secondaryNavbarItems = {
         sidebar: "conceptsSidebar",
       },
       {
-        label: "Tutorials & guides",
+        label: "Tutorials & Guides",
         link: "/weaviate/configuration",
         sidebar: "guidesSidebar",
       },
@@ -52,7 +52,8 @@ const secondaryNavbarItems = {
     description: "Manage and scale Weaviate in the cloud",
     link: "/cloud",
     links: [
-      { label: "Getting Started", link: "/cloud", sidebar: "cloudSidebar" },
+      { label: "Get Started", link: "/cloud", sidebar: "cloudSidebar" },
+      { label: "Administration", link: "/cloud/create-instance", sidebar: "cloudAdministrationSidebar" },
     ],
   },
   academy: {
@@ -62,7 +63,7 @@ const secondaryNavbarItems = {
       "Learn about vector search and Weaviate through structured courses",
     link: "/academy",
     links: [
-      { label: "Getting Started", link: "/academy", sidebar: "academySidebar" },
+      { label: "Get Started", link: "/academy", sidebar: "academySidebar" },
     ],
   },
   integrations: {
@@ -72,7 +73,7 @@ const secondaryNavbarItems = {
     link: "/integrations",
     links: [
       {
-        label: "Getting Started",
+        label: "Get Started",
         link: "/integrations",
         sidebar: "integrationsSidebar",
       },
@@ -85,9 +86,9 @@ const secondaryNavbarItems = {
     link: "/contributor-guide",
     links: [
       {
-        label: "Getting Started",
+        label: "Get Started",
         link: "/contributor-guide",
-        sidebar: "contributorGetStartedSidebar",
+        sidebar: "contributorSidebar",
       },
       {
         label: "Weaviate Core",
