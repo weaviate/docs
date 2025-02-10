@@ -1,46 +1,52 @@
-import React from 'react';
-import styles from './styles.module.scss';
-import content from './content.json';
-import CustomScriptLoader from '../../scriptSwitch';
+import React from "react";
+import styles from "./styles.module.scss";
+import content from "./content.json";
+import CardsSection from '../CardsSection'; 
+import secondaryNavbarItems from "/secondaryNavbar.js";
+import CustomScriptLoader from "../../scriptSwitch";
+import { faStar, faComments } from '@fortawesome/free-solid-svg-icons';
+
+// Define a list of hardcoded items for the welcome cards.
+const welcomeCardsData = [
+  {
+    id: 'new',
+    title: 'New to Weaviate?',
+    description: (
+      <>
+        Start with the{' '}
+        <span className={styles.highlight}>Quickstart tutorial</span> - an end-to-end demo that takes 15–30 minutes.
+      </>
+    ),
+    link: '/weaviate/quickstart',
+    icon: faStar,
+  },
+  {
+    id: 'questions',
+    title: 'Questions',
+    description: "Please visit our forum. The Weaviate team and our awesome community can help.",
+    link: 'https://forum.weaviate.io/c/support/',
+    icon: faComments, 
+  },
+];
 
 const DocHomePage = () => {
   return (
     <>
       <div className={styles.docHome}>
-        <h1 className={styles.docHeadText}>Welcome to Weaviate Docs</h1>
+        <h1 className={styles.highLightText}>Welcome to Weaviate Docs</h1>
 
         <p className={styles.docText}>
           Weaviate <i>(we-vee-eight)</i> is an open source, AI-native vector
           database. Use this documentation to get started with Weaviate and to
           learn how to get the most out of Weaviate's features.
         </p>
+        <CardsSection items={welcomeCardsData} />
 
-        <div className={styles.welcomeSection}>
-          <div className={styles.welcomeBox}>
-            <div className={`${styles.welcomeHeader} ${styles.new}`}>
-              {' '}
-              New to Weaviate?{' '}
-            </div>
-            <p>
-              Start with the{' '}
-              <a href="/weaviate/quickstart">Quickstart tutorial</a>{' '}
-              - an end-to-end demo that takes 15-30 minutes.
-            </p>
-          </div>
-          <div className={styles.welcomeBox}>
-            <div className={`${styles.welcomeHeader} ${styles.questions}`}>
-              Questions{' '}
-            </div>
-            <p>
-              Please visit our{' '}
-              <a href="https://forum.weaviate.io/c/support/">forum</a>. The
-              Weaviate team and our awesome community can help.
-            </p>
-          </div>
-        </div>
-        <br />
+        {/* Cards Section using data passed from secondaryNavbarItems */}
+        <h2 className={styles.highLightText}>Go to documentation for:</h2>
+        <CardsSection items={secondaryNavbarItems} />
 
-        <p className={styles.highLightText}>Getting Started</p>
+        <h2 className={styles.highLightText}>Getting Started</h2>
 
         <h3 className={styles.docHeader}>Step 1 - Choose your deployment</h3>
         <p className={styles.docText}>
@@ -65,9 +71,7 @@ const DocHomePage = () => {
                 <li>(Optional) Zero-downtime updates</li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/cloud/create-instance">
-                  Set up a WCD instance
-                </a>
+                <a href="/cloud/create-instance">Set up a WCD instance</a>
               </button>
             </div>
           </div>
@@ -168,40 +172,34 @@ const DocHomePage = () => {
             <div className={`${styles.scenarioLogo} ${styles.data}`}></div>
             <div className={styles.scenarioText}>
               <span>
+                <span>Work with text data</span>
                 <span>
-                  Work with text data 
+                  <p>
+                    <a href="/academy/py/starter_text_data/">Python</a> /{" "}
+                    <a href="/academy/js/starter_text_data/">JavaScript</a>
+                  </p>
                 </span>
-                <span>
-                <p>
-                  <a href="/academy/py/starter_text_data/">
-                  Python
-                </a> / <a href="/academy/js/starter_text_data/">
-                  JavaScript
-                </a>
-                </p>
               </span>
-              </span>
-              
 
               <p>
                 Just bring your text data to Weaviate and it will do the rest.
               </p>
               <p>
-                Just{' '}
+                Just{" "}
                 <a href="/academy/py/starter_text_data/text_collections/">
                   populate Weaviate
-                </a>{' '}
-                with your text data and start using powerful{' '}
+                </a>{" "}
+                with your text data and start using powerful{" "}
                 <a href="/academy/py/starter_text_data/text_searches/">
                   vector, keyword and hybrid search capabilities
                 </a>
                 .
               </p>
               <p>
-                And use our integrations to{' '}
+                And use our integrations to{" "}
                 <a href="/academy/py/starter_text_data/text_rag/">
                   build generative ai tools
-                </a>{' '}
+                </a>{" "}
                 with your data.
               </p>
             </div>
@@ -217,21 +215,21 @@ const DocHomePage = () => {
 
               <p>Do you prefer to work with your own vectors? No problem.</p>
               <p>
-                You can{' '}
+                You can{" "}
                 <a href="/academy/py/starter_custom_vectors/object_collections/">
                   add your own vectors to Weaviate
-                </a>{' '}
-                and still benefit from{' '}
+                </a>{" "}
+                and still benefit from{" "}
                 <a href="/academy/py/starter_custom_vectors/object_searches/">
                   all of its indexing and search capabilities.
                 </a>
                 .
               </p>
               <p>
-                Our integrations to{' '}
+                Our integrations to{" "}
                 <a href="/academy/py/starter_custom_vectors/object_rag/">
                   build generative ai tools
-                </a>{' '}
+                </a>{" "}
                 work just as well with your data and vectors.
               </p>
             </div>
@@ -240,38 +238,32 @@ const DocHomePage = () => {
             <div className={`${styles.scenarioLogo} ${styles.semantic}`}></div>
             <div className={styles.scenarioText}>
               <span>
+                <span>Multimodality</span>
                 <span>
-                  Multimodality
+                  <p>
+                    <a href="/academy/py/starter_multimodal_data">Python</a> /{" "}
+                    <a href="/academy/js/starter_multimodal_data">JavaScript</a>
+                  </p>
                 </span>
-                <span>
-                <p>
-                  <a href="/academy/py/starter_multimodal_data">
-                  Python
-                </a> / <a href="/academy/js/starter_multimodal_data">
-                  JavaScript
-                </a>
-                </p>
               </span>
-              </span>
-              
 
               <p>For many, data comes in multiple forms beyond text.</p>
               <p>
-                Weaviate's multimodal modules{' '}
+                Weaviate's multimodal modules{" "}
                 <a href="/academy/py/starter_multimodal_data/mm_collections/">
                   can import text, audio and video and more
-                </a>{' '}
-                as well as{' '}
+                </a>{" "}
+                as well as{" "}
                 <a href="/academy/py/starter_multimodal_data/mm_searches/">
                   perform multimodal searches
                 </a>
                 .
               </p>
               <p>
-                Use these modules to{' '}
+                Use these modules to{" "}
                 <a href="/academy/py/starter_multimodal_data/mm_rag/">
                   build generative ai tools
-                </a>{' '}
+                </a>{" "}
                 from your entire dataset.
               </p>
             </div>
@@ -291,9 +283,7 @@ const DocHomePage = () => {
               objects and vectors.
             </p>
             <div className={styles.wtLearn}>
-              <a href="/weaviate/introduction#what-is-weaviate">
-                Learn more
-              </a>
+              <a href="/weaviate/introduction#what-is-weaviate">Learn more</a>
             </div>
           </div>
           <div className={styles.whatnextBox}>
@@ -356,9 +346,7 @@ const DocHomePage = () => {
               <a href="/weaviate/client-libraries/python">Python</a>
             </div>
             <div className={`${styles.secondaryTabs} ${styles.ts}`}>
-              <a href="/weaviate/client-libraries/typescript">
-                JS/TS
-              </a>
+              <a href="/weaviate/client-libraries/typescript">JS/TS</a>
             </div>
           </div>
 

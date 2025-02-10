@@ -1,0 +1,77 @@
+
+// Container for the cards
+.cardsSection {
+  display: grid;
+  /* Force exactly 2 columns with the fixed card width */
+  grid-template-columns: repeat(2, 25.5625rem);
+  gap: 40px;
+  margin: 40px auto; // center the container
+  justify-content: left;
+
+  /* On smaller screens, fallback to a single column */
+  @media screen and (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  border-radius: 0.9375rem;
+  border: 1px solid var(--docs-cards-border-color);
+  background: var(--docs-cards-bg);
+  box-shadow: 0px 10px 20px 0px rgba(22, 27, 45, 0.08);
+  padding: 25px;
+  text-decoration: none;
+  color: var(--ifm-navbar-link-color);
+
+  /* Fixed dimensions */
+  width: 25.5625rem;
+  max-width: 25.5625rem;
+
+  &:hover {
+    border: 1px solid var(--docs-cards-border-hover-color);
+    box-shadow: 0px 20px 30px 0px rgba(22, 27, 45, 0.1);
+    color: var(--site-font-accent-color);
+    text-decoration: none;
+
+    .cardHeader {
+      text-decoration: underline;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  font-size: 1.25rem;
+}
+
+.cardTitle {
+  font-family: 'Plus Jakarta Sans';
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 12px 6px;
+}
+
+.cardDescription {
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 157.33%;
+  color: var(--ifm-navbar-link-color);
+}
+
+.highlight {
+  color: var(--site-font-accent-color);
+}
