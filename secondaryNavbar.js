@@ -1,6 +1,7 @@
 import {
   faCode,
   faCloud,
+  faDatabase,
   faGraduationCap,
   faPuzzlePiece,
   faEdit,
@@ -44,6 +45,16 @@ const secondaryNavbarItems = {
         link: "/weaviate/benchmarks",
         sidebar: "othersSidebar",
       },
+    ],
+  },
+  deploy: {
+    title: "Deploy",
+    icon: faDatabase,
+    description: "Deploy, configure, and maintain Weaviate Core",
+    link: "/deploy",
+    links: [
+      { label: "Get Started", link: "/deploy", sidebar: "deploySidebar" },
+      { label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },
     ],
   },
   cloud: {
