@@ -29,7 +29,7 @@ Further details on each data type are provided below.
 Use this type for any text data.
 
 - Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../manage-data/collections.mdx#property-level-settings).
-- If using [named vectors](../concepts/data.md#multiple-vectors-named-vectors), the property vectorization is defined in the [named vector definition](../manage-data/collections.mdx#define-multiple-named-vectors).
+- If using [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors), the property vectorization is defined in the [named vector definition](../manage-data/collections.mdx#define-named-vectors).
 - Text properties are tokenized prior to being indexed for keyword/BM25 searches. See [collection definition: tokenization](../config-refs/schema/index.md#tokenization) for more information.
 
 <details>
@@ -597,6 +597,10 @@ An object for this class may have a structure such as follows:
 
 ## `cross-reference`
 
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
 The `cross-reference` type allows a link to be created from one object to another. This is useful for creating relationships between collections, such as linking a `Person` collection to a `Company` collection.
 
 The `cross-reference` type objects are `arrays` by default. This allows you to link to any number of instances of a given collection (including zero).
@@ -608,7 +612,7 @@ For more information on cross-references, see the [cross-references](../concepts
 :::info Related pages
 - [How-to: Manage collections](../manage-data/collections.mdx)
 - [Concepts: Data Structure](../concepts/data.md)
-- [References: REST API: Schema](/weaviate/api/rest#tag/schema)
+- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
 :::
 
 ### Notes

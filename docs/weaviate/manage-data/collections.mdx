@@ -98,8 +98,8 @@ Use properties to configure additional parameters such as data type, index chara
 
 For details, see:
 
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
-- [API References: REST: Schema](/weaviate/api/rest#tag/schema)
+- [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
+- [API References: REST: Schema](/docs/weaviate/api/rest#tag/schema)
 - [Available data types](../config-refs/datatypes.md)
 
 </details>
@@ -168,7 +168,7 @@ Specify a `vectorizer` for a collection.
 Collection level settings override default values and general configuration parameters such as [environment variables](../config-refs/env-vars.md).
 
 - [Available model integrations](../model-providers/index.md)
-- [Vectorizer configuration references](/weaviate/config-refs/schema#vectorizer)
+- [Vectorizer configuration references](/docs/weaviate/config-refs/schema#vectorizer)
 
 </details>
 
@@ -221,12 +221,12 @@ Collection level settings override default values and general configuration para
 </Tabs>
 
 
-## Define multiple named vectors
+## Define named vectors
 
 :::info Added in `v1.24`
 :::
 
-You can define multiple [named vectors](../concepts/data.md#multiple-vectors-named-vectors) per collection. This allows each object to be represented by multiple vectors, each with its own vector index.
+You can define multiple [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors) per collection. This allows each object to be represented by multiple vector embeddings, each with its own vector index.
 
 As such, each named vector configuration can include its own vectorizer and vector index settings.
 
@@ -276,6 +276,31 @@ As such, each named vector configuration can include its own vectorizer and vect
     />
   </TabItem>
 
+</Tabs>
+
+## Define multi-vector embeddings (e.g. ColBERT, ColPali)
+
+:::caution Multi-vector embeddings technical preview
+Multi-vector support is added in `v1.29` as a **technical preview**.
+<br/>
+
+This means that the feature is still under development and may change in future releases, including potential breaking changes. Currently, quantization is not supported for multi-vector embeddings.
+<br/>
+
+**We do not recommend using this feature in production environments at this time.**
+:::
+
+Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START MultiValueVectorCollection"
+      endMarker="# END MultiValueVectorCollection"
+      language="py"
+    />
+  </TabItem>
 </Tabs>
 
 ## Specify vectorizer settings
@@ -842,7 +867,7 @@ import RaftRFChangeWarning from '/_includes/1-25-replication-factor.mdx';
 
 <RaftRFChangeWarning/>
 
-Configure replication settings, such as [async replication](../concepts/replication-architecture/consistency.md#async-replication) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
+Configure replication settings, such as [async replication](/docs/weaviate/configuration/replication#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -920,7 +945,7 @@ To use replication factors greater than one, use a [multi-node deployment](../in
 
 For details on the configuration parameters, see the following:
 
-- [Replication](/weaviate/config-refs/schema#replicationconfig)
+- [Replication](/docs/weaviate/config-refs/schema#replicationconfig)
 
 </details>
 
@@ -973,7 +998,7 @@ Configure sharding per collection.
 
 For details on the configuration parameters, see the following:
 
-- [Sharding](/weaviate/config-refs/schema#shardingconfig)
+- [Sharding](/docs/weaviate/config-refs/schema#shardingconfig)
 
 </details>
 
@@ -1457,13 +1482,13 @@ import CodeSchemaShardsUpdate from '/_includes/code/howto/manage-data.shards.upd
 
 ### References
 
-- [API References: REST: Schema](/weaviate/api/rest#tag/schema/post/schema)
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [API References: REST: Schema](/docs/weaviate/api/rest#tag/schema/post/schema)
+- [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
 - [Concepts: Data structure](../concepts/data.md)
 
 ### Background knowledge
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [Tutorial: Schema](../starter-guides/schema.md)
 
 ## Questions and feedback

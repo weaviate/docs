@@ -13,37 +13,37 @@ const secondaryNavbarItems = {
     title: "Build",
     icon: faCode,
     description: "Develop AI applications using Weaviate's APIs and tools",
-    link: "/docs",
+    link: "/docs/weaviate",
     links: [
-      { label: "Get Started", link: "/", sidebar: "getStartedSidebar" },
+      { label: "Get Started", link: "/docs/weaviate", sidebar: "getStartedSidebar" },
       {
         label: "Model Integrations",
-        link: "/weaviate/model-providers",
+        link: "/docs/weaviate/model-providers",
         sidebar: "modelProvidersSidebar",
       },
       {
         label: "Concepts",
-        link: "/weaviate/concepts",
+        link: "/docs/weaviate/concepts",
         sidebar: "conceptsSidebar",
       },
       {
         label: "Tutorials & Guides",
-        link: "/weaviate/configuration",
+        link: "/docs/weaviate/configuration",
         sidebar: "guidesSidebar",
       },
       {
         label: "Reference",
-        link: "/weaviate/api",
+        link: "/docs/weaviate/api",
         sidebar: "referenceSidebar",
       },
       {
         label: "Releases",
-        link: "/weaviate/release-notes",
+        link: "/docs/weaviate/release-notes",
         sidebar: "releasesSidebar",
       },
       {
         label: "Other",
-        link: "/weaviate/benchmarks",
+        link: "/docs/weaviate/benchmarks",
         sidebar: "othersSidebar",
       },
     ],
@@ -54,8 +54,8 @@ const secondaryNavbarItems = {
     description: "Deploy, configure, and maintain Weaviate Core",
     link: "/docs/deploy",
     links: [
-      { label: "Get Started", link: "/deploy", sidebar: "deploySidebar" },
-      { label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },
+      { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
+      { label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },
     ],
   },
   agents: {
@@ -64,7 +64,7 @@ const secondaryNavbarItems = {
     description: "Build and deploy intelligent agents with Weaviate",
     link: "/docs/agents",
     links: [
-      { label: "Get Started", link: "/agents", sidebar: "agentsSidebar" },
+      { label: "Get Started", link: "/docs/agents", sidebar: "agentsSidebar" },
     ],
   },
   cloud: {
@@ -73,9 +73,9 @@ const secondaryNavbarItems = {
     description: "Manage and scale Weaviate in the cloud",
     link: "/docs/cloud",
     links: [
-      { label: "Get Started", link: "/cloud", sidebar: "cloudSidebar" },
-      { label: "Weaviate Embeddings", link: "/cloud/embeddings", sidebar: "cloudWeaviateEmbeddings" },
-      { label: "Account management", link: "/cloud/platform/billing", sidebar: "cloudAccountManagementSidebar" },
+      { label: "Get Started", link: "/docs/cloud", sidebar: "cloudSidebar" },
+      { label: "Weaviate Embeddings", link: "/docs/cloud/embeddings", sidebar: "cloudWeaviateEmbeddings" },
+      { label: "Account management", link: "/docs/cloud/platform/billing", sidebar: "cloudAccountManagementSidebar" },
     ],
   },
   academy: {
@@ -85,7 +85,7 @@ const secondaryNavbarItems = {
       "Learn about vector search and Weaviate through structured courses",
     link: "/docs/academy",
     links: [
-      { label: "Get Started", link: "/academy", sidebar: "academySidebar" },
+      { label: "Get Started", link: "/docs/academy", sidebar: "academySidebar" },
     ],
   },
   integrations: {
@@ -96,7 +96,7 @@ const secondaryNavbarItems = {
     links: [
       {
         label: "Get Started",
-        link: "/integrations",
+        link: "/docs/integrations",
         sidebar: "integrationsSidebar",
       },
     ],
@@ -109,27 +109,27 @@ const secondaryNavbarItems = {
     links: [
       {
         label: "Get Started",
-        link: "/contributor-guide",
+        link: "/docs/contributor-guide",
         sidebar: "contributorSidebar",
       },
       {
         label: "Weaviate Core",
-        link: "/contributor-guide/weaviate-core",
+        link: "/docs/contributor-guide/weaviate-core",
         sidebar: "contributorCoreSidebar",
       },
       {
         label: "Weaviate Modules",
-        link: "/contributor-guide/weaviate-modules",
+        link: "/docs/contributor-guide/weaviate-modules",
         sidebar: "contributorModulesSidebar",
       },
       {
         label: "Weaviate Clients",
-        link: "/contributor-guide/weaviate-clients",
+        link: "/docs/contributor-guide/weaviate-clients",
         sidebar: "contributorClientsSidebar",
       },
       {
         label: "Contextionary",
-        link: "/contributor-guide/contextionary",
+        link: "/docs/contributor-guide/contextionary",
         sidebar: "contributorContextionarySidebar",
       },
     ],

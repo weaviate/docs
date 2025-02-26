@@ -1,5 +1,5 @@
 ---
-title: Multiple vectors
+title: Multiple vector embeddings
 sidebar_position: 20
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'vector index']
@@ -15,15 +15,15 @@ Collections can have multiple named vectors.
 
 The vectors in a collection can have their own configurations. Each vector space can set its own index, its own compression algorithm, and its own vectorizer. This means you can use different vectorization models, and apply different distance metrics, to the same object.
 
-To work with named vectors, adjust your queries to specify a target vector for [vector search](/weaviate/search/similarity#named-vectors) or [hybrid search](/weaviate/search/hybrid#named-vectors) queries.
+To work with named vectors, adjust your queries to specify a target vector for [vector search](/docs/weaviate/search/similarity#named-vectors) or [hybrid search](/docs/weaviate/search/hybrid#named-vectors) queries.
 
 ## Syntax
 
-Single vector collections are valid and continue to use the original collection syntax. However, if you configure multiple vectors, you must use the new, named vector syntax to query your collections.
+Single vector collections are valid and continue to use the original collection syntax. However, if you configure multiple vector embeddings, you must use the new, named vector syntax to query your collections.
 
 ### Collection definition
 
-Use the collection definition to [configure the vector spaces](/weaviate/manage-data/collections#define-multiple-named-vectors) for each data object.
+Use the collection definition to [configure the vector spaces](/docs/weaviate/manage-data/collections#define-named-vectors) for each data object.
 
 :::info Named vectors must be defined at collection creation
 All named vectors must be defined when you create a collection. Currently, it is not possible to add or remove named vectors from a collection after it has been created.
@@ -33,11 +33,11 @@ All named vectors must be defined when you create a collection. Currently, it is
 
 To do a vector search on a collection with named vectors, specify the vector space to search.
 
-Use named vectors with [vector similarity searches](/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/weaviate/search/hybrid#named-vectors).
+Use named vectors with [vector similarity searches](/docs/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/docs/weaviate/search/hybrid#named-vectors).
 
 Named vector collections support hybrid search, but only for one vector at a time.
 
-[Keyword search](/weaviate/search/bm25) syntax does not change if a collection has named vectors.
+[Keyword search](/docs/weaviate/search/bm25) syntax does not change if a collection has named vectors.
 
 ### Query multiple named vectors
 
@@ -58,8 +58,8 @@ Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
 
 ## Related pages
 
-- [How-to: manage data](/weaviate/manage-data/collections#define-multiple-named-vectors): Configure collections
-- [How-to: search](/weaviate/search/index.md): Code examples for search
+- [How-to: manage data](/docs/weaviate/manage-data/collections#define-named-vectors): Configure collections
+- [How-to: search](/docs/weaviate/search/index.md): Code examples for search
 - [Weaviate academy: Named vectors](../../../academy/py/named_vectors/index.md)
 
 ## Questions and feedback

@@ -194,7 +194,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Want to specify object vectors?</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <a href="/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</a>.
+        If you prefer to add vectors yourself along with the object data, see <a href="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</a>.
       </div>
     </div>
   </div>
@@ -296,7 +296,7 @@ flowchart LR
 :::info Where did the vectors come from?
 Weaviate used the locally hosted Ollama model to generate a vector embedding for each object during import. During the query, Weaviate similarly converted the query (`biology`) into a vector.
 
-As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
+As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/docs/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
 :::
 
 :::tip More search types available
@@ -377,7 +377,7 @@ Run this code to perform the query. Here is one possible response (your response
 🦢 2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new species! 🦢🌿 #ScienceFacts #DNA #SpeciesClassification
 ```
 
-The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#31-semantic-search) section.
+The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#semantic-search) section.
 
 The power of RAG comes from the ability to transform your own data. Weaviate helps you in this journey by making it easy to perform a combined search & generation in just a few lines of code.
 
@@ -410,7 +410,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <a href="/weaviate/search">how to perform searches</a>, such as <a href="/weaviate/search/bm25">keyword</a>, <a href="/weaviate/search/similarity">similarity</a>, <a href="/weaviate/search/hybrid">hybrid</a>, <a href="/weaviate/search/image">image</a>, <a href="/weaviate/search/filters">filtered</a> and <a href="/weaviate/search/rerank">reranked</a> searches.
+            See <a href="/docs/weaviate/search">how to perform searches</a>, such as <a href="/docs/weaviate/search/bm25">keyword</a>, <a href="/docs/weaviate/search/similarity">similarity</a>, <a href="/docs/weaviate/search/hybrid">hybrid</a>, <a href="/docs/weaviate/search/image">image</a>, <a href="/docs/weaviate/search/filters">filtered</a> and <a href="/docs/weaviate/search/rerank">reranked</a> searches.
           </p>
         </div>
       </div>
@@ -422,7 +422,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <a href="/weaviate/manage-data">how to manage data</a>, such as <a href="/weaviate/manage-data/collections">manage collections</a>, <a href="/weaviate/manage-data/create">create objects</a>, <a href="/weaviate/manage-data/import">batch import data</a> and <a href="/weaviate/manage-data/multi-tenancy">use multi-tenancy</a>.
+            See <a href="/docs/weaviate/manage-data">how to manage data</a>, such as <a href="/docs/weaviate/manage-data/collections">manage collections</a>, <a href="/docs/weaviate/manage-data/create">create objects</a>, <a href="/docs/weaviate/manage-data/import">batch import data</a> and <a href="/docs/weaviate/manage-data/multi-tenancy">use multi-tenancy</a>.
           </p>
         </div>
       </div>
@@ -434,7 +434,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <a href="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/academy">Weaviate Academy</a> unit on <a href="/academy/py/standalone/chunking">chunking</a>.
+            Check out the <a href="/docs/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/developers/academy">Weaviate Academy</a> unit on <a href="/developers/academy/py/standalone/chunking">chunking</a>.
           </p>
         </div>
       </div>
@@ -498,7 +498,7 @@ import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 <details>
   <summary>See answer</summary>
 
-If you are not sure whether the collection has been created, check the [`schema`](/weaviate/api/rest#tag/schema) endpoint.
+If you are not sure whether the collection has been created, check the [`schema`](/docs/weaviate/api/rest#tag/schema) endpoint.
 
 Replace WEAVIATE_INSTANCE_URL with your instance's REST Endpoint URL.:
 
@@ -533,7 +533,7 @@ Weaviate uses a combination of RESTful and GraphQL APIs. In Weaviate, RESTful AP
 <details>
   <summary>See answer</summary>
 
-To confirm successful data import, check the [`objects`](/weaviate/api/rest#tag/objects) endpoint to verify that all objects are imported.
+To confirm successful data import, check the [`objects`](/docs/weaviate/api/rest#tag/objects) endpoint to verify that all objects are imported.
 
 Replace WEAVIATE_INSTANCE_URL with your instance REST Endpoint URL:
 
@@ -564,7 +564,7 @@ Where you should be able to confirm that you have imported all `10` objects.
 
 To perform text-based (`nearText`) similarity searches, you need to have a vectorizer enabled, and configured in your collection.
 
-Make sure the vectorizer is configured [like this](#21-define-a-collection).
+Make sure the vectorizer is configured [like this](#define-a-data-collection).
 
 If the search still doesn't work, [contact us](#questions-and-feedback)!
 

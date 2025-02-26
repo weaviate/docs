@@ -248,7 +248,7 @@ For OIDC authentication with the Client Credentials flow, use the `AuthClientCre
 
 For OIDC authentication with the Refresh Token flow, use the `AuthBearerToken` class.
 
-If the helper functions do not provide the customization you need, use the `WeaviateClient` class to instantiate the client.
+If the helper functions do not provide the customization you need, use the [`WeaviateClient`](#explicit-instantiation) class to instantiate the client.
 
 ### Explicit instantiation
 
@@ -279,6 +279,10 @@ For more details, see the [async Python client documentation](./async.md).
 To create an older, `v3` style `Client` object, use the `weaviate.Client` class. This method is available for backwards compatibility. Where possible, use a client v4 connection.
 
 To create a `v3` style client, refer to the [`v3` client documentation](./python_v3.md).
+
+### Using Custom SSL Certificates
+
+The Python client doesn't directly support passing SSL certificates. If you need to work with self-signed certificates (e.g. for enterprise environments), you can add the certificate to the underlying libraries such as `certifi` that the Weaviate client library uses.
 
 ## Initial connection checks
 
@@ -1202,7 +1206,7 @@ In particular, check out the pages for:
 - [Similarity search](../../search/similarity.md)
 - [Filters](../../search/filters.md)
 
-The Weaviate API reference pages for [search](../../api/graphql/index.md) and [REST](/weaviate/api/rest) may also be useful starting points.
+The Weaviate API reference pages for [search](../../api/graphql/index.md) and [REST](/docs/weaviate/api/rest) may also be useful starting points.
 
 ## Releases
 

@@ -248,9 +248,9 @@ The response should look like this:
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [API References: GraphQL - Additional properties](../api/graphql/additional-properties.md#rerank)
-- [API References: GraphQL - Sorting](/weaviate/api/graphql/additional-operators#sorting-api)
+- [API References: GraphQL - Sorting](/docs/weaviate/api/graphql/additional-operators#sorting-api)
 - [Concepts: Reranking](../concepts/reranking.md)
 - [Model providers integrations](../model-providers/index.md)
 

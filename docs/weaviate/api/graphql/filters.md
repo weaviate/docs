@@ -147,7 +147,7 @@ See the [Schema property tokenization section](../../config-refs/schema/index.md
 
 #### Stopwords in `text` filters
 
-Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/schema/index.mds#stopwords-stopword-lists).
+Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/docs/weaviate/config-refs/schema/index.md#stopwords-stopword-lists).
 
 ## Multiple operands
 
@@ -305,7 +305,7 @@ import GraphQLFiltersWhereId from '/_includes/code/graphql.filters.where.id.mdx'
 Filtering can be performed with internal timestamps as well, such as `creationTimeUnix` and `lastUpdateTimeUnix`. These values can be represented either as Unix epoch milliseconds, or as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) formatted datetimes. Note that epoch milliseconds should be passed in as a `valueText`, and an RFC3339 datetime should be a `valueDate`.
 
 :::info
-Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/schema/index.md#indextimestamps) for details.
+Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/docs/weaviate/config-refs/schema/index.md#indextimestamps) for details.
 :::
 
 import GraphQLFiltersWhereTimestamps from '/_includes/code/graphql.filters.where.timestamps.mdx';
@@ -375,7 +375,7 @@ To filter for `Article` class objects with `title` length greater than 10, you w
 ```
 
 :::note
-Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/schema/index.md#indexpropertylength).
+Filtering by property length requires the target class to be [configured to index the length](/docs/weaviate/config-refs/schema/index.md#indexpropertylength).
 :::
 
 ### By cross-references

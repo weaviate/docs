@@ -267,8 +267,8 @@ We use Go to measure the concurrent (multi-threaded) queries.
 Each language has its own performance characteristics.
 You may get different results if you use a different language to send your queries.
 
-For maximum throughput, we recommend using the [Go](/weaviate/client-libraries/go.md) or
-[Java](/weaviate/client-libraries/java.md) client libraries.
+For maximum throughput, we recommend using the [Go](/docs/weaviate/client-libraries/go.md) or
+[Java](/docs/weaviate/client-libraries/java.md) client libraries.
 
 The complete import and test scripts are available [here](https://github.com/weaviate/weaviate-benchmarking).
 
@@ -345,12 +345,12 @@ rough estimation of how the throughput would vary on smaller or larger
 machines. If you do not need the stated throughput, you can run with fewer CPU
 cores. If you need more throughput, you can run with more CPU cores.
 
-Adding more CPUs reaches a point of diminishing returns because of synchronization mechanisms, disk, and memory bottlenecks. Beyond that point, you  should scale horizontally instead of vertically. Horizontal scaling with replication will be [available in Weaviate soon](/weaviate/roadmap/index.md).
+Adding more CPUs reaches a point of diminishing returns because of synchronization mechanisms, disk, and memory bottlenecks. Beyond that point, you  should scale horizontally instead of vertically. Horizontal scaling with replication will be [available in Weaviate soon](/docs/weaviate/roadmap/index.md).
 
 ### What are `ef`, `efConstruction`, and `maxConnections`?
 
 These parameters refer to the [HNSW build and query
-parameters](/weaviate/config-refs/schema/vector-index.md#hnsw-indexes).
+parameters](/docs/weaviate/config-refs/schema/vector-index.md#hnsw-indexes).
 They represent a trade-off between recall, latency & throughput, index size, and
 memory consumption. This trade-off is highlighted in the benchmark results.
 
@@ -379,7 +379,7 @@ hints to look at:
   it could then be that your benchmark is bottlenecked by those disks.
 
 * Are you using more than 2 million vectors? If yes, make sure to set the
-  [vector cache large enough](/weaviate/concepts/resources.md#vector-cache)
+  [vector cache large enough](/docs/weaviate/concepts/resources.md#vector-cache)
   for maximum performance.
 
 ### Where can I find the scripts to run this benchmark myself?

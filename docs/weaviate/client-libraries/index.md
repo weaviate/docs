@@ -10,10 +10,10 @@ You can interact with Weaviate by using the GraphQL or RESTful API directly, or 
 
 Currently, Weaviate supports:
 
-- [Python](/weaviate/client-libraries/python/index.md)
-- [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx)
-- [Go](/weaviate/client-libraries/go.md)
-- [Java](/weaviate/client-libraries/java.md)
+- [Python](/docs/weaviate/client-libraries/python/index.md)
+- [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx)
+- [Go](/docs/weaviate/client-libraries/go.md)
+- [Java](/docs/weaviate/client-libraries/java.md)
 
 import ClientCapabilitiesOverview from '/_includes/client.capabilities.mdx'
 

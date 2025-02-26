@@ -123,7 +123,7 @@ As a comparison, with pure HNSW - without the cutoff - the same filters would lo
 
 ![Prefiltering with pure HNSW](./img/prefiltering-pure-hnsw-without-cutoff.png "Prefiltering without cutoff, i.e. pure HNSW")
 
-The cutoff value can be configured as [part of the `vectorIndexConfig` settings in the schema](/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) for each collection separately.
+The cutoff value can be configured as [part of the `vectorIndexConfig` settings in the schema](/docs/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) for each collection separately.
 
 <!-- TODO - replace figures with updated post-roaring bitmaps figures -->
 

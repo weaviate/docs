@@ -42,6 +42,15 @@ The following example adds objects to the `MyCollection` collection.
       endMarker="# END BasicBatchImportExample"
       language="py"
     />
+
+### Error handling
+
+During a batch import, any failed objects or references will be stored and can be obtained through `batch.failed_objects` and `batch.failed_references`.
+Additionally, a running count of failed objects and references is maintained and can be accessed through `batch.number_errors` within the context manager.
+This counter can be used to stop the import process in order to investigate the failed objects or references.
+
+Find out more about error handling on the Python client [reference page](/docs/weaviate/client-libraries/python#error-handling).
+
   </TabItem>
 
   <TabItem value="py3" label="Python Client v3">
@@ -100,14 +109,14 @@ The [gRPC API](../api/grpc.md) is faster than the REST API. Use the gRPC API to 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
 
-The Python client uses gRPC by default. See the client page for additional batch import [configuration options](/weaviate/client-libraries/python#batch-imports).
+The Python client uses gRPC by default. See the client page for additional batch import [configuration options](/docs/weaviate/client-libraries/python#batch-imports).
 
 <br/>The legacy Python client does not support gRPC.
 
 </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
 
-The [TypeScript client v3](/weaviate/client-libraries/typescript/typescript-v3#batch-inserts) uses gRPC by default.
+The [TypeScript client v3](/docs/weaviate/client-libraries/typescript/typescript-v3#batch-inserts) uses gRPC by default.
 
 <br/>The legacy TypeScript client does not support gRPC.
 
@@ -293,7 +302,7 @@ Use the `vector` property to specify a vector for each object.
 :::info Added in `v1.24`
 :::
 
-When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-multiple-named-vectors)).
+When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -507,7 +516,7 @@ Data imports can be resource intensive. Consider the following when you import l
 Available starting in `v1.22`. This is an experimental feature. Use with caution.
 :::
 
-To maximize import speed, enable [asynchronous indexing](/weaviate/config-refs/schema/vector-index#asynchronous-indexing).
+To maximize import speed, enable [asynchronous indexing](/docs/weaviate/config-refs/schema/vector-index#asynchronous-indexing).
 
 To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration file.
 
@@ -526,15 +535,15 @@ import AutoTenant from '/_includes/auto-tenant.mdx';
 
 <AutoTenant/>
 
-For details, see [auto-tenant](/weaviate/manage-data/multi-tenancy#automatically-add-new-tenants).
+For details, see [auto-tenant](/docs/weaviate/manage-data/multi-tenancy#automatically-add-new-tenants).
 
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How-to: Create objects](./create.mdx)
-- [References: REST - /v1/batch](/weaviate/api/rest#tag/batch)
-- [Configuration: Indexes](/weaviate/config-refs/schema/vector-index#asynchronous-indexing)
+- [References: REST - /v1/batch](/docs/weaviate/api/rest#tag/batch)
+- [Configuration: Indexes](/docs/weaviate/config-refs/schema/vector-index#asynchronous-indexing)
 
 ## Questions and feedback
 

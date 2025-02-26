@@ -30,11 +30,11 @@ The ecosystem is divided into these categories:
 
 | Company Category | Companies |
 |------------------|-----------|
-| Cloud Hyperscalers | [AWS](/integrations/cloud-hyperscalers/aws), [Google](/integrations/cloud-hyperscalers/google)|
-| Compute Infrastructure | [Modal](/integrations/compute-infrastructure/modal), [Replicate](/integrations/compute-infrastructure/replicate) |
-| Data Platforms |[Airbyte](/integrations/data-platforms/airbyte), [Aryn](/integrations/data-platforms/aryn/), [Confluent Cloud](/integrations/data-platforms/confluent-cloud), [Astronomer](/integrations/data-platforms/astronomer), [Context Data](/integrations/data-platforms/context-data/), [Databricks](/integrations/data-platforms/databricks/), [Firecrawl](/integrations/data-platforms/firecrawl), [IBM](/integrations/data-platforms/ibm/),  [Unstructured](/integrations/data-platforms/unstructured) |
-| LLM Frameworks | [Composio](/integrations/llm-frameworks/composio/), [DSPy](/integrations/llm-frameworks/dspy/), [Haystack](/integrations/llm-frameworks/haystack/), [LangChain](/integrations/llm-frameworks/langchain/), [LlamaIndex](/integrations/llm-frameworks/llamaindex/), [Semantic Kernel](/integrations/llm-frameworks/semantic-kernel/) |
-| Operations | [Arize](/integrations/operations/arize/), [Langtrace](/integrations/operations/langtrace/), [LangWatch](/integrations/operations/langwatch/), [Nomic](/integrations/operations/nomic/), [Ragas](/integrations/operations/ragas/), [Weights & Biases](/integrations/operations/wandb/) |
+| Cloud Hyperscalers | [AWS](/docs/integrations/cloud-hyperscalers/aws), [Google](/docs/integrations/cloud-hyperscalers/google)|
+| Compute Infrastructure | [Modal](/docs/integrations/compute-infrastructure/modal), [Replicate](/docs/integrations/compute-infrastructure/replicate) |
+| Data Platforms |[Airbyte](/docs/integrations/data-platforms/airbyte), [Aryn](/docs/integrations/data-platforms/aryn/), [Confluent Cloud](/docs/integrations/data-platforms/confluent-cloud), [Astronomer](/docs/integrations/data-platforms/astronomer), [Context Data](/docs/integrations/data-platforms/context-data/), [Databricks](/docs/integrations/data-platforms/databricks/), [Firecrawl](/docs/integrations/data-platforms/firecrawl), [IBM](/docs/integrations/data-platforms/ibm/),  [Unstructured](/docs/integrations/data-platforms/unstructured) |
+| LLM Frameworks | [Composio](/docs/integrations/llm-frameworks/composio/), [DSPy](/docs/integrations/llm-frameworks/dspy/), [Haystack](/docs/integrations/llm-frameworks/haystack/), [LangChain](/docs/integrations/llm-frameworks/langchain/), [LlamaIndex](/docs/integrations/llm-frameworks/llamaindex/), [Semantic Kernel](/docs/integrations/llm-frameworks/semantic-kernel/) |
+| Operations | [Arize](/docs/integrations/operations/arize/), [Langtrace](/docs/integrations/operations/langtrace/), [LangWatch](/docs/integrations/operations/langwatch/), [Nomic](/docs/integrations/operations/nomic/), [Ragas](/docs/integrations/operations/ragas/), [Weights & Biases](/docs/integrations/operations/wandb/) |
 
 ## Model Provider Integrations 
 Weaviate integrates with self-hosted and API-based embedding models from a range of providers.

@@ -19,7 +19,7 @@ const config = {
   url: "https://your-docusaurus-site.example.com",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/docs/",
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -49,7 +49,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           path: "docs", // folder name – where the docs are
-          routeBasePath: "/", // route name – where to navigate for docs i.e. weaviate.io/<route-base-path>/...
+          routeBasePath: "docs", // route name – where to navigate for docs i.e. weaviate.io/<route-base-path>/...
           editUrl: "https://github.com/weaviate/weaviate-io/tree/main/",
         },
         /**
@@ -79,10 +79,10 @@ const config = {
   ],
   stylesheets: [
     // Add Font Awesome stylesheets
-    '/fonts/font-awesome/fontawesome.css',
-    '/fonts/font-awesome/solid.css',
-    '/fonts/font-awesome/regular.css',
-    '/fonts/font-awesome/brands.css',
+    "/fonts/font-awesome/fontawesome.css",
+    "/fonts/font-awesome/solid.css",
+    "/fonts/font-awesome/regular.css",
+    "/fonts/font-awesome/brands.css",
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -96,52 +96,9 @@ const config = {
           alt: "Weaviate",
           src: "/img/site/weaviate-logo-horizontal-light-1.svg",
           srcDark: "/img/site/weaviate-logo-horizontal-dark-1.svg",
+          href: "/docs/weaviate",
         },
         items: [
-          /*
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'getStartedSidebar',
-            label: 'Get Started',
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'modelProvidersSidebar',
-            label: 'Model Integrations',
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'conceptsSidebar',
-            label: 'Concepts',
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'guidesSidebar',
-            label: 'Tutorials & guides',
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'referenceSidebar',
-            label: 'Reference',
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'releasesSidebar',
-            label: 'Releases',
-          },
-          {
-            type: 'docSidebar',
-            position: 'left',
-            sidebarId: 'othersSidebar',
-            label: 'Others',
-          },
-          */
           {
             type: "dropdown",
             label: "Product",
@@ -324,7 +281,7 @@ const config = {
               },
               {
                 label: "Academy",
-                to: "/academy",
+                to: "/docs/academy",
               },
               {
                 label: "Workshops",
@@ -350,11 +307,11 @@ const config = {
               },
               {
                 label: "Documentation",
-                to: "/",
+                to: "/docs/weaviate",
               },
               {
                 label: "Weaviate Cloud Docs",
-                to: "/cloud",
+                to: "/docs/cloud",
               },
               {
                 label: "GitHub",

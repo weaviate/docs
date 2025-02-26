@@ -108,7 +108,7 @@ import ImgSrchTSCode from '!!raw-loader!/_includes/code/howto/search.image.ts';
 import ImgSrchTSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.image-v2.ts';
 
 
-Use the `Near Image` operator to find objects with the nearest vector to an image.<br/>
+Use the [`Near Image`](../api/graphql/search-operators.md#nearimage) operator to find objects with the nearest vector to an image.<br/>
 This example uses a base64 representation of an image.
 
 <Tabs groupId="languages">
@@ -804,10 +804,10 @@ The output is like this:
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- For image search, see [Image search](/weaviate/search/image).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md).
-- For search using the GraphQL API, see [GraphQL API](/weaviate/api/graphql).
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- For image search, see [Image search](/docs/weaviate/search/image).
+- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md).
+- For search using the GraphQL API, see [GraphQL API](/docs/weaviate/api/graphql).
 
 ## Questions and feedback
 

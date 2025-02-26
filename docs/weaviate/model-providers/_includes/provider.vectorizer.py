@@ -149,7 +149,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START BasicMMVectorizerCohere
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -179,7 +179,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START MMVectorizerCohereCustomModel
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -189,7 +189,7 @@ client.collections.create(
         Property(name="poster", data_type=DataType.BLOB),
     ],
     vectorizer_config=[
-        Configure.NamedVectors.text2vec_cohere(
+        Configure.NamedVectors.multi2vec_cohere(
             name="title_vector",
             model="embed-multilingual-v3.0",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
@@ -210,7 +210,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START FullMMVectorizerCohere
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -220,7 +220,7 @@ client.collections.create(
         Property(name="poster", data_type=DataType.BLOB),
     ],
     vectorizer_config=[
-        Configure.NamedVectors.text2vec_cohere(
+        Configure.NamedVectors.multi2vec_cohere(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -276,6 +276,7 @@ client.collections.create(
         Configure.NamedVectors.text2vec_palm(
             name="title_vector",
             source_properties=["title"],
+            project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
             model_id="text-embedding-004"
         )
@@ -298,7 +299,7 @@ client.collections.create(
         Configure.NamedVectors.text2vec_palm(
             name="title_vector",
             source_properties=["title"],
-            # project_id="<google-cloud-project-id>",  # Required for Vertex AI
+            project_id="<google-cloud-project-id>",  # Required for Vertex AI
             # # Further options
             # model_id="<google-model-id>",
             # api_endpoint="<google-api-endpoint>",
@@ -346,7 +347,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START FullMMVectorizerGoogleVertex
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -359,9 +360,9 @@ client.collections.create(
     vectorizer_config=[
         Configure.NamedVectors.multi2vec_palm(
             name="title_vector",
-            # project_id="<google-cloud-project-id>"  # Required for Vertex AI
+            project_id="<google-cloud-project-id>",  # Required for Vertex AI
+            location="us-central1",
             # model_id="<google-model-id>",
-            # location="us-central1",
             # dimensions=512,
             image_fields=[
                 Multi2VecField(name="poster", weight=0.9)
@@ -495,7 +496,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START BasicMMVectorizerJinaAI
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -525,7 +526,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START MMVectorizerJinaCustomModel
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -555,7 +556,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START FullMMVectorizerJinaAI
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -583,6 +584,69 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullMMVectorizerJinaAI
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicColBERTVectorizerJinaAI
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2colbert_jinaai(
+            name="title_vector",
+            source_properties=["title"]
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicColBERTVectorizerJinaAI
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START ColBERTVectorizerJinaCustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2colbert_jinaai(
+            name="title_vector",
+            source_properties=["title"],
+            model="jina-colbert-v2",
+        )
+    ],
+    # highlight-end
+)
+# END ColBERTVectorizerJinaCustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullColBERTVectorizerJinaAI
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2colbert_jinaai(
+            name="title_vector",
+            source_properties=["title"],
+            # Further options
+            # model="jina-colbert-v2",
+            # dimensions=64,  # e.g. 128, 64 (only applicable for some models)
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullColBERTVectorizerJinaAI
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -624,6 +688,162 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullVectorizerMistral
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicVectorizerNVIDIA
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2vec_nvidia(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerNVIDIA
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START VectorizerNVIDIACustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2vec_nvidia(
+            name="title_vector",
+            source_properties=["title"],
+            model="nvidia/nv-embed-v1"
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END VectorizerNVIDIACustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerNVIDIA
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2vec_nvidia(
+            name="title_vector",
+            source_properties=["title"],
+            model="nvidia/nv-embed-v1",
+            base_url="https://integrate.api.nvidia.com/v1",
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerNVIDIA
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicMMVectorizerNVIDIA
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vectorizer_config=[
+        Configure.NamedVectors.multi2vec_nvidia(
+            name="title_vector",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicMMVectorizerNVIDIA
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START MMVectorizerNVIDIACustomModel
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vectorizer_config=[
+        Configure.NamedVectors.multi2vec_nvidia(
+            name="title_vector",
+            model="nvidia/nvclip",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END MMVectorizerNVIDIACustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullMMVectorizerNVIDIA
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="poster", data_type=DataType.BLOB),
+    ],
+    vectorizer_config=[
+        Configure.NamedVectors.multi2vec_nvidia(
+            name="title_vector",
+            # Define the fields to be used for the vectorization - using image_fields, text_fields
+            image_fields=[
+                Multi2VecField(name="poster", weight=0.9)
+            ],
+            text_fields=[
+                Multi2VecField(name="title", weight=0.1)
+            ],
+            # Further options
+            # model="nvidia/nvclip",
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullMMVectorizerNVIDIA
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -703,7 +923,11 @@ client.collections.create(
 )
 # END BasicVectorizerOpenAI
 
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicVectorizerDatabricks
+import os
 from weaviate.classes.config import Configure
 
 databricks_vectorizer_endpoint = os.getenv("DATABRICKS_VECTORIZER_ENDPOINT")  # If saved as an environment variable
@@ -935,7 +1159,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START BasicMMVectorizerVoyageAI
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -965,7 +1189,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START MMVectorizerVoyageAICustomModel
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -996,7 +1220,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START FullMMVectorizerVoyageAI
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -1060,7 +1284,7 @@ client.collections.create(
         Configure.NamedVectors.text2vec_weaviate(
             name="title_vector",
             source_properties=["title"],
-            model="arctic-embed-m-v1.5"
+            model="Snowflake/snowflake-arctic-embed-l-v2.0"
         )
     ],
     # highlight-end
@@ -1071,7 +1295,7 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
-# START FullVectorizerWeaviate
+# START SnowflakeArcticEmbedMV15
 from weaviate.classes.config import Configure
 
 client.collections.create(
@@ -1081,8 +1305,8 @@ client.collections.create(
         Configure.NamedVectors.text2vec_weaviate(
             name="title_vector",
             source_properties=["title"],
+            model="Snowflake/snowflake-arctic-embed-m-v1.5",
             # Further options
-            # model="arctic-embed-m-v1.5",
             # dimensions=256
             # base_url="<custom_weaviate_embeddings_url>",
         )
@@ -1090,7 +1314,31 @@ client.collections.create(
     # highlight-end
     # Additional parameters not shown
 )
-# END FullVectorizerWeaviate
+# END SnowflakeArcticEmbedMV15
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START SnowflakeArcticEmbedLV20
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vectorizer_config=[
+        Configure.NamedVectors.text2vec_weaviate(
+            name="title_vector",
+            source_properties=["title"],
+            model="Snowflake/snowflake-arctic-embed-l-v2.0",
+            # Further options
+            # dimensions=256
+            # base_url="<custom_weaviate_embeddings_url>",
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END SnowflakeArcticEmbedLV20
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -1128,8 +1376,8 @@ client.collections.create(
             # Further options
             pooling_strategy="masked_mean",
             inference_url="<custom_transformers_url>",          # For when using multiple inference containers
-            passage_inference_url="<custom_transformers_url>",  # For when using DPR models
-            query_inference_url="<custom_transformers_url>",    # For when using DPR models
+            # passage_inference_url="<custom_transformers_url>",  # For when using DPR models
+            # query_inference_url="<custom_transformers_url>",    # For when using DPR models
         )
     ],
     # highlight-end
@@ -1226,7 +1474,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START BasicMMVectorizerCLIP
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -1256,7 +1504,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START FullMMVectorizerCLIP
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -1287,7 +1535,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START BasicMMVectorizerBind
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -1317,7 +1565,7 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START FullMMVectorizerBind
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
 client.collections.create(
     "DemoCollection",
@@ -1355,14 +1603,38 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BatchImportExample
 source_objects = [
-    {"title": "The Shawshank Redemption", "description": ""},
-    {"title": "The Godfather", "description": ""},
-    {"title": "The Dark Knight", "description": ""},
-    {"title": "Jingle All the Way", "description": ""},
-    {"title": "A Christmas Carol", "description": ""},
+    {"title": "The Shawshank Redemption", "description": "A wrongfully imprisoned man forms an inspiring friendship while finding hope and redemption in the darkest of places."},
+    {"title": "The Godfather", "description": "A powerful mafia family struggles to balance loyalty, power, and betrayal in this iconic crime saga."},
+    {"title": "The Dark Knight", "description": "Batman faces his greatest challenge as he battles the chaos unleashed by the Joker in Gotham City."},
+    {"title": "Jingle All the Way", "description": "A desperate father goes to hilarious lengths to secure the season's hottest toy for his son on Christmas Eve."},
+    {"title": "A Christmas Carol", "description": "A miserly old man is transformed after being visited by three ghosts on Christmas Eve in this timeless tale of redemption."}
 ]
 
+collection = client.collections.get("DemoCollection")
+
+with collection.batch.dynamic() as batch:
+    for src_obj in source_objects:
+        # highlight-start
+        # The model provider integration will automatically vectorize the object
+        batch.add_object(
+            properties={
+                "title": src_obj["title"],
+                "description": src_obj["description"],
+            },
+            # vector=vector  # Optionally provide a pre-obtained vector
+        )
+        # highlight-end
+        if batch.number_errors > 10:
+            print("Batch import stopped due to excessive errors.")
+            break
+
+failed_objects = collection.batch.failed_objects
+if failed_objects:
+    print(f"Number of failed imports: {len(failed_objects)}")
+    print(f"First failed object: {failed_objects[0]}")
+# END BatchImportExample
 
 # START NearImageExample
 def url_to_base64(url):
@@ -1381,26 +1653,6 @@ src_img_path = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img
 
 for i in range(len(source_objects)):
     source_objects[i]["poster_path"] = src_img_path
-
-# START BatchImportExample
-collection = client.collections.get("DemoCollection")
-
-with collection.batch.dynamic() as batch:
-    # source_objects is a list of objects being imported that contain the fields "title" and "description"
-    for src_obj in source_objects:
-        weaviate_obj = {
-            "title": src_obj["title"],
-            "description": src_obj["description"],
-        }
-
-        # highlight-start
-        # The model provider integration will automatically vectorize the object
-        batch.add_object(
-            properties=weaviate_obj,
-            # vector=vector  # Optionally provide a pre-obtained vector
-        )
-        # highlight-end
-# END BatchImportExample
 
 # START MMBatchImportExample
 collection = client.collections.get("DemoCollection")

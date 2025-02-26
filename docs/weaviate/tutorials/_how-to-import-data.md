@@ -64,7 +64,7 @@ import CodeAddRefLater from '/_includes/code/howto.add.data.things.add.reference
 <!-- TODO: point it towards search or the relevant content -->
 <!-- - Take a look at [How to query data](./how-to-query-data) to learn how to interact with the data you just added. -->
 
-- See the RESTful [API reference pages](/weaviate/api/rest) for all API operations to add, modify and delete data.
+- See the RESTful [API reference pages](/docs/weaviate/api/rest) for all API operations to add, modify and delete data.
 
 
 ## Questions and feedback

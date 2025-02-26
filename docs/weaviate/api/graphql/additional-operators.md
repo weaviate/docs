@@ -130,9 +130,6 @@ Pagination is not a cursor-based implementation. This has the following implicat
 
 ## Autocut
 
-:::info Added in `v1.20`
-:::
-
 The autocut function limits results based on discontinuities in the result set. Specifically, autocut looks for discontinuities, or jumps, in result metrics such as vector distance or search score.
 
 To use autocut, specify how many jumps there should be in your query. The query stops returning results after the specified number of jumps.
@@ -160,7 +157,7 @@ Autocut is disabled by default. To explicitly disable autocut, set the number of
 If autocut is combined with the limit filter, autocut only considers the first objects returned up to the value of `limit`.
 
 <!-- TODO: Update with link to blog:
-For more `autocut` examples and to learn about the motivation behind this filter, see the [v1.20 release blog post](/blog). -->
+For more `autocut` examples and to learn about the motivation behind this filter, see the [v1.20 release blog post](https://weaviate.io/blog). -->
 
 Sample client code:
 
@@ -283,13 +280,11 @@ import GraphQLFiltersAfter from '/_includes/code/graphql.filters.after.mdx';
 
 ## Sorting
 
-:::info
-Added in `v1.13.0`.
-:::
-
-You can sort results by any primitive property, such as `text`, `number`, or `int`. When query results, for example, `near<Media>` vector search results, have a natural order, sort functions override that order.
+You can sort results by any primitive property, such as `text`, `number`, or `int`. 
 
 ### Sorting considerations
+
+Sorting can be applied when fetching objects, but it's **unavailable when using search operators**. 
 
 Weaviate's sorting implementation does not lead to massive memory spikes. Weaviate does not load all object properties into memory; only the property values being sorted are kept in memory.
 

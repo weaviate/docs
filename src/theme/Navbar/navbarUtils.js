@@ -4,9 +4,9 @@
  * @param {string} path - The path to normalize.
  * @returns {string} - The normalized path.
  */
-export function normalizePath(path, baseUrl) {
-  if (baseUrl && path.startsWith(baseUrl)) {
-    path = path.slice(baseUrl.length);
+export function normalizePath(path, routeBasePath) {
+  if (routeBasePath && path.startsWith(routeBasePath)) {
+    path = path.slice(routeBasePath.length);
   }
   return path.startsWith('/') ? path.slice(1) : path;
 }

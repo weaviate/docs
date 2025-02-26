@@ -30,7 +30,7 @@ This section includes references for the RESTful and GraphQL APIs. RESTful API e
 
 ### References - RESTful API
 
-- [OpenAPI specs](/weaviate/api/rest)
+- [OpenAPI specs](/docs/weaviate/api/rest)
 
 ## Questions and feedback
 

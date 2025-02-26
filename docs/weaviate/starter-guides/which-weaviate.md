@@ -41,18 +41,18 @@ Here are some recommendations for different use cases.
 
 If you are evaluating Weaviate, we recommend using one of these instance types to get started quickly:
 
-- [Weaviate Cloud (WCD)](/cloud) sandbox
-- [Embedded Weaviate](/weaviate/installation/embedded)
+- [Weaviate Cloud (WCD)](/docs/cloud) sandbox
+- [Embedded Weaviate](/docs/weaviate/installation/embedded)
 
 Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or  `text2vec-google`.
 
-The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
+The [Quickstart guide](/docs/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
 
 ### Development
 
 For development, we recommend using
 
-- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/weaviate/installation/docker-compose).
+- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/docs/weaviate/installation/docker-compose).
 - A vectorization strategy that matches your production vectorization strategy.
 
 #### Docker-Compose vs. Weaviate Cloud (WCD)
@@ -81,9 +81,9 @@ Keep in mind two other factors, which are cost, and their footprint.
 
 For production deployments, consider one of these hosting models:
 
-- [Weaviate Cloud (WCD)](/cloud)
-- [Self-managed Kubernetes](/weaviate/installation/kubernetes)
-- [Hybrid SaaS](/cloud#bring-your-own-cloud)
+- [Weaviate Cloud (WCD)](/docs/cloud)
+- [Self-managed Kubernetes](/docs/weaviate/installation/kubernetes)
+- [Hybrid SaaS](/docs/cloud)
 
 All of these options are scalable. Kubernetes and Hybrid SaaS offer the most configuration flexibility.
 
