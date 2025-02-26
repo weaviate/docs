@@ -12,14 +12,34 @@ To estimate costs for different combinations of usage levels and SLAs, see the [
 
 ## Create an account
 
-Weaviate Cloud (WCD) uses [Stripe](https://stripe.com/) for billing. To create a Stripe account follow these steps:
+Weaviate Cloud (WCD) uses [Stripe](https://stripe.com/) for billing. To create a Stripe account, follow these steps:
 
-1. On the Clusters tab, click the `Create cluster` button.
-1. Choose `Managed cluster`.
-1. Click the `Add billing` button.<br/>
-1. Select your location on the next screen.
-1. Continue to the Stripe account creation page.<br/>
-1. Create your Stripe account.
+import EditOrganization from '/_includes/wcs/weaviate-cloud-edit-organization.mdx'
+
+<EditOrganization/>
+
+import BillingSection from '/docs/cloud/img/weaviate-cloud-billing-section.png';
+
+<ol start="4">
+  <li>
+    Under the <code>Billing</code> section, click on the{' '}
+    <code>Add payment method</code> button (<span class="callout">3</span>).
+  </li>
+  <li>Fill in the needed personal information.</li>
+  <li>Create your Stripe account.</li>
+</ol>
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={BillingSection} alt="Add payment method to Weaviate Cloud" />
+    </div>
+    <div class="card__body">
+      <p>Add payment method to Weaviate Cloud.</p>
+    </div>
+  </div>
+</div>
+<br />
 
 ## Usage charges
 
@@ -30,24 +50,24 @@ Usage charges reflect the number and size of the objects in your collection. Wea
 
 The values are added together and normalized to get a base price. The base price is multiplied by the pricing rate for the cluster's SLA tier.
 
-If the cluster has high availability, the pricing rate is multiplied by three.
+If the cluster has **high availability**, the pricing rate is multiplied by three.
 
-There are significant cost savings when compression is enabled.
+Significant cost savings can be achieved when **compression** is enabled.
 
 ## Support levels
 
-Weaviate offers three levels of support, [Standard](/cloud/platform/support-levels#standard-support), [Professional](/cloud/platform/support-levels#professional-support), and [Business Critical](/cloud/platform/support-levels#business-critical-support). Each support level (SLA) has a billing rate for usage and a minimum cost per month.
+Weaviate offers three levels of support, [Standard](/docs/cloud/platform/support-levels#standard-support), [Professional](/docs/cloud/platform/support-levels#professional-support), and [Business Critical](/docs/cloud/platform/support-levels#business-critical-support). Each support level (SLA) has a billing rate for usage and a minimum cost per month.
 
 - If the usage cost is less than the monthly minimum charge for the SLA, Weaviate bills the monthly minimum.
 - If the usage cost exceeds the monthly minimum, Weaviate bills the minimum amount plus any additional charges.
 
 ## High availability
 
-If you have a high availability (HA) cluster, WCD multiples the minimum charge and the usage charges by three to account for the additional resources.
+If you have a high availability (HA) cluster, Weaviate Cloud multiples the minimum charge and the usage charges by three to account for the additional resources.
 
 ## Billing cycles
 
-Billing runs on 30 day cycles. Charges are calculated for active clusters every 30 days; the billing periods are not aligned with calendar months.
+Billing runs on 30-day cycles. Charges are calculated for active clusters every 30 days; the billing periods are not aligned with calendar months.
 
 ## Support
 

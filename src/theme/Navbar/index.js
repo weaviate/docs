@@ -7,6 +7,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styles from "./styles.module.scss";
 import secondaryNavOptions from "/secondaryNavbar.js";
 import { normalizePath, findPathInItems } from "./navbarUtils";
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const DEFAULT_OPTION = Object.keys(secondaryNavOptions)[0]; // Using the first key in secondaryNavOptions as the default option.
 const sidebars = require("/sidebars.js");
@@ -14,10 +15,11 @@ const sidebars = require("/sidebars.js");
 export default function NavbarWrapper(props) {
   const history = useHistory();
   const location = useLocation();
-
+  const { siteConfig } = useDocusaurusContext();
+  const baseUrl = siteConfig.baseUrl || '/';
   // Compute the initial secondaryNavbar state based on the current location synchronously.
   const initialState = useMemo(() => {
-    let currentPath = normalizePath(location.pathname);
+    let currentPath = normalizePath(location.pathname, baseUrl);
     if (!currentPath) {
       return {
         selectedOption: DEFAULT_OPTION,
@@ -95,7 +97,7 @@ export default function NavbarWrapper(props) {
 
   // Update state if location.pathname changes.
   useEffect(() => {
-    let currentPath = normalizePath(location.pathname);
+    let currentPath = normalizePath(location.pathname, baseUrl);
     if (!currentPath) {
       setSelectedOption(DEFAULT_OPTION);
       setActiveLink(secondaryNavOptions[DEFAULT_OPTION].links[0].sidebar);

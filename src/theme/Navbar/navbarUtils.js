@@ -1,11 +1,14 @@
 /**
- * Removes the leading slash from a given path.
+ * Removes the base URL and the leading slash from a given path.
  *
  * @param {string} path - The path to normalize.
  * @returns {string} - The normalized path.
  */
-export function normalizePath(path) {
-  return path.startsWith("/") ? path.slice(1) : path;
+export function normalizePath(path, baseUrl) {
+  if (baseUrl && path.startsWith(baseUrl)) {
+    path = path.slice(baseUrl.length);
+  }
+  return path.startsWith('/') ? path.slice(1) : path;
 }
 
 /**

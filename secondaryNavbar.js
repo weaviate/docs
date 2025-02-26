@@ -5,6 +5,7 @@ import {
   faGraduationCap,
   faPuzzlePiece,
   faEdit,
+  faRobot,
 } from "@fortawesome/free-solid-svg-icons";
 
 const secondaryNavbarItems = {
@@ -12,7 +13,7 @@ const secondaryNavbarItems = {
     title: "Build",
     icon: faCode,
     description: "Develop AI applications using Weaviate's APIs and tools",
-    link: "/",
+    link: "/docs",
     links: [
       { label: "Get Started", link: "/", sidebar: "getStartedSidebar" },
       {
@@ -51,20 +52,30 @@ const secondaryNavbarItems = {
     title: "Deploy",
     icon: faDatabase,
     description: "Deploy, configure, and maintain Weaviate Core",
-    link: "/deploy",
+    link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/deploy", sidebar: "deploySidebar" },
       { label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },
+    ],
+  },
+  agents: {
+    title: "Agents",
+    icon: faRobot,
+    description: "Build and deploy intelligent agents with Weaviate",
+    link: "/docs/agents",
+    links: [
+      { label: "Get Started", link: "/agents", sidebar: "agentsSidebar" },
     ],
   },
   cloud: {
     title: "Weaviate Cloud",
     icon: faCloud,
     description: "Manage and scale Weaviate in the cloud",
-    link: "/cloud",
+    link: "/docs/cloud",
     links: [
       { label: "Get Started", link: "/cloud", sidebar: "cloudSidebar" },
-      { label: "Administration", link: "/cloud/create-instance", sidebar: "cloudAdministrationSidebar" },
+      { label: "Weaviate Embeddings", link: "/cloud/embeddings", sidebar: "cloudWeaviateEmbeddings" },
+      { label: "Account management", link: "/cloud/platform/billing", sidebar: "cloudAccountManagementSidebar" },
     ],
   },
   academy: {
@@ -72,7 +83,7 @@ const secondaryNavbarItems = {
     icon: faGraduationCap,
     description:
       "Learn about vector search and Weaviate through structured courses",
-    link: "/academy",
+    link: "/docs/academy",
     links: [
       { label: "Get Started", link: "/academy", sidebar: "academySidebar" },
     ],
@@ -81,7 +92,7 @@ const secondaryNavbarItems = {
     title: "Integrations",
     icon: faPuzzlePiece,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
-    link: "/integrations",
+    link: "/docs/integrations",
     links: [
       {
         label: "Get Started",
@@ -94,7 +105,7 @@ const secondaryNavbarItems = {
     title: "Contributor guide",
     icon: faEdit,
     description: "Learn how to contribute to Weaviate's open-source projects",
-    link: "/contributor-guide",
+    link: "/docs/contributor-guide",
     links: [
       {
         label: "Get Started",
