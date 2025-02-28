@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
 import OriginalNavbar from "@theme-original/Navbar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styles from "./styles.module.scss";
 import secondaryNavOptions from "/secondaryNavbar.js";
 import { normalizePath, findPathInItems } from "./navbarUtils";
@@ -141,12 +139,15 @@ export default function NavbarWrapper(props) {
           className={styles.modalButton}
           onClick={() => setModalOpen(true)}
         >
-          <FontAwesomeIcon
-            icon={secondaryNavOptions[selectedOption]?.icon}
-            className={styles.optionIcon}
+          <i
+            className={`${secondaryNavOptions[selectedOption]?.icon} ${styles.optionIcon}`}
+            aria-hidden="true"
           />
           {secondaryNavOptions[selectedOption]?.title}
-          <FontAwesomeIcon icon={faChevronDown} className={styles.arrowIcon} />
+          <i
+            className={`fa fa-chevron-down ${styles.arrowIcon}`}
+            aria-hidden="true"
+          />
         </button>
         <nav className={styles.secondaryNavLinks}>
           {secondaryNavOptions[selectedOption]?.links.map((item, index) => {
@@ -193,9 +194,9 @@ export default function NavbarWrapper(props) {
                 className={styles.modalOption}
                 onClick={() => handleOptionSelect(key)}
               >
-                <FontAwesomeIcon
-                  icon={value.icon}
-                  className={styles.modalIcon}
+                <i
+                  className={`${value.icon} ${styles.modalIcon}`}
+                  aria-hidden="true"
                 />
                 <div className={styles.modalText}>
                   <strong>{value.title}</strong>

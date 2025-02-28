@@ -1,17 +1,7 @@
-import {
-  faCode,
-  faCloud,
-  faDatabase,
-  faGraduationCap,
-  faPuzzlePiece,
-  faEdit,
-  faRobot,
-} from "@fortawesome/free-solid-svg-icons";
-
 const secondaryNavbarItems = {
   build: {
     title: "Build",
-    icon: faCode,
+    icon: "fa fa-code",
     description: "Develop AI applications using Weaviate's APIs and tools",
     link: "/docs/weaviate",
     links: [
@@ -50,7 +40,7 @@ const secondaryNavbarItems = {
   },
   deploy: {
     title: "Deploy",
-    icon: faDatabase,
+    icon: "fa fa-database",
     description: "Deploy, configure, and maintain Weaviate Core",
     link: "/docs/deploy",
     links: [
@@ -60,7 +50,7 @@ const secondaryNavbarItems = {
   },
   agents: {
     title: "Agents",
-    icon: faRobot,
+    icon: "fa fa-robot",
     description: "Build and deploy intelligent agents with Weaviate",
     link: "/docs/agents",
     links: [
@@ -69,7 +59,7 @@ const secondaryNavbarItems = {
   },
   cloud: {
     title: "Weaviate Cloud",
-    icon: faCloud,
+    icon: "fa fa-cloud",
     description: "Manage and scale Weaviate in the cloud",
     link: "/docs/cloud",
     links: [
@@ -80,7 +70,7 @@ const secondaryNavbarItems = {
   },
   academy: {
     title: "Academy",
-    icon: faGraduationCap,
+    icon: "fa fa-graduation-cap",
     description:
       "Learn about vector search and Weaviate through structured courses",
     link: "/docs/academy",
@@ -90,7 +80,7 @@ const secondaryNavbarItems = {
   },
   integrations: {
     title: "Integrations",
-    icon: faPuzzlePiece,
+    icon: "fa fa-puzzle-piece",
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
     link: "/docs/integrations",
     links: [
@@ -103,7 +93,7 @@ const secondaryNavbarItems = {
   },
   contributor: {
     title: "Contributor guide",
-    icon: faEdit,
+    icon: "fa fa-edit",
     description: "Learn how to contribute to Weaviate's open-source projects",
     link: "/docs/contributor-guide",
     links: [

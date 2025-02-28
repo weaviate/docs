@@ -12,7 +12,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
 import BatchVectorCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
 
-This page broadly covers the Weaviate Python client (`v4` release). For usage information not specific to the Python client, such as code examples, see the relevant pages in the [Weaviate documentation](../../index.md). Some frequently used sections are [listed here](#code-examples--resources) for convenience.
+This page broadly covers the Weaviate Python client (`v4` release). For usage information not specific to the Python client, such as code examples, see the relevant pages in the [Weaviate documentation](../../index.mdx). Some frequently used sections are [listed here](#code-examples--resources) for convenience.
 
 :::info Inline documentation
 For the inline documentation (also known as docstrings) of the Python client, see the [Read the Docs](https://weaviate-python-client.readthedocs.io/en/latest/) page.

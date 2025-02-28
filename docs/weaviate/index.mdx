@@ -9,7 +9,6 @@ hide_table_of_contents: true
 import CardsSection from "/src/components/CardsSection";
 import DeploymentCards from "/src/components/DeploymentCards";
 import styles from "/src/components/CardsSection/styles.module.scss";
-import { faStar, faComments } from "@fortawesome/free-solid-svg-icons";
 import secondaryNavbarItems from "/secondaryNavbar.js";
 
 Weaviate _(we-vee-eight)_ is an open source, AI-native vector database.  
@@ -22,12 +21,12 @@ export const welcomeCardsData = [
     description: (
       <>
         Start with the{" "}
-        <span className={styles.highlight}>Quickstart tutorial</span> - an
+        <span className={styles.highlight}>Quickstart tutorial</span> – an
         end-to-end demo that takes 15–30 minutes.
       </>
     ),
     link: "/docs/weaviate/quickstart",
-    icon: faStar,
+    icon: "fas fa-star", // use Font Awesome CSS class
   },
   {
     id: "questions",
@@ -35,7 +34,14 @@ export const welcomeCardsData = [
     description:
       "Please visit our forum. The Weaviate team and our awesome community can help.",
     link: "https://forum.weaviate.io/c/support/",
-    icon: faComments,
+    icon: "fas fa-comments",
+  },
+  {
+    id: "github",
+    title: "Open-source on GitHub",
+    description: "Give us a star on GitHub to support our work.",
+    link: "https://github.com/weaviate/weaviate",
+    icon: "fab fa-github", // note: brand icons use "fab"
   },
 ];
 
