@@ -68,7 +68,7 @@ You can instantiate the `WeaviateClient` object directly. However, in most cases
   language="py"
 />
 
-To configure connection timeout values, see [Timeout values](/weaviate/client-libraries/python#timeout-values).
+To configure connection timeout values, see [Timeout values](/docs/weaviate/client-libraries/python#timeout-values).
 
 </TabItem>
 <TabItem value="local" label="Local">

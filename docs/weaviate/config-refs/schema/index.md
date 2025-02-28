@@ -132,7 +132,7 @@ The following are not allowed:
 * Any map type is forbidden, unless it clearly matches one of the two supported types `phoneNumber` or `geoCoordinates`.
 * Any array type is forbidden, unless it is clearly a reference-type. In this case, Weaviate needs to resolve the beacon and see what collection the resolved beacon is from, since it needs the collection name to be able to alter the schema.
 
-### Multiple vectors (named vectors)
+### Multiple vector embeddings (named vectors)
 
 import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
@@ -247,7 +247,7 @@ This configuration allows stopwords to be configured by collection. If not set, 
 
 As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverted index, but not in the tokenized query. As a result, when the BM25 algorithm is applied, stopwords are ignored in the input for relevance ranking but will affect the score.
 
-Stopwords can now be configured at runtime. You can use the RESTful API to [update](/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D) the list of stopwords after your data has been indexed.
+Stopwords can now be configured at runtime. You can use the RESTful API to [update](/docs/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D) the list of stopwords after your data has been indexed.
 
 Note that stopwords are only removed when [tokenization](#tokenization) is set to `word`.
 
@@ -602,13 +602,13 @@ import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.m
 
 ## Configure semantic indexing
 
-Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
+Weaviate can generate vector embeddings for objects using [model provider integrations](/docs/weaviate/model-providers/).
 
 For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
 
 Unless specified otherwise in the collection definition, the default behavior is to:
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skip](/weaviate/manage-data/collections#property-level-settings)ped)
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skip](/docs/weaviate/manage-data/collections#property-level-settings)ped)
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
@@ -653,9 +653,9 @@ client.schema.create_class(collection_obj)
 
 ## Related pages
 - [Tutorial: Schema](../../starter-guides/schema.md)
-- [How to: Configure a schema](/weaviate/manage-data/collections)
-- [References: REST API: Schema](/weaviate/api/rest#tag/schema)
-- [Concepts: Data Structure](/weaviate/concepts/data)
+- [How to: Configure a schema](/docs/weaviate/manage-data/collections)
+- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- [Concepts: Data Structure](/docs/weaviate/concepts/data)
 
 ## Questions and feedback
 

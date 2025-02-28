@@ -245,7 +245,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 
 ## Questions and feedback
 

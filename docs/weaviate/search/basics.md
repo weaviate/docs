@@ -571,6 +571,10 @@ The output is like this:
 
 ## Retrieve cross-referenced properties
 
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
 To retrieve properties from cross-referenced objects, specify:
 
 - The cross-reference property
@@ -805,9 +809,9 @@ import QueryReplication from '/_includes/code/replication.get.object.by.id.mdx';
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections)
+- [Connect to Weaviate](/docs/weaviate/connections)
 - [API References: GraphQL: Get](../api/graphql/get.md)
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
+- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md)
 
 ## Questions and feedback

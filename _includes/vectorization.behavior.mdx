@@ -4,7 +4,7 @@ Weaviate follows the collection configuration and a set of predetermined rules t
 Unless specified otherwise in the collection definition, the default behavior is to:
 <br/>
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](/weaviate/manage-data/collections#property-level-settings))
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](/docs/weaviate/manage-data/collections#property-level-settings))
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces

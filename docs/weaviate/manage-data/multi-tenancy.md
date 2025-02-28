@@ -26,6 +26,9 @@ Multi-tenancy provides data isolation. Each tenant is stored on a separate shard
 
 - Multi-tenancy added in `v1.20`
 - Tenant activity status setting added in `v1.21`
+- Auto-tenant creation for batch imports added in `v1.25.0`
+- Auto-tenant creation for single object insertions added in `v1.25.2`
+- Auto-tenant activation added in `v1.25.2`
 
 </details>
 
@@ -571,6 +574,10 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
 
 ## Cross-references
 
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
 A cross-reference can be added from a multi-tenancy collection object to:
 - A non-multi-tenancy collection object, or
 - An object belonging to the same tenant.
@@ -641,9 +648,9 @@ Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will on
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How to: Configure a schema](../manage-data/collections.mdx)
-- [References: REST API: Schema](/weaviate/api/rest#tag/schema)
+- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
 - [Concepts: Data Structure: Multi-tenancy](../concepts/data.md#multi-tenancy)
 
 ## Questions and feedback

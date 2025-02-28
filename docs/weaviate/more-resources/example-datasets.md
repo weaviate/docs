@@ -8,10 +8,10 @@ image: og/docs/more-resources.jpg
 ## Multi-Modal Text/Image search using CLIP
 
 This example application spins up a Weaviate instance using the
-[multi2vec-clip](/weaviate/model-providers/transformers/embeddings-multimodal.md)
+[multi2vec-clip](/docs/weaviate/model-providers/transformers/embeddings-multimodal.md)
 integration, imports a few sample images (you can add your own images, too!) and
 provides a very simple search frontend in [React](https://reactjs.org/) using
-the [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx) client.
+the [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx) client.
 
 [Get started here](https://github.com/weaviate/weaviate-examples/blob/main/clip-multi-modal-text-image-search/README.md)
 
@@ -127,7 +127,6 @@ export BATCH_SIZE=<YOUR_CHOICE_OF_BATCH_SIZE>
 # Run docker
 docker run -it --network=$WEAVIATE_NETWORK -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir-$CACHE_DIR -e batch_size=$BATCH_SIZE  semitechnologies/weaviate-demo-newspublications:latest
 ```
-
 
 ## Questions and feedback
 

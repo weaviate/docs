@@ -184,7 +184,7 @@ Weaviate lets you search through your data even if it's currently being imported
 
 Within Weaviate, all individual data objects are based on a class property structure where a vector represents each data object. You can connect data objects (like in a traditional graph) and search for data objects in the vector space.
 
-You can add data to Weaviate through the [RESTful API](/weaviate/api/rest) end-points and retrieve data through the [GraphQL interface](./api/graphql/index.md).
+You can add data to Weaviate through the [RESTful API](/docs/weaviate/api/rest) end-points and retrieve data through the [GraphQL interface](./api/graphql/index.md).
 
 Weaviate's [vector indexing mechanism is modular](./concepts/vector-index.md), and the current available plugin is the Hierarchical Navigable Small World (HNSW) multilayered graph.
 

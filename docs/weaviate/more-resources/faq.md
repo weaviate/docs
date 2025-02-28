@@ -42,7 +42,7 @@ image: og/docs/more-resources.jpg
 <details>
   <summary>Answer</summary>
 
-> You can find this in the [architecture section](/weaviate/concepts/resources.md#an-example-calculation) of the docs.
+> You can find this in the [architecture section](/docs/weaviate/concepts/resources.md#an-example-calculation) of the docs.
 
 </details>
 
@@ -67,6 +67,16 @@ image: og/docs/more-resources.jpg
 
 </details>
 
+#### Q: How to enable RBAC in Weaviate?
+
+<details>
+  <summary>Answer</summary>
+
+> Role-based access control (RBAC) can be enabled when configuring Weaviate via the `AUTHORIZATION_RBAC_ENABLED` environment variable.
+> For more info visit the [RBAC: Configuration](/docs/weaviate/configuration/rbac/configuration) guide.
+
+</details>
+
 ## Schema and data structure
 
 #### Q: Are there any 'best practices' or guidelines to consider when designing a schema?
@@ -80,7 +90,9 @@ image: og/docs/more-resources.jpg
 >
 > So, basically, it's a set of tradeoffs. Personally we've had great success with using paragraphs as individual units, as there's little benefit in going even more granular, but it's still much more precise than whole chapters, etc.
 >
-> You can use cross-references to link e.g. chapters to paragraphs. Note that resolving a cross-references takes a slight performance penalty. Essentially resolving A1->B1 is the same cost as looking up both A1 and B1 indvidually. This cost however, will probably only matter at really large scale.
+> You can use cross-references to link e.g. chapters to paragraphs. Note that resolving a cross-references takes a performance penalty. Essentially resolving A1->B1 is the same cost as looking up both A1 and B1 indvidually. But at scale, this can add up.
+>
+> So, consider denormalizing your data, i.e. storing the data in a way that you can resolve the cross-references without actually looking them up. This is a common pattern in databases, and it's also a common pattern in Weaviate.
 
 </details>
 
@@ -92,7 +104,7 @@ image: og/docs/more-resources.jpg
 > In short: for convenience you can add relations to your data schema, because you need less code and queries to get data. But resolving references in queries takes some of the performance.
 >
 > 1. If your ultimate goal is performance, references probably don't add any value, as resolving them adds a cost.
-> 2. If your goal is represent complex relationships between your data items, they can help a lot. You can resolve references in a single query, so if you have classes with multiple links, it could definitely be helpful to resolve some of those connections in a single query. On the other hand, if you have a single (bi-directional) reference in your data, you could also just denormalize the links (e.g. with an ID field) and resolve them during search.
+> 2. If your goal is represent complex relationships between your data items, they can help a lot. You can resolve references in a single query, so if you have collections with multiple links, it could definitely be helpful to resolve some of those connections in a single query. On the other hand, if you have a single (bi-directional) reference in your data, you could also just denormalize the links (e.g. with an ID field) and resolve them during search.
 
 </details>
 
@@ -114,12 +126,12 @@ image: og/docs/more-resources.jpg
 
 </details>
 
-#### Q: Do Weaviate classes have namespaces?
+#### Q: Do Weaviate collections have namespaces?
 
 <details>
   <summary>Answer</summary>
 
-Yes. Each class itself acts like namespaces. Additionally, you can use the [multi-tenancy](../concepts/data.md#multi-tenancy) feature to create isolated storage for each tenant. This is especially useful for use cases where one cluster might be used to store data for multiple customers or users.
+Yes. Each collection itself acts like namespaces. Additionally, you can use the [multi-tenancy](../concepts/data.md#multi-tenancy) feature to create isolated storage for each tenant. This is especially useful for use cases where one cluster might be used to store data for multiple customers or users.
 
 </details>
 
@@ -167,7 +179,7 @@ Yes. Each class itself acts like namespaces. Additionally, you can use the [mult
 <details>
   <summary>Answer</summary>
 
-> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary-v1modulestext2vec-contextionaryextensions)
+> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/docs/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary-v1modulestext2vec-contextionaryextensions)
 
 </details>
 
@@ -176,7 +188,7 @@ Yes. Each class itself acts like namespaces. Additionally, you can use the [mult
 <details>
   <summary>Answer</summary>
 
-> Every data object gets its vector representation based on its semantic meaning. In a nutshell, we calculate the vector position of the data object based on the words and concepts used in the data object. The existing model in the contextionary gives already enough context. If you want to get in the nitty-gritty, you can [browse the code here](https://github.com/weaviate/contextionary/tree/master/server), but you can also ask a [specific question on Stackoverflow](https://stackoverflow.com/tags/weaviate/) and tag it with Weaviate.
+> Every data object gets its vector embedding based on its semantic meaning. In a nutshell, we calculate the vector position of the data object based on the words and concepts used in the data object. The existing model in the contextionary gives already enough context. If you want to get in the nitty-gritty, you can [browse the code here](https://github.com/weaviate/contextionary/tree/master/server), but you can also ask a [specific question on Stackoverflow](https://stackoverflow.com/tags/weaviate/) and tag it with Weaviate.
 
 </details>
 
@@ -194,7 +206,7 @@ Yes. Each class itself acts like namespaces. Additionally, you can use the [mult
 <details>
   <summary>Answer</summary>
 
-> How can Weaviate interpret that you mean a company, as in business, and not as the division of the army? We do this based on the structure of the schema and the data you add. A schema in Weaviate might contain a company class with the property name and the value Apple. This simple representation (company, name, apple) is already enough to gravitate the vector position of the data object towards businesses or the iPhone. You can read [here](/) how we do this, or you can ask a specific question on [Stackoverflow](https://stackoverflow.com/tags/weaviate/) and tag it with Weaviate.
+> How can Weaviate interpret that you mean a company, as in business, and not as the division of the army? We do this based on the structure of the schema and the data you add. A schema in Weaviate might contain a company collection with the property name and the value Apple. This simple representation (company, name, apple) is already enough to gravitate the vector position of the data object towards businesses or the iPhone. You can read [here](../) how we do this, or you can ask a specific question on [Stackoverflow](https://stackoverflow.com/tags/weaviate/) and tag it with Weaviate.
 
 </details>
 
@@ -203,20 +215,20 @@ Yes. Each class itself acts like namespaces. Additionally, you can use the [mult
 <details>
   <summary>Answer</summary>
 
-> You can create multiple classes in the Weaviate schema, where one class will act like a namespace in Kubernetes or an index in Elasticsearch. So the spaces will be completely independent, this allows space 1 to use completely different embeddings from space 2. The configured vectorizer is always scoped only to a single class. You can also use Weaviate's Cross-Reference features to make a graph-like connection between an object of Class 1 to the corresponding object of Class 2 to make it easy to see the equivalent in the other space.
+> You can create multiple collections in the Weaviate schema, where one collection will act like a namespace in Kubernetes or an index in Elasticsearch. So the spaces will be completely independent, this allows space 1 to use completely different embeddings from space 2. The configured vectorizer is always scoped only to a single collection. You can also use Weaviate's Cross-Reference features to make a graph-like connection between an object of Class 1 to the corresponding object of Class 2 to make it easy to see the equivalent in the other space.
 
 </details>
 
 ## Queries
 
-#### Q: How can I retrieve the total object count in a class?
+#### Q: How can I retrieve the total object count in a collection?
 
 <details>
   <summary>Answer</summary>
 
 import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 
-> This `Aggregate` query returns the total object count in a class.
+> This `Aggregate` query returns the total object count in a collection.
 
 <HowToGetObjectCount/>
 
@@ -236,7 +248,7 @@ import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 <details>
   <summary>Answer</summary>
 
-Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/weaviate/benchmarks/ann.md#results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
+Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
 
 Generally if you need a higher recall than the default parameters provide you with, you can use stronger parameters. This can either be done at build time (`efConstruction`, `maxConnections`) or at query time (`ef`). Roughly speaking, a higher `ef` value at query time means a more thorough search. It will have a slightly higher latency, but also lead to a slightly better recall.
 
@@ -251,7 +263,7 @@ Example: Using the default parameters `ef=-1`, `dynamicEfMin=100`, `dynamicEfMax
 If you need a higher search quality for a given limit you can consider the following options:
 
 1. Instead of using a dynamic `ef` value, use a fixed one that provides the desired recall.
-1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/weaviate/benchmarks/ann.md#results) present a combination of many different parameter combination for various datasets.
+1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#results) present a combination of many different parameter combination for various datasets.
 
 </details>
 
@@ -287,7 +299,7 @@ If you need a higher search quality for a given limit you can consider the follo
 > Here are top 3 best practices for updating data:
 > 1. Use the [batch API](../manage-data/import.mdx)
 > 2. Start with a small-ish batch size e.g. 100 per batch. Adjust up if it is very fast, adjust down if you run into timeouts
-> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-data/import.mdx#import-with-references) to set links between classes in arbitrary directions.
+> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-data/import.mdx#import-with-references) to set links between collections in arbitrary directions.
 
 </details>
 
@@ -298,7 +310,7 @@ If you need a higher search quality for a given limit you can consider the follo
 <details>
   <summary>Answer</summary>
 
-> [Yes!](/weaviate/modules/custom-modules.md)
+> [Yes!](/docs/weaviate/modules/custom-modules.md)
 
 </details>
 
@@ -307,7 +319,7 @@ If you need a higher search quality for a given limit you can consider the follo
 <details>
   <summary>Answer</summary>
 
-> Not at the moment. You can currently use the [available contextionaries](/weaviate/modules/text2vec-contextionary.md) in a variety of languages and use the transfer learning feature to add custom concepts if needed.
+> Not at the moment. You can currently use the [available contextionaries](/docs/weaviate/modules/text2vec-contextionary.md) in a variety of languages and use the transfer learning feature to add custom concepts if needed.
 
 </details>
 
@@ -330,9 +342,9 @@ If you need a higher search quality for a given limit you can consider the follo
 > More information:
 >
 > - [Weaviate, an ANN Database with CRUD support – DB-Engines.com](https://db-engines.com/en/blog_post/87) ⬅️ best resource on the topic
-> - [Weaviate's HNSW implementation in the docs](/weaviate/concepts/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
+> - [Weaviate's HNSW implementation in the docs](/docs/weaviate/concepts/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
 >
-> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/weaviate/concepts/vector-index.md)_
+> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/docs/weaviate/concepts/vector-index.md)_
 
 </details>
 

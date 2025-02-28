@@ -623,7 +623,7 @@ The output is like this:
 :::info Added in `v1.25`
 :::
 
-You can specify [vector similarity search](/weaviate/search/similarity) parameters similar to [near text](/weaviate/search/similarity.md#search-with-text) or [near vector](/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
+You can specify [vector similarity search](/docs/weaviate/search/similarity) parameters similar to [near text](/docs/weaviate/search/similarity.md#search-with-text) or [near vector](/docs/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -686,10 +686,14 @@ The only available search threshold is `max vector distance`, which will set the
 
   <TabItem value="js" label="JS/TS Client v3">
 
-```ts
-// TS support coming soon
-```
-
+<TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START VectorSimilarityThreshold"
+      endMarker="// END VectorSimilarityThreshold"
+      language="ts"
+    />
+  </TabItem>
   </TabItem>
 </Tabs>
 
@@ -707,6 +711,15 @@ Define criteria to group search results.
       startMarker="# START HybridGroupByPy4"
       endMarker="# END HybridGroupByPy4"
       language="py"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridGroupBy"
+      endMarker="// END HybridGroupBy"
+      language="ts"
     />
   </TabItem>
 </Tabs>
@@ -941,11 +954,11 @@ import TokenizationNote from '/_includes/tokenization.mdx'
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
 - [Weaviate Academy: Tokenization](../../academy/py/tokenization/index.md)
 - About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
+- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).
 
 ## Questions and feedback

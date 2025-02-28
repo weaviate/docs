@@ -11,7 +11,7 @@ The `text2vec-contextionary` module enables Weaviate to obtain vectors locally u
 Key notes:
 
 - This module is not available on Weaviate Cloud (WCD).
-- Enabling this module will enable the [`nearText` search operator](/weaviate/api/graphql/search-operators.md#neartext).
+- Enabling this module will enable the [`nearText` search operator](/docs/weaviate/api/graphql/search-operators.md#neartext).
 - This module is based on FastText and uses a weighted mean of word embeddings (WMOWE) to produce the vector.
 - Available for multiple languages
 
@@ -32,7 +32,7 @@ This module is not available on Weaviate Cloud.
 To use `text2vec-contextionary`, you must enable it in your Docker Compose file (e.g. `docker-compose.yml`).
 
 :::tip Use the configuration tool
-While you can do so manually, we recommend using the [Weaviate configuration tool](/weaviate/installation/docker-compose.md#configurator) to generate the `Docker Compose` file.
+While you can do so manually, we recommend using the [Weaviate configuration tool](/docs/weaviate/installation/docker-compose.md#configurator) to generate the `Docker Compose` file.
 :::
 
 #### Parameters
@@ -95,7 +95,7 @@ services:
 
 ## Class configuration
 
-You can configure how the module will behave in each class through the [Weaviate schema](/weaviate/manage-data/collections.mdx).
+You can configure how the module will behave in each class through the [Weaviate schema](/docs/weaviate/manage-data/collections.mdx).
 
 ### Vectorization settings
 

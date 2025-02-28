@@ -177,6 +177,10 @@ import SchemaWithPropertyOptions from '/_includes/code/tutorial.schema.propertie
 
 #### Cross-references
 
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
 This is also where you would specify cross-references, which are a special type of property that links to another collection.
 
 Cross-references can be very useful for creating relationships between objects. For example, you might have a `Movie` collection with a `withActor` cross-reference property that points to the `Actor` collection. This will allow you to retrieve relevant actors for each movie.
@@ -239,7 +243,7 @@ The following resources include more detailed information on schema settings and
 
 - [Schema - Reference: Configuration](../config-refs/schema/index.md): A reference of all available schema settings.
 - [Collections - How-to: manage data](../manage-data/collections.mdx): Code examples for creating and managing collections, including how to configure various settings using client libraries.
-- [Schema - Reference: REST](/weaviate/api/rest#tag/schema/GET/schema): A reference of all available schema settings for the REST API.
+- [Schema - Reference: REST](/docs/weaviate/api/rest#tag/schema): A reference of all available schema settings for the REST API.
 
 
 ## Questions and feedback

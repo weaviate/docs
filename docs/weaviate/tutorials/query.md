@@ -6,6 +6,10 @@ image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
+import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
+
+<UpdateInProgressNote />
+
 In this section, we will explore different queries that you can perform with Weaviate. Here, we will expand on the `nearText` queries that you may have seen in the [Quickstart tutorial](../quickstart/index.md) to show you different query types, filters and metrics that can be used.
 
 By the end of this section, you will have performed vector and scalar searches separately as well as in combination to retrieve individual objects and aggregations.
@@ -275,13 +279,13 @@ As you can see, the `Aggregate` function can return handy aggregated, or metadat
 - [Tutorial: Schemas in detail](../starter-guides/schema.md)
 - [Tutorial: Import in detail](./import.md)
 - [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
+- [Tutorial: Introduction to Weaviate Console](/docs/cloud/tools/query-tool.mdx)
 
 ## Notes
 
 ### How is certainty calculated?
 
-`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](../more-resources/faq.md#q-how-do-i-get-the-cosine-similarity-from-weaviates-certainty).
+`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](../more-resources/faq.md#q-how-do-i-get-the-cosine-similarity-from-weaviates-certainty?).
 
 
 ## Questions and feedback

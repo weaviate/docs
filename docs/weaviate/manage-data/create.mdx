@@ -93,7 +93,7 @@ To create an object, specify the following:
 - The target collection
 - If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant](./multi-tenancy.md)
 
-By default, [auto-schema](/weaviate/config-refs/schema#autoschema) creates new collections and adds new properties.
+By default, [auto-schema](/docs/weaviate/config-refs/schema#autoschema) creates new collections and adds new properties.
 
 </details>
 
@@ -162,7 +162,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
 :::info Added in `v1.24`
 :::
 
-When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-multiple-named-vectors)).
+When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -342,6 +342,10 @@ To generate deterministic IDs, use one of these methods:
 
 ## Create an object with cross-references
 
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
 import XrefPyCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
 import XrefPyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v3.py';
 import XrefTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
@@ -397,7 +401,7 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 
 <GeoLimitations/>
 
-If you want to supply a [`geoCoordinates`](/weaviate/config-refs/datatypes.md#geocoordinates) property, you need to specify the `latitude` and `longitude` as floating point decimal degrees:
+If you want to supply a [`geoCoordinates`](/docs/weaviate/config-refs/datatypes.md#geocoordinates) property, you need to specify the `latitude` and `longitude` as floating point decimal degrees:
 
 import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx';
 
@@ -405,7 +409,7 @@ import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx
 
 ## Validate objects before creation
 
-Before you create an object, you can [validate](/weaviate/api/rest#tag/objects/post/objects/validate) it against the collection definition.
+Before you create an object, you can [validate](/docs/weaviate/api/rest#tag/objects/post/objects/validate) it against the collection definition.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -463,7 +467,7 @@ Before you create an object, you can [validate](/weaviate/api/rest#tag/objects/p
   </TabItem>
 </Tabs>
 
-## Multiple vectors (named vectors)
+## Multiple vector embeddings (named vectors)
 
 import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
@@ -471,9 +475,9 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How-to: (Batch) Import items](./import.mdx)
-- [References: REST - /v1/objects](/weaviate/api/rest#tag/objects)
+- [References: REST - /v1/objects](/docs/weaviate/api/rest#tag/objects)
 
 ## Questions and feedback
 

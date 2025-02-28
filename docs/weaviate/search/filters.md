@@ -607,6 +607,10 @@ The output is like this:
 
 ## Filter using cross-references
 
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
 To filter on properties from a cross-referenced object, add the collection name to the filter.
 
 <Tabs groupId="languages">
@@ -1012,7 +1016,7 @@ For a list of filter operators, see [the reference page](../api/graphql/filters.
 
 ## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [API References: Filters](../api/graphql/filters.md)
 
 ## Questions and feedback
