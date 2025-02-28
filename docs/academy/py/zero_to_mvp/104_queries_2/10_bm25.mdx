@@ -152,7 +152,9 @@ If you would like to delve into the details of the exact algorithm, you can revi
 
 ## <i class="fa-solid fa-square-chevron-right"></i> Review
 
-TODO[g-despot]
+<Quiz questions={Bm25Question} />
+
+<Quiz questions={wordTokenizationQuestion} />
 
 ### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
 
@@ -169,4 +171,43 @@ import DocsFeedback from '/_includes/docs-feedback.mdx';
 <DocsFeedback/>
 
 import Quiz from '/src/components/Academy/quiz.js'
-import { Bm25Question, wordTokenizationQuestion } from './_quizData/10_bm25.js';
+export const Bm25Question = [{
+  questionText: 'What does a BM25 search do?',
+  answerOptions: [
+    {
+      answerText: 'Matches search terms between the query and data objects in the index and ranks results based on the frequency of those terms.',
+      isCorrect: true,
+      feedback: 'It is a keyword search with ranking based on term frequency.',
+    },
+    {
+      answerText: 'Excludes objects based on the provided set of conditions.',
+      isCorrect: false,
+      feedback: 'This describes a filter.',
+    },
+    {
+      answerText: 'Searches for exact matches of the entire query string in the index.',
+      isCorrect: false,
+      feedback: 'This is describing a form of tokenization (field tokenization), not BM25 search.',
+    },
+  ]
+}];
+export const wordTokenizationQuestion = [{
+  questionText: 'What does the `word` tokenization option do?',
+  answerOptions: [
+    {
+      answerText: 'Lowercases the query string and splits it by whitespace.',
+      isCorrect: false,
+      feedback: 'This is only partially true.',
+    },
+    {
+      answerText: 'Indexes each string as-is.',
+      isCorrect: false,
+      feedback: 'This is the `field` tokenization.',
+    },
+    {
+      answerText: 'Lowercases the query string, keeps alpha-numeric characters and splits it by whitespace.',
+      isCorrect: true,
+      feedback: 'Understanding different tokenization options and their impact can be very useful.',
+    },
+  ]
+}];

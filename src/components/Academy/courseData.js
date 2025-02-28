@@ -4,7 +4,7 @@ export const courseData = {
     courseId: "PY_101T",
     body: "Project-based learning where you'll learn how to build with Weaviate and any text data. Weaviate generates the vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/starter_text_data",
+    buttonURL: "/docs/academy/py/starter_text_data",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -26,7 +26,7 @@ export const courseData = {
     courseId: "PY_101V",
     body: "Project-based learning where you'll learn how to build with Weaviate and your own data and vectors. This version is for those who prefer to use your own vectors built outside of Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/starter_custom_vectors",
+    buttonURL: "/docs/academy/py/starter_custom_vectors",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -48,7 +48,7 @@ export const courseData = {
     courseId: "PY_101M",
     body: "Project-based learning where you'll learn how to build with Weaviate and multi-modal data. Weaviate generates the vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/starter_multimodal_data",
+    buttonURL: "/docs/academy/py/starter_multimodal_data",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -70,7 +70,7 @@ export const courseData = {
     courseId: "PY_220",
     body: "Learn how named vectors can provide a flexible way to represent your data in Weaviate.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/named_vectors",
+    buttonURL: "/docs/academy/py/named_vectors",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -92,7 +92,7 @@ export const courseData = {
     courseId: "PY_230",
     body: "Vector indexes are the key components for vector search. Learn what they are, and how to use them effectively to suit your needs.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/vector_index",
+    buttonURL: "/docs/academy/py/vector_index",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -115,7 +115,7 @@ export const courseData = {
     courseId: "PY_250",
     body: "Vectors can be compressed to reduce memory requirements or improve retrieval speeds. Find out how to get the most out of this feature.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/compression",
+    buttonURL: "/docs/academy/py/compression",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -137,7 +137,7 @@ export const courseData = {
     courseId: "PY_275",
     body: "What happens when text is indexed, and searched, or converted into a vector? They are 'tokenized'. Learn what this is, and how you can make it work for you.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/tokenization",
+    buttonURL: "/docs/academy/py/tokenization",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -159,7 +159,7 @@ export const courseData = {
     courseId: "TS_100",
     body: "A quick run through of how to set up and install the Weaviate TypeScript client.",
     buttonType: "Click here",
-    buttonURL: "/academy/js/set_up_typescript",
+    buttonURL: "/docs/academy/js/set_up_typescript",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -180,7 +180,7 @@ export const courseData = {
     courseId: "TS_101M",
     body: "Project-based learning where you'll learn how to build with Weaviate and multi-modal data. Weaviate generates the vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/academy/js/starter_multimodal_data",
+    buttonURL: "/docs/academy/js/starter_multimodal_data",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -202,7 +202,7 @@ export const courseData = {
     courseId: "PY_280",
     body: "Learn how to implement and manage multi-tenancy in Weaviate for efficient data isolation and resource management.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/multitenancy",
+    buttonURL: "/docs/academy/py/multitenancy",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -229,7 +229,7 @@ export const courseData = {
     courseId: "TS_101T",
     body: "Project-based learning where you'll learn how to build with Weaviate and any text data. Weaviate generates the vectors for you.",
     buttonType: "Click here",
-    buttonURL: "/academy/js/starter_text_data",
+    buttonURL: "/docs/academy/js/starter_text_data",
     badgeType: "course",
     isCourse: true,
     units: [
@@ -251,7 +251,7 @@ export const courseData = {
   //   courseId: "PY_200",
   //   body: "Expand on the `Getting to MVP` course for deeper dives into key topics vectorizer selection, multi-modal models, and best practices.",
   //   buttonType: "Click here",
-  //   buttonURL: "/academy/py/building_with_weaviate",
+  //   buttonURL: "/docs/academy/py/building_with_weaviate",
   //   badgeType: "course",
   //   isCourse: true,
   //   units: [
@@ -308,7 +308,7 @@ export const courseData = {
     courseId: "D100",
     body: "Learn how to run Weaviate on a local kubernetes cluster with Minikube.",
     buttonType: "Click here",
-    buttonURL: "/academy/deployment/k8s",
+    buttonURL: "/docs/academy/deployment/k8s",
     badgeType: "course",
     isCourse: false,
     units: [
@@ -345,7 +345,7 @@ export const courseData = {
     courseId: "P3_1",
     body: "Start here: Get started with all the core knowledge and essential skills for building with Weaviate. Learn how to build a Weaviate database and effectively perform queries to find the right data.",
     buttonType: "Click here",
-    buttonURL: "/academy/py/zero_to_mvp",
+    buttonURL: "/docs/academy/py/zero_to_mvp",
     badgeType: "course",
     isCourse: true,
     units: [

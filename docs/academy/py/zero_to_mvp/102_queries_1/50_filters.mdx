@@ -174,7 +174,7 @@ Try filtering for `JeopardyQuestion` objects with:
 - a `points` value equal to 200
 - a `points` value greater than or equal to 600
 
-You can find the list of available operators on [this page](https://weaviate.io/docs/weaviate/api/graphql/filters#filter-structure).
+You can find the list of available operators on [this page](/docs/weaviate/api/graphql/filters#filter-structure).
 :::
 
 ### <i class="fa-solid fa-code"></i> Multiple operands example
@@ -317,7 +317,46 @@ The `offset` operator is available with all vector search functions including `G
 - The `offset` operator can be used in conjunction with `limit` to skip results and build pagination.
 
 import Quiz from '/src/components/Academy/quiz.js'
-import { whereUsage, offsetExample } from './_quizData/50_filters.js';
+export const whereUsage = [{
+  questionText: 'Which filter is used to apply a boolean condition to the data in Weaviate?',
+  answerOptions: [
+    {
+      answerText: 'limit',
+      isCorrect: false,
+      feedback: 'This is used to set the maximum number of objects to retrieve.',
+    },
+    {
+      answerText: 'offset',
+      isCorrect: false,
+      feedback: 'This is used to skip a number of results.',
+    },
+    {
+      answerText: 'where',
+      isCorrect: true,
+      feedback: 'It is similar to the WHERE clause in SQL.',
+    },
+  ]
+}];
+export const offsetExample = [{
+  questionText: 'How can you combine the offset and limit operators to display the second page of results with 10 results per page?',
+  answerOptions: [
+    {
+      answerText: 'Set offset: 10 and limit: 10',
+      isCorrect: true,
+      feedback: 'This would get results 11-20.',
+    },
+    {
+      answerText: 'Set offset: 20 and limit: 10',
+      isCorrect: false,
+      feedback: 'This would get results 21-30.',
+    },
+    {
+      answerText: 'Set offset: 10 and limit: 20',
+      isCorrect: false,
+      feedback: 'This would get results 11-30',
+    },
+  ]
+}];
 
 ## Questions and feedback
 

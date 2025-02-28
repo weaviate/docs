@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@docusaurus/Link';
 import './academy.css'
 
 function AcademyCard(props) {
@@ -43,7 +44,7 @@ function AcademyCard(props) {
     btnComp = <button class={btnClass}>{btnTxt}</button>
   } else {
     btnURL = props.buttonURL
-    btnComp = <a class={btnClass} href={btnURL}>{btnTxt}</a>
+    btnComp = <Link class={btnClass} to={btnURL}>{btnTxt}</Link>
   }
 
   // const badgeClass = "badge badge--note";

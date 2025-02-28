@@ -270,7 +270,26 @@ See in-line exercises.
 - '_additional' properties can include distance, id, and vector information, providing more context and information about the retrieved objects.
 
 import Quiz from '/src/components/Academy/quiz.js'
-import { nearText } from './_quizData/10_get.js';
+export const nearText = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}];
 
 ## Questions and feedback
 
