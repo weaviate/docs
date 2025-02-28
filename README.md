@@ -1,5 +1,9 @@
 # Website
 
+<div style="text-align: center;">
+  <img src="/static/img/github/weaviate-docs-banner.png" alt="Weaviate Docs Banner" />
+</div>
+
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ### Installation
