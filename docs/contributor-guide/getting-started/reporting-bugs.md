@@ -24,4 +24,4 @@ If not, open an issue in that repository with **a complete, specific and accurat
 
 ## Read more
 
-We also encourage you to check out this more detailed guide on [Writing great Bug Reports](/weaviate/more-resources/write-great-bug-reports.md) from our team.
+We also encourage you to check out this more detailed guide on [Writing great Bug Reports](/docs/weaviate/more-resources/write-great-bug-reports.md) from our team.

@@ -1,0 +1,50 @@
+---
+title: Welcome to Weaviate Docs
+sidebar_position: 0
+image: og/docs/home.jpg
+hide_table_of_contents: true
+# tags: []
+---
+
+import DocHomePage from "/src/components/Documentation/Home";
+import CardsSection from "/src/components/Documentation/CardsSection";
+import styles from "/src/components/Documentation/Home/styles.module.scss";
+import { faStar, faComments } from "@fortawesome/free-solid-svg-icons";
+import secondaryNavbarItems from "/secondaryNavbar.js";
+
+Weaviate _(we-vee-eight)_ is an open source, AI-native vector database.  
+Use this documentation to get started with Weaviate and to learn how to get the most out of Weaviate's features.
+
+export const welcomeCardsData = [
+  {
+    id: "new",
+    title: "New to Weaviate?",
+    description: (
+      <>
+        Start with the{" "}
+        <span className={styles.highlight}>Quickstart tutorial</span> - an
+        end-to-end demo that takes 15–30 minutes.
+      </>
+    ),
+    link: "/docs/weaviate/quickstart",
+    icon: faStar,
+  },
+  {
+    id: "questions",
+    title: "Questions",
+    description:
+      "Please visit our forum. The Weaviate team and our awesome community can help.",
+    link: "https://forum.weaviate.io/c/support/",
+    icon: faComments,
+  },
+];
+
+<CardsSection items={welcomeCardsData} />
+
+## Find the right documentation and resources
+
+<CardsSection items={secondaryNavbarItems} />
+
+## Getting Started
+
+<DocHomePage />

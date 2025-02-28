@@ -8,7 +8,7 @@ image: og/integrations/home.jpg
 
 ## Databricks and Weaviate
 
-Databricks' Foundation Model APIs can be called directly from Weaviate, allowing you to use models hosted on the Databricks platform through the [`text2vec-databricks`](/weaviate/model-providers/databricks/embeddings) and [`generative-databricks`](/weaviate/model-providers/databricks/generative) modules.
+Databricks' Foundation Model APIs can be called directly from Weaviate, allowing you to use models hosted on the Databricks platform through the [`text2vec-databricks`](/docs/weaviate/model-providers/databricks/embeddings) and [`generative-databricks`](/docs/weaviate/model-providers/databricks/generative) modules.
 
 ## Spark Connector and Weaviate
 
@@ -27,7 +27,7 @@ The resources are broken into two categories:
 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Weaviate Tutorial | Learn how to ingest data into Weaviate with Spark. | [Tutorial](/weaviate/tutorials/spark-connector)
+| Weaviate Tutorial | Learn how to ingest data into Weaviate with Spark. | [Tutorial](/docs/weaviate/tutorials/spark-connector)
 | Using the Spark Connector for Weaviate | Learn how to take data from a Spark dataframe and feed it into Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/spark/spark-connector.ipynb) |
 | Ingest data from Spark into Weaviate | Learn how to ingest data from a Spark dataframe to Weaviate and use the `text2vec-databricks` and `generative-databricks` module. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/databricks/databricks-spark-connector-demo.ipynb) |
 

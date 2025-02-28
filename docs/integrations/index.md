@@ -39,4 +39,4 @@ The ecosystem is divided into these categories:
 ## Model Provider Integrations 
 Weaviate integrates with self-hosted and API-based embedding models from a range of providers.
 
-Refer to the [documentation page](/weaviate/model-providers) to see the full list of model providers.
+Refer to the [documentation page](/docs/weaviate/model-providers) to see the full list of model providers.

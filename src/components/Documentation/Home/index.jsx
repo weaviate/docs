@@ -1,53 +1,12 @@
 import React from "react";
+import Link from "@docusaurus/Link";
 import styles from "./styles.module.scss";
-import content from "./content.json";
-import CardsSection from '../CardsSection'; 
-import secondaryNavbarItems from "/secondaryNavbar.js";
 import CustomScriptLoader from "../../scriptSwitch";
-import { faStar, faComments } from '@fortawesome/free-solid-svg-icons';
-
-// Define a list of hardcoded items for the welcome cards.
-const welcomeCardsData = [
-  {
-    id: 'new',
-    title: 'New to Weaviate?',
-    description: (
-      <>
-        Start with the{' '}
-        <span className={styles.highlight}>Quickstart tutorial</span> - an end-to-end demo that takes 15–30 minutes.
-      </>
-    ),
-    link: '/weaviate/quickstart',
-    icon: faStar,
-  },
-  {
-    id: 'questions',
-    title: 'Questions',
-    description: "Please visit our forum. The Weaviate team and our awesome community can help.",
-    link: 'https://forum.weaviate.io/c/support/',
-    icon: faComments, 
-  },
-];
 
 const DocHomePage = () => {
   return (
     <>
       <div className={styles.docHome}>
-        <h1 className={styles.highLightText}>Welcome to Weaviate Docs</h1>
-
-        <p className={styles.docText}>
-          Weaviate <i>(we-vee-eight)</i> is an open source, AI-native vector
-          database. Use this documentation to get started with Weaviate and to
-          learn how to get the most out of Weaviate's features.
-        </p>
-        <CardsSection items={welcomeCardsData} />
-
-        {/* Cards Section using data passed from secondaryNavbarItems */}
-        <h2 className={styles.highLightText}>Go to documentation for:</h2>
-        <CardsSection items={secondaryNavbarItems} />
-
-        <h2 className={styles.highLightText}>Getting Started</h2>
-
         <h3 className={styles.docHeader}>Step 1 - Choose your deployment</h3>
         <p className={styles.docText}>
           Multiple deployment options are available to cater for different users
@@ -71,7 +30,7 @@ const DocHomePage = () => {
                 <li>(Optional) Zero-downtime updates</li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/cloud/create-instance">Set up a WCD instance</a>
+                <Link to="/docs/cloud/create-instance">Set up a WCD instance</Link>
               </button>
             </div>
           </div>
@@ -95,9 +54,9 @@ const DocHomePage = () => {
                 <li>Customizable configurations</li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/weaviate/installation/docker-compose">
+                <Link to="/docs/weaviate/installation/docker-compose">
                   Run Weaviate with Docker
-                </a>
+                </Link>
               </button>
             </div>
           </div>
@@ -126,9 +85,9 @@ const DocHomePage = () => {
                 <li>(Optional) Zero-downtime updates</li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/weaviate/installation/kubernetes">
+                <Link to="/docs/weaviate/installation/kubernetes">
                   Run Weaviate with Kubernetes
-                </a>
+                </Link>
               </button>
             </div>
           </div>
@@ -152,9 +111,9 @@ const DocHomePage = () => {
                 </li>
               </ul>
               <button className={styles.deployButton}>
-                <a href="/weaviate/installation/embedded">
+                <Link to="/docs/weaviate/installation/embedded">
                   Run Embedded Weaviate
-                </a>
+                </Link>
               </button>
             </div>
           </div>
@@ -175,8 +134,8 @@ const DocHomePage = () => {
                 <span>Work with text data</span>
                 <span>
                   <p>
-                    <a href="/academy/py/starter_text_data/">Python</a> /{" "}
-                    <a href="/academy/js/starter_text_data/">JavaScript</a>
+                    <Link to="/docs/academy/py/starter_text_data/">Python</Link> /{" "}
+                    <Link to="/docs/academy/js/starter_text_data/">JavaScript</Link>
                   </p>
                 </span>
               </span>
@@ -186,20 +145,20 @@ const DocHomePage = () => {
               </p>
               <p>
                 Just{" "}
-                <a href="/academy/py/starter_text_data/text_collections/">
+                <Link to="/docs/academy/py/starter_text_data/text_collections/">
                   populate Weaviate
-                </a>{" "}
+                </Link>{" "}
                 with your text data and start using powerful{" "}
-                <a href="/academy/py/starter_text_data/text_searches/">
+                <Link to="/docs/academy/py/starter_text_data/text_searches/">
                   vector, keyword and hybrid search capabilities
-                </a>
+                </Link>
                 .
               </p>
               <p>
                 And use our integrations to{" "}
-                <a href="/academy/py/starter_text_data/text_rag/">
+                <Link to="/docs/academy/py/starter_text_data/text_rag/">
                   build generative ai tools
-                </a>{" "}
+                </Link>{" "}
                 with your data.
               </p>
             </div>
@@ -208,28 +167,28 @@ const DocHomePage = () => {
             <div className={`${styles.scenarioLogo} ${styles.custom}`}></div>
             <div className={styles.scenarioText}>
               <span>
-                <a href="/weaviate/starter-guides/custom-vectors">
+                <Link to="/docs/weaviate/starter-guides/custom-vectors">
                   Bring your own vectors
-                </a>
+                </Link>
               </span>
 
               <p>Do you prefer to work with your own vectors? No problem.</p>
               <p>
                 You can{" "}
-                <a href="/academy/py/starter_custom_vectors/object_collections/">
+                <Link to="/docs/academy/py/starter_custom_vectors/object_collections/">
                   add your own vectors to Weaviate
-                </a>{" "}
+                </Link>{" "}
                 and still benefit from{" "}
-                <a href="/academy/py/starter_custom_vectors/object_searches/">
+                <Link to="/docs/academy/py/starter_custom_vectors/object_searches/">
                   all of its indexing and search capabilities.
-                </a>
+                </Link>
                 .
               </p>
               <p>
                 Our integrations to{" "}
-                <a href="/academy/py/starter_custom_vectors/object_rag/">
+                <Link to="/docs/academy/py/starter_custom_vectors/object_rag/">
                   build generative ai tools
-                </a>{" "}
+                </Link>{" "}
                 work just as well with your data and vectors.
               </p>
             </div>
@@ -241,8 +200,11 @@ const DocHomePage = () => {
                 <span>Multimodality</span>
                 <span>
                   <p>
-                    <a href="/academy/py/starter_multimodal_data">Python</a> /{" "}
-                    <a href="/academy/js/starter_multimodal_data">JavaScript</a>
+                    <Link to="/docs/academy/py/starter_multimodal_data">Python</Link>{" "}
+                    /{" "}
+                    <Link to="/docs/academy/js/starter_multimodal_data">
+                      JavaScript
+                    </Link>
                   </p>
                 </span>
               </span>
@@ -250,20 +212,20 @@ const DocHomePage = () => {
               <p>For many, data comes in multiple forms beyond text.</p>
               <p>
                 Weaviate's multimodal modules{" "}
-                <a href="/academy/py/starter_multimodal_data/mm_collections/">
+                <Link to="/docs/academy/py/starter_multimodal_data/mm_collections/">
                   can import text, audio and video and more
-                </a>{" "}
+                </Link>{" "}
                 as well as{" "}
-                <a href="/academy/py/starter_multimodal_data/mm_searches/">
+                <Link to="/docs/academy/py/starter_multimodal_data/mm_searches/">
                   perform multimodal searches
-                </a>
+                </Link>
                 .
               </p>
               <p>
                 Use these modules to{" "}
-                <a href="/academy/py/starter_multimodal_data/mm_rag/">
+                <Link to="/docs/academy/py/starter_multimodal_data/mm_rag/">
                   build generative ai tools
-                </a>{" "}
+                </Link>{" "}
                 from your entire dataset.
               </p>
             </div>
@@ -283,7 +245,9 @@ const DocHomePage = () => {
               objects and vectors.
             </p>
             <div className={styles.wtLearn}>
-              <a href="/weaviate/introduction#what-is-weaviate">Learn more</a>
+              <Link to="/docs/weaviate/introduction#what-is-weaviate">
+                Learn more
+              </Link>
             </div>
           </div>
           <div className={styles.whatnextBox}>
@@ -292,9 +256,9 @@ const DocHomePage = () => {
               Features, examples, demo applications, recipes, use cases, etc..
             </p>
             <div className={styles.wtLearn}>
-              <a href="/weaviate/more-resources/example-use-cases">
+              <Link to="/docs/weaviate/more-resources/example-use-cases">
                 Learn more
-              </a>
+              </Link>
             </div>
           </div>
           <div className={`${styles.whatnextBox} ${styles.small}`}>
@@ -304,7 +268,7 @@ const DocHomePage = () => {
               instructions on installation and configuration.
             </p>
             <div className={styles.wtLearn}>
-              <a href="/weaviate/installation">Learn more</a>
+              <Link to="/docs/weaviate/installation">Learn more</Link>
             </div>
           </div>
           <div className={`${styles.whatnextBox} ${styles.small}`}>
@@ -313,7 +277,7 @@ const DocHomePage = () => {
               Discover how to configure Weaviate to suit your specific needs.
             </p>
             <div className={styles.wtLearn}>
-              <a href="/weaviate/configuration">Learn more</a>
+              <Link to="/docs/weaviate/configuration">Learn more</Link>
             </div>
           </div>
           <div className={`${styles.whatnextBox} ${styles.small}`}>
@@ -323,38 +287,38 @@ const DocHomePage = () => {
               various features.
             </p>
             <div className={styles.wtLearn}>
-              <a href="/weaviate/concepts">Learn more</a>
+              <Link to="/docs/weaviate/concepts">Learn more</Link>
             </div>
           </div>
         </div>
         <div className={styles.secondaryContent}>
           <h3>Can we help?</h3>
           <div className={`${styles.secondaryTabs} ${styles.github}`}>
-            <a href="https://github.com/weaviate/weaviate">GitHub</a>
+            <Link to="https://github.com/weaviate/weaviate">GitHub</Link>
           </div>
           <div className={`${styles.secondaryTabs} ${styles.forum}`}>
-            <a href="https://forum.weaviate.io/">Community forum</a>
+            <Link to="https://forum.weaviate.io/">Community forum</Link>
           </div>
           <div className={`${styles.secondaryTabs} ${styles.slack}`}>
-            <a href="https://weaviate.io/slack">Slack</a>
+            <Link to="https://weaviate.io/slack">Slack</Link>
           </div>
         </div>
         <div className={styles.secondaryContent}>
           <h3>Client Libraries</h3>
           <div className={styles.tabRow}>
             <div className={`${styles.secondaryTabs} ${styles.python}`}>
-              <a href="/weaviate/client-libraries/python">Python</a>
+              <Link to="/docs/weaviate/client-libraries/python">Python</Link>
             </div>
             <div className={`${styles.secondaryTabs} ${styles.ts}`}>
-              <a href="/weaviate/client-libraries/typescript">JS/TS</a>
+              <Link to="/docs/weaviate/client-libraries/typescript">JS/TS</Link>
             </div>
           </div>
 
           <div className={`${styles.secondaryTabs} ${styles.go}`}>
-            <a href="/weaviate/client-libraries/go">Go</a>
+            <Link to="/docs/weaviate/client-libraries/go">Go</Link>
           </div>
           <div className={`${styles.secondaryTabs} ${styles.java}`}>
-            <a href="/weaviate/client-libraries/java">Java</a>
+            <Link to="/docs/weaviate/client-libraries/java">Java</Link>
           </div>
         </div>
       </div>
