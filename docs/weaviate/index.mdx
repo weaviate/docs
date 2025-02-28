@@ -6,9 +6,9 @@ hide_table_of_contents: true
 # tags: []
 ---
 
-import DocHomePage from "/src/components/Documentation/Home";
-import CardsSection from "/src/components/Documentation/CardsSection";
-import styles from "/src/components/Documentation/Home/styles.module.scss";
+import CardsSection from "/src/components/CardsSection";
+import DeploymentCards from "/src/components/DeploymentCards";
+import styles from "/src/components/CardsSection/styles.module.scss";
 import { faStar, faComments } from "@fortawesome/free-solid-svg-icons";
 import secondaryNavbarItems from "/secondaryNavbar.js";
 
@@ -45,6 +45,95 @@ export const welcomeCardsData = [
 
 <CardsSection items={secondaryNavbarItems} />
 
-## Getting Started
+## Choose your deployment
 
-<DocHomePage />
+export const deploymentCardsData = [
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Weaviate Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "From evaluation (sandbox) to production",
+      "Serverless (infrastructure managed by Weaviate)",
+      "(Optional) Data replication (high-availability)",
+      "(Optional) Zero-downtime updates",
+    ],
+    button: {
+      text: "Set up a WCD instance",
+      link: "/docs/cloud/manage-clusters/create",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: false },
+    ],
+    header: "Docker",
+    bgImage: "/img/site/docker-doc-icon.svg",
+    bgImageLight: "/img/site/docker-doc-icon-light.svg",
+    listItems: [
+      "For local evaluation & development",
+      "Local inference containers",
+      "Multi-modal models",
+      "Customizable configurations",
+    ],
+    button: {
+      text: "Run Weaviate with Docker",
+      link: "/docs/weaviate/installation/docker-compose",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: false },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Kubernetes",
+    bgImage: "/img/site/kubernetes-doc-icon.svg",
+    bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
+    listItems: [
+      "For development to production",
+      "Local inference containers",
+      "Multi-modal models",
+      "Customizable configurations",
+      "Self-deploy or Marketplace deployment",
+      "(Optional) Zero-downtime updates",
+    ],
+    button: {
+      text: "Run Weaviate with Kubernetes",
+      link: "/docs/weaviate/installation/kubernetes",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: false },
+      { label: "Production", active: false },
+    ],
+    header: "Embedded Weaviate",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "For basic, quick evaluation",
+      "Conveniently launch Weaviate directly from Python or JS/TS",
+    ],
+    button: {
+      text: "Run Embedded Weaviate",
+      link: "/docs/weaviate/installation/embedded",
+    },
+  },
+];
+
+<DeploymentCards items={deploymentCardsData} />
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

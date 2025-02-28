@@ -34,6 +34,25 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Installation",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "weaviate/installation/index",
+      },
+      items: [
+        "weaviate/installation/weaviate-cloud-services",
+        "weaviate/installation/docker-compose",
+        "weaviate/installation/kubernetes",
+        "weaviate/installation/embedded",
+        "weaviate/installation/aws-marketplace",
+        "weaviate/installation/gc-marketplace",
+        "weaviate/installation/spcs-integration",
+      ],
+    },
+    {
+      type: "category",
       label: "Client libraries",
       collapsible: true,
       collapsed: true,
@@ -299,6 +318,7 @@ const sidebars = {
         id: "weaviate/release-notes/index",
       },
       items: [
+        "weaviate/release-notes/release_1_29",
         "weaviate/release-notes/release_1_28",
         "weaviate/release-notes/release_1_27",
         "weaviate/release-notes/release_1_26",
@@ -322,6 +342,7 @@ const sidebars = {
         },
       ],
     },
+    "weaviate/roadmap/index",
   ],
   othersSidebar: [
     {

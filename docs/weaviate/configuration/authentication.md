@@ -350,7 +350,7 @@ OIDC authentication flows are outside the scope of this documentation, but here 
 
 ### Support for Weaviate clients
 
-If Weaviate core is configured to use the `client credentials grant` flow or the `resource owner password flow`, a Weaviate client can instantiate a connection to Weaviate core that incorporates the authentication flow.
+If Weaviate Core is configured to use the `client credentials grant` flow or the `resource owner password flow`, a Weaviate client can instantiate a connection to Weaviate Core that incorporates the authentication flow.
 
 import OIDCExamples from '/_includes/code/connections/oidc-connect.mdx';
 

@@ -18,13 +18,13 @@ The `v3` client will continue to get critical security updates and bugfixes for 
 **What does this mean for me?**
 <br/>
 
-To take advantage of the latest developments on the Weaviate core database, we recommend migrating your codebase to use the [`v4` client API](./index.md).
+To take advantage of the latest developments on the Weaviate Core database, we recommend migrating your codebase to use the [`v4` client API](./index.md).
 <br/>
 
 Our documentation includes [a migration guide here](./v3_v4_migration.md), and many code examples include both `v3` and `v4` syntax. We will be adding more dedicated resources for you to ease the migration experience.
 <br/>
 
-If you have an existing codebase and Weaviate core database that you expect to remain static, we recommend pinning the version in your requirements file (e.g. `requirements.txt`), like so:
+If you have an existing codebase and Weaviate Core database that you expect to remain static, we recommend pinning the version in your requirements file (e.g. `requirements.txt`), like so:
 
 ```bash
   weaviate-client>=3.26.7,<4.0.0

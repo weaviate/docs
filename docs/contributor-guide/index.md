@@ -8,7 +8,7 @@ image: og/contributor-guide/welcome.jpg
 
 🎉 First off, thank you for taking the time to contribute! 🎉
 
-We are delighted to have you here. We are thrilled that you want to contribute to Weaviate core, as together we can make Weaviate even better. We strive to build an engaging community and we encourage you to participate, share your ideas and make friends.
+We are delighted to have you here. We are thrilled that you want to contribute to Weaviate Core, as together we can make Weaviate even better. We strive to build an engaging community and we encourage you to participate, share your ideas and make friends.
 
 ##  Weaviate on GitHub
 

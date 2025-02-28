@@ -142,9 +142,7 @@ docker compose up -d
 
 The Configurator can generate a `docker-compose.yml` file for you. Use the Configurator to select specific Weaviate modules, including vectorizers that run locally (i.e. `text2vec-transformers`, or `multi2vec-clip`)
 
-<!-- {% include docs-config-gen.html %} -->
-
-import DocsConfigGen from '/_includes/docs-config-gen.mdx';
+import DocsConfigGen from '@site/src/components/DockerConfigGen';
 
 <DocsConfigGen />
 

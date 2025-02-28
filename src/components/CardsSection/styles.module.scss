@@ -3,7 +3,7 @@
 .cardsSection {
   display: grid;
   /* Force exactly 2 columns with the fixed card width */
-  grid-template-columns: repeat(2, 25.5625rem);
+  grid-template-columns: repeat(4, 25.5625rem);
   gap: 40px;
   margin: 40px auto; // center the container
   justify-content: left;
@@ -74,4 +74,5 @@
 
 .highlight {
   color: var(--site-font-accent-color);
+  font-weight: 600;
 }
