@@ -12,7 +12,10 @@ const {
   companyDropdownHtml,
 } = require('./src/components/dropdownConstants');
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+const remarkReplace = require('./src/remark/remark-replace');
+// Math equation plugins
+const math = require('remark-math');
+const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -57,6 +60,8 @@ const config = {
           path: "docs", // folder name – where the docs are
           routeBasePath: "docs", // route name – where to navigate for docs i.e. weaviate.io/<route-base-path>/...
           editUrl: "https://github.com/weaviate/weaviate-io/tree/main/",
+          remarkPlugins: [remarkReplace, math],
+          rehypePlugins: [katex],
         },
         /**
         blog: {
