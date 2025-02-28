@@ -10,12 +10,12 @@ const {
   solutionsDropdownHtml,
   developersDropdownHtml,
   companyDropdownHtml,
-} = require('./src/components/dropdownConstants');
+} = require("./src/components/dropdownConstants");
 
-const remarkReplace = require('./src/remark/remark-replace');
+const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
-const math = require('remark-math');
-const katex = require('rehype-katex');
+const math = require("remark-math");
+const katex = require("rehype-katex");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -45,7 +45,25 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-  plugins: ["docusaurus-plugin-sass"],
+  plugins: [
+    "docusaurus-plugin-sass",
+    [
+      "@scalar/docusaurus",
+      {
+        label: "",
+        route: "/docs/weaviate/api/rest",
+        configuration: {
+          spec: {
+            // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi_docs_v1-29/openapi-specs/schema.json",
+          },
+          hideModels: true,
+          // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
+          // hiddenClients: [...],
+        },
+      },
+    ],
+  ],
   markdown: {
     mermaid: true,
   },

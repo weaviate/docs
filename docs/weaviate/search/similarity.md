@@ -108,7 +108,7 @@ import ImgSrchTSCode from '!!raw-loader!/_includes/code/howto/search.image.ts';
 import ImgSrchTSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.image-v2.ts';
 
 
-Use the [`Near Image`](../api/graphql/search-operators.md#nearimage) operator to find objects with the nearest vector to an image.<br/>
+Use the [`Near Image`](../api/graphql/search-operators.md) operator to find objects with the nearest vector to an image.<br/>
 This example uses a base64 representation of an image.
 
 <Tabs groupId="languages">
@@ -553,7 +553,7 @@ Optionally, use `offset` to paginate the results.
   </TabItem>
 </Tabs>
 
-## Limit result groups
+## Limit result groups {#autocut}
 
 To limit results to groups of similar distances to the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter to set the number of groups to return.
 
