@@ -19,7 +19,7 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
 Weaviate's integration with the Hugging Face Transformers library allows you to access their models' capabilities directly from Weaviate.
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use the Transformers integration, and [configure the Weaviate instance](#weaviate-configuration) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the Transformers inference container. This feature is called the *vectorizer*.
+Configure a Weaviate vector index to use the Transformers integration, and [configure the Weaviate instance](#configure-the-weaviate-instance) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the Transformers inference container. This feature is called the *vectorizer*.
 
 This page shows how to [build a custom Transformers model image](#build-a-custom-transformers-model-image) and configure Weaviate with it, for users whose desired model is not available in [the pre-built images](./embeddings.md#available-models).
 

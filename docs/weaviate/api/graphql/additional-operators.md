@@ -215,9 +215,9 @@ The output is like this:
 
 For more client code examples for each functional category, see these pages:
 
-- [Autocut with similarity search](../../search/similarity.md#autocut).
-- [Autocut with `bm25` search](../../search/bm25.md#autocut).
-- [Autocut with `hybrid` search](../../search/hybrid.md#autocut).
+- [Autocut with similarity search](../../search/similarity.md#limit-result-groups).
+- [Autocut with `bm25` search](../../search/bm25.md#limit-result-groups).
+- [Autocut with `hybrid` search](../../search/hybrid.md#limit-result-groups).
 
 
 ## Cursor with `after`

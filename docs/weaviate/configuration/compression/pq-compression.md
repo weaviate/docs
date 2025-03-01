@@ -261,7 +261,7 @@ To enable PQ, update your collection definition as shown below. For additional c
 
 ### 4. Load the rest of your data
 
-Once the [codebook has been trained](#enable-pq-and-create-the-codebook), you may continue to add data as per normal. Weaviate compresses the new data when it adds it to the database.
+Once the [codebook has been trained](#3-enable-pq-and-create-the-codebook), you may continue to add data as per normal. Weaviate compresses the new data when it adds it to the database.
 
 If you already have data in your Weaviate instance when you create the codebook, Weaviate automatically compresses the remaining objects (the ones after the initial training set).
 

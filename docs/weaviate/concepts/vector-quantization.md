@@ -127,7 +127,7 @@ You might be also interested in our blog post [32x Reduced Memory Usage With Bin
 
 ### With an HNSW index
 
-An [HNSW index](#hnsw-index) can be configured using [PQ](#product-quantization) or [BQ](#binary-quantization). Since HNSW is in memory, compression can reduce your memory footprint or allow you to store more data in the same amount of memory.
+An HNSW index can be configured using [PQ](#product-quantization) or [BQ](#binary-quantization). Since HNSW is in memory, compression can reduce your memory footprint or allow you to store more data in the same amount of memory.
 
 :::tip
 You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithms Part 2.1](https://weaviate.io/blog/ann-algorithms-hnsw-pq).
@@ -135,7 +135,7 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 ### With a flat index
 
-[BQ](#binary-quantization) can use a [flat index](#flat-index). A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
+[BQ](#binary-quantization) can use a flat index. A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
 
 ## Rescoring
 

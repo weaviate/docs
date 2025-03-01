@@ -179,7 +179,7 @@ Yes. Each collection itself acts like namespaces. Additionally, you can use the 
 <details>
   <summary>Answer</summary>
 
-> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/docs/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary-v1modulestext2vec-contextionaryextensions)
+> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/docs/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary)
 
 </details>
 
@@ -248,7 +248,7 @@ import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 <details>
   <summary>Answer</summary>
 
-Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
+Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#benchmark-results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
 
 Generally if you need a higher recall than the default parameters provide you with, you can use stronger parameters. This can either be done at build time (`efConstruction`, `maxConnections`) or at query time (`ef`). Roughly speaking, a higher `ef` value at query time means a more thorough search. It will have a slightly higher latency, but also lead to a slightly better recall.
 
@@ -263,7 +263,7 @@ Example: Using the default parameters `ef=-1`, `dynamicEfMin=100`, `dynamicEfMax
 If you need a higher search quality for a given limit you can consider the following options:
 
 1. Instead of using a dynamic `ef` value, use a fixed one that provides the desired recall.
-1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#results) present a combination of many different parameter combination for various datasets.
+1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#benchmark-results) present a combination of many different parameter combination for various datasets.
 
 </details>
 
@@ -287,7 +287,7 @@ If you need a higher search quality for a given limit you can consider the follo
 >
 > To iterate through all objects, you can use the [`after` operator](../manage-data/read-all-objects.mdx).
 >
-> For pagination through a result set, you can use the `offset` and `limit` operators for GraphQL API calls. Take a look at [this page](../api/graphql/filters.md#pagination-with-offset) which describes how to use these operators, including tips on performance and limitations.
+> For pagination through a result set, you can use the `offset` and `limit` operators for GraphQL API calls. Take a look at [this page](../api/graphql/filters.md) which describes how to use these operators, including tips on performance and limitations.
 
 </details>
 

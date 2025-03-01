@@ -209,7 +209,7 @@ If you did not see any errors, you are ready to proceed. We will replace the sim
 
 Now, we can populate our database by first defining a collection and then adding data.
 
-### 2.1 Define a collection
+### 2.1 Define a collection {#define-a-collection}
 
 :::info What is a collection?
 A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed.
@@ -286,7 +286,7 @@ Run this code to add the demo data.
 
 Weaviate provides a wide range of query tools to help you find the right data. We will try a few searches here.
 
-### 3.1 Semantic search
+### 3.1 Semantic search {#semantic-search}
 
 Semantic search finds results based on meaning. This is called `nearText` in Weaviate.
 
@@ -628,7 +628,7 @@ Where you should be able to confirm that you have imported all `10` objects.
 
 To perform text-based (`nearText`) similarity searches, you need to have a vectorizer enabled, and configured in your collection.
 
-Make sure the vectorizer is configured [like this](#define-a-data-collection).
+Make sure the vectorizer is configured [like this](#define-a-collection).
 
 If the search still doesn't work, [contact us](#questions-and-feedback)!
 

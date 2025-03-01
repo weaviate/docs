@@ -80,7 +80,7 @@ Refer to the individual [module documentation](../modules/index.md) for more det
 
 ## Vectorizer modules
 
-The [vectorization integration](../model-providers/index.md) enable Weaviate to vectorize data at import, and to perform [`near<Media>`](../search/similarity.md#an-input-medium) searches such as `nearText` or `nearImage`.
+The [vectorization integration](../model-providers/index.md) enable Weaviate to vectorize data at import, and to perform [`near<Media>`](../search/similarity.md) searches such as `nearText` or `nearImage`.
 
 :::info List of available vectorizer integrations
 Can be found [in this section](../model-providers/index.md).

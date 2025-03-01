@@ -798,7 +798,7 @@ Optionally, use `offset` to paginate the results.
   </TabItem>
 </Tabs>
 
-## Limit result groups {#autocut}
+## Limit result groups {#limit-result-groups}
 
 To limit results to groups with similar distances from the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter. Specify the `Relative Score Fusion` ranking method when you use autocut with hybrid search.
 

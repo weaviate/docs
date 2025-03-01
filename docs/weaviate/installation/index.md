@@ -14,7 +14,7 @@ If you are upgrading from a previous version of Weaviate, see the [Migration Gui
 To install and configure Weaviate, see the following:
 
 - **[Weaviate Cloud](../../cloud/quickstart.mdx)**: Managed services for development and production environments.
-- **[Docker Compose](./docker-compose.md#starter-docker-compose-file)**: Docker containers are well suited for development and testing.
+- **[Docker Compose](./docker-compose.md)**: Docker containers are well suited for development and testing.
 - **[Kubernetes](./kubernetes.md)**: Kubernetes is ideal for scalable, production deployments.
 - **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
 - **[Google Cloud Marketplace](./gc-marketplace.md)** Deploy Weaviate directly from the Google Cloud Marketplace.
@@ -24,7 +24,7 @@ To install and configure Weaviate, see the following:
 
 ## Configuration files
 
-Docker Compose and Kubernetes use yaml files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](./docker-compose.md#starter-docker-compose-file) file. Kubernetes relies on [Helm charts](./kubernetes.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
+Docker Compose and Kubernetes use yaml files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](./docker-compose.md) file. Kubernetes relies on [Helm charts](./kubernetes.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
 
 If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
 

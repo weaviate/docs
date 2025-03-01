@@ -152,7 +152,7 @@ Let's review these search types in more detail.
 
 #### Keyword Search
 
-Keyword search ranks results based on keyword match "scores". These scores are based on how often tokens in the query appear in each data object. These metrics are combined using the [BM25 algorithm](#bm25f-algorithm) to produce a score.
+Keyword search ranks results based on keyword match "scores". These scores are based on how often tokens in the query appear in each data object. These metrics are combined using the BM25 algorithm to produce a score.
 
 <details>
   <summary>Keyword Search: Example</summary>

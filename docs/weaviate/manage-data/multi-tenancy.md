@@ -167,7 +167,7 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
 
 ## Add new tenants manually
 
-To add tenants to a collection, specify the collection and the new tenants. Optionally, specify the tenant activity status as `ACTIVE`(available, default), `INACTIVE` (not available, on disk), or `OFFLOADED` (not available, [offloaded to cloud](../concepts/data.md#tenant-status)).
+To add tenants to a collection, specify the collection and the new tenants. Optionally, specify the tenant activity status as `ACTIVE`(available, default), `INACTIVE` (not available, on disk), or `OFFLOADED` (not available, [offloaded to cloud](../concepts/data.md#tenant-states)).
 
 This example adds `tenantA` to the `MultiTenancyCollection` collection:
 
@@ -643,7 +643,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
 ## Backups
 
 :::caution Backups do not include inactive or offloaded tenants
-Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](#activate-tenant) before creating a backup to ensure all data is included.
+Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](#manage-tenant-states) before creating a backup to ensure all data is included.
 :::
 
 ## Related pages

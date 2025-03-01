@@ -19,7 +19,7 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
 Weaviate's integration with the Hugging Face Transformers library allows you to access their CLIP models' capabilities directly from Weaviate.
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use the CLIP integration, and [configure the Weaviate instance](#weaviate-configuration) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the CLIP inference container. This feature is called the *vectorizer*.
+Configure a Weaviate vector index to use the CLIP integration, and [configure the Weaviate instance](#configure-the-weaviate-instance) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the CLIP inference container. This feature is called the *vectorizer*.
 
 This page shows how to [build a custom CLIP model image](#build-a-custom-clip-model-image) and configure Weaviate with it, for users whose desired model is not available in [the pre-built images](./embeddings-multimodal.md#available-models).
 

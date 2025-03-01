@@ -49,7 +49,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 
 </details>
 
-### Databricks Personal Access Token
+### Databricks Personal Access Token {#api-credentials}
 
 You must provide a valid Databricks Personal Access Token (PAT) to Weaviate for this integration. Refer to the [Databricks documentation](https://docs.databricks.com/en/dev-tools/auth/pat.html) for instructions on generating your PAT in your workspace.
 
