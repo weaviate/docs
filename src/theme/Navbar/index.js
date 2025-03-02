@@ -126,6 +126,18 @@ export default function NavbarWrapper(props) {
     history.push(secondaryNavOptions[option].link);
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Check for Ctrl+Shift+D (you can change this combination)
+      if (event.shiftKey && event.key.toLowerCase() === "d") {
+        setModalOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <>
       {/* Default Navbar */}
@@ -169,7 +181,6 @@ export default function NavbarWrapper(props) {
         </nav>
       </div>
 
-      {/* Modal for Category Selection */}
       <div
         className={`${styles.modalOverlay} ${isModalOpen ? styles.active : ""}`}
         onClick={() => setModalOpen(false)}
@@ -178,32 +189,45 @@ export default function NavbarWrapper(props) {
           className={styles.modalContent}
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            className={styles.closeIcon}
-            onClick={() => setModalOpen(false)}
-          >
-            ✕
-          </button>
-          <div className={styles.modalTitle}>
-            <strong>Go to documentation:</strong>
-          </div>
-          <div className={styles.modalOptionsContainer}>
-            {Object.entries(secondaryNavOptions).map(([key, value]) => (
-              <div
-                key={key}
-                className={styles.modalOption}
-                onClick={() => handleOptionSelect(key)}
-              >
-                <i
-                  className={`${value.icon} ${styles.modalIcon}`}
-                  aria-hidden="true"
-                />
-                <div className={styles.modalText}>
-                  <strong>{value.title}</strong>
-                  <p>{value.description}</p>
-                </div>
+          {/* Modal Header */}
+          <div className={styles.modalHeader}>
+            <div className={styles.modalHeaderLeft}>
+              <strong>Go to documentation:</strong>
+            </div>
+            <div className={styles.modalHeaderRight}>
+              <div className={styles.headerControls}>
+                <span className={styles.modalShortcut}>Shift+d</span>
+                <div className={styles.verticalDivider}></div>
+                <button
+                  className={styles.headerCloseIcon}
+                  onClick={() => setModalOpen(false)}
+                >
+                  ✕
+                </button>
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Modal Body */}
+          <div className={styles.modalBody}>
+            <div className={styles.modalOptionsContainer}>
+              {Object.entries(secondaryNavOptions).map(([key, value]) => (
+                <div
+                  key={key}
+                  className={styles.modalOption}
+                  onClick={() => handleOptionSelect(key)}
+                >
+                  <i
+                    className={`${value.icon} ${styles.modalIcon}`}
+                    aria-hidden="true"
+                  />
+                  <div className={styles.modalText}>
+                    <strong>{value.title}</strong>
+                    <p>{value.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

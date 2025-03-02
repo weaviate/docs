@@ -100,6 +100,7 @@
 
 /* MODAL STYLES */
 /* Modal Overlay: initially hidden */
+/* Modal Overlay and Content (unchanged) */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -116,32 +117,92 @@
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* When the overlay has the "active" class, fade in */
 .modalOverlay.active {
   opacity: 1;
   visibility: visible;
 }
 
-/* Modal Content: animate its opacity and vertical position */
 .modalContent {
   background: var(--docs-modal-bg);
-  padding: 20px 20px 40px 20px;
   border-radius: 8px;
   width: 100% !important;
   max-width: 650px !important;
-  text-align: left;
   box-shadow: var(--modal-shadow);
-  z-index: 1001;
+  overflow: hidden; /* Ensures header and body share the rounded corners */
   position: relative;
   transform: translateY(-20px);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* When the overlay is active, animate the content in */
 .modalOverlay.active .modalContent {
   transform: translateY(0);
   opacity: 1;
+}
+
+/* Modal Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #e0e0e07a; /* Darker background for header */
+  border-bottom: 1px solid #ccc; /* Horizontal line divider */
+}
+
+.modalHeaderLeft {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ifm-navbar-link-color);
+}
+
+.modalHeaderRight {
+  /* Container for header controls */
+}
+
+/* Header Controls (inside modalHeaderRight) */
+.headerControls {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;          /* Fixed height for consistent alignment */
+  padding: 0 8px;
+  border: 1px solid #ccc; /* Thin border */
+  border-radius: 8px;     /* Rounded corners */
+  background-color: #f7f7f7; /* Lighter background for controls */
+}
+
+.modalShortcut {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  color: #666;           /* Slightly darker for the shortcut hint */
+  padding: 0 8px;
+}
+
+.verticalDivider {
+  width: 1px;
+  background-color: #ccc;
+  height: 100%;          /* Fills the height of .headerControls */
+  margin: 0 8px;
+}
+
+.headerCloseIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;          /* Matches container height */
+  font-size: 20px;
+  color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  margin: 0;
+}
+
+/* Modal Body */
+.modalBody {
+  padding: 20px; /* Adjust as needed for your content */
 }
 
 .modalOptionsContainer {
@@ -236,7 +297,7 @@
     scrollbar-color: var(--ifm-navbar-link-active-color);
     scrollbar-gutter: stable; /* Reserves space for the scrollbar */
   }
-  
+
   /* Optional: style the scrollbar for WebKit-based browsers */
   .secondaryNavbar::-webkit-scrollbar {
     height: 6px; /* Adjust the scrollbar height as needed */

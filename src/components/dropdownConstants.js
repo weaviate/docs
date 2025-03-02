@@ -82,11 +82,11 @@ export const developersDropdownHtml = `
   </ul>
   <div class="divider"></div>
     <ul class="holdRightnoBorder">
-    <li class="dropDownLabel">Build</li>
-    <li><a class="dropdown__link" href="/docs/weaviate">Documentation</a></li>
-    <li><a class="dropdown__link" href="/docs/cloud">Weaviate Cloud Docs</a></li>
+    <li class="dropDownLabel">Documentation</li>
+    <li><a class="dropdown__link dropdown__link--highlight" href="/docs/weaviate">Weaviate Docs</a></li>
+    <li><a class="dropdown__link dropdown__link--highlight" href="/docs/cloud">Weaviate Cloud Docs</a></li>
+    <li><a class="dropdown__link dropdown__link--highlight" href="/docs/cloud">Weaviate Agent Docs</a></li>
     <li><a class="dropdown__link" href="/docs/integrations">Integrations Docs</a></li>
-    <li><a class="dropdown__link" href="https://github.com/weaviate/weaviate">GitHub</a></li>
   </ul>
 </div>
 <ul class="menu__list mobileNav">
