@@ -1,41 +1,28 @@
 To get started, visit the following resources:
 
-import NextSteps from '/src/components/NextSteps';
+import CardsSection from "/src/components/CardsSection";
 
-export const cardsData = [
+export const nextStepsData = [
   {
-    title: (
-      <span>
-        <i className="fa fa-desktop" aria-hidden="true"></i> Weaviate Cloud: Console
-      </span>
-    ),
-    description: (
-      <span>
-        Go directly to the Weaviate Cloud console and create your first cluster.
-      </span>
-    ),
-    link: 'https://console.weaviate.cloud/',
+    title: "Weaviate Cloud: Console",
+    description: " Go directly to the Weaviate Cloud console and create your first cluster.",
+    link: "https://console.weaviate.cloud/",
+    icon: "fa fa-desktop",
   },
   {
-    title: (
-      <span>
-        <i className="fa fa-book" aria-hidden="true"></i> Weaviate Cloud: Quickstart
-      </span>
-    ),
+    title: "Weaviate Cloud: Quickstart",
     description:
-      'Follow the step-by-step quickstart guide to set up your first Weaviate Cloud project.',
-    link: '/docs/cloud/quickstart',
+      "Follow the step-by-step quickstart guide to set up your first Weaviate Cloud project.",
+    link: "/docs/cloud/quickstart",
+    icon: "fa fa-book",
   },
   {
-    title: (
-      <span>
-        <i className="fa fa-credit-card" aria-hidden="true"></i> Weaviate Cloud:
-        Pricing
-      </span>
-    ),
-    description: 'Check out the available pricing plans for Weaviate Cloud.',
-    link: 'https://weaviate.io/pricing',
+    title: "Weaviate Cloud: Pricing",
+    description: "Check out the available pricing plans for Weaviate Cloud.",
+    link: "https://weaviate.io/pricing",
+    icon: "fa fa-credit-card",
   },
 ];
 
-<NextSteps cards={cardsData} />
+<CardsSection items={nextStepsData} />
+<br />

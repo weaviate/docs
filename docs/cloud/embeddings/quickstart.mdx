@@ -4,18 +4,18 @@ sidebar_position: 1
 image: og/wcs/user_guides.jpg
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyConnect from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.connect.weaviate.py';
-import TSConnect from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.connect.weaviate.ts';
-import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go';
-import JavaConnect from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddings.java';
-import PyCode from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.py';
-import TSCode from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java';
-import JavaImportQueries from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyConnect from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.connect.weaviate.py";
+import TSConnect from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.connect.weaviate.ts";
+import GoConnect from "!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go";
+import JavaConnect from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddings.java";
+import PyCode from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.py";
+import TSCode from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java";
+import JavaImportQueries from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java";
 
 <span class="badge badge--secondary">Expected time: 30 minutes</span>
 <br />
@@ -77,7 +77,9 @@ Notes:
 ## Requirements
 
 To use Weaviate Embeddings, you will need:
+
 <!-- TODO[g-despot]: Update prerequisites with correct client versions -->
+
 - A Weaviate Cloud Sandbox running at least Weaviate `1.28.5`
 - A Weaviate client library that supports Weaviate Embeddings:
   - **Python** client version `4.9.5` or higher
@@ -90,7 +92,7 @@ To use Weaviate Embeddings, you will need:
 
 To create a free **Sandbox** cluster in Weaviate Cloud, follow **[these instructions](/docs/cloud/manage-clusters/create#create-a-cluster)**.
 
-import LatestWeaviateVersion from '/_includes/latest-weaviate-version.mdx';
+import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
 <LatestWeaviateVersion />
 
@@ -98,7 +100,7 @@ import LatestWeaviateVersion from '/_includes/latest-weaviate-version.mdx';
 
 We recommend using a [client library](/docs/weaviate/client-libraries) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](/docs/weaviate/client-libraries/python), [JavaScript/TypeScript](/docs/weaviate/client-libraries/typescript), [Go](/docs/weaviate/client-libraries/go), and [Java](/docs/weaviate/client-libraries/java).
 
-import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
+import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
 <CodeClientInstall />
 
@@ -270,42 +272,30 @@ The query below returns the `n` most similar objects from the database, set by `
 
 ## Next steps
 
-import NextSteps from '/src/components/NextSteps';
+import CardsSection from "/src/components/CardsSection";
 
-export const cardsData = [
+export const nextStepsData = [
   {
-    title: (
-      <span>
-        <i className="fa fa-list-alt" aria-hidden="true"></i> Choose a model
-      </span>
-    ),
-    description: 'Check out which additional models are available through Weaviate Embeddings.',
-    link: '/docs/cloud/embeddings/models',
+    title: "Choose a model",
+    description:
+      "Check out which additional models are available through Weaviate Embeddings.",
+    link: "/docs/cloud/embeddings/models",
+    icon: "fa fa-list-alt",
   },
   {
-    title: (
-      <span>
-        <i className="fa fa-search" aria-hidden="true"></i> Explore hybrid search
-      </span>
-    ),
-    description: 'Discover how hybrid search combines keyword matching and semantic search.',
-    link: '/docs/weaviate/search/hybrid',
-  },
-  {
-    title: (
-      <span>
-        <i className="fa fa-user-friends" aria-hidden="true"></i> Join the community
-      </span>
-    ),
-    description: 'Connect with other developers and contribute to our forums.',
-    link: 'https://weaviate.io/community',
+    title: "Explore hybrid search",
+    description:
+      "Discover how hybrid search combines keyword matching and semantic search.",
+    link: "/docs/weaviate/search/hybrid",
+    icon: "fa fa-search",
   },
 ];
 
-<NextSteps cards={cardsData} />
+<CardsSection items={nextStepsData} />
+<br />
 
-## Support
+## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

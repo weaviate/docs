@@ -489,48 +489,33 @@ The power of RAG comes from the ability to transform your own data. Weaviate hel
 
 Try these additional resources to learn more about Weaviate:
 
-import NextSteps from '/src/components/NextSteps';
+import CardsSection from "/src/components/CardsSection";
 
-export const cardsData = [
+export const nextStepsData = [
   {
-    title: (
-      <span>
-        <i className="fa fa-server" aria-hidden="true"></i> Serverless Cloud
-      </span>
-    ),
-    description: (
+    title: "Serverless Cloud",
+    description:(
       <span>
         If you need a production-ready and persistent instance, create a{' '}
         <b>Serverless cluster</b>.
       </span>
     ),
-    link: '/docs/cloud/manage-clusters/create',
+    link: "/docs/cloud/manage-clusters/create",
+    icon: "fa fa-server",
   },
   {
-    title: (
-      <span>
-        <i className="fa fa-book" aria-hidden="true"></i> Weaviate Core: Documentation
-      </span>
-    ),
+    title: "Weaviate Core: Documentation",
     description:
-      'To learn how Weaviate can help you build your AI project, check out the Weaviate documentation.',
-    link: '/docs/weaviate/',
-  },
-  {
-    title: (
-      <span>
-        <i className="fa fa-user-friends" aria-hidden="true"></i> Join the community
-      </span>
-    ),
-    description:
-      'Connect with other developers and contribute to our forum and Slack discussions.',
-    link: 'https://weaviate.io/community',
+      "To learn how Weaviate can help you build your AI project, check out the Weaviate documentation.",
+    link: "/docs/weaviate/",
+    icon: "fa fa-book",
   },
 ];
 
-<NextSteps cards={cardsData} />
+<CardsSection items={nextStepsData} />
+<br />
 
-## Support
+## Support & feedback
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 

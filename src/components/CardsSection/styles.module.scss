@@ -1,11 +1,10 @@
-
 // Container for the cards
 .cardsSection {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25.5625rem, 1fr));
-  gap: 40px;
-  margin: 40px auto;
-  justify-content: left;
+  grid-template-columns: repeat(auto-fit, 25.5625rem);
+  gap: 10px;
+  margin: 0;
+  justify-content: start;
 }
 
 .card {
@@ -39,6 +38,12 @@
   }
 }
 
+.smallCards {
+  .card {
+    padding: 10px 25px 5px 25px;
+  }
+}
+
 .cardHeader {
   display: flex;
   align-items: center;
@@ -53,7 +58,7 @@
 }
 
 .cardTitle {
-  font-family: 'Plus Jakarta Sans';
+  font-family: "Plus Jakarta Sans";
   font-size: 1.25rem;
   font-weight: 700;
   margin: 12px 6px;

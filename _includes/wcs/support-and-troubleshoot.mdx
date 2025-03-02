@@ -1,9 +1,30 @@
-For help with **Serverless Cloud**, **Enterprise Cloud**, and **Bring Your Own Cloud** accounts, contact [Weaviate support](mailto:support@weaviate.io) directly to open a support ticket.
+For help with **Serverless Cloud**, **Enterprise Cloud**, and **Bring Your Own Cloud** accounts, contact [Weaviate support](mailto:support@weaviate.io) directly to open a support ticket. To add a support plan, contact [Weaviate sales](https://weaviate.io/pricing#contact-sales).
 
-For questions and support from the Weaviate community, try these resources:
+If you have any questions or feedback, let us know in the [user forum](https://forum.weaviate.io/).
 
-- [Community forum](https://forum.weaviate.io)
-- [GitHub](https://github.com/weaviate/weaviate)
-- [Slack](https://weaviate.io/slack)
+import CardsSection from "/src/components/CardsSection";
+import styles from "/src/components/CardsSection/styles.module.scss";
 
-To add a support plan, contact [Weaviate sales](https://weaviate.io/pricing#contact-sales).
+export const feedbackCardsData = [
+  {
+    id: "new",
+    title: "Technical questions",
+    description: (
+      <>
+        If you have questions feel free to post on our{" "}
+        <span className={styles.highlight}>Community forum</span>.
+      </>
+    ),
+    link: "https://forum.weaviate.io/new-topic?title=%5BQuestion%5D%20YOUR%20TOPIC&body=Details%20here&category=support&tags=technical",
+    icon: "fas fa-comments",
+  },
+  {
+    id: "concepts",
+    title: "Documentation feedback",
+    description: "Leave feedback by opening a GitHub issue.",
+    link: "https://github.com/weaviate/docs/issues",
+    icon: "fa-brands fa-github",
+  },
+];
+
+<CardsSection items={feedbackCardsData} className={styles.smallCards} />

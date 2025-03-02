@@ -11,9 +11,6 @@ import DeploymentCards from "/src/components/DeploymentCards";
 import styles from "/src/components/CardsSection/styles.module.scss";
 import secondaryNavbarItems from "/secondaryNavbar.js";
 
-Weaviate _(we-vee-eight)_ is an open source, AI-native vector database.  
-Use this documentation to get started with Weaviate and to learn how to get the most out of Weaviate's features.
-
 export const welcomeCardsData = [
   {
     id: "new",
@@ -28,28 +25,27 @@ export const welcomeCardsData = [
     link: "/docs/weaviate/quickstart",
     icon: "fas fa-star", // use Font Awesome CSS class
   },
-  {
-    id: "questions",
-    title: "Questions",
-    description:
-      "Please visit our forum. The Weaviate team and our awesome community can help.",
-    link: "https://forum.weaviate.io/c/support/",
-    icon: "fas fa-comments",
-  },
-  {
-    id: "github",
-    title: "Open-source on GitHub",
-    description: "Give us a star on GitHub to support our work.",
-    link: "https://github.com/weaviate/weaviate",
-    icon: "fab fa-github", // note: brand icons use "fab"
-  },
 ];
 
-<CardsSection items={welcomeCardsData} />
+<div class="row">
+  <div class="col col--6">
+    Weaviate _(we-vee-eight)_ is an open source, AI-native vector database. Use
+    this documentation to get started with Weaviate and to learn how to get the
+    most out of Weaviate's features.
+  </div>
+  <div class="col col--6">
+    <CardsSection items={welcomeCardsData} className={styles.smallCards} />
+  </div>
+</div>
+<br />
 
 ## Find the right documentation and resources
 
+The Weaviate documentation is structured into multiple units based on the service and functionality.
+
+<br />
 <CardsSection items={secondaryNavbarItems} />
+<br />
 
 ## Choose your deployment
 
@@ -138,8 +134,24 @@ export const deploymentCardsData = [
 
 <DeploymentCards items={deploymentCardsData} />
 
-## Questions and feedback
+## Community & support
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+export const communityCardsData = [
+  {
+    id: "questions",
+    title: "Questions",
+    description:
+      "Please visit our forum. The Weaviate team and our awesome community can help.",
+    link: "https://forum.weaviate.io/c/support/",
+    icon: "fas fa-comments",
+  },
+  {
+    id: "github",
+    title: "Open-source on GitHub",
+    description: "Give us a star on GitHub to support our work.",
+    link: "https://github.com/weaviate/weaviate",
+    icon: "fab fa-github", // note: brand icons use "fab"
+  },
+];
 
-<DocsFeedback/>
+<CardsSection items={communityCardsData} />

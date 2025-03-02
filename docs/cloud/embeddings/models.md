@@ -48,7 +48,7 @@ import WeaviateEmbeddingsVectorizerParameters from '/_includes/weaviate-embeddin
 - [Weaviate Embeddings: Administration](/docs/cloud/embeddings/administration)
 - [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings)
 
-## Support
+## Support & feedback
 
 import SupportAndTrouble from '/\_includes/wcs/support-and-troubleshoot.mdx';
 

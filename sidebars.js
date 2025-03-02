@@ -23,7 +23,7 @@ const sidebars = {
     {
       type: "doc",
       id: "weaviate/introduction", // document ID
-      label: "About the docs", // sidebar label
+      label: "About Weaviate", // sidebar label
     },
     {
       type: "category",

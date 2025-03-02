@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: About Weaviate
 sidebar_position: 0
 image: og/docs/introduction.jpg
 # tags: []
@@ -7,119 +7,26 @@ image: og/docs/introduction.jpg
 
 Welcome to the documentation for **Weaviate**, an open source vector database.
 
-### About the docs
-The content is grouped into categories by goals:
+import WeaviateEcosystem from '@site/static/img/weaviate-ecosystem.png';
 
-| |How-to |References |Concepts |Tutorials |
-| ----- | ----- | ----- | ----- | ----- |
-| **Goal** | **Solve** a problem | Find **itemized** information | **Explanations** of topics | Guided **lessons** |
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={WeaviateEcosystem} alt="Weaviate Ecosystem" />
+    </div>
+    <div class="card__body">
+      <p>Weaviate ecosystem</p>
+    </div>
+  </div>
+</div>
+<br />
 
-Commonly requested resources such as
-- [Benchmarks](./benchmarks/index.md)
-- [Roadmap](./roadmap/index.md)
+The Weaviate ecosystem consists of multiple tools and services centered around building cloud native AI-powered applications. As shown in the high-level overview above, the ecosystem consists of:
 
-Have their own sections, and others such as the
-
-- [FAQ](./more-resources/faq.md)
-- [Glossary](./more-resources/glossary.md)
-
-And more can be found in the [More Resources](./more-resources/index.md) section.
-
-:::tip Looking for Weaviate Cloud docs?
-The Weaviate Cloud (WCD) documentation now has its own section! [Check it out here](../cloud/index.mdx).
-:::
-
-### For new users
-
-If you are new to Weaviate, we recommend starting with these sections:
-1. Introduction (this page),
-2. [Quickstart tutorial](./quickstart/index.md)
-3. [Installation](./installation/index.md)
-4. [How-to: Configure](./configuration/index.md)
-
-We suggest you browse through the [concepts](./concepts/index.md) section if you are interested in how Weaviate works.
-
-:::info Help us to help you!
-If you have questions, visit our [forum](https://forum.weaviate.io) - we can help you with your specific problem, and help make the documentation better. Plus you'll meet our amazing, helpful community of users just like you!
-:::
-
-:::note
-Like what you see? Consider giving us a [⭐ on GitHub](https://github.com/weaviate/weaviate/stargazers).
-:::
-
-### Code examples
-
-Where possible, we show code examples in multiple programming languages using our [client libraries](./client-libraries/index.md). The following example shows you how to get a Weaviate collection definition using different clients.
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go';
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START ReadAllCollections"
-      endMarker="# END ReadAllCollections"
-      language="py"
-    />
-  </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllCollections"
-      endMarker="# END ReadAllCollections"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START ReadAllCollections"
-      endMarker="// END ReadAllCollections"
-      language="ts"
-    />
-  </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ReadAllCollections"
-      endMarker="// END ReadAllCollections"
-      language="tsv2"
-    />
-  </TabItem>
-
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START ReadAllCollections"
-      endMarker="// END ReadAllCollections"
-      language="java"
-    />
-  </TabItem>
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START ReadAllCollections"
-      endMarker="// END ReadAllCollections"
-      language="go"
-    />
-  </TabItem>
-</Tabs>
-
-## About this page
-
-This page is an introduction to Weaviate. We present a very high-level overview of Weaviate here, so that you have some context before moving on to any other sections.
+- **[Weaviate Core](#what-is-weaviate)**: An open source vector database that stores both objects and vectors.
+- **[Weaviate Cloud](/docs/cloud)**: A fully managed cloud deployment of the Weaviate vector database.
+- **[Weaviate Agents](/docs/agents)**: Pre-built agentic services for Weaviate Cloud users.
+- **[Weaviate Embeddings](/docs/cloud/embeddings)**: A managed embedding inference service for Weaviate Cloud users.
 
 ## What is Weaviate?
 
@@ -222,11 +129,34 @@ People use Weaviate for cases such as semantic search, image search, similarity 
 
 Want to get started or want to learn more? These resources might help you further:
 
-- Try out Weaviate:
-    - [Quickstart tutorial](./quickstart/index.md)
-- Learn about Weaviate:
-    - [Concepts](./concepts/index.md)
+import CardsSection from "/src/components/CardsSection";
+import styles from "/src/components/CardsSection/styles.module.scss";
 
+export const welcomeCardsData = [
+  {
+    id: "new",
+    title: "New to Weaviate?",
+    description: (
+      <>
+        Start with the{" "}
+        <span className={styles.highlight}>Quickstart tutorial</span> – an
+        end-to-end demo that takes 15–30 minutes.
+      </>
+    ),
+    link: "/docs/weaviate/quickstart",
+    icon: "fas fa-star", // use Font Awesome CSS class
+  },
+  {
+    id: "concepts",
+    title: "Concepts",
+    description:
+      "Learn more about Weaviate with our detailed concept explanations",
+    link: "/docs/weaviate/concepts",
+    icon: "fas fa-comments",
+  },
+];
+
+<CardsSection items={welcomeCardsData} />
 
 ## Questions and feedback
 

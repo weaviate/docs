@@ -79,7 +79,7 @@ We may expand the service to other regions in the future.
 - [Weaviate Embeddings: Administration](/docs/cloud/embeddings/administration)
 - [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings)
 
-## Support
+## Support & feedback
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
