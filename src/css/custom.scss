@@ -1061,3 +1061,31 @@ ul.dropdown__menu {
   top: 60px !important;
   /* other styles… */
 }
+
+// RBAC table styling
+
+.rbac-table tbody tr:hover {
+  background-color: #ececec !important;
+}
+
+.rbac-table a:hover {
+  text-decoration: underline;
+}
+
+.access-level {
+  margin: 1.5rem 0;
+}
+.access-level:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.constraints-level {
+  margin: 1.5rem 0;
+}
+.constraints-level:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}

@@ -77,11 +77,11 @@ flowchart LR
     end
 
     %% Connections with curved edges
-    data --->|"1. Insert objects\n(no vector)"| core
-    core --->|"2. Request\nvector"| vectorizer
-    vectorizer --->|"3. Request\nvector"| inference
-    inference --->|"4. Vector"| vectorizer
-    vectorizer --->|"5. Vector"| core
+    data --->|"1\. Insert objects\n(no vector)"| core
+    core --->|"2\. Request\nvector"| vectorizer
+    vectorizer --->|"3\. Request\nvector"| inference
+    inference --->|"4\. Vector"| vectorizer
+    vectorizer --->|"5\. Vector"| core
 
     %% Apply styles
     class user systemBox
@@ -149,7 +149,7 @@ flowchart LR
     end
 
     %% Connections with curved edges
-    data --->|"1. Insert objects\n(with vectors)"| core
+    data --->|"1\. Insert objects\n(with vectors)"| core
 
     %% Apply styles
     class user systemBox

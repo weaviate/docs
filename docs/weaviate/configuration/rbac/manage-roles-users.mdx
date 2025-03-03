@@ -6,12 +6,12 @@ image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
 
-import Link from '@docusaurus/Link';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py';
-import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py';
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py";
+import RolePyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py";
 
 :::info Available from `v1.29`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
@@ -21,44 +21,9 @@ In Weaviate, Role-based access control (RBAC) allows you to define roles and ass
 
 Follow these general steps to configure RBAC:
 
-<!-- TODO: Potentially replace with a React component -->
-
-<ol className="step-list">
-  <li>
-    <i className="fa-solid fa-key icon-list" style={{ marginRight: '0.5rem' }}></i>
-    <b>Step 1.</b> Connect to Weaviate with a user possessing{' '}
-    <b>
-      <Link to="#requirements">role management permissions</Link>
-    </b>
-    .
-  </li>
-  <li>
-    <i
-      className="fa-solid fa-user-shield icon-list"
-      style={{ marginRight: '0.5rem' }}
-    ></i>
-    <b>Step 2.</b> Grant permissions to a{' '}
-    <b>
-      <Link to="#create-new-roles-with-permissions">new role</Link>
-    </b>{' '}
-    or an{' '}
-    <b>
-      <Link to="#grant-additional-permissions">existing role</Link>
-    </b>
-    .
-  </li>
-  <li>
-    <i
-      className="fa-solid fa-user-edit icon-list"
-      style={{ marginRight: '0.5rem' }}
-    ></i>
-    <b>Step 3.</b>{' '}
-    <b>
-      <Link to="#assign-a-role-to-a-user">Assign the role to a user</Link>
-    </b>
-    .
-  </li>
-</ol>
+- **Step 1.** Connect to Weaviate with a user possessing **[role management permissions](#requirements)**
+- **Step 2.** Grant permissions to a **[new role](#create-new-roles-with-permissions)** or an **[existing role](#grant-additional-permissions)**
+- **Step 3.** **[Assign the role to a user](#assign-a-role-to-a-user)**
 
 ## Requirements for managing roles <i class="fa-solid fa-key"></i> {#requirements}
 
@@ -806,6 +771,6 @@ Retrieve the role and permission information for any user.
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

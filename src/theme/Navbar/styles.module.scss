@@ -141,13 +141,14 @@
 }
 
 /* Modal Header */
+/* Modal Header remains unchanged except for adding styles for the new button */
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #e0e0e07a; /* Darker background for header */
-  border-bottom: 1px solid #ccc; /* Horizontal line divider */
+  background-color: #e0e0e07a; /* Your header background */
+  border-bottom: 1px solid #ccc; /* Horizontal divider */
 }
 
 .modalHeaderLeft {
@@ -157,42 +158,81 @@
 }
 
 .modalHeaderRight {
-  /* Container for header controls */
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between the two control groups */
 }
 
-/* Header Controls (inside modalHeaderRight) */
-.headerControls {
+/* New Ask AI button styles */
+.askAiButton {
   display: inline-flex;
   align-items: center;
-  height: 32px;          /* Fixed height for consistent alignment */
-  padding: 0 8px;
-  border: 1px solid #ccc; /* Thin border */
-  border-radius: 8px;     /* Rounded corners */
-  background-color: #f7f7f7; /* Lighter background for controls */
+  height: 32px;             // slightly reduce overall height
+  padding: 0 4px;           // reduce horizontal padding
+  border: 1px solid #ccc;
+  border-radius: 6px;       // a bit less rounding
+  background-color: #f7f7f7;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
 }
 
-.modalShortcut {
-  display: inline-flex;
-  align-items: center;
-  font-size: 14px;
-  color: #666;           /* Slightly darker for the shortcut hint */
-  padding: 0 8px;
+.buttonShortcut {
+  font-size: 13px;          // slightly smaller font-size
+  color: #666;
+  padding: 0 4px;
+}
+
+.buttonText {
+  font-size: 13px;
+  color: #333;
+  font-weight: bold;
+  padding: 0 4px;
+  line-height: 28px;        // match container height for vertical centering
 }
 
 .verticalDivider {
   width: 1px;
   background-color: #ccc;
-  height: 100%;          /* Fills the height of .headerControls */
-  margin: 0 8px;
+  height: 80%;              // slightly shorter than full height
+  margin: 0 4px;
+}
+
+.buttonIcon {
+  width: 24px;              // smaller icon
+  height: auto;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+
+/* Existing Header Controls (Shift+d and close) */
+.headerControls {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+}
+
+.modalShortcut {
+  font-size: 14px;
+  color: #666;
+  padding: 0 8px;
 }
 
 .headerCloseIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 100%;          /* Matches container height */
+  height: 100%;
   font-size: 20px;
-  color: var(--ifm-navbar-link-color);
+  color: #333;
   cursor: pointer;
   padding: 0 8px;
   border: none;

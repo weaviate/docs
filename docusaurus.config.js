@@ -204,19 +204,23 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "Build",
+            title: "Documentation",
             items: [
               {
-                label: "Documentation",
+                label: "Weaviate Core",
                 to: "/docs/weaviate",
               },
               {
-                label: "Weaviate Cloud Docs",
+                label: "Weaviate Cloud",
                 to: "/docs/cloud",
               },
               {
-                label: "GitHub",
-                to: "https://github.com/weaviate/weaviate",
+                label: "Weaviate Agents",
+                to: "/docs/agents",
+              },
+              {
+                label: "Weaviate Integrations",
+                to: "/docs/integrations",
               },
             ],
           },
@@ -224,21 +228,20 @@ const config = {
             title: "Support",
             items: [
               {
-                label: "Events & Webinars",
-                to: "https://weaviate.io/community/events",
-              },
-              {
-                label: "Weaviate Hero Program",
-                href: "https://weaviate.io/community",
-              },
-
-              {
                 label: "Forum",
                 to: "https://forum.weaviate.io/",
               },
               {
                 label: "Slack",
                 to: "https://weaviate.io/slack",
+              },
+              {
+                label: "Events & Webinars",
+                to: "https://weaviate.io/community/events",
+              },
+              {
+                label: "Weaviate Hero Program",
+                href: "https://weaviate.io/community",
               },
             ],
           },

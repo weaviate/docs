@@ -34,16 +34,16 @@ flowchart LR
     B2 --> C1["Assign role to a specific user"]
 
     %% Group nodes in subgraphs with brand colors
-    subgraph sg1 ["1. Connect to Weaviate"]
+    subgraph sg1 ["1\. Connect to Weaviate"]
         A1
     end
 
-    subgraph sg2 ["2. Create new role with custom permissions"]
+    subgraph sg2 ["2\. Create new role with custom permissions"]
         B1
         B2
     end
 
-    subgraph sg3 ["3. Assign the role to a user"]
+    subgraph sg3 ["3\. Assign the role to a user"]
         C1
     end
 

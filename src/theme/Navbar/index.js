@@ -128,14 +128,23 @@ export default function NavbarWrapper(props) {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Check for Ctrl+Shift+D (you can change this combination)
-      if (event.shiftKey && event.key.toLowerCase() === "d") {
+      // Check for Ctrl+l (you can change this combination)
+      if (event.metaKey && event.key.toLowerCase() === "u") {
         setModalOpen((prev) => !prev);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const [isApple, setIsApple] = useState(true);
+
+  useEffect(() => {
+    // Detect if the platform is Apple (if needed)
+    if (navigator.appVersion.indexOf("Apple") !== -1) {
+      setIsApple(true);
+    }
   }, []);
 
   return (
@@ -195,8 +204,33 @@ export default function NavbarWrapper(props) {
               <strong>Go to documentation:</strong>
             </div>
             <div className={styles.modalHeaderRight}>
+              {/* New Ask AI button */}
+              <div
+                className={styles.askAiButton}
+                onClick={() => {
+                  if (window.Kapa && typeof window.Kapa.open === "function") {
+                    window.Kapa.open({
+                      mode: "ai",
+                      query: "",
+                      submit: false,
+                    });
+                  } else {
+                    console.warn("Kapa is not available");
+                  }
+                }}
+              >
+                <span className={styles.buttonShortcut}>{isApple ? "⌘K" : "Ctrl+K"}</span>
+                <div className={styles.verticalDivider}></div>
+                <span className={styles.buttonText}>Ask AI</span>
+                <img
+                  src="/img/site/weaviate-logo-w.png"
+                  alt="Weaviate Logo"
+                  className={styles.buttonIcon}
+                />
+              </div>
+              {/* Existing header controls */}
               <div className={styles.headerControls}>
-                <span className={styles.modalShortcut}>Shift+d</span>
+                <span className={styles.modalShortcut}>{isApple ? "⌘U" : "Ctrl+U"}</span>
                 <div className={styles.verticalDivider}></div>
                 <button
                   className={styles.headerCloseIcon}
