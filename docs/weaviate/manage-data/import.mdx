@@ -176,7 +176,7 @@ To use the gRPC API with the [Spark connector](https://github.com/weaviate/spark
 
 ## Specify an ID value
 
-Weaviate generates an UUID for each object. Object IDs must be unique. If you set object IDs, use one of these [deterministic UUID](#generate-a-deterministic-id) methods to prevent duplicate IDs:
+Weaviate generates an UUID for each object. Object IDs must be unique. If you set object IDs, use one of these deterministic UUID methods to prevent duplicate IDs:
 
 - [`generate_uuid5`](https://weaviate-python-client.readthedocs.io/en/stable/weaviate.util.html#weaviate.util.generate_uuid5) (Python)
 - `generateUuid5` (TypeScript)
@@ -378,7 +378,7 @@ You can batch create links from an object to another other object through cross-
 
 The Python clients have built-in batching methods to help you optimize import speed. For details, see the client documentation:
 
-- [Python client `v4`](../client-libraries/python/index.md#batching)
+- [Python client `v4`](../client-libraries/python/index.md#batch-imports)
 - [Python client `v3`](../client-libraries/python/python_v3.md#batching)
 
 ### Async Python client and batching

@@ -78,7 +78,7 @@ For a list of the files that are included in a release, see the Assets section o
 
 ### File URL
 To get the URL for a particular binary archive file, follow these steps:
-1. Find the Weaviate Core release you want on the [Release Notes](/docs/weaviate/release-notes/index.md#weaviate-core-release-summaries) page.
+1. Find the Weaviate Core release you want on the [Release Notes](/docs/weaviate/release-notes/index.md) page.
 1. Click to the release notes for that version. The Assets section includes `linux-amd64` and `linux-arm64` binaries in `tar.gz` format.
 1. Copy the link to the full URL of the `tar.gz` file for your platform.
 

@@ -15,7 +15,7 @@ The following diagram illustrates the flow of a user request through the authent
 
 ```mermaid
 flowchart TB
-    User(["Authenticated User"]) --> AuthScheme{"Authorization\nScheme?"}
+    User(["Authenticated User"]) --> AuthScheme{"Authorization<br> Scheme?"}
 
     subgraph rbac ["RBAC Authorization"]
         direction TB
@@ -23,9 +23,9 @@ flowchart TB
         ViewerRole["Viewer Role"]
         CustomRole["Custom Roles"]
 
-        Perms1["Full Access\nAll Operations"]
-        Perms2["Read-only\nAccess"]
-        Perms3["Custom\nPermissions"]
+        Perms1["Full Access<br> All Operations"]
+        Perms2["Read-only<br> Access"]
+        Perms3["Custom<br> Permissions"]
 
         AdminRole --> Perms1
         ViewerRole --> Perms2
@@ -36,10 +36,10 @@ flowchart TB
         direction TB
         AdminUser["Admin Users"]
         ReadOnly["Read-only Users"]
-        AnonUser["Anonymous Users\n(Optional)"]
+        AnonUser["Anonymous Users<br> (Optional)"]
 
-        AllPerms["Full Access\nAll Operations"]
-        ReadPerms["Read-only\nAccess"]
+        AllPerms["Full Access<br> All Operations"]
+        ReadPerms["Read-only<br> Access"]
 
         AdminUser --> AllPerms
         ReadOnly --> ReadPerms
@@ -48,7 +48,7 @@ flowchart TB
     end
 
     subgraph undiffer ["Undifferentiated Access"]
-        AllAccess["Full Access\nAll Operations"]
+        AllAccess["Full Access<br> All Operations"]
     end
 
     AuthScheme -->|"RBAC"| rbac

@@ -100,9 +100,9 @@ flowchart LR
     %% Define nodes and connections
     subgraph vectorIndex ["Vector Index Selection"]
         direction LR
-        multiTenant{"Is multi-tenancy\nenabled?"}
-        objCount{"Does the collection have\nmore than 100k objects?"}
-        stayUnder{"Is the collection likely to stay\nat under 100k objects?"}
+        multiTenant{"Is multi-tenancy<br> enabled?"}
+        objCount{"Does the collection have<br> more than 100k objects?"}
+        stayUnder{"Is the collection likely to stay<br> at under 100k objects?"}
 
         multiTenant -->|No| objCount
         multiTenant -->|Yes| useDynamic["Use Dynamic"]
@@ -152,10 +152,10 @@ flowchart LR
     %% Define nodes and connections
     subgraph compression ["Compression Strategy"]
         direction LR
-        startIndexType{"What is your\nvector index type?"}
-        sample{"Do you have a\nrepresentative sample\nof your final dataset?"}
-        tunable{"Do you want\ntunable\ncompression?"}
-        bqcompat{"Is your vectorizer\nmodel compatible\nwith BQ?"}
+        startIndexType{"What is your<br> vector index type?"}
+        sample{"Do you have a<br> representative sample<br> of your final dataset?"}
+        tunable{"Do you want<br> tunable<br> compression?"}
+        bqcompat{"Is your vectorizer<br> model compatible<br> with BQ?"}
 
         startIndexType -->|HNSW| sample
         startIndexType -->|Flat| bqcompat
@@ -164,7 +164,7 @@ flowchart LR
         tunable -->|No| useSQ["Use SQ"]
         sample -->|No| useBQ["Use BQ"]
         bqcompat -->|Yes| useBQ["Use BQ"]
-        bqcompat -->|No| noCompress["Do not use\ncompression"]
+        bqcompat -->|No| noCompress["Do not use<br> compression"]
     end
 
     %% Style nodes
@@ -207,8 +207,8 @@ flowchart LR
     %% Define nodes and connections
     subgraph tenantData ["Tenant Data Availability"]
         direction LR
-        needNow{"Does the tenant data\nneed to be\navailable now?"}
-        howQuick{"When it is needed,\nhow quickly does it\nneed to be available?"}
+        needNow{"Does the tenant data<br> need to be<br> available now?"}
+        howQuick{"When it is needed,<br> how quickly does it<br> need to be available?"}
 
         needNow -->|Yes| active["Active"]
         needNow -->|No| howQuick

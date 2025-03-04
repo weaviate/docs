@@ -1,5 +1,6 @@
 ---
 title: Model provider integrations
+sidebar_label: Overview
 sidebar_position: 50
 image: og/docs/model-provider-integrations.jpg
 # tags: ['getting started', 'model providers', 'integrations']
@@ -76,19 +77,19 @@ This is done by providing the source data to the integration provider, which the
 
 flowchart LR
     %% Style definitions
-    classDef systemBox fill:#f7fafc,stroke:#3182ce,stroke-width:2px,color:#2d3748,padding:10px
-    classDef weaviateBox fill:#f7fafc,stroke:#2d3748,stroke-width:2px,color:#2d3748,padding:10px
-    classDef providerBox fill:#f7fafc,stroke:#48bb78,stroke-width:2px,color:#2d3748,padding:10px
+    classDef systemBox fill:#f7fafc,stroke:#3182ce,stroke-width:2px,color:#2d3748
+    classDef weaviateBox fill:#f7fafc,stroke:#2d3748,stroke-width:2px,color:#2d3748
+    classDef providerBox fill:#f7fafc,stroke:#48bb78,stroke-width:2px,color:#2d3748
     classDef component fill:white,stroke:#718096,stroke-width:1.5px,color:#2d3748,rx:6
 
     %% Model Provider section (leftmost)
     subgraph provider["Model Provider"]
-        inference["🤖 Inference API /\nLocal Model"]
+        inference["🤖 Inference API /<br> Local Model"]
     end
 
     %% Weaviate section (middle)
     subgraph weaviate["Weaviate"]
-        vectorizer["🔌 Model Provider\nIntegration"]
+        vectorizer["🔌 Model Provider<br> Integration"]
         core["⚡️ Data & vector store"]
     end
 
@@ -98,11 +99,11 @@ flowchart LR
     end
 
     %% Connections
-    data -->|"1. Insert objects"| core
-    core -->|"2. Request vector"| vectorizer
-    vectorizer -->|"3. Request vector"| inference
-    inference -->|"4. Vector"| vectorizer
-    vectorizer -->|"5. Vector"| core
+    data -->|"1\. Insert objects"| core
+    core -->|"2\. Request vector"| vectorizer
+    vectorizer -->|"3\. Request vector"| inference
+    inference -->|"4\. Vector"| vectorizer
+    vectorizer -->|"5\. Vector"| core
 
     %% Apply styles
     class user systemBox

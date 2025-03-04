@@ -28,11 +28,11 @@ flowchart LR
     %% Node definitions
     Query[/"🔍 Query"/]
     Filter["Filter"]
-    Key["Keyword Search\n(BM25F)"]
-    Vec["Vector Search\n(Embeddings)"]
-    Hyb["Hybrid Search\n(Combined)"]
-    Rerank["Rerank\n(Optional)"]
-    RAG["RAG\n(Optional)"]
+    Key["Keyword Search<br> (BM25F)"]
+    Vec["Vector Search<br> (Embeddings)"]
+    Hyb["Hybrid Search<br> (Combined)"]
+    Rerank["Rerank<br> (Optional)"]
+    RAG["RAG<br> (Optional)"]
     Results[/"📊 Results"/]
 
     %% Main flow grouping

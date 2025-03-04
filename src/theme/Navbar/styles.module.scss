@@ -1,8 +1,13 @@
 /* Define common values as CSS custom properties */
 :root {
   --secondary-navbar-height: 60px;
-  --modal-overlay-bg: rgba(0, 0, 0, 0.5);
-  --modal-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  --docs-modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  --docs-modal-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  --docs-divider-color: #ccc;
+  --docs-modal-header-bg: #e0e0e07a;
+  --docs-modal-header-button-bg: #f7f7f7;
+  --docs-modal-header-button-hover-bg: #e0e0e0;
+  --docs-header-button-text-color: #333;
 }
 
 /* NAVBAR STYLES */
@@ -62,8 +67,23 @@
   background-color: var(--ifm-hover-overlay);
 }
 
-.optionIcon,
-.arrowIcon {
+.modalButtonVerticalDivider {
+  display: inline-block;
+  width: 1px;
+  height: 24px; /* fixed height; adjust as needed */
+  background-color: var(--docs-divider-color);
+  margin: 0 4px; /* adjust spacing on each side */
+}
+
+.modalButtonShortcut {
+  white-space: nowrap; // Force no wrapping on text
+  padding: 0 4px;
+  color: var(--ifm-navbar-link-color);
+  font-size: 13px;
+  font-weight: normal;
+}
+
+.optionIcon {
   font-size: 14px;
   color: var(--docs-modal-button-color);
 }
@@ -107,7 +127,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--modal-overlay-bg);
+  background: var(--docs-modal-overlay-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,7 +147,7 @@
   border-radius: 8px;
   width: 100% !important;
   max-width: 650px !important;
-  box-shadow: var(--modal-shadow);
+  box-shadow: var(--docs-modal-shadow);
   overflow: hidden; /* Ensures header and body share the rounded corners */
   position: relative;
   transform: translateY(-20px);
@@ -147,8 +167,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #e0e0e07a; /* Your header background */
-  border-bottom: 1px solid #ccc; /* Horizontal divider */
+  background-color: var(--docs-modal-header-bg);
+  border-bottom: 1px solid var(--docs-divider-color);
 }
 
 .modalHeaderLeft {
@@ -167,45 +187,67 @@
 .modalHeaderButton {
   display: inline-flex;
   align-items: center;
-  height: 32px;             // slightly reduce overall height
-  padding: 0 4px;           // reduce horizontal padding
-  border: 1px solid #ccc;
-  border-radius: 6px;       // a bit less rounding
-  background-color: #f7f7f7;
+  flex-wrap: nowrap; // Prevent wrapping
+  white-space: nowrap; // Ensure content stays on one line
+  overflow: hidden; // Hide any overflow if it occurs
+  height: 32px;
+  padding: 0 4px; // Reduce horizontal padding for compactness
+  border: 1px solid var(--docs-divider-color);
+  border-radius: 6px;
+  background-color: var(--docs-modal-header-button-bg);
   cursor: pointer;
   transition: background-color 0.2s ease;
-  
-  &:hover {
-    background-color: #e0e0e0;
-  }
-}
-
-.buttonShortcut {
-  font-size: 13px;          // slightly smaller font-size
-  color: #666;
-  padding: 0 4px;
-}
-
-.buttonText {
   font-size: 13px;
-  color: #333;
-  font-weight: bold;
+}
+
+.modalHeaderButton:hover {
+  background-color: var(--docs-modal-header-button-hover-bg);
+}
+
+.buttonShortcut,
+.buttonText {
+  white-space: nowrap; // Force no wrapping on text
   padding: 0 4px;
-  line-height: 28px;        // match container height for vertical centering
+  color: var(--docs-header-button-text-color);
 }
 
 .verticalDivider {
   width: 1px;
-  background-color: #ccc;
-  height: 1.5em;
+  background-color: var(--docs-divider-color);
+  height: 80%; // Adjust height as needed
   margin: 0 4px;
 }
 
 .buttonIcon {
-  width: 24px;              // smaller icon
+  width: 24px;
   height: auto;
   margin-left: 4px;
   vertical-align: middle;
+}
+
+/* Media Query for narrow screens */
+@media (max-width: 600px) {
+  .modalHeaderButton {
+    height: 28px;
+    padding: 0 2px;
+    font-size: 11px;
+  }
+
+  .buttonShortcut,
+  .buttonText {
+    padding: 0 2px;
+    font-size: 11px;
+  }
+
+  .verticalDivider {
+    margin: 0 2px;
+    height: 70%;
+  }
+
+  .buttonIcon {
+    width: 16px;
+    margin-left: 2px;
+  }
 }
 
 .headerCloseIcon {
@@ -214,7 +256,7 @@
   justify-content: center;
   height: 100%;
   font-size: 20px;
-  color: #333;
+  color: var(--docs-header-button-text-color);
   padding: 0 8px;
   border: none;
   background: transparent;
@@ -343,7 +385,7 @@
     height: auto;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: var(--modal-shadow);
+    box-shadow: var(--docs-modal-shadow);
   }
 
   .modalOptionsContainer {

@@ -1,5 +1,6 @@
 ---
 title: Concepts
+sidebar_label: Overview
 description: Concepts in Weaviate
 sidebar_position: 0
 image: og/docs/concepts.jpg

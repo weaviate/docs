@@ -14,11 +14,11 @@ Weaviate controls access through user authentication via API keys or OpenID Conn
 ```mermaid
 flowchart LR
     %% Define main nodes
-    Request["Client\nRequest"]
-    AuthCheck{"AuthN\nEnabled?"}
-    AccessCheck{"Check\nAuthZ"}
-    Access["✅ Access\nGranted"]
-    Denied["❌ Access\nDenied"]
+    Request["Client<br> Request"]
+    AuthCheck{"AuthN<br> Enabled?"}
+    AccessCheck{"Check<br> AuthZ"}
+    Access["✅ Access<br> Granted"]
+    Denied["❌ Access<br> Denied"]
 
     %% Define authentication method nodes
     subgraph auth ["AuthN"]

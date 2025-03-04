@@ -58,8 +58,8 @@ flowchart LR
 
     %% Parameters box
     subgraph params["Search Parameters"]
-        alpha["Alpha: Balance between\nvector and keyword scores"]
-        fusion_type["Fusion Strategy:\nrankedFusion or relativeScoreFusion"]
+        alpha["Alpha: Balance between<br> vector and keyword scores"]
+        fusion_type["Fusion Strategy:<br> rankedFusion or relativeScoreFusion"]
     end
 
     params --> fusion

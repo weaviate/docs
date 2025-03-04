@@ -62,13 +62,13 @@ flowchart LR
 
     %% Provider section
     subgraph provider["Model provider"]
-        inference["🤖 Inference API /\nLocal model"]
+        inference["🤖 Inference API /<br> Local model"]
     end
 
     %% Weaviate section
     subgraph weaviate["Weaviate"]
-        vectorizer["🔌 Model provider\nintegration"]
-        core["💾 Data &\nvector store"]
+        vectorizer["🔌 Model provider<br> integration"]
+        core["💾 Data &<br> vector store"]
     end
 
     %% User System
@@ -77,9 +77,9 @@ flowchart LR
     end
 
     %% Connections with curved edges
-    data --->|"1\. Insert objects\n(no vector)"| core
-    core --->|"2\. Request\nvector"| vectorizer
-    vectorizer --->|"3\. Request\nvector"| inference
+    data --->|"1\. Insert objects<br> (no vector)"| core
+    core --->|"2\. Request<br> vector"| vectorizer
+    vectorizer --->|"3\. Request<br> vector"| inference
     inference --->|"4\. Vector"| vectorizer
     vectorizer --->|"5\. Vector"| core
 
@@ -140,7 +140,7 @@ flowchart LR
 
     %% Weaviate section
     subgraph weaviate["Weaviate"]
-        core["💾 Data &\nvector store"]
+        core["💾 Data &<br> vector store"]
     end
 
     %% User System
@@ -149,7 +149,7 @@ flowchart LR
     end
 
     %% Connections with curved edges
-    data --->|"1\. Insert objects\n(with vectors)"| core
+    data --->|"1\. Insert objects<br> (with vectors)"| core
 
     %% Apply styles
     class user systemBox

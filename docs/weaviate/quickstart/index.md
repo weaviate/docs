@@ -25,26 +25,26 @@ This quickstart shows you how to combine Weaviate Cloud and Cohere to:
 ```mermaid
 flowchart LR
     %% Define nodes with white backgrounds and darker borders
-    A1["Create Weaviate\nSandbox"] --> A2["Install client\nlibrary"]
-    A2 --> A3["Connect to\nWeaviate"]
-    A3 --> B1["Define collection\n(with an inference API)"]
-    B1 --> B2["Batch import\nobjects"]
-    B2 --> C1["Semantic search\n(nearText)"]
-    C1 --> C2["RAG\n(Generate)"]
+    A1["Create Weaviate<br> Sandbox"] --> A2["Install client<br> library"]
+    A2 --> A3["Connect to<br> Weaviate"]
+    A3 --> B1["Define collection<br> (with an inference API)"]
+    B1 --> B2["Batch import<br> objects"]
+    B2 --> C1["Semantic search<br> (nearText)"]
+    C1 --> C2["RAG<br> (Generate)"]
 
     %% Group nodes in subgraphs with brand colors
-    subgraph sg1 ["1. Setup"]
+    subgraph sg1 ["1\. Setup"]
         A1
         A2
         A3
     end
 
-    subgraph sg2 ["2. Populate"]
+    subgraph sg2 ["2\. Populate"]
         B1
         B2
     end
 
-    subgraph sg3 ["3. Query"]
+    subgraph sg3 ["3\. Query"]
         C1
         C2
     end
@@ -326,16 +326,16 @@ Here is a diagram showing the workflow in Weaviate.
 
 ```mermaid
 flowchart LR
-    Query["🔍 Search:\n'biology'"]
+    Query["🔍 Search:<br> 'biology'"]
 
     subgraph sg1 ["Vector Search"]
         direction LR
-        VS1["Convert query\nto vector"] --> VS2["Find similar\nvectors"]
-        VS2 --> VS3["Return top\nmatches"]
+        VS1["Convert query<br> to vector"] --> VS2["Find similar<br> vectors"]
+        VS2 --> VS3["Return top<br> matches"]
     end
 
     subgraph sg2 ["Results"]
-        R1["Most similar\ndocuments"]
+        R1["Most similar<br> documents"]
     end
 
     Query --> VS1
@@ -377,26 +377,26 @@ This diagram shows the RAG workflow in Weaviate.
 flowchart LR
     subgraph sg0 ["Weaviate Query"]
         direction TB
-        Search["🔍 Search: \n'biology'"]
-        Prompt["✍️ Prompt: \n'Write a\ntweet...'"]
+        Search["🔍 Search:<br> 'biology'"]
+        Prompt["✍️ Prompt:<br> 'Write a<br> tweet...'"]
     end
 
     subgraph sg1 ["Vector Search"]
         direction LR
-        VS1["Convert query\nto vector"] --> VS2["Find similar\nvectors"]
-        VS2 --> VS3["Return top\nmatches"]
+        VS1["Convert query<br> to vector"] --> VS2["Find similar<br> vectors"]
+        VS2 --> VS3["Return top<br> matches"]
     end
 
     subgraph sg2 ["Generation"]
         direction LR
-        G1["Send\n(results + prompt)\nto LLM"]
-        G1 --> G2["Generate\nresponse"]
+        G1["Send<br> (results + prompt)<br> to LLM"]
+        G1 --> G2["Generate<br> response"]
     end
 
     subgraph sg3 ["Results"]
         direction TB
-        R1["Most similar\ndocuments"]
-        R2["Generated\ncontent"]
+        R1["Most similar<br> documents"]
+        R2["Generated<br> content"]
     end
 
     Search --> VS1

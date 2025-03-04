@@ -23,13 +23,13 @@ This quickstart shows you how to combine Weaviate Cloud and [Weaviate Embeddings
 ```mermaid
 flowchart LR
     %% Define nodes with white backgrounds and darker borders
-    A1["Sign up"] --> A2["Create a\ncluster"]
-    A2 --> B1["Install client\nlibrary"]
-    B1 --> B2["Connect to\nWeaviate"]
+    A1["Sign up"] --> A2["Create a<br> cluster"]
+    A2 --> B1["Install client<br> library"]
+    B1 --> B2["Connect to<br> Weaviate"]
     B2 --> C1["Define collection"]
     C1 --> C2["Import data"]
     C2 --> D1["Semantic search"]
-    D1 --> D2["RAG\n(Generate)"]
+    D1 --> D2["RAG<br> (Generate)"]
 
     %% Group nodes in subgraphs with brand colors
     subgraph sg1 ["1\. Setup"]
@@ -364,16 +364,16 @@ Here is a diagram showing the workflow in Weaviate.
 
 ```mermaid
 flowchart LR
-    Query["🔍 Search:\n'biology'"]
+    Query["🔍 Search:<br> 'biology'"]
 
     subgraph sg1 ["Vector Search"]
         direction LR
-        VS1["Convert query\nto vector"] --> VS2["Find similar\nvectors"]
-        VS2 --> VS3["Return top\nmatches"]
+        VS1["Convert query<br> to vector"] --> VS2["Find similar<br> vectors"]
+        VS2 --> VS3["Return top<br> matches"]
     end
 
     subgraph sg2 ["Results"]
-        R1["Most similar\ndocuments"]
+        R1["Most similar<br> documents"]
     end
 
     Query --> VS1
@@ -415,26 +415,26 @@ This diagram shows the RAG workflow in Weaviate.
 flowchart LR
     subgraph sg0 ["Weaviate Query"]
         direction TB
-        Search["🔍 Search: \n'biology'"]
-        Prompt["✍️ Prompt: \n'Write a\ntweet...'"]
+        Search["🔍 Search: <br> 'biology'"]
+        Prompt["✍️ Prompt:<br> 'Write a<br> tweet...'"]
     end
 
     subgraph sg1 ["Vector Search"]
         direction LR
-        VS1["Convert query\nto vector"] --> VS2["Find similar\nvectors"]
-        VS2 --> VS3["Return top\nmatches"]
+        VS1["Convert query<br> to vector"] --> VS2["Find similar<br> vectors"]
+        VS2 --> VS3["Return top<br> matches"]
     end
 
     subgraph sg2 ["Generation"]
         direction LR
-        G1["Send\n(results + prompt)\nto LLM"]
-        G1 --> G2["Generate\nresponse"]
+        G1["Send<br> (results + prompt)<br> to LLM"]
+        G1 --> G2["Generate<br> response"]
     end
 
     subgraph sg3 ["Results"]
         direction TB
-        R1["Most similar\ndocuments"]
-        R2["Generated\ncontent"]
+        R1["Most similar<br> documents"]
+        R2["Generated<br> content"]
     end
 
     Search --> VS1

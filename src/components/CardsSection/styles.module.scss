@@ -2,11 +2,10 @@
 .cardsSection {
   display: grid;
   grid-template-columns: repeat(auto-fit, 25.5625rem);
-  gap: 10px;
+  gap: 20px;
   margin: 0;
   justify-content: start;
 }
-
 .card {
   border-radius: 0.9375rem;
   border: 1px solid var(--docs-cards-border-color);

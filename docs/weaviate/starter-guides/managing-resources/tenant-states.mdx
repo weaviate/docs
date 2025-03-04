@@ -46,8 +46,8 @@ flowchart LR
     %% Define nodes and connections
     subgraph tenantData ["Tenant Data Availability"]
         direction LR
-        needNow{"Does the tenant data\nneed to be\navailable now?"}
-        howQuick{"When it is needed,\nhow quickly does it\nneed to be available?"}
+        needNow{"Does the tenant data<br> need to be<br> available now?"}
+        howQuick{"When it is needed,<br> how quickly does it<br> need to be available?"}
 
         needNow -->|Yes| active["Active"]
         needNow -->|No| howQuick

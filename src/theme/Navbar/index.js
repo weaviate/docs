@@ -165,8 +165,8 @@ export default function NavbarWrapper(props) {
             aria-hidden="true"
           />
           {secondaryNavOptions[selectedOption]?.title}
-          <div className={styles.verticalDivider}></div>
-          <span className={styles.buttonShortcut}>
+          <div className={styles.modalButtonVerticalDivider}></div>
+          <span className={styles.modalButtonShortcut}>
             {isApple ? "⌘U" : "Ctrl+U"}
           </span>
         </button>

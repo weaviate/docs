@@ -1,12 +1,5 @@
 //@import 'variables.scss';
-@use 'variables';
-
-:root {
-  .custom-page {
-    --ifm-heading-font-family: var(--site-font-fun-heading-family) !important;
-    --ifm-font-family-base: var(--site-font-fun-base-family) !important;
-  }
-}
+@use "variables";
 
 .highlight {
   color: var(--site-font-accent-color);

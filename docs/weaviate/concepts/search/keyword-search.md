@@ -97,18 +97,18 @@ flowchart LR
 
     %% Main flow
     query["🔍 Query Text"] --> tokenize["⚡ Tokenization"]
-    tokenize --> stopwords["🚫 Stopword\nRemoval"]
-    stopwords --> scoring["📊 BM25\nScoring"]
+    tokenize --> stopwords["🚫 Stopword<br> Removal"]
+    stopwords --> scoring["📊 BM25<br> Scoring"]
 
     %% Parameters section
     subgraph params["Parameter Configuration"]
         direction TB
-        k1["k1: Term Frequency\nSaturation Control"]
-        b["b: Document Length\nNormalization"]
+        k1["k1: Term Frequency<br> Saturation Control"]
+        b["b: Document Length<br> Normalization"]
     end
 
     params --> scoring
-    scoring --> results["📑 Ranked\nResults"]
+    scoring --> results["📑 Ranked<br> Results"]
 
     %% Apply styles
     class query,tokenize,stopwords,scoring,results component

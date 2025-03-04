@@ -104,6 +104,36 @@ const sidebars = {
         "weaviate/connections/connect-query",
       ],
     },
+    {
+      type: "category",
+      label: "Starter guides",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "weaviate/starter-guides/index",
+      },
+      items: [
+        "weaviate/starter-guides/which-weaviate",
+        "weaviate/starter-guides/custom-vectors",
+        "weaviate/starter-guides/generative",
+        {
+          type: "category",
+          label: "Managing Resources (Hot, Warm, Cold)",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "weaviate/starter-guides/managing-resources/index",
+          },
+          items: [
+            "weaviate/starter-guides/managing-resources/compression",
+            "weaviate/starter-guides/managing-resources/indexing",
+            "weaviate/starter-guides/managing-resources/tenant-states",
+          ],
+        },
+      ],
+    },
   ],
   modelProvidersSidebar: [
     {
@@ -119,8 +149,13 @@ const sidebars = {
   ],
   guidesSidebar: [
     {
+      type: "doc",
+      id: "weaviate/guides", // document ID
+      label: "Overview", // sidebar label
+    },
+    {
       type: "category",
-      label: "Configure Weaviate",
+      label: "How-to: Configure Weaviate",
       link: {
         type: "doc",
         id: "weaviate/configuration/index",
@@ -169,7 +204,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Manage data",
+      label: "How-to: Manage data",
       link: {
         type: "doc",
         id: "weaviate/manage-data/index",
@@ -192,7 +227,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Queries",
+      label: "How-to: Query & Search",
       link: {
         type: "doc",
         id: "weaviate/search/index",
