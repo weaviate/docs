@@ -165,10 +165,10 @@ export default function NavbarWrapper(props) {
             aria-hidden="true"
           />
           {secondaryNavOptions[selectedOption]?.title}
-          <i
-            className={`fa fa-chevron-down ${styles.arrowIcon}`}
-            aria-hidden="true"
-          />
+          <div className={styles.verticalDivider}></div>
+          <span className={styles.buttonShortcut}>
+            {isApple ? "⌘U" : "Ctrl+U"}
+          </span>
         </button>
         <nav className={styles.secondaryNavLinks}>
           {secondaryNavOptions[selectedOption]?.links.map((item, index) => {
@@ -206,7 +206,7 @@ export default function NavbarWrapper(props) {
             <div className={styles.modalHeaderRight}>
               {/* New Ask AI button */}
               <div
-                className={styles.askAiButton}
+                className={styles.modalHeaderButton}
                 onClick={() => {
                   if (window.Kapa && typeof window.Kapa.open === "function") {
                     window.Kapa.open({
@@ -219,7 +219,9 @@ export default function NavbarWrapper(props) {
                   }
                 }}
               >
-                <span className={styles.buttonShortcut}>{isApple ? "⌘K" : "Ctrl+K"}</span>
+                <span className={styles.buttonShortcut}>
+                  {isApple ? "⌘K" : "Ctrl+K"}
+                </span>
                 <div className={styles.verticalDivider}></div>
                 <span className={styles.buttonText}>Ask AI</span>
                 <img
@@ -229,15 +231,17 @@ export default function NavbarWrapper(props) {
                 />
               </div>
               {/* Existing header controls */}
-              <div className={styles.headerControls}>
-                <span className={styles.modalShortcut}>{isApple ? "⌘U" : "Ctrl+U"}</span>
+              <div
+                className={styles.modalHeaderButton}
+                onClick={() => {
+                  setModalOpen(false);
+                }}
+              >
+                <span className={styles.buttonShortcut}>
+                  {isApple ? "⌘U" : "Ctrl+U"}
+                </span>
                 <div className={styles.verticalDivider}></div>
-                <button
-                  className={styles.headerCloseIcon}
-                  onClick={() => setModalOpen(false)}
-                >
-                  ✕
-                </button>
+                <button className={styles.headerCloseIcon}>✕</button>
               </div>
             </div>
           </div>

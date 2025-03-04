@@ -164,7 +164,7 @@
 }
 
 /* New Ask AI button styles */
-.askAiButton {
+.modalHeaderButton {
   display: inline-flex;
   align-items: center;
   height: 32px;             // slightly reduce overall height
@@ -197,7 +197,7 @@
 .verticalDivider {
   width: 1px;
   background-color: #ccc;
-  height: 80%;              // slightly shorter than full height
+  height: 1.5em;
   margin: 0 4px;
 }
 
@@ -208,24 +208,6 @@
   vertical-align: middle;
 }
 
-
-/* Existing Header Controls (Shift+d and close) */
-.headerControls {
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f7f7f7;
-}
-
-.modalShortcut {
-  font-size: 14px;
-  color: #666;
-  padding: 0 8px;
-}
-
 .headerCloseIcon {
   display: inline-flex;
   align-items: center;
@@ -233,11 +215,11 @@
   height: 100%;
   font-size: 20px;
   color: #333;
-  cursor: pointer;
   padding: 0 8px;
   border: none;
   background: transparent;
   margin: 0;
+  cursor: pointer;
 }
 
 /* Modal Body */
