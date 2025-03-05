@@ -4,7 +4,6 @@
   --docs-modal-overlay-bg: rgba(0, 0, 0, 0.5);
   --docs-modal-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   --docs-divider-color: #ccc;
-  --docs-modal-header-bg: #e0e0e07a;
   --docs-modal-header-button-bg: #f7f7f7;
   --docs-modal-header-button-hover-bg: #e0e0e0;
   --docs-header-button-text-color: #333;
@@ -83,7 +82,8 @@
   font-weight: normal;
 }
 
-.optionIcon {
+.optionIcon,
+.arrowIcon {
   font-size: 14px;
   color: var(--docs-modal-button-color);
 }

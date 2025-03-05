@@ -165,10 +165,10 @@ export default function NavbarWrapper(props) {
             aria-hidden="true"
           />
           {secondaryNavOptions[selectedOption]?.title}
-          <div className={styles.modalButtonVerticalDivider}></div>
-          <span className={styles.modalButtonShortcut}>
-            {isApple ? "⌘U" : "Ctrl+U"}
-          </span>
+          <i
+            className={`fa fa-chevron-down ${styles.arrowIcon}`}
+            aria-hidden="true"
+          />
         </button>
         <nav className={styles.secondaryNavLinks}>
           {secondaryNavOptions[selectedOption]?.links.map((item, index) => {

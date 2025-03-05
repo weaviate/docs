@@ -24,23 +24,12 @@ const config = {
     "Weaviate empowers developers to deliver, scalable vector search-powered apps painlessly",
   favicon: "img/favicon.ico",
   staticDirectories: ["static"],
-  // Set the production url of your site here
   url: "https://your-docusaurus-site.example.com",
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "weaviate", // Usually your GitHub org/user name.
-  projectName: "docs", // Usually your repo name.
 
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -81,22 +70,6 @@ const config = {
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
         },
-        /**
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },*/
         theme: {
           customCss: [
             require.resolve("./src/css/custom.scss"),
@@ -200,110 +173,6 @@ const config = {
             className: "hiddenSearch",
           },
         ],
-      },
-      footer: {
-        style: "dark",
-        links: [
-          {
-            title: "Documentation",
-            items: [
-              {
-                label: "Weaviate Core",
-                to: "/docs/weaviate",
-              },
-              {
-                label: "Weaviate Cloud",
-                to: "/docs/cloud",
-              },
-              {
-                label: "Weaviate Agents",
-                to: "/docs/agents",
-              },
-              {
-                label: "Weaviate Integrations",
-                to: "/docs/integrations",
-              },
-            ],
-          },
-          {
-            title: "Support",
-            items: [
-              {
-                label: "Forum",
-                to: "https://forum.weaviate.io/",
-              },
-              {
-                label: "Slack",
-                to: "https://weaviate.io/slack",
-              },
-              {
-                label: "Events & Webinars",
-                to: "https://weaviate.io/community/events",
-              },
-              {
-                label: "Weaviate Hero Program",
-                href: "https://weaviate.io/community",
-              },
-            ],
-          },
-
-          {
-            title: "Follow Us",
-            items: [
-              {
-                label: "GitHub",
-                to: "https://github.com/weaviate/weaviate",
-              },
-              {
-                label: "Slack",
-                to: "https://weaviate.io/slack",
-              },
-              {
-                label: "X",
-                to: "https://x.com/weaviate_io",
-              },
-              {
-                label: "Instagram",
-                to: "https://instagram.com/weaviate.io",
-              },
-              {
-                label: "YouTube",
-                to: "https://youtube.com/@Weaviate",
-              },
-              {
-                label: "LinkedIn",
-                to: "https://www.linkedin.com/company/weaviate-io",
-              },
-            ],
-          },
-
-          {
-            title: "Meetups",
-            items: [
-              {
-                label: "Amsterdam",
-                to: "https://www.meetup.com/weaviate-amsterdam",
-              },
-              {
-                label: "Boston",
-                to: "https://www.meetup.com/weaviate-boston",
-              },
-              {
-                label: "New York",
-                to: "https://www.meetup.com/weaviate-NYC",
-              },
-              {
-                label: "San Francisco",
-                to: "https://www.meetup.com/weaviate-san-francisco",
-              },
-              {
-                label: "Toronto",
-                to: "https://www.meetup.com/weaviate-toronto",
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} Weaviate, B.V. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,

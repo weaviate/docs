@@ -317,6 +317,10 @@
   text-align: center;               /* Center the text */
   cursor: pointer;                  /* Pointer on hover */
   transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Quick, subtle transitions */
+
+  @media screen and (max-width: 1150px) {
+    display: none;
+  }
 }
 
 .modern-button:hover {

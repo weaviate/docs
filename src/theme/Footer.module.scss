@@ -1,0 +1,139 @@
+:root {
+  --ifm-color-primary: #fa0171;
+  --ifm-color-primary-dark: #e10166; /* Pre-calc the darkened color */
+}
+
+.footerContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline; /* aligns elements by their text baseline */
+  gap: 4rem;
+  text-align: left;
+}
+
+/* Adjust left section so it's aligned with right section headers */
+.leftSection {
+  flex: 1 1 auto;
+  min-width: 300px; /* Ensure it doesn't get too small */
+  display: flex;
+  flex-direction: column;
+  justify-content: start; /* Align at the top */
+}
+
+/* Center the footer sections dynamically */
+.rightSection {
+  flex: 2 1 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem; /* Allow automatic spacing */
+}
+
+.footer {
+  background-color: #f8f9fa;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+}
+
+[data-theme="dark"] .footer {
+  background-color: #1a1a1a;
+  border-top: none;
+  border-bottom: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.newsletter {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.newsletterForm {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.newsletterForm input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.newsletterForm button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--site-primary-dark);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.newsletterForm button:hover {
+  background-color: var(--site-primary);
+}
+
+.message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Social icons styling */
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.socialIcons i {
+  font-size: 24px;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+[data-theme="dark"] .socialIcons i {
+  color: #fff;
+}
+
+.socialIcons i:hover {
+  color: var(--site-primary);
+}
+
+.footerSection {
+  text-align: left;
+}
+
+.footerSection h5 {
+  margin-bottom: 0.5rem;
+}
+
+.footerSection ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerSection ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer a {
+  color: var(--docs-base-color);
+}
+
+/* Footer bottom text */
+.footerText {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1rem;
+}
