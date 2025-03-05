@@ -862,3 +862,12 @@ button.close {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
 }
+
+.theme-doc-sidebar-container {
+  //background-color: var(--docs-sidebar-bg);
+  background-color: var(--docs-sidebar-bg);
+}
+
+:root nav.navbar {
+  background-color: var(--site-navbar-color);
+}

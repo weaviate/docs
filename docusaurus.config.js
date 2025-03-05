@@ -6,10 +6,7 @@
 
 import { themes as prismThemes } from "prism-react-renderer";
 const {
-  productDropdownHtml,
-  solutionsDropdownHtml,
   developersDropdownHtml,
-  companyDropdownHtml,
 } = require("./src/components/dropdownConstants");
 
 const remarkReplace = require("./src/remark/remark-replace");
@@ -64,8 +61,8 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          path: "docs", // folder name – where the docs are
-          routeBasePath: "docs", // route name – where to navigate for docs i.e. weaviate.io/<route-base-path>/...
+          path: "docs",
+          routeBasePath: "docs",
           editUrl: "https://github.com/weaviate/weaviate-io/tree/main/",
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
@@ -89,11 +86,16 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "og/default.jpg",
+      announcementBar: {
+        id: "announcement-bar-march-2025",
+        content: `<a href="https://weaviate.io/blog/weaviate-agents">Product Update: Meet Weaviate Agents — Read the blog</a>`,
+        backgroundColor: "#1C1468",
+        textColor: "#F5F5F5",
+        isCloseable: true,
+      },
       navbar: {
         title: "",
-        // hideOnScroll: true,
         logo: {
           alt: "Weaviate",
           src: "/img/site/weaviate-logo-horizontal-light-1.svg",
@@ -102,30 +104,15 @@ const config = {
         },
         items: [
           {
-            type: "dropdown",
             label: "Product",
             position: "right",
-            items: [
-              {
-                type: "html",
-                value: productDropdownHtml,
-                className: "dropDownContainer2",
-              },
-            ],
+            to: "https://weaviate.io/product",
           },
           {
-            type: "dropdown",
             label: "Solutions",
             position: "right",
-            items: [
-              {
-                type: "html",
-                value: solutionsDropdownHtml,
-                className: "dropDownContainer2",
-              },
-            ],
+            to: "https://weaviate.io/rag",
           },
-
           {
             type: "dropdown",
             label: "Developers",
@@ -140,16 +127,9 @@ const config = {
             ],
           },
           {
-            type: "dropdown",
             label: "Company",
             position: "right",
-            items: [
-              {
-                type: "html",
-                value: companyDropdownHtml,
-                className: "dropDownContainer2",
-              },
-            ],
+            to: "https://weaviate.io/company/about-us",
           },
           {
             label: "Pricing",

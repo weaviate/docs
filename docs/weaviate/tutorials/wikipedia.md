@@ -109,7 +109,7 @@ curl -s http://localhost:8080/v1/schema | jq
 
 :::tip jq
 The [`jq`](https://stedolan.github.io/jq/) command used after `curl` is a handy JSON preprocessor. When simply piping some text through it, `jq` returns the text pretty-printed and syntax-highlighted.
-:::tip
+:::
 
 
 ## Import the articles

@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: var(--docs-secondary-navbar-color);
+  background-color: var(--docs-sidebar-bg);
   padding: 0 0 0 10px;
   border-top: 1px solid var(--ifm-toc-border-color);
   border-bottom: 1px solid var(--ifm-toc-border-color);
@@ -47,11 +47,11 @@
 .modalButton {
   background-color: var(--docs-modal-button-bg);
   color: var(--ifm-navbar-link-color);
-  border: 1px solid var(--ifm-toc-border-color);
-  padding: 8px 16px;
-  font-size: 14px;
+  border: 1px solid var(--ifm-toc-border-color); /* slightly thicker border */
+  padding: 10px 20px; /* increased padding */
+  font-size: 16px; /* larger font size */
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px; /* slightly larger radius */
   margin-right: 30px;
   z-index: 2;
   position: relative;
@@ -59,27 +59,15 @@
   align-items: center;
   gap: 8px;
   font-weight: bold;
+  transition: all 0.3s ease; /* smooth transitions */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* subtle shadow */
 }
 
 .modalButton:hover {
-  color: var(--ifm-navbar-link-hover-color);
+  border: 1px solid var(--site-primary); /* slightly thicker border */
+  color: var(--site-font-link-color);
   background-color: var(--ifm-hover-overlay);
-}
-
-.modalButtonVerticalDivider {
-  display: inline-block;
-  width: 1px;
-  height: 24px; /* fixed height; adjust as needed */
-  background-color: var(--docs-divider-color);
-  margin: 0 4px; /* adjust spacing on each side */
-}
-
-.modalButtonShortcut {
-  white-space: nowrap; // Force no wrapping on text
-  padding: 0 4px;
-  color: var(--ifm-navbar-link-color);
-  font-size: 13px;
-  font-weight: normal;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* deeper shadow on hover */
 }
 
 .optionIcon,
@@ -204,11 +192,15 @@
   background-color: var(--docs-modal-header-button-hover-bg);
 }
 
-.buttonShortcut,
-.buttonText {
+.buttonShortcut {
   white-space: nowrap; // Force no wrapping on text
   padding: 0 4px;
   color: var(--docs-header-button-text-color);
+  font-weight: normal;
+}
+
+.buttonText {
+  font-weight: bold;
 }
 
 .verticalDivider {
