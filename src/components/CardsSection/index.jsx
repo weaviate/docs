@@ -8,10 +8,7 @@ const CardsSection = ({ items, className = "" }) => {
       {Object.entries(items).map(([key, item]) => (
         <Link key={key} to={item.link} className={styles.card}>
           <div className={styles.cardHeader}>
-            <i
-              className={`${item.icon} ${styles.cardIcon}`}
-              aria-hidden="true"
-            />
+            <i className={`${item.icon} ${styles.cardIcon}`} />
             <span className={styles.cardTitle}>{item.title}</span>
           </div>
           <p className={styles.cardDescription}>{item.description}</p>

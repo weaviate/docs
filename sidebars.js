@@ -63,8 +63,11 @@ const sidebars = {
           label: "Python",
           collapsible: true,
           collapsed: true,
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/python/index",
+          },
           items: [
-            "weaviate/client-libraries/python/index",
             "weaviate/client-libraries/python/async",
             "weaviate/client-libraries/python/v3_v4_migration",
             "weaviate/client-libraries/python/python_v3",
@@ -75,8 +78,11 @@ const sidebars = {
           label: "JavaScript and TypeScript",
           collapsible: true,
           collapsed: true,
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/typescript/index",
+          },
           items: [
-            "weaviate/client-libraries/typescript/index",
             "weaviate/client-libraries/typescript/typescript-v3",
             "weaviate/client-libraries/typescript/typescript-v2",
             "weaviate/client-libraries/typescript/v2_v3_migration",
@@ -114,6 +120,7 @@ const sidebars = {
         id: "weaviate/starter-guides/index",
       },
       items: [
+        "weaviate/starter-guides/schema",
         "weaviate/starter-guides/which-weaviate",
         "weaviate/starter-guides/custom-vectors",
         "weaviate/starter-guides/generative",

@@ -5,6 +5,17 @@ image: og/docs/client-libraries.jpg
 # tags: ['java', 'client library']
 ---
 
+import QuickLinks from "/src/components/QuickLinks";
+
+export const javaCardsData = [
+  {
+  title: "weaviate/java-client",
+  link: "https://github.com/weaviate/java-client",
+  icon: "fa-brands fa-github",
+  },
+];
+
+<QuickLinks items={javaCardsData} />
 
 :::note Java client version
 The current Java client version is `v||site.java_client_version||`.

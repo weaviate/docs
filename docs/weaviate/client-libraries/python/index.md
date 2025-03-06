@@ -9,8 +9,20 @@ image: og/docs/client-libraries.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
-import BatchVectorCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
+import PythonCode from '!!raw-loader!/\_includes/code/client-libraries/python_v4.py';
+import BatchVectorCode from '!!raw-loader!/\_includes/code/howto/manage-data.import.py';
+
+import QuickLinks from "/src/components/QuickLinks";
+
+export const pythonCardsData = [
+  {
+  title: "weaviate/weaviate-python-client",
+  link: "https://github.com/weaviate/weaviate-python-client",
+  icon: "fa-brands fa-github",
+  },
+];
+
+<QuickLinks items={pythonCardsData} />
 
 This page broadly covers the Weaviate Python client (`v4` release). For usage information not specific to the Python client, such as code examples, see the relevant pages in the [Weaviate documentation](../../index.mdx). Some frequently used sections are [listed here](#code-examples--resources) for convenience.
 
@@ -47,9 +59,9 @@ The `v4` client uses remote procedure calls (RPCs) under-the-hood. Accordingly, 
 If you are running Weaviate with Docker, you can map the default port (`50051`) by adding the following to your `docker-compose.yml` file:
 
 ```yaml
-    ports:
-     - 8080:8080
-     - 50051:50051
+ports:
+  - 8080:8080
+  - 50051:50051
 ```
 
 </details>
@@ -60,7 +72,7 @@ The free (sandbox) tier of WCD is compatible with the `v4` client as of 31 Janua
 
 #### Weaviate server version
 
-The `v4` client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client *and* the Weaviate server.
+The `v4` client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client _and_ the Weaviate server.
 
 ## High-level ideas
 
@@ -85,16 +97,16 @@ For discoverability, the classes are arranged into submodules.
 <details>
   <summary>See the list of submodules</summary>
 
-| Module                      | Description                         |
-|-----------------------------|-------------------------------------|
-| `weaviate.classes.config`   | Collection creation / modification  |
-| `weaviate.classes.data`     | CUD operations                      |
-| `weaviate.classes.query`    | query/search operations             |
-| `weaviate.classes.aggregate`| aggregate operations                |
-| `weaviate.classes.generic`  | generics                            |
-| `weaviate.classes.init`     | initialization                      |
-| `weaviate.classes.tenants`  | tenants                             |
-| `weaviate.classes.batch`    | batch operations                    |
+| Module                       | Description                        |
+| ---------------------------- | ---------------------------------- |
+| `weaviate.classes.config`    | Collection creation / modification |
+| `weaviate.classes.data`      | CUD operations                     |
+| `weaviate.classes.query`     | query/search operations            |
+| `weaviate.classes.aggregate` | aggregate operations               |
+| `weaviate.classes.generic`   | generics                           |
+| `weaviate.classes.init`      | initialization                     |
+| `weaviate.classes.tenants`   | tenants                            |
+| `weaviate.classes.batch`     | batch operations                   |
 
 </details>
 
@@ -136,7 +148,7 @@ There are multiple ways to connect to your Weaviate instance. To instantiate a c
 ### Connection helper functions
 
 - `weaviate.connect_to_weaviate_cloud()`
-    - Previously `connect_to_wcs()`
+  - Previously `connect_to_wcs()`
 - `weaviate.connect_to_local()`
 - `weaviate.connect_to_embedded()`
 - `weaviate.connect_to_custom()`
@@ -154,7 +166,7 @@ There are multiple ways to connect to your Weaviate instance. To instantiate a c
 </TabItem>
 <TabItem value="local" label="Local">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# LocalInstantiationBasic"
     endMarker="# END LocalInstantiationBasic"
@@ -224,7 +236,7 @@ Some of the `connect` helper functions take authentication credentials. For exam
 <Tabs groupId="languages">
 <TabItem value="api_key" label="API Key">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# WCDInstantiation"
     endMarker="# END WCDInstantiation"
@@ -301,7 +313,6 @@ In most cases, you should use the default `False` setting for `skip_init_checks`
 
 For additional connection configuration, see [Timeout values](#timeout-values).
 
-
 ## Batch imports
 
 The `v4` client offers two ways to perform batch imports. From the client object directly, or from the collection object.
@@ -312,11 +323,11 @@ We recommend using the collection object to perform batch imports of single coll
 
 There are three methods to configure the batching behavior. They are `dynamic`, `fixed_size` and `rate_limit`.
 
-| Method | Description | When to use |
-| :-- | :-- | :-- |
-| `dynamic` | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import, depending on the server load. | Recommended starting point. |
-| `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user. | When you want to specify fixed parameters. |
-| `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute). | When you want to avoid hitting third-party vectorization API rate limits. |
+| Method       | Description                                                                                                                           | When to use                                                               |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------ |
+| `dynamic`    | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import, depending on the server load. | Recommended starting point.                                               |
+| `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user.                                            | When you want to specify fixed parameters.                                |
+| `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute).                                           | When you want to avoid hitting third-party vectorization API rate limits. |
 
 #### Usage
 
@@ -327,7 +338,7 @@ These methods return a new context manager for each batch. Attributes that are r
 <Tabs groupId="languages">
 <TabItem value="dynamic" label="Dynamic">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START BatchDynamic"
     endMarker="# END BatchDynamic"
@@ -337,7 +348,7 @@ These methods return a new context manager for each batch. Attributes that are r
 </TabItem>
 <TabItem value="fixedSize" label="Fixed Size">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START BatchFixedSize"
     endMarker="# END BatchFixedSize"
@@ -381,7 +392,7 @@ Note that these lists are reset when a batching process is initialized. So make 
 :::info Added in `v1.25`.
 :::
 
-import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
+import BatchVectorizationOverview from '/\_includes/code/client-libraries/batch-import.mdx';
 
 <BatchVectorizationOverview />
 
@@ -424,7 +435,7 @@ You can instantiate a collection object by creating a collection, or by retrievi
 <Tabs groupId="languages">
 <TabItem value="create" label="Create a collection">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START CreateCollectionExample"
     endMarker="# END CreateCollectionExample"
@@ -434,7 +445,7 @@ You can instantiate a collection object by creating a collection, or by retrievi
 </TabItem>
 <TabItem value="crossref" label="With cross-references">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START CreateCollectionWithRefsExample"
     endMarker="# END CreateCollectionWithRefsExample"
@@ -462,7 +473,7 @@ Operations in the `v4` client are grouped into submodules. The key submodules fo
 - `batch`: Batch import operations
 - `query`: Search operations
 - `generate`: Retrieval augmented generation operations
-    - Build on top of `query` operations
+  - Build on top of `query` operations
 - `aggregate`: Aggregation operations
 
 ### `data`
@@ -470,10 +481,10 @@ Operations in the `v4` client are grouped into submodules. The key submodules fo
 The `data` submodule contains all object-level CUD operations, including:
 
 - `insert` for creating objects.
-    - This function takes the object properties as a dictionary.
+  - This function takes the object properties as a dictionary.
 - `insert_many` for adding multiple objects with one request.
-    - This function takes the object properties as a dictionary or as a `DataObject` instance.
-    - Note: For larger numbers of objects, consider using [batch imports](#batch-imports).
+  - This function takes the object properties as a dictionary or as a `DataObject` instance.
+  - Note: For larger numbers of objects, consider using [batch imports](#batch-imports).
 - `update` for updating objects (for `PATCH` operations).
 - `replace` for replacing objects (for `PUT` operations).
 - `delete_by_id` for deleting objects by ID.
@@ -485,7 +496,7 @@ See some examples below. Note that each function will return varying types of ob
 <Tabs groupId="languages">
 <TabItem value="insert" label="Insert">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START CreateObjectExample"
     endMarker="# END CreateObjectExample"
@@ -495,7 +506,7 @@ See some examples below. Note that each function will return varying types of ob
 </TabItem>
 <TabItem value="insert_many" label="Insert many">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START InsertManyExample"
     endMarker="# END InsertManyExample"
@@ -563,14 +574,14 @@ Using the `properties` parameter to add references is deprecated and will be rem
 
 ### `query`
 
-The `query` submodule contains all object-level query operations, including `fetch_objects` for retrieving objects without additional search parameters, `bm25` for keyword search,  `near_<xxx>` for vector search operators, `hybrid` for hybrid search and so on.
+The `query` submodule contains all object-level query operations, including `fetch_objects` for retrieving objects without additional search parameters, `bm25` for keyword search, `near_<xxx>` for vector search operators, `hybrid` for hybrid search and so on.
 
 These queries return a `_QueryReturn` object, which contains a list of `_Object` objects.
 
 <Tabs groupId="languages">
 <TabItem value="bm25" label="BM25">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START BM25QueryExample"
     endMarker="# END BM25QueryExample"
@@ -580,7 +591,7 @@ These queries return a `_QueryReturn` object, which contains a list of `_Object`
 </TabItem>
 <TabItem value="near_text" label="Near text">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START NearTextQueryExample"
     endMarker="# END NearTextQueryExample"
@@ -593,13 +604,14 @@ These queries return a `_QueryReturn` object, which contains a list of `_Object`
 #### Queries with custom returns
 
 You can further specify:
+
 - Whether to include the object vector (via `include_vector`)
-    - Default is `False`
+  - Default is `False`
 - Which properties to include (via `return_properties`)
-    - All properties are returned by default
+  - All properties are returned by default
 - Which references to include (via `return_references`)
 - Which metadata to include
-    - No metadata is returned by default
+  - No metadata is returned by default
 
 Each object includes its UUID as well as all properties by default.
 
@@ -608,7 +620,7 @@ For example:
 <Tabs groupId="languages">
 <TabItem value="default" label="Default">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START BM25QueryDefaultReturnsExample"
     endMarker="# END BM25QueryDefaultReturnsExample"
@@ -618,7 +630,7 @@ For example:
 </TabItem>
 <TabItem value="custom_return" label="Customized returns">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START BM25QueryCustomReturnsExample"
     endMarker="# END BM25QueryCustomReturnsExample"
@@ -633,6 +645,7 @@ For example:
 Results of a query can be grouped by a property as shown here.
 
 The results are organized by both their individual objects as well as the group.
+
 - The `objects` attribute is a list of objects, each containing a `belongs_to_group` property to indicate which group it belongs to.
 - The `group` attribute is a dictionary with each key indicating the value of the group, and the value being a list of objects belonging to that group.
 
@@ -660,7 +673,7 @@ The `generate` methods perform [retrieval augmented generation (RAG)](../../star
 </TabItem>
 <TabItem value="query" label="Query">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START BM25QueryExample"
     endMarker="# END BM25QueryExample"
@@ -679,7 +692,7 @@ To use the `aggregate` submodule, supply one or more ways to aggregate the data.
 <Tabs groupId="languages">
 <TabItem value="count" label="Count">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START AggregateCountExample"
     endMarker="# END AggregateCountExample"
@@ -689,7 +702,7 @@ To use the `aggregate` submodule, supply one or more ways to aggregate the data.
 </TabItem>
 <TabItem value="metric" label="Metric">
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PythonCode}
     startMarker="# START AggregateMetricExample"
     endMarker="# END AggregateMetricExample"
@@ -716,10 +729,10 @@ The results are organized the group, returning a list of groups.
 
 [Model provider integrations](../../model-providers/index.md) are configured using the `weaviate.classes.config.Configure` class. More specifically, they are configured through the `Generate`, `Reranker`, `Vectorizer` or `NamedVector` namespaces as shown in the examples below:
 
-import GenerativeExamples from '!!raw-loader!../../model-providers/_includes/provider.generative.py';
-import RerankerExamples from '!!raw-loader!../../model-providers/_includes/provider.reranker.py';
-import NamedVectorizerExamples from '!!raw-loader!../../model-providers/_includes/provider.vectorizer.py';
-import VectorizerExamples from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
+import GenerativeExamples from '!!raw-loader!../../model-providers/\_includes/provider.generative.py';
+import RerankerExamples from '!!raw-loader!../../model-providers/\_includes/provider.reranker.py';
+import NamedVectorizerExamples from '!!raw-loader!../../model-providers/\_includes/provider.vectorizer.py';
+import VectorizerExamples from '!!raw-loader!/\_includes/code/howto/manage-data.collections.py';
 
 <Tabs groupId="languages">
 <TabItem value="generative" label="Generative">
@@ -876,27 +889,34 @@ There is now runtime logic for parsing query arguments enforcing the correct typ
 ##### Batch processing
 
 Introduction of three distinct algorithms using different batching styles under-the-hood:
+
 - `client.batch.dynamic()`
 - `client.batch.fixed_size()`
 - `client.batch.rate_limit()`
 
 `client.batch.dynamic() as batch` is a drop-in replacement for the previous `client.batch as batch`, which is now deprecated and will be removed on release.
+
 ```python
 with client.batch.dynamic() as batch:
   ...
 ```
+
 is equivalent to:
+
 ```python
 with client.batch as batch:
   ...
 ```
 
 `client.batch.fixed_size() as batch` is a way to configure your batching algorithm to only use a fixed size.
+
 ```python
 with client.batch.dynamic() as batch:
   ...
 ```
+
 is equivalent to:
+
 ```python
 client.batch.configure_fixed_size()
 with client.batch as batch:
@@ -971,15 +991,14 @@ The v4.4b7 client introduces changes to `client.batch`.
 
 Updated `client.batch` parameters
 
-| Old value | Value in v4.4b7 |
-| :-- | :-- |
-| from_object_uuid: UUID | from_uuid: UUID |
-| from_object_collection: str | from_collection: str |
-| from_property_name: str | from_property: str |
-| to_object_uuid: UUID | to: Union[WeaviateReference, List[UUID]] |
-| to_object_collection: Optional[str] = None | |
-| tenant: Optional[str] = None | tenant: Optional[str] = None |
-
+| Old value                                  | Value in v4.4b7                          |
+| :----------------------------------------- | :--------------------------------------- |
+| from_object_uuid: UUID                     | from_uuid: UUID                          |
+| from_object_collection: str                | from_collection: str                     |
+| from_property_name: str                    | from_property: str                       |
+| to_object_uuid: UUID                       | to: Union[WeaviateReference, List[UUID]] |
+| to_object_collection: Optional[str] = None |                                          |
+| tenant: Optional[str] = None               | tenant: Optional[str] = None             |
 
 ##### Filter syntax
 
@@ -987,11 +1006,11 @@ Filter syntax is updated in v4.4b7.
 
 **NOTE**: The [filter reference syntax](#reference-filters) is simplified in 4.4b8.
 
-| Old syntax | New syntax in v4.4b7 |
-| :-- | :-- |
-| Filter(path=property) | Filter.by_property(property) |
-| Filter(path=["ref", "target_class", "target_property"]) | Filter.by_ref().link_on("ref").by_property("target_property") |
-| FilterMetadata.ByXX | Filter.by_id()<br/> Filter.by_creation_time() <br/> Filter.by_update_time() |
+| Old syntax                                              | New syntax in v4.4b7                                                        |
+| :------------------------------------------------------ | :-------------------------------------------------------------------------- |
+| Filter(path=property)                                   | Filter.by_property(property)                                                |
+| Filter(path=["ref", "target_class", "target_property"]) | Filter.by_ref().link_on("ref").by_property("target_property")               |
+| FilterMetadata.ByXX                                     | Filter.by_id()<br/> Filter.by_creation_time() <br/> Filter.by_update_time() |
 
 The pre-4.4b7 filter syntax is deprecated. The new, v4.4b7 syntax looks like this.
 
@@ -1044,49 +1063,49 @@ Use `ReferenceToMulti` for multi-target references.
 
 ##### References
 
-* References are now added through a `references` parameter during collection creation, object insertion and queries. See examples for:
-    * [Collection creation](#instantiate-a-collection)
-    * [Cross-reference creation](#cross-reference-creation)
-    * [Queries](#query)
-* The `FromReference` class is now called `QueryReference`.
+- References are now added through a `references` parameter during collection creation, object insertion and queries. See examples for:
+  - [Collection creation](#instantiate-a-collection)
+  - [Cross-reference creation](#cross-reference-creation)
+  - [Queries](#query)
+- The `FromReference` class is now called `QueryReference`.
 
 ##### Reorganization of classes/parameters
 
-* `weaviate.classes` submodule further split into:
-    * `weaviate.classes.config`
-    * `weaviate.classes.data`
-    * `weaviate.classes.query`
-    * `weaviate.classes.generic`
-* `vector_index_config` parameter factory functions for `wvc.config.Configure` and `wvc.config.Reconfigure` have changed to, e.g.:
-    ```python
-    client.collections.create(
-        name="MyCollection",
-        # highlight-start
-        vector_index_config=wvc.config.Configure.VectorIndex.hnsw(
-            distance_metric=wvc.config.VectorDistances.COSINE,
-            vector_cache_max_objects=1000000,
-            quantizer=wvc.config.Configure.VectorIndex.Quantizer.pq()
-        ),
-        # highlight-end
-    )
-    ```
-    * `vector_index_type` parameter has been removed.
-* `vectorize_class_name` parameter in the `Property` constructor method is `vectorize_collection_name`.
-* `[collection].data.update()` / `.replace()` *args order changed, aiming to accommodate not providing properties when updating.
-* `[collection].data.reference_add` / `.reference_delete` / `.reference_replace` the `ref` keyword was renamed to `to`.
-* `collections.create()` / `get()`: `data_model` kwarg to keyword to provide generics was renamed to `data_model_properties` .
-* `[object].metadata.uuid` is now `[object].uuid`.
-* `[object].metadata.creation_time_unix` is now `[object].metadata.creation_time`.
-* `[object].metadata.last_update_time_unix` is now `[object].metadata.last_update`.
-* `quantitizer` is renamed to `quantizer`
-* To request the vector in the returned data, use the `include_vector` parameter ([example](#queries-with-custom-returns)).
+- `weaviate.classes` submodule further split into:
+  - `weaviate.classes.config`
+  - `weaviate.classes.data`
+  - `weaviate.classes.query`
+  - `weaviate.classes.generic`
+- `vector_index_config` parameter factory functions for `wvc.config.Configure` and `wvc.config.Reconfigure` have changed to, e.g.:
+  ```python
+  client.collections.create(
+      name="MyCollection",
+      # highlight-start
+      vector_index_config=wvc.config.Configure.VectorIndex.hnsw(
+          distance_metric=wvc.config.VectorDistances.COSINE,
+          vector_cache_max_objects=1000000,
+          quantizer=wvc.config.Configure.VectorIndex.Quantizer.pq()
+      ),
+      # highlight-end
+  )
+  ```
+  - `vector_index_type` parameter has been removed.
+- `vectorize_class_name` parameter in the `Property` constructor method is `vectorize_collection_name`.
+- `[collection].data.update()` / `.replace()` \*args order changed, aiming to accommodate not providing properties when updating.
+- `[collection].data.reference_add` / `.reference_delete` / `.reference_replace` the `ref` keyword was renamed to `to`.
+- `collections.create()` / `get()`: `data_model` kwarg to keyword to provide generics was renamed to `data_model_properties` .
+- `[object].metadata.uuid` is now `[object].uuid`.
+- `[object].metadata.creation_time_unix` is now `[object].metadata.creation_time`.
+- `[object].metadata.last_update_time_unix` is now `[object].metadata.last_update`.
+- `quantitizer` is renamed to `quantizer`
+- To request the vector in the returned data, use the `include_vector` parameter ([example](#queries-with-custom-returns)).
 
 ##### Data types
 
-* Time metadata (for creation and last updated time) now returns a `datetime` object, and the parameters are renamed to `creation_time` and `last_update_time` under `MetadataQuery`.
-    * `metadata.creation_time.timestamp() * 1000` will return the same value as before.
-* `query.fetch_object_by_id()` now uses gRPC under the hood (rather than REST), and returns objects in the same format as other queries.
-* `UUID` and `DATE` properties are returned as typed objects.
+- Time metadata (for creation and last updated time) now returns a `datetime` object, and the parameters are renamed to `creation_time` and `last_update_time` under `MetadataQuery`.
+  - `metadata.creation_time.timestamp() * 1000` will return the same value as before.
+- `query.fetch_object_by_id()` now uses gRPC under the hood (rather than REST), and returns objects in the same format as other queries.
+- `UUID` and `DATE` properties are returned as typed objects.
 
 </details>
 
@@ -1183,12 +1202,11 @@ This may be useful in cases where you are using the client library in a producti
 
 ### Tab completion in Jupyter notebooks
 
-If you use a browser to run the Python client with a Jupyter notebook, press `Tab` for code completion while you edit. If you use VSCode to run your Jupyter notebook, press  `control` + `space` for code completion.
+If you use a browser to run the Python client with a Jupyter notebook, press `Tab` for code completion while you edit. If you use VSCode to run your Jupyter notebook, press `control` + `space` for code completion.
 
 ### Raw GraphQL queries
 
 To provide raw GraphQL queries, you can use the `client.graphql_raw_query` method (previously `client.query.raw` in the `v3` client). This method takes a string as input.
-
 
 ## Code examples & resources
 
@@ -1215,7 +1233,7 @@ Go to the [GitHub releases page](https://github.com/weaviate/weaviate-python-cli
 <details>
   <summary>Click here for a table of Weaviate and corresponding client versions</summary>
 
-import ReleaseHistory from '/_includes/release-history.md';
+import ReleaseHistory from '/\_includes/release-history.md';
 
 <ReleaseHistory />
 
@@ -1223,6 +1241,6 @@ import ReleaseHistory from '/_includes/release-history.md';
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

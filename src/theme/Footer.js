@@ -41,7 +41,10 @@ function Footer() {
           <div className={styles.leftSection}>
             <div className={styles.newsletter}>
               <h4>Get updates from Weaviate</h4>
-              <form onSubmit={handleSubscribe} className={styles.newsletterForm}>
+              <form
+                onSubmit={handleSubscribe}
+                className={styles.newsletterForm}
+              >
                 <input
                   type="email"
                   name="email"
@@ -166,7 +169,9 @@ function Footer() {
           </div>
         </div>
         <div className={styles.footerText}>
-          &copy; {new Date().getFullYear()} Weaviate, B.V. Built with Docusaurus.
+          &copy; {new Date().getFullYear()} Weaviate, B.V. Built with
+          Docusaurus.{" "}
+          <Link to="https://weaviate.io/service">Terms and policies</Link>
         </div>
       </div>
     </footer>

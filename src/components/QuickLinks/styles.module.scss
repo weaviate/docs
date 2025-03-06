@@ -1,0 +1,41 @@
+.quickLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px; // Adds space below the QuickLinks component
+  }
+  
+  .quickLink {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--docs-cards-border-color);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--ifm-navbar-link-color);
+    background: var(--docs-cards-bg);
+  
+    &:hover {
+      border-color: var(--docs-cards-border-hover-color);
+      background: var(--docs-cards-hover-bg);
+      color: var(--site-font-accent-color);
+    }
+  }
+  
+  .quickLinkIcon {
+    font-size: 1.5rem; // Increase this value to make the icon larger
+    width: auto; // Allow width to adjust automatically based on font-size
+    height: auto; // Allow height to adjust automatically based on font-size
+    display: inline-block;
+  }  
+  
+  .quickLinkTitle {
+    margin-left: 0.5rem;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  

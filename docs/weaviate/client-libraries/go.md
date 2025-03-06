@@ -5,6 +5,18 @@ image: og/docs/client-libraries.jpg
 # tags: ['go', 'client library']
 ---
 
+import QuickLinks from "/src/components/QuickLinks";
+
+export const goCardsData = [
+  {
+  title: "weaviate/weaviate-go-client",
+  link: "https://github.com/weaviate/weaviate-go-client",
+  icon: "fa-brands fa-github",
+  },
+];
+
+<QuickLinks items={goCardsData} />
+
 :::note Go client version
 The current Go client version is `v||site.go_client_version||`.
 :::
