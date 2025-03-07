@@ -9,7 +9,7 @@ We include brief guidelines below for submitting bug reports. These guidelines a
 
 ## How to write bug reports
 
-Bug reports are tracked as GitHub issues, such as these in [Weaviate Core]](https://github.com/weaviate/weaviate/issues).
+Bug reports are tracked as GitHub issues, such as these in [Weaviate Core](https://github.com/weaviate/weaviate/issues).
 
 Once you've determined which repository your bug is related to, check first for a duplicate WIP (work in progress) issue.
 

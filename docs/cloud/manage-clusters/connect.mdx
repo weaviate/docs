@@ -5,7 +5,7 @@ sidebar_position: 1
 image: og/wcs/user_guides.jpg
 ---
 
-import CompareURLs from '/docs/cloud/img/wcs-console-url-check.jpg';
+import CompareURLs from "/docs/cloud/img/wcs-console-url-check.jpg";
 
 [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) offers multiple options on how to connect to your cluster:
 
@@ -36,7 +36,7 @@ For authentication details, see [Account management: Authentication](/docs/cloud
 
 ### Retrieve your API keys
 
-import RetrieveAPIKeys from '/_includes/wcs/retrieve-api-keys.mdx';
+import RetrieveAPIKeys from "/_includes/wcs/retrieve-api-keys.mdx";
 
 <RetrieveAPIKeys />
 
@@ -50,7 +50,7 @@ export WEAVIATE_API_KEY="replaceThisPartWithYourAPIKey"
 
 ### Connection example
 
-import ConnectIsReady from '/_includes/code/quickstart/quickstart.is_ready.mdx';
+import ConnectIsReady from "/_includes/code/quickstart/quickstart.is_ready.mdx";
 
 <ConnectIsReady />
 
@@ -68,30 +68,26 @@ To connect to the console, follow these steps:
 
 The built-in [Query tool](/docs/cloud/tools/query-tool) connects directly to clusters in your Weaviate Cloud organization without any additional authentication.
 
-import APIKeyInHeader from '/docs/cloud/img/wcs-auth-header.jpg';
+import APIKeyInHeader from "/docs/cloud/img/wcs-auth-header.jpg";
 
-<div class="row">
-  <div class="col col--6">
-    <p>
-      To connect the Query tool to a Weaviate instance that is not part of your
-      Weaviate Cloud organization, provide an API key for the remote instance.{' '}
-      <br />
-      <br />
-      Add the API key to the connection <code>Headers</code> at the bottom of
-      the Query tool tab.
-    </p>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={APIKeyInHeader} alt="Create a cluster" />
-      </div>
-      <div class="card__body">
-        Copy the appropriate API key for your cluster.
-      </div>
-    </div>
-  </div>
-</div>
+export const imageContent = (
+  <p>
+    To connect the Query tool to a Weaviate instance that is not part of your
+    Weaviate Cloud organization, provide an API key for the remote instance.{" "}
+    <br />
+    <br />
+    Add the API key to the connection <code>Headers</code> at the bottom of the
+    Query tool tab.
+  </p>
+);
+
+<DocsImage
+  image={APIKeyInHeader}
+  caption="Connect to you Weaviate cluster with the Query tool"
+  layout="right"
+>
+  {imageContent}
+</DocsImage>
 
 ## Troubleshooting
 
@@ -111,10 +107,10 @@ To reset your Weaviate Cloud password, follow these steps:
 
 The new Python client uses the gRPC protocol to connect to Weaviate Cloud. The gRPC protocol improves query performance, but the protocol is sensitive to network speeds. If you run into timeout errors, increase the connection timeout value in your connection code.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCodeSupp from '!!raw-loader!/_includes/code/client-libraries/python_slow_connection.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCodeSupp from "!!raw-loader!/_includes/code/client-libraries/python_slow_connection.py";
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -154,30 +150,27 @@ When a Serverless cluster is updated, the cluster URL may change slightly. Weavi
 
 To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match.
 
-import EndpointURLs from '/docs/cloud/img/weaviate-cloud-endpoint-urls.png';
+import EndpointURLs from "/docs/cloud/img/weaviate-cloud-endpoint-urls.png";
 
-<div class="row">
-  <div class="col col--4">
-    <p>
-      Compare the Cluster URL with the connection URL in your application. The
-      old URL and the new URL are similar, but the new one may have an extra
-      subdomain such as <code>.c0.region</code>.
-    </p>
+export const imageContent2 = (
+  <p>
+    Compare the Cluster URL with the connection URL in your application. The old
+    URL and the new URL are similar, but the new one may have an extra subdomain
+    such as <code>.c0.region</code>.
     <br />
-    <p>
-      If the URLs are different, update your application's connection code to
-      use the new Cluster URL.
-    </p>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={EndpointURLs} alt="Cluster URLs" />
-      </div>
-      <div class="card__body">Cluster URLs.</div>
-    </div>
-  </div>
-</div>
+    <br />
+    If the URLs are different, update your application's connection code to use the
+    new Cluster URL.
+  </p>
+);
+
+<DocsImage
+  image={EndpointURLs}
+  caption="Check your gRPC Endpoint URL"
+  layout="right"
+>
+  {imageContent2}
+</DocsImage>
 
 ## More resources
 
@@ -190,10 +183,10 @@ To authenticate with a Weaviate client library, see the following:
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />
 
-import CustomScriptLoader from '/src/components/scriptSwitch';
+import CustomScriptLoader from "/src/components/scriptSwitch";
 
 <CustomScriptLoader />

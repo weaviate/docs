@@ -110,6 +110,7 @@ function Footer() {
           </div>
 
           {/* Right Section: Additional Links */}
+          {/*
           <div className={styles.rightSection}>
             <div className={styles.footerSection}>
               <h5>Support</h5>
@@ -167,6 +168,7 @@ function Footer() {
               </ul>
             </div>
           </div>
+          */}
         </div>
         <div className={styles.footerText}>
           &copy; {new Date().getFullYear()} Weaviate, B.V. Built with

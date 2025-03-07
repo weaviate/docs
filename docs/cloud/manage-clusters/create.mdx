@@ -52,9 +52,10 @@ Weaviate offers the following cluster options:
 
 To create a sandbox cluster, follow these steps:
 
-<div class="row">
-  <div class="col col--6">
-    <ol>
+import EndpointURLs from "/docs/cloud/img/weaviate-cloud-endpoint-urls.png";
+
+export const imageContent2 = (
+  <ol>
       <li>
         Select the <code>Sandbox</code> tab.
       </li>
@@ -64,18 +65,15 @@ To create a sandbox cluster, follow these steps:
         Click the <code>Create</code> button.
       </li>
     </ol>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={SandboxCluster} alt="Create a cluster" />
-      </div>
-      <div class="card__body">
-        Choose a name and a cloud region to create a cluster.
-      </div>
-    </div>
-  </div>
-</div>
+);
+
+<DocsImage
+  image={SandboxCluster}
+  caption="Choose a name and a cloud region to create a cluster"
+  layout="right"
+>
+  {imageContent2}
+</DocsImage>
 
 ### Serverless clusters
 
@@ -83,9 +81,10 @@ Serverless clusters require billing details. Weaviate Cloud prompts you to add b
 
 To create a serverless cluster, follow these steps:
 
-<div class="row">
-  <div class="col col--6">
-    <ol>
+import Link from "@docusaurus/Link";
+
+export const imageContent3 = (
+  <ol>
       <li>
         Select the <code>Serverless</code> tab.
       </li>
@@ -102,18 +101,15 @@ To create a serverless cluster, follow these steps:
         Click the <code>Create</code> button.
       </li>
     </ol>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={ServerlessCluster} alt="Create a cluster" />
-      </div>
-      <div class="card__body">
-        Choose a name and a cloud region to create a cluster.
-      </div>
-    </div>
-  </div>
-</div>
+);
+
+<DocsImage
+  image={ServerlessCluster}
+  caption="Choose a name and a cloud region to create a cluster"
+  layout="right"
+>
+  {imageContent3}
+</DocsImage>
 
 #### Advanced configuration
 
