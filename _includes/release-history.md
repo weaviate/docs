@@ -33,10 +33,11 @@ This table lists the Weaviate Core versions and corresponding client library ver
 | 1.1.x | 2021-02-10 | 2.1.x | - | - | - |
 | 1.0.x | 2021-01-14 | 2.0.x | - | - | - |
 
+{/*
 #### TypeScript client change
 
 The [TypeScript client](https://github.com/weaviate/typescript-client) replaced the [JavaScript client](https://github.com/weaviate/weaviate-javascript-client) on 2023-03-17.
-
+*/}
 [comment]: # ( repo links )
 
 [cWeaviate]: https://github.com/weaviate/weaviate/releases

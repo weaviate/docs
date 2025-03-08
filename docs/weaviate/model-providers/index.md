@@ -1,6 +1,6 @@
 ---
 title: Model provider integrations
-sidebar_label: Overview
+sidebar_label: Model provider integrations
 sidebar_position: 50
 image: og/docs/model-provider-integrations.jpg
 # tags: ['getting started', 'model providers', 'integrations']

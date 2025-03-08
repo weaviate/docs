@@ -11,6 +11,40 @@ This page lists [developer release notes](https://github.com/weaviate/weaviate/r
 - For expanded blog posts on recent minor releases, follow the links in the table of contents at the left of this page.
 - For more information on upgrading Weaviate, see the [Migration Guide](../more-resources/migration/index.md).
 
+These are the last five minor releases:
+
+import QuickLinks from "/src/components/QuickLinks";
+
+export const pythonCardsData = [
+  {
+  title: "v1.29",
+  link: "https://weaviate.io/blog/weaviate-1-29-release",
+  icon: "fa fa-tags",
+  },
+  {
+  title: "v1.28",
+  link: "https://weaviate.io/blog/weaviate-1-28-release",
+  icon: "fa fa-tags",
+  },
+  {
+  title: "v1.27",
+  link: "https://weaviate.io/blog/weaviate-1-27-release",
+  icon: "fa fa-tags",
+  },
+  {
+  title: "v1.26",
+  link: "https://weaviate.io/blog/weaviate-1-26-release",
+  icon: "fa fa-tags",
+  },
+  {
+  title: "v1.25",
+  link: "https://weaviate.io/blog/weaviate-1-25-release",
+  icon: "fa fa-tags",
+  },
+];
+
+<QuickLinks items={pythonCardsData} />
+
 ### Weaviate Core and client releases
 
 import ReleaseHistory from '/_includes/release-history.md';

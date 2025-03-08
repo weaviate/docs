@@ -365,41 +365,21 @@ const sidebars = {
     },
   ],
   releasesSidebar: [
+    "weaviate/release-notes/index",
     {
       type: "category",
-      label: "Release notes",
-      collapsible: true,
-      collapsed: true,
+      label: "Migration",
       link: {
         type: "doc",
-        id: "weaviate/release-notes/index",
+        id: "weaviate/more-resources/migration/index",
       },
+      collapsible: true,
+      collapsed: true,
       items: [
-        "weaviate/release-notes/release_1_29",
-        "weaviate/release-notes/release_1_28",
-        "weaviate/release-notes/release_1_27",
-        "weaviate/release-notes/release_1_26",
-        "weaviate/release-notes/release_1_25",
-        {
-          type: "category",
-          label: "Older releases",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            "weaviate/release-notes/older-releases/release_1_24",
-            "weaviate/release-notes/older-releases/release_1_23",
-            "weaviate/release-notes/older-releases/release_1_22",
-            "weaviate/release-notes/older-releases/release_1_21",
-            "weaviate/release-notes/older-releases/release_1_20",
-            "weaviate/release-notes/older-releases/release_1_19",
-            "weaviate/release-notes/older-releases/release_1_18",
-            "weaviate/release-notes/older-releases/release_1_17",
-            "weaviate/release-notes/older-releases/release_1_16",
-          ],
-        },
+        "weaviate/more-resources/migration/weaviate-1-25",
+        "weaviate/more-resources/migration/archive",
       ],
     },
-    "weaviate/roadmap/index",
   ],
   othersSidebar: [
     {
