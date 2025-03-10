@@ -2,6 +2,7 @@
   "name": "docs",
   "version": "0.0.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -35,6 +36,8 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/types": "3.7.0",
     "ag-grid-react": "^33.0.4",
+    "netlify-cli": "19.0.2",
+    "node-fetch": "3.3.2",
     "raw-loader": "^4.0.2",
     "react-player": "^2.16.0"
   },
