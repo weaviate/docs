@@ -43,6 +43,9 @@ jobs:
         run: |
           source _build_scripts/slack-find-author.sh
           source _build_scripts/slack-netlify-message.sh
+      - name: Validate links on Netlify
+        run: |
+          source _build_scripts/verify-links.sh
       - name: Deploy to Production Netlify
         if: ${{ github.ref_name == 'main' }}
         run: |

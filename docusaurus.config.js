@@ -21,7 +21,8 @@ const config = {
     "Weaviate empowers developers to deliver, scalable vector search-powered apps painlessly",
   favicon: "img/favicon.ico",
   staticDirectories: ["static"],
-  url: "https://your-docusaurus-site.example.com",
+  // url: "https://weaviate.io",
+  url: "https://weaviate-docs.netlify.app",
   baseUrl: "/",
 
   onBrokenLinks: "warn",
@@ -63,7 +64,7 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           path: "docs",
           routeBasePath: "docs",
-          editUrl: "https://github.com/weaviate/weaviate-io/tree/main/",
+          editUrl: "https://github.com/weaviate/docs/tree/main/",
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],
         },

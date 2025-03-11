@@ -70,7 +70,7 @@ export const developersDropdownHtml = `
     <li class="dropDownLabel">Learn</li>
     <li><a class="dropdown__link" href="https://weaviate.io/learn" target="_blank" rel="noopener noreferrer">Learning Center</a></li>
     <li><a class="dropdown__link" href="https://weaviate.io/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
-    <li><a class="dropdown__link" href="https://weaviate.io/academy" target="_blank" rel="noopener noreferrer">Academy</a></li>
+    <li><a class="dropdown__link" href="https://weaviate.io/developers/academy" target="_blank" rel="noopener noreferrer">Academy</a></li>
     <li><a class="dropdown__link" href="https://weaviate.io/community/events" target="_blank" rel="noopener noreferrer">Workshops</a></li>
     <li><a class="dropdown__link" href="https://weaviate.io/community/build-with-weaviate" target="_blank" rel="noopener noreferrer">Showcases</a></li>
     <li><a class="dropdown__link" href="https://weaviate.io/learn/knowledgecards" target="_blank" rel="noopener noreferrer">Knowledge Cards</a></li>
@@ -89,15 +89,19 @@ export const developersDropdownHtml = `
   </ul>
 </div>
 <ul class="menu__list mobileNav">
-  <li class="dropDownLabel mobDrop">Build</li>
-  <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/weaviate" target="_blank" rel="noopener noreferrer">Documentation</a></li>
-  <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/cloud" target="_blank" rel="noopener noreferrer">Weaviate Cloud Docs</a></li>
-  <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/developers/integrations" target="_blank" rel="noopener noreferrer">Integrations Docs</a></li>
-  <li class="menu__list-item"><a class="menu__link" href="https://github.com/weaviate/weaviate" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+  <li class="dropDownLabel mobDrop">Documentation</li>
+    <li class="menu__list-item"><a class="menu__link" href="/docs/weaviate">Weaviate Docs</a></li>
+    <li class="menu__list-item"><a class="menu__link" href="/docs/cloud">Weaviate Cloud Docs</a></li>
+    <li class="menu__list-item"><a class="menu__link" href="/docs/agents">Weaviate Agent Docs</a></li>
+    <li class="menu__list-item"><a class="menu__link" href="/docs/integrations">Integrations Docs</a></li>
+    <li class="menu__list-item"><a class="menu__link" href="/docs/contributor-guide">Contributor guide</a></li>
+    
+    
+    <li class="menu__list-item"><a class="menu__link" href="https://github.com/weaviate/weaviate" target="_blank" rel="noopener noreferrer">GitHub</a></li>
   <li class="dropDownLabel mobDrop">Learn</li>
   <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/learn" target="_blank" rel="noopener noreferrer">Learning Center</a></li>
   <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/blog" target="_blank" rel="noopener noreferrer">Blog</a></li>
-  <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/academy" target="_blank" rel="noopener noreferrer">Academy</a></li>
+  <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/developers/academy" target="_blank" rel="noopener noreferrer">Academy</a></li>
   <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/community/events" target="_blank" rel="noopener noreferrer">Workshops</a></li>
   <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/community/build-with-weaviate" target="_blank" rel="noopener noreferrer">Showcases</a></li>
   <li class="menu__list-item"><a class="menu__link" href="https://weaviate.io/learn/knowledgecards" target="_blank" rel="noopener noreferrer">Knowledge Cards</a></li>

@@ -1,7 +1,7 @@
 ---
 title: LlamaIndex
 sidebar_position: 5
-image: og/docs/llamaindex.jpg
+image: og/integrations/llamaindex.jpg
 ---
 
 [LlamaIndex](https://www.llamaindex.ai/) is a framework for building large language model (LLM) applications. 

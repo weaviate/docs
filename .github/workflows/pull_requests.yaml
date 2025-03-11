@@ -24,3 +24,5 @@ jobs:
           node _build_scripts/update-config-versions.js
       - name: Build a dev version
         run: yarn build-dev
+      - name: Validate links from the build.dev folder
+        run: source _build_scripts/verify-links-build-dev.sh
