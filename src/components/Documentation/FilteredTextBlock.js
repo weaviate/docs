@@ -3,7 +3,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 // GitHub configuration - could be moved to a separate config file
 const GITHUB_CONFIG = {
-    baseUrl: 'https://github.com/weaviate/weaviate-io',
+    baseUrl: 'https://github.com/weaviate/docs',
     branch: 'main',
 };
 
@@ -227,7 +227,7 @@ const FilteredTextBlock = ({
                 )}
                 {language === 'pyv3' && (
                     <a
-                        href="https://weaviate.io/docs/weaviate/client-libraries/python/python_v3"
+                        href="https://weaviate-docs.netlify.app/docs/weaviate/client-libraries/python/python_v3"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="badge badge--warning"

@@ -26,7 +26,7 @@ These are just some of the ways that you could apply your skills to the project:
 There are four major GitHub repositories of Weaviate, any of which you can contribute to. This includes:
 
 * [Weaviate](https://github.com/weaviate/weaviate) - Weaviate's "core" codebase
-* [Weaviate-io](https://github.com/weaviate/weaviate-io) - official Weaviate documentation
+* [Docs](https://github.com/weaviate/docs) - official Weaviate documentation
 * [Weaviate Examples](https://github.com/weaviate/weaviate-examples) - apps built using Weaviate
 * [Awesome Weaviate](https://github.com/weaviate/awesome-weaviate) - list of examples and tutorials on how to use Weaviate
 

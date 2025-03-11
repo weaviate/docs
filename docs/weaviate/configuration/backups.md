@@ -307,7 +307,7 @@ If you are missing your desired backup module, you can open a feature request on
 
 ## API
 
-For REST API documentation, see the [Backups section](https://weaviate.io/docs/weaviate/api/rest#tag/backups).
+For REST API documentation, see the [Backups section](https://weaviate-docs.netlify.app/docs/weaviate/api/rest#tag/backups).
 
 ### Create Backup
 

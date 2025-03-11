@@ -473,7 +473,7 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](https://weaviate.io/docs/weaviate/config-refs/env-vars).
+You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](https://weaviate-docs.netlify.app/docs/weaviate/config-refs/env-vars).
 
 Read more on SIGQUIT [here](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) and this [StackOverflow answer](https://stackoverflow.com/questions/19094099/how-to-dump-goroutine-stacktraces/35290196#35290196).
 

@@ -107,7 +107,7 @@ Configure Weaviate to use a KubeAI generative AI model:
 
 Any model that is supported by vLLM or Ollama can be used with KubeAI.
 
-Refer to the [KubeAI docs on model management](https://www.kubeai.org/how-to/manage-models/) for more information on available models and how to configure them.
+Refer to the [KubeAI docs on model management](https://www.kubeai.org/how-to/install-models/) for more information on available models and how to configure them.
 
 ## Retrieval augmented generation
 
@@ -191,7 +191,7 @@ Once the integrations are configured at the collection, the data management and 
 ### External resources
 
 - [KubeAI documentation](https://www.kubeai.org/)
-- [KubeAI documentation on model management](https://www.kubeai.org/how-to/manage-models/)
+- [KubeAI documentation on model management](https://www.kubeai.org/how-to/install-models/)
 
 ## Questions and feedback
 

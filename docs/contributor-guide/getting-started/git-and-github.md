@@ -18,7 +18,7 @@ If you are new to git/GitHub, you can go through this section like a tutorial an
 There are four major GitHub repositories of Weaviate, any of which you can contribute to. This includes:
 
 * [Weaviate](https://github.com/weaviate/weaviate) - Weaviate's "core" codebase
-* [Weaviate-io](https://github.com/weaviate/weaviate-io) - official Weaviate documentation
+* [Docs](https://github.com/weaviate/docs) - official Weaviate documentation
 * [Weaviate Examples](https://github.com/weaviate/weaviate-examples) - apps built using Weaviate
 * [Awesome Weaviate](https://github.com/weaviate/awesome-weaviate) - list of examples and tutorials on how to use Weaviate
 
@@ -104,7 +104,7 @@ git clone git@github.com:<USERNAME>/weaviate.git
 
 Where `git@github.com:<USERNAME>/weaviate.git` is the URI you copied.
 
-**Note:** ("weaviate" is used as the example repo. Make sure to cite the particular repository you are contributing to (for example, "weaviate-io")
+**Note:** ("weaviate" is used as the example repo. Make sure to cite the particular repository you are contributing to (for example, "docs")
 
 After cloning the repository from GitHub, use the `change directory` command to navigate to the cloned folder.
 
@@ -302,13 +302,11 @@ To bring in upstream changes to your fork, you need to fetch and pull the upstre
 
 * The first step is to incorporate any upstream changes to your forked repository. Head over to the forked GitHub repository, and under `Fetch Upstream`, click `Fetch and merge`.
 
-* The next step is to bring those changes to the local repository. If you have made any changes, make sure to commit them locally. Then check out the `main` (or `master` for Weaviate) branch like so:
+* The next step is to bring those changes to the local repository. If you have made any changes, make sure to commit them locally. Then check out the `main` branch like so:
 
 ```shell
 git checkout main
 ```
-
-> Note, the `weaviate` project uses `master` as its default branch, while `weaviate-io` uses `main`. Pick the right branch name based on the project you use.
 
 * Then pull the changes into local repository
 

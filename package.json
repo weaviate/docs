@@ -2,10 +2,12 @@
   "name": "docs",
   "version": "0.0.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
+    "build-dev": "docusaurus build --config docusaurus.dev.config.js --out-dir build.dev",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -35,6 +37,9 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/types": "3.7.0",
     "ag-grid-react": "^33.0.4",
+    "linkinator": "^6.1.2",
+    "netlify-cli": "19.0.2",
+    "node-fetch": "3.3.2",
     "raw-loader": "^4.0.2",
     "react-player": "^2.16.0"
   },

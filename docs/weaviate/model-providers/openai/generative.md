@@ -247,22 +247,22 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (default)
-* [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3-5)
-* [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5)
-* [gpt-4](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
-* [gpt-4-1106-preview](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
-* [gpt-4-32k](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
-* [gpt-4o](https://platform.openai.com/docs/models#gpt-4o)
-* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini) (Added in v1.26.7)
+* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3.5-turbo) (default)
+* [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3.5-turbo)
+* [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3.5-turbo)
+* [gpt-4](https://platform.openai.com/docs/models/gpt-4)
+* [gpt-4-1106-preview](https://platform.openai.com/docs/models/gpt-4-preview)
+* [gpt-4-32k](https://platform.openai.com/docs/models/gpt-4)
+* [gpt-4o](https://platform.openai.com/docs/models/gpt-4o)
+* [gpt-4o-mini](https://platform.openai.com/docs/models/gpt-4o-mini) (Added in v1.26.7)
 
 <details>
   <summary>Older models</summary>
 
 The following models are available, but not recommended:
 
-* [davinci 002](https://platform.openai.com/docs/models/overview)
-* [davinci 003](https://platform.openai.com/docs/models/overview)
+* [davinci 002](https://platform.openai.com/docs/deprecations)
+* [davinci 003](https://platform.openai.com/docs/deprecations)
 
 </details>
 
