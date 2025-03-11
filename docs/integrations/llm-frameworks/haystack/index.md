@@ -20,4 +20,4 @@ document_store = WeaviateDocumentStore(auth_client_secret=auth_client_secret)
 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Advanced RAG: Query Expansion | Learn how to implement query expansion for RAG. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-frameworks/haystack/query_expansion_haystack_weaviate.ipynb)  |
+| Advanced RAG: Query Expansion | Learn how to implement query expansion for RAG. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/haystack/query_expansion_haystack_weaviate.ipynb)  |
