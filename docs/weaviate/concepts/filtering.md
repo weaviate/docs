@@ -95,7 +95,7 @@ To learn more about Weaviate's roaring bitmaps implementation, see the [in-line 
 
 Weaviate `1.26` introduces the `indexRangeFilters` index, which is a range-based index for filtering by numerical ranges. This index is available for `int`, `number`, or `date` properties. The index is not available for arrays of these data types.
 
-Internally, rangeable indexes are implemented as [roaring bitmap slices](https://www.featurebase.com/blog/range-encoded-bitmaps). This data structure limits the index to values that can be stored as 64 bit integers.
+Internally, rangeable indexes are implemented as roaring bitmap slices. This data structure limits the index to values that can be stored as 64 bit integers.
 
 `indexRangeFilters` is only available for new properties. Existing properties cannot be converted to use the rangeable index.
 
