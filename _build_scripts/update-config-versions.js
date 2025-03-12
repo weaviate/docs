@@ -1,13 +1,17 @@
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 
 const getRepoVersion = async (repoName) => {
     try {
+        (process.env.GH_API_TOKEN)
+
+        const fetch = (await import('node-fetch')).default;
         const response = await fetch( // fetch all release versions
             `https://api.github.com/repos/weaviate/${repoName}/releases`,
             {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'User-Agent': 'request',
                     'authorization': // Use the github token if available
                         (process.env.GH_API_TOKEN) ?
                             `Bearer ${ process.env.GH_API_TOKEN }` : ''

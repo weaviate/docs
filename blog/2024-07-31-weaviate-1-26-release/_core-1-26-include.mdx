@@ -31,7 +31,7 @@ When you anticipate using numerical comparisons over ranges of values, enable th
 
 The rangeable index can be enabled alone or with the [filterable index](/docs/weaviate/concepts/filtering#indexrangefilters). Efficient range filters can be combined with other filters, such as the `Equal` filter, to quickly narrow your searches to the most relevant information.
 
-Internally, rangeable indexes are implemented as [roaring bitmap slices](https://www.featurebase.com/blog/range-encoded-bitmaps). This is an exciting data structure that combines several clever ideas to reduce memory requirements while improving processing speeds.
+Internally, rangeable indexes are implemented as roaring bitmap slices. This is an exciting data structure that combines several clever ideas to reduce memory requirements while improving processing speeds.
 
 This feature is only available for new properties and new collections.
 

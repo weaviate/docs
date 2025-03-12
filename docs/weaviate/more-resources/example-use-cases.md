@@ -9,7 +9,7 @@ image: og/docs/more-resources.jpg
 
 This page illustrates various use cases for [vector databases](https://weaviate.io/blog/what-is-a-vector-database) by way of open-source demo projects. You can fork and modify any of them.
 
-If you would like to contribute your own project to this page, create an issue on [GitHub](https://github.com/weaviate/weaviate-io/issues).
+If you would like to contribute your own project to this page, create an issue on [GitHub](https://github.com/weaviate/docs/issues).
 
 ## Similarity search
 
@@ -57,7 +57,7 @@ Weaviate can leverage its vectorization capabilities to enable automatic, real-t
 
 ## Other use cases
 
-Weaviate's [modular ecosystem](https://weaviate.io/docs/weaviate/modules) unlocks many other use cases of the Weaviate vector database, such as [Named Entity Recognition](https://weaviate.io/docs/weaviate/modules/ner-transformers) or [spell checking](https://weaviate.io/docs/weaviate/modules/other-modules/spellcheck).
+Weaviate's [modular ecosystem](https://weaviate-docs.netlify.app/docs/weaviate/modules) unlocks many other use cases of the Weaviate vector database, such as [Named Entity Recognition](https://weaviate-docs.netlify.app/docs/weaviate/modules/ner-transformers) or [spell checking](https://weaviate-docs.netlify.app/docs/weaviate/modules/spellcheck).
 
 |Title | Description | Code |
 | --- | --- | --- |

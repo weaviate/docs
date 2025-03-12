@@ -157,7 +157,7 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [Anyscale Endpoints API documentation](https://docs.endpoints.anyscale.com/).
+For further details on model parameters, see the [Anyscale Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/).
 
 ## Runtime parameters
 
@@ -258,7 +258,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### References
 
-- Anyscale [Endpoints API documentation](https://docs.endpoints.anyscale.com/)
+- Anyscale [Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/)
 
 ## Questions and feedback
 

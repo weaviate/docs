@@ -45,3 +45,6 @@ yarn.lock
 
 .python-version
 __pycache__
+
+# Local Netlify folder
+.netlify

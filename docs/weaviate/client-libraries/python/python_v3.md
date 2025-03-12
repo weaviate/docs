@@ -33,7 +33,7 @@ If you have an existing codebase and Weaviate Core database that you expect to r
 We appreciate that code migration can be cumbersome, but we feel strongly that the end experience and feature set will make your time worthwhile.
 <br/>
 
-If you have specific requests for migration documentation or resources, please reach out through [our GitHub repository](https://github.com/weaviate/weaviate-io/issues).
+If you have specific requests for migration documentation or resources, please reach out through [our GitHub repository](https://github.com/weaviate/docs/issues).
 :::
 
 ## Installation and setup
@@ -286,7 +286,7 @@ client.schema.create(schema)
 
 #### Example: Blog Post on How to get started with Weaviate and the Python client
 
-A full example of how to use the Python client for Weaviate can be found in [this article on Towards Data Science](https://towardsdatascience.com/quickstart-with-weaviate-python-client-e85d14f19e4f).
+A full example of how to use the Python client for Weaviate can be found in [this article on Towards Data Science](https://towardsdatascience.com/getting-started-with-weaviate-python-client-e85d14f19e4f).
 
 ## Batching
 
