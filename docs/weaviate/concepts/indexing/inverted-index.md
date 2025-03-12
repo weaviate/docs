@@ -32,7 +32,7 @@ If you are experiencing slow BM25 (or hybrid) searches, try enabling BlockMax WA
 
 **To use BlockMax WAND in Weaviate `v1.29`, it must be enabled prior to collection creation.** As of this version, Weaviate will not migrate existing collections to use BlockMax WAND.
 
-Enable BlockMax WAND by setting the [environment variables](../config-refs/env-vars.md#general) `USE_BLOCKMAX_WAND` and `USE_INVERTED_SEARCHABLE` to `true`.
+Enable BlockMax WAND by setting the [environment variables](../../config-refs/env-vars.md#general) `USE_BLOCKMAX_WAND` and `USE_INVERTED_SEARCHABLE` to `true`.
 
 Once enabled, all BM25 and hybrid searches will use BlockMax WAND algorithm for searches, potentially improving search performance.
 
@@ -67,16 +67,16 @@ Due to the nature of the BlockMax WAND algorithm, the scoring of BM25 and hybrid
 There are three inverted index types in Weaviate:
 
 - `indexSearchable` - a searchable index for BM25 or hybrid search
-- `indexFilterable` - a match-based index for fast [filtering](./filtering.md) by matching criteria
-- `indexRangeFilters` - a range-based index for [filtering](./filtering.md) by numerical ranges
+- `indexFilterable` - a match-based index for fast [filtering](../filtering.md) by matching criteria
+- `indexRangeFilters` - a range-based index for [filtering](../filtering.md) by numerical ranges
 
 Each inverted index can be set to `true` (on) or `false` (off) on a property level. The `indexSearchable` and `indexFilterable` indexes are on by default, while the `indexRangeFilters` index is off by default.
 
-The filterable indexes are only capable of [filtering](./filtering.md), while the searchable index can be used for both searching and filtering (though not as fast as the filterable index).
+The filterable indexes are only capable of [filtering](../filtering.md), while the searchable index can be used for both searching and filtering (though not as fast as the filterable index).
 
 So, setting `"indexFilterable": false` and `"indexSearchable": true` (or not setting it at all) will have the trade-off of worse filtering performance but faster imports (due to only needing to update one index) and lower disk usage.
 
-See the [related how-to section](../manage-data/collections.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
+See the [related how-to section](../../manage-data/collections.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
 
 A rule of thumb to follow when determining whether to switch off indexing is: _if you will never perform queries based on this property, you can turn it off._
 
@@ -171,7 +171,7 @@ To create a collection without any indexes, skip indexing on the collection and 
 
 :::info Related pages
 - [Concepts: Vector Indexing](./vector-index.md)
-- [Configuration: Vector index](../config-refs/schema/vector-index.md)
+- [Configuration: Vector index](../../config-refs/schema/vector-index.md)
 :::
 
 

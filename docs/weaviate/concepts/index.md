@@ -33,11 +33,11 @@ If you are after a practical guide, try the [quickstart tutorial](/docs/weaviate
 
 - An overview of Weaviate's module system, including what can be done with modules, existing module types, and custom modules.
 
-**[Indexing](./indexing.md)**
+**[Indexing](./indexing/index.md)**
 
 - Read how data is indexed within Weaviate using inverted and ANN indexes, and about configurable settings.
 
-**[Vector indexing](./vector-index.md)**
+**[Vector indexing](./indexing/vector-index.md)**
 
 - Read more about Weaviate's vector indexing architecture, such as the HNSW algorithm, distance metrics, and configurable settings.
 

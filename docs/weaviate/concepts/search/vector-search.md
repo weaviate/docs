@@ -239,7 +239,7 @@ Each [collection](../data.md#collections) or [tenant](../data.md#multi-tenancy) 
 Read more about:
 - [Collections](../data.md#collections)
 - [Multi-tenancy](../data.md#multi-tenancy)
-- [Vector indexes](../vector-index.md)
+- [Vector indexes](../indexing/vector-index.md)
 - [Multiple named vectors](../data.md#multiple-vector-embeddings-named-vectors)
 :::
 
