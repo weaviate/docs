@@ -5,11 +5,7 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes']
 ---
 
-This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for the Weaviate Core and client libraries.
-
-- To see the GitHub release notes for a particular version, click on the version number.
-- For expanded blog posts on recent minor releases, follow the links in the table of contents at the left of this page.
-- For more information on upgrading Weaviate, see the [Migration Guide](../more-resources/migration/index.md).
+## Weaviate Core release notes
 
 These are the last five minor releases:
 
@@ -45,15 +41,17 @@ export const pythonCardsData = [
 
 <QuickLinks items={pythonCardsData} />
 
+This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate Core.
+
+- To see the GitHub release notes for a particular version, click on the version number.
+- For expanded blog posts on recent minor releases, follow the links in the table of contents at the left of this page.
+- For more information on upgrading Weaviate, see the [Migration Guide](../more-resources/migration/index.md).
+
 ### Weaviate Core and client releases
 
 import ReleaseHistory from '/_includes/release-history.md';
 
 <ReleaseHistory />
-
-## Weaviate Core
-
-Refer to the [Weaviate release notes on GitHub](https://github.com/weaviate/weaviate/releases) for more information on each release.
 
 ## Client library release notes
 

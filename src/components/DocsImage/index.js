@@ -42,7 +42,11 @@ const DocsImage = ({
           <div className={`col col--${hasContent ? imageColumns : 12}`}>
             <div className="card">
               <div className="card__image">
-                <img src={image} alt={alt} />
+                <img
+                  src={image}
+                  alt={alt}
+                  className={!caption ? styles.fullRoundedImage : ""}
+                />
               </div>
               {caption && <div className="card__body">{caption}</div>}
             </div>
@@ -58,7 +62,11 @@ const DocsImage = ({
           <div className={`col col--${hasContent ? imageColumns : 12}`}>
             <div className="card">
               <div className="card__image">
-                <img src={image} alt={alt} />
+                <img
+                  src={image}
+                  alt={alt}
+                  className={!caption ? styles.fullRoundedImage : ""}
+                />
               </div>
               {caption && <div className="card__body">{caption}</div>}
             </div>

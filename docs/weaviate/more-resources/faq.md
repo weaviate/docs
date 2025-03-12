@@ -342,9 +342,9 @@ If you need a higher search quality for a given limit you can consider the follo
 > More information:
 >
 > - [Weaviate, an ANN Database with CRUD support – DB-Engines.com](https://db-engines.com/en/blog_post/87) ⬅️ best resource on the topic
-> - [Weaviate's HNSW implementation in the docs](/docs/weaviate/concepts/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
+> - [Weaviate's HNSW implementation in the docs](/docs/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
 >
-> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/docs/weaviate/concepts/vector-index.md)_
+> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/docs/weaviate/concepts/indexing/vector-index.md)_
 
 </details>
 

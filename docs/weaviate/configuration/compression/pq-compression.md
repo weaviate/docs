@@ -372,7 +372,7 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 
 ## Related pages
 - [Configuration: Vector index](/docs/weaviate/config-refs/schema/vector-index.md)
-- [Concepts: Vector index](/docs/weaviate/concepts/vector-index.md)
+- [Concepts: Vector index](/docs/weaviate/concepts/indexing/vector-index.md)
 - [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
 - [Guide: Schemas and collection definitions](/docs/weaviate/starter-guides/schema)
 

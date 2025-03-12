@@ -5,7 +5,7 @@ image: og/docs/concepts.jpg
 # tags: ['vector compression', 'quantization']
 ---
 
-**Vector quantization** reduces the memory footprint of the [vector index](./vector-index.md) by compressing the vector embeddings, and thus reduces deployment costs and improves the speed of the vector similarity search process.
+**Vector quantization** reduces the memory footprint of the [vector index](./indexing/vector-index.md) by compressing the vector embeddings, and thus reduces deployment costs and improves the speed of the vector similarity search process.
 
 Weaviate currently offers two vector quantization techniques:
 
@@ -146,8 +146,8 @@ In some cases, rescoring also includes over-fetching, whereby additional candida
 ## Further resources
 
 :::info Related pages
-- [Concepts: Indexing](./indexing.md)
-- [Concepts: Vector Indexing](./vector-index.md)
+- [Concepts: Indexing](./indexing/index.md)
+- [Concepts: Vector Indexing](./indexing/vector-index.md)
 - [Configuration: Vector index](../config-refs/schema/vector-index.md)
 - [Configuration: Schema (Configure semantic indexing)](../config-refs/schema/index.md#configure-semantic-indexing)
 - [How to configure: Binary quantization (compression)](../configuration/compression/bq-compression.md)

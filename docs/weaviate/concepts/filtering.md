@@ -42,7 +42,7 @@ As of `v1.27`, Weaviate supports two filter strategies: `sweeping` and `acorn` s
 
 Weaviate `1.27` adds the a new filtering algorithm that is based on the [`ACORN`](https://arxiv.org/html/2403.04871v1) paper. We refer to this as `ACORN`, but the actual implementation in Weaviate is a custom implementation that is inspired by the paper. (References to `ACORN` in this document refer to the Weaviate implementation.)
 
-The `ACORN` algorithm is designed to speed up filtered searches with the [HNSW index](./vector-index.md#hierarchical-navigable-small-world-hnsw-index) by the following:
+The `ACORN` algorithm is designed to speed up filtered searches with the [HNSW index](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) by the following:
 
 - Objects that do not meet the filters are ignored in distance calculations.
 - The algorithm reaches the relevant part of the HNSW graph faster, by using a multi-hop approach to evaluate the neighborhood of candidates.
