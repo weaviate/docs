@@ -13,6 +13,7 @@ const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
 const math = require("remark-math");
 const katex = require("rehype-katex");
+const siteRedirects = require('./site.redirects');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -33,6 +34,7 @@ const config = {
   },
   plugins: [
     "docusaurus-plugin-sass",
+    ['@docusaurus/plugin-client-redirects', siteRedirects],
     [
       "@scalar/docusaurus",
       {

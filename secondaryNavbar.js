@@ -5,26 +5,30 @@ const secondaryNavbarItems = {
     description: "Develop AI applications using Weaviate's APIs and tools",
     link: "/docs/weaviate",
     links: [
-      { label: "Get Started", link: "/docs/weaviate", sidebar: "getStartedSidebar" },
+      {
+        label: "Get Started",
+        link: "/docs/weaviate",
+        sidebar: "getStartedSidebar",
+      },
+      {
+        label: "How-to & Guides",
+        link: "/docs/weaviate/guides",
+        sidebar: "guidesSidebar",
+      },
       {
         label: "Model Integrations",
         link: "/docs/weaviate/model-providers",
         sidebar: "modelProvidersSidebar",
       },
       {
+        label: "References",
+        link: "/docs/weaviate/api",
+        sidebar: "referenceSidebar",
+      },
+      {
         label: "Concepts",
         link: "/docs/weaviate/concepts",
         sidebar: "conceptsSidebar",
-      },
-      {
-        label: "Guides & Tutorials",
-        link: "/docs/weaviate/guides",
-        sidebar: "guidesSidebar",
-      },
-      {
-        label: "Reference",
-        link: "/docs/weaviate/api",
-        sidebar: "referenceSidebar",
       },
       {
         label: "Releases",
@@ -38,6 +42,7 @@ const secondaryNavbarItems = {
       },
     ],
   },
+  /*
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
@@ -48,6 +53,7 @@ const secondaryNavbarItems = {
       { label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },
     ],
   },
+  */
   agents: {
     title: "Agents",
     icon: "fa fa-robot",
@@ -64,8 +70,16 @@ const secondaryNavbarItems = {
     link: "/docs/cloud",
     links: [
       { label: "Get Started", link: "/docs/cloud", sidebar: "cloudSidebar" },
-      { label: "Weaviate Embeddings", link: "/docs/cloud/embeddings", sidebar: "cloudWeaviateEmbeddings" },
-      { label: "Account management", link: "/docs/cloud/platform/billing", sidebar: "cloudAccountManagementSidebar" },
+      {
+        label: "Weaviate Embeddings",
+        link: "/docs/cloud/embeddings",
+        sidebar: "cloudWeaviateEmbeddings",
+      },
+      {
+        label: "Account management",
+        link: "/docs/cloud/platform/billing",
+        sidebar: "cloudAccountManagementSidebar",
+      },
     ],
   },
   academy: {
@@ -75,7 +89,11 @@ const secondaryNavbarItems = {
       "Learn about vector search and Weaviate through structured courses",
     link: "/docs/academy",
     links: [
-      { label: "Get Started", link: "/docs/academy", sidebar: "academySidebar" },
+      {
+        label: "Get Started",
+        link: "/docs/academy",
+        sidebar: "academySidebar",
+      },
     ],
   },
   integrations: {

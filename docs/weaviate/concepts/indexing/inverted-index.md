@@ -1,34 +1,9 @@
 ---
-title: Indexing
-sidebar_position: 20
+title: Inverted indexes
+sidebar_position: 2
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
-
-Weaviate supports several types of indexes.
-
-1. **[Vector indexes](./vector-index.md)** - a vector index (e.g. HNSW or flat) is used to serve all vector-search queries.
-1. **Inverted indexes** - inverted indexes enable BM25 queries, or speed up filtering.
-
-You can configure indexes in Weaviate per collection.
-
-Some things to bear in mind:
-
-* Especially for large datasets, configuring the indexes is important because the more you index, the more storage is needed.
-* A rule of thumb -- if you don't query over a specific field or vector space, don't index it.
-* One of Weaviate's unique features is how the indexes are configured (learn more about this [here](../concepts/filtering.md)).
-
-## Vector indexes
-
-A vector index is used to serve all vector-search queries. Weaviate supports multiple types of vector indexes:
-
-1. **HNSW** - an approximate nearest neighbor (ANN) search based vector index. HNSW indexes scale well with large datasets.
-2. **Flat** - a vector index that is used for brute-force searches. This is useful for small datasets.
-2. **Dynamic** - a vector index that is flat when the dataset is small and switches to HNSW when the dataset is large.
-
-For more information on vector indexes, see the [Vector Indexing](./vector-index.md) page.
-
-## Inverted indexes
 
 <details>
   <summary>Performance improvements added in Oct 2024</summary>

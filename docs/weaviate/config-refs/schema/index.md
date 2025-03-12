@@ -590,7 +590,7 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 The `indexInverted` parameter has been deprecated from Weaviate `v1.19` onwards.
 :::
 
-Multiple [inverted index types](../../concepts/indexing.md#inverted-indexes) are available in Weaviate. Not all inverted index types are available for all data types. The available inverted index types are:
+Multiple [inverted index types](../../concepts/indexing/inverted-index.md) are available in Weaviate. Not all inverted index types are available for all data types. The available inverted index types are:
 
 import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.mdx';
 

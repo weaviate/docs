@@ -17,20 +17,19 @@ const sidebars = {
     // Normal syntax:
     {
       type: "doc",
-      id: "weaviate/index", // document ID
-      label: "Overview", // sidebar label
-    },
-    {
-      type: "doc",
-      id: "weaviate/introduction", // document ID
-      label: "About Weaviate", // sidebar label
+      id: "weaviate/index",
+      label: "Introduction",
     },
     {
       type: "category",
       label: "Quickstart",
       collapsible: true,
       collapsed: true,
-      items: ["weaviate/quickstart/index", "weaviate/quickstart/local"],
+      link: {
+        type: "doc",
+        id: "weaviate/quickstart/index",
+      },
+      items: ["weaviate/quickstart/local"],
     },
     {
       type: "category",
@@ -108,37 +107,6 @@ const sidebars = {
         "weaviate/connections/connect-custom",
         "weaviate/connections/connect-embedded",
         "weaviate/connections/connect-query",
-      ],
-    },
-    {
-      type: "category",
-      label: "Starter guides",
-      collapsible: true,
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "weaviate/starter-guides/index",
-      },
-      items: [
-        "weaviate/starter-guides/schema",
-        "weaviate/starter-guides/which-weaviate",
-        "weaviate/starter-guides/custom-vectors",
-        "weaviate/starter-guides/generative",
-        {
-          type: "category",
-          label: "Managing Resources (Hot, Warm, Cold)",
-          collapsible: true,
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "weaviate/starter-guides/managing-resources/index",
-          },
-          items: [
-            "weaviate/starter-guides/managing-resources/compression",
-            "weaviate/starter-guides/managing-resources/indexing",
-            "weaviate/starter-guides/managing-resources/tenant-states",
-          ],
-        },
       ],
     },
   ],
@@ -256,6 +224,37 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Starter guides",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "weaviate/starter-guides/index",
+      },
+      items: [
+        "weaviate/starter-guides/schema",
+        "weaviate/starter-guides/which-weaviate",
+        "weaviate/starter-guides/custom-vectors",
+        "weaviate/starter-guides/generative",
+        {
+          type: "category",
+          label: "Managing Resources (Hot, Warm, Cold)",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "weaviate/starter-guides/managing-resources/index",
+          },
+          items: [
+            "weaviate/starter-guides/managing-resources/compression",
+            "weaviate/starter-guides/managing-resources/indexing",
+            "weaviate/starter-guides/managing-resources/tenant-states",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Tutorials",
       link: {
         type: "doc",
@@ -272,7 +271,7 @@ const sidebars = {
         "weaviate/tutorials/query",
         "weaviate/tutorials/wikipedia",
         "weaviate/tutorials/spark-connector",
-        "weaviate/tutorials/modules",
+        //"weaviate/tutorials/modules",
       ],
     },
   ],

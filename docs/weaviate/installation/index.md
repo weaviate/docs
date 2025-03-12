@@ -21,7 +21,6 @@ To install and configure Weaviate, see the following:
 - **[Snowpark Container Services](./spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
 - **[Embedded Weaviate](./embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
 
-
 ## Configuration files
 
 Docker Compose and Kubernetes use yaml files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](./docker-compose.md) file. Kubernetes relies on [Helm charts](./kubernetes.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
@@ -30,20 +29,20 @@ If you are self-hosting, consider experimenting on a small scale with Docker and
 
 ## Unreleased versions
 
-import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
+import RunUnreleasedImages from '/\_includes/configuration/run-unreleased.mdx'
 
 <RunUnreleasedImages />
 
 When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
 
 ## Related pages
+
 - [Connect to Weaviate](../connections/index.mdx)
 - [Weaviate Quickstart](../quickstart/index.md)
-- [Weaviate Cloud Quickstart](../../cloud/quickstart.mdx)
-- [References: Configuration](../configuration/index.md)
+- [How-to: Configure Weaviate](../configuration/index.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

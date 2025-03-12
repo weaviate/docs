@@ -8,26 +8,6 @@ pagination_next: weaviate/quickstart/index
 
 Welcome to the documentation for **Weaviate**, an open source vector database.
 
-import WeaviateEcosystem from '@site/static/img/weaviate-ecosystem.png';
-
-<div class="row">
-  <div class="card">
-    <div class="card__image">
-      <img src={WeaviateEcosystem} alt="Weaviate Ecosystem" />
-    </div>
-    <div class="card__body">
-      <p>Weaviate ecosystem</p>
-    </div>
-  </div>
-</div>
-<br />
-
-The Weaviate ecosystem consists of multiple tools and services centered around building cloud native AI-powered applications. As shown in the high-level overview above, the ecosystem consists of:
-
-- **[Weaviate Core](#what-is-weaviate)**: An open source vector database that stores both objects and vectors.
-- **[Weaviate Cloud](/docs/cloud)**: A fully managed cloud deployment of the Weaviate vector database.
-- **[Weaviate Agents](/docs/agents)**: Pre-built agentic services for Weaviate Cloud users.
-- **[Weaviate Embeddings](/docs/cloud/embeddings)**: A managed embedding inference service for Weaviate Cloud users.
 
 ## What is Weaviate?
 
@@ -36,7 +16,7 @@ Weaviate is an open source vector database that stores both objects and vectors.
 **Weaviate in a nutshell**:
 
 * Weaviate is an open source [vector database](https://weaviate.io/blog/what-is-a-vector-database).
-* Weaviate allows you to store and retrieve data objects based on their semantic properties by indexing them with [vectors](./concepts/vector-index.md).
+* Weaviate allows you to store and retrieve data objects based on their semantic properties by indexing them with [vectors](./concepts/indexing/vector-index.md).
 * Weaviate can be used stand-alone (aka _bring your vectors_) or with a variety of [modules](./modules/index.md) that can do the vectorization for you and extend the core capabilities.
 * Weaviate has a [GraphQL-API](./api/graphql/index.md) to access your data easily.
 * Weaviate is fast (check our [open source benchmarks](./benchmarks/index.md)).
@@ -94,7 +74,7 @@ Within Weaviate, all individual data objects are based on a class property struc
 
 You can add data to Weaviate through the [RESTful API](/docs/weaviate/api/rest) end-points and retrieve data through the [GraphQL interface](./api/graphql/index.md).
 
-Weaviate's [vector indexing mechanism is modular](./concepts/vector-index.md), and the current available plugin is the Hierarchical Navigable Small World (HNSW) multilayered graph.
+Weaviate's [vector indexing mechanism is modular](./concepts/indexing/vector-index.md), and the current available plugin is the Hierarchical Navigable Small World (HNSW) multilayered graph.
 
 ## What are Weaviate modules?
 

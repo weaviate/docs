@@ -147,6 +147,9 @@ export default function NavbarWrapper(props) {
     }
   }, []);
 
+  // Determine the number of links for the selected option
+  const linksCount = secondaryNavOptions[selectedOption]?.links.length || 0;
+
   return (
     <>
       {/* Default Navbar */}
@@ -171,22 +174,24 @@ export default function NavbarWrapper(props) {
           />
         </button>
         <nav className={styles.secondaryNavLinks}>
-          {secondaryNavOptions[selectedOption]?.links.map((item, index) => {
-            const isActive = activeLink && item.sidebar === activeLink;
-            return (
-              <Link
-                key={index}
-                to={item.link}
-                className={
-                  isActive
-                    ? `${styles.navLink} ${styles.activeNavLink}`
-                    : styles.navLink
-                }
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+          {/* Render secondary navbar only if there's more than one link */}
+          {linksCount > 1 &&
+            secondaryNavOptions[selectedOption]?.links.map((item, index) => {
+              const isActive = activeLink && item.sidebar === activeLink;
+              return (
+                <Link
+                  key={index}
+                  to={item.link}
+                  className={
+                    isActive
+                      ? `${styles.navLink} ${styles.activeNavLink}`
+                      : styles.navLink
+                  }
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
         </nav>
       </div>
 

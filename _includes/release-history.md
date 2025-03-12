@@ -14,6 +14,7 @@ This table lists the Weaviate Core versions and corresponding client library ver
 | 1.20.x | 2023-07-06 | 3.22.x | 1.1.x | 4.7.x | 4.2.x |
 | 1.19.x | 2023-05-04 | 3.17.x | 1.1.x[<sup>1</sup>](#typescript-client-change)| 4.7.x | 4.0.x |
 | 1.18.x | 2023-03-07 | 3.13.x | 2.14.x | 4.6.x | 3.6.x |
+{/*
 | 1.17.x | 2022-12-20 | 3.9.x | 2.14.x | 4.5.x | 3.5.x |
 | 1.16.x | 2022-10-31 | 3.8.x | 2.13.x | 4.4.x | 3.4.x |
 | 1.15.x | 2022-09-07 | 3.6.x | 2.12.x | 4.3.x | 3.3.x |
@@ -32,7 +33,7 @@ This table lists the Weaviate Core versions and corresponding client library ver
 | 1.2.x | 2021-03-15 | 2.2.x | 2.0.x | 1.1.x | - |
 | 1.1.x | 2021-02-10 | 2.1.x | - | - | - |
 | 1.0.x | 2021-01-14 | 2.0.x | - | - | - |
-
+*/}
 {/*
 #### TypeScript client change
 
