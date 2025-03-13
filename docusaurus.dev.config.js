@@ -13,4 +13,6 @@ config.plugins = config.plugins.filter(plugin => !isRedirectPlugin(plugin));
 // use trailing slash, to be able to use link checker on a local build folder
 config.trailingSlash = true;
 
+config.url = "http://localhost.build.dev"
+
 module.exports = config;
