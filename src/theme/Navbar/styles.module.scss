@@ -201,6 +201,7 @@
 
 .buttonText {
   font-weight: bold;
+  color: var(--docs-header-button-text-color);
 }
 
 .verticalDivider {
@@ -213,7 +214,8 @@
 .buttonIcon {
   width: 24px;
   height: auto;
-  margin-left: 4px;
+  margin-left: 6px;
+  margin-right: 6px;
   vertical-align: middle;
 }
 
