@@ -42,7 +42,7 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  /*
+
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
@@ -53,7 +53,7 @@ const secondaryNavbarItems = {
       { label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },
     ],
   },
-  */
+
   agents: {
     title: "Agents",
     icon: "fa fa-robot",
