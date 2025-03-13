@@ -25,4 +25,4 @@ jobs:
       - name: Build a dev version
         run: yarn build-dev
       - name: Validate links from the build.dev folder
-        run: source _build_scripts/verify-links-build-dev.sh
+        run: node _build_scripts/verify-links-pr.js
