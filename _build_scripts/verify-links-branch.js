@@ -49,8 +49,7 @@ const runBranchValidationOnNetlify = async () => {
             //DOCUSAURUS_IGNORES
             'github.com/weaviate/docs',
         ]
-    }, Verbosity.ALL_LINKS)
-    
+    }, Verbosity.ERROR)
     
     const paths = [
         `${netlifyPath}/docs/agents`,
