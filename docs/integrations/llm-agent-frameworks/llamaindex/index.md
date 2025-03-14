@@ -1,7 +1,7 @@
 ---
 title: LlamaIndex
 sidebar_position: 5
-image: og/docs/llamaindex.jpg
+image: og/integrations/llamaindex.jpg
 ---
 
 [LlamaIndex](https://www.llamaindex.ai/) is a framework for building large language model (LLM) applications. 
@@ -31,7 +31,7 @@ The resources are broken into two categories:
 | Self Correcting Query Engine | Setup your vector store and build a self-correcting query engine. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/self-correcting-query-engine/self-correcting.ipynb) | 
 | Simple Query Engine | Build a simple query engine | [Notebook](https://github.com/weaviate/recipes/tree/main/integrations/llm-agent-frameworks/llamaindex/simple-query-engine) |
 | SQL Router Query Engine | Build a SQL Query Engine to search through your vector and SQL database. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sql-router-query-engine/sql-query-router.ipynb) |
-| Sub-Question Query Engine | Build a query engine that will break down a complex question into multiple parts. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sub-question-query-engine/sub_question_query_enginev1.ipynb) |
+| Sub-Question Query Engine | Build a query engine that will break down a complex question into multiple parts. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sub-question-query-engine/sub_question_query_engine.ipynb) |
 | Advanced RAG | This notebook walks you through an advanced Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/advanced_rag.ipynb) | 
 | Naive RAG | This notebook walks you through a naive Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/naive_rag.ipynb) |
 | Agent vs No Agent | Learn the difference between naive RAG, and an agent that has RAG tools. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/llama-index-weaviate-assistant-agent.ipynb) |
