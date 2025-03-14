@@ -29,7 +29,7 @@ If you are self-hosting, consider experimenting on a small scale with Docker and
 
 ## Unreleased versions
 
-import RunUnreleasedImages from '/\_includes/configuration/run-unreleased.mdx'
+import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
 
 <RunUnreleasedImages />
 
@@ -39,10 +39,11 @@ When you try upcoming features, please provide [feedback](https://github.com/wea
 
 - [Connect to Weaviate](../connections/index.mdx)
 - [Weaviate Quickstart](../quickstart/index.md)
-- [How-to: Configure Weaviate](../configuration/index.md)
+- [Weaviate Cloud Quickstart](../../cloud/quickstart.mdx)
+- [References: Configuration](../configuration/index.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
