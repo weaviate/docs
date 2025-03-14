@@ -1,3 +1,6 @@
+# Ignore any files or folders starting with __
+__*
+
 # For testing
 .venv
 nohup.out
