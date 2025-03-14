@@ -21,7 +21,7 @@ The ecosystem is divided into these categories:
 * **Cloud Hyperscalers** - Large-scale computing and storage
 * **Compute Infrastructure** - Run and scale containerized applications
 * **Data Platforms** - Data ingestion and web scraping 
-* **LLM Frameworks** - Build generative AI applications
+* **LLM and Agent Frameworks** - Build agents and generative AI applications
 * **Operations** - Tools for monitoring and analyzing generative AI workflows
 
 
@@ -33,7 +33,7 @@ The ecosystem is divided into these categories:
 | Cloud Hyperscalers | [AWS](/docs/integrations/cloud-hyperscalers/aws), [Google](/docs/integrations/cloud-hyperscalers/google)|
 | Compute Infrastructure | [Modal](/docs/integrations/compute-infrastructure/modal), [Replicate](/docs/integrations/compute-infrastructure/replicate) |
 | Data Platforms |[Airbyte](/docs/integrations/data-platforms/airbyte), [Aryn](/docs/integrations/data-platforms/aryn/), [Confluent Cloud](/docs/integrations/data-platforms/confluent-cloud), [Astronomer](/docs/integrations/data-platforms/astronomer), [Context Data](/docs/integrations/data-platforms/context-data/), [Databricks](/docs/integrations/data-platforms/databricks/), [Firecrawl](/docs/integrations/data-platforms/firecrawl), [IBM](/docs/integrations/data-platforms/ibm/),  [Unstructured](/docs/integrations/data-platforms/unstructured) |
-| LLM Frameworks | [Composio](/docs/integrations/llm-frameworks/composio/), [DSPy](/docs/integrations/llm-frameworks/dspy/), [Haystack](/docs/integrations/llm-frameworks/haystack/), [LangChain](/docs/integrations/llm-frameworks/langchain/), [LlamaIndex](/docs/integrations/llm-frameworks/llamaindex/), [Semantic Kernel](/docs/integrations/llm-frameworks/semantic-kernel/) |
+| LLM and Agent Frameworks | [Composio](/docs/integrations/llm-agent-frameworks/composio/), [DSPy](/docs/integrations/llm-agent-frameworks/dspy/), [Haystack](/docs/integrations/llm-agent-frameworks/haystack/), [LangChain](/docs/integrations/llm-agent-frameworks/langchain/), [LlamaIndex](/docs/integrations/llm-agent-frameworks/llamaindex/), [Semantic Kernel](/docs/integrations/llm-agent-frameworks/semantic-kernel/) |
 | Operations | [Arize](/docs/integrations/operations/arize/), [Langtrace](/docs/integrations/operations/langtrace/), [LangWatch](/docs/integrations/operations/langwatch/), [Nomic](/docs/integrations/operations/nomic/), [Ragas](/docs/integrations/operations/ragas/), [Weights & Biases](/docs/integrations/operations/wandb/) |
 
 ## Model Provider Integrations 

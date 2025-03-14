@@ -39,7 +39,7 @@ The resources are broken into two categories:
 | --- | --- | --- |
 | Getting Started with RAG in DSPy | Learn about DSPy and how to build a program: Installation, settings, datasets, LLM metrics, DSPy programming model, and optimization. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/1.Getting-Started-with-RAG-in-DSPy.ipynb), [Video](https://youtu.be/CEuUG4Umfxs?si=4Gp8gR9glmoMJNaU) |
 | DSPy + Weaviate for the Next Generation of LLM Apps | Build a 4-layer DSPy program for generating blog posts from queries. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/2.Writing-Blog-Posts-with-DSPy.ipynb), [Video](https://youtu.be/ickqCzFxWj0?si=AxCbD9tq2cbAH6bB)|
-| RAG with Persona | Build a compound AI system with DSPy, Cohere, and Weaviate, where you'll add a persona to the language model. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/fullstack-recipes/RAGwithPersona/4.RAG-with-Persona.ipynb), [Post](https://x.com/ecardenas300/status/1765444492348243976)|
+| RAG with Persona | Build a compound AI system with DSPy, Cohere, and Weaviate, where you'll add a persona to the language model. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/fullstack-recipes/RAGwithPersona/4.RAG-with-Persona.ipynb), [Post](https://twitter.com/ecardenas300/status/1765444492348243976)|
 | Adding Depth to RAG Programs | Enhancing DSPy programs by integrating unique input-output examples and multiple LLMs. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/3.Adding-Depth-to-RAG-Programs.ipynb), [Video](https://youtu.be/0c7Ksd6BG88?si=YUF2wm1ncUTkSuPQ) |
 | Hurricane: Writing Blog Posts with Generative Feedback Loops | Introduction to Hurricane, a web app for demonstrating generative feedback loops with blog posts. | [Notebook](https://github.com/weaviate-tutorials/Hurricane), [Blog](https://weaviate.io/blog/hurricane-generative-feedback-loops) |
 | Structured Outputs with DSPy | The three methods for structuring outputs in DSPy programs. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/4.Structured-Outputs-with-DSPy.ipynb), [Video](https://youtu.be/tVw3CwrN5-8?si=P7fWeXzQ7p-2SFYF) |
@@ -47,7 +47,7 @@ The resources are broken into two categories:
 | Advanced Optimizers in DSPy | Dive into optimizing DSPy programs with various techniques. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/5.Advanced-Optimizers.ipynb) |
 | Llama 3 RAG Demo with DSPy Optimization, Ollama, and Weaviate | Integrating Llama3 with DSPy and optimizing prompts with MIPRO. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/llms/Llama3.ipynb), [Video](https://youtu.be/1h3_h8t3L14?si=G4d-aY5Ynpv8ckea)|
 | BigQuery and Weaviate orchestrated with DSPy | Build an end-to-end RAG pipeline that uses BigQuery and Weaviate using DSPy. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/bigquery/BigQuery-Weaviate-DSPy-RAG.ipynb)|
-
+| DSPy and Weaviate Query Agent | Use the Query Agent as a Tool with DSPy | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/agents/simple-query-agent-tool.ipynb) |
 
 
 ### Read and Listen

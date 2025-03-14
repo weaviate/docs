@@ -99,7 +99,7 @@ const siteRedirects = {
       from: "/docs/weaviate/current/more-resources/deprecation-messages",
     },
     {
-      to: "/docs/integrations/llm-frameworks/dspy",
+      to: "/docs/integrations/llm-agent-frameworks/dspy",
       from: "/docs/weaviate/more-resources/dspy",
     },
 
@@ -483,6 +483,35 @@ const siteRedirects = {
     {
       to: "/docs/weaviate/release-notes/older-releases/release_1_16",
       from: "/docs/weaviate/release-notes/release_1_16",
+    },
+    // Integration Docs
+    {
+      to: "/docs/integrations/llm-agent-frameworks",
+      from: "/docs/integrations/llm-frameworks",
+    },
+    {
+      to: "/docs/integrations/llm-agent-frameworks/composio",
+      from: "/docs/integrations/llm-frameworks/composio",
+    },
+    {
+      to: "/docs/integrations/llm-agent-frameworks/dspy",
+      from: "/docs/integrations/llm-frameworks/dspy",
+    },
+    {
+      to: "/docs/integrations/llm-agent-frameworks/haystack",
+      from: "/docs/integrations/llm-frameworks/haystack",
+    },
+    {
+      to: "/docs/integrations/llm-agent-frameworks/langchain",
+      from: "/docs/integrations/llm-frameworks/langchain",
+    },
+    {
+      to: "/docs/integrations/llm-agent-frameworks/llamaindex",
+      from: "/docs/integrations/llm-frameworks/llamaindex",
+    },
+    {
+      to: "/docs/integrations/llm-agent-frameworks/semantic-kernel",
+      from: "/docs/integrations/llm-frameworks/semantic-kernel",
     },
 
     // Restructured starter guides
