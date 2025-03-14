@@ -45,6 +45,7 @@ const runBranchValidationOnNetlify = async () => {
             'https://instagram.com/',
             'https://youtu.be/',
             'https://www.youtube.com',
+            'https://weaviateagents.featurebase.app',
 
             //DOCUSAURUS_IGNORES
             'github.com/weaviate/docs',

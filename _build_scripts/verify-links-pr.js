@@ -34,6 +34,7 @@ const runPRValidationFromBuildDev = async () => {
             'https://instagram.com/',
             'https://youtu.be/',
             'https://www.youtube.com',
+            'https://weaviateagents.featurebase.app',
 
             // GITHUB_IGNORES
             'github.com',
