@@ -1,6 +1,6 @@
 const secondaryNavbarItems = {
   build: {
-    title: "Build",
+    title: "Weaviate",
     icon: "fa fa-code",
     description: "Develop AI applications using Weaviate's APIs and tools",
     link: "/docs/weaviate",
