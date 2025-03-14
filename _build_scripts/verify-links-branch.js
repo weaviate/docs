@@ -1,4 +1,4 @@
-const { LinkValidator, Verbosity, Color } = require('./link-validator')
+const { LinkValidator, Verbosity } = require('./link-validator')
 
 const findNetlifyPath = () => {
     const fs = require('fs');
@@ -58,35 +58,19 @@ const runBranchValidationOnNetlify = async () => {
         `${netlifyPath}/docs/weaviate`,
     ]
     
-    const results = await validator.validateLinks(paths);
+    const success = await validator.validateLinks(paths);
+    validator.printSummary();
     
-    let allLinksFine = true;
-    results.forEach(result => {
-        validator.printSummary(result)
-
-        allLinksFine &&= result.passed
-    })
-
-    return allLinksFine;
+    return success;
 }
 
 runBranchValidationOnNetlify()
 .then(
     passed => {
         if (passed) {
-
-        console.log(`
-${Color.GREEN}##################################
-${Color.GREEN}# WEBSITE LINK VALIDATION PASSED #
-${Color.GREEN}##################################`);
             // Force exit, as sometimes linkinator doesn't quit the process and it hangs
             process.exit(0)
         }
-
-        console.log(`
-${Color.RED}##################################
-${Color.RED}# WEBSITE LINK VALIDATION FAILED #
-${Color.RED}##################################`);
 
         // Throw an error if any of the links are broken
         process.exit(1)
