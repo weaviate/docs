@@ -15,11 +15,11 @@ import BatchVectorCode from '!!raw-loader!/\_includes/code/howto/manage-data.imp
 import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
-  {
-  title: "weaviate/weaviate-python-client",
-  link: "https://github.com/weaviate/weaviate-python-client",
-  icon: "fa-brands fa-github",
-  },
+{
+title: "weaviate/weaviate-python-client",
+link: "https://github.com/weaviate/weaviate-python-client",
+icon: "fa-brands fa-github",
+},
 ];
 
 <QuickLinks items={pythonCardsData} />
@@ -72,7 +72,7 @@ The free (sandbox) tier of WCD is compatible with the `v4` client as of 31 Janua
 
 #### Weaviate server version
 
-The `v4` client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client _and_ the Weaviate server.
+The `v4` client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client and the Weaviate server.
 
 ## High-level ideas
 

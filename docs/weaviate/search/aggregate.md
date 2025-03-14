@@ -33,7 +33,7 @@ To run an `Aggregate` query, specify the following:
 
 - Select at least one sub-property for each selected property
 
-For details, see <a href="https://weaviate-docs.netlify.app/docs/weaviate/api/graphql/aggregate">Aggregate</a>.
+For details, see [Aggregate](/docs/weaviate/api/graphql/aggregate).
 
 </details>
 
