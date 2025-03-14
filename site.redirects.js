@@ -99,7 +99,7 @@ const siteRedirects = {
       from: "/developers/weaviate/current/more-resources/deprecation-messages",
     },
     {
-      to: "/docs/integrations/llm-frameworks/dspy",
+      to: "/docs/integrations/llm-agent-frameworks/dspy",
       from: "/developers/weaviate/more-resources/dspy",
     },
 
@@ -486,31 +486,31 @@ const siteRedirects = {
     },
     // Integration Docs
     {
-      to: "/docs/integrations/llm-frameworks",
+      to: "/docs/integrations/llm-agent-frameworks",
       from: "/developers/integrations/llm-frameworks",
     },
     {
-      to: "/docs/integrations/llm-frameworks/composio",
+      to: "/docs/integrations/llm-agent-frameworks/composio",
       from: "/developers/integrations/llm-frameworks/composio",
     },
     {
-      to: "/docs/integrations/llm-frameworks/dspy",
+      to: "/docs/integrations/llm-agent-frameworks/dspy",
       from: "/developers/integrations/llm-frameworks/dspy",
     },
     {
-      to: "/docs/integrations/llm-frameworks/haystack",
+      to: "/docs/integrations/llm-agent-frameworks/haystack",
       from: "/developers/integrations/llm-frameworks/haystack",
     },
     {
-      to: "/docs/integrations/llm-frameworks/langchain",
+      to: "/docs/integrations/llm-agent-frameworks/langchain",
       from: "/developers/integrations/llm-frameworks/langchain",
     },
     {
-      to: "/docs/integrations/llm-frameworks/llamaindex",
+      to: "/docs/integrations/llm-agent-frameworks/llamaindex",
       from: "/developers/integrations/llm-frameworks/llamaindex",
     },
     {
-      to: "/docs/integrations/llm-frameworks/semantic-kernel",
+      to: "/docs/integrations/llm-agent-frameworks/semantic-kernel",
       from: "/developers/integrations/llm-frameworks/semantic-kernel",
     },
 

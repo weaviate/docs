@@ -41,7 +41,7 @@ The resources are broken into two categories:
 | DSPy + Weaviate for the Next Generation of LLM Apps | Build a 4-layer DSPy program for generating blog posts from queries. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/2.Writing-Blog-Posts-with-DSPy.ipynb), [Video](https://youtu.be/ickqCzFxWj0?si=AxCbD9tq2cbAH6bB)|
 | RAG with Persona | Build a compound AI system with DSPy, Cohere, and Weaviate, where you'll add a persona to the language model. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/fullstack-recipes/RAGwithPersona/4.RAG-with-Persona.ipynb), [Post](https://twitter.com/ecardenas300/status/1765444492348243976)|
 | Adding Depth to RAG Programs | Enhancing DSPy programs by integrating unique input-output examples and multiple LLMs. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/3.Adding-Depth-to-RAG-Programs.ipynb), [Video](https://youtu.be/0c7Ksd6BG88?si=YUF2wm1ncUTkSuPQ) |
-| Hurricane: Writing Blog Posts with Generative Feedback Loops | Introduction to Hurricane, a web app for demonstrating generative feedback loops with blog posts. | [Notebook](https://github.com/weaviate-tutorials/Hurricane), [Blog](/blog/hurricane-generative-feedback-loops) |
+| Hurricane: Writing Blog Posts with Generative Feedback Loops | Introduction to Hurricane, a web app for demonstrating generative feedback loops with blog posts. | [Notebook](https://github.com/weaviate-tutorials/Hurricane), [Blog](https://weaviate.io/blog/hurricane-generative-feedback-loops) |
 | Structured Outputs with DSPy | The three methods for structuring outputs in DSPy programs. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/4.Structured-Outputs-with-DSPy.ipynb), [Video](https://youtu.be/tVw3CwrN5-8?si=P7fWeXzQ7p-2SFYF) |
 | Building RAG with Command R+ from Cohere, DSPy, and Weaviate | Overview of Command R+ with a quick RAG demo in DSPy. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/llms/Command-R-Plus.ipynbb), [Video](https://youtu.be/6dgXALb_5Ag?si=nSX2AnmpbUau_2JF) |
 | Advanced Optimizers in DSPy | Dive into optimizing DSPy programs with various techniques. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dspy/5.Advanced-Optimizers.ipynb) |
@@ -58,8 +58,8 @@ The resources are broken into two categories:
 | DSPy Explained| Learn about the core concepts of DSPy. Walk through the introduction notebooks to compile a simple retrieve-then-read RAG program and Multi-Hop RAG Program. | [Video](https://youtu.be/41EfOY0Ldkc?si=sFieUeHc9rXRn6uk)|
 | XMC.dspy with Karel D'Oosterlinck - Weaviate Podcast #87 | Karel D'Oosterlinck joins the Weaviate podcast to discuss IReRa (Infer-Retrieve-Rank). | [Video](https://youtu.be/_ye26_8XPcs?si=ZBodgHbOcaq2Kwky)
 | Intro to DSPy: Goodbye Prompting, Hello Programming | Overview of DSPy and how it solves the fragility problem in LLM-based applications. | [Blog](https://towardsdatascience.com/intro-to-dspy-goodbye-prompting-hello-programming-4ca1c6ce3eb9)|
-| Fine-Tuning Cohere’s Reranker | Generate synthetic data with DSPy to fine-tune Cohere’s reranker model. |[Blog](/blog/fine-tuning-coheres-reranker)|
-| Your Language Model Deserves Better Prompting | Overview of the DSPy optimizers for prompt tuning. | [Blog](/blog/dspy-optimizers)|
+| Fine-Tuning Cohere’s Reranker | Generate synthetic data with DSPy to fine-tune Cohere’s reranker model. |[Blog](https://weaviate.io/blog/fine-tuning-coheres-reranker)|
+| Your Language Model Deserves Better Prompting | Overview of the DSPy optimizers for prompt tuning. | [Blog](https://weaviate.io/blog/dspy-optimizers)|
 
 
 ## Questions and feedback
