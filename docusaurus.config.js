@@ -25,7 +25,7 @@ const config = {
   // url: "https://weaviate.io",
   url: "https://weaviate-docs.netlify.app",
   baseUrl: "/",
-
+  trailingSlash: false,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
 

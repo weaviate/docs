@@ -206,7 +206,7 @@ import CrossReferencePerformanceNote from '/_includes/cross-reference-performanc
 
 <CrossReferencePerformanceNote />
 
-If data objects are related, you can use [cross-references](/docs/weaviate/manage-data/cross-references.mdx) to represent the relationships. Cross-references in Weaviate are like links that help you retrieve related information. Cross-references capture relationships, but they do not change the vectors of the underlying objects.
+If data objects are related, you can use [cross-references](../manage-data/cross-references.mdx) to represent the relationships. Cross-references in Weaviate are like links that help you retrieve related information. Cross-references capture relationships, but they do not change the vectors of the underlying objects.
 
 To create a reference, use a property from one collection to specify the value of a related property in the other collection.
 
@@ -277,7 +277,7 @@ Schemas fulfill several roles:
 1. Schemas define cross-references that link collections, even collections that use different embeddings.
 1. Schemas let you configure module behavior, ANN index settings, reverse indexes, and other features on a collection level.
 
-For details on configuring your schema, see the [schema tutorial](../starter-guides/schema.md) or [schema configuration](../manage-data/collections.mdx).
+For details on configuring your schema, see the [schema tutorial](../starter-guides/managing-collections/index.mdx) or [schema configuration](../manage-data/collections.mdx).
 
 ## Multi-tenancy
 
