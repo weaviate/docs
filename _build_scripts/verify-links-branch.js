@@ -64,15 +64,20 @@ const runBranchValidationOnNetlify = async () => {
     return success;
 }
 
-runBranchValidationOnNetlify()
-.then(
-    passed => {
-        if (passed) {
-            // Force exit, as sometimes linkinator doesn't quit the process and it hangs
-            process.exit(0)
+try {
+    runBranchValidationOnNetlify()
+    .then(
+        passed => {
+            if (passed) {
+                // Force exit, as sometimes linkinator doesn't quit the process and it hangs
+                process.exit(0)
+            }
+    
+            // Throw an error if any of the links are broken
+            process.exit(1)
         }
-
-        // Throw an error if any of the links are broken
-        process.exit(1)
-    }
-)
+    )
+} catch(error) {
+    console.error(`runBranchValidationOnNetlify failed`)
+    console.error(error)
+}
