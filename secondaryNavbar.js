@@ -50,7 +50,8 @@ const secondaryNavbarItems = {
     link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
-      { label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },
+      { label: "Kubernetes", link: "/docs/deploy/k8s", sidebar: "deployK8sSidebar" },
+      /*{ label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },*/
     ],
   },
 
