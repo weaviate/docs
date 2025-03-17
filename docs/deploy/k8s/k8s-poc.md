@@ -43,7 +43,7 @@ Check out the Academy course  [“Run Weaviate on Kubernetes”](https://weaviat
 - Configure an ingress controller to securely expose Weaviate.
 - Enable TLS with a certificate manager and enforce TLS encryption for all client-server communication.
 - Assign a domain name for external access.
-- Implement RBAC to restrict user access.
+- Implement RBAC to restrict user access:
 
 ```yaml
 authorization:
@@ -52,6 +52,13 @@ authorization:
     # root_users:
     # - admin_user1
     # - admin_user2
+```
+
+[Configuring RBAC](/docs/weaviate/configuration/rbac/configuration.md)
+
+- **Optional**: Implement admin lists (if not using RBAC):
+
+```yaml
   admin_list:
     enabled: true
     # users:
@@ -63,16 +70,20 @@ authorization:
     # - readonly_user2
     # - api-key-user-readOnly
 ```
+::: tip
+Using an admin list will allow you to define your admin or read-only user/API-key pairs across all Weaviate resources. Whereas RBAC allows you more granular permissions by defining roles and assigning them to users either via API keys or OIDC.
+:::
 
+[Admin List Configuration](/docs/weaviate/configuration/authorization.md#admin-list-kubernetes)
 ### Step 3: Scaling
 
-- Implement horizontal scaling to ensure high availability.
+- Implement horizontal scaling to ensure high availability:
 
 ```yaml
 replicaCount: 3
 ```
 
-- Define CPU/memory limits and requests to optimize pod efficiency.
+- Define CPU/memory limits and requests to optimize pod efficiency:
 
 ```yaml
 resources:
@@ -86,7 +97,7 @@ resources:
 
 ### Step 4: Monitoring and Logging
 
-- Use Prometheus and Grafana to collect and analyze performance metrics.
+- Use Prometheus and Grafana to collect and analyze performance metrics:
 
 ```yaml
 serviceMonitor:
@@ -99,7 +110,7 @@ serviceMonitor:
 
 ### Step 5: Upgrades and Backups
 
-- Use the rolling update strategy used by Helm to minimize downtime.
+- Use the rolling update strategy used by Helm to minimize downtime:
 
 ```yaml
 updateStrategy:
