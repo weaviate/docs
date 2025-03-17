@@ -39,24 +39,6 @@ function Footer() {
         <div className={styles.footerContent}>
           {/* Left Section: Newsletter and Social Icons */}
           <div className={styles.leftSection}>
-            <div className={styles.newsletter}>
-              <h4>Get updates from Weaviate</h4>
-              <form
-                onSubmit={handleSubscribe}
-                className={styles.newsletterForm}
-              >
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <button type="submit">Subscribe</button>
-              </form>
-              {message && <p className={styles.message}>{message}</p>}
-            </div>
             <div className={styles.socialIcons}>
               <Link
                 to="https://github.com/weaviate/weaviate"
@@ -107,10 +89,29 @@ function Footer() {
                 <i className="fab fa-linkedin" aria-hidden="true"></i>
               </Link>
             </div>
+            {/*
+            <div className={styles.newsletter}>
+              <h4>Get updates from Weaviate</h4>
+              <form
+                onSubmit={handleSubscribe}
+                className={styles.newsletterForm}
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <button type="submit">Subscribe</button>
+              </form>
+              {message && <p className={styles.message}>{message}</p>}
+            </div>
+            */}
           </div>
 
           {/* Right Section: Additional Links */}
-          {/*
           <div className={styles.rightSection}>
             <div className={styles.footerSection}>
               <h5>Support</h5>
@@ -168,13 +169,14 @@ function Footer() {
               </ul>
             </div>
           </div>
-          */}
         </div>
+        {/*
         <div className={styles.footerText}>
           &copy; {new Date().getFullYear()} Weaviate, B.V. Built with
           Docusaurus.{" "}
           <Link to="https://weaviate.io/service">Terms and policies</Link>
         </div>
+        */}
       </div>
     </footer>
   );

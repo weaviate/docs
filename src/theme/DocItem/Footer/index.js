@@ -40,7 +40,7 @@ export default function DocItemFooter() {
           lastUpdatedBy={lastUpdatedBy}
         />
       )}
-      {/*<Footer />*/}
+      <Footer />
     </footer>
   );
 }

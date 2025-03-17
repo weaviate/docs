@@ -57,7 +57,7 @@ Weaviate can leverage its vectorization capabilities to enable automatic, real-t
 
 ## Other use cases
 
-Weaviate's [modular ecosystem](https://weaviate-docs.netlify.app/docs/weaviate/modules) unlocks many other use cases of the Weaviate vector database, such as [Named Entity Recognition](https://weaviate-docs.netlify.app/docs/weaviate/modules/ner-transformers) or [spell checking](https://weaviate-docs.netlify.app/docs/weaviate/modules/spellcheck).
+Weaviate's [modular ecosystem](../modules/index.md) unlocks many other use cases of the Weaviate vector database, such as [Named Entity Recognition](../modules/ner-transformers.md) or [spell checking](../modules/spellcheck.md).
 
 |Title | Description | Code |
 | --- | --- | --- |

@@ -209,7 +209,7 @@ If you did not see any errors, you are ready to proceed. We will replace the sim
 
 Now, we can populate our database by first defining a collection and then adding data.
 
-### 2.1 Define a collection {#define-a-collection}
+### 2.1 Define a collection
 
 :::info What is a collection?
 A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed.
@@ -244,7 +244,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Prefer a different model provider?</h4>
       </div>
       <div class="card__body">
-        See <a href="#can-i-use-different-integrations">this section</a> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
+        See <Link to="#can-i-use-different-integrations">this section</Link> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
       </div>
     </div>
   </div>
@@ -254,7 +254,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Want to specify object vectors?</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <a href="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</a>.
+        If you prefer to add vectors yourself along with the object data, see <Link to="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
       </div>
     </div>
   </div>
@@ -286,7 +286,7 @@ Run this code to add the demo data.
 
 Weaviate provides a wide range of query tools to help you find the right data. We will try a few searches here.
 
-### 3.1 Semantic search {#semantic-search}
+### 3.1 Semantic search
 
 Semantic search finds results based on meaning. This is called `nearText` in Weaviate.
 
@@ -474,7 +474,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <a href="/docs/weaviate/search">how to perform searches</a>, such as <a href="/docs/weaviate/search/bm25">keyword</a>, <a href="/docs/weaviate/search/similarity">similarity</a>, <a href="/docs/weaviate/search/hybrid">hybrid</a>, <a href="/docs/weaviate/search/image">image</a>, <a href="/docs/weaviate/search/filters">filtered</a> and <a href="/docs/weaviate/search/rerank">reranked</a> searches.
+            See <Link to="/docs/weaviate/search">how to perform searches</Link>, such as <Link to="/docs/weaviate/search/bm25">keyword</Link>, <Link to="/docs/weaviate/search/similarity">similarity</Link>, <Link to="/docs/weaviate/search/hybrid">hybrid</Link>, <Link to="/docs/weaviate/search/image">image</Link>, <Link to="/docs/weaviate/search/filters">filtered</Link> and <Link to="/docs/weaviate/search/rerank">reranked</Link> searches.
           </p>
         </div>
       </div>
@@ -486,7 +486,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <a href="/docs/weaviate/manage-data">how to manage data</a>, such as <a href="/docs/weaviate/manage-data/collections">manage collections</a>, <a href="/docs/weaviate/manage-data/create">create objects</a>, <a href="/docs/weaviate/manage-data/import">batch import data</a> and <a href="/docs/weaviate/manage-data/multi-tenancy">use multi-tenancy</a>.
+            See <Link to="/docs/weaviate/manage-data">how to manage data</Link>, such as <Link to="/docs/weaviate/manage-data/collections">manage collections</Link>, <Link to="/docs/weaviate/manage-data/create">create objects</Link>, <Link to="/docs/weaviate/manage-data/import">batch import data</Link> and <Link to="/docs/weaviate/manage-data/multi-tenancy">use multi-tenancy</Link>.
           </p>
         </div>
       </div>
@@ -498,7 +498,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <a href="/docs/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</a>, and the <a href="/docs/academy">Weaviate Academy</a> unit on <a href="/docs/academy/py/standalone/chunking">chunking</a>.
+            Check out the <Link to="/docs/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/docs/academy">Weaviate Academy</Link> unit on <Link to="/docs/academy/py/standalone/chunking">chunking</Link>.
           </p>
         </div>
       </div>
@@ -510,7 +510,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-          We hold in-person and online <a href="https://weaviate.io/community/events">workshops, office hours and events</a> for different experience levels. Join us!
+          We hold in-person and online <Link to="https://weaviate.io/community/events">workshops, office hours and events</Link> for different experience levels. Join us!
           </p>
         </div>
       </div>

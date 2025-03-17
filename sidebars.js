@@ -232,7 +232,19 @@ const sidebars = {
         id: "weaviate/starter-guides/index",
       },
       items: [
-        "weaviate/starter-guides/schema",
+        {
+          type: "category",
+          label: "Managing collections",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "weaviate/starter-guides/managing-collections/index",
+          },
+          items: [
+            "weaviate/starter-guides/managing-collections/collections-scaling-limits",
+          ],
+        },
         "weaviate/starter-guides/which-weaviate",
         "weaviate/starter-guides/custom-vectors",
         "weaviate/starter-guides/generative",
