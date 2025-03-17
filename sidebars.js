@@ -55,8 +55,11 @@ const sidebars = {
       label: "Client libraries",
       collapsible: true,
       collapsed: true,
+      link: {
+        type: "doc",
+        id: "weaviate/client-libraries/index",
+      },
       items: [
-        "weaviate/client-libraries/index",
         {
           type: "category",
           label: "Python",
