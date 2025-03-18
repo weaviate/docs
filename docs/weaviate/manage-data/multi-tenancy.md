@@ -2,7 +2,6 @@
 title: Multi-tenancy operations
 sidebar_position: 60
 image: og/docs/configuration.jpg
-# tags: ['configuration', 'multi-tenancy']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,6 +15,7 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go';
 import GoCodeAuto from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go';
 import CurlCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh';
+import SkipLink from '/src/components/SkipValidationLink'
 
 Multi-tenancy provides data isolation. Each tenant is stored on a separate shard. Data stored in one tenant is not visible to another tenant. If your application serves many different users, multi-tenancy keeps their data private and makes database operations more efficient.
 
@@ -650,7 +650,7 @@ Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will on
 
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How to: Configure a schema](../manage-data/collections.mdx)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure: Multi-tenancy](../concepts/data.md#multi-tenancy)
 
 ## Questions and feedback

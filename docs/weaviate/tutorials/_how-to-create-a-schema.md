@@ -2,8 +2,9 @@
 title: How to define a schema
 sidebar_position: 2
 image: og/docs/tutorials.jpg
-# tags: ['how to', 'schema']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 This tutorial is designed to show you an example of how to create a schema in Weaviate.
 
@@ -13,7 +14,7 @@ By the end of this tutorial, you should have a good idea of how to create a sche
 
 - A schema consists of classes and properties, which define concepts.
 - Words in the schema (names of classes and properties) must be part of the `text2vec-contextionary`.
-- The schema can be modified through the [RESTful API](/docs/weaviate/api/rest#tag/schema). Python, JavaScript and Go clients are available.
+- The schema can be modified through the <SkipLink href="/docs/weaviate/api/rest#tag/schema">RESTful API</SkipLink>. Python, JavaScript and Go clients are available.
 - A class or property in Weaviate becomes immutable, but can always be extended.
 - Learn about Concepts, Classes, Properties and dataTypes in the [API reference guide](/docs/weaviate/api/index.md).
 
@@ -280,7 +281,7 @@ import HowtoSchemaPropertyAdd from '/_includes/code/howto.schema.property.add.md
 ## Next steps
 
 <!-- - Go to the [next "How-to" guide]  (./how-to-import-data.md) to learn how to import data. -->
-- Check out the [RESTful API reference](/docs/weaviate/api/rest#tag/schema) for an overview of all schema API operations.
+- Check out the <SkipLink href="/docs/weaviate/api/rest#tag/schema">RESTful API reference</SkipLink> for an overview of all schema API operations.
 - Read this article on [Weaviate and schema creation](https://hackernoon.com/what-is-weaviate-and-how-to-create-data-schemas-in-it-7hy3460)
 
 

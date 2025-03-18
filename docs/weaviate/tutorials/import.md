@@ -3,9 +3,9 @@ title: Imports in detail
 description: Understand data import techniques in Weaviate for efficient data integration.
 sidebar_position: 4
 image: og/docs/tutorials.jpg
-# tags: ['import']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
 import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 <UpdateInProgressNote />
@@ -52,7 +52,7 @@ Each Weaviate data object is structured as follows:
 
 Most commonly, Weaviate users import data through a Weaviate client library.
 
-It is worth noting, however, that data is ultimately added through the RESTful API, either through the [`objects` endpoint](/docs/weaviate/api/rest#tag/objects) or the [`batch` endpoint](/docs/weaviate/api/rest#tag/batch).
+It is worth noting, however, that data is ultimately added through the RESTful API, either through the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects` endpoint</SkipLink> or the <SkipLink href="/docs/weaviate/api/rest#tag/batch">`batch` endpoint</SkipLink>.
 
 As the names suggest, the use of these endpoints depend on whether objects are being imported as batches or individually.
 

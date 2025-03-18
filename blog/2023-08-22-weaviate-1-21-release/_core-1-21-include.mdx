@@ -1,10 +1,11 @@
 ![Weaviate 1.21](./img/hero.png)
 
+import SkipLink from '/src/components/SkipValidationLink'
+
 Weaviate `1.21` is here!
 
 Here are the ⭐️*highlights*⭐️ relating to this release:
 
-<!-- truncate -->
 1. [`ContainsAny` and `ContainsAll` operators added](#containsany-and-containsall-operators) – Convenient, new operators to simplify complex queries.
 1. [Multi-tenancy improvements](#multi-tenancy-improvements) – Experimental tenant deactivation for efficiency, performance improvements.
 1. [New vectorizer modules](#new-modules)
@@ -103,7 +104,7 @@ This is possible because under the hood, each [tenant is a partition shard](http
 Deactivating unused subsets of data will help to reduce cost and improve the overall performance. We are very excited for you to [try it out](/docs/weaviate/manage-data/multi-tenancy).
 
 > Read more:
-> - [REST API: Schema: Multi-tenancy](/docs/weaviate/api/rest#tag/schema/post/schema/%7BclassName%7D/tenants)
+> - <SkipLink href="/docs/weaviate/api/rest#tag/schema/post/schema/%7BclassName%7D/tenants">REST API: Schema: Multi-tenancy</SkipLink>
 > - [Concepts: Data: Multi-tenancy](/docs/weaviate/concepts/data#multi-tenancy)
 
 :::note This is an experimental feature

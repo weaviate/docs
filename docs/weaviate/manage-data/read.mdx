@@ -2,7 +2,6 @@
 title: Read objects
 sidebar_position: 20
 image: og/docs/howto.jpg
-# tags: ['how-to', 'CRUD', 'read']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -14,6 +13,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go';
+import SkipLink from '/src/components/SkipValidationLink'
 
 
 Instead of querying your database, you can use an ID to retrieve individual objects.
@@ -191,7 +191,7 @@ Where [named vectors](../config-refs/schema/multi-vector.md) are used, you can r
 
 ## Check object existence
 
-To efficiently check if an object with a given [id](../api/graphql/additional-properties.md#id) exists without retrieving it, make a `HEAD` request to the [`/v1/objects/` REST endpoint](/docs/weaviate/api/rest#tag/objects/head/objects/{className}/{id}), or use the following client code:
+To efficiently check if an object with a given [id](../api/graphql/additional-properties.md#id) exists without retrieving it, make a `HEAD` request to the <SkipLink href="/docs/weaviate/api/rest#tag/objects/head/objects/{className}/{id}">`/v1/objects/` REST endpoint</SkipLink>, or use the following client code:
 
 import CheckObjectExistence from '/_includes/code/howto/manage-data.read.check.existence.mdx';
 
@@ -202,7 +202,7 @@ import CheckObjectExistence from '/_includes/code/howto/manage-data.read.check.e
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How-to: Search](../search/index.md)
 - [How-to: Read all objects](./read-all-objects.mdx)
-- [References: REST - /v1/objects](/docs/weaviate/api/rest#tag/objects)
+- <SkipLink href="/docs/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
 
 ## Questions and feedback
 

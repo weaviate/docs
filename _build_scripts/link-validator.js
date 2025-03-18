@@ -33,6 +33,7 @@ const domainsToIgnore = [
     'https://www.researchgate.net',
     'https://simple/',
     'https://www.snowflake.com',
+    'https://towardsdatascience.com/',
     'https://voyageai.com/',
     'https://weaviateagents.featurebase.app',
     'https://youtu.be/',

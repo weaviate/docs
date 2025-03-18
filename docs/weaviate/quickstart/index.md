@@ -2,7 +2,6 @@
 title: Quickstart (with cloud resources)
 sidebar_position: 0
 image: og/docs/quickstart-tutorial.jpg
-# tags: ['getting started']
 hide_table_of_contents: true
 ---
 
@@ -10,6 +9,7 @@ hide_table_of_contents: true
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import SkipLink from '/src/components/SkipValidationLink'
 
 <span class="badge badge--secondary">Expected time: 30 minutes</span> <span class="badge badge--secondary">Prerequisites: None</span>
 <br/><br/>
@@ -562,7 +562,7 @@ import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 <details>
   <summary>See answer</summary>
 
-If you are not sure whether the collection has been created, check the [`schema`](/docs/weaviate/api/rest#tag/schema) endpoint.
+If you are not sure whether the collection has been created, check the <SkipLink href="/docs/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
 
 Replace WEAVIATE_INSTANCE_URL with your instance's REST Endpoint URL.:
 
@@ -597,7 +597,7 @@ Weaviate uses a combination of RESTful and GraphQL APIs. In Weaviate, RESTful AP
 <details>
   <summary>See answer</summary>
 
-To confirm successful data import, check the [`objects`](/docs/weaviate/api/rest#tag/objects) endpoint to verify that all objects are imported.
+To confirm successful data import, check the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
 
 Replace WEAVIATE_INSTANCE_URL with your instance REST Endpoint URL:
 

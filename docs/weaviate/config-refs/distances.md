@@ -2,13 +2,13 @@
 title: Distance metrics
 sidebar_position: 30
 image: og/docs/configuration.jpg
-# tags: ['HNSW']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
 
 :::info Related pages
 - [Configuration: Schema](../manage-data/collections.mdx)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](../concepts/data.md)
 :::
 

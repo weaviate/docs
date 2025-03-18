@@ -3,12 +3,12 @@ title: Data types
 description: Data Types in Weaviate Schema
 sidebar_position: 20
 image: og/docs/configuration.jpg
-# tags: ['Data types']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import SkipLink from '/src/components/SkipValidationLink'
 
 ## Introduction
 
@@ -612,7 +612,7 @@ For more information on cross-references, see the [cross-references](../concepts
 :::info Related pages
 - [How-to: Manage collections](../manage-data/collections.mdx)
 - [Concepts: Data Structure](../concepts/data.md)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 :::
 
 ### Notes
