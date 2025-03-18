@@ -70,7 +70,7 @@ authorization:
     # - readonly_user2
     # - api-key-user-readOnly
 ```
-::: tip
+:::tip
 Using an admin list will allow you to define your admin or read-only user/API-key pairs across all Weaviate resources. Whereas RBAC allows you more granular permissions by defining roles and assigning them to users either via API keys or OIDC.
 :::
 
