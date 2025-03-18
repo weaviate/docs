@@ -2,9 +2,9 @@
 title: Create objects
 sidebar_position: 10
 image: og/docs/howto.jpg
-# tags: ['how-to', 'CRUD', 'create']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
@@ -409,7 +409,7 @@ import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx
 
 ## Validate objects before creation
 
-Before you create an object, you can [validate](/docs/weaviate/api/rest#tag/objects/post/objects/validate) it against the collection definition.
+Before you create an object, you can <SkipLink href="/docs/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -477,7 +477,7 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How-to: (Batch) Import items](./import.mdx)
-- [References: REST - /v1/objects](/docs/weaviate/api/rest#tag/objects)
+- <SkipLink href="/docs/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
 
 ## Questions and feedback
 

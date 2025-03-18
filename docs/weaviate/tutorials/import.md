@@ -3,9 +3,9 @@ title: Imports in detail
 description: Understand data import techniques in Weaviate for efficient data integration.
 sidebar_position: 4
 image: og/docs/tutorials.jpg
-# tags: ['import']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
 import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 <UpdateInProgressNote />
@@ -52,7 +52,7 @@ Each Weaviate data object is structured as follows:
 
 Most commonly, Weaviate users import data through a Weaviate client library.
 
-It is worth noting, however, that data is ultimately added through the RESTful API, either through the [`objects` endpoint](/docs/weaviate/api/rest#tag/objects) or the [`batch` endpoint](/docs/weaviate/api/rest#tag/batch).
+It is worth noting, however, that data is ultimately added through the RESTful API, either through the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects` endpoint</SkipLink> or the <SkipLink href="/docs/weaviate/api/rest#tag/batch">`batch` endpoint</SkipLink>.
 
 As the names suggest, the use of these endpoints depend on whether objects are being imported as batches or individually.
 
@@ -130,7 +130,7 @@ When importing large datasets, it may be worth planning out an optimized import 
 
 1. The most likely bottleneck is the import script. Accordingly, aim to max out all the CPUs available.
 1. To use multiple CPUs efficiently, enable sharding when you import data. For the fastest imports, enable sharding even on a single node.
-1. Use [parallelization](https://www.computerhope.com/jargon/p/parallelization.htm#:~:text=Parallelization%20is%20the%20act%20of,the%20next%2C%20then%20the%20next.); if the CPUs are not maxed out, just add another import process.
+1. Use [parallelization](https://www.computerhope.com/jargon/p/parallelization.htm); if the CPUs are not maxed out, just add another import process.
 1. Use `htop` when importing to see if all CPUs are maxed out.
 1. To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](../config-refs/env-vars.md).
 1. For Kubernetes, a few large machines are faster than many small machines (due to network latency).

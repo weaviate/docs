@@ -1,4 +1,4 @@
-const { LinkValidator, Verbosity } = require('./link-validator')
+const { LinkValidator, Verbosity, domainsToIgnore } = require('./link-validator')
 
 const findNetlifyPath = () => {
     const fs = require('fs');
@@ -32,20 +32,7 @@ const runBranchValidationOnNetlify = async () => {
 
         linksToSkip: [
             //URL_IGNORES
-            'https://x.com',
-            'https://openai.com',
-            'https://platform.openai.com',
-            'https://aistudio.google.com',
-            'https://ai.google.dev',
-            'https://www.snowflake.com',
-            'https://www.researchgate.net',
-            'https://ai.meta.com/',
-            'https://voyageai.com/',
-            'https://simple/',
-            'https://instagram.com/',
-            'https://youtu.be/',
-            'https://www.youtube.com',
-            'https://weaviateagents.featurebase.app',
+            ...domainsToIgnore,
 
             //DOCUSAURUS_IGNORES
             'github.com/weaviate/docs',

@@ -3,8 +3,9 @@ title: Enable and configure RBAC
 sidebar_label: Enable RBAC
 sidebar_position: 1
 image: og/docs/configuration.jpg
-# tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 :::info Available from `v1.29`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
@@ -56,7 +57,7 @@ This configuration:
 - Configures `user-a` as a user with built-in root/admin permissions
 - Configures `user-b` as a user with no built-in permissions
 
-The user `user-b` can now be assigned custom roles and permissions using the [REST API](/docs/weaviate/api/rest#tag/authz) or [programmatically using a client library](/docs/weaviate/configuration/rbac/manage-roles-users).
+The user `user-b` can now be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](/docs/weaviate/configuration/rbac/manage-roles-users).
 
 :::caution Changes in environment variables
 As of Weaviate version `v1.29` these environment variables have changed:
@@ -100,7 +101,7 @@ This configuration:
 - Configures `user-a` as a user with built-in admin permissions
 - Configures `user-b` as a user with no built-in permissions
 
-The user `user-b` can now be assigned custom roles and permissions using the [REST API](/docs/weaviate/api/rest#tag/authz) or [programmatically using a client library](/docs/weaviate/configuration/rbac/manage-roles-users).
+The user `user-b` can now be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](/docs/weaviate/configuration/rbac/manage-roles-users).
 
 ## RBAC and performance
 

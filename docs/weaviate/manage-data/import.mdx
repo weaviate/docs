@@ -2,7 +2,6 @@
 title: Batch import
 sidebar_position: 15
 image: og/docs/howto.jpg
-# tags: ['how-to', 'import']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,6 +15,7 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.import-
 import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.import.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
+import SkipLink from '/src/components/SkipValidationLink'
 
 [Batch imports](../tutorials/import.md#to-batch-or-not-to-batch) are an efficient way to add multiple data objects and cross-references.
 
@@ -542,7 +542,7 @@ For details, see [auto-tenant](/docs/weaviate/manage-data/multi-tenancy#automati
 
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
 - [How-to: Create objects](./create.mdx)
-- [References: REST - /v1/batch](/docs/weaviate/api/rest#tag/batch)
+- <SkipLink href="/docs/weaviate/api/rest#tag/batch">References: REST - /v1/batch</SkipLink>
 - [Configuration: Indexes](/docs/weaviate/config-refs/schema/vector-index#asynchronous-indexing)
 
 ## Questions and feedback

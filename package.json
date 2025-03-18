@@ -8,6 +8,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "build-dev": "docusaurus build --config docusaurus.dev.config.js --out-dir build.dev",
+    "validate-links-dev": "node ./_build_scripts/validate-links-pr.js",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
