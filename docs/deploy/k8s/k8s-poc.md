@@ -11,11 +11,11 @@ At the end of this guide, expect to have:
 - TLS, RBAC, and security best practices implements
 - Monitoring, logging, and backup strategies enabled
 
-## Prerequisites
+### Prerequisites
 
 Before beginning, ensure that you have the following:
 
-### Technical Knowledge
+#### Technical Knowledge
 
 - Basic Kubernetes and containerization conceptual knowledge
 - Basic experience with Helm and `kubectl`
@@ -26,13 +26,13 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate
 
 :::
 
-### Required Tools
+#### Required Tools
 
 - A running Kubernetes cluster with Weaviate installed
 - `kubectl` installed
 - Helm installed
 
-### Step 1: Configure your Helm Chart
+## Step 1: Configure your Helm Chart
 
 - Use the official [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm) for your installation:
  
@@ -44,7 +44,7 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate
 - Customize the values to fit your enterprise requirements (e.g., resource allocation, storage settings).
 - Deploy the chart and verify pod health.
 
-### Step 2: Network Security
+## Step 2: Network Security
 
 - Configure an ingress controller to securely expose Weaviate.
 - Enable TLS with a certificate manager and enforce TLS encryption for all client-server communication.
@@ -79,14 +79,15 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate
     - readonly_user2
     - api-key-user-readOnly
 ```
+[Admin List Configuration](/docs/weaviate/configuration/authorization.md#admin-list-kubernetes)
+
 </details>
 
 :::tip
 Using an admin list will allow you to define your admin or read-only user/API-key pairs across all Weaviate resources. Whereas RBAC allows you more granular permissions by defining roles and assigning them to users either via API keys or OIDC.
 :::
 
-[Admin List Configuration](/docs/weaviate/configuration/authorization.md#admin-list-kubernetes)
-### Step 3: Scaling
+## Step 3: Scaling
 
 - Implement horizontal scaling to ensure high availability:
 
@@ -110,7 +111,7 @@ resources:
 ```
 </details>
 
-### Step 4: Monitoring and Logging
+## Step 4: Monitoring and Logging
 
 - Use Prometheus and Grafana to collect and analyze performance metrics. 
 - Implement alerting for issue resolution.
@@ -127,7 +128,7 @@ serviceMonitor:
 </details>
 
 
-### Step 5: Upgrades and Backups
+## Step 5: Upgrades and Backups
 
 - Use the rolling update strategy used by Helm to minimize downtime.
 
