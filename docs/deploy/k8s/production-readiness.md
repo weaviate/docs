@@ -1,3 +1,7 @@
+---
+sidebar_label: Production Readiness Self-Assessment
+---
+
 # Kubernetes Production Readiness Self-Assessment
 
 Think you’re ready for production? Ensuring that your Weaviate cluster is production-ready requires careful planning, configuration, and ongoing maintenance. Ensuring that you have a stable, reliable deployment requires you to think of your *ending* at the *beginning.* This guide provides you with introspective questions to assess readiness and identify any potential gaps before moving your workloads into production.
