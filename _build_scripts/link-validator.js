@@ -22,6 +22,24 @@ class Verbosity {
     static get ALL_LINKS() { return this.#_ALL_LINKS; }
 }
 
+const domainsToIgnore = [
+    'https://aistudio.google.com',
+    'https://ai.google.dev',
+    'https://ai.meta.com/',
+    'https://www.computerhope.com',
+    'https://instagram.com/',
+    'https://openai.com',
+    'https://platform.openai.com',
+    'https://www.researchgate.net',
+    'https://simple/',
+    'https://www.snowflake.com',
+    'https://voyageai.com/',
+    'https://weaviateagents.featurebase.app',
+    'https://youtu.be/',
+    'https://www.youtube.com',
+    'https://x.com',
+]
+
 class LinkValidator {
     #checker;
     #verbosity;
@@ -180,4 +198,4 @@ Skipped links:     ${skippedLinks.length}`)
     }
 }
 
-module.exports = { LinkValidator, Verbosity, Color }
+module.exports = { LinkValidator, Verbosity, Color, domainsToIgnore }
