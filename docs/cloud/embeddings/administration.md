@@ -57,7 +57,7 @@ More info about billing in Weaviate Cloud can be found on [this page](/docs/clou
 - [Weaviate Embeddings: Overview](/docs/cloud/embeddings)
 - [Weaviate Embeddings: Quickstart](/docs/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Choose a model](/docs/cloud/embeddings/models)
-- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings)
+- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md)
 
 ## Support & feedback
 
