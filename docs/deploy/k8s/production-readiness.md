@@ -35,7 +35,7 @@ Think you’re ready for production? Ensuring that your Weaviate cluster is prod
 - [ ]  Is the *“principle of least privilege”* being followed?
 - [ ]  Are your container security defaults set properly?
 - [ ]  Is access to your cluster strictly limited?
-- [ ]  Has RBAC been implemented to restrict access?
+- [ ]  Has [RBAC](/docs/weaviate/configuration/rbac/index.mdx) been implemented to restrict access?
 - [ ]  Have network policies been implemented to limit pod-to-pod communication?
 - [ ]  Are secrets secured with K8s Secrets or a vault solution?
 - [ ]  Do you have a process for when secrets are exposed, when access is lost to a key or certificate, and when secrets need to be rotated?
@@ -53,13 +53,3 @@ Evaluate these key areas to build a highly available, resilient, and efficient d
 :::tip
 If you *do* identify gaps within your deployment, be sure to reach out to your SE (sales engineer) who can help steer you on the path to production success!
 :::
-
-#### Additional Resources
-
-- [Replication](/docs/weaviate/configuration/replication.md)
-- [Horizontal Scaling](/docs/weaviate/concepts/cluster.md)
-- [Storage](/docs/weaviate/concepts/storage.md)
-- [RBAC](/docs/weaviate/configuration/rbac/index.mdx)
-- [Backups](/docs/weaviate/configuration/backups.md)
-- [Persistence](/docs/weaviate/configuration/persistence.md)
-- [Monitoring](/docs/weaviate/configuration/monitoring.md)

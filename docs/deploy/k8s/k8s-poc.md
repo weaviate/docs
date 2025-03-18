@@ -2,7 +2,7 @@
 
 ## Introduction
 
-You are a developer who has already deployed Weaviate on a test cluster and want to take things a step further by deploying and testing Weaviate on a self-managed K8s (Kubernetes) cluster. This guide shows how to validate Weaviate’s capabilities in your enterprise environment.  
+Are you ready to deploy and test Weaviate on a self-managed K8s (Kubernetes) cluster? This guide shows how to validate Weaviate’s capabilities in your enterprise environment.  
 
 At the end of this guide, expect to have:
 
@@ -22,7 +22,7 @@ Before beginning, ensure that you have the following:
 
 :::note
 
-Check out the Academy course  [“Run Weaviate on Kubernetes”](https://weaviate.io/developers/academy/deployment/k8s) if you need assistance. 
+Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate.io/developers/academy/deployment/k8s) if you need assistance. 
 
 :::
 
@@ -34,7 +34,13 @@ Check out the Academy course  [“Run Weaviate on Kubernetes”](https://weaviat
 
 ### Step 1: Configure your Helm Chart
 
-- Use the official [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm) for your installation.
+- Use the official [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm) for your installation:
+ 
+```
+  helm repo add weaviate https://weaviate.github.io/weaviate-helm
+  helm install my-weaviate weaviate/weaviate
+```
+
 - Customize the values to fit your enterprise requirements (e.g., resource allocation, storage settings).
 - Deploy the chart and verify pod health.
 
@@ -43,33 +49,38 @@ Check out the Academy course  [“Run Weaviate on Kubernetes”](https://weaviat
 - Configure an ingress controller to securely expose Weaviate.
 - Enable TLS with a certificate manager and enforce TLS encryption for all client-server communication.
 - Assign a domain name for external access.
-- Implement RBAC to restrict user access:
+- Implement RBAC or admin lists to restrict user access.
+
+<details>
+  <summary> An example of RBAC enabled on your Helm chart </summary>
 
 ```yaml
-authorization:
+  authorization:
   rbac:
     enabled: true
-    # root_users:
-    # - admin_user1
-    # - admin_user2
+     root_users:
+    - admin_user1
+    - admin_user2
 ```
+</details>
 
-[Configuring RBAC](/docs/weaviate/configuration/rbac/configuration.md)
-
-- **Optional**: Implement admin lists (if not using RBAC):
+<details>
+<summary> An example of admin lists implemented on your Helm chart (if not using RBAC)</summary>
 
 ```yaml
   admin_list:
     enabled: true
-    # users:
-    # - admin_user1
-    # - admin_user2
-    # - api-key-user-admin
-    # read_only_users:
-    # - readonly_user1
-    # - readonly_user2
-    # - api-key-user-readOnly
+    users:
+    - admin_user1
+    - admin_user2
+    - api-key-user-admin
+    read_only_users:
+    - readonly_user1
+    - readonly_user2
+    - api-key-user-readOnly
 ```
+</details>
+
 :::tip
 Using an admin list will allow you to define your admin or read-only user/API-key pairs across all Weaviate resources. Whereas RBAC allows you more granular permissions by defining roles and assigning them to users either via API keys or OIDC.
 :::
@@ -83,7 +94,10 @@ Using an admin list will allow you to define your admin or read-only user/API-ke
 replicaCount: 3
 ```
 
-- Define CPU/memory limits and requests to optimize pod efficiency:
+- Define CPU/memory limits and requests to optimize pod efficiency.
+
+<details>
+<summary> An example of defining CPU and memory limits and cores </summary>
 
 ```yaml
 resources:
@@ -94,10 +108,15 @@ resources:
     cpu: "2"
     memory: "4Gi"
 ```
+</details>
 
 ### Step 4: Monitoring and Logging
 
-- Use Prometheus and Grafana to collect and analyze performance metrics:
+- Use Prometheus and Grafana to collect and analyze performance metrics. 
+- Implement alerting for issue resolution.
+
+<details>
+<summary> An example of enabling service monitoring </summary>
 
 ```yaml
 serviceMonitor:
@@ -105,12 +124,15 @@ serviceMonitor:
   interval: 30s
   scrapeTimeout: 10s
 ```
+</details>
 
-- Implement alerting for issue resolution.
 
 ### Step 5: Upgrades and Backups
 
-- Use the rolling update strategy used by Helm to minimize downtime:
+- Use the rolling update strategy used by Helm to minimize downtime.
+
+<details>
+<summary> An example of configuring the rolling update strategy.</summary>
 
 ```yaml
 updateStrategy:
@@ -119,6 +141,7 @@ updateStrategy:
     maxSurge: 1
     maxUnavailable: 0
 ```
+</details>
 
 - Test new Weaviate versions before deploying into production.
 - Implement disaster recovery procedures to ensure that data is restored quickly.
