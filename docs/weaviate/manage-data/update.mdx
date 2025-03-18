@@ -2,7 +2,6 @@
 title: Update objects
 sidebar_position: 30
 image: og/docs/howto.jpg
-# tags: ['how-to', 'CRUD', 'update']
 ---
 
 
@@ -17,14 +16,15 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.update-
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go';
 import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
+import SkipLink from '/src/components/SkipValidationLink'
 
 Weaviate allows partial or complete object updates.
 
 <details>
   <summary>Additional information</summary>
 
-  - Partial updates use [`PATCH` requests to the `/v1/objects` REST API endpoint](/docs/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D) under the hood.
-  - Complete updates use [`PUT` requests to the `/v1/objects` REST API endpoint](/docs/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D) under the hood.
+  - Partial updates use <SkipLink href="/docs/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D">`PATCH` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
+  - Complete updates use <SkipLink href="/docs/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">`PUT` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
   - Updates that include a `vector` property will recalculate the vector embedding (unless all updated `text` properties are [skipped](../manage-data/collections.mdx#property-level-settings)).
   - To update objects, you must provide the collection name, id and properties to update.
   - For [multi-tenancy](../concepts/data.md#multi-tenancy) collections, you will also need to specify the tenant name. See [Manage data: multi-tenancy operations](./multi-tenancy.md) for details on how.
@@ -269,7 +269,7 @@ At object level, you can replace the object with a copy that has those propertie
 ## Related pages
 
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- [References: REST - /v1/objects](/docs/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D)
+- <SkipLink href="/docs/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">References: REST - /v1/objects</SkipLink>
 
 
 ## Questions and feedback

@@ -2,8 +2,9 @@
 title: Consistency
 sidebar_position: 4
 image: og/docs/concepts.jpg
-# tags: ['architecture']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 The replication factor in Weaviate determines how many copies of shards (also called replicas) will be stored across a Weaviate cluster.
 
@@ -315,7 +316,7 @@ Repairs only happen on read, so they do not create a lot of background overhead.
 
 ## Related pages
 - [API References | GraphQL | Get | Consistency Levels](../../api/graphql/get.md#consistency-levels)
-- [API References | REST | Objects](/docs/weaviate/api/rest#tag/objects)
+- <SkipLink href="/docs/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
 
 ## Questions and feedback
 

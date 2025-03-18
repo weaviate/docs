@@ -3,10 +3,9 @@ title: Additional properties (metadata)
 description: Use additional properties in Weaviate's GraphQL API for enriched query results.
 sidebar_position: 45
 image: og/docs/api.jpg
-# tags: ['graphql', 'additional properties', 'additional', 'metadata']
 ---
 
-
+import SkipLink from '/src/components/SkipValidationLink'
 import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
 <TryEduDemo />
@@ -160,7 +159,7 @@ The `explainScore` will be the hybrid score of the result, broken down into its 
 
 ### Classification
 
-When a data-object has been [subjected to classification](/docs/weaviate/api/rest#tag/classifications), you can get additional information about how the object was classified by running the following command:
+When a data-object has been <SkipLink href="/docs/weaviate/api/rest#tag/classifications">subjected to classification</SkipLink>, you can get additional information about how the object was classified by running the following command:
 
 import GraphQLUnderscoreClassification from '/_includes/code/graphql.underscoreproperties.classification.mdx';
 

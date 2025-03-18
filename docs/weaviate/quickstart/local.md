@@ -2,7 +2,6 @@
 title: Locally hosted
 sidebar_position: 0
 image: og/docs/quickstart-tutorial.jpg
-# tags: ['getting started']
 hide_table_of_contents: true
 ---
 
@@ -10,6 +9,7 @@ hide_table_of_contents: true
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import SkipLink from '/src/components/SkipValidationLink'
 
 <span class="badge badge--secondary">Expected time: 30 minutes</span> <span class="badge badge--secondary">Prerequisites: None</span>
 <br/><br/>
@@ -377,7 +377,7 @@ Run this code to perform the query. Here is one possible response (your response
 🦢 2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new species! 🦢🌿 #ScienceFacts #DNA #SpeciesClassification
 ```
 
-The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#semantic-search) section.
+The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#31-semantic-search) section.
 
 The power of RAG comes from the ability to transform your own data. Weaviate helps you in this journey by making it easy to perform a combined search & generation in just a few lines of code.
 
@@ -498,7 +498,7 @@ import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 <details>
   <summary>See answer</summary>
 
-If you are not sure whether the collection has been created, check the [`schema`](/docs/weaviate/api/rest#tag/schema) endpoint.
+If you are not sure whether the collection has been created, check the <SkipLink href="/docs/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
 
 Replace WEAVIATE_INSTANCE_URL with your instance's REST Endpoint URL.:
 
@@ -533,7 +533,7 @@ Weaviate uses a combination of RESTful and GraphQL APIs. In Weaviate, RESTful AP
 <details>
   <summary>See answer</summary>
 
-To confirm successful data import, check the [`objects`](/docs/weaviate/api/rest#tag/objects) endpoint to verify that all objects are imported.
+To confirm successful data import, check the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
 
 Replace WEAVIATE_INSTANCE_URL with your instance REST Endpoint URL:
 
@@ -564,7 +564,7 @@ Where you should be able to confirm that you have imported all `10` objects.
 
 To perform text-based (`nearText`) similarity searches, you need to have a vectorizer enabled, and configured in your collection.
 
-Make sure the vectorizer is configured [like this](#define-a-collection).
+Make sure the vectorizer is configured [like this](#21-define-a-collection).
 
 If the search still doesn't work, [contact us](#questions-and-feedback)!
 

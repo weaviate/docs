@@ -3,8 +3,9 @@ title: Collection definition
 description: Schema Configuration in Weaviate
 sidebar_position: 10
 image: og/docs/configuration.jpg
-# tags: ['Data types']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 ## Introduction
 
@@ -247,7 +248,7 @@ This configuration allows stopwords to be configured by collection. If not set, 
 
 As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverted index, but not in the tokenized query. As a result, when the BM25 algorithm is applied, stopwords are ignored in the input for relevance ranking but will affect the score.
 
-Stopwords can now be configured at runtime. You can use the RESTful API to [update](/docs/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D) the list of stopwords after your data has been indexed.
+Stopwords can now be configured at runtime. You can use the RESTful API to <SkipLink href="/docs/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">update</SkipLink> the list of stopwords after your data has been indexed.
 
 Note that stopwords are only removed when [tokenization](#tokenization) is set to `word`.
 
@@ -654,7 +655,7 @@ client.schema.create_class(collection_obj)
 ## Related pages
 - [Tutorial: Schema](/docs/weaviate/starter-guides/managing-collections)
 - [How to: Configure a schema](/docs/weaviate/manage-data/collections)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](/docs/weaviate/concepts/data)
 
 ## Questions and feedback

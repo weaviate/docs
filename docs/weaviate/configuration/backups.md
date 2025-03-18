@@ -2,9 +2,9 @@
 title: Backups
 sidebar_position: 12
 image: og/docs/configuration.jpg
-# tags: ['configuration', 'backups']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
@@ -307,7 +307,7 @@ If you are missing your desired backup module, you can open a feature request on
 
 ## API
 
-For REST API documentation, see the [Backups section](/docs/weaviate/api/rest#tag/backups).
+For REST API documentation, see the <SkipLink href="/docs/weaviate/api/rest#tag/backups">Backups section</SkipLink>.
 
 ### Create Backup
 
@@ -713,7 +713,7 @@ For example, consider the following situation: You would like to do a load test 
 - If a backup module is misconfigured, such as having an invalid backup path, it can cause Weaviate to not start. Review the system logs for any errors.
 
 ## Related pages
-- [References: REST API: Backups](/docs/weaviate/api/rest#tag/backups)
+- <SkipLink href="/docs/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>
 
 ## Questions and feedback
 

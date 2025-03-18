@@ -1,17 +1,18 @@
 ![Weaviate 1.18](./img/hero.png)
 
-<!-- truncate -->
+import SkipLink from '/src/components/SkipValidationLink'
+
 We are happy to announce the release of Weaviate `1.18`, which brings a set of great features, performance improvements, and fixes.
 
 ## The Brief
 If you like your content brief and to the point, here is the TL;DR of this release:
 
-1. [Faster Filtering with Roaring Bitmaps](#faster-filtering-with-roaring-bitmaps) – modern data structure that dramatically boosts the speed for filtered searches
-1. [HNSW-PQ](#hnsw-pq) – enables great performance at a fraction of the previous RAM requirements
-1. [Improvements to BM25 and Hybrid Search](#improvements-to-bm25-and-hybrid-search) – faster scoring with the WAND implementation and added filter support
-1. [Replication](#replication) – two new replication features: tunable consistency for all read and write REST operations, and repair on read
-1. [Cursor API](#cursor-api) – simple way to export every object from Weaviate
-1. [Azure Storage backup module](#azure-storage-backup-module) – extends our cloud-native backup capabilities further by introducing the `backup-azure` module.
+1. [Faster Filtering with Roaring Bitmaps](#faster-filtering-with-roaring-bitmaps) - modern data structure that dramatically boosts the speed for filtered searches
+1. [HNSW-PQ](#hnsw-pq) - enables great performance at a fraction of the previous RAM requirements
+1. [Improvements to BM25 and Hybrid Search](#improvements-to-bm25-and-hybrid-search) - faster scoring with the WAND implementation and added filter support
+1. [Replication](#replication) - two new replication features: tunable consistency for all read and write REST operations, and repair on read
+1. [Cursor API](#cursor-api) - simple way to export every object from Weaviate
+1. [Azure Storage backup module](#azure-storage-backup-module) - extends our cloud-native backup capabilities further by introducing the `backup-azure` module.
 
 Read below to learn more about each of these points in more detail.
 
@@ -123,7 +124,7 @@ class_obj = {
 client.schema.update_config("Article", class_obj)
 ```
 
-For more information on how to update a class using the RESTful API, check out the [documentation](/docs/weaviate/api/rest#tag/schema).
+For more information on how to update a class using the RESTful API, check out the <SkipLink href="/docs/weaviate/api/rest#tag/schema">documentation</SkipLink>.
 
 ### Ongoing Fixes and Improvements
 Although [BM25](/docs/weaviate/api/graphql/search-operators#bm25) and [Hybrid Search](/docs/weaviate/api/graphql/search-operators#hybrid) were released in Weaviate `1.17`, we continued to make fixes and improvements. Here are a list of the patch releases related to BM25/Hybrid:
@@ -164,7 +165,7 @@ Depending on the desired tradeoff between consistency and speed, below are three
 
 Read operations with the consistency level set to `QUORUM` or `ALL` return the most recent objects out of those returned by the majority of nodes, based on timestamps.
 
-Version `1.17` supported tunable consistency for [fetching by id](/docs/weaviate/api/rest#tag/objects/get/objects/%7BclassName%7D/%7Bid%7D). Weaviate `1.18` adds tunable consistency support for all read and write REST operations, including [batching](/docs/weaviate/api/rest#tag/batch) and [cross-references](/docs/weaviate/api/rest#tag/objects/post/objects/%7BclassName%7D/%7Bid%7D/references/%7BpropertyName%7D). GraphQL queries do not support tunable consistency yet.
+Version `1.17` supported tunable consistency for <SkipLink href="/docs/weaviate/api/rest#tag/objects/get/objects/%7BclassName%7D/%7Bid%7D">fetching by id</SkipLink>. Weaviate `1.18` adds tunable consistency support for all read and write REST operations, including <SkipLink href="/docs/weaviate/api/rest#tag/batch">batching</SkipLink> and <SkipLink href="/docs/weaviate/api/rest#tag/objects/post/objects/%7BclassName%7D/%7Bid%7D/references/%7BpropertyName%7D">cross-references</SkipLink>. GraphQL queries do not support tunable consistency yet.
 
 This version also ships with an optimization for fetching multiple objects: the coordinator node only waits to receive a full result set from one of the nodes, and verifies it has the correct objects using digest responses sent by the other nodes. Since Weaviate uses a leaderless setup, the coordinator itself sends a response, which most often will arrive before the full responses sent by the other nodes, but the digests will confirm it is the correct result set.
 

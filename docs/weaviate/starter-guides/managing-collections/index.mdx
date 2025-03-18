@@ -3,8 +3,9 @@ title: Collection definitions (schemas)
 description: Begin with collection definition setup in Weaviate to structure your data effectively.
 sidebar_position: 0
 image: og/docs/tutorials.jpg
-# tags: ['basics']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 This tutorial will guide you through the process of defining a schema for your data, including commonly used settings and key considerations.
 
@@ -213,7 +214,7 @@ import SchemaWithMT from '/_includes/code/tutorial.schema.multi-tenancy.mdx';
 
 ### Index settings
 
-Weaviate uses two types of indexes: [vector indexes](/docs/weaviate/concepts/vector-index) and [inverted indexes](/docs/weaviate/concepts/indexing#inverted-indexes). Vector indexes are used to store and organize vectors for fast vector similarity-based searches. Inverted indexes are used to store data for fast filtering and keyword searches.
+Weaviate uses two types of indexes: [vector indexes](/docs/weaviate/concepts/indexing/vector-index.md) and [inverted indexes](/docs/weaviate/concepts/indexing/inverted-index.md). Vector indexes are used to store and organize vectors for fast vector similarity-based searches. Inverted indexes are used to store data for fast filtering and keyword searches.
 
 The default vector index type is [HNSW](/docs/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index). The other options are [flat](/docs/weaviate/concepts/vector-index#flat-index), which is suitable for small collections, such as those in a multi-tenancy collection, or [dynamic](/docs/weaviate/concepts/vector-index#dynamic-index), which starts as a flat index before switching to an HNSW index if its size grows beyond a predetermined threshold.
 
@@ -247,7 +248,7 @@ The following resources include more detailed information on collection definiti
 
 - [Reference: Configuration - Collection definition](/docs/weaviate/config-refs/schema): A reference of all available collection definition settings.
 - [Collections - How-to: manage data](/docs/weaviate/manage-data/collections): Code examples for creating and managing collections, including how to configure various settings using client libraries.
-- [Reference: REST - Schema](/docs/weaviate/api/rest#tag/schema): A reference of all available collection definition settings for the REST API.
+- <SkipLink href="/docs/weaviate/api/rest#tag/schema">Reference: REST - Schema</SkipLink>: A reference of all available collection definition settings for the REST API.
 
 ## Questions and feedback
 

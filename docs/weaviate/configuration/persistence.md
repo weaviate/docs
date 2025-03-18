@@ -2,8 +2,9 @@
 title: Persistence
 sidebar_position: 45
 image: og/docs/configuration.jpg
-# tags: ['configuration', 'persistence']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 When running Weaviate with Docker or Kubernetes, you can persist its data by mounting a volume to store the data outside of the containers. Doing so will cause the Weaviate instance to also load the data from the mounted volume when it is restarted.
 
@@ -88,7 +89,7 @@ Starting with `v1.12.0` there are two levels of disk usage notifications and act
 
 If a shard was marked `READONLY` due to disk pressure and you want to mark the
 shard as ready again (either because you have made more space available or
-changed the thresholds) you can use the [Shards API](/docs/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards) to do so.
+changed the thresholds) you can use the <SkipLink href="/docs/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> to do so.
 
 ## Disk access method
 
