@@ -39,6 +39,7 @@ const secondaryNavbarItems = {
         label: "Other",
         link: "/docs/weaviate/benchmarks",
         sidebar: "othersSidebar",
+        /*
         dropdown: [
           {
             label: "Benchmarks",
@@ -51,6 +52,7 @@ const secondaryNavbarItems = {
             sidebar: "othersSidebarFAQ",
           },
         ],
+        */
       },
     ],
   },
