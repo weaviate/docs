@@ -520,7 +520,7 @@ const siteRedirects = {
       from: "/docs/weaviate/starter-guides/schema",
     },
 
-    // Redirects for Weaviate Core error messages
+    // Redirects for Weaviate database error messages
     //{
     //  to: "/docs/weaviate/starter-guides/schema/collections-scaling-limits",
     //  from: "/collections-count-limit",

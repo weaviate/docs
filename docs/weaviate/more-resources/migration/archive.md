@@ -732,7 +732,7 @@ to
 
 #### Modular classification
 
-Some classification types are tied to modules (e.g. the former "contextual" classification is tied to the `text2vec-contextionary` module. We make a distinction between fields which are always present and those which are type dependent. Additionally the API is improved by grouping `settings` and `filters` in separate properties. kNN classification is the only type of classification that is present with Weaviate Core without dependency on modules. The former "contextual" classification is tied to the `text2vec-contextionary` module, see [here](#text2vec-contextionary). An example of how the change looks like in the classification API POST body:
+Some classification types are tied to modules (e.g. the former "contextual" classification is tied to the `text2vec-contextionary` module. We make a distinction between fields which are always present and those which are type dependent. Additionally the API is improved by grouping `settings` and `filters` in separate properties. kNN classification is the only type of classification that is present with Weaviate database without dependency on modules. The former "contextual" classification is tied to the `text2vec-contextionary` module, see [here](#text2vec-contextionary). An example of how the change looks like in the classification API POST body:
 
 From
 

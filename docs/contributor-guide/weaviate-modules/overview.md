@@ -64,7 +64,7 @@ other benefits from running the container as a separate service. Most notably:
 
 - **Independent scalability**
   This separation of concerns allows to scale each concern depending on load.
-  For example, if you have a read-heavy workload, Weaviate Core might be the
+  For example, if you have a read-heavy workload, Weaviate database might be the
   bottleneck. If you have a write-heavy workload with very long objects, model
   inference might be the bottleneck. By having these concerns separated, you
   can individually scale based on your needs.

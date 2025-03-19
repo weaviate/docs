@@ -1,7 +1,7 @@
 const secondaryNavbarItems = {
   build: {
-    title: "Weaviate",
-    icon: "fa fa-code",
+    title: "Weaviate database",
+    icon: "fa fa-database",
     description: "Develop AI applications using Weaviate's APIs and tools",
     link: "/docs/weaviate",
     links: [
@@ -39,6 +39,18 @@ const secondaryNavbarItems = {
         label: "Other",
         link: "/docs/weaviate/benchmarks",
         sidebar: "othersSidebar",
+        dropdown: [
+          {
+            label: "Benchmarks",
+            link: "/docs/weaviate/benchmarks",
+            sidebar: "othersSidebar",
+          },
+          {
+            label: "FAQ",
+            link: "/docs/weaviate/more-resources/faq",
+            sidebar: "othersSidebarFAQ",
+          },
+        ],
       },
     ],
   },
@@ -46,7 +58,7 @@ const secondaryNavbarItems = {
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
-    description: "Deploy, configure, and maintain Weaviate Core",
+    description: "Deploy, configure, and maintain Weaviate database",
     link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
@@ -121,7 +133,7 @@ const secondaryNavbarItems = {
         sidebar: "contributorSidebar",
       },
       {
-        label: "Weaviate Core",
+        label: "Weaviate database",
         link: "/docs/contributor-guide/weaviate-core",
         sidebar: "contributorCoreSidebar",
       },

@@ -1,5 +1,5 @@
 ---
-title: Weaviate Core Roadmap
+title: Weaviate database Roadmap
 sidebar_position: 0
 image: og/docs/roadmap.jpg
 # tags: ['roadmap']

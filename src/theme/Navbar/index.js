@@ -174,9 +174,30 @@ export default function NavbarWrapper(props) {
           />
         </button>
         <nav className={styles.secondaryNavLinks}>
-          {/* Render secondary navbar only if there's more than one link */}
-          {linksCount > 1 &&
-            secondaryNavOptions[selectedOption]?.links.map((item, index) => {
+          {secondaryNavOptions[selectedOption]?.links.map((item, index) => {
+            // Check if the current item has a dropdown field.
+            if (item.dropdown) {
+              return (
+                <div key={index} className={styles.navDropdown}>
+                  <span className={styles.navLinkWithArrow}>
+                    {item.label}
+                    <i className="fa fa-chevron-down" aria-hidden="true" />
+                  </span>
+                  <div className={styles.dropdownContent}>
+                    {item.dropdown.map((subItem, subIndex) => (
+                      <React.Fragment key={subIndex}>
+                        <Link to={subItem.link} className={styles.dropdownItem}>
+                          {subItem.label}
+                        </Link>
+                        {subIndex !== item.dropdown.length - 1 && (
+                          <div className={styles.dropdownDivider} />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              );
+            } else {
               const isActive = activeLink && item.sidebar === activeLink;
               return (
                 <Link
@@ -191,7 +212,8 @@ export default function NavbarWrapper(props) {
                   {item.label}
                 </Link>
               );
-            })}
+            }
+          })}
         </nav>
       </div>
 
