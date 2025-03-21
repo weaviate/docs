@@ -77,7 +77,7 @@ We may expand the service to other regions in the future.
 - [Weaviate Embeddings: Quickstart](/docs/cloud/embeddings/quickstart)
 - [Weaviate Embeddings: Choose a model](/docs/cloud/embeddings/models)
 - [Weaviate Embeddings: Administration](/docs/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings)
+- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md)
 
 ## Support & feedback
 

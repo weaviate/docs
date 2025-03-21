@@ -2,8 +2,9 @@
 title: Data structure
 sidebar_position: 10
 image: og/docs/concepts.jpg
-# tags: ['basics']
 ---
+
+import SkipLink from '/src/components/SkipValidationLink'
 
 ## Data object concepts
 
@@ -480,7 +481,7 @@ Note that these numbers relate to active tenants only. If you [set unused tenant
 For more information, see the following:
 
 - [How-to manage data: Multi-tenancy operations](../manage-data/multi-tenancy.md)
-- [References: REST API: Schema](/docs/weaviate/api/rest#tag/schema)
+- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Configuration: Schema](../manage-data/collections.mdx)
 
 ## Summary

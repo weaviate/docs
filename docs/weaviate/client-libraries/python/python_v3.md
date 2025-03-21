@@ -284,10 +284,6 @@ schema = {
 client.schema.create(schema)
 ```
 
-#### Example: Blog Post on How to get started with Weaviate and the Python client
-
-A full example of how to use the Python client for Weaviate can be found in [this article on Towards Data Science](https://towardsdatascience.com/getting-started-with-weaviate-python-client-e85d14f19e4f).
-
 ## Batching
 
 Batching is a way of importing/creating `objects` and `references` in bulk using a single API request to the Weaviate server. With Python this can be done using 3 different methods:

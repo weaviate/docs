@@ -2,7 +2,6 @@
 title: Cross-references
 sidebar_position: 50
 image: og/docs/howto.jpg
-# tags: ["howto"]
 ---
 
 import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
@@ -18,6 +17,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.cross-refs.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go';
+import SkipLink from '/src/components/SkipValidationLink'
 
 
 Use cross-references to establish directional relationships between collections.
@@ -616,7 +616,7 @@ The targets of a cross-reference can be updated.
 ## Related pages
 
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- [References: REST - /v1/objects](/docs/weaviate/api/rest#tag/objects)
+- <SkipLink href="/docs/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
 - [Retrieve the cross-reference](../search/basics.md#retrieve-cross-referenced-properties) as a part of a query.
 
 ## Questions and feedback
