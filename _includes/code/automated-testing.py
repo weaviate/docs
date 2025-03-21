@@ -1,46 +1,33 @@
 import weaviate
 import os
-import requests
-import json
+import weaviate_datasets as wd
 from weaviate.classes.init import Auth
-from weaviate.classes.config import Configure
 
 # Get credentials from environment variables
 wcd_url = os.environ["WCD_DEMO_URL"]
 wcd_api_key = os.environ["WCD_DEMO_ADMIN_KEY"]
+openai_api = os.environ["OPENAI_APIKEY"]
+
+headers = {"X-OpenAI-Api-Key": openai_api}
 
 # Instantiate the v4 Weaviate client using the cloud helper.
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=wcd_url,
     auth_credentials=Auth.api_key(wcd_api_key),
+    headers=headers,
 )
 
 client.collections.delete("JeopardyQuestion")
-questions = client.collections.create(
-    name="JeopardyQuestion", vectorizer_config=Configure.Vectorizer.text2vec_weaviate()
-)
+client.collections.delete("JeopardyCategory")
+dataset = wd.JeopardyQuestions1k()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
-# --- Import objects from JSON file ---
-url = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_100.json"
-resp = requests.get(url)
-data = json.loads(resp.text)
+client.collections.delete("Article")
+client.collections.delete("Publication")
+client.collections.delete("Author")
+client.collections.delete("Category")
 
-# Use dynamic batching (which automatically adjusts the batch size) for the import:
-with questions.batch.dynamic() as batch:
-    for i, obj in enumerate(data):
-        batch.add_object(
-            {
-                "question": obj["Question"],
-                "answer": obj["Answer"],
-                "points": obj["Value"],
-                "round": obj["Round"],
-                "air_date": obj["Air Date"],
-                "hasCategory": obj["Category"],
-            }
-        )
+dataset = wd.NewsArticles()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
-collection_size = len(questions)
-assert (
-    collection_size == 100
-), f"Expected 100 imported objects but got {collection_size}"
-print("All objects were imported successfully!")
+client.close()
