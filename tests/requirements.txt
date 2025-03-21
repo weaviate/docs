@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 cohere==5.6.2
 comm==0.2.1
-cryptography==42.0.4
+cryptography==44.0.1
 debugpy==1.8.1
 decorator==5.1.1
 Deprecated==1.2.14
