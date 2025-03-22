@@ -9,7 +9,7 @@ image: og/contributor-guide/weaviate-core.jpg
 
 ### Test Pyramid
 
-Weaviate database follows a typical [Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) approach. As Weaviate itself contains no graphical user interface (GUI), the highest level tests test the user journeys at an API level.
+Weaviate Database follows a typical [Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) approach. As Weaviate itself contains no graphical user interface (GUI), the highest level tests test the user journeys at an API level.
 
 The tests are grouped into the following three levels:
 
@@ -58,9 +58,9 @@ Nevertheless, you should aim to always make sure that your contribution does not
 
 ### Cross-repository dependencies
 
-There are various ways to interact with the Weaviate API. You can send HTTP requests directly or you could use a client, such as the [python client](/docs/weaviate/client-libraries/python/index.md) to interact with Weaviate. In the Weaviate database repository we have chosen not to use any of our own clients. This has the goal to minimize dependencies and allow independent development by different teams.
+There are various ways to interact with the Weaviate API. You can send HTTP requests directly or you could use a client, such as the [python client](/docs/weaviate/client-libraries/python/index.md) to interact with Weaviate. In the Weaviate Database repository we have chosen not to use any of our own clients. This has the goal to minimize dependencies and allow independent development by different teams.
 
-As a result all journey tests in Weaviate database either use the go client (which is auto-generated from swagger) or plain HTTP.
+As a result all journey tests in Weaviate Database either use the go client (which is auto-generated from swagger) or plain HTTP.
 
 ## How to run tests
 

@@ -1,4 +1,4 @@
-This table lists the Weaviate database versions and corresponding client library versions.
+This table lists the Weaviate Database versions and corresponding client library versions.
 
 | Weaviate <br/><small>([GitHub][cWeaviate])</small> | First <br/>release date | Python <br/><small>([GitHub][cPython])</small> | TypeScript/ <br/>JavaScript <br/><small>([GitHub][cTypeScript])</small> | Go <br/><small>([GitHub][cGo])</small> | Java <br/><small>([GitHub][cJava])</small> |
 | :- | :- | :-: | :-: | :-: | :-: |

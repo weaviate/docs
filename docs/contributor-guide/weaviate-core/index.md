@@ -1,5 +1,5 @@
 ---
-title: Weaviate database
+title: Weaviate Database
 sidebar_position: 0
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['build, run, test']

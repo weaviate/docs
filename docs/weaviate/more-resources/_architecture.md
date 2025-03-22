@@ -43,7 +43,7 @@ a more marketing-suited way of saying the same things. Feel free to adopt.
 ### Other
 * One Weaviate schema class maps to one Elasticsearch index
 * By default, 3 Elasticsearch shards are created for one index
-* Weaviate database is stateless, so it can be horizontally scaled at will
+* Weaviate Database is stateless, so it can be horizontally scaled at will
 * Elasticsearch can be scaled horizontally
 * Etcd can be scaled horizontally, but it is unlikely that etcd will become the
   bottleneck in the stack.

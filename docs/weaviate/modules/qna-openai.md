@@ -72,7 +72,7 @@ import ClientKey from '/_includes/code/core.client.openai.apikey.mdx';
 If you use Weaviate Cloud (WCD), this module is already enabled and pre-configured. You cannot edit the configuration in WCD.
 :::
 
-### Docker Compose file (Weaviate database only)
+### Docker Compose file (Weaviate Database only)
 
 You can enable the OpenAI Q&A module in your Docker Compose file (e.g. `docker-compose.yml`). Add the `qna-openai` module (alongside any other module you may need) to the `ENABLE_MODULES` property, like this:
 

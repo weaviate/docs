@@ -801,7 +801,7 @@ import VectorizerExamples from '!!raw-loader!/\_includes/code/howto/manage-data.
 
 In the rare cases where Weaviate supports a model provider that is not yet integrated into the client library, you can manually specify the model provider configuration through the `.custom()` methods in each namespace.
 
-Note that the module_config keys should follow the naming convention of Weaviate database, which uses camelCase for keys. For example, `api_endpoint` in `.anthropic()` becomes `apiEndpoint` in `.custom()`.
+Note that the module_config keys should follow the naming convention of Weaviate Database, which uses camelCase for keys. For example, `api_endpoint` in `.anthropic()` becomes `apiEndpoint` in `.custom()`.
 
 <Tabs groupId="languages">
 <TabItem value="generative" label="Generative">

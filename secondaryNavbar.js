@@ -1,6 +1,6 @@
 const secondaryNavbarItems = {
   build: {
-    title: "Weaviate database",
+    title: "Weaviate Database",
     icon: "fa fa-database",
     description: "Develop AI applications using Weaviate's APIs and tools",
     link: "/docs/weaviate",
@@ -60,7 +60,7 @@ const secondaryNavbarItems = {
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
-    description: "Deploy, configure, and maintain Weaviate database",
+    description: "Deploy, configure, and maintain Weaviate Database",
     link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
@@ -69,7 +69,7 @@ const secondaryNavbarItems = {
   },
   */
   agents: {
-    title: "Agents",
+    title: "Weaviate Agents",
     icon: "fa fa-robot",
     description: "Build and deploy intelligent agents with Weaviate",
     link: "/docs/agents",
@@ -135,7 +135,7 @@ const secondaryNavbarItems = {
         sidebar: "contributorSidebar",
       },
       {
-        label: "Weaviate database",
+        label: "Weaviate Database",
         link: "/docs/contributor-guide/weaviate-core",
         sidebar: "contributorCoreSidebar",
       },

@@ -41,7 +41,7 @@ export const pythonCardsData = [
 
 <QuickLinks items={pythonCardsData} />
 
-This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate database.
+This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate Database.
 
 - To see the GitHub release notes for a particular version, click on the version number.
 - For expanded blog posts on recent minor releases, follow the links in the table of contents at the left of this page.
