@@ -99,6 +99,7 @@ const secondaryNavbarItems = {
   academy: {
     title: "Academy",
     icon: "fa fa-graduation-cap",
+    isSmall: true,
     description:
       "Learn about vector search and Weaviate through structured courses",
     link: "/docs/academy",
@@ -126,6 +127,7 @@ const secondaryNavbarItems = {
   contributor: {
     title: "Contributor guide",
     icon: "fa fa-edit",
+    isSmall: true,
     description: "Learn how to contribute to Weaviate's open-source projects",
     link: "/docs/contributor-guide",
     links: [

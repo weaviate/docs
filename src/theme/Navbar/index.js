@@ -9,12 +9,14 @@ import { normalizePath, findPathInItems } from "./navbarUtils";
 //import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 // Using the first key in secondaryNavOptions as the default option.
+const DEFAULT_OPTION = Object.keys(secondaryNavOptions)[0];
 const sidebars = require("/sidebars.js");
 
 export default function NavbarWrapper(props) {
   const history = useHistory();
   const location = useLocation();
   const routeBasePath = "/docs";
+  
   // Compute the initial secondaryNavbar state based on the current location synchronously.
   const initialState = useMemo(() => {
     let currentPath = normalizePath(location.pathname, routeBasePath);
@@ -45,13 +47,101 @@ export default function NavbarWrapper(props) {
   );
   const [activeLink, setActiveLink] = useState(initialState.activeLink);
   const [isModalOpen, setModalOpen] = useState(false);
-
+  
   // Refs for secondary navbar sticky behavior.
   const defaultNavbarRef = useRef(null);
   const secondaryNavbarRef = useRef(null);
   const placeholderRef = useRef(null);
+  // Store a reference to the button - we'll just render it directly in the navbar
+  const buttonRef = useRef(null);
 
   const linksCount = secondaryNavOptions[selectedOption]?.links.length || 0;
+
+  // Update button content when selected option changes
+  useEffect(() => {
+    if (buttonRef.current) {
+      // Update the button text and icon
+      const iconElement = buttonRef.current.querySelector(`.${styles.optionIcon}`);
+      if (iconElement) {
+        // Remove old icon classes
+        iconElement.className = `${secondaryNavOptions[selectedOption]?.icon} ${styles.optionIcon}`;
+      }
+      
+      // Update text content (the text node is the second child, after the icon)
+      const textNode = Array.from(buttonRef.current.childNodes).find(
+        node => node.nodeType === Node.TEXT_NODE
+      );
+      
+      if (textNode) {
+        textNode.nodeValue = secondaryNavOptions[selectedOption]?.title;
+      }
+    }
+  }, [selectedOption]);
+
+  // Create the button element once on initial render
+  useEffect(() => {
+    // Create the button element that will be inserted into the navbar
+    if (!buttonRef.current) {
+      const button = document.createElement('button');
+      button.className = styles.modalButton;
+      button.onclick = () => setModalOpen(true);
+      
+      // Create icon element
+      const icon = document.createElement('i');
+      icon.className = `${secondaryNavOptions[selectedOption]?.icon} ${styles.optionIcon}`;
+      icon.setAttribute('aria-hidden', 'true');
+      button.appendChild(icon);
+      
+      // Add the title text
+      button.appendChild(document.createTextNode(secondaryNavOptions[selectedOption]?.title));
+      
+      // Create arrow icon
+      const arrowIcon = document.createElement('i');
+      arrowIcon.className = 'fa fa-chevron-down arrow-icon';
+      arrowIcon.setAttribute('aria-hidden', 'true');
+      button.appendChild(arrowIcon);
+      
+      buttonRef.current = button;
+    }
+    
+    // Function to insert the button in the navbar
+    const insertButtonInNavbar = () => {
+      if (!buttonRef.current) return;
+      
+      // Find the navbar__items container
+      const navbarItems = document.querySelector('.navbar__items');
+      if (!navbarItems) return;
+      
+      // Check if button is already in the DOM
+      if (!document.body.contains(buttonRef.current)) {
+        // Insert the button in the navbar
+        navbarItems.appendChild(buttonRef.current);
+      }
+    };
+    
+    // Insert button immediately
+    insertButtonInNavbar();
+    
+    // Also set up a MutationObserver to handle cases where the navbar might be recreated
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') {
+          insertButtonInNavbar();
+        }
+      }
+    });
+    
+    // Start observing the document body for changes
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => {
+      // Clean up on unmount
+      observer.disconnect();
+      if (buttonRef.current && document.body.contains(buttonRef.current)) {
+        buttonRef.current.remove();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // If there's no secondary navbar, remove any existing placeholder and do nothing.
@@ -134,8 +224,9 @@ export default function NavbarWrapper(props) {
   // Toggle modal with Cmd+U or Ctrl+U.
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.metaKey && event.key.toLowerCase() === "u") {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "u") {
         setModalOpen((prev) => !prev);
+        event.preventDefault();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -147,58 +238,27 @@ export default function NavbarWrapper(props) {
   useEffect(() => {
     if (navigator.appVersion.indexOf("Apple") !== -1) {
       setIsApple(true);
+    } else {
+      setIsApple(false);
     }
   }, []);
 
-  // Portal to render the modal button as the second child in the ".navbar__items" container.
-  // Custom hook to get the container
-  function useNavbarContainer() {
-    const [container, setContainer] = useState(null);
-
-    useEffect(() => {
-      // Assume .navbar__items is rendered in a higher level that doesn't change on page transitions.
-      const target = document.querySelector(".navbar__items");
-      if (target) {
-        setContainer(target);
-      }
-    }, []);
-
-    return container;
-  }
-
-  function ModalButtonPortal() {
-    const container = useNavbarContainer();
-    const portalRef = useRef(null);
-
-    if (!container) return null;
-
-    return ReactDOM.createPortal(
-      <div ref={portalRef}>
-        <button
-          className={styles.modalButton}
-          onClick={() => setModalOpen(true)}
-        >
-          <i
-            className={`${secondaryNavOptions[selectedOption]?.icon} ${styles.optionIcon}`}
-            aria-hidden="true"
-          />
-          {secondaryNavOptions[selectedOption]?.title}
-          <i className="fa fa-chevron-down arrow-icon" aria-hidden="true" />
-        </button>
-      </div>,
-      container
-    );
-  }
+  // Filter options into regular and small groups
+  const regularItems = Object.entries(secondaryNavOptions).filter(
+    ([, value]) => !value.isSmall
+  );
+  const smallItems = Object.entries(secondaryNavOptions).filter(
+    ([, value]) => value.isSmall
+  );
 
   return (
     <>
       {/* Primary Navbar as provided by the theme */}
       <div
         className={styles.defaultNavbar}
-        style={linksCount == 1 ? { top: 0 } : {}}
+        style={linksCount === 1 ? { top: 0 } : {}}
       >
         <OriginalNavbar {...props} />
-        <ModalButtonPortal />
       </div>
 
       {/* Secondary Navbar */}
@@ -306,8 +366,9 @@ export default function NavbarWrapper(props) {
 
           {/* Modal Body */}
           <div className={styles.modalBody}>
+            {/* Render regular items as cards */}
             <div className={styles.modalOptionsContainer}>
-              {Object.entries(secondaryNavOptions).map(([key, value]) => (
+              {regularItems.map(([key, value]) => (
                 <div
                   key={key}
                   className={styles.modalOption}
@@ -324,6 +385,28 @@ export default function NavbarWrapper(props) {
                 </div>
               ))}
             </div>
+
+            {/* Render small items at the bottom with a divider */}
+            {smallItems.length > 0 && (
+              <>
+                <hr className={styles.modalDivider} />
+                <div className={styles.modalSmallOptionsContainer}>
+                  {smallItems.map(([key, value]) => (
+                    <div
+                      key={key}
+                      className={styles.modalSmallOption}
+                      onClick={() => handleOptionSelect(key)}
+                    >
+                      <i
+                        className={`${value.icon} ${styles.modalSmallIcon}`}
+                        aria-hidden="true"
+                      />
+                      {value.title}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

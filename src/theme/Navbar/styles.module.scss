@@ -347,6 +347,44 @@
   background-color: var(--ifm-hover-overlay);
 }
 
+/* Divider between regular and small modal options */
+.modalDivider {
+  border: none;
+  border-top: 1px solid var(--docs-divider-color);
+  margin: 20px 0;
+}
+
+/* Container for small modal options */
+.modalSmallOptionsContainer {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr; // Adjust the grid as needed
+}
+
+/* Style for individual small option cards */
+.modalSmallOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  // Optionally, add a lighter font-size or other styling differences
+  font-size: 16px;
+}
+
+.modalSmallOption:hover {
+  background-color: var(--ifm-hover-overlay);
+}
+
+/* Optionally, style the small icon differently */
+.modalSmallIcon {
+  font-size: 16px;
+  color: var(--ifm-navbar-link-color);
+}
+
+
 .modalIcon {
   font-size: 20px;
   color: var(--ifm-navbar-link-color);
