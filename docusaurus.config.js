@@ -5,9 +5,6 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from "prism-react-renderer";
-const {
-  developersDropdownHtml,
-} = require("./src/components/dropdownConstants");
 
 const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
