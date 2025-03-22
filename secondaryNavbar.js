@@ -42,7 +42,7 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  /*
+
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
@@ -50,10 +50,12 @@ const secondaryNavbarItems = {
     link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
-      { label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },
+      /*{ label: "Kubernetes", link: "/docs/deploy/k8s", sidebar: "deployK8sSidebar" },*/
+      { label: "Production", link: "/docs/deploy/production", sidebar: "deployProductionSidebar"},
+      /*{ label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },*/
     ],
   },
-  */
+
   agents: {
     title: "Agents",
     icon: "fa fa-robot",
