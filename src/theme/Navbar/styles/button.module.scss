@@ -1,0 +1,141 @@
+:root {
+  --docs-header-button-text-color: #333;
+  --docs-modal-button-color: inherit;
+}
+
+/* BUTTON & ICONS */
+.modalButton {
+  padding: 10px 20px;
+  background-color: var(--docs-modal-button-bg);
+  color: var(--ifm-navbar-link-color);
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modalButton:hover {
+  border: 1px solid var(--site-primary);
+  color: var(--site-font-link-color);
+  background-color: var(--ifm-hover-overlay);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.optionIcon,
+.arrowIcon {
+  font-size: 14px;
+  color: var(--docs-modal-button-color);
+}
+
+.optionIcon {
+  margin-right: 4px;
+}
+
+/* Modal header button styles */
+.modalHeaderButton {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap; // Prevent wrapping
+  white-space: nowrap; // Ensure content stays on one line
+  overflow: hidden; // Hide any overflow if it occurs
+  height: 32px;
+  padding: 0 4px; // Reduce horizontal padding for compactness
+  border: 1px solid var(--docs-divider-color);
+  border-radius: 6px;
+  background-color: var(--docs-modal-header-button-bg);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+}
+
+.modalHeaderButton:hover {
+  background-color: var(--docs-modal-header-button-hover-bg);
+}
+
+.buttonShortcut {
+  white-space: nowrap; // Force no wrapping on text
+  padding: 0 4px;
+  color: var(--docs-header-button-text-color);
+  font-weight: normal;
+}
+
+.buttonText {
+  font-weight: bold;
+  color: var(--docs-header-button-text-color);
+}
+
+.verticalDivider {
+  width: 1px;
+  background-color: var(--docs-divider-color);
+  height: 80%; // Adjust height as needed
+  margin: 0 4px;
+}
+
+.buttonIcon {
+  width: 24px;
+  height: auto;
+  margin-left: 6px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.headerCloseIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 20px;
+  color: var(--docs-header-button-text-color);
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  margin: 0;
+  cursor: pointer;
+}
+
+.closeIcon {
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--ifm-navbar-link-color);
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.closeIcon:hover {
+  color: var(--ifm-navbar-hover-link-color);
+}
+
+/* Media Query for narrow screens */
+@media (max-width: 600px) {
+  .modalHeaderButton {
+    height: 28px;
+    padding: 0 2px;
+    font-size: 11px;
+  }
+
+  .buttonShortcut,
+  .buttonText {
+    padding: 0 2px;
+    font-size: 11px;
+  }
+
+  .verticalDivider {
+    margin: 0 2px;
+    height: 70%;
+  }
+
+  .buttonIcon {
+    width: 16px;
+    margin-left: 2px;
+  }
+}
