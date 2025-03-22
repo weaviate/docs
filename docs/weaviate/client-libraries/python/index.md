@@ -370,6 +370,10 @@ These methods return a new context manager for each batch. Attributes that are r
 
 If the background thread that is responsible for sending the batches raises an exception during batch processing, the error is raised to the main thread.
 
+:::tip
+For more code examples about the batch importing, visit [How-to: Batch import](../../manage-data/import.mdx).
+:::
+
 ### Error handling
 
 During a batch import, any failed objects or references will be stored for retrieval. Additionally, a running count of failed objects and references is maintained.
@@ -465,6 +469,10 @@ You can instantiate a collection object by creating a collection, or by retrievi
 </TabItem>
 </Tabs>
 
+:::tip
+For more code examples about working with collections, visit [How-to: Manage collections](../../manage-data/collections.mdx).
+:::
+
 ### Collection submodules
 
 Operations in the `v4` client are grouped into submodules. The key submodules for interacting with objects are:
@@ -536,6 +544,10 @@ See some examples below. Note that each function will return varying types of ob
 </TabItem>
 </Tabs>
 
+:::tip
+For more code examples about inserting data, visit [How-to: Create objects](../../manage-data/create.mdx).
+:::
+
 :::info `insert_many` sends one request
 `insert_many` sends one request for the entire function call. For requests with a large number of objects, [consider using `batch` imports](#batch-imports).
 :::
@@ -572,6 +584,10 @@ For example:
 
 Using the `properties` parameter to add references is deprecated and will be removed in the future.
 
+:::tip
+For more code examples about working with cross-references, visit [How-to: Cross-references](../../manage-data/cross-references.mdx).
+:::
+
 ### `query`
 
 The `query` submodule contains all object-level query operations, including `fetch_objects` for retrieving objects without additional search parameters, `bm25` for keyword search, `near_<xxx>` for vector search operators, `hybrid` for hybrid search and so on.
@@ -600,6 +616,10 @@ These queries return a `_QueryReturn` object, which contains a list of `_Object`
 
 </TabItem>
 </Tabs>
+
+:::tip
+For more code examples about querying, visit [How-to: Query & Search](../../search/index.md).
+:::
 
 #### Queries with custom returns
 
@@ -685,6 +705,10 @@ The `generate` methods perform [retrieval augmented generation (RAG)](../../star
 
 Outputs of the `generate` submodule queries include `generate` attributes at the top level for the `grouped_task` tasks, while `generate` attributes attached with each object contain results from `single_prompt` tasks.
 
+:::tip
+For more code examples about the `generative` method, visit [How-to: Retrieval Augmented Generation (RAG)](../../search/generative.md).
+:::
+
 ### `aggregate`
 
 To use the `aggregate` submodule, supply one or more ways to aggregate the data. For example, they could be by a count of objects matching the criteria, or by a metric aggregating the objects' properties.
@@ -711,6 +735,10 @@ To use the `aggregate` submodule, supply one or more ways to aggregate the data.
 
 </TabItem>
 </Tabs>
+
+:::tip
+For more code examples about the `aggregate` method, visit [How-to: Aggregate data](../../search/aggregate.md).
+:::
 
 #### `aggregate` + group by
 
@@ -773,7 +801,7 @@ import VectorizerExamples from '!!raw-loader!/\_includes/code/howto/manage-data.
 
 In the rare cases where Weaviate supports a model provider that is not yet integrated into the client library, you can manually specify the model provider configuration through the `.custom()` methods in each namespace.
 
-Note that the module_config keys should follow the naming convention of Weaviate database, which uses camelCase for keys. For example, `api_endpoint` in `.anthropic()` becomes `apiEndpoint` in `.custom()`.
+Note that the module_config keys should follow the naming convention of Weaviate Database, which uses camelCase for keys. For example, `api_endpoint` in `.anthropic()` becomes `apiEndpoint` in `.custom()`.
 
 <Tabs groupId="languages">
 <TabItem value="generative" label="Generative">

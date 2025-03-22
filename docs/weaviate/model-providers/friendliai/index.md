@@ -10,7 +10,7 @@ image: og/docs/integrations/provider_integrations_friendliai.jpg
 :::info Added in `v1.26.3`
 :::
 
-FriendliAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with FriendliAI APIs, allowing users to leverage FriendliAI's inference engine within the Weaviate database.
+FriendliAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with FriendliAI APIs, allowing users to leverage FriendliAI's inference engine within the Weaviate Database.
 
 FriendliAI integration empowers developers to build sophisticated AI-driven applications with ease.
 
@@ -22,7 +22,7 @@ FriendliAI integration empowers developers to build sophisticated AI-driven appl
 
 FriendliAI's generative AI models can generate human-like text based on given prompts and contexts.
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform Retrieval Augmented Generation (RAG) directly from the Weaviate database. This combines Weaviate's efficient storage and fast retrieval capabilities with FriendliAI's generative AI models to generate personalized and context-aware responses.
+[Weaviate's generative AI integration](./generative.md) enables users to perform Retrieval Augmented Generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with FriendliAI's generative AI models to generate personalized and context-aware responses.
 
 Visit [FriendliAI generative AI integration page](./generative.md) for more information on our integrations with FriendliAI.
 

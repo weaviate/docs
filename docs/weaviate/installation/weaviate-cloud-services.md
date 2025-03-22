@@ -10,7 +10,7 @@ import WCDLandingIntro from '/_includes/wcs/wcs-landing-intro.mdx'
 
 <WCDLandingIntro/>
 
-## WCD and Weaviate open-source
+## WCD and Weaviate Database
 
 import WCDLandingOpenSource from '/_includes/wcs/wcs-landing-open-source.mdx'
 

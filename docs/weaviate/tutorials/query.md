@@ -264,7 +264,7 @@ And as you saw above, there are four objects that match the query filter.
 
 Here, Weaviate has identified the same objects that you saw earlier in the similar `Get` queries. The difference is that instead of returning the individual objects you are seeing the requested aggregated statistic (count) here.
 
-As you can see, the `Aggregate` function can return handy aggregated, or metadata, information from the Weaviate database.
+As you can see, the `Aggregate` function can return handy aggregated, or metadata, information from the Weaviate Database.
 
 ## Recap
 

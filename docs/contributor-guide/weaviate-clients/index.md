@@ -50,7 +50,7 @@ the client against various Weaviate versions. As a client is an integration
 point to Weaviate, the [Test pyramid](../weaviate-core/tests.md#test-pyramid)
 will look upside down.
 
-Contrary to Weaviate Core it is most important that [Journey
+Contrary to Weaviate Database it is most important that [Journey
 Tests](../weaviate-core/tests.md#journey-tests) are present, which verify all
 actual integration points with a real Weaviate instance. Feel free to add
 additional Integration, Component or [Unit

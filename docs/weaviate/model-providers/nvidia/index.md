@@ -7,7 +7,7 @@ image: og/docs/integrations/provider_integrations_nvidia.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-NVIDIA NIM microservices offer a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with NVIDIA, allowing users to leverage the inference engine within the Weaviate database.
+NVIDIA NIM microservices offer a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with NVIDIA, allowing users to leverage the inference engine within the Weaviate Database.
 
 These integrations empower developers to build sophisticated AI-driven applications with ease.
 
@@ -30,7 +30,7 @@ NVIDIA's embedding models transform text data into high-dimensional vector repre
 
 Generative AI models on NVIDIA can generate human-like text based on given prompts and contexts.
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform Retrieval Augmented Generation (RAG) directly from the Weaviate database. This combines Weaviate's efficient storage and fast retrieval capabilities with generative AI models on NVIDIA to generate personalized and context-aware responses.
+[Weaviate's generative AI integration](./generative.md) enables users to perform Retrieval Augmented Generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with generative AI models on NVIDIA to generate personalized and context-aware responses.
 
 [NVIDIA generative AI integration page](./generative.md)
 

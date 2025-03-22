@@ -55,7 +55,7 @@ image: og/docs/more-resources.jpg
 
 </details>
 
-#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate database lost?
+#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate Database lost?
 
 <details>
   <summary>Answer</summary>

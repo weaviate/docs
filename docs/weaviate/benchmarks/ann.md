@@ -325,7 +325,7 @@ request that 99% of requests experience. In other words, 99% of your users will
 experience a time equal to or better than the stated value. This is a much
 better guarantee than a mean value.
 
-In production settings, requirements - as stated in SLAs - are often a
+In production settings, requirements - as stated in support plans - are often a
 combination of throughput and a percentile latency. For example, the statement
 "3000 QPS at p95 latency of 20ms" conveys the following meaning.
 

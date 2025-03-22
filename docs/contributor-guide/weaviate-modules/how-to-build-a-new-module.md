@@ -8,17 +8,17 @@ image: og/contributor-guide/weaviate-modules.jpg
 
 If you have your own vectorizer, machine learning or other model that you want to use with Weaviate, you can build your own Weaviate Module.
 
-The visualization below shows how modules are part of and connected to Weaviate. The black border indicates Weaviate Core, with the grey boxes as internals. Everything in red involves how Weaviate uses the modules that are connected, with the general Module System API. The red Module API spans two internal 'layers', because it can influence the Weaviate APIs (e.g. by extending GraphQL or providing additional properties), and it can influence the business logic (e.g. by taking the properties of an object and setting a vector).
+The visualization below shows how modules are part of and connected to Weaviate. The black border indicates Weaviate Database, with the grey boxes as internals. Everything in red involves how Weaviate uses the modules that are connected, with the general Module System API. The red Module API spans two internal 'layers', because it can influence the Weaviate APIs (e.g. by extending GraphQL or providing additional properties), and it can influence the business logic (e.g. by taking the properties of an object and setting a vector).
 
-Everything that is blue belongs to a specific module (more than one module can be attached, but here we show one module). Here we have an example of Weaviate using the `text2vec-transformers` module `bert-base-uncased`. Everything that belongs to the `text2vec-transformers` module is thus drawn in blue. The blue box inside Weaviate Core is the part 1 of the module: the module code for Weaviate. The blue box outside Weaviate Core is the separate inference service, part 2.
+Everything that is blue belongs to a specific module (more than one module can be attached, but here we show one module). Here we have an example of Weaviate using the `text2vec-transformers` module `bert-base-uncased`. Everything that belongs to the `text2vec-transformers` module is thus drawn in blue. The blue box inside Weaviate Database is the part 1 of the module: the module code for Weaviate. The blue box outside Weaviate Database is the separate inference service, part 2.
 
 The picture shows three APIs:
-* The first grey box inside Weaviate Core, which is the user-facing RESTful and GraphQL API.
+* The first grey box inside Weaviate Database, which is the user-facing RESTful and GraphQL API.
 * The red box is the Module System API, which are interfaces written in Go.
 * The third API is completely owned by the module, which is used to communicate with the separate module container. This is in this case a Python container, shown on the left.
 
 To use a custom ML model with Weaviate, you have two options:
-* A: Replace parts of an existing module, where you only replace the inference service (part 2). You don't have to touch Weaviate Core here. This is a good option for fast prototyping and proofs of concepts. In this case, you simply replace the inference model (part 2), but keep the interface with Weaviate in Go. This is a quick way to integrate completely different model types.
+* A: Replace parts of an existing module, where you only replace the inference service (part 2). You don't have to touch Weaviate Database here. This is a good option for fast prototyping and proofs of concepts. In this case, you simply replace the inference model (part 2), but keep the interface with Weaviate in Go. This is a quick way to integrate completely different model types.
 * B: Build a complete new module and replace all existing (blue) module parts (both 1 and 2). You can configure custom behavior like extending the GraphQL API, as long as the module can hook into the 'red' Module System API. Keep in mind that you'll need to write some module code in Go to achieve this.
 
 On this page, you'll find how to create a complete new module (option B), so building part 1 and 2. If you only want to replace part 2 (so making use of an existing Weaviate module's API design), you can find instructions [here](/docs/weaviate/modules/custom-modules.md#a-replace-parts-of-an-existing-module).

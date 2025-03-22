@@ -343,7 +343,7 @@ export const courseData = {
   "zero_to_mvp": {
     title: "Zero to MVP: The basics",
     courseId: "P3_1",
-    body: "Start here: Get started with all the core knowledge and essential skills for building with Weaviate. Learn how to build a Weaviate database and effectively perform queries to find the right data.",
+    body: "Start here: Get started with all the core knowledge and essential skills for building with Weaviate. Learn how to build a Weaviate Database and effectively perform queries to find the right data.",
     buttonType: "Click here",
     buttonURL: "/docs/academy/py/zero_to_mvp",
     badgeType: "course",
