@@ -8,6 +8,8 @@ export default function OptionModal({
   secondaryNavOptions,
   handleOptionSelect,
   isApple,
+  activeLink, // Add activeLink prop to know which item is currently active
+  selectedOption, // Add selectedOption prop to know which category is selected
 }) {
   // Filter options into regular and small groups
   const regularItems = Object.entries(secondaryNavOptions).filter(
@@ -16,6 +18,15 @@ export default function OptionModal({
   const smallItems = Object.entries(secondaryNavOptions).filter(
     ([, value]) => value.isSmall
   );
+
+  // Helper function to determine if an option is active
+  const isOptionActive = (key) => {
+    const option = secondaryNavOptions[key];
+    // Check if this option contains the active link
+    return (
+      option.links && option.links.some((link) => link.sidebar === activeLink)
+    );
+  };
 
   return (
     <div
@@ -49,7 +60,9 @@ export default function OptionModal({
             {regularItems.map(([key, value]) => (
               <div
                 key={key}
-                className={styles.modalOption}
+                className={`${styles.modalOption} ${
+                  isOptionActive(key) ? styles.activeOption : ""
+                }`}
                 onClick={() => handleOptionSelect(key)}
               >
                 <i
@@ -60,6 +73,9 @@ export default function OptionModal({
                   <strong>{value.title}</strong>
                   <p>{value.description}</p>
                 </div>
+                {isOptionActive(key) && (
+                  <div className={styles.activeIndicator}></div>
+                )}
               </div>
             ))}
           </div>
@@ -72,7 +88,9 @@ export default function OptionModal({
                 {smallItems.map(([key, value]) => (
                   <div
                     key={key}
-                    className={styles.resourceCard}
+                    className={`${styles.resourceCard} ${
+                      isOptionActive(key) ? styles.activeResource : ""
+                    }`}
                     onClick={() => handleOptionSelect(key)}
                   >
                     <i
@@ -80,6 +98,9 @@ export default function OptionModal({
                       aria-hidden="true"
                     />
                     <span className={styles.resourceTitle}>{value.title}</span>
+                    {isOptionActive(key) && (
+                      <div className={styles.activeResourceIndicator}></div>
+                    )}
                   </div>
                 ))}
               </div>

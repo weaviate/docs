@@ -80,6 +80,8 @@ export default function NavbarWrapper(props) {
         secondaryNavOptions={secondaryNavOptions}
         handleOptionSelect={handleOptionSelect}
         isApple={isApple}
+        activeLink={activeLink}         // Pass activeLink from hook
+        selectedOption={selectedOption}  // Pass selectedOption from hook
       />
     </>
   );

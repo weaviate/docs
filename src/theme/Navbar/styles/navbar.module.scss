@@ -160,6 +160,10 @@
 }
 
 @media (max-width: 599px) {
+  .secondaryNavbar {
+    z-index: 999;
+  }
+
   .secondaryNavLinks {
     display: flex;
     flex-wrap: nowrap;

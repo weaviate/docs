@@ -376,3 +376,75 @@
     gap: 1.5rem;
   }
 }
+
+/* Add these new styles to your existing CSS file */
+
+/* Active state for main option cards */
+.activeOption {
+  border-left: 3px solid var(--site-primary) !important;
+  background-color: var(--ifm-hover-overlay) !important;
+  position: relative;
+
+  /* Add dark mode support */
+  [data-theme="dark"] & {
+    background-color: var(--docs-dark-card-hover-bg) !important;
+    border-left-color: var(--site-primary) !important;
+  }
+}
+
+/* Active indicator dot for main option cards */
+.activeIndicator {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--site-primary);
+
+  /* Add dark mode support */
+  [data-theme="dark"] & {
+    background-color: var(--site-primary);
+  }
+}
+
+/* Active state for resource cards */
+.activeResource {
+  background-color: var(--docs-dark-card-hover-bg) !important;
+  position: relative;
+
+  /* Add dark mode support */
+  [data-theme="dark"] & {
+    background-color: var(--docs-dark-card-hover-bg) !important;
+    border-left-color: var(---site-primary) !important;
+  }
+}
+
+/* Target resource cards specifically in dark mode */
+[data-theme="dark"] .resourceCard.activeResource {
+  /* Override the background color explicitly */
+  border-left: 3px solid var(--site-primary) !important;
+}
+
+/* Active indicator dot for resource cards */
+.activeResourceIndicator {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--site-primary);
+
+  /* Add dark mode support */
+  [data-theme="dark"] & {
+    background-color: var(--site-primary);
+  }
+}
+
+/* Slightly adjust padding for active cards to accommodate border */
+.activeOption,
+.activeResource {
+  padding-left: calc(1.2rem - 3px);
+}
