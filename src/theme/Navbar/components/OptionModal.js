@@ -23,37 +23,12 @@ export default function OptionModal({
       onClick={() => setModalOpen(false)}
     >
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        {/* Modal Header */}
+        {/* Modal Header - Simplified */}
         <div className={styles.modalHeader}>
           <div className={styles.modalHeaderLeft}>
             <strong>Go to documentation:</strong>
           </div>
           <div className={styles.modalHeaderRight}>
-            <div
-              className={buttonStyles.modalHeaderButton}
-              onClick={() => {
-                if (window.Kapa && typeof window.Kapa.open === "function") {
-                  window.Kapa.open({
-                    mode: "ai",
-                    query: "",
-                    submit: false,
-                  });
-                } else {
-                  console.warn("Kapa is not available");
-                }
-              }}
-            >
-              <span className={buttonStyles.buttonShortcut}>
-                {isApple ? "⌘K" : "Ctrl+K"}
-              </span>
-              <div className={buttonStyles.verticalDivider}></div>
-              <span className={buttonStyles.buttonText}>Ask AI</span>
-              <img
-                src="/img/site/weaviate-logo-w.png"
-                alt="Weaviate Logo"
-                className={buttonStyles.buttonIcon}
-              />
-            </div>
             <div
               className={buttonStyles.modalHeaderButton}
               onClick={() => setModalOpen(false)}
@@ -89,27 +64,58 @@ export default function OptionModal({
             ))}
           </div>
 
-          {/* Render small items at the bottom with a divider */}
+          {/* Resources Section */}
           {smallItems.length > 0 && (
-            <>
-              <hr className={styles.modalDivider} />
-              <div className={styles.modalSmallOptionsContainer}>
+            <div className={styles.resourcesSection}>
+              <h4 className={styles.sectionTitle}>Additional resources</h4>
+              <div className={styles.resourcesGrid}>
                 {smallItems.map(([key, value]) => (
                   <div
                     key={key}
-                    className={styles.modalSmallOption}
+                    className={styles.resourceCard}
                     onClick={() => handleOptionSelect(key)}
                   >
                     <i
-                      className={`${value.icon} ${styles.modalSmallIcon}`}
+                      className={`${value.icon} ${styles.resourceIcon}`}
                       aria-hidden="true"
                     />
-                    {value.title}
+                    <span className={styles.resourceTitle}>{value.title}</span>
                   </div>
                 ))}
               </div>
-            </>
+            </div>
           )}
+
+          {/* AI Assistant Section */}
+          <div className={styles.aiAssistantSection}>
+            <h4 className={styles.sectionTitle}>Need help?</h4>
+            <div className={styles.resourcesGrid}>
+              <div
+                className={styles.askAiButton}
+                onClick={() => {
+                  if (window.Kapa && typeof window.Kapa.open === "function") {
+                    window.Kapa.open({
+                      mode: "ai",
+                      query: "",
+                      submit: false,
+                    });
+                  } else {
+                    console.warn("Kapa is not available");
+                  }
+                }}
+              >
+                <img
+                  src="/img/site/weaviate-logo-w.png"
+                  alt="Weaviate Logo"
+                  className={styles.askAiIcon}
+                />
+                <span className={styles.askAiText}>Ask AI Assistant</span>
+                <span className={styles.askAiShortcut}>
+                  {isApple ? "⌘K" : "Ctrl+K"}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
