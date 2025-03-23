@@ -33,7 +33,6 @@
   --docs-cards-hover-bg: #fafafa;
   --docs-cards-border-color: var(--ifm-color-emphasis-400);
   --docs-cards-border-hover-color: var(--ifm-color-emphasis-700);
-  --docs-modal-header-bg: #e0e0e07a;
 }
 [data-theme='dark'] {
   --site-base-color: #f7f9fd;
@@ -44,27 +43,26 @@
   --site-accent: #fc3988;
   --site-accent-dark: #fb0b6d;
 
-  --site-background: #0c1428;
+  --site-background: #171717;
 
   --site-font-main-color: #c3c5d8;
   --site-font-header-color: #f7f9fd;
   --site-font-accent-color: #00c342;
   --site-font-link-color: #00c342;
-  --site-navbar-color: #17274d;
+  --site-navbar-color: #1a1c1e;
 
   --docs-base-color: #ffffff;
   --docs-header-color: #dddddd;
-  --docs-sidebar-bg: #000000;
-  --docs-body-bg: #000000;
+  --docs-sidebar-bg: #1f2228;
+  --docs-body-bg: #171717;
   --docs-secondary-navbar-color: #17274d;
   --docs-modal-button-color: #c3c5d8;
-  --docs-modal-button-bg: #1c305e;
+  --docs-modal-button-bg: #242e3e;
   --docs-modal-bg: #17274d;
-  --docs-cards-bg: #1c305e;
-  --docs-cards-hover-bg: #1c305e;
+  --docs-cards-bg: #242e3e;
+  --docs-cards-hover-bg: #2f3c51;
   --docs-cards-border-color: var(--ifm-color-emphasis-400);
   --docs-cards-border-hover-color: var(--ifm-color-emphasis-700);
-  --docs-modal-header-bg: #3B82F680;
 }
 
 //********************* FONTS *********************
