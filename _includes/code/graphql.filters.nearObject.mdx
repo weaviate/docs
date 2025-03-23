@@ -13,31 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-nearObject = {
-  "id": "32d5a368-ace8-3bb7-ade7-9f7ff03eddb6",  # or {"beacon": "weaviate://localhost/32d5a368-ace8-3bb7-ade7-9f7ff03eddb6"}
-  "distance": 0.6,
-}
-
-result = (
-  client.query
-  .get("Publication", "name")
-  .with_additional("distance") # "certainty" only supported if distance==cosine
-  .with_near_object(nearObject)
-  .with_limit(5)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

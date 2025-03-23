@@ -1,7 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
@@ -17,14 +16,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AsyncRepair"
-      endMarker="# END AsyncRepair"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

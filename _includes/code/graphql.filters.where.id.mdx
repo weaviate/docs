@@ -13,31 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-import json
-
-client = weaviate.Client("http://localhost:8080")
-
-where_filter = {
-  "path": ["id"],
-  "operator": "Equal",
-  "valueText": "00037775-1432-35e5-bc59-443baaef7d80"
-}
-
-response = (
-  client.query
-  .get("Article", "title")
-  .with_where(where_filter)
-  .do()
-)
-
-print(json.dumps(response, indent=2))
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

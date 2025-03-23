@@ -9,7 +9,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.create-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.create.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.create-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java';
@@ -36,14 +35,6 @@ This example creates an object in the `JeopardyQuestion` collection.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObject START"
-      endMarker="# CreateObject END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -111,14 +102,6 @@ When you create an object, you can provide a vector. (For specifying multiple, n
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectWithVector START"
-      endMarker="# CreateObjectWithVector END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -174,14 +157,6 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectNamedVectors START"
-      endMarker="# CreateObjectNamedVectors END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -220,14 +195,6 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectWithId START"
-      endMarker="# CreateObjectWithId END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -284,14 +251,6 @@ Object IDs are not randomly generated. The same value always generates the same 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectWithDeterministicId START"
-      endMarker="# CreateObjectWithDeterministicId END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -347,7 +306,6 @@ import CrossReferencePerformanceNote from '/_includes/cross-reference-performanc
 <CrossReferencePerformanceNote />
 
 import XrefPyCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
-import XrefPyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v3.py';
 import XrefTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
 import XrefTSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2';
 
@@ -363,14 +321,6 @@ You can create an object with cross-references to other objects.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={XrefPyCodeV3}
-      startMarker="# START ObjectWithCrossRef"
-      endMarker="# END ObjectWithCrossRef"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -421,14 +371,6 @@ Before you create an object, you can <SkipLink href="/docs/weaviate/api/rest#tag
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ValidateObject START"
-      endMarker="# ValidateObject END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

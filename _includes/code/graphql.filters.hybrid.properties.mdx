@@ -15,27 +15,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-result = (
-  client.query
-  .get("JeopardyQuestion", ["question", "answer"])
-  .with_additional(["score"])
-  .with_hybrid(
-    "Venus",
-    alpha=0.25,  # closer to pure keyword search
-# highlight-start
-    properties=["question"]  # changing to "answer" will yield a different result set
-# highlight-end
-  )
-  .with_limit(3)do()
-)
-
-print(json.dumps(result, indent=4))
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

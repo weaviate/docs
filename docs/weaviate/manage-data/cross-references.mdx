@@ -12,7 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.cross-refs.java';
@@ -48,14 +47,6 @@ Include the reference property in the collection definition before adding cross-
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CrossRefDefinition"
-      endMarker="# END CrossRefDefinition"
-      language="pyv3"
-    />
-  </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
@@ -77,14 +68,6 @@ It is also possible to add a cross-reference property to an existing collection 
       startMarker="# START Collections TwoWay Category2"
       endMarker="# END Collections TwoWay Category2"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Collections TwoWay Category2"
-      endMarker="# END Collections TwoWay Category2"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -121,14 +104,6 @@ Specify a cross-reference when creating an object.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ObjectWithCrossRef"
-      endMarker="# END ObjectWithCrossRef"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -164,14 +139,6 @@ Specify the required id and properties for the source and the target.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START OneWay"
-      endMarker="# END OneWay"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -226,14 +193,6 @@ Create the `JeopardyCategory` collection:
       language="python"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Collections TwoWay Category1"
-      endMarker="# END Collections TwoWay Category1"
-      language="pyv3"
-    />
-  </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
@@ -264,14 +223,6 @@ Create the `JeopardyQuestion` collection including the reference property to `Je
       language="python"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Collections TwoWay Question"
-      endMarker="# END Collections TwoWay Question"
-      language="pyv3"
-    />
-  </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
@@ -300,14 +251,6 @@ Modify `JeopardyCategory` to add the reference to `JeopardyQuestion`:
       startMarker="# START Collections TwoWay Category2"
       endMarker="# END Collections TwoWay Category2"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Collections TwoWay Category2"
-      endMarker="# END Collections TwoWay Category2"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -341,14 +284,6 @@ And add the cross-references:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# TwoWay Python"
-      endMarker="# END TwoWay Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -402,14 +337,6 @@ Weaviate allows creation of multiple cross-references from one source object.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# Multiple Python"
-      endMarker="# END Multiple Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -462,14 +389,6 @@ Cross-references can be read as part of the object.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ReadCrossRef"
-      endMarker="# END ReadCrossRef"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -495,14 +414,6 @@ Deleting a cross-reference with the same parameters used to define the cross-ref
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# Delete Python"
-      endMarker="# END Delete Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -566,14 +477,6 @@ The targets of a cross-reference can be updated.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# Update Python"
-      endMarker="# END Update Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

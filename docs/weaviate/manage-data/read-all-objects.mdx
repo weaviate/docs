@@ -10,7 +10,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read-all-objects.java';
@@ -39,14 +38,6 @@ The following code iterates through all objects, providing the properties and id
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllProps"
-      endMarker="# END ReadAllProps"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -100,14 +91,6 @@ Read through all data including the vectors. (Also applicable where [named vecto
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllVectors"
-      endMarker="# END ReadAllVectors"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -147,14 +130,6 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllTenants"
-      endMarker="# END ReadAllTenants"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

@@ -13,19 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-result = (
-  client.query
-  .get("Article", ["title", "summary"])
-  .with_additional(["score"])
-  .with_hybrid("Fisherman that catches salmon", alpha=0.5, vector=[1, 2, 3])
-  .do()
-  )
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

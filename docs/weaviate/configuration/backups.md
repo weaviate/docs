@@ -9,7 +9,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/configure.backups.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/configure.backups-v3.py';
 import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.backup.ts';
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
@@ -59,15 +58,6 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
       startMarker="# START CreateBackup"
       endMarker="# END CreateBackup"
       language="py"
-    />
-  </TabItem>
-
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateBackup"
-      endMarker="# END CreateBackup"
-      language="pyv3"
     />
   </TabItem>
 
@@ -336,15 +326,6 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
     />
   </TabItem>
 
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateBackup"
-      endMarker="# END CreateBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeBackup}
@@ -425,15 +406,6 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       language="py"
     />
   </TabItem>
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START StatusCreateBackup"
-      endMarker="# END StatusCreateBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeStatus}
@@ -534,15 +506,6 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       language="py"
     />
   </TabItem>
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START RestoreBackup"
-      endMarker="# END RestoreBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeRestore}
@@ -605,14 +568,6 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       startMarker="# START StatusRestoreBackup"
       endMarker="# END StatusRestoreBackup"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START StatusRestoreBackup"
-      endMarker="# END StatusRestoreBackup"
-      language="pyv3"
     />
   </TabItem>
 

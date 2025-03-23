@@ -34,16 +34,6 @@ You can get objects without specifying any parameters. This returns objects in a
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# BasicGetPython"
-  endMarker="# END BasicGetPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -131,16 +121,6 @@ Use `limit` to set a fixed maximum number of objects to return.
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetWithLimitPython"
-  endMarker="# END GetWithLimitPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -220,16 +200,6 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetWithLimitOffsetPython"
-  endMarker="# END GetWithLimitOffsetPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -313,16 +283,6 @@ You can specify which object properties to return.
 </TabItem>
 
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetPropertiesPython"
-  endMarker="# END GetPropertiesPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -403,15 +363,6 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetObjectVectorPython"
-  endMarker="# END GetObjectVectorPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -493,16 +444,6 @@ You can retrieve the object `id` (uuid).
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetObjectIdPython"
-  endMarker="# END GetObjectIdPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -591,16 +532,6 @@ To retrieve properties from cross-referenced objects, specify:
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetWithCrossRefsPython"
-  endMarker="# END GetWithCrossRefsPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -672,16 +603,6 @@ You can specify metadata fields to be returned.
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GetWithMetadataPython"
-  endMarker="# END GetWithMetadataPython"
-  language="pyv3"
-/>
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 
 <FilteredTextBlock
@@ -751,14 +672,6 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
 />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# MultiTenancy"
-  endMarker="# END MultiTenancy"
-  language="pyv3"
- />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock

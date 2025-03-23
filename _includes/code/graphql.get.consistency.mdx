@@ -3,7 +3,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 import PyCode from '!!raw-loader!/_includes/code/graphql.get.simple.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.simple.v3.py';
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -13,25 +12,6 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.simple.v3.py';
     endMarker="END ConsistencyExample"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-from weaviate.data.replication import ConsistencyLevel
-
-client = weaviate.Client("http://localhost:8080")
-
-resp = (
-    client.query.get("Article", ["name"])
-    .with_additional("isConsistent")
-    .with_consistency_level(ConsistencyLevel.QUORUM)
-    .do()
-)
-
-print(f"resp: {resp}")
-```
-
 </TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 

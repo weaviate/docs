@@ -10,7 +10,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.update.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.update-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.update.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.update-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java';
@@ -49,14 +48,6 @@ However, if you add a *new* property to your collection definition, Weaviate onl
       startMarker="# UpdateProps START"
       endMarker="# UpdateProps END"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# UpdateProps START"
-      endMarker="# UpdateProps END"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -106,14 +97,6 @@ The object vector can also be updated similarly to properties. For [named vector
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# UpdateVector START"
-      endMarker="# UpdateVector END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -155,14 +138,6 @@ The entire object can be replaced by providing the collection name, id and the n
       startMarker="# Replace START"
       endMarker="# Replace END"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# Replace START"
-      endMarker="# Replace END"
-      language="pyv3"
     />
   </TabItem>
 
@@ -217,14 +192,6 @@ At object level, you can replace the object with a copy that has those propertie
       startMarker="# DelProps START"
       endMarker="# DelProps END"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# DelProps START"
-      endMarker="# DelProps END"
-      language="pyv3"
     />
   </TabItem>
 

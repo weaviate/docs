@@ -12,34 +12,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
       language="py"
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-get_articles_group = """
-  {
-    Get {
-      Publication(
-        group:{
-          type: merge,
-          force:0.05
-        }
-      ) {
-        name
-      }
-    }
-  }
-"""
-
-query_result = client.query.raw(get_articles_group)
-print(query_result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

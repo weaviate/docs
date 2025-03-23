@@ -13,37 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-import os
-
-client = weaviate.Client(
-    "https://edu-demo.weaviate.network",
-    auth_client_secret=weaviate.auth.AuthApiKey("learn-weaviate"),
-    additional_headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"]  # Replace with your OPENAI API key
-    }
-)
-
-ask = {
-  "question": "Who is the king of the Netherlands?",
-  "properties": ["summary"]
-}
-
-result = (
-  client.query
-  .get("Article", ["title", "_additional {answer {hasAnswer property result startPosition endPosition} }"])
-  .with_ask(ask)
-  .with_limit(1)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

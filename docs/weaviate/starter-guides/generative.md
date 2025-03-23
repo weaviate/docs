@@ -77,14 +77,6 @@ Connect to the instance like so, remembering to replace the API key for the LLM 
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# Instantiation"
-  endMarker="# END Instantiation"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeEduDemo}
@@ -118,14 +110,6 @@ Before we can generate text, we need to retrieve relevant data. Let's retrieve t
   startMarker="# DataRetrieval"
   endMarker="# END DataRetrieval"
   language="py"
-/>
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# DataRetrieval"
-  endMarker="# END DataRetrieval"
-  language="pyv3"
 />
 </TabItem>
 <TabItem value="js" label="JS/TS Client v3">
@@ -190,14 +174,6 @@ Run the following code snippet, and inspect the results:
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# TransformResultSets"
-  endMarker="# END TransformResultSets"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeEduDemo}
@@ -257,14 +233,6 @@ Note that in this query, we apply a `single prompt` parameter. This means that t
   startMarker="# TransformIndividualObjects"
   endMarker="# END TransformIndividualObjects"
   language="py"
-/>
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# TransformIndividualObjects"
-  endMarker="# END TransformIndividualObjects"
-  language="pyv3"
 />
 </TabItem>
 <TabItem value="js" label="JS/TS Client v3">
@@ -344,14 +312,6 @@ You can check which modules are enabled by viewing the `meta` information for yo
   startMarker="# ListModules"
   endMarker="# END ListModules"
   language="py"
-/>
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# ListModules"
-  endMarker="# END ListModules"
-  language="pyv3"
 />
 </TabItem>
 <TabItem value="js" label="JS/TS Client v3">
@@ -450,14 +410,6 @@ In the following snippet, we download a chapter of the `Pro Git` book, clean it 
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# ChunkText"
-  endMarker="# END ChunkText"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeLocal}
@@ -493,14 +445,6 @@ The below collection definition for the `GitBookChunk` collection specifies `tex
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# CreateClass"
-  endMarker="# END CreateClass"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeLocal}
@@ -532,14 +476,6 @@ Now, we can import the data into Weaviate.
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# ImportData"
-  endMarker="# END ImportData"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeLocal}
@@ -567,14 +503,6 @@ Once this is done, you should have imported a collection of chunks from the chap
   startMarker="# CountObjects"
   endMarker="# END CountObjects"
   language="py"
-/>
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# CountObjects"
-  endMarker="# END CountObjects"
-  language="pyv3"
 />
 </TabItem>
 <TabItem value="js" label="JS/TS Client v3">
@@ -612,14 +540,6 @@ Single prompts tell Weaviate to generate text based on each retrieved object and
   startMarker="# SinglePrompt"
   endMarker="# END SinglePrompt"
   language="py"
-/>
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# SinglePrompt"
-  endMarker="# END SinglePrompt"
-  language="pyv3"
 />
 </TabItem>
 <TabItem value="js" label="JS/TS Client v3">
@@ -669,14 +589,6 @@ In this example, we prompt the language model to write a trivia tweet based on t
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# GroupedTask"
-  endMarker="# END GroupedTask"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeLocal}
@@ -718,14 +630,6 @@ In this example, we search the chapter for passages that relate to the states of
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# NearTextGroupedTask"
-  endMarker="# END NearTextGroupedTask"
-  language="pyv3"
-/>
-</TabItem>
 <TabItem value="js" label="JS/TS Client v3">
 <FilteredTextBlock
   text={TSCodeLocal}
@@ -761,14 +665,6 @@ Now, simply by changing the search query, we can generate similar content about 
   startMarker="# SecondNearTextGroupedTask"
   endMarker="# END SecondNearTextGroupedTask"
   language="py"
-/>
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# SecondNearTextGroupedTask"
-  endMarker="# END SecondNearTextGroupedTask"
-  language="pyv3"
 />
 </TabItem>
 <TabItem value="js" label="JS/TS Client v3">

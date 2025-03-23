@@ -51,14 +51,6 @@ Return the number  of objects matched by the query.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# MetaCount Python"
-      endMarker="# END MetaCount Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -124,14 +116,6 @@ This example counts occurrence frequencies in the `question` property:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# TextProp Python"
-      endMarker="# END TextProp Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -197,14 +181,6 @@ This  example sums the `points` property.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# IntProp Python"
-      endMarker="# END IntProp Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -272,14 +248,6 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# groupBy Python"
-      endMarker="# END groupBy Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -353,14 +321,6 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# nearTextWithLimit Python"
-      endMarker="# END nearTextWithLimit Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -431,14 +391,6 @@ Use `distance` to specify how similar the objects should be.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# nearTextWithDistance Python"
-      endMarker="# END nearTextWithDistance Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -504,14 +456,6 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# HybridExample"
-      endMarker="# END HybridExample"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -577,14 +521,6 @@ For more specific results, use a `filter` to narrow your search.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# whereFilter Python"
-      endMarker="# END whereFilter Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

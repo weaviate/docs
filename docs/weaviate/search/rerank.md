@@ -52,14 +52,6 @@ Any vector-based search on collections with [named vectors](../config-refs/schem
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={SimilarityPyCodeV3}
-      startMarker="# NamedVectorNearTextPython"
-      endMarker="# END NamedVectorNearTextPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -112,14 +104,6 @@ To rerank the results of a vector search, configure the object properties to sor
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START nearTextRerank Python"
-      endMarker="# END nearTextRerank Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -186,14 +170,6 @@ To rerank the results of a keyword search, configure the object properties to so
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START bm25Rerank Python"
-      endMarker="# END bm25Rerank Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

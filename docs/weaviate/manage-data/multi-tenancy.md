@@ -8,7 +8,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java';
@@ -47,14 +46,6 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       startMarker="# START EnableMultiTenancy"
       endMarker="# END EnableMultiTenancy"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START EnableMultiTenancy"
-      endMarker="# END EnableMultiTenancy"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -195,14 +186,6 @@ Tenant status is available from Weaviate `1.21` onwards.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AddTenantsToClass"
-      endMarker="# END AddTenantsToClass"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -257,14 +240,6 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ListTenants"
-      endMarker="# END ListTenants"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -376,14 +351,6 @@ Deleting a tenant deletes all associated objects.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START RemoveTenants"
-      endMarker="# END RemoveTenants"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -466,14 +433,6 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateMtObject"
-      endMarker="# END CreateMtObject"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -526,14 +485,6 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Search"
-      endMarker="# END Search"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -594,14 +545,6 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AddCrossRef"
-      endMarker="# END AddCrossRef"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

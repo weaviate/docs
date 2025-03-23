@@ -31,14 +31,6 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetNearTextPython"
-      endMarker="# END GetNearTextPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -121,14 +113,6 @@ This example uses a base64 representation of an image.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={ImgSrchPyCodeV3}
-      startMarker="# START search with base64"
-      endMarker="# END search with base64"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -175,14 +159,6 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetNearObjectPython"
-      endMarker="# END GetNearObjectPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -254,14 +230,6 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetNearVectorPython"
-      endMarker="# END GetNearVectorPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -335,14 +303,6 @@ To search a collection that has [named vectors](../config-refs/schema/multi-vect
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# NamedVectorNearTextPython"
-      endMarker="# END NamedVectorNearTextPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -418,14 +378,6 @@ To set a similarity threshold between the search and target vectors, define a ma
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetWithDistancePython"
-      endMarker="# END GetWithDistancePython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -498,14 +450,6 @@ Optionally, use `offset` to paginate the results.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetLimitOffsetPython"
-      endMarker="# END GetLimitOffsetPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -567,14 +511,6 @@ To limit results to groups of similar distances to the query, use the [`autocut`
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Autocut Python"
-      endMarker="# END Autocut Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -650,14 +586,6 @@ Use a property or a cross-reference to group results. To group returned objects,
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetWithGroupbyPython"
-      endMarker="# END GetWithGroupbyPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -733,14 +661,6 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GetWithWherePython"
-      endMarker="# END GetWithWherePython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

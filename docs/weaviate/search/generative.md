@@ -46,14 +46,6 @@ Any vector-based search on collections with [named vectors](../config-refs/schem
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# NamedVectorNearTextPython"
-      endMarker="# END NamedVectorNearTextPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -99,14 +91,6 @@ The properties you use in the prompt do not have to be among the properties you 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# SingleGenerativePropertiesPython"
-      endMarker="# END SingleGenerativePropertiesPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -173,14 +157,6 @@ Grouped task search returns one response that includes all of the query results.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GroupedGenerativePython"
-      endMarker="# END GroupedGenerativePython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -250,14 +226,6 @@ Define object `properties` to use in the prompt. This limits the information in 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# GroupedGenerativeProperties Python"
-      endMarker="# END GroupedGenerativeProperties Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

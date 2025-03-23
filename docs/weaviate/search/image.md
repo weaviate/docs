@@ -50,14 +50,6 @@ If your query image is stored in a file, you can use the client library to searc
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ImageFileSearch"
-      endMarker="# END ImageFileSearch"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
 
@@ -130,14 +122,6 @@ You can search by a base64 representation of an image:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START search with base64"
-      endMarker="# END search with base64"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

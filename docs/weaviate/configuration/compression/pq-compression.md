@@ -9,7 +9,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/configure.pq-compression.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/configure.pq-compression-v3.py';
 import TSCodeAutoPQ from '!!raw-loader!/_includes/code/howto/configure.pq-compression.autopq.ts';
 import TSCodeManualPQ from '!!raw-loader!/_includes/code/howto/configure.pq-compression.manual.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure.pq-compression-v2.ts';
@@ -66,14 +65,6 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START CollectionWithAutoPQ"
-       endMarker="# END CollectionWithAutoPQ"
-       language="pyv3"
-     />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
      <FilteredTextBlock
@@ -139,14 +130,6 @@ Follow these steps to manually enable PQ.
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START InitialSchema"
-       endMarker="# END InitialSchema"
-       language="pyv3"
-     />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
      <FilteredTextBlock
@@ -213,14 +196,6 @@ To enable PQ, update your collection definition as shown below. For additional c
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START UpdateSchema"
-       endMarker="# END UpdateSchema"
-       language="pyv3"
-     />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
      <FilteredTextBlock
@@ -318,14 +293,6 @@ To review the current `pq` configuration, you can retrieve it as shown below.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START GetSchema"
-      endMarker="# END GetSchema"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

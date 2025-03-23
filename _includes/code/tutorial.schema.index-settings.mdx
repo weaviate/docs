@@ -14,67 +14,6 @@ import PyCode from '!!raw-loader!/_includes/code/starter-guides/schema.py';
 />
 
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-import json
-
-client = weaviate.Client("https://WEAVIATE_INSTANCE_URL/")  # Replace with your Weaviate endpoint
-
-# we will create the class "Question"
-class_obj = {
-    "class": "Question",
-    "description": "Information from a Jeopardy! question",  # description of the class
-    "vectorizer": "text2vec-openai",
-    "moduleConfig": {
-        "generative-openai": {}  # Set `generative-openai` as the generative module
-    },
-    "properties": [
-        {
-            "name": "question",
-            "dataType": ["text"],
-            "description": "The question",
-            "moduleConfig": {
-                "text2vec-openai": {  # this must match the vectorizer used
-                    "vectorizePropertyName": True,
-                    "tokenization": "lowercase"
-                }
-            }
-        },
-        {
-            "name": "answer",
-            "dataType": ["text"],
-            "description": "The answer",
-            "moduleConfig": {
-                "text2vec-openai": {  # this must match the vectorizer used
-                    "vectorizePropertyName": False,
-                    "tokenization": "whitespace"
-                }
-            }
-        },
-    ],
-    # highlight-start
-    # Configure the vector index
-    "vectorIndexType": "hnsw",  # Or "flat" or "dynamic"
-    "vectorIndexConfig": {
-        "distance": "cosine",
-        "bq": {
-          "enabled": True,
-        },
-    },
-    # Configure the inverted index
-    "indexTimestamps": True,
-    "indexNullState": True,
-    "indexPropertyLength": True,
-    # highlight-end
-}
-
-# add the schema
-client.schema.create_class(class_obj)
-```
-
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
 

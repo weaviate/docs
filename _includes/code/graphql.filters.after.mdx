@@ -12,22 +12,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
       language="py"
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-
-```py
-response = (
-    client.query.get("Article", ["title"])
-    .with_additional(["id"])
-    .with_limit(5)
-    .with_after("002d5cb3-298b-380d-addb-2e026b76c8ed")
-    .do()
-)
-
-print(response)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

@@ -36,10 +36,6 @@ The Python client library provides a synchronous API by default through the `Wea
 
 ## Installation
 
-:::tip Migrating from `v3` to `v4`
-If you are migrating from the `v3` client to the `v4`, see this [dedicated guide](./v3_v4_migration.md).
-:::
-
 The Python client library is developed and tested using Python 3.8+. It is available on [PyPI.org](https://pypi.org/project/weaviate-client/), and can be installed with:
 
 ```bash
@@ -890,12 +886,6 @@ You can choose to provide a generic type to a query or data operation. This can 
   endMarker="# END GenericsExample"
   language="py"
 />
-
-## Migration guides
-
-:::tip Migrating from `v3` to `v4`
-If you are migrating from the `v3` client to the `v4`, see this [dedicated guide](./v3_v4_migration.md).
-:::
 
 ### Beta releases
 

@@ -13,30 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-where_filter = {
-  "path": ["wordCount"],
-  "operator": "GreaterThan",
-  "valueInt": 1000
-}
-
-query_result = (
-  client.query
-  .get("Article", "title")
-  .with_where(where_filter)
-  .do()
-)
-
-print(query_result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

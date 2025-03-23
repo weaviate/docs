@@ -171,14 +171,6 @@ Sample client code:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={AutocutPyCodeV3}
-      startMarker="# START Autocut Python"
-      endMarker="# END Autocut Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v2">
     <FilteredTextBlock
@@ -331,14 +323,6 @@ The sort function takes either an object, or an array of objects, that describe 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Sorting Python"
-      endMarker="# END Sorting Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v2">
     <FilteredTextBlock
@@ -432,14 +416,6 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START MultiplePropSorting Python"
-      endMarker="# END MultiplePropSorting Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v2">
     <FilteredTextBlock
@@ -508,14 +484,6 @@ To sort with metadata, add an underscore to the property name.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AdditionalPropSorting Python"
-      endMarker="# END AdditionalPropSorting Python"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v2">
     <FilteredTextBlock

@@ -13,29 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-bm25 = {
-  "query": "fox",
-  "properties": ["title"],  # by default, all properties are searched
-}
-
-result = (
-  client.query
-  .get("Article", ["title", "_additional {score} "])
-  .with_bm25(**bm25)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

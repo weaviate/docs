@@ -13,26 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.aggregate.simple.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-response = (
-    client.query
-    .aggregate("Article")
-    .with_group_by_filter(["inPublication"])
-    .with_meta_count()
-    .with_fields("meta { count } wordCount { mean } groupedBy { path value }")
-    .do()
-)
-
-print(response)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

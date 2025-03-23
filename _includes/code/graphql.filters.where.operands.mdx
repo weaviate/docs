@@ -13,37 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-where_filter = {
-  "operator": "And",
-  "operands": [{
-        "path": ["wordCount"],
-        "operator": "GreaterThan",
-        "valueInt": 1000
-      }, {
-        "path": ["title"],
-        "operator": "Like",
-        "valueText": "*economy*",
-      }]
-}
-
-response = (
-  client.query
-  .get("Article", "title")
-  .with_where(where_filter)
-  .do()
-)
-
-print(response)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

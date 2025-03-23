@@ -8,7 +8,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.read.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.read-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read.java';
@@ -39,14 +38,6 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ReadObject START"
-      endMarker="# ReadObject END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -100,14 +91,6 @@ Object vectors can be retrieved by specifying its return.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ReadObjectWithVector START"
-      endMarker="# ReadObjectWithVector END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -160,14 +143,6 @@ Where [named vectors](../config-refs/schema/multi-vector.md) are used, you can r
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ReadObjectNamedVectors START"
-      endMarker="# ReadObjectNamedVectors END"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock

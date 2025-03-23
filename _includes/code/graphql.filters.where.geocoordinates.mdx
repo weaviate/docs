@@ -13,44 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
     language="py"
   />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-get_articles_where = """
-  {
-    Get {
-      Publication(where: {
-        operator: WithinGeoRange,
-        valueGeoRange: {
-          geoCoordinates: {
-            latitude: 51.51,    # latitude
-            longitude: -0.09    # longitude
-          },
-          distance: {
-            max: 2000           # distance in meters
-          }
-        },
-        path: ["headquartersGeoLocation"] # property needs to be of geoLocation type.
-      }) {
-        name
-        headquartersGeoLocation {
-          latitude
-          longitude
-        }
-      }
-    }
-  }
-"""
-
-query_result = client.query.raw(get_articles_where)
-print(query_result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

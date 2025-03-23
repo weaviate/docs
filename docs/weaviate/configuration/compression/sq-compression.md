@@ -9,7 +9,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression-v4.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression-v3.ts';
 import TSCodeSQOptions from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression.options-v3.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression-v2.ts';
@@ -39,14 +38,6 @@ To enable SQ, set `vector_index_config`.
         language="py"
       />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-      <FilteredTextBlock
-        text={PyCodeV3}
-        startMarker="# START EnableSQ"
-        endMarker="# END EnableSQ"
-        language="pyv3"
-      />
-  </TabItem>
 </Tabs>
 
 
@@ -73,14 +64,6 @@ To tune SQ, set these `vectorIndexConfig` parameters.
       />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-      <FilteredTextBlock
-        text={PyCodeV3}
-        startMarker="# START SQWithOptions"
-        endMarker="# END SQWithOptions"
-        language="pyv3"
-      />
-  </TabItem>
 </Tabs>
 
 ## Multiple vector embeddings (named vectors)
