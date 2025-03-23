@@ -90,7 +90,7 @@ We will be running Weaviate and language models locally. We recommend that you u
 
 ## Step 1: Set up Weaviate
 
-### 1.1 Create a Weaviate Database
+### 1.1 Create a Weaviate database
 
 Save the following code to a file named `docker-compose.yml` in your project directory.
 

@@ -83,7 +83,7 @@ If you have another preferred [model provider](/docs/weaviate/model-providers), 
 
 ## Step 1: Set up Weaviate
 
-### 1.1 Create a Weaviate Database
+### 1.1 Create a Weaviate database
 
 Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance.
 

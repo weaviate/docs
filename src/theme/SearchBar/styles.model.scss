@@ -3,7 +3,7 @@
   // display: none;
   // display: flex;
   height: 37px;
-  width: 155px;
+  width: 200px;
   justify-content: center;
 
   @media screen and (max-width: 668px) {
@@ -29,6 +29,11 @@
   @media screen and (max-width: 668px) {
     width: auto;
   }
+}
+
+.searchButton:hover {
+  border: var(--site-primary-dark) solid 0.3px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
 }
 
 .searchPlaceholder {

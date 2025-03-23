@@ -39,9 +39,16 @@ most out of Weaviate's features.
 
 The Weaviate documentation is structured into multiple units based on the service and functionality.
 
-<br />
-<CardsSection items={secondaryNavbarItems} />
-<br />
+{/* Filter out items where isSmall is true */}
+{(() => {
+  const regularItems = Object.fromEntries(
+    Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
+  );
+  
+  <br />
+  return <CardsSection items={regularItems} />;
+  <br />
+})()}
 
 ## What is Weaviate?
 
