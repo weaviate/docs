@@ -1,8 +1,12 @@
 ---
-title: Deployment Overview
+title: Overview
 description: Deployment overview page
 sidebar_position: 0
 ---
+
+import CardsSection from "/src/components/CardsSection";
+import DeploymentCards from "/src/components/DeploymentCards";
+import styles from "/src/components/CardsSection/styles.module.scss";
 
 # Deploying Weaviate
 
@@ -26,7 +30,69 @@ Weaviate is designed for:
 
 Choose the best deployment method based on your needs:
 
-- [**Serverless Cloud** ](https://weaviate.io/deployment/serverless)- The easiest deployment setup to test out your Weaviate use case.
-- [**Enterprise Cloud -**](https://weaviate.io/deployment/enterprise-cloud) Deploy on dedicated resources in a secure, highly available environment.
-- [**Bring Your Own Cloud (BYOC)**](https://weaviate.io/deployment/byoc) – Have a fully managed deployment within your own cloud environment.
+export const deploymentCardsData = [
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Weaviate Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "From evaluation (sandbox) to production",
+      "Serverless (infrastructure managed by Weaviate)",
+      "(Optional) Data replication (high-availability)",
+      "(Optional) Zero-downtime updates",
+    ],
+    button: {
+      text: "Set up a WCD instance",
+      link: "/docs/cloud/manage-clusters/create",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: false },
+    ],
+    header: "Docker",
+    bgImage: "/img/site/docker-doc-icon.svg",
+    bgImageLight: "/img/site/docker-doc-icon-light.svg",
+    listItems: [
+      "For local evaluation & development",
+      "Local inference containers",
+      "Multi-modal models",
+      "Customizable configurations",
+    ],
+    button: {
+      text: "Deploy Weaviate with Docker",
+      link: "/docs/deploy/installation-guides/docker-installation",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: false },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Kubernetes",
+    bgImage: "/img/site/kubernetes-doc-icon.svg",
+    bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
+    listItems: [
+      "From development to production",
+      "Local inference containers",
+      "Multi-modal models",
+      "Customizable configurations",
+      "Self-deploy or Marketplace deployment",
+      "(Optional) Zero-downtime updates",
+    ],
+    button: {
+      text: "Deploy Weaviate with Kubernetes",
+      link: "/docs/deploy/installation-guides/k8s-installation",
+    },
+  },
+];
 
+<DeploymentCards items={deploymentCardsData} />
