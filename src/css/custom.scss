@@ -345,7 +345,7 @@
 }
 
 .theme-doc-sidebar-menu {
-  font-size: 0.9rem !important;
+  font-size: 0.95rem !important;
 }
 
 [data-theme="light"] img[src$="#gh-dark-mode-only"],
@@ -470,10 +470,6 @@ button.close {
     background-image: url("/img/site/weaviate-logo-horizontal-light-1.svg");
     background-size: contain;
     background-repeat: no-repeat;
-  }
-
-  .blogContainer {
-    background-color: #0c1428;
   }
 
   .footer--dark {

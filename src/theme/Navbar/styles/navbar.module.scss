@@ -25,6 +25,7 @@
   position: sticky;
   width: 100%;
   height: var(--secondary-navbar-height);
+  font-size: 1rem !important;
   z-index: 1001;
 }
 
@@ -159,6 +160,10 @@
 }
 
 @media (max-width: 599px) {
+  .secondaryNavbar {
+    z-index: 999;
+  }
+
   .secondaryNavLinks {
     display: flex;
     flex-wrap: nowrap;

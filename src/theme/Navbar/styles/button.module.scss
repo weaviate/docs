@@ -18,6 +18,8 @@
   font-weight: bold;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .modalButton:hover {
@@ -137,5 +139,17 @@
   .buttonIcon {
     width: 16px;
     margin-left: 2px;
+  }
+
+  /* For very small screens */
+  @media (max-width: 480px) {
+    .modalButton {
+      padding: 6px 10px;
+      font-size: 16px;
+    }
+
+    .navbar .modalButton {
+      max-width: 140px;
+    }
   }
 }
