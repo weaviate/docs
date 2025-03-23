@@ -17,7 +17,7 @@ The `ref2Vec-centroid` module is used to calculate object vectors based on the c
 
 This module is enabled by default on the WCD.
 
-### Weaviate open source
+### Weaviate Database
 
 Which modules to use in a Weaviate instance can be specified in the `Docker Compose` file. Ref2Vec-centroid can be added like this:
 

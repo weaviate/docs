@@ -15,6 +15,10 @@
   z-index: 1000;
 }
 
+.onlyDefaultNavbar {
+  top: 0 !important;
+}
+
 .secondaryNavbar {
   display: flex;
   align-items: center;
@@ -26,7 +30,7 @@
   position: sticky;
   width: 100%;
   height: var(--secondary-navbar-height);
-  z-index: 999;
+  z-index: 1001;
 }
 
 /* Placeholder to prevent content shift when secondaryNavbar becomes fixed */
@@ -43,31 +47,89 @@
   display: block;
 }
 
+/* Container for the dropdown */
+.navDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown toggle styling (you can re-use .navLink if you prefer) */
+.navLinkWithArrow {
+  display: inline-flex; // Ensure text and icon are on the same line
+  align-items: center; // Vertically center them
+  cursor: pointer;
+}
+
+.navLinkWithArrow i {
+  font-size: 12px;
+  margin-left: 4px; // Spacing between text and icon
+  display: inline-block; // Make sure the transform applies
+}
+
+/* Container for dropdown items */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: var(--docs-modal-bg);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/* Show dropdown on hover (or change this to a click handler in React if desired) */
+.navDropdown:hover .dropdownContent {
+  display: block;
+}
+
+/* Style individual dropdown items */
+.dropdownItem {
+  color: var(--ifm-navbar-link-color);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdownItem:hover {
+  color: var(--ifm-navbar-link-color) !important;
+}
+
+/* Override active styling for dropdown items */
+.dropdownItem.activeNavLink {
+  border-bottom: none !important;
+  color: var(--ifm-navbar-link-color) !important;
+  background: none !important;
+}
+
+.dropdownDivider {
+  height: 1px; // Set the thickness of the divider
+  background-color: var(--ifm-toc-border-color); // Use a light gray (or your preferred color)
+  width: 100%; // Make it span the full width of the dropdown
+  margin: 0; // Remove any default margin
+}
+
 /* BUTTON & ICONS */
 .modalButton {
+  padding: 10px 20px;
   background-color: var(--docs-modal-button-bg);
   color: var(--ifm-navbar-link-color);
-  border: 1px solid var(--ifm-toc-border-color); /* slightly thicker border */
-  padding: 10px 20px; /* increased padding */
-  font-size: 16px; /* larger font size */
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 6px; /* slightly larger radius */
-  margin-right: 30px;
-  z-index: 2;
-  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: bold;
-  transition: all 0.3s ease; /* smooth transitions */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .modalButton:hover {
-  border: 1px solid var(--site-primary); /* slightly thicker border */
+  border: 1px solid var(--site-primary);
   color: var(--site-font-link-color);
   background-color: var(--ifm-hover-overlay);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* deeper shadow on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .optionIcon,
@@ -86,6 +148,7 @@
   gap: 40px;
   align-items: center;
   height: 100%;
+  margin-left: 20px; // Shift items to the right
 }
 
 .navLink {
@@ -119,7 +182,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1002;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -283,6 +346,44 @@
 .modalOption:hover {
   background-color: var(--ifm-hover-overlay);
 }
+
+/* Divider between regular and small modal options */
+.modalDivider {
+  border: none;
+  border-top: 1px solid var(--docs-divider-color);
+  margin: 20px 0;
+}
+
+/* Container for small modal options */
+.modalSmallOptionsContainer {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr; // Adjust the grid as needed
+}
+
+/* Style for individual small option cards */
+.modalSmallOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  // Optionally, add a lighter font-size or other styling differences
+  font-size: 16px;
+}
+
+.modalSmallOption:hover {
+  background-color: var(--ifm-hover-overlay);
+}
+
+/* Optionally, style the small icon differently */
+.modalSmallIcon {
+  font-size: 16px;
+  color: var(--ifm-navbar-link-color);
+}
+
 
 .modalIcon {
   font-size: 20px;

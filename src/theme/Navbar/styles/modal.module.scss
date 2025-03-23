@@ -1,0 +1,193 @@
+:root {
+  --docs-modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  --docs-modal-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  --docs-divider-color: #ccc;
+  --docs-modal-header-button-bg: #f7f7f7;
+  --docs-modal-header-button-hover-bg: #e0e0e0;
+}
+
+/* MODAL STYLES */
+/* Modal Overlay: initially hidden */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--docs-modal-overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modalOverlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modalContent {
+  background: var(--docs-modal-bg);
+  border-radius: 8px;
+  width: 100% !important;
+  max-width: 650px !important;
+  box-shadow: var(--docs-modal-shadow);
+  overflow: hidden; /* Ensures header and body share the rounded corners */
+  position: relative;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modalOverlay.active .modalContent {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Modal Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--docs-modal-header-bg);
+  border-bottom: 1px solid var(--docs-divider-color);
+}
+
+.modalHeaderLeft {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ifm-navbar-link-color);
+}
+
+.modalHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between the two control groups */
+}
+
+/* Modal Body */
+.modalBody {
+  padding: 20px; /* Adjust as needed for your content */
+}
+
+.modalOptionsContainer {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr;
+}
+
+.modalOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 10px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.modalOption:hover {
+  background-color: var(--ifm-hover-overlay);
+}
+
+/* Divider between regular and small modal options */
+.modalDivider {
+  border: none;
+  border-top: 1px solid var(--docs-divider-color);
+  margin: 20px 0;
+}
+
+/* Container for small modal options */
+.modalSmallOptionsContainer {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr; // Adjust the grid as needed
+}
+
+/* Style for individual small option cards */
+.modalSmallOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  // Optionally, add a lighter font-size or other styling differences
+  font-size: 16px;
+}
+
+.modalSmallOption:hover {
+  background-color: var(--ifm-hover-overlay);
+}
+
+/* Optionally, style the small icon differently */
+.modalSmallIcon {
+  font-size: 16px;
+  color: var(--ifm-navbar-link-color);
+}
+
+.modalIcon {
+  font-size: 20px;
+  color: var(--ifm-navbar-link-color);
+  margin-top: 3px;
+}
+
+.modalTitle strong {
+  display: block;
+  font-size: 18px;
+  color: var(--ifm-navbar-link-color);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.modalText {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalText strong {
+  display: block;
+  font-size: 18px;
+  color: var(--ifm-navbar-link-color);
+  font-weight: 500;
+}
+
+.modalText p {
+  font-size: 14px;
+  color: var(--ifm-navbar-link-color);
+  margin: 4px 0 0;
+}
+
+/* RESPONSIVE STYLES FOR MODAL */
+@media (min-width: 600px) {
+  .modalContent {
+    width: 450px;
+  }
+  .modalOptionsContainer {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 599px) {
+  .modalContent {
+    position: relative;
+    width: 90vw;
+    max-width: 90vw;
+    margin: 0 5% 0 5%;
+    margin-top: 10vh;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--docs-modal-shadow);
+  }
+
+  .modalOptionsContainer {
+    grid-template-columns: 1fr;
+  }
+}

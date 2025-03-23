@@ -306,17 +306,20 @@
 }
 
 .modern-button {
-  display: inline-block;            /* Ensure it behaves like a block element */
-  padding: 0.5rem 1rem;              /* Compact padding */
-  font-size: 1rem;                  /* Standard font size */
-  font-weight: 600;                 /* Slightly bold for emphasis */
-  border: none;                     /* Remove default border */
-  border-radius: 4px;               /* Rounded corners */
-  background-color: var(--site-primary-dark);        /* Primary blue background */
-  color: #fff;                      /* White text */
-  text-align: center;               /* Center the text */
+  display: inline-flex;            /* Flex for better content alignment */
+  align-items: center;             /* Vertically center content */
+  justify-content: center;         /* Horizontally center content */
+  gap: 8px;                        /* Space between icon and text */
+  padding: 6px 10px;              /* Balanced padding */
+  color: white;
+  font-weight: 600;                /* Medium weight looks more refined */
+  letter-spacing: 0.01em;          /* Subtle letter spacing for clarity */
+  border: 2px solid var(--site-primary-dark); /* Border with the original green */
+  border-radius: 8px;              /* More rounded corners */
+  background-color: var(--site-primary-dark); /* Original green background on hover */
   cursor: pointer;                  /* Pointer on hover */
-  transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Quick, subtle transitions */
+  transition: all 0.2s ease;        /* Smooth transition for all properties */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Very subtle initial shadow */
 
   @media screen and (max-width: 1150px) {
     display: none;
@@ -324,8 +327,9 @@
 }
 
 .modern-button:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow effect */
-  color: #fff !important;   
+  color: white !important;
+  transform: translateY(-0.5px);      /* Subtle lift effect */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
 }
 
 [data-theme="light"] {
