@@ -38,7 +38,7 @@ Each collection can be configured to use BQ compression. BQ must be enabled at c
 This can be done by setting the `vector_index_config` of the collection to enable BQ compression.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START EnableBQ"
@@ -101,7 +101,7 @@ The following parameters are available for BQ compression, under `vectorIndexCon
 For example:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START BQWithOptions"

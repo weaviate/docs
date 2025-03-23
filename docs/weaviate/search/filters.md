@@ -23,7 +23,7 @@ For a list of filter operators, see the [API reference page](../api/graphql/filt
 Add a `filter` to your query, to limit the result set.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# SingleFilterPython"
@@ -89,7 +89,7 @@ The output is like this:
 To filter with two or more conditions, use `And` or `Or` to define the relationship between the conditions.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
 
   The `v4` Python client API provides  filtering by `any_of`, or `all_of`, as well as using `&` or `|` operators.
   <br/>
@@ -194,7 +194,7 @@ The output is like this:
 You can group and nest filters.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# MultipleFiltersNestedPython"
@@ -274,7 +274,7 @@ To create a nested filter, follow these steps.
 Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# SingleFilterNearTextPython"
@@ -340,7 +340,7 @@ The output is like this:
 The `ContainsAny` operator works on text properties and take an array of values as input. It will match objects where the property **contains any (i.e. one or more)** of the values in the array.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# ContainsAnyFilter"
@@ -406,7 +406,7 @@ The output is like this:
 The `ContainsAll` operator works on text properties and take an array of values as input. It will match objects where the property **contains all** of the values in the array.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# ContainsAllFilter"
@@ -476,7 +476,7 @@ If you want to do a batch delete, see [Delete objects](../manage-data/delete.mdx
 If the object property is a `text`, or `text`-like data type such as object ID, use `Like` to filter on partial text matches.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# LikeFilterPython"
@@ -558,7 +558,7 @@ import CrossReferencePerformanceNote from '/_includes/cross-reference-performanc
 To filter on properties from a cross-referenced object, add the collection name to the filter.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CrossReferencePython"
@@ -626,7 +626,7 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 <GeoLimitations/>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterbyGeolocation"
@@ -676,7 +676,7 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) timestamp, or a client library-compatible type such as a Python `datetime` object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByDateDatatype"
@@ -711,7 +711,7 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 ### By object `id`
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterById"
@@ -760,7 +760,7 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 This filter requires the [property timestamp](../config-refs/schema/index.md#indextimestamps) to [be indexed](../manage-data/collections.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByTimestamp"
@@ -810,7 +810,7 @@ This filter requires the [property timestamp](../config-refs/schema/index.md#ind
 This filter requires the [property length](../config-refs/schema/index.md#indexpropertylength) to [be indexed](../manage-data/collections.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByPropertyLength"
@@ -860,7 +860,7 @@ This filter requires the [property length](../config-refs/schema/index.md#indexp
 This filter requires the [property null state](../config-refs/schema/index.md#indexnullstate) to [be indexed](../manage-data/collections.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByPropertyNullState"

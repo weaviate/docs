@@ -131,7 +131,7 @@ We will connect to Weaviate with `user-a`, and once we create a new role, we wil
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/docs/weaviate/configuration/rbac/configuration) or by granting a user the [`manage_roles` permission](/docs/weaviate/configuration/rbac/manage-roles-users#role-management-permissions).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
       startMarker="# START AdminClient"
@@ -167,7 +167,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 This grants read and write permissions for collections starting with `TargetCollection`, and read permissions to nodes and cluster metadata.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadWritePermissionDefinition"
@@ -201,7 +201,7 @@ This grants read and write permissions for collections starting with `TargetColl
 ### Step 3: Assign the role to a user
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadWritePermissionAssignment"
@@ -239,7 +239,7 @@ This grants read and write permissions for collections starting with `TargetColl
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/docs/weaviate/configuration/rbac/configuration) or by granting a user the [`manage_roles` permission](/docs/weaviate/configuration/rbac/manage-roles-users#role-management-permissions).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
       startMarker="# START AdminClient"
@@ -275,7 +275,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 This grants viewer permissions for collections starting with `TargetCollection`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ViewerPermissionDefinition"
@@ -309,7 +309,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
 ### Step 3: Assign the role to a user
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ViewerPermissionAssignment"
@@ -347,7 +347,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/docs/weaviate/configuration/rbac/configuration) or by granting a user the [`manage_roles` permission](/docs/weaviate/configuration/rbac/manage-roles-users#role-management-permissions).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
       startMarker="# START AdminClient"
@@ -383,7 +383,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 This grants permissions to manage collections starting with `TargetCollection`, and to create, read, and update tenants in the same collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MTPermissionsExample"
@@ -417,7 +417,7 @@ This grants permissions to manage collections starting with `TargetCollection`, 
 ### Step 3: Assign the role to a user
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MTPermissionsAssignment"

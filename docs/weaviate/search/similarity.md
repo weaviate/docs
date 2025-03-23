@@ -22,7 +22,7 @@ Vector search returns the objects with most similar vectors to that of the query
 Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to find objects with the nearest vector to an input text.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetNearTextPython"
@@ -104,7 +104,7 @@ Use the [`Near Image`](../api/graphql/search-operators.md) operator to find obje
 This example uses a base64 representation of an image.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ImgSrchPyCode}
       startMarker="# START search with base64"
@@ -150,7 +150,7 @@ See [Image search](./image.md) for more information.
 If you have an object ID, use the [`Near Object`](../api/graphql/search-operators.md#nearobject) operator to find similar objects to that object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetNearObjectPython"
@@ -221,7 +221,7 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
 If you have an input vector, use the [`Near Vector`](../api/graphql/search-operators.md#nearvector) operator to find objects with similar vectors
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetNearVectorPython"
@@ -294,7 +294,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 To search a collection that has [named vectors](../config-refs/schema/multi-vector.md), use the `target vector` field to specify which named vector to search.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# NamedVectorNearTextPython"
@@ -369,7 +369,7 @@ The output is like this:
 To set a similarity threshold between the search and target vectors, define a maximum `distance` (or `certainty`).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetWithDistancePython"
@@ -441,7 +441,7 @@ Use `limit` to set a fixed maximum number of objects to return.
 Optionally, use `offset` to paginate the results.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetLimitOffsetPython"
@@ -502,7 +502,7 @@ Optionally, use `offset` to paginate the results.
 To limit results to groups of similar distances to the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter to set the number of groups to return.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Autocut Python"
@@ -577,7 +577,7 @@ The output is like this:
 Use a property or a cross-reference to group results. To group returned objects, the query must include a `Near` search operator, such as `Near Text` or `Near Object`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetWithGroupbyPython"
@@ -652,7 +652,7 @@ The output is like this:
 For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow your search.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GetWithWherePython"

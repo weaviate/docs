@@ -30,7 +30,7 @@ SQ must be enabled at collection creation time. You cannot enable SQ after you a
 To enable SQ, set `vector_index_config`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START EnableSQ"
@@ -55,7 +55,7 @@ To tune SQ, set these `vectorIndexConfig` parameters.
 
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START SQWithOptions"

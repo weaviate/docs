@@ -34,7 +34,7 @@ To create a bulk import job, follow these steps:
 The following example adds objects to the `MyCollection` collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicBatchImportExample"
@@ -98,7 +98,7 @@ Find out more about error handling on the Python client [reference page](/docs/w
 The [gRPC API](../api/grpc.md) is faster than the REST API. Use the gRPC API to improve import speeds.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 
 The Python client uses gRPC by default. See the client page for additional batch import [configuration options](/docs/weaviate/client-libraries/python#batch-imports).
 
@@ -173,7 +173,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
 - `generateUuid5` (TypeScript)
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportWithIDExample"
@@ -225,7 +225,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
 Use the `vector` property to specify a vector for each object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportWithVectorExample"
@@ -280,7 +280,7 @@ Use the `vector` property to specify a vector for each object.
 When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportWithNamedVectors"
@@ -315,7 +315,7 @@ When you create an object, you can specify named vectors (if [configured in your
 You can batch create links from an object to another other object through cross-references.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# BatchImportWithRefExample"
@@ -337,8 +337,7 @@ You can batch create links from an object to another other object through cross-
 
 The Python clients have built-in batching methods to help you optimize import speed. For details, see the client documentation:
 
-- [Python client `v4`](../client-libraries/python/index.md#batch-imports)
-- [Python client `v3`](../client-libraries/python/python_v3.md#batching)
+- [Python client](../client-libraries/python/index.md#batch-imports)
 
 ### Async Python client and batching
 
@@ -378,7 +377,7 @@ To try the example code, download the sample data and create the sample input fi
   <summary>Stream JSON files example code</summary>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="# START JSON streaming"
@@ -403,7 +402,7 @@ To try the example code, download the sample data and create the sample input fi
   <summary>Stream CSV files example code</summary>
 
 <Tabs groupId="languages">
-  <TabItem value="pycsv" label="Python Client v4">
+  <TabItem value="pycsv" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="# START CSV streaming"
@@ -439,7 +438,7 @@ You can configure the batch vectorization settings for each model provider, such
 Note that each provider exposes different configuration options.
 
  <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchVectorizationClientModify"

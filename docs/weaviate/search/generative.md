@@ -37,7 +37,7 @@ See the relevant model provider documentation for more details.
 Any vector-based search on collections with [named vectors](../config-refs/schema/multi-vector.md) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# NamedVectorNearTextPython"
@@ -82,7 +82,7 @@ Define object `properties` – using `{prop-name}` syntax – to interpolate ret
 The properties you use in the prompt do not have to be among the properties you retrieve in the query.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# SingleGenerativePropertiesPython"
@@ -148,7 +148,7 @@ The output is like this:
 Grouped task search returns one response that includes all of the query results. By default grouped task search uses all object `properties` in the prompt.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GroupedGenerativePython"
@@ -217,7 +217,7 @@ The output is like this:
 Define object `properties` to use in the prompt. This limits the information in the prompt and reduces prompt length.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# GroupedGenerativeProperties Python"

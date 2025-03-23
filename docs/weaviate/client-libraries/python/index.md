@@ -139,8 +139,7 @@ There are multiple ways to connect to your Weaviate instance. To instantiate a c
 - [Connection helper functions](#connection-helper-functions)
 - [Explicit instantiation](#explicit-instantiation)
 - [Async client](#async-client)
-- [Legacy (v3) API](#legacy-v3-api)
-
++
 ### Connection helper functions
 
 - `weaviate.connect_to_weaviate_cloud()`
@@ -281,12 +280,6 @@ The `v4` API client supports asynchronous (`asyncio`) operations through the `We
 You can instantiate an `WeaviateAsyncClient` object directly, or use helper functions with a `weaviate.use_async_xxx` prefix such as `weaviate.use_async_with_weaviate_cloud()`.
 
 For more details, see the [async Python client documentation](./async.md).
-
-### Legacy (v3) API
-
-To create an older, `v3` style `Client` object, use the `weaviate.Client` class. This method is available for backwards compatibility. Where possible, use a client v4 connection.
-
-To create a `v3` style client, refer to the [`v3` client documentation](./python_v3.md).
 
 ### Using Custom SSL Certificates
 

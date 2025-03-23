@@ -26,7 +26,7 @@ For creating multiple objects at once, see [How-to: Batch Import](./import.mdx).
 This example creates an object in the `JeopardyQuestion` collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObject START"
@@ -93,7 +93,7 @@ By default, [auto-schema](/docs/weaviate/config-refs/schema#auto-schema) creates
 When you create an object, you can provide a vector. (For specifying multiple, named vectors, see [below](#create-an-object-with-named-vectors).)
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithVector START"
@@ -148,7 +148,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
 When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectNamedVectors START"
@@ -186,7 +186,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithId START"
@@ -242,7 +242,7 @@ Object IDs are not randomly generated. The same value always generates the same 
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithDeterministicId START"
@@ -312,7 +312,7 @@ import XrefTSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cro
 You can create an object with cross-references to other objects.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={XrefPyCode}
       startMarker="# START ObjectWithCrossRef"
@@ -362,7 +362,7 @@ import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx
 Before you create an object, you can <SkipLink href="/docs/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# ValidateObject START"

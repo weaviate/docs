@@ -29,7 +29,7 @@ import InitialCaps from '/_includes/schemas/initial-capitalization.md'
 <InitialCaps />
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicCreateCollection"
@@ -106,7 +106,7 @@ For details, see:
 </details>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionWithProperties"
@@ -166,7 +166,7 @@ Collection level settings override default values and general configuration para
 </details>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Vectorizer"
@@ -216,7 +216,7 @@ You can define multiple [named vectors](../concepts/data.md#multiple-vector-embe
 As such, each named vector configuration can include its own vectorizer and vector index settings.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicNamedVectors"
@@ -270,7 +270,7 @@ This means that the feature is still under development and may change in future 
 Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MultiValueVectorCollection"
@@ -285,7 +285,7 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
 To configure how a vectorizer works (i.e. what model to use) with a specific collection, set the vectorizer parameters.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ModuleSettings"
@@ -329,7 +329,7 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
 The vector index type can be set for each collection at creation time, between `hnsw`, `flat` and `dynamic` index types.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetVectorIndexType"
@@ -383,7 +383,7 @@ Was added in `v1.27`
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetVectorIndexParams"
@@ -437,7 +437,7 @@ Configure individual properties in a collection. Each property can have it's own
 - Set a [tokenization type](../config-refs/schema/index.md#tokenization)
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START PropModuleSettings"
@@ -480,7 +480,7 @@ Configure individual properties in a collection. Each property can have it's own
 If you choose to bring your own vectors, you should specify the `distance metric`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DistanceMetric"
@@ -535,7 +535,7 @@ For details on the configuration parameters, see the following:
 Various [inverted index parameters](../config-refs/schema/index.md#invertedindexconfig) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetInvertedIndexParams"
@@ -573,7 +573,7 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetReranker"
@@ -611,7 +611,7 @@ The `reranker` and `generative` configurations are mutable from `v1.25.23`, `v1.
 Update the [`reranker`](../concepts/search/index.md#rerank) model integration for [reranking retrieved results](../search/rerank.md).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateReranker"
@@ -649,7 +649,7 @@ Specify a `generative` model integration for a collection (for RAG).
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetGenerative"
@@ -683,7 +683,7 @@ Specify a `generative` model integration for a collection (for RAG).
 Specify a generative `model name`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetGenModel"
@@ -721,7 +721,7 @@ The `reranker` and `generative` configurations are mutable from `v1.25.23`, `v1.
 Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generation-rag) model integration.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateGenerative"
@@ -759,7 +759,7 @@ import RaftRFChangeWarning from '/_includes/1-25-replication-factor.mdx';
 Configure replication settings, such as [async replication](/docs/weaviate/configuration/replication#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AllReplicationSettings"
@@ -835,7 +835,7 @@ For details on the configuration parameters, see the following:
 Configure sharding per collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ShardingSettings"
@@ -883,7 +883,7 @@ For details on the configuration parameters, see the following:
 Create a collection with multi-tenancy enabled.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Multi-tenancy"
@@ -917,7 +917,7 @@ Create a collection with multi-tenancy enabled.
 Retrieve a collection definition from the schema.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadOneCollection"
@@ -1133,7 +1133,7 @@ For image searches, see [Image search](../search/image.md).
 Fetch the database schema to retrieve all of the collection definitions.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadAllCollections"
@@ -1187,7 +1187,7 @@ Fetch the database schema to retrieve all of the collection definitions.
 You can update a collection definition to change the [mutable collection settings](../config-refs/schema/index.md#mutability).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateCollection"
@@ -1237,7 +1237,7 @@ You can update a collection definition to change the [mutable collection setting
 Some parameters cannot be modified after you create your collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ModifyParam"

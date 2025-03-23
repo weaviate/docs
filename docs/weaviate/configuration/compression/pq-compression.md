@@ -56,7 +56,7 @@ AutoPQ requires asynchronous indexing.
 To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START CollectionWithAutoPQ"
@@ -121,7 +121,7 @@ Follow these steps to manually enable PQ.
 [Create a collection](/docs/weaviate/manage-data/collections.mdx#create-a-collection) without specifying a quantizer.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START InitialSchema"
@@ -187,7 +187,7 @@ import PQMakesCodebook from '/_includes/pq-compression/makes-a-codebook.mdx' ;
 To enable PQ, update your collection definition as shown below. For additional configuration options, see the [PQ parameter table](./pq-compression.md#pq-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START UpdateSchema"
@@ -284,7 +284,7 @@ docker inspect --format='{{.LogPath}}' <your-weaviate-container-id>
 To review the current `pq` configuration, you can retrieve it as shown below.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GetSchema"

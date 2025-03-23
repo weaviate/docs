@@ -23,7 +23,7 @@ The [fusion method](#change-the-fusion-method) and the [relative weights](#balan
 Combine the results of a vector search and a keyword search. The search uses a single query string.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridBasicPython"
@@ -92,7 +92,7 @@ The output is like this:
 A hybrid search on a collection that has [named vectors](../config-refs/schema/multi-vector.md) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# NamedVectorHybridPython"
@@ -145,7 +145,7 @@ The output is like this:
 To see the object rankings, set the `explain score` field in your query. The search rankings are part of the object metadata. Weaviate uses the score to order the search results.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithScorePython"
@@ -214,7 +214,7 @@ Hybrid search results can favor the keyword component or the vector component. T
 - An `alpha` of `0` is a pure keyword search.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithAlphaPython"
@@ -283,7 +283,7 @@ The output is like this:
 - To use [`autocut`](../api/graphql/additional-operators.md#autocut) with the `hybrid` operator, use `Relative Score Fusion`.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithFusionTypePython"
@@ -361,7 +361,7 @@ For a discussion of fusion methods, see [this blog post](https://weaviate.io/blo
 The keyword search portion of hybrid search can be directed to only search a subset of object properties. This does not affect the vector search portion.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithPropertiesPython"
@@ -427,7 +427,7 @@ The output is like this:
 Specify the relative value of an object's `properties` in the keyword search. Higher values increase the property's contribution to the search score.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithPropertyWeightingPython"
@@ -493,7 +493,7 @@ The output is like this:
 The vector component of hybrid search can use a query string or a query vector. To specify a query vector instead of a query string, provide a query vector (for the vector search) and a query string (for the keyword search) in your query.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithVectorPython"
@@ -562,7 +562,7 @@ The output is like this:
 You can specify [vector similarity search](/docs/weaviate/search/similarity) parameters similar to [near text](/docs/weaviate/search/similarity.md#search-with-text) or [near vector](/docs/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START VectorParametersPython"
@@ -602,7 +602,7 @@ The output is like this:
 The only available search threshold is `max vector distance`, which will set the maximum allowable distance for the vector search component.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START VectorSimilarityPython"
@@ -632,7 +632,7 @@ The only available search threshold is `max vector distance`, which will set the
 Define criteria to group search results.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridGroupByPy4"
@@ -670,7 +670,7 @@ Use `limit` to set a fixed maximum number of objects to return.
 Optionally, use `offset` to paginate the results.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START limit Python"
@@ -722,7 +722,7 @@ Optionally, use `offset` to paginate the results.
 To limit results to groups with similar distances from the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter. Specify the `Relative Score Fusion` ranking method when you use autocut with hybrid search.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START autocut Python"
@@ -788,7 +788,7 @@ The output is like this:
 To narrow your search results, use a [`filter`](../api/graphql/filters.md).
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# HybridWithFilterPython"

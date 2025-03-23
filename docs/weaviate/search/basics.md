@@ -25,7 +25,7 @@ You can get objects without specifying any parameters. This returns objects in a
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# BasicGetPython"
@@ -112,7 +112,7 @@ The output is like this:
 Use `limit` to set a fixed maximum number of objects to return.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# GetWithLimitPython"
@@ -191,7 +191,7 @@ The output is like this:
 To start in the middle of your result set, define an `offset`. Set a `limit` to return objects starting at the offset.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# GetWithLimitOffsetPython"
@@ -273,7 +273,7 @@ To paginate through the entire database, use a [cursor](../manage-data/read-all-
 You can specify which object properties to return.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# GetPropertiesPython"
@@ -354,7 +354,7 @@ The output is like this:
 You can retrieve the object vector. (Also applicable where [named vectors](../config-refs/schema/multi-vector.md) are used.)
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# GetObjectVectorPython"
@@ -434,7 +434,7 @@ The output is like this:
 You can retrieve the object `id` (uuid).
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
@@ -523,7 +523,7 @@ To retrieve properties from cross-referenced objects, specify:
 - The properties to retrieve
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# GetWithCrossRefsPython"
@@ -594,7 +594,7 @@ The output is like this:
 You can specify metadata fields to be returned.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# GetWithMetadataPython"
@@ -663,7 +663,7 @@ For a comprehensive list of metadata fields, see [GraphQL: Additional properties
 If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the tenant parameter in each query.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
   startMarker="# MultiTenancy"

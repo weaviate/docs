@@ -41,7 +41,7 @@ Use the `Near Image` operator to execute image search.<br/>
 If your query image is stored in a file, you can use the client library to search by its filename.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ImageFileSearch"
@@ -113,7 +113,7 @@ If your query image is stored in a file, you can use the client library to searc
 You can search by a base64 representation of an image:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START search with base64"

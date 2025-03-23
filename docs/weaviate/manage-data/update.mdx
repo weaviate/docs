@@ -42,7 +42,7 @@ If you update the value of a *previously vectorized* property, Weaviate re-vecto
 However, if you add a *new* property to your collection definition, Weaviate only vectorizes the new objects. Weaviate doesn't re-vectorize and re-index existing objects when a new property is defined, only when an existing property is updated.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# UpdateProps START"
@@ -89,7 +89,7 @@ However, if you add a *new* property to your collection definition, Weaviate onl
 The object vector can also be updated similarly to properties. For [named vectors](../config-refs/schema/multi-vector.md), provide the data as a dictionary/map similarly to the [object creation](./create.mdx#create-an-object-with-named-vectors).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# UpdateVector START"
@@ -132,7 +132,7 @@ The object vector can also be updated similarly to properties. For [named vector
 The entire object can be replaced by providing the collection name, id and the new object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# Replace START"
@@ -186,7 +186,7 @@ Deleting or updating properties in the collection definition is [not yet support
 At object level, you can replace the object with a copy that has those properties deleted, or set to `""` for text properties.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# DelProps START"
