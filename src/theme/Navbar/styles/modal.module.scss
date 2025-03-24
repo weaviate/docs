@@ -417,7 +417,7 @@
   /* Add dark mode support */
   [data-theme="dark"] & {
     background-color: var(--docs-dark-card-hover-bg) !important;
-    border-left-color: var(--site-primary) !important; /* Fix the typo here */
+    border-left-color: var(--site-primary) !important;
   }
 }
 
