@@ -426,6 +426,18 @@ const sidebars = {
         "deploy/installation-guides/aws-installation",
       ],
     },
+    {
+      type: "category",
+      label: "Configuration Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        "deploy/installation-guides/k8s-installation",
+        "deploy/installation-guides/docker-installation",
+        "deploy/installation-guides/gcp-installation",
+        "deploy/installation-guides/aws-installation",
+      ],
+    },
   ],
   /*deployAwsSidebar: [
     {
