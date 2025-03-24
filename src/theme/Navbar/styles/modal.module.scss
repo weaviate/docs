@@ -410,20 +410,15 @@
 
 /* Active state for resource cards */
 .activeResource {
-  background-color: var(--docs-dark-card-hover-bg) !important;
+  background-color: var(--ifm-hover-overlay) !important;
   position: relative;
+  border-left: 3px solid var(--site-primary) !important;
 
   /* Add dark mode support */
   [data-theme="dark"] & {
     background-color: var(--docs-dark-card-hover-bg) !important;
-    border-left-color: var(---site-primary) !important;
+    border-left-color: var(--site-primary) !important; /* Fix the typo here */
   }
-}
-
-/* Target resource cards specifically in dark mode */
-[data-theme="dark"] .resourceCard.activeResource {
-  /* Override the background color explicitly */
-  border-left: 3px solid var(--site-primary) !important;
 }
 
 /* Active indicator dot for resource cards */
