@@ -68,8 +68,6 @@ const sidebars = {
           },
           items: [
             "weaviate/client-libraries/python/async",
-            "weaviate/client-libraries/python/v3_v4_migration",
-            "weaviate/client-libraries/python/python_v3",
           ],
         },
         {
