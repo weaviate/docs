@@ -25,7 +25,7 @@ export default function SearchBarWrapper(props) {
       <button className="searchButton" onClick={handleSearchClick}>
         <span className="searchPlaceholder">
           <i className="searchIcon fas fa-magnifying-glass" />
-          <span className="searchPlaceholderText">Search</span>
+          <span className="searchPlaceholderText">Search or Ask AI</span>
         </span>
         <div className="commandIconContainer">
           <span className="commandIcon">{isApple ? "⌘K" : "Ctrl + K"}</span>

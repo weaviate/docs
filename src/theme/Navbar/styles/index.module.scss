@@ -1,0 +1,15 @@
+/* Import all component styles */
+@import "./navbar.scss";
+@import "./button.scss";
+@import "./modal.scss";
+
+/* Define common values as CSS custom properties (shared between components) */
+:root {
+  --secondary-navbar-height: 60px;
+  --docs-modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  --docs-modal-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  --docs-divider-color: #ccc;
+  --docs-modal-header-button-bg: #f7f7f7;
+  --docs-modal-header-button-hover-bg: #e0e0e0;
+  --docs-header-button-text-color: #333;
+}

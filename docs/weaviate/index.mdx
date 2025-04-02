@@ -39,9 +39,16 @@ most out of Weaviate's features.
 
 The Weaviate documentation is structured into multiple units based on the service and functionality.
 
-<br />
-<CardsSection items={secondaryNavbarItems} />
-<br />
+{/* Filter out items where isSmall is true */}
+{(() => {
+  const regularItems = Object.fromEntries(
+    Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
+  );
+  
+  <br />
+  return <CardsSection items={regularItems} />;
+  <br />
+})()}
 
 ## What is Weaviate?
 
@@ -71,7 +78,7 @@ import WeaviateEcosystem from "@site/static/img/weaviate-ecosystem.png";
 
 As shown in the high-level overview above, the ecosystem consists of:
 
-- **[Weaviate Core](#what-is-weaviate)**: An open-source vector database that stores both objects and vectors.
+- **[Weaviate Database](#what-is-weaviate)**: An open source vector database that stores both objects and vectors.
 - **[Weaviate Cloud](/docs/cloud)**: A fully managed cloud deployment of the Weaviate vector database.
 - **[Weaviate Agents](/docs/agents)**: Pre-built agentic services for Weaviate Cloud users.
 - **[Weaviate Embeddings](/docs/cloud/embeddings)**: A managed embedding inference service for Weaviate Cloud users.

@@ -42,6 +42,7 @@ export default function Root({ children }) {
         script.setAttribute("data-modal-open-by-default", "false");
         script.setAttribute("data-modal-open-on-command-k", "true");
         script.setAttribute("data-modal-z-index", "9999");
+        script.setAttribute("data-button-hide", "true");
         script.setAttribute(
           "data-modal-disclaimer",
           "This is a custom LLM for Weaviate with access to all developer docs, Cloud docs, academy lessons, contributor guides, GitHub issues, and forum questions."
@@ -52,7 +53,7 @@ export default function Root({ children }) {
         );
         script.setAttribute(
           "data-modal-footer",
-          "Powered by weaviate and kapa.ai"
+          "Powered by Weaviate and kapa.ai"
         );
         script.async = true;
         document.body.appendChild(script);

@@ -59,7 +59,7 @@ Read more about [enabling all API-based modules](../configuration/modules.md#ena
 
 When a model provider integration for embeddings is enabled, Weaviate automatically generates embeddings for objects that are added to the database.
 
-This is done by providing the source data to the integration provider, which then returns the embeddings to Weaviate. The embeddings are then stored in the Weaviate database.
+This is done by providing the source data to the integration provider, which then returns the embeddings to Weaviate. The embeddings are then stored in the Weaviate Database.
 
 ```mermaid
 %%{init: {

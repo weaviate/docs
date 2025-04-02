@@ -69,7 +69,7 @@ import EmbeddedInstantiationModule from '/_includes/code/embedded.instantiate.mo
 
 ## Binary sources
 
-Weaviate Core releases include executable Linux binaries. When you instantiate an Embedded Weaviate client, the client checks for local copies of the binary packages. If the client finds the binary files, it runs them to create a temporary Weaviate instance. If not, the client downloads the binaries and saves them in your `binary_path` directory.
+Weaviate Database releases include executable Linux binaries. When you instantiate an Embedded Weaviate client, the client checks for local copies of the binary packages. If the client finds the binary files, it runs them to create a temporary Weaviate instance. If not, the client downloads the binaries and saves them in your `binary_path` directory.
 
 The Embedded Weaviate instance goes away when your client exits. However, the client does not delete the binary files. The next time your client runs, it checks for the binaries and uses the saved binaries if they exist.
 
@@ -78,7 +78,7 @@ For a list of the files that are included in a release, see the Assets section o
 
 ### File URL
 To get the URL for a particular binary archive file, follow these steps:
-1. Find the Weaviate Core release you want on the [Release Notes](/docs/weaviate/release-notes/index.md) page.
+1. Find the Weaviate Database release you want on the [Release Notes](/docs/weaviate/release-notes/index.md) page.
 1. Click to the release notes for that version. The Assets section includes `linux-amd64` and `linux-arm64` binaries in `tar.gz` format.
 1. Copy the link to the full URL of the `tar.gz` file for your platform.
 
@@ -88,7 +88,7 @@ For example, the URL for the Weaviate `1.19.6` `AMD64` binary is:
 
 ## Functional overview
 
-Weaviate Core usually runs as a stand-alone server that clients connect to in order to access data. An Embedded Weaviate instance is a process that runs in conjunction with a client script or application. Embedded Weaviate instances can access a persistent datastore, but the instances exit when the client exits.
+Weaviate Database usually runs as a stand-alone server that clients connect to in order to access data. An Embedded Weaviate instance is a process that runs in conjunction with a client script or application. Embedded Weaviate instances can access a persistent datastore, but the instances exit when the client exits.
 
 When your client runs, it checks for a stored Weaviate binary. If it finds one, the client uses that binary to create an Embedded Weaviate instance. If not, the client downloads the binary.
 

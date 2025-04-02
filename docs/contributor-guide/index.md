@@ -8,7 +8,7 @@ image: og/contributor-guide/welcome.jpg
 
 🎉 First off, thank you for taking the time to contribute! 🎉
 
-We are delighted to have you here. We are thrilled that you want to contribute to Weaviate Core, as together we can make Weaviate even better. We strive to build an engaging community and we encourage you to participate, share your ideas and make friends.
+We are delighted to have you here. We are thrilled that you want to contribute to Weaviate Database, as together we can make Weaviate even better. We strive to build an engaging community and we encourage you to participate, share your ideas and make friends.
 
 ##  Weaviate on GitHub
 
@@ -19,7 +19,7 @@ If you're using Weaviate or if you like the project, please <a href="https://git
 We recommend reading through the [Contributors' getting started guide](./getting-started/index.md) first. That includes suggestions on different ways to contribute, as well as how you can make those contributions.
 
 This guide also includes the following sections on specific areas. You can think of these as more technical, reference guides on each area for contributors.
-- [Weaviate Core](./weaviate-core/index.md)
+- [Weaviate Database](./weaviate-core/index.md)
 - [Weaviate Modules](./weaviate-modules/index.md)
 - [Contextionary](./contextionary/index.md)
 - [Weaviate Clients](./weaviate-clients/index.md)
