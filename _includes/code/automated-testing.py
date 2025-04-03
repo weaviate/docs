@@ -1,73 +1,40 @@
-# Blog: Automated testing for Weaviate applications - Python code
-#START Connect  # START ConnectAndCleanup
 import weaviate
 import os
+import weaviate_datasets as wd
+from weaviate.classes.init import Auth
 
-# Instantiate the embedded Weaviate client and pass the OpenAI API key
-client = weaviate.Client(
-    embedded_options=weaviate.embedded.EmbeddedOptions(),
-    additional_headers={
-        'X-OpenAI-Api-Key': os.environ['OPENAI_API_KEY']  # Replace with your OpenAI API key
-    }
-)
-# Client is now ready to accept requests
+# Get credentials from environment variables
+wcd_url = os.environ["WCD_DEMO_URL"]
+wcd_api_key = os.environ["WCD_DEMO_ADMIN_KEY"]
+openai_api = os.environ["OPENAI_APIKEY"]
 
-# Clean slate for local testing (GitHub Actions VMs start fresh) because Weaviate data is persisted in embedded mode.
-client.schema.delete_all()
-# Client connected and schema cleared
+headers = {"X-OpenAI-Api-Key": openai_api}
 
-
-# Create the class
-class_name = 'JeopardyQuestion'
-class_definition = {
-    'class': class_name,
-    'vectorizer': 'text2vec-openai',
-}
-
-client.schema.create_class(class_definition)
-
-# Test
-retrieved_definition = client.schema.get(class_name)
-assert retrieved_definition['moduleConfig']['text2vec-openai']['model'] == 'ada'
-# Class created successfully
-
-
-# Import objects from the JSON file
-import json
-
-with open('jeopardy_100.json') as f:
-    data = json.load(f)
-
-# Context manager for batch import
-with client.batch as batch:
-    # Build data objects & add to batch
-    for i, obj in enumerate(data):
-        batch.add_data_object(
-            data_object={
-                'question': obj['Question'],
-                'answer': obj['Answer'],
-            },
-            class_name=class_name,
-        )
-    if i % 20 == 0:
-        print(f'Imported {i} objects...')
-
-# Test all objects were imported
-response = client.query.aggregate(class_name).with_meta_count().do()
-actual_count = response['data']['Aggregate'][class_name][0]['meta']['count']
-assert actual_count == 100, f'Expected 100 imported objects but got {actual_count}'
-# Import completed successfully
-
-
-# Run a test query
-result = (
-    client.query
-    .get('JeopardyQuestion', ['question', 'answer'])
-    .with_near_text({'concepts': 'chemistry'})
-    .with_limit(1)
-    .do()
+# Instantiate the v4 Weaviate client using the cloud helper.
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=wcd_url,
+    auth_credentials=Auth.api_key(wcd_api_key),
+    headers=headers,
 )
 
-# Test
-assert 'sodium' in result['data']['Get'][class_name][0]['answer']
-# Query test completed
+client.collections.delete("JeopardyQuestion")
+client.collections.delete("JeopardyCategory")
+
+dataset = wd.JeopardyQuestions10k()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
+
+
+client.collections.delete("Article")
+client.collections.delete("Publication")
+client.collections.delete("Author")
+client.collections.delete("Category")
+
+dataset = wd.NewsArticles()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
+
+client.collections.delete("WineReviewNV")
+
+dataset = wd.WineReviewsNV()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
+
+client.close()

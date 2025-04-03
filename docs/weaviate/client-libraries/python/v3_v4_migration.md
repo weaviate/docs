@@ -155,7 +155,7 @@ The `wvc` namespace exposes commonly used classes in the `v4` API. The namespace
 
 ### Interact with collections
 
-When you connect to a Weaviate database, the v4 API returns a `WeaviateClient` object, while the v3 API returns a `Client` object.
+When you connect to a Weaviate Database, the v4 API returns a `WeaviateClient` object, while the v3 API returns a `Client` object.
 
 The `v3` API's interactions were built around the `client` object (an instance of `Client`). This includes server interactions for CRUD and search operations.
 

@@ -28,7 +28,7 @@ export const welcomeCardsData = [
 ];
 
 Weaviate _(we-vee-eight)_ is an open-source, AI-native vector database. Use
-this documentation to get started with Weaviate and to learn how to get the
+this documentation to get started with Weaviate and learn how to get the
 most out of Weaviate's features.
 
 <CardsSection items={welcomeCardsData} className={styles.smallCards} />
@@ -39,21 +39,28 @@ most out of Weaviate's features.
 
 The Weaviate documentation is structured into multiple units based on the service and functionality.
 
-<br />
-<CardsSection items={secondaryNavbarItems} />
-<br />
+{/* Filter out items where isSmall is true */}
+{(() => {
+  const regularItems = Object.fromEntries(
+    Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
+  );
+  
+  <br />
+  return <CardsSection items={regularItems} />;
+  <br />
+})()}
 
 ## What is Weaviate?
 
 Weaviate is an **open-source vector database** designed to store and index both data objects and their vector embeddings. This architecture enables advanced semantic search capabilities by comparing the meaning encoded in vectors rather than relying solely on keyword matching. Key capabilities include:
 
-- **[Semantic and Hybrid Search](./search/basics.md)**  
+- **[Semantic and hybrid search](./search/basics.md)**  
   By indexing data with vectors, Weaviate supports searches based on both semantic similarity and keywords. This allows for more relevant results even when the query terms don’t exactly match the stored data.
 
-- **[Retrieval Augmented Generation (RAG)](./search/generative.md)**  
+- **[Retrieval augmented generation (RAG)](./search/generative.md)**  
   Weaviate can serve as a robust backend for RAG workflows, where vector search is used to retrieve context that enhances the output of generative models, making it easier to generate accurate, context-aware responses.
 
-- **[Agent-Driven Workflows](../agents/query/index.md)**  
+- **[Agent-driven workflows](../agents/query/index.md)**  
   Its flexible API and integration with modern AI models make Weaviate suitable for powering applications that rely on intelligent agents. These agents can leverage semantic insights to make decisions or trigger actions based on the data stored in Weaviate.
 
 ## The Weaviate Ecosystem
@@ -71,7 +78,7 @@ import WeaviateEcosystem from "@site/static/img/weaviate-ecosystem.png";
 
 As shown in the high-level overview above, the ecosystem consists of:
 
-- **[Weaviate Core](#what-is-weaviate)**: An open source vector database that stores both objects and vectors.
+- **[Weaviate Database](#what-is-weaviate)**: An open source vector database that stores both objects and vectors.
 - **[Weaviate Cloud](/docs/cloud)**: A fully managed cloud deployment of the Weaviate vector database.
 - **[Weaviate Agents](/docs/agents)**: Pre-built agentic services for Weaviate Cloud users.
 - **[Weaviate Embeddings](/docs/cloud/embeddings)**: A managed embedding inference service for Weaviate Cloud users.

@@ -1,7 +1,7 @@
 const secondaryNavbarItems = {
   build: {
-    title: "Weaviate",
-    icon: "fa fa-code",
+    title: "Weaviate Database",
+    icon: "fa fa-database",
     description: "Develop AI applications using Weaviate's APIs and tools",
     link: "/docs/weaviate",
     links: [
@@ -39,6 +39,20 @@ const secondaryNavbarItems = {
         label: "Other",
         link: "/docs/weaviate/benchmarks",
         sidebar: "othersSidebar",
+        /*
+        dropdown: [
+          {
+            label: "Benchmarks",
+            link: "/docs/weaviate/benchmarks",
+            sidebar: "othersSidebar",
+          },
+          {
+            label: "FAQ",
+            link: "/docs/weaviate/more-resources/faq",
+            sidebar: "othersSidebarFAQ",
+          },
+        ],
+        */
       },
     ],
   },
@@ -46,7 +60,7 @@ const secondaryNavbarItems = {
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
-    description: "Deploy, configure, and maintain Weaviate Core",
+    description: "Deploy, configure, and maintain Weaviate Database",
     link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
@@ -57,7 +71,7 @@ const secondaryNavbarItems = {
   },
 
   agents: {
-    title: "Agents",
+    title: "Weaviate Agents",
     icon: "fa fa-robot",
     description: "Build and deploy intelligent agents with Weaviate",
     link: "/docs/agents",
@@ -87,6 +101,7 @@ const secondaryNavbarItems = {
   academy: {
     title: "Academy",
     icon: "fa fa-graduation-cap",
+    isSmall: true,
     description:
       "Learn about vector search and Weaviate through structured courses",
     link: "/docs/academy",
@@ -114,6 +129,7 @@ const secondaryNavbarItems = {
   contributor: {
     title: "Contributor guide",
     icon: "fa fa-edit",
+    isSmall: true,
     description: "Learn how to contribute to Weaviate's open-source projects",
     link: "/docs/contributor-guide",
     links: [
@@ -123,7 +139,7 @@ const secondaryNavbarItems = {
         sidebar: "contributorSidebar",
       },
       {
-        label: "Weaviate Core",
+        label: "Weaviate Database",
         link: "/docs/contributor-guide/weaviate-core",
         sidebar: "contributorCoreSidebar",
       },

@@ -114,6 +114,20 @@ function Footer() {
           {/* Right Section: Additional Links */}
           <div className={styles.rightSection}>
             <div className={styles.footerSection}>
+              <h5>Documentation</h5>
+              <ul>
+                <li>
+                  <Link to="/docs/weaviate">Weaviate Database</Link>
+                </li>
+                <li>
+                  <Link to="/docs/cloud">Weaviate Cloud</Link>
+                </li>
+                <li>
+                  <Link to="/docs/agents">Weaviate Agents</Link>
+                </li>
+              </ul>
+            </div>
+            <div className={styles.footerSection}>
               <h5>Support</h5>
               <ul>
                 <li>
@@ -136,6 +150,7 @@ function Footer() {
                 </li>
               </ul>
             </div>
+            {/* 
             <div className={styles.footerSection}>
               <h5>Deployment options</h5>
               <ul>
@@ -168,6 +183,7 @@ function Footer() {
                 </li>
               </ul>
             </div>
+            */}
           </div>
         </div>
         {/*
