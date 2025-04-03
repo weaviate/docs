@@ -36,10 +36,6 @@ The Python client library provides a synchronous API by default through the `Wea
 
 ## Installation
 
-:::tip Migrating from `v3` to `v4`
-If you are migrating from the `v3` client to the `v4`, see this [dedicated guide](./v3_v4_migration.md).
-:::
-
 The Python client library is developed and tested using Python 3.8+. It is available on [PyPI.org](https://pypi.org/project/weaviate-client/), and can be installed with:
 
 ```bash
@@ -143,8 +139,7 @@ There are multiple ways to connect to your Weaviate instance. To instantiate a c
 - [Connection helper functions](#connection-helper-functions)
 - [Explicit instantiation](#explicit-instantiation)
 - [Async client](#async-client)
-- [Legacy (v3) API](#legacy-v3-api)
-
++
 ### Connection helper functions
 
 - `weaviate.connect_to_weaviate_cloud()`
@@ -285,12 +280,6 @@ The `v4` API client supports asynchronous (`asyncio`) operations through the `We
 You can instantiate an `WeaviateAsyncClient` object directly, or use helper functions with a `weaviate.use_async_xxx` prefix such as `weaviate.use_async_with_weaviate_cloud()`.
 
 For more details, see the [async Python client documentation](./async.md).
-
-### Legacy (v3) API
-
-To create an older, `v3` style `Client` object, use the `weaviate.Client` class. This method is available for backwards compatibility. Where possible, use a client v4 connection.
-
-To create a `v3` style client, refer to the [`v3` client documentation](./python_v3.md).
 
 ### Using Custom SSL Certificates
 
@@ -890,12 +879,6 @@ You can choose to provide a generic type to a query or data operation. This can 
   endMarker="# END GenericsExample"
   language="py"
 />
-
-## Migration guides
-
-:::tip Migrating from `v3` to `v4`
-If you are migrating from the `v3` client to the `v4`, see this [dedicated guide](./v3_v4_migration.md).
-:::
 
 ### Beta releases
 

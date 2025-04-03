@@ -111,7 +111,7 @@ import ForcePipInstall from '../_includes/_force_pip_install.mdx';
 Now, you can finally connect to your Weaviate Cloud instance with the parameters from the first step:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ConnectToWeaviate"
@@ -156,7 +156,7 @@ import WeaviateAgentsArxivDataset from '/docs/agents/_includes/transformation_ag
 For the collection `ArxivPapers`, we are going to use the [`auto-schema`](../../weaviate/config-refs/schema/index.md#auto-schema) option, which creates properties automatically based on the imported data.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DefineCollections"
@@ -171,7 +171,7 @@ For the collection `ArxivPapers`, we are going to use the [`auto-schema`](../../
 Now, we can import the pre-vectorized data [ArxivPapers](https://huggingface.co/datasets/weaviate/agents/viewer/transformation-agent-papers) into our Weaviate Cloud instance:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START PopulateDatabase"
@@ -219,7 +219,7 @@ To append a new property, we define an operation with:
 First, let's append a new property called `topics`, which should be a `TEXT_ARRAY`. Based on the `abstract`, let's ask for the LLM to extract a list of topic tags. Let's ask for no more than 5.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AddListOfTopics"
@@ -234,7 +234,7 @@ First, let's append a new property called `topics`, which should be a `TEXT_ARRA
 Next, let's add a new `french_abstract` property, which is simply a translation of the `abstract` property:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AddFrenchAbstract"
@@ -249,7 +249,7 @@ Next, let's add a new `french_abstract` property, which is simply a translation 
 This time, we can add a property that is an `INT`. Here, we ask the LLM to give a score from `0` to `10` based on how relevant the paper is to Natural Language Processing.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AddNlpRelevance"
@@ -264,7 +264,7 @@ This time, we can add a property that is an `INT`. Here, we ask the LLM to give 
 Finally, let's ask for a `BOOL` property, which indicates whether the paper is a survey or not. The LLM will determine if the paper presents novel techniques or if it's a survey of existing ones.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START IsSurveyPaper"
@@ -285,7 +285,7 @@ Don't perform updates on properties that are part of other agent operations. Thi
 Now, let's update the `title` property as we haven't used it in any previous operations:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateProperty"
@@ -304,7 +304,7 @@ When initializing the agent, we have to let it know which collection to modify. 
 Next, we need to provide a list of `operations` that the agent should run. Here, we provide all the operations we defined above.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateTransformationAgent"
@@ -319,7 +319,7 @@ Next, we need to provide a list of `operations` that the agent should run. Here,
 By calling `update_all()`, we get the agent to spin up individual workflows for each operation. Each operation will then run on each object in our collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ExecutingTransformations"
@@ -368,7 +368,7 @@ TransformationResponse(operation_name='title', workflow_id='TransformationWorkfl
 To inspect the status of the asynchronous transformation operations, we can use the `agent.get_status(workflow_id)` function:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GetStatus"
