@@ -1,0 +1,20 @@
+### ==================== TOP LEVEL ==================== ###
+
+## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
+
+[[redirects]]
+from = "/docs"
+to   = "/docs/weaviate"
+status = 301
+
+[[redirects]]
+from = "/"
+to   = "/docs/weaviate"
+status = 301
+
+## Redirect anything from /developers to /docs
+
+[[redirects]]
+from = "/developers/*"
+to   = "/docs/:splat"
+status = 301
