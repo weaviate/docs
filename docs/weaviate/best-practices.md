@@ -69,7 +69,7 @@ Typically, multi-tenant setups can benefit from using `dynamic` indexes, as they
 
 :::tip Further resources
 - [How-to: Set the vector index type](manage-data/collections.mdx#set-vector-index-type)
-- [Concepts: Vector indexes](concepts/vector-index.md)
+- [Concepts: Vector indexes](concepts/indexing/vector-index.md)
 :::
 
 ### Reduce memory footprint with vector quantization

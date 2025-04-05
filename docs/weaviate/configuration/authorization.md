@@ -93,7 +93,7 @@ Role-based access control (RBAC) is generally available in Weaviate from version
 
 Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to define **roles** and assign **permissions** to those roles. Users can then be assigned to roles, and inherit the permissions associated with those roles.
 
-Check out the dedicated **[RBAC documentation](/docs/weaviate/configuration/rbac)** for instructions on how to [configure RBAC](/docs/weaviate/configuration/rbac/configuration) in your Weaviate instance and examples on how to [manage roles an users](/docs/weaviate/configuration/rbac/manage-roles-users).
+Check out the dedicated **[RBAC documentation](./rbac/index.mdx)** for instructions on how to [configure RBAC](./rbac/configuration.md) in your Weaviate instance and examples on how to [manage roles an users](./rbac/manage-roles.mdx).
 
 ## Admin list
 
@@ -250,7 +250,7 @@ Weaviate can be configured to provide undifferentiated access, by disabling auth
 ## Further resources
 
 - [Configuration: Authentication](./authentication.md)
-- [Configuration: RBAC](/docs/weaviate/configuration/rbac)
+- [Configuration: RBAC](./rbac/index.mdx)
 - [References: Environment variables / Authentication and Authorization](../config-refs/env-vars/index.md#authentication-and-authorization)
 
 ## Questions and feedback

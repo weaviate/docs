@@ -60,7 +60,7 @@ The existing and current default filter strategy in Weaviate is referred to as `
 
 The algorithm starts at the root node and traverses the graph, evaluating the distance to the query vector at each node, while keeping the "allow list" of the filter as context. If the filter is not met, the node is skipped and the traversal continues. This process is repeated until the desired number of results is reached.
 
-## `indexFilterable`
+## `indexFilterable` {#indexFilterable}
 
 :::info Added in `1.18`
 :::

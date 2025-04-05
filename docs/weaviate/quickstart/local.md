@@ -194,7 +194,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Want to specify object vectors?</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <Link to="/developers/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
+        If you prefer to add vectors yourself along with the object data, see <Link to="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
       </div>
     </div>
   </div>

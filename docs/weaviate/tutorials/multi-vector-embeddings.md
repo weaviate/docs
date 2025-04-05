@@ -1,4 +1,4 @@
----
+x---
 title: Multi-vector embeddings (ColBERT, ColPali, etc.)
 description: Learn how to use multi-vector embeddings in Weaviate.
 sidebar_position: 2
@@ -9,7 +9,7 @@ image: og/docs/tutorials.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/developers/weaviate/tutorials/_includes/multi-vector-embeddings.py';
+import PyCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.py';
 
 In this section, we will explore how to use multi-vector embeddings in Weaviate. Multi-vector embeddings (implemented through models like ColBERT, ColPali, or ColQwen) represent each object or query using multiple vectors instead of a single vector. This approach enables more precise searching through "late interaction" - a technique that matches individual parts of texts rather than comparing them as whole units.
 

@@ -11,7 +11,7 @@ import SkipLink from '/src/components/SkipValidationLink'
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
 :::
 
-Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to **[define roles and assign permissions](/docs/weaviate/configuration/rbac/manage-roles-users)** to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
+Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to **[define roles and assign permissions](/docs/weaviate/configuration/rbac/manage-roles)** to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
 
 Weaviate comes with a set of predefined roles. These roles are:
 
@@ -58,7 +58,7 @@ This configuration:
 - Enables RBAC
 - Configures `root-user` as a user with built-in admin permissions
 
-You can connect to your instance with the root user in order to [create new users](./manage-users.mdx) which can be assigned custom roles and permissions using the [REST API](/docs/weaviate/api/rest#tag/authz) or [programmatically using a client library](./manage-roles.mdx).
+You can connect to your instance with the root user in order to [create new users](./manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](./manage-roles.mdx).
 
 import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
 
@@ -103,7 +103,7 @@ This configuration:
 - Enables RBAC
 - Configures `root-user` as a user with built-in admin permissions
 
-You can connect to your instance with the root user in order to [create new users](./manage-users.mdx) which can be assigned custom roles and permissions using the [REST API](/docs/weaviate/api/rest#tag/authz) or [programmatically using a client library](./manage-roles.mdx).
+You can connect to your instance with the root user in order to [create new users](./manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](./manage-roles.mdx).
 
 ## RBAC and performance
 
