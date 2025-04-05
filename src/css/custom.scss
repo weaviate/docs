@@ -871,3 +871,7 @@ button.close {
 :root nav.navbar {
   background-color: var(--site-navbar-color);
 }
+
+.docs-image li > * {
+  display: inline;
+}

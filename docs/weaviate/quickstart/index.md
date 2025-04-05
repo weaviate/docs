@@ -94,7 +94,7 @@ import CreateSandbox from '/docs/weaviate/quickstart/img/create_sandbox.png';
 <div class="row">
   <div class="col col--4">
     <ol>
-      <li><a href="https://console.weaviate.cloud">Log onto WCD</a>.</li>
+      <li><Link to="https://console.weaviate.cloud">Log onto WCD</Link>.</li>
       <li>Click on <code>Clusters</code> on the sidebar.</li>
       <li>In the following pane, click <code>Create cluster</code>.</li>
     </ol>
