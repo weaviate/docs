@@ -172,7 +172,8 @@ const sidebars = {
           collapsed: true,
           items: [
             "weaviate/configuration/rbac/configuration",
-            "weaviate/configuration/rbac/manage-roles-users",
+            "weaviate/configuration/rbac/manage-roles",
+            "weaviate/configuration/rbac/manage-users",
           ],
         },
         "weaviate/configuration/persistence",
@@ -369,7 +370,7 @@ const sidebars = {
         },
         "weaviate/config-refs/datatypes",
         "weaviate/config-refs/distances",
-        "weaviate/config-refs/env-vars",
+        "weaviate/config-refs/env-vars/index",
         "weaviate/config-refs/status",
         "weaviate/config-refs/telemetry",
         "weaviate/config-refs/meta",

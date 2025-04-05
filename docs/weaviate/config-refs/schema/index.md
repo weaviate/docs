@@ -151,6 +151,25 @@ To avoid this, you can either:
 
 We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
 
+### Collections count limit {#collections-count-limit}
+
+:::info Added in **`v1.30`**
+:::
+
+To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
+
+- **Default limit**: `1000` collections.
+- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](../../config-refs/env-vars/index.md) environment variable to adjust the collection count limit.
+
+:::note 
+If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
+:::
+
+:::tip
+**Instead of raising the collections count limit, consider rethinking your architecture**.  
+For more details, see [Starter Guides: Scaling limits with collections](../../starter-guides/managing-collections/collections-scaling-limits.mdx). 
+:::
+
 ## Available parameters
 
 ### `class`
@@ -584,6 +603,11 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
   - `["아버지", "가", "방", "에", "들어가", "신다"]`
 - `"결정하겠다"`:
   - `["결정", "하", "겠", "다"]`
+
+### Limit the number of `gse` and `Kagome` tokenizers
+
+The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
+You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](../env-vars/index.md). 
 
 ### Inverted index types
 

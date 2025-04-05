@@ -1,14 +1,13 @@
 ---
 title: Generative AI
 sidebar_position: 51
-image: og/docs/integrations/provider_integrations_friendliai.jpg
-# tags: ['model providers', 'friendliai', 'generative', 'rag']
+image: og/docs/integrations/provider_integrations_xai.jpg
+# tags: ['model providers', 'xAI', 'generative', 'rag']
 ---
 
-# FriendliAI Generative AI with Weaviate
+# xAI Generative AI with Weaviate
 
-
-:::info Added in `v1.26.3`
+:::info Added in `v1.30.0`
 :::
 
 import Tabs from '@theme/Tabs';
@@ -19,19 +18,19 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integrations with FriendliAI APIs allow you to access their models' capabilities directly from Weaviate.
+Weaviate's integrations with xAI's API allows you to access their models' capabilities directly from Weaviate.
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with FriendliAI. Weaviate will perform Retrieval Augmented Generation (RAG) using the specified model and your Friendli token.
+[Configure a Weaviate collection](#configure-collection) to use a generative AI model with xAI. Weaviate will perform Retrieval Augmented Generation (RAG) using the specified model using your xAI API Key.
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the FriendliAI generative model to generate outputs.
+More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the generative model on xAI to generate outputs.
 
-![RAG integration illustration](../_includes/integration_friendliai_rag.png)
+![RAG integration illustration](../_includes/integration_xai_rag.png)
 
 ## Requirements
 
 ### Weaviate configuration
 
-Your Weaviate instance must be configured with the FriendliAI generative AI integration (`generative-friendliai`) module.
+Your Weaviate instance must be configured with the xAI generative (`generative-xai`) module.
 
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
@@ -50,20 +49,20 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 
 ### API credentials
 
-You must provide a valid Friendli Suite Token to Weaviate for this integration. Go to [Friendli Suite](https://docs.friendli.ai/openapi/create-chat-completions) to sign up and obtain a personal access token.
+You must provide a valid API key to Weaviate for this integration. Go to [xAI](https://console.x.ai/) to sign up and obtain an API key.
 
-Provide the Friendli token to Weaviate using one of the following methods:
+Provide the API key to Weaviate using one of the following methods:
 
-- Set the `FRIENDLI_TOKEN` environment variable that is available to Weaviate.
-- Provide the token at runtime, as shown in the examples below.
+- Set the `XAI_APIKEY` environment variable that is available to Weaviate.
+- Provide the API key at runtime, as shown in the examples below.
 
 <Tabs groupId="languages">
 
  <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyConnect}
-      startMarker="# START FriendliInstantiation"
-      endMarker="# END FriendliInstantiation"
+      startMarker="# START XaiInstantiation"
+      endMarker="# END XaiInstantiation"
       language="py"
     />
   </TabItem>
@@ -71,8 +70,8 @@ Provide the Friendli token to Weaviate using one of the following methods:
  <TabItem value="js" label="JS/TS API v3">
     <FilteredTextBlock
       text={TSConnect}
-      startMarker="// START FriendliInstantiation"
-      endMarker="// END FriendliInstantiation"
+      startMarker="// START XaiInstantiation"
+      endMarker="// END XaiInstantiation"
       language="ts"
     />
   </TabItem>
@@ -85,14 +84,14 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-generative-model-integration) as follows to use a FriendliAI generative AI model:
+[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-generative-model-integration) as follows to use an xAI generative AI model:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START BasicGenerativeFriendliAI"
-      endMarker="# END BasicGenerativeFriendliAI"
+      startMarker="# START BasicGenerativexAI"
+      endMarker="# END BasicGenerativexAI"
       language="py"
     />
   </TabItem>
@@ -100,8 +99,8 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
   <TabItem value="js" label="JS/TS API v3">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START BasicGenerativeFriendliAI"
-      endMarker="// END BasicGenerativeFriendliAI"
+      startMarker="// START BasicGenerativexAI"
+      endMarker="// END BasicGenerativexAI"
       language="ts"
     />
   </TabItem>
@@ -116,8 +115,8 @@ You can specify one of the [available models](#available-models) for Weaviate to
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START GenerativeFriendliAICustomModel"
-      endMarker="# END GenerativeFriendliAICustomModel"
+      startMarker="# START GenerativexAICustomModel"
+      endMarker="# END GenerativexAICustomModel"
       language="py"
     />
   </TabItem>
@@ -125,8 +124,8 @@ You can specify one of the [available models](#available-models) for Weaviate to
   <TabItem value="js" label="JS/TS API v3">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START GenerativeFriendliAICustomModel"
-      endMarker="// END GenerativeFriendliAICustomModel"
+      startMarker="// START GenerativexAICustomModel"
+      endMarker="// END GenerativexAICustomModel"
       language="ts"
     />
   </TabItem>
@@ -143,8 +142,8 @@ Configure the following generative parameters to customize the model behavior.
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START FullGenerativeFriendliAI"
-      endMarker="# END FullGenerativeFriendliAI"
+      startMarker="# START FullGenerativexAI"
+      endMarker="# END FullGenerativexAI"
       language="py"
     />
   </TabItem>
@@ -152,15 +151,15 @@ Configure the following generative parameters to customize the model behavior.
   <TabItem value="js" label="JS/TS API v3">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START FullGenerativeFriendliAI"
-      endMarker="// END FullGenerativeFriendliAI"
+      startMarker="// START FullGenerativexAI"
+      endMarker="// END FullGenerativexAI"
       language="ts"
     />
   </TabItem>
 
 </Tabs>
 
-For further details on model parameters, see the [FriendliAI API documentation](https://docs.friendli.ai/openapi/create-chat-completions).
+For further details on model parameters, see the [xAI API documentation](https://docs.x.ai/docs/guides/chat#parameters).
 
 ## Select a model at runtime
 
@@ -170,8 +169,8 @@ Aside from setting the default model provider when creating the collection, you 
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START RuntimeModelSelectionFriendliAI"
-      endMarker="# END RuntimeModelSelectionFriendliAI"
+      startMarker="# START RuntimeModelSelectionxAI"
+      endMarker="# END RuntimeModelSelectionxAI"
       language="py"
     />
   </TabItem>
@@ -184,24 +183,13 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Header parameters
-
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
-
-- `X-Friendli-Api-Key`: The Friendli API key.
-- `X-Friendli-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Friendli URL.
-
-Any additional headers provided at runtime will override the existing Weaviate configuration.
-
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
-
 ## Retrieval augmented generation
 
 After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
 
 ### Single prompt
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_friendliai_rag_single.png)
+![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_xai_rag.png)
 
 To generate text for each object in the search results, use the single prompt method.
 
@@ -233,7 +221,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 ### Grouped task
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_friendliai_rag_grouped.png)
+![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_xai_rag.png)
 
 To generate one text for the entire set of search results, use the grouped task method.
 
@@ -265,58 +253,9 @@ In other words, when you have `n` search results, the generative model generates
 
 ### Available models
 
-* `meta-llama-3.1-70b-instruct` (default)
-* `meta-llama-3.1-8b-instruct`
-* `mixtral-8x7b-instruct-v0-1`
+You can use any generative model [on xAI's API](https://docs.x.ai/docs/models) with Weaviate.
 
-You can use any model deployed on Friendli Suite with Weaviate.
-
-FriendliAI's provide a wide range of [available models](https://friendli.ai/models), which can optionally be [fine-tuned](https://docs.friendli.ai/guides/dedicated_endpoints/fine-tuning). See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
-
-If using a dedicated FriendliAI endpoint with the Weaviate integration, specify it as shown below:
-
-<Tabs groupId="languages">
-
- <TabItem value="py" label="Python API v4">
-    <FilteredTextBlock
-      text={PyConnect}
-      startMarker="# START FriendliDedicatedInstantiation"
-      endMarker="# END FriendliDedicatedInstantiation"
-      language="py"
-    />
-  </TabItem>
-
- <TabItem value="js" label="JS/TS API v3">
-    <FilteredTextBlock
-      text={TSConnect}
-      startMarker="// START FriendliDedicatedInstantiation"
-      endMarker="// END FriendliDedicatedInstantiation"
-      language="ts"
-    />
-  </TabItem>
-
-</Tabs>
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START DedicatedGenerativeFriendliAI"
-      endMarker="# END DedicatedGenerativeFriendliAI"
-      language="py"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS API v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START DedicatedGenerativeFriendliAI"
-      endMarker="// END DedicatedGenerativeFriendliAI"
-      language="ts"
-    />
-  </TabItem>
-
-</Tabs>
+The default model is `grok-2-latest`.
 
 ## Further resources
 
@@ -329,7 +268,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### References
 
-- [FriendliAI API documentation](https://docs.friendli.ai/openapi/create-chat-completions)
+- [xAI API Documentation](https://docs.x.ai/docs/introduction)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

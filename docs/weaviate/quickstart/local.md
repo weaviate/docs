@@ -184,7 +184,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Prefer a different model provider?</h4>
       </div>
       <div class="card__body">
-        See <a href="#can-i-use-different-integrations">this section</a> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
+        See <Link to="#can-i-use-different-integrations">this section</Link> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
       </div>
     </div>
   </div>
@@ -194,7 +194,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Want to specify object vectors?</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <a href="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</a>.
+        If you prefer to add vectors yourself along with the object data, see <Link to="/developers/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
       </div>
     </div>
   </div>
