@@ -393,7 +393,7 @@ const siteRedirects = {
 
     // moved Quickstart installation to Quickstart
     {
-      to: "/docs/weaviate/quickstart/",
+      to: "/docs/weaviate/quickstart",
       from: "/docs/weaviate/quickstart/installation",
     },
 
@@ -513,6 +513,10 @@ const siteRedirects = {
       to: "/docs/integrations/llm-agent-frameworks/semantic-kernel",
       from: "/docs/integrations/llm-frameworks/semantic-kernel",
     },
+    {
+      to: "/docs/integrations/data-platforms/confluent",
+      from: "/docs/integrations/data-platforms/confluent-cloud",
+    },
 
     // Restructured starter guides
     {
@@ -520,13 +524,17 @@ const siteRedirects = {
       from: "/docs/weaviate/starter-guides/schema",
     },
 
-    // Redirects for Weaviate Database error messages
-    //{
-    //  to: "/docs/weaviate/starter-guides/schema/collections-scaling-limits",
-    //  from: "/collections-count-limit",
-    //},
+    // Redirects for Weaviate Core error messages
+    {
+      to: "/docs/weaviate/starter-guides/managing-collections/collections-scaling-limits",
+      from: "/collections-count-limit",
+    },
 
-    // Docs migration redirects
+    // Redirects for dynamic user support
+    {
+      to: "/docs/weaviate/configuration/rbac/manage-roles",
+      from: "/docs/weaviate/configuration/rbac/manage-roles-users",
+    },
   ],
   createRedirects(existingPath) {
     if (existingPath.includes("/weaviate/api/graphql")) {
@@ -603,9 +611,7 @@ const siteRedirects = {
 
     // Any remaining weaviate docs redirects
     if (existingPath.includes("/docs/weaviate")) {
-      return [
-        existingPath.replace("/docs/weaviate", "/docs/weaviate/current"),
-      ];
+      return [existingPath.replace("/docs/weaviate", "/docs/weaviate/current")];
     }
 
     // Contributor Guide redirects

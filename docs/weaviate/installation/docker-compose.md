@@ -151,7 +151,7 @@ import DocsConfigGen from '@site/src/components/DockerConfigGen';
 You can use environment variables to control your Weaviate setup, authentication and authorization, module settings, and data storage settings.
 
 :::info List of environment variables
-A comprehensive of list environment variables [can be found on this page](../config-refs/env-vars.md).
+A comprehensive of list environment variables [can be found on this page](../config-refs/env-vars/index.md).
 :::
 
 ## Example configurations
