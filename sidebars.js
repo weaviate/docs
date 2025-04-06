@@ -427,6 +427,7 @@ const sidebars = {
         "deploy/installation-guides/docker-installation",
         "deploy/installation-guides/gcp-installation",
         "deploy/installation-guides/aws-installation",
+        "deploy/installation-guides/aws-cli",
       ],
     },
     {
