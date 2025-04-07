@@ -1,5 +1,5 @@
 ---
-title: Kubernetes
+title: Installing Kubernetes
 sidebar_position: 3
 image: og/docs/installation.jpg
 # tags: ['installation', 'Kubernetes']
@@ -9,7 +9,11 @@ image: og/docs/installation.jpg
 For a tutorial on how to use [minikube](https://minikube.sigs.k8s.io/docs/) to deploy Weaviate on Kubernetes, see the Weaviate Academy course, [Weaviate on Kubernetes](../../academy/deployment/k8s/index.md).
 :::
 
-## Requirements
+:::info Deploying to Production
+If looking for details and best practices for deploying Weaviate in production, see [Weaviate in Production](docs/deploy/production/Kubernetes/k8s-poc.md)
+:::
+
+## Prerequisites
 
 * A recent Kubernetes Cluster (at least version 1.23). If you are in a development environment, consider using the kubernetes cluster that is built into Docker desktop. For more information, see the [Docker documentation](https://docs.docker.com/desktop/kubernetes/).
 * The cluster needs to be able to provision `PersistentVolumes` using Kubernetes' `PersistentVolumeClaims`.
@@ -66,12 +70,11 @@ Local models, such as `text2vec-transformers`, `qna-transformers`, and  `img2vec
 
 #### Resource limits
 
-Starting in Helm chart version 17.0.1, constraints on module resources are commented out to improve performance. To constrain resources for specific modules, add the constraints in your `values.yaml` file.
+In an effort to improve performance, constraints on module resources are commented out. To constrain resources for specific modules, add the constraints in your `values.yaml` file.
 
 #### gRPC service configuration
 
-Starting in Helm chart version 17.0.0, the gRPC service is enabled by default. If you use an older Helm chart, edit your `values.yaml` file to enable gRPC.
-
+gRPC service is enabled by default. If using an older Helm chart, edit your `values.yaml` file to enable gRPC.
 Check that the `enabled` field is set to `true` and the `type` field to `LoadBalancer`. These settings allow you to access the [gRPC API](https://weaviate.io/blog/grpc-performance-improvements) from outside the Kubernetes cluster.
 
 ```yaml
@@ -87,7 +90,7 @@ grpcService:
 
 #### Authentication and authorization
 
-An example configuration for authentication is shown below.
+An example configuration for authentication is shown below:
 
 ```yaml
 authentication:
@@ -167,24 +170,19 @@ To upgrade to `1.25` or higher from a pre-`1.25` version, you must delete the de
 
 See the [1.25 migration guide for Kubernetes](../more-resources/migration/weaviate-1-25.md) for more details.
 
-## Additional Configuration Help
-
-- [Cannot list resource "configmaps" in API group when deploying Weaviate k8s setup on GCP](https://stackoverflow.com/questions/58501558/cannot-list-resource-configmaps-in-api-group-when-deploying-weaviate-k8s-setup)
-- [Error: UPGRADE FAILED: configmaps is forbidden](https://stackoverflow.com/questions/58501558/cannot-list-resource-configmaps-in-api-group-when-deploying-weaviate-k8s-setup)
-
 ### Using EFS with Weaviate
 
 In some circumstances, you may wish, or need, to use EFS (Amazon Elastic File System) with Weaviate. And we note in the case of AWS Fargate, you must create the [PV (persistent volume)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) manually, as the PVC will NOT create a PV for you.
 
 To use EFS with Weaviate, you need to:
 
-- Create an EFS file system.
-- Create an EFS access point for every Weaviate replica.
-    - All of the Access Points must have a different root-directory so that Pods do not share the data, otherwise it will fail.
-- Create EFS mount targets for each subnet of the VPC where Weaviate is deployed.
-- Create StorageClass in Kubernetes using EFS.
-- Create Weaviate Volumes, where each volume has a different AccessPoint for VolumeHandle(as mentioned above).
-- Deploy Weaviate.
+1. Create an EFS file system.
+1. Create an EFS access point for every Weaviate replica.
+    1. All of the Access Points must have a different root-directory so that Pods do not share the data, otherwise it will fail.
+1. Create EFS mount targets for each subnet of the VPC where Weaviate is deployed.
+1. Create StorageClass in Kubernetes using EFS.
+1. Create Weaviate Volumes, where each volume has a different AccessPoint for VolumeHandle(as mentioned above).
+1. Deploy Weaviate.
 
 This code is an example of a PV for `weaviate-0` Pod:
 
@@ -212,7 +210,14 @@ spec:
 For more, general information on running EFS with Fargate, we recommend reading [this AWS blog](https://aws.amazon.com/blogs/containers/running-stateful-workloads-with-amazon-eks-on-aws-fargate-using-amazon-efs/).
 
 ### Using Azure file CSI with Weaviate
-The provisioner `file.csi.azure.com` is **not supported** and will lead to file corruptions. Instead, make sure the storage class defined in values.yaml is from provisioner `disk.csi.azure.com`, for example:
+
+:::danger Important
+
+The provisioner `file.csi.azure.com` is **not supported** and will lead to file corruptions.
+
+:::
+
+Instead, make sure the storage class defined in values.yaml is from provisioner `disk.csi.azure.com`, for example:
 
 ```yaml
 storage:
@@ -246,6 +251,12 @@ In some systems, the cluster hostname may change over time. This is known to cre
 env:
   - CLUSTER_HOSTNAME: "node-1"
 ```
+
+## Additional Configuration Help
+
+- [Cannot list resource "configmaps" in API group when deploying Weaviate k8s setup on GCP](https://stackoverflow.com/questions/58501558/cannot-list-resource-configmaps-in-api-group-when-deploying-weaviate-k8s-setup)
+
+- [Error: UPGRADE FAILED: configmaps is forbidden](https://stackoverflow.com/questions/58501558/cannot-list-resource-configmaps-in-api-group-when-deploying-weaviate-k8s-setup)
 
 ## Questions and feedback
 
