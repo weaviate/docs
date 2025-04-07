@@ -112,6 +112,7 @@ const sidebars = {
         "weaviate/connections/connect-query",
       ],
     },
+    "weaviate/best-practices",
   ],
   modelProvidersSidebar: [
     {
@@ -172,7 +173,8 @@ const sidebars = {
           collapsed: true,
           items: [
             "weaviate/configuration/rbac/configuration",
-            "weaviate/configuration/rbac/manage-roles-users",
+            "weaviate/configuration/rbac/manage-roles",
+            "weaviate/configuration/rbac/manage-users",
           ],
         },
         "weaviate/configuration/persistence",
@@ -369,7 +371,19 @@ const sidebars = {
         },
         "weaviate/config-refs/datatypes",
         "weaviate/config-refs/distances",
-        "weaviate/config-refs/env-vars",
+        {
+          type: "category",
+          label: "Environment variables",
+          link: {
+            type: "doc",
+            id: "weaviate/config-refs/env-vars/index",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            "weaviate/config-refs/env-vars/runtime-config",
+          ],
+        },
         "weaviate/config-refs/status",
         "weaviate/config-refs/telemetry",
         "weaviate/config-refs/meta",
