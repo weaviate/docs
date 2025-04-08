@@ -1,12 +1,15 @@
 // src/components/DirectoryCards.js
 import React from 'react';
-import { useLocation } from '@docusaurus/router';
 import { useActivePlugin, useAllDocsData } from '@docusaurus/plugin-content-docs/client';
+import { useLocation } from '@docusaurus/router';
 import CardsSection from "/src/components/CardsSection";
 
-export default function DirectoryCards() {
+export default function DirectoryCards({ path }) {
   const location = useLocation();
   const currentPath = location.pathname;
+  
+  // Use provided path or current path as fallback
+  const directoryPath = path || currentPath;
   
   // Get the active docs plugin
   const activePlugin = useActivePlugin();
@@ -32,50 +35,79 @@ export default function DirectoryCards() {
   // Get all docs from the current version
   const allDocs = docsData.versions[currentVersion]?.docs || {};
   
-  // CORRECTED: Since index.mdx is at /docs/weaviate/recipes/, we should look for
-  // siblings that are directly in this directory, not in the parent
-  
-  // Find all docs that are direct children of the current directory
-  const siblingDocs = Object.values(allDocs).filter(doc => {
+  // Find all docs that are direct children of the specified directory
+  const directoryDocs = Object.values(allDocs).filter(doc => {
     // Skip if there's no path
     if (!doc?.path) return false;
     
     // Skip the current page itself
     if (doc.path === currentPath) return false;
     
-    // Check if this is in the same directory
-    // For a page at /docs/weaviate/recipes, we want pages like:
-    // /docs/weaviate/recipes/page1, /docs/weaviate/recipes/page2, etc.
-    return doc.path.startsWith(currentPath.endsWith('/') ? currentPath : currentPath + '/');
+    // Skip the directory index page itself
+    if (doc.path === directoryPath) return false;
+    
+    // Check if this is a direct child of the specified directory path
+    const normalizedDirPath = directoryPath.endsWith('/') ? directoryPath : directoryPath + '/';
+    
+    // A direct child starts with the directory path and doesn't have additional slashes
+    if (!doc.path.startsWith(normalizedDirPath)) return false;
+    
+    const remainingPath = doc.path.substring(normalizedDirPath.length);
+    return !remainingPath.includes('/');
   });
   
+  // Function to extract title from frontmatter or metadata
+  function extractTitle(doc) {
+    // Check for frontmatter title first (explore all possible locations)
+    if (doc.frontMatter && doc.frontMatter.title) {
+      return doc.frontMatter.title;
+    }
+    
+    // Try to find title in metadata (Docusaurus 2.0+ style)
+    if (doc.title) {
+      return doc.title;
+    }
+    
+    // Try other possible locations for the title
+    if (doc.metadata && doc.metadata.title) {
+      return doc.metadata.title;
+    }
+    
+    // If we have source available, try to extract title from there
+    if (doc.source) {
+      const frontmatterMatch = doc.source.match(/---[\s\S]*?title:\s*["']?(.*?)["']?[\s\n][\s\S]*?---/);
+      if (frontmatterMatch && frontmatterMatch[1]) {
+        return frontmatterMatch[1];
+      }
+    }
+    
+    // Last resort: use path
+    const pathParts = doc.path.split('/');
+    const lastPart = pathParts[pathParts.length - 1];
+    
+    // Convert slug to title case
+    return lastPart
+      .replace(/-/g, ' ')
+      .replace(/_/g, ' ') // Also replace underscores with spaces
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+  
   // Map docs to the format expected by CardsSection
-  const cardsData = siblingDocs.map(doc => ({
-    title: doc.title || 'Unnamed Document',
-    description: doc.description || " ",
-    link: doc.path,
-  }));
+  const cardsData = directoryDocs.map(doc => {
+    // Show detailed document structure in console for debugging
+    console.log('Document structure:', JSON.stringify(doc, null, 2));
+    
+    return {
+      title: extractTitle(doc),
+      description: doc.description || doc.frontMatter?.description || " ",
+      link: doc.path,
+    };
+  });
   
   return (
     <div>
-      <details>
-        <summary>Debug Information (click to expand)</summary>
-        <div style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: '12px', border: '1px solid #ccc', padding: '10px', margin: '10px 0', backgroundColor: '#f5f5f5' }}>
-          <p>Current Path: {currentPath}</p>
-          <p>Active Plugin: {activePlugin?.pluginId}</p>
-          <p>Versions Available: {versions.length}</p>
-          <p>Current Version: {currentVersion}</p>
-          <p>Total Docs: {Object.keys(allDocs).length}</p>
-          <p>Sibling Docs Found: {siblingDocs.length}</p>
-          <p>Sibling Docs: {JSON.stringify(siblingDocs.map(doc => ({
-            title: doc.title,
-            path: doc.path
-          })), null, 2)}</p>
-        </div>
-      </details>
-      
       {cardsData.length === 0 ? (
-        <p>No other documents found in this section.</p>
+        <p>No documents found in directory: {directoryPath}</p>
       ) : (
         <>
           <br />
