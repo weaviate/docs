@@ -34,7 +34,9 @@ export default function DirectoryCards({ path }) {
   
   // Get all docs from the current version
   const allDocs = docsData.versions[currentVersion]?.docs || {};
-  
+  console.log(docsData.versions[currentVersion])
+  console.log('Full structure of allDocs:', JSON.stringify(allDocs, null, 2)); 
+
   // Find all docs that are direct children of the specified directory
   const directoryDocs = Object.values(allDocs).filter(doc => {
     // Skip if there's no path

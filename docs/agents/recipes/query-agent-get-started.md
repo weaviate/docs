@@ -218,6 +218,8 @@ response = agent.run("I like the vintage clothes, can you list me some options t
 print_query_agent_response(response)
 ```
 
+
+
 ### Changing the System Prompt
 
 In some cases, you may want to define a custom `system_prompt` for your agent. This can help you provide the agent with some default instructions as to how to behave. For example, let's create an agent that will always answer the query in the users language.

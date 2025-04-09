@@ -69,7 +69,7 @@ client = weaviate.connect_to_weaviate_cloud(
     cluster_url=WCD_CLUSTER_URL,
     auth_credentials=Auth.api_key(WCD_CLUSTER_KEY),
 
-    headers={
+    headers=\{
         "X-OpenAI-Api-Key": OPENAI_API_KEY,
     }
 )
@@ -136,7 +136,7 @@ collection = client.collections.get("JeopardyQuestion")
 # Insert data objects with batch import
 with collection.batch.dynamic() as batch:
     for _, row in df.iterrows():
-        properties = {
+        properties = \{
             "question": row['Question'],
             "answer": row['Answer'],
             "category": row["Category"],
@@ -146,7 +146,7 @@ with collection.batch.dynamic() as batch:
 
 failed_objects = collection.batch.failed_objects
 if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
+    print(f"Number of failed imports: \{len(failed_objects)}")
 else:
     print("Insert complete.")
 ```
@@ -284,7 +284,7 @@ response = collection.generate.hybrid(
     limit=2
 )
 
-print(f"Generated output: {response.generated}") 
+print(f"Generated output: \{response.generated}") 
 ```
 
     Generated output: People thought these animals were unicorn-like for a few reasons:

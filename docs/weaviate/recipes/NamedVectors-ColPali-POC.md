@@ -32,19 +32,22 @@ We will test this with 3 PDFs:
 !pip install peft==0.12.0 > /dev/null
 ```
 
+
 ```python
 !sudo apt-get update > /dev/null
 !sudo apt-get install poppler-utils > /dev/null
 ```
 
-W: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu jammy InRelease' does not seem to provide it (sources.list entry misspelt?)
-debconf: unable to initialize frontend: Dialog
-debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78, &lt;> line 1.)
-debconf: falling back to frontend: Readline
-debconf: unable to initialize frontend: Readline
-debconf: (This frontend requires a controlling tty.)
-debconf: falling back to frontend: Teletype
-dpkg-preconfigure: unable to re-open stdin: 
+    W: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu jammy InRelease' does not seem to provide it (sources.list entry misspelt?)
+    debconf: unable to initialize frontend: Dialog
+    debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 78, &lt;> line 1.)
+    debconf: falling back to frontend: Readline
+    debconf: unable to initialize frontend: Readline
+    debconf: (This frontend requires a controlling tty.)
+    debconf: falling back to frontend: Teletype
+    dpkg-preconfigure: unable to re-open stdin: 
+
+
 
 ```python
 !huggingface-cli login
@@ -534,7 +537,7 @@ def embed_query_with_colpali(query, model, processor):
     query_vectors = {}
     num_tokens = query_embedding.shape[1]
     for idx in range(num_patches):
-        # Use modulo to cycle through token embeddings if num_tokens < num_patches
+        # Use modulo to cycle through token embeddings if num_tokens &lt; num_patches
         token_idx = idx % num_tokens
         query_vectors[f"patch_{idx}"] = query_embedding[0, token_idx].cpu().numpy().tolist()
 

@@ -172,19 +172,19 @@ start_time = time.time()
 with blogs_collection.batch.dynamic() as batch:
     for i, blog_chunk in enumerate(blog_chunks):
         batch.add_object(
-            properties={
+            properties=\{
                 "content": blog_chunk
             },
         )
         
         if (i + 1) % 500 == 0:
             elapsed_time = time.time() - start_time
-            print(f"Inserted {i + 1} blog chunks... (Time elapsed: {elapsed_time:.2f} seconds)")
+            print(f"Inserted \{i + 1} blog chunks... (Time elapsed: \{elapsed_time:.2f} seconds)")
 
 failed_objects = blogs_collection.batch.failed_objects
 if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
-    print(f"First failed object: {failed_objects[0]}")
+    print(f"Number of failed imports: \{len(failed_objects)}")
+    print(f"First failed object: \{failed_objects[0]}")
 ```
 
     Inserted 500 blog chunks... (Time elapsed: 2.26 seconds)
@@ -207,7 +207,7 @@ for object in failed_objects:
         
         # Insert the object with proper error handling
         blogs_collection.data.insert(
-            properties={
+            properties=\{
                 "content": properties["content"]  # Use "content" instead of "input_persona"
             }
         )
@@ -217,14 +217,14 @@ for object in failed_objects:
         time.sleep(0.1)
         
     except Exception as e:
-        print(f"Error uploading object: {e}")
+        print(f"Error uploading object: \{e}")
         error_count += 1
         
     # Print progress every 50 objects
     if (success_count + error_count) % 50 == 0:
-        print(f"Progress: {success_count + error_count}/{len(failed_objects)} objects processed")
+        print(f"Progress: \{success_count + error_count}/\{len(failed_objects)} objects processed")
 
-print(f"Retry complete. Successfully uploaded {success_count} previously failed objects. {error_count} objects still failed.")
+print(f"Retry complete. Successfully uploaded \{success_count} previously failed objects. \{error_count} objects still failed.")
 ```
 
     Attempting to retry failed objects...
@@ -264,9 +264,8 @@ for operation in response:  # The response is a list of TransformationResponse o
     print(agent.get_status(workflow_id=operation.workflow_id))  # Use the workflow_id to check the status of each operation
 ```
 
-```
-    {'workflow_id': 'TransformationWorkflow-e979d5f69b91575e7289ab61d559cafa', 'status': {'batch_count': 0, 'end_time': None, 'start_time': '2025-03-12 01:21:58', 'state': 'running', 'total_duration': None, 'total_items': 0}}
-```
+    \Æ'workflow_id': 'TransformationWorkflow-e979d5f69b91575e7289ab61d559cafa', 'status': \{'batch_count': 0, 'end_time': None, 'start_time': '2025-03-12 01:21:58', 'state': 'running', 'total_duration': None, 'total_items': 0}}
+
 
 
 ```python
@@ -275,15 +274,15 @@ agent.get_status(workflow_id=response[0].workflow_id)
 
 
 
-```
-    {'workflow_id': 'TransformationWorkflow-e979d5f69b91575e7289ab61d559cafa',
-     'status': {'batch_count': 9,
+
+    \{'workflow_id': 'TransformationWorkflow-e979d5f69b91575e7289ab61d559cafa',
+     'status': \{'batch_count': 9,
       'end_time': '2025-03-12 01:23:01',
       'start_time': '2025-03-12 01:21:58',
       'state': 'completed',
       'total_duration': 63.097952,
       'total_items': 2160}}
-```
+
 
 
 
@@ -315,11 +314,11 @@ results = blogs_collection.query.hybrid(
 ).objects
 
 for i, result in enumerate(results, 1):
-    print(f"\033[37mExample #{i}\033[0m")
+    print(f"\033[37mExample #\{i}\033[0m")
     print("\033[36mBlog Content:\033[0m\n")
-    print(f"\033[36m{result.properties['content']}\033[0m")
+    print(f"\033[36m\{result.properties['content']}\033[0m")
     print("\033[32mPredicted User Query:\033[0m\n")
-    print(f"\033[32m{result.properties['predicted_user_query']}\033[0m")
+    print(f"\033[32m\{result.properties['predicted_user_query']}\033[0m")
     print()
 ```
 
@@ -402,7 +401,8 @@ for i, result in enumerate(results, 1):
     [36mBlog Content:[0m
     
     [36mWhether you're building applications that require semantic search, complex aggregations, or both, the Query Agent simplifies the development process while providing the flexibility to customize its behavior through system prompts. As we continue to develop and enhance this feature, we look forward to seeing how our community will leverage it to build even more powerful AI-driven applications. Ready to get started? Check out our [recipe](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/query-agent-get-started.ipynb), join the discussion in our forum, and start building with the Weaviate Query Agent today!
- 
+    
+
     [32mPredicted User Query:[0m
     
     [32mHow can I customize the behavior of the Query Agent through system prompts?[0m
@@ -470,11 +470,11 @@ for item in blogs_collection.iterator():
         current_recall_at_5_arctic_1_5 = sum(recall_at_5_arctic_1_5) / len(recall_at_5_arctic_1_5)
         current_recall_at_5_arctic_2_0 = sum(recall_at_5_arctic_2_0) / len(recall_at_5_arctic_2_0)
         
-        print(f"Processed {total_items} items...")
-        print(f"  Current Arctic 1.5 - Recall@1: {current_recall_at_1_arctic_1_5:.4f}, Recall@5: {current_recall_at_5_arctic_1_5:.4f}")
-        print(f"  Current Arctic 2.0 - Recall@1: {current_recall_at_1_arctic_2_0:.4f}, Recall@5: {current_recall_at_5_arctic_2_0:.4f}")
+        print(f"Processed \{total_items} items...")
+        print(f"  Current Arctic 1.5 - Recall@1: \{current_recall_at_1_arctic_1_5:.4f}, Recall@5: \{current_recall_at_5_arctic_1_5:.4f}")
+        print(f"  Current Arctic 2.0 - Recall@1: \{current_recall_at_1_arctic_2_0:.4f}, Recall@5: \{current_recall_at_5_arctic_2_0:.4f}")
 
-print(f"Evaluation complete! Processed {total_items} total items.")
+print(f"Evaluation complete! Processed \{total_items} total items.")
 
 # Calculate average recall metrics
 avg_recall_at_1_arctic_1_5 = sum(recall_at_1_arctic_1_5) / len(recall_at_1_arctic_1_5) if recall_at_1_arctic_1_5 else 0
@@ -488,8 +488,8 @@ avg_recall_at_100_arctic_2_0 = sum(recall_at_100_arctic_2_0) / len(recall_at_100
 
 # Print final results
 print(f"FINAL RESULTS:")
-print(f"Arctic 1.5 - Recall@1: {avg_recall_at_1_arctic_1_5:.4f}, Recall@5: {avg_recall_at_5_arctic_1_5:.4f}, Recall@100: {avg_recall_at_100_arctic_1_5:.4f}")
-print(f"Arctic 2.0 - Recall@1: {avg_recall_at_1_arctic_2_0:.4f}, Recall@5: {avg_recall_at_5_arctic_2_0:.4f}, Recall@100: {avg_recall_at_100_arctic_2_0:.4f}")
+print(f"Arctic 1.5 - Recall@1: \{avg_recall_at_1_arctic_1_5:.4f}, Recall@5: \{avg_recall_at_5_arctic_1_5:.4f}, Recall@100: \{avg_recall_at_100_arctic_1_5:.4f}")
+print(f"Arctic 2.0 - Recall@1: \{avg_recall_at_1_arctic_2_0:.4f}, Recall@5: \{avg_recall_at_5_arctic_2_0:.4f}, Recall@100: \{avg_recall_at_100_arctic_2_0:.4f}")
 
 ```
 
