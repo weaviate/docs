@@ -15,6 +15,7 @@
   padding: 25px;
   text-decoration: none;
   color: var(--ifm-navbar-link-color);
+  position: relative; // Added for absolute positioning of tags
 
   /* Fixed dimensions */
   width: 25.5625rem;
@@ -41,6 +42,44 @@
 .smallCards {
   .card {
     padding: 10px 25px 5px 25px;
+  }
+}
+
+// Recipe cards specific styles
+.recipeCards {
+  .card {
+    padding-bottom: 45px; // Add more padding at the bottom for tags
+  }
+
+  .cardTags {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .tag {
+    background-color: var(--site-primary-dark);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+}
+
+// Special header for recipe cards - aligns title properly
+.recipeCardHeader {
+  justify-content: flex-start;
+
+  .cardTitle {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
   }
 }
 

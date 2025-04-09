@@ -75,7 +75,11 @@ const secondaryNavbarItems = {
     link: "/docs/agents",
     links: [
       { label: "Get Started", link: "/docs/agents", sidebar: "agentsSidebar" },
-      { label: "Recipes", link: "/docs/agents/recipes", sidebar: "agentsRecipesSidebar" },
+      {
+        label: "Recipes",
+        link: "/docs/agents/recipes",
+        sidebar: "agentsRecipesSidebar",
+      },
     ],
   },
   cloud: {
@@ -122,6 +126,11 @@ const secondaryNavbarItems = {
         label: "Get Started",
         link: "/docs/integrations",
         sidebar: "integrationsSidebar",
+      },
+      {
+        label: "Recipes",
+        link: "/docs/integrations/recipes",
+        sidebar: "integrationsRecipesSidebar",
       },
     ],
   },

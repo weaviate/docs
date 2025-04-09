@@ -1,6 +1,6 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main//weaviate-features/multi-vector/NamedVectors-ColPali-POC.ipynb
+colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/multi-vector/NamedVectors-ColPali-POC.ipynb
 toc: True
 title: "How to use ColPali with Weaviate's Named Vectors"
 featured: False
@@ -10,6 +10,7 @@ tags: ['ColPali', 'Named Vectors']
 ---
     
 
+# How to use ColPali with Weaviate's Named Vectors!
 
 **Please note: The multi-vector feature was added to Weaviate `1.29`. Test out the feature in [this notebook](weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb).**
 
