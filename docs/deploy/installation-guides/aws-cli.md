@@ -24,15 +24,23 @@ eksctl version
 ### Step 1: Create the Cluster
 
 ```bash
-eksctl create cluster --name <your-cluster-name-here> --region <your-region-here> --nodegroup-name <nodegroup-name-here> --nodes 3 --nodes-min 2 --nodes-max 4 --node-type t3.medium
+eksctl create cluster 
+--name <your-cluster-name-here>
+--region <your-region-here>
+--nodegroup-name <nodegroup-name-here>
+--nodes 3 --nodes-min 2 --nodes-max 4
+--node-type t3.medium
 ```
 
-This creates an EKS cluster within your speciifed region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand. 
+This creates an EKS cluster within your specified region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand. 
 
 #### Enable `kubectl` to interact with the newly created cluster:
 
 ```bash
-aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
+aws eks 
+--region <your-region> 
+update-kubeconfig 
+--name <your-cluster-name>
 ```
 
 #### Verify that the node has been created and that you are able to interact with the cluster:
@@ -46,7 +54,10 @@ kubectl get nodes
 Peristent storage is required for running Weaviate on a Kubernetes cluster, it ensures that data is retained should a pod restart, a node crashes, or a cluster scales up or down. 
 
 ```bash
-eksctl create addon --name aws-ebs-csi-driver --cluster <your-cluster-name> --region <your-region> --service-account-role-arn <arn:aws:iam::<your-account-id>:role/AmazonEKS_EBS_CSI_DriverRole>
+eksctl create addon 
+--name aws-ebs-csi-driver 
+--cluster <your-cluster-name> 
+--region <your-region> --service-account-role-arn <arn:aws:iam::<your-account-id>:role/AmazonEKS_EBS_CSI_DriverRole>
 ```
 
 The above adds the EBS CSI Driver add-on for your cluster. After adding the add-on, a storage class and `PersistentValueClaim` is needed to enable persistent storage. 

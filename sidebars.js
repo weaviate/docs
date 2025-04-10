@@ -442,7 +442,6 @@ const sidebars = {
         "deploy/installation-guides/gcp-installation",
         "deploy/installation-guides/aws-installation",
         "deploy/installation-guides/aws-cli",
-        "deploy/installation-guides/aws-cli",
         "deploy/installation-guides/helm-installation",
       ],
     },
