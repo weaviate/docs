@@ -1,66 +1,53 @@
 // src/components/RecipesCards/index.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useLocation } from "@docusaurus/router";
 import CardsSection from "/src/components/CardsSection";
+import styles from "./styles.module.css"; // Import CSS Modules for styling
 
-// Function to parse TOML data
+// --- Helper Functions (parseToml, extractPathCategory - Keep as they are) ---
+// Function to parse TOML data (simplified)
 function parseToml(tomlString) {
   try {
-    // This is a simplified TOML parser focused on our specific use case
     const config = {};
     const recipes = [];
-
-    // Extract recipe blocks
     const recipeBlocks =
       tomlString.match(/\[\[recipe\]\]([\s\S]*?)(?=\[\[recipe\]\]|$)/g) || [];
-
-    // Extract config section
     const configMatch = tomlString.match(
       /\[config\]([\s\S]*?)(?=\[\[recipe\]\]|$)/
     );
+
     if (configMatch) {
       const configLines = configMatch[1].trim().split("\n");
       configLines.forEach((line) => {
         if (line.trim() && line.includes("=")) {
           const [key, value] = line.split("=").map((part) => part.trim());
-          // Remove quotes if present
           config[key] = value.replace(/^["'](.*)["']$/, "$1");
         }
       });
     }
 
-    // Process each recipe block
     recipeBlocks.forEach((block) => {
       const recipe = {};
       const lines = block.trim().split("\n");
-
       lines.forEach((line) => {
         if (line.trim() && !line.includes("[[recipe]]") && line.includes("=")) {
           const [key, rawValue] = line.split("=").map((part) => part.trim());
-
-          // Handle arrays (like tags)
           if (rawValue.startsWith("[") && rawValue.endsWith("]")) {
             const items = rawValue.slice(1, -1).split(",");
-            recipe[key] = items.map((item) =>
-              item.trim().replace(/^["'](.*)["']$/, "$1")
-            );
-          }
-          // Handle booleans
-          else if (rawValue === "true" || rawValue === "false") {
+            recipe[key] = items
+              .map((item) => item.trim().replace(/^["'](.*)["']$/, "$1"))
+              .filter((tag) => tag); // Ensure tags are not empty strings
+          } else if (rawValue === "true" || rawValue === "false") {
             recipe[key] = rawValue === "true";
-          }
-          // Handle strings
-          else {
+          } else {
             recipe[key] = rawValue.replace(/^["'](.*)["']$/, "$1");
           }
         }
       });
-
       if (Object.keys(recipe).length > 0) {
         recipes.push(recipe);
       }
     });
-
     return { config, recipes };
   } catch (error) {
     console.error("Error parsing TOML:", error);
@@ -70,38 +57,35 @@ function parseToml(tomlString) {
 
 // Function to extract key segments from path
 function extractPathCategory(path) {
-  // Remove /docs/ prefix if present
   const cleanPath = path.replace(/^\/docs\//, "");
-  // Get first segment
   const segments = cleanPath.split("/");
   return segments[0];
 }
 
+// --- Main Component ---
+
 export default function RecipesCards({ path }) {
   const location = useLocation();
   const currentPath = location.pathname;
-  const [cardsData, setCardsData] = useState([]);
+  const [allCardsData, setAllCardsData] = useState([]); // Stores ALL cards for the category
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [allTags, setAllTags] = useState([]); // Stores all unique tags
+  const [selectedTags, setSelectedTags] = useState(new Set()); // Stores selected tags, START EMPTY
 
-  // Use provided path or current path as fallback
   const directoryPath = path || currentPath;
-
-  // Extract path category for filtering
   const pathCategory = extractPathCategory(directoryPath);
 
   useEffect(() => {
     async function loadIndexToml() {
       try {
         setLoading(true);
-
-        // The index.toml file is in static/docs/
+        setError(null);
         const indexPath = "/docs/index.toml";
 
         console.log("Attempting to fetch index.toml from:", indexPath);
         console.log("Current path category for filtering:", pathCategory);
 
-        // Fetch the index.toml file
         const response = await fetch(indexPath);
         console.log("Fetch response status:", response.status);
 
@@ -112,38 +96,24 @@ export default function RecipesCards({ path }) {
         }
 
         const tomlContent = await response.text();
-        console.log(
-          "TOML content first 100 chars:",
-          tomlContent.substring(0, 100)
-        );
-
         const { config, recipes } = parseToml(tomlContent);
         console.log("Parsed config:", config);
         console.log("Found recipes:", recipes.length);
 
-        // Filter recipes based on the provided path category
-        // This allows us to use a single index.toml file for all directories
         const filteredRecipes = recipes.filter((recipe) => {
           if (!recipe.notebook) return false;
-
-          // Get recipe category based on properties
           let recipeCategory;
-          if (recipe.agent === true) {
-            recipeCategory = "agents";
-          } else if (recipe.integration === true) {
-            recipeCategory = "integrations";
-          } else {
-            recipeCategory = "weaviate";
-          }
+          if (recipe.agent === true) recipeCategory = "agents";
+          else if (recipe.integration === true) recipeCategory = "integrations";
+          else recipeCategory = "weaviate"; // Default or base category
 
-          console.log(
-            `Recipe "${recipe.title}" category: ${recipeCategory}, current path category: ${pathCategory}`
-          );
+          const normalizedPathCategory = pathCategory.replace(/\/$/, "");
 
-          // Match recipe category with current path category
+          // Match recipe category with current path category (allow for plurals like 'agent' vs 'agents')
           return (
-            pathCategory === recipeCategory ||
-            pathCategory === recipeCategory.replace("-", "")
+            normalizedPathCategory === recipeCategory ||
+            normalizedPathCategory === recipeCategory.replace(/s$/, "") || // Handle singular vs plural
+            `${normalizedPathCategory}s` === recipeCategory
           );
         });
 
@@ -151,21 +121,18 @@ export default function RecipesCards({ path }) {
           `Filtered to ${filteredRecipes.length} recipes for category ${pathCategory}`
         );
 
-        // Map recipes to card format
+        const uniqueTags = new Set();
         const cards = filteredRecipes.map((recipe) => {
-          // Get notebook path and create appropriate link
           const notebookPath = recipe.notebook;
-
-          // Extract the notebook name without extension to create a path
           const notebookName = notebookPath
             .split("/")
             .pop()
             .replace(".ipynb", "");
+          const link = `${directoryPath.replace(/\/$/, "")}/${notebookName}`; // Ensure single slash
 
-          // Create link to the doc page based on the notebook path
-          const link = `${directoryPath}${
-            directoryPath.endsWith("/") ? "" : "/"
-          }${notebookName}`;
+          (recipe.tags || []).forEach((tag) => {
+            if (tag) uniqueTags.add(tag);
+          });
 
           return {
             title: recipe.title,
@@ -178,10 +145,17 @@ export default function RecipesCards({ path }) {
           };
         });
 
-        setCardsData(cards);
+        const sortedTags = Array.from(uniqueTags).sort();
+
+        setAllCardsData(cards);
+        setAllTags(sortedTags);
+        setSelectedTags(new Set()); // Initialize with NO tags selected
       } catch (err) {
         console.error("Error loading index.toml:", err);
         setError(err.message);
+        setAllCardsData([]);
+        setAllTags([]);
+        setSelectedTags(new Set());
       } finally {
         setLoading(false);
       }
@@ -190,8 +164,36 @@ export default function RecipesCards({ path }) {
     loadIndexToml();
   }, [directoryPath, pathCategory]);
 
+  // --- Tag Handling ---
+  const handleTagClick = (tag) => {
+    setSelectedTags((prevSelectedTags) => {
+      const newSelectedTags = new Set(prevSelectedTags);
+      if (newSelectedTags.has(tag)) {
+        newSelectedTags.delete(tag);
+      } else {
+        newSelectedTags.add(tag);
+      }
+      return newSelectedTags;
+    });
+  };
+
+  // --- Filtering Logic ---
+  const filteredCards = useMemo(() => {
+    // *** CHANGE HERE: If no tags are selected, show ALL cards ***
+    if (selectedTags.size === 0) {
+      return allCardsData;
+    }
+
+    // Otherwise, filter: show a card if it has at least one selected tag
+    return allCardsData.filter((card) =>
+      card.tags.some((tag) => selectedTags.has(tag))
+    );
+  }, [allCardsData, selectedTags]); // Dependencies: Recalculate when base data or selection changes
+
+  // --- Rendering ---
+
   if (loading) {
-    return <p>Loading recipes...</p>;
+    return <div>Loading recipes...</div>;
   }
 
   if (error) {
@@ -200,7 +202,20 @@ export default function RecipesCards({ path }) {
         <p>Error loading recipes: {error}</p>
         <p>
           Make sure you have an index.toml file at:{" "}
-          <code>/static/docs/index.toml</code> in your project.
+          <code>/static/docs/index.toml</code> and it's correctly formatted.
+        </p>
+      </div>
+    );
+  }
+
+  if (allCardsData.length === 0 && !loading) {
+    // Check !loading to avoid brief flash
+    return (
+      <div>
+        <p>No recipes found for category: "{pathCategory}"</p>
+        <p>
+          Check if <code>/static/docs/index.toml</code> contains recipe entries
+          matching this category.
         </p>
       </div>
     );
@@ -208,21 +223,40 @@ export default function RecipesCards({ path }) {
 
   return (
     <div>
-      {cardsData.length === 0 ? (
-        <div>
-          <p>No recipes found for category: {pathCategory}</p>
-          <p>
-            Make sure your index.toml file contains properly formatted recipe
-            entries that match this category.
-          </p>
+      {/* Tag Filter Section */}
+      {allTags.length > 0 && (
+        <div className={styles.tagContainer}>
+          <span className={styles.tagLabel}>Filter by tag:</span>
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => handleTagClick(tag)}
+              // Style depends only on whether the tag is in the set
+              className={`${styles.tagButton} ${
+                selectedTags.has(tag) ? styles.tagSelected : ""
+              }`}
+              aria-pressed={selectedTags.has(tag)}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
-      ) : (
-        <>
-          <br />
-          <CardsSection items={cardsData} recipeCards={true} />
-          <br />
-        </>
       )}
+
+      <br />
+
+      {/* Cards Section */}
+      {/* Show message only if tags ARE selected, but result is empty */}
+      {filteredCards.length === 0 && selectedTags.size > 0 && (
+        <p>No recipes match the selected tags.</p>
+      )}
+
+      {/* Render cards if there are any matching the filter (or all, if no filter active) */}
+      {filteredCards.length > 0 && (
+        <CardsSection items={filteredCards} recipeCards={true} />
+      )}
+
+      <br />
     </div>
   );
 }
