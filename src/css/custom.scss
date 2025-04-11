@@ -841,6 +841,10 @@ button.close {
   background-color: #ececec !important;
 }
 
+[data-theme="dark"] tbody tr:hover {
+  background-color: #ececec45 !important;
+}
+
 .rbac-table a:hover {
   text-decoration: underline;
 }
@@ -864,8 +868,11 @@ button.close {
 }
 
 .theme-doc-sidebar-container {
-  //background-color: var(--docs-sidebar-bg);
   background-color: var(--docs-sidebar-bg);
+}
+
+.collapseSidebarButton_PEFL {
+  background-color: var(--docs-sidebar-bg) !important;
 }
 
 :root nav.navbar {

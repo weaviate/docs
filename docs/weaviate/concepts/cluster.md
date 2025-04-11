@@ -68,10 +68,6 @@ Weaviate uses a virtual shard system to assign objects to shards. This makes it 
 
 Example - assume the following scenario: A class is comprised of 4 shards and taking 60 minutes to import all data. When changing the sharding count to 5, each shard will roughly transfer 20% of its data to the new shard. This is equivalent to an import of 20% of the dataset, so the expected time for this process would be ~12 minutes.
 
-:::note
-The groundwork to be able to re-shard has been laid by using Weaviate's Virtual shard system. Re-sharding however is not yet implemented and not currently prioritized. See Weaviate's [Architectural Roadmap](/docs/weaviate/roadmap/index.md).
-:::
-
 ## Node Discovery
 
 By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
@@ -130,8 +126,7 @@ Shards were assigned to 'live' nodes in a round-robin fashion starting with a ra
 
 * Starting with `v1.25.0`, Weaviate adopts the [Raft consensus algorithm](https://raft.github.io/) which is a log-based algorithm coordinated by an elected leader. This brings an additional benefit in that concurrent schema changes are now supported.<br/>If you are a Kubernetes user, see the [`1.25 migration guide`](/docs/weaviate/more-resources/migration/weaviate-1-25.md) before you upgrade. To upgrade, you have to delete your existing StatefulSet.
 * As of `v1.8.0`, the process of broadcasting schema changes across the cluster uses a form of two-phase transaction that as of now cannot tolerate node failures during the lifetime of the transaction.
-* As of `v1.8.0`, replication is currently under development. ([See Roadmap](/docs/weaviate/roadmap/index.md)).
-* As of `v1.8.0`, dynamically scaling a cluster is not fully supported yet. New nodes can be added to an existing cluster, however it does not affect the ownership of shards. Existing nodes can not yet be removed if data is present, as shards are not yet being moved to other nodes prior to a removal of a node. ([See Roadmap](/docs/weaviate/roadmap/index.md)).
+* As of `v1.8.0`, dynamically scaling a cluster is not fully supported yet. New nodes can be added to an existing cluster, however it does not affect the ownership of shards. Existing nodes can not yet be removed if data is present, as shards are not yet being moved to other nodes prior to a removal of a node. 
 
 
 

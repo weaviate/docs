@@ -65,9 +65,6 @@ The console might ask to downgrade to HTTP. This is done to avoid [CORS](https:/
 - [References: Configuration](../configuration/index.md)
 - [References: API](../api/index.md)
 - [Concepts](../concepts/index.md)
-- [Roadmap](../roadmap/index.md)
-
-
 
 ## Questions and feedback
 
