@@ -404,6 +404,7 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
+        "weaviate/more-resources/migration/weaviate-1-30",
         "weaviate/more-resources/migration/weaviate-1-25",
         "weaviate/more-resources/migration/archive",
       ],
