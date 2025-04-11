@@ -455,6 +455,7 @@ const sidebars = {
         "deploy/config-guides/modules",
         "deploy/config-guides/monitoring",
         "deploy/config-guides/persistence",
+        "deploy/config-guides/async-rep",
       ],
     },
   ],
