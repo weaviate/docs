@@ -407,7 +407,7 @@ const sidebars = {
       ],
     },
   ],
-  othersSidebar: [
+  weaviateRecipesSidebar: [
     {
       type: "category",
       label: "Recipes",
@@ -422,6 +422,8 @@ const sidebars = {
         },
       ],
     },
+  ],
+  othersSidebar: [
     {
       type: "category",
       label: "Benchmarks",

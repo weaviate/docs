@@ -62,12 +62,11 @@
   }
 
   .tag {
-    background-color: var(--site-primary-dark);
-    color: white;
     font-size: 0.8rem;
     font-weight: 500;
     padding: 4px 8px;
     border-radius: 4px;
+    border: var(--site-primary-dark) 2px solid;;
     white-space: nowrap;
   }
 }

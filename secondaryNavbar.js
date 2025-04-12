@@ -36,8 +36,13 @@ const secondaryNavbarItems = {
         sidebar: "releasesSidebar",
       },
       {
-        label: "Other",
+        label: "Recipes",
         link: "/docs/weaviate/recipes",
+        sidebar: "weaviateRecipesSidebar",
+      },
+      {
+        label: "Other",
+        link: "/docs/weaviate/benchmarks",
         sidebar: "othersSidebar",
         /*
         dropdown: [
