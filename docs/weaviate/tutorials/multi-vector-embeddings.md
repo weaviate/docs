@@ -1,4 +1,4 @@
-x---
+---
 title: Multi-vector embeddings (ColBERT, ColPali, etc.)
 description: Learn how to use multi-vector embeddings in Weaviate.
 sidebar_position: 2

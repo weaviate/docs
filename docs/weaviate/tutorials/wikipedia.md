@@ -77,7 +77,7 @@ import ProvideOpenAIAPIKey from '/_includes/provide-openai-api-key-headers.mdx'
 
 ## Create the schema
 
-The [schema](../starter-guides/managing-collections/index.mdx) defines the data structure for objects in a given Weaviate class. We'll create a schema for a Wikipedia `Article` class mapping the CSV columns, and using the [text2vec-openai vectorizer](../manage-data/collections.mdx#specify-a-vectorizer). The schema will have two properties:
+The [schema](../starter-guides/managing-collections/index.mdx) defines the data structure for objects in a given Weaviate class. We'll create a schema for a Wikipedia `Article` class mapping the CSV columns, and using the [text2vec-openai vectorizer](../manage-collections/vector-config.mdx#specify-a-vectorizer). The schema will have two properties:
 * `title` - article title, not vectorized
 * `content` - article content, corresponding to the `text` column from the CSV
 
@@ -114,7 +114,7 @@ The [`jq`](https://stedolan.github.io/jq/) command used after `curl` is a handy 
 
 ## Import the articles
 
-We're now ready to import the articles. For maximum performance, we'll load the articles into Weaviate via [batch import](../manage-data/import.mdx).
+We're now ready to import the articles. For maximum performance, we'll load the articles into Weaviate via [batch import](../manage-objects/import.mdx).
 
 import ImportArticles from '/_includes/code/tutorials.wikipedia.import.mdx';
 

@@ -188,7 +188,7 @@ Cross-references can be very useful for creating relationships between objects. 
 
 However, cross-references can be costly in terms of performance. Use them sparingly. Additionally, cross-reference properties do not affect the object's vector. So if you want the related properties to be considered in a vector search, they should be included in the object's vectorized properties.
 
-You can find examples of how to define and use cross-references [here](/docs/weaviate/manage-data/cross-references).
+You can find examples of how to define and use cross-references [here](/docs/weaviate/manage-collections/cross-references).
 
 ### Vectorizer and generative modules
 
@@ -230,7 +230,7 @@ Replication settings determine how many copies of the data are stored. For examp
 
 This goes hand-in-hand with consistency settings, which determine how many replicas must respond before an operation is considered successful.
 
-We recommend that you read the [concepts page on replication](/docs/weaviate/concepts/replication-architecture) for information on how replication works in Weaviate. To specify a replication factor, follow [this how-to](/docs/weaviate/manage-data/collections#replication-settings).
+We recommend that you read the [concepts page on replication](/docs/weaviate/concepts/replication-architecture) for information on how replication works in Weaviate. To specify a replication factor, follow [this how-to](../../manage-collections/multi-node-setup.mdx#replication-settings).
 
 #### Sharding
 
@@ -247,7 +247,7 @@ Collection names always start with a capital letter. Properties always begin wit
 The following resources include more detailed information on collection definition settings and how to use them:
 
 - [Reference: Configuration - Collection definition](/docs/weaviate/config-refs/schema): A reference of all available collection definition settings.
-- [Collections - How-to: manage data](/docs/weaviate/manage-data/collections): Code examples for creating and managing collections, including how to configure various settings using client libraries.
+- [How-to: Manage collections](../managing-collections/index.mdx): Code examples for creating and managing collections, including how to configure various settings using client libraries.
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema">Reference: REST - Schema</SkipLink>: A reference of all available collection definition settings for the REST API.
 
 ## Questions and feedback

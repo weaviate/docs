@@ -1,5 +1,5 @@
 ---
-title: Guides and tutorials
+title: How-to manuals and Guides
 sidebar_label: Overview
 sidebar_position: 0
 image: og/docs/introduction.jpg
@@ -11,7 +11,9 @@ Whether you’re setting up advanced configurations or handling data operations,
 
 import CardsSection from "/src/components/CardsSection";
 
-export const guidesCardsData = [
+## How-to manuals
+
+export const howToGuidesCardsData = [
   {
     title: "How-to: Configure Weaviate",
     description:
@@ -20,10 +22,17 @@ export const guidesCardsData = [
     icon: "fas fa-cogs",
   },
   {
-    title: "How-to: Manage data",
+    title: "How-to: Manage collections",
     description:
       "Manage data: collections, objects, multi-tenancy, and migration.",
-    link: "/docs/weaviate/manage-data",
+    link: "/docs/weaviate/manage-collections",
+    icon: "fas fa-database",
+  },
+  {
+    title: "How-to: Manage objects",
+    description:
+      "Manage data: collections, objects, multi-tenancy, and migration.",
+    link: "/docs/weaviate/manage-objects",
     icon: "fas fa-database",
   },
   {
@@ -32,6 +41,15 @@ export const guidesCardsData = [
     link: "/docs/weaviate/search",
     icon: "fas fa-search",
   },
+];
+
+<br />
+<CardsSection items={howToGuidesCardsData} />
+<br />
+
+## Others guides
+
+export const otherGuidesCardsData = [
   {
     title: "Starter guides",
     description: "Guides and tips for new users learning how to use Weaviate.",
@@ -47,5 +65,5 @@ export const guidesCardsData = [
 ];
 
 <br />
-<CardsSection items={guidesCardsData} />
+<CardsSection items={otherGuidesCardsData} />
 <br />

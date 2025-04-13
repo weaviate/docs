@@ -211,7 +211,7 @@ The following example:
 - Adds objects to the target collection (`Question`) using a batch process.
 
 :::tip Batch imports
-([Batch imports](../manage-data/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-data/import.mdx) guide for more information.
+([Batch imports](../manage-objects/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-objects/import.mdx) guide for more information.
 :::
 
 import ImportObjects from '/_includes/code/quickstart/local.quickstart.import_objects.mdx'
@@ -422,7 +422,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <Link to="/docs/weaviate/manage-data">how to manage data</Link>, such as <Link to="/docs/weaviate/manage-data/collections">manage collections</Link>, <Link to="/docs/weaviate/manage-data/create">create objects</Link>, <Link to="/docs/weaviate/manage-data/import">batch import data</Link> and <Link to="/docs/weaviate/manage-data/multi-tenancy">use multi-tenancy</Link>.
+            See how to manage data, such as <Link to="/docs/weaviate/manage-collections">manage collections</Link>, <Link to="/docs/weaviate/manage-objects/create">create objects</Link>, <Link to="/docs/weaviate/manage-objects/import">batch import data</Link> and <Link to="/docs/weaviate/manage-collections/multi-tenancy">use multi-tenancy</Link>.
           </p>
         </div>
       </div>

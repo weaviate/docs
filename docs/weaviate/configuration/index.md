@@ -10,7 +10,7 @@ This section shows you how to configure Weaviate.
 - Extend Weaviate's functionality by adding vectorizers and other [modules](./modules.md)
 - Configure how Weaviate stores and indexes data
 
-  - [schema](../manage-data/collections.mdx)
+  - [collections](../manage-collections/index.mdx)
   - [data types](../config-refs/datatypes.md)
   - [distance metrics](../config-refs/distances.md)
 

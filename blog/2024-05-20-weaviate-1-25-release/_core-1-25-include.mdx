@@ -107,7 +107,7 @@ Learn more about how you can use the integration model [here](/docs/weaviate/mod
 
 Data imports often involve a vectorization step. You designate a third party vectorization service in your collection schema, and Weaviate sends objects to the service's API during data imports. In earlier versions, each object is sent as a single API call. This creates a bottleneck and leads to long import times.
 
-Some third part services offer more efficient, batch APIs. Starting in 1.25, you can configure Weaviate to [send batches of objects](/docs/weaviate/manage-data/import#batch-vectorization) to vectorization services that offer batch APIs.
+Some third part services offer more efficient, batch APIs. Starting in 1.25, you can configure Weaviate to [send batches of objects](/docs/weaviate/manage-objects/import#batch-vectorization) to vectorization services that offer batch APIs.
 
 Batch operations have two primary advantages:
 
@@ -116,9 +116,9 @@ Batch operations have two primary advantages:
 
 ## Automatic tenant creation
 
-[Multi-tenant collections](/docs/weaviate/manage-data/multi-tenancy) are a useful way to separate and organize data. Earlier version of Weaviate, [batch imports](/docs/weaviate/manage-data/import) already support multi-tenant operations. However, you have to create the tenants before you import data. This extra step can be inconvenient.
+[Multi-tenant collections](/docs/weaviate/manage-collections/multi-tenancy) are a useful way to separate and organize data. Earlier version of Weaviate, [batch imports](/docs/weaviate/manage-objects/import) already support multi-tenant operations. However, you have to create the tenants before you import data. This extra step can be inconvenient.
 
-Starting in 1.25, you can configure Weaviate to [create new tenants](/docs/weaviate/manage-data/multi-tenancy#automatically-add-new-tenants)  during batch imports if the tenants don't already exist. Use automatic multi-tenant creation to streamline your data imports.
+Starting in 1.25, you can configure Weaviate to [create new tenants](/docs/weaviate/manage-collections/multi-tenancy#automatically-add-new-tenants)  during batch imports if the tenants don't already exist. Use automatic multi-tenant creation to streamline your data imports.
 
 ## Search improvements
 

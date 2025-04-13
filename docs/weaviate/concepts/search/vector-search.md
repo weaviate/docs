@@ -30,7 +30,7 @@ A user can populate Weaviate with objects and their vectors in one of two ways:
 
 Weaviate provides [first-party integrations with popular vectorizer model providers](../../model-providers/index.md) such as [Cohere](../../model-providers/cohere/index.md), [Ollama](../../model-providers/ollama/index.md), [OpenAI](../../model-providers/openai/index.md), and more.
 
-In this workflow, the user can [configure a vectorizer for a collection](../../manage-data/collections.mdx#specify-a-vectorizer) and Weaviate will automatically generate vectors as needed, such as when inserting objects or performing searches.
+In this workflow, the user can [configure a vectorizer for a collection](../../manage-collections/vector-config.mdx#specify-a-vectorizer) and Weaviate will automatically generate vectors as needed, such as when inserting objects or performing searches.
 
 ```mermaid
 %%{init: {
@@ -98,7 +98,7 @@ This integration abstracts the vector generation process from the user, allowing
 
 :::info Vectorizer configuration is immutable
 
-Once it is set, the vectorizer cannot be changed for a collection. This ensures that the vectors are generated consistently and stay compatible. If you need to change the vectorizer, you must create a new collection with the desired vectorizer, and [migrate the data to the new collection](../../manage-data/migrate.mdx).
+Once it is set, the vectorizer cannot be changed for a collection. This ensures that the vectors are generated consistently and stay compatible. If you need to change the vectorizer, you must create a new collection with the desired vectorizer, and [migrate the data to the new collection](../../manage-collections/migrate.mdx).
 
 :::
 

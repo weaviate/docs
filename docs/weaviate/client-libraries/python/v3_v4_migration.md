@@ -210,11 +210,11 @@ Due to the architectural changes as well as changes to the terminology, most of 
 
 For example, `client.collections.list_all()` is the replacement for `client.schema.get()`.
 
-[Manage data](../../manage-data/index.md) has more details and additional sample code for working with data, such as [working with collections](../../manage-data/collections.mdx). See [searches](../../search/index.md) for further details on various queries and filters.
+[Manage collections](../../manage-collections/index.mdx) has more details and additional sample code for working with collections. See [searches](../../search/index.md) for further details on various queries and filters.
 
 ### Collection creation from JSON
 
-You can still create a collection from a JSON definition. This may be a useful way to migrate your existing data, for example. You could [fetch an existing definition](../../manage-data/collections.mdx#read-a-single-collection-definition) and then use it to create a new collection.
+You can still create a collection from a JSON definition. This may be a useful way to migrate your existing data, for example. You could [fetch an existing definition](../../manage-collections/collection-operations.mdx#read-a-single-collection-definition) and then use it to create a new collection.
 
 <FilteredTextBlock
   text={PythonCode}
@@ -258,14 +258,14 @@ Additionally, many arguments are now constructed using helper classes (e.g. `Met
 
 The migration will likely involve significant changes to your codebase. Review the [Python client library documentation](./index.md) to get started, including instantiation details and various submodules.
 
-Then, take a look at the how-to guides for [Managing data](../../manage-data/index.md) and [Queries](../../search/index.md).
+Then, take a look at the how-to guides for [Managing collections](../../manage-collections/index.mdx) and [Queries](../../search/index.md).
 
 In particular, check out the pages for:
 
 - [Client instantiation](./index.md#instantiate-a-client),
-- [Manage collections](../../manage-data/collections.mdx),
-- [Batch import](../../manage-data/import.mdx)
-- [Cross-reference](../../manage-data/cross-references.mdx)
+- [Manage collections](../../manage-collections/index.mdx),
+- [Batch import](../../manage-objects/import.mdx)
+- [Cross-reference](../../manage-collections/cross-references.mdx)
 - [Basic search](../../search/basics.md)
 - [Similarity search](../../search/similarity.md)
 - [Filters](../../search/filters.md)

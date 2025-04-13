@@ -51,8 +51,8 @@ Then consider enabling multi-tenancy, and assigning each subset of data to a sep
 <p align="center"><img src="/img/docs/system/collections_with_without_mt.png" alt="Replication Factor" width="100%"/></p>
 
 :::tip Further resources
-- [How-to: Perform multi-tenancy operations](manage-data/multi-tenancy.md)
-- [How to: Manage tenant states](manage-data/tenant-states.mdx)
+- [How-to: Perform multi-tenancy operations](manage-collections/multi-tenancy.mdx)
+- [How to: Manage tenant states](manage-collections/tenant-states.mdx)
 - [Concepts: Multi-tenancy](concepts/data.md#multi-tenancy)
 :::
 
@@ -68,7 +68,7 @@ For many cases, the default, `hnsw` index type is a good starting point. However
 Typically, multi-tenant setups can benefit from using `dynamic` indexes, as they can automatically switch to `hnsw` indexes when the number of vectors in a tenant exceeds a certain threshold.
 
 :::tip Further resources
-- [How-to: Set the vector index type](manage-data/collections.mdx#set-vector-index-type)
+- [How-to: Set the vector index type](manage-collections/vector-config.mdx#set-vector-index-type)
 - [Concepts: Vector indexes](concepts/indexing/vector-index.md)
 :::
 
@@ -220,7 +220,7 @@ with collection.batch.dynamic() as batch:
 ```
 
 :::tip Further resources
-- [How-to: Batch import data](manage-data/import.mdx)
+- [How-to: Batch import data](manage-objects/import.mdx)
 :::
 
 ### Minimize costs by offloading inactive tenants
@@ -239,7 +239,7 @@ At the moment, offloading tenants is only available in the open-source version o
 
 :::tip Further resources
 - [Starter guide: Managing resources](starter-guides/managing-resources/index.md)
-- [How-to: Manage tenant states](manage-data/tenant-states.mdx)
+- [How-to: Manage tenant states](manage-collections/tenant-states.mdx)
 :::
 
 <!-- ### Data validation strategies -->

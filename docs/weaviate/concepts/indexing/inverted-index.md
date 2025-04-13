@@ -49,7 +49,7 @@ The filterable indexes are only capable of [filtering](../filtering.md), while t
 
 So, setting `"indexFilterable": false` and `"indexSearchable": true` (or not setting it at all) will have the trade-off of worse filtering performance but faster imports (due to only needing to update one index) and lower disk usage.
 
-See the [related how-to section](../../manage-data/collections.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
+See the [related how-to section](../../manage-collections/vector-config.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
 
 A rule of thumb to follow when determining whether to switch off indexing is: _if you will never perform queries based on this property, you can turn it off._
 

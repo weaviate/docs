@@ -227,7 +227,7 @@ Note that the vector index type parameter only specifies how the vectors of data
 
 The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/docs/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
 
-To learn more about configuring the collection, see [this how-to page](../../manage-data/collections.mdx).
+To learn more about configuring the collection, see [this how-to page](../../manage-collections/vector-config.mdx).
 
 ### Which distance metrics can I use with vector indexing?
 
@@ -235,7 +235,7 @@ All of [the distance metrics](/docs/weaviate/config-refs/distances.md), such as 
 
 ### How to configure the vector index type in Weaviate?
 
-The index type can be specified per data collection via the [collection definition](/docs/weaviate/manage-data/collections.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/schema/vector-index.md).
+The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/schema/vector-index.md).
 
 ### When to skip indexing
 
