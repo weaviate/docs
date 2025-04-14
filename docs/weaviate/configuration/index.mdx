@@ -1,0 +1,87 @@
+---
+title: How to configure Weaviate
+sidebar_position: 0
+image: og/docs/configuration.jpg
+# tags: ['configuration']
+---
+
+Configure and manage key operational aspects of your Weaviate instance with these guides:
+
+import CardsSection from "/src/components/CardsSection";
+
+export const configOpsData = [
+  {
+    title: "Compression/Quantization (PQ/BQ/SQ)",
+    description:
+      "Reduce memory usage with Product, Binary, or Scalar Quantization techniques.",
+    link: "/docs/weaviate/configuration/compression",
+    icon: "fas fa-compress-alt", 
+  },
+  {
+    title: "Tenant Offloading",
+    description:
+      "Manage resource usage by offloading inactive tenants in multi-tenant setups.",
+    link: "/docs/weaviate/configuration/tenant-offloading",
+    icon: "fas fa-pause-circle", 
+  },
+  {
+    title: "Modules",
+    description:
+      "Explore Weaviate's ecosystem of vectorizer, generative (RAG), and other modules.",
+    link: "/docs/weaviate/configuration/modules", 
+    icon: "fas fa-puzzle-piece", 
+  },
+  {
+    title: "Backup and restore",
+    description:
+      "Configure and manage backups (filesystem, S3, GCS) for data safety and recovery.",
+    link: "/docs/weaviate/configuration/backups",
+    icon: "fas fa-save", 
+  },
+  {
+    title: "Authentication",
+    description:
+      "Set up methods (API keys, OIDC) to verify user identities before granting access.",
+    link: "/docs/weaviate/configuration/authentication",
+    icon: "fas fa-key", 
+  },
+  {
+    title: "Authorization",
+    description:
+      "Understand Weaviate's authorization schemes (RBAC, Admin List) to control user permissions.",
+    link: "/docs/weaviate/configuration/authorization",
+    icon: "fas fa-shield-alt", 
+  },
+  {
+    title: "RBAC",
+    description:
+      "Learn about Role-Based Access Control concepts, predefined/custom roles, and permissions.",
+    link: "/docs/weaviate/configuration/rbac",
+    icon: "fas fa-user-shield", 
+  },
+  {
+    title: "Data Persistence",
+    description:
+      "Configure volume mounts and settings for durable data storage on disk.",
+    link: "/docs/weaviate/configuration/persistence",
+    icon: "fas fa-hdd",
+  },
+  {
+    title: "Monitoring",
+    description:
+      "Enable and configure Prometheus-compatible metrics for observing instance health.",
+    link: "/docs/weaviate/configuration/monitoring",
+    icon: "fas fa-chart-line",
+  },
+  {
+    title: "Replication",
+    description:
+      "Set up data replication across nodes for high availability and fault tolerance.",
+    link: "/docs/weaviate/configuration/replication",
+    icon: "fas fa-copy",
+  },
+];
+
+<br />
+<CardsSection items={configOpsData} />
+<br />

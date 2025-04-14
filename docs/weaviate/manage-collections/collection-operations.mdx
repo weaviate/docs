@@ -172,51 +172,6 @@ By default, Weaviate creates missing collections and missing properties. When yo
 
 To disable [`auto-schema`](../config-refs/schema/index.md#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
 
-## Multi-tenancy
-
-:::info Added in `v1.20`
-:::
-
-Create a collection with multi-tenancy enabled.
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START Multi-tenancy"
-      endMarker="# END Multi-tenancy"
-      language="py"
-    />
-  </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START Multi-tenancy"
-    endMarker="# END Multi-tenancy"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START Multi-tenancy"
-    endMarker="// END Multi-tenancy"
-    language="ts"
-  />
-</TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START Multi-tenancy"
-      endMarker="// END Multi-tenancy"
-      language="tsv2"
-    />
-  </TabItem>
-</Tabs>
-
 ## Read a single collection definition
 
 Retrieve a collection definition from the schema.
@@ -631,20 +586,55 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 
 <CodeSchemaAddProperties />
 
-## Further resources
+## Set inverted index parameters
 
-### References
+Various [inverted index parameters](../config-refs/schema/index.md#invertedindexconfig) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="pyv3"
+    />
+  </TabItem>
+
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="ts"
+    />
+  </TabItem>
+
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="tsv2"
+    />
+  </TabItem>
+</Tabs>
+
+## Further resources
 
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema/post/schema">
     API References: REST: Schema
   </SkipLink>
 - [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
 - [Concepts: Data structure](../concepts/data.md)
-
-### Background knowledge
-
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- [Tutorial: Schema](../starter-guides/managing-collections/index.mdx)
 
 ## Questions and feedback
 
