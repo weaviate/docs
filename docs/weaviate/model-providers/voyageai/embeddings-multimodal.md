@@ -167,7 +167,7 @@ The following examples show how to configure VoyageAI-specific options.
 
 </Tabs>
 
-For further details on model parameters, see the [VoyageAI API documentation](https://docs.voyageai.com/reference/multimodal-embeddings-api).
+For further details on model parameters, see the [VoyageAI API documentation](https://docs.voyageai.com/docs/multimodal-embeddings).
 
 
 ## Header parameters
@@ -329,7 +329,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### External resources
 
-- VoyageAI [Multimodal Embed API documentation](https://docs.voyageai.com/reference/multimodal-embeddings-api)
+- VoyageAI [Multimodal Embed API documentation](https://docs.voyageai.com/docs/multimodal-embeddings)
 
 ## Questions and feedback
 
