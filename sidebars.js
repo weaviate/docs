@@ -29,8 +29,6 @@ const sidebars = {
         "weaviate/installation/docker-compose",
         "weaviate/installation/kubernetes",
         "weaviate/installation/embedded",
-        "weaviate/installation/aws-marketplace",
-        "weaviate/installation/gc-marketplace",
         "weaviate/installation/spcs-integration",
       ],
     },
@@ -94,7 +92,17 @@ const sidebars = {
         "weaviate/connections/connect-query",
       ],
     },
-    "weaviate/best-practices",
+    {
+      type: "category",
+      label: "Best practices",
+      link: {
+        type: "doc",
+        id: "weaviate/best-practices/index",
+      },
+      items: [
+        "weaviate/best-practices/code-generation",
+      ],
+    },
   ],
   modelProvidersSidebar: [
     {

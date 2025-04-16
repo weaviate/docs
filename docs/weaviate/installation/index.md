@@ -16,8 +16,6 @@ To install and configure Weaviate, see the following:
 - **[Weaviate Cloud](../../cloud/quickstart.mdx)**: Managed services for development and production environments.
 - **[Docker Compose](./docker-compose.md)**: Docker containers are well suited for development and testing.
 - **[Kubernetes](./kubernetes.md)**: Kubernetes is ideal for scalable, production deployments.
-- **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
-- **[Google Cloud Marketplace](./gc-marketplace.md)** Deploy Weaviate directly from the Google Cloud Marketplace.
 - **[Snowpark Container Services](./spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
 - **[Embedded Weaviate](./embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
 
@@ -36,7 +34,6 @@ import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
 When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
 
 ## Related pages
-
 - [Connect to Weaviate](../connections/index.mdx)
 - [Weaviate Quickstart](../quickstart/index.md)
 - [Weaviate Cloud Quickstart](../../cloud/quickstart.mdx)
