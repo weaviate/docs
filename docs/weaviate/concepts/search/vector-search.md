@@ -280,7 +280,7 @@ This will cause the search to return up to the specified (`limit`) number of res
 
 ### Further resources
 
-- [How-to: Search](../../search/index.md)
+- [How-to: Search](../../search/index.mdx)
 - [How-to: Vector similarity search](../../search/similarity.md)
 
 ## Questions and feedback

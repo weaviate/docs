@@ -170,7 +170,7 @@ Here are some key considerations when using keyword search:
 
 ### Further resources
 
-- [How-to: Search](../../search/index.md)
+- [How-to: Search](../../search/index.mdx)
 - [How-to: Keyword search](../../search/bm25.md)
 
 ## Questions and feedback

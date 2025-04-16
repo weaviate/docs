@@ -59,7 +59,7 @@ Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
 ## Related pages
 
 - [How-to: Manage collections](../../manage-collections/vector-config.mdx#define-named-vectors): Configure vectors in collections
-- [How-to: Search](../../search/index.md): Code examples for search
+- [How-to: Search](../../search/index.mdx): Code examples for search
 - [Weaviate academy: Named vectors](../../../academy/py/named_vectors/index.md)
 
 ## Questions and feedback
