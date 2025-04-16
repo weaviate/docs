@@ -13,35 +13,7 @@ import CardsSection from "/src/components/CardsSection";
 
 ## How-to manuals
 
-export const howToGuidesCardsData = [
-  {
-    title: "How-to: Configure Weaviate",
-    description:
-      "Configure Weaviate: compression, backups, security, and replication.",
-    link: "/docs/weaviate/configuration",
-    icon: "fas fa-cogs",
-  },
-  {
-    title: "How-to: Manage collections",
-    description:
-      "Manage collections: CRUD operations for collections, manage vectors, multi-tenancy and migrations.",
-    link: "/docs/weaviate/manage-collections",
-    icon: "fas fa-database",
-  },
-  {
-    title: "How-to: Manage objects",
-    description:
-      "Manage objects: CRUD operations for managing objects within collections.",
-    link: "/docs/weaviate/manage-objects",
-    icon: "fas fa-database",
-  },
-  {
-    title: "How-to: Query & search",
-    description: "Query basics: vector, hybrid, image search, and aggregation.",
-    link: "/docs/weaviate/search",
-    icon: "fas fa-search",
-  },
-];
+import { howToGuidesCardsData } from '/_includes/configuration/how-to-manuals.js'; 
 
 <br />
 <CardsSection items={howToGuidesCardsData} />

@@ -1,14 +1,10 @@
 Usage information for various operations and features can be found throughout the Weaviate documentation.
 
-Some frequently used sections are the how-to guides for [Managing collections](/docs/weaviate/manage-collections/index.mdx) and [Queries](/docs/weaviate/search/index.mdx). The how-to guides include concise examples for common operations.
+import CardsSection from "/src/components/CardsSection";
+import { howToGuidesCardsData } from "/_includes/configuration/how-to-manuals.js";
 
-In particular, check out the pages for:
-
-- [Manage collections](/docs/weaviate/manage-collections)
-- [Batch import](/docs/weaviate/manage-objects/import)
-- [Cross-references](/docs/weaviate/manage-collections/cross-references)
-- [Basic search](/docs/weaviate/search/basics)
-- [Similarity search](/docs/weaviate/search/similarity)
-- [Filters](/docs/weaviate/search/filters)
+<br />
+<CardsSection items={howToGuidesCardsData} />
+<br />
 
 The Weaviate API reference pages for [search](/docs/weaviate/api/graphql) and [REST](/docs/weaviate/api/rest) may also be useful starting points.

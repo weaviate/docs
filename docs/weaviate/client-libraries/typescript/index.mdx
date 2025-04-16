@@ -24,10 +24,12 @@ export const typescriptCardsData = [
   },
 ];
 
+:::note Latest version
+
+The latest TypeScript client is version `v||site.typescript_client_version||`.
+
 <QuickLinks items={typescriptCardsData} />
 
-:::note TypeScript client version
-The latest TypeScript client is version `v||site.typescript_client_version||`.
 :::
 
 :::info
@@ -36,7 +38,7 @@ The TypeScript client supports code that is written in TypeScript or JavaScript.
 
 The **v3 client** is the current TypeScript client. If you have code written for the v2 client, you should migrate it to v3.
 
-The [v2 client](/docs/weaviate/client-libraries/typescript/typescript-v2) version is still available in [npm](https://www.npmjs.com/package/weaviate-ts-client?activeTab=versions), however you should not use it to begin new projects except if you need browser based web client development.
+The [v2 client](./typescript-v2.mdx) version is still available in [npm](https://www.npmjs.com/package/weaviate-ts-client?activeTab=versions), however you should not use it to begin new projects except if you need browser based web client development.
 
 :::
 
@@ -47,7 +49,7 @@ import TSClientIntro from "/_includes/clients/ts-client-intro.mdx";
 If you are migrating a project from the Weaviate TypeScript client v2 to the v3 client, see the [migration page](/docs/weaviate/client-libraries/typescript/v2_v3_migration) for additional details.
 
 :::tip Jump straight to code?
-If you want to dive straight into demo applications and code examples that use the client, please take a look at the **[example code](#example-code)** section of this page.
+If you want to dive straight into demo applications and code examples that use the client, please take a look at the **[example code](#code-examples--further-resources)** section of this page.
 :::
 
 ## Installation
@@ -132,11 +134,12 @@ The following code demonstrates how to:
   language="js"
 />
 
-## Code examples & further resources
+## Asynchronous usage
 
-import CodeExamples from "/_includes/clients/code-examples.mdx";
+All client v3 methods, with the exception of `collection.use()`, use ES6 Promises with asynchronous code. This means you have to use `.then()` after function calls, or wrap your code `async/await` blocks.
 
-<CodeExamples />
+When there is an asynchronous code error, a promise returns the specific error message. If you use `async` and `await`, a rejected promises acts like a thrown exception
+
 
 ## Releases
 
@@ -150,6 +153,12 @@ import ReleaseHistory from "/_includes/release-history.md";
 <ReleaseHistory />
 
 </details>
+
+## Code examples & further resources
+
+import CodeExamples from "/_includes/clients/code-examples.mdx";
+
+<CodeExamples />
 
 ## Questions and feedback
 

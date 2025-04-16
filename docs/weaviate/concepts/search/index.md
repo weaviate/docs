@@ -387,7 +387,7 @@ For more details, see the respective pages for:
 - [Concepts: Keyword search](./keyword-search.md)
 - [Concepts: Hybrid search](./hybrid-search.md).
 
-For code snippets on how to use these search types, see the [How-to: search](../search/index.mdx) page.
+For code snippets on how to use these search types, see the [How-to: search](../../search/index.mdx) page.
 
 ## Questions and feedback
 

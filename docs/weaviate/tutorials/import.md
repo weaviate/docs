@@ -144,7 +144,8 @@ Our rules of thumb are:
 
 ### Error handling
 
-We recommend that you implement error handling at an object level, such as in [this example](../client-libraries/python/index.md#error-handling).
+<!-- TODO[g-despot]: Add link to external Python references once created for "this example" -->
+We recommend that you implement error handling at an object level, such as in this example.
 
 :::tip `200` status code != 100% batch success
 It is important to note that an HTTP `200` status code only indicates that the **request** has been successfully sent to Weaviate. In other words, there were no issues with the connection or processing of the batch and no malformed request.
