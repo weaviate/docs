@@ -60,7 +60,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "JavaScript and TypeScript",
+          label: "JavaScript/TypeScript",
 
           link: {
             type: "doc",
