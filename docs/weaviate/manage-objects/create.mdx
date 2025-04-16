@@ -91,7 +91,7 @@ To create an object, specify the following:
 
 - The object data you want to add
 - The target collection
-- If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant](./multi-tenancy.md)
+- If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant]( ../manage-collections/multi-tenancy.mdx)
 
 By default, [auto-schema](/docs/weaviate/config-refs/schema#auto-schema) creates new collections and adds new properties.
 
@@ -162,7 +162,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
 :::info Added in `v1.24`
 :::
 
-When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-named-vectors)).
+When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -392,7 +392,7 @@ You can create an object with cross-references to other objects.
 </Tabs>
 
 :::tip Additional information
-See [How-to: Cross-references](./cross-references.mdx) for more on working with cross-references.
+See [How-to: Cross-references](../manage-collections/cross-references.mdx) for more on working with cross-references.
 :::
 
 ## Create an object with `geoCoordinates`

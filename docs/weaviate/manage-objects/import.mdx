@@ -45,11 +45,12 @@ The following example adds objects to the `MyCollection` collection.
 
 ### Error handling
 
+<!-- TODO[g-despot]: Add link to external Python references once created for "reference page" -->
 During a batch import, any failed objects or references will be stored and can be obtained through `batch.failed_objects` and `batch.failed_references`.
 Additionally, a running count of failed objects and references is maintained and can be accessed through `batch.number_errors` within the context manager.
 This counter can be used to stop the import process in order to investigate the failed objects or references.
 
-Find out more about error handling on the Python client [reference page](/docs/weaviate/client-libraries/python#error-handling).
+Find out more about error handling on the Python client [reference page](/docs/weaviate/client-libraries/python).
 
   </TabItem>
 
@@ -109,14 +110,16 @@ The [gRPC API](../api/grpc.md) is faster than the REST API. Use the gRPC API to 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
 
-The Python client uses gRPC by default. See the client page for additional batch import [configuration options](/docs/weaviate/client-libraries/python#batch-imports).
+<!-- TODO[g-despot]: Add link to external Python references once created for "batch import configuration options" -->
+<!-- See the client page for additional batch import [configuration options](/docs/weaviate/client-libraries/python#batch-imports). -->
+The Python client uses gRPC by default. 
 
 <br/>The legacy Python client does not support gRPC.
 
 </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
 
-The [TypeScript client v3](/docs/weaviate/client-libraries/typescript/typescript-v3#batch-inserts) uses gRPC by default.
+The TypeScript client v3 uses gRPC by default.
 
 <br/>The legacy TypeScript client does not support gRPC.
 
@@ -302,7 +305,7 @@ Use the `vector` property to specify a vector for each object.
 :::info Added in `v1.24`
 :::
 
-When you create an object, you can specify named vectors (if [configured in your collection](./collections.mdx#define-named-vectors)).
+When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -378,8 +381,8 @@ You can batch create links from an object to another other object through cross-
 
 The Python clients have built-in batching methods to help you optimize import speed. For details, see the client documentation:
 
-- [Python client `v4`](../client-libraries/python/index.md#batch-imports)
-- [Python client `v3`](../client-libraries/python/python_v3.md#batching)
+<!-- TODO[g-despot]: Add link to external Python references once created for "Python client `v4`" -->
+- [Python client `v4`](../client-libraries/python/index.mdx)
 
 ### Async Python client and batching
 
@@ -535,7 +538,7 @@ import AutoTenant from '/_includes/auto-tenant.mdx';
 
 <AutoTenant/>
 
-For details, see [auto-tenant](/docs/weaviate/manage-data/multi-tenancy#automatically-add-new-tenants).
+For details, see [auto-tenant](/docs/weaviate/manage-collections/multi-tenancy#automatically-add-new-tenants).
 
 
 ## Related pages

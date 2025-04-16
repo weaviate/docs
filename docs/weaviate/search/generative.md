@@ -24,7 +24,7 @@ In Weaviate, a RAG query consists of two parts: *a search query*, and a *prompt 
 :::
 
 To use RAG with a [generative model integration](../model-providers/index.md):
-- [set a default configuration for the collection](../manage-data/collections.mdx#specify-a-generative-model-integration) and/or
+- [set a default configuration for the collection](../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) and/or
 - provide the settings as a part of the query:
 
 <Tabs groupId="languages">

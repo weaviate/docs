@@ -40,7 +40,7 @@ When you try upcoming features, please provide [feedback](https://github.com/wea
 - [Connect to Weaviate](../connections/index.mdx)
 - [Weaviate Quickstart](../quickstart/index.md)
 - [Weaviate Cloud Quickstart](../../cloud/quickstart.mdx)
-- [References: Configuration](../configuration/index.md)
+- [References: Configuration](../configuration/index.mdx)
 
 ## Questions and feedback
 

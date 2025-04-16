@@ -18,7 +18,7 @@ Named vectors make your collections richer and more versatile.
 
 Starting in 1.24, collections can have multiple named vectors. Each vector is independent. Each vector has its own index, its own compression, and its own vectorizer. This means you can create vectors for properties, use different vectorization models, and apply different metrics to fine tune interactions with your data.
 
-In earlier versions, objects in your collections are limited to one vector. Now, you can vectorize meta data like titles and descriptions so that it is available for vector search. You can group things that are logically related, like a music video and a lyric sheet, in the same object. You don't have to create [cross-references](/docs/weaviate/manage-data/cross-references) or manage shared metadata. A single object in a collection can have multiple named vectors.
+In earlier versions, objects in your collections are limited to one vector. Now, you can vectorize meta data like titles and descriptions so that it is available for vector search. You can group things that are logically related, like a music video and a lyric sheet, in the same object. You don't have to create [cross-references](/docs/weaviate/manage-collections/cross-references) or manage shared metadata. A single object in a collection can have multiple named vectors.
 
 You don't have to use multiple vectors in your collections, but if you do, adjust your queries to specify which vector you want to use.
 

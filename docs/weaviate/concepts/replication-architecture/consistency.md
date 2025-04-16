@@ -116,7 +116,7 @@ The main reason for introducing configurable write consistency in v1.18 is becau
 Read operations are GET requests to data objects in Weaviate. Like write, read consistency is tunable, to `ONE`, `QUORUM` (default) or `ALL`.
 
 :::note
-Prior to `v1.18`, read consistency was tunable only for [requests that obtained an object by id](../../manage-data/read.mdx#get-an-object-by-id), and all other read requests had a consistency of `ALL`.
+Prior to `v1.18`, read consistency was tunable only for [requests that obtained an object by id](../../manage-objects/read.mdx#get-an-object-by-id), and all other read requests had a consistency of `ALL`.
 :::
 
 The following consistency levels are applicable to most read operations:
@@ -195,7 +195,7 @@ Repair-on-read works well with one or two isolated repairs. Async replication is
 
 Async replication supplements the repair-on-read mechanism. If a node becomes inconsistent between sync checks, the repair-on-read mechanism catches the problem at read time.
 
-To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-data/collections.mdx#replication-settings). Visit the [How-to: Replication](/docs/weaviate/configuration/replication#async-replication-settings) page to learn more about the available async replication settings.
+To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-collections/multi-node-setup.mdx#replication-settings). Visit the [How-to: Replication](/docs/weaviate/configuration/replication#async-replication-settings) page to learn more about the available async replication settings.
 
 #### Memory and performance considerations for async replication
 
@@ -270,13 +270,13 @@ The default hash tree height of `16` is chosen to balance memory consumption wit
 
 When an object is present on some replicas but not others, this can be because a creation has not yet been propagated to all replicas, or because a deletion has not yet been propagated to all replicas. It is important to distinguish between these two cases.
 
-Deletion resolution works alongside async replication and repair-on-read to ensure consistent handling of deleted objects across the cluster. For each collection, [you can set one of the following](../../manage-data/collections.mdx#replication-settings) deletion resolution strategies:
+Deletion resolution works alongside async replication and repair-on-read to ensure consistent handling of deleted objects across the cluster. For each collection, [you can set one of the following](../../manage-collections/multi-node-setup.mdx#replication-settings) deletion resolution strategies:
 
 - `NoAutomatedResolution`
 - `DeleteOnConflict`
 - `TimeBasedResolution`
 
-Deletion resolution strategies are mutable. [Read more about how to update collection definitions](../../manage-data/collections.mdx#update-a-collection-definition).
+Deletion resolution strategies are mutable. [Read more about how to update collection definitions](../../manage-collections/collection-operations.mdx#update-a-collection-definition).
 
 #### `NoAutomatedResolution`
 

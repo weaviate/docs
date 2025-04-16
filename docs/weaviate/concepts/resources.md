@@ -31,7 +31,7 @@ Vector search is the most CPU intensive process in Weaviate operations. Queries 
 
 To use multiple CPUs efficiently, create multiple shards for your collection. For the fastest imports, create multiple shards even on a single node.
 
-Each insert, or search, is single-threaded. However, if you make multiple searches or inserts at the same time, Weaviate can make use of multiple threads. [Batch inserts](/docs/weaviate/manage-data/import) use multiple threads to process data in parallel.
+Each insert, or search, is single-threaded. However, if you make multiple searches or inserts at the same time, Weaviate can make use of multiple threads. [Batch inserts](/docs/weaviate/manage-objects/import) use multiple threads to process data in parallel.
 
 ### When to add more CPUs
 

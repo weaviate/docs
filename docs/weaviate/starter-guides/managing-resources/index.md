@@ -129,7 +129,7 @@ flowchart LR
 If you are unsure which index type to use, the dynamic index type is a good starting point, as it automatically transitions from a flat to an HNSW index based on the number of objects.
 
 - [Starter guide: indexes](./indexing.mdx)
-- [How-to: Set the vector index type](../../manage-data/collections.mdx#set-vector-index-type)
+- [How-to: Set the vector index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
 
 ### Vector compression
 
@@ -233,7 +233,7 @@ Consider a strategy of deactivating tenants that are not frequently accessed, an
 
 - [Starter guide: tenant states](./tenant-states.mdx)
 - [How-to: Configure tenant offloading](../../configuration/tenant-offloading.md)
-- [How-to: Manage tenant states](../../manage-data/tenant-states.mdx)
+- [How-to: Manage tenant states](../../manage-collections/tenant-states.mdx)
 
 ## Tips
 
@@ -258,10 +258,10 @@ Consider a strategy of deactivating tenants that are not frequently accessed, an
 - [Concepts: Vector Index](../../concepts/indexing/vector-index.md)
 - [Concepts: Vector Quantization](../../concepts/vector-quantization.md)
 - [Concepts: Multi-Tenancy](../../concepts/data.md#multi-tenancy)
-- [How-to: Set the vector index type](../../manage-data/collections.mdx#set-vector-index-type)
+- [How-to: Set the vector index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
 - [How-to: Configure vector compression](../../configuration/compression/index.md)
-- [How-to: Perform multi-tenancy operations](../../manage-data/multi-tenancy.md)
-- [How-to: Manage tenant states](../../manage-data/tenant-states.mdx)
+- [How-to: Perform multi-tenancy operations](../../manage-collections/multi-tenancy.mdx)
+- [How-to: Manage tenant states](../../manage-collections/tenant-states.mdx)
 
 ## Questions and feedback
 

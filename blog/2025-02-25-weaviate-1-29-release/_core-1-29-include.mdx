@@ -85,7 +85,7 @@ When each shard is replicated across multiple nodes, async replication guarantee
 
 Async replication supplements the existing repair-on-read mechanism. If a node becomes inconsistent between sync checks, the repair-on-read mechanism catches the problem at read time.
 
-To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](/docs/weaviate/manage-data/collections#replication-settings). Visit the [How-to: Replication](/docs/weaviate/configuration/replication#async-replication-settings) page to learn more about the available async replication settings, and [Concepts: Replication/Consistency](/docs/weaviate/concepts/replication-architecture/consistency) for more information on how async replication works.
+To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](/docs/weaviate/manage-collections/multi-node-setup#replication-settings). Visit the [How-to: Replication](/docs/weaviate/configuration/replication#async-replication-settings) page to learn more about the available async replication settings, and [Concepts: Replication/Consistency](/docs/weaviate/concepts/replication-architecture/consistency) for more information on how async replication works.
 
 ## Summary
 

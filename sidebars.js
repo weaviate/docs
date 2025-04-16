@@ -1,20 +1,8 @@
-/**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
- */
-
 // @ts-check
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   getStartedSidebar: [
-    // Normal syntax:
     {
       type: "doc",
       id: "weaviate/index",
@@ -23,8 +11,6 @@ const sidebars = {
     {
       type: "category",
       label: "Quickstart",
-      collapsible: true,
-      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/quickstart/index",
@@ -34,8 +20,6 @@ const sidebars = {
     {
       type: "category",
       label: "Installation",
-      collapsible: true,
-      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/installation/index",
@@ -53,8 +37,6 @@ const sidebars = {
     {
       type: "category",
       label: "Client libraries",
-      collapsible: true,
-      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/client-libraries/index",
@@ -63,31 +45,33 @@ const sidebars = {
         {
           type: "category",
           label: "Python",
-          collapsible: true,
-          collapsed: true,
           link: {
             type: "doc",
             id: "weaviate/client-libraries/python/index",
           },
           items: [
             "weaviate/client-libraries/python/async",
-            "weaviate/client-libraries/python/v3_v4_migration",
-            "weaviate/client-libraries/python/python_v3",
+            {
+              type: "link",
+              label: "Reference manual",
+              href: "https://weaviate-python-client.readthedocs.io/en/stable/index.html",
+            },
           ],
         },
         {
           type: "category",
-          label: "JavaScript and TypeScript",
-          collapsible: true,
-          collapsed: true,
+          label: "JavaScript/TypeScript",
+
           link: {
             type: "doc",
             id: "weaviate/client-libraries/typescript/index",
           },
           items: [
-            "weaviate/client-libraries/typescript/typescript-v3",
-            "weaviate/client-libraries/typescript/typescript-v2",
-            "weaviate/client-libraries/typescript/v2_v3_migration",
+            {
+              type: "link",
+              label: "Reference manual",
+              href: "https://weaviate.github.io/typescript-client/index.html",
+            },
           ],
         },
         "weaviate/client-libraries/java",
@@ -98,8 +82,6 @@ const sidebars = {
     {
       type: "category",
       label: "Connect to Weaviate",
-      collapsible: true,
-      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/connections/index",
@@ -129,8 +111,8 @@ const sidebars = {
   guidesSidebar: [
     {
       type: "doc",
-      id: "weaviate/guides", // document ID
-      label: "Overview", // sidebar label
+      id: "weaviate/guides",
+      label: "Overview",
     },
     {
       type: "category",
@@ -139,8 +121,6 @@ const sidebars = {
         type: "doc",
         id: "weaviate/configuration/index",
       },
-      collapsible: true,
-      collapsed: true,
       items: [
         {
           type: "category",
@@ -149,8 +129,6 @@ const sidebars = {
             type: "doc",
             id: "weaviate/configuration/compression/index",
           },
-          collapsible: true,
-          collapsed: true,
           items: [
             "weaviate/configuration/compression/pq-compression",
             "weaviate/configuration/compression/bq-compression",
@@ -169,8 +147,6 @@ const sidebars = {
             type: "doc",
             id: "weaviate/configuration/rbac/index",
           },
-          collapsible: true,
-          collapsed: true,
           items: [
             "weaviate/configuration/rbac/configuration",
             "weaviate/configuration/rbac/manage-roles",
@@ -184,25 +160,43 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "How-to: Manage data",
+      label: "How-to: Manage collections",
       link: {
         type: "doc",
-        id: "weaviate/manage-data/index",
+        id: "weaviate/manage-collections/index",
       },
-      collapsible: true,
-      collapsed: true,
       items: [
-        "weaviate/manage-data/collections",
-        "weaviate/manage-data/create",
-        "weaviate/manage-data/import",
-        "weaviate/manage-data/read",
-        "weaviate/manage-data/read-all-objects",
-        "weaviate/manage-data/update",
-        "weaviate/manage-data/delete",
-        "weaviate/manage-data/cross-references",
-        "weaviate/manage-data/multi-tenancy",
-        "weaviate/manage-data/tenant-states",
-        "weaviate/manage-data/migrate",
+        "weaviate/manage-collections/collection-operations",
+        "weaviate/manage-collections/vector-config",
+        "weaviate/manage-collections/generative-reranker-models",
+        {
+          type: "category",
+          label: "Multi-tenancy",
+          link: {
+            type: "doc",
+            id: "weaviate/manage-collections/multi-tenancy",
+          },
+          items: ["weaviate/manage-collections/tenant-states"],
+        },
+        "weaviate/manage-collections/multi-node-setup",
+        "weaviate/manage-collections/migrate",
+        "weaviate/manage-collections/cross-references",
+      ],
+    },
+    {
+      type: "category",
+      label: "How-to: Manage objects",
+      link: {
+        type: "doc",
+        id: "weaviate/manage-objects/index",
+      },
+      items: [
+        "weaviate/manage-objects/create",
+        "weaviate/manage-objects/import",
+        "weaviate/manage-objects/read",
+        "weaviate/manage-objects/read-all-objects",
+        "weaviate/manage-objects/update",
+        "weaviate/manage-objects/delete",
       ],
     },
     {
@@ -212,8 +206,6 @@ const sidebars = {
         type: "doc",
         id: "weaviate/search/index",
       },
-      collapsible: true,
-      collapsed: true,
       items: [
         "weaviate/search/basics",
         "weaviate/search/similarity",
@@ -230,8 +222,6 @@ const sidebars = {
     {
       type: "category",
       label: "Starter guides",
-      collapsible: true,
-      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/starter-guides/index",
@@ -240,8 +230,6 @@ const sidebars = {
         {
           type: "category",
           label: "Managing collections",
-          collapsible: true,
-          collapsed: true,
           link: {
             type: "doc",
             id: "weaviate/starter-guides/managing-collections/index",
@@ -255,9 +243,7 @@ const sidebars = {
         "weaviate/starter-guides/generative",
         {
           type: "category",
-          label: "Managing Resources (Hot, Warm, Cold)",
-          collapsible: true,
-          collapsed: true,
+          label: "Managing resources (hot, warm, cold)",
           link: {
             type: "doc",
             id: "weaviate/starter-guides/managing-resources/index",
@@ -277,17 +263,15 @@ const sidebars = {
         type: "doc",
         id: "weaviate/tutorials/index",
       },
-      collapsible: true,
-      collapsed: true,
       items: [
         "weaviate/tutorials/rbac",
         "weaviate/tutorials/multi-vector-embeddings",
-        "weaviate/tutorials/import",
+        //"weaviate/tutorials/import",
         "weaviate/tutorials/cross-references",
-        "weaviate/tutorials/vector-provision-options",
-        "weaviate/tutorials/query",
-        "weaviate/tutorials/wikipedia",
-        "weaviate/tutorials/spark-connector",
+        //"weaviate/tutorials/vector-provision-options",
+        //"weaviate/tutorials/query",
+        //"weaviate/tutorials/wikipedia",
+        //"weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/modules",
       ],
     },
@@ -296,8 +280,6 @@ const sidebars = {
     {
       type: "category",
       label: "API",
-      collapsible: true,
-      collapsed: true,
       link: {
         type: "doc",
         id: "weaviate/api/index",
@@ -310,8 +292,6 @@ const sidebars = {
             type: "doc",
             id: "weaviate/api/graphql/index",
           },
-          collapsible: true,
-          collapsed: true,
           items: [
             "weaviate/api/graphql/get",
             "weaviate/api/graphql/aggregate",
@@ -328,32 +308,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Modules",
-      collapsible: true,
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "weaviate/modules/index",
-      },
-      items: [
-        "weaviate/modules/model_providers",
-        "weaviate/modules/text2vec-contextionary",
-        "weaviate/modules/img2vec-neural",
-        "weaviate/modules/model_providers",
-        "weaviate/modules/ref2vec-centroid",
-        "weaviate/modules/qna-transformers",
-        "weaviate/modules/qna-openai",
-        "weaviate/modules/ner-transformers",
-        "weaviate/modules/spellcheck",
-        "weaviate/modules/sum-transformers",
-        "weaviate/modules/custom-modules",
-      ],
-    },
-    {
-      type: "category",
       label: "Configuration",
-      collapsible: true,
-      collapsed: true,
       items: [
         {
           type: "category",
@@ -362,8 +317,6 @@ const sidebars = {
             type: "doc",
             id: "weaviate/config-refs/schema/index",
           },
-          collapsible: true,
-          collapsed: true,
           items: [
             "weaviate/config-refs/schema/multi-vector",
             "weaviate/config-refs/schema/vector-index",
@@ -378,17 +331,33 @@ const sidebars = {
             type: "doc",
             id: "weaviate/config-refs/env-vars/index",
           },
-          collapsible: true,
-          collapsed: true,
-          items: [
-            "weaviate/config-refs/env-vars/runtime-config",
-          ],
+          items: ["weaviate/config-refs/env-vars/runtime-config"],
         },
         "weaviate/config-refs/status",
         "weaviate/config-refs/telemetry",
         "weaviate/config-refs/meta",
         "weaviate/config-refs/nodes",
         "weaviate/config-refs/oidc",
+      ],
+    },
+    {
+      type: "category",
+      label: "Modules",
+      link: {
+        type: "doc",
+        id: "weaviate/modules/index",
+      },
+      items: [
+        "weaviate/modules/model_providers",
+        "weaviate/modules/text2vec-contextionary",
+        "weaviate/modules/img2vec-neural",
+        "weaviate/modules/ref2vec-centroid",
+        "weaviate/modules/qna-transformers",
+        "weaviate/modules/qna-openai",
+        "weaviate/modules/ner-transformers",
+        "weaviate/modules/spellcheck",
+        "weaviate/modules/sum-transformers",
+        "weaviate/modules/custom-modules",
       ],
     },
   ],
@@ -401,8 +370,6 @@ const sidebars = {
         type: "doc",
         id: "weaviate/more-resources/migration/index",
       },
-      collapsible: true,
-      collapsed: true,
       items: [
         "weaviate/more-resources/migration/weaviate-1-30",
         "weaviate/more-resources/migration/weaviate-1-25",
@@ -418,8 +385,6 @@ const sidebars = {
         type: "doc",
         id: "weaviate/benchmarks/index",
       },
-      collapsible: true,
-      collapsed: true,
       items: ["weaviate/benchmarks/ann"],
     },
     "weaviate/more-resources/faq",
@@ -448,14 +413,12 @@ const sidebars = {
   contributorSidebar: [
     {
       type: "doc",
-      id: "contributor-guide/index", // document ID
-      label: "Open-source at Weaviate", // sidebar label
+      id: "contributor-guide/index",
+      label: "Open-source at Weaviate",
     },
     {
       type: "category",
       label: "Getting started",
-      collapsible: true,
-      collapsed: false,
       link: {
         type: "doc",
         id: "contributor-guide/getting-started/index",
@@ -497,19 +460,17 @@ const sidebars = {
   cloudSidebar: [
     {
       type: "doc",
-      id: "cloud/index", // document ID
-      label: "Overview", // sidebar label
+      id: "cloud/index",
+      label: "Overview",
     },
     {
       type: "doc",
-      id: "cloud/quickstart", // document ID
-      label: "Quickstart", // sidebar label
+      id: "cloud/quickstart",
+      label: "Quickstart",
     },
     {
       type: "category",
       label: "Manage a cluster",
-      collapsible: true,
-      collapsed: false,
       items: [
         "cloud/manage-clusters/connect",
         "cloud/manage-clusters/create",
@@ -520,8 +481,6 @@ const sidebars = {
     {
       type: "category",
       label: "Tools",
-      collapsible: true,
-      collapsed: false,
       items: [
         "cloud/tools/collections-tool",
         "cloud/tools/explorer-tool",
@@ -530,8 +489,8 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "cloud/faq", // document ID
-      label: "FAQ", // sidebar label
+      id: "cloud/faq",
+      label: "FAQ",
     },
   ],
   cloudWeaviateEmbeddings: [

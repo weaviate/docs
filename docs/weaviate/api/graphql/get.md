@@ -163,7 +163,7 @@ import GraphQLGetMT from '/_includes/code/graphql.get.multitenancy.mdx';
 
 
 :::tip Read more
-- [How-to manage data: Multi-tenancy operations](../../manage-data/multi-tenancy.md)
+- [How-to manage data: Multi-tenancy operations](../../manage-collections/multi-tenancy.mdx)
 :::
 
 ## Cross-references

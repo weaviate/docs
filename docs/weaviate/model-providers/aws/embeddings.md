@@ -102,7 +102,7 @@ To use a model via [SageMaker](https://aws.amazon.com/sagemaker/), you must have
 
 ## Configure the vectorizer
 
-[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-vectorizer) as follows to use an AWS embedding model.
+[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an AWS embedding model.
 
 The required parameters for the Bedrock and the SageMaker models are different.
 
@@ -224,7 +224,7 @@ The AWS region setting is required for all AWS integrations.
 
 ## Data import
 
-After configuring the vectorizer, [import data](../../manage-data/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
 
 <Tabs groupId="languages">
 
@@ -372,8 +372,8 @@ Any custom SageMaker URL can be used as an endpoint.
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### External resources
 

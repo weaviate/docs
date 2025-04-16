@@ -8,7 +8,7 @@ image: og/docs/concepts.jpg
 :::info Added in `v1.17`
 :::
 
-Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-data/collections.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
+Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-collections/multi-node-setup.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
 
 Weaviate utilizes multiple replication architectures:
 

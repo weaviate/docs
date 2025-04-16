@@ -89,4 +89,4 @@ Modules can be "vectorizers" (defines how the numbers in the vectors are chosen 
 - General module information (which modules are attached, version, etc.) is accessible through Weaviate's <SkipLink href="/docs/weaviate/api/rest#tag/meta">`v1/meta` endpoint</SkipLink>.
 - Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](/docs/weaviate/api/graphql/additional-properties.md).
 - A module can add [filters](/docs/weaviate/api/graphql/filters.md) in GraphQL queries.
-- Which vectorizer and other modules are applied to which data classes is configured in the [schema](/docs/weaviate/manage-data/collections.mdx#specify-a-vectorizer).
+- Which vectorizer and other modules are applied to which data classes is configured in the [schema](../../weaviate/manage-collections/vector-config.mdx#specify-a-vectorizer).

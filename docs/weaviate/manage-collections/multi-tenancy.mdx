@@ -1,21 +1,21 @@
 ---
 title: Multi-tenancy operations
-sidebar_position: 60
+sidebar_position: 4
 image: og/docs/configuration.jpg
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v3.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v2.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go';
-import GoCodeAuto from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go';
-import CurlCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh';
-import SkipLink from '/src/components/SkipValidationLink'
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v2.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
+import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
+import CurlCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh";
+import SkipLink from "/src/components/SkipValidationLink";
 
 Multi-tenancy provides data isolation. Each tenant is stored on a separate shard. Data stored in one tenant is not visible to another tenant. If your application serves many different users, multi-tenancy keeps their data private and makes database operations more efficient.
 
@@ -93,9 +93,9 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
 
 ## Automatically add new tenants
 
-import AutoTenant from '/_includes/auto-tenant.mdx';
+import AutoTenant from "/_includes/auto-tenant.mdx";
 
-<AutoTenant/>
+<AutoTenant />
 
 ### Create a collection
 
@@ -147,7 +147,7 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       language="py"
     />
   </TabItem>
-    <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START UpdateAutoMT"
@@ -176,12 +176,13 @@ This example adds `tenantA` to the `MultiTenancyCollection` collection:
     Additional information
   </summary>
 
-import TenantNameFormat from '/_includes/tenant-names.mdx';
+import TenantNameFormat from "/_includes/tenant-names.mdx";
 
 Tenant status is available from Weaviate `1.21` onwards.
-<br/>
 
-<TenantNameFormat/>
+<br />
+
+<TenantNameFormat />
 
 </details>
 
@@ -195,41 +196,41 @@ Tenant status is available from Weaviate `1.21` onwards.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AddTenantsToClass"
-      endMarker="# END AddTenantsToClass"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START AddTenantsToClass"
+    endMarker="# END AddTenantsToClass"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START AddTenantsToClass"
-      endMarker="// END AddTenantsToClass"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START AddTenantsToClass"
+    endMarker="// END AddTenantsToClass"
+    language="ts"
+  />
+</TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START AddTenantsToClass"
-      endMarker="// END AddTenantsToClass"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START AddTenantsToClass"
+    endMarker="// END AddTenantsToClass"
+    language="tsv2"
+  />
+</TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START AddTenantsToClass"
-      endMarker="// END AddTenantsToClass"
-      language="java"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START AddTenantsToClass"
+    endMarker="// END AddTenantsToClass"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -257,41 +258,41 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ListTenants"
-      endMarker="# END ListTenants"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START ListTenants"
+    endMarker="# END ListTenants"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START ListTenants"
-      endMarker="// END ListTenants"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ListTenants"
+    endMarker="// END ListTenants"
+    language="ts"
+  />
+</TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ListTenants"
-      endMarker="// END ListTenants"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ListTenants"
+    endMarker="// END ListTenants"
+    language="tsv2"
+  />
+</TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START ListTenants"
-      endMarker="// END ListTenants"
-      language="java"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ListTenants"
+    endMarker="// END ListTenants"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -319,14 +320,14 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START GetTenantsByName"
-      endMarker="// END GetTenantsByName"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START GetTenantsByName"
+    endMarker="// END GetTenantsByName"
+    language="ts"
+  />
+</TabItem>
 
 </Tabs>
 
@@ -346,17 +347,16 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START GetOneTenant"
-      endMarker="// END GetOneTenant"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START GetOneTenant"
+    endMarker="// END GetOneTenant"
+    language="ts"
+  />
+</TabItem>
 
 </Tabs>
-
 
 ## Delete tenants
 
@@ -376,41 +376,41 @@ Deleting a tenant deletes all associated objects.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START RemoveTenants"
-      endMarker="# END RemoveTenants"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START RemoveTenants"
+    endMarker="# END RemoveTenants"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START RemoveTenants"
-      endMarker="// END RemoveTenants"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START RemoveTenants"
+    endMarker="// END RemoveTenants"
+    language="ts"
+  />
+</TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START RemoveTenants"
-      endMarker="// END RemoveTenants"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START RemoveTenants"
+    endMarker="// END RemoveTenants"
+    language="tsv2"
+  />
+</TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START RemoveTenants"
-      endMarker="// END RemoveTenants"
-      language="java"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START RemoveTenants"
+    endMarker="// END RemoveTenants"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -466,41 +466,41 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateMtObject"
-      endMarker="# END CreateMtObject"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START CreateMtObject"
+    endMarker="# END CreateMtObject"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START CreateMtObject"
-      endMarker="// END CreateMtObject"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START CreateMtObject"
+    endMarker="// END CreateMtObject"
+    language="ts"
+  />
+</TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START CreateMtObject"
-      endMarker="// END CreateMtObject"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START CreateMtObject"
+    endMarker="// END CreateMtObject"
+    language="tsv2"
+  />
+</TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateMtObject"
-      endMarker="// END CreateMtObject"
-      language="java"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateMtObject"
+    endMarker="// END CreateMtObject"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -526,41 +526,41 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Search"
-      endMarker="# END Search"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START Search"
+    endMarker="# END Search"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START Search"
-      endMarker="// END Search"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START Search"
+    endMarker="// END Search"
+    language="ts"
+  />
+</TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START Search"
-      endMarker="// END Search"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START Search"
+    endMarker="// END Search"
+    language="tsv2"
+  />
+</TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START Search"
-      endMarker="// END Search"
-      language="java"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START Search"
+    endMarker="// END Search"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -574,11 +574,12 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
 
 ## Cross-references
 
-import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+import CrossReferencePerformanceNote from "/_includes/cross-reference-performance-note.mdx";
 
 <CrossReferencePerformanceNote />
 
 A cross-reference can be added from a multi-tenancy collection object to:
+
 - A non-multi-tenancy collection object, or
 - An object belonging to the same tenant.
 
@@ -594,41 +595,41 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AddCrossRef"
-      endMarker="# END AddCrossRef"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START AddCrossRef"
+    endMarker="# END AddCrossRef"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START AddCrossRef"
-      endMarker="// END AddCrossRef"
-      language="ts"
-    />
-  </TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START AddCrossRef"
+    endMarker="// END AddCrossRef"
+    language="ts"
+  />
+</TabItem>
 
- <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START AddCrossRef"
-      endMarker="// END AddCrossRef"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START AddCrossRef"
+    endMarker="// END AddCrossRef"
+    language="tsv2"
+  />
+</TabItem>
 
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START AddCrossRef"
-      endMarker="// END AddCrossRef"
-      language="java"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START AddCrossRef"
+    endMarker="// END AddCrossRef"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -649,12 +650,12 @@ Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will on
 ## Related pages
 
 - [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- [How to: Configure a schema](../manage-data/collections.mdx)
+- [How to: Manage collections](../manage-collections/index.mdx)
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure: Multi-tenancy](../concepts/data.md#multi-tenancy)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />
