@@ -351,7 +351,6 @@ const sidebars = {
         "weaviate/modules/model_providers",
         "weaviate/modules/text2vec-contextionary",
         "weaviate/modules/img2vec-neural",
-        "weaviate/modules/model_providers",
         "weaviate/modules/ref2vec-centroid",
         "weaviate/modules/qna-transformers",
         "weaviate/modules/qna-openai",
