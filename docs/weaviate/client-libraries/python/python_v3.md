@@ -18,7 +18,7 @@ The `v3` client will continue to get critical security updates and bugfixes for 
 **What does this mean for me?**
 <br/>
 
-To take advantage of the latest developments on the Weaviate Database, we recommend migrating your codebase to use the [`v4` client API](./index.md).
+To take advantage of the latest developments on the Weaviate Database, we recommend migrating your codebase to use the [`v4` client API](./index.mdx).
 <br/>
 
 Our documentation includes [a migration guide here](./v3_v4_migration.md), and many code examples include both `v3` and `v4` syntax. We will be adding more dedicated resources for you to ease the migration experience.
@@ -283,6 +283,10 @@ schema = {
 
 client.schema.create(schema)
 ```
+
+#### Example: Blog Post on How to get started with Weaviate and the Python client
+
+A full example of how to use the Python client for Weaviate can be found in [this article on Towards Data Science](https://towardsdatascience.com/quickstart-with-weaviate-python-client-e85d14f19e4f).
 
 ## Batching
 

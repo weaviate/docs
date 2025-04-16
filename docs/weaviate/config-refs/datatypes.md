@@ -12,7 +12,7 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 ## Introduction
 
-When [creating a property](../manage-data/collections.mdx#add-a-property), you must specify a data type. Weaviate accepts the following types.
+When [creating a property](../manage-collections/collection-operations.mdx#add-a-property), you must specify a data type. Weaviate accepts the following types.
 
 :::note Array types
 Arrays of a data type are specified by adding `[]` to the type (e.g. `text` ➡ `text[]`). Note that not all data types support arrays.
@@ -28,8 +28,8 @@ Further details on each data type are provided below.
 
 Use this type for any text data.
 
-- Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../manage-data/collections.mdx#property-level-settings).
-- If using [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors), the property vectorization is defined in the [named vector definition](../manage-data/collections.mdx#define-named-vectors).
+- Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../manage-collections/vector-config.mdx#property-level-settings).
+- If using [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors), the property vectorization is defined in the [named vector definition](../manage-collections/vector-config.mdx#define-named-vectors).
 - Text properties are tokenized prior to being indexed for keyword/BM25 searches. See [collection definition: tokenization](../config-refs/schema/index.md#tokenization) for more information.
 
 <details>
@@ -605,12 +605,12 @@ The `cross-reference` type allows a link to be created from one object to anothe
 
 The `cross-reference` type objects are `arrays` by default. This allows you to link to any number of instances of a given collection (including zero).
 
-For more information on cross-references, see the [cross-references](../concepts/data.md#cross-references). To see how to work with cross-references, see [how to manage data: cross-references](../manage-data/cross-references.mdx).
+For more information on cross-references, see the [cross-references](../concepts/data.md#cross-references). To see how to work with cross-references, see [how to manage data: cross-references](../manage-collections/cross-references.mdx).
 
 ## More information
 
 :::info Related pages
-- [How-to: Manage collections](../manage-data/collections.mdx)
+- [How-to: Manage collections](../manage-collections/index.mdx)
 - [Concepts: Data Structure](../concepts/data.md)
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 :::

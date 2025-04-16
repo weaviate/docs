@@ -345,7 +345,7 @@ rough estimation of how the throughput would vary on smaller or larger
 machines. If you do not need the stated throughput, you can run with fewer CPU
 cores. If you need more throughput, you can run with more CPU cores.
 
-Adding more CPUs reaches a point of diminishing returns because of synchronization mechanisms, disk, and memory bottlenecks. Beyond that point, you  should scale horizontally instead of vertically. Horizontal scaling with replication will be [available in Weaviate soon](/docs/weaviate/roadmap/index.md).
+Adding more CPUs reaches a point of diminishing returns because of synchronization mechanisms, disk, and memory bottlenecks. Beyond that point, you  should scale horizontally instead of vertically. Horizontal scaling with replication is also available. 
 
 ### What are `ef`, `efConstruction`, and `maxConnections`?
 

@@ -46,11 +46,11 @@ No additional authentication is specifically needed, and the Weaviate Embeddings
 ## Usage limits
 
 <!-- TODO[g-despot] Don't hardcode these values here if possible -->
-Weaviate Embeddings only imposes usage limits on requests for free Sandbox clusters. 
-The rate limit for Sandbox clusters is `2000` requests per cluster. 
+Weaviate Embeddings only imposes usage limits on requests for free Sandbox clusters.
+The rate limit for Sandbox clusters is `2000` requests per cluster per day.
 
 :::info
-If you use a [batch import](/docs/weaviate/manage-data/import) to vectorize your data, the maximum size is `200` objects per batch. 
+If you use a [batch import](/docs/weaviate/manage-objects/import) to vectorize your data, the maximum size is `200` objects per batch. 
 This means that you can generate up to a maximum of `400 000` embeddings (`2000 (requests) * 200 (objects per request)`) within your free Sandbox cluster.
 :::
 

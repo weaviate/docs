@@ -91,7 +91,7 @@ Provide the Dataricks token to Weaviate using one of the following methods:
 
 ## Configure the vectorizer
 
-[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-vectorizer) to use a Databricks serving model endpoint by setting the vectorizer as follows:
+[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) to use a Databricks serving model endpoint by setting the vectorizer as follows:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,7 +132,7 @@ This will configure Weaviate to use the vectorizer served through the endpoint y
 
 For further details on model parameters, see the [Databricks documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#embedding-request).
 
-## Runtime parameters
+## Header parameters
 
 You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
 
@@ -146,7 +146,7 @@ Provide the headers as shown in the [API credentials examples](#api-credentials)
 
 ## Data import
 
-After configuring the vectorizer, [import data](../../manage-data/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using [the specified model](#vectorizer-parameters).
+After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using [the specified model](#vectorizer-parameters).
 
 <Tabs groupId="languages">
 
@@ -276,8 +276,8 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### External resources
 

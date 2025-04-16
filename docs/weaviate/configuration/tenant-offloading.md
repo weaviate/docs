@@ -9,7 +9,7 @@ image: og/docs/configuration.jpg
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-This page explains how to configure tenant offloading in Weaviate. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-data/tenant-states.mdx).
+This page explains how to configure tenant offloading in Weaviate. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
 
 ## Tenant offload modules
 
@@ -21,7 +21,7 @@ To use tenant offloading in Weaviate, you need enable a relevant offloading [mod
 
 ## `offload-s3` module
 
-The `offload-s3` module enables you to [offload or onload tenants](../manage-data/tenant-states.mdx#offload-tenant) to/from an S3 bucket.
+The `offload-s3` module enables you to [offload or onload tenants](../manage-collections/tenant-states.mdx#offload-tenant) to/from an S3 bucket.
 
 To use the `offload-s3` module, add `offload-s3` to the `ENABLE_MODULES` in your docker-compose file as shown below.
 
@@ -92,7 +92,7 @@ The backup module will first try to authenticate itself using AWS IAM. If the au
 
 ## Related pages
 - [Configure: Modules](./modules.md)
-- [How-to: Manage tenant states](../manage-data/tenant-states.mdx)
+- [How-to: Manage tenant states](../manage-collections/tenant-states.mdx)
 - [Guide: Manage tenant states](../starter-guides/managing-resources/tenant-states.mdx)
 
 ## Questions and feedback

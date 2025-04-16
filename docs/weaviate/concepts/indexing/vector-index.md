@@ -29,7 +29,7 @@ In vector databases, a vector index is a data structure that organizes vector em
 
 [Vector embeddings](https://weaviate.io/blog/vector-embeddings-explained) are a great way to represent meaning. Understanding how to index a vector is crucial for working with vector databases effectively. Vectors embeddings are arrays of elements that can capture meaning from different data types, such as texts, images, videos, and other content. The number of elements are called dimensions. High dimension vectors capture more information, but they are harder to work with.
 
-Vector databases make it easier to work with high dimensional vectors. Consider search; Vector databases efficiently measure semantic similarity between data objects. When you run a [similarity search](https://weaviate-docs.netlify.app/docs/weaviate/search/similarity), a vector database like Weaviate uses a vectorized version of the query to find objects in the database that have vectors similar to the query vector.
+Vector databases make it easier to work with high dimensional vectors. Consider search; Vector databases efficiently measure semantic similarity between data objects. When you run a [similarity search](../../search/similarity.md), a vector database like Weaviate uses a vectorized version of the query to find objects in the database that have vectors similar to the query vector.
 
 Vectors are like coordinates in a multi-dimensional space. A very simple vector might represent objects, *words* in this case, in a 2-dimensional space.
 
@@ -136,7 +136,7 @@ The resulting search list has these characteristics.
 - A maximum length of 25 objects ("dynamicEfMax": 25).
 - An actual size of 5 to 25 objects.
 
-If you use the [`docker-compose.yml` file from Weaviate](/docs/weaviate/installation/docker-compose) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
+If you use the [`docker-compose.yml` file from Weaviate](../../installation/docker-compose.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
 To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you configure your Weaviate instance.
 
@@ -227,7 +227,7 @@ Note that the vector index type parameter only specifies how the vectors of data
 
 The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/docs/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
 
-To learn more about configuring the collection, see [this how-to page](../../manage-data/collections.mdx).
+To learn more about configuring the collection, see [this how-to page](../../manage-collections/vector-config.mdx).
 
 ### Which distance metrics can I use with vector indexing?
 
@@ -235,7 +235,7 @@ All of [the distance metrics](/docs/weaviate/config-refs/distances.md), such as 
 
 ### How to configure the vector index type in Weaviate?
 
-The index type can be specified per data collection via the [collection definition](/docs/weaviate/manage-data/collections.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/schema/vector-index.md).
+The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/schema/vector-index.md).
 
 ### When to skip indexing
 

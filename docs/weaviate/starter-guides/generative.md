@@ -850,7 +850,7 @@ Our own [Connor Shorten's podcast](https://weaviate.io/podcast) is a great resou
 
 We've explored the dynamic capabilities of RAG in Weaviate, showcasing how it enhances large language models through retrieval-augmented generation.
 
-To learn more about specific search capabilities, check out the [How-to: search guide](../search/index.md). And to learn more about individual modules, check out the [Modules section](../modules/index.md).
+To learn more about specific search capabilities, check out the [How-to: search guide](../search/index.mdx). And to learn more about individual modules, check out the [Modules section](../modules/index.md).
 
 
 ## Questions and feedback

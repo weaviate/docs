@@ -60,7 +60,7 @@ As the names suggest, the use of these endpoints depend on whether objects are b
 
 For importing data, we **strongly suggest that you use batch imports** unless you have a specific reason not to. Batch imports can greatly improve performance by sending multiple objects in a single request.
 
-We note that batch imports are carried out through the [`batch` REST endpoint](../manage-data/import.mdx).
+We note that batch imports are carried out through the [`batch` REST endpoint](../manage-objects/import.mdx).
 
 ### Batch import process
 
@@ -94,7 +94,7 @@ You may have noticed that we do not provide a vector. As a `vectorizer` is speci
 
 ### Bring your own vectors
 
-If you wish to upload your own vectors, you can do so with Weaviate. Refer to the [this page](../manage-data/import.mdx#specify-a-vector).
+If you wish to upload your own vectors, you can do so with Weaviate. Refer to the [this page](../manage-objects/import.mdx#specify-a-vector).
 
 You can also manually upload existing vectors and use a vectorizer module for vectorizing queries.
 
@@ -132,7 +132,7 @@ When importing large datasets, it may be worth planning out an optimized import 
 1. To use multiple CPUs efficiently, enable sharding when you import data. For the fastest imports, enable sharding even on a single node.
 1. Use [parallelization](https://www.computerhope.com/jargon/p/parallelization.htm); if the CPUs are not maxed out, just add another import process.
 1. Use `htop` when importing to see if all CPUs are maxed out.
-1. To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](../config-refs/env-vars.md).
+1. To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](../config-refs/env-vars/index.md).
 1. For Kubernetes, a few large machines are faster than many small machines (due to network latency).
 
 Our rules of thumb are:
@@ -144,7 +144,8 @@ Our rules of thumb are:
 
 ### Error handling
 
-We recommend that you implement error handling at an object level, such as in [this example](../client-libraries/python/index.md#error-handling).
+<!-- TODO[g-despot]: Add link to external Python references once created for "this example" -->
+We recommend that you implement error handling at an object level, such as in this example.
 
 :::tip `200` status code != 100% batch success
 It is important to note that an HTTP `200` status code only indicates that the **request** has been successfully sent to Weaviate. In other words, there were no issues with the connection or processing of the batch and no malformed request.
@@ -167,7 +168,7 @@ A request with a `200` response may still include object-level errors, which is 
 
 ### Other object operations
 
-All other CRUD object operations are available in the [manage-data](../manage-data/index.md) section.
+All other CRUD object operations are available in the [manage-data](../manage-collections/index.mdx) section.
 
 
 ## Questions and feedback

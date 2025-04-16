@@ -195,11 +195,11 @@ Every collection has its own vector space. This means that different collections
 
 Every object stored in Weaviate has a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier). The UUID guarantees uniqueness across all collections.
 
-You can [use a deterministic UUID](../manage-data/import.mdx#specify-an-id-value) to ensure that the same object always has the same UUID. This is useful when you want to update an object without changing its UUID.
+You can [use a deterministic UUID](../manage-objects/import.mdx#specify-an-id-value) to ensure that the same object always has the same UUID. This is useful when you want to update an object without changing its UUID.
 
 If you don't specify an ID, Weaviate generates a random UUID for you.
 
-In requests without any other ordering specified, Weaviate processes them in ascending UUID order. This means that requests to [list objects](../search/basics.md#list-objects), use of the [cursor API](../manage-data/read-all-objects.mdx), or requests to [delete objects](../manage-data/delete.mdx#delete-multiple-objects-by-id), without any other ordering specified, will be processed in ascending UUID order.
+In requests without any other ordering specified, Weaviate processes them in ascending UUID order. This means that requests to [list objects](../search/basics.md#list-objects), use of the [cursor API](../manage-objects/read-all-objects.mdx), or requests to [delete objects](../manage-objects/delete.mdx#delete-multiple-objects-by-id), without any other ordering specified, will be processed in ascending UUID order.
 
 ### Cross-references
 
@@ -207,7 +207,7 @@ import CrossReferencePerformanceNote from '/_includes/cross-reference-performanc
 
 <CrossReferencePerformanceNote />
 
-If data objects are related, you can use [cross-references](../manage-data/cross-references.mdx) to represent the relationships. Cross-references in Weaviate are like links that help you retrieve related information. Cross-references capture relationships, but they do not change the vectors of the underlying objects.
+If data objects are related, you can use [cross-references](../manage-collections/cross-references.mdx) to represent the relationships. Cross-references in Weaviate are like links that help you retrieve related information. Cross-references capture relationships, but they do not change the vectors of the underlying objects.
 
 To create a reference, use a property from one collection to specify the value of a related property in the other collection.
 
@@ -278,7 +278,7 @@ Schemas fulfill several roles:
 1. Schemas define cross-references that link collections, even collections that use different embeddings.
 1. Schemas let you configure module behavior, ANN index settings, reverse indexes, and other features on a collection level.
 
-For details on configuring your schema, see the [schema tutorial](../starter-guides/managing-collections/index.mdx) or [schema configuration](../manage-data/collections.mdx).
+For details on configuring your schema, see the [schema tutorial](../starter-guides/managing-collections/index.mdx) or [How-to: Manage collections](../manage-collections/index.mdx).
 
 ## Multi-tenancy
 
@@ -394,7 +394,7 @@ Tenants have an activity status (also called a tenant state) that reflects their
     - `OFFLOADING` tenants are being moved to cloud storage. This is a transient status, and therefore not user-specifiable.
     - `ONLOADING` tenants are being loaded from cloud storage. This is a transient status, and therefore not user-specifiable. An `ONLOADING` tenant may be being warmed to a `ACTIVE` status or a `INACTIVE` status.
 
-For more details on managing tenants, see [Multi-tenancy operations](../manage-data/multi-tenancy.md).
+For more details on managing tenants, see [Multi-tenancy operations](../manage-collections/multi-tenancy.mdx).
 
 | Status | Available | Description | User-specifiable |
 | :-- | :-- | :-- | :-- |
@@ -432,7 +432,7 @@ When a tenant is offloaded, the entire tenant shard is moved to cloud storage. T
 ### Backups
 
 :::caution Backups do not include inactive or offloaded tenants
-Backups of multi-tenant collections will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](../manage-data/multi-tenancy.md#manage-tenant-states) before creating a backup to ensure all data is included.
+Backups of multi-tenant collections will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](../manage-collections/multi-tenancy.mdx#manage-tenant-states) before creating a backup to ensure all data is included.
 :::
 
 ### Tenancy and IDs
@@ -460,13 +460,13 @@ Cross-references like these are not supported:
 - To scale out, add a new node to your cluster. Weaviate does not redistribute existing tenants, however Weaviate adds new tenants to the node with the least resource usage.
 
 :::info Related pages
-- [How-to: Manage Data | Multi-tenancy operations](../manage-data/multi-tenancy.md)
+- [How-to: Manage Data | Multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
 - [Multi-tenancy blog](https://weaviate.io/blog/multi-tenancy-vector-search)
 :::
 
 ### Monitoring metrics
 
-To group tenants together for monitoring, set [`PROMETHEUS_MONITORING_GROUP = true`](../config-refs/env-vars.md) in your system configuration file.
+To group tenants together for monitoring, set [`PROMETHEUS_MONITORING_GROUP = true`](../config-refs/env-vars/index.md) in your system configuration file.
 
 ### Number of tenants per node
 
@@ -474,15 +474,15 @@ The number of tenants per node is limited by operating system constraints. The n
 
 For example, a 9-node test cluster built on `n1-standard-8` machines holds around 170k active tenants. There are 18,000 to 19,000 tenants per node.
 
-Note that these numbers relate to active tenants only. If you [set unused tenants as `inactive`](../manage-data/multi-tenancy.md#manage-tenant-states), the open file per process limit does not apply.
+Note that these numbers relate to active tenants only. If you [set unused tenants as `inactive`](../manage-collections/multi-tenancy.mdx#manage-tenant-states), the open file per process limit does not apply.
 
 ## Related pages
 
 For more information, see the following:
 
-- [How-to manage data: Multi-tenancy operations](../manage-data/multi-tenancy.md)
+- [How-to: Multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
-- [Configuration: Schema](../manage-data/collections.mdx)
+- [How-to: Manage collections](../manage-collections/index.mdx)
 
 ## Summary
 

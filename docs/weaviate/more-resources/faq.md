@@ -285,7 +285,7 @@ If you need a higher search quality for a given limit you can consider the follo
 
 > Yes, Weaviate supports cursor-based iteration as well as pagination through a result set.
 >
-> To iterate through all objects, you can use the [`after` operator](../manage-data/read-all-objects.mdx).
+> To iterate through all objects, you can use the [`after` operator](../manage-objects/read-all-objects.mdx).
 >
 > For pagination through a result set, you can use the `offset` and `limit` operators for GraphQL API calls. Take a look at [this page](../api/graphql/filters.md) which describes how to use these operators, including tips on performance and limitations.
 
@@ -297,9 +297,9 @@ If you need a higher search quality for a given limit you can consider the follo
   <summary>Answer</summary>
 
 > Here are top 3 best practices for updating data:
-> 1. Use the [batch API](../manage-data/import.mdx)
+> 1. Use the [batch API](../manage-objects/import.mdx)
 > 2. Start with a small-ish batch size e.g. 100 per batch. Adjust up if it is very fast, adjust down if you run into timeouts
-> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-data/import.mdx#import-with-references) to set links between collections in arbitrary directions.
+> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-objects/import.mdx#import-with-references) to set links between collections in arbitrary directions.
 
 </details>
 
@@ -473,7 +473,7 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](../config-refs/env-vars.md).
+You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](../config-refs/env-vars/index.md).
 
 Read more on SIGQUIT [here](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) and this [StackOverflow answer](https://stackoverflow.com/questions/19094099/how-to-dump-goroutine-stacktraces/35290196#35290196).
 

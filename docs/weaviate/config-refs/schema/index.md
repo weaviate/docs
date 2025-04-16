@@ -151,6 +151,25 @@ To avoid this, you can either:
 
 We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
 
+### Collections count limit {#collections-count-limit}
+
+:::info Added in **`v1.30`**
+:::
+
+To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
+
+- **Default limit**: `1000` collections.
+- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](../../config-refs/env-vars/index.md) environment variable to adjust the collection count limit.
+
+:::note 
+If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
+:::
+
+:::tip
+**Instead of raising the collections count limit, consider rethinking your architecture**.  
+For more details, see [Starter Guides: Scaling limits with collections](../../starter-guides/managing-collections/collections-scaling-limits.mdx). 
+:::
+
 ## Available parameters
 
 ### `class`
@@ -315,7 +334,7 @@ Using these features requires more resources. The additional inverted indexes mu
 
 The vectorizer (`"vectorizer": "..."`) can be specified per collection in the definition. Check the [modules page](../../modules/index.md) for available vectorizer modules.
 
-You can use Weaviate without a vectorizer by setting `"vectorizer": "none"`. This is useful if you want to upload your own vectors from a custom model ([see how here](../../manage-data/import.mdx#specify-a-vector)), or if you want to create a collection without any vectors.
+You can use Weaviate without a vectorizer by setting `"vectorizer": "none"`. This is useful if you want to upload your own vectors from a custom model ([see how here](../../manage-objects/import.mdx#specify-a-vector)), or if you want to create a collection without any vectors.
 
 ### `vectorIndexType`
 
@@ -452,7 +471,7 @@ This feature was introduced in `v1.12.0`.
 
 You can customize how `text` data is tokenized and indexed in the inverted index. Tokenization influences the results returned by the [`bm25`](../../api/graphql/search-operators.md#bm25) and [`hybrid`](../../api/graphql/search-operators.md#hybrid) operators, and [`where` filters](../../api/graphql/filters.md).
 
-Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../../manage-data/collections.mdx#property-level-settings)
+Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../../manage-collections/vector-config.mdx#property-level-settings)
 
 <details>
   <summary>Example property configuration</summary>
@@ -585,6 +604,11 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 - `"결정하겠다"`:
   - `["결정", "하", "겠", "다"]`
 
+### Limit the number of `gse` and `Kagome` tokenizers
+
+The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
+You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](../env-vars/index.md). 
+
 ### Inverted index types
 
 :::info `indexInverted` is deprecated
@@ -609,7 +633,7 @@ For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or
 
 Unless specified otherwise in the collection definition, the default behavior is to:
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skip](/docs/weaviate/manage-data/collections#property-level-settings)ped)
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
@@ -654,7 +678,7 @@ client.schema.create_class(collection_obj)
 
 ## Related pages
 - [Tutorial: Schema](/docs/weaviate/starter-guides/managing-collections)
-- [How to: Configure a schema](/docs/weaviate/manage-data/collections)
+- [How to: Configure a schema](../../manage-collections/index.mdx)
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](/docs/weaviate/concepts/data)
 

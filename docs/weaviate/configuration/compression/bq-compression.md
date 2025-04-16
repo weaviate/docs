@@ -27,7 +27,7 @@ To use BQ, enable it as shown below and add data to the collection.
 <details>
   <summary>Additional information</summary>
 
-- How to [set the index type](/docs/weaviate/manage-data/collections.mdx#set-vector-index-type)
+- How to [set the index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
 
 </details>
 
@@ -166,6 +166,12 @@ For example:
 </Tabs>
 
 ## Multiple vector embeddings (named vectors)
+
+import NamedVectorCompress from '/_includes/named-vector-compress.mdx';
+
+<NamedVectorCompress />
+
+## Multi-vector embeddings (ColBERT, ColPali, etc.)
 
 import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 

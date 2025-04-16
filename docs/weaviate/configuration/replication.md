@@ -15,7 +15,7 @@ import RaftRFChangeWarning from '/\_includes/1-25-replication-factor.mdx';
 
 <RaftRFChangeWarning/>
 
-Replication is disabled by default. It can be enabled per collection in the [collection configuration](../manage-data/collections.mdx#replication-settings). This means you can set different replication factors per class in your dataset.
+Replication is disabled by default. It can be enabled per collection in the [collection configuration](../manage-collections/multi-node-setup.mdx#replication-settings). This means you can set different replication factors per class in your dataset.
 
 To enable replication, you can set one or both of the following:
 
@@ -113,7 +113,7 @@ curl "http://localhost:8080/v1/objects/{ClassName}/{id}?consistency_level=ONE"
 ```
 
 :::note
-In v1.17, only [read queries that get data by ID](../manage-data/read.mdx#get-an-object-by-id) had a tunable consistency level. All other object-specific REST endpoints (read or write) used the consistency level `ALL`. Starting with v1.18, all write and read queries are tunable to either `ONE`, `QUORUM` (default) or `ALL`. GraphQL endpoints use the consistency level `ONE` (in both versions).
+In v1.17, only [read queries that get data by ID](../manage-objects/read.mdx#get-an-object-by-id) had a tunable consistency level. All other object-specific REST endpoints (read or write) used the consistency level `ALL`. Starting with v1.18, all write and read queries are tunable to either `ONE`, `QUORUM` (default) or `ALL`. GraphQL endpoints use the consistency level `ONE` (in both versions).
 :::
 
 import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx';

@@ -8,7 +8,7 @@ image: og/docs/configuration.jpg
 import Link from '@docusaurus/Link';
 import SkipLink from '/src/components/SkipValidationLink'
 
-:::info Available from `v1.29`
+:::info Added in `v1.29`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
 :::
 
@@ -89,7 +89,7 @@ style Resources fill:#CFD8DC,stroke:#AAB4BA,stroke-width:1px
 style Permissions fill:#E0F7FA,stroke:#B2EBF2,stroke-width:1px
 ```
 
-This RBAC system ensures that users only have the access necessary for their roles, enhancing both security and manageability within Weaviate. Roles and permissions can be managed through the Weaviate <b><SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink></b> directly or through a **[client library](/docs/weaviate/configuration/rbac/manage-roles-users)** programmatically.
+This RBAC system ensures that users only have the access necessary for their roles, enhancing both security and manageability within Weaviate. Roles and permissions can be managed through the Weaviate <b><SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink></b> directly or through a **[client library](/docs/weaviate/configuration/rbac/manage-roles)** programmatically.
 
 ## Roles
 
@@ -112,7 +112,7 @@ Any authenticated user that is not assigned a predefined role has no roles or pe
 
 These users' permissions can be modified through Weaviate by those with the appropriate permissions for **managing roles**. This allows for the creation of custom roles, which can be assigned to users as needed.
 
-Role management can be performed with a [predefined `root` role](/docs/weaviate/configuration/rbac/configuration) or a custom role with [`manage_roles` permissions](/docs/weaviate/configuration/rbac/manage-roles-users#role-management-permissions).
+Role management can be performed with a [predefined `root` role](/docs/weaviate/configuration/rbac/configuration) or a custom role with [`manage_roles` permissions](/docs/weaviate/configuration/rbac/manage-roles#role-management-permissions).
 
 :::caution Role Management Permissions
 Be careful when assigning permissions to roles that manage roles. These permissions can be used to escalate privileges by assigning additional roles to users. Only assign these permissions to trusted users.
@@ -147,7 +147,7 @@ Permissions can be defined with the following resources, access levels and optio
   <tbody>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#role-management-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#role-management-permissions">
           <strong>Role Management</strong>
         </Link>
       </td>
@@ -180,7 +180,7 @@ Permissions can be defined with the following resources, access levels and optio
     </tr>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#collections-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#collections-permissions">
           <strong>Collections</strong>
         </Link>
         <br />
@@ -206,7 +206,7 @@ Permissions can be defined with the following resources, access levels and optio
     </tr>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#tenants-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#tenants-permissions">
           <strong>Tenants</strong>
         </Link>
       </td>
@@ -217,6 +217,13 @@ Permissions can be defined with the following resources, access levels and optio
         <div class="access-level">Delete tenants</div>
       </td>
       <td>
+        <p>Collection name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which collections' tenants
+            can be managed
+          </li>
+        </ul>
         <p>Tenant name filter:</p>
         <ul>
           <li>
@@ -227,7 +234,7 @@ Permissions can be defined with the following resources, access levels and optio
     </tr>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#data-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#data-permissions">
           <strong>Data Objects</strong>
         </Link>
       </td>
@@ -245,11 +252,18 @@ Permissions can be defined with the following resources, access levels and optio
             can be managed
           </li>
         </ul>
+        <p>Tenant name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which tenants' objects
+            can be managed
+          </li>
+        </ul>
       </td>
     </tr>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#backups-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#backups-permissions">
           <strong>Backups</strong>
         </Link>
       </td>
@@ -266,7 +280,7 @@ Permissions can be defined with the following resources, access levels and optio
     </tr>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#clusters-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#clusters-permissions">
           <strong>Cluster Data Access</strong>
         </Link>
       </td>
@@ -275,7 +289,7 @@ Permissions can be defined with the following resources, access levels and optio
     </tr>
     <tr>
       <td>
-        <Link to="/docs/weaviate/configuration/rbac/manage-roles-users#nodes-permissions">
+        <Link to="/docs/weaviate/configuration/rbac/manage-roles#nodes-permissions">
           <strong>Node Data Access</strong>
         </Link>
       </td>
@@ -334,11 +348,16 @@ To have permissions to operate on a tenant that belongs to a collection, the use
 
 For example, to create a tenant in a collection called `TestCollection`, the user must have permission to "create" tenants in that collection. This is separate from the permission to create a collection called `TestCollection`.
 
-## Additional resources
+## Users
 
-- [RBAC: Configuration](/docs/weaviate/configuration/rbac/configuration)
-- [RBAC: Manage roles & users](/docs/weaviate/configuration/rbac/manage-roles-users)
-- [RBAC: Tutorial](/docs/weaviate/tutorials/rbac)
+The [user management](./manage-users.mdx) API can be used to create, delete and list users, rotate their API keys and manage their roles. 
+
+## Further resources
+
+- [RBAC: Configuration](./configuration.md)
+- [RBAC: Manage roles](./manage-roles.mdx)
+- [RBAC: Manage users](./manage-users.mdx)
+- [RBAC: Tutorial](../../tutorials/rbac.mdx)
 
 ## Questions and feedback
 

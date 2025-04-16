@@ -109,6 +109,28 @@ Any model that is supported by vLLM or Ollama can be used with KubeAI.
 
 Refer to the [KubeAI docs on model management](https://www.kubeai.org/how-to/install-models/) for more information on available models and how to configure them.
 
+## Select a model at runtime
+
+Aside from setting the default model provider when creating the collection, you can also override it at query time.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python API v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START RuntimeModelSelectionKubeAI"
+      endMarker="# END RuntimeModelSelectionKubeAI"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```ts
+// TS support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
 ## Retrieval augmented generation
 
 After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
@@ -185,8 +207,8 @@ In other words, when you have `n` search results, the generative model generates
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### External resources
 

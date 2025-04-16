@@ -10,6 +10,7 @@ For example, Vector Databases are typically paired with Large Language Models in
 
 Learn about how Weaviate integrates with these solutions:
 * [Arize](/docs/integrations/operations/arize/)
+* [DeepEval](/docs/integrations/operations/deepeval/)
 * [Langtrace](/docs/integrations/operations/langtrace/)
 * [LangWatch](/docs/integrations/operations/langwatch)
 * [Nomic](/docs/integrations/operations/nomic/)

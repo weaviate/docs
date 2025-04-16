@@ -29,7 +29,7 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 :::caution Important backup considerations
 
 - **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](../more-resources/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
-- **[Multi-tenancy](../concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](../manage-data/multi-tenancy.md#manage-tenant-states) any required tenants before creating a backup.
+- **[Multi-tenancy](../concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](../manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
 :::
 
 ## Backup Quickstart
@@ -276,6 +276,16 @@ If both of `AZURE_STORAGE_CONNECTION_STRING` and `AZURE_STORAGE_ACCOUNT` are pro
 At least one of `AZURE_STORAGE_CONNECTION_STRING` or `AZURE_STORAGE_ACCOUNT` must be present.
 :::
 
+#### Azure block size and Concurrency
+
+| Environment variable | Required | Default | Description |
+| --- | --- | --- | --- |
+| `AZURE_BLOCK_SIZE` | no | `41943040` (40MB) | The Azure block size (in bytes) |
+| `AZURE_CONCURRENCY` | no | `1` | Upload concurrency |
+
+:::note
+You can also use `X-Azure-Block-Size` and `X-Azure-Concurrency` as a client header parameter. If provided, they will override any environment variables.
+:::
 
 ### Filesystem
 
