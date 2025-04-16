@@ -465,23 +465,23 @@ const siteRedirects = {
     },
     // Release notes
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_20",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_20",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_19",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_19",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_18",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_18",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_17",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_17",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_16",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_16",
     },
     // Integration Docs
