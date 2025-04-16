@@ -83,7 +83,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/model-providers.mdx#specify-a-generative-model-integration) as follows to use an OpenAI Azure generative model.
+[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an OpenAI Azure generative model.
 
 To select the model, specify the Azure resource name.
 

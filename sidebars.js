@@ -168,7 +168,7 @@ const sidebars = {
       items: [
         "weaviate/manage-collections/collection-operations",
         "weaviate/manage-collections/vector-config",
-        "weaviate/manage-collections/model-providers",
+        "weaviate/manage-collections/generative-reranker-models",
         {
           type: "category",
           label: "Multi-tenancy",

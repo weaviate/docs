@@ -6,44 +6,63 @@ image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library', 'experimental']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PythonCode from '!!raw-loader!/\_includes/code/client-libraries/python_v4.py';
-import BatchVectorCode from '!!raw-loader!/\_includes/code/howto/manage-data.import.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PythonCode from "!!raw-loader!/_includes/code/client-libraries/python_v4.py";
+import BatchVectorCode from "!!raw-loader!/_includes/code/howto/manage-data.import.py";
 
 import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
-{
-title: "weaviate/weaviate-python-client",
-link: "https://github.com/weaviate/weaviate-python-client",
-icon: "fa-brands fa-github",
-},
+  {
+    title: "weaviate/weaviate-python-client",
+    link: "https://github.com/weaviate/weaviate-python-client",
+    icon: "fa-brands fa-github",
+  },
+  {
+    title: "Reference manual (docstrings)",
+    link: "https://weaviate-python-client.readthedocs.io/en/latest/",
+    icon: "fa-solid fa-book",
+  },
 ];
 
 <QuickLinks items={pythonCardsData} />
 
 This page broadly covers the Weaviate Python client (`v4` release). For usage information not specific to the Python client, such as code examples, see the relevant pages in the [Weaviate documentation](../../index.mdx). Some frequently used sections are [listed here](#code-examples--resources) for convenience.
 
-:::info Inline documentation
-For the inline documentation (also known as docstrings) of the Python client, see the [Read the Docs](https://weaviate-python-client.readthedocs.io/en/latest/) page.
-:::
-
 ## Installation
-
-:::tip Migrating from `v3` to `v4`
-If you are migrating from the `v3` client to the `v4`, see this [dedicated guide](./v3_v4_migration.md).
-:::
 
 The Python client library is developed and tested using Python 3.8+. It is available on [PyPI.org](https://pypi.org/project/weaviate-client/), and can be installed with:
 
 ```bash
-# For beta versions: `pip install --pre -U "weaviate-client==4.*"`
 pip install -U weaviate-client
 ```
 
+<details>
+  <summary>For installing beta versions</summary>
+
+```bash
+pip install --pre -U "weaviate-client==4.*"`
+```
+
+</details>
+
+### Weaviate Agents
+
+You can install the Weaviate client library with the optional agents extras to use [Weaviate Agents](../../../agents/index.md). Install the client library using the following command:
+
+```bash
+pip install -U weaviate-client[agents]
+```
+
 ### Requirements
+
+#### Weaviate version compatibility
+
+The `v4` Python client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client and the Weaviate Database.
+
+In Weaviate Cloud, the Sandoxes are compatible with the `v4` client as of 31 January, 2024. Sandboxes created before this date will not be compatible with the `v4` client.
 
 #### gRPC
 
@@ -62,17 +81,7 @@ ports:
 
 </details>
 
-#### WCD compatibility
-
-The free (sandbox) tier of WCD is compatible with the `v4` client as of 31 January, 2024. Sandboxes created before this date will not be compatible with the `v4` client.
-
-#### Weaviate server version
-
-The `v4` client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client and the Weaviate server.
-
 ## Get started
-
-
 
 ## Migration guides
 
@@ -328,8 +337,7 @@ Some frequently used sections are the how-to guides for [Managing collections](.
 
 In particular, check out the pages for:
 
-- [Client instantiation](./index.md#instantiate-a-client),
-- [Manage collections](../../manage-collections/index.mdx),
+- [Manage collections](../../manage-collections/index.mdx)
 - [Batch import](../../manage-objects/import.mdx)
 - [Cross-reference](../../manage-collections/cross-references.mdx)
 - [Basic search](../../search/basics.md)
@@ -345,7 +353,7 @@ Go to the [GitHub releases page](https://github.com/weaviate/weaviate-python-cli
 <details>
   <summary>Click here for a table of Weaviate and corresponding client versions</summary>
 
-import ReleaseHistory from '/\_includes/release-history.md';
+import ReleaseHistory from "/_includes/release-history.md";
 
 <ReleaseHistory />
 
@@ -353,6 +361,6 @@ import ReleaseHistory from '/\_includes/release-history.md';
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

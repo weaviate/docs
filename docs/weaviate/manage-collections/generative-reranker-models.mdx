@@ -1,5 +1,5 @@
 ---
-title: Model provider integrations
+title: Generative and reranker models
 sidebar_position: 3
 image: og/docs/howto.jpg
 ---
@@ -14,6 +14,12 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+:::tip Embedding models / Vectorizers
+
+Visit the [Vectorizer and vector config](./vector-config.mdx) guide to find out how to configure an embedding model for your collection or to fine-tune the vector index settings. 
+
+:::
 
 ## Specify a reranker model integration
 
@@ -249,18 +255,11 @@ import RuntimeGenerative from "/_includes/runtime-generative.mdx";
 
 ## Further resources
 
-### References
-
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema/post/schema">
     API References: REST: Schema
   </SkipLink>
 - [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
 - [Concepts: Data structure](../concepts/data.md)
-
-### Background knowledge
-
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- [Tutorial: Schema](../starter-guides/managing-collections/index.mdx)
 
 ## Questions and feedback
 

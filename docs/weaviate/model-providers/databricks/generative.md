@@ -83,7 +83,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate collection](../../manage-collections/model-providers.mdx#specify-a-generative-model-integration) to use a Databricks generative AI endpoint as follows:
+[Configure a Weaviate collection](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) to use a Databricks generative AI endpoint as follows:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
