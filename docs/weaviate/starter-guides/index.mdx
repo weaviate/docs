@@ -1,0 +1,67 @@
+---
+title: Getting Started Guides
+sidebar_position: 0
+image: og/docs/tutorials.jpg
+hide_table_of_contents: true
+# tags: ['getting started']
+---
+
+This section helps you to get started with Weaviate.
+
+import CardsSection from "/src/components/CardsSection";
+
+export const starterConceptsData = [
+  {
+    title: "Which Weaviate setup?",
+    description:
+      "Find the right Weaviate deployment option (Cloud, Docker, K8s, Embedded) for your needs.",
+    link: "/docs/weaviate/starter-guides/which-weaviate",
+    icon: "fas fa-map-signs",
+  },
+  {
+    title: "Collection definitions & schema",
+    description:
+      "Learn how to define collection settings, properties, and data schema effectively.",
+    link: "/docs/weaviate/starter-guides/managing-collections/",
+    icon: "fas fa-sitemap",
+  },
+  {
+    title: "Collection scaling limits",
+    description:
+      "Learn why multi-tenancy helps when scaling beyond many collections.",
+    link: "/docs/weaviate/starter-guides/managing-collections/collections-scaling-limits",
+    icon: "fas fa-expand-arrows-alt",
+  },
+  {
+    title: "Bring Your Own Vectors (BYOV)",
+    description:
+      "Guide on importing and using your own pre-computed vectors with Weaviate.",
+    link: "/docs/weaviate/starter-guides/custom-vectors",
+    icon: "fas fa-upload",
+  },
+  {
+    title: "Retrieval Augmented Generation (RAG)",
+    description:
+      "Perform generative search (RAG) by augmenting LLM prompts with search results.",
+    link: "/docs/weaviate/starter-guides/generative",
+    icon: "fas fa-robot",
+  },
+  {
+    title: "Indexing",
+    description:
+      "How Weaviate indexes data for fast search and filtering, and choosing index settings.",
+    link: "/docs/weaviate/starter-guides/managing-resources/indexing",
+    icon: "fas fa-search-plus",
+  },
+  {
+    title: "Managing resources",
+    description:
+      "Balance search speed, recall, and cost with compression and other features.",
+    link: "/docs/weaviate/starter-guides/managing-resources/",
+    icon: "fas fa-balance-scale",
+  },
+];
+
+<br />
+<CardsSection items={starterConceptsData} />
+<br />

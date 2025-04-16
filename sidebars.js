@@ -243,7 +243,7 @@ const sidebars = {
         "weaviate/starter-guides/generative",
         {
           type: "category",
-          label: "Managing Resources (Hot, Warm, Cold)",
+          label: "Managing resources (hot, warm, cold)",
           link: {
             type: "doc",
             id: "weaviate/starter-guides/managing-resources/index",
