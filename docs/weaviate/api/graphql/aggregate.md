@@ -264,7 +264,7 @@ You can do so by specifying the `tenant` parameter in the query as shown below, 
 ```
 
 :::tip See HOW-TO guide
-For more information on using multi-tenancy, see the [Multi-tenancy operations guide](../../manage-data/multi-tenancy.md).
+For more information on using multi-tenancy, see the [Multi-tenancy operations guide](../../manage-collections/multi-tenancy.mdx).
 :::
 
 ## Aggregating a Vector Search / Faceted Vector Search

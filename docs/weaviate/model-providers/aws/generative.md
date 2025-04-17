@@ -95,7 +95,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-generative-model-integration) as follows to use an AWS generative model:
+[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an AWS generative model:
 
 ### Bedrock
 
@@ -167,11 +167,12 @@ Aside from setting the default model provider when creating the collection, you 
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
-
-```ts
-// TS support coming soon
-```
-
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START RuntimeModelSelectionAWS"
+      endMarker="// END RuntimeModelSelectionAWS"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
@@ -256,11 +257,12 @@ You can also supply images as a part of the input when performing retrieval augm
     />
   </TabItem>
   <TabItem value="js" label="JS/TS API v3">
-
-```ts
-// TS support coming soon
-```
-
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START WorkingWithImagesAWS"
+      endMarker="// END WorkingWithImagesAWS"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
@@ -308,8 +310,8 @@ Any custom SageMaker URL can be used as an endpoint.
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### References
 

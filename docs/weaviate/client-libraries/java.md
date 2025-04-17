@@ -15,10 +15,12 @@ export const javaCardsData = [
   },
 ];
 
+:::note Java client (SDK)
+
+The latest Java client is version `v||site.java_client_version||`.
+
 <QuickLinks items={javaCardsData} />
 
-:::note Java client version
-The current Java client version is `v||site.java_client_version||`.
 :::
 
 :::info Breaking changes introduced in v4

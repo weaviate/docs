@@ -11,7 +11,7 @@ const secondaryNavbarItems = {
         sidebar: "getStartedSidebar",
       },
       {
-        label: "How-to & Guides",
+        label: "How-to manuals & Guides",
         link: "/docs/weaviate/guides",
         sidebar: "guidesSidebar",
       },

@@ -367,7 +367,7 @@ Weaviate version 1.0.0 was released on 12 January 2021, and consists of the majo
 
 Weaviate release 1.0.0 from 0.23.2 comes with a significant amount of breaking changes in the data schema, API and clients. Here is an overview of all (breaking) changes.
 
-For client library specific changes, take a look at the change logs of the specific client ([Go](/docs/weaviate/client-libraries/go.md#releases), [Python](/docs/weaviate/client-libraries/python/index.md#releases) and [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx#releases).
+For client library specific changes, take a look at the change logs of the specific client ([Go](/docs/weaviate/client-libraries/go.md#releases), [Python](/docs/weaviate/client-libraries/python/index.mdx#releases) and [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx#releases).
 
 Moreover, a new version of the Console is released. Visit the Console documentation for more information.
 

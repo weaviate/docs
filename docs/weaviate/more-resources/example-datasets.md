@@ -11,7 +11,7 @@ This example application spins up a Weaviate instance using the
 [multi2vec-clip](/docs/weaviate/model-providers/transformers/embeddings-multimodal.md)
 integration, imports a few sample images (you can add your own images, too!) and
 provides a very simple search frontend in [React](https://reactjs.org/) using
-the [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx) client.
+the [TypeScript/JavaScript](../client-libraries/typescript/index.mdx) client.
 
 [Get started here](https://github.com/weaviate/weaviate-examples/blob/main/clip-multi-modal-text-image-search/README.md)
 

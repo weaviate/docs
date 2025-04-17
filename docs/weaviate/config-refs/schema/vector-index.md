@@ -75,33 +75,6 @@ import PQParameters from '/_includes/pq-compression/parameters.mdx' ;
 
 <PQParameters />
 
-<!-- ### Collection configuration example
-
-This is a sample of collection that shows the [data schema](/docs/weaviate/manage-data/collections.mdx):
-
-
-```json
-{
-  "class": "Article",
-  "description": "string",
-  "properties": [
-    {
-      "name": "title",
-      "description": "string",
-      "dataType": ["text"]
-    }
-  ],
-  "vectorIndexType": "hnsw",
-  "vectorIndexConfig": {
-    "skip": false,
-    "ef": 100,
-    "efConstruction": 128,
-    "maxConnections": 32,
-  }
-}
-``` -->
-
-
 ### HNSW Configuration tips
 
 To determine reasonable settings for your use case, consider the following questions and compare your answers in the table below:
@@ -185,7 +158,7 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use with caution.
 :::
 
-Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-data/collections.mdx#set-vector-index-type).
+Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-collections/vector-config.mdx#set-vector-index-type).
 
 | Parameter | Type | Default | Details |
 | :-- | :-- | :-- | :-- |

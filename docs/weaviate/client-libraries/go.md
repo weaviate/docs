@@ -15,10 +15,12 @@ export const goCardsData = [
   },
 ];
 
+:::note Go client (SDK)
+
+The latest Go client is version `v||site.go_client_version||`.
+
 <QuickLinks items={goCardsData} />
 
-:::note Go client version
-The current Go client version is `v||site.go_client_version||`.
 :::
 
 The Weaviate Go client is compatible with Go 1.16+.
