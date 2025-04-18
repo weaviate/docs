@@ -43,10 +43,20 @@ export default function Root({ children }) {
         script.setAttribute("data-modal-open-on-command-k", "true");
         script.setAttribute("data-modal-z-index", "9999");
         script.setAttribute("data-button-hide", "true");
+        script.setAttribute("data-switch-border", "1px");
+        script.setAttribute("data-switch-bg-color", "#efefef");
+        script.setAttribute("data-font-size-xs", "0.85rem");
+        script.setAttribute("data-font-size-sm", "1.1rem");
+        script.setAttribute("data-font-size-md", "1.15rem");
+        script.setAttribute("data-font-size-lg", "1.225rem");
+        script.setAttribute("data-font-size-xl", "1.35rem");
         script.setAttribute(
           "data-modal-disclaimer",
           "This is a custom LLM for Weaviate with access to all developer docs, Cloud docs, academy lessons, contributor guides, GitHub issues, and forum questions."
         );
+        script.setAttribute("data-modal-disclaimer-bg-color", "white");
+        script.setAttribute("data-modal-disclaimer-text-color", "black");
+        script.setAttribute("data-modal-disclaimer-font-size", "0.85rem");
         script.setAttribute(
           "data-modal-example-questions",
           "How do I run Weaviate?,What model providers work with Weaviate?,How do I perform a hybrid search?,How do I create objects with vectors?"

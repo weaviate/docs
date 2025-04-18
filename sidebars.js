@@ -49,6 +49,43 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Starter guides",
+      link: {
+        type: "doc",
+        id: "weaviate/starter-guides/index",
+      },
+      items: [
+        "weaviate/starter-guides/which-weaviate",
+        "weaviate/starter-guides/custom-vectors",
+        "weaviate/starter-guides/generative",
+        {
+          type: "category",
+          label: "Managing collections",
+          link: {
+            type: "doc",
+            id: "weaviate/starter-guides/managing-collections/index",
+          },
+          items: [
+            "weaviate/starter-guides/managing-collections/collections-scaling-limits",
+          ],
+        },
+        {
+          type: "category",
+          label: "Managing resources (hot, warm, cold)",
+          link: {
+            type: "doc",
+            id: "weaviate/starter-guides/managing-resources/index",
+          },
+          items: [
+            "weaviate/starter-guides/managing-resources/compression",
+            "weaviate/starter-guides/managing-resources/indexing",
+            "weaviate/starter-guides/managing-resources/tenant-states",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Best practices",
       link: {
         type: "doc",
@@ -182,43 +219,6 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Starter guides",
-      link: {
-        type: "doc",
-        id: "weaviate/starter-guides/index",
-      },
-      items: [
-        {
-          type: "category",
-          label: "Managing collections",
-          link: {
-            type: "doc",
-            id: "weaviate/starter-guides/managing-collections/index",
-          },
-          items: [
-            "weaviate/starter-guides/managing-collections/collections-scaling-limits",
-          ],
-        },
-        "weaviate/starter-guides/which-weaviate",
-        "weaviate/starter-guides/custom-vectors",
-        "weaviate/starter-guides/generative",
-        {
-          type: "category",
-          label: "Managing resources (hot, warm, cold)",
-          link: {
-            type: "doc",
-            id: "weaviate/starter-guides/managing-resources/index",
-          },
-          items: [
-            "weaviate/starter-guides/managing-resources/compression",
-            "weaviate/starter-guides/managing-resources/indexing",
-            "weaviate/starter-guides/managing-resources/tenant-states",
-          ],
-        },
-      ],
-    },
-    {
-      type: "category",
       label: "Tutorials",
       link: {
         type: "doc",
@@ -238,67 +238,11 @@ const sidebars = {
     },
   ],
   referenceSidebar: [
-    "weaviate/reference",
-    {
-      type: "category",
-      label: "API: GraphQL/gRPC",
-      link: {
-        type: "doc",
-        id: "weaviate/api/index",
-      },
-      items: [
-        "weaviate/api/graphql/get",
-        "weaviate/api/graphql/aggregate",
-        "weaviate/api/graphql/search-operators",
-        "weaviate/api/graphql/filters",
-        "weaviate/api/graphql/additional-operators",
-        "weaviate/api/graphql/additional-properties",
-        "weaviate/api/graphql/explore",
-      ],
-    },
-    {
-      type: "doc",
-      id: "weaviate/api/rest",
-      label: "API: RESTful",
-    },
-    {
-      type: "category",
-      label: "Configuration",
-      items: [
-        {
-          type: "category",
-          label: "Collection definition",
-          link: {
-            type: "doc",
-            id: "weaviate/config-refs/schema/index",
-          },
-          items: [
-            "weaviate/config-refs/schema/multi-vector",
-            "weaviate/config-refs/schema/vector-index",
-          ],
-        },
-        "weaviate/config-refs/datatypes",
-        "weaviate/config-refs/distances",
-        {
-          type: "category",
-          label: "Environment variables",
-          link: {
-            type: "doc",
-            id: "weaviate/config-refs/env-vars/index",
-          },
-          items: ["weaviate/config-refs/env-vars/runtime-config"],
-        },
-        "weaviate/config-refs/status",
-        "weaviate/config-refs/telemetry",
-        "weaviate/config-refs/meta",
-        "weaviate/config-refs/nodes",
-        "weaviate/config-refs/oidc",
-      ],
-    },
     {
       type: "category",
       label: "Client libraries",
-      collapsed: false,
+      collapsible: false,
+      className: "sidebar-main-category",
       link: {
         type: "doc",
         id: "weaviate/client-libraries/index",
@@ -307,6 +251,7 @@ const sidebars = {
         {
           type: "category",
           label: "Python",
+          className: "sidebar-item",
           link: {
             type: "doc",
             id: "weaviate/client-libraries/python/index",
@@ -324,7 +269,7 @@ const sidebars = {
         {
           type: "category",
           label: "JavaScript/TypeScript",
-
+          className: "sidebar-item",
           link: {
             type: "doc",
             id: "weaviate/client-libraries/typescript/index",
@@ -338,9 +283,128 @@ const sidebars = {
             },
           ],
         },
-        "weaviate/client-libraries/java",
-        "weaviate/client-libraries/go",
-        "weaviate/client-libraries/community",
+        {
+          type: "doc",
+          id: "weaviate/client-libraries/java",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/client-libraries/go",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/client-libraries/community",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    // API section with divider
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "APIs",
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        {
+          type: "category",
+          label: "Search API - GraphQL/gRPC",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/api/index",
+          },
+          items: [
+            "weaviate/api/graphql/get",
+            "weaviate/api/graphql/aggregate",
+            "weaviate/api/graphql/search-operators",
+            "weaviate/api/graphql/filters",
+            "weaviate/api/graphql/additional-operators",
+            "weaviate/api/graphql/additional-properties",
+            "weaviate/api/graphql/explore",
+          ],
+        },
+        {
+          type: "doc",
+          id: "weaviate/api/rest",
+          label: "RESTful API",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Configuration",
+      className: "sidebar-main-category",
+      collapsible: false,
+      items: [
+        {
+          type: "category",
+          label: "Collection definition",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/config-refs/schema/index",
+          },
+          items: [
+            "weaviate/config-refs/schema/multi-vector",
+            "weaviate/config-refs/schema/vector-index",
+          ],
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/datatypes",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/distances",
+          className: "sidebar-item",
+        },
+        {
+          type: "category",
+          label: "Environment variables",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/config-refs/env-vars/index",
+          },
+          items: ["weaviate/config-refs/env-vars/runtime-config"],
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/status",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/telemetry",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/meta",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/nodes",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/oidc",
+          className: "sidebar-item",
+        },
       ],
     },
   ],
@@ -404,7 +468,6 @@ const sidebars = {
       },
       items: [
         "weaviate/modules/text2vec-contextionary",
-        "weaviate/modules/img2vec-neural",
         "weaviate/modules/ref2vec-centroid",
         "weaviate/modules/qna-transformers",
         "weaviate/modules/qna-openai",

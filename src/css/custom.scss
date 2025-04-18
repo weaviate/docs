@@ -886,3 +886,21 @@ button.close {
 .step-list li * {
   display: inline;
 }
+
+
+/* Add this to your custom.css file */
+.sidebar-main-category {
+  font-weight: bold;
+}
+
+.sidebar-item {
+  font-weight: normal;
+}
+
+/* For the dividers */
+.sidebar-divider {
+  margin: 0.5rem 0;
+  border: 0;
+  height: 1px;
+  background-color: var(--ifm-toc-border-color);
+}
