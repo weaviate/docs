@@ -99,9 +99,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/index",
       },
-      items: [
-        "weaviate/best-practices/code-generation",
-      ],
+      items: ["weaviate/best-practices/code-generation"],
     },
   ],
   modelProvidersSidebar: [
@@ -369,22 +367,6 @@ const sidebars = {
       ],
     },
   ],
-  releasesSidebar: [
-    "weaviate/release-notes/index",
-    {
-      type: "category",
-      label: "Migration",
-      link: {
-        type: "doc",
-        id: "weaviate/more-resources/migration/index",
-      },
-      items: [
-        "weaviate/more-resources/migration/weaviate-1-30",
-        "weaviate/more-resources/migration/weaviate-1-25",
-        "weaviate/more-resources/migration/archive",
-      ],
-    },
-  ],
   weaviateRecipesSidebar: [
     {
       type: "category",
@@ -402,6 +384,29 @@ const sidebars = {
     },
   ],
   othersSidebar: [
+    {
+      type: "category",
+      label: "Releases",
+      link: {
+        type: "doc",
+        id: "weaviate/release-notes/index",
+      },
+      items: [
+        {
+          type: "category",
+          label: "Migration",
+          link: {
+            type: "doc",
+            id: "weaviate/more-resources/migration/index",
+          },
+          items: [
+            "weaviate/more-resources/migration/weaviate-1-30",
+            "weaviate/more-resources/migration/weaviate-1-25",
+            "weaviate/more-resources/migration/archive",
+          ],
+        },
+      ],
+    },
     {
       type: "category",
       label: "Benchmarks",

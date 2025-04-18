@@ -25,7 +25,7 @@ We will test this with 3 PDFs:
 - Boston_restaurants.pdf
 - DSPy.pdf
 
-# ColPali Setup
+## ColPali Setup
 
 ```python
 !pip install pdf2image==1.17.0 > /dev/null
@@ -65,13 +65,13 @@ Python output:
 Enter your token (input will not be visible): 
 Add token as git credential? (Y/n) 
 Token is valid (permission: read).
-[1m[31mCannot authenticate through git-credential as no helper is defined on your machine.
+Cannot authenticate through git-credential as no helper is defined on your machine.
 You might have to re-authenticate when pushing to the Hugging Face Hub.
 Run the following command in your terminal in case you want to set the 'store' credential helper as default.
 
 git config --global credential.helper store
 
-Read https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage for more details.[0m
+Read https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage for more details.
 Token has not been saved to git credential helper.
 Your token has been saved to /root/.cache/huggingface/token
 Login successful
@@ -388,7 +388,7 @@ Python output:
 ```text
 Number of patches per image: 1030
 ```
-# Weaviate Setup
+## Weaviate Setup
 
 ```python
 !pip install weaviate-client==4.7.1 > /dev/null
@@ -396,7 +396,7 @@ Number of patches per image: 1030
 
 Python output:
 ```text
-[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 cudf-cu12 24.4.1 requires protobuf&lt;5,>=3.20, but you have protobuf 5.27.2 which is incompatible.
 google-ai-generativelanguage 0.6.6 requires protobuf!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,>=3.19.5, but you have protobuf 5.27.2 which is incompatible.
 google-cloud-aiplatform 1.59.0 requires protobuf!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,>=3.19.5, but you have protobuf 5.27.2 which is incompatible.
@@ -404,8 +404,7 @@ google-cloud-bigquery-storage 2.25.0 requires protobuf!=3.20.0,!=3.20.1,!=4.21.0
 google-cloud-datastore 2.19.0 requires protobuf!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,>=3.19.5, but you have protobuf 5.27.2 which is incompatible.
 google-cloud-firestore 2.16.1 requires protobuf!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,>=3.19.5, but you have protobuf 5.27.2 which is incompatible.
 tensorflow 2.15.0 requires protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,>=3.20.3, but you have protobuf 5.27.2 which is incompatible.
-tensorflow-metadata 1.15.0 requires protobuf&lt;4.21,>=3.20.3; python_version &lt; "3.11", but you have protobuf 5.27.2 which is incompatible.[0m[31m
-[0m
+tensorflow-metadata 1.15.0 requires protobuf&lt;4.21,>=3.20.3; python_version &lt; "3.11", but you have protobuf 5.27.2 which is incompatible.
 ```
 ```python
 import weaviate

@@ -2,11 +2,11 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb
 toc: True
-title: "Hybrid Search with Mistral"
+title: "Similarity Search with Cohere"
 featured: False
 integration: False
 agent: False
-tags: ['Hybrid Search', 'Mistral']
+tags: ['Similarity Search', 'Cohere']
 ---
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb" target="_blank">
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
