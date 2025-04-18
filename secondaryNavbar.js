@@ -21,8 +21,8 @@ const secondaryNavbarItems = {
         sidebar: "modelProvidersSidebar",
       },
       {
-        label: "References",
-        link: "/docs/weaviate/api",
+        label: "Reference & APIs",
+        link: "/docs/weaviate/reference",
         sidebar: "referenceSidebar",
       },
       {

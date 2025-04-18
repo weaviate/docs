@@ -151,7 +151,7 @@ The cache is built in a way that it cannot ever serve a stale entry. Any write t
 
 ## Further resources
 :::info Related pages
-- [References: GraphQL API](../api/graphql/index.md)
+- [References: GraphQL API](/docs/weaviate/api)
 :::
 
 ## Questions and feedback

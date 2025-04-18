@@ -34,51 +34,6 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Client libraries",
-      link: {
-        type: "doc",
-        id: "weaviate/client-libraries/index",
-      },
-      items: [
-        {
-          type: "category",
-          label: "Python",
-          link: {
-            type: "doc",
-            id: "weaviate/client-libraries/python/index",
-          },
-          items: [
-            "weaviate/client-libraries/python/async",
-            {
-              type: "link",
-              label: "Reference manual",
-              href: "https://weaviate-python-client.readthedocs.io/en/stable/index.html",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "JavaScript/TypeScript",
-
-          link: {
-            type: "doc",
-            id: "weaviate/client-libraries/typescript/index",
-          },
-          items: [
-            {
-              type: "link",
-              label: "Reference manual",
-              href: "https://weaviate.github.io/typescript-client/index.html",
-            },
-          ],
-        },
-        "weaviate/client-libraries/java",
-        "weaviate/client-libraries/go",
-        "weaviate/client-libraries/community",
-      ],
-    },
-    {
-      type: "category",
       label: "Connect to Weaviate",
       link: {
         type: "doc",
@@ -283,34 +238,28 @@ const sidebars = {
     },
   ],
   referenceSidebar: [
+    "weaviate/reference",
     {
       type: "category",
-      label: "API",
+      label: "API: GraphQL/gRPC",
       link: {
         type: "doc",
         id: "weaviate/api/index",
       },
       items: [
-        {
-          type: "category",
-          label: "Search (GraphQL | gRPC)",
-          link: {
-            type: "doc",
-            id: "weaviate/api/graphql/index",
-          },
-          items: [
-            "weaviate/api/graphql/get",
-            "weaviate/api/graphql/aggregate",
-            "weaviate/api/graphql/search-operators",
-            "weaviate/api/graphql/filters",
-            "weaviate/api/graphql/additional-operators",
-            "weaviate/api/graphql/additional-properties",
-            "weaviate/api/graphql/explore",
-          ],
-        },
-        "weaviate/api/rest",
-        "weaviate/api/grpc",
+        "weaviate/api/graphql/get",
+        "weaviate/api/graphql/aggregate",
+        "weaviate/api/graphql/search-operators",
+        "weaviate/api/graphql/filters",
+        "weaviate/api/graphql/additional-operators",
+        "weaviate/api/graphql/additional-properties",
+        "weaviate/api/graphql/explore",
       ],
+    },
+    {
+      type: "doc",
+      id: "weaviate/api/rest",
+      label: "API: RESTful",
     },
     {
       type: "category",
@@ -348,22 +297,50 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Modules",
+      label: "Client libraries",
+      collapsed: false,
       link: {
         type: "doc",
-        id: "weaviate/modules/index",
+        id: "weaviate/client-libraries/index",
       },
       items: [
-        "weaviate/modules/model_providers",
-        "weaviate/modules/text2vec-contextionary",
-        "weaviate/modules/img2vec-neural",
-        "weaviate/modules/ref2vec-centroid",
-        "weaviate/modules/qna-transformers",
-        "weaviate/modules/qna-openai",
-        "weaviate/modules/ner-transformers",
-        "weaviate/modules/spellcheck",
-        "weaviate/modules/sum-transformers",
-        "weaviate/modules/custom-modules",
+        {
+          type: "category",
+          label: "Python",
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/python/index",
+          },
+          items: [
+            "weaviate/client-libraries/python/async",
+            "weaviate/client-libraries/python/notes-best-practices",
+            {
+              type: "link",
+              label: "Reference manual",
+              href: "https://weaviate-python-client.readthedocs.io/en/stable/index.html",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "JavaScript/TypeScript",
+
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/typescript/index",
+          },
+          items: [
+            "weaviate/client-libraries/typescript/notes-best-practices",
+            {
+              type: "link",
+              label: "Reference manual",
+              href: "https://weaviate.github.io/typescript-client/index.html",
+            },
+          ],
+        },
+        "weaviate/client-libraries/java",
+        "weaviate/client-libraries/go",
+        "weaviate/client-libraries/community",
       ],
     },
   ],
@@ -418,6 +395,25 @@ const sidebars = {
     },
     "weaviate/more-resources/faq",
     "weaviate/more-resources/glossary",
+    {
+      type: "category",
+      label: "Modules",
+      link: {
+        type: "doc",
+        id: "weaviate/modules/index",
+      },
+      items: [
+        "weaviate/modules/text2vec-contextionary",
+        "weaviate/modules/img2vec-neural",
+        "weaviate/modules/ref2vec-centroid",
+        "weaviate/modules/qna-transformers",
+        "weaviate/modules/qna-openai",
+        "weaviate/modules/ner-transformers",
+        "weaviate/modules/spellcheck",
+        "weaviate/modules/sum-transformers",
+        "weaviate/modules/custom-modules",
+      ],
+    },
     "weaviate/more-resources/example-datasets",
   ],
   deploySidebar: ["deploy/index"],

@@ -138,7 +138,7 @@ Weaviate has several client libraries: in [Go](/docs/weaviate/client-libraries/g
 
 ## Further resources
 :::info Related pages
-- [References: GraphQL API](../api/graphql/index.md)
+- [References: GraphQL API](/docs/weaviate/api)
 - [References: RESTful API](/docs/weaviate/api/rest).
 - [References: Client Libraries](../client-libraries/index.mdx).
 :::
