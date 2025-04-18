@@ -8,7 +8,9 @@ integration: False
 agent: False
 tags: ['ColPali', 'Named Vectors']
 ---
-# How to use ColPali with Weaviate's Named Vectors!
+<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/multi-vector/NamedVectors-ColPali-POC.ipynb" target="_blank">
+  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
+</a>
 
 **Please note: The multi-vector feature was added to Weaviate `1.29`. Test out the feature in [this notebook](weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb).**
 

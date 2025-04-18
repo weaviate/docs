@@ -445,7 +445,18 @@ const sidebars = {
         "agents/transformation/tutorial-enrich-dataset",
       ],
     },
-    "agents/personalization",
+    {
+      type: "category",
+      label: "Personalization Agent",
+      link: {
+        type: "doc",
+        id: "agents/personalization/index",
+      },
+      items: [
+        "agents/transformation/usage",
+        "agents/personalization/tutorial-recipe-recommender",
+      ],
+    },
   ],
   agentsRecipesSidebar: [
     {
