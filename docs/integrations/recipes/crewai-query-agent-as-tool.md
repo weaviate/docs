@@ -12,17 +12,15 @@ tags: ['Query Agent', 'Integration']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-## Weaviate Query Agent with Crew AI
-
 This notebook will show you how to define the Weaviate Query Agent as a tool through the Crew AI.
 
-### Requirements
+## Requirements
 1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://console.weaviate.cloud/).
 2. Install Crew AI with `pip install crewai`
 3. Install the Weaviate Agents package with `pip install weaviate-agents`
-4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
+4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
 
-### Import libraries and keys
+## Import libraries and keys
 
 ```python
 import weaviate
@@ -49,7 +47,7 @@ os.environ["WEAVIATE_URL"] = ""
 os.environ["WEAVIATE_API_KEY"] = ""
 ```
 
-### Define Weaviate Query Agent as a tool
+## Define Weaviate Query Agent as a tool
 
 ```python
 class WeaviateQuerySchema(BaseModel):
@@ -128,7 +126,7 @@ blog_crew = Crew(
 )
 ```
 
-### Query Time
+## Query Time
 
 ```python
 result = blog_crew.kickoff()

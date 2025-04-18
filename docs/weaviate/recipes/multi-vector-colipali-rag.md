@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb
 toc: True
-title: "#Multi-vector RAG: Using Weaviate to search a collection of PDF documents "
+title: "Multi-vector RAG: Using Weaviate to search a collection of PDF documents "
 featured: False
 integration: False
 agent: False
@@ -11,19 +11,6 @@ tags: ['ColPali', 'Named Vectors']
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb" target="_blank">
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
-
-**Author**
-
-Tobias Christiani <tobias@weaviate.io>
-
-**Dependencies**
-
-Python `3.13`
-Weaviate `1.29.0`  
-weaviate-client `4.11.0`  
-[ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0)  
-[Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)  
-... see Pipfile for full list of Python packages
 
 ## Introduction
 
@@ -48,7 +35,7 @@ which involves the use of OCR (Optical Character Recognition) software and
 separate processing of text and figures, by instead feeding images (screenshots) 
 of entire pages to a Vision Language Model that produces a ColBERT-style embedding.
 
-<img src="figures/colipali_pipeline.jpeg" width="700px">
+![colipali pipeline](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/figures/colipali_pipeline.jpeg)
 
 Specifically, we will be using the publicly available model 
 [ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) to generate 
@@ -67,9 +54,9 @@ By inspecting the first page of the
 [DeepSeek-V2 paper](https://arxiv.org/abs/2405.04434) we see that it does indeed 
 contain a figure that is relevant for answering our query:
 
-<img src="figures/deepseek_efficiency.jpeg" width="700px">
+![deepseek efficiency](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/figures/deepseek_efficiency.jpeg)
 
-# Extension to Retrieval Augmented Generation (RAG)
+## Extension to Retrieval Augmented Generation (RAG)
 
 The above example gives us the most relevant pages to begin looking at in order 
 to answer our query. Vision language models are now powerful enough that we can 
@@ -79,7 +66,7 @@ answer to our query in plain text!
 In order to accomplish this we are going to feed the top results into the 
 state-of-the-art VLM [Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct).
 
-# Demonstration overview
+## Demonstration overview
 
 The demonstration will proceed through the following steps in order to set up a
  running retrieval example:
@@ -92,13 +79,13 @@ bring-your-own multivectors.
 4. Querying the collection and displaying results.
 5. Setting up Qwen2.5-VL to support retrieval-augmented generation.
 
-# Prerequisites
+## Prerequisites
 
 - The Python packages listed in the Pipfile in this directory.
 - A machine capable of running neural networks using 5-10 GB of memory.
 - A local instance of Weaviate version >= 1.29.0
 
-To install all dependencies as listed in the Pipfile use `pipenv install` to set 
+To install all dependencies as listed in the [Pipfile](https://github.com/weaviate/recipes/blob/main/weaviate-features/multi-vector/Pipfile) use `pipenv install` to set 
 up the local environment for this notebook. 
 
 The demonstration uses two different vision language models that both require 
@@ -158,9 +145,11 @@ colqwen = Colqwen()
 
 Python output:
 ```text
-Loading checkpoint shards:   0%|          | 0/2 [00:00&lt;?, ?it/s]
+Running cells with 'Python 3.13.1' requires the ipykernel package.
 
-Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.48, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+Install 'ipykernel' into the Python environment. 
+
+Command: '/opt/homebrew/bin/python3 -m pip install ipykernel -U --user --force-reinstall'
 ```
 ```python
 # Load a dataset from huggingface
@@ -173,10 +162,6 @@ page_data = load_dataset("weaviate/arXiv-AI-papers-multi-vector").with_format(
 img = page_data[12]["page_image"]
 display(img)
 ```
-
-    
-![png](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/output_2_0.png)
-    
 
 ```python
 # Verify that the embedding of images and queries works as intended.
@@ -197,22 +182,11 @@ print(colqwen.maxsim(query_embeddings[0], page_embedding))  # 13.4375
 print(colqwen.maxsim(query_embeddings[1], page_embedding))  # 9.5625
 ```
 
-Python output:
-```text
-torch.Size([755, 128])
-torch.Size([30, 128])
-20.0
-13.0625
-```
 ```python
 # Make sure that you have weaviate >= 1.29.0 running locally.
 !docker run --detach -p 8080:8080 -p 50051:50051 cr.weaviate.io/semitechnologies/weaviate:1.29.0
 ```
 
-Python output:
-```text
-48bf63fa2d2ae3ce5dfa6d8f8462ea4367b4acfb18f4b50e71d03aa3ecf503fe
-```
 ```python
 # Create the Pages collection that will hold our page embeddings.
 import weaviate
@@ -268,29 +242,6 @@ with pages.batch.dynamic() as batch:
 client.close()
 ```
 
-Python output:
-```text
-Added 1/399 Page objects to Weaviate.
-Added 26/399 Page objects to Weaviate.
-Added 51/399 Page objects to Weaviate.
-
-/Users/tobiaschristiani/.local/share/virtualenvs/multi-vector-CMoV6Oxu/lib/python3.13/site-packages/weaviate/warnings.py:280: UserWarning: Bat003: The dynamic batch-size could not be refreshed successfully: error ZeroDivisionError('division by zero')
-  warnings.warn(
-
-Added 76/399 Page objects to Weaviate.
-Added 101/399 Page objects to Weaviate.
-Added 126/399 Page objects to Weaviate.
-Added 151/399 Page objects to Weaviate.
-Added 176/399 Page objects to Weaviate.
-Added 201/399 Page objects to Weaviate.
-Added 226/399 Page objects to Weaviate.
-Added 251/399 Page objects to Weaviate.
-Added 276/399 Page objects to Weaviate.
-Added 301/399 Page objects to Weaviate.
-Added 326/399 Page objects to Weaviate.
-Added 351/399 Page objects to Weaviate.
-Added 376/399 Page objects to Weaviate.
-```
 ```python
 # Example of retrieving relevant PDF pages to answer a query.
 import weaviate
@@ -317,19 +268,6 @@ with weaviate.connect_to_local() as client:
         )
 ```
 
-Python output:
-```text
-1) MaxSim: 29.66, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1
-2) MaxSim: 28.03, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 4
-3) MaxSim: 27.12, Title: "DeepSeek-Coder: When the Large Language Model Meets Programming -- The Rise of Code Intelligence" (arXiv: 2401.14196), Page: 10
-4) MaxSim: 26.44, Title: "LLaMA: Open and Efficient Foundation Language Models" (arXiv: 2302.13971), Page: 4
-5) MaxSim: 26.35, Title: "DeepSeek-Coder: When the Large Language Model Meets Programming -- The Rise of Code Intelligence" (arXiv: 2401.14196), Page: 2
-6) MaxSim: 26.33, Title: "Qwen Technical Report" (arXiv: 2309.16609), Page: 8
-7) MaxSim: 26.15, Title: "Llama 2: Open Foundation and Fine-Tuned Chat Models" (arXiv: 2307.09288), Page: 4
-8) MaxSim: 26.09, Title: "LLaMA: Open and Efficient Foundation Language Models" (arXiv: 2302.13971), Page: 1
-9) MaxSim: 26.00, Title: "Llama 2: Open Foundation and Fine-Tuned Chat Models" (arXiv: 2307.09288), Page: 6
-10) MaxSim: 25.89, Title: "LLaMA: Open and Efficient Foundation Language Models" (arXiv: 2302.13971), Page: 7
-```
 ```python
 # Setting up Qwen2.5-VL-3B-Instruct for generating answers from a query string 
 # plus a collection of (images of) PDF pages.
@@ -398,11 +336,7 @@ class QwenVL:
 qwenvl = QwenVL()
 ```
 
-Python output:
-```text
-Loading checkpoint shards:   0%|          | 0/2 [00:00&lt;?, ?it/s]
-```
-# RAG examples
+"# RAG examples
 
 Try this out yourself below.
 
@@ -503,16 +437,4 @@ with weaviate.connect_to_local() as client:
         result_images.append(page_images[p["page_id"]])
     
 print(f"\nThe answer from Qwen2.5-VL-3B-Instruct based on these documents:\n{qwenvl.query_images(query_text, result_images)}")
-```
-
-Python output:
-```text
-The most relevant documents for the query "Why do we need the retrieval step when performing retrieval augmented generation?" by order of relevance:
-
-1) MaxSim: 24.53, Title: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), Page: 2
-2) MaxSim: 23.41, Title: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), Page: 1
-3) MaxSim: 21.06, Title: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), Page: 4
-
-The answer from Qwen2.5-VL-3B-Instruct based on these documents:
-The retrieval step is necessary in Retrieval-Augmented Generation (RAG) because it allows the model to access and utilize external knowledge from databases or other sources. This external knowledge can provide context, enhance the accuracy of the generated response, and help the model understand the user's query better. By incorporating this external knowledge, RAG can improve its performance on tasks that require domain-specific knowledge or require continuous updates based on new information.
 ```

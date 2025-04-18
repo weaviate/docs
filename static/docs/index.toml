@@ -10,7 +10,7 @@ tags = ["Hybrid Search", "Mistral"]
 description = "Learn how to perform hybrid search in Weaviate using Mistral models for enhanced retrieval."
 
 [[recipe]]
-title = "#Multi-vector RAG: Using Weaviate to search a collection of PDF documents "
+title = "Multi-vector RAG: Using Weaviate to search a collection of PDF documents "
 notebook = "weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb"
 tags = ["ColPali", "Named Vectors"]
 description = "How to use Weaviate's multi-vector feature for querying PDF documents."
