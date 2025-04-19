@@ -13,7 +13,7 @@ import CardsSection from "/src/components/CardsSection";
 
 ## How-to manuals
 
-import { howToGuidesCardsData } from '/_includes/configuration/how-to-manuals.js'; 
+import { howToGuidesCardsData } from "/_includes/configuration/how-to-manuals.js";
 
 <br />
 <CardsSection items={howToGuidesCardsData} />
@@ -23,16 +23,23 @@ import { howToGuidesCardsData } from '/_includes/configuration/how-to-manuals.js
 
 export const otherGuidesCardsData = [
   {
+    title: "Tutorials",
+    description: "Step-by-step guides and practical examples.",
+    link: "/docs/weaviate/tutorials",
+    icon: "fas fa-chalkboard-teacher",
+  },
+  {
     title: "Starter guides",
     description: "Guides and tips for new users learning how to use Weaviate.",
     link: "/docs/weaviate/starter-guides",
     icon: "fas fa-compass",
   },
   {
-    title: "Tutorials",
-    description: "Step-by-step guides and practical examples.",
-    link: "/docs/weaviate/tutorials",
-    icon: "fas fa-chalkboard-teacher",
+    title: "Recipes",
+    description:
+      "Jupyter Notebooks that showcase various use cases and functionalities.",
+    link: "/docs/weaviate/recipes",
+    icon: "fas fa-scroll",
   },
 ];
 

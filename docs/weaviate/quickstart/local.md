@@ -1,11 +1,9 @@
 ---
-title: Locally hosted
-sidebar_position: 0
+title: 'Quickstart: Locally hosted'
+sidebar_label: Locally hosted
 image: og/docs/quickstart-tutorial.jpg
 hide_table_of_contents: true
 ---
-
-# Quickstart: locally hosted
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

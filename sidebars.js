@@ -15,7 +15,10 @@ const sidebars = {
         type: "doc",
         id: "weaviate/quickstart/index",
       },
-      items: ["weaviate/quickstart/local"],
+      items: [
+        "weaviate/quickstart/local",
+        "weaviate/starter-guides/custom-vectors",
+      ],
     },
     {
       type: "category",
@@ -56,7 +59,6 @@ const sidebars = {
       },
       items: [
         "weaviate/starter-guides/which-weaviate",
-        "weaviate/starter-guides/custom-vectors",
         "weaviate/starter-guides/generative",
         {
           type: "category",
@@ -309,6 +311,10 @@ const sidebars = {
       type: "category",
       label: "APIs",
       className: "sidebar-main-category",
+      link: {
+        type: "doc",
+        id: "weaviate/api/index",
+      },
       collapsible: false,
       items: [
         {
@@ -317,7 +323,7 @@ const sidebars = {
           className: "sidebar-item",
           link: {
             type: "doc",
-            id: "weaviate/api/index",
+            id: "weaviate/api/search",
           },
           items: [
             "weaviate/api/graphql/get",
@@ -457,8 +463,6 @@ const sidebars = {
       },
       items: ["weaviate/benchmarks/ann"],
     },
-    "weaviate/more-resources/faq",
-    "weaviate/more-resources/glossary",
     {
       type: "category",
       label: "Modules",
@@ -477,6 +481,8 @@ const sidebars = {
         "weaviate/modules/custom-modules",
       ],
     },
+    "weaviate/more-resources/faq",
+    "weaviate/more-resources/glossary",
     "weaviate/more-resources/example-datasets",
   ],
   deploySidebar: ["deploy/index"],

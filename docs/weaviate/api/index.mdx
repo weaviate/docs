@@ -1,130 +1,46 @@
 ---
-title: GraphQL & gRPC API
+title: APIs
 description: Weaviate API Documentation
 sidebar_position: 0
 image: og/docs/api.jpg
 # tags: ['schema']
 ---
 
-Weaviate offers [GraphQL](https://graphql.org/) and gRPC APIs for queries.
+Weaviate provides multiple Application Programming Interfaces (APIs) to interact with the database, manage instances, and perform searches. Weaviate exposes three main APIs:
 
-We recommend using a Weaviate [client library](../client-libraries/index.mdx), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
+1.  **[RESTful API](./rest.md)**:
 
-However, you can query Weaviate directly using GraphQL with a POST request to the `/graphql` endpoint, or write your own `gRPC` calls based on the [gRPC](#protobuf-definitions) protobuf specification.
+    - **Purpose**: Enables almost complete management of a Weaviate instance. 
+    - **Functionality**: Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
 
-## All references
+2.  **[Search API - GraphQL](./search.mdx#graphql-api)**:
 
-All references have their individual subpages. Click on one of the references below for more information.
+    - **Purpose**: Designed specifically for data querying and exploration.
+    - **Functionality**: Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
 
-- [Object-level queries](./graphql/get.md)
-- [Aggregate](./graphql/aggregate.md)
-- [Search operators](./graphql/search-operators.md)
-- [Conditional filters](./graphql/filters.md)
-- [Additional operators](./graphql/additional-operators.md)
-- [Additional properties](./graphql/additional-properties.md)
-- [Explore](./graphql/explore.md)
+3.  **[Search API - gRPC](./search.mdx#grpc-api)**:
+    - **Purpose**: A high-performance alternative for GraphQL when it comes to demanding data operations.
+    - **Functionality**: gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
 
-## GraphQL API
+## Client libraries and API usage
 
-### Why GraphQL?
+Weaviate offers official client libraries for these programming languages:
 
-GraphQL is a query language built on using graph data structures. It is an efficient method of data retrieval and mutation, since it mitigates the common over-fetching and under-fetching problems of other query languages.
+- [Python](../client-libraries/python/index.mdx)
+- [TypeScript/JavaScript](../client-libraries/typescript/index.mdx)
+- [Go](../client-libraries/go.md)
+- [Java](../client-libraries/java.md)
 
-:::tip GraphQL is case-sensitive
-GraphQL is case-sensitive ([reference](https://spec.graphql.org/June2018/#sec-Names)), so make sure to use the correct casing when writing your queries.
+:::tip **TIP:** Using the official client libraries for interacting with Weaviate
+
+The client libraries abstract away the complexities of making direct REST, GraphQL, or gRPC calls. You interact with Weaviate using idiomatic methods and objects in your preferred language.
+
+Modern versions of the client libraries (e.g., Python v4+, TypeScript v3+) are designed to **automatically utilize the more performant gRPC interface** for search and query operations whenever possible and supported by the Weaviate instance you are connected to. They handle the negotiation and use the optimal protocol under the hood, typically requiring only the standard connection details (like the REST endpoint URL and authentication keys) for setup.
+
 :::
-
-### Query structure
-
-You can POST a GraphQL query to Weaviate as follows:
-
-```bash
-curl http://localhost/v1/graphql -X POST -H 'Content-type: application/json' -d '{GraphQL query}'
-```
-
-A GraphQL JSON object is defined as:
-
-```json
-{
-  "query": "{ # GRAPHQL QUERY }"
-}
-```
-
-GraphQL queries follow a defined structure. Queries are structured as follows:
-
-```graphql
-{
-  <Function> {
-      <Collection> {
-        <property>
-        _<underscore-property>
-      }
-  }
-}
-```
-
-### Limitations
-
-GraphQL _integer_ data currently only supports `int32`, and does not support `int64`. This means that currently _integer_ data fields in Weaviate with integer values larger than `int32`, will not be returned using GraphQL queries. We are working on solving this [issue](https://github.com/weaviate/weaviate/issues/1563). As current workaround is to use a `string` instead.
-
-### Consistency level
-
-GraphQL (`Get`) queries are run with a tunable [consistency level](../concepts/replication-architecture/consistency.md#tunable-read-consistency).
-
-## gRPC API
-
-Starting with Weaviate `v1.19.0`, a gRPC interface has been progressively added to Weaviate. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
-
-As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python (`v4` version)](/docs/weaviate/client-libraries/python) and [TypeScript (`v3` version)](../client-libraries/typescript/index.mdx) client libraries support gRPC, and the other client libraries will follow.
-
-### Protocol Buffer (Protobuf) definitions {#protobuf-definitions}
-
-A gRPC interface is defined through its Protocol Buffer, or Protobuf ([read more](https://protobuf.dev/)) definitions.
-
-In the case of Weaviate, the `.proto` files are listed in the Core library's [proto directory](https://github.com/weaviate/weaviate/tree/master/grpc/proto/v1).
-
-This directory contains the following files:
-
-- `weaviate.proto`: The main Protobuf definition file. This file defines the `Weaviate` service, and specifies the RPC methods available in the Weaviate service.
-- `batch.proto`: Defines data structures for handling batch object operations. This file is imported by `weaviate.proto`.
-- `search_get.proto`: Defines data structures for handling search (get) operations. This file is imported by `weaviate.proto`.
-- `base.proto`: Defines base data structures to be used elsewhere. This file is imported by `batch.proto` and `search_get.proto`.
-
-### How to use gRPC
-
-#### Server-side
-
-As an example, the snippet below maps `50051` as the host port so that it can be accessed from outside the container. The `50051` port is mapped to the `50051` port inside the container for gRPC calls, and the `8080` port is mapped to the `8080` port inside the container for REST calls.
-
-:::info
-We suggest using the default port `50051` for gRPC calls. It can be modified through the `GRPC_PORT` [environment variable](/docs/weaviate/config-refs/env-vars).  
-Note that [Weaviate Cloud](https://console.weaviate.cloud/) uses port `443` for gRPC.
-:::
-
-````yaml:
-
-```yaml
----
-services:
-  weaviate:
-    # ... Other settings
-    ports:
-     - "8080:8080"  # REST calls
-     - "50051:50051"  # gRPC calls
-  # ... Other settings
-````
-
-#### Client-side
-
-You can use the gRPC interface through the [Python (`v4` version)](/docs/weaviate/client-libraries/python) and [TypeScript (`v3` version)](../client-libraries/typescript/index.mdx) client libraries. Other client libraries will also introduce gRPC support in the near future.
-
-Alternatively, you can use other tools, such as the `grpcurl` command-line tool, to interact with the gRPC API. Some options include:
-
-- `grpcurl` command-line tool ([GitHub repo](https://github.com/fullstorydev/grpcurl))
-- Postman ([How to send a gRPC request with Postman](https://learning.postman.com/docs/sending-requests/grpc/grpc-request-interface/))
 
 ## Questions and feedback
 
-import DocsFeedback from '/\_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />
