@@ -8,28 +8,26 @@ image: og/docs/api.jpg
 
 Weaviate provides multiple Application Programming Interfaces (APIs) to interact with the database, manage instances, and perform searches. Weaviate exposes three main APIs:
 
-1.  **[RESTful API](./rest.md)**:
+- **[RESTful API](./rest.md)**: Enables almost complete management of a Weaviate instance.
 
-    - **Purpose**: Enables almost complete management of a Weaviate instance. 
-    - **Functionality**: Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
+  - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
 
-2.  **[Search API - GraphQL](./search.mdx#graphql-api)**:
+- **[Search API - GraphQL](./search.mdx#graphql-api)**: Designed specifically for data querying and exploration.
 
-    - **Purpose**: Designed specifically for data querying and exploration.
-    - **Functionality**: Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
+  - Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
 
-3.  **[Search API - gRPC](./search.mdx#grpc-api)**:
-    - **Purpose**: A high-performance alternative for GraphQL when it comes to demanding data operations.
-    - **Functionality**: gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
+- **[Search API - gRPC](./search.mdx#grpc-api)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
+
+  - gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
 
 ## Client libraries and API usage
 
 Weaviate offers official client libraries for these programming languages:
 
-- [Python](../client-libraries/python/index.mdx)
-- [TypeScript/JavaScript](../client-libraries/typescript/index.mdx)
-- [Go](../client-libraries/go.md)
-- [Java](../client-libraries/java.md)
+- **[Python](../client-libraries/python/index.mdx)**
+- **[TypeScript/JavaScript](../client-libraries/typescript/index.mdx)**
+- **[Go](../client-libraries/go.md)**
+- **[Java](../client-libraries/java.md)**
 
 :::tip **TIP:** Using the official client libraries for interacting with Weaviate
 
