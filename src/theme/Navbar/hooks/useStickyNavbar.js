@@ -51,7 +51,17 @@ export default function useStickyNavbar(linksCount, pathname) {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Enhanced cleanup function
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+
+      // Remove the placeholder when unmounting or when pathname changes
+      if (placeholderRef.current) {
+        placeholderRef.current.remove();
+        placeholderRef.current = null;
+      }
+    };
   }, [linksCount, pathname]);
 
   return { defaultNavbarRef, secondaryNavbarRef, placeholderRef };

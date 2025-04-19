@@ -135,6 +135,20 @@ export default function OptionModal({
                   {isApple ? "⌘K" : "Ctrl+K"}
                 </span>
               </div>
+
+              {/* New Forum Card - styled like the resource cards */}
+              <div
+                className={styles.resourceCard}
+                onClick={() =>
+                  window.open("https://forum.weaviate.io", "_blank")
+                }
+              >
+                <i
+                  className="fa fa-comments styles.resourceIcon"
+                  aria-hidden="true"
+                />
+                <span className={styles.resourceTitle}>Community Forum</span>
+              </div>
             </div>
           </div>
         </div>

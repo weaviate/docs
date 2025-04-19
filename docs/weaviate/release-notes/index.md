@@ -5,8 +5,6 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes']
 ---
 
-## Weaviate release notes
-
 These are the last five minor releases:
 
 import QuickLinks from "/src/components/QuickLinks";
