@@ -22,6 +22,11 @@ Weaviate supports runtime configuration management. Check out how to [configure 
 ## General
 
 import Link from '@docusaurus/Link';
+import APITable from '@site/src/components/APITable';
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
@@ -73,7 +78,15 @@ import Link from '@docusaurus/Link';
 | `USE_INVERTED_SEARCHABLE` | Store searchable properties using a more efficient in-disk format, designed for the BlockMax WAND algorithm. Set as `true` together with `USE_BLOCKMAX_WAND` to enable BlockMax WAND at query time. <br/><br/>Added in `v1.28` default: `false` <br/> From `v1.30` default: `true` <br/><Link to="/docs/weaviate/concepts/indexing/inverted-index#blockmax-wand-algorithm">Read more</Link> | `boolean` | `true` |
 | `USE_BLOCKMAX_WAND` | Use BlockMax WAND algorithm for BM25 and hybrid searches. Enable it together with `USE_INVERTED_SEARCHABLE` to get the performance benefits. <br/><br/>Added in `v1.28` default: `false` <br/> From `v1.30` default: `true` <br/><Link to="/docs/weaviate/concepts/indexing/inverted-index#blockmax-wand-algorithm">Read more</Link> | `boolean` | `true` |
 
+```mdx-code-block
+</APITable>
+```
+
 ## Module-specific
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
@@ -99,11 +112,19 @@ import Link from '@docusaurus/Link';
 | `GPT4ALL_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `text2vec-gpt4all` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
 | `TRANSFORMERS_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `text2vec-transformers` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
 
+```mdx-code-block
+</APITable>
+```
+
 ## Authentication and authorization
 
 :::info Authentication & Authorization documentation
 For more information on authentication and authorization, see the [Authentication](../../configuration/authentication.md) and [Authorization](../../configuration/authorization.md) pages.
 :::
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
@@ -121,14 +142,30 @@ For more information on authentication and authorization, see the [Authenticatio
 | `AUTHORIZATION_ADMINLIST_USERS` | Users with admin permission when AdminList scheme used | `string - comma-separated list` | `jane@example.com,john@example.com` |
 | `AUTHORIZATION_ADMINLIST_READONLY_USERS` | Users with read-only permission when AdminList scheme used | `string - comma-separated list` | `alice@example.com,dave@example.com` |
 
+```mdx-code-block
+</APITable>
+```
+
 ### RBAC Authorization
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
 | `AUTHORIZATION_RBAC_ENABLED` | Enable RBAC authorization scheme (mutually exclusive with `AUTHORIZATION_ADMINLIST_ENABLED`). | `boolean` | `true` |
 | `AUTHORIZATION_RBAC_ROOT_USERS` | Users with the built-in root/administrator role when RBAC scheme used. At least one root user must be defined with RBAC. | `string - comma-separated list` | `admin-user,another-admin-user` |
 
+```mdx-code-block
+</APITable>
+```
+
 ## Multi-node instances
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
@@ -147,12 +184,20 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
 
+```mdx-code-block
+</APITable>
+```
+
 ### Async replication
 
 :::info Added in `v1.29`
 The environment variables for configuring async replication have been introduced in `v1.29`.
 To learn more about their usage, visit the **[replication how-to guide](/docs/weaviate/configuration/replication#async-replication-settings)**.
 :::
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
@@ -169,6 +214,10 @@ To learn more about their usage, visit the **[replication how-to guide](/docs/we
 | `ASYNC_REPLICATION_PROPAGATION_DELAY` | Sets a delay period to allow asynchronous write operations to reach all nodes in a shard/tenant before propagating new or updated objects. Default: `30` | `string - number` | `40` |
 | `ASYNC_REPLICATION_PROPAGATION_CONCURRENCY` | Defines the number of workers which will concurrently propagate a batch of objects. Default: `5`, Min: `1`, Max: `20` | `string - number` | `10` |
 | `ASYNC_REPLICATION_PROPAGATION_BATCH_SIZE` | Sets the maximum number of objects to propagate in a single batch. Default: `100`, Min: `1`, Max: `1000` |`string - number`  | `200` |
+
+```mdx-code-block
+</APITable>
+```
 
 <!-- Docs notes:
 Undocumented environment variables - for internal use only:

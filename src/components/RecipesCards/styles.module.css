@@ -18,7 +18,6 @@
   border-radius: 15px; /* Rounded corners */
   border: 1px solid var(--site-primary-dark); /* Use Docusaurus theme variable */
   background-color: transparent;
-  color: var(--site-primary-dark);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   font-size: 0.9em;
