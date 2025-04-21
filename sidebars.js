@@ -15,10 +15,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/quickstart/index",
       },
-      items: [
-        "weaviate/quickstart/local",
-        "weaviate/starter-guides/custom-vectors",
-      ],
+      items: ["weaviate/quickstart/local"],
     },
     {
       type: "category",
@@ -59,6 +56,7 @@ const sidebars = {
       },
       items: [
         "weaviate/starter-guides/which-weaviate",
+        "weaviate/starter-guides/custom-vectors",
         "weaviate/starter-guides/generative",
         {
           type: "category",
