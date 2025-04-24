@@ -36,16 +36,28 @@ const config = {
     [
       "@scalar/docusaurus",
       {
+        id: "api-v1-30",
         label: "",
         route: "/docs/weaviate/api/rest",
         configuration: {
           spec: {
-            // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
-            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi_docs_v1-30/openapi-specs/schema.json",
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/rest-api-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
-          // hiddenClients: [...],
+        },
+      },
+    ],
+    [
+      "@scalar/docusaurus",
+      {
+        id: "api-v1-29",
+        label: "",
+        route: "/docs/weaviate/api/rest/v1-29",
+        configuration: {
+          spec: {
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi_docs_v1-29/openapi-specs/schema.json",
+          },
+          hideModels: true,
         },
       },
     ],

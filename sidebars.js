@@ -334,10 +334,13 @@ const sidebars = {
           ],
         },
         {
-          type: "doc",
-          id: "weaviate/api/rest",
+          type: "category",
           label: "RESTful API",
           className: "sidebar-item",
+          items: [
+            "weaviate/api/rest",
+            "weaviate/api/rest/v1-29",
+          ],
         },
       ],
     },
