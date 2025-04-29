@@ -1,7 +1,6 @@
 ---
 title: APIs
 description: Weaviate API Documentation
-sidebar_position: 0
 image: og/docs/api.jpg
 # tags: ['schema']
 ---
@@ -12,11 +11,11 @@ Weaviate provides multiple Application Programming Interfaces (APIs) to interact
 
   - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
 
-- **[Search API - GraphQL](./search.mdx#graphql-api)**: Designed specifically for data querying and exploration.
+- **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
 
   - Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
 
-- **[Search API - gRPC](./search.mdx#grpc-api)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
+- **[Search API - gRPC](./grpc.md)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
 
   - gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
 
