@@ -54,3 +54,9 @@ Alternatively, you can use other tools, such as the `grpcurl` command-line tool,
 
 - `grpcurl` command-line tool ([GitHub repo](https://github.com/fullstorydev/grpcurl))
 - Postman ([How to send a gRPC request with Postman](https://learning.postman.com/docs/sending-requests/grpc/grpc-request-interface/))
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
