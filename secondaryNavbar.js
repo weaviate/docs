@@ -22,7 +22,7 @@ const secondaryNavbarItems = {
       },
       {
         label: "Reference & APIs",
-        link: "/docs/weaviate/client-libraries",
+        link: "/docs/weaviate/config-refs",
         sidebar: "referenceSidebar",
       },
       {
