@@ -1,4 +1,4 @@
 [[rewrites]]
-  source = "/docs/assets/:splat"
-  destination = "/assets/:splat"
+  source = "/docs/assets/(.*)"
+  destination = "/assets/:1"
   status = 200
