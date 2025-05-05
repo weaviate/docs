@@ -5,6 +5,11 @@
   [headers.values]
     access-control-allow-origin = "*"
 
+[[redirects]]
+from = "/docs/weaviate"
+to   = "/docs/weaviate/tmp"
+status = 301
+
 # ESSENTIAL: Rule for CSS, JS, etc.
 [[rewrites]]
   source = "/docs/assets/:splat"
@@ -13,7 +18,7 @@
 
 [[rewrites]]
   source = "/docs/config/:splat"
-  destination = "/docs/:splat"
+  destination = "/config/:splat"
   status = 200 # Serve the actual asset
 
 [[rewrites]]
