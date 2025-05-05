@@ -1,4 +1,132 @@
+### ==================== TOP LEVEL ==================== ###
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    access-control-allow-origin = "*"
+
+# ESSENTIAL: Rule for CSS, JS, etc.
 [[rewrites]]
-  source = "/docs/assets/(.*)"
-  destination = "/assets/:1"
+  source = "/docs/assets/:splat"
+  destination = "/assets/:splat"
   status = 200
+
+[[rewrites]]
+  source = "/docs/config/:splat"
+  destination = "/config/:splat"
+  status = 200 # Serve the actual asset
+
+[[rewrites]]
+  source = "/docs/img/:splat"
+  destination = "/img/:splat"
+  status = 200
+
+[[rewrites]]
+  source = "/docs/fonts/:splat" # For Font Awesome etc.
+  destination = "/fonts/:splat"
+  status = 200
+
+[[rewrites]]
+  source = "/docs/js/:splat" # For Font Awesome etc.
+  destination = "/js/:splat"
+  status = 200
+
+[[rewrites]]
+  source = "/docs/og/:splat" # For Font Awesome etc.
+  destination = "/og/:splat"
+  status = 200
+
+## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
+
+[[redirects]]
+from = "/docs"
+to   = "/docs/weaviate"
+status = 301
+
+[[redirects]]
+from = "/"
+to   = "/docs/weaviate"
+status = 301
+
+## Redirect anything from /developers to /docs
+
+[[redirects]]
+from = "/developers/*"
+to   = "/docs/:splat"
+status = 301
+
+## Redirect all paths starting with /docs/wcs to /docs/cloud
+
+[[redirects]]
+from = "/docs/wcs/*"
+to   = "/docs/cloud/:splat"
+status = 301
+
+## Manage data refactoring
+
+[[redirects]]
+from = "/docs/weaviate/manage-data"
+to   = "/docs/weaviate/manage-collections"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/collections"
+to   = "/docs/weaviate/manage-collections"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/create"
+to   = "/docs/weaviate/manage-objects/create"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/import"
+to   = "/docs/weaviate/manage-objects/import"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/read"
+to   = "/docs/weaviate/manage-objects/read"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/read-all-objects"
+to   = "/docs/weaviate/manage-objects/read-all-objects"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/update"
+to   = "/docs/weaviate/manage-objects/update"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/delete"
+to   = "/docs/weaviate/manage-objects/delete"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/cross-references"
+to   = "/docs/weaviate/manage-collections/cross-references"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/multi-tenancy"
+to   = "/docs/weaviate/manage-collections/multi-tenancy"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/tenant-states"
+to   = "/docs/weaviate/manage-collections/tenant-states"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/migrate"
+to   = "/docs/weaviate/manage-collections/migrate"
+status = 301
+
+## Roadmap page redirect
+
+[[redirects]]
+from = "/docs/weaviate/roadmap"
+to   = "/docs/weaviate/release-notes"
+status = 301
