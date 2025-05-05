@@ -48,7 +48,7 @@ If your use cases involves multiple subsets of data which meet all of the follow
 
 Then consider enabling multi-tenancy, and assigning each subset of data to a separate tenant. This will reduce the resource overhead on Weaviate, and allow you to scale more effectively.
 
-<p align="center"><img src="/img/docs/system/collections_with_without_mt.png" alt="Replication Factor" width="100%"/></p>
+<p align="center"><img src="/docs/img/docs/system/collections_with_without_mt.png" alt="Replication Factor" width="100%"/></p>
 
 :::tip Further resources
 - [How-to: Perform multi-tenancy operations](../manage-collections/multi-tenancy.mdx)

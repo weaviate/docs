@@ -5,17 +5,17 @@ const DockerConfigGen = () => {
     const configDiv = document.getElementById("configuration-generator-root");
     if (configDiv) {
       const scriptA = document.createElement("script");
-      scriptA.src = "/js/configgen/2.709632dd.chunk.js";
+      scriptA.src = "/docs/js/configgen/2.709632dd.chunk.js";
       scriptA.type = "text/javascript";
       configDiv.appendChild(scriptA);
 
       const scriptB = document.createElement("script");
-      scriptB.src = "/js/configgen/main.dde0b96f.chunk.js";
+      scriptB.src = "/docs/js/configgen/main.dde0b96f.chunk.js";
       scriptB.type = "text/javascript";
       configDiv.appendChild(scriptB);
 
       const scriptC = document.createElement("script");
-      scriptC.src = "/js/configgen/runtime-main.a0f4ef68.js";
+      scriptC.src = "/docs/js/configgen/runtime-main.a0f4ef68.js";
       scriptC.type = "text/javascript";
       configDiv.appendChild(scriptC);
     }

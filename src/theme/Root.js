@@ -29,7 +29,7 @@ export default function Root({ children }) {
         script.setAttribute("data-project-color", "#130c49");
         script.setAttribute(
           "data-project-logo",
-          "/img/site/weaviate-logo-w.png"
+          "/docs/img/site/weaviate-logo-w.png"
         );
         script.setAttribute("data-button-image-width", "35");
         script.setAttribute("data-button-image-height", "20");

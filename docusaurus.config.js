@@ -21,7 +21,7 @@ const config = {
   staticDirectories: ["static"],
   // url: "https://weaviate.io",
   url: "https://weaviate-docs.netlify.app",
-  baseUrl: "/",
+  baseUrl: "/docs/",
   trailingSlash: false,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -62,7 +62,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           path: "docs",
-          routeBasePath: "docs",
+          routeBasePath: "/",
           editUrl: "https://github.com/weaviate/docs/tree/main/",
           remarkPlugins: [remarkReplace, math],
           rehypePlugins: [katex],

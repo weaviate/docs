@@ -126,7 +126,7 @@ export default function OptionModal({
                 }}
               >
                 <img
-                  src="/img/site/weaviate-logo-w.png"
+                  src="/docs/img/site/weaviate-logo-w.png"
                   alt="Weaviate Logo"
                   className={styles.askAiIcon}
                 />
