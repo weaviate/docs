@@ -5,6 +5,12 @@
   [headers.values]
     access-control-allow-origin = "*"
 
+# ESSENTIAL: Rule for CSS, JS, etc.
+[[rewrites]]
+  source = "/docs/assets/:splat"
+  destination = "/assets/:splat"
+  status = 200
+
 [[rewrites]]
   source = "/docs/recipes/:splat"
   destination = "/docs/:splat"
