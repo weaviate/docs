@@ -78,10 +78,10 @@ const config = {
   ],
   stylesheets: [
     // Add Font Awesome stylesheets
-    "/fonts/font-awesome/fontawesome.css",
-    "/fonts/font-awesome/solid.css",
-    "/fonts/font-awesome/regular.css",
-    "/fonts/font-awesome/brands.css",
+    "/docs/fonts/font-awesome/fontawesome.css",
+    "/docs/fonts/font-awesome/solid.css",
+    "/docs/fonts/font-awesome/regular.css",
+    "/docs/fonts/font-awesome/brands.css",
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
