@@ -5,37 +5,6 @@
   [headers.values]
     access-control-allow-origin = "*"
 
-# ESSENTIAL: Rule for CSS, JS, etc.
-[[rewrites]]
-  source = "/docs/assets/:splat"
-  destination = "/assets/:splat"
-  status = 200
-
-[[rewrites]]
-  source = "/docs/config/:splat"
-  destination = "/config/:splat"
-  status = 200 # Serve the actual asset
-
-[[rewrites]]
-  source = "/docs/img/:splat"
-  destination = "/img/:splat"
-  status = 200
-
-[[rewrites]]
-  source = "/docs/fonts/:splat" # For Font Awesome etc.
-  destination = "/fonts/:splat"
-  status = 200
-
-[[rewrites]]
-  source = "/docs/js/:splat" # For Font Awesome etc.
-  destination = "/js/:splat"
-  status = 200
-
-[[rewrites]]
-  source = "/docs/og/:splat" # For Font Awesome etc.
-  destination = "/og/:splat"
-  status = 200
-
 ## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
 
 [[redirects]]
@@ -130,3 +99,9 @@ status = 301
 from = "/docs/weaviate/roadmap"
 to   = "/docs/weaviate/release-notes"
 status = 301
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/:splat"
+  status = 200
+  force = true
