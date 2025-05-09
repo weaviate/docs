@@ -1,0 +1,165 @@
+---
+title: AWS EKS Installation
+description: Deploy Weaviate on EKS using the AWS CLI
+---
+
+Weaviate can be deployed on an EKS cluster using the `eksctl` command-line tool that creates and manages clusters. By the end of this document, you'll have all the necessary information to create an EKS cluster using the command line, add persistent storage to your cluster and then deploy Weaviate onto the cluster. 
+
+:::info Prerequisites
+
+- Helm installed
+- The AWS CLI installed with the latest version
+- `kubectl` installed
+- `eksctl` installed
+:::
+
+#### Verify your tools
+
+Before starting, ensure that your tools are installed:
+
+```bash
+helm version
+aws --version
+kubectl version
+eksctl version
+```
+
+### Step 1: Create the Cluster
+
+To create your cluster, prepare a `yaml` file that with a name of your choosing (e.g. `eks-cluster.yaml`)
+
+```bash
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: 'your-cluster-name'        # Replace with your desired cluster name
+  region: 'your-region'           # Replace with your desired AWS region
+  version: "1.33"               # Kubernetes version
+
+iam:
+  withOIDC: true                # Enable IAM OIDC provider
+  
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+
+managedNodeGroups:
+  - name: node-group-name
+    labels: { role: worker }
+    instanceType: t3.large     # Choose an appropriate instance type
+    desiredCapacity: 3         # Number of nodes
+    minSize: 2                 # Minimum number of nodes for autoscaling
+    maxSize: 5                 # Maximum number of nodes for autoscaling
+    privateNetworking: true    # Use private networking
+    volumeSize: 80             # Root volume size in GB
+    volumeType: gp3            # Root volume type
+
+addons:
+  - name: vpc-cni
+    version: latest
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: aws-ebs-csi-driver
+    version: latest
+    wellKnownPolicies:
+      ebsCSIController: true   # Enable EBS CSI driver
+```
+
+This creates an EKS cluster within your specified region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand.
+
+Run this command to create your EKS cluster:
+```
+eksctl create cluster -f your-file-name.yaml
+```
+
+#### Enable `kubectl` to interact with the newly created cluster:
+
+```bash
+aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
+```
+
+#### Verify that the cluster has been created and that you are able to interact with it:
+
+```bash
+kubectl get nodes
+```
+
+#### Step 2: Add Storage Class
+
+After creating your cluster and verifying that you can interact with it , you'll need to create a `storageclass.yaml` file:
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: <your-storageclass-name>
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  encrypted: "true"
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+```
+
+After creating the storage class, apply it: ```kubectl apply -f <your-storageclass-name>.yaml```
+
+
+#### Verify your storage class and has been created and applied
+
+```
+kubectl get sc
+```
+
+### Step 3: Add Weaviate to EKS
+
+After adding persistent storage to your cluster, you can now deploy Weaviate into it.  
+
+#### Create a Weaviate namespace:
+
+```bash
+kubectl create namespace weaviate
+```
+
+#### Add the Weaviate Helm chart:
+
+```bash
+helm repo add weaviate https://weaviate.github.io/weaviate-helm
+helm repo update
+```
+
+After you've added the Weaviate Helm chart, configure the `values.yaml` file before you deploy Weaviate on the cluster. 
+
+
+#### Deploy Weaviate on your cluster:
+
+```bash
+helm upgrade --install weaviate weaviate/weaviate \
+  --namespace weaviate \
+  --values values.yaml \
+```
+
+#### Verify your deployment
+
+```bash
+kubectl get pods
+```
+
+
+### Next Steps: [Connecting to Weaviate](docs/weaviate/connections/index.mdx)
+
+### Further Resources
+
+- [Persistent storage for Kubernetes](https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
