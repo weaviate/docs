@@ -18,8 +18,6 @@ It is easy to deploy a Weaviate cluster through the AWS Marketplace.
 
 You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) to directly launch a Weaviate cluster.
 
-
-
 ## Installation instructions
 
 ### AWS Marketplace

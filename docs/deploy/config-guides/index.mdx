@@ -1,0 +1,34 @@
+---
+title: Configuration Guides
+sidebar_position: 0
+---
+
+Deploying Weaviate successfully depends on robust, well-considered configuration. 
+This section outlines key configuration requirements and best practices for production deployments. 
+Whether you are setting up a new environment or optimizing an existing one, configuration choices impact security, scalability, and reliability.
+
+### Configuring your deployment
+
+#### Environment Variables and Secrets Management
+- Configure environment variables for connection strings, ports, and security credentials.  
+
+#### Resource Limits and Autoscaling
+- Set CPU and memory requests and limits for each service.
+
+#### Persistence and Storage Configuration
+- Define volumes for persistent data.  
+- Enable backups and configure retention policies.
+
+#### Security Hardening
+- Configure TLS/SSL certificates for encrypted communication.  
+- Use RBAC to restrict access to configuration endpoints and dashboards.
+
+#### Monitoring, Metrics, and Logging
+- Set up metrics exporters and logging targets.  
+- Define alert thresholds based on config misalignment or performance drops. 
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

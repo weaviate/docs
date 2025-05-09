@@ -1,1 +1,0 @@
-# Horizontal Scaling Placeholder

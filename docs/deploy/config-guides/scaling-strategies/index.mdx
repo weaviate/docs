@@ -1,0 +1,53 @@
+---
+
+title: Scaling Overview
+sidebar_position: 1
+
+---
+
+Interested in taking a journey to Weaviate's wonderful world of horizontal scaling and learn about the various scaling strategies available for your deployments?  As your database grows from an experimental playground to a mission-critical infrastructure, you'll need strategies to scale effectively. So don't worry, we've got you covered!
+
+### Why Scaling Matters
+
+Vector databases face unique scaling challenges and as your data grows:
+
+- Memory requirements increase dramatically with vector dimensions and dataset size
+- Query performance becomes critical as user traffic grows
+- System reliability becomes non-negotiable for production deployments
+- Cost optimization becomes increasingly important
+
+
+### High Availability: Downtime is not an option
+
+A highly available architecture ensures that your deployment is operational even when individual components fails, this architecture is essential for:
+
+- Mission-critical applications where search functionality cannot go offline 
+- Zero-downtime maintenance for seamless upgrades and updates
+- Resilience against hardware failures or cloud provider issues
+- Consistent performance even during peak traffic periods
+
+### Horizontal Scaling: Growing out, not up
+
+Your deployment will grow beyond the limits of a single machine by distributing your workload across multiple nodes by using horizontal scaling. Implementing this will allow your deployment to: 
+
+- Handle larger datasets that exceed single-machine memory
+- Improve query throughput by distributing read operations
+- Accelerate imports through parallel processing
+- Optimize resource usage across your infrastructure
+
+
+### Next Steps
+
+- [High Availability Strategies]
+- [Horizontal Scaling]
+
+#### Further resources
+
+- [Concepts: Horizontal Scaling](/docs/weaviate/concepts/cluster.md)
+
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

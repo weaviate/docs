@@ -26,11 +26,58 @@ eksctl version
 
 ### Step 1: Create the Cluster
 
+To create your cluster, prepare a `yaml` file that with a name of your choosing (e.g. `eks-cluster.yaml`)
+
 ```bash
-eksctl create cluster --name <your-cluster-name-here> --region <your-region-here> --nodegroup-name <nodegroup-name-here> --nodes 3 --nodes-min 2 --nodes-max 4 --node-type t3.medium
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: 'your-cluster-name'        # Replace with your desired cluster name
+  region: 'your-region'           # Replace with your desired AWS region
+  version: "1.33"               # Kubernetes version
+
+iam:
+  withOIDC: true                # Enable IAM OIDC provider
+  
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+
+managedNodeGroups:
+  - name: node-group-name
+    labels: { role: worker }
+    instanceType: t3.large     # Choose an appropriate instance type
+    desiredCapacity: 3         # Number of nodes
+    minSize: 2                 # Minimum number of nodes for autoscaling
+    maxSize: 5                 # Maximum number of nodes for autoscaling
+    privateNetworking: true    # Use private networking
+    volumeSize: 80             # Root volume size in GB
+    volumeType: gp3            # Root volume type
+
+addons:
+  - name: vpc-cni
+    version: latest
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: aws-ebs-csi-driver
+    version: latest
+    wellKnownPolicies:
+      ebsCSIController: true   # Enable EBS CSI driver
 ```
 
-This creates an EKS cluster within your specified region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand. 
+This creates an EKS cluster within your specified region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand.
+
+Run this command to create your EKS cluster:
+```
+eksctl create cluster -f your-file-name.yaml
+```
 
 #### Enable `kubectl` to interact with the newly created cluster:
 
@@ -38,26 +85,15 @@ This creates an EKS cluster within your specified region with an autoscaling nod
 aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
 ```
 
-#### Verify that the node has been created and that you are able to interact with the cluster:
+#### Verify that the cluster has been created and that you are able to interact with it:
 
 ```bash
 kubectl get nodes
 ```
 
-### Step 2: Enable Persistent Storage on the Cluster
+#### Step 2: Add Storage Class
 
-Peristent storage is required for running Weaviate on a Kubernetes cluster, it ensures that data is retained should a pod restart, a node crashes, or a cluster scales up or down. 
-
-#### Add the EBS CSI Driver Add-On
-```bash
-eksctl create addon --name aws-ebs-csi-driver --cluster <your-cluster-name> --region <your-region> --service-account-role-arn <arn:aws:iam::<your-account-id>:role/AmazonEKS_EBS_CSI_DriverRole>
-```
-
-The above adds the EBS CSI Driver add-on for your cluster. After adding the add-on, a storage class and `PersistentValueClaim` is needed to enable persistent storage.
-
-#### Add Storage Class
-
-After adding the EBS CSI Driver add-on, you'll need to create a `storageclass.yaml` file:
+After creating your cluster and verifying that you can interact with it , you'll need to create a `storageclass.yaml` file:
 ```
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -74,35 +110,16 @@ allowVolumeExpansion: true
 
 After creating the storage class, apply it: ```kubectl apply -f <your-storageclass-name>.yaml```
 
-#### Create a `PersistentValueClaim`
 
-After creating and applying the Storage class, you'll need to also create a `PersistentValueClaim` file:
-
-```apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: <your-pvc-name>
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: <your-storageclass-name>
-  resources:
-    requests:
-      storage: 10Gi
-```
-After creating the persistent value claim, you also need to apply it: 
-```kubectl apply -f <your-pvc-name>.yaml```
-
-#### Verify your storage class and PersistentValueClaim have both been applied
+#### Verify your storage class and has been created and applied
 
 ```
 kubectl get sc
-kubectl get pvc
 ```
 
 ### Step 3: Add Weaviate to EKS
 
-After creating
+After adding persistent storage to your cluster, you can now deploy Weaviate into it.  
 
 #### Create a Weaviate namespace:
 
