@@ -72,7 +72,7 @@ services:
 
 ### Backups
 
-See [Backups](./backups.md).
+See [Backups](docs/deploy/config-guides/backups.md).
 
 ## Kubernetes
 
