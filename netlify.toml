@@ -99,3 +99,9 @@ status = 301
 from = "/docs/weaviate/roadmap"
 to   = "/docs/weaviate/release-notes"
 status = 301
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/:splat"
+  status = 200
+  force = true
