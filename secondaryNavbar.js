@@ -11,7 +11,7 @@ const secondaryNavbarItems = {
         sidebar: "getStartedSidebar",
       },
       {
-        label: "How-to & Guides",
+        label: "How-to manuals & Guides",
         link: "/docs/weaviate/guides",
         sidebar: "guidesSidebar",
       },
@@ -21,8 +21,8 @@ const secondaryNavbarItems = {
         sidebar: "modelProvidersSidebar",
       },
       {
-        label: "References",
-        link: "/docs/weaviate/api",
+        label: "Reference & APIs",
+        link: "/docs/weaviate/config-refs",
         sidebar: "referenceSidebar",
       },
       {
@@ -31,13 +31,13 @@ const secondaryNavbarItems = {
         sidebar: "conceptsSidebar",
       },
       {
-        label: "Releases",
-        link: "/docs/weaviate/release-notes",
-        sidebar: "releasesSidebar",
+        label: "Recipes",
+        link: "/docs/weaviate/recipes",
+        sidebar: "weaviateRecipesSidebar",
       },
       {
         label: "Other",
-        link: "/docs/weaviate/benchmarks",
+        link: "/docs/weaviate/release-notes",
         sidebar: "othersSidebar",
         /*
         dropdown: [
@@ -80,7 +80,12 @@ const secondaryNavbarItems = {
     description: "Build and deploy intelligent agents with Weaviate",
     link: "/docs/agents",
     links: [
-      { label: "Get Started", link: "/docs/agents", sidebar: "agentsSidebar" },
+      { label: "Documentation", link: "/docs/agents", sidebar: "agentsSidebar" },
+      {
+        label: "Recipes",
+        link: "/docs/agents/recipes",
+        sidebar: "agentsRecipesSidebar",
+      },
     ],
   },
   cloud: {
@@ -124,9 +129,14 @@ const secondaryNavbarItems = {
     link: "/docs/integrations",
     links: [
       {
-        label: "Get Started",
+        label: "Documentation",
         link: "/docs/integrations",
         sidebar: "integrationsSidebar",
+      },
+      {
+        label: "Recipes",
+        link: "/docs/integrations/recipes",
+        sidebar: "integrationsRecipesSidebar",
       },
     ],
   },

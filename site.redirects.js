@@ -78,7 +78,7 @@ const siteRedirects = {
       from: "/docs/weaviate/current/configuration/vector-index-type",
     },
     {
-      to: "/docs/weaviate/manage-data/collections",
+      to: "/docs/weaviate/manage-collections",
       from: [
         "/docs/weaviate/current/schema",
         "/docs/weaviate/current/schema/schema-configuration",
@@ -209,7 +209,7 @@ const siteRedirects = {
 
     // Howto redirects
     {
-      to: "/docs/weaviate/manage-data/read-all-objects",
+      to: "/docs/weaviate/manage-objects/read-all-objects",
       from: "/docs/weaviate/manage-data/exhaustive-retrieval",
     },
 
@@ -425,12 +425,12 @@ const siteRedirects = {
     },
 
     {
-      to: "/docs/weaviate/manage-data/collections",
+      to: "/docs/weaviate/manage-collections",
       from: "/docs/weaviate/manage-data/classes",
     },
 
     {
-      to: "/docs/weaviate/manage-data/collections",
+      to: "/docs/weaviate/manage-collections",
       from: "/docs/weaviate/configuration/schema-configuration",
     },
 
@@ -465,23 +465,23 @@ const siteRedirects = {
     },
     // Release notes
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_20",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_20",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_19",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_19",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_18",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_18",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_17",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_17",
     },
     {
-      to: "/docs/weaviate/release-notes/older-releases/release_1_16",
+      to: "/docs/weaviate/release-notes",
       from: "/docs/weaviate/release-notes/release_1_16",
     },
     // Integration Docs

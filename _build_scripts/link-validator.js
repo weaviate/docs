@@ -31,12 +31,15 @@ const domainsToIgnore = [
     'https://console.x.ai/',
     'https://docs.anthropic.com',
     'https://docs.x.ai',
+    'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link
+    'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
     'https://instagram.com/',
     'https://openai.com',
     'https://platform.openai.com',
     'https://www.researchgate.net',
     'https://simple/',
     'https://www.snowflake.com',
+    'https://stackoverflow.com/',
     'https://towardsdatascience.com/',
     'https://voyageai.com/',
     'https://weaviateagents.featurebase.app',

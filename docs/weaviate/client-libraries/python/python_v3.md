@@ -18,7 +18,7 @@ The `v3` client will continue to get critical security updates and bugfixes for 
 **What does this mean for me?**
 <br/>
 
-To take advantage of the latest developments on the Weaviate Database, we recommend migrating your codebase to use the [`v4` client API](./index.md).
+To take advantage of the latest developments on the Weaviate Database, we recommend migrating your codebase to use the [`v4` client API](./index.mdx).
 <br/>
 
 Our documentation includes [a migration guide here](./v3_v4_migration.md), and many code examples include both `v3` and `v4` syntax. We will be adding more dedicated resources for you to ease the migration experience.
@@ -196,7 +196,7 @@ There is a variety of neural search frameworks that use Weaviate under the hood 
 
 # References documentation
 
-On this Weaviate documentation website, you will find how to use the Python client for all [RESTful endpoints](/docs/weaviate/api/rest) and [GraphQL functions](../../api/graphql/index.md). For each reference, a code block is included with an example of how to use the function with the Python (and other) clients. The Python client, however, has additional functionalities, which are covered in the full client documentation on [weaviate-python-client.readthedocs.io](https://weaviate-python-client.readthedocs.io/en/stable/). Some of these additional functions are highlighted here below.
+On this Weaviate documentation website, you will find how to use the Python client for all [RESTful endpoints](/docs/weaviate/api/rest) and [GraphQL functions](/docs/weaviate/api). For each reference, a code block is included with an example of how to use the function with the Python (and other) clients. The Python client, however, has additional functionalities, which are covered in the full client documentation on [weaviate-python-client.readthedocs.io](https://weaviate-python-client.readthedocs.io/en/stable/). Some of these additional functions are highlighted here below.
 
 ### Example: client.schema.create(schema)
 Instead of adding classes one by one using the RESTful `v1/schema` endpoint, you can upload a full schema in JSON format at once using the Python client. Use the function `client.schema.create(schema)` as follows:

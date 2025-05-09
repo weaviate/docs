@@ -1,0 +1,99 @@
+---
+title: Configuration
+image: og/docs/configuration.jpg
+hide_table_of_contents: true
+---
+
+Use the following reference guides to understand Weaviate's core concepts and configurations. These guides cover collection definitions, data types, distance metrics, environment variables, and more to help you optimize your Weaviate deployment.
+
+import CardsSection from "/src/components/CardsSection";
+
+export const mainReferencesData = [
+  {
+    title: "Collection definition",
+    description:
+      "Learn about the structure and properties of Weaviate collections.",
+    link: "/docs/weaviate/config-refs/schema",
+    icon: "fas fa-cube",
+  },
+  {
+    title: "Multiple vector embeddings",
+    description:
+      "Configure and manage multiple vectors per object for specialized search capabilities.",
+    link: "/docs/weaviate/config-refs/schema/multi-vector",
+    icon: "fas fa-layer-group",
+  },
+  {
+    title: "Vector indexes",
+    description:
+      "Understand vector indexing options to optimize search performance and accuracy.",
+    link: "/docs/weaviate/config-refs/schema/vector-index",
+    icon: "fas fa-sitemap",
+  },
+  {
+    title: "Data types",
+    description:
+      "Reference for supported data types and their handling in Weaviate.",
+    link: "/docs/weaviate/config-refs/datatypes",
+    icon: "fas fa-list-ul",
+  },
+  {
+    title: "Distance metrics",
+    description:
+      "Learn about the distance metrics used for similarity calculations.",
+    link: "/docs/weaviate/config-refs/distances",
+    icon: "fas fa-ruler",
+  },
+  {
+    title: "Environment variables",
+    description:
+      "Configure Weaviate through environment variables and runtime settings.",
+    link: "/docs/weaviate/config-refs/env-vars",
+    icon: "fas fa-cogs",
+  },
+];
+
+export const otherReferencesData = [
+  {
+    title: "Status",
+    description: "Monitor the status and health of your Weaviate instance.",
+    link: "/docs/weaviate/config-refs/status",
+    icon: "fas fa-heartbeat",
+  },
+  {
+    title: "Telemetry",
+    description:
+      "Understand how Weaviate telemetry works and how to configure it.",
+    link: "/docs/weaviate/config-refs/telemetry",
+    icon: "fas fa-chart-line",
+  },
+  {
+    title: "Cluster metadata",
+    description: "Access and manage metadata about your Weaviate cluster.",
+    link: "/docs/weaviate/config-refs/meta",
+    icon: "fas fa-info-circle",
+  },
+  {
+    title: "Cluster node data",
+    description: "View and manage data about individual nodes in your cluster.",
+    link: "/docs/weaviate/config-refs/nodes",
+    icon: "fas fa-server",
+  },
+  {
+    title: "OIDC Configuration",
+    description:
+      "Configure OpenID Connect for secure authentication with Weaviate.",
+    link: "/docs/weaviate/config-refs/oidc",
+    icon: "fas fa-lock",
+  },
+];
+
+<br />
+<CardsSection items={mainReferencesData} />
+<br />
+
+## Other references
+
+<br />
+<CardsSection items={otherReferencesData} />
+<br />

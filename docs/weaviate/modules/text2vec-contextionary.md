@@ -93,9 +93,9 @@ services:
 ...
 ```
 
-## Class configuration
+## Collection configuration
 
-You can configure how the module will behave in each class through the [Weaviate schema](/docs/weaviate/manage-data/collections.mdx).
+You can configure how the module will behave in each class through the [collection configuration](../manage-collections/vector-config.mdx).
 
 ### Vectorization settings
 

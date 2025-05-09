@@ -1,11 +1,9 @@
 ---
-title: Quickstart (with cloud resources)
+title: 'Quickstart: With Cloud resources'
 sidebar_position: 0
 image: og/docs/quickstart-tutorial.jpg
 hide_table_of_contents: true
 ---
-
-# Quickstart: with cloud resources
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -146,7 +144,7 @@ import LatestWeaviateVersion from '/_includes/latest-weaviate-version.mdx';
 
 ### 1.2 Install a client library
 
-We recommend using a [client library](../client-libraries/index.md) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.md), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+We recommend using a [client library](../client-libraries/index.mdx) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
 
 import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
 
@@ -271,7 +269,7 @@ The following example:
 - Adds objects to the target collection (`Question`) using a batch process.
 
 :::tip Batch imports
-([Batch imports](../manage-data/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-data/import.mdx) guide for more information.
+([Batch imports](../manage-objects/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-objects/import.mdx) guide for more information.
 :::
 
 import ImportObjects from '/_includes/code/quickstart/quickstart.import_objects.mdx'
@@ -486,7 +484,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <Link to="/docs/weaviate/manage-data">how to manage data</Link>, such as <Link to="/docs/weaviate/manage-data/collections">manage collections</Link>, <Link to="/docs/weaviate/manage-data/create">create objects</Link>, <Link to="/docs/weaviate/manage-data/import">batch import data</Link> and <Link to="/docs/weaviate/manage-data/multi-tenancy">use multi-tenancy</Link>.
+            See how to manage data, such as <Link to="/docs/weaviate/manage-collections">manage collections</Link>, <Link to="/docs/weaviate/manage-objects/create">create objects</Link>, <Link to="/docs/weaviate/manage-objects/import">batch import data</Link> and <Link to="/docs/weaviate/manage-collections/multi-tenancy">use multi-tenancy</Link>.
           </p>
         </div>
       </div>

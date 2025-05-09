@@ -127,7 +127,7 @@ Follow these steps to manually enable PQ.
 
 ### 1. Define a collection without PQ
 
-[Create a collection](/docs/weaviate/manage-data/collections.mdx#create-a-collection) without specifying a quantizer.
+[Create a collection](../../manage-collections/collection-operations.mdx#create-a-collection) without specifying a quantizer.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -187,7 +187,7 @@ Follow these steps to manually enable PQ.
 
 ### 2. Load training data
 
-[Add objects](/docs/weaviate/manage-data/import.mdx) that will be used to train PQ. Weaviate will use the greater of the training limit, or the collection size, to train PQ.
+[Add objects](/docs/weaviate/manage-objects/import.mdx) that will be used to train PQ. Weaviate will use the greater of the training limit, or the collection size, to train PQ.
 
 We recommend loading a representative sample such that the trained centroids are representative of the entire dataset.
 

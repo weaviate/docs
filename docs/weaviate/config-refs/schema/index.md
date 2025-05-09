@@ -334,7 +334,7 @@ Using these features requires more resources. The additional inverted indexes mu
 
 The vectorizer (`"vectorizer": "..."`) can be specified per collection in the definition. Check the [modules page](../../modules/index.md) for available vectorizer modules.
 
-You can use Weaviate without a vectorizer by setting `"vectorizer": "none"`. This is useful if you want to upload your own vectors from a custom model ([see how here](../../manage-data/import.mdx#specify-a-vector)), or if you want to create a collection without any vectors.
+You can use Weaviate without a vectorizer by setting `"vectorizer": "none"`. This is useful if you want to upload your own vectors from a custom model ([see how here](../../manage-objects/import.mdx#specify-a-vector)), or if you want to create a collection without any vectors.
 
 ### `vectorIndexType`
 
@@ -471,7 +471,7 @@ This feature was introduced in `v1.12.0`.
 
 You can customize how `text` data is tokenized and indexed in the inverted index. Tokenization influences the results returned by the [`bm25`](../../api/graphql/search-operators.md#bm25) and [`hybrid`](../../api/graphql/search-operators.md#hybrid) operators, and [`where` filters](../../api/graphql/filters.md).
 
-Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../../manage-data/collections.mdx#property-level-settings)
+Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../../manage-collections/vector-config.mdx#property-level-settings)
 
 <details>
   <summary>Example property configuration</summary>
@@ -633,7 +633,7 @@ For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or
 
 Unless specified otherwise in the collection definition, the default behavior is to:
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skip](/docs/weaviate/manage-data/collections#property-level-settings)ped)
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
@@ -678,7 +678,7 @@ client.schema.create_class(collection_obj)
 
 ## Related pages
 - [Tutorial: Schema](/docs/weaviate/starter-guides/managing-collections)
-- [How to: Configure a schema](/docs/weaviate/manage-data/collections)
+- [How to: Configure a schema](../../manage-collections/index.mdx)
 - <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](/docs/weaviate/concepts/data)
 

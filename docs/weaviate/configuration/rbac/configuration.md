@@ -3,11 +3,12 @@ title: Enable and configure RBAC
 sidebar_label: Enable RBAC
 sidebar_position: 1
 image: og/docs/configuration.jpg
+# tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-:::info Available from `v1.29`
+:::info Added in `v1.29`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
 :::
 

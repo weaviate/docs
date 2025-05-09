@@ -92,29 +92,31 @@ You can also use a custom configuration to instantiate the client directly:
 
 ## Changes in v3
 
-The v3 client introduces a new way to work with your data. Here are some of the important changes:
+This section highlights some features of the v3 TypeScript client.
 
-- [Install](#install)
-- [Instantiate a client](#instantiate-a-client)
-- [Changes in v3](#changes-in-v3)
-  - [Work with collections](#work-with-collections)
-  - [Builder Pattern is removed](#builder-pattern-is-removed)
-  - [Batch Inserts](#batch-inserts)
-  - [Client Close Method](#client-close-method)
-  - [Filter data](#filter-data)
-  - [Generate Namespace](#generate-namespace)
-  - [Return object](#return-object)
-- [Code comparison](#code-comparison)
-  - [Imports](#imports)
-  - [Connect to Weaviate Cloud](#connect-to-weaviate-cloud)
-  - [Create a collection](#create-a-collection)
-  - [Batch insert](#batch-insert)
-  - [Query your data](#query-your-data)
-  - [Delete a collection](#delete-a-collection)
-  - [Sample scripts](#sample-scripts)
-- [How to migrate your code](#how-to-migrate-your-code)
-- [Client change logs](#client-change-logs)
-- [Questions and feedback](#questions-and-feedback)
+### Design philosophy
+
+The v3 client interacts with collections as the primary way to work with objects in your Weaviate database.
+
+Your application code creates an object that represents a collection. This object enables search and CRUD operations to be performed against it.
+
+This example returns objects from the `JeopardyQuestion` collection.
+
+```js
+const myCollection = client.collections.get('JeopardyQuestion');
+
+const result = await myCollection.query.fetchObjects()
+
+console.log(JSON.stringify(result, null, 2));
+```
+
+### Node support only
+
+The gRPC protocol is fast and provides other internal benefits. Unfortunately, gRPC does not support browser-based client development.
+
+The v3 client uses gRPC to connect to your Weaviate instance. The client supports Node.js, server-based development. It does not support browser-based web client development.
+
+To develop a browser-based application, use the [v2 client](/docs/weaviate/client-libraries/typescript/typescript-v2).
 
 ### Work with collections
 
@@ -170,9 +172,11 @@ The v3 client doesn't use the builder pattern. The v3 client uses specific metho
 
 ### Batch Inserts
 
-The `insertMany()` method replaces `objectBatcher()` to make batch insertions easier.
+The `insertMany()` method replaces `objectBatcher()` to make batch insertions easier. 
 
-For more information on batch processing, see [Batch Inserts](/docs/weaviate/client-libraries/typescript/typescript-v3#batch-inserts).
+For inserts of over 5000 objects, use `insertMany()` as part of a batch process.
+
+For more information on batch processing, see [Batch Inserts](../../manage-objects/import.mdx).
 
 <Tabs groupId="batchEx">
 <TabItem value="three" label="Client v3">
@@ -427,7 +431,7 @@ These scripts are complete versions of the client comparison code from this sect
 For more code examples, see the following:
 
 - [Search](/docs/weaviate/search)
-- [Data management](/docs/weaviate/manage-data)
+- [Collection management](/docs/weaviate/manage-collections)
 - [Connect to Weaviate](/docs/weaviate/connections)
 
 ## How to migrate your code
@@ -435,9 +439,9 @@ For more code examples, see the following:
 To update v2 client code to v3, follow these steps:
 
 1. Install the [v3 client package](https://www.npmjs.com/package/weaviate-client).
-1. Edit your v2 code to [import](/docs/weaviate/client-libraries/typescript/typescript-v3#import-the-client) the v3 client package.
-1. Edit your v2 [client instantiation](/docs/weaviate/client-libraries/typescript/typescript-v3#connect-to-weaviate) code.
-1. Edit your code to reflect the [collection first](/docs/weaviate/client-libraries/typescript/typescript-v3#design-philosophy) client orientation.
+1. Edit your v2 code to [import](/docs/weaviate/client-libraries/typescript#import-the-client) the v3 client package.
+1. Edit your v2 [client instantiation](/docs/weaviate/client-libraries/typescript) code.
+1. Edit your code to reflect the [collection first](#design-philosophy) client orientation.
 
 Continue to update the v2 code until all of the old code is replace with the v3 equivalent.
 

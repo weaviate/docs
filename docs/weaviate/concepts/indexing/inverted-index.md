@@ -25,7 +25,7 @@ As always, we recommend upgrading to the latest version of Weaviate to benefit f
 :::info Added in `v1.30`
 :::
 
-The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches ([academic paper](http://engineering.nyu.edu/~suel/papers/bmw.pdf)). It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
+The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
 
 If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](../../more-resources/migration/weaviate-1-30.md).
 
@@ -49,7 +49,7 @@ The filterable indexes are only capable of [filtering](../filtering.md), while t
 
 So, setting `"indexFilterable": false` and `"indexSearchable": true` (or not setting it at all) will have the trade-off of worse filtering performance but faster imports (due to only needing to update one index) and lower disk usage.
 
-See the [related how-to section](../../manage-data/collections.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
+See the [related how-to section](../../manage-collections/vector-config.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
 
 A rule of thumb to follow when determining whether to switch off indexing is: _if you will never perform queries based on this property, you can turn it off._
 

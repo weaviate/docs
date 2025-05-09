@@ -16,7 +16,7 @@ By the end of this tutorial, you should have a good idea of how to create a sche
 - Words in the schema (names of classes and properties) must be part of the `text2vec-contextionary`.
 - The schema can be modified through the <SkipLink href="/docs/weaviate/api/rest#tag/schema">RESTful API</SkipLink>. Python, JavaScript and Go clients are available.
 - A class or property in Weaviate becomes immutable, but can always be extended.
-- Learn about Concepts, Classes, Properties and dataTypes in the [API reference guide](/docs/weaviate/api/index.md).
+- Learn about Concepts, Classes, Properties and dataTypes in the [API reference guide](/docs/weaviate/api/index.mdx).
 
 ## Prerequisites
 

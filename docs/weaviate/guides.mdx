@@ -1,5 +1,5 @@
 ---
-title: Guides and tutorials
+title: How-to manuals and Guides
 sidebar_label: Overview
 sidebar_position: 0
 image: og/docs/introduction.jpg
@@ -7,30 +7,26 @@ image: og/docs/introduction.jpg
 ---
 
 Explore our concise guides to configure, manage, and query Weaviate.
-Whether you’re setting up advanced configurations or handling data operations, our step-by-step instructions and examples are designed to help you quickly master Weaviate:
+Whether you’re setting up advanced configurations or handling data operations, our step-by-step instructions and examples are designed to help you quickly master Weaviate.
 
 import CardsSection from "/src/components/CardsSection";
 
-export const guidesCardsData = [
+## How-to manuals
+
+import { howToGuidesCardsData } from "/_includes/configuration/how-to-manuals.js";
+
+<br />
+<CardsSection items={howToGuidesCardsData} />
+<br />
+
+## Other guides and tutorials
+
+export const otherGuidesCardsData = [
   {
-    title: "How-to: Configure Weaviate",
-    description:
-      "Configure Weaviate: compression, backups, security, and replication.",
-    link: "/docs/weaviate/configuration",
-    icon: "fas fa-cogs",
-  },
-  {
-    title: "How-to: Manage data",
-    description:
-      "Manage data: collections, objects, multi-tenancy, and migration.",
-    link: "/docs/weaviate/manage-data",
-    icon: "fas fa-database",
-  },
-  {
-    title: "How-to: Query & search",
-    description: "Query basics: vector, hybrid, image search, and aggregation.",
-    link: "/docs/weaviate/search",
-    icon: "fas fa-search",
+    title: "Tutorials",
+    description: "Step-by-step guides and practical examples.",
+    link: "/docs/weaviate/tutorials",
+    icon: "fas fa-chalkboard-teacher",
   },
   {
     title: "Starter guides",
@@ -39,13 +35,14 @@ export const guidesCardsData = [
     icon: "fas fa-compass",
   },
   {
-    title: "Tutorials",
-    description: "Step-by-step guides and practical examples.",
-    link: "/docs/weaviate/tutorials",
-    icon: "fas fa-chalkboard-teacher",
+    title: "Recipes",
+    description:
+      "Jupyter Notebooks that showcase various use cases and functionalities.",
+    link: "/docs/weaviate/recipes",
+    icon: "fas fa-scroll",
   },
 ];
 
 <br />
-<CardsSection items={guidesCardsData} />
+<CardsSection items={otherGuidesCardsData} />
 <br />

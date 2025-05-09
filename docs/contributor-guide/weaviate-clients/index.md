@@ -8,15 +8,15 @@ image: og/contributor-guide/weaviate-clients.jpg
 # Contributor guidelines
 
 There are currently four clients developed for Weaviate's APIs:
-* [Python](/docs/weaviate/client-libraries/python/index.md)
+* [Python](/docs/weaviate/client-libraries/python/index.mdx)
 * [Go](/docs/weaviate/client-libraries/go.md)
-* [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx)
+* [TypeScript/JavaScript](../../weaviate/client-libraries/typescript/index.mdx)
 * [Java](/docs/weaviate/client-libraries/java.md)
 
 These clients, and all future clients are and will be developed according to the following guidelines:
 
 1. Every client *must* reflect all features of the [RESTful API one-to-one](/docs/weaviate/api/rest).
-2. Every client *must* reflect all functions of [GraphQL API](/docs/weaviate/api/graphql/index.md) (1-1 where possible).
+2. Every client *must* reflect all functions of [GraphQL API](/docs/weaviate/api/index.mdx) (1-1 where possible).
 3. Clients *can* have client-specific, extra or unique features:
    1. These features on top of the 1-1 RESTful and GraphQL functionalities must be defined through a user story, which will also be reflected in the documentation.
    2. These features can be solved in a client's native way (follow the current design of the client for consistency)

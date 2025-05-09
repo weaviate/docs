@@ -52,7 +52,7 @@ The `ACORN` algorithm is especially useful when the filter has low correlation w
 
 Our internal testing indicates that for lowly correlated, restrictive filters, the `ACORN` algorithm can be significantly faster, especially for large datasets. If this has been a bottleneck for your use case, we recommend enabling the `ACORN` algorithm.
 
-As of `v1.27`, the `ACORN` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-data/collections.mdx#set-vector-index-parameters).
+As of `v1.27`, the `ACORN` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
 
 ### Sweeping
 
@@ -151,7 +151,7 @@ The cache is built in a way that it cannot ever serve a stale entry. Any write t
 
 ## Further resources
 :::info Related pages
-- [References: GraphQL API](../api/graphql/index.md)
+- [References: GraphQL API](/docs/weaviate/api)
 :::
 
 ## Questions and feedback

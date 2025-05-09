@@ -23,7 +23,7 @@ Single vector collections are valid and continue to use the original collection 
 
 ### Collection definition
 
-Use the collection definition to [configure the vector spaces](/docs/weaviate/manage-data/collections#define-named-vectors) for each data object.
+Use the collection definition to [configure the vector spaces](../../manage-collections/vector-config.mdx#define-named-vectors) for each data object.
 
 :::info Named vectors must be defined at collection creation
 All named vectors must be defined when you create a collection. Currently, it is not possible to add or remove named vectors from a collection after it has been created.
@@ -58,8 +58,8 @@ Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
 
 ## Related pages
 
-- [How-to: manage data](/docs/weaviate/manage-data/collections#define-named-vectors): Configure collections
-- [How-to: search](/docs/weaviate/search/index.md): Code examples for search
+- [How-to: Manage collections](../../manage-collections/vector-config.mdx#define-named-vectors): Configure vectors in collections
+- [How-to: Search](../../search/index.mdx): Code examples for search
 - [Weaviate academy: Named vectors](../../../academy/py/named_vectors/index.md)
 
 ## Questions and feedback

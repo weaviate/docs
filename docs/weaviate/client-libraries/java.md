@@ -15,10 +15,12 @@ export const javaCardsData = [
   },
 ];
 
+:::note Java client (SDK)
+
+The latest Java client is version `v||site.java_client_version||`.
+
 <QuickLinks items={javaCardsData} />
 
-:::note Java client version
-The current Java client version is `v||site.java_client_version||`.
 :::
 
 :::info Breaking changes introduced in v4
@@ -178,13 +180,13 @@ public class App {
 
 ## References
 
-All [RESTful endpoints](/docs/weaviate/api/rest) and [GraphQL functions](../api/graphql/index.md) references covered by the Java client, and explained on those reference pages in the code blocks.
+All [RESTful endpoints](/docs/weaviate/api/rest) and [GraphQL functions](/docs/weaviate/api) references covered by the Java client, and explained on those reference pages in the code blocks.
 
 ## Design
 
 ### Builder pattern
 
-The Java client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/docs/weaviate/api/rest) and the [GraphQL reference pages](../api/graphql/index.md).
+The Java client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/docs/weaviate/api/rest) and the [GraphQL reference pages](/docs/weaviate/api).
 
 The code snippet above shows a simple query similar to `RESTful GET /v1/meta`. The client is initiated by requiring the package and connecting to the running instance. Then, a query is constructed by using the `.metaGetter()` on `.misc()`. The query will be sent with the `.run()` function, this object is thus required for every function you want to build and execute.
 

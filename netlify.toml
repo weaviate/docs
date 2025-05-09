@@ -1,5 +1,10 @@
 ### ==================== TOP LEVEL ==================== ###
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+    access-control-allow-origin = "*"
+
 ## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
 
 [[redirects]]
@@ -17,4 +22,80 @@ status = 301
 [[redirects]]
 from = "/developers/*"
 to   = "/docs/:splat"
+status = 301
+
+## Redirect all paths starting with /docs/wcs to /docs/cloud
+
+[[redirects]]
+from = "/docs/wcs/*"
+to   = "/docs/cloud/:splat"
+status = 301
+
+## Manage data refactoring
+
+[[redirects]]
+from = "/docs/weaviate/manage-data"
+to   = "/docs/weaviate/manage-collections"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/collections"
+to   = "/docs/weaviate/manage-collections"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/create"
+to   = "/docs/weaviate/manage-objects/create"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/import"
+to   = "/docs/weaviate/manage-objects/import"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/read"
+to   = "/docs/weaviate/manage-objects/read"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/read-all-objects"
+to   = "/docs/weaviate/manage-objects/read-all-objects"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/update"
+to   = "/docs/weaviate/manage-objects/update"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/delete"
+to   = "/docs/weaviate/manage-objects/delete"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/cross-references"
+to   = "/docs/weaviate/manage-collections/cross-references"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/multi-tenancy"
+to   = "/docs/weaviate/manage-collections/multi-tenancy"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/tenant-states"
+to   = "/docs/weaviate/manage-collections/tenant-states"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/manage-data/migrate"
+to   = "/docs/weaviate/manage-collections/migrate"
+status = 301
+
+## Roadmap page redirect
+
+[[redirects]]
+from = "/docs/weaviate/roadmap"
+to   = "/docs/weaviate/release-notes"
 status = 301
