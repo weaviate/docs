@@ -81,7 +81,7 @@ export default function RecipesCards({ path }) {
       try {
         setLoading(true);
         setError(null);
-        const indexPath = "/docs/index.toml";
+        const indexPath = "/docs/config/index.toml";
 
         console.log("Attempting to fetch index.toml from:", indexPath);
         console.log("Current path category for filtering:", pathCategory);
@@ -202,7 +202,7 @@ export default function RecipesCards({ path }) {
         <p>Error loading recipes: {error}</p>
         <p>
           Make sure you have an index.toml file at:{" "}
-          <code>/static/docs/index.toml</code> and it's correctly formatted.
+          <code>/static/config/index.toml</code> and it's correctly formatted.
         </p>
       </div>
     );
@@ -214,7 +214,7 @@ export default function RecipesCards({ path }) {
       <div>
         <p>No recipes found for category: "{pathCategory}"</p>
         <p>
-          Check if <code>/static/docs/index.toml</code> contains recipe entries
+          Check if <code>/static/config/index.toml</code> contains recipe entries
           matching this category.
         </p>
       </div>
