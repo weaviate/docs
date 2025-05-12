@@ -1,0 +1,38 @@
+/*
+src/theme/Navbar/MobileSidebar/PrimaryMenu/sidebar.module.scss
+*/
+
+.dropdownArrow {
+  margin-left: 8px;
+  display: inline-block;
+  transition: transform 0.2s ease-in-out; // Smooth transition for rotation
+}
+
+.dropdownArrowOpen {
+  transform: rotate(180deg);
+}
+
+.sectionTitle {
+  font-weight: bold;
+  color: var(--ifm-color-emphasis-700);
+  display: block;
+  /* We'll use menu__link class for padding, so no need to redefine here
+       unless you want different padding than standard menu links. */
+  // padding: var(--ifm-menu-link-padding-vertical) var(--ifm-menu-link-padding-horizontal);
+}
+
+.emptyMenuText {
+  font-style: italic;
+  color: var(--ifm-color-emphasis-600);
+  /* We'll use menu__link class for padding and display properties */
+}
+
+/* Example of how you could further customize if needed:
+  .mobileMenuItem {
+    // Custom styles for all list items if menu__list-item isn't enough
+  }
+  
+  .mobileMenuLink {
+    // Custom styles for all links if menu__link isn't enough
+  }
+  */

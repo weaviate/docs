@@ -1,15 +1,13 @@
 import React from "react";
 import Link from "@docusaurus/Link";
-import { useLocation } from "@docusaurus/router"; // To get location for the hook
+import { useLocation } from "@docusaurus/router";
 import { Collapsible, useCollapsible } from "@docusaurus/theme-common";
 import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 
-// Adjust the import path based on where you placed useNavbarState.js
-// Assuming NavbarMobilePrimaryMenu is in src/theme/Navbar/MobileSidebar/PrimaryMenu/
-// and useNavbarState is in src/theme/Navbar/hooks/
-import useNavbarState from "../../hooks/useNavbarState"; // Adjusted path: up one level from PrimaryMenu, then into hooks
+import useNavbarState from "../../hooks/useNavbarState";
+import styles from "../../styles/sidebar.module.scss"; // Import the SCSS module
 
-// MobileDropdown helper component (ensure this is defined or imported correctly)
+// MobileDropdown helper component
 function MobileDropdown({ item, onClose, isPrimaryNavItem = false }) {
   const { collapsed, toggleCollapsed, setCollapsed } = useCollapsible({
     initialState: true,
@@ -27,7 +25,7 @@ function MobileDropdown({ item, onClose, isPrimaryNavItem = false }) {
           e.preventDefault();
           toggleCollapsed();
         }}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer" }} // Keep cursor pointer for clarity, or move to a general clickable class
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
@@ -39,11 +37,9 @@ function MobileDropdown({ item, onClose, isPrimaryNavItem = false }) {
       >
         {parentLabel}
         <span
-          style={{
-            marginLeft: "8px",
-            display: "inline-block",
-            transform: collapsed ? "rotate(0deg)" : "rotate(180deg)",
-          }}
+          className={`${styles.dropdownArrow} ${
+            !collapsed ? styles.dropdownArrowOpen : ""
+          }`}
         >
           ▼
         </span>
@@ -79,36 +75,29 @@ function MobileDropdown({ item, onClose, isPrimaryNavItem = false }) {
 }
 
 export default function NavbarMobilePrimaryMenu() {
-  const location = useLocation(); // Get location for useNavbarState
+  const location = useLocation();
   const mobileSidebar = useNavbarMobileSidebar();
   const onClose = mobileSidebar.toggle;
 
-  // Use your custom hook to get the calculated state
-  const {
-    selectedOption, // This is the key for secondaryNavOptions (e.g., 'build')
-    activeLink, // This is the active sidebar name (e.g., 'getStartedSidebar')
-    secondaryNavOptions, // The full secondaryNavOptions object
-  } = useNavbarState(location); // Pass the current location to the hook
+  const { selectedOption, activeLink, secondaryNavOptions } =
+    useNavbarState(location);
 
-  // Get the links for the currently selected option/section
   const currentSecondaryNav = secondaryNavOptions[selectedOption];
   const secondaryNavLinksToDisplay = currentSecondaryNav?.links || [];
 
   return (
     <ul className="menu__list">
+      {" "}
+      {/* Base Infima class for the list */}
       {secondaryNavLinksToDisplay.length > 0 ? (
         <>
           {currentSecondaryNav?.title && (
             <li className="menu__list-item menu__list-item--sublist">
+              {" "}
+              {/* Base Infima classes */}
               <span
-                className="menu__link menu__link--sublist"
-                style={{
-                  fontWeight: "bold",
-                  color: "var(--ifm-color-emphasis-700)",
-                  display: "block",
-                  padding:
-                    "var(--ifm-menu-link-padding-vertical) var(--ifm-menu-link-padding-horizontal)",
-                }}
+                // Using menu__link for consistent padding/display, and our module for text styling
+                className={`menu__link menu__link--sublist ${styles.sectionTitle}`}
               >
                 {currentSecondaryNav.title}
               </span>
@@ -116,7 +105,6 @@ export default function NavbarMobilePrimaryMenu() {
           )}
 
           {secondaryNavLinksToDisplay.map((navItem, index) => {
-            // Skip items that don't have a link property, unless they are dropdown containers
             if (
               !navItem.link &&
               !(navItem.dropdown && navItem.dropdown.length > 0)
@@ -133,17 +121,19 @@ export default function NavbarMobilePrimaryMenu() {
                 />
               );
             } else {
-              // ACTIVE STATE LOGIC: Compare navItem.sidebar with activeLink from the hook
               const isActive = navItem.sidebar === activeLink;
+              // Base Infima classes + active state class
               const linkClassName = `menu__link ${
                 isActive ? "menu__link--active" : ""
               }`;
 
               return (
                 <li key={navItem.link || index} className="menu__list-item">
+                  {" "}
+                  {/* Base Infima class */}
                   <Link
                     className={linkClassName}
-                    to={navItem.link} // Ensure navItem.link exists for non-dropdown items
+                    to={navItem.link}
                     onClick={onClose}
                   >
                     {navItem.label}
@@ -155,12 +145,11 @@ export default function NavbarMobilePrimaryMenu() {
         </>
       ) : (
         <li className="menu__list-item">
+          {" "}
+          {/* Base Infima class */}
           <span
-            className="menu__link"
-            style={{
-              fontStyle: "italic",
-              color: "var(--ifm-color-emphasis-600)",
-            }}
+            // Using menu__link for consistent padding/display, and our module for text styling
+            className={`menu__link ${styles.emptyMenuText}`}
           >
             Main Menu
           </span>
