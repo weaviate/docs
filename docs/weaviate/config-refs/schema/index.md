@@ -159,7 +159,7 @@ We are working on a re-indexing API to allow you to re-index the data after addi
 To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
 
 - **Default limit**: `1000` collections.
-- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](../../config-refs/env-vars/index.md) environment variable to adjust the collection count limit.
+- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](docs/deploy/config-guides/env-vars/index.md) environment variable to adjust the collection count limit.
 
 :::note 
 If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
