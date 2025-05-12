@@ -822,12 +822,12 @@ const sidebars = {
       label: "Migration",
       link: {
         type: "doc",
-        id: "deploy/other/migration/index.md",
+        id: "deploy/other/migration/index",
       },
       items: [
         "deploy/other/migration/weaviate-1-30",
-        "deploy/other/migration/weaviate-1-25.md",
-        "deploy/other/migration/archive.md",
+        "deploy/other/migration/weaviate-1-25",
+        "deploy/other/migration/archive",
       ],
     },
   ],
