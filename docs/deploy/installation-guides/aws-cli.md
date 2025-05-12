@@ -1,5 +1,5 @@
 ---
-title: AWS EKS Installation
+title: EKS Installation
 description: Deploy Weaviate on EKS using the AWS CLI
 ---
 

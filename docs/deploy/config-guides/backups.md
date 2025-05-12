@@ -110,6 +110,7 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
 That's all there is to getting started with backups in Weaviate. The backup will be stored in the specified location on the local filesystem.
 
 You can also:
+
 - [Restore the backup](#restore-backup) to a Weaviate instance
 - [Check the status](#asynchronous-status-checking) of the backup (if you did not wait for completion)
 - [Cancel the backup](#cancel-backup) if needed

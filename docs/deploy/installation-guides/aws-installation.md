@@ -9,25 +9,40 @@ import ReactPlayer from 'react-player/lazy'
 
 <!-- NOTE: To show this page on the sidebar, remove the `sidebar_class_name: hidden` line above. -->
 
-It is easy to deploy a Weaviate cluster through the AWS Marketplace. 
+Through the AWS Marketplace you can launch a Weaviate serverless instance billed directly from AWS. 
 
 :::info Prerequisites
 - An AWS account with sufficient credit / payment method.
 - (Recommended) Familiarity with AWS and the AWS console.
 :::
 
-You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) to directly launch a Weaviate cluster.
+You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) to launch a Weaviate serverless instance.
 
 ## Installation instructions
 
-### AWS Marketplace
-
-1. Go to Weaviate's [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) to directly launch a Weaviate cluster.
-1. Subscribe to the product in AWS Marketplace by following the instructions on the page. 
+1. Go to Weaviate's [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa).
+1. Subscribe to the product by following the instructions on the page. 
     1. Click <kbd>View Purchase Options</kbd>, then go to the next page.
     2. Review the pricing, terms and conditions, and click <kbd>Subscribe</kbd>. 
 From there you will be prompted to set up your account on  [Weaviate Cloud](docs/cloud/index.mdx).
 
+:::info
+<details>
+
+<summary> A little background information </summary>
+
+- When you deploy Weaviate Serverless Cloud through the AWS Marketplace, you're subscribing to a Software as a Service (SaaS) solution that is specifically built for AWS customers. 
+
+- AWS will notify you once your Weaviate serverless cluster is available. 
+
+**This solution is ideal for:**
+
+- Organizations requiring AWS billing integration. 
+- Organizations with regulatory requirements who need specific regional deployments. 
+
+</details>
+
+:::
 
 ## Billing
 

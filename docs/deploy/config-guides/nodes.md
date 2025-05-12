@@ -1,6 +1,5 @@
 ---
 title: Cluster node data
-sidebar_position: 93
 image: og/docs/configuration.jpg
 # tags: ['nodes', 'reference', 'configuration']
 ---

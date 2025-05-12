@@ -23,7 +23,7 @@ This almost always means you've run out of disk space. Weaviate protects itself 
 
 <summary> Answer </summary>
 
-This [doc](../installation-guides/aws-installation.md) will walk you through all the necessary steps to deploy Weaviate using AWS marketplace. 
+This [page](../installation-guides/aws-installation.md) will walk you through all the necessary steps to deploy Weaviate using AWS marketplace. 
 
 </details>
 
@@ -33,7 +33,7 @@ This [doc](../installation-guides/aws-installation.md) will walk you through all
 
 <summary> Answer </summary>
 
-This [doc](../installation-guides/gcp-installation.md) will walk you through all the necessary steps to deploy Weaviate using GCP marketplace. 
+This [page](../installation-guides/gcp-installation.md) will walk you through all the necessary steps to deploy Weaviate using GCP marketplace. 
 
 </details>
 
@@ -57,10 +57,14 @@ If you plan to create more than **20** collections, you may want to consider mul
 
 Common issues that occur during deployment include:
 
-- The cluster becoming `read-only`
-- Query results being inconsistent
+- The cluster becoming `read-only`.
+- Query results being inconsistent.
 - Nodes unable to maintain consensus. 
-- Creating too many collections
+- Creating too many collections.
+
+#### Further resources 
+
+For further information, the [troubleshooting page](./troubleshooting.md) will help with some of the common issue encountered. 
 
 </details>
 
@@ -70,7 +74,7 @@ Common issues that occur during deployment include:
 
 <summary> Answer </summary>
 
-Weaviate has complex processes which means that ingestion and deletion require more steps than other types of databases. 
+Weaviate has complex processes which means that ingestion and deletion require more steps than other types of databases. Data ingestion tends to take longer than a traditional database because of vectorization and deleting objects can be expensive due to the embedding costs. 
 </details>
 
 #### Q7: Do my resources free up immediately after deleting objects?

@@ -59,7 +59,7 @@ In summary, Weaviate allows the following authentication methods:
 
 - API key
 - OpenID Connect (OIDC)
-- Anonymous access (no authentication, strongly discouraged except for development or evaluation)
+- Anonymous access **(no authentication, strongly discouraged except for development or evaluation)**
 
 Note that API key and OIDC authentication can be both enabled at the same time.
 
@@ -136,6 +136,7 @@ authentication:
 ```
 
 This configuration:
+
 - Disables anonymous access
 - Enables API key authentication
 - Defines plaintext API keys in `allowed_keys`

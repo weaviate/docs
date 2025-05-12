@@ -1,7 +1,6 @@
 ---
 title: Enable and configure RBAC
-sidebar_label: Enable RBAC
-sidebar_position: 1
+sidebar_label: RBAC
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
@@ -120,10 +119,10 @@ Here are some tips to optimize performance when using RBAC:
 
 ## Further resources
 
-- [RBAC: Overview](./index.mdx)
-- [RBAC: Manage roles](./manage-roles.mdx)
-- [RBAC: Manage users](./manage-users.mdx)
-- [RBAC: Tutorial](../../tutorials/rbac.mdx)
+- [RBAC: Overview](docs/weaviate/configuration/rbac/index.mdx)
+- [RBAC: Manage roles](docs/weaviate/configuration/rbac/manage-roles.mdx)
+- [RBAC: Manage users](docs/weaviate/configuration/rbac/manage-users.mdx)
+- [RBAC: Tutorial](docs/weaviate/tutorials/rbac.mdx)
 
 ## Questions and feedback
 

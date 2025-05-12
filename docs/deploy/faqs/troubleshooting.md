@@ -7,25 +7,28 @@ title: Deployment Troubleshooting Guide
 So you've deployed Weaviate and you're fully immersed in the world of vectors when suddenly you encounter a puzzling mystery. This page will serve as your handbook for when things go awry in "Vector Land!" Consider every error message a clue to solving the mystery you're encountering. 
 
 
-## Common Issues and Solutions
+## Common issues and solutions
+
+### The cluster is not accepting new information and there are disk space or `read-only` error messages in the logs.
 
 <details>
 
-<summary> The cluster is not accepting new information and there are disk space or `read-only` error messages in the logs. </summary>
+<summary>Answer</summary>
 
 #### Identifying the issue
-
 As a first step, you'll want to examine your cluster's logs to identify the problem. If after checking the logs of your cluster you see error messages that include phrases like "read-only" or "disk space," then your cluster is more than likely in a `read-only` state due to insufficient disk space.
 
 #### Resolving the issue
 
 To solve this mystery, you'll need to increase the available disk space for your nodes. Once the disk space is increased, then you'll need to manually mark the affected shards or collections as writeable again. 
-
+You can also set the [`MEMORY_WARNING_PERCENTAGE`](/weaviate/config-refs/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near. 
 </details>
+
+### You're receiving inconsistent query results.
 
 <details>
 
-<summary> You're receiving inconsistent query results.  </summary>
+<summary> Answer </summary>
 
 #### Identifying the issue
 
@@ -36,9 +39,11 @@ To confirm and identify the issue, you'll want to first run the same query multi
 Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. 
 </details>
 
+### Your nodes won't communicate, join a cluster, or maintain consensus. 
+
 <details>
 
-<summary> Your nodes won't communicate, join a cluster, or maintain consensus.  </summary>
+<summary> Answer </summary>
 
 #### Identifying the issue
 
@@ -46,8 +51,12 @@ To confirm and identify the issue, you'll want to first run the same query multi
 
 #### Resolving the issue
 
-Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. 
+Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. Additionally, test the [live and ready REST endpoints](/docs/weaviate/api/rest#tag/well-known/GET/.well-known/live) and check the network configuration of the nodes. 
 </details>
+
+## Further reading
+
+- [LOG_LEVEL](insert env vars `log_level`)
 
 ## Questions and feedback
 

@@ -6,6 +6,11 @@ sidebar_label: Production Readiness Self-Assessment
 
 Think you’re ready for production? Ensuring that your Weaviate cluster is production-ready requires careful planning, configuration, and ongoing maintenance. Ensuring that you have a stable, reliable deployment requires you to think of your *ending* at the *beginning.* This guide provides you with introspective questions to assess readiness and identify any potential gaps before moving your workloads into production.
 
+:::tip
+If you *do* identify gaps within your deployment, be sure to reach out to your SE (solutions engineer) who can help steer you on the path to production success!
+:::
+
+
 ### High Availability and Resilience
 
 - [ ]  Are your clusters deployed across multiple availability zones (AZs) or regions to prevent downtime?
@@ -81,6 +86,3 @@ Think you’re ready for production? Ensuring that your Weaviate cluster is prod
 
 Evaluate these key areas to build a highly available, resilient, and efficient deployment that will scale to meet your business needs. By ensuring that these self-assessment questions have been addressed, you can proactively identify potential risks and maximize the reliability of your deployment. 
 
-:::tip
-If you *do* identify gaps within your deployment, be sure to reach out to your SE (sales engineer) who can help steer you on the path to production success!
-:::
