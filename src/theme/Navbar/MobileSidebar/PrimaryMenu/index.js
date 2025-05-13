@@ -5,7 +5,7 @@ import { Collapsible, useCollapsible } from "@docusaurus/theme-common";
 import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 
 import useNavbarState from "../../hooks/useNavbarState";
-import styles from "../../styles/sidebar.module.scss"; // Import the SCSS module
+import styles from "../../styles/sidebar.module.scss";
 
 // MobileDropdown helper component
 function MobileDropdown({ item, onClose, isPrimaryNavItem = false }) {
