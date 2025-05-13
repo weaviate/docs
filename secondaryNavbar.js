@@ -127,6 +127,7 @@ const secondaryNavbarItems = {
   integrations: {
     title: "Integrations",
     icon: "fa fa-puzzle-piece",
+    isSmall: true,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
     link: "/docs/integrations",
     links: [
