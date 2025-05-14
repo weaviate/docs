@@ -1,7 +1,7 @@
 ---
 title: BlockMax WAND migration guide
 sidebar_label: 1.30 (BlockMax WAND migration)
-sidebar_position: 9
+sidebar_position: 1
 image: og/docs/more-resources.jpg
 ---
 

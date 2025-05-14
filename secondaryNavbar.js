@@ -72,7 +72,7 @@ const secondaryNavbarItems = {
       /*{ label: "Scaling Strategies", link: "/docs/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/docs/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
       { label: "FAQs", link: "/docs/deploy/faqs", sidebar: "deployFaqsSidebar"},
-      { label: "Other", link: "/docs/deploy/other", sidebar: "deployOtherSidebar"},
+      { label: "Migration", link: "/docs/deploy/migration", sidebar: "deployMigrationSidebar"},
     ]
   },
 

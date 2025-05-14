@@ -28,28 +28,18 @@ eksctl version
 
 To create your cluster, prepare a `yaml` file that with a name of your choosing (e.g. `eks-cluster.yaml`)
 
-```bash
+```yaml
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: 'your-cluster-name'        # Replace with your desired cluster name
-  region: 'your-region'           # Replace with your desired AWS region
-  version: "1.33"               # Kubernetes version
-
-iam:
-  withOIDC: true                # Enable IAM OIDC provider
+  name: <your-cluster-name>
+  region: <your-region>
+  version: "1.31"
   
-  serviceAccounts:
-    - metadata:
-        name: aws-load-balancer-controller
-        namespace: kube-system
-      wellKnownPolicies:
-        awsLoadBalancerController: true
-
 managedNodeGroups:
   - name: node-group-name
     labels: { role: worker }
-    instanceType: t3.large     # Choose an appropriate instance type
+    instanceType: t3.large     # Choose your instance type
     desiredCapacity: 3         # Number of nodes
     minSize: 2                 # Minimum number of nodes for autoscaling
     maxSize: 5                 # Maximum number of nodes for autoscaling
@@ -74,9 +64,10 @@ addons:
 
 This creates an EKS cluster within your specified region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand.
 
-Run this command to create your EKS cluster:
-```
-eksctl create cluster -f your-file-name.yaml
+#### Run this command to create your EKS cluster:
+
+```bash
+eksctl create cluster -f <your-file-name.yaml>
 ```
 
 #### Enable `kubectl` to interact with the newly created cluster:
@@ -91,10 +82,10 @@ aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
 kubectl get nodes
 ```
 
-#### Step 2: Add Storage Class
+### Step 2: Add Storage Class
 
 After creating your cluster and verifying that you can interact with it , you'll need to create a `storageclass.yaml` file:
-```
+```yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -108,12 +99,15 @@ volumeBindingMode: Immediate
 allowVolumeExpansion: true
 ```
 
-After creating the storage class, apply it: ```kubectl apply -f <your-storageclass-name>.yaml```
+After creating the storage class, apply it: 
+```bash
+kubectl apply -f <your-storageclass-name>.yaml
+```
 
 
 #### Verify your storage class and has been created and applied
 
-```
+```bash
 kubectl get sc
 ```
 
@@ -148,13 +142,10 @@ helm upgrade --install weaviate weaviate/weaviate \
 #### Verify your deployment
 
 ```bash
-kubectl get pods
+kubectl get pods -n weaviate
 ```
 
-
-### Next Steps: [Connecting to Weaviate](docs/weaviate/connections/index.mdx)
-
-### Further Resources
+## Further Resources
 
 - [Persistent storage for Kubernetes](https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/)
 

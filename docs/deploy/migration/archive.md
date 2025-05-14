@@ -1,7 +1,7 @@
 ---
 title: Archive
-sidebar_position: 90
 image: og/docs/more-resources.jpg
+sidebar_position: 10
 # tags: ['migration']
 ---
 

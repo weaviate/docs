@@ -1,6 +1,6 @@
 ---
 title: Migration Guide
-sidebar_position: 10
+sidebar_position: 0
 image: og/docs/more-resources.jpg
 # tags: ['migration']
 ---
@@ -58,6 +58,16 @@ If you are upgrading from a version before `v1.23.13`, we recommend that you:
 1. Create a backup of your current Weaviate instance.
 2. Upgrade to at least `v1.23.13` (preferably to `v1.23.16`) or higher, using the [general upgrade instructions above](#general-upgrade-instructions).
 3. Restore your backup to the upgraded instance.
+
+## Downgrades
+
+### RAFT Snapshots (v1.28.13+, v1.29.5+, v1.30.2+)
+
+Multi-node instances of Weaviate running `1.28.13+`, `1.29.5+`, or `1.30.2+` may experience problems if downgraded to a `v1.27.x` version earlier than `1.27.26`. The cluster may not reach a **Ready** state due to a change in the way that RAFT snapshots are stored in the database.
+
+A fix for this issue will be released with `1.27.26`, which safely handles the downgrade path to `1.27`.
+
+If you need to downgrade Weaviate to `v1.27.x`, use `1.27.26` or higher.
 
 ## Questions and feedback
 
