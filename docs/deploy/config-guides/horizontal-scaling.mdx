@@ -1,4 +1,5 @@
 ---
+sidebar_label: Horizontal scaling
 title: Horizontal Scaling Deployment Strategies
 ---
 
@@ -13,11 +14,16 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go';
 
 
-This document provides detailed implementation guidance for horizontally scaling your Weaviate deployment. 
+Weaviate offers two complementary superpowers for scaling your deployment: sharding and replication. 
+Sharding divides your data across multiple nodes, allowing you to handle datasets far larger than a single machine could process. 
+Meanwhile, replication creates redundant copies of your data, ensuring high availability even when individual nodes fail or need maintenance.
+While each scaling method shines on its own, the true magic happens when they join forces.
+
+Let's explore how you can harness these capabilities to build a deployment that's both massive in scale and rock-solid in reliability!
 
 ## Scaling Methods
 
-![Sharding vs Replication](./imgs/horiz-scaling.png)
+![Sharding vs Replication](./img/horiz-scaling.png)
 
 
 
@@ -359,10 +365,12 @@ http://localhost:8080/v1/schema
 </TabItem>
 </Tabs>
 
-#### Sharding and Replication: The Dynamic Duo
 
-In a highly available environment, combining sharding and replication leverages the power and capabilities of both methods to be a dynamic duo that keeps your deployment highly available. 
-
+In a highly available environment, combining sharding and replication leverages the power and 
+capabilities of both methods to be a dynamic duo that keeps your deployment highly available. 
+If given the opportunity, those two techniques will be your deployment's dynamic duo. 
+Specifically using the [`ASYNC_REPLICATION` environment variables](./async-rep.md) introduced in the 1.29 release 
+will allow you to unleash the full power of horizontal scaling!
 
 ## Questions and feedback
 

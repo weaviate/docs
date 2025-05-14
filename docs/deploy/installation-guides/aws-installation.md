@@ -44,7 +44,7 @@ From there you will be prompted to set up your account on  [Weaviate Cloud](docs
 
 :::
 
-## Billing
+### Billing
 
 You will be charged for Weaviate directly by AWS.
 
@@ -53,6 +53,10 @@ You will be charged for Weaviate directly by AWS.
 If you cancel your Weaviate AWS marketplace subscription, your Weaviate organization and its clusters will be deleted by Weaviate.
 
 :::
+
+### Other marketplace offerings
+
+- [Weaviate Kubernetes Cluster](https://aws.amazon.com/marketplace/pp/prodview-cicacyv63r43i?sr=0-1&ref_=beagle&applicationId=AWSMPContessa) this product uses a CloudFormation template to create an EKS cluster with Weaviate already installed. 
 
 ## Questions and feedback
 

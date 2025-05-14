@@ -1,5 +1,5 @@
 ---
-title: Enable and configure RBAC
+title: RBAC
 sidebar_label: RBAC
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']

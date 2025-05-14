@@ -1,6 +1,5 @@
 ---
 title: Monitoring
-sidebar_position: 50
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'operations', 'monitoring', 'observability']
 ---
