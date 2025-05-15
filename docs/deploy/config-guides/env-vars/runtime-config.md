@@ -73,7 +73,7 @@ If Weaviate attempts to start with an invalid runtime configuration file (e.g., 
 
 When modifying the runtime configuration file for a running Weaviate instance, if the new configuration is invalid, Weaviate continues using the last valid configuration that is stored in memory. Error logs and metrics will indicate when configuration loading fails.
 
-Weaviate provides the following [metrics to help you monitor](../../configuration/monitoring.md) runtime configuration status:
+Weaviate provides the following [metrics to help you monitor](../monitoring.md) runtime configuration status:
 
 | Metric Name                                 | Description                                                                                                       |
 | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -85,3 +85,9 @@ Weaviate provides the following [metrics to help you monitor](../../configuratio
 It's important to set up proper alerting based on these metrics and logs to quickly identify configuration issues. If any Weaviate process is failing to load its runtime configuration, it won't be able to start until the configuration is fixed.
 
 :::
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

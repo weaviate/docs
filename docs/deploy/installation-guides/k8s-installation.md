@@ -122,8 +122,8 @@ In this example, the key `readonly-key` will authenticate a user as the `readonl
 OIDC authentication is also enabled, with WCD as the token issuer/identity provider. Thus, users with WCD accounts could be authenticated. This configuration sets `someuser@weaviate.io` as an admin user, so if `someuser@weaviate.io` were to authenticate, they will be given full (read and write) privileges.
 
 For further, general documentation on authentication and authorization configuration, see:
-- [Authentication](../configuration/authentication.md)
-- [Authorization](../configuration/authorization.md)
+- [Authentication](../config-guides/authentication.md)
+- [Authorization](../config-guides/authorization.md)
 
 #### Run as non-root user
 
@@ -165,7 +165,7 @@ The above command (`helm upgrade...`) is idempotent. In other words, you can run
 
 To upgrade to `1.25` or higher from a pre-`1.25` version, you must delete the deployed `StatefulSet`, update the helm chart to version `17.0.0` or higher, and re-deploy Weaviate.
 
-See the [1.25 migration guide for Kubernetes](../more-resources/migration/weaviate-1-25.md) for more details.
+See the [1.25 migration guide for Kubernetes](../migration/weaviate-1-25.md) for more details.
 
 ## Additional Configuration Help
 

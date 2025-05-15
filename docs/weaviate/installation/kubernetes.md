@@ -125,8 +125,8 @@ In this example, the key `readonly-key` will authenticate a user as the `readonl
 OIDC authentication is also enabled, with WCD as the token issuer/identity provider. Thus, users with WCD accounts could be authenticated. This configuration sets `someuser@weaviate.io` as an admin user, so if `someuser@weaviate.io` were to authenticate, they will be given full (read and write) privileges.
 
 For further, general documentation on authentication and authorization configuration, see:
-- [Authentication](../configuration/authentication.md)
-- [Authorization](../configuration/authorization.md)
+- [Authentication](docs/deploy/config-guides/authentication.md)
+- [Authorization](docs/deploy/config-guides/authorization.md)
 
 #### Run as non-root user
 

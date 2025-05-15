@@ -120,11 +120,11 @@ volumes:
 ...
 ```
 
-This setup enables API-key based [authentication](/docs/weaviate/configuration/authentication.md) and role-based access control [authorization](/docs/weaviate/configuration/authorization.md).
+This setup enables API-key based [authentication](docs/deploy/config-guides/authentication.md) and role-based access control [authorization](docs/deploy/config-guides/authorization.md).
 
 It defines the users `user-a` and `user-b` and corresponding keys `user-a-key` and `user-b-key` which serve as authentication credentials for connecting to your Weaviate instance.
 
-The user `user-a` is granted admin access rights using the **Role-based access control (RBAC)** method. A custom role can be assigned to the user `user-b` by following the [authorization and RBAC guide](/docs/weaviate/configuration/authorization.md).
+The user `user-a` is granted admin access rights using the **Role-based access control (RBAC)** method. A custom role can be assigned to the user `user-b` by following the [authorization and RBAC guide](docs/deploy/config-guides/authorization.md).
 
   </TabItem>
 </Tabs>
@@ -150,7 +150,7 @@ import DocsConfigGen from '@site/src/components/DockerConfigGen';
 You can use environment variables to control your Weaviate setup, authentication and authorization, module settings, and data storage settings.
 
 :::info List of environment variables
-A comprehensive of list environment variables [can be found on this page](/docs/weaviate/config-refs/env-vars.md).
+A comprehensive of list environment variables [can be found on this page](/docs/deploy/config-guides/env-vars/index.md).
 :::
 
 ## Example configurations

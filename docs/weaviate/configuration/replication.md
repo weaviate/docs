@@ -55,12 +55,12 @@ import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/rep
 ### Configure async replication settings {#async-replication-settings}
 
 :::info Added in `v1.29`
-The [environment variables](/docs/weaviate/config-refs/env-vars#async-replication) for configuring async replication (`ASYNC_*`) have been introduced in `v1.29`.
+The [environment variables](docs/deploy/config-guides/env-vars/index.md#async-replication) for configuring async replication (`ASYNC_*`) have been introduced in `v1.29`.
 :::
 
 Async replication helps achieve consistency for data replicated across multiple nodes.
 
-Update the following [environment variables](/docs/weaviate/config-refs/env-vars#async-replication) to configure async replication for your particular use case.
+Update the following [environment variables](docs/deploy/config-guides/env-vars/index.md#async-replication) to configure async replication for your particular use case.
 
 #### Logging
 

@@ -27,8 +27,8 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 
 :::caution Important backup considerations
 
-- **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](../more-resources/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
-- **[Multi-tenancy](../concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](../manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
+- **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/docs/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
+- **[Multi-tenancy](docs/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](docs/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
 :::
 
 ## Backup Quickstart
@@ -643,7 +643,7 @@ These values are available under the `backups` key in the `values.yaml` file. Re
 
 The backup process is designed to be minimally invasive to a running setup. Even on very large setups, where terabytes of data need to be copied, Weaviate stays available during backup. It even accepts write requests while a backup process is running. This sections explains how backups work under the hood and why Weaviate can safely accept writes while a backup is copied.
 
-Weaviate uses a custom [LSM Store](../concepts/storage.md#object-and-inverted-index-store) for its object store and inverted index. LSM stores are a hybrid of immutable disk segments and an in-memory structure called a memtable that accepts all writes (including updates and deletes). Most of the time, files on disk are immutable, there are only three situations where files are changed:
+Weaviate uses a custom [LSM Store](docs/weaviate/concepts/storage.md#object-and-inverted-index-store) for its object store and inverted index. LSM stores are a hybrid of immutable disk segments and an in-memory structure called a memtable that accepts all writes (including updates and deletes). Most of the time, files on disk are immutable, there are only three situations where files are changed:
 
 1. Anytime a memtable is flushed. This creates a new segment. Existing segments are not changed.
 2. Any write into the memtable is also written into a Write-Ahead-Log (WAL). The WAL is only needed for disaster-recovery. Once a segment has been orderly flushed, the WAL can be discarded.

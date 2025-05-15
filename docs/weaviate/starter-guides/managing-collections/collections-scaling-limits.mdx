@@ -11,7 +11,7 @@ image: og/docs/more-resources.jpg
 
 :::caution Have you hit the collections count limit?
 If you see an error that the collection count limit has been reached, it means you **can't create any more collections**. This limit aims to ensure Weaviate remains performant. If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.<br /><br />
-**Instead of simply raising the limit, consider rethinking your architecture**. If you really need to change the limit, use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](../../config-refs/env-vars/index.md) environment variable.
+**Instead of simply raising the limit, consider rethinking your architecture**. If you really need to change the limit, use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](docs/deploy/config-guides/env-vars/index.md) environment variable.
 :::
 
 This guide offers an overview of the available architectural choices of using **multi-tenancy** or defining a **dedicated collection** for each subset of data.
@@ -139,7 +139,7 @@ Use multi-tenancy when you need to support a large number of tenants and priorit
 
 #### Challenges
 
-- **Access control complexity**: [Fine-grained access control](../../configuration/authorization.md) must be implemented to ensure data isolation between tenants.
+- **Access control complexity**: [Fine-grained access control](docs/deploy/config-guides/authorization.md) must be implemented to ensure data isolation between tenants.
 - **Uniform collection definition**: All tenants must share the same collection schema and configuration.
 
 :::tip Reduce storage costs

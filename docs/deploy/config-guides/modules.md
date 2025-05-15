@@ -14,7 +14,7 @@ At the instance (i.e. Weaviate cluster) level, you can:
 - Configure the default vectorizer module
 - Configure module-specific variables (e.g. API keys), where applicable
 
-This can be done by setting the appropriate [environment variables](/docs/weaviate/config-refs/env-vars.md) as shown below.
+This can be done by setting the appropriate [environment variables](docs/deploy/config-guides/env-vars/index.md) as shown below.
 
 :::tip What about WCD?
 Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/docs/cloud/manage-clusters/status#enabled-modules) for details.
@@ -75,7 +75,7 @@ Note that enabling multiple vectorizer (e.g. `text2vec`, `multi2vec`) modules wi
 
 You may need to specify additional environment variables to configure each module where applicable. For example, the `backup-s3` module requires the backup S3 bucket to be set via `BACKUP_S3_BUCKET`, and the `text2vec-contextionary` module requires the inference API location via `TRANSFORMERS_INFERENCE_API`.
 
-Refer to the individual [module documentation](../modules/index.md) for more details.
+Refer to the individual [module documentation](docs/weaviate/modules/index.md) for more details.
 
 ## Vectorizer modules
 

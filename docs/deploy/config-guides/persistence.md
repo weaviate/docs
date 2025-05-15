@@ -103,7 +103,7 @@ In general, `mmap` may be a preferred option with memory management benefits. Ho
 
 
 ## Related pages
-- [Configuration: Backups](docs/weaviate/configuration/backups.md)
+- [Configuration: Backups](docs/deploy/config-guides/backups.md)
 
 ## Questions and feedback
 

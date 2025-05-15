@@ -24,7 +24,7 @@ As a first step, you'll want to examine your cluster's logs to identify the prob
 #### Resolving the issue
 
 To solve this mystery, you'll need to increase the available disk space for your nodes. Once the disk space is increased, then you'll need to manually mark the affected shards or collections as writeable again. 
-You can also set the [`MEMORY_WARNING_PERCENTAGE`](/weaviate/config-refs/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near. 
+You can also set the [`MEMORY_WARNING_PERCENTAGE`](docs/deploy/config-guides/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near. 
 </details>
 
 ### You're receiving inconsistent query results.

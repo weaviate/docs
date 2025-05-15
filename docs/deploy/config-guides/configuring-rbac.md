@@ -58,7 +58,7 @@ This configuration:
 - Enables RBAC
 - Configures `root-user` as a user with built-in admin permissions
 
-You can connect to your instance with the root user in order to [create new users](./manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](./manage-roles.mdx).
+You can connect to your instance with the root user in order to [create new users](docs/weaviate/configuration/rbac/manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](docs/weaviate/configuration/rbac/manage-roles.mdx).
 
 import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
 
@@ -103,7 +103,7 @@ This configuration:
 - Enables RBAC
 - Configures `root-user` as a user with built-in admin permissions
 
-You can connect to your instance with the root user in order to [create new users](./manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](./manage-roles.mdx).
+You can connect to your instance with the root user in order to [create new users](docs/weaviate/configuration/rbac/manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/docs/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](docs/weaviate/configuration/rbac/manage-roles.mdx).
 
 ## RBAC and performance
 
@@ -122,7 +122,7 @@ Here are some tips to optimize performance when using RBAC:
 - [RBAC: Overview](docs/weaviate/configuration/rbac/index.mdx)
 - [RBAC: Manage roles](docs/weaviate/configuration/rbac/manage-roles.mdx)
 - [RBAC: Manage users](docs/weaviate/configuration/rbac/manage-users.mdx)
-- [RBAC: Tutorial](docs/weaviate/tutorials/rbac.mdx)
+- [RBAC: Tutorial](docs/deploy/tutorials/rbac.mdx)
 
 ## Questions and feedback
 
