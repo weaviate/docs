@@ -9,26 +9,82 @@ Whether you are setting up a new environment or optimizing an existing one, conf
 
 ### Configuring your deployment
 
-#### Environment Variables and Secrets Management
-- Configure environment variables for connection strings, ports, and security credentials.  
+import CardsSection from "/src/components/CardsSection";
 
-#### Resource Limits and Autoscaling
-- Set CPU and memory requests and limits for each service.
+export const mainReferencesData = [
 
-#### Persistence and Storage Configuration
-- Define volumes for persistent data.  
-- Enable backups and configure retention policies.
+  {
+    title: "Environment variables",
+    description: "Configure your environment variables for connection strings, ports, and security credentials",
+    link: "/docs/deploy/config-guides/env-vars",
+    icon: "fas fa-cog",
+  },
+  {
+    title: "Scaling",
+    description: "Scale your deployment for high availability.",
+    link: "/docs/deploy/config-guides/horizontal-scaling",
+    icon: "fas fa-arrow-up-right-dots",
+  },
+    {
+    title: "Persistence",
+    description: "Enable backups and configure retention policies.",
+    link: "/docs/deploy/config-guides/persistence",
+    icon: "fas fa-floppy-disk",
+  },
+    {
+    title: "Monitoring, metrics, and logging",
+    description: "Monitor the status and health of your Weaviate instance.",
+    link: "/docs/deploy/config-guides/monitoring",
+    icon: "fas fa-chart-bar",
+  },
+    {
+    title: "Access Management",
+    description: "Configure access management of your deployment.",
+    link: "/docs/deploy/config-guides/authentication",
+    icon: "fas fa-shield-halved",
+  },
+  {
+    title: "Status",
+    description: "Monitor the status and health of your Weaviate instance.",
+    link: "/docs/deploy/config-guides/status",
+    icon: "fas fa-heartbeat",
+  },
+  {
+    title: "Telemetry",
+    description:
+      "Understand how Weaviate telemetry works and how to configure it.",
+    link: "/docs/deploy/config-guides/telemetry",
+    icon: "fas fa-chart-line",
+  },
+  {
+    title: "Cluster metadata",
+    description: "Access and manage metadata about your Weaviate cluster.",
+    link: "/docs/deploy/config-guides/meta",
+    icon: "fas fa-info-circle",
+  },
+  {
+    title: "Cluster node data",
+    description: "View and manage data about individual nodes in your cluster.",
+    link: "/docs/deploy/config-guides/nodes", 
+    icon: "fas fa-server",
+  },
+  {
+    title: "OIDC Configuration",
+    description:
+      "Configure OpenID Connect for secure authentication with Weaviate.",
+    link: "/docs/deploy/config-guides/oidc",
+    icon: "fas fa-lock",
+  },
+]
 
-#### Security Hardening
-- Configure TLS/SSL certificates for encrypted communication.  
-- Use RBAC to restrict access to configuration endpoints and dashboards.
-
-#### Monitoring, Metrics, and Logging
-- Set up metrics exporters and logging targets.  
-- Define alert thresholds based on config misalignment or performance drops. 
+<br />
+<CardsSection items={mainReferencesData} />
+<br />
 
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

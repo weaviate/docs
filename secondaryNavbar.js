@@ -67,7 +67,7 @@ const secondaryNavbarItems = {
       { label: "Configuration Guides", link: "/docs/deploy/config-guides", sidebar: "deployConfigSidebar"},
       /*{ label: "Kubernetes", link: "/docs/deploy/k8s", sidebar: "deployK8sSidebar" },*/
       { label: "Production Guides", link: "/docs/deploy/production", sidebar: "deployProductionSidebar"},
-      { label: "Tutorials", link: "/docs/deploy/tutorials", sidebar: "deployTutorialSidebar"},
+      { label: "Tutorials", link: "/docs/deploy/tutorials/rbac", sidebar: "deployTutorialSidebar"},
       /*{ label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },*/
       /*{ label: "Scaling Strategies", link: "/docs/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/docs/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/

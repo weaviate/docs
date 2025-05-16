@@ -40,7 +40,7 @@ This integration is not available for Weaviate Cloud (WCD) serverless instances,
 
 #### Enable the integration module
 
-- Check the [cluster metadata](../../config-refs/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](docs/deploy/config-guides/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 #### Configure the integration
@@ -54,7 +54,7 @@ The following example shows how to configure the Hugging Face Transformers integ
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
 
-Follow the instructions on the [Weaviate Docker installation configurator](../../installation/docker-compose.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+Follow the instructions on the [Weaviate Docker installation configurator](docs/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
 <br/>
 
 #### Docker Option 2: Add the configuration manually

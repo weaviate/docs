@@ -35,9 +35,9 @@ import APITable from '@site/src/components/APITable';
 | `RAFT_ENABLE_ONE_NODE_RECOVERY` | Enable running the single node recovery routine on restart. This is useful if the default hostname has changed and a single node cluster believes there are supposed to be two nodes. | `boolean` | `false` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - will be overridden by any class-level value defined in the schema | `string` | `text2vec-contextionary` |
 | `DISABLE_LAZY_LOAD_SHARDS` | New in v1.23. When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. | `string` | `false` |
-| `DISABLE_TELEMETRY` | Disable [telemetry](docs/weaviate/config-refs/telemetry.md) data collection | boolean | `false` |
-| `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](/docs/weaviate/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
-| `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](/docs/weaviate/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
+| `DISABLE_TELEMETRY` | Disable [telemetry](docs/deploy/config-guides/telemetry.md) data collection | boolean | `false` |
+| `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](docs/deploy/config-guides/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
+| `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](docs/deploy/config-guides/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
 | `ENABLE_API_BASED_MODULES` | Enable all API-based modules. (Experimental as of `v1.26.0`) | `boolean` | `true` |
 | `ENABLE_MODULES` | Specify Weaviate modules to enable | `string - comma separated names` | `text2vec-openai,generative-openai` |
 | `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/docs/weaviate/config-refs/schema/index.md#gse-and-trigram-tokenization-methods) for use | `boolean` | `true` |
@@ -192,7 +192,7 @@ For more information on authentication and authorization, see the [Authenticatio
 
 :::info Added in `v1.29`
 The environment variables for configuring async replication have been introduced in `v1.29`.
-To learn more about their usage, visit the **[replication how-to guide](/docs/weaviate/configuration/replication#async-replication-settings)**.
+To learn more about their usage, visit the **[replication how-to guide](docs/deploy/config-guides/replication.md#async-replication-settings)**.
 :::
 
 ```mdx-code-block

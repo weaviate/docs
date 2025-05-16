@@ -385,7 +385,7 @@ These parameters are explained below:
 
 <RaftRFChangeWarning/>
 
-[Replication](../../configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
+[Replication](docs/deploy/config-guides/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
 The `factor` parameter sets the number of copies of to be stored for objects in this collection.
 

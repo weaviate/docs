@@ -289,7 +289,7 @@ And the other members' configurations may look like this:
       RAFT_BOOTSTRAP_EXPECT: 3
 ```
 
-Below is an example configuration for a 3-node setup. You may be able to test [replication](/docs/weaviate/configuration/replication.md) examples locally using this configuration.
+Below is an example configuration for a 3-node setup. You may be able to test [replication](docs/deploy/config-guides/replication.md) examples locally using this configuration.
 
 
 <details>

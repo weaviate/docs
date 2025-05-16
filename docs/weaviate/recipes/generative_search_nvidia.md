@@ -19,7 +19,7 @@ In this demo, we will use an embedding and generative model on NVIDIA to generat
 1. Weaviate cluster
     1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
     2. [Embedded Weaviate](https://weaviate.io/developers/weaviate/installation/embedded)
-    3. [Local deployment](https://weaviate.io/developers/weaviate/installation/docker-compose#starter-docker-compose-file)
+    3. [Local deployment](docs/deploy/installation-guides/docker-installation.md#starter-docker-compose-file)
     4. [Other options](https://weaviate.io/developers/weaviate/installation)
 
 2. NVIDIA NIM API key. Grab one [here](https://build.nvidia.com/models).

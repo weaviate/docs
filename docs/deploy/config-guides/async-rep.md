@@ -168,7 +168,7 @@ Sets the maximum time allowed for a single propagation request (sending actual o
 
 - [Concepts: Replication](https://weaviate.io/developers/weaviate/concepts/replication-architecture/consistency)
 
-- [Replication How-To](https://weaviate.io/developers/weaviate/configuration/replication#async-replication-settings)
+- [Replication How-To](docs/deploy/config-guides/replication.md#async-replication-settings)
 
 - [Environment Variables](docs/deploy/config-guides/env-vars/index.md#async-replication)
 

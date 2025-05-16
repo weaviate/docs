@@ -68,7 +68,7 @@ For example:
   - A module name must be url-safe, meaning it must not contain any characters which would require url-encoding.
   - A module name is not case-sensitive. `text2vec-bert` would be the same module as `text2vec-BERT`.
 - Module information is accessible through the `v1/modules/<module-name>/<module-specific-endpoint>` RESTful endpoint.
-- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](../config-refs/meta.md).
+- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](docs/deploy/config-guides/meta.md).
 - Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](../api/graphql/additional-properties.md).
 - A module can add [filters](../api/graphql/filters.md) in GraphQL queries.
 - Which vectorizer and other modules are applied to which data collection is configured in the [schema](../manage-collections/vector-config.mdx#specify-a-vectorizer).

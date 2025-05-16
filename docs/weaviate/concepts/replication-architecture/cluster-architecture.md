@@ -14,7 +14,7 @@ In Weaviate, metadata replication and data replication are separate. For the met
 
 By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
 
-Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](/docs/weaviate/installation/kubernetes.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
+Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
 
 <details>
   <summary>FQDN for node discovery</summary>

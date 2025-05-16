@@ -19,4 +19,4 @@ This section shows you how to configure Weaviate.
 - Control access
   - [authentication](./authentication.md)
   - [authorization](docs/deploy/config-guides/authorization.md)
-- [Monitor](./monitoring.md) your Weaviate instance
+- [Monitor](docs/deploy/config-guides/monitoring.md) your Weaviate instance
