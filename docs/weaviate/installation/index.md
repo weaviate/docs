@@ -7,21 +7,21 @@ image: og/docs/installation.jpg
 
 Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](https://console.weaviate.cloud/), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
 
-If you are upgrading from a previous version of Weaviate, see the [Migration Guide](../more-resources/migration/index.md) for any changes that may affect your installation.
+If you are upgrading from a previous version of Weaviate, see the [Migration Guide](docs/deploy/migration/index.md) for any changes that may affect your installation.
 
 ## Installation methods
 
 To install and configure Weaviate, see the following:
 
 - **[Weaviate Cloud](../../cloud/quickstart.mdx)**: Managed services for development and production environments.
-- **[Docker Compose](./docker-compose.md)**: Docker containers are well suited for development and testing.
-- **[Kubernetes](./kubernetes.md)**: Kubernetes is ideal for scalable, production deployments.
+- **[Docker Compose](docs/deploy/installation-guides/docker-installation.md)**: Docker containers are well suited for development and testing.
+- **[Kubernetes](docs/deploy/installation-guides/k8s-installation.md)**: Kubernetes is ideal for scalable, production deployments.
 - **[Snowpark Container Services](./spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
 - **[Embedded Weaviate](./embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
 
 ## Configuration files
 
-Docker Compose and Kubernetes use yaml files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](./docker-compose.md) file. Kubernetes relies on [Helm charts](./kubernetes.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
+Docker Compose and Kubernetes use yaml files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) file. Kubernetes relies on [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
 
 If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
 

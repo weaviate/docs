@@ -14,7 +14,7 @@ In Weaviate, metadata replication and data replication are separate. For the met
 
 By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
 
-Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](/docs/weaviate/installation/kubernetes.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
+Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
 
 <details>
   <summary>FQDN for node discovery</summary>
@@ -25,7 +25,7 @@ This was an experimental feature. Use with caution.
 
 :::
 
-There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](../../config-refs/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
+There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](docs/deploy/config-guides/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
 
 If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
 

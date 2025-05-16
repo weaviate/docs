@@ -31,8 +31,7 @@ To run the server locally with the OpenAI module.
 
 The default configuration is `local-development` which will run the server locally with the `text2vec-contextionary` and `backup-filesystem` modules.
 
-You can also create your own configuration. For instance, you can clone an entry (`local-all-openai-cohere-google` is a good start) and add the required [environment variables](../../weaviate/config-refs/env-vars/index.md).
-
+You can also create your own configuration. For instance, you can clone an entry (`local-all-openai-cohere-google` is a good start) and add the required [environment variables](docs/deploy/config-guides/env-vars/index.md).
 
 ## Running with Docker
 
@@ -54,7 +53,7 @@ tools/dev/restart_dev_environment.sh --prometheus && tools/dev/run_dev_server.sh
 ```
 
 :::info
-This setup is for contributors to the Weaviate code base. If you are an end-user of Weaviate looking for a Prometheus-enabled example, please see [this documentation page](/docs/weaviate/configuration/monitoring.md) or this [example](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
+This setup is for contributors to the Weaviate code base. If you are an end-user of Weaviate looking for a Prometheus-enabled example, please see [this documentation page](/docs/deploy/config-guides/monitoring.md) or this [example](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
 :::
 
 Below are more examples of running Weaviate with Docker.

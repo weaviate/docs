@@ -1,52 +1,98 @@
 ---
-title: Deployment overview
+title: Overview
 description: Deployment overview page
 sidebar_position: 0
 ---
 
-# Tacetve a gemit quisquam praestat meruisse gradientis
+import CardsSection from "/src/components/CardsSection";
+import DeploymentCards from "/src/components/DeploymentCards";
+import styles from "/src/components/CardsSection/styles.module.scss";
 
-## Nec sum vagatur nupta tantus
+# Deploying Weaviate
 
-Lorem markdownum pugnando ventoque et ducta et et adurat locus inde cervos
-refeci Phaethon clivum linguaque Salmacis geras coeperat mollia. Leucothoen Ceyx
-est viret nostraque; meum utque latens
-quae, patrios plebe inpositum: torvum. **Stipite fluminaque videri**; ictu
-duabus sua *condita monstrum*. Imo undis: aut niveo sidoniae; placato sorores
-at, quae perque. *Candore dolore*, et secum rastra ceratis et sollicitat vincula
-matri mei alios in rigore murmur foedataque, cum.
+:::info[Section under construction!]
 
-Et solvit ex comitante super luctus. Unda posse perque venitque quod algae
-lymphis postquam optime.
+This is a new section being created, please bear with us as we add in new content!
 
-## Flammis levi harena illi membra caudam
+:::
 
-Ipse inducitur stridore Aiacem intonsum! Est arma, hausitque *tu* litora
-aetasque, at fuit Aegea vides. Non laborum longi fortisque *putes bracchia*
-umbras te fingit enim manum!
+Weaviate offers multiple deployment options to satisfy your specific use case in production. 
 
-Ingentia sive Idaeo serpere, dives inpia. Oculos in aras ergo bracchiaque vera,
-omnis solutus vellet: et. Est et putat nec obvia unda
-totidem amisit *coniurataeque sic arabat* mea. Caune
-quodque **addita** truncis quid latebra: incubat pallorque turribus et ignarus
-signum pectore quicquid Abantiades locus. **Ante** aliqua Aiacis deferre, ferunt
-hunc omnia, et hic Aconteus nec.
+This section hosts common deployment topics, including Kubernetes, cloud providers, and best practices, along with detailed tutorials and how-to guides.
+Weaviate is designed for:
 
-Odit festas dixit et quas fidissima, *est umbrae matrona* palude. Ait et quod
-pectora circa.
+- **Scalability** – Handle billions of vector data points efficiently.
+- **High-Performance Search** – Power AI applications with real-time vector retrieval.
+- **Flexible Integrations** – Connect with various machine learning models and data sources.
+- **Cloud & On-Prem Deployment** – Deploy on Weaviate Cloud, Kubernetes, or managed cloud services.
 
-## Elegit sim ulla poteramus stridente cessit auras
+## Deployment Options
 
-Tanta *Elinque*. Mea quae cultum Palameden Aglauros si sacra miserere quam ego,
-**e scires** imo sonitusque tumidarum fremit quae ictu? Tum est sub vate vasto,
-Galanthida in potui huc et temptat Cenaeo praeterque septem caede.
+Choose the best deployment method based on your needs:
 
-> Suo ipse cubitique et vento in onerosa adunco, non. **In paelice Quirites**
-> sunt stant sinebat superstes differt non per potentia illiusque nostris
-> Hecateidos? Tempore haud imagine facta ora, uni quam fatorum.
+export const deploymentCardsData = [
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Weaviate Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "From evaluation (sandbox) to production",
+      "Serverless (infrastructure managed by Weaviate)",
+      "(Optional) Data replication (high-availability)",
+      "(Optional) Zero-downtime updates",
+    ],
+    button: {
+      text: "Set up a WCD instance",
+      link: "/docs/cloud/manage-clusters/create",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: false },
+    ],
+    header: "Docker",
+    bgImage: "/img/site/docker-doc-icon.svg",
+    bgImageLight: "/img/site/docker-doc-icon-light.svg",
+    listItems: [
+      "For local evaluation & development",
+      "Local inference containers",
+      "Multi-modal models",
+      "Customizable configurations",
+    ],
+    button: {
+      text: "Deploy Weaviate with Docker",
+      link: "/docs/deploy/installation-guides/docker-installation",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: false },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Kubernetes",
+    bgImage: "/img/site/kubernetes-doc-icon.svg",
+    bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
+    listItems: [
+      "From development to production",
+      "Local inference containers",
+      "Multi-modal models",
+      "Customizable configurations",
+      "Self-deploy or Marketplace deployment",
+      "(Optional) Zero-downtime updates",
+    ],
+    button: {
+      text: "Deploy Weaviate with Kubernetes",
+      link: "/docs/deploy/installation-guides/k8s-installation",
+    },
+  },
+];
 
-Altis animalibus pampinus venit mirabilis busto: tamen hunc, **salutant**
-Stheneleia vultibus pectore. Evocat posuere anxia.
-
-Aper est; in tuum medius, responderat tamen: magis vix! Amor regno tamen tuli
-remige facitote **reverentia**: loqui vade pignora.
+<DeploymentCards items={deploymentCardsData} />

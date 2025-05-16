@@ -10,6 +10,7 @@ git_slack_map=(
     ["Charlie Harr"]="<@U044XTHRVFA>"
     ["Connor Shorten"]="<@U03FRH53SUT>"
     ["Daniel Madalitso Phiri"]="<@U060UJ41YBC>"
+    ["DanielleWashington"]="<@U088SBVDCET>"
     ["Dirk Kulawiak"]="<@U03MWHK4KV3>"
     ["Duda Nogueira"]="<@U05K3K9M82F>"
     ["dyma solovei"]="<@U07NGR323JR>"

@@ -16,9 +16,9 @@ This page helps you to find the right combination for your project.
 
 Weaviate can be deployed in the following ways:
 - [Embedded Weaviate](../installation/embedded.md)
-- [Docker-Compose](../installation/docker-compose.md)
+- [Docker-Compose](docs/deploy/installation-guides/docker-installation.md)
 - [Weaviate Cloud (WCD)](../installation/weaviate-cloud-services.md)
-- [Self-managed Kubernetes](../installation/kubernetes.md)
+- [Self-managed Kubernetes](docs/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 
 ## Vectorization options
@@ -52,7 +52,7 @@ The [Quickstart guide](/docs/weaviate/quickstart) uses a WCD sandbox and an API 
 
 For development, we recommend using
 
-- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/docs/weaviate/installation/docker-compose).
+- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](docs/deploy/installation-guides/docker-installation.md).
 - A vectorization strategy that matches your production vectorization strategy.
 
 #### Docker-Compose vs. Weaviate Cloud (WCD)
@@ -82,7 +82,7 @@ Keep in mind two other factors, which are cost, and their footprint.
 For production deployments, consider one of these hosting models:
 
 - [Weaviate Cloud (WCD)](/docs/cloud)
-- [Self-managed Kubernetes](/docs/weaviate/installation/kubernetes)
+- [Self-managed Kubernetes](/docs/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](/docs/cloud)
 
 All of these options are scalable. Kubernetes and Hybrid SaaS offer the most configuration flexibility.

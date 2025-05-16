@@ -51,7 +51,7 @@ services:
 
 ## Using the Docker Compose configurator
 
-You can also use the Docker compose [configurator](/docs/weaviate/installation/docker-compose.md#configurator). Make sure to select `Enabled` for the Enterprise Usage Collector option.
+You can also use the Docker compose [configurator](docs/deploy/installation-guides/docker-installation.md#configurator). Make sure to select `Enabled` for the Enterprise Usage Collector option.
 
 ## Collector proxy on Kubernetes using Helm
 

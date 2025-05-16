@@ -54,7 +54,7 @@ Tombstones are records that mark deleted objects. In an HNSW index, tombstones a
 
 As the index grows in size, the cleanup process may take longer to complete and require more resources. For very large indexes, this may cause performance issues.
 
-To control the number of tombstones deleted per cleanup cycle and prevent performance issues, set the [`TOMBSTONE_DELETION_MAX_PER_CYCLE` and `TOMBSTONE_DELETION_MIN_PER_CYCLE` environment variables](../env-vars/index.md#general).
+To control the number of tombstones deleted per cleanup cycle and prevent performance issues, set the [`TOMBSTONE_DELETION_MAX_PER_CYCLE` and `TOMBSTONE_DELETION_MIN_PER_CYCLE` environment variables](docs/deploy/config-guides/env-vars/index.md#general).
 
 - Set `TOMBSTONE_DELETION_MIN_PER_CYCLE` to prevent occurrences of unnecessary cleanup cycles.
 - Set `TOMBSTONE_DELETION_MAX_PER_CYCLE` to prevent the cleanup process from taking too long and consuming too many resources.
@@ -219,7 +219,7 @@ services:
 
 </details>
 
-To get the index status, check the [node status](/docs/weaviate/config-refs/nodes) endpoint.
+To get the index status, check the [node status](docs/deploy/config-guides/nodes.md) endpoint.
 
 <details>
   <summary><code>Node status</code> example usage</summary>

@@ -388,7 +388,7 @@ services:
       ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles'
 ```
 
-Check the specific documentation for your deployment method ([Docker](../installation/docker-compose.md), [Kubernetes](../installation/kubernetes.md), [Embedded Weaviate](../installation/embedded.md)) for more information on how to configure it.
+Check the specific documentation for your deployment method ([Docker](docs/deploy/installation-guides/docker-installation.md), [Kubernetes](docs/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](../installation/embedded.md)) for more information on how to configure it.
 
 </details>
 

@@ -136,7 +136,7 @@ The resulting search list has these characteristics.
 - A maximum length of 25 objects ("dynamicEfMax": 25).
 - An actual size of 5 to 25 objects.
 
-If you use the [`docker-compose.yml` file from Weaviate](../../installation/docker-compose.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
+If you use the [`docker-compose.yml` file from Weaviate](docs/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
 To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you configure your Weaviate instance.
 
@@ -162,7 +162,7 @@ When asynchronous indexing is enabled, all vector indexing operations go through
 
 This means that the object store can be updated quickly to finish performing user requests while the vector index updates in the background. Asynchronous indexing is especially useful for importing large amounts of data.
 
-This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](../../config-refs/nodes.md).
+This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/docs/deploy/config-guides/nodes.md).
 
 :::info Changes in `v1.28`
 In Weaviate `v1.22` to `v1.27`, the async indexing feature only affected batch import operations, using an in-memory queue.

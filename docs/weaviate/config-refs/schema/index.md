@@ -159,7 +159,7 @@ We are working on a re-indexing API to allow you to re-index the data after addi
 To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
 
 - **Default limit**: `1000` collections.
-- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](../../config-refs/env-vars/index.md) environment variable to adjust the collection count limit.
+- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](docs/deploy/config-guides/env-vars/index.md) environment variable to adjust the collection count limit.
 
 :::note 
 If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
@@ -385,7 +385,7 @@ These parameters are explained below:
 
 <RaftRFChangeWarning/>
 
-[Replication](../../configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
+[Replication](docs/deploy/config-guides/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
 The `factor` parameter sets the number of copies of to be stored for objects in this collection.
 
@@ -607,7 +607,7 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 ### Limit the number of `gse` and `Kagome` tokenizers
 
 The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
-You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](../env-vars/index.md). 
+You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](docs/deploy/config-guides/env-vars/index.md). 
 
 ### Inverted index types
 

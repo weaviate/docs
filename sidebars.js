@@ -26,8 +26,6 @@ const sidebars = {
       },
       items: [
         "weaviate/installation/weaviate-cloud-services",
-        "weaviate/installation/docker-compose",
-        "weaviate/installation/kubernetes",
         "weaviate/installation/embedded",
         "weaviate/installation/spcs-integration",
       ],
@@ -428,9 +426,7 @@ const sidebars = {
         },
         "weaviate/configuration/tenant-offloading",
         "weaviate/configuration/modules",
-        "weaviate/configuration/backups",
         "weaviate/configuration/authentication",
-        "weaviate/configuration/authorization",
         {
           type: "category",
           label: "RBAC",
@@ -439,14 +435,10 @@ const sidebars = {
             id: "weaviate/configuration/rbac/index",
           },
           items: [
-            "weaviate/configuration/rbac/configuration",
             "weaviate/configuration/rbac/manage-roles",
             "weaviate/configuration/rbac/manage-users",
           ],
         },
-        "weaviate/configuration/persistence",
-        "weaviate/configuration/monitoring",
-        "weaviate/configuration/replication",
       ],
     },
     {
@@ -518,7 +510,6 @@ const sidebars = {
         id: "weaviate/tutorials/index",
       },
       items: [
-        "weaviate/tutorials/rbac",
         "weaviate/tutorials/multi-vector-embeddings",
         //"weaviate/tutorials/import",
         "weaviate/tutorials/cross-references",
@@ -562,41 +553,6 @@ const sidebars = {
         {
           type: "doc",
           id: "weaviate/config-refs/distances",
-          className: "sidebar-item",
-        },
-        {
-          type: "category",
-          label: "Environment variables",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/config-refs/env-vars/index",
-          },
-          items: ["weaviate/config-refs/env-vars/runtime-config"],
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/telemetry",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/meta",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/nodes",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/oidc",
           className: "sidebar-item",
         },
       ],
@@ -731,7 +687,7 @@ const sidebars = {
       ],
     },
   ],
-  othersSidebar: [
+ othersSidebar: [
     {
       type: "category",
       label: "Releases",
@@ -740,19 +696,6 @@ const sidebars = {
         id: "weaviate/release-notes/index",
       },
       items: [
-        {
-          type: "category",
-          label: "Migration",
-          link: {
-            type: "doc",
-            id: "weaviate/more-resources/migration/index",
-          },
-          items: [
-            "weaviate/more-resources/migration/weaviate-1-30",
-            "weaviate/more-resources/migration/weaviate-1-25",
-            "weaviate/more-resources/migration/archive",
-          ],
-        },
       ],
     },
     {
@@ -786,11 +729,173 @@ const sidebars = {
     "weaviate/more-resources/glossary",
     "weaviate/more-resources/example-datasets",
   ],
-  deploySidebar: ["deploy/index"],
-  deployAwsSidebar: [
+  deploySidebar: [
+    {
+      type: "doc",
+      id: "deploy/index", // document ID
+      label: "Overview", // sidebar label
+    },
+    {
+      type: "category",
+      label: "Installation Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        "deploy/installation-guides/k8s-installation",
+        "deploy/installation-guides/docker-installation",
+        "deploy/installation-guides/gcp-installation",
+        "deploy/installation-guides/aws-installation",
+        "deploy/installation-guides/aws-cli",
+      ],
+    },
+  ],
+deployConfigSidebar: [
+  {
+    type: "category",
+    label: "Configuration Guides",
+    className: "sidebar-main-category",
+    collapsible: false,
+    link: {
+      type: "doc",
+      id: "deploy/config-guides/index",
+    },
+    items: [
+      {
+        type: "doc",
+        id: "deploy/config-guides/backups",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/horizontal-scaling",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/meta",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/monitoring",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/nodes",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/persistence",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/replication",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/status",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/telemetry",
+        className: "sidebar-item",
+      },
+      {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+      {
+        type: "category",
+        label: "Authorization and Authentication",
+        className: "sidebar-item",
+        link: {
+          type: "doc",
+          id: "deploy/config-guides/authentication",
+        },
+        items: [
+          "deploy/config-guides/authentication",
+          "deploy/config-guides/authorization",
+          "deploy/config-guides/oidc",
+          "deploy/config-guides/configuring-rbac",
+        ],
+      },
+      {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+      },
+      {
+        type: "category",
+        label: "Replication",
+        className: "sidebar-item",
+        items: [
+          "deploy/config-guides/replication",
+          "deploy/config-guides/async-rep",
+        ],
+      },
+      {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+          {
+        type: "category",
+        label: "Environment Variables",
+        className: "sidebar-item",
+        items: [
+          "deploy/config-guides/env-vars/index",
+          "deploy/config-guides/env-vars/runtime-config",
+        ],
+      },
+    ],
+  },
+],
+  /*deployAwsSidebar: [
     {
       type: "autogenerated",
       dirName: "deploy/aws",
+    },
+  ],*/
+  /*deployK8sSidebar: [
+    {
+      type: "autogenerated",
+      dirName: "deploy/k8s",
+    },
+  ],*/
+  deployProductionSidebar: [
+    {
+      type: "autogenerated",
+      dirName: "deploy/production",
+      
+    },
+  ],
+deployTutorialSidebar: [
+  {
+    type: "category",
+    label: "Tutorials",
+    className: "sidebar-main-category",
+    collapsible: false,
+    link: {
+      type: "doc",
+      id: "deploy/tutorials/rbac",
+    },
+    items: [],
+  },
+], 
+  deployFaqsSidebar: [
+    {
+      type: "autogenerated",
+      dirName: "deploy/faqs",
+      
+    },
+  ],
+  deployMigrationSidebar: [
+    {
+      type: "autogenerated",
+      dirName: "deploy/migration"
     },
   ],
   agentsSidebar: [
