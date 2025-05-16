@@ -147,7 +147,7 @@ Prior to Weaviate `v1.25`, each cluster metadata change was recorded via a distr
 
 This is a synchronous process, which means that the cluster metadata change is only committed when all nodes have acknowledged the change. In this architecture, any node downtime would temporarily prevent metadata operations. Additionally, only one such operation could be processed at a time.
 
-If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](/docs/deploy/other/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
+If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](docs/deploy/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
 
 </details>
 

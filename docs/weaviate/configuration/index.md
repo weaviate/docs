@@ -10,7 +10,7 @@ This section shows you how to configure Weaviate.
 - Extend Weaviate's functionality by adding vectorizers and other [modules](./modules.md)
 - Configure how Weaviate stores and indexes data
 
-  - [schema](../manage-data/collections.mdx)
+  - [schema](docs/weaviate/manage-collections/index.mdx)
   - [data types](../config-refs/datatypes.md)
   - [distance metrics](../config-refs/distances.md)
 
@@ -18,5 +18,5 @@ This section shows you how to configure Weaviate.
 - [Back up](docs/deploy/config-guides/backups.md) your Weaviate instance
 - Control access
   - [authentication](./authentication.md)
-  - [authorization](./authorization.md)
+  - [authorization](docs/deploy/config-guides/authorization.md)
 - [Monitor](./monitoring.md) your Weaviate instance

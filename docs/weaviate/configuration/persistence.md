@@ -76,7 +76,7 @@ See [Backups](docs/deploy/config-guides/backups.md).
 
 ## Kubernetes
 
-For Kubernetes setup, the only thing to bear in mind is that Weaviate needs a `PersistentVolumes` through `PersistentVolumeClaims` ([more info](/docs/weaviate/installation/kubernetes.md#requirements)) but the Helm chart is already configured to store the data on an external volume.
+For Kubernetes setup, the only thing to bear in mind is that Weaviate needs a `PersistentVolumes` through `PersistentVolumeClaims` ([more info](/docs/deploy/installation-guides/k8s-installation.md#requirements)) but the Helm chart is already configured to store the data on an external volume.
 
 ## Disk Pressure Warnings and Limits
 
@@ -104,7 +104,7 @@ In general, `mmap` may be a preferred option with memory management benefits. Ho
 
 
 ## Related pages
-- [Configuration: Backups](./backups.md)
+- [Configuration: Backups](docs/deploy/config-guides/backups.md)
 
 ## Questions and feedback
 

@@ -36,8 +36,8 @@ You can customize your Weaviate configuration by creating a `docker-compose.yml`
 ## Sample Docker Compose file
 
 This starter Docker Compose file allows:
-* Use of any [API-based model provider integrations](../model-providers/index.md) (e.g. `OpenAI`, `Cohere`, `Google`, and `Anthropic`).
-    * This includes the relevant embedding model, generative, and reranker [integrations](../model-providers/index.md).
+* Use of any [API-based model provider integrations](docs/weaviate/model-providers/index.md) (e.g. `OpenAI`, `Cohere`, `Google`, and `Anthropic`).
+    * This includes the relevant embedding model, generative, and reranker [integrations](/docs/weaviate/model-providers/index.md).
 * Searching pre-vectorized data (without a vectorizer).
 * Mounts a persistent volume called `weaviate_data` to `/var/lib/weaviate` in the container to store data.
 

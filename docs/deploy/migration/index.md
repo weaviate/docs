@@ -13,7 +13,7 @@ Weaviate is under active development, with new features and improvements being a
 
 When upgrading Weaviate, we recommend that you:
 
-1. Create a complete [backup](../../configuration/backups.md) of your current Weaviate instance before beginning any upgrade process.
+1. Create a complete [backup](docs/deploy/config-guides/backups.md) of your current Weaviate instance before beginning any upgrade process.
 1. Plan to upgrade one minor version at a time, always using the latest patch version of each minor release.
 
 This approach of upgrading one minor version at a time helps to minimize the risk of issues during the upgrade process, by mirroring our testing and release process. Upgrading to the latest patch version of each minor release ensures that you have the latest bugfixes and improvements.
@@ -41,11 +41,11 @@ Between `v1.25` and `v1.27`, there are two minor versions, `v1.26` and `v1.27`. 
 
 ### Raft Migration (v1.25.0+)
 
-Weaviate `v1.25.0` introduced Raft [as the consensus algorithm for cluster metadata](../../concepts/replication-architecture/cluster-architecture.md#metadata-replication-raft). This requires a one-time migration of the cluster metadata.
+Weaviate `v1.25.0` introduced Raft [as the consensus algorithm for cluster metadata](/docs/weaviate/concepts/replication-architecture/cluster-architecture.md#metadata-replication-raft.). This requires a one-time migration of the cluster metadata.
 
-In [Docker-based self-hosted instances](../../installation/docker-compose.md), the migration is automatic.
+In [Docker-based self-hosted instances](docs/deploy/installation-guides/docker-installation.md), the migration is automatic.
 
-In [Kubernetes-based self-hosted instances](../../installation/kubernetes.md), you must perform a manual migration step. For more information, see the [Weaviate `v1.25.0` migration guide](./weaviate-1-25.md).
+In [Kubernetes-based self-hosted instances](docs/deploy/installation-guides/k8s-installation.md), you must perform a manual migration step. For more information, see the [Weaviate `v1.25.0` migration guide](./weaviate-1-25.md).
 
 This was a significant change to the Weaviate architecture. Accordingly, we suggest performing another backup after upgrading to `v1.25.latest`, before proceeding with further upgrades to ensure that you have a recent backup.
 

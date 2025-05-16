@@ -498,7 +498,7 @@ As with backup creation, the `include` and `exclude` options are mutually exclus
 Note that a restore fails if any of the collections already exist on this instance.
 
 :::caution Restoring backups from `v1.23.12` and older
-If you are running Weaviate `v1.23.12` or older, first **[update Weaviate](../more-resources/migration/index.md) to version 1.23.13** or higher before restoring a backup.
+If you are running Weaviate `v1.23.12` or older, first **[update Weaviate](/docs/deploy/migration/index.md) to version 1.23.13** or higher before restoring a backup.
 Versions prior to `v1.23.13` had a bug that could lead to data not being stored correctly from a backup of your data.
 :::
 

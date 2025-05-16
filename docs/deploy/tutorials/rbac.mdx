@@ -79,7 +79,7 @@ We are going to create the following roles:
 Before starting this tutorial, ensure you have the following:
 
 - Docker for running a Weaviate instance locally.
-- Your preferred Weaviate [client library](../client-libraries/index.mdx) installed.
+- Your preferred Weaviate [client library](docs/weaviate/client-libraries/index.mdx) installed.
 
 ### Local instance - `root` user
 
@@ -132,7 +132,7 @@ We will connect to Weaviate with `root-user`, and once we create a new role, we 
 
 ### Step 1: Connect to Weaviate
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](../configuration/rbac/configuration.md) or by granting a user the [`manage_roles` permission](../configuration/rbac/manage-roles.mdx#role-management-permissions).
+Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](docs/deploy/config-guides/configuring-rbac.md) or by granting a user the [`manage_roles` permission](docs/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -279,7 +279,9 @@ Now, you can assign the role `rw_role` to `custom-user`:
 
 ### Step 1: Connect to Weaviate
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](../configuration/rbac/configuration.md) or by granting a user the [`manage_roles` permission](../configuration/rbac/manage-roles.mdx#role-management-permissions).
+Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
+You can achieve this by either using the predefined `root` role during [Weaviate configuration](/docs/deploy/config-guides/configuring-rbac) 
+or by granting a user the [`manage_roles` permission](/docs/weaviate/configuration/rbac/manage-roles#role-management).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -426,7 +428,9 @@ Now, you can assign the role `viewer_role` to `custom-user`:
 
 ### Step 1: Connect to Weaviate
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](../configuration/rbac/configuration.md) or by granting a user the [`manage_roles` permission](../configuration/rbac/manage-roles.mdx#role-management-permissions).
+Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
+You can achieve this by either using the predefined `root` role during [Weaviate configuration](docs/deploy/config-guides/configuring-rbac.md) 
+or by granting a user the [`manage_roles` permission](docs/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -579,9 +583,9 @@ It walks you through connecting to Weaviate using a user with role management ca
 
 ## Additional resources
 
-- [RBAC: Configuration](../configuration/rbac/configuration.md)
-- [RBAC: Manage roles](../configuration/rbac/manage-roles.mdx)
-- [RBAC: Manage users](../configuration/rbac/manage-users.mdx)
+- [RBAC: Configuration](docs/deploy/config-guides/configuring-rbac.md)
+- [RBAC: Manage roles](docs/weaviate/configuration/rbac/manage-roles.mdx)
+- [RBAC: Manage users](docs/weaviate/configuration/rbac/manage-users.mdx)
 
 ## Questions and feedback
 

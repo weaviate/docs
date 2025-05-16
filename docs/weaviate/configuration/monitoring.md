@@ -130,7 +130,7 @@ your uses perfectly:
 
 ## `nodes` API Endpoint
 
-To get collection details programmatically, use the [`nodes`](../config-refs/nodes.md) REST endpoint.
+To get collection details programmatically, use the [`nodes`](docs/deploy/config-guides/nodes.md) REST endpoint.
 
 import APIOutputs from '/\_includes/rest/node-endpoint-info.mdx';
 

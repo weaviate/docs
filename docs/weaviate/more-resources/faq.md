@@ -73,7 +73,7 @@ image: og/docs/more-resources.jpg
   <summary>Answer</summary>
 
 > Role-based access control (RBAC) can be enabled when configuring Weaviate via the `AUTHORIZATION_RBAC_ENABLED` environment variable.
-> For more info visit the [RBAC: Configuration](/docs/weaviate/configuration/rbac/configuration) guide.
+> For more info visit the [RBAC: Configuration](docs/deploy/config-guides/configuring-rbac.md) guide.
 
 </details>
 

@@ -6,7 +6,7 @@ image: og/docs/configuration.jpg
 
 Weaviate instances can be replicated. Replication can improve read throughput, improve availability, and enable zero-downtime upgrades.
 
-For more details on how replication is designed and built in Weaviate, see [Replication Architecture](../concepts/replication-architecture/index.md).
+For more details on how replication is designed and built in Weaviate, see [Replication Architecture](docs/weaviate/concepts/replication-architecture/index.md).
 
 ## How to configure
 
@@ -14,7 +14,7 @@ import RaftRFChangeWarning from '/\_includes/1-25-replication-factor.mdx';
 
 <RaftRFChangeWarning/>
 
-Replication is disabled by default. It can be enabled per collection in the [collection configuration](../manage-collections/multi-node-setup.mdx#replication-settings). This means you can set different replication factors per class in your dataset.
+Replication is disabled by default. It can be enabled per collection in the [collection configuration](docs/weaviate/manage-collections/multi-node-setup.mdx#replication-settings). This means you can set different replication factors per class in your dataset.
 
 To enable replication, you can set one or both of the following:
 
@@ -25,14 +25,14 @@ To enable replication, you can set one or both of the following:
 
 The `REPLICATION_MINIMUM_FACTOR` environment variable sets the minimum replication factor for all collections in the Weaviate instance.
 
-If you set the [replication factor for a collection](#replication-factor-for-a-collection), the collection's replication factor overrides the minimum replication factor.
+If you set the [replication factor for a collection](/docs/weaviate/configuration/replication.md#replication-factor-for-a-collection), the collection's replication factor overrides the minimum replication factor.
 
 
 ## Data consistency
 
 When Weaviate detects inconsistent data across nodes, it attempts to repair the out of sync data.
 
-Starting in v1.26, Weaviate adds [async replication](../concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](../concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
+Starting in v1.26, Weaviate adds [async replication](docs/weaviate/concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](docs/weaviate/concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
 
 Repair-on-read is automatic. To activate async replication, set `asyncEnabled` to true in the `replicationConfig` section of your collection definition.
 
@@ -64,7 +64,7 @@ Update the following [environment variables](/docs/deploy/config-guides/env-vars
 - **Monitor node availability:** `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
   Trigger comparisons whenever there’s a change in node availability.
 - **Configure hash tree height:** `ASYNC_REPLICATION_HASHTREE_HEIGHT`
-  Specify the size of the hash tree, which helps narrow down data differences by comparing hash digests at multiple levels instead of scanning entire datasets. See [this page](../concepts/replication-architecture/consistency.md#memory-and-performance-considerations-for-async-replication) for more information on the memory and performance considerations for async replication.
+  Specify the size of the hash tree, which helps narrow down data differences by comparing hash digests at multiple levels instead of scanning entire datasets. See [this page](docs/weaviate/concepts/replication-architecture/consistency.md#memory-and-performance-considerations-for-async-replication) for more information on the memory and performance considerations for async replication.
 - **Batch size for digest comparison:** `ASYNC_REPLICATION_DIFF_BATCH_SIZE`
   Define the number of objects whose digest (e.g., last update time) is compared between nodes before propagating actual objects.
 
@@ -91,7 +91,7 @@ Tweak these settings based on your cluster size and network latency to achieve o
 
 ## How to use: Queries
 
-When you add (write) or query (read) data, one or more replica nodes in the cluster will respond to the request. How many nodes need to send a successful response and acknowledgment to the coordinator node depends on the `consistency_level`. Available [consistency levels](../concepts/replication-architecture/consistency.md) are `ONE`, `QUORUM` (replication_factor / 2 + 1) and `ALL`.
+When you add (write) or query (read) data, one or more replica nodes in the cluster will respond to the request. How many nodes need to send a successful response and acknowledgment to the coordinator node depends on the `consistency_level`. Available [consistency levels](docs/weaviate/concepts/replication-architecture/consistency.md) are `ONE`, `QUORUM` (replication_factor / 2 + 1) and `ALL`.
 
 The `consistency_level` can be specified at query time:
 
@@ -101,7 +101,7 @@ curl "http://localhost:8080/v1/objects/{ClassName}/{id}?consistency_level=ONE"
 ```
 
 :::note
-In v1.17, only [read queries that get data by ID](../manage-objects/read.mdx#get-an-object-by-id) had a tunable consistency level. All other object-specific REST endpoints (read or write) used the consistency level `ALL`. Starting with v1.18, all write and read queries are tunable to either `ONE`, `QUORUM` (default) or `ALL`. GraphQL endpoints use the consistency level `ONE` (in both versions).
+In v1.17, only [read queries that get data by ID](docs/weaviate/manage-objects/read.mdx#get-an-object-by-id) had a tunable consistency level. All other object-specific REST endpoints (read or write) used the consistency level `ALL`. Starting with v1.18, all write and read queries are tunable to either `ONE`, `QUORUM` (default) or `ALL`. GraphQL endpoints use the consistency level `ONE` (in both versions).
 :::
 
 import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx';
@@ -110,7 +110,7 @@ import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx'
 
 ## Related pages
 
-- [Concepts: Replication Architecture](../concepts/replication-architecture/index.md)
+- [Concepts: Replication Architecture](docs/weaviate/concepts/replication-architecture/index.md)
 - [Configurinfg Async Replication](./async-rep.md)
 
 ## Questions and feedback

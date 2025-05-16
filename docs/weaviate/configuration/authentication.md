@@ -9,7 +9,7 @@ image: og/docs/configuration.jpg
 Authentication and authorization are closely related concepts, and sometimes abbreviated as `AuthN` and `AuthZ`. Authentication (`AuthN`) is the process of verifying the identity of a user, while authorization (`AuthZ`) is the process of determining what permissions the user has.
 :::
 
-Weaviate controls access through user authentication via API keys or OpenID Connect (OIDC), with an option for anonymous access. Users can then be assigned different [authorization](./authorization.md) levels, as shown in the diagram below.
+Weaviate controls access through user authentication via API keys or OpenID Connect (OIDC), with an option for anonymous access. Users can then be assigned different [authorization](docs/deploy/config-guides/authorization.md) levels, as shown in the diagram below.
 
 ```mermaid
 flowchart LR
@@ -218,7 +218,7 @@ curl https://localhost:8080/v1/objects -H "Authorization: Bearer ${WEAVIATE_API_
 
 ## Further resources
 
-- [Configuration: Authorization and RBAC](./authorization.md)
+- [Configuration: Authorization and RBAC](docs/deploy/config-guides/authorization.md)
 - [References: Environment variables / Authentication and Authorization](docs/deploy/config-guides/env-vars/index.md#authentication-and-authorization)
 
 ## Questions and feedback

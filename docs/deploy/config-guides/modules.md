@@ -79,7 +79,7 @@ Refer to the individual [module documentation](docs/weaviate/modules/index.md) f
 
 ## Vectorizer modules
 
-The [vectorization integration](../model-providers/index.md) enable Weaviate to vectorize data at import, and to perform [`near<Media>`](/docs/weaviate/search/similarity.md) searches such as `nearText` or `nearImage`.
+The [vectorization integration](docs/weaviate/model-providers/index.md) enable Weaviate to vectorize data at import, and to perform [`near<Media>`](/docs/weaviate/search/similarity.md) searches such as `nearText` or `nearImage`.
 
 :::info List of available vectorizer integrations
 Can be found [in this section](/docs/weaviate/model-providers/index.md).
@@ -134,7 +134,7 @@ Your choice of the `text2vec` module does not restrict your choice of `generativ
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-See the [dedicated page on tenant offloading](/docs/weaviate/configuration/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](/docs/weaviate/manage-data/tenant-states.mdx).
+See the [dedicated page on tenant offloading](/docs/weaviate/configuration/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](docs/weaviate/manage-collections/tenant-states.mdx).
 
 ## Custom modules
 

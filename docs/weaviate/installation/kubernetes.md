@@ -168,7 +168,7 @@ The above command (`helm upgrade...`) is idempotent. In other words, you can run
 
 To upgrade to `1.25` or higher from a pre-`1.25` version, you must delete the deployed `StatefulSet`, update the helm chart to version `17.0.0` or higher, and re-deploy Weaviate.
 
-See the [1.25 migration guide for Kubernetes](../more-resources/migration/weaviate-1-25.md) for more details.
+See the [1.25 migration guide for Kubernetes](docs/deploy/migration/weaviate-1-25.md) for more details.
 
 ### Using EFS with Weaviate
 

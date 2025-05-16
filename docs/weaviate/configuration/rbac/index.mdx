@@ -104,7 +104,7 @@ The `root` role can be assigned to a user through the Weaviate configuration fil
 
 All roles can also be assigned through the Weaviate API, including the predefined role. The predefined roles cannot be modified, but they can be assigned to or revoked from users.
 
-Refer to the [RBAC: Configuration](/docs/weaviate/configuration/rbac/configuration) page for more information on how to assign predefined roles to users.
+Refer to the [RBAC: Configuration](docs/deploy/config-guides/configuring-rbac.md) page for more information on how to assign predefined roles to users.
 
 ### Custom roles
 
@@ -112,7 +112,7 @@ Any authenticated user that is not assigned a predefined role has no roles or pe
 
 These users' permissions can be modified through Weaviate by those with the appropriate permissions for **managing roles**. This allows for the creation of custom roles, which can be assigned to users as needed.
 
-Role management can be performed with a [predefined `root` role](/docs/weaviate/configuration/rbac/configuration) or a custom role with [`manage_roles` permissions](/docs/weaviate/configuration/rbac/manage-roles#role-management-permissions).
+Role management can be performed with a [predefined `root` role](docs/deploy/config-guides/configuring-rbac.md) or a custom role with [`manage_roles` permissions](/docs/weaviate/configuration/rbac/manage-roles#role-management-permissions).
 
 :::caution Role Management Permissions
 Be careful when assigning permissions to roles that manage roles. These permissions can be used to escalate privileges by assigning additional roles to users. Only assign these permissions to trusted users.
@@ -357,7 +357,7 @@ The [user management](./manage-users.mdx) API can be used to create, delete and 
 - [RBAC: Configuration](docs/deploy/config-guides/configuring-rbac.md)
 - [RBAC: Manage roles](./manage-roles.mdx)
 - [RBAC: Manage users](./manage-users.mdx)
-- [RBAC: Tutorial](../../tutorials/rbac.mdx)
+- [RBAC: Tutorial](docs/deploy/tutorials/rbac.mdx)
 
 ## Questions and feedback
 
