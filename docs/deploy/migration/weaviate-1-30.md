@@ -323,3 +323,10 @@ BlockMax WAND algorithm is available in `v1.29` as a **technical preview**. **We
 Enable BlockMax WAND by setting the environment variables `USE_BLOCKMAX_WAND` and `USE_INVERTED_SEARCHABLE` to `true`.
 
 Now, all new data added to Weaviate will use BlockMax WAND for BM25 and hybrid searches. However, preexisting data will continue to use the default WAND algorithm.
+
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

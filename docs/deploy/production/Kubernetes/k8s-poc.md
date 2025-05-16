@@ -152,3 +152,9 @@ updateStrategy:
 Voila! You now have a deployment that is *somewhat* ready for production. Your next step will be to complete the self-assessment and identify any gaps. 
 
 ### Next Steps: [Production Readiness Self-Assessment](./production-readiness.md)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

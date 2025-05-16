@@ -193,6 +193,8 @@ helm upgrade weaviate weaviate/weaviate \
 
 This should bring the cluster back to your specified pre-`1.25` version.
 
+## Questions and feedback
+
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

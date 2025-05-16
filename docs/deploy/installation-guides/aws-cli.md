@@ -13,6 +13,39 @@ Weaviate can be deployed on an EKS cluster using the `eksctl` command-line tool 
 - `eksctl` installed
 :::
 
+<details>
+<summary> AWS policies needed </summary>
+
+Ensure that you have adequate permissions to create and interact wth an EKS cluster. The following policies should provide you the adequate permissions to create your cluster: 
+
+- eks:CreateCluster
+- eks:DescribeCluster
+- eks:ListClusters
+- eks:UpdateClusterConfig
+- eks:DeleteCluster
+- iam:CreateRole
+- iam:AttachRolePolicy
+- iam:PutRolePolicy
+- iam:GetRole
+- iam:ListRolePolicies
+- iam:ListAttachedRolePolicies
+- ec2:DescribeSubnets
+- ec2:DescribeVpcs
+- ec2:DescribeSecurityGroups
+- ec2:CreateSecurityGroup
+- ec2:AuthorizeSecurityGroupIngress
+- ec2:RevokeSecurityGroupIngress
+- cloudformation:CreateStack
+- cloudformation:DescribeStacks
+- cloudformation:UpdateStack
+- cloudformation:DeleteStack
+- ec2:CreateTags
+- ec2:DescribeInstances
+- ec2:DescribeNetworkInterfaces
+- ec2:DescribeAvailabilityZones
+
+</details>
+
 #### Verify your tools
 
 Before starting, ensure that your tools are installed:
@@ -23,6 +56,8 @@ aws --version
 kubectl version
 eksctl version
 ```
+
+
 
 ### Step 1: Create the Cluster
 
@@ -130,6 +165,21 @@ helm repo update
 
 After you've added the Weaviate Helm chart, configure the `values.yaml` file before you deploy Weaviate on the cluster. 
 
+```bash
+helm show values weaviate/weaviate > values.yaml
+```
+
+Before deploying Weaviate, change the `storgeclass` and ensure that you have replicas specified in your `values.yaml` file. 
+
+```yaml
+storage:
+  size: 32Gi
+  storageClassName: "<your-storage-class-name>"
+```
+
+```yaml
+replicas: 3
+```
 
 #### Deploy Weaviate on your cluster:
 
