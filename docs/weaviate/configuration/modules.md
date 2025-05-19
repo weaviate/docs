@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 # tags: ['configuration', 'modules']
 ---
 
-Weaviate's functionality can be customized by using [modules](../concepts/modules.md). This page explains how to enable and configure modules.
+Weaviate's functionality can be customized by using [modules](docs/weaviate/concepts/modules.md). This page explains how to enable and configure modules.
 
 ## Instance-level configuration
 
@@ -135,7 +135,7 @@ Your choice of the `text2vec` module does not restrict your choice of `generativ
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-See the [dedicated page on tenant offloading](./tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
+See the [dedicated page on tenant offloading](docs/deploy/config-guides/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
 
 ## Custom modules
 
