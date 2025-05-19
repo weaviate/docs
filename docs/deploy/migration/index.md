@@ -41,7 +41,7 @@ Between `v1.25` and `v1.27`, there are two minor versions, `v1.26` and `v1.27`. 
 
 ### Raft Migration (v1.25.0+)
 
-Weaviate `v1.25.0` introduced Raft [as the consensus algorithm for cluster metadata](/docs/weaviate/concepts/replication-architecture/cluster-architecture.md#metadata-replication-raft.). This requires a one-time migration of the cluster metadata.
+Weaviate `v1.25.0` introduced Raft [as the consensus algorithm for cluster metadata](/docs/weaviate/concepts/replication-architecture/cluster-architecture#metadata-replication-raft). This requires a one-time migration of the cluster metadata.
 
 In [Docker-based self-hosted instances](docs/deploy/installation-guides/docker-installation.md), the migration is automatic.
 

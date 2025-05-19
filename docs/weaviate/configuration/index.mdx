@@ -16,55 +16,71 @@ export const configOpsData = [
     description:
       "Reduce memory usage with Product, Binary, or Scalar Quantization techniques.",
     link: "/docs/weaviate/configuration/compression",
-    icon: "fas fa-compress-alt", 
+    icon: "fas fa-compress-alt",
   },
   {
     title: "Tenant offloading",
     description:
       "Manage resource usage by offloading inactive tenants in multi-tenant setups.",
     link: "/docs/weaviate/configuration/tenant-offloading",
-    icon: "fas fa-pause-circle", 
+    icon: "fas fa-pause-circle",
   },
   {
     title: "Modules",
     description:
       "Explore Weaviate's ecosystem of vectorizer, generative (RAG), and other modules.",
-    link: "/docs/weaviate/configuration/modules", 
-    icon: "fas fa-puzzle-piece", 
-  },
-  {
-    title: "Backup and restore",
-    description:
-      "Configure and manage backups (filesystem, S3, GCS) for data safety and recovery.",
-    link: "/docs/weaviate/configuration/backups",
-    icon: "fas fa-save", 
+    link: "/docs/weaviate/configuration/modules",
+    icon: "fas fa-puzzle-piece",
   },
   {
     title: "Authentication",
     description:
       "Set up methods (API keys, OIDC) to verify user identities before granting access.",
     link: "/docs/weaviate/configuration/authentication",
-    icon: "fas fa-key", 
-  },
-  {
-    title: "Authorization",
-    description:
-      "Understand Weaviate's authorization schemes (RBAC, Admin List) to control user permissions.",
-    link: "/docs/deploy/config-guides/authorization.md",
-    icon: "fas fa-shield-alt", 
+    icon: "fas fa-key",
   },
   {
     title: "RBAC",
     description:
       "Learn about Role-Based Access Control concepts, predefined/custom roles, and permissions.",
     link: "/docs/weaviate/configuration/rbac",
-    icon: "fas fa-user-shield", 
+    icon: "fas fa-user-shield",
+  },
+];
+
+<br />
+<CardsSection items={configOpsData} />
+<br />
+
+## Deployment guides
+
+export const deployConfigOpsData = [
+  {
+    title: "Backup and restore",
+    description:
+      "Configure and manage backups (filesystem, S3, GCS) for data safety and recovery.",
+    link: "/docs/deploy/config-guides/backups",
+    icon: "fas fa-save",
+  },
+  {
+    title: "Authentication",
+    description:
+      "Set up methods (API keys, OIDC) to verify user identities before granting access.",
+    link: "/docs/deploy/config-guides/authentication",
+    icon: "fas fa-key",
+  },
+  {
+    title: "Authorization",
+    description:
+      "Understand Weaviate's authorization schemes (RBAC, Admin List) to control user permissions.",
+    link: "/docs/deploy/config-guides/authorization",
+    icon: "fas fa-shield-alt",
   },
   {
     title: "Data persistence",
     description:
       "Configure volume mounts and settings for durable data storage on disk.",
-    link: "/docs/weaviate/configuration/persistence",
+    link: "/docs/deploy/config-guides/persistence",
     icon: "fas fa-hdd",
   },
   {
@@ -78,11 +94,11 @@ export const configOpsData = [
     title: "Replication",
     description:
       "Set up data replication across nodes for high availability and fault tolerance.",
-    link: "/docs/weaviate/configuration/replication",
+    link: "/docs/deploy/config-guides/replication",
     icon: "fas fa-copy",
   },
 ];
 
 <br />
-<CardsSection items={configOpsData} />
+<CardsSection items={deployConfigOpsData} />
 <br />
