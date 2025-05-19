@@ -84,6 +84,73 @@ const siteRedirects = {
         "/weaviate/current/schema/schema-configuration",
       ],
     },
+    // Deployment redirects- Installation
+    {
+      to: "/deploy/installation-guides/docker-installation",
+      from: "/weaviate/installation/docker-compose",
+    },
+    {
+      to: "/deploy/installation-guides/k8s-installation",
+      from: "/weaviate/installation/kubernetes",
+    },
+    {
+        to: "/deploy/installation-guides/aws-installation",
+        from: "/developers/weaviate/installation/aws-marketplace",
+    },
+    {
+        to: "/deploy/installation-guides/gcp-installation",
+        from: "/developers/weaviate/installation/gc-marketplace",
+    },
+    // Deployment redirects- Configuration
+    {
+      to: "/deploy/config-guides/configuring-rbac",
+      from: "/weaviate/configuration/rbac/configuration",
+    },
+    {
+      to: "/deploy/config-guides/backups",
+      from: "/weaviate/configuration/backups",
+    },
+    {
+      to: "/deploy/config-guides/authentication",
+      from: "/weaviate/configuration/authentication",
+    },
+    {
+      to: "/deploy/config-guides/authorization",
+      from: "/weaviate/configuration/authorization",
+    },
+    {
+      to: "/deploy/config-guides/persistence",
+      from: "/weaviate/configuration/persistence",
+    },
+    {
+      to: "/deploy/config-guides/monitoring",
+      from: "/weaviate/configuration/monitoring",
+    },    
+    {
+      to: "/deploy/config-guides/replication",
+      from: "/weaviate/configuration/replication",
+    },    
+    {
+      to: "/deploy/config-guides/nodes",
+      from: "/weaviate/config-refs/nodes",
+    },    
+    {
+      to: "/deploy/config-guides/meta",
+      from: "/weaviate/config-refs/meta",
+    },    
+    {
+      to: "/deploy/config-guides/oidc",
+      from: "/weaviate/config-refs/oidc",
+    },
+    {
+      to: "/deploy/config-guides/telemetry ",
+      from: "/weaviate/config-refs/telemetry",
+    },
+        {
+      to: "/deploy/config-guides/status",
+      from: "/weaviate/config-refs/status",
+    },
+
 
     // More-resources redirects
     {

@@ -424,7 +424,6 @@ const sidebars = {
             "weaviate/configuration/compression/sq-compression",
           ],
         },
-        "weaviate/configuration/tenant-offloading",
         "weaviate/configuration/modules",
         "weaviate/configuration/authentication",
         {
@@ -803,6 +802,11 @@ deployConfigSidebar: [
       {
         type: "doc",
         id: "deploy/config-guides/telemetry",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/tenant-offloading",
         className: "sidebar-item",
       },
       {
