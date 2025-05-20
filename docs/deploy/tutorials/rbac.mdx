@@ -28,38 +28,7 @@ In the steps that follow, we’ll cover:
 - **Step 3: Assigning roles to new users**  
   Apply these roles to a new user, limiting their access across different resources.
 
-```mermaid
-flowchart LR
-    %% Define nodes with white backgrounds and darker borders
-    A1["User with role management permissions"] --> B1["Define permissions"]
-    B1 --> B2["Assign permissions to new role"]
-    B2 --> C1["Assign role to a specific user"]
-
-    %% Group nodes in subgraphs with brand colors
-    subgraph sg1 ["1. Connect to Weaviate"]
-        A1
-    end
-
-    subgraph sg2 ["2. Create new role with custom permissions"]
-        B1
-        B2
-    end
-
-    subgraph sg3 ["3. Assign the role to a new user"]
-        C1
-    end
-
-    %% Style nodes with white background and darker borders
-    style A1 fill:#ffffff,stroke:#B9C8DF,color:#130C49
-    style B1 fill:#ffffff,stroke:#B9C8DF,color:#130C49
-    style B2 fill:#ffffff,stroke:#B9C8DF,color:#130C49
-    style C1 fill:#ffffff,stroke:#B9C8DF,color:#130C49
-
-    %% Style subgraphs with brand colors
-    style sg1 fill:#ffffff,stroke:#61BD73,stroke-width:2px,color:#130C49
-    style sg2 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
-    style sg3 fill:#ffffff,stroke:#7AD6EB,stroke-width:2px,color:#130C49
-```
+![RBAC Tutorial Diagram](./imgs/RBAC-tutorial-diagram.png)
 
 By the end of this guide, you’ll have a clear roadmap for implementing RBAC in your Weaviate deployment, adding an essential layer of security to your AI powered applications.
 
