@@ -13,29 +13,41 @@ Unlike development or testing environments, a production instance must be resili
 
 ## Key Aspects of a Production Environments
 
-- **Scalability and Performance**
-    - Production workloads demand high availability and low latency.
-    - Auto-scaling strategies and resource monitoring must be in place. 
-- **Data Resilience and Backups**
-    - Data must be safeguarded against corruption and loss. 
-    - Disaster recover strategies and automated backups must be implemented. 
-- **Security and Compliance**
-    - Data at rest and in transit should be encrypted. 
-    - liance best practices must be followed.  
-- **Monitoring and Observability**
-    - Logs and metrics must be collected for troubleshooting and optimization. 
-    - Monitoring tools should be used to track performance. 
-    - Alerting mechanisms must be set up to detect any anaomolies or failures. 
-- **Networking and Access Control**
-    - Privileges should be limited using RBAC (role-based access control). 
-    - Load balancing should be configured. 
+import CardsSection from "/src/components/CardsSection";
 
-### Weaviate Production Environments
-Weaviate has different options for deploying in a production environment using: 
+export const mainReferencesData = [
 
-- **Serverless Cloud**: A Serverless Cloud instance is a robust cluster designed for production use.
-- **Enterprise Cloud**: Enterprise Cloud is a fully-managed deployment of dedicated resources within a secure, highly available environment.
-- **Bring Your Own Cloud (BYOC)**: Using your own cloud environment, you are able to have a fully managed deployed.
+  {
+    title: "Scalability and performance",
+    description: "Production workloads demand high availability and low latency.",
+    link: "/docs/deploy/config-guides/horizontal-scaling",
+    icon: "fas fa-arrow-up-right-dots",
+  },
+    {
+    title: "Data resilience and backups",
+    description: "Data must be safeguarded against corruption and loss.",
+    link: "/docs/deploy/config-guides/persistence",
+    icon: "fas fa-floppy-disk",
+  },
+    {
+    title: "Monitoring and observability",
+    description: "Collect logs and metrics for troubleshooting and optimization .",
+    link: "/docs/deploy/config-guides/monitoring",
+    icon: "fas fa-chart-bar",
+  },
+    {
+    title: "Security and access management",
+    description: "Ensure that your deployment is following the principle of least privilege.",
+    link: "/docs/deploy/config-guides/authentication",
+    icon: "fas fa-shield-halved",
+  },
+
+]
+
+<br />
+<CardsSection items={mainReferencesData} />
+<br />
+
 
 ## Questions and feedback
 
