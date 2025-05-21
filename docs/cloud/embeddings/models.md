@@ -2,7 +2,7 @@
 title: Choose a model
 sidebar_label: Choose a model
 sidebar_position: 2
-image: og/wcs/user_guides.jpg
+image: og/wcd/user_guides.jpg
 ---
 
 On this page, you can find a list of pre-trained models designed specifically for enterprise retrieval tasks in English and other languages. Additional models and features will be added in the future, so please check back regularly for updates.
