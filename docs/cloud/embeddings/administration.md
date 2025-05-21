@@ -1,7 +1,7 @@
 ---
 title: Administration
 sidebar_position: 3
-image: og/wcs/user_guides.jpg
+image: og/wcd/user_guides.jpg
 ---
 
 import Link from '@docusaurus/Link';
