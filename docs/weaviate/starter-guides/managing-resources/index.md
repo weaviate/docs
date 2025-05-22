@@ -232,7 +232,7 @@ flowchart LR
 Consider a strategy of deactivating tenants that are not frequently accessed, and offloading tenants that are rarely accessed.
 
 - [Starter guide: tenant states](./tenant-states.mdx)
-- [How-to: Configure tenant offloading](../../configuration/tenant-offloading.md)
+- [How-to: Configure tenant offloading](docs/deploy/config-guides/tenant-offloading.md)
 - [How-to: Manage tenant states](../../manage-collections/tenant-states.mdx)
 
 ## Tips
