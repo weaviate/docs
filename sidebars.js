@@ -790,38 +790,46 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/config-guides/meta",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/monitoring",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/nodes",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/config-guides/persistence",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/telemetry",
           className: "sidebar-item",
         },
         {
           type: "doc",
           id: "deploy/config-guides/tenant-offloading",
           className: "sidebar-item",
+        },
+        {
+          type: "category",
+          label: "Cluster information",
+          className: "sidebar-item",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy/config-guides/meta",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/nodes",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/monitoring",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/status",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/telemetry",
+              className: "sidebar-item",
+            },
+          ],
         },
       ],
     },
@@ -834,6 +842,10 @@ const sidebars = {
       label: "Authorization and Authentication",
       className: "sidebar-main-category",
       collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/authz-authn",
+      },
       items: [
         {
           type: "doc",
@@ -847,12 +859,12 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/config-guides/oidc",
+          id: "deploy/config-guides/configuring-rbac",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/configuring-rbac",
+          id: "deploy/config-guides/oidc",
           className: "sidebar-item",
         },
       ],
