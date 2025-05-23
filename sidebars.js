@@ -686,7 +686,7 @@ const sidebars = {
       ],
     },
   ],
- othersSidebar: [
+  othersSidebar: [
     {
       type: "category",
       label: "Releases",
@@ -694,8 +694,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/release-notes/index",
       },
-      items: [
-      ],
+      items: [],
     },
     {
       type: "category",
@@ -731,132 +730,188 @@ const sidebars = {
   deploySidebar: [
     {
       type: "doc",
-      id: "deploy/index", // document ID
-      label: "Overview", // sidebar label
+      id: "deploy/index",
+      label: "Overview",
     },
     {
       type: "category",
       label: "Installation Guides",
-      collapsible: true,
-      collapsed: true,
+      className: "sidebar-main-category",
+      collapsible: false,
       items: [
-        "deploy/installation-guides/k8s-installation",
-        "deploy/installation-guides/docker-installation",
-        "deploy/installation-guides/gcp-installation",
-        "deploy/installation-guides/aws-installation",
-        "deploy/installation-guides/aws-cli",
+        {
+          type: "doc",
+          id: "deploy/installation-guides/k8s-installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/docker-installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/gcp-installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/aws-installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/aws-cli",
+          className: "sidebar-item",
+        },
       ],
     },
   ],
-deployConfigSidebar: [
-  {
-    type: "category",
-    label: "Configuration Guides",
-    className: "sidebar-main-category",
-    collapsible: false,
-    link: {
-      type: "doc",
-      id: "deploy/config-guides/index",
+  deployConfigSidebar: [
+    {
+      type: "category",
+      label: "Configuration Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/index",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "deploy/config-guides/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/horizontal-scaling",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/persistence",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/tenant-offloading",
+          className: "sidebar-item",
+        },
+        {
+          type: "category",
+          label: "Cluster information",
+          className: "sidebar-item",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy/config-guides/meta",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/nodes",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/monitoring",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/status",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/telemetry",
+              className: "sidebar-item",
+            },
+          ],
+        },
+      ],
     },
-    items: [
-      {
-        type: "doc",
-        id: "deploy/config-guides/backups",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/horizontal-scaling",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/meta",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/monitoring",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/nodes",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/persistence",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/replication",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/status",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/telemetry",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/tenant-offloading",
-        className: "sidebar-item",
-      },
-      {
+    {
       type: "html",
       value: "<hr class='sidebar-divider' />",
     },
-      {
-        type: "category",
-        label: "Authorization and Authentication",
-        className: "sidebar-item",
-        link: {
+    {
+      type: "category",
+      label: "Authorization and Authentication",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/authz-authn",
+      },
+      items: [
+        {
           type: "doc",
           id: "deploy/config-guides/authentication",
+          className: "sidebar-item",
         },
-        items: [
-          "deploy/config-guides/authentication",
-          "deploy/config-guides/authorization",
-          "deploy/config-guides/oidc",
-          "deploy/config-guides/configuring-rbac",
-        ],
-      },
-      {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-      },
-      {
-        type: "category",
-        label: "Replication",
-        className: "sidebar-item",
-        items: [
-          "deploy/config-guides/replication",
-          "deploy/config-guides/async-rep",
-        ],
-      },
-      {
+        {
+          type: "doc",
+          id: "deploy/config-guides/authorization",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/configuring-rbac",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/oidc",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "<hr class='sidebar-divider' />",
     },
-          {
-        type: "category",
-        label: "Environment Variables",
-        className: "sidebar-item",
-        items: [
-          "deploy/config-guides/env-vars/index",
-          "deploy/config-guides/env-vars/runtime-config",
-        ],
+    {
+      type: "category",
+      label: "Replication",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/replication",
       },
-    ],
-  },
-],
+      items: [
+        {
+          type: "doc",
+          id: "deploy/config-guides/async-rep",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Environment Variables",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/env-vars/index",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "deploy/config-guides/env-vars/runtime-config",
+          className: "sidebar-item",
+        },
+      ],
+    },
+  ],
   /*deployAwsSidebar: [
     {
       type: "autogenerated",
@@ -873,33 +928,31 @@ deployConfigSidebar: [
     {
       type: "autogenerated",
       dirName: "deploy/production",
-      
     },
   ],
-deployTutorialSidebar: [
-  {
-    type: "category",
-    label: "Tutorials",
-    className: "sidebar-main-category",
-    collapsible: false,
-    link: {
-      type: "doc",
-      id: "deploy/tutorials/rbac",
+  deployTutorialSidebar: [
+    {
+      type: "category",
+      label: "RBAC",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/tutorials/rbac",
+      },
+      items: [],
     },
-    items: [],
-  },
-], 
+  ],
   deployFaqsSidebar: [
     {
       type: "autogenerated",
       dirName: "deploy/faqs",
-      
     },
   ],
   deployMigrationSidebar: [
     {
       type: "autogenerated",
-      dirName: "deploy/migration"
+      dirName: "deploy/migration",
     },
   ],
   agentsSidebar: [
