@@ -747,110 +747,115 @@ const sidebars = {
       ],
     },
   ],
-  deployConfigSidebar: [
-    {
-      type: "category",
-      label: "Configuration Guides",
-      className: "sidebar-main-category",
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "deploy/config-guides/index",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "deploy/config-guides/backups",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/horizontal-scaling",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/meta",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/monitoring",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/nodes",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/persistence",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/status",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/telemetry",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/tenant-offloading",
-          className: "sidebar-item",
-        },
-        {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Authorization and Authentication",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "deploy/config-guides/authentication",
-          },
-          items: [
-            "deploy/config-guides/authentication",
-            "deploy/config-guides/authorization",
-            "deploy/config-guides/oidc",
-            "deploy/config-guides/configuring-rbac",
-          ],
-        },
-        {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Replication",
-          className: "sidebar-item",
-          items: [
-            "deploy/config-guides/replication",
-            "deploy/config-guides/async-rep",
-          ],
-        },
-        {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Environment Variables",
-          className: "sidebar-item",
-          items: [
-            "deploy/config-guides/env-vars/index",
-            "deploy/config-guides/env-vars/runtime-config",
-          ],
-        },
-      ],
+deployConfigSidebar: [
+  {
+    type: "category",
+    label: "Configuration Guides",
+    className: "sidebar-main-category",
+    collapsible: false,
+    link: {
+      type: "doc",
+      id: "deploy/config-guides/index",
     },
-  ],
+    items: [
+      {
+        type: "doc",
+        id: "deploy/config-guides/backups",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/horizontal-scaling",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/meta",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/monitoring",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/nodes",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/persistence",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/replication",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/status",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/telemetry",
+        className: "sidebar-item",
+      },
+      {
+        type: "doc",
+        id: "deploy/config-guides/tenant-offloading",
+        className: "sidebar-item",
+      },
+      {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+      {
+        type: "category",
+        label: "Authorization and Authentication",
+        className: "sidebar-item",
+        link: {
+          type: "doc",
+          id: "deploy/config-guides/authentication",
+        },
+        items: [
+          "deploy/config-guides/authentication",
+          "deploy/config-guides/authorization",
+          "deploy/config-guides/oidc",
+          "deploy/config-guides/configuring-rbac",
+        ],
+      },
+      {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+      },
+      {
+        type: "category",
+        label: "Replication",
+        className: "sidebar-item",
+        items: [
+          "deploy/config-guides/replication",
+          "deploy/config-guides/async-rep",
+        ],
+      },
+      {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+          {
+        type: "category",
+        label: "Environment Variables",
+        className: "sidebar-item",
+        items: [
+          "deploy/config-guides/env-vars/index",
+          "deploy/config-guides/env-vars/runtime-config",
+        ],
+      },
+    ],
+  },
+],
   /*deployAwsSidebar: [
     {
       type: "autogenerated",
