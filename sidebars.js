@@ -767,87 +767,108 @@ const sidebars = {
       ],
     },
   ],
-deployConfigSidebar: [
-  {
-    type: "category",
-    label: "Configuration Guides",
-    className: "sidebar-main-category",
-    collapsible: false,
-    link: {
-      type: "doc",
-      id: "deploy/config-guides/index",
+  deployConfigSidebar: [
+    {
+      type: "category",
+      label: "Configuration Guides",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/index",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "deploy/config-guides/backups",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/horizontal-scaling",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/persistence",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/tenant-offloading",
+          className: "sidebar-item",
+        },
+        {
+          type: "category",
+          label: "Cluster information",
+          className: "sidebar-item",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy/config-guides/meta",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/nodes",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/monitoring",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/status",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/telemetry",
+              className: "sidebar-item",
+            },
+          ],
+        },
+      ],
     },
-    items: [
-      {
-        type: "doc",
-        id: "deploy/config-guides/backups",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/horizontal-scaling",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/meta",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/monitoring",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/nodes",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/persistence",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/replication",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/status",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/telemetry",
-        className: "sidebar-item",
-      },
-      {
-        type: "doc",
-        id: "deploy/config-guides/tenant-offloading",
-        className: "sidebar-item",
-      },
-      {
+    {
       type: "html",
       value: "<hr class='sidebar-divider' />",
     },
-      {
-        type: "category",
-        label: "Authorization and Authentication",
-        className: "sidebar-item",
-        link: {
+    {
+      type: "category",
+      label: "Authorization and Authentication",
+      className: "sidebar-main-category",
+      collapsible: false,
+      link: {
+        type: "doc",
+        id: "deploy/config-guides/authz-authn",
+      },
+      items: [
+        {
           type: "doc",
           id: "deploy/config-guides/authentication",
         },
-        items: [
-          "deploy/config-guides/authentication",
-          "deploy/config-guides/authorization",
-          "deploy/config-guides/oidc",
-          "deploy/config-guides/configuring-rbac",
-        ],
-      },
-      {
+        {
+          type: "doc",
+          id: "deploy/config-guides/authorization",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/configuring-rbac",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/oidc",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "<hr class='sidebar-divider' />",
       },
