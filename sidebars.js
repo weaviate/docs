@@ -764,61 +764,43 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "category",
-          label: "Cluster information",
-          className: "sidebar-item",
-          items: [
-            {
-              type: "doc",
-              id: "deploy/config-guides/meta",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/nodes",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/monitoring",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/status",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/telemetry",
-              className: "sidebar-item",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Environment Variables",
-          className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "deploy/config-guides/env-vars/index",
-          },
-          items: [
-            {
-              type: "doc",
-              id: "deploy/config-guides/env-vars/runtime-config",
-              className: "sidebar-item",
-            },
-          ],
-        },
-        {
           type: "doc",
           id: "deploy/config-guides/horizontal-scaling",
           className: "sidebar-item",
         },
         {
           type: "doc",
+          id: "deploy/config-guides/meta",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/monitoring",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/nodes",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "deploy/config-guides/persistence",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/replication",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/status",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/telemetry",
           className: "sidebar-item",
         },
         {
@@ -833,33 +815,16 @@ const sidebars = {
         {
           type: "category",
           label: "Authorization and Authentication",
-          className: "sidebar-main-category",
-          collapsible: false,
+          className: "sidebar-item",
           link: {
             type: "doc",
-            id: "deploy/config-guides/authz-authn",
+            id: "deploy/config-guides/authentication",
           },
           items: [
-            {
-              type: "doc",
-              id: "deploy/config-guides/authentication",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/authorization",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/configuring-rbac",
-              className: "sidebar-item",
-            },
-            {
-              type: "doc",
-              id: "deploy/config-guides/oidc",
-              className: "sidebar-item",
-            },
+            "deploy/config-guides/authentication",
+            "deploy/config-guides/authorization",
+            "deploy/config-guides/oidc",
+            "deploy/config-guides/configuring-rbac",
           ],
         },
         {
@@ -869,18 +834,23 @@ const sidebars = {
         {
           type: "category",
           label: "Replication",
-          className: "sidebar-main-category",
-          collapsible: false,
-          link: {
-            type: "doc",
-            id: "deploy/config-guides/replication",
-          },
+          className: "sidebar-item",
           items: [
-            {
-              type: "doc",
-              id: "deploy/config-guides/async-rep",
-              className: "sidebar-item",
-            },
+            "deploy/config-guides/replication",
+            "deploy/config-guides/async-rep",
+          ],
+        },
+        {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "category",
+          label: "Environment Variables",
+          className: "sidebar-item",
+          items: [
+            "deploy/config-guides/env-vars/index",
+            "deploy/config-guides/env-vars/runtime-config",
           ],
         },
       ],
