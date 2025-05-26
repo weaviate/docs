@@ -41,7 +41,7 @@ The following models are available for use with Weaviate Embeddings:
 ## Authentication
 
 In order to use Weaviate Embeddings you only need a [connection to your Weaviate Cloud cluster](/docs/cloud/manage-clusters/connect). 
-No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/docs/weaviate/client-libraries) or, for example, via [OIDC](/docs/weaviate/configuration/authentication#oidc).
+No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/docs/weaviate/client-libraries) or, for example, via [OIDC](/docs/weaviate/configuration/authz-authn#oidc).
 
 ## Usage limits
 

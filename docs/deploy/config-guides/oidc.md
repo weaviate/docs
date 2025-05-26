@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 # tags: ['metadata', 'reference', 'configuration']
 ---
 
-If [OpenID Connect (OIDC)](/docs/weaviate/configuration/authentication.md) authentication is enabled, its details will be available through the `/v1/.well-known/openid-configuration` endpoint.
+If [OpenID Connect (OIDC)](./authentication.md) authentication is enabled, its details will be available through the `/v1/.well-known/openid-configuration` endpoint.
 
 If a token is configured, the endpoint redirects to it.
 
