@@ -790,11 +790,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/config-guides/replication",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/config-guides/status",
           className: "sidebar-item",
         },
