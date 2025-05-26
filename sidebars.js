@@ -750,7 +750,7 @@ const sidebars = {
   deployConfigSidebar: [
     {
       type: "category",
-      label: "Configuration Guides",
+      label: "Configuration",
       className: "sidebar-main-category",
       collapsible: false,
       link: {
