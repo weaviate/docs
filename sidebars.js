@@ -426,6 +426,7 @@ const sidebars = {
         },
         "weaviate/configuration/modules",
         "weaviate/configuration/authz-authn",
+        "weaviate/configuration/authz-authn",
         {
           type: "category",
           label: "RBAC",
@@ -736,34 +737,14 @@ const sidebars = {
     {
       type: "category",
       label: "Installation Guides",
-      className: "sidebar-main-category",
-      collapsible: false,
+      collapsible: true,
+      collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "deploy/installation-guides/k8s-installation",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/docker-installation",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/gcp-installation",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/aws-installation",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/aws-cli",
-          className: "sidebar-item",
-        },
+        "deploy/installation-guides/k8s-installation",
+        "deploy/installation-guides/docker-installation",
+        "deploy/installation-guides/gcp-installation",
+        "deploy/installation-guides/aws-installation",
+        "deploy/installation-guides/aws-cli",
       ],
     },
   ],
@@ -784,25 +765,9 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "deploy/config-guides/horizontal-scaling",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/persistence",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/tenant-offloading",
-          className: "sidebar-item",
-        },
-        {
           type: "category",
           label: "Cluster information",
           className: "sidebar-item",
-          collapsed: true,
           items: [
             {
               type: "doc",
@@ -831,72 +796,97 @@ const sidebars = {
             },
           ],
         },
+        {
+          type: "category",
+          label: "Environment Variables",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "deploy/config-guides/env-vars/index",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "deploy/config-guides/env-vars/runtime-config",
+              className: "sidebar-item",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/horizontal-scaling",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/persistence",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/config-guides/tenant-offloading",
+          className: "sidebar-item",
+        },
+        {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "category",
+          label: "Authorization and Authentication",
+          className: "sidebar-main-category",
+          collapsible: false,
+          link: {
+            type: "doc",
+            id: "deploy/config-guides/authz-authn",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "deploy/config-guides/authentication",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/authorization",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/configuring-rbac",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "deploy/config-guides/oidc",
+              className: "sidebar-item",
+            },
+          ],
+        },
+        {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "category",
+          label: "Replication",
+          className: "sidebar-main-category",
+          collapsible: false,
+          link: {
+            type: "doc",
+            id: "deploy/config-guides/replication",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "deploy/config-guides/async-rep",
+              className: "sidebar-item",
+            },
+          ],
+        },
       ],
     },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-    {
-      type: "category",
-      label: "Authorization and Authentication",
-      className: "sidebar-main-category",
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "deploy/config-guides/authz-authn",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "deploy/config-guides/authentication",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/authorization",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/configuring-rbac",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/oidc",
-          className: "sidebar-item",
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-      },
-      {
-        type: "category",
-        label: "Replication",
-        className: "sidebar-item",
-        items: [
-          "deploy/config-guides/replication",
-          "deploy/config-guides/async-rep",
-        ],
-      },
-      {
-      type: "html",
-      value: "<hr class='sidebar-divider' />",
-    },
-          {
-        type: "category",
-        label: "Environment Variables",
-        className: "sidebar-item",
-        items: [
-          "deploy/config-guides/env-vars/index",
-          "deploy/config-guides/env-vars/runtime-config",
-        ],
-      },
-    ],
-  },
-],
+  ],
   /*deployAwsSidebar: [
     {
       type: "autogenerated",
