@@ -64,7 +64,7 @@ const secondaryNavbarItems = {
     link: "/docs/deploy",
     links: [
       { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
-      { label: "Configuration Guides", link: "/docs/deploy/config-guides", sidebar: "deployConfigSidebar"},
+      { label: "Configuration", link: "/docs/deploy/config-guides", sidebar: "deployConfigSidebar"},
       /*{ label: "Kubernetes", link: "/docs/deploy/k8s", sidebar: "deployK8sSidebar" },*/
       { label: "Production Guides", link: "/docs/deploy/production", sidebar: "deployProductionSidebar"},
       { label: "Tutorials", link: "/docs/deploy/tutorials/rbac", sidebar: "deployTutorialSidebar"},
