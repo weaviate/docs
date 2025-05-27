@@ -1,6 +1,7 @@
 ---
 title: Backups
 image: og/docs/configuration.jpg
+# tags: ['configuration', 'backups']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
@@ -61,6 +62,15 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
     />
   </TabItem>
 
+  <TabItem value="pyv3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateBackup"
+      endMarker="# END CreateBackup"
+      language="pyv3"
+    />
+  </TabItem>
+
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeBackup}
@@ -110,7 +120,6 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
 That's all there is to getting started with backups in Weaviate. The backup will be stored in the specified location on the local filesystem.
 
 You can also:
-
 - [Restore the backup](#restore-backup) to a Weaviate instance
 - [Check the status](#asynchronous-status-checking) of the backup (if you did not wait for completion)
 - [Cancel the backup](#cancel-backup) if needed
@@ -337,6 +346,15 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
     />
   </TabItem>
 
+  <TabItem value="pyv3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START CreateBackup"
+      endMarker="# END CreateBackup"
+      language="pyv3"
+    />
+  </TabItem>
+
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeBackup}
@@ -415,6 +433,14 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       startMarker="# START StatusCreateBackup"
       endMarker="# END StatusCreateBackup"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="pyv3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START StatusCreateBackup"
+      endMarker="# END StatusCreateBackup"
+      language="pyv3"
     />
   </TabItem>
 
@@ -518,6 +544,14 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       language="py"
     />
   </TabItem>
+  <TabItem value="pyv3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START RestoreBackup"
+      endMarker="# END RestoreBackup"
+      language="pyv3"
+    />
+  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -583,6 +617,15 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       language="py"
     />
   </TabItem>
+  <TabItem value="pyv3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START StatusRestoreBackup"
+      endMarker="# END StatusRestoreBackup"
+      language="pyv3"
+    />
+  </TabItem>
+
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeStatus}
