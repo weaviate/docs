@@ -55,7 +55,7 @@ image: og/docs/more-resources.jpg
 
 </details>
 
-#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate Database lost?
+#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate database lost?
 
 <details>
   <summary>Answer</summary>
@@ -557,7 +557,16 @@ docker compose up
 
 </details>
 
-## More questions?
+#### Q: Can I run Weaviate on Windows?
+
+<details>
+  <summary>Answer</summary>
+
+Weaviate can be used on Windows via containerized environments like [Docker](/docs/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/), 
+
+Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](../installation/embedded.md) should be avoided.
+
+</details>
 
 ## Questions and feedback
 
