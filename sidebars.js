@@ -1059,6 +1059,7 @@ const sidebars = {
       type: "category",
       label: "Tools",
       items: [
+        "cloud/tools/import-tool",
         "cloud/tools/collections-tool",
         "cloud/tools/explorer-tool",
         "cloud/tools/query-tool",
