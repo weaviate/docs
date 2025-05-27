@@ -60,6 +60,7 @@ In summary, Weaviate allows the following authentication methods:
 - API key
 - OpenID Connect (OIDC)
 - Anonymous access (no authentication, strongly discouraged except for development or evaluation)
+- Anonymous access (no authentication, strongly discouraged except for development or evaluation)
 
 Note that API key and OIDC authentication can be both enabled at the same time.
 
@@ -74,8 +75,9 @@ For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC a
 API key authentication is a simple and effective way to authenticate users. Each user is assigned a unique API key, which is used to authenticate the user.
 
 ### API keys: Database users
+### API keys: Database users
 
-When [creating database users programmatically](/docs/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/docs/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key). 
+When [creating database users programmatically](./rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](./rbac/manage-users.mdx#rotate-user-api-key). 
 
 ### API keys: Docker
 
@@ -107,6 +109,20 @@ This configuration:
 - Associates users with the API keys in `AUTHENTICATION_APIKEY_USERS`
 
 These users can now be assigned permissions based on the authorization settings.
+
+import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
+
+<DynamicUserManagement />
+
+:::note
+
+Note that you can either:
+- Set one user for all API keys, or
+- Define one user per API key (the number of users must match the number of API keys)
+
+Make sure all listed users are also configured in the authorization settings.
+
+:::
 
 import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
 
@@ -188,7 +204,7 @@ correct, all contents of the token are trusted, which authenticates the user bas
 
 :::tip TIP: OIDC and RBAC
 
-The [user management API](/docs/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](/docs/weaviate/configuration/rbac/index.mdx).
+The [user management API](/docs/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](./rbac/index.mdx).
 
 :::
 
