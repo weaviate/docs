@@ -136,7 +136,7 @@ The resulting search list has these characteristics.
 - A maximum length of 25 objects ("dynamicEfMax": 25).
 - An actual size of 5 to 25 objects.
 
-If you use the [`docker-compose.yml` file from Weaviate](docs/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
+If you use the [`docker-compose.yml` file from Weaviate](/docs/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
 To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you configure your Weaviate instance.
 

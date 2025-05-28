@@ -1,7 +1,7 @@
 ---
 title: Generative AI
 sidebar_position: 51
-# image: og/docs/integrations/provider_integrations_xai.jpg
+image: og/docs/integrations/provider_integrations_xai.jpg
 # tags: ['model providers', 'xAI', 'generative', 'rag']
 ---
 

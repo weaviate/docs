@@ -1,7 +1,7 @@
 ---
 title: xAI + Weaviate
 sidebar_position: 10
-# image: og/docs/integrations/provider_integrations_xai.jpg
+image: og/docs/integrations/provider_integrations_xai.jpg
 # tags: ['model providers', 'xAI']
 ---
 

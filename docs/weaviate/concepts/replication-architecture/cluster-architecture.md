@@ -14,7 +14,7 @@ In Weaviate, metadata replication and data replication are separate. For the met
 
 By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
 
-Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
+Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](/docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
 
 <details>
   <summary>FQDN for node discovery</summary>
@@ -25,7 +25,7 @@ This was an experimental feature. Use with caution.
 
 :::
 
-There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](docs/deploy/config-guides/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
+There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](/docs/deploy/config-guides/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
 
 If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
 
@@ -90,7 +90,6 @@ The replication factor (RF or n) determines how many copies of data are stored i
 A replication factor of 3 is commonly used, since this provides a right balance between performance and fault tolerance. An odd number of nodes is generally preferred, as it makes it easier to resolve conflicts. In a 3-node setup, a quorum can be reached with 2 nodes. Therefore the fault tolerance is 1 node. In a 2-node setup, on the other hand, no node failures can be tolerated while still reaching consensus across nodes. In a 4-node setup, respectively, 3 nodes would be required to reach a consensus. Thus, a 3-node setup has a better fault-tolerance to cost ratio than either a 2-node or 4-node setup.
 
 <p align="center"><img src="/docs/img/docs/replication-architecture/replication-factor.png" alt="Replication Factor" width="75%"/></p>
-
 
 ## Write operations
 
