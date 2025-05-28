@@ -73,7 +73,7 @@ finally:
 # =========================
 # 2. COLLECTION MANAGEMENT
 # =========================
-# For more information, see the How-to Manage Collections page: https://weaviate.io/developers/weaviate/manage-collections
+# For more information, see the How-to Manage Collections page: https://weaviate.io/developers/weaviate/manage-data/collections
 
 """
 Creating, configuring, and managing collections
@@ -278,16 +278,16 @@ author_collection.data.reference_add(
 # ========================
 # 4. BATCH OPERATIONS
 # ========================
-# For more information, see the How-to batch import data page: https://weaviate.io/developers/weaviate/manage-objects/import
+# For more information, see the How-to batch import data page: https://weaviate.io/developers/weaviate/manage-data/import
 # And the Python Client library page: https://weaviate.io/developers/weaviate/client-libraries/python#batch-imports
 
 """
 Batch import for better performance
 """
 
-# Dynamic batch (adapts to Weaviate load)
+# Fixed size batch (Recommended option)
 collection = client.collections.get("Article")
-with collection.batch.dynamic() as batch:
+with collection.batch.fixed_size(batch_size=50) as batch:
     for i in range(100):
         batch.add_object(
             properties={
@@ -296,8 +296,8 @@ with collection.batch.dynamic() as batch:
             }
         )
 
-# Fixed size batch
-with collection.batch.fixed_size(batch_size=50) as batch:
+# Dynamic batch (adapts to Weaviate load)
+with collection.batch.dynamic() as batch:
     for i in range(100):
         batch.add_object(
             properties={
@@ -317,7 +317,7 @@ with collection.batch.rate_limit(requests_per_minute=600) as batch:
         )
 
 # Batch with error handling
-with collection.batch.dynamic() as batch:
+with collection.batch.fixed_size(batch_size=50) as batch:
     for i in range(100):
         batch.add_object(
             properties={
@@ -529,8 +529,8 @@ for obj in response.objects:
 # =================================
 # 7. MULTI-TENANCY OPERATIONS
 # =================================
-# For more information, see the How-to multi-tenancy page: https://weaviate.io/developers/weaviate/manage-collections/multi-tenancy
-# And the manage tenant data and temperatures page: https://weaviate.io/developers/weaviate/manage-collections/tenant-states
+# For more information, see the How-to multi-tenancy page: https://weaviate.io/developers/weaviate/manage-data/multi-tenancy
+# And the manage tenant data and temperatures page: https://weaviate.io/developers/weaviate/manage-data/tenant-states
 
 """
 Working with multi-tenant collections
