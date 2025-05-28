@@ -737,7 +737,7 @@ const sidebars = {
       type: "category",
       label: "Installation Guides",
       collapsible: true,
-      collapsed: true,
+      collapsed: false,
       items: [
         "deploy/installation-guides/k8s-installation",
         "deploy/installation-guides/docker-installation",
@@ -770,17 +770,7 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/config-guides/meta",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "deploy/config-guides/monitoring",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/config-guides/nodes",
           className: "sidebar-item",
         },
         {
@@ -809,12 +799,8 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Authorization and Authentication",
+          label: "Authorization and authentication",
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "deploy/config-guides/authentication",
-          },
           items: [
             "deploy/config-guides/authentication",
             "deploy/config-guides/authorization",
@@ -841,11 +827,24 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Environment Variables",
+          label: "Environment variables",
           className: "sidebar-item",
           items: [
             "deploy/config-guides/env-vars/index",
             "deploy/config-guides/env-vars/runtime-config",
+          ],
+        },
+        {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "category",
+          label: "Cluster information",
+          className: "sidebar-item",
+          items: [
+            "deploy/config-guides/meta",
+            "deploy/config-guides/nodes",
           ],
         },
       ],
