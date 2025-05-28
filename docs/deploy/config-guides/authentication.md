@@ -75,7 +75,7 @@ API key authentication is a simple and effective way to authenticate users. Each
 
 ### API keys: Database users
 
-When [creating database users programmatically](./rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](./rbac/manage-users.mdx#rotate-user-api-key). 
+When [creating database users programmatically](/docs/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/docs/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key). 
 
 ### API keys: Docker
 
@@ -188,7 +188,7 @@ correct, all contents of the token are trusted, which authenticates the user bas
 
 :::tip TIP: OIDC and RBAC
 
-The [user management API](/docs/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](./rbac/index.mdx).
+The [user management API](/docs/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](/docs/weaviate/configuration/rbac/index.mdx).
 
 :::
 

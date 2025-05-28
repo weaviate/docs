@@ -32,7 +32,6 @@ import APITable from '@site/src/components/APITable';
 | --- | --- | --- | --- |
 | `ASYNC_INDEXING` | (Experimental, added in `v1.22`.) <br/><br/>If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
-| `RAFT_ENABLE_ONE_NODE_RECOVERY` | Enable running the single node recovery routine on restart. This is useful if the default hostname has changed and a single node cluster believes there are supposed to be two nodes. | `boolean` | `false` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - will be overridden by any class-level value defined in the schema | `string` | `text2vec-contextionary` |
 | `DISABLE_LAZY_LOAD_SHARDS` | New in v1.23. When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. | `string` | `false` |
 | `DISABLE_TELEMETRY` | Disable [telemetry](docs/deploy/config-guides/telemetry.md) data collection | boolean | `false` |
@@ -69,7 +68,7 @@ import APITable from '@site/src/components/APITable';
 | `QUERY_MAXIMUM_RESULTS` | Sets the maximum total number of objects that can be retrieved. | `string - number` | `10000` |
 | `QUERY_SLOW_LOG_ENABLED` | Log slow queries for debugging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `boolean` | `False` |
 | `QUERY_SLOW_LOG_THRESHOLD` | Set a threshold time for slow query logging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `string` | `2s` <br/> Values are times: `3h`, `2s`, `100ms` |
-| `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to [use Roaring Bitmaps](docs/weaviate/concepts/filtering.md#indexFilterable). <br/><br/
+| `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to [use Roaring Bitmaps](/docs/weaviate/concepts/filtering.md#migration-to-indexFilterable). <br/><br/>Available in versions `1.18` and higher. | `boolean` | `true` |
 | `TOKENIZER_CONCURRENCY_COUNT` | Limit the combined number of GSE and Kagome tokenizers running at the same time. Default: `GOMAXPROCS` | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `TOMBSTONE_DELETION_CONCURRENCY` | The maximum number of cores to use for tombstone deletion. Set this to limit the number of cores used for cleanup. Default: Half of the available cores. (New in `v1.24.0`) | `string - int` | `4` |
 | `TOMBSTONE_DELETION_MAX_PER_CYCLE` | Maximum number of tombstones to delete per cleanup cycle. Set this to limit cleanup cycles, as they are resource-intensive. As an example, set a maximum of 10000000 (10M) for a cluster with 300 million-object shards. Default: none | `string - int` (New in `v1.24.15` / `v1.25.2`) | `10000000` |
@@ -174,28 +173,36 @@ For more information on authentication and authorization, see the [Authenticatio
 | `CLUSTER_HOSTNAME` | Hostname of a node. Always set this value if the default OS hostname might change over time. | `string` | `node1` |
 | `CLUSTER_JOIN` | The service name of the "founding" member node in a cluster setup | `string` | `weaviate-node-1:7100` |
 | `HNSW_STARTUP_WAIT_FOR_VECTOR_CACHE` | If `true`, vector cache prefill is synchronous when a node starts. The node reports ready to serve when the cache is hot. Defaults to `false`. Added in 1.24.20 and 1.25.5. | `boolean` | `false` |
-| `COLLECTION_RETRIEVAL_STRATEGY`| Set collection definition retrieval behavior for a data request. <br/><br/> <ul><li>`LeaderOnly` (default): Always requests the definition from the leader node. </li><li>`LocalOnly`: Always use the local definition</li><li>`LeaderOnMismatch`: Requests the definition if outdated.</li></ul> ([Read more](../../concepts/replication-architecture/consistency.md#collection-definition-requests-in-queries)) (Added in `v1.27.10`, `v1.28.4`) | `string` | `LeaderOnly` |
+| `COLLECTION_RETRIEVAL_STRATEGY`| Set collection definition retrieval behavior for a data request. <br/><br/> <ul><li>`LeaderOnly` (default): Always requests the definition from the leader node. </li><li>`LocalOnly`: Always use the local definition</li><li>`LeaderOnMismatch`: Requests the definition if outdated.</li></ul> ([Read more](/docs/weaviate/concepts/replication-architecture/consistency.md#collection-definition-requests-in-queries)) (Added in `v1.27.10`, `v1.28.4`) | `string` | `LeaderOnly` |
 | `RAFT_BOOTSTRAP_EXPECT` | The number of voter notes at bootstrapping time | `string - number` | `1` |
 | `RAFT_BOOTSTRAP_TIMEOUT` | The time in seconds to wait for the cluster to bootstrap | `string - number` | `90` |
-| `RAFT_ENABLE_FQDN_RESOLVER` | If `true`, use DNS lookup instead of memberlist lookup for Raft. Added in `v1.25.15` and removed in `v1.30`. ([Read more](../../concepts/cluster.md#fqdn-for-node-discovery)) | `boolean` | `true` |
+| `RAFT_ENABLE_FQDN_RESOLVER` | If `true`, use DNS lookup instead of memberlist lookup for Raft. Added in `v1.25.15` and removed in `v1.30`. ([Read more](/docs/weaviate/concepts/cluster.md#node-discovery)) | `boolean` | `true` |
 | `RAFT_ENABLE_ONE_NODE_RECOVERY` | Enable running the single node recovery routine on restart. This is useful if the default hostname has changed and a single node cluster believes there are supposed to be two nodes. | `boolean` | `false` |
-| `RAFT_FQDN_RESOLVER_TLD` | The top-level domain to use for DNS lookup, in `[node-id].[tld]` format. Added in `v1.25.15` and removed in `v1.30`. ([Read more](../../concepts/cluster.md#fqdn-for-node-discovery)) | `string` | `example.com` |
+| `RAFT_FQDN_RESOLVER_TLD` | The top-level domain to use for DNS lookup, in `[node-id].[tld]` format. Added in `v1.25.15` and removed in `v1.30`. ([Read more](/docs/weaviate/concepts/cluster.md#node-discovery)) | `string` | `example.com` |
 | `RAFT_GRPC_MESSAGE_MAX_SIZE` | The maximum internal raft gRPC message size in bytes. Defaults to 1073741824 | `string - number` | `1073741824` |
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
 
+```mdx-code-block
+</APITable>
+```
+
 ### Async replication
 
 :::info Added in `v1.29`
 The environment variables for configuring async replication have been introduced in `v1.29`.
-To learn more about their usage, visit the **[replication how-to guide](/developers/weaviate/configuration/replication#async-replication-settings)**.
+To learn more about their usage, visit the **[replication how-to guide](/docs/deploy/config-guides/replication#async-replication-settings)**.
 :::
+
+```mdx-code-block
+<APITable>
+```
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
 | `ASYNC_REPLICATION_DISABLED` | Disable async replication. Default: `false` | `boolean` | `false` |
-| `ASYNC_REPLICATION_HASHTREE_HEIGHT` | Height of the hash tree used for data comparison between nodes. If the height is `0` each node will store just one digest per shard. Default: `16`, Min: `0`, Max: `20`<br/> [Read more about potentially increased memory consumption.](/developers/weaviate/concepts/replication-architecture/consistency#memory-and-performance-considerations-for-async-replication) | `string - number` | `10` |
+| `ASYNC_REPLICATION_HASHTREE_HEIGHT` | Height of the hash tree used for data comparison between nodes. If the height is `0` each node will store just one digest per shard. Default: `16`, Min: `0`, Max: `20`<br/> [Read more about potentially increased memory consumption.](/docs/weaviate/concepts/replication-architecture/consistency#memory-and-performance-considerations-for-async-replication) | `string - number` | `10` |
 | `ASYNC_REPLICATION_FREQUENCY` |  Frequency of periodic data comparison between nodes in seconds. Default: `30` | `string - number` | `60` |
 | `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING` | Frequency of data comparison between nodes after a node has been synced in milliseconds. Default: `10` | `string - number` | `20` |
 | `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY` | Frequency of how often the background process checks for changes in the availability of nodes in seconds. Default: `5` | `string - number` | `20` |
@@ -208,6 +215,9 @@ To learn more about their usage, visit the **[replication how-to guide](/develop
 | `ASYNC_REPLICATION_PROPAGATION_CONCURRENCY` | Defines the number of workers which will concurrently propagate a batch of objects. Default: `5`, Min: `1`, Max: `20` | `string - number` | `10` |
 | `ASYNC_REPLICATION_PROPAGATION_BATCH_SIZE` | Sets the maximum number of objects to propagate in a single batch. Default: `100`, Min: `1`, Max: `1000` |`string - number`  | `200` |
 
+```mdx-code-block
+</APITable>
+```
 <!-- Docs notes:
 Undocumented environment variables - for internal use only:
 MAINTENANCE_NODES
