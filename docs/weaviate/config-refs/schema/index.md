@@ -3,8 +3,8 @@ title: Collection definition
 description: Schema Configuration in Weaviate
 sidebar_position: 10
 image: og/docs/configuration.jpg
-# tags: ['Data types']
 ---
+
 import SkipLink from '/src/components/SkipValidationLink'
 
 ## Introduction
@@ -99,7 +99,7 @@ import CollectionMutableParameters from '/_includes/collection-mutable-parameter
 
 </details>
 
-After you create a collection, you can add new properties. You cannot modify existing properties after you create the collection. You can also [add new named vectors](#adding-a-named-vector-after-collection-creation).
+After you create a collection, you can add new properties. You cannot modify existing properties after you create the collection.
 
 ### Auto-schema
 
@@ -133,13 +133,7 @@ The following are not allowed:
 * Any map type is forbidden, unless it clearly matches one of the two supported types `phoneNumber` or `geoCoordinates`.
 * Any array type is forbidden, unless it is clearly a reference-type. In this case, Weaviate needs to resolve the beacon and see what collection the resolved beacon is from, since it needs the collection name to be able to alter the schema.
 
-### Single vector collections
-
-If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a *single vector* collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
-
-To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](#configure-semantic-indexing) section.
-
-### Multiple vector embeddings (named vectors) {#named-vectors}
+### Multiple vector embeddings (named vectors)
 
 import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
@@ -157,28 +151,9 @@ To avoid this, you can either:
 
 We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
 
-### Adding a named vector after collection creation
-
-:::info Added in `v1.31`
-:::
-
-A named vector can be added to an existing collection definition after collection creation. This allows you to add new vector representations for objects without having to delete and recreate the collection.
-
-When you add a new named vector to an existing collection definition, it's important to understand that **existing objects' new named vector will remain unpopulated**. Only objects created or updated after the named vector addition will receive these new vector embeddings.
-
-This prevents any unintended side effects, such as incurring large vectorization time or costs for all existing objects in a collection.
-
-If you want to populate the new named vector for existing objects, update the object with the existing object UUID and vectors. This will trigger the vectorization process for the new named vector.
-
-<!-- TODO: I wonder we should show an example - maybe once the vectorizer syntax is updated with 1.32 -->
-
-:::caution Not available for legacy (unnamed) vectorizers
-The ability to add a named vector after collection creation is only available for collections configured with named vectors.
-:::
-
 ### Collections count limit {#collections-count-limit}
 
-:::info Added in `v1.30`
+:::info Added in **`v1.30`**
 :::
 
 To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
@@ -186,13 +161,13 @@ To ensure optimal performance, Weaviate **limits the number of collections per n
 - **Default limit**: `1000` collections.
 - **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](docs/deploy/config-guides/env-vars/index.md) environment variable to adjust the collection count limit.
 
-:::note
+:::note 
 If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
 :::
 
 :::tip
-**Instead of raising the collections count limit, consider rethinking your architecture**.
-For more details, see [Starter Guides: Scaling limits with collections](../../starter-guides/managing-collections/collections-scaling-limits.mdx).
+**Instead of raising the collections count limit, consider rethinking your architecture**.  
+For more details, see [Starter Guides: Scaling limits with collections](../../starter-guides/managing-collections/collections-scaling-limits.mdx). 
 :::
 
 ## Available parameters
