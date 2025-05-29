@@ -18,11 +18,7 @@ Compression techniques become especially crucial for multi-vector systems to man
 
 **MUVERA**, which stands for _Multi-Vector Retrieval via Fixed Dimensional Encodings_, tackles the higher memory usage and slower processing times of multi-vector embeddings by encoding them into single, fixed-dimensional vectors. This leads to reduced memory usage compared to traditional multi-vector approaches.
 
-<<<<<<< Updated upstream
 <!-- TODO[g-despot]: Add link to blog post: Read more about it in this blog post. -->
-=======
-<!-- TODO[g-despot]: Add link to blog post: Read more about it in this MUVERA blog post. -->
->>>>>>> Stashed changes
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
