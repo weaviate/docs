@@ -316,7 +316,7 @@ This example uses a small search result set to compare the ranked fusion and rel
 
 The ranking algorithms use these scores to derive the hybrid ranking.
 
-#### Ranked Fusion
+#### Ranked fusion
 
 The score depends on the rank of the result. The score is equal to `1/(RANK + 60)`:
 
@@ -337,7 +337,7 @@ The score depends on the rank of the result. The score is equal to `1/(RANK + 60
 
 As you can see, the results of each rank is identical, regardless of the input score.
 
-#### Relative Score Fusion
+#### Relative score fusion
 
 Here, we normalize the scores – the largest score is set to 1 and the lowest to 0, and all entries in-between are scaled according to their **relative distance** to the **maximum** and **minimum values**.
 
