@@ -107,7 +107,7 @@ Weaviate offers two fusion methods to combine vector and keyword search results:
    - Assigns scores based on the rank of each object in vector and keyword results.
    - Combines rank-based scores to produce final ordering.
 
-### Alpha Parameter
+### Alpha parameter
 
 The alpha parameter controls the balance between vector and keyword search in hybrid searches:
 
