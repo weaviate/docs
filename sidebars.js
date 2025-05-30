@@ -735,7 +735,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Installation Guides",
+      label: "Installation",
       collapsible: true,
       collapsed: false,
       items: [
