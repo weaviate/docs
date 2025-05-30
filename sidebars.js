@@ -729,17 +729,16 @@ const sidebars = {
   ],
   deploySidebar: [
     {
-      type: "doc",
-      id: "deploy/index",
-      label: "Overview",
-    },
-    {
       type: "category",
       label: "Installation",
-      collapsible: true,
+      collapsible: false,
       collapsed: false,
+      link: {
+        type: "doc",
+        id: "deploy/index",
+      },
       items: [
-{
+        {
           type: "doc",
           id: "deploy/installation-guides/docker-installation",
           className: "sidebar-item",
@@ -757,7 +756,7 @@ const sidebars = {
           type: "category",
           label: "AWS",
           className: "sidebar-item",
-          collapsible: true,
+          collapsible: false,
           collapsed: false,
           items: [
             "deploy/installation-guides/aws-marketplace",
@@ -774,7 +773,7 @@ const sidebars = {
           type: "category",
           label: "GCP",
           className: "sidebar-item",
-          collapsible: true,
+          collapsible: false,
           collapsed: false,
           items: [
             "deploy/installation-guides/gcp-marketplace",
