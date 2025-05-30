@@ -71,7 +71,7 @@ export const deploymentCardsData = [
       link: "/docs/deploy/installation-guides/docker-installation",
     },
   },
-  {
+    {
     tabs: [
       { label: "Evaluation", active: false },
       { label: "Deployment", active: true },
@@ -91,6 +91,45 @@ export const deploymentCardsData = [
     button: {
       text: "Deploy Weaviate with Kubernetes",
       link: "/docs/deploy/installation-guides/k8s-installation",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "AWS",
+    bgImage: "/docs/img/site/aws-marketplace-2.svg",
+    bgImageLight: "/docs/img/site/aws-marketplace-2.svg", 
+    listItems: [
+      "From evaluation (sandbox) to production",
+      "Serverless (bill through AWS)",
+      "Kubernetes (billed through AWS)",
+      "Self-hosted on EKS",
+    ],
+    button: {
+      text: "Deploy Weaviate on AWS",
+      link: "/docs/deploy/installation-guides/aws-marketplace",
+    },
+  },
+  {
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Deployment", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "GCP Marketplace",
+    bgImage: "/docs/img/site/gcp-marketplace.svg",
+    bgImageLight: "/docs/img/site/gcp-marketplace.svg",
+    listItems: [
+      "From evaluation (sandbox) to production",
+      "Serverless (bill through GCP)",
+      "Kubernetes (billed through GCP)",
+    ],
+    button: {
+      text: "Deploy Weaviate with GCP",
+      link: "/docs/deploy/installation-guides/gcp-marketplace",
     },
   },
 ];
