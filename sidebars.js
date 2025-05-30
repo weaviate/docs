@@ -739,11 +739,48 @@ const sidebars = {
       collapsible: true,
       collapsed: false,
       items: [
-        "deploy/installation-guides/k8s-installation",
-        "deploy/installation-guides/docker-installation",
-        "deploy/installation-guides/gcp-installation",
-        "deploy/installation-guides/aws-installation",
-        "deploy/installation-guides/aws-cli",
+{
+          type: "doc",
+          id: "deploy/installation-guides/docker-installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/k8s-installation",
+          className: "sidebar-item",
+        },
+        {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "category",
+          label: "AWS",
+          className: "sidebar-item",
+          collapsible: true,
+          collapsed: false,
+          items: [
+            "deploy/installation-guides/aws-marketplace",
+             "deploy/installation-guides/eks-marketplace",
+             "deploy/installation-guides/eks",
+           
+          ],
+        },
+                {
+          type: "html",
+          value: "<hr class='sidebar-divider' />",
+        },
+        {
+          type: "category",
+          label: "GCP",
+          className: "sidebar-item",
+          collapsible: true,
+          collapsed: false,
+          items: [
+            "deploy/installation-guides/gcp-marketplace",
+            "deploy/installation-guides/gke-marketplace",           
+          ],
+        },
       ],
     },
   ],
