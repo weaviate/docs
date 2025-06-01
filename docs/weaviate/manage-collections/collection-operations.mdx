@@ -14,6 +14,7 @@ import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes-v6.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 Every object in Weaviate belongs to exactly one collection. Use the examples on this page to manage your collections.
@@ -70,6 +71,15 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 <TabItem value="java" label="Java">
   <FilteredTextBlock
     text={JavaCode}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="Java6" label="Java Client V6">
+  <FilteredTextBlock
+    text={JavaV6Code}
     startMarker="// START BasicCreateCollection"
     endMarker="// END BasicCreateCollection"
     language="java"

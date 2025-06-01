@@ -14,6 +14,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.basics.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.basics-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTestV6.java';
 
 With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#specify-object-properties) and [metadata](#retrieve-metadata-values) to return.
 
@@ -116,6 +117,23 @@ The output is like this:
   Specify the information that you want your query to return. You can return object properties, object IDs, and object metadata.
 
 </details>
+
+## Get object by ID
+
+Retrieve a single data object from a collection by its unique ID.
+
+<Tabs groupId="languages">
+
+<TabItem value="java6" label="Java Client V6">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START BasicGet"
+    endMarker="// END BasicGet"
+    language="java"
+  />
+</TabItem>
+
+</Tabs>
 
 ## `limit` returned objects
 
