@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import io.weaviate.client6.Config;
 import io.weaviate.client6.WeaviateClient;
+// START CreateObject // START ObjectWithCrossRef
 import io.weaviate.client6.v1.collections.object.WeaviateObject;
 import io.weaviate.client6.v1.collections.Reference;
+
+
+// END CreateObject // END ObjectWithCrossRef
 
 @Tag("crud")
 @Tag("create")
@@ -30,31 +34,42 @@ class ManageDataCreateTest {
 
   @Test
   public void shouldManageDataCreate() {
-    // CreateObject START
+    // START ObjectWithCrossRef
+    String targetCollectionName = "JeopardyQuestion";
+    String targetObjectId = "12345"; // Example target object ID, replace with actual ID
+    // END ObjectWithCrossRef
+    // START CreateObject // START ObjectWithCrossRef
     String collectionName = "JeopardyQuestion";
 
-    // CreateObject END
+    // END CreateObject // END ObjectWithCrossRef
     createObject(collectionName);
   }
 
   private void createObject(String collectionName) {
-    // CreateObject START
+    // START CreateObject
     var collection = client.collections.use(collectionName);
 
-    // 1. Insert an object with basic properties
-    WeaviateObject<Map<String, Object>> objectResult1 = collection.data.insert(
+    WeaviateObject<Map<String, Object>> objectResult = collection.data.insert(
         Map.of("propertyName1", "Some Value"));
-    String createdObjectId1 = objectResult1.metadata().id(); // Get ID of the created object
+  
+    String createdObjectId = objectResult.metadata().id(); // Get ID of the created object
+    // END CreateObject
+  }
 
-    // 2. Insert an object with a reference to another object
-    WeaviateObject<Map<String, Object>> objectResult2 = collection.data.insert(
+  private void createObjectWithReference(String collectionName, String targetCollectionName, String targetObjectId) {
+    // START ObjectWithCrossRef
+    var collection = client.collections.use(collectionName);
+
+    WeaviateObject<Map<String, Object>> objectResult = collection.data.insert(
         Map.of(
             "propertyName1", "Another Value",
             "integerPropertyName", 100),
         opt -> opt.reference(
             "referencePropertyName", // Name of the reference property in COLLECTION_NAME
-            Reference.collection(TARGET_COLLECTION_NAME, createdObjectId1) // Target collection and ID
+            Reference.collection(targetCollectionName, targetObjectId) // Target collection and ID
         ));
-    // CreateObject END
+
+    String createdObjectId = objectResult.metadata().id(); // Get ID of the created object
+    // END ObjectWithCrossRef
   }
 }

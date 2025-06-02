@@ -13,6 +13,7 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.create-v3.p
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.create.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.create-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create-v6.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go';
 
 
@@ -74,9 +75,9 @@ This example creates an object in the `JeopardyQuestion` collection.
 
   <TabItem value="java6" label="Java Client V6">
     <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// CreateObject START"
-      endMarker="// CreateObject END"
+      text={JavaV6Code}
+      startMarker="// START CreateObject"
+      endMarker="// END CreateObject"
       language="java"
     />
   </TabItem>
@@ -396,6 +397,15 @@ You can create an object with cross-references to other objects.
       startMarker="// START ObjectWithCrossRef"
       endMarker="// END ObjectWithCrossRef"
       language="tsv2"
+    />
+  </TabItem>
+
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ObjectWithCrossRef"
+      endMarker="// END ObjectWithCrossRef"
+      language="java"
     />
   </TabItem>
 </Tabs>
