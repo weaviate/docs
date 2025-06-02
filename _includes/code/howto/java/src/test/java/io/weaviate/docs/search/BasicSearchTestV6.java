@@ -33,6 +33,8 @@ public class BasicSearchTest {
   public void shouldPerformBasicSearch() {
     // START BasicGet
     String collectionName = "Article";
+    String objectIdToFetch = "12345"; // Replace with the actual object ID you want to fetch
+    
     // END BasicGet
 
     getById(collectionName);
@@ -40,7 +42,7 @@ public class BasicSearchTest {
 
   private void getById(String collectionName) {
     // START BasicGet
-    var collection = client.collections.use(COLLECTION_NAME);
+    var collection = client.collections.use(collectionName);
 
     Optional<WeaviateObject<Map<String, Object>>> fetchResult = collection.data.get(objectIdToFetch);
 
