@@ -26,11 +26,19 @@ const sidebars = {
       },
       items: [
         "weaviate/installation/weaviate-cloud-services",
-        "deploy/installation-guides/k8s-installation",
-        "deploy/installation-guides/docker-installation",
         "weaviate/installation/embedded",
         "weaviate/installation/aws-marketplace",
         "weaviate/installation/spcs-integration",
+        {
+          type: "link",
+          label: "Docker",
+          href: "https://weaviate.io/docs/deploy/installation-guides/docker-installation",
+        },
+        {
+          type: "link",
+          label: "Kubernetes",
+          href: "https://weaviate.io:3001/docs/deploy/installation-guides/k8s-installation",
+        },
       ],
     },
     {
@@ -763,12 +771,11 @@ const sidebars = {
           collapsed: false,
           items: [
             "deploy/installation-guides/aws-marketplace",
-             "deploy/installation-guides/eks-marketplace",
-             "deploy/installation-guides/eks",
-           
+            "deploy/installation-guides/eks-marketplace",
+            "deploy/installation-guides/eks",
           ],
         },
-                {
+        {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
@@ -780,7 +787,7 @@ const sidebars = {
           collapsed: false,
           items: [
             "deploy/installation-guides/gcp-marketplace",
-            "deploy/installation-guides/gke-marketplace",           
+            "deploy/installation-guides/gke-marketplace",
           ],
         },
       ],

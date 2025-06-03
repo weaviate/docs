@@ -126,7 +126,7 @@ Set custom `k1` and `b` values [for a collection](../../manage-collections/colle
 :::info Added in `v1.31`
 :::
 
-Search operators define the minimum number of query [tokens](#set-tokenization) that must be present in the object to be returned.
+Search operators define the minimum number of query [tokens](../../search/bm25.md#set-tokenization) that must be present in the object to be returned.
 
 Conceptually, it works as though a filter is applied to the results of the BM25 score calculation. The available operators are:
 - `and`: All tokens must be present in the object
