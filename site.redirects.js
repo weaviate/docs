@@ -93,14 +93,6 @@ const siteRedirects = {
       to: "/deploy/installation-guides/k8s-installation",
       from: "/weaviate/installation/kubernetes",
     },
-    {
-        to: "/deploy/installation-guides/aws-installation",
-        from: "/developers/weaviate/installation/aws-marketplace",
-    },
-    {
-        to: "/deploy/installation-guides/gcp-installation",
-        from: "/developers/weaviate/installation/gc-marketplace",
-    },
     // Deployment redirects- Configuration
     {
       to: "/deploy/config-guides/configuring-rbac",

@@ -1,5 +1,5 @@
 ---
-title: GCP Marketplace
+title: GCP Marketplace - Weaviate Serverless
 description: Set up Weaviate using Google Cloud Marketplace for simplified deployment.
 image: og/docs/installation.jpg
 tags: ['installation', 'Google Cloud Marketplace']

@@ -23,7 +23,7 @@ This almost always means you've run out of disk space. Weaviate protects itself 
 
 <summary> Answer </summary>
 
-This [page](../installation-guides/aws-installation.md) will walk you through all the necessary steps to deploy Weaviate using AWS marketplace. 
+This [page](../installation-guides/aws-marketplace.md) will walk you through all the necessary steps to deploy Weaviate using AWS marketplace. 
 
 </details>
 
@@ -33,7 +33,7 @@ This [page](../installation-guides/aws-installation.md) will walk you through al
 
 <summary> Answer </summary>
 
-This [page](../installation-guides/gcp-installation.md) will walk you through all the necessary steps to deploy Weaviate using GCP marketplace. 
+This [page](../installation-guides/gcp-marketplace.md) will walk you through all the necessary steps to deploy Weaviate using GCP marketplace. 
 
 </details>
 

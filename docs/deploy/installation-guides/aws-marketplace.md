@@ -1,6 +1,6 @@
 ---
-title: AWS Marketplace
-description: Install Weaviate through the AWS Marketplace for quick cloud deployment.
+title: AWS Marketplace - Weaviate Serverless
+description: Install a Weaviate serverless instance through the AWS Marketplace for quick cloud deployment.
 image: og/docs/installation.jpg
 # tags: ['installation', 'AWS Marketplace']
 ---
