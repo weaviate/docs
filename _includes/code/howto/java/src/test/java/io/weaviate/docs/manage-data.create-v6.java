@@ -65,8 +65,8 @@ class ManageDataCreateTest {
             "propertyName1", "Another Value",
             "integerPropertyName", 100),
         opt -> opt.reference(
-            "referencePropertyName", // Name of the reference property in COLLECTION_NAME
-            Reference.collection(targetCollectionName, targetObjectId) // Target collection and ID
+            "referencePropertyName", // Name of the reference property
+            Reference.collection(targetCollectionName, targetObjectId) // Target target collection and ID
         ));
 
     String createdObjectId = objectResult.metadata().id(); // Get ID of the created object

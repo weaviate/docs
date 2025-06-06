@@ -121,14 +121,14 @@ Return the number  of objects matched by the query.
 
 ## Aggregate `text` properties
 
-This example counts occurrence frequencies in the `question` property:
+This example counts occurrence frequencies:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# TextProp Python"
-      endMarker="# END TextProp Python"
+      endMarker="# END TextProp Python"f
       language="py"
     />
   </TabItem>
@@ -203,7 +203,7 @@ This example counts occurrence frequencies in the `question` property:
 
 ## Aggregate `int` properties
 
-This  example sums the `points` property.
+This example shows aggregation with integers. 
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

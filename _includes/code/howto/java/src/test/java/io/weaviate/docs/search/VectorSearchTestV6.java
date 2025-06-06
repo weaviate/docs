@@ -37,6 +37,7 @@ public class VectorSearchTest {
   private void searchWithNearText(String collectionName) {
     // START GetNearText
     var collection = client.collections.use(collectionName);
+    
     String yourQueryText = "your search query"; // The text to search for
 
     QueryResult<Map<String, Object>> queryResult = collection.query.nearText(
