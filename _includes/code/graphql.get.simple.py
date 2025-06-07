@@ -54,6 +54,7 @@ try:
     questions = client.collections.get("JeopardyQuestion")
     response = questions.query.near_text(
         query="animals",
+        distance=0.2,
         group_by=wvc.query.GroupBy(
             prop="points",
             number_of_groups=3,
