@@ -1061,6 +1061,8 @@ const sidebars = {
         "cloud/manage-clusters/create",
         "cloud/manage-clusters/status",
         "cloud/manage-clusters/upgrade",
+        "cloud/manage-clusters/authentication",
+        "cloud/manage-clusters/authorization",
       ],
     },
     {
@@ -1090,7 +1092,6 @@ const sidebars = {
     "cloud/platform/support-levels",
     "cloud/platform/version",
     "cloud/platform/create-account",
-    "cloud/platform/manage-api-keys",
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
   ],
