@@ -37,7 +37,7 @@ const sidebars = {
         {
           type: "link",
           label: "Kubernetes",
-          href: "https://weaviate.io:3001/docs/deploy/installation-guides/k8s-installation",
+          href: "https://weaviate.io/docs/deploy/installation-guides/k8s-installation",
         },
       ],
     },
