@@ -422,6 +422,7 @@ const sidebars = {
         id: "weaviate/configuration/index",
       },
       items: [
+        "weaviate/configuration/authz-authn",
         {
           type: "category",
           label: "Compression",
@@ -435,8 +436,8 @@ const sidebars = {
             "weaviate/configuration/compression/sq-compression",
           ],
         },
+        "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
-        "weaviate/configuration/authz-authn",
         {
           type: "category",
           label: "RBAC",

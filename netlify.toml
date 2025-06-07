@@ -7,6 +7,13 @@
 
 ## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
 
+## Redirect anything from /developers to /docs
+
+[[redirects]]
+from = "/developers/*"
+to   = "/docs/:splat"
+status = 301
+
 [[redirects]]
 from = "/docs"
 to   = "/docs/weaviate"
@@ -15,13 +22,6 @@ status = 301
 [[redirects]]
 from = "/"
 to   = "/docs/weaviate"
-status = 301
-
-## Redirect anything from /developers to /docs
-
-[[redirects]]
-from = "/developers/*"
-to   = "/docs/:splat"
 status = 301
 
 ## Redirect all paths starting with /docs/wcs to /docs/cloud
