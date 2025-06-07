@@ -27,7 +27,7 @@ const DOC_SYSTEMS = {
     },
     go: {
         baseUrl:
-            'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v4/weaviate',
+            'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v5/weaviate',
         constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
         icon: '/docs/img/site/logo-go.svg',
     },
