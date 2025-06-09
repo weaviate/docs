@@ -13,7 +13,7 @@ import SkipLink from '/src/components/SkipValidationLink'
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
 :::
 
-Weaviate provides differentiated access through [authorization](docs/deploy/config-guides/authorization.md) levels based on the [authenticated](docs/deploy/config-guides/authentication.md) user identity.
+Weaviate provides differentiated access through [authorization](docs/deploy/configuration/authorization.md) levels based on the [authenticated](docs/deploy/configuration/authentication.md) user identity.
 
 If **role-based access control (RBAC)** is enabled, access can be further restricted based on the roles of users.
 The diagram below illustrates the RBAC model in Weaviate, where access is governed by defining roles and assigning them specific permissions. These permissions determine which actions users can perform on designated resource types.
@@ -101,11 +101,11 @@ Weaviate comes with a set of predefined roles. These roles are:
 - `root`: The root role has **full access** to all resources in Weaviate.
 - `viewer`: The viewer role has **read-only access** to all resources in Weaviate.
 
-The `root` role can be assigned to a user through the Weaviate configuration file using the [`AUTHORIZATION_RBAC_ROOT_USERS`](docs/deploy/config-guides/env-vars/index.md#rbac-authorization) environment variable. A predefined role cannot be modified. The user can, however, be assigned additional roles through the Weaviate API.
+The `root` role can be assigned to a user through the Weaviate configuration file using the [`AUTHORIZATION_RBAC_ROOT_USERS`](docs/deploy/configuration/env-vars/index.md#rbac-authorization) environment variable. A predefined role cannot be modified. The user can, however, be assigned additional roles through the Weaviate API.
 
 All roles can also be assigned through the Weaviate API, including the predefined role. The predefined roles cannot be modified, but they can be assigned to or revoked from users.
 
-Refer to the [RBAC: Configuration](docs/deploy/config-guides/configuring-rbac.md) page for more information on how to assign predefined roles to users.
+Refer to the [RBAC: Configuration](docs/deploy/configuration/configuring-rbac.md) page for more information on how to assign predefined roles to users.
 
 ### Custom roles
 
@@ -113,7 +113,7 @@ Any authenticated user that is not assigned a predefined role has no roles or pe
 
 These users' permissions can be modified through Weaviate by those with the appropriate permissions for **managing roles**. This allows for the creation of custom roles, which can be assigned to users as needed.
 
-Role management can be performed with a [predefined `root` role](docs/deploy/config-guides/configuring-rbac.md) or a custom role with [`manage_roles` permissions](/docs/weaviate/configuration/rbac/manage-roles#role-management-permissions).
+Role management can be performed with a [predefined `root` role](docs/deploy/configuration/configuring-rbac.md) or a custom role with [`manage_roles` permissions](/docs/weaviate/configuration/rbac/manage-roles#role-management-permissions).
 
 :::caution Role Management Permissions
 Be careful when assigning permissions to roles that manage roles. These permissions can be used to escalate privileges by assigning additional roles to users. Only assign these permissions to trusted users.
@@ -384,7 +384,7 @@ The [user management](./manage-users.mdx) API can be used to create, delete and 
 
 ## Further resources
 
-- [RBAC: Configuration](docs/deploy/config-guides/configuring-rbac.md)
+- [RBAC: Configuration](docs/deploy/configuration/configuring-rbac.md)
 - [RBAC: Manage roles](./manage-roles.mdx)
 - [RBAC: Manage users](./manage-users.mdx)
 - [RBAC: Tutorial](docs/deploy/tutorials/rbac.mdx)

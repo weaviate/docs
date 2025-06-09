@@ -34,9 +34,9 @@ import APITable from '@site/src/components/APITable';
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - will be overridden by any class-level value defined in the schema | `string` | `text2vec-contextionary` |
 | `DISABLE_LAZY_LOAD_SHARDS` | New in v1.23. When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. | `string` | `false` |
-| `DISABLE_TELEMETRY` | Disable [telemetry](docs/deploy/config-guides/telemetry.md) data collection | boolean | `false` |
-| `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](docs/deploy/config-guides/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
-| `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](docs/deploy/config-guides/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
+| `DISABLE_TELEMETRY` | Disable [telemetry](docs/deploy/configuration/telemetry.md) data collection | boolean | `false` |
+| `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](docs/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
+| `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](docs/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
 | `ENABLE_API_BASED_MODULES` | Enable all API-based modules. (Experimental as of `v1.26.0`) | `boolean` | `true` |
 | `ENABLE_MODULES` | Specify Weaviate modules to enable | `string - comma separated names` | `text2vec-openai,generative-openai` |
 | `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/docs/weaviate/config-refs/schema/index.md#gse-and-trigram-tokenization-methods) for use | `boolean` | `true` |
@@ -66,7 +66,7 @@ import APITable from '@site/src/components/APITable';
 | `PERSISTENCE_HNSW_MAX_LOG_SIZE` | Maximum size of the HNSW [write-ahead-log](docs/weaviate/concepts/storage.md#hnsw-vector-index-storage). Increase this to improve log compaction efficiency, or decrease to reduce memory requirements. Default: 500MiB | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
 | `PERSISTENCE_LSM_ACCESS_STRATEGY` | Function used to access disk data in virtual memory. Default: `mmap` | `string` | `mmap` or `pread` |
 | `PERSISTENCE_LSM_MAX_SEGMENT_SIZE` | Maximum size of a segment in the [LSM store](docs/weaviate/concepts/storage.md#object-and-inverted-index-store). Set this to limit disk usage spikes during compaction to ~2x the segment size. Default: no limit | `string` | `4GiB` (IEC units), `4GB` (SI units), `4000000000` (bytes) |
-| `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](docs/deploy/config-guides/monitoring.md) | `boolean` | `false` |
+| `PROMETHEUS_MONITORING_ENABLED`  | If set, Weaviate collects [metrics in a Prometheus-compatible format](docs/deploy/configuration/monitoring.md) | `boolean` | `false` |
 | `PROMETHEUS_MONITORING_GROUP` | If set, Weaviate groups metrics for the same class across all shards. | `boolean` | `true` |
 | `QUERY_CROSS_REFERENCE_DEPTH_LIMIT` | Sets the maximum depth of cross-references to be resolved in a query. Defaults to 5. <br/>Added in `v1.24.25`, `v1.25.18`, `v1.26.5`. | `string - number` | `3` |
 | `QUERY_DEFAULTS_LIMIT` | Sets the default number of objects to be returned in a query. | `string - number` | `25` <br/> Starting in v1.24, defaults to `10`|
@@ -94,7 +94,7 @@ import APITable from '@site/src/components/APITable';
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
-| `BACKUP_*` | Various configuration variables for backup provider modules. They are outlined in detail on the [Backups page](docs/deploy/config-guides/backups.md). | |
+| `BACKUP_*` | Various configuration variables for backup provider modules. They are outlined in detail on the [Backups page](docs/deploy/configuration/backups.md). | |
 | `AZURE_BLOCK_SIZE` | The block size for Azure Blob Storage for backups. Default: `41943040` (40MB) | `int - bytes` | `10000000` |
 | `AZURE_CONCURRENCY` | The maximum number of parts that will be concurrently uploaded/downloaded during backup operations. Default: `1` | `int` | `3` |
 | `CLIP_INFERENCE_API` | The endpoint where to reach the clip module if enabled | `string` | `http://multi2vec-clip:8000` |
@@ -123,7 +123,7 @@ import APITable from '@site/src/components/APITable';
 ## Authentication and authorization
 
 :::info Authentication & Authorization documentation
-For more information on authentication and authorization, see the [Authentication](docs/deploy/config-guides/authentication.md) and [Authorization](docs/deploy/config-guides/authorization.md) pages.
+For more information on authentication and authorization, see the [Authentication](docs/deploy/configuration/authentication.md) and [Authorization](docs/deploy/configuration/authorization.md) pages.
 :::
 
 ```mdx-code-block
@@ -197,7 +197,7 @@ For more information on authentication and authorization, see the [Authenticatio
 
 :::info Added in `v1.29`
 The environment variables for configuring async replication have been introduced in `v1.29`.
-To learn more about their usage, visit the **[replication how-to guide](/docs/deploy/config-guides/replication#async-replication-settings)**.
+To learn more about their usage, visit the **[replication how-to guide](/docs/deploy/configuration/replication#async-replication-settings)**.
 :::
 
 ```mdx-code-block

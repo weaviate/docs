@@ -51,7 +51,7 @@ For use cases such as this, consider using a self-hosted Weaviate instance, or a
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](docs/deploy/config-guides/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](docs/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>

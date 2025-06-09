@@ -13,7 +13,7 @@ Weaviate is under active development, with new features and improvements being a
 
 When upgrading Weaviate, we recommend that you:
 
-1. Create a complete [backup](docs/deploy/config-guides/backups.md) of your current Weaviate instance before beginning any upgrade process.
+1. Create a complete [backup](docs/deploy/configuration/backups.md) of your current Weaviate instance before beginning any upgrade process.
 1. Plan to upgrade one minor version at a time, always using the latest patch version of each minor release.
 
 This approach of upgrading one minor version at a time helps to minimize the risk of issues during the upgrade process, by mirroring our testing and release process. Upgrading to the latest patch version of each minor release ensures that you have the latest bugfixes and improvements.

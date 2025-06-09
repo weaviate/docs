@@ -95,51 +95,51 @@ const siteRedirects = {
     },
     // Deployment redirects- Configuration
     {
-      to: "/deploy/config-guides/configuring-rbac",
+      to: "/deploy/configuration/configuring-rbac",
       from: "/weaviate/configuration/rbac/configuration",
     },
     {
-      to: "/deploy/config-guides/backups",
+      to: "/deploy/configuration/backups",
       from: "/weaviate/configuration/backups",
     },
     {
-      to: "/deploy/config-guides/authentication",
+      to: "/deploy/configuration/authentication",
       from: "/weaviate/configuration/authentication",
     },
     {
-      to: "/deploy/config-guides/authorization",
+      to: "/deploy/configuration/authorization",
       from: "/weaviate/configuration/authorization",
     },
     {
-      to: "/deploy/config-guides/persistence",
+      to: "/deploy/configuration/persistence",
       from: "/weaviate/configuration/persistence",
     },
     {
-      to: "/deploy/config-guides/monitoring",
+      to: "/deploy/configuration/monitoring",
       from: "/weaviate/configuration/monitoring",
     },    
     {
-      to: "/deploy/config-guides/replication",
+      to: "/deploy/configuration/replication",
       from: "/weaviate/configuration/replication",
     },    
     {
-      to: "/deploy/config-guides/nodes",
+      to: "/deploy/configuration/nodes",
       from: "/weaviate/config-refs/nodes",
     },    
     {
-      to: "/deploy/config-guides/meta",
+      to: "/deploy/configuration/meta",
       from: "/weaviate/config-refs/meta",
     },    
     {
-      to: "/deploy/config-guides/oidc",
+      to: "/deploy/configuration/oidc",
       from: "/weaviate/config-refs/oidc",
     },
     {
-      to: "/deploy/config-guides/telemetry ",
+      to: "/deploy/configuration/telemetry ",
       from: "/weaviate/config-refs/telemetry",
     },
         {
-      to: "/deploy/config-guides/status",
+      to: "/deploy/configuration/status",
       from: "/weaviate/config-refs/status",
     },
 
