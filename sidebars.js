@@ -803,42 +803,42 @@ const sidebars = {
       collapsible: false,
       link: {
         type: "doc",
-        id: "deploy/config-guides/index",
+        id: "deploy/configuration/index",
       },
       items: [
         {
           type: "doc",
-          id: "deploy/config-guides/backups",
+          id: "deploy/configuration/backups",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/horizontal-scaling",
+          id: "deploy/configuration/horizontal-scaling",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/monitoring",
+          id: "deploy/configuration/monitoring",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/persistence",
+          id: "deploy/configuration/persistence",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/status",
+          id: "deploy/configuration/status",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/telemetry",
+          id: "deploy/configuration/telemetry",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/tenant-offloading",
+          id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
         {
@@ -850,10 +850,10 @@ const sidebars = {
           label: "Authorization and authentication",
           className: "sidebar-item",
           items: [
-            "deploy/config-guides/authentication",
-            "deploy/config-guides/authorization",
-            "deploy/config-guides/oidc",
-            "deploy/config-guides/configuring-rbac",
+            "deploy/configuration/authentication",
+            "deploy/configuration/authorization",
+            "deploy/configuration/oidc",
+            "deploy/configuration/configuring-rbac",
           ],
         },
         {
@@ -865,8 +865,8 @@ const sidebars = {
           label: "Replication",
           className: "sidebar-item",
           items: [
-            "deploy/config-guides/replication",
-            "deploy/config-guides/async-rep",
+            "deploy/configuration/replication",
+            "deploy/configuration/async-rep",
           ],
         },
         {
@@ -878,8 +878,8 @@ const sidebars = {
           label: "Environment variables",
           className: "sidebar-item",
           items: [
-            "deploy/config-guides/env-vars/index",
-            "deploy/config-guides/env-vars/runtime-config",
+            "deploy/configuration/env-vars/index",
+            "deploy/configuration/env-vars/runtime-config",
           ],
         },
         {
@@ -890,7 +890,7 @@ const sidebars = {
           type: "category",
           label: "Cluster information",
           className: "sidebar-item",
-          items: ["deploy/config-guides/meta", "deploy/config-guides/nodes"],
+          items: ["deploy/configuration/meta", "deploy/configuration/nodes"],
         },
       ],
     },

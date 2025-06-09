@@ -6,7 +6,7 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 So you've deployed Weaviate and you're fully immersed in the world of vectors when suddenly you encounter a puzzling mystery. This page will serve as your handbook for when things go awry in "Vector Land!"
 
-Consider every error message a clue to solving the mystery you're encountering. The [LOG_LEVEL](/deploy/config-guides/env-vars#LOG_LEVEL) environment variable helps you to solve any mysteries you encounter. The various levels of logging will allow you to right-size the precise amount of information you need to solve any Vector Land mysteries.
+Consider every error message a clue to solving the mystery you're encountering. The [LOG_LEVEL](/deploy/configuration/env-vars#LOG_LEVEL) environment variable helps you to solve any mysteries you encounter. The various levels of logging will allow you to right-size the precise amount of information you need to solve any Vector Land mysteries.
 
 ## Common issues and solutions
 
@@ -23,7 +23,7 @@ As a first step, you'll want to examine your cluster's logs to identify the prob
 #### Resolving the issue
 
 To solve this mystery, you'll need to increase the available disk space for your nodes. Once the disk space is increased, then you'll need to manually mark the affected shards or collections as writeable again.
-You can also set the [`MEMORY_WARNING_PERCENTAGE`](docs/deploy/config-guides/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
+You can also set the [`MEMORY_WARNING_PERCENTAGE`](docs/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
 
 </details>
 

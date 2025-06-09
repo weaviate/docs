@@ -347,7 +347,7 @@ authentication:
 ## Further resources
 
 - [Configuration: Authorization and RBAC](./authorization.md)
-- [References: Environment variables / Authentication and Authorization](/docs/deploy/config-guides/env-vars#authentication-and-authorization)
+- [References: Environment variables / Authentication and Authorization](/docs/deploy/configuration/env-vars#authentication-and-authorization)
 
 ## Questions and feedback
 

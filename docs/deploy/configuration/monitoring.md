@@ -54,7 +54,7 @@ command. In this setup the following components are used:
 
 ### Multi-tenancy
 
-When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](docs/deploy/config-guides/env-vars/index.md) as `true` so that data across all tenants are grouped together for monitoring.
+When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](docs/deploy/configuration/env-vars/index.md) as `true` so that data across all tenants are grouped together for monitoring.
 
 ## Obtainable Metrics
 
@@ -157,7 +157,7 @@ your uses perfectly:
 
 ## `nodes` API Endpoint
 
-To get collection details programmatically, use the [`nodes`](docs/deploy/config-guides/nodes.md) REST endpoint.
+To get collection details programmatically, use the [`nodes`](docs/deploy/configuration/nodes.md) REST endpoint.
 
 import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
 

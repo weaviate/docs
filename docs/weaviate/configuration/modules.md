@@ -15,7 +15,7 @@ At the instance (i.e. Weaviate cluster) level, you can:
 - Configure the default vectorizer module
 - Configure module-specific variables (e.g. API keys), where applicable
 
-This can be done by setting the appropriate [environment variables](docs/deploy/config-guides/env-vars/index.md) as shown below.
+This can be done by setting the appropriate [environment variables](docs/deploy/configuration/env-vars/index.md) as shown below.
 
 :::tip What about WCD?
 Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/docs/cloud/manage-clusters/status#enabled-modules) for details.
@@ -135,7 +135,7 @@ Your choice of the `text2vec` module does not restrict your choice of `generativ
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-See the [dedicated page on tenant offloading](docs/deploy/config-guides/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
+See the [dedicated page on tenant offloading](docs/deploy/configuration/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
 
 ## Custom modules
 

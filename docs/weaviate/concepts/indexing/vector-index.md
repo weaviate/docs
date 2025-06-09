@@ -162,7 +162,7 @@ When asynchronous indexing is enabled, all vector indexing operations go through
 
 This means that the object store can be updated quickly to finish performing user requests while the vector index updates in the background. Asynchronous indexing is especially useful for importing large amounts of data.
 
-This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/docs/deploy/config-guides/nodes.md).
+This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/docs/deploy/configuration/nodes.md).
 
 :::info Changes in `v1.28`
 In Weaviate `v1.22` to `v1.27`, the async indexing feature only affected batch import operations, using an in-memory queue.
