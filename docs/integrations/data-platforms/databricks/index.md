@@ -35,4 +35,5 @@ The resources are broken into two categories:
 | Topic | Description | Resource | 
 | --- | --- | --- |
 | The Sphere Dataset in Weaviate | Learn how to import and query the Sphere dataset in Weaviate. | [Blog](https://weaviate.io/blog/sphere-dataset-in-weaviate) |
-| The Details Behind the Sphere Dataset in Weaviate | The details on how we ingested ~1 billion article snippets into Weaviate. | [Blog](https://weaviate.io/blog/details-behind-the-sphere-dataset-in-weaviate) |
+| The Details Behind the Sphere Dataset in Weaviate | The details on how we ingested ~1 billion article snippets into Weaviate. | [Blog](/blog/details-behind-the-sphere-dataset-in-weaviate) |
+| Build Scalable Gen AI Data Pipelines with Weaviate and Databricks | Learn how to build generative AI data pipelines at scale with Weaviate and Databricks | [Blog](https://weaviate.io/blog/genai-apps-with-weaviate-and-databricks) |
