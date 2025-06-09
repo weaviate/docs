@@ -74,7 +74,7 @@ def populate_weaviate(client, overwrite_existing=False):
     if not client.collections.exists("Weather"):
         client.collections.create(
             "Weather",
-            description="Daily weather information including temperature, wind speed, percipitation, pressure etc.",
+            description="Daily weather information including temperature, wind speed, precipitation, pressure etc.",
             vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
             properties=[
                 Property(name="date", data_type=DataType.DATE),
@@ -94,7 +94,7 @@ def populate_weaviate(client, overwrite_existing=False):
     if not client.collections.exists("FinancialContracts"):
         client.collections.create(
             "FinancialContracts",
-            description="A dataset of financial contracts between indivicuals and/or companies, as well as information on the type of contract and who has authored them.",
+            description="A dataset of financial contracts between individuals and/or companies, as well as information on the type of contract and who has authored them.",
             vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
         )
 
@@ -238,7 +238,7 @@ response.display()                      # Use the class method
 # END BasicQuery
 
 # START FollowUpQuery
-# Perform a follow-up query
+# Perform a follow-up query to 'I like vintage clothes and and nice shoes. Recommend some of each below $60.'
 following_response = qa.run(
     "I like the vintage clothes options, can you do the same again but above $200?",
     context=response,
