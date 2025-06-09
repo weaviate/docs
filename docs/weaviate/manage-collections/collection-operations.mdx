@@ -14,6 +14,7 @@ import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 Every object in Weaviate belongs to exactly one collection. Use the examples on this page to manage your collections.
@@ -81,7 +82,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
       text={GoCode}
       startMarker="// START BasicCreateCollection"
       endMarker="// END BasicCreateCollection"
-      language="go"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -165,6 +166,15 @@ For details, see:
   />
 </TabItem>
 
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="gonew"
+  />
+</TabItem>
+
 </Tabs>
 
 ## Disable auto-schema
@@ -227,7 +237,7 @@ Retrieve a collection definition from the schema.
       text={GoCode}
       startMarker="// START ReadOneCollection"
       endMarker="// END ReadOneCollection"
-      language="go"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -449,7 +459,7 @@ Fetch the database schema to retrieve all of the collection definitions.
       text={GoCode}
       startMarker="// START ReadAllCollections"
       endMarker="// END ReadAllCollections"
-      language="go"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -499,59 +509,22 @@ You can update a collection definition to change the [mutable collection setting
   />
 </TabItem>
 
-  <TabItem value="java" label="Java">
-
-```java
-// This feature is under development
-```
-
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="java"
+  />
+</TabItem>
 
   <TabItem value="go" label="Go">
-
-```go
-// This feature is under development
-```
-
-  </TabItem>
-</Tabs>
-
-## Update a parameter
-
-Some parameters cannot be modified after you create your collection.
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START ModifyParam"
-      endMarker="# END ModifyParam"
-      language="py"
+      text={GoCode}
+      startMarker="// START UpdateCollection"
+      endMarker="// END UpdateCollection"
+      language="gonew"
     />
-  </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START ModifyParam"
-    endMarker="# END ModifyParam"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START ModifyParam"
-    endMarker="// END ModifyParam"
-    language="ts"
-  />
-</TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-
-([Vote for the feature request.](https://github.com/weaviate/typescript-client/issues/72))
-
   </TabItem>
 </Tabs>
 
@@ -601,30 +574,48 @@ Various [inverted index parameters](../config-refs/schema/index.md#invertedindex
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START SetInvertedIndexParams"
-      endMarker="# END SetInvertedIndexParams"
-      language="pyv3"
-    />
-  </TabItem>
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetInvertedIndexParams"
+    endMarker="# END SetInvertedIndexParams"
+    language="pyv3"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={TSCode}
+      text={GoCode}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
-      language="ts"
-    />
-  </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START SetInvertedIndexParams"
-      endMarker="// END SetInvertedIndexParams"
-      language="tsv2"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
