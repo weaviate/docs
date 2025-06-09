@@ -115,7 +115,7 @@ const sidebars = {
       label: "API-based",
       collapsed: false,
       collapsible: false,
-      className: "sidebar-main-category",
+      className: "sidebar-item",
       items: [
         {
           type: "category",
@@ -335,7 +335,7 @@ const sidebars = {
       label: "Locally hosted",
       collapsed: false,
       collapsible: false,
-      className: "sidebar-main-category",
+      className: "sidebar-item",
       items: [
         {
           type: "category",
@@ -434,6 +434,7 @@ const sidebars = {
             "weaviate/configuration/compression/pq-compression",
             "weaviate/configuration/compression/bq-compression",
             "weaviate/configuration/compression/sq-compression",
+            "weaviate/configuration/compression/multi-vectors",
           ],
         },
         "weaviate/configuration/hnsw-snapshots",

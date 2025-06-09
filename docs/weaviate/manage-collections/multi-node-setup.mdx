@@ -12,7 +12,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 ## Replication settings
@@ -54,14 +54,24 @@ Configure replication settings, such as [async replication](docs/deploy/config-g
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="gonew"
+  />
+</TabItem>
+
   <TabItem value="curl" label="cURL">
 
 ```bash
@@ -136,14 +146,33 @@ Configure sharding per collection.
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="gonew"
+  />
+</TabItem>
+
 </Tabs>
 
 <details>

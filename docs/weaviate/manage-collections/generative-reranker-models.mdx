@@ -17,7 +17,7 @@ import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.class
 
 :::tip Embedding models / Vectorizers
 
-Visit the [Vectorizer and vector config](./vector-config.mdx) guide to find out how to configure an embedding model for your collection or to fine-tune the vector index settings. 
+Visit the [Vectorizer and vector config](./vector-config.mdx) guide to find out how to configure an embedding model for your collection or to fine-tune the vector index settings.
 
 :::
 
@@ -58,12 +58,21 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetReranker"
+    endMarker="// END SetReranker"
+    language="tsv2"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={TSCodeLegacy}
+      text={GoCode}
       startMarker="// START SetReranker"
       endMarker="// END SetReranker"
-      language="tsv2"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -104,12 +113,21 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START UpdateReranker"
+    endMarker="// END UpdateReranker"
+    language="tsv2"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={TSCodeLegacy}
+      text={GoCode}
       startMarker="// START UpdateReranker"
       endMarker="// END UpdateReranker"
-      language="tsv2"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -151,54 +169,30 @@ Specify a `generative` model integration for a collection (for RAG).
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START SetGenerative"
-      endMarker="// END SetGenerative"
-      language="tsv2"
-    />
-  </TabItem>
-</Tabs>
-
-## Specify a generative model name
-
-Specify a generative `model name`.
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START SetGenModel"
-      endMarker="# END SetGenModel"
-      language="py"
-    />
-  </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
+<TabItem value="js2" label="JS/TS Client v2">
   <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetGenModel"
-    endMarker="# END SetGenModel"
-    language="pyv3"
+    text={TSCodeLegacy}
+    startMarker="// START SetGenerative"
+    endMarker="// END SetGenerative"
+    language="tsv2"
   />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="go" label="Go">
   <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetGenModel"
-    endMarker="// END SetGenModel"
-    language="ts"
+    text={GoCode}
+    startMarker="// START SetGenerative"
+    endMarker="// END SetGenerative"
+    language="gonew"
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+  <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={TSCodeLegacy}
+      text={JavaCode}
       startMarker="// START SetGenModel"
       endMarker="// END SetGenModel"
-      language="tsv2"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -239,12 +233,21 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START UpdateGenerative"
+    endMarker="// END UpdateGenerative"
+    language="tsv2"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={TSCodeLegacy}
+      text={GoCode}
       startMarker="// START UpdateGenerative"
       endMarker="// END UpdateGenerative"
-      language="tsv2"
+      language="gonew"
     />
   </TabItem>
 </Tabs>

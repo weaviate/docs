@@ -5,11 +5,16 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes']
 ---
 
-These are the last five minor releases:
+These are the release notes for the last five minor releases:
 
 import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
+  {
+  title: "v1.31",
+  link: "https://weaviate.io/blog/weaviate-1-31-release",
+  icon: "fa fa-tags",
+  },
   {
   title: "v1.30",
   link: "https://weaviate.io/blog/weaviate-1-30-release",
@@ -28,11 +33,6 @@ export const pythonCardsData = [
   {
   title: "v1.27",
   link: "https://weaviate.io/blog/weaviate-1-27-release",
-  icon: "fa fa-tags",
-  },
-  {
-  title: "v1.26",
-  link: "https://weaviate.io/blog/weaviate-1-26-release",
   icon: "fa fa-tags",
   },
 ];

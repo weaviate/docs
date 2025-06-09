@@ -2,6 +2,7 @@
 title: Consistency
 sidebar_position: 4
 image: og/docs/concepts.jpg
+# tags: ['architecture']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
@@ -161,6 +162,12 @@ This is due to the fact that each query is performed by the coordinator node and
 Where the read consistency level is applied is in retrieving the identified objects from the replicas. For example, if the read consistency level is set to `ALL`, the coordinator node will wait for all replicas to return the identified objects. And if the read consistency level is set to `ONE`, the coordinator node may simply return the objects from itself.
 
 In other words, the read consistency level only affects which versions of the objects are retrieved, but it does not lead to a more (or less) consistent query result.
+
+:::note When might this occur?
+
+By default, Weaviate writes to all nodes on an insert/update/delete. So, most of the time this won't matter as all shards will have identical local indexes to each other. This is a rare care which may only occur if there is a problem, such as a node being down, or there is a network problem.
+
+:::
 
 ### Tenant states and data objects
 
