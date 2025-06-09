@@ -3,6 +3,7 @@ title: Data types
 description: Data Types in Weaviate Schema
 sidebar_position: 20
 image: og/docs/configuration.jpg
+# tags: ['Data types']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -302,7 +303,7 @@ import GeoTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datat
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
-      text={UUIDTypeTs}
+      text={GeoTypeTs}
       startMarker="// START ConfigureDataType"
       endMarker="// END ConfigureDataType"
       language="ts"
