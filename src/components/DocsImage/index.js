@@ -34,29 +34,27 @@ const DocsImage = ({
   // Wrap everything inside a unique container
   if (layout === "right") {
     return (
-      <div className="docs-image">
-        <div className="row">
-          {hasContent && (
-            <div className={`col col--${contentColumns}`}>{children}</div>
-          )}
-          <div className={`col col--${hasContent ? imageColumns : 12}`}>
-            <div className="card">
-              <div className="card__image">
-                <img
-                  src={image}
-                  alt={alt}
-                  className={!caption ? styles.fullRoundedImage : ""}
-                />
-              </div>
-              {caption && <div className="card__body">{caption}</div>}
+      <div className="row">
+        {hasContent && (
+          <div className={`col col--${contentColumns}`}>{children}</div>
+        )}
+        <div className={`col col--${hasContent ? imageColumns : 12}`}>
+          <div className="card">
+            <div className="card__image">
+              <img
+                src={image}
+                alt={alt}
+                className={!caption ? styles.fullRoundedImage : ""}
+              />
             </div>
+            {caption && <div className="card__body">{caption}</div>}
           </div>
         </div>
       </div>
     );
   } else if (layout === "below") {
     return (
-      <div className="docs-image">
+      <div>
         {hasContent && <div>{children}</div>}
         <div className="row">
           <div className={`col col--${hasContent ? imageColumns : 12}`}>
