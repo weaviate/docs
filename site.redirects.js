@@ -117,19 +117,19 @@ const siteRedirects = {
     {
       to: "/deploy/configuration/monitoring",
       from: "/weaviate/configuration/monitoring",
-    },    
+    },
     {
       to: "/deploy/configuration/replication",
       from: "/weaviate/configuration/replication",
-    },    
+    },
     {
       to: "/deploy/configuration/nodes",
       from: "/weaviate/config-refs/nodes",
-    },    
+    },
     {
       to: "/deploy/configuration/meta",
       from: "/weaviate/config-refs/meta",
-    },    
+    },
     {
       to: "/deploy/configuration/oidc",
       from: "/weaviate/config-refs/oidc",
@@ -138,11 +138,10 @@ const siteRedirects = {
       to: "/deploy/configuration/telemetry ",
       from: "/weaviate/config-refs/telemetry",
     },
-        {
+    {
       to: "/deploy/configuration/status",
       from: "/weaviate/config-refs/status",
     },
-
 
     // More-resources redirects
     {
@@ -517,10 +516,7 @@ const siteRedirects = {
     },
     {
       to: "/weaviate/model-providers",
-      from: [
-        "/weaviate/api/rest/modules",
-        "/weaviate/api/rest_legacy/modules",
-      ],
+      from: ["/weaviate/api/rest/modules", "/weaviate/api/rest_legacy/modules"],
     },
     // Release notes
     {
@@ -593,6 +589,18 @@ const siteRedirects = {
     {
       to: "/weaviate/configuration/rbac/manage-roles",
       from: "/weaviate/configuration/rbac/manage-roles-users",
+    },
+
+    // Redirects for GCP
+    {
+      to: "/deploy/installation-guides/gcp-marketplace",
+      from: "/weaviate/installation/gc-marketplace",
+    },
+
+    // Redirect for manage API keys page
+    {
+      to: "/cloud/manage-clusters/authentication",
+      from: "/cloud/platform/manage-api-keys",
     },
   ],
   createRedirects(existingPath) {

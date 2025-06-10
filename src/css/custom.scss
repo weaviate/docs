@@ -881,14 +881,6 @@ button.close {
   background-color: var(--site-navbar-color);
 }
 
-.docs-image li > Link {
-  display: inline;
-}
-
-.step-list li * {
-  display: inline;
-}
-
 /* Add this to your custom.css file */
 .sidebar-main-category {
   font-weight: bold;
@@ -904,4 +896,12 @@ button.close {
   border: 0;
   height: 1px;
   background-color: var(--ifm-toc-border-color);
+}
+
+.inline-content p,
+.inline-content a,
+.inline-content a p {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
