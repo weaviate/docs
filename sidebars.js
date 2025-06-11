@@ -772,6 +772,7 @@ const sidebars = {
           items: [
             "deploy/installation-guides/aws-marketplace",
             "deploy/installation-guides/eks-marketplace",
+            "deploy/installation-guides/ecs-marketplace",
             "deploy/installation-guides/eks",
           ],
         },
