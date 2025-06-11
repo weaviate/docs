@@ -3,7 +3,7 @@ title: Marketplace - EC2
 description: Deploy Weaviate using Docker on an EC2 instance.
 ---
 
-A fully operational instance of Weaviate can now be deployed on an EC2 instance using Docker with the AWS Marketplace. This option is perfect for developers who want to prototype and test Weaviate quickly and easily. It uses a [CloudFormation template](https://aws.amazon.com/cloudformation/)for delivery. 
+A fully operational instance of Weaviate can now be deployed on an EC2 instance using Docker with the AWS Marketplace. This option is perfect for developers who want to prototype and test Weaviate quickly and easily. It uses a [CloudFormation template](https://aws.amazon.com/cloudformation/) for delivery. 
 
 :::tip Prerequisites
 
@@ -14,15 +14,11 @@ A fully operational instance of Weaviate can now be deployed on an EC2 instance 
 
 ## Installation
 
-:::info 
-<details>
-
-<summary> Background information </summary>
+:::info Background information 
 
 Weaviate is deployed on a Docker container on a single EC2 instance. This is a monthly contract that is billed immediately through AWS. The current pricing for a one month contract is $149. 
 
-This solution is best for testing and development and does not include enterprise support. 
-</details>
+This solution is best for testing and development and **does not include enterprise support**. 
 :::
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
@@ -78,7 +74,7 @@ You will be charged for Weaviate and associated resources directly by AWS.
 
 ### Other marketplace offerings
 
-- [Weaviate Kubernetes cluster](https://aws.amazon.com/marketplace/pp/prodview-cicacyv63r43i?sr=0-1&ref_=beagle&applicationId=AWSMPContessa) this product uses a CloudFormation template to create an EKS cluster with Weaviate already installed. 
+- [Weaviate Kubernetes cluster](https://aws.amazon.com/marketplace/pp/prodview-cicacyv63r43i?sr=0-1&ref_=beagle&applicationId=AWSMPContessa) 
 - [Weaviate serverless cloud](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-2&ref_=beagle&applicationId=AWSMPContessa)
 - [Weaviate enterprise cloud](https://aws.amazon.com/marketplace/pp/prodview-27nbweprm7hha?sr=0-3&ref_=beagle&applicationId=AWSMPContessa)
 
