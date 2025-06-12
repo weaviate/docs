@@ -56,7 +56,6 @@ If you cancel your Weaviate AWS marketplace subscription, your Weaviate organiza
 
 ### Other marketplace offerings
 
-- [Weaviate Kubernetes cluster](https://aws.amazon.com/marketplace/pp/prodview-cicacyv63r43i?sr=0-1&ref_=beagle&applicationId=AWSMPContessa) this product uses a CloudFormation template to create an EKS cluster with Weaviate already installed. 
 - [Weaviate serverless cloud](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-2&ref_=beagle&applicationId=AWSMPContessa)
 - [Weaviate enterprise cloud](https://aws.amazon.com/marketplace/pp/prodview-27nbweprm7hha?sr=0-3&ref_=beagle&applicationId=AWSMPContessa)
 
