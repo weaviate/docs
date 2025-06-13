@@ -28,18 +28,7 @@ const siteRedirects = {
       to: "/cloud/tools/query-tool",
       from: "/weaviate/current/core-knowledge/console",
     },
-    {
-      to: "/cloud/tools/query-tool",
-      from: "/wcs/guides/console",
-    },
-    {
-      to: "/cloud/manage-clusters/create",
-      from: "/wcs/guides/create-instance",
-    },
-    {
-      to: "/cloud/manage-clusters/connect",
-      from: "/wcs/guides/authentication",
-    },
+
     // Client library redirects
     {
       to: "/weaviate/client-libraries/typescript",
@@ -205,39 +194,6 @@ const siteRedirects = {
       from: "/weaviate/current/quickstart/console",
     },
 
-    // WCD redirects
-    {
-      to: "/cloud/faq",
-      from: "/wcs/troubleshooting",
-    },
-    {
-      to: "/cloud/tools/query-tool",
-      from: "/wcs/platform/ssconsole",
-    },
-    {
-      to: "/cloud/manage-clusters/status",
-      from: "/wcs/platform/cluster-status",
-    },
-    {
-      to: "/cloud/tools/query-tool",
-      from: "/wcs/console",
-    },
-    {
-      to: "/cloud/manage-clusters/status",
-      from: "/wcs/cluster-status",
-    },
-    {
-      to: "/cloud/manage-clusters/connect",
-      from: "/wcs/conect",
-    },
-    {
-      to: "/cloud/manage-clusters/create",
-      from: "/wcs/create-instance",
-    },
-    {
-      to: "/cloud/manage-clusters/upgrade",
-      from: "/wcs/upgrade",
-    },
     // Tutorial redirects
     {
       to: "/weaviate/starter-guides/managing-collections",
