@@ -155,11 +155,3 @@ status = 301
 from = "/docs/weaviate/roadmap"
 to   = "/docs/weaviate/release-notes"
 status = 301
-
-## Because baseUrl is /docs but pages are served directly under /build
-
-[[redirects]]
-  from = "/docs/*"
-  to = "/:splat"
-  status = 200
-  force = true
