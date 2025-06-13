@@ -13,12 +13,12 @@ If you are upgrading from a previous version of Weaviate, see the [Migration Gui
 
 To install and configure Weaviate, see the following:
 
-- **[Weaviate Cloud](../../cloud/quickstart.mdx)**: Managed services for development and production environments.
+- **[Weaviate Cloud](docs/cloud/quickstart.mdx)**: Managed services for development and production environments.
 - **[Docker Compose](docs/deploy/installation-guides/docker-installation.md)**: Docker containers are well suited for development and testing.
 - **[Kubernetes](docs/deploy/installation-guides/k8s-installation.md)**: Kubernetes is ideal for scalable, production deployments.
 - **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
-- **[Snowpark Container Services](./spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
-- **[Embedded Weaviate](./embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
+- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
+- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
 
 :::caution Native Windows support
 
@@ -41,9 +41,9 @@ import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
 When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
 
 ## Related pages
-- [Connect to Weaviate](../connections/index.mdx)
-- [Weaviate Quickstart](../quickstart/index.md)
-- [Weaviate Cloud Quickstart](../../cloud/quickstart.mdx)
+- [Connect to Weaviate](docs/weaviate/connections/index.mdx)
+- [Weaviate Quickstart](docs/weaviate/quickstart/index.md)
+- [Weaviate Cloud Quickstart](docs/cloud/quickstart.mdx)
 - [References: Configuration](../configuration/index.mdx)
 
 ## Questions and feedback
