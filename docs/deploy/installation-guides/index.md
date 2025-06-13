@@ -28,7 +28,7 @@ Although Weaviate can be used on Windows via containerized environments like [Do
 
 ## Configuration files
 
-Docker Compose and Kubernetes use yaml files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) file. Kubernetes relies on [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
+Docker Compose and Kubernetes use `yaml` files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) file. Kubernetes relies on [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
 
 If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
 
