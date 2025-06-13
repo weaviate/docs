@@ -81,7 +81,7 @@ export default function RecipesCards({ path }) {
       try {
         setLoading(true);
         setError(null);
-        const indexPath = "/docs/config/index.toml";
+        const indexPath = "/config/index.toml";
 
         console.log("Attempting to fetch index.toml from:", indexPath);
         console.log("Current path category for filtering:", pathCategory);

@@ -12,30 +12,30 @@ const DOC_SYSTEMS = {
         baseUrl:
             'https://weaviate-python-client.readthedocs.io/en/stable',
         constructUrl: (baseUrl, ref) => `${baseUrl}/${ref}`,
-        icon: '/docs/img/site/logo-py.svg',
+        icon: '/img/site/logo-py.svg',
     },
     pyv3: {
         baseUrl:
             'https://weaviate-python-client.readthedocs.io/en/v3.26.2',
         constructUrl: (baseUrl, ref) => `${baseUrl}/${ref}`,
-        icon: '/docs/img/site/logo-py.svg',
+        icon: '/img/site/logo-py.svg',
     },
     ts: {
         baseUrl: 'https://weaviate.github.io/typescript-client',
         constructUrl: (baseUrl, ref) => `${baseUrl}/${ref}`,
-        icon: '/docs/img/site/logo-ts.svg',
+        icon: '/img/site/logo-ts.svg',
     },
     go: {
         baseUrl:
             'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v5/weaviate',
         constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
-        icon: '/docs/img/site/logo-go.svg',
+        icon: '/img/site/logo-go.svg',
     },
     java: {
         baseUrl:
             'https://javadoc.io/doc/io.weaviate/client/latest/',
         constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
-        icon: '/docs/img/site/logo-java.svg',
+        icon: '/img/site/logo-java.svg',
     },
 };
 

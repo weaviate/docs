@@ -21,7 +21,7 @@ const config = {
   staticDirectories: ["static"],
   // url: "https://weaviate.io",
   url: "https://weaviate-docs.netlify.app",
-  baseUrl: "/docs/",
+  baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -37,7 +37,7 @@ const config = {
       "@scalar/docusaurus",
       {
         label: "",
-        route: "/docs/weaviate/api/rest",
+        route: "/weaviate/api/rest",
         configuration: {
           spec: {
             // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
@@ -78,10 +78,10 @@ const config = {
   ],
   stylesheets: [
     // Add Font Awesome stylesheets
-    "/docs/fonts/font-awesome/fontawesome.css",
-    "/docs/fonts/font-awesome/solid.css",
-    "/docs/fonts/font-awesome/regular.css",
-    "/docs/fonts/font-awesome/brands.css",
+    "/fonts/font-awesome/fontawesome.css",
+    "/fonts/font-awesome/solid.css",
+    "/fonts/font-awesome/regular.css",
+    "/fonts/font-awesome/brands.css",
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
