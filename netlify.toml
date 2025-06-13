@@ -5,8 +5,64 @@
   [headers.values]
     access-control-allow-origin = "*"
 
-## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
+## WCS redirects
 
+[[redirects]]
+from = "/wcs/troubleshooting"
+to   = "/cloud/faq"
+status = 301
+
+[[redirects]]
+from = "/wcs/platform/ssconsole"
+to   = "/cloud/tools/query-tool"
+status = 301
+
+[[redirects]]
+from = "/wcs/platform/cluster-status"
+to   = "/cloud/manage-clusters/status"
+status = 301
+
+[[redirects]]
+from = "/wcs/console"
+to   = "/cloud/tools/query-tool"
+status = 301
+
+[[redirects]]
+from = "/wcs/cluster-status"
+to   = "/cloud/manage-clusters/status"
+status = 301
+
+[[redirects]]
+from = "/wcs/conect"
+to   = "/cloud/manage-clusters/connect"
+status = 301
+
+[[redirects]]
+from = "/wcs/create-instance"
+to   = "/cloud/manage-clusters/create"
+status = 301
+
+[[redirects]]
+from = "/wcs/upgrade"
+to   = "/cloud/manage-clusters/upgrade"
+status = 301
+
+[[redirects]]
+from = "/wcs/guides/console"
+to   = "/cloud/tools/query-tool"
+status = 301
+
+[[redirects]]
+from = "/wcs/guides/create-instance"
+to   = "/cloud/manage-clusters/create"
+status = 301
+
+[[redirects]]
+from = "/wcs/guides/authentication"
+to   = "/cloud/manage-clusters/connect"
+status = 301
+
+## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
 ## Redirect anything from /developers to /docs
 
 [[redirects]]
@@ -99,3 +155,9 @@ status = 301
 from = "/docs/weaviate/roadmap"
 to   = "/docs/weaviate/release-notes"
 status = 301
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/:splat"
+  status = 200
+  force = true
