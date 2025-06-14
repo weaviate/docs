@@ -17,7 +17,7 @@ By the end of this tutorial, you'll be able to see how to you can import your da
 
 ## Installation
 
-We recommend reading the [Quickstart tutorial](../quickstart/index.md) first before tackling this tutorial.
+We recommend reading the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first before tackling this tutorial.
 
 We will install the python `weaviate-client` and also run Spark locally for which we need to install the python `pyspark` package. Use the following command in your terminal to get both:
 ```bash
@@ -32,7 +32,7 @@ We will also need the Weaviate Spark connector. You can download this by running
 curl https://github.com/weaviate/spark-connector/releases/download/v||site.spark_connector_version||/spark-connector-assembly-||site.spark_connector_version||.jar --output spark-connector-assembly-||site.spark_connector_version||.jar
 ```
 
-For this tutorial, you will also need a Weaviate instance running at `http://localhost:8080`. This instance does not need to have any modules and can be setup by following the [Quickstart tutorial](../quickstart/index.md).
+For this tutorial, you will also need a Weaviate instance running at `http://localhost:8080`. This instance does not need to have any modules and can be setup by following the [Quickstart tutorial](docs/weaviate/quickstart/index.md).
 
 You will also need Java 8+ and Scala 2.12 installed. You can get these separately setup or a more convenient way to get both of these set up is to install [IntelliJ](https://www.jetbrains.com/idea/).
 
@@ -102,7 +102,7 @@ To verify this is done correctly we can have a look at the first few records:
 ## Writing to Weaviate
 
 :::tip
-Prior to this step, make sure your Weaviate instance is running at `http://localhost:8080`. You can refer to the [Quickstart tutorial](../quickstart/index.md) for instructions on how to set that up.
+Prior to this step, make sure your Weaviate instance is running at `http://localhost:8080`. You can refer to the [Quickstart tutorial](docs/weaviate/quickstart/index.md) for instructions on how to set that up.
 :::
 
 To quickly get a Weaviate instance running you can save the following `docker-compose.yml` file to your local machine:

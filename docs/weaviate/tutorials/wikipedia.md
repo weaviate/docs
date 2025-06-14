@@ -61,7 +61,7 @@ import {DownloadButton} from '@theme/Buttons';
 
 ## Create a Weaviate instance
 
-We can create a Weaviate instance locally using the [embedded](../installation/embedded.md) option on Linux (transparent and fastest), Docker on any OS (fastest import and search), or in the cloud using the Weaviate Cloud (easiest setup, but importing may be slower due to the network speed). Each option is explained on its [Installation](../installation/index.md) page.
+We can create a Weaviate instance locally using the [embedded](/docs/deploy/installation-guides/embedded.md) option on Linux (transparent and fastest), Docker on any OS (fastest import and search), or in the cloud using the Weaviate Cloud (easiest setup, but importing may be slower due to the network speed). Each option is explained on its [Installation](/docs/deploy/index.mdx) page.
 
 :::caution text2vec-openai
 If using the Docker option, make sure to select "With Modules" (instead of standalone), and the `text2vec-openai` module when using the Docker configurator, at the "Vectorizer & Retriever Text Module" step. At the "OpenAI Requires an API Key" step, you can choose to "provide the key with each request", as we'll do so in the next section.

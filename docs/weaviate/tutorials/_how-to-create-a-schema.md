@@ -20,7 +20,7 @@ By the end of this tutorial, you should have a good idea of how to create a sche
 
 ## Prerequisites
 
-We recommend reading the [Quickstart tutorial](../quickstart/index.md) first before tackling this tutorial.
+We recommend reading the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first before tackling this tutorial.
 
 For the tutorial, you will need a Weaviate instance running with the `text2vec-contextionary` module. We assume your instance is running at `http://localhost:8080`.
 
