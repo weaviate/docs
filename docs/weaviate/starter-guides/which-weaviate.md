@@ -17,7 +17,7 @@ This page helps you to find the right combination for your project.
 Weaviate can be deployed in the following ways:
 - [Embedded Weaviate](/docs/deploy/installation-guides/embedded.md)
 - [Docker-Compose](/docs/deploy/installation-guides/docker-installation.md)
-- [Weaviate Cloud (WCD)](/docs/deploy/installation-guides/weaviate-cloud-services.md)
+- [Weaviate Cloud (WCD)](/docs/deploy/installation-guides/weaviate-cloud.md)
 - [Self-managed Kubernetes](/docs/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 

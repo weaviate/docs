@@ -754,7 +754,7 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/installation-guides/weaviate-cloud-services",
+          id: "deploy/installation-guides/weaviate-cloud",
           className: "sidebar-item",
         },
         {

@@ -156,6 +156,43 @@ from = "/docs/weaviate/roadmap"
 to   = "/docs/weaviate/release-notes"
 status = 301
 
+## Installation redirects
+
+[[redirects]]
+from = "/docs/weaviate/installation/weaviate-cloud-services"
+to   = "/docs/deploy/installation-guides/weaviate-cloud"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/installation/docker-compose"
+to   = "/docs/deploy/installation-guides/docker-installation"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/installation/kubernetes"
+to   = "/docs/deploy/installation-guides/k8s-installation"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/installation/embedded"
+to   = "/docs/deploy/installation-guides/embedded"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/installation/aws-marketplace"
+to   = "/docs/deploy/installation-guides/eks"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/installation/gc-marketplace"
+to   = "/docs/deploy/installation-guides/gke-marketplace"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/installation/spcs-integration"
+to   = "/docs/deploy/installation-guides/spcs-integration"
+status = 301
+
 ## Because baseUrl is /docs but pages are served directly under /build
 
 [[redirects]]
