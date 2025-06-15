@@ -120,7 +120,7 @@ In this section, we will use Weaviate's model integration with JinaAI's ColBERT 
 
 ### 1.1. Connect to Weaviate
 
-First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](../connections/index.mdx)).
+First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](docs/weaviate/connections/index.mdx)).
 
 <Tabs groupId="languages">
 
@@ -307,7 +307,7 @@ This allows you to use any pre-existing embeddings you may have, while benefitin
 
 ### 2.1. Connect to Weaviate
 
-First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](../connections/index.mdx)).
+First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](docs/weaviate/connections/index.mdx)).
 
 <Tabs groupId="languages">
 
