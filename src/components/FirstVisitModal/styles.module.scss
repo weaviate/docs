@@ -1,4 +1,4 @@
-// FirstVisitModal.module.scss - Simplified for iframe content
+// FirstVisitModal.module.scss - Updated with header and tabs
 
 // CSS Variables for first visit modal
 :root {
@@ -6,48 +6,209 @@
   --text-color-light: #666;
   --link-color: #1976d2;
   --link-hover-color: #1565c0;
+  --border-color: #eaeaea;
+  --card-bg: #f8f9fa;
 
   // Dark mode
   --dark-text-color: #ffffff;
   --dark-text-color-light: rgba(255, 255, 255, 0.8);
   --dark-link-color: #64b5f6;
+  --dark-border-color: #242e3e;
+  --dark-card-bg: #253246;
 }
 
 // Main modal container - 80% width
 .firstVisitModal {
   width: 80vw !important;
   max-width: 80vw !important;
-  max-height: 90vh !important;
+  height: 85vh !important;
+  max-height: 85vh !important;
   margin: 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 // Modal content wrapper
 .modalContent {
-  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
   height: 100%;
+  overflow: hidden;
+
+  // Override any global heading styles (like .docs-doc-page h2) that might affect modal layout
+  // These global styles add unwanted padding that breaks our modal's compact design
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 }
 
-// Header section
-.header {
-  text-align: left;
+// Custom Modal Header
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.3rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
 
-  h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin: 0 0 1.5rem 0;
+  :global([data-theme="dark"]) & {
+    border-bottom-color: var(--dark-border-color);
+  }
+}
+
+.modalTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color);
+  // Override global .docs-doc-page h2 styles
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+
+  :global([data-theme="dark"]) & {
+    color: var(--dark-text-color);
+  }
+}
+
+.customCloseButton {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  :global([data-theme="dark"]) & {
+    color: var(--dark-text-color);
+    background: rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// Tabs container
+.tabsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 2rem 2rem 2rem;
+}
+
+// Custom tabs list
+.tabsList {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.5rem;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+  }
+
+  :global([data-theme="dark"]) & {
+    border-bottom-color: var(--dark-border-color);
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-color-light);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: fit-content;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
     color: var(--text-color);
+  }
 
-    :global([data-theme="dark"]) & {
+  :global([data-theme="dark"]) & {
+    color: var(--dark-text-color-light);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
       color: var(--dark-text-color);
     }
   }
 }
 
+.tabButtonActive {
+  color: var(--link-color);
+  border-bottom-color: var(--link-color);
+  background-color: rgba(25, 118, 210, 0.05);
+
+  :global([data-theme="dark"]) & {
+    color: var(--dark-link-color);
+    border-bottom-color: var(--dark-link-color);
+    background-color: rgba(100, 181, 246, 0.1);
+  }
+}
+
+.tabPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tabContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  overflow: hidden;
+}
+
+// Description text
 .description {
-  text-align: left;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
 
   p {
     font-size: 16px;
@@ -76,17 +237,114 @@
   }
 }
 
-// Iframe container
+// Tab link buttons (styled like links)
+.tabLink {
+  background: none;
+  border: none;
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+
+  &:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+  }
+
+  :global([data-theme="dark"]) & {
+    color: var(--dark-link-color);
+  }
+}
+
+// Section links grid
+.sectionLinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.linkCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  :global([data-theme="dark"]) & {
+    background: var(--dark-card-bg);
+    border-color: var(--dark-border-color);
+  }
+
+  h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 16px;
+    font-weight: 600;
+    // Override global heading styles
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    a {
+      color: var(--text-color);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--link-color);
+      }
+
+      :global([data-theme="dark"]) & {
+        color: var(--dark-text-color);
+
+        &:hover {
+          color: var(--dark-link-color);
+        }
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-color-light);
+    line-height: 1.4;
+
+    :global([data-theme="dark"]) & {
+      color: var(--dark-text-color-light);
+    }
+  }
+}
+
+// Iframe container for overview tab
 .iframeContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 400px;
+  overflow: hidden;
+  margin-top: 1rem;
 
-  // Ensure iframe container takes up remaining space
+  // Override the inline styles to make iframe flexible
   > div {
-    flex: 1;
-    min-height: 400px;
+    flex: 1 !important;
+    height: 100% !important;
+    padding-bottom: 0 !important;
+    position: relative !important;
+
+    iframe {
+      width: 100% !important;
+      height: 100% !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
   }
 }
 
@@ -95,15 +353,20 @@
   .firstVisitModal {
     width: 90vw !important;
     max-width: 90vw !important;
+    height: 85vh !important;
     margin: 1rem !important;
   }
 
-  .modalContent {
-    padding: 2rem;
+  .modalHeader {
+    padding: 0.875rem 1.5rem;
   }
 
-  .header h2 {
-    font-size: 28px;
+  .modalTitle {
+    font-size: 22px;
+  }
+
+  .tabsContainer {
+    padding: 0 1.5rem 1.5rem 1.5rem;
   }
 }
 
@@ -111,20 +374,27 @@
   .firstVisitModal {
     width: 95vw !important;
     max-width: 95vw !important;
-    max-height: 95vh !important;
+    height: 90vh !important;
+    max-height: 90vh !important;
     margin: 0.5rem !important;
   }
 
-  .modalContent {
-    padding: 1.5rem;
-    gap: 1.5rem;
+  .modalHeader {
+    padding: 0.75rem 1rem;
   }
 
-  .header {
-    h2 {
-      font-size: 24px;
-      margin-bottom: 1rem;
-    }
+  .modalTitle {
+    font-size: 20px;
+  }
+
+  .customCloseButton {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+
+  .tabsContainer {
+    padding: 0 1rem 1rem 1rem;
   }
 
   .description {
@@ -133,12 +403,18 @@
     }
   }
 
-  .iframeContainer {
-    min-height: 300px;
+  .sectionLinks {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 
-    > div {
-      min-height: 300px;
-    }
+  .linkCard {
+    padding: 1.25rem;
+  }
+
+  .tabButton {
+    padding: 0.5rem 1rem;
+    font-size: 13px;
   }
 }
 
@@ -147,16 +423,20 @@
     margin: 0.25rem !important;
     width: calc(100vw - 0.5rem) !important;
     max-width: calc(100vw - 0.5rem) !important;
-    max-height: 95vh !important;
+    height: calc(100vh - 0.5rem) !important;
+    max-height: calc(100vh - 0.5rem) !important;
   }
 
-  .modalContent {
-    padding: 1rem;
-    gap: 1rem;
+  .modalHeader {
+    padding: 0.6rem 0.75rem;
   }
 
-  .header h2 {
-    font-size: 22px;
+  .modalTitle {
+    font-size: 18px;
+  }
+
+  .tabsContainer {
+    padding: 0 0.75rem 0.75rem 0.75rem;
   }
 
   .description {
@@ -165,11 +445,15 @@
     }
   }
 
-  .iframeContainer {
-    min-height: 250px;
+  .linkCard {
+    padding: 1rem;
 
-    > div {
-      min-height: 250px;
+    h4 {
+      font-size: 15px;
+    }
+
+    p {
+      font-size: 13px;
     }
   }
 }
