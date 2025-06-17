@@ -1,6 +1,7 @@
 ---
 title: Data structure
 sidebar_position: 10
+description: "Core data object concepts, schema design, and data organization principles in Weaviate."
 image: og/docs/concepts.jpg
 ---
 

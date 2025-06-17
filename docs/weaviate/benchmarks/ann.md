@@ -1,6 +1,7 @@
 ---
 title: ANN Benchmark
 sidebar_position: 1
+description: "Approximate Nearest Neighbor performance benchmarks measuring Weaviate's search accuracy and speed in real-world scenarios."
 image: og/docs/benchmarks.jpg
 # tags: ['Weaviate', 'performance', 'benchmarks', 'ANN benchmarks', 'vector database benchmarks']
 ---

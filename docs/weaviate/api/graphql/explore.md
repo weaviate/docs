@@ -1,6 +1,7 @@
 ---
 title: Explore
 sidebar_position: 99
+description: "Explore function reference for discovering data relationships when single inference modules are enabled."
 image: og/docs/api.jpg
 # tags: ['graphql', 'explore{}']
 ---

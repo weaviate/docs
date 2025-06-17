@@ -1,6 +1,7 @@
 ---
 title: Async API
 sidebar_position: 40
+description: "Asynchronous Python client documentation for high-performance, non-blocking Weaviate operations."
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---
