@@ -1,0 +1,175 @@
+// FirstVisitModal.module.scss - Simplified for iframe content
+
+// CSS Variables for first visit modal
+:root {
+  --text-color: #333;
+  --text-color-light: #666;
+  --link-color: #1976d2;
+  --link-hover-color: #1565c0;
+
+  // Dark mode
+  --dark-text-color: #ffffff;
+  --dark-text-color-light: rgba(255, 255, 255, 0.8);
+  --dark-link-color: #64b5f6;
+}
+
+// Main modal container - 80% width
+.firstVisitModal {
+  width: 80vw !important;
+  max-width: 80vw !important;
+  max-height: 90vh !important;
+  margin: 1rem !important;
+}
+
+// Modal content wrapper
+.modalContent {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+}
+
+// Header section
+.header {
+  text-align: left;
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    color: var(--text-color);
+
+    :global([data-theme="dark"]) & {
+      color: var(--dark-text-color);
+    }
+  }
+}
+
+.description {
+  text-align: left;
+
+  p {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+
+    :global([data-theme="dark"]) & {
+      color: var(--dark-text-color);
+    }
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        color: var(--link-hover-color);
+        text-decoration: underline;
+      }
+
+      :global([data-theme="dark"]) & {
+        color: var(--dark-link-color);
+      }
+    }
+  }
+}
+
+// Iframe container
+.iframeContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+
+  // Ensure iframe container takes up remaining space
+  > div {
+    flex: 1;
+    min-height: 400px;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .firstVisitModal {
+    width: 90vw !important;
+    max-width: 90vw !important;
+    margin: 1rem !important;
+  }
+
+  .modalContent {
+    padding: 2rem;
+  }
+
+  .header h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .firstVisitModal {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    max-height: 95vh !important;
+    margin: 0.5rem !important;
+  }
+
+  .modalContent {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .header {
+    h2 {
+      font-size: 24px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .description {
+    p {
+      font-size: 15px;
+    }
+  }
+
+  .iframeContainer {
+    min-height: 300px;
+
+    > div {
+      min-height: 300px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .firstVisitModal {
+    margin: 0.25rem !important;
+    width: calc(100vw - 0.5rem) !important;
+    max-width: calc(100vw - 0.5rem) !important;
+    max-height: 95vh !important;
+  }
+
+  .modalContent {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .header h2 {
+    font-size: 22px;
+  }
+
+  .description {
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .iframeContainer {
+    min-height: 250px;
+
+    > div {
+      min-height: 250px;
+    }
+  }
+}

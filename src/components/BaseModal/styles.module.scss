@@ -1,0 +1,133 @@
+// BaseModal.module.scss - Base Modal styles only
+
+// CSS Variables for base modal
+:root {
+  --modal-overlay-bg: rgba(0, 0, 0, 0.6);
+  --modal-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --modal-border-radius: 12px;
+  --modal-transition: all 0.3s ease;
+
+  // Base colors
+  --modal-bg: white;
+  --modal-text-color: #333;
+  --modal-border-color: #eaeaea;
+
+  // Dark mode variables
+  --modal-dark-bg: #1f2228;
+  --modal-dark-text-color: #ffffff;
+  --modal-dark-border-color: #242e3e;
+}
+
+// Modal Overlay
+.modalOverlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: var(--modal-overlay-bg) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 10001 !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(2px);
+  margin: 0 !important;
+  padding: 0 !important;
+
+  &.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+// Modal Content
+.modalContent {
+  background: var(--modal-bg);
+  border-radius: var(--modal-border-radius);
+  box-shadow: var(--modal-shadow);
+  position: relative;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: var(--modal-transition);
+  overflow-y: auto;
+  max-height: 90vh !important;
+  width: auto;
+  margin: 1rem;
+
+  // Animation when active
+  .modalOverlay.active & {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+
+  // Dark mode support
+  :global([data-theme="dark"]) & {
+    background-color: var(--modal-dark-bg);
+    color: var(--modal-dark-text-color);
+  }
+}
+
+// Close Button
+.modalClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--modal-text-color);
+  transition: background-color 0.2s ease;
+  z-index: 1;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  // Dark mode support
+  :global([data-theme="dark"]) & {
+    color: var(--modal-dark-text-color);
+    background: rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// Base responsive behavior
+@media (max-width: 768px) {
+  .modalContent {
+    max-height: 90vh !important;
+    overflow-y: auto;
+    margin: 0.5rem !important;
+    width: calc(100vw - 1rem) !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalClose {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .modalContent {
+    margin: 0.25rem !important;
+    width: calc(100vw - 0.5rem) !important;
+    max-width: calc(100vw - 0.5rem) !important;
+  }
+}

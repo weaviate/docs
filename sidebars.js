@@ -9,11 +9,6 @@ const sidebars = {
       label: "Introduction",
     },
     {
-      type: "link",
-      label: "Installation",
-      href: "https://weaviate.io/docs/deploy/installation-guides",
-    },
-    {
       type: "category",
       label: "Quickstart",
       link: {
@@ -21,6 +16,11 @@ const sidebars = {
         id: "weaviate/quickstart/index",
       },
       items: ["weaviate/quickstart/local"],
+    },
+    {
+      type: "link",
+      label: "Installation",
+      href: "https://weaviate.io/docs/deploy/installation-guides",
     },
     {
       type: "category",
