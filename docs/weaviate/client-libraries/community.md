@@ -1,6 +1,7 @@
 ---
 title: Community clients
 sidebar_position: 95
+description: "Community-developed Weaviate client libraries and integrations for additional language support."
 image: og/docs/client-libraries.jpg
 # tags: ['client libraries', 'cli']
 ---

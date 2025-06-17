@@ -1,7 +1,6 @@
 ---
 title: Data types
-description: Data Types in Weaviate Schema
-sidebar_position: 20
+description: "Weaviate schema data types reference for defining object properties and field specifications."
 image: og/docs/configuration.jpg
 # tags: ['Data types']
 ---

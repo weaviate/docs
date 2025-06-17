@@ -1,7 +1,7 @@
 ---
 title: Search operators
-description: Leverage search operators in Weaviate's GraphQL API for targeted data retrieval.
 sidebar_position: 20
+description: "GraphQL search operators guide for advanced query construction and precise data targeting techniques."
 image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---

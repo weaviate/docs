@@ -1,6 +1,7 @@
 ---
 title: Vector Search
 sidebar_position: 20
+description: "Similarity-based semantic search using vector embeddings for text, images, audio, and multimodal data."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'vector search', 'vector']
 ---

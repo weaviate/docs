@@ -1,7 +1,7 @@
 ---
 title: Best practices
-description: Best practices for using Weaviate
 sidebar_position: 10
+description: "Expert recommendations and optimization strategies for maximizing Weaviate performance."
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---

@@ -1,6 +1,6 @@
 ---
 title: gRPC
-description: Integrate gRPC API with Weaviate for efficient data access.
+description: "gRPC API integration guide for high-performance, efficient communication with Weaviate database instances."
 image: og/docs/api.jpg
 # tags: ['schema']
 ---

@@ -1,6 +1,7 @@
 ---
 title: Resource Planning
 sidebar_position: 90
+description: "CPU, memory, and GPU resource planning guidelines for optimal Weaviate performance at scale."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'resource', 'cpu', 'memory', 'gpu']
 ---

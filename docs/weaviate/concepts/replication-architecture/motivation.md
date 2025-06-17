@@ -1,6 +1,7 @@
 ---
 title: Use Cases (Motivation)
 sidebar_position: 1
+description: "Four key use cases demonstrating the benefits and configuration requirements for Weaviate replication."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---

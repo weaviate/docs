@@ -1,6 +1,7 @@
 ---
 title: Multi-Data center
 sidebar_position: 5
+description: "Future multi-data center replication capabilities for distributed deployments across geographic regions."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---

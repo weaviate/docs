@@ -1,6 +1,7 @@
 ---
 title: "Legacy (v3) API (DEPRECATED)"
 sidebar_position: 80
+description: "Deprecated Python v3 client documentation maintained for legacy application compatibility only."
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---

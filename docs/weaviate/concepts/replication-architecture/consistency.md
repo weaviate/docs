@@ -1,6 +1,7 @@
 ---
 title: Consistency
 sidebar_position: 4
+description: "Replication factor configuration and data consistency models across Weaviate cluster replicas."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---

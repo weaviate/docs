@@ -1,6 +1,7 @@
 ---
 title: Cluster Architecture
 sidebar_position: 3
+description: "Node behavior and cluster coordination mechanisms in Weaviate's distributed replication system."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---

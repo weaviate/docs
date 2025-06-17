@@ -1,6 +1,7 @@
 ---
 title: Search
 sidebar_position: 5
+description: "Overview of search capabilities designed for billion-scale datasets and real-time queries."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search']
 ---

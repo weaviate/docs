@@ -1,6 +1,6 @@
 ---
 title: Distance metrics
-sidebar_position: 30
+description: "Distance metric options for vector similarity calculations and search result ranking algorithms."
 image: og/docs/configuration.jpg
 ---
 
