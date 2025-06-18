@@ -11,7 +11,7 @@ Weaviate Embeddings is a paid service available through Weaviate Cloud. You can 
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-[Weaviate Embeddings](/docs/cloud/embeddings) offers vectorizer models to Weaviate Cloud users, allowing users to leverage Weaviate Embeddings' models directly from a Weaviate Cloud database instance.
+[Weaviate Embeddings](/cloud/embeddings) offers vectorizer models to Weaviate Cloud users, allowing users to leverage Weaviate Embeddings' models directly from a Weaviate Cloud database instance.
 
 These integrations empower developers to build sophisticated AI-driven applications with ease.
 

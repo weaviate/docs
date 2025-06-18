@@ -52,7 +52,7 @@ Each Weaviate data object is structured as follows:
 
 Most commonly, Weaviate users import data through a Weaviate client library.
 
-It is worth noting, however, that data is ultimately added through the RESTful API, either through the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects` endpoint</SkipLink> or the <SkipLink href="/docs/weaviate/api/rest#tag/batch">`batch` endpoint</SkipLink>.
+It is worth noting, however, that data is ultimately added through the RESTful API, either through the <SkipLink href="/weaviate/api/rest#tag/objects">`objects` endpoint</SkipLink> or the <SkipLink href="/weaviate/api/rest#tag/batch">`batch` endpoint</SkipLink>.
 
 As the names suggest, the use of these endpoints depend on whether objects are being imported as batches or individually.
 
@@ -132,7 +132,7 @@ When importing large datasets, it may be worth planning out an optimized import 
 1. To use multiple CPUs efficiently, enable sharding when you import data. For the fastest imports, enable sharding even on a single node.
 1. Use [parallelization](https://www.computerhope.com/jargon/p/parallelization.htm); if the CPUs are not maxed out, just add another import process.
 1. Use `htop` when importing to see if all CPUs are maxed out.
-1. To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](docs/deploy/configuration/env-vars/index.md).
+1. To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](/deploy/configuration/env-vars/index.md).
 1. For Kubernetes, a few large machines are faster than many small machines (due to network latency).
 
 Our rules of thumb are:
@@ -164,7 +164,7 @@ A request with a `200` response may still include object-level errors, which is 
 - [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
 - [Tutorial: Queries in detail](./query.md)
 - [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/docs/cloud/tools/query-tool.mdx)
+- [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
 
 ### Other object operations
 

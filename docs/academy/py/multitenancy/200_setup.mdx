@@ -178,7 +178,7 @@ services:
 
 ### <i class="fa-solid fa-chalkboard"></i> Configuration highlights
 
-You may have seen Docker configurations elsewhere ([e.g. Docs](/docs/deploy/installation-guides/docker-installation.md), [Academy](../starter_text_data/101_setup_weaviate/20_create_instance/20_create_docker.mdx)). But these highlighted configurations may be new to you:
+You may have seen Docker configurations elsewhere ([e.g. Docs](/deploy/installation-guides/docker-installation.md), [Academy](../starter_text_data/101_setup_weaviate/20_create_instance/20_create_docker.mdx)). But these highlighted configurations may be new to you:
 
 - `ASYNC_INDEXING`: This will enable asynchronous indexing. This is useful for high-volume data insertion, and enables us to use the `dynamic` index type, which you will learn about later on.
 - `ENABLE_MODULES`: We enable `offload-s3` to demonstrate tenant offloading later on. Offloading helps us to manage inactive users' data efficiently.

@@ -20,7 +20,7 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 
 :::
 
-[Scalar quantization (SQ)](/docs/weaviate/concepts/vector-quantization#scalar-quantization) is a vector compression technique that can reduce the size of a vector.
+[Scalar quantization (SQ)](/weaviate/concepts/vector-quantization#scalar-quantization) is a vector compression technique that can reduce the size of a vector.
 
 To use SQ, enable it in the collection definition, then add data to the collection.
 
@@ -60,7 +60,7 @@ To tune SQ, set these `vectorIndexConfig` parameters.
 | `sq`: `rescoreLimit` | integer | -1 | The minimum number of candidates to fetch before rescoring. |
 | `sq`: `trainingLimit` | integer | 100000 | The size of the training set to determine scalar bucket boundaries. |
 | `sq`: `cache` | boolean | `false` | Use the vector cache when true. |
-| `vectorCacheMaxObjects` | integer | `1e12` | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](/docs/weaviate/concepts/indexing/vector-index.md#vector-cache-considerations). |
+| `vectorCacheMaxObjects` | integer | `1e12` | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](/weaviate/concepts/indexing/vector-index.md#vector-cache-considerations). |
 
 
 <Tabs groupId="languages">
@@ -96,10 +96,10 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 ## Related pages
-- [Configuration: Vector index](/docs/weaviate/config-refs/schema/vector-index.md)
-- [Concepts: Vector index](/docs/weaviate/concepts/indexing/vector-index.md)
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Tutorial: Schema](/docs/weaviate/starter-guides/managing-collections/index.mdx)
+- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
+- [Tutorial: Schema](/weaviate/starter-guides/managing-collections/index.mdx)
 
 ## Questions and feedback
 

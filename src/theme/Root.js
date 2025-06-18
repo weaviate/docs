@@ -11,7 +11,7 @@ export default function Root({ children }) {
 
       const isDocsOrBlogs =
         (currentPath.startsWith("/docs") &&
-          !currentPath.startsWith("/docs/weaviate/api/rest")) ||
+          !currentPath.startsWith("/weaviate/api/rest")) ||
         currentPath.startsWith("/blog");
 
       const existingScript = document.querySelector(

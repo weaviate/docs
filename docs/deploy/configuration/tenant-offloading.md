@@ -9,7 +9,7 @@ image: og/docs/configuration.jpg
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-This page explains how to configure tenant offloading in Weaviate. For information on how to offload and onload tenants, see [How-to: manage tenant states](docs/weaviate/manage-collections/tenant-states.mdx).
+This page explains how to configure tenant offloading in Weaviate. For information on how to offload and onload tenants, see [How-to: manage tenant states](/weaviate/manage-collections/tenant-states.mdx).
 
 ## Tenant offload modules
 
@@ -17,11 +17,11 @@ import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-To use tenant offloading in Weaviate, you need enable a relevant offloading [module](/docs/weaviate/configuration/modules.md).
+To use tenant offloading in Weaviate, you need enable a relevant offloading [module](/weaviate/configuration/modules.md).
 
 ## `offload-s3` module
 
-The `offload-s3` module enables you to [offload or onload tenants](docs/weaviate/manage-collections/tenant-states.mdx) to/from an S3 bucket.
+The `offload-s3` module enables you to [offload or onload tenants](/weaviate/manage-collections/tenant-states.mdx) to/from an S3 bucket.
 
 To use the `offload-s3` module, add `offload-s3` to the `ENABLE_MODULES` in your docker-compose file as shown below.
 
@@ -91,9 +91,9 @@ The backup module will first try to authenticate itself using AWS IAM. If the au
 | `AWS_REGION` | (Optional) The AWS Region. If not provided, the module will try to parse `AWS_DEFAULT_REGION`. |
 
 ## Related pages
-- [Configure: Modules](docs/weaviate/configuration/modules.md)
-- [How-to: Manage tenant states](docs/weaviate/manage-collections/tenant-states.mdx)
-- [Guide: Manage tenant states](docs/weaviate/starter-guides/managing-resources/tenant-states.mdx)
+- [Configure: Modules](/weaviate/configuration/modules.md)
+- [How-to: Manage tenant states](/weaviate/manage-collections/tenant-states.mdx)
+- [Guide: Manage tenant states](/weaviate/starter-guides/managing-resources/tenant-states.mdx)
 
 ## Questions and feedback
 

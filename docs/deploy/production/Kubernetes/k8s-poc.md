@@ -79,7 +79,7 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate
     - readonly_user2
     - api-key-user-readOnly
 ```
-[Admin List Configuration](docs/deploy/configuration/authorization.md#admin-list-kubernetes)
+[Admin List Configuration](/deploy/configuration/authorization.md#admin-list-kubernetes)
 
 </details>
 

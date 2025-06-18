@@ -100,7 +100,6 @@ const config = {
           alt: "Weaviate",
           src: "/img/site/weaviate-logo-horizontal-light-1.svg",
           srcDark: "/img/site/weaviate-logo-horizontal-dark-1.svg",
-          // href: "/docs/weaviate",
           href: "https://weaviate.io",
         },
         items: [

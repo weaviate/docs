@@ -35,7 +35,7 @@ This page describes how to use the Query Agent to answer natural language querie
 
 ### Weaviate instance
 
-This Agent is available exclusively for use with a Weaviate Cloud instance. Refer to the [Weaviate Cloud documentation](/docs/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+This Agent is available exclusively for use with a Weaviate Cloud instance. Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
 You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
 
@@ -417,7 +417,7 @@ This example outputs:
 
 ### Usage limits
 
-The current usage limit is 500 Query Agent queries per day per Weaviate Cloud [organization](/docs/cloud/platform/users-and-organizations.mdx#organizations).
+The current usage limit is 500 Query Agent queries per day per Weaviate Cloud [organization](/cloud/platform/users-and-organizations.mdx#organizations).
 
 ### Custom collection descriptions
 

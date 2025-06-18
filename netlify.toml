@@ -62,7 +62,7 @@ from = "/wcs/guides/authentication"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
-## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
+## Redirect starting paths "/" and "/docs" to "/weaviate"
 ## Redirect anything from /developers to /docs
 
 [[redirects]]
@@ -80,68 +80,68 @@ status = 301
 ## Manage data refactoring
 
 [[redirects]]
-from = "/docs/weaviate/manage-data"
-to   = "/docs/weaviate/manage-collections"
+from = "/weaviate/manage-data"
+to   = "/weaviate/manage-collections"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/collections"
-to   = "/docs/weaviate/manage-collections"
+from = "/weaviate/manage-data/collections"
+to   = "/weaviate/manage-collections"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/create"
-to   = "/docs/weaviate/manage-objects/create"
+from = "/weaviate/manage-data/create"
+to   = "/weaviate/manage-objects/create"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/import"
-to   = "/docs/weaviate/manage-objects/import"
+from = "/weaviate/manage-data/import"
+to   = "/weaviate/manage-objects/import"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/read"
-to   = "/docs/weaviate/manage-objects/read"
+from = "/weaviate/manage-data/read"
+to   = "/weaviate/manage-objects/read"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/read-all-objects"
-to   = "/docs/weaviate/manage-objects/read-all-objects"
+from = "/weaviate/manage-data/read-all-objects"
+to   = "/weaviate/manage-objects/read-all-objects"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/update"
-to   = "/docs/weaviate/manage-objects/update"
+from = "/weaviate/manage-data/update"
+to   = "/weaviate/manage-objects/update"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/delete"
-to   = "/docs/weaviate/manage-objects/delete"
+from = "/weaviate/manage-data/delete"
+to   = "/weaviate/manage-objects/delete"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/cross-references"
-to   = "/docs/weaviate/manage-collections/cross-references"
+from = "/weaviate/manage-data/cross-references"
+to   = "/weaviate/manage-collections/cross-references"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/multi-tenancy"
-to   = "/docs/weaviate/manage-collections/multi-tenancy"
+from = "/weaviate/manage-data/multi-tenancy"
+to   = "/weaviate/manage-collections/multi-tenancy"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/tenant-states"
-to   = "/docs/weaviate/manage-collections/tenant-states"
+from = "/weaviate/manage-data/tenant-states"
+to   = "/weaviate/manage-collections/tenant-states"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/migrate"
-to   = "/docs/weaviate/manage-collections/migrate"
+from = "/weaviate/manage-data/migrate"
+to   = "/weaviate/manage-collections/migrate"
 status = 301
 
 ## Roadmap page redirect
 
 [[redirects]]
-from = "/docs/weaviate/roadmap"
-to   = "/docs/weaviate/release-notes"
+from = "/weaviate/roadmap"
+to   = "/weaviate/release-notes"
 status = 301

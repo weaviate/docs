@@ -24,7 +24,7 @@ You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2
 1. Subscribe to the product by following the instructions on the page. 
     1. Click <kbd>View Purchase Options</kbd>, then go to the next page.
     2. Review the pricing, terms and conditions, and click <kbd>Subscribe</kbd>. 
-From there you will be prompted to set up your account on  [Weaviate Cloud](docs/cloud/index.mdx).
+From there you will be prompted to set up your account on  [Weaviate Cloud](/cloud/index.mdx).
 
 :::info
 <details>

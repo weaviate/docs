@@ -93,7 +93,7 @@ To create an object, specify the following:
 - The target collection
 - If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant]( ../manage-collections/multi-tenancy.mdx)
 
-By default, [auto-schema](/docs/weaviate/config-refs/schema#auto-schema) creates new collections and adds new properties.
+By default, [auto-schema](/weaviate/config-refs/schema#auto-schema) creates new collections and adds new properties.
 
 </details>
 
@@ -401,7 +401,7 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 
 <GeoLimitations/>
 
-If you want to supply a [`geoCoordinates`](/docs/weaviate/config-refs/datatypes.md#geocoordinates) property, you need to specify the `latitude` and `longitude` as floating point decimal degrees:
+If you want to supply a [`geoCoordinates`](/weaviate/config-refs/datatypes.md#geocoordinates) property, you need to specify the `latitude` and `longitude` as floating point decimal degrees:
 
 import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx';
 
@@ -409,7 +409,7 @@ import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx
 
 ## Validate objects before creation
 
-Before you create an object, you can <SkipLink href="/docs/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
+Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -475,9 +475,9 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How-to: (Batch) Import items](./import.mdx)
-- <SkipLink href="/docs/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
 
 ## Questions and feedback
 
