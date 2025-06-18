@@ -966,7 +966,7 @@ const sidebars = {
         id: "agents/personalization/index",
       },
       items: [
-        "agents/transformation/usage",
+        "agents/personalization/usage",
         "agents/personalization/tutorial-recipe-recommender",
       ],
     },
