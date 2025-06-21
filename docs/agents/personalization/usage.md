@@ -1,6 +1,7 @@
 ---
 title: Usage
 sidebar_position: 30
+description: "Technical documentation and usage examples for implementing the Personalization Agent."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'personalization agent']
 ---

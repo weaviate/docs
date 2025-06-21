@@ -1,6 +1,7 @@
 ---
 title: Transformation Agent
 sidebar_position: 30
+description: "Overview of the AI agent that enhances, enriches and transforms existing data in Weaviate collections."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'transformation agent']
 ---

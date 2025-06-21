@@ -1,6 +1,6 @@
 ---
 title: Vector indexes
-sidebar_position: 30
+description: "Vector index configuration options for optimizing search performance and storage efficiency."
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'vector index']
 ---

@@ -1,6 +1,7 @@
 ---
 title: Hybrid search
 sidebar_position: 60
+description: "Combined vector (semantic) and keyword search leveraging semantic similarity and exact keyword matching strengths."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'hybrid search', 'vector search', 'keyword search', 'bm25']
 ---

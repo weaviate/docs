@@ -1,6 +1,7 @@
 ---
 title: Keyword Search (BM25)
 sidebar_position: 40
+description: "Exact token-based matching using BM25 algorithm for precise keyword and phrase searching."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'keyword search', 'bm25', 'keyword']
 ---

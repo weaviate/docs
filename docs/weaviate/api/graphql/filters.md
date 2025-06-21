@@ -1,7 +1,7 @@
 ---
 title: Conditional filters
-description: Apply filters in Weaviate's GraphQL API to refine search and data queries.
 sidebar_position: 35
+description: "GraphQL filtering documentation for applying conditional logic to refine search results."
 image: og/docs/api.jpg
 # tags: ['graphql', 'filters']
 ---

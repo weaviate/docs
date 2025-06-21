@@ -1,6 +1,7 @@
 ---
 title: Philosophy
 sidebar_position: 2
+description: "Design principles and user-centric approach behind Weaviate's replication architecture decisions."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---

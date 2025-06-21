@@ -1,6 +1,7 @@
 ---
 title: Filtering
 sidebar_position: 26
+description: "Filtered vector search capabilities combining semantic similarity with structured scalar filtering."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'filtered vector search', 'pre-filtering']
 ---

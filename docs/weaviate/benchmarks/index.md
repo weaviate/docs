@@ -1,6 +1,7 @@
 ---
 title: Benchmarks
 sidebar_position: 0
+description: "Performance benchmarks and evaluation metrics for Weaviate's vector database capabilities across various use cases."
 image: og/docs/benchmarks.jpg
 # tags: ['Weaviate', 'performance', 'benchmarks', 'ann benchmarks', 'vector database benchmarks']
 ---
