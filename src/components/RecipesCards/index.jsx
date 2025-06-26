@@ -57,8 +57,7 @@ function parseToml(tomlString) {
 
 // Function to extract key segments from path
 function extractPathCategory(path) {
-  const cleanPath = path.replace(/^\/docs\//, "");
-  const segments = cleanPath.split("/");
+  const segments = path.replace(/^\/+/, "").split("/");
   return segments[0];
 }
 
