@@ -49,7 +49,7 @@ For environments with high reliability requirements, high query loads or latency
 
 :::tip Further resources
 - [Concepts: Cluster architecture](../concepts/cluster.md)
-- [Configuration: Replication](/docs/deploy/configuration/replication.md)
+- [Configuration: Replication](/deploy/configuration/replication.md)
 :::
 
 ### Use multi-tenancy for data subsets
@@ -62,7 +62,7 @@ If your use cases involves multiple subsets of data which meet all of the follow
 
 Then consider enabling multi-tenancy, and assigning each subset of data to a separate tenant. This will reduce the resource overhead on Weaviate, and allow you to scale more effectively.
 
-<p align="center"><img src="/docs/img/docs/system/collections_with_without_mt.png" alt="Replication Factor" width="100%"/></p>
+<p align="center"><img src="/img/docs/system/collections_with_without_mt.png" alt="Replication Factor" width="100%"/></p>
 
 :::tip Further resources
 - [How-to: Perform multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
@@ -111,7 +111,7 @@ These thresholds can be adjusted to better fit your use case. For example, if yo
 Set `DISK_USE_WARNING_PERCENTAGE` and `DISK_USE_READONLY_PERCENTAGE` to adjust the disk usage thresholds, and `MEMORY_WARNING_PERCENTAGE` and `MEMORY_READONLY_PERCENTAGE` to adjust the memory usage thresholds.
 
 :::tip Further resources
-- [References: Environment variables](/docs/deploy/configuration/env-vars/index.md#general)
+- [References: Environment variables](/deploy/configuration/env-vars/index.md#general)
 
 :::
 
@@ -140,7 +140,7 @@ We add some overhead for the index structure, and additional overheads, which br
 
 ### How to quickly check the memory usage
 
-In production settings, you should set up cluster [monitoring](/docs/deploy/configuration/monitoring.md) with tools such as Grafana & Prometheus.
+In production settings, you should set up cluster [monitoring](/deploy/configuration/monitoring.md) with tools such as Grafana & Prometheus.
 
 There are, however, other ways to quickly check Weaviate's memory usage.
 

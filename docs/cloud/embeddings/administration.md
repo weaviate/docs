@@ -50,14 +50,14 @@ If you would like to learn about the pricing model, you can visit the Weaviate E
 The pricing works on a per-token basis. This means that you will only be billed for the tokens that are successfully consumed. 
 In other words, only requests that result in valid responses from the API are considered.
 
-More info about billing in Weaviate Cloud can be found on [this page](/docs/cloud/platform/billing).
+More info about billing in Weaviate Cloud can be found on [this page](/cloud/platform/billing).
 
 ## Additional resources
 
-- [Weaviate Embeddings: Overview](/docs/cloud/embeddings)
-- [Weaviate Embeddings: Quickstart](/docs/cloud/embeddings/quickstart)
-- [Weaviate Embeddings: Choose a model](/docs/cloud/embeddings/models)
-- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md)
+- [Weaviate Embeddings: Overview](/cloud/embeddings)
+- [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
+- [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
+- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 
 ## Support & feedback
 

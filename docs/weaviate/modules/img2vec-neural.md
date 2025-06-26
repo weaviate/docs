@@ -32,7 +32,7 @@ This module is not available on Weaviate Cloud.
 To use `img2vec-neural`, you must enable it in your Docker Compose file (e.g. `docker-compose.yml`).
 
 :::tip Use the configuration tool
-While you can do so manually, we recommend using the [Weaviate configuration tool](docs/deploy/installation-guides/docker-installation.md#configurator) to generate the `Docker Compose` file.
+While you can do so manually, we recommend using the [Weaviate configuration tool](/deploy/installation-guides/docker-installation.md#configurator) to generate the `Docker Compose` file.
 :::
 
 #### Parameters

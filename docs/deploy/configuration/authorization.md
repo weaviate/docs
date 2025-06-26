@@ -8,7 +8,7 @@ image: og/docs/configuration.jpg
 Authentication and authorization are closely related concepts, and sometimes abbreviated as `AuthN` and `AuthZ`. Authentication (`AuthN`) is the process of verifying the identity of a user, while authorization (`AuthZ`) is the process of determining what permissions the user has.
 :::
 
-Weaviate provides differentiated access through [authorization](./authorization.md) levels, based on the user's [authentication](./authentication.md) status. A user can be granted admin permission, read-only permission, or no permission at all. From `v1.29.0`, Weaviate also supports [Role-Based Access Control (RBAC)](/docs/weaviate/configuration/rbac) for more fine-grained control over user permissions.
+Weaviate provides differentiated access through [authorization](./authorization.md) levels, based on the user's [authentication](./authentication.md) status. A user can be granted admin permission, read-only permission, or no permission at all. From `v1.29.0`, Weaviate also supports [Role-Based Access Control (RBAC)](/weaviate/configuration/rbac) for more fine-grained control over user permissions.
 
 The following diagram illustrates the flow of a user request through the authentication and authorization process:
 
@@ -78,7 +78,7 @@ In the Admin list authorization scheme, [anonymous users](#anonymous-users) can 
 The way to configure authorization differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
 
 :::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authorization is pre-configured with Admin list access. You can [authenticate against Weaviate](/docs/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with admin or read-only API keys](/docs/cloud/manage-clusters/connect.mdx).
+For Weaviate Cloud (WCD) instances, authorization is pre-configured with Admin list access. You can [authenticate against Weaviate](/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with admin or read-only API keys](/cloud/manage-clusters/connect.mdx).
 <br/>
 
 RBAC access will be available in WCD in a future release.
@@ -92,7 +92,7 @@ Role-based access control (RBAC) is generally available in Weaviate from version
 
 Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to define **roles** and assign **permissions** to those roles. Users can then be assigned to roles, and inherit the permissions associated with those roles.
 
-Check out the dedicated **[RBAC documentation](/docs/weaviate/configuration/rbac/index.mdx)** for instructions on how to [configure RBAC](/docs/deploy/configuration/configuring-rbac.md) in your Weaviate instance and examples on how to [manage roles an users](/docs/weaviate/configuration/rbac/manage-roles.mdx).
+Check out the dedicated **[RBAC documentation](/weaviate/configuration/rbac/index.mdx)** for instructions on how to [configure RBAC](/deploy/configuration/configuring-rbac.md) in your Weaviate instance and examples on how to [manage roles an users](/weaviate/configuration/rbac/manage-roles.mdx).
 
 ## Admin list
 
@@ -249,8 +249,8 @@ Weaviate can be configured to provide undifferentiated access, by disabling auth
 ## Further resources
 
 - [Configuration: Authentication](./authentication.md)
-- [Configuration: RBAC](/docs/weaviate/configuration/rbac/index.mdx)
-- [References: Environment variables / Authentication and Authorization](docs/deploy/configuration/env-vars/index.md#authentication-and-authorization)
+- [Configuration: RBAC](/weaviate/configuration/rbac/index.mdx)
+- [References: Environment variables / Authentication and Authorization](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
 
 ## Questions and feedback
 

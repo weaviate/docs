@@ -8,14 +8,14 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 :::info Related pages
 - [Configuration: Manage collections](../manage-collections/index.mdx)
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](../concepts/data.md)
 :::
 
 ## Available distance metrics
 
 If not specified explicitly, the default distance metric in Weaviate is
-`cosine`. It can be [set in the vectorIndexConfig](/docs/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) field as part of the schema ([example](../manage-collections/vector-config.mdx#specify-a-distance-metric)) to any of the following types:
+`cosine`. It can be [set in the vectorIndexConfig](/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) field as part of the schema ([example](../manage-collections/vector-config.mdx#specify-a-distance-metric)) to any of the following types:
 
 :::tip Comparing distances
 In all cases, larger distance values indicate lower similarity. Conversely, smaller distance values indicate higher similarity.
@@ -43,7 +43,7 @@ If you're missing your favorite distance type and would like to contribute it to
 
 ### Distance implementations and optimizations
 
-On a typical Weaviate use case the largest portion of CPU time is spent calculating vector distances. Even with an approximate nearest neighbor index - which leads to far fewer calculations - the efficiency of distance calculations has a major impact on [overall performance](/docs/weaviate/benchmarks/ann.md).
+On a typical Weaviate use case the largest portion of CPU time is spent calculating vector distances. Even with an approximate nearest neighbor index - which leads to far fewer calculations - the efficiency of distance calculations has a major impact on [overall performance](/weaviate/benchmarks/ann.md).
 
 Weaviate uses SIMD (Single Instruction, Multiple Data) instructions for the following distance metrics and architectures. The available optimizations are resolved in the shown order (e.g. SVE -> Neon).
 

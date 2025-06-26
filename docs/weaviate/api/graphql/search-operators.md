@@ -54,7 +54,7 @@ All vector search operators can be used with a `certainty` or `distance` thresho
 | Variable | Required | Type | Description |
 | --- | --- | --- | --- |
 | `vector` | yes | `[float]` | This variable takes a vector embedding in the form of an array of floats. The array should have the same length as the vectors in this collection. |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/docs/weaviate/config-refs/distances.md). |
+| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
 | `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
 
 #### Example
@@ -77,7 +77,7 @@ import GraphQLFiltersNearVector from '/_includes/code/graphql.filters.nearVector
 | --------- | -------- | ---- | ----------- |
 | `id` | yes | `UUID` | Data object identifier in the uuid format. |
 | `beacon` | no | `url` | Data object identifier in the beacon URL format. E.g., `weaviate://<hostname>/<kind>/id`. |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/docs/weaviate/config-refs/distances.md). |
+| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
 | `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
 
 #### Example
@@ -144,7 +144,7 @@ This operator is enabled if a compatible vectorizer module is configured for the
 | Variable | Required | Type | Description |
 | --- | --- | --- | --- |
 | `concepts` | yes | `[string]` | An array of strings that can be natural language queries, or single words. If multiple strings are used, a centroid is calculated and used. Learn more about how the concepts are parsed [here](#concept-parsing). |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/docs/weaviate/config-refs/distances.md). |
+| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
 | `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
 | `autocorrect` | no | `boolean` | Autocorrect input text values. Requires the [`text-spellcheck` module](../../modules/spellcheck.md) to be present & enabled.  |
 | `moveTo` | no | `object{}` | Move your search term closer to another vector described by keywords |
@@ -562,7 +562,7 @@ If not yet, the keyword search will behave as if `Or` was set with `minimumOrTok
 
 ## ask
 
-Enabled by the module: [Question Answering](/docs/weaviate/modules/qna-transformers.md).
+Enabled by the module: [Question Answering](/weaviate/modules/qna-transformers.md).
 
 This operator allows you to return answers to questions by running the results through a Q&A model.
 

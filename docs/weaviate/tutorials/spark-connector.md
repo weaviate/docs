@@ -207,7 +207,7 @@ client.query.get("Sphere", "title").do()
 
 ### Connecting to Weaviate
 
-If using an authenticated cluster such as on [WCD](/docs/cloud/index.mdx) you can provide `.option("apiKey", WEAVIATE_API_KEY)` for api key authentication like below:
+If using an authenticated cluster such as on [WCD](/cloud/index.mdx) you can provide `.option("apiKey", WEAVIATE_API_KEY)` for api key authentication like below:
 
 ```python
 df.limit(1500).withColumnRenamed("id", "uuid").write.format("io.weaviate.spark.Weaviate") \

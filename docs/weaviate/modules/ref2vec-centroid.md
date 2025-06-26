@@ -143,7 +143,7 @@ An object whose class is configured to use ref2vec-centroid will have its vector
 
 ### Making queries
 
-This module can be used with the existing [nearVector](/docs/weaviate/api/graphql/search-operators.md#nearvector) and [`nearObject`](/docs/weaviate/api/graphql/search-operators.md#nearobject) filters. It does not add any additional GraphQL extensions like `nearText`.
+This module can be used with the existing [nearVector](/weaviate/api/graphql/search-operators.md#nearvector) and [`nearObject`](/weaviate/api/graphql/search-operators.md#nearobject) filters. It does not add any additional GraphQL extensions like `nearText`.
 
 ## Additional information
 

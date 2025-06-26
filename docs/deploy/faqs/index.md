@@ -45,7 +45,7 @@ This [page](../installation-guides/gcp-marketplace.md) will walk you through all
 
 If you plan to create more than **20** collections, you may want to consider multi-tenancy instead for better scaling and performance. 
 
-**Additional information:** [Scaling limits with collections](docs/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx)
+**Additional information:** [Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx)
 
 </details>
 

@@ -14,9 +14,9 @@ By the end of this tutorial, you should have a good idea of how to create a sche
 
 - A schema consists of classes and properties, which define concepts.
 - Words in the schema (names of classes and properties) must be part of the `text2vec-contextionary`.
-- The schema can be modified through the <SkipLink href="/docs/weaviate/api/rest#tag/schema">RESTful API</SkipLink>. Python, JavaScript and Go clients are available.
+- The schema can be modified through the <SkipLink href="/weaviate/api/rest#tag/schema">RESTful API</SkipLink>. Python, JavaScript and Go clients are available.
 - A class or property in Weaviate becomes immutable, but can always be extended.
-- Learn about Concepts, Classes, Properties and dataTypes in the [API reference guide](/docs/weaviate/api/index.mdx).
+- Learn about Concepts, Classes, Properties and dataTypes in the [API reference guide](/weaviate/api/index.mdx).
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ import SchemaDef from '/_includes/definition-schema.md';
 
 <SchemaDef/>
 
-If you begin to import data without having defined a schema, it will trigger the [auto-schema feature](/docs/weaviate/config-refs/schema/index.md#auto-schema) and Weaviate will create a schema for you.
+If you begin to import data without having defined a schema, it will trigger the [auto-schema feature](/weaviate/config-refs/schema/index.md#auto-schema) and Weaviate will create a schema for you.
 
 While this may be suitable in some circumstances, in many cases you may wish to explicitly define a schema. Manually defining the schema will help you ensure that the schema is suited for your specific data and needs.
 
@@ -54,7 +54,7 @@ Schemas are defined in JSON format. An empty schema to start with:
 
 Let's say there are three classes you want to capture from this dataset in Weaviate: `Publication`, `Article` and `Author`. Notice that these words are *singular* (which is best practice, each data object is *one* of these classes).
 
-Classes always start with a capital letter. Properties always begin with a small letter. When you want to concatenate words into one class name or one property name, you can do that with camelCasing the words. Read more about schema classes, properties and data types [here](/docs/weaviate/config-refs/schema/index.md).
+Classes always start with a capital letter. Properties always begin with a small letter. When you want to concatenate words into one class name or one property name, you can do that with camelCasing the words. Read more about schema classes, properties and data types [here](/weaviate/config-refs/schema/index.md).
 
 Let's define the class `Publication` with the properties `name`, `hasArticles` and `headquartersGeoLocation` in JSON format. `name` will be the name of the `Publication`, in string format. `hasArticles` will be a reference to Article objects. We need to define the class `Article` in the same schema to make sure the reference is possible. `headquartersGeoLocation` will be of the special dataType `geoCoordinates`.
 
@@ -281,7 +281,7 @@ import HowtoSchemaPropertyAdd from '/_includes/code/howto.schema.property.add.md
 ## Next steps
 
 <!-- - Go to the [next "How-to" guide]  (./how-to-import-data.md) to learn how to import data. -->
-- Check out the <SkipLink href="/docs/weaviate/api/rest#tag/schema">RESTful API reference</SkipLink> for an overview of all schema API operations.
+- Check out the <SkipLink href="/weaviate/api/rest#tag/schema">RESTful API reference</SkipLink> for an overview of all schema API operations.
 - Read this article on [Weaviate and schema creation](https://hackernoon.com/what-is-weaviate-and-how-to-create-data-schemas-in-it-7hy3460)
 
 

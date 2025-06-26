@@ -43,10 +43,10 @@ import WeaviateEmbeddingsVectorizerParameters from '/_includes/weaviate-embeddin
 
 ## Additional resources
 
-- [Weaviate Embeddings: Overview](/docs/cloud/embeddings)
-- [Weaviate Embeddings: Quickstart](/docs/cloud/embeddings/quickstart)
-- [Weaviate Embeddings: Administration](/docs/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md)
+- [Weaviate Embeddings: Overview](/cloud/embeddings)
+- [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
+- [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
+- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 
 ## Support & feedback
 

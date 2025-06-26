@@ -28,8 +28,8 @@ Weaviate's Backup feature is designed to work natively with cloud technology. Mo
 
 :::caution Important backup considerations
 
-- **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/docs/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
-- **[Multi-tenancy](docs/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](docs/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
+- **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
+- **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
 :::
 
 ## Backup Quickstart
@@ -317,7 +317,7 @@ If you are missing your desired backup module, you can open a feature request on
 
 ## API
 
-For REST API documentation, see the <SkipLink href="/docs/weaviate/api/rest#tag/backups">Backups section</SkipLink>.
+For REST API documentation, see the <SkipLink href="/weaviate/api/rest#tag/backups">Backups section</SkipLink>.
 
 ### Create Backup
 
@@ -524,7 +524,7 @@ As with backup creation, the `include` and `exclude` options are mutually exclus
 Note that a restore fails if any of the collections already exist on this instance.
 
 :::caution Restoring backups from `v1.23.12` and older
-If you are running Weaviate `v1.23.12` or older, first **[update Weaviate](/docs/deploy/migration/index.md) to version 1.23.13** or higher before restoring a backup.
+If you are running Weaviate `v1.23.12` or older, first **[update Weaviate](/deploy/migration/index.md) to version 1.23.13** or higher before restoring a backup.
 Versions prior to `v1.23.13` had a bug that could lead to data not being stored correctly from a backup of your data.
 :::
 
@@ -686,7 +686,7 @@ These values are available under the `backups` key in the `values.yaml` file. Re
 
 The backup process is designed to be minimally invasive to a running setup. Even on very large setups, where terabytes of data need to be copied, Weaviate stays available during backup. It even accepts write requests while a backup process is running. This sections explains how backups work under the hood and why Weaviate can safely accept writes while a backup is copied.
 
-Weaviate uses a custom [LSM Store](docs/weaviate/concepts/storage.md#object-and-inverted-index-store) for its object store and inverted index. LSM stores are a hybrid of immutable disk segments and an in-memory structure called a memtable that accepts all writes (including updates and deletes). Most of the time, files on disk are immutable, there are only three situations where files are changed:
+Weaviate uses a custom [LSM Store](/weaviate/concepts/storage.md#object-and-inverted-index-store) for its object store and inverted index. LSM stores are a hybrid of immutable disk segments and an in-memory structure called a memtable that accepts all writes (including updates and deletes). Most of the time, files on disk are immutable, there are only three situations where files are changed:
 
 1. Anytime a memtable is flushed. This creates a new segment. Existing segments are not changed.
 2. Any write into the memtable is also written into a Write-Ahead-Log (WAL). The WAL is only needed for disaster-recovery. Once a segment has been orderly flushed, the WAL can be discarded.
@@ -723,7 +723,7 @@ For example, consider the following situation: You would like to do a load test 
 - If a backup module is misconfigured, such as having an invalid backup path, it can cause Weaviate to not start. Review the system logs for any errors.
 
 ## Related pages
-- <SkipLink href="/docs/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>
 
 ## Questions and feedback
 

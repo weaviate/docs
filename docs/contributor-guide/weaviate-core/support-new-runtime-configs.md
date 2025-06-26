@@ -17,7 +17,7 @@ This means that the feature is still under development and may change in future 
 
 Weaviate supports runtime configuration management, allowing certain environment variables to be updated and read by Weaviate on the fly without the need for restarts. This feature helps you adapt settings in real time and fine-tune your instance based on evolving needs.
 
-For more information on how to **use runtime configuration**, look at the [user guide](/docs/deploy/configuration/env-vars/runtime-config.md). This document talks about how to add support to the configs to be changed dynamically during runtime.
+For more information on how to **use runtime configuration**, look at the [user guide](/deploy/configuration/env-vars/runtime-config.md). This document talks about how to add support to the configs to be changed dynamically during runtime.
 
 ## Add support for configuration changes during runtime
 

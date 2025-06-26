@@ -68,7 +68,7 @@ For example:
   - A module name must be url-safe, meaning it must not contain any characters which would require url-encoding.
   - A module name is not case-sensitive. `text2vec-bert` would be the same module as `text2vec-BERT`.
 - Module information is accessible through the `v1/modules/<module-name>/<module-specific-endpoint>` RESTful endpoint.
-- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](docs/deploy/configuration/meta.md).
+- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](/deploy/configuration/meta.md).
 - Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](../api/graphql/additional-properties.md).
 - A module can add [filters](../api/graphql/filters.md) in GraphQL queries.
 - Which vectorizer and other modules are applied to which data collection is configured in the [schema](../manage-collections/vector-config.mdx#specify-a-vectorizer).
@@ -88,9 +88,9 @@ This type of provider is ideal for production environments. This is because stor
 Additionally, multi-node Weaviate clusters _require_ the use of an external provider. Storing a multi-node backup on internally on a single node presents several issues, like significantly reducing the durability and availability of the backup, and is not supported.
 
 The supported external backup providers are:
-- [S3](docs/deploy/configuration/backups.md#s3-aws-or-s3-compatible)
-- [GCS](docs/deploy/configuration/backups.md#gcs-google-cloud-storage)
-- [Azure](docs/deploy/configuration/backups.md#azure-storage)
+- [S3](/deploy/configuration/backups.md#s3-aws-or-s3-compatible)
+- [GCS](/deploy/configuration/backups.md#gcs-google-cloud-storage)
+- [Azure](/deploy/configuration/backups.md#azure-storage)
 
 Thanks to the extensibility of the module system, new providers can be readily added. If you are interested in an external provider other than the ones listed above, feel free to reach out via our [forum](https://forum.weaviate.io/), or open an issue on [GitHub](https://github.com/weaviate/weaviate).
 
@@ -98,7 +98,7 @@ Thanks to the extensibility of the module system, new providers can be readily a
 
 Internal providers coordinate the storage and retrieval of backed-up Weaviate data within a Weaviate instance. This type of provider is intended for developmental or experimental use, and is not recommended for production. Internal Providers are not compatible for multi-node backups, which require the use of an external provider.
 
-As of Weaviate `v1.16`, the only supported internal backup provider is the [filesystem](docs/deploy/configuration/backups.md#filesystem) provider.
+As of Weaviate `v1.16`, the only supported internal backup provider is the [filesystem](/deploy/configuration/backups.md#filesystem) provider.
 
 ## Offloading Modules
 
@@ -107,7 +107,7 @@ As of Weaviate `v1.16`, the only supported internal backup provider is the [file
 
 Offloading modules facilitate the offloading of tenant data to external storage. This is useful for managing resources and costs.
 
-See [how to configure: offloading](docs/deploy/configuration/tenant-offloading.md) for more information on how to configure and use offloading modules.
+See [how to configure: offloading](/deploy/configuration/tenant-offloading.md) for more information on how to configure and use offloading modules.
 
 ## Other modules
 

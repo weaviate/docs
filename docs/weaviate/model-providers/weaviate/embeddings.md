@@ -357,7 +357,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### References
 
-- Weaviate Embeddings [Documentation](/docs/cloud/embeddings)
+- Weaviate Embeddings [Documentation](/cloud/embeddings)
 
 ## Questions and feedback
 

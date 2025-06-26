@@ -240,7 +240,7 @@ See the [`similarity search`](./similarity.md) page for more details.
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 
 ## Questions and feedback
 

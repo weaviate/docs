@@ -71,7 +71,7 @@ If you *do* identify gaps within your deployment, be sure to reach out to your S
 - [ ]  Is the *“principle of least privilege”* being followed?
 - [ ]  Are your container security defaults set properly?
 - [ ]  Is access to your cluster strictly limited?
-- [ ]  Has [RBAC](/docs/weaviate/configuration/rbac/index.mdx) been implemented to restrict access?
+- [ ]  Has [RBAC](/weaviate/configuration/rbac/index.mdx) been implemented to restrict access?
 - [ ]  Have network policies been implemented to limit pod-to-pod communication?
 - [ ]  Are secrets secured with K8s Secrets or a vault solution?
 - [ ]  Do you have a process for when secrets are exposed, when access is lost to a key or certificate, and when secrets need to be rotated?

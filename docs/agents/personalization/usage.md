@@ -45,7 +45,7 @@ The official changelog for Weaviate Agents can be [found here](https://weaviatea
 
 This Agent is available exclusively for use with a Weaviate Cloud instance.
 
-Refer to the [Weaviate Cloud documentation](/docs/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
 You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
 
@@ -376,7 +376,7 @@ The available parameters for personalizing a Weaviate query can be specified ups
 
 ### Usage limits
 
-At this stage, there is a limit of 100 Personalization Agent queries per day per Weaviate Cloud [organization](/docs/cloud/platform/users-and-organizations.mdx#organizations) where the agent-based reranking is used.
+At this stage, there is a limit of 100 Personalization Agent queries per day per Weaviate Cloud [organization](/cloud/platform/users-and-organizations.mdx#organizations) where the agent-based reranking is used.
 
 There are no limits on the number of queries per day for the vector search only (i.e. without the agent-based reranking).
 

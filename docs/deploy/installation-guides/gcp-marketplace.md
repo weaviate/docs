@@ -18,7 +18,7 @@ A Weaviate cluster is easy to deploy with Google Cloud Marketplace (GCP).
 1. Go to Weaviate's [Google Cloud Marketplace listing](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate) page and click <kbd>Subscribe</kbd>.
 1. Configure and deploy Weaviate by following the on-screen instructions.
 
-Once completed, you will have a [Weaviate serverless cloud](docs/cloud/index.mdx) deployment. 
+Once completed, you will have a [Weaviate serverless cloud](/cloud/index.mdx) deployment. 
 
 :::info
 <details>

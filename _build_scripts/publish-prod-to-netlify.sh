@@ -9,7 +9,7 @@ Disallow: /" >> build/robots.txt
 #### TODO: REMOVE 👆 BEFORE WE GO LIVE ####
 
 # # deploy
-./node_modules/.bin/netlify deploy --prod --dir=build --site=weaviate-docs
+./node_modules/.bin/netlify deploy --prod --dir=build --site=docs-weaviate-io
 
 echo "TODO: you may need to figure out GOOGLE KEYS for the sitemap"
 # # Share sitemap to G

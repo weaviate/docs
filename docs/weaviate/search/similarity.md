@@ -804,10 +804,10 @@ The output is like this:
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- For image search, see [Image search](/docs/weaviate/search/image).
-- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md).
-- For search using the GraphQL API, see [GraphQL API](/docs/weaviate/api).
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- For image search, see [Image search](/weaviate/search/image).
+- For tutorials, see [Queries](/weaviate/tutorials/query.md).
+- For search using the GraphQL API, see [GraphQL API](/weaviate/api).
 
 ## Questions and feedback
 

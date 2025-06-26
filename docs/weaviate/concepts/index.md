@@ -19,7 +19,7 @@ image: og/docs/concepts.jpg
 The **Concepts** section explains various aspects related to Weaviate and its architecture to help you get the most out of it. You can read these sections in any order.
 
 :::info
-If you are after a practical guide, try the [quickstart tutorial](/docs/weaviate/quickstart/index.md).
+If you are after a practical guide, try the [quickstart tutorial](/weaviate/quickstart/index.md).
 :::
 
 ## Core concepts

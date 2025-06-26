@@ -54,7 +54,7 @@ command. In this setup the following components are used:
 
 ### Multi-tenancy
 
-When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](docs/deploy/configuration/env-vars/index.md) as `true` so that data across all tenants are grouped together for monitoring.
+When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](/deploy/configuration/env-vars/index.md) as `true` so that data across all tenants are grouped together for monitoring.
 
 ## Obtainable Metrics
 
@@ -130,7 +130,7 @@ e effect. | `sha256` | `Gauge` |
 | `weaviate_internal_timer_raft_fsm_enqueue` | Time required to queue up a batch of logs for the finite state machine to apply. | `quantile=0.5, 0.9, 0.99` | `summary` |
 | `weaviate_internal_timer_raft_leader_dispatchLog` | Time required for the leader node to write a log entry to disk. | `quantile=0.5, 0.9, 0.99` | `Summary` |
 
-Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/docs/contributor-guide).
+Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).
 
 ### Versioning
 
@@ -157,7 +157,7 @@ your uses perfectly:
 
 ## `nodes` API Endpoint
 
-To get collection details programmatically, use the [`nodes`](docs/deploy/configuration/nodes.md) REST endpoint.
+To get collection details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
 
 import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
 

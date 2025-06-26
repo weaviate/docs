@@ -7,13 +7,13 @@ image: og/integrations/home.jpg
 These Large Language Model (LLM) and Agent frameworks have tools to help developers build agentic applications with generative models.
 
 Learn how Weaviate integrates with these solutions:
-* [Agno](/docs/integrations/llm-agent-frameworks/agno/)
-* [Composio](/docs/integrations/llm-agent-frameworks/composio/)
-* [CrewAI](/docs/integrations/llm-agent-frameworks/crewai/)
-* [DSPy](/docs/integrations/llm-agent-frameworks/dspy/)
-* [Dynamiq](/docs/integrations/llm-agent-frameworks/dynamiq/)
-* [Haystack](/docs/integrations/llm-agent-frameworks/haystack/)
-* [LangChain](/docs/integrations/llm-agent-frameworks/langchain/)
-* [LlamaIndex](/docs/integrations/llm-agent-frameworks/llamaindex/)
-* [Semantic Kernel](/docs/integrations/llm-agent-frameworks/semantic-kernel/)
+* [Agno](/integrations/llm-agent-frameworks/agno/)
+* [Composio](/integrations/llm-agent-frameworks/composio/)
+* [CrewAI](/integrations/llm-agent-frameworks/crewai/)
+* [DSPy](/integrations/llm-agent-frameworks/dspy/)
+* [Dynamiq](/integrations/llm-agent-frameworks/dynamiq/)
+* [Haystack](/integrations/llm-agent-frameworks/haystack/)
+* [LangChain](/integrations/llm-agent-frameworks/langchain/)
+* [LlamaIndex](/integrations/llm-agent-frameworks/llamaindex/)
+* [Semantic Kernel](/integrations/llm-agent-frameworks/semantic-kernel/)
 

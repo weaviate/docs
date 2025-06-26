@@ -25,7 +25,7 @@ This guide will also explore practical applications ranging from semantic search
 - A Node.js environment with `weaviate-client` installed
 - Basic understanding of Weaviate's search functionality
 - Intermediate JavaScript programming skills
-- You must have completed the [quickstart](/docs/weaviate/quickstart)
+- You must have completed the [quickstart](/weaviate/quickstart)
 
 ## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
 

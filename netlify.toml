@@ -5,198 +5,180 @@
   [headers.values]
     access-control-allow-origin = "*"
 
+
 ## WCS redirects
 
+### Redirect all paths starting with /wcs to /cloud
 [[redirects]]
-from = "/wcs/troubleshooting"
+from = "/wcs/*"
+to   = "/cloud/:splat"
+status = 301
+
+[[redirects]]
+from = "/cloud/troubleshooting"
 to   = "/cloud/faq"
 status = 301
 
 [[redirects]]
-from = "/wcs/platform/ssconsole"
+from = "/cloud/platform/ssconsole"
 to   = "/cloud/tools/query-tool"
 status = 301
 
 [[redirects]]
-from = "/wcs/platform/cluster-status"
+from = "/cloud/platform/cluster-status"
 to   = "/cloud/manage-clusters/status"
 status = 301
 
 [[redirects]]
-from = "/wcs/console"
+from = "/cloud/console"
 to   = "/cloud/tools/query-tool"
 status = 301
 
 [[redirects]]
-from = "/wcs/cluster-status"
+from = "/cloud/cluster-status"
 to   = "/cloud/manage-clusters/status"
 status = 301
 
 [[redirects]]
-from = "/wcs/conect"
+from = "/cloud/conect"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
 [[redirects]]
-from = "/wcs/create-instance"
+from = "/cloud/create-instance"
 to   = "/cloud/manage-clusters/create"
 status = 301
 
 [[redirects]]
-from = "/wcs/upgrade"
+from = "/cloud/upgrade"
 to   = "/cloud/manage-clusters/upgrade"
 status = 301
 
 [[redirects]]
-from = "/wcs/guides/console"
+from = "/cloud/guides/console"
 to   = "/cloud/tools/query-tool"
 status = 301
 
 [[redirects]]
-from = "/wcs/guides/create-instance"
+from = "/cloud/guides/create-instance"
 to   = "/cloud/manage-clusters/create"
 status = 301
 
 [[redirects]]
-from = "/wcs/guides/authentication"
+from = "/cloud/guides/authentication"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
-## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
+## Redirect starting paths "/" and "/docs" to "/weaviate"
 ## Redirect anything from /developers to /docs
 
 [[redirects]]
-from = "/developers/*"
-to   = "/docs/:splat"
-status = 301
-
-[[redirects]]
-from = "/docs"
-to   = "/docs/weaviate"
-status = 301
-
-[[redirects]]
 from = "/"
-to   = "/docs/weaviate"
-status = 301
-
-## Redirect all paths starting with /docs/wcs to /docs/cloud
-
-[[redirects]]
-from = "/docs/wcs/*"
-to   = "/docs/cloud/:splat"
+to   = "/weaviate"
 status = 301
 
 ## Manage data refactoring
 
 [[redirects]]
-from = "/docs/weaviate/manage-data"
-to   = "/docs/weaviate/manage-collections"
+from = "/weaviate/manage-data"
+to   = "/weaviate/manage-collections"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/collections"
-to   = "/docs/weaviate/manage-collections"
+from = "/weaviate/manage-data/collections"
+to   = "/weaviate/manage-collections"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/create"
-to   = "/docs/weaviate/manage-objects/create"
+from = "/weaviate/manage-data/create"
+to   = "/weaviate/manage-objects/create"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/import"
-to   = "/docs/weaviate/manage-objects/import"
+from = "/weaviate/manage-data/import"
+to   = "/weaviate/manage-objects/import"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/read"
-to   = "/docs/weaviate/manage-objects/read"
+from = "/weaviate/manage-data/read"
+to   = "/weaviate/manage-objects/read"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/read-all-objects"
-to   = "/docs/weaviate/manage-objects/read-all-objects"
+from = "/weaviate/manage-data/read-all-objects"
+to   = "/weaviate/manage-objects/read-all-objects"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/update"
-to   = "/docs/weaviate/manage-objects/update"
+from = "/weaviate/manage-data/update"
+to   = "/weaviate/manage-objects/update"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/delete"
-to   = "/docs/weaviate/manage-objects/delete"
+from = "/weaviate/manage-data/delete"
+to   = "/weaviate/manage-objects/delete"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/cross-references"
-to   = "/docs/weaviate/manage-collections/cross-references"
+from = "/weaviate/manage-data/cross-references"
+to   = "/weaviate/manage-collections/cross-references"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/multi-tenancy"
-to   = "/docs/weaviate/manage-collections/multi-tenancy"
+from = "/weaviate/manage-data/multi-tenancy"
+to   = "/weaviate/manage-collections/multi-tenancy"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/tenant-states"
-to   = "/docs/weaviate/manage-collections/tenant-states"
+from = "/weaviate/manage-data/tenant-states"
+to   = "/weaviate/manage-collections/tenant-states"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/manage-data/migrate"
-to   = "/docs/weaviate/manage-collections/migrate"
+from = "/weaviate/manage-data/migrate"
+to   = "/weaviate/manage-collections/migrate"
 status = 301
 
 ## Roadmap page redirect
 
 [[redirects]]
-from = "/docs/weaviate/roadmap"
-to   = "/docs/weaviate/release-notes"
+from = "/weaviate/roadmap"
+to   = "/weaviate/release-notes"
 status = 301
 
 ## Installation redirects
 
 [[redirects]]
-from = "/docs/weaviate/installation/weaviate-cloud-services"
-to   = "/docs/deploy/installation-guides/weaviate-cloud"
+from = "/weaviate/installation/weaviate-cloud-services"
+to   = "/deploy/installation-guides/weaviate-cloud"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/installation/docker-compose"
-to   = "/docs/deploy/installation-guides/docker-installation"
+from = "/weaviate/installation/docker-compose"
+to   = "/deploy/installation-guides/docker-installation"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/installation/kubernetes"
-to   = "/docs/deploy/installation-guides/k8s-installation"
+from = "/weaviate/installation/kubernetes"
+to   = "/deploy/installation-guides/k8s-installation"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/installation/embedded"
-to   = "/docs/deploy/installation-guides/embedded"
+from = "/weaviate/installation/embedded"
+to   = "/deploy/installation-guides/embedded"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/installation/aws-marketplace"
-to   = "/docs/deploy/installation-guides/eks"
+from = "/weaviate/installation/aws-marketplace"
+to   = "/deploy/installation-guides/eks"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/installation/gc-marketplace"
-to   = "/docs/deploy/installation-guides/gke-marketplace"
+from = "/weaviate/installation/gc-marketplace"
+to   = "/deploy/installation-guides/gke-marketplace"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/installation/spcs-integration"
-to   = "/docs/deploy/installation-guides/spcs-integration"
+from = "/weaviate/installation/spcs-integration"
+to   = "/deploy/installation-guides/spcs-integration"
 status = 301
-
-## Because baseUrl is /docs but pages are served directly under /build
-
-[[redirects]]
-  from = "/docs/*"
-  to = "/:splat"
-  status = 200
-  force = true

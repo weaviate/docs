@@ -613,7 +613,7 @@ For more information on cross-references, see the [cross-references](../concepts
 :::info Related pages
 - [How-to: Manage collections](../manage-collections/index.mdx)
 - [Concepts: Data Structure](../concepts/data.md)
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 :::
 
 ### Notes

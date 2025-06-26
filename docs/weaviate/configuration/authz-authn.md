@@ -11,7 +11,7 @@ Authentication and authorization are closely related concepts, and sometimes abb
 
 ## Authentication
 
-Weaviate controls access through user authentication via API keys or OpenID Connect (OIDC), with an option for anonymous access. Users can then be assigned different [authorization](docs/deploy/configuration/authorization.md) levels, as shown in the diagram below.
+Weaviate controls access through user authentication via API keys or OpenID Connect (OIDC), with an option for anonymous access. Users can then be assigned different [authorization](/deploy/configuration/authorization.md) levels, as shown in the diagram below.
 
 ```mermaid
 flowchart LR
@@ -60,27 +60,27 @@ For example, a user logging in with the API key `jane-secret` may be granted adm
 
 In summary, Weaviate allows the following authentication methods:
 
-- [API key](/docs/deploy/configuration/authentication.md#api-key-authentication)
-- [OpenID Connect (OIDC)](/docs/deploy/configuration/authentication.md#oidc-authentication)
-- [Anonymous access](/docs/deploy/configuration/authentication.md#anonymous-access) (no authentication, strongly discouraged except for development or evaluation)
+- [API key](/deploy/configuration/authentication.md#api-key-authentication)
+- [OpenID Connect (OIDC)](/deploy/configuration/authentication.md#oidc-authentication)
+- [Anonymous access](/deploy/configuration/authentication.md#anonymous-access) (no authentication, strongly discouraged except for development or evaluation)
 
 Note that API key and OIDC authentication can be both enabled at the same time.
 
 The way to configure authentication differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
 
 :::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](../connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/docs/cloud/manage-clusters/connect.mdx).
+For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](../connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/cloud/manage-clusters/connect.mdx).
 :::
 
 ### API key
 
-For more details on how to work with API keys in Weaviate, check out the [authentication guide](/docs/deploy/configuration/authentication.md#api-key-authentication).
+For more details on how to work with API keys in Weaviate, check out the [authentication guide](/deploy/configuration/authentication.md#api-key-authentication).
 
 We recommend using a client library to authenticate against Weaviate. See [How-to: Connect](docs/weaviate/connections/index.mdx) pages for more information. 
 
 ### OIDC
 
-For more details on how to work with OIDC authentication in Weaviate, check out the [authentication guide](/docs/deploy/configuration/authentication.md#oidc-authentication).
+For more details on how to work with OIDC authentication in Weaviate, check out the [authentication guide](/deploy/configuration/authentication.md#oidc-authentication).
 
 The OIDC standard allows for many different methods _(flows)_ of obtaining tokens. The appropriate method can vary depending on your situation, including configurations at the token issuer, and your requirements.
 
@@ -90,7 +90,7 @@ OIDC authentication flows are outside the scope of this documentation, but here 
    - Validated using Okta and Azure as identity providers; GCP does not support client credentials grant flow (as of December 2022).
    - Weaviate's Python client directly supports this method.
    - Client credential flows usually do not come with a refresh token and the credentials are saved in the respective clients to acquire a new access token on expiration of the old one.
-1. Use the `resource owner password flow` for trusted applications like [Weaviate Cloud](/docs/cloud/manage-clusters/connect).
+1. Use the `resource owner password flow` for trusted applications like [Weaviate Cloud](/cloud/manage-clusters/connect).
 1. Use `hybrid flow` if Azure is your token issuer or if you would like to prevent exposing passwords.
 
 ### Support for Weaviate clients
@@ -289,9 +289,9 @@ The way to configure authorization differs by your deployment method, depending 
 
 ## Further resources
 
-- [Configuration: Authentication](docs/deploy/configuration/authentication.md)
-- [Configuration: Authorization](docs/deploy/configuration/authorization.md)
-- [Configuration: Environment variables - Authentication and Authorization](docs/deploy/configuration/env-vars/index.md#authentication-and-authorization)
+- [Configuration: Authentication](/deploy/configuration/authentication.md)
+- [Configuration: Authorization](/deploy/configuration/authorization.md)
+- [Configuration: Environment variables - Authentication and Authorization](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
 
 ## Questions and feedback
 

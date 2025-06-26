@@ -78,19 +78,19 @@ To create a sandbox cluster, follow these steps:
     <p>The following advanced configuration settings are available:</p>
     <ul>
       <li>
-        <a href="/docs/weaviate/config-refs/schema#auto-schema">
+        <Link to="/weaviate/config-refs/schema#auto-schema">
           <code>Enable auto schema generation</code>
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/docs/weaviate/concepts/vector-index#asynchronous-indexing">
+        <Link to="/weaviate/concepts/vector-index#asynchronous-indexing">
           <code>Enable async indexing</code>
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/docs/weaviate/configuration/replication#async-replication-settings">
+        <Link to="/deploy/configuration/replication#async-replication-settings">
           <code>Enable async replication</code>
-        </a>
+        </Link>
       </li>
       <li>
         <code>Allow all CORS origins</code>
@@ -144,19 +144,19 @@ import Link from '@docusaurus/Link';
     <p>The following advanced configuration settings are available:</p>
     <ul>
       <li>
-        <a href="/docs/weaviate/config-refs/schema#auto-schema">
+        <Link to="/weaviate/config-refs/schema#auto-schema">
           <code>Enable auto schema generation</code>
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/docs/weaviate/concepts/vector-index#asynchronous-indexing">
+        <Link to="/weaviate/concepts/vector-index#asynchronous-indexing">
           <code>Enable async indexing</code>
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/docs/weaviate/configuration/replication#async-replication-settings">
+        <Link to="/deploy/configuration/replication#async-replication-settings">
           <code>Enable async replication</code>
-        </a>
+        </Link>
       </li>
       <li>
         <code>Allow all CORS origins</code>
@@ -175,7 +175,7 @@ import Link from '@docusaurus/Link';
 
 ## Authentication
 
-Weaviate Cloud clusters use API key authentication. The authentication approach depends on whether [RBAC (Role-Based Access Control)](/docs/weaviate/configuration/rbac) is enabled:
+Weaviate Cloud clusters use API key authentication. The authentication approach depends on whether [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac) is enabled:
 
 ### Authentication with RBAC enabled
 
@@ -183,7 +183,7 @@ New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by defau
 
 When you develop your client application, use an API key to connect your client to the cluster. For detailed instructions on finding and managing your API keys, including creating new keys and managing roles, check out this guide:
 
-- **[Manage clusters: Authentication](/docs/cloud/manage-clusters/authentication.mdx)**
+- **[Manage clusters: Authentication](/cloud/manage-clusters/authentication.mdx)**
 
 ### Authentication with RBAC disabled
 
@@ -202,7 +202,7 @@ Weaviate Cloud does not automatically update existing clusters when a new versio
 
 For more details on Weaviate Cloud versioning, see:
 
-- **[Account management: Server version](/docs/cloud/platform/version)**.
+- **[Account management: Server version](/cloud/platform/version)**.
 
 ## Number of clusters
 

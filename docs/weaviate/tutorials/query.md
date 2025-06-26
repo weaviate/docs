@@ -279,13 +279,13 @@ As you can see, the `Aggregate` function can return handy aggregated, or metadat
 - [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
 - [Tutorial: Import in detail](./import.md)
 - [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/docs/cloud/tools/query-tool.mdx)
+- [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
 
 ## Notes
 
 ### How is certainty calculated?
 
-`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](/docs/weaviate/config-refs/distances#distance-vs-certainty).
+`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](/weaviate/config-refs/distances#distance-vs-certainty).
 
 
 ## Questions and feedback

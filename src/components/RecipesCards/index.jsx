@@ -57,8 +57,7 @@ function parseToml(tomlString) {
 
 // Function to extract key segments from path
 function extractPathCategory(path) {
-  const cleanPath = path.replace(/^\/docs\//, "");
-  const segments = cleanPath.split("/");
+  const segments = path.replace(/^\/+/, "").split("/");
   return segments[0];
 }
 
@@ -81,7 +80,7 @@ export default function RecipesCards({ path }) {
       try {
         setLoading(true);
         setError(null);
-        const indexPath = "/docs/config/index.toml";
+        const indexPath = "/config/index.toml";
 
         console.log("Attempting to fetch index.toml from:", indexPath);
         console.log("Current path category for filtering:", pathCategory);

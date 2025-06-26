@@ -45,7 +45,7 @@ The official changelog for Weaviate Agents can be [found here](https://weaviatea
 
 This Agent is available exclusively for use with a Weaviate Cloud instance.
 
-Refer to the [Weaviate Cloud documentation](/docs/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
 You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
 
@@ -202,7 +202,7 @@ You can use the workflow ID to monitor the status of each transformation operati
 
 ### Usage limits
 
-At this stage, there is a limit of 50,000 Transformation Agent operations per day per Weaviate Cloud [organization](/docs/cloud/platform/users-and-organizations.mdx#organizations).
+At this stage, there is a limit of 50,000 Transformation Agent operations per day per Weaviate Cloud [organization](/cloud/platform/users-and-organizations.mdx#organizations).
 
 Note that this limit is per individual operations. In other words, running a Transformation Agent with 4 operations on a collection of 2,500 objects would max out the limit for that day.
 
