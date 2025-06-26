@@ -5,60 +5,67 @@
   [headers.values]
     access-control-allow-origin = "*"
 
+
 ## WCS redirects
 
+### Redirect all paths starting with /wcs to /cloud
 [[redirects]]
-from = "/wcs/troubleshooting"
+from = "/wcs/*"
+to   = "/cloud/:splat"
+status = 301
+
+[[redirects]]
+from = "/cloud/troubleshooting"
 to   = "/cloud/faq"
 status = 301
 
 [[redirects]]
-from = "/wcs/platform/ssconsole"
+from = "/cloud/platform/ssconsole"
 to   = "/cloud/tools/query-tool"
 status = 301
 
 [[redirects]]
-from = "/wcs/platform/cluster-status"
+from = "/cloud/platform/cluster-status"
 to   = "/cloud/manage-clusters/status"
 status = 301
 
 [[redirects]]
-from = "/wcs/console"
+from = "/cloud/console"
 to   = "/cloud/tools/query-tool"
 status = 301
 
 [[redirects]]
-from = "/wcs/cluster-status"
+from = "/cloud/cluster-status"
 to   = "/cloud/manage-clusters/status"
 status = 301
 
 [[redirects]]
-from = "/wcs/conect"
+from = "/cloud/conect"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
 [[redirects]]
-from = "/wcs/create-instance"
+from = "/cloud/create-instance"
 to   = "/cloud/manage-clusters/create"
 status = 301
 
 [[redirects]]
-from = "/wcs/upgrade"
+from = "/cloud/upgrade"
 to   = "/cloud/manage-clusters/upgrade"
 status = 301
 
 [[redirects]]
-from = "/wcs/guides/console"
+from = "/cloud/guides/console"
 to   = "/cloud/tools/query-tool"
 status = 301
 
 [[redirects]]
-from = "/wcs/guides/create-instance"
+from = "/cloud/guides/create-instance"
 to   = "/cloud/manage-clusters/create"
 status = 301
 
 [[redirects]]
-from = "/wcs/guides/authentication"
+from = "/cloud/guides/authentication"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
@@ -68,13 +75,6 @@ status = 301
 [[redirects]]
 from = "/"
 to   = "/weaviate"
-status = 301
-
-## Redirect all paths starting with /docs/wcs to /docs/cloud
-
-[[redirects]]
-from = "/wcs/*"
-to   = "/cloud/:splat"
 status = 301
 
 ## Manage data refactoring
