@@ -13,16 +13,18 @@ image: og/wcd/user_guides.jpg
 
 When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters (<span class="callout">1</span>). There are no clusters when you log in to a new account.
 
-To create a cluster: 
+To create a cluster:
 
 import CreateCluster from '/docs/cloud/img/weaviate-cloud-create-new-cluster.png';
 import SandboxCluster from '/docs/cloud/img/weaviate-cloud-sandbox-cluster.png';
 import ServerlessCluster from '/docs/cloud/img/weaviate-cloud-serverless-cluster.png';
 
-export const imageContent = (
-  <ol>
+<div class="row">
+  <div class="col col--6">
+    <ol>
       <li>
-        Click the plus icon ➕ in the <code>Clusters</code> panel (<span class="callout">2</span>).
+        Click the plus icon ➕ in the <code>Clusters</code> panel (
+        <span class="callout">2</span>).
       </li>
       <li>
         Click on <code>Create cluster</code>.
@@ -31,17 +33,16 @@ export const imageContent = (
         A new panel will open where you can choose between cluster options.
       </li>
     </ol>
-);
-
-<DocsImage
-  image={CreateCluster}
-  caption="Click on this button to create a cluster"
-  layout="right"
-  contentColumns={6}
-  imageColumns={6}
->
-  {imageContent}
-</DocsImage>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={CreateCluster} alt="Create a cluster" />
+      </div>
+      <div class="card__body">Click on this button to create a cluster.</div>
+    </div>
+  </div>
+</div>
 
 Weaviate offers the following cluster options:
 
@@ -52,85 +53,44 @@ Weaviate offers the following cluster options:
 
 To create a sandbox cluster, follow these steps:
 
-import EndpointURLs from "/docs/cloud/img/weaviate-cloud-endpoint-urls.png";
-
-export const imageContent2 = (
-  <ol>
-      <li>
-        Select the <code>Sandbox</code> tab.
-      </li>
-      <li>Choose a name for your cluster.</li>
-      <li>Select a cloud region from the dropdown.</li>
-      <li>
-        Click the <code>Create</code> button.
-      </li>
-    </ol>
-);
-
-<DocsImage
-  image={SandboxCluster}
-  caption="Choose a name and a cloud region to create a cluster"
-  layout="right"
->
-  {imageContent2}
-</DocsImage>
-
-### Serverless clusters
-
-Serverless clusters require billing details. Weaviate Cloud prompts you to add billing details if you have not already added them.
-
-To create a serverless cluster, follow these steps:
-
-import Link from "@docusaurus/Link";
-
-export const imageContent3 = (
-  <ol>
-      <li>
-        Select the <code>Serverless</code> tab.
-      </li>
-      <li>Choose a name for your cluster.</li>
-      <li>Select a cloud region from the dropdown.</li>
-      <li>
-        Set the{' '}
-        <code>
-          <Link to="#advanced-configuration">Advanced configuration</Link>
-        </code>{' '}
-        settings.
-      </li>
-      <li>
-        Click the <code>Create</code> button.
-      </li>
-    </ol>
-);
-
-<DocsImage
-  image={ServerlessCluster}
-  caption="Choose a name and a cloud region to create a cluster"
-  layout="right"
->
-  {imageContent3}
-</DocsImage>
-
-#### Advanced configuration
-
-import AdvancedConfiguration from '/docs/cloud/img/weaviate-cloud-advanced-configuration.png';
-
-The following advanced configuration settings are available:
-
 <div class="row">
   <div class="col col--6">
+    <ol>
+      <li>
+        Select the <code>Sandbox</code> tab (<span class="callout">1</span>).
+      </li>
+      <li>
+        Choose a name for your cluster (<span class="callout">2</span>).
+      </li>
+      <li>
+        Select a cloud region from the dropdown (<span class="callout">3</span>
+        ).
+      </li>
+      <li>
+        Configure the <code>Advanced configuration</code>
+        settings if needed (<span class="callout">4</span>).
+      </li>
+      <li>
+        Click the <code>Create</code> button.
+      </li>
+    </ol>
+    <h4>Advanced configuration for Serverless clusters</h4>
+    <p>The following advanced configuration settings are available:</p>
     <ul>
       <li>
-        <code><Link to="/weaviate/configuration/rbac">Enable RBAC</Link></code>
+        <Link to="/weaviate/config-refs/schema#auto-schema">
+          <code>Enable auto schema generation</code>
+        </Link>
       </li>
       <li>
-        <code><Link to="/weaviate/config-refs/schema#auto-schema">Enable auto schema generation</Link></code>
+        <Link to="/weaviate/concepts/vector-index#asynchronous-indexing">
+          <code>Enable async indexing</code>
+        </Link>
       </li>
       <li>
-        <code><Link to="/weaviate/concepts/vector-index#asynchronous-indexing">Enable async indexing</Link></code>
-      </li>
-      <li>
-        <code><Link to="/deploy/configuration/replication#async-replication-settings">Enable async replication</Link></code>
+        <Link to="/deploy/configuration/replication#async-replication-settings">
+          <code>Enable async replication</code>
+        </Link>
       </li>
       <li>
         <code>Allow all CORS origins</code>
@@ -140,29 +100,105 @@ The following advanced configuration settings are available:
   <div class="col col--6">
     <div class="card">
       <div class="card__image">
-        <img
-          src={AdvancedConfiguration}
-          alt=" Set the Advanced configuration settings"
-        />
+        <img src={SandboxCluster} alt="Create a sandbox cluster" />
       </div>
-      <div class="card__body">Set the Advanced configuration settings.</div>
+      <div class="card__body">Configure your sandbox cluster settings.</div>
+    </div>
+  </div>
+</div>
+
+### Serverless clusters
+
+Serverless clusters require billing details. Weaviate Cloud prompts you to add billing details if you have not already added them.
+
+To create a serverless cluster, follow these steps:
+
+import Link from '@docusaurus/Link';
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        Select the <code>Serverless</code> tab (<span class="callout">1</span>).
+      </li>
+      <li>
+        Choose a name for your cluster (<span class="callout">2</span>).
+      </li>
+      <li>
+        Select a cloud region from the dropdown (<span class="callout">3</span>
+        ).
+      </li>
+      <li>
+        Optionally, enable <code>High Availability</code> to reduce downtime
+        during upgrades or scaling.
+      </li>
+      <li>
+        Configure the <code>Advanced configuration</code> settings if needed (
+        <span class="callout">4</span>).
+      </li>
+      <li>
+        Click the <code>Create</code> button.
+      </li>
+    </ol>
+    <h4>Advanced configuration for Serverless clusters</h4>
+    <p>The following advanced configuration settings are available:</p>
+    <ul>
+      <li>
+        <Link to="/weaviate/config-refs/schema#auto-schema">
+          <code>Enable auto schema generation</code>
+        </Link>
+      </li>
+      <li>
+        <Link to="/weaviate/concepts/vector-index#asynchronous-indexing">
+          <code>Enable async indexing</code>
+        </Link>
+      </li>
+      <li>
+        <Link to="/deploy/configuration/replication#async-replication-settings">
+          <code>Enable async replication</code>
+        </Link>
+      </li>
+      <li>
+        <code>Allow all CORS origins</code>
+      </li>
+    </ul>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={ServerlessCluster} alt="Create a serverless cluster" />
+      </div>
+      <div class="card__body">Configure your serverless cluster settings.</div>
     </div>
   </div>
 </div>
 
 ## Authentication
 
-By default, API keys are enabled for all Weaviate Cloud clusters. Both Serverless and Sandbox clusters have an administrator key and a read-only key.
+Weaviate Cloud clusters use API key authentication. The authentication approach depends on whether [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac) is enabled:
 
-When you develop your client application, use an API key to connect your client to the cluster. For more details on where to find the API keys, check out this guide:
+### Authentication with RBAC enabled
 
-- **[Manage clusters: Connect to Weaviate Cloud](/cloud/manage-clusters/connect)**.
+New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default. With RBAC enabled, you create API keys with specific roles for granular access control.
+
+When you develop your client application, use an API key to connect your client to the cluster. For detailed instructions on finding and managing your API keys, including creating new keys and managing roles, check out this guide:
+
+- **[Manage clusters: Authentication](/cloud/manage-clusters/authentication.mdx)**
+
+### Authentication with RBAC disabled
+
+If RBAC is not enabled (before `v1.30`), clusters use the traditional approach with two default API keys:
+
+- **Admin keys**: Provide read-write access to the database
+- **ReadOnly keys**: Provide read-only access to the database
+
+Serverless clusters can create, delete, edit, and rotate API keys, while Sandbox clusters cannot modify the default keys.
 
 ## Weaviate Database version
 
-When you provision a new cluster, Weaviate Cloud uses the current version of Weaviate Database to set up the new cluster. You can also choose from a limited number of older versions. There may be a short delay between the release of a new Weaviate Database version and its availability in Weaviate Cloud.
+When you provision a new cluster, Weaviate Cloud uses the latest version of Weaviate to set up the new cluster. There may be a short delay between the release of a new Weaviate version and its availability in Weaviate Cloud.
 
-Weaviate Cloud does not automatically update existing clusters when a new version of Weaviate Database is released.
+Weaviate Cloud does not automatically update existing clusters when a new version of Weaviate is released.
 
 For more details on Weaviate Cloud versioning, see:
 
@@ -172,7 +208,7 @@ For more details on Weaviate Cloud versioning, see:
 
 <!-- TODO[g-despot]: Check if this is true.-->
 
-By default, an organization can have up to six serverless clusters and two sandbox clusters at the same time. To change these limits, [contact support](mailto:support@weaviate.io).
+By default, an organization can have up to six (6) serverless clusters and two (2) sandbox clusters at the same time. To change these limits, [contact support](mailto:support@weaviate.io).
 
 ## Support & feedback
 

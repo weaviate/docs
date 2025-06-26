@@ -7,7 +7,7 @@ image: og/docs/tutorials.jpg
 
 Weaviate can be configured and deployed in many different ways. Important configuration decisions include:
 
-- The [deployment setup](../installation/index.md)
+- The [deployment setup](/deploy/index.mdx)
 - The [model integration](../model-providers/index.md) to enable
 
 This page helps you to find the right combination for your project.
@@ -15,9 +15,9 @@ This page helps you to find the right combination for your project.
 ## Deploy Weaviate
 
 Weaviate can be deployed in the following ways:
-- [Embedded Weaviate](../installation/embedded.md)
+- [Embedded Weaviate](/deploy/installation-guides/embedded.md)
 - [Docker-Compose](/deploy/installation-guides/docker-installation.md)
-- [Weaviate Cloud (WCD)](../installation/weaviate-cloud-services.md)
+- [Weaviate Cloud (WCD)](/deploy/installation-guides/weaviate-cloud.md)
 - [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 
@@ -42,7 +42,7 @@ Here are some recommendations for different use cases.
 If you are evaluating Weaviate, we recommend using one of these instance types to get started quickly:
 
 - [Weaviate Cloud (WCD)](/cloud) sandbox
-- [Embedded Weaviate](/weaviate/installation/embedded)
+- [Embedded Weaviate](/deploy/installation-guides/embedded)
 
 Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or  `text2vec-google`.
 

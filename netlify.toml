@@ -73,8 +73,8 @@ status = 301
 ## Redirect all paths starting with /docs/wcs to /docs/cloud
 
 [[redirects]]
-from = "/docs/wcs/*"
-to   = "/docs/cloud/:splat"
+from = "/wcs/*"
+to   = "/cloud/:splat"
 status = 301
 
 ## Manage data refactoring
@@ -144,4 +144,41 @@ status = 301
 [[redirects]]
 from = "/weaviate/roadmap"
 to   = "/weaviate/release-notes"
+status = 301
+
+## Installation redirects
+
+[[redirects]]
+from = "/weaviate/installation/weaviate-cloud-services"
+to   = "/deploy/installation-guides/weaviate-cloud"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/docker-compose"
+to   = "/deploy/installation-guides/docker-installation"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/kubernetes"
+to   = "/deploy/installation-guides/k8s-installation"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/embedded"
+to   = "/deploy/installation-guides/embedded"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/aws-marketplace"
+to   = "/deploy/installation-guides/eks"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/gc-marketplace"
+to   = "/deploy/installation-guides/gke-marketplace"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/spcs-integration"
+to   = "/deploy/installation-guides/spcs-integration"
 status = 301

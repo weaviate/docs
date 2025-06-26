@@ -564,7 +564,7 @@ docker compose up
 
 Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/), 
 
-Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](../installation/embedded.md) should be avoided.
+Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](/docs/deploy/installation-guides/embedded.md) should be avoided.
 
 </details>
 

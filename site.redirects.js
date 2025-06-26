@@ -424,7 +424,7 @@ const siteRedirects = {
 
     // old link redirects
     {
-      to: "/weaviate/installation",
+      to: "/deploy/installation-guides",
       from: "/weaviate/current/getting-started/installation",
     },
 
@@ -545,12 +545,6 @@ const siteRedirects = {
     {
       to: "/weaviate/configuration/rbac/manage-roles",
       from: "/weaviate/configuration/rbac/manage-roles-users",
-    },
-
-    // Redirects for GCP
-    {
-      to: "/deploy/installation-guides/gcp-marketplace",
-      from: "/weaviate/installation/gc-marketplace",
     },
 
     // Redirect for manage API keys page

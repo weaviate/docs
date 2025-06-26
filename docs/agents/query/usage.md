@@ -421,7 +421,9 @@ The current usage limit is 500 Query Agent queries per day per Weaviate Cloud [o
 
 ### Custom collection descriptions
 
-The Query Agent makes use of each collection's `description` metadata in deciding what collection to query.
+The Query Agent makes use of each collection's `description` metadata as well as individual property descriptions in deciding what collection to query.
+
+Both collection descriptions and property descriptions can be updated after the collection has been created. For detailed instructions on updating collection and property descriptions, see the [update collection definition documentation](/docs/weaviate/manage-collections/collection-operations.mdx#update-a-collection-definition).
 
 We are investigating an ability to specify a custom collection description at runtime.
 
@@ -442,4 +444,3 @@ The official changelog for Weaviate Agents can be [found here](https://weaviatea
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

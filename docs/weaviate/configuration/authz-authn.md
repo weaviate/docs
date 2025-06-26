@@ -76,7 +76,7 @@ For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC a
 
 For more details on how to work with API keys in Weaviate, check out the [authentication guide](/deploy/configuration/authentication.md#api-key-authentication).
 
-We recommend using a client library to authenticate against Weaviate. See [How-to: Connect](../connections/index.mdx) pages for more information. 
+We recommend using a client library to authenticate against Weaviate. See [How-to: Connect](docs/weaviate/connections/index.mdx) pages for more information. 
 
 ### OIDC
 

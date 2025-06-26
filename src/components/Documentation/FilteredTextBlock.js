@@ -136,6 +136,9 @@ const FilteredTextBlock = ({
         case 'pyv3':
             language2 = 'py';
             break;
+        case 'tsv2':
+            language2 = 'ts';
+            break;
         case 'gonew':
         case 'goraw':
             language2 = 'go';
@@ -227,7 +230,7 @@ const FilteredTextBlock = ({
                 )}
                 {language === 'pyv3' && (
                     <a
-                        href="https://weaviate-docs.netlify.app/docs/weaviate/client-libraries/python/python_v3"
+                        href="https://weaviate.io/docs/weaviate/client-libraries/python/python_v3"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="badge badge--warning"

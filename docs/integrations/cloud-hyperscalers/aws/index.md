@@ -8,7 +8,7 @@ Launch a Weaviate cluster from the Amazon Web Services (AWS) marketplace. AWS su
 ## AWS and Weaviate
 Weaviate integrates with [AWS](https://aws.amazon.com/) infrastructure and services like [SageMaker](https://aws.amazon.com/sagemaker/) and [Bedrock](https://aws.amazon.com/bedrock/).
 
-* [Deploy Weaviate from AWS Marketplace](/weaviate/installation/aws-marketplace)
+* [Deploy Weaviate from AWS Marketplace](/deploy/installation-guides/aws-marketplace.md)
 * [Run embedding and generative models on SageMaker and Bedrock](/weaviate/model-providers/aws)
 
 ## Our Resources 

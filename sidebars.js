@@ -17,29 +17,10 @@ const sidebars = {
       },
       items: ["weaviate/quickstart/local"],
     },
-    {
-      type: "category",
+        {
+      type: "link",
       label: "Installation",
-      link: {
-        type: "doc",
-        id: "weaviate/installation/index",
-      },
-      items: [
-        "weaviate/installation/weaviate-cloud-services",
-        "weaviate/installation/embedded",
-        "weaviate/installation/aws-marketplace",
-        "weaviate/installation/spcs-integration",
-        {
-          type: "link",
-          label: "Docker",
-          href: "https://weaviate.io/docs/deploy/installation-guides/docker-installation",
-        },
-        {
-          type: "link",
-          label: "Kubernetes",
-          href: "https://weaviate.io/docs/deploy/installation-guides/k8s-installation",
-        },
-      ],
+      href: "https://weaviate.io/docs/deploy/installation-guides",
     },
     {
       type: "category",
@@ -762,6 +743,21 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
+          type: "doc",
+          id: "deploy/installation-guides/embedded",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/spcs-integration",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/weaviate-cloud",
+          className: "sidebar-item",
+        },
+        {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
@@ -970,7 +966,7 @@ const sidebars = {
         id: "agents/personalization/index",
       },
       items: [
-        "agents/transformation/usage",
+        "agents/personalization/usage",
         "agents/personalization/tutorial-recipe-recommender",
       ],
     },
