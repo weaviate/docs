@@ -20,7 +20,7 @@ const config = {
   favicon: "img/favicon.ico",
   staticDirectories: ["static"],
   // url: "https://weaviate.io",
-  url: "https://weaviate-docs.netlify.app",
+  url: "https://docs.weaviate.io",
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
