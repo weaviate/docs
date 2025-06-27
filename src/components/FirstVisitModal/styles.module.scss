@@ -1,60 +1,48 @@
-// FirstVisitModal.module.scss - Simplified without tabs
+// GuideflowModal.module.scss - Standalone modal styles
 
-// CSS Variables for first visit modal
-:root {
-  --text-color: #333;
-  --text-color-light: #666;
-  --border-color: #eaeaea;
-
-  // Dark mode
-  --dark-text-color: #ffffff;
-  --dark-text-color-light: rgba(255, 255, 255, 0.8);
-  --dark-border-color: #242e3e;
+// Modal overlay
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+  backdrop-filter: blur(2px);
 }
 
-// Main modal container - 80% width
-.firstVisitModal {
-  width: 80vw !important;
-  max-width: 80vw !important;
-  height: 85vh !important;
-  max-height: 85vh !important;
-  margin: 0 !important; /* CRITICAL FIX: Override BaseModal's default margin */
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important; /* Ensure content within is clipped if it tries to escape */
-}
-
-// Renamed from .modalContent to .firstVisitModalInnerContent to avoid conflict with BaseModal
-.firstVisitModalInnerContent {
+// Modal container
+.modalContainer {
+  width: min(80vw, 1200px);
+  height: 85vh;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  height: 100%; /* Take full height of its parent (.firstVisitModal) */
-  overflow: hidden; /* This should contain scrolling if children overflow */
+  overflow: hidden;
 
-  // Override any global heading styles (like .docs-doc-page h2) that might affect modal layout
-  // These global styles add unwanted padding that breaks our modal's compact design
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+  // Dark mode support
+  :global([data-theme="dark"]) & {
+    background-color: #1f2228;
   }
 }
 
-// Custom Modal Header
+// Header
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.3rem 2rem;
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0; /* Ensures header does not shrink */
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #eaeaea;
+  flex-shrink: 0;
 
   :global([data-theme="dark"]) & {
-    border-bottom-color: var(--dark-border-color);
+    border-bottom-color: #242e3e;
   }
 }
 
@@ -62,17 +50,16 @@
   font-size: 24px;
   font-weight: 700;
   margin: 0;
-  color: var(--text-color);
-  // Override global .docs-doc-page h2 styles
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  color: #333;
+  padding-top: 0.5rem !important; // Override .docs-doc-page h2
+  padding-bottom: 0 !important; // Override .docs-doc-page h2
 
   :global([data-theme="dark"]) & {
-    color: var(--dark-text-color);
+    color: #ffffff;
   }
 }
 
-.customCloseButton {
+.closeButton {
   background: rgba(0, 0, 0, 0.1);
   border: none;
   font-size: 24px;
@@ -84,7 +71,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-color);
+  color: #333;
   transition: background-color 0.2s ease;
 
   &:hover {
@@ -92,7 +79,7 @@
   }
 
   :global([data-theme="dark"]) & {
-    color: var(--dark-text-color);
+    color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
 
     &:hover {
@@ -101,165 +88,108 @@
   }
 }
 
-// Content container (with padding and box-sizing)
-.contentContainer {
-  flex: 1; /* This will make it take up remaining vertical space */
+// Content area
+.modalContent {
+  flex: 1;
+  padding: 1.5rem 2rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  padding: 1.5rem 2rem 2rem 2rem; /* Padding applied here */
-  min-height: 0; /* Allows this flex item to shrink */
-  height: 100%; /* Ensures it fills its parent's height */
-  box-sizing: border-box; /* Crucial: padding included in the element's total height */
+  gap: 1rem;
+  min-height: 0;
 }
 
-.content {
-  flex: 1; /* This will make it take up remaining vertical space within contentContainer */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* This should contain scrolling if children overflow */
-  height: 100%; /* Ensures it fills its parent's height */
-  min-height: 0; /* Allows this flex item to shrink */
-  box-sizing: border-box; /* Also apply box-sizing here */
-  gap: 1rem; /* Added gap for spacing between description and iframeContainer */
-}
-
-// Description text
+// Description
 .description {
-  flex-shrink: 0; /* Ensures description does not shrink */
+  flex-shrink: 0;
 
   p {
     font-size: 16px;
-    color: var(--text-color);
-    margin: 0; /* Ensure no external margins on the paragraph */
+    color: #333;
+    margin: 0;
     line-height: 1.5;
 
     :global([data-theme="dark"]) & {
-      color: var(--dark-text-color);
+      color: rgba(255, 255, 255, 0.8);
     }
   }
 }
 
-// Iframe container for overview content
+// Iframe container
 .iframeContainer {
-  flex: 1; /* This will make it take up remaining vertical space within content */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* This should contain scrolling for the iframe if it overflows */
-  min-height: 0; /* Allows this flex item to shrink */
+  flex: 1;
   width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 0;
 
-  // Override the inline styles to make iframe flexible
-  > div {
-    flex: 1 !important; /* Ensure the inner div also expands */
-    height: 100% !important; /* Explicitly take 100% height of .iframeContainer */
-    width: 100% !important;
-    min-height: 0 !important; /* Allow it to shrink */
-    padding: 0 !important;
-    margin: 0 !important;
-    position: relative !important;
-    display: block !important;
-
-    iframe {
-      width: 100% !important;
-      height: 100% !important;
-      display: block !important;
-      border: none !important;
-      border-radius: 8px;
-    }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+    display: block;
   }
 }
 
-// Responsive Design
+// Responsive design
 @media (max-width: 1200px) {
-  .firstVisitModal {
-    width: 90vw !important;
-    max-width: 90vw !important;
-    height: 85vh !important;
-    margin: 0.5rem !important; /* Adjusted margin for explicit override in smaller screens */
+  .modalContainer {
+    width: 90vw;
   }
 
   .modalHeader {
-    padding: 0.875rem 1.5rem;
+    padding: 0.75rem 1.5rem;
   }
 
   .modalTitle {
     font-size: 22px;
   }
 
-  .contentContainer {
-    /* Adjusted padding for responsiveness */
+  .modalContent {
     padding: 1rem 1.5rem 1.5rem 1.5rem;
-  }
-
-  .content {
-    /* Adjusted gap for responsiveness */
-    gap: 0.75rem;
   }
 }
 
 @media (max-width: 768px) {
-  .firstVisitModal {
-    width: 95vw !important;
-    max-width: 95vw !important;
-    height: 90vh !important;
-    max-height: 90vh !important;
-    margin: 0.25rem !important; /* Adjusted margin for explicit override in smaller screens */
+  .modalContainer {
+    width: 95vw;
+    height: 90vh;
   }
 
   .modalHeader {
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 1rem;
   }
 
   .modalTitle {
     font-size: 20px;
   }
 
-  .customCloseButton {
+  .closeButton {
     width: 36px;
     height: 36px;
     font-size: 22px;
   }
 
-  .contentContainer {
-    /* Adjusted padding for responsiveness */
+  .modalContent {
     padding: 0.75rem 1rem 1rem 1rem;
-  }
-
-  .content {
-    /* Adjusted gap for responsiveness */
-    gap: 0.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .firstVisitModal {
-    margin: 0.1rem !important; /* Adjusted margin for explicit override in smallest screens */
-    width: calc(
-      100vw - 0.2rem
-    ) !important; /* Adjust width to account for new margin */
-    max-width: calc(100vw - 0.2rem) !important;
-    height: calc(
-      100vh - 0.2rem
-    ) !important; /* Adjust height to account for new margin */
-    max-height: calc(100vh - 0.2rem) !important;
+  .modalContainer {
+    width: calc(100vw - 0.2rem);
+    height: calc(100vh - 0.2rem);
   }
 
   .modalHeader {
-    padding: 0.6rem 0.75rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .modalTitle {
     font-size: 18px;
   }
 
-  .contentContainer {
-    /* Adjusted padding for responsiveness */
+  .modalContent {
     padding: 0.5rem 0.75rem 0.75rem 0.75rem;
-  }
-
-  .content {
-    /* Adjusted gap for responsiveness */
-    gap: 0.4rem;
   }
 }

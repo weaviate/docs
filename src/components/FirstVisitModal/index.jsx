@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import BaseModal from "../BaseModal"; // Assuming BaseModal is in the parent directory
+import Link from "@docusaurus/Link";
 import styles from "./styles.module.scss";
 
 export default function FirstVisitModal() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    console.log("FirstVisitModal useEffect running...");
-
     // Check for dev override in URL
     const urlParams = new URLSearchParams(window.location.search);
     const forceShow = urlParams.get("firstvisit") === "true";
@@ -16,18 +14,41 @@ export default function FirstVisitModal() {
     console.log("hasVisited:", hasVisited, "forceShow:", forceShow);
 
     if (!hasVisited || forceShow) {
-      console.log("Showing modal...");
       const timer = setTimeout(() => {
-        setIsModalOpen(true);
+        setIsOpen(true);
       }, 500);
 
       return () => clearTimeout(timer);
     }
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+
+      // Add escape key listener
+      const handleEscape = (e) => {
+        if (e.key === "Escape") {
+          handleClose();
+        }
+      };
+
+      document.addEventListener("keydown", handleEscape);
+
+      return () => {
+        document.removeEventListener("keydown", handleEscape);
+      };
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const handleClose = () => {
-    console.log("Modal closing...");
-    setIsModalOpen(false);
+    setIsOpen(false);
 
     const urlParams = new URLSearchParams(window.location.search);
     const forceShow = urlParams.get("firstvisit") === "true";
@@ -37,23 +58,27 @@ export default function FirstVisitModal() {
     }
   };
 
-  console.log("FirstVisitModal render - isModalOpen:", isModalOpen);
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
+
+  if (!isOpen) return null;
 
   return (
-    <BaseModal
-      isOpen={isModalOpen}
-      onClose={handleClose}
-      className={styles.firstVisitModal}
-      maxWidth="80vw"
-      showCloseButton={false} // We'll use custom header
-    >
-      {/* Changed className from styles.modalContent to styles.firstVisitModalInnerContent */}
-      <div className={styles.firstVisitModalInnerContent}>
-        {/* Custom Header with title aligned to close button */}
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+      <div
+        className={styles.modalContainer}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>Explore Weaviate docs</h2>
+          <h2 className={styles.modalTitle}>
+            Weaviate documentation structure
+          </h2>
           <button
-            className={styles.customCloseButton}
+            className={styles.closeButton}
             onClick={handleClose}
             aria-label="Close modal"
           >
@@ -61,44 +86,66 @@ export default function FirstVisitModal() {
           </button>
         </div>
 
-        {/* Content Container */}
-        <div className={styles.contentContainer}>
-          <div className={styles.content}>
-            <div className={styles.description}>
-              <p>
-                The Weaviate documentation is divided into the following four
-                sections: Core database, Deployment, Weaviate Cloud and Weaviate
-                Agents docs.
-              </p>
-            </div>
+        {/* Content */}
+        <div className={styles.modalContent}>
+          {/* Description */}
+          <div className={styles.description}>
+            <p>
+              The Weaviate documentation is divided into the following four
+              sections:{" "}
+              <Link to="/docs/weaviate" onClick={handleClose}>
+                core database
+              </Link>
+              ,{" "}
+              <Link to="/docs/deploy" onClick={handleClose}>
+                deployment
+              </Link>
+              ,{" "}
+              <Link to="/docs/cloud" onClick={handleClose}>
+                Weaviate Cloud
+              </Link>{" "}
+              and{" "}
+              <Link to="/docs/agents" onClick={handleClose}>
+                Weaviate Agents
+              </Link>{" "}
+              docs.
+            </p>
+          </div>
 
-            {/* Guideflow iframe for overview */}
-            <div className={styles.iframeContainer}>
-              <div>
-                <iframe
-                  id="er5mn6lu6k"
-                  src="https://app.guideflow.com/embed/er5mn6lu6k"
-                  width="100%"
-                  height="100%"
-                  style={{
-                    overflow: "hidden",
-                    border: "none",
-                  }}
-                  allow="clipboard-read; clipboard-write"
-                  webKitAllowFullScreen
-                  mozAllowFullScreen
-                  allowFullScreen
-                  allowTransparency="true"
-                />
-                <script
-                  src="https://app.guideflow.com/assets/opt.js"
-                  data-iframe-id="er5mn6lu6k"
-                ></script>
-              </div>
+          {/* Iframe */}
+          <div className={styles.iframeContainer}>
+            <div
+              style={{
+                position: "relative",
+                paddingBottom: "calc(54.10879629629629% + 50px)",
+                height: 0,
+              }}
+            >
+              <iframe
+                id="1pz2g4lamp"
+                src="https://app.guideflow.com/embed/1pz2g4lamp"
+                width="100%"
+                height="100%"
+                style={{
+                  overflow: "hidden",
+                  position: "absolute",
+                  border: "none",
+                }}
+                scrolling="no"
+                allow="clipboard-read; clipboard-write"
+                webKitAllowFullScreen
+                mozAllowFullScreen
+                allowFullScreen
+                allowTransparency="true"
+              />
+              <script
+                src="https://app.guideflow.com/assets/opt.js"
+                data-iframe-id="1pz2g4lamp"
+              ></script>
             </div>
           </div>
         </div>
       </div>
-    </BaseModal>
+    </div>
   );
 }
