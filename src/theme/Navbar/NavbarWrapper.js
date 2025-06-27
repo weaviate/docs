@@ -5,7 +5,7 @@ import buttonStyles from "./styles/button.module.scss";
 import modalStyles from "./styles/modal.module.scss";
 import DefaultNavbar from "./components/DefaultNavbar";
 import SecondaryNavbar from "./components/SecondaryNavbar";
-import OptionModal from "./components/OptionModal";
+import NavigationModal from "./components/NavigationModal";
 import useNavbarState from "./hooks/useNavbarState";
 import useStickyNavbar from "./hooks/useStickyNavbar";
 import useKeyboardShortcut from "./hooks/useKeyboardShortcut";
@@ -72,7 +72,7 @@ export default function NavbarWrapper(props) {
         />
       )}
 
-      <OptionModal
+      <NavigationModal
         isModalOpen={isModalOpen}
         setModalOpen={setModalOpen}
         styles={modalStyles}
@@ -80,8 +80,8 @@ export default function NavbarWrapper(props) {
         secondaryNavOptions={secondaryNavOptions}
         handleOptionSelect={handleOptionSelect}
         isApple={isApple}
-        activeLink={activeLink}         // Pass activeLink from hook
-        selectedOption={selectedOption}  // Pass selectedOption from hook
+        activeLink={activeLink} // Pass activeLink from hook
+        selectedOption={selectedOption} // Pass selectedOption from hook
       />
     </>
   );

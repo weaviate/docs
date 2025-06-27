@@ -23,6 +23,11 @@ const sidebars = {
       href: "https://weaviate.io/docs/deploy/installation-guides",
     },
     {
+      type: "link",
+      label: "Installation",
+      href: "https://weaviate.io/docs/deploy/installation-guides",
+    },
+    {
       type: "category",
       label: "Connect to Weaviate",
       link: {

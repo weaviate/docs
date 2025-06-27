@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
+import FirstVisitModal from "@site/src/components/FirstVisitModal";
 
 export default function Root({ children }) {
   const location = useLocation();
@@ -82,5 +83,10 @@ export default function Root({ children }) {
     manageKapiWidget();
   }, [location]);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <FirstVisitModal />
+    </>
+  );
 }
