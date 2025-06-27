@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 import navbarStyles from "./styles/navbar.module.scss";
 import buttonStyles from "./styles/button.module.scss";
+import modalStyles from "./styles/modal.module.scss";
 import DefaultNavbar from "./components/DefaultNavbar";
 import SecondaryNavbar from "./components/SecondaryNavbar";
-import NavigationModal from "./components/NavigationModal"; // Renamed from OptionModal
+import NavigationModal from "./components/NavigationModal";
 import useNavbarState from "./hooks/useNavbarState";
 import useStickyNavbar from "./hooks/useStickyNavbar";
 import useKeyboardShortcut from "./hooks/useKeyboardShortcut";
@@ -74,12 +75,13 @@ export default function NavbarWrapper(props) {
       <NavigationModal
         isModalOpen={isModalOpen}
         setModalOpen={setModalOpen}
-        buttonStyles={buttonStyles} // Still needed for header button styles
+        styles={modalStyles}
+        buttonStyles={buttonStyles}
         secondaryNavOptions={secondaryNavOptions}
         handleOptionSelect={handleOptionSelect}
         isApple={isApple}
-        activeLink={activeLink}
-        selectedOption={selectedOption}
+        activeLink={activeLink} // Pass activeLink from hook
+        selectedOption={selectedOption} // Pass selectedOption from hook
       />
     </>
   );
