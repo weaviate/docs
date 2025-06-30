@@ -84,6 +84,18 @@ from = "/docs/weaviate/introduction"
 to   = "/docs/weaviate"
 status = 301
 
+## Redirects for Weaviate release notes
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_:version"
+to = "https://weaviate.io/blog/weaviate-1-:version-release"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/release_1_:version"
+to = "https://weaviate.io/blog/weaviate-1-:version-release"
+status = 301
+
 ## Redirect all paths starting with /docs/wcs to /docs/cloud
 
 [[redirects]]
@@ -240,88 +252,6 @@ status = 301
 [[redirects]]
 from = "/docs/weaviate/config-refs/env-vars/runtime-config"
 to   = "/docs/deploy/configuration/env-vars/runtime-config"
-status = 301
-
-## Redirects for Weaviate release notes
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_16"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_16"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_17"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_17"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_18"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_18"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_19"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_19"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_20"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_20"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_21"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_21"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_22"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_22"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_23"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_23"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_24"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_24"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_25"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_25"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_26"
-to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_26"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/release_1_27"
-to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_27"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/release_1_28"
-to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_28"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/release_1_29"
-to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_29"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/release_1_30"
-to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_30"
-status = 301
-
-[[redirects]]
-from = "/docs/weaviate/release-notes/release_1_31"
-to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_31"
 status = 301
 
 ## Docs migration redirects
