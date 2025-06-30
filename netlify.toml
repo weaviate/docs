@@ -87,13 +87,13 @@ status = 301
 ## Redirects for Weaviate release notes
 
 [[redirects]]
-from = "/docs/weaviate/release-notes/older-releases/release_1_:version"
-to = "https://weaviate.io/blog/weaviate-1-:version-release"
+from = "/docs/weaviate/release-notes/older-releases/release_1_*"
+to = "https://weaviate.io/blog/weaviate-1-:splat-release"
 status = 301
 
 [[redirects]]
-from = "/docs/weaviate/release-notes/release_1_:version"
-to = "https://weaviate.io/blog/weaviate-1-:version-release"
+from = "/docs/weaviate/release-notes/release_1_*"
+to = "https://weaviate.io/blog/weaviate-1-:splat-release"
 status = 301
 
 ## Redirect all paths starting with /docs/wcs to /docs/cloud
