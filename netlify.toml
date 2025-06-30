@@ -62,8 +62,7 @@ from = "/wcs/guides/authentication"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
-## Redirect starting paths "/" and "/docs" to "/docs/weaviate"
-## Redirect anything from /developers to /docs
+## Redirect starting paths "/", "/docs" and "/docs/weaviate/introduction" to "/docs/weaviate"
 
 [[redirects]]
 from = "/developers/*"
@@ -77,6 +76,11 @@ status = 301
 
 [[redirects]]
 from = "/"
+to   = "/docs/weaviate"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/introduction"
 to   = "/docs/weaviate"
 status = 301
 
@@ -156,7 +160,12 @@ from = "/docs/weaviate/roadmap"
 to   = "/docs/weaviate/release-notes"
 status = 301
 
-## Installation redirects
+## Deployment redirects
+
+[[redirects]]
+from = "/docs/weaviate/installation"
+to   = "/docs/deploy"
+status = 301
 
 [[redirects]]
 from = "/docs/weaviate/installation/weaviate-cloud-services"
@@ -191,6 +200,135 @@ status = 301
 [[redirects]]
 from = "/docs/weaviate/installation/spcs-integration"
 to   = "/docs/deploy/installation-guides/spcs-integration"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/configuration/tenant-offloading"
+to   = "/docs/deploy/configuration/tenant-offloading"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/more-resources/migration"
+to   = "/docs/deploy/migration"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/more-resources/migration/archive"
+to   = "/docs/deploy/migration/archive"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/more-resources/migration/weaviate-1-25"
+to   = "/docs/deploy/migration/weaviate-1-25"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/more-resources/migration/weaviate-1-30"
+to   = "/docs/deploy/migration/weaviate-1-30"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/tutorials/rbac"
+to   = "/docs/deploy/tutorials/rbac"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/config-refs/env-vars"
+to   = "/docs/deploy/configuration/env-vars"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/config-refs/env-vars/runtime-config"
+to   = "/docs/deploy/configuration/env-vars/runtime-config"
+status = 301
+
+## Redirects for Weaviate release notes
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_16"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_16"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_17"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_17"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_18"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_18"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_19"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_19"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_20"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_20"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_21"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_21"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_22"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_22"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_23"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_23"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_24"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_24"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_25"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_25"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/older-releases/release_1_26"
+to   = "https://weaviate.io/developers/weaviate/release-notes/older-releases/release_1_26"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/release_1_27"
+to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_27"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/release_1_28"
+to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_28"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/release_1_29"
+to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_29"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/release_1_30"
+to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_30"
+status = 301
+
+[[redirects]]
+from = "/docs/weaviate/release-notes/release_1_31"
+to   = "https://weaviate.io/developers/weaviate/release-notes/release_1_31"
+status = 301
+
+## Docs migration redirects
+
+[[redirects]]
+from = "/docs/weaviate/client-libraries/typescript/typescript-v3"
+to   = "/docs/weaviate/client-libraries/typescript"
 status = 301
 
 ## Because baseUrl is /docs but pages are served directly under /build
