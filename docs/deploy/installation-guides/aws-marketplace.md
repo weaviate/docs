@@ -18,6 +18,24 @@ Through the AWS Marketplace you can launch a Weaviate serverless instance billed
 
 You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) to launch a Weaviate serverless instance.
 
+
+<div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
+  <iframe 
+    id="zklzyv5bop" 
+    src="https://app.guideflow.com/embed/zpe5o7jh3p" 
+    width="100%" 
+    height="100%" 
+    style={{overflow: "hidden", position: "absolute", border: "none"}} 
+    scrolling="no" 
+    allow="clipboard-read; clipboard-write" 
+    webKitAllowFullScreen 
+    mozAllowFullScreen 
+    allowFullScreen 
+    allowTransparency="true"
+  />
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="zpe5o7jh3p"></script>
+</div>
+
 ## Installation instructions
 
 1. Go to Weaviate's [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa).

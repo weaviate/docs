@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function OptionModal({
+export default function NavigationModal({
   isModalOpen,
   setModalOpen,
   styles,
