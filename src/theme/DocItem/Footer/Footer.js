@@ -120,10 +120,10 @@ function Footer() {
                   <Link to="/weaviate">Weaviate Database</Link>
                 </li>
                 <li>
-                  <Link to="/docs/deploy">Deployment documentation</Link>
+                  <Link to="/deploy">Deployment documentation</Link>
                 </li>
                 <li>
-                  <Link to="/docs/cloud">Weaviate Cloud</Link>
+                  <Link to="/cloud">Weaviate Cloud</Link>
                 </li>
                 <li>
                   <Link to="/agents">Weaviate Agents</Link>
