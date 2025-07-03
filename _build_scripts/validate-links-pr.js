@@ -13,9 +13,8 @@ const runPRValidationFromBuildDev = async () => {
                 replacement: 'http://localhost:9000',
             },
             {   // make sure to validate weaviate.io docs locally
-                pattern: 'https://weaviate-docs.netlify.app/docs',
-                // pattern: 'http://weaviate.io/docs', // TODO: update the link to weaviate.io
-                replacement: 'http://localhost:9000/docs',
+                pattern: 'https://docs.weaviate.io',
+                replacement: 'http://localhost:9000',
             }
         ],
 
@@ -32,10 +31,10 @@ const runPRValidationFromBuildDev = async () => {
     }, Verbosity.ERROR);
     
     const paths = [
-        `/docs/agents`,
-        `/docs/cloud`,
-        `/docs/integrations/`,
-        `/docs/weaviate`,
+        `/agents`,
+        `/cloud`,
+        `/integrations/`,
+        `/weaviate`,
     ]
     
     const success = await validator.validateLinks(paths);
