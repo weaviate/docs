@@ -5,6 +5,16 @@
   [headers.values]
     access-control-allow-origin = "*"
 
+## Redirects with /current in the path 
+[[redirects]]
+from = "/weaviate/current/*"
+to   = "/weaviate/:splat"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/current/*"
+to   = "/contributor-guide/:splat"
+status = 301
 
 ## WCS redirects
 
@@ -79,18 +89,6 @@ status = 301
 [[redirects]]
 from = "/weaviate/introduction"
 to   = "/weaviate"
-status = 301
-
-## Redirects for Weaviate release notes
-
-[[redirects]]
-from = "/weaviate/release-notes/older-releases/release_1_*"
-to = "https://weaviate.io/blog/weaviate-1-:splat-release"
-status = 301
-
-[[redirects]]
-from = "/weaviate/release-notes/release_1_*"
-to = "https://weaviate.io/blog/weaviate-1-:splat-release"
 status = 301
 
 ## Manage data refactoring
@@ -250,3 +248,159 @@ status = 301
 from = "/weaviate/client-libraries/typescript/typescript-v3"
 to   = "/weaviate/client-libraries/typescript"
 status = 301
+
+
+# Integrations
+
+[[redirects]]
+from = "/integrations/llm-frameworks/*"
+to   = "/integrations/llm-agent-frameworks/:splat"
+status = 301
+
+
+[[redirects]]
+from = "/weaviate/more-resources/dspy"
+to   = "/integrations/llm-agent-frameworks/dspy"
+status = 301
+
+# Modules
+
+## Text2vec redirects
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/text2vec-contextionary"
+to   = "/weaviate/modules/text2vec-contextionary"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/text2vec-palm"
+to   = "/weaviate/model-providers/google/embeddings"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/text2vec-*"
+to   = "/weaviate/model-providers/:splat/embeddings"
+status = 301
+
+## Generative redirects
+[[redirects]]
+from = "/weaviate/modules/reader-generator-modules/generative-palm"
+to   = "/weaviate/model-providers/google/generative"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/reader-generator-modules/generative-*"
+to   = "/weaviate/model-providers/:splat/generative"
+status = 301
+
+### i.e. "/weaviate/modules/reader-generator-modules/ner-transformers" => "/weaviate/modules/ner-transformers"
+[[redirects]]
+from = "/weaviate/modules/reader-generator-modules/*"
+to   = "/weaviate/modules/:splat"
+status = 301
+
+## Multimodal redirects
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/multi2vec-bind"
+to   = "/weaviate/model-providers/imagebind/embeddings-multimodal"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/multi2vec-clip"
+to   = "/weaviate/model-providers/transformers/embeddings-multimodal"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/multi2vec-palm"
+to   = "/weaviate/model-providers/google/embeddings-multimodal"
+status = 301
+
+## Reranker redirects
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/reranker-*"
+to   = "/weaviate/model-providers/:splat/reranker"
+status = 301
+
+## Remaining module redirects
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/ref2vec-centroid"
+to   = "/weaviate/modules/ref2vec-centroid"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/retriever-vectorizer-modules/img2vec-neural"
+to   = "/weaviate/model-providers/transformers/embeddings-multimodal"
+status = 301
+
+[[redirects]]
+from = "/weaviate/modules/other-modules/custom-modules"
+to   = "/weaviate/modules/custom-modules"
+status = 301
+
+## Other modules/model-providers redirects
+[[redirects]]
+from = "/weaviate/api/rest/modules"
+to   = "/weaviate/model-providers"
+status = 301
+
+# Rest API redirects
+[[redirects]]
+from = "/weaviate/api/rest_legacy/modules"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/api/rest_legacy/classification"
+to   = "/weaviate/api/rest#tag/classifications"
+status = 301
+
+[[redirects]]
+from = "/weaviate/api/rest/classification"
+to   = "/weaviate/api/rest#tag/classifications"
+status = 301
+
+[[redirects]]
+from = "/weaviate/api/rest/*"
+to   = "/weaviate/api/rest#tag/:splat"
+status = 301
+
+[[redirects]]
+from = "/weaviate/api/rest_legacy/*"
+to   = "/weaviate/api/rest#tag/:splat"
+status = 301
+
+# --- 3rd party site redirects ---
+[[redirects]]
+from = "/weaviate/quickstart/installation"
+to   = "/weaviate/quickstart"
+status = 301
+
+[[redirects]]
+from = "/weaviate/quickstart/end-to-end"
+to   = "/weaviate/quickstart"
+status = 301
+
+## Schema links
+
+[[redirects]]
+from = "/weaviate/schema/add-properties"
+to   = "/weaviate/manage-collections/collection-operations"
+status = 301
+
+[[redirects]]
+from = "/weaviate/schema/datatypes"
+to   = "/weaviate/config-refs/datatypes"
+status = 301
+
+### redirect all the other schema links to manage-collections
+[[redirects]]
+from = "/weaviate/schema/*"
+to   = "/weaviate/manage-collections"
+status = 301
+
+## Other
+
+[[redirects]]
+from = "/weaviate/core-knowledge/basics"
+to   = "/weaviate/concepts/data"
+status = 301
+
