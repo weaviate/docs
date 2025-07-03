@@ -72,7 +72,7 @@ async function importQuestionsWithVectors() {
 
 await importQuestionsWithVectors();
 
-// Query using nearVector - https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearvector
+// Query using nearVector - https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearvector
 const response = await client.graphql
   .get()
   .withClassName(className)

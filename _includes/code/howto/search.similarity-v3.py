@@ -75,7 +75,7 @@ gqlresponse = client.query.raw(gql_query)
 # ===== QUERY WITH nearText =====
 # ===============================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 
 # GetNearTextPython
 response = (
@@ -160,7 +160,7 @@ test_gqlresponse(response, gqlresponse)
 # ===== QUERY WITH nearObject =====
 # =================================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearobject
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearobject
 
 # GetNearObjectPython
 response = (
@@ -217,7 +217,7 @@ test_gqlresponse(response, gqlresponse)
 # ===== QUERY WITH nearVector =====
 # =================================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearvector
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearvector
 
 # GetNearVectorPython
 response = (
@@ -276,7 +276,7 @@ test_gqlresponse(response, gqlresponse)
 # ==========================================
 
 
-# Query with LimitOffset - https://weaviate.io/docs/weaviate/api/graphql/filters#limit-argument
+# Query with LimitOffset - https://docs.weaviate.io/weaviate/api/graphql/filters#limit-argument
 
 # GetLimitOffsetPython
 response = (
@@ -346,7 +346,7 @@ test_gqlresponse(response, gqlresponse)
 # ===== QUERY WITH DISTANCE =====
 # ===============================
 
-# http://weaviate.io/docs/weaviate/config-refs/distances
+# http://docs.weaviate.io/weaviate/config-refs/distances
 
 # GetWithDistancePython
 # highlight-start
@@ -408,7 +408,7 @@ test_gqlresponse(response, gqlresponse)
 # ===== Query with autocut =====
 # ===============================
 
-# http://weaviate.io/docs/weaviate/api/graphql/additional-operators#autocut
+# http://docs.weaviate.io/weaviate/api/graphql/additional-operators#autocut
 
 # START Autocut Python
 response = (
@@ -532,7 +532,7 @@ test_gqlresponse(response, gqlresponse)
 # ==============================
 
 
-# https://weaviate.io/docs/weaviate/api/graphql/get#get-groupby
+# https://docs.weaviate.io/weaviate/api/graphql/get#get-groupby
 # GetWithGroupbyPython
 max_groups = 2
 max_objects_per_group = 2
@@ -697,7 +697,7 @@ assert len(gqlresponse["data"]["Get"]["JeopardyQuestion"][0]["_additional"]["gro
 # ===== QUERY WITH WHERE =====
 # ============================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 
 # GetWithWherePython
 response = (

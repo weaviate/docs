@@ -53,7 +53,7 @@ for (let object of result.objects) {
 // ===== With NearText =====
 // =========================
 {
-// https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+// https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 // GetNearText
 
 // highlight-start
@@ -82,7 +82,7 @@ result.objects.forEach(item => {
 const tempResp = await jeopardy.query.fetchObjects({limit:1, includeVector:true})
 const queryVector = tempResp.objects[0].vectors.default
 
-// https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+// https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 // GetNearVector
 
 // highlight-start
@@ -108,7 +108,7 @@ for (let object of result.objects) {
 // ===== With NearObject =====
 // ================================
 {
-// https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearobject
+// https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearobject
 // GetNearObject
 
 // highlight-start
@@ -131,7 +131,7 @@ for (let object of result.objects) {
 }
 
 {
-// Limit - https://weaviate.io/docs/weaviate/api/graphql/filters#limit-argument
+// Limit - https://docs.weaviate.io/weaviate/api/graphql/filters#limit-argument
 // GetLimitOffset
 
 const result = await jeopardy.query.nearText('animals in movies', {
@@ -155,7 +155,7 @@ console.log(JSON.stringify(result.objects, null, 2));
 // ===== With Distance =====
 // =========================
 {
-// Distance - http://weaviate.io/docs/weaviate/config-refs/distances
+// Distance - http://docs.weaviate.io/weaviate/config-refs/distances
 // GetWithDistance
 // highlight-start
 const maxDistance = 0.18;
@@ -183,7 +183,7 @@ result.objects.forEach(item => {
 // ===== With Autocut =====
 // ========================
 
-// # http://weaviate.io/docs/weaviate/api/graphql/additional-operators#autocut
+// # http://docs.weaviate.io/weaviate/api/graphql/additional-operators#autocut
 {
 // START Autocut
 
@@ -209,7 +209,7 @@ result.objects.forEach(item => {
 // ===== With GroupBy =====
 // ========================
 {
-// groupBy - https://weaviate.io/docs/weaviate/api/graphql/get#get-groupby
+// groupBy - https://docs.weaviate.io/weaviate/api/graphql/get#get-groupby
 // GetWithGroupBy
 
 const result = await jeopardy.query.nearText('animals in movies', {

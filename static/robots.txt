@@ -1,2 +1,7 @@
+# Sitemap: https://docs.weaviate.io/sitemap.xml
+# User-agent: *
+# Allow: /
+# Disallow: /*?*
+
 User-agent: *
 Disallow: /
