@@ -33,13 +33,14 @@ export default function useStickyNavbar(linksCount, pathname) {
       secondaryNavbarRef.current.insertAdjacentElement("afterend", placeholder);
     }
 
-    const handleScroll = () => {
+    const applySticky = () => {
       if (
         !defaultNavbarRef.current ||
         !secondaryNavbarRef.current ||
         !placeholderRef.current
       )
         return;
+
       // If the page has been scrolled beyond the height of the default navbar...
       if (window.scrollY > defaultNavbarRef.current.offsetHeight) {
         secondaryNavbarRef.current.classList.add(navbarStyles.fixOnTop);
@@ -50,11 +51,34 @@ export default function useStickyNavbar(linksCount, pathname) {
       }
     };
 
+    // Check initial scroll position (handles anchor links on page load)
+    // Use setTimeout to ensure DOM is fully rendered and scroll position is set
+    const checkInitialPosition = () => {
+      applySticky();
+    };
+
+    // Multiple timeouts to handle different loading scenarios
+    setTimeout(checkInitialPosition, 0);
+    setTimeout(checkInitialPosition, 100);
+
+    // Also check when the page fully loads
+    if (document.readyState === "complete") {
+      checkInitialPosition();
+    } else {
+      window.addEventListener("load", checkInitialPosition);
+    }
+
+    // Handle scroll events
+    const handleScroll = () => {
+      applySticky();
+    };
+
     window.addEventListener("scroll", handleScroll);
 
     // Enhanced cleanup function
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("load", checkInitialPosition);
 
       // Remove the placeholder when unmounting or when pathname changes
       if (placeholderRef.current) {
