@@ -52,7 +52,6 @@ export default function useStickyNavbar(linksCount, pathname) {
     };
 
     // Check initial scroll position (handles anchor links on page load)
-    // Use setTimeout to ensure DOM is fully rendered and scroll position is set
     const checkInitialPosition = () => {
       applySticky();
     };
