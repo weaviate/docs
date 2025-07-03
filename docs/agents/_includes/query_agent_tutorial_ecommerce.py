@@ -132,11 +132,13 @@ multi_lingual_agent = QueryAgent(
 # END CustomizedQueryAgent
 
 # START AskQuestions
+from weaviate.agents.utils import print_query_agent_response
+
 response = agent.run(
     "I like vintage clothes, can you list me some options that are less than $200?"
 )
 
-response.display()
+print(response)
 # END AskQuestions
 
 # START FinalAnswerAskQuestions
@@ -146,7 +148,7 @@ print(response.final_answer)
 
 # START PrintQueryAgentResponseAskQuestions
 # Print the whole response in a user-friendly format
-response.display()
+print_query_agent_response(response)
 # END PrintQueryAgentResponseAskQuestions
 
 # START FollowUpAskQuestions
@@ -154,13 +156,13 @@ new_response = agent.run(
     "What about some nice shoes, same budget as before?", context=response
 )
 
-new_response.display()
+print_query_agent_response(new_response)
 # END FollowUpAskQuestions
 
 # START Aggregation
 response = agent.run("What is the the name of the brand that lists the most shoes?")
 
-response.display()
+print_query_agent_response(response)
 # END Aggregation
 
 # START SearchOverMultipleCollections
@@ -169,7 +171,7 @@ response = agent.run(
     "Also, what's the average price of a shoe from 'Loom & Aura'?"
 )
 
-response.display()
+print_query_agent_response(response)
 # END SearchOverMultipleCollections
 
 # START MoreQuestions

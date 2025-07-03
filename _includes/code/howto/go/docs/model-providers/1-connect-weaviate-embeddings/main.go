@@ -1,6 +1,6 @@
 // START-ANY
 // Best practice: store your credentials in environment variables
-// WEAVIATE_HOSTNAME	Weaviate hostname: "REST Endpoint" in Weaviate Cloud console
+// WEAVIATE_URL		    Weaviate URL: "REST Endpoint" in Weaviate Cloud console
 // WEAVIATE_API_KEY		Weaviate API key: "ADMIN" API key in Weaviate Cloud console
 
 package main
@@ -16,9 +16,13 @@ import (
 
 func main() {
 	cfg := weaviate.Config{
-		Host:       os.Getenv("WEAVIATE_HOSTNAME"),
+		Host:       os.Getenv("WEAVIATE_URL"),
 		Scheme:     "https",
 		AuthConfig: auth.ApiKey{Value: os.Getenv("WEAVIATE_API_KEY")},
+		Headers: map[string]string{
+			"X-Weaviate-Api-Key":     os.Getenv("WEAVIATE_API_KEY"),
+			"X-Weaviate-Cluster-Url": fmt.Sprintf("https://%s", os.Getenv("WEAVIATE_URL")),
+		},
 	}
 
 	client, err := weaviate.NewClient(cfg)

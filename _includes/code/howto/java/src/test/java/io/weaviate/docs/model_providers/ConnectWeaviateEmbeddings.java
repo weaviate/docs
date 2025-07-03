@@ -6,24 +6,28 @@ import io.weaviate.client.WeaviateAuthClient;
 import io.weaviate.client.WeaviateClient;
 import io.weaviate.client.base.Result;
 
+import java.util.Map;
+import java.util.HashMap;
+
 // END-ANY
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Test;
-
 // START-ANY
-public class ConnectWeaviateEmbeddingsTest {
-  // END-ANY
-  @Test
-  // START-ANY
-  public void shouldConnectToWeaviate() throws Exception {
+public class ConnectWeaviateEmbeddings {
+  public static void main(String[] args) throws Exception {
 
     // Best practice: store your credentials in environment variables
-    String weaviateHost = System.getenv("WEAVIATE_HOSTNAME"); // Weaviate hostname: "REST Endpoint" in Weaviate Cloud console
-    String weaviateKey = System.getenv("WEAVIATE_API_KEY");   // Weaviate API key: "ADMIN" API key in Weaviate Cloud console
+    String weaviateUrl = System.getenv("WEAVIATE_URL");      // Weaviate URL: "REST Endpoint" in Weaviate Cloud console
+    String weaviateKey = System.getenv("WEAVIATE_API_KEY");  // Weaviate API key: "ADMIN" API key in Weaviate Cloud console
 
     // highlight-start
-    Config config = new Config("https", weaviateHost);
+    Map<String, String> headers = new HashMap<String, String>() { {
+      put("X-Weaviate-Api-Key", weaviateKey);
+      put("X-Weaviate-Cluster-Url", "https://" + weaviateUrl);
+    } };
+
+    // highlight-start
+    Config config = new Config("https", weaviateUrl, headers);
     // highlight-end
     WeaviateClient client = WeaviateAuthClient.apiKey(config, weaviateKey);
 
