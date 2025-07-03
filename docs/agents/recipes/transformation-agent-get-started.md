@@ -29,7 +29,7 @@ If you'd like to try out building more agents with different datasets, check out
 ## Setting Up Weaviate & Importing Data
 
 To use the Weaviate Transformation Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
-1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/wcs/manage-clusters/create#sandbox-clusters)
+1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters)
 2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
 3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
 

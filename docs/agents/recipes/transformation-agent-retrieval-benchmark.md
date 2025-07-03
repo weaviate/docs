@@ -65,7 +65,7 @@ Create 2 HSNW indexes from the *same* property in Weaviate!!
 
 On top of that, you can set different embedding models for each!
 
-You can learn more about Weaviate Named Vectors [here](https://docs.weaviate.io/weaviate/config-refs/schema/multi-vector) and the Weaviate Embedding Service [here](https://docs.weaviate.io/wcs/embeddings)!
+You can learn more about Weaviate Named Vectors [here](https://docs.weaviate.io/weaviate/config-refs/schema/multi-vector) and the Weaviate Embedding Service [here](https://docs.weaviate.io/cloud/embeddings)!
 
 ```python
 blogs_collection = weaviate_client.collections.create(

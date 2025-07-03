@@ -12,7 +12,7 @@ tags: ['Weaviate Embeddings', 'Weaviate Cloud']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-[Weaviate Embeddings](https://docs.weaviate.io/wcs/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://console.weaviate.cloud/) database instance. 
+[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://console.weaviate.cloud/) database instance. 
 
 *Please note this service is part of Weaviate Cloud and cannot be accessed through open-source. Additionally, this service is currently under technical preview, and you can request access [here](https://events.weaviate.io/embeddings-preview).*
 

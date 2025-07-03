@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "link",
       label: "Installation",
-      href: "https://weaviate.io/docs/deploy/installation-guides",
+      href: "https://docs.weaviate.io/deploy/installation-guides",
     },
     {
       type: "category",

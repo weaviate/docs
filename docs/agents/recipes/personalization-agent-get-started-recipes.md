@@ -29,7 +29,7 @@ For this example, we will be using the recipes dataset to create a food recommen
 ## Setting Up Weaviate & Importing Data
 
 To use the Weaviate Personalization Agent, first, create a [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) account👇
-1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) and setup a free [Sandbox](https://docs.weaviate.io/wcs/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents)
+1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents)
 2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
 3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
 

@@ -33,6 +33,7 @@ const domainsToIgnore = [
     'https://docs.x.ai',
     'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link
     'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
+    'https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA',
     'https://instagram.com/',
     'https://openai.com',
     'https://platform.openai.com',
