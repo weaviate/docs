@@ -57,11 +57,7 @@ export default function useStickyNavbar(linksCount, pathname) {
       applySticky();
     };
 
-    // Multiple timeouts to handle different loading scenarios
-    setTimeout(checkInitialPosition, 0);
-    setTimeout(checkInitialPosition, 100);
-
-    // Also check when the page fully loads
+    // Check when the page fully loads
     if (document.readyState === "complete") {
       checkInitialPosition();
     } else {
