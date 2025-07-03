@@ -14,7 +14,7 @@ tags: ['Personalization Agent']
 
 In this recipe, we will use the new Weaviate `PersonalizationAgent` to fetch personalized objects from a Weaviate collection, in a user personalized way. This new agentic way of retrieving objects is based on a users persona profile and past interactions with your collection.
 
-> 📚 You can learn more about how to use the `PersonalizationAgent`, in our ["Introducing the Weaviate Personalization Agent"](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents) blog and [documentation](https://docs.weaviate.io/agents/personalization?utm_source=recipe&utm_campaign=agents).
+> 📚 You can learn more about how to use the `PersonalizationAgent`, in our ["Introducing the Weaviate Personalization Agent"](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents) blog and [documentation](https://docs.weaviate.io/agents/personalization).
 
 To help you get started, we're providing a few demo datasets, available on Hugging Face datasets 🤗:
 - [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes): A dataset that lists the name, short description and cuisine of a dish.
@@ -33,7 +33,7 @@ To use the Weaviate Personalization Agent, first, create a [Weaviate Cloud](tps:
 2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
 3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
 
-> Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate?utm_source=recipe&utm_campaign=agents) so you do not have to provide any extra keys for external embedding providers.
+> Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
 
 ```python
 import os
