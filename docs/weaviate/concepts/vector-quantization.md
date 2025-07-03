@@ -39,7 +39,7 @@ After the segments are created, there is a training step to calculate `centroids
 
 Once the codebook is ready, Weaviate uses the id of the closest centroid to compress each vector segment. The new vector embedding reduces memory consumption significantly. Imagine a collection where each vector embedding has 768 four byte elements. Before PQ compression, each vector embeddingrequires `768 x 4 = 3072` bytes of storage. After PQ compression, each vector requires `128 x 1 = 128` bytes of storage. The original representation is almost 24 times as large as the PQ compressed version. (It is not exactly 24x because there is a small amount of overhead for the codebook.)
 
-To enable PQ compression, see [Enable PQ compression](/docs/weaviate/configuration/compression/pq-compression#enable-pq-compression)
+To enable PQ compression, see [Enable PQ compression](/weaviate/configuration/compression/pq-compression#enable-pq-compression)
 
 ### Segments
 

@@ -388,7 +388,7 @@ services:
       ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles'
 ```
 
-Check the specific documentation for your deployment method ([Docker](docs/deploy/installation-guides/docker-installation.md), [Kubernetes](docs/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](/docs/deploy/installation-guides/embedded.md)) for more information on how to configure it.
+Check the specific documentation for your deployment method ([Docker](/deploy/installation-guides/docker-installation.md), [Kubernetes](/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](/deploy/installation-guides/embedded.md)) for more information on how to configure it.
 
 </details>
 
@@ -840,11 +840,11 @@ Additionally, you could link the chunks to the source document, allowing you to 
 
 While the field of prompting is relatively new, it has seen significant advancements already.
 
-As one example, a technique called "[chain-of-thought prompting](https://paperswithcode.com/paper/chain-of-thought-prompting-elicits-reasoning)" can be an effective technique. It suggests that the prompt can be used to nudge the model towards producing intermediate reasoning steps, which improves the quality of the answer.
+As one example, a technique called "[chain-of-thought prompting](https://arxiv.org/abs/2201.11903)" can be an effective technique. It suggests that the prompt can be used to nudge the model towards producing intermediate reasoning steps, which improves the quality of the answer.
 
 We recommend keeping up to date with the latest developments in the field, and experimenting with different techniques.
 
-Our own [Connor Shorten's podcast](https://weaviate.io/podcast) is a great resource for keeping up with the research, as are resources such as [Arxiv](https://arxiv.org/), and [PapersWithCode](https://paperswithcode.com/).
+Our own [Connor Shorten's podcast](https://weaviate.io/podcast) is a great resource for keeping up with the research, as are resources such as [Arxiv](https://arxiv.org/).
 
 ## Wrap-up
 

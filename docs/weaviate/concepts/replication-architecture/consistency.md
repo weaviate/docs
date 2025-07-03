@@ -9,7 +9,7 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 The replication factor in Weaviate determines how many copies of shards (also called replicas) will be stored across a Weaviate cluster.
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-factor.png" alt="Replication factor" width="80%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-factor.png" alt="Replication factor" width="80%"/></p>
 
 When the replication factor is > 1, consistency models balance the system's reliability, scalability, and/or performance requirements.
 
@@ -60,7 +60,7 @@ A clean (without fails) execution has two phases:
 
 Some queries require the collection definition. Prior to the introduction of this feature, every such query led to the local (requesting) node to fetch the collection definition from the leader node. This meant that the definition was strongly consistent, but it could lead to additional traffic and load.
 
-Where available, the `COLLECTION_RETRIEVAL_STRATEGY` [environment variable](docs/deploy/configuration/env-vars/index.md#multi-node-instances) can be set to `LeaderOnly`, `LocalOnly`, or `LeaderOnMismatch`.
+Where available, the `COLLECTION_RETRIEVAL_STRATEGY` [environment variable](/deploy/configuration/env-vars/index.md#multi-node-instances) can be set to `LeaderOnly`, `LocalOnly`, or `LeaderOnMismatch`.
 
 - `LeaderOnly` (default): Always requests the definition from the leader node. This is the most consistent behavior but can lead to higher intra-cluster traffic.
 - `LocalOnly`: Always use the local definition; leading to eventually consistent behavior while reducing intra-cluster traffic.
@@ -82,7 +82,7 @@ Weaviate uses eventual consistency to improve availability. Read and write consi
 
 *The animation below is an example of how a write or a read is performed with Weaviate with a replication factor of 3 and 8 nodes. The blue node acts as the coordinator node. The consistency level is set to `QUORUM`, so the coordinator node only waits for two out of three responses before sending the result back to the client.*
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-quorum-animation.gif" alt="Write consistency QUORUM" width="75%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-quorum-animation.gif" alt="Write consistency QUORUM" width="75%"/></p>
 
 ### Tunable write consistency
 
@@ -100,16 +100,16 @@ The main reason for introducing configurable write consistency in v1.18 is becau
 
 *Figure below: a replicated Weaviate setup with write consistency of ONE. There are 8 nodes in total out of which 3 replicas.*
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-ONE.png" alt="Write consistency ONE" width="60%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ONE.png" alt="Write consistency ONE" width="60%"/></p>
 
 *Figure below: a replicated Weaviate setup with Write Consistency of `QUORUM` (n/2+1). There are 8 nodes in total, out of which 3 replicas.*
 
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Write consistency QUORUM" width="60%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Write consistency QUORUM" width="60%"/></p>
 
 *Figure below: a replicated Weaviate setup with Write Consistency of `ALL`. There are 8 nodes in total, out of which 3 replicas.*
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-ALL.png" alt="Write consistency ALL" width="60%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ALL.png" alt="Write consistency ALL" width="60%"/></p>
 
 
 ### Tunable read consistency
@@ -134,17 +134,17 @@ Examples:
 * **ONE**<br/>
   In a single datacenter with a replication factor of 3 and a read consistency level of ONE, the coordinator node will wait for a response from one replica node.
 
-  <p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-ONE.png" alt="Write consistency ONE" width="60%"/></p>
+  <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ONE.png" alt="Write consistency ONE" width="60%"/></p>
 
 * **QUORUM**<br/>
   In a single datacenter with a replication factor of 3 and a read consistency level of `QUORUM`, the coordinator node will wait for n / 2 + 1 = 3 / 2 + 1 = 2 replicas nodes to return a response.
 
-  <p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Write consistency QUORUM" width="60%"/></p>
+  <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Write consistency QUORUM" width="60%"/></p>
 
 * **ALL**<br/>
   In a single datacenter with a replication factor of 3 and a read consistency level of `ALL`, the coordinator node will wait for all 3 replicas nodes to return a response.
 
-  <p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-ALL.png" alt="Write consistency ALL" width="60%"/></p>
+  <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ALL.png" alt="Write consistency ALL" width="60%"/></p>
 
 ### Tunable consistency strategies
 
@@ -202,7 +202,7 @@ Repair-on-read works well with one or two isolated repairs. Async replication is
 
 Async replication supplements the repair-on-read mechanism. If a node becomes inconsistent between sync checks, the repair-on-read mechanism catches the problem at read time.
 
-To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-collections/multi-node-setup.mdx#replication-settings). Visit the [How-to: Replication](docs/deploy/configuration/replication.md#async-replication-settings) page to learn more about the available async replication settings.
+To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-collections/multi-node-setup.mdx#replication-settings). Visit the [How-to: Replication](/deploy/configuration/replication.md#async-replication-settings) page to learn more about the available async replication settings.
 
 #### Memory and performance considerations for async replication
 
@@ -336,7 +336,7 @@ Repairs only happen on read, so they do not create a lot of background overhead.
 
 ## Related pages
 - [API References | GraphQL | Get | Consistency Levels](../../api/graphql/get.md#consistency-levels)
-- <SkipLink href="/docs/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
 
 ## Questions and feedback
 

@@ -10,16 +10,14 @@ export default function Root({ children }) {
     function manageKapiWidget() {
       const currentPath = location.pathname;
 
-      const isDocsOrBlogs =
-        (currentPath.startsWith("/docs") &&
-          !currentPath.startsWith("/docs/weaviate/api/rest")) ||
-        currentPath.startsWith("/blog");
+      // Load widget on all pages except /weaviate/api/rest
+      const shouldLoadWidget = !currentPath.startsWith("/weaviate/api/rest");
 
       const existingScript = document.querySelector(
         'script[src="https://widget.kapa.ai/kapa-widget.bundle.js"]'
       );
 
-      if (isDocsOrBlogs && !existingScript) {
+      if (shouldLoadWidget && !existingScript) {
         const script = document.createElement("script");
         script.src = "https://widget.kapa.ai/kapa-widget.bundle.js";
         script.setAttribute(
@@ -30,7 +28,7 @@ export default function Root({ children }) {
         script.setAttribute("data-project-color", "#130c49");
         script.setAttribute(
           "data-project-logo",
-          "/docs/img/site/weaviate-logo-w.png"
+          "/img/site/weaviate-logo-w.png"
         );
         script.setAttribute("data-button-image-width", "35");
         script.setAttribute("data-button-image-height", "20");
@@ -68,7 +66,7 @@ export default function Root({ children }) {
         );
         script.async = true;
         document.body.appendChild(script);
-      } else if (!isDocsOrBlogs && existingScript) {
+      } else if (!shouldLoadWidget && existingScript) {
         existingScript.remove();
 
         const widgetContainer = document.querySelector(

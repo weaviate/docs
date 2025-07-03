@@ -9,11 +9,11 @@ Weaviate stores vector embeddings, also called "embeddings" or simply "vectors."
 
 When collections have millions of objects, the total storage size for the vectors can be very large. The vectors are not just stored, they are indexed as well. This index can also grow very large. The resource costs to host the vectors and the index can be expensive.
 
-Weaviate creates indexes to search the vector space for your collection. The default vector index is a [Hierarchical Navigable Small World (HNSW)](/docs/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) index. This data structure includes the vectors as well as an index graph. HNSW indexes allow fast vector searches while maintaining excellent recall, but they can be expensive to use because they are stored in RAM memory.
+Weaviate creates indexes to search the vector space for your collection. The default vector index is a [Hierarchical Navigable Small World (HNSW)](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) index. This data structure includes the vectors as well as an index graph. HNSW indexes allow fast vector searches while maintaining excellent recall, but they can be expensive to use because they are stored in RAM memory.
 
 Updating the default index configuration settings can result in significant cost savings and even performance improvements. In many cases, you can use compression or a different index type to change the way Weaviate stores and searches your data, and still maintain high levels of recall.
 
-This page discusses compression algorithms. For more on indexes, see [Vector indexing](/docs/weaviate/concepts/vector-index).
+This page discusses compression algorithms. For more on indexes, see [Vector indexing](/weaviate/concepts/vector-index).
 
 ## Compression algorithms
 
@@ -43,7 +43,7 @@ This table shows the compression algorithms that are available for each index ty
 | SQ | Yes | No | Yes |
 | BQ | Yes | Yes | Yes |
 
-The [dynamic index](/docs/weaviate/config-refs/schema/vector-index#dynamic-indexes) is new in v1.25. This type of index is a [flat index](/docs/weaviate/config-refs/schema/vector-index#flat-indexes) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
+The [dynamic index](/weaviate/config-refs/schema/vector-index#dynamic-indexes) is new in v1.25. This type of index is a [flat index](/weaviate/config-refs/schema/vector-index#flat-indexes) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
 
 ### Cost, recall and speed
 
@@ -95,7 +95,7 @@ SQ and BQ both have optional vector caches. Use these configurable caches to loa
 
 Importing and compressing vectors takes slightly longer than importing uncompressed vectors, but this is a one time cost. In contrast, loading a compressed index into memory is faster since there is less data to load. This means restarts are faster.
 
-Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/docs/weaviate/config-refs/schema/vector-index#asynchronous-indexing) feature which effectively speeds up the import process. Consider enabling asynchronous indexing to improve imports.
+Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/config-refs/schema/vector-index#asynchronous-indexing) feature which effectively speeds up the import process. Consider enabling asynchronous indexing to improve imports.
 
 ### Activate compression
 
@@ -107,7 +107,7 @@ Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/docs/weavi
   - SQ's training step determines the minimum and maximum values for bucket boundaries.
   - PQ and SQ both begin to compress data after you have imported a large enough training set and the training step is complete.
 
-- If you have async indexing and [AutoPQ enabled](/docs/weaviate/configuration/compression/pq-compression#configure-autopq), PQ compression can be enabled anytime. If AutoPQ is not enabled, you should only enable PQ after you have imported enough objects to [train the algorithm](/docs/weaviate/configuration/compression/pq-compression#manually-configure-pq).
+- If you have async indexing and [AutoPQ enabled](/weaviate/configuration/compression/pq-compression#configure-autopq), PQ compression can be enabled anytime. If AutoPQ is not enabled, you should only enable PQ after you have imported enough objects to [train the algorithm](/weaviate/configuration/compression/pq-compression#manually-configure-pq).
 
 - BQ doesn't require a training step.
 
@@ -135,7 +135,7 @@ To enable compression, follow the steps on these pages:
 
 For more documentation details, see:
 
-- [Compression discussion](/docs/weaviate/concepts/vector-quantization)
+- [Compression discussion](/weaviate/concepts/vector-quantization)
 
 ### Blog posts
 

@@ -30,9 +30,9 @@ In multi-tenant collections, you can change tenant states (`Active`, `Inactive`,
 
 The vector index type affects its default resource type.
 
-* [`HNSW` index (default)](/docs/academy/py/vector_index/hnsw) - uses the vector index in RAM, a **Hot** resource.
-* [`Flat` index](/docs/academy/py/vector_index/flat) - uses the vector index on disk, a **Warm** resource.
-* [`Dynamic` index](/docs/academy/py/vector_index/dynamic) - starts as a flat index (using a **Warm** resource), then switches to an HNSW index (a **Hot** resource) at a predetermined threshold.
+* [`HNSW` index (default)](/academy/py/vector_index/hnsw) - uses the vector index in RAM, a **Hot** resource.
+* [`Flat` index](/academy/py/vector_index/flat) - uses the vector index on disk, a **Warm** resource.
+* [`Dynamic` index](/academy/py/vector_index/dynamic) - starts as a flat index (using a **Warm** resource), then switches to an HNSW index (a **Hot** resource) at a predetermined threshold.
 
 </details>
 
@@ -47,12 +47,12 @@ There are three tenant states: `Active`, `Inactive` and `Offloaded`.
 | Offloaded        | **No**         | Cold         | Cold           | Cold        | Slow             |Tenant is stored in cloud storage and not available for use |
 
 :::tip Tenant state and consistency
-Tenant states are eventually consistent. [Read more](/docs/weaviate/concepts/replication-architecture/consistency#tenant-states-and-data-objects)
+Tenant states are eventually consistent. [Read more](/weaviate/concepts/replication-architecture/consistency#tenant-states-and-data-objects)
 :::
 
 ### Active
 
-An `Active` tenant is available for queries and CRUD operations. Depending on the [vector index type](/docs/weaviate/starter-guides/managing-resources#vector-index-types) it uses either **hot** or **warm** resources.
+An `Active` tenant is available for queries and CRUD operations. Depending on the [vector index type](/weaviate/starter-guides/managing-resources#vector-index-types) it uses either **hot** or **warm** resources.
 
 The tenant's object data and inverted index are stored on disk, using `warm` resources.
 

@@ -1,7 +1,7 @@
 ---
 title: Authentication
 sidebar_position: 5
-image: og/wcs/user_guides.jpg
+image: og/wcd/user_guides.jpg
 ---
 
 import WCDAPIKeys from '/docs/cloud/img/wcs-api-keys.jpg';
@@ -9,13 +9,13 @@ import WCDAddAPIKeys from '/docs/cloud/img/wcs-add-key-details.jpg';
 import WCDDelAPIKeys from '/docs/cloud/img/wcs-delete-api-key.jpg';
 import RestartTheCluster from '/_includes/wcs/restart-warning.mdx';
 
-There are two options for managing cluster authentication depending on [RBAC (Role-Based Access Control)](/docs/weaviate/configuration/rbac/index.mdx) being enabled:
+There are two options for managing cluster authentication depending on [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) being enabled:
 - [Authentication with RBAC enabled](#authentication-with-rbac-enabled)
 - [Authentication with RBAC disabled](#authentication-with-rbac-disabled)
 
 ## Authentication with RBAC enabled
 
-This section only applies to clusters that have [RBAC (Role-Based Access Control)](/docs/weaviate/configuration/rbac/index.mdx) enabled. New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default.
+This section only applies to clusters that have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled. New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default.
 
 ### Create an API key
 
@@ -38,7 +38,7 @@ import RotateAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-api-key-rotate.p
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
           Select your cluster
         </Link>{' '}
         and navigate to the <code>API Keys</code> section.
@@ -100,7 +100,7 @@ import EditAPIKeyForm from '/docs/cloud/img/weaviate-cloud-api-key-edit.png';
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
           Select your cluster
         </Link>{' '}
         and navigate to the <code>API Keys</code> section.
@@ -132,7 +132,7 @@ import EditAPIKeyForm from '/docs/cloud/img/weaviate-cloud-api-key-edit.png';
       <li>
         You can also update the roles associated with this API key. Choose from
         the existing roles or{' '}
-        <Link to="/docs/cloud/manage-clusters/authorization">
+        <Link to="/cloud/manage-clusters/authorization">
           assign different roles
         </Link>{' '}
         (<span class="callout">2</span>).
@@ -167,7 +167,7 @@ import DeleteAPIKeyRBAC from '/docs/cloud/img/weaviate-cloud-delete-api-key.png'
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
           Select your cluster
         </Link>{' '}
         and navigate to the <code>API Keys</code> section.
@@ -217,7 +217,7 @@ import DeleteAPIKeyConfirmRBAC from '/docs/cloud/img/weaviate-cloud-delete-api-k
 
 ## Authentication with RBAC disabled
 
-If [RBAC (Role-Based Access Control)](/docs/weaviate/configuration/rbac/index.mdx) is not enabled, there will be two default API keys, `ReadOnly` and `Admin`:
+If [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) is not enabled, there will be two default API keys, `ReadOnly` and `Admin`:
 
 - `Admin` keys are read-write.
 - `ReadOnly` keys do not grant write access to the database.
@@ -245,7 +245,7 @@ import NewAPIKey from '/docs/cloud/img/weaviate-cloud-new-api-key.png';
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
           Select your cluster
         </Link>{' '}
         and find the <code>API Keys</code> section.
@@ -311,7 +311,7 @@ import DeleteAPIKey from '/docs/cloud/img/weaviate-cloud-delete-api-key.png';
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-your-cluster">
           Select your cluster
         </Link>{' '}
         and find the <code>API Keys</code> section.
@@ -364,7 +364,7 @@ import DeleteAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-delete-api-key-c
 ## Further resources
 
 - [Manage authorization in WCD](./authorization.mdx)
-- [RBAC documentation](/docs/weaviate/configuration/rbac/index.mdx)
+- [RBAC documentation](/weaviate/configuration/rbac/index.mdx)
 
 ## Support
 
