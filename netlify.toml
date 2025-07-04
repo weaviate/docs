@@ -427,7 +427,7 @@ to = "/weaviate/config-refs/schema/vector-index"
 status = 301
 
 [[redirects]]
-from = "/weaviate/current/configuration/vector-index-type"
+from = "/weaviate/configuration/vector-index-type"
 to = "/weaviate/config-refs/schema/vector-index"
 status = 301
 
@@ -553,7 +553,7 @@ status = 301
 # Old link redirects
 
 [[redirects]]
-from = "/weaviate/current/getting-started/installation"
+from = "/weaviate/getting-started/installation"
 to = "/deploy/installation-guides"
 status = 301
 
