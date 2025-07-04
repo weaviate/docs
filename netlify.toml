@@ -689,3 +689,18 @@ status = 301
 from = "/weaviate/vector-indexplugins/hnsw"
 to   = "/weaviate/concepts/vector-index"
 status = 301
+
+[[redirects]]
+from = "/weaviate/tutorials/custom-vectors"
+to   = "/weaviate/starter-guides/custom-vectors"
+status = 301
+
+[[redirects]]
+from = "/weaviate/v1.11.0/reader-generator-modules/ner-transformers"
+to   = "/weaviate/modules/ner-transformers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/v1.8.0/architecture/resources"
+to   = "/weaviate/concepts"
+status = 301
