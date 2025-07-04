@@ -79,6 +79,16 @@ from = "/cloud/guides/authentication"
 to   = "/cloud/manage-clusters/connect"
 status = 301
 
+[[redirects]]
+from = "/cloud/platform/manage-api-keys"
+to = "/cloud/manage-clusters/authentication"
+status = 301
+
+[[redirects]]
+from = "/weaviate/tutorials/console"
+to = "/cloud/tools/query-tool"
+status = 301
+
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
 
 [[redirects]]
@@ -395,6 +405,197 @@ status = 301
 [[redirects]]
 from = "/weaviate/schema/*"
 to   = "/weaviate/manage-collections"
+status = 301
+
+# Client library redirects
+
+[[redirects]]
+from = "/weaviate/client-libraries/javascript"
+to = "/weaviate/client-libraries/typescript"
+status = 301
+
+# Configuration redirects
+
+[[redirects]]
+from = "/weaviate/config-refs/schema/range-index"
+to = "/weaviate/concepts/filtering"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/indexes"
+to = "/weaviate/config-refs/schema/vector-index"
+status = 301
+
+[[redirects]]
+from = "/weaviate/current/configuration/vector-index-type"
+to = "/weaviate/config-refs/schema/vector-index"
+status = 301
+
+# Deployment redirects - Installation
+
+[[redirects]]
+from = "/weaviate/installation/docker-compose"
+to = "/deploy/installation-guides/docker-installation"
+status = 301
+
+[[redirects]]
+from = "/weaviate/installation/kubernetes"
+to = "/deploy/installation-guides/k8s-installation"
+status = 301
+
+# Deployment redirects - Configuration
+
+[[redirects]]
+from = "/weaviate/configuration/rbac/configuration"
+to = "/deploy/configuration/configuring-rbac"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/backups"
+to = "/deploy/configuration/backups"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/authentication"
+to = "/deploy/configuration/authentication"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/authorization"
+to = "/deploy/configuration/authorization"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/persistence"
+to = "/deploy/configuration/persistence"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/monitoring"
+to = "/deploy/configuration/monitoring"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/replication"
+to = "/deploy/configuration/replication"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/nodes"
+to = "/deploy/configuration/nodes"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/meta"
+to = "/deploy/configuration/meta"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/oidc"
+to = "/deploy/configuration/oidc"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/telemetry"
+to = "/deploy/configuration/telemetry"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/status"
+to = "/deploy/configuration/status"
+status = 301
+
+# Howto redirects
+
+[[redirects]]
+from = "/weaviate/manage-data/exhaustive-retrieval"
+to = "/weaviate/manage-objects/read-all-objects"
+status = 301
+
+# Tutorial refresh 2024
+
+[[redirects]]
+from = "/weaviate/tutorials/schema"
+to = "/weaviate/starter-guides/managing-collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/tutorials/connect"
+to = "/weaviate/connections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/starter-guides/connect"
+to = "/weaviate/connections"
+status = 301
+
+# 2024.10 Rename "prefiltering" to "filtering"
+
+[[redirects]]
+from = "/weaviate/concepts/prefiltering"
+to = "/weaviate/concepts/filtering"
+status = 301
+
+# Remove BPR page
+
+[[redirects]]
+from = "/weaviate/concepts/binary-passage-retrieval"
+to = "/weaviate/concepts/vector-index"
+status = 301
+
+# References: API / GraphQL redirects
+
+[[redirects]]
+from = "/weaviate/api/graphql/vector-search-parameters"
+to = "/weaviate/api/graphql/search-operators"
+status = 301
+
+# Old link redirects
+
+[[redirects]]
+from = "/weaviate/current/getting-started/installation"
+to = "/deploy/installation-guides"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/pq-compression"
+to = "/weaviate/configuration/compression/pq-compression"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/bq-compression"
+to = "/weaviate/configuration/compression/bq-compression"
+status = 301
+
+[[redirects]]
+from = "/weaviate/manage-data/classes"
+to = "/weaviate/manage-collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/configuration/schema-configuration"
+to = "/weaviate/manage-collections"
+status = 301
+
+# Restructured starter guides
+
+[[redirects]]
+from = "/weaviate/starter-guides/schema"
+to = "/weaviate/starter-guides/managing-collections"
+status = 301
+
+# Redirects for Weaviate Core error messages
+
+[[redirects]]
+from = "/collections-count-limit"
+to = "/weaviate/starter-guides/managing-collections/collections-scaling-limits"
+status = 301
+
+# Redirects for rbac
+
+[[redirects]]
+from = "/weaviate/configuration/rbac/manage-roles-users"
+to = "/weaviate/configuration/rbac/manage-roles"
 status = 301
 
 ## Other
