@@ -603,11 +603,6 @@ from = "/weaviate/configuration/rbac/manage-roles-users"
 to = "/weaviate/configuration/rbac/manage-roles"
 status = 301
 
-# Broken links
-from = "/weaviate/configuration/rbac/manage-roles-users"
-to = "/weaviate/concepts"
-status = 301
-
 ## Ahrefs fixing links
 
 [[redirects]]
