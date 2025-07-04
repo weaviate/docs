@@ -5,7 +5,7 @@
   [headers.values]
     access-control-allow-origin = "*"
 
-## Redirects with /current in the path 
+## Remove /current from the path 
 [[redirects]]
 from = "/weaviate/current/*"
 to   = "/weaviate/:splat"
@@ -81,12 +81,12 @@ status = 301
 
 [[redirects]]
 from = "/cloud/platform/manage-api-keys"
-to = "/cloud/manage-clusters/authentication"
+to   = "/cloud/manage-clusters/authentication"
 status = 301
 
 [[redirects]]
 from = "/weaviate/tutorials/console"
-to = "/cloud/tools/query-tool"
+to   = "/cloud/tools/query-tool"
 status = 301
 
 ## Redirect starting paths "/" and "/weaviate/introduction" to "/weaviate"
@@ -134,6 +134,11 @@ to   = "/weaviate/manage-objects/read-all-objects"
 status = 301
 
 [[redirects]]
+from = "/weaviate/manage-data/exhaustive-retrieval"
+to   = "/weaviate/manage-objects/read-all-objects"
+status = 301
+
+[[redirects]]
 from = "/weaviate/manage-data/update"
 to   = "/weaviate/manage-objects/update"
 status = 301
@@ -163,19 +168,14 @@ from = "/weaviate/manage-data/migrate"
 to   = "/weaviate/manage-collections/migrate"
 status = 301
 
-## Roadmap page redirect
+## Roadmap page redirect also covers /roadmap/feature-roadmap
 
 [[redirects]]
-from = "/weaviate/roadmap"
+from = "/weaviate/roadmap*"
 to   = "/weaviate/release-notes"
 status = 301
 
 ## Deployment redirects
-
-[[redirects]]
-from = "/weaviate/installation"
-to   = "/deploy"
-status = 301
 
 [[redirects]]
 from = "/weaviate/installation/weaviate-cloud-services"
@@ -183,7 +183,7 @@ to   = "/deploy/installation-guides/weaviate-cloud"
 status = 301
 
 [[redirects]]
-from = "/weaviate/installation/docker-compose"
+from = "/weaviate/installation/docker*"
 to   = "/deploy/installation-guides/docker-installation"
 status = 301
 
@@ -210,6 +210,12 @@ status = 301
 [[redirects]]
 from = "/weaviate/installation/spcs-integration"
 to   = "/deploy/installation-guides/spcs-integration"
+status = 301
+
+# note must be the last /weaviate/installation redirect
+[[redirects]]
+from = "/weaviate/installation*"
+to   = "/deploy"
 status = 301
 
 [[redirects]]
@@ -303,6 +309,12 @@ to   = "/weaviate/model-providers/:splat/generative"
 status = 301
 
 ### i.e. "/weaviate/modules/reader-generator-modules/ner-transformers" => "/weaviate/modules/ner-transformers"
+
+[[redirects]]
+from = "/weaviate/reader-generator-modules/*"
+to   = "/weaviate/modules/:splat"
+status = 301
+
 [[redirects]]
 from = "/weaviate/modules/reader-generator-modules/*"
 to   = "/weaviate/modules/:splat"
@@ -411,196 +423,163 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/client-libraries/javascript"
-to = "/weaviate/client-libraries/typescript"
+to   = "/weaviate/client-libraries/typescript"
 status = 301
 
 # Configuration redirects
 
 [[redirects]]
 from = "/weaviate/config-refs/schema/range-index"
-to = "/weaviate/concepts/filtering"
+to   = "/weaviate/concepts/filtering"
+status = 301
+
+[[redirects]]
+from = "/weaviate/concepts/prefiltering"
+to   = "/weaviate/concepts/filtering"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/indexes"
-to = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/schema/vector-index"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/vector-index-type"
-to = "/weaviate/config-refs/schema/vector-index"
-status = 301
-
-# Deployment redirects - Installation
-
-[[redirects]]
-from = "/weaviate/installation/docker-compose"
-to = "/deploy/installation-guides/docker-installation"
-status = 301
-
-[[redirects]]
-from = "/weaviate/installation/docker"
-to = "/deploy/installation-guides/docker-installation"
-status = 301
-
-[[redirects]]
-from = "/weaviate/installation/kubernetes"
-to = "/deploy/installation-guides/k8s-installation"
+to   = "/weaviate/config-refs/schema/vector-index"
 status = 301
 
 # Deployment redirects - Configuration
 
 [[redirects]]
 from = "/weaviate/configuration/rbac/configuration"
-to = "/deploy/configuration/configuring-rbac"
+to   = "/deploy/configuration/configuring-rbac"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/backups"
-to = "/deploy/configuration/backups"
+to   = "/deploy/configuration/backups"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/authentication"
-to = "/deploy/configuration/authentication"
+to   = "/deploy/configuration/authentication"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/authorization"
-to = "/deploy/configuration/authorization"
+to   = "/deploy/configuration/authorization"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/persistence"
-to = "/deploy/configuration/persistence"
+to   = "/deploy/configuration/persistence"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/monitoring"
-to = "/deploy/configuration/monitoring"
+to   = "/deploy/configuration/monitoring"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/replication"
-to = "/deploy/configuration/replication"
+to   = "/deploy/configuration/replication"
 status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/nodes"
-to = "/deploy/configuration/nodes"
+to   = "/deploy/configuration/nodes"
 status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/meta"
-to = "/deploy/configuration/meta"
+to   = "/deploy/configuration/meta"
 status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/oidc"
-to = "/deploy/configuration/oidc"
+to   = "/deploy/configuration/oidc"
 status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/telemetry"
-to = "/deploy/configuration/telemetry"
+to   = "/deploy/configuration/telemetry"
 status = 301
 
 [[redirects]]
 from = "/weaviate/config-refs/status"
-to = "/deploy/configuration/status"
-status = 301
-
-# Howto redirects
-
-[[redirects]]
-from = "/weaviate/manage-data/exhaustive-retrieval"
-to = "/weaviate/manage-objects/read-all-objects"
+to   = "/deploy/configuration/status"
 status = 301
 
 # Tutorial refresh 2024
 
 [[redirects]]
-from = "/weaviate/tutorials/schema"
-to = "/weaviate/starter-guides/managing-collections"
-status = 301
-
-[[redirects]]
 from = "/weaviate/tutorials/connect"
-to = "/weaviate/connections"
+to   = "/weaviate/connections"
 status = 301
 
 [[redirects]]
 from = "/weaviate/starter-guides/connect"
-to = "/weaviate/connections"
-status = 301
-
-# 2024.10 Rename "prefiltering" to "filtering"
-
-[[redirects]]
-from = "/weaviate/concepts/prefiltering"
-to = "/weaviate/concepts/filtering"
-status = 301
-
-# Remove BPR page
-
-[[redirects]]
-from = "/weaviate/concepts/binary-passage-retrieval"
-to = "/weaviate/concepts/vector-index"
+to   = "/weaviate/connections"
 status = 301
 
 # References: API / GraphQL redirects
 
 [[redirects]]
 from = "/weaviate/api/graphql/vector-search-parameters"
-to = "/weaviate/api/graphql/search-operators"
+to   = "/weaviate/api/graphql/search-operators"
 status = 301
 
 # Old link redirects
-
+# note. this must be before /weaviate/getting-started* redirect
 [[redirects]]
 from = "/weaviate/getting-started/installation"
-to = "/deploy/installation-guides"
+to   = "/deploy/installation-guides"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/pq-compression"
-to = "/weaviate/configuration/compression/pq-compression"
+to   = "/weaviate/configuration/compression/pq-compression"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/bq-compression"
-to = "/weaviate/configuration/compression/bq-compression"
+to   = "/weaviate/configuration/compression/bq-compression"
 status = 301
 
 [[redirects]]
 from = "/weaviate/manage-data/classes"
-to = "/weaviate/manage-collections"
+to   = "/weaviate/manage-collections"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/schema-configuration"
-to = "/weaviate/manage-collections"
+to   = "/weaviate/manage-collections"
 status = 301
 
 # Restructured starter guides
 
 [[redirects]]
 from = "/weaviate/starter-guides/schema"
-to = "/weaviate/starter-guides/managing-collections"
+to   = "/weaviate/starter-guides/managing-collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/tutorials/schema"
+to   = "/weaviate/starter-guides/managing-collections"
 status = 301
 
 # Redirects for Weaviate Core error messages
 
 [[redirects]]
 from = "/collections-count-limit"
-to = "/weaviate/starter-guides/managing-collections/collections-scaling-limits"
+to   = "/weaviate/starter-guides/managing-collections/collections-scaling-limits"
 status = 301
 
 # Redirects for rbac
 
 [[redirects]]
 from = "/weaviate/configuration/rbac/manage-roles-users"
-to = "/weaviate/configuration/rbac/manage-roles"
+to   = "/weaviate/configuration/rbac/manage-roles"
 status = 301
 
 ## Ahrefs fixing links
@@ -621,38 +600,38 @@ to   = "/deploy/configuration/authorization"
 status = 301
 
 [[redirects]]
-from = "/weaviate/community"
-to   = "https://weaviate.io/community"
-status = 301
-
-[[redirects]]
-from = "/weaviate/core-knowledge/basics"
+from = "/weaviate/core-knowledge/basics*"
 to   = "/weaviate/quickstart"
 status = 301
 
 [[redirects]]
-from = "/weaviate/data-schema/datatypes"
+from = "/weaviate/data-schema/datatypes*"
 to   = "/weaviate/config-refs/datatypes"
 status = 301
 
 [[redirects]]
-from = "/weaviate/faq"
+from = "/weaviate/faq*"
 to   = "/weaviate/more-resources/faq"
 status = 301
 
 [[redirects]]
-from = "/weaviate/getting-started/*"
+from = "/weaviate/getting-started*"
 to   = "/weaviate/quickstart"
 status = 301
 
 [[redirects]]
-from = "/weaviate/graphql-references/*"
-to   = "/weaviate/api/graphql"
+from = "/weaviate/graphql-references/filters*"
+to   = "/weaviate/api/graphql/filters"
 status = 301
 
 [[redirects]]
-from = "/weaviate/reader-generator-modules/*"
-to   = "/weaviate/model-providers"
+from = "/weaviate/graphql-references/vector-search*"
+to   = "/weaviate/api/graphql/search-operators"
+status = 301
+
+[[redirects]]
+from = "/weaviate/graphql-references*"
+to   = "/weaviate/api/graphql"
 status = 301
 
 [[redirects]]
@@ -666,12 +645,7 @@ to   = "/weaviate/concepts/replication-architecture"
 status = 301
 
 [[redirects]]
-from = "/weaviate/roadmap/feature-roadmap"
-to   = "/weaviate/release-notes"
-status = 301
-
-[[redirects]]
-from = "/weaviate/tutorials/example-datasets"
+from = "/weaviate/tutorials/example-datasets*"
 to   = "/weaviate/more-resources/example-datasets"
 status = 301
 
@@ -686,7 +660,13 @@ to   = "/weaviate/release-notes"
 status = 301
 
 [[redirects]]
-from = "/weaviate/vector-indexplugins/hnsw"
+from = "/weaviate/vector-indexplugins/hnsw*"
+to   = "/weaviate/concepts/vector-index"
+status = 301
+
+# Remove BPR page
+[[redirects]]
+from = "/weaviate/concepts/binary-passage-retrieval"
 to   = "/weaviate/concepts/vector-index"
 status = 301
 
@@ -703,4 +683,22 @@ status = 301
 [[redirects]]
 from = "/weaviate/v1.8.0/architecture/resources"
 to   = "/weaviate/concepts"
+status = 301
+
+# /weaviate/current/retriever-vectorizer-modules/text2vec-huggingface.html
+[[redirects]]
+from = "/weaviate/retriever-vectorizer-modules/text2vec-huggingface*"
+to   = "/weaviate/model-providers/huggingface/embeddings"
+status = 301
+
+# /weaviate/current/retriever-vectorizer-modules/text2vec-openai.html
+[[redirects]]
+from = "/weaviate/retriever-vectorizer-modules/text2vec-openai*"
+to   = "/weaviate/model-providers/openai/embeddings"
+status = 301
+
+# /weaviate/current/retriever-vectorizer-modules/text2vec-transformers.html
+[[redirects]]
+from = "/weaviate/retriever-vectorizer-modules/text2vec-transformers*"
+to   = "/weaviate/model-providers/transformers/embeddings"
 status = 301
