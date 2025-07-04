@@ -93,19 +93,19 @@ export default function FirstVisitModal() {
             <p>
               The Weaviate documentation is divided into the following four
               sections:{" "}
-              <Link to="/docs/weaviate" onClick={handleClose}>
+              <Link to="/weaviate" onClick={handleClose}>
                 core database
               </Link>
               ,{" "}
-              <Link to="/docs/deploy" onClick={handleClose}>
+              <Link to="/deploy" onClick={handleClose}>
                 deployment
               </Link>
               ,{" "}
-              <Link to="/docs/cloud" onClick={handleClose}>
+              <Link to="/cloud" onClick={handleClose}>
                 Weaviate Cloud
               </Link>{" "}
               and{" "}
-              <Link to="/docs/agents" onClick={handleClose}>
+              <Link to="/agents" onClick={handleClose}>
                 Weaviate Agents
               </Link>{" "}
               docs.
