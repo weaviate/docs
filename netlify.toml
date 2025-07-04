@@ -656,7 +656,7 @@ to   = "/weaviate/model-providers"
 status = 301
 
 [[redirects]]
-from = "/weaviate/retriever-vectorizer-modules/*"
+from = "/weaviate/modules/retriever-vectorizer-modules"
 to   = "/weaviate/model-providers"
 status = 301
 
@@ -676,7 +676,7 @@ to   = "/weaviate/more-resources/example-datasets"
 status = 301
 
 [[redirects]]
-from = "/weaviate/current/use-cases/"
+from = "/weaviate/use-cases"
 to   = "https://weaviate.io/case-studies"
 status = 301
 
