@@ -439,6 +439,11 @@ to = "/deploy/installation-guides/docker-installation"
 status = 301
 
 [[redirects]]
+from = "/weaviate/installation/docker"
+to = "/deploy/installation-guides/docker-installation"
+status = 301
+
+[[redirects]]
 from = "/weaviate/installation/kubernetes"
 to = "/deploy/installation-guides/k8s-installation"
 status = 301
@@ -598,10 +603,69 @@ from = "/weaviate/configuration/rbac/manage-roles-users"
 to = "/weaviate/configuration/rbac/manage-roles"
 status = 301
 
-## Other
+# Broken links
+from = "/weaviate/configuration/rbac/manage-roles-users"
+to = "/weaviate/concepts"
+status = 301
+
+## Ahrefs fixing links
+
+[[redirects]]
+from = "/weaviate/architecture/*"
+to   = "/weaviate/concepts"
+status = 301
+
+[[redirects]]
+from = "/weaviate/authentication"
+to   = "/deploy/configuration/authentication"
+status = 301
+
+[[redirects]]
+from = "/weaviate/authorization"
+to   = "/deploy/configuration/authorization"
+status = 301
+
+[[redirects]]
+from = "/weaviate/community"
+to   = "https://weaviate.io/community"
+status = 301
 
 [[redirects]]
 from = "/weaviate/core-knowledge/basics"
-to   = "/weaviate/concepts/data"
+to   = "/weaviate/quickstart"
 status = 301
 
+[[redirects]]
+from = "/weaviate/current/data-schema/datatypes"
+to   = "/weaviate/config-refs/datatypes"
+status = 301
+
+[[redirects]]
+from = "/weaviate/faq"
+to   = "/weaviate/more-resources/faq"
+status = 301
+
+[[redirects]]
+from = "/weaviate/getting-started/*"
+to   = "/weaviate/quickstart"
+status = 301
+
+[[redirects]]
+from = "/weaviate/graphql-references/*"
+to   = "/weaviate/api/graphql"
+status = 301
+
+[[redirects]]
+from = "/weaviate/reader-generator-modules/*"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/retriever-vectorizer-modules/*"
+to   = "/weaviate/model-providers"
+status = 301
+
+[[redirects]]
+from = "/weaviate/replication-architecture"
+to   = "/weaviate/concepts/replication-architecture"
+status = 301
