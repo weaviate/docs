@@ -199,7 +199,7 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/installation/aws-marketplace"
-to   = "/deploy/installation-guides/eks"
+to   = "/deploy/installation-guides/aws-marketplace"
 status = 301
 
 [[redirects]]
@@ -676,12 +676,12 @@ to   = "/weaviate/starter-guides/custom-vectors"
 status = 301
 
 [[redirects]]
-from = "/weaviate/v1.11.0/reader-generator-modules/ner-transformers"
+from = "/weaviate/v1.11.0/reader-generator-modules/ner-transformers*"
 to   = "/weaviate/modules/ner-transformers"
 status = 301
 
 [[redirects]]
-from = "/weaviate/v1.8.0/architecture/resources"
+from = "/weaviate/v1.8.0/architecture/resources*"
 to   = "/weaviate/concepts"
 status = 301
 
