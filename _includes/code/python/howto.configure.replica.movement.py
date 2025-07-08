@@ -51,14 +51,15 @@ target_node_name = next(
 # 1. Replicate (Copy) a shard
 # Initiates the copy of a shard to another node.
 # START ReplicateShard
-from weaviate.cluster.models import TransferType
+from weaviate.cluster.models import ReplicationType
 
 operation_id = client.cluster.replicate(
     collection=collection_name,
     shard=shard_name,
     source_node=source_node_name,
     target_node=target_node_name,
-    transfer_type=TransferType.COPY,  # or TransferType.MOVE
+    replication_type=ReplicationType.COPY,  # For copying a shard
+    # replication_type=ReplicationType.MOVE,  # For moving a shard
 )
 print(f"Replication initiated, ID: {operation_id}")
 # END ReplicateShard
