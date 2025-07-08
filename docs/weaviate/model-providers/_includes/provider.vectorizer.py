@@ -25,7 +25,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",
-            model="cohere.embed-multilingual-v3",
+            model="titan-embed-text-v2:0",
         )
     ],
     # highlight-end
@@ -48,7 +48,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="sagemaker",
-            endpoint="<custom_sagemaker_url>",
+            endpoint="<custom_sagemaker_name>", # tei-xxx
         )
     ],
     # highlight-end
@@ -71,7 +71,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",                      # `bedrock` or `sagemaker`
-            model="cohere.embed-multilingual-v3",   # If using `bedrock`, this is required
+            model="titan-embed-text-v2:0",          # If using `bedrock`, this is required
             # endpoint="<sagemaker_endpoint>",        # If using `sagemaker`, this is required
         )
     ],
