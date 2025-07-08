@@ -915,6 +915,11 @@ const sidebars = {
           id: "deploy/configuration/async-rep",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "deploy/configuration/replica-movement",
+          className: "sidebar-item",
+        },
       ],
     },
     {
