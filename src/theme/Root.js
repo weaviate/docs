@@ -22,7 +22,7 @@ export default function Root({ children }) {
         script.src = "https://widget.kapa.ai/kapa-widget.bundle.js";
         script.setAttribute(
           "data-website-id",
-          "109019ee-418e-4434-b485-85a09533c865"
+          "0df375e2-7065-4fc1-b6dc-12f0b0bcb222"
         );
         script.setAttribute("data-project-name", "Weaviate");
         script.setAttribute("data-project-color", "#130c49");
