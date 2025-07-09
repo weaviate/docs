@@ -11,7 +11,12 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
 
-:::info Added in `v1.32`
+:::caution Technical preview
+
+Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
 :::
 
 Collection aliases allow you to create alternative names for your collections. This is useful for seamless schema migrations, A/B testing, or providing more convenient names for collections. An alias acts as a pointer to a collection - when you query using an alias name, Weaviate automatically routes the request to the target collection.
