@@ -196,12 +196,33 @@ client.roles.create(
 # END AddNodesPermission
 
 permissions = client.roles.get(role_name="testRole")
-print("ivan ", permissions)
 assert any(
     permission.collection == "TargetCollection*"
     for permission in permissions.nodes_permissions
 )
 
+client.roles.delete("testRole")
+
+# START AddAliasPermission
+from weaviate.classes.rbac import Permissions
+
+permissions = [
+    Permissions.alias(
+        alias="TargetAlias*",  # Applies to all aliases starting with "TargetAlias"
+        create=True,  # Allow alias creation
+        read=True,  # Allow listing aliases
+        update=True,  # Allow updating aliases
+        delete=False,  # Allow deleting aliases
+    ),
+]
+
+client.roles.create(role_name="testRole", permissions=permissions)
+# END AddAliasPermission
+permissions = client.roles.get(role_name="testRole")
+assert any(
+    permission.alias == "TargetAlias*"
+    for permission in permissions.alias_permissions
+)
 
 client.roles.delete("testRole")
 
