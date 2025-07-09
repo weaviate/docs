@@ -701,6 +701,10 @@ collection_obj = {
 client.schema.create_class(collection_obj)
 ```
 
+## Collection aliases
+
+Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. When you query using an alias, Weaviate automatically routes the request to the target collection. Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>. 
+
 ## Related pages
 - [Tutorial: Schema](/weaviate/starter-guides/managing-collections)
 - [How to: Configure a schema](../../manage-collections/index.mdx)

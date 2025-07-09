@@ -80,33 +80,23 @@ if success:
 
 # START DeleteAlias
 # Delete an alias (the underlying collection remains)
-deleted = client.alias.delete(alias_name="ArticlesProd")
-
-if deleted:
-    print("Alias deleted successfully")
-else:
-    print("Alias not found")
+client.alias.delete(alias_name="ArticlesProd")
 # END DeleteAlias
 
 # START UseAlias
 # Ensure the Articles collection exists (it might have been deleted in previous examples)
-try:
-    client.collections.create(
-        name="Articles",
-        vectorizer_config=wvc.config.Configure.Vectorizer.none(),
-        properties=[
-            wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
-            wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
-        ],
-    )
-except:
-    pass  # Collection already exists
+
+client.collections.create(
+    name="Articles",
+    vectorizer_config=wvc.config.Configure.Vectorizer.none(),
+    properties=[
+        wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
+        wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
+    ],
+)
 
 # Delete alias if it exists from a previous run
-try:
-    client.alias.delete("MyArticles")
-except:
-    pass
+client.alias.delete("MyArticles")
 
 # Create an alias for easier access
 client.alias.create(alias_name="MyArticles", target_collection="Articles")

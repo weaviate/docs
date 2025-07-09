@@ -234,6 +234,56 @@ We recommend that you read the [concepts page on replication](/weaviate/concepts
 
 Sharding settings determine how each collection is sharded and distributed across nodes. This is not a setting that is typically changed, but you can use it to control how many shards are created in a cluster, and how many virtual shards are created per physical shard ([read more here](/weaviate/config-refs/schema#shardingconfig)).
 
+## Collection aliases
+
+Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. When you query using an alias, Weaviate automatically routes the request to the target collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>. 
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
+
+### Migration workflow with collection aliases
+
+Collection aliases enable collection migrations with zero downtime. Simply create a new collection with your updated collection definition, migrate your data, then instantly switch the alias to point to the new collection. All your existing queries will continue running uninterrupted. Your application code remains unchanged, as it references the stable alias name rather than the underlying collection.
+
+Here's a complete example showing how to use aliases for a collection migration:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START MigrationExample"
+      endMarker="# END MigrationExample"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
 ## Notes
 
 ### Collection & property names
