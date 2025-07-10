@@ -385,9 +385,9 @@ Vertex AI:
 - `textembedding-gecko-multilingual@latest`
 - `text-embedding-preview-0409`
 - `text-multilingual-embedding-preview-0409`
-- `gemini-embedding-001` (added in v1.29.9, 1.31.5 and onwards)
-- `text-embedding-005` (added in v1.29.9, 1.31.5 and onwards)
-- `text-multilingual-embedding-002` (added in v1.29.9, 1.31.5 and onwards)
+- `gemini-embedding-001` (added in 1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
 
 AI Studio:
 - `embedding-001` (default)
