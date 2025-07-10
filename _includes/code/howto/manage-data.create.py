@@ -27,7 +27,7 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "JeopardyQuestion",
-    vectorizer_config=Configure.Vectorizer.text2vec_openai()
+    vector_config=Configure.Vectors.text2vec_openai()
 )
 
 client.collections.create(
@@ -45,10 +45,10 @@ client.collections.create(
             description="Originating country",
         ),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(name="title", source_properties=["title"]),
-        Configure.NamedVectors.text2vec_openai(name="review_body", source_properties=["review_body"]),
-        Configure.NamedVectors.text2vec_openai(name="title_country", source_properties=["title", "country"]),
+    vector_config=[
+        Configure.Vectors.text2vec_openai(name="title", source_properties=["title"]),
+        Configure.Vectors.text2vec_openai(name="review_body", source_properties=["review_body"]),
+        Configure.Vectors.text2vec_openai(name="title_country", source_properties=["title", "country"]),
     ]
 )
 

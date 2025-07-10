@@ -61,7 +61,7 @@ def create_collection(client_in: WeaviateClient, collection_name: str, enable_mt
         multi_tenancy_config=wvc.config.Configure.multi_tenancy(enabled=enable_mt),
         # Additional settings not shown
         # END CreateCollectionCollectionToCollection  # END CreateCollectionTenantToCollection  # END CreateCollectionCollectionToTenant  # END CreateCollectionTenantToTenant
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
+        vector_config=wvc.Configure.Vectors.text2vec_openai(),
         generative_config=wvc.config.Configure.Generative.openai(),
         properties=[
             wvc.config.Property(

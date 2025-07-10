@@ -55,7 +55,7 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="Question",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(),
     # highlight-start
     vector_index_config=wc.Configure.VectorIndex.hnsw(
         quantizer=wc.Configure.VectorIndex.Quantizer.pq(training_limit=50000)  # Set the threshold to begin training
@@ -90,7 +90,7 @@ client.collections.delete("Question")
 client.collections.create(
     name="Question",
     description="A Jeopardy! question",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(),
     generative_config=wc.Configure.Generative.openai(),
     properties=[
         wc.Property(name="question", data_type=wc.DataType.TEXT),

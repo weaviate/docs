@@ -96,7 +96,7 @@ client.collections.create(
 # Collection with vectorizer
 client.collections.create(
     "Article",
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
+    vector_config=Configure.Vectors.text2vec_openai(),
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
@@ -109,17 +109,17 @@ client.collections.create(
 # Collection with named vectors
 client.collections.create(
     "ArticleNV",
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title",
             source_properties=["title"]
         ),
-        Configure.NamedVectors.text2vec_openai(
+        Configure.Vectors.text2vec_openai(
             name="title_body",
             source_properties=["title", "body"]
         ),
         # For user-provided vectors
-        Configure.NamedVectors.none(name="custom_vector")
+        Configure.Vectors.self_provided(name="custom_vector")
     ],
     properties=[
         Property(name="title", data_type=DataType.TEXT),
@@ -130,7 +130,7 @@ client.collections.create(
 # Collection with generative module
 client.collections.create(
     "Article",
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
+    vector_config=Configure.Vectors.text2vec_openai(),
     generative_config=Configure.Generative.openai(
         model="gpt-4"  # Optional specific model
     ),
@@ -544,7 +544,7 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
-    vectorizer_config=Configure.Vectorizer.text2vec_openai()
+    vector_config=Configure.Vectors.text2vec_openai()
 )
 
 mt_collection = client.collections.get("MultiTenantArticle")

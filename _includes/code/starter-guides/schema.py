@@ -18,7 +18,7 @@ try:
     # START BasicSchema
     questions = client.collections.create(
         name="Question",
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
+        vector_config=wvc.Configure.Vectors.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
         generative_config=wvc.config.Configure.Generative.cohere(),             # Set the generative module to "generative-cohere" to use the Cohere API for RAG
         properties=[
             wvc.config.Property(
@@ -44,7 +44,7 @@ try:
     # START SchemaWithPropertyOptions
     questions = client.collections.create(
         name="Question",
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
+        vector_config=wvc.Configure.Vectors.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
         generative_config=wvc.config.Configure.Generative.cohere(),             # Set the generative module to "generative-cohere" to use the Cohere API for RAG
         properties=[
             wvc.config.Property(
@@ -73,7 +73,7 @@ try:
     # START SchemaWithMultiTenancy
     questions = client.collections.create(
         name="Question",
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
+        vector_config=wvc.Configure.Vectors.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
         generative_config=wvc.config.Configure.Generative.cohere(),             # Set the generative module to "generative-cohere" to use the Cohere API for RAG
         properties=[
             wvc.config.Property(
@@ -97,7 +97,7 @@ try:
     # START SchemaWithIndexSettings
     questions = client.collections.create(
         name="Question",
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
+        vector_config=wvc.Configure.Vectors.text2vec_openai(),    # Set the vectorizer to "text2vec-openai" to use the OpenAI API for vector-related operations
         generative_config=wvc.config.Configure.Generative.cohere(),             # Set the generative module to "generative-cohere" to use the Cohere API for RAG
         properties=[
             wvc.config.Property(

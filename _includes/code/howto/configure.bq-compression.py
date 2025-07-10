@@ -31,7 +31,7 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(),
     # highlight-start
     vector_index_config=wc.Configure.VectorIndex.flat(
         quantizer=wc.Configure.VectorIndex.Quantizer.bq()
@@ -51,7 +51,7 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(),
     vector_index_config=wc.Configure.VectorIndex.flat(
         distance_metric=wc.VectorDistances.COSINE,
         vector_cache_max_objects=100000,
