@@ -212,7 +212,7 @@ permissions = [
         shard="TargetShard*",  # Applies to all shards starting with "TargetShard"
         create=True,  # Allow replica movement operations
         read=True,  # Allow retrieving replication status
-        update=True,  # Allow updating replication operations
+        update=True,  # Allow cancelling replication operations
         delete=False,  # Allow deleting replication operations
     ),
 ]

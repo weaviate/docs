@@ -189,7 +189,7 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
 | `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
-| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits during the [`dehydrating` phase](/docs/weaviate/concepts/replication-architecture/cluster-architecture.md#movement-states), after file copy but before finalizing the move. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
+| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 
 ```mdx-code-block
 </APITable>

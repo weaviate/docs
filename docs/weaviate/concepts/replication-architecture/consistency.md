@@ -345,6 +345,12 @@ Replica movement operates as a state machine with stages that ensure data integr
 
 Unlike the static replication factor configured at collection creation, replica movement allows the replication factor to be adjusted for specific shards as replicas are moved or copied across the cluster. When a copy operation is performed, the newly created replica increases the replication factor for that specific shard. While a collection may have a default replication factor, individual shards within that collection can have a higher replication factor. However, shards can't have a replication factor lower then the one set on the collection level. 
 
+:::info
+
+The [`REPLICATION_ENGINE_MAX_WORKERS` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICATION_ENGINE_MAX_WORKERS) can be used to adjust the number of workers that process replica movements in parallel. 
+
+:::
+
 ### Movement states
 
 Each replica movement operation progresses through a workflow designed to maintain data consistency and availability. The workflow comprises of the following states:
@@ -353,9 +359,9 @@ Each replica movement operation progresses through a workflow designed to mainta
 
 - **HYDRATING**: A new replica is being created on the destination node. Data segments are transferred from an existing replica (usually the source replica, or another available peer) to establish the new replica.
 
-- **FINALIZING**: The bulk data transfer is complete, and the new replica is catching up on any writes that occurred during the transfer. This ensures the replica is fully synchronized with the latest data.
+- **FINALIZING**: The bulk data transfer is complete, and the new replica is catching up on any writes that occurred during the transfer. This ensures the replica is fully synchronized with the latest data. You can use the [`REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT) to adjust the wait time which ensures that any in progress writes have been completed and replicated to the target node.
 
-- **DEHYDRATING**: For move operations, after the new replica is ready, the original replica on the source node is being removed.
+- **DEHYDRATING**: For move operations, after the new replica is ready, the original replica on the source node is being removed. 
 
 - **READY**: The operation has completed successfully. The new replica is fully synchronized and ready to serve traffic. For move operations, the source replica has been removed.
 
