@@ -64,16 +64,7 @@ operation_id = client.cluster.replicate(
 print(f"Replication initiated, ID: {operation_id}")
 # END ReplicateShard
 
-# 2. Get replication operation status
-# START CheckOperationStatus
-op_status = client.cluster.replications.get(
-    uuid=operation_id,
-    # include_history=True
-)
-print(f"Status for {operation_id}: {op_status.status.state}")
-# END CheckOperationStatus
-
-# 3. List replication operations
+# 2. List replication operations
 # START ListReplicationOperations
 all_ops = client.cluster.replications.list_all()
 print(f"Total replication operations: {len(all_ops)}")
@@ -86,6 +77,20 @@ print(
     f"Filtered operations for collection '{collection_name}' on '{target_node_name}': {len(filtered_ops)}"
 )
 # END ListReplicationOperations
+
+# Wait for the operation to change state
+import time
+time.sleep(2)
+
+# 3. Get replication operation status
+# START CheckOperationStatus
+op_status = client.cluster.replications.get(
+    uuid=operation_id,
+    include_history=True
+)
+print(f"Status for {operation_id}: {op_status.status}")
+print(f"History for {operation_id}: {op_status.status_history}")
+# END CheckOperationStatus
 
 # 4. Cancel a replication operation
 # START CancelOperation
@@ -104,20 +109,14 @@ client.cluster.replications.delete_all()
 
 # 7. Query Sharding State
 # START CheckShardingState
-collection_sharding_state = client.cluster.query_sharding_state(
-    collection=collection_name
+sharding_state = client.cluster.query_sharding_state(
+    collection=collection_name,
+    # shard=shard_name,  # Optional: specify a shard to filter results
 )
-if collection_sharding_state and collection_sharding_state.shards:
-    print(
-        f"Shards in '{collection_name}': {[s.name for s in collection_sharding_state.shards]}"
-    )
 
-# This uses 'shard_name' defined earlier in the script, for example, shard_name = "tF9DtxC59ykC"
-specific_shard_state = client.cluster.query_sharding_state(
-    collection=collection_name, shard=shard_name
-)
-if specific_shard_state and specific_shard_state.shards:
-    print(f"Nodes for shard '{shard_name}': {specific_shard_state.shards[0].replicas}")
+print(f"Shards in '{collection_name}': {[s.name for s in sharding_state.shards]}")
+for shard in sharding_state.shards:
+    print(f"Nodes for shard '{shard.name}': {shard.replicas}")
 # END CheckShardingState
 
 client.close()

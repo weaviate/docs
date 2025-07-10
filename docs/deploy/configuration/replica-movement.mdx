@@ -8,9 +8,9 @@ image: og/docs/configuration.jpg
 
 Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/docs/weaviate/api/rest.md) or through the client library API described below.
 
-## Checking sharding state
+## Check shard state
 
-Before initiating any movement, you might want to inspect the current distribution of replicas. You can retrieve the locations of all replicas or for specific collections and shards.
+Before initiating any movement, you might want to inspect the current distribution of replicas. You can retrieve the sharding state of an entire collection, or its specific shard.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -53,15 +53,17 @@ import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.replica.
   <summary>Code output</summary>
 
 ```
-Shards in 'MyReplicatedDocCollection': ['BoMYGMWFncSG', 'ddYSP1oIHT7t', 'xSBcs4TRJ5QH']
-Nodes for shard 'BoMYGMWFncSG': ['node3', 'node1']
+Shards in 'MyReplicatedDocCollection': ['0QK7V2bbAHQ2', 'arxzWNklLIU7', 'w5OcBGbNvRt4']
+Nodes for shard '0QK7V2bbAHQ2': ['node3', 'node1']
+Nodes for shard 'arxzWNklLIU7': ['node1', 'node2']
+Nodes for shard 'w5OcBGbNvRt4': ['node2', 'node3']
 ```
 
 </details>
 
-## Initiating a replica movement operation
+## Initiate a replica movement
 
-This starts the asynchronous process of creating a replica on a new node and, if moving, removing it from the old one. When copying a replica, the replication factor for that shard will be increased as opposed to moving the replica. You'll need to specify the source node, destination node, collection name, shard ID and whether the operation is a `MOVE` or `COPY`.
+Copy or move a shard replica by specifying the the source node, destination node, collection name, shard ID and operation type (`MOVE` or `COPY`).
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -104,18 +106,9 @@ Replication initiated, ID: 32536c0e-09e1-4ea1-a2c5-e85af10a9d58
 
 </details>
 
-## Checking the status of a replication operation
+## Check the status of a replication operation
 
-Since movement is asynchronous, you can monitor its progress. The movement operation can have one of the following states:
-
-- `REGISTERED`
-- `HYDRATING`
-- `FINALIZING`
-- `DEHYDRATING`
-- `READY`
-- `CANCELLED`
-
-To learn more about the replication states, check out [Concepts: Cluster architecture](/docs/weaviate/concepts/replication-architecture/cluster-architecture.md#replica-movement).
+Shard replication operations are asynchronous. An operation status can be queried, with an option to view the full operation history.
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -153,12 +146,27 @@ language="py"
   <summary>Code output</summary>
 
 ```
-Status for 32536c0e-09e1-4ea1-a2c5-e85af10a9d58: REGISTERED
+Status for f771aae1-f3c4-4fac-bae6-90597e8c70bd: ReplicateOperationStatus(state=<ReplicateOperationState.FINALIZING: 'FINALIZING'>, errors=[])
+History for f771aae1-f3c4-4fac-bae6-90597e8c70bd: [ReplicateOperationStatus(state=<ReplicateOperationState.REGISTERED: 'REGISTERED'>, errors=[]), ReplicateOperationStatus(state=<ReplicateOperationState.HYDRATING: 'HYDRATING'>, errors=[])]
 ```
 
 </details>
 
-## Listing replication operations
+:::note
+The movement operation can have one of the following states:
+
+- `REGISTERED`
+- `HYDRATING`
+- `FINALIZING`
+- `DEHYDRATING`
+- `READY`
+- `CANCELLED`
+
+To learn more about the replication states, check out [Concepts: Cluster architecture](/docs/weaviate/concepts/replication-architecture/cluster-architecture.md#replica-movement).
+
+:::
+
+## List replication operations
 
 List all ongoing or recently completed operations. This can be filtered by node, collection and shard.
 
@@ -204,9 +212,9 @@ Filtered operations for collection 'MyReplicatedDocCollection' on 'node3': 1
 
 </details>
 
-## Cancelling a replication operation
+## Cancel a replication operation
 
-If a movement needs to be stopped before completion. The operation will be stopped and will remain in a `CANCELLED` state.
+The operation will be stopped if possible. If successfully cancelled, its state will change to `CANCELLED`.
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -240,9 +248,9 @@ language="py"
 </TabItem>
 </Tabs>
 
-## Deleting a replication operation
+## Delete a replication operation
 
-Remove a replication operation, no matter what state it's in. If the operation is active, it will be cancelled first.
+Remove a replication operation from the logs. If the operation is active, it will be cancelled first.
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -276,9 +284,9 @@ language="py"
 </TabItem>
 </Tabs>
 
-## Deleting all replication operations
+## Delete all replication operations
 
-Remove all replication operations, no matter what state they are in. If an operation is active, it will be cancelled first.
+Remove all replication operations from the logs. If any operations are active, they will be cancelled first.
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">

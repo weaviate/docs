@@ -210,10 +210,10 @@ permissions = [
     Permissions.replicate(
         collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
         shard="TargetShard*",  # Applies to all shards starting with "TargetShard"
-        create=True,  # Allow data inserts
-        read=True,  # Allow query and fetch operations
-        update=True,  # Allow data updates
-        delete=False,  # Allow data deletes
+        create=True,  # Allow replica movement operations
+        read=True,  # Allow retrieving replication status
+        update=True,  # Allow updating replication operations
+        delete=False,  # Allow deleting replication operations
     ),
 ]
 

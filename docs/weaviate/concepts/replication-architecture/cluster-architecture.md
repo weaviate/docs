@@ -124,40 +124,6 @@ If the cluster size is 3 and the replication factor is also 3, then all nodes ca
 
 If the cluster size is 10 and the replication factor is 3, the 3 nodes which contain that data (collection) can serve queries, coordinated by the coordinator node. The client waits until x (the consistency level) nodes have responded.
 
-## Replica movement
-
-:::info Added in `v1.32`
-:::
-
-Weaviate allows users to manually move or copy individual shard replicas from a source node to a destination node in a Weaviate cluster. This capability addresses operational scenarios such as cluster rebalancing after scaling, node decommissioning, optimizing data locality for improved performance, or increasing data availability.
-
-Replica movement operates as a state machine with stages that ensure data integrity throughout the process. The feature works for both single-tenant collections and multi-tenant collections. 
-
-Unlike the static replication factor configured at collection creation, replica movement allows the replication factor to be adjusted for specific shards as replicas are moved or copied across the cluster. When a copy operation is performed, the newly created replica increases the replication factor for that specific shard. While a collection may have a default replication factor, individual shards within that collection can temporarily have a higher replication factor. However, shards can't have a replication factor lower then the one set on the collection level. 
-
-### Movement states
-
-The replica movement process follows a coordinated workflow that maintains data consistency and availability. Each operation progresses through distinct states that reflect the current stage of the movement:
-
-1. **REGISTERED**: The movement operation has been initiated and logged by the Raft leader. The request has been received and the operation is queued for processing.
-
-2. **HYDRATING**: A new replica is being created on the destination node. Data segments are transferred from an existing replica (usually the source replica, or another available peer) to establish the new shard instance.
-
-3. **FINALIZING**: The bulk data transfer is complete, and the new replica is catching up on any writes that occurred during the transfer. This ensures the replica is fully synchronized with the latest data.
-
-4. **DEHYDRATING**: For move operations, after the new replica is ready, the original replica on the source node is being decommissioned and prepared for removal.
-
-5. **READY**: The operation has completed successfully. The new replica is fully synchronized and ready to serve traffic. For move operations, the source replica has been removed.
-
-6. **CANCELLED**: The operation has been cancelled before completion. This can happen either through manual intervention or if the operation encounters an unrecoverable error.
-
-Replica movement supports two distinct operation modes:
-
-- **Move operations**: Transfer a replica from one node to another, maintaining the same replication factor
-- **Copy operations**: Create an additional replica on a new node, increasing the replication factor for that specific shard
-
-It's worth noting that increasing the replication factor to an even number through copy operations might make it harder to achieve quorum in certain scenarios.
-
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
