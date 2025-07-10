@@ -111,38 +111,25 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ## Rotational quantization
 
-**Rotational quantization (RQ)** is an untrained 8-bit quantization technique that provides 4x compression while maintaining 98-99% recall on most datasets. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation.
+:::caution Technical preview
 
-RQ works in two steps:
+Rotational quantization (RQ) was added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+**Rotational quantization (RQ)** is an untrained 8-bit quantization technique that provides 4x compression while maintaining 98-99% recall on most datasets. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ works in two steps:
 
 1. **Fast pseudorandom rotation**: The input vector is transformed using a fast rotation based on the Walsh Hadamard Transform. This rotation takes approximately 7-10 microseconds for a 1536-dimensional vector. The output dimension is rounded up to the nearest multiple of 64.
 
 2. **Scalar quantization**: Each entry of the rotated vector is quantized to an 8-bit integer. The minimum and maximum values of each individual rotated vector define the quantization interval.
 
-### How RQ improves compression
+The rotation step provides multiple benefits. It tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly. It also distributes the distance information more evenly across all dimensions, providing a better starting point for distance estimation.
 
-The rotation step provides two key benefits:
-- **Smoothens the vector**: The rotation tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly
-- **Spreads information**: The rotation distributes distance information evenly across all dimensions, providing a better starting point for distance estimation
+It's worth noting that RQ rounds up dimensions to multiples of 64 which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression. 
 
-### Technical details
-
-- **Storage**: Quantized vectors are stored in byte arrays of length `16 + d` where `d` is the output dimension after rotation
-- **Metadata**: The first 16 bytes store four float32 values containing the quantization interval and norm information
-- **Distance computation**: Uses the same SIMD-optimized `dotByteImpl()` function as SQ, providing 2-3x faster distance calculations than uncompressed vectors
-- **No centering**: Unlike some quantization methods, RQ does not center or normalize vectors
-
-### RQ vs SQ comparison
-
-While both RQ and SQ provide 4x compression through 8-bit quantization, they have different characteristics:
-
-| Feature | RQ | SQ |
-|---------|----|----|
-| Training required | No | Yes (100k objects default) |
-| Recall | 98-99% | 95-97% |
-| When compression starts | Immediately | After training completes |
-| Query performance | As fast or faster | Fast |
-| Best for | Standard embeddings (≥128 dims) | Low-dimensional or special structure data |
+While inspired by extended RaBitQ, this implementation differs significantly for performance reasons. It Uses fast pseudorandom rotations instead of truly random rotations and it employs scalar quantization instead of RaBitQ's encoding algorithm, which becomes prohibitively slow with more bits per entry.
 
 :::tip
 Learn more about how to [configure rotational quantization](../configuration/compression/rq-compression.md) in Weaviate.

@@ -103,7 +103,7 @@ Each compression algorithm has its own characteristics with regard to speed.
 
 - RQ provides the fastest query performance among 8-bit quantization methods. RQ uses SIMD-optimized distance computations that are typically 2-3x faster than uncompressed vectors. RQ is as fast or faster than SQ while providing better recall. For maximum performance, RQ can run without rescoring with minimal impact on recall.
 
-SQ, RQ, and BQ all have optional vector caches. Use these configurable caches to load frequently used, uncompressed vectors into memory to improve overall search times.
+SQ and BQ both have optional vector caches. Use these configurable caches to load frequently used, uncompressed vectors into memory to improve overall search times.
 
 #### Import speed
 
