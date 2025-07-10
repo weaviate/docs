@@ -83,7 +83,7 @@ import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 RQ supports multi-vector embeddings. Each token vector is rounded up to a multiple of 64 dimensions, which may result in less than 4x compression for very short vectors. This is a technical limitation that may be addressed in future versions.
 :::
 
-## Related pages
+## Further resources
 
 - [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
 - [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
