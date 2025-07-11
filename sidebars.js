@@ -414,6 +414,7 @@ const sidebars = {
           items: [
             "weaviate/configuration/compression/pq-compression",
             "weaviate/configuration/compression/bq-compression",
+            "weaviate/configuration/compression/rq-compression",
             "weaviate/configuration/compression/sq-compression",
             "weaviate/configuration/compression/multi-vectors",
           ],
