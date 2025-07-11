@@ -1,5 +1,5 @@
 ---
-title: n8n
+title: N8n
 sidebar_position: 6
 ---
 
