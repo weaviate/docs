@@ -253,7 +253,9 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
 
 ### Migration workflow with collection aliases
 
-Collection aliases enable collection migrations with zero downtime. Simply create a new collection with your updated collection definition, migrate your data, then instantly switch the alias to point to the new collection. All your existing queries will continue running uninterrupted. Your application code remains unchanged, as it references the stable alias name rather than the underlying collection.
+Collection aliases enable collection migrations with zero downtime. Previously, migrating to a new collection required creating the new collection, pausing your application, updating all collection references in your code, then restarting the application, resulting in service interruption. 
+
+Now with aliases, simply create a new collection with your updated collection definition, migrate your data, then instantly [switch the alias](../../manage-collections/collection-aliases.mdx#update-an-alias) to point to the new collection. All your existing queries will continue running uninterrupted. Your application code remains unchanged, as it references the stable alias name rather than the underlying collection.
 
 Here's a complete example showing how to use aliases for a collection migration:
 

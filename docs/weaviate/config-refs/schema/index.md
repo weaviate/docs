@@ -711,11 +711,19 @@ This means that the feature is still under development and may change in future 
 
 :::
 
-Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. When you query using an alias, Weaviate automatically routes the request to the target collection. Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>. 
+Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
 
-## Related pages
+Weaviate automatically routes alias requests to the target collection. This allows you to use aliases wherever collection names are required. This includes [collection management](../../manage-collections/index.mdx), [queries](../../search/index.mdx), and all other operations requiring a specific collection name with the **exception** of deleting collections. To delete a collection you need to use its name. Deleting a collection does not automatically delete aliases pointing to it.
+
+Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>. 
+
+In order to manage collection aliases, you need to posses the right [`Collection aliases`](../../configuration/rbac/index.mdx#available-permissions) permissions. To manage the underlying collection the alias references, you also need the [`Collections`](../../configuration/rbac/index.mdx#available-permissions) permissions for that specific collection. 
+
+## Further resources
+
 - [Tutorial: Schema](/weaviate/starter-guides/managing-collections)
 - [How to: Configure a schema](../../manage-collections/index.mdx)
+- [How to: Collection aliases](../../manage-collections/collection-aliases.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](/weaviate/concepts/data)
 

@@ -78,10 +78,7 @@ if success:
     print("Alias updated successfully")
 # END UpdateAlias
 
-# START DeleteAlias
-# Delete an alias (the underlying collection remains)
-client.alias.delete(alias_name="ArticlesProd")
-# END DeleteAlias
+client.collections.delete("Articles")
 
 # START UseAlias
 # Ensure the Articles collection exists (it might have been deleted in previous examples)
@@ -96,7 +93,12 @@ client.collections.create(
 )
 
 # Delete alias if it exists from a previous run
-client.alias.delete("MyArticles")
+client.alias.delete(alias_name="MyArticles")
+
+# START DeleteAlias
+# Delete an alias (the underlying collection remains)
+client.alias.delete(alias_name="ArticlesProd")
+# END DeleteAlias
 
 # Create an alias for easier access
 client.alias.create(alias_name="MyArticles", target_collection="Articles")
@@ -117,6 +119,11 @@ results = articles.query.fetch_objects(limit=5)
 
 for obj in results.objects:
     print(f"Found: {obj.properties['title']}")
+
+# Add a new property using the alias
+articles.config.add_property(
+    wvc.config.Property(name="author", data_type=wvc.config.DataType.TEXT)
+)
 # END UseAlias
 
 # START MigrationExample
