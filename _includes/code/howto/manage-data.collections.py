@@ -81,7 +81,7 @@ client.collections.create(
 collection = client.collections.get("Article")
 config = collection.config.get()
 
-assert config.vectorizer.value == "text2vec-openai"
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
 
 
 # ===============================================
@@ -153,12 +153,14 @@ from weaviate.classes.config import Configure, Property, DataType
 
 client.collections.create(
     "Article",
-    vector_config=Configure.Vectors.text2vec_openai(),
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(),  # Use the HNSW index
-    # vector_index_config=Configure.VectorIndex.flat(),  # Use the FLAT index
-    # vector_index_config=Configure.VectorIndex.dynamic(),  # Use the DYNAMIC index
-    # highlight-end
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
+        # highlight-start
+        vector_index_config=Configure.VectorIndex.hnsw(),  # Use the HNSW index
+        # vector_index_config=Configure.VectorIndex.flat(),  # Use the FLAT index
+        # vector_index_config=Configure.VectorIndex.dynamic(),  # Use the DYNAMIC index
+        # highlight-end
+    ),
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
@@ -167,11 +169,12 @@ client.collections.create(
 # END SetVectorIndexType
 
 # Test
+from weaviate.collections.classes.config import _VectorIndexConfigHNSW
+
 collection = client.collections.get("Article")
 config = collection.config.get()
-assert config.vectorizer.value == "text2vec-openai"
-assert config.vector_index_type.name == "HNSW"
-
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
+assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
 
 # ===========================
 # ===== SET VECTOR INDEX PARAMETERS =====
@@ -191,23 +194,24 @@ from weaviate.classes.config import (
 
 client.collections.create(
     "Article",
-    # Additional configuration not shown
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(
-        quantizer=Configure.VectorIndex.Quantizer.bq(),
-        ef_construction=300,
-        distance_metric=VectorDistances.COSINE,
-        filter_strategy=VectorFilterStrategy.SWEEPING,  # or ACORN (Available from Weaviate v1.27.0)
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
+        # highlight-start
+        vector_index_config=Configure.VectorIndex.hnsw(
+            ef_construction=300,
+            distance_metric=VectorDistances.COSINE,
+            filter_strategy=VectorFilterStrategy.SWEEPING,  # or ACORN (Available from Weaviate v1.27.0)
+        ),
+        # highlight-end
     ),
-    # highlight-end
 )
 # END SetVectorIndexParams
 
 # Test
 collection = client.collections.get("Article")
 config = collection.config.get()
-assert config.vector_index_config.filter_strategy.name == "SWEEPING"
-assert config.vector_index_type.name == "HNSW"
+assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
+assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
 
 
 # ===================================================================
@@ -414,7 +418,7 @@ client.collections.create(
         # Example 1 - Use a model integration
         # The factory function will automatically enable multi-vector support for the HNSW index
         # highlight-start
-        Configure.Vectors.text2colbert_jinaai(
+        Configure.Vectors.text2vec_jinaai(
             name="jina_colbert",
             source_properties=["text"],
         ),
@@ -522,8 +526,8 @@ client.collections.create(
 # Test
 collection = client.collections.get("Article")
 config = collection.config.get()
-assert config.vectorizer.value == "text2vec-cohere"
-assert config.vectorizer_config.model["model"] == "embed-multilingual-v2.0"
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
+assert config.vector_config["default"].vectorizer.model["model"] == "embed-multilingual-v2.0"
 
 # ====================================
 # ===== MODULE SETTINGS PROPERTY =====
@@ -570,7 +574,7 @@ from weaviate.classes.config import Configure
 articles = client.collections.get("Article")
 
 articles.config.add_vector(
-    vector_config=Configure.Vectors.text2vec_cohere(
+    vector_config=Configure.NamedVectors.text2vec_cohere(
         name="body_vector",
         source_properties=["body"],
     )
@@ -581,7 +585,7 @@ articles.config.add_vector(
 collection = client.collections.get("Article")
 config = collection.config.get()
 
-assert config.vectorizer_config.vectorizer.value == "text2vec-cohere"
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
 for p in config.properties:
     if p.name == "title":
         assert p.tokenization.name == "LOWERCASE"
@@ -601,18 +605,20 @@ from weaviate.classes.config import Configure, VectorDistances
 
 client.collections.create(
     "Article",
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(
-        distance_metric=VectorDistances.COSINE
-    ),
-    # highlight-end
+    vector_config=Configure.Vectors.text2vec_openai(
+        # highlight-start
+        vector_index_config=Configure.VectorIndex.hnsw(
+            distance_metric=VectorDistances.COSINE
+        ),
+        # highlight-end
+    )
 )
 # END DistanceMetric
 
 # Test
 collection = client.collections.get("Article")
 config = collection.config.get()
-assert config.vector_index_config.distance_metric.value == "cosine"
+assert config.vector_config["default"].vector_index_config.distance_metric.value == "cosine"
 
 client.close()
 
@@ -864,8 +870,11 @@ articles.config.update(
         "title": "The updated title description for article",
     },  # Available from Weaviate v1.31.0
     inverted_index_config=Reconfigure.inverted_index(bm25_k1=1.5),
-    vector_index_config=Reconfigure.VectorIndex.hnsw(
-        filter_strategy=VectorFilterStrategy.ACORN  # Available from Weaviate v1.27.0
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            filter_strategy=VectorFilterStrategy.ACORN  # Available from Weaviate v1.27.0
+        ),
     ),
     replication_config=Reconfigure.replication(
         deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION  # Available from Weaviate v1.28.0

@@ -61,7 +61,7 @@ def create_collection(client_in: WeaviateClient, collection_name: str, enable_mt
         multi_tenancy_config=wvc.config.Configure.multi_tenancy(enabled=enable_mt),
         # Additional settings not shown
         # END CreateCollectionCollectionToCollection  # END CreateCollectionTenantToCollection  # END CreateCollectionCollectionToTenant  # END CreateCollectionTenantToTenant
-        vector_config=wvc.Configure.Vectors.text2vec_openai(),
+        vector_config=wvc.config.Configure.Vectors.text2vec_openai(),
         generative_config=wvc.config.Configure.Generative.openai(),
         properties=[
             wvc.config.Property(
@@ -115,7 +115,9 @@ def migrate_data(collection_src: Collection, collection_tgt: Collection):
         for q in tqdm(collection_src.iterator(include_vector=True)):
             batch.add_object(
                 properties=q.properties,
-                vector=q.vector["default"],
+                vector={
+                    "default": q.vector["default"],
+                },
                 uuid=q.uuid
             )
 
