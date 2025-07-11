@@ -701,9 +701,29 @@ collection_obj = {
 client.schema.create_class(collection_obj)
 ```
 
-## Related pages
+## Collection aliases
+
+:::caution Technical preview
+
+Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
+
+Weaviate automatically routes alias requests to the target collection. This allows you to use aliases wherever collection names are required. This includes [collection management](../../manage-collections/index.mdx), [queries](../../search/index.mdx), and all other operations requiring a specific collection name with the **exception** of deleting collections. To delete a collection you need to use its name. Deleting a collection does not automatically delete aliases pointing to it.
+
+Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>. 
+
+In order to manage collection aliases, you need to posses the right [`Collection aliases`](../../configuration/rbac/index.mdx#available-permissions) permissions. To manage the underlying collection the alias references, you also need the [`Collections`](../../configuration/rbac/index.mdx#available-permissions) permissions for that specific collection. 
+
+## Further resources
+
 - [Tutorial: Schema](/weaviate/starter-guides/managing-collections)
 - [How to: Configure a schema](../../manage-collections/index.mdx)
+- [How to: Collection aliases](../../manage-collections/collection-aliases.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [Concepts: Data Structure](/weaviate/concepts/data)
 
