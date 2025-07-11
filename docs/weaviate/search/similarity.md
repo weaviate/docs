@@ -14,7 +14,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.similarity-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTest.java';
-import JavaV6Code from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTestV6.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/VectorSearchTestV6.java';
 
 Vector search returns the objects with most similar vectors to that of the query.
 

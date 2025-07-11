@@ -3,18 +3,19 @@ package io.weaviate.docs.search;
 import io.weaviate.client6.Config;
 import io.weaviate.client6.WeaviateClient;
 // START MetaCount // START TextProp // START IntProp
-import io.weaviate.client6.v1.collections.aggregate.AggregateGroupByResponse;
-import io.weaviate.client6.v1.collections.aggregate.Metric;
+import io.weaviate.client6.v1.api.collections.aggregate.Aggregation;
 
 // END MetaCount // END TextProp // END IntProp
 // START GroupBy
-import io.weaviate.client6.v1.collections.aggregate.AggregateGroupByRequest.GroupBy;
+import io.weaviate.client6.v1.api.collections.aggregate.GroupBy;
 
 // END GroupBy
 import io.weaviate.docs.helper.EnvHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.google.api.Metric;
 
 @Tag("crud")
 @Tag("vector-search")
@@ -72,12 +73,11 @@ private void aggregateIntProp(String collectionName) {
     // START IntProp
     var collection = client.collections.use(collectionName);
 
-    AggregateGroupByResponse response = collection.aggregate.overAll(
-            with -> with.metrics(
-                    Metric.integer("integerPropertyName", calculate -> calculate // Property for metrics
-                            .min()
-                            .max()
-                            .count())));
+    var response = collection.aggregate.overAll(
+                with -> with
+                        .metrics(
+                                Aggregation.integer("integerPropertyName",
+                                        calculate -> calculate.min().max().count())));
 
     System.out.println("Aggregate query result: " + response);
     // END IntProp
@@ -87,9 +87,12 @@ private void aggregateGroupBy(String collectionName) {
     // START GroupBy
     var collection = client.collections.use(collectionName);
 
-    AggregateGroupByResponse response = collection.aggregate.overAll(
-            new GroupBy("groupByPropertyName") // Property to group by
-    );
+    var response = collection.aggregate.overAll(
+                with -> with
+                        .metrics(
+                                Aggregation.integer("integerPropertyName",
+                                        calculate -> calculate.min())),
+                new GroupBy("groupByPropertyName"));  // Property to group by
 
     System.out.println("Aggregate query result: " + response);
     // END GroupBy

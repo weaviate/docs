@@ -2,10 +2,7 @@ package io.weaviate.docs.search;
 
 import io.weaviate.client6.Config;
 import io.weaviate.client6.WeaviateClient;
-// START GetNearText
-import io.weaviate.client6.v1.collections.query.QueryResult;
 
-// END GetNearText
 import io.weaviate.docs.helper.EnvHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -40,12 +37,12 @@ public class VectorSearchTest {
     
     String yourQueryText = "your search query"; // The text to search for
 
-    QueryResult<Map<String, Object>> queryResult = collection.query.nearText(
+    var queryResult = collection.query.nearText(
         yourQueryText,
         opt -> opt.limit(1) // Example: Limit to 1 result
     );
 
-    System.out.println("NearText query result: " + queryResult.objects);
+    System.out.println("NearText query result: " + queryResult.objects());
     // END GetNearText
   }
 }

@@ -1,13 +1,11 @@
 // How-to: Manage-Data -> Classes
 package io.weaviate.docs;
 
-import io.weaviate.client6.Config;
 import io.weaviate.client6.WeaviateClient;
 // START CreateCollectionWithProperties // START CrossRefDefinition
-import io.weaviate.client6.v1.collections.Property;
-import io.weaviate.client6.v1.collections.Vectorizer;
-import io.weaviate.client6.v1.collections.VectorIndex;
-
+import io.weaviate.client6.v1.api.WeaviateClient;
+import io.weaviate.client6.v1.api.collections.Property;
+import io.weaviate.client6.v1.api.collections.Vectorizers;
 
 // END CreateCollectionWithProperties // END CrossRefDefinition
 import io.weaviate.docs.helper.EnvHelper;
@@ -24,12 +22,10 @@ class ManageDataClassesTest {
 
   @BeforeAll
   public static void beforeAll() {
-    String scheme = EnvHelper.scheme("http");
-    String host = EnvHelper.host("localhost");
-    String port = EnvHelper.port("8080");
+    String httpHost = "localhost";
+    int httpPort = 8080;
 
-    Config config = new Config(scheme, host + ":" + port);
-    client = new WeaviateClient(config);
+    return WeaviateClient.local(conn -> conn.host(httpHost).httpPort(httpPort));
   }
 
   @Test
@@ -37,10 +33,12 @@ class ManageDataClassesTest {
     // START CrossRefDefinition
     String targetCollectionName = "Article";
     // END CrossRefDefinition
-    // START BasicCreateCollection // START CreateCollectionWithProperties // START DeleteCollection
+    // START BasicCreateCollection // START CreateCollectionWithProperties // START
+    // DeleteCollection
     String collectionName = "Article";
 
-    // END BasicCreateCollection // END CreateCollectionWithProperties // END DeleteCollection
+    // END BasicCreateCollection // END CreateCollectionWithProperties // END
+    // DeleteCollection
 
     createCollection(collectionName);
     createCollectionWithProperties(collectionName);
@@ -56,16 +54,13 @@ class ManageDataClassesTest {
 
   private void createCollectionWithProperties(String collectionName) {
     // START CreateCollectionWithProperties
-    client.collections.create(collectionName, collectionConfig -> collectionConfig
+    client.collections.create(collectionName, collection -> collection
         .properties(
-            Property.text("propertyName1"), // Example text property
-            Property.integer("integerPropertyName") // Example integer property
-        )
-        .vector( // Define vector index configuration
-            new VectorIndex<>(
-                VectorIndex.IndexingStrategy.hnsw(),
-                Vectorizer.text2vecContextionary() // Or your chosen vectorizer
-            )));
+            Property.text("textProperty"))
+        // other types of properties
+        .vectors(
+            Vectorizers.text2vecWeaviate("someVector",
+                t2v -> t2v.vectorizeCollectionName(true))));
     // END CreateCollectionWithProperties
   }
 
@@ -73,15 +68,13 @@ class ManageDataClassesTest {
     // START CrossRefDefinition
     client.collections.create(collectionName, collectionConfig -> collectionConfig
         .properties(
-            Property.text("propertyName1")
-        )
+            Property.text("propertyName1"))
         .references( // Define a reference to another collection
             Property.reference("referencePropertyName", targetCollectionName))
-        .vector( 
+        .vector(
             new VectorIndex<>(
                 VectorIndex.IndexingStrategy.hnsw(),
-                Vectorizer.text2vecContextionary()
-            )));
+                Vectorizer.text2vecContextionary())));
     // END CrossRefDefinition
   }
 

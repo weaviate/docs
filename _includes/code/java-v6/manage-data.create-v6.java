@@ -6,14 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.weaviate.client6.Config;
-import io.weaviate.client6.WeaviateClient;
-// START CreateObject // START ObjectWithCrossRef
-import io.weaviate.client6.v1.collections.object.WeaviateObject;
-import io.weaviate.client6.v1.collections.Reference;
+import io.weaviate.client6.v1.api.WeaviateClient;
 
-
-// END CreateObject // END ObjectWithCrossRef
 
 @Tag("crud")
 @Tag("create")
@@ -49,10 +43,10 @@ class ManageDataCreateTest {
     // START CreateObject
     var collection = client.collections.use(collectionName);
 
-    WeaviateObject<Map<String, Object>> objectResult = collection.data.insert(
+    var objectResult = collection.data.insert(
         Map.of("propertyName1", "Some Value"));
-  
-    String createdObjectId = objectResult.metadata().id(); // Get ID of the created object
+
+    String createdObjectId = objectResult.metadata().uuid(); // Get ID of the created object
     // END CreateObject
   }
 

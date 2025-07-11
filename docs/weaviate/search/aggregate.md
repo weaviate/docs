@@ -13,7 +13,7 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.aggregate-v3.py'
 import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.aggregate-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
-import JavaV6Code from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/AggregateTestV6.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/AggregateTestV6.java';
 
 `Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
 

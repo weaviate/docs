@@ -3,7 +3,7 @@ package io.weaviate.docs.search;
 import io.weaviate.client6.Config;
 import io.weaviate.client6.WeaviateClient;
 // START BasicGet
-import io.weaviate.client6.v1.collections.object.WeaviateObject;
+import io.weaviate.client6.v1.api.collections.query.Metadata;
 
 
 // END BasicGet
@@ -37,19 +37,17 @@ public class BasicSearchTest {
     
     // END BasicGet
 
-    getById(collectionName);
+    getById(collectionName, objectIdToFetch);
   }
 
-  private void getById(String collectionName) {
+  private void getById(String collectionName, String objectIdToFetch) {
     // START BasicGet
     var collection = client.collections.use(collectionName);
 
-    Optional<WeaviateObject<Map<String, Object>>> fetchResult = collection.data.get(objectIdToFetch);
+    var result = collection.query.byId(objectIdToFetch, query -> query.returnProperties("name")
+                .returnMetadata(Metadata.DISTANCE));
 
-    if (fetchResult.isPresent()) {
-      WeaviateObject<Map<String, Object>> fetchedObject = fetchResult.get();
-      System.out.println("Fetched object: " + fetchedObject);
-    }
+    System.out.println("Fetched object metadata: " + result.get().metadata());
     // END BasicGet
   }
 }
