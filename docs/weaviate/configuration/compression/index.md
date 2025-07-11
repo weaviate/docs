@@ -11,6 +11,7 @@ To balance resource costs and system performance, consider one of these options:
 
 - [Binary Quantization (BQ)](/weaviate/configuration/compression/bq-compression)
 - [Product Quantization (PQ)](/weaviate/configuration/compression/pq-compression)
+- [Rotational Quantization (RQ)](/weaviate/configuration/compression/rq-compression)
 - [Scalar Quantization (SQ)](/weaviate/configuration/compression/sq-compression)
 
 Aside from quantization, Weaviate also offers encodings for multi-vector embeddings:

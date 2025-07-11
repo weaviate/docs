@@ -218,10 +218,37 @@ permissions = [
 
 client.roles.create(role_name="testRole", permissions=permissions)
 # END AddAliasPermission
+
 permissions = client.roles.get(role_name="testRole")
 assert any(
     permission.alias == "TargetAlias*"
     for permission in permissions.alias_permissions
+)
+
+client.roles.delete("testRole")
+
+# START AddReplicationsPermission
+from weaviate.classes.rbac import Permissions
+
+permissions = [
+    Permissions.replicate(
+        collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        shard="TargetShard*",  # Applies to all shards starting with "TargetShard"
+        create=True,  # Allow replica movement operations
+        read=True,  # Allow retrieving replication status
+        update=True,  # Allow cancelling replication operations
+        delete=False,  # Allow deleting replication operations
+    ),
+]
+
+client.roles.create(role_name="testRole", permissions=permissions)
+# END AddReplicationsPermission
+
+permissions = client.roles.get(role_name="testRole")
+assert any(
+    permission.collection == "TargetCollection*" and
+    permission.shard == "TargetShard*"
+    for permission in permissions.replicate_permissions
 )
 
 client.roles.delete("testRole")
