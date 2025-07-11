@@ -55,12 +55,12 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="Question",
-    vector_config=wc.Configure.Vectors.text2vec_openai(),
-    # highlight-start
-    vector_index_config=wc.Configure.VectorIndex.hnsw(
-        quantizer=wc.Configure.VectorIndex.Quantizer.pq(training_limit=50000)  # Set the threshold to begin training
+    vector_config=wc.Configure.Vectors.text2vec_openai(
+        name="default",
+        # highlight-start
+        quantizer=wc.Configure.VectorIndex.Quantizer.pq(training_limit=50000),  # Set the threshold to begin training
+        # highlight-end
     ),
-    # highlight-end
     properties=[
         wc.Property(name="question", data_type=wc.DataType.TEXT),
         wc.Property(name="answer", data_type=wc.DataType.TEXT),
@@ -76,7 +76,7 @@ config = collection.config.get()
 
 from weaviate.collections.classes.config import _PQConfig
 
-assert type(config.vector_index_config.quantizer) == _PQConfig
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _PQConfig
 # No import test as it would take a long time
 
 
@@ -90,7 +90,9 @@ client.collections.delete("Question")
 client.collections.create(
     name="Question",
     description="A Jeopardy! question",
-    vector_config=wc.Configure.Vectors.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(
+        name="default",
+    ),
     generative_config=wc.Configure.Generative.openai(),
     properties=[
         wc.Property(name="question", data_type=wc.DataType.TEXT),
@@ -100,7 +102,7 @@ client.collections.create(
 
 # END InitialSchema
 config = client.collections.get("Question").config.get()
-assert config.vector_index_config.quantizer is None
+assert config.vector_config["default"].vector_index_config.quantizer is None
 
 # ==============================
 # =====  LOAD DATA =====
@@ -138,16 +140,19 @@ import weaviate.classes.config as wc
 
 jeopardy = client.collections.get("Question")
 jeopardy.config.update(
-    vector_index_config=wc.Reconfigure.VectorIndex.hnsw(
-        quantizer=wc.Reconfigure.VectorIndex.Quantizer.sq(
-            training_limit=50000  # Default: 100000
+    vector_config=wc.Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=wc.Reconfigure.VectorIndex.hnsw(
+            quantizer=wc.Reconfigure.VectorIndex.Quantizer.pq(
+                training_limit=50000  # Default: 100000
+            ),
         )
     )
 )
 # END UpdateSchema
 
 config = client.collections.get("Question").config.get()
-assert type(config.vector_index_config.quantizer) == _PQConfig
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _PQConfig
 
 # ==============================
 # =====  GET THE SCHEMA =====
@@ -156,7 +161,7 @@ assert type(config.vector_index_config.quantizer) == _PQConfig
 # START GetSchema
 jeopardy = client.collections.get("Question")
 config = jeopardy.config.get()
-pq_config = config.vector_index_config.quantizer
+pq_config = config.vector_config["default"].vector_index_config.quantizer
 
 # print some of the config properties
 print(f"Encoder: { pq_config.encoder }")
