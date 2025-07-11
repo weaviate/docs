@@ -58,7 +58,6 @@ client.collections.create(
         # highlight-start
         quantizer=wc.Configure.VectorIndex.Quantizer.rq(
             bits=8,  # Number of bits, only 8 is supported for now
-            rescore_limit=200,
         ),
         # highlight-end
     ),

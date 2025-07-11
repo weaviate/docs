@@ -163,10 +163,6 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 [BQ](#binary-quantization) can use a [flat index](./indexing/inverted-index.md). A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
 
-:::note
-RQ is not currently supported with flat indexes.
-:::
-
 ## Rescoring
 
 Quantization inherently involves some loss information due to the reduction in information precision. To mitigate this, Weaviate uses a technique called rescoring, using the uncompressed vectors that are also stored alongside compressed vectors. Rescoring recalculates the distance between the original vectors of the returned candidates from the initial search. This ensures that the most accurate results are returned to the user.
