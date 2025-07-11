@@ -335,6 +335,8 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 | `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional compression level used by compression algorithm from options. (`DefaultCompression`, `BestSpeed`, `BestCompression`) Weaviate uses [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) by default. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
+| `roleOption`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
+| `userOption`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -721,6 +723,7 @@ For example, consider the following situation: You would like to do a load test 
 - Single node backup is available starting in Weaviate `v1.15`. Multi-node backups is available starting in `v1.16`.
 - In some cases, backups can take a long time, or get "stuck", causing Weaviate to be unresponsive. If this happens, you can [cancel the backup](#cancel-backup) and try again.
 - If a backup module is misconfigured, such as having an invalid backup path, it can cause Weaviate to not start. Review the system logs for any errors.
+- RBAC roles and users are not backed up and restored by default. You need to enable them manually through the configuration properties when [creating a backup](#available-config-object-properties).
 
 ## Related pages
 - <SkipLink href="/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>
