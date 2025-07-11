@@ -52,6 +52,8 @@ In a multi-target vector search, you can specify:
 - The query(ies) to compare to the target vectors
 - The weights to apply to each distance (raw, or normalized) for each target vector
 
+Multi-target vector search is available for `near_xxx` queries (from `v1.26`), as well as `hybrid` queries (from `v1.27`).
+
 Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
 
 ## Related pages
