@@ -26,7 +26,7 @@ Single vector collections are valid and continue to use the original collection 
 Use the collection definition to [configure the vector spaces](../../manage-collections/vector-config.mdx#define-named-vectors) for each data object.
 
 :::info Adding named vectors to existing collections
-Currently, it is only possible to [add new named vectors](../../manage-collections/vector-config.mdx#add-new-named-vectors) to collections that were initially configured to use named vectors. 
+Currently, it is only possible to [add new named vectors](../../manage-collections/vector-config.mdx#add-new-named-vectors) to collections that were initially configured to use named vectors.
 :::
 
 ### Query a named vector
@@ -34,8 +34,6 @@ Currently, it is only possible to [add new named vectors](../../manage-collectio
 To do a vector search on a collection with named vectors, specify the vector space to search.
 
 Use named vectors with [vector similarity searches](/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/weaviate/search/hybrid#named-vectors).
-
-Named vector collections support hybrid search, but only for one vector at a time.
 
 [Keyword search](/weaviate/search/bm25) syntax does not change if a collection has named vectors.
 
