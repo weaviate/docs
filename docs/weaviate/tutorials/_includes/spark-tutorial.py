@@ -70,16 +70,13 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.none(
+    vector_config=[
+        Configure.Vectors.self_provided(
             name="regular",
             vector_index_config=Configure.VectorIndex.hnsw(),
         ),
-        Configure.NamedVectors.none(
+        Configure.MultiVectors.self_provided(
             name="colbert",
-            vector_index_config=Configure.VectorIndex.hnsw(
-                multi_vector=Configure.VectorIndex.MultiVector.multi_vector()
-            ),
         ),
     ],
 )

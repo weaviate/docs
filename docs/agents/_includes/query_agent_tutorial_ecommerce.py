@@ -34,14 +34,14 @@ from weaviate.classes.config import Configure, Property, DataType
 client.collections.create(
     "Brands",
     description="A dataset that lists information about clothing brands, their parent companies, average rating and more.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
 )
 
 # Explicitly defining the data schema
 client.collections.create(
     "ECommerce",
     description="A dataset that lists clothing items, their brands, prices, and more.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
     properties=[
         Property(name="collection", data_type=DataType.TEXT),
         Property(

@@ -18,7 +18,7 @@ import weaviate.classes as wvc
 # Create the collection. Weaviate's autoschema feature will infer properties when importing.
 questions = client.collections.create(
     "Question",
-    vectorizer_config=wvc.config.Configure.Vectorizer.none(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
 )
 
 # ===== Import data =====

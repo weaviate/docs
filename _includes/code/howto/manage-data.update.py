@@ -31,7 +31,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     name="JeopardyQuestion",
     description="A Jeopardy! question",
-    vectorizer_config=Configure.Vectorizer.text2vec_openai()
+    vector_config=Configure.Vectors.text2vec_openai()
 )
 
 # =============================

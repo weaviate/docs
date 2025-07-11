@@ -31,12 +31,12 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    # highlight-start
-    vector_index_config=wc.Configure.VectorIndex.hnsw(
-        quantizer=wc.Configure.VectorIndex.Quantizer.sq()
+    vector_config=wc.Configure.Vectors.text2vec_openai(
+        name="default",
+        # highlight-start
+        quantizer=wc.Configure.VectorIndex.Quantizer.sq(),
+        # highlight-end
     ),
-    # highlight-end
 )
 # END EnableSQ
 
@@ -51,17 +51,19 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    vector_index_config=wc.Configure.VectorIndex.hnsw(
-        distance_metric=wc.VectorDistances.COSINE,
-        vector_cache_max_objects=100000,
+    vector_config=wc.Configure.Vectors.text2vec_openai(
+        name="default",
         # highlight-start
         quantizer=wc.Configure.VectorIndex.Quantizer.sq(
             rescore_limit=200,
             training_limit=50000,
             cache=True,
-        )
+        ),
         # highlight-end
+        vector_index_config=wc.Configure.VectorIndex.hnsw(
+            distance_metric=wc.VectorDistances.COSINE,
+            vector_cache_max_objects=100000,
+        ),
     ),
 )
 # END SQWithOptions

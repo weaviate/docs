@@ -60,7 +60,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_aws(
+    vector_config=wc.Configure.Vectors.text2vec_aws(
         service="bedrock",   #this is crucial
         model="cohere.embed-english-v3", # select the model, make sure it is enabled for your account
         # model="amazon.titan-embed-text-v1", # select the model, make sure it is enabled for your account

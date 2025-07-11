@@ -152,7 +152,7 @@ for o in response.objects:
 
 
 # Test results
-from weaviate.collections.queries.base import _WeaviateUUIDInt
+from weaviate.util import _WeaviateUUIDInt
 
 assert response.objects[0].collection == "JeopardyQuestion"
 assert type(response.objects[0].uuid) == _WeaviateUUIDInt

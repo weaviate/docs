@@ -67,7 +67,7 @@ from weaviate.classes.config import Configure, DataType, Property
 client.collections.create(
     "Movies",
     description="A dataset that lists movies, including their release dates, ratings, popularity etc.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
     properties=[
         Property(
             name="release_date",

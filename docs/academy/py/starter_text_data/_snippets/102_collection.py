@@ -42,7 +42,7 @@ client.collections.create(
         wc.Property(name="tmdb_id", data_type=wc.DataType.INT),
     ],
     # Define the vectorizer module
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(),
     # Define the generative module
     generative_config=wc.Configure.Generative.openai()
     # END generativeDefinition  # CreateMovieCollection

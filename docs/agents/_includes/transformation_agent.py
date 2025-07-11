@@ -48,7 +48,7 @@ client.collections.delete("ArxivPapers")
 client.collections.create(
     "ArxivPapers",
     description="A dataset that lists research paper titles and abstracts",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
 )
 
 dataset = load_dataset(

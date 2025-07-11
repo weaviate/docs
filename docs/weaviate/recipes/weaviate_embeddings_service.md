@@ -89,7 +89,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_weaviate( # specify the vectorizer and model type you're using
+    vector_config=wc.Configure.Vectors.text2vec_weaviate( # specify the vectorizer and model type you're using
         model="Snowflake/snowflake-arctic-embed-l-v2.0", # default model
     ),
 

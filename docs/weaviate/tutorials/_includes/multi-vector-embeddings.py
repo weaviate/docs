@@ -58,10 +58,10 @@ client.collections.delete(collection_name)
 # START ColBERTCollectionConfig
 client.collections.create(
     collection_name,
-    vectorizer_config=[
+    vector_config=[
         # highlight-start
         # ColBERT vectorizer
-        Configure.NamedVectors.text2colbert_jinaai(
+        Configure.MultiVectors.text2vec_jinaai(
             name="multi_vector",
             source_properties=["text"],
             model="jina-colbert-v2"
@@ -160,15 +160,11 @@ client.collections.delete(collection_name)
 # START UserEmbeddingCollectionConfig
 client.collections.create(
     collection_name,
-    vectorizer_config=[
+    vector_config=[
         # highlight-start
         # User-provided embeddings
-        Configure.NamedVectors.none(
+        Configure.MultiVectors.self_provided(
             name="multi_vector",
-            vector_index_config=Configure.VectorIndex.hnsw(
-                # Enable multi-vector index with default settings
-                multi_vector=Configure.VectorIndex.MultiVector.multi_vector()
-            )
         ),
         # highlight-end
     ],

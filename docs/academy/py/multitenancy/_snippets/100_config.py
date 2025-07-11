@@ -48,8 +48,8 @@ mt_collection = client.collections.create(
         Property(name="tags", data_type=DataType.TEXT_ARRAY),
     ],
     # DynamicIndexConfig # MTFullCollectionCreation
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_cohere(
+    vector_config=[
+        Configure.Vectors.text2vec_cohere(
             name="text",
             source_properties=["text"],
             # highlight-start
