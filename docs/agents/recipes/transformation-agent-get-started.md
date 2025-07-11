@@ -12,7 +12,7 @@ tags: ['Transformation Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-In this recipe, we will use a Weaviate [`TransformationAgent`](https://weaviate.io/developers/agents/transformation) to enhance our data in Weaviate. We will build an agent that has access to a collection containing a bunch or research papers, their abstracts and titles. We will then use the agent to create additional properties for eaach of our objects in the collection.
+In this recipe, we will use a Weaviate [`TransformationAgent`](https://docs.weaviate.io/agents/transformation) to enhance our data in Weaviate. We will build an agent that has access to a collection containing a bunch or research papers, their abstracts and titles. We will then use the agent to create additional properties for eaach of our objects in the collection.
 
 > ⚠️ The Weaviate Transformation Agent is designed to modify data in Weaviate in place. **While the Agent is in technical preview, do not use it in a production environment.** The Agent may not work as expected, and the data in your Weaviate instance may be affected in unexpected ways.
 
@@ -29,11 +29,11 @@ If you'd like to try out building more agents with different datasets, check out
 ## Setting Up Weaviate & Importing Data
 
 To use the Weaviate Transformation Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
-1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://weaviate.io/developers/wcs/manage-clusters/create#sandbox-clusters)
+1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters)
 2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
 3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
 
-> Info: We recommend using [Weaviate Embeddings](https://weaviate.io/developers/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
+> Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
 
 ```python
 !pip install "weaviate-client[agents]" datasets

@@ -41,7 +41,7 @@ For more details of this representation, see: ([GloVe](https://github.com/stanfo
 
 ![2D Vector embedding visualization](../img/vectors-2d.png "2D Vectors visualization")
 
-Another way to think of this is how products are placed in a supermarket. You'd expect to find `Apples` close to `Bananas`, because they are both fruit. But when you are searching for a `Magazine`, you would move away from the `Apples` and `Bananas`, more towards the aisle with, for example, `Newspapers`. This is how the semantics of concepts can be stored in Weaviate as well, depending on the module you're using to calculate the numbers in the vectors. Not only words or text can be indexed as vectors, but also images, video, DNA sequences, etc. Read more about which model to use [here](/docs/weaviate/modules/index.md).
+Another way to think of this is how products are placed in a supermarket. You'd expect to find `Apples` close to `Bananas`, because they are both fruit. But when you are searching for a `Magazine`, you would move away from the `Apples` and `Bananas`, more towards the aisle with, for example, `Newspapers`. This is how the semantics of concepts can be stored in Weaviate as well, depending on the module you're using to calculate the numbers in the vectors. Not only words or text can be indexed as vectors, but also images, video, DNA sequences, etc. Read more about which model to use [here](/weaviate/modules/index.md).
 
 ![Supermarket map visualization as analogy for vector indexing](../img/supermarket.svg "Supermarket map visualization")
 
@@ -136,7 +136,7 @@ The resulting search list has these characteristics.
 - A maximum length of 25 objects ("dynamicEfMax": 25).
 - An actual size of 5 to 25 objects.
 
-If you use the [`docker-compose.yml` file from Weaviate](/docs/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
+If you use the [`docker-compose.yml` file from Weaviate](/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
 To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you configure your Weaviate instance.
 
@@ -162,7 +162,7 @@ When asynchronous indexing is enabled, all vector indexing operations go through
 
 This means that the object store can be updated quickly to finish performing user requests while the vector index updates in the background. Asynchronous indexing is especially useful for importing large amounts of data.
 
-This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/docs/deploy/config-guides/nodes.md).
+This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/deploy/configuration/nodes.md).
 
 :::info Changes in `v1.28`
 In Weaviate `v1.22` to `v1.27`, the async indexing feature only affected batch import operations, using an in-memory queue.
@@ -225,13 +225,13 @@ A simple heuristic is that for use cases such as SaaS products where each end us
 
 Note that the vector index type parameter only specifies how the vectors of data objects are *indexed*. The index is used for data retrieval and similarity search.
 
-The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/docs/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
+The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
 
 To learn more about configuring the collection, see [this how-to page](../../manage-collections/vector-config.mdx).
 
 ### Which distance metrics can I use with vector indexing?
 
-All of [the distance metrics](/docs/weaviate/config-refs/distances.md), such as cosine similarity, can be used with any vector index type.
+All of [the distance metrics](/weaviate/config-refs/distances.md), such as cosine similarity, can be used with any vector index type.
 
 ### How to configure the vector index type in Weaviate?
 
@@ -251,7 +251,7 @@ There are different ANN algorithms, you can find a nice overview of them on <a h
 
 ### Are there indicative benchmarks for Weaviate's ANN performance?
 
-The [ANN benchmark page](/docs/weaviate/benchmarks/ann.md) contains a wide variety of vector search use cases and relative benchmarks. This page is ideal for finding a dataset similar to yours and learning what the most optimal settings are.
+The [ANN benchmark page](/weaviate/benchmarks/ann.md) contains a wide variety of vector search use cases and relative benchmarks. This page is ideal for finding a dataset similar to yours and learning what the most optimal settings are.
 
 ## Further resources
 

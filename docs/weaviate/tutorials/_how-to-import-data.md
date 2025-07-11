@@ -30,7 +30,7 @@ Data is added through the RESTful API. The syntax of a data object is as follows
 
 # Prerequisites
 
-We recommend reading the [Quickstart tutorial](../quickstart/index.md) first before tackling this tutorial.
+We recommend reading the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first before tackling this tutorial.
 
 1. **Connect to a Weaviate instance.**
 For the tutorial, you will need a Weaviate instance running with the `text2vec-contextionary` module. We assume your instance is running at `http://localhost:8080`.
@@ -64,7 +64,7 @@ import CodeAddRefLater from '/_includes/code/howto.add.data.things.add.reference
 <!-- TODO: point it towards search or the relevant content -->
 <!-- - Take a look at [How to query data](./how-to-query-data) to learn how to interact with the data you just added. -->
 
-- See the RESTful [API reference pages](/docs/weaviate/api/rest) for all API operations to add, modify and delete data.
+- See the RESTful [API reference pages](/weaviate/api/rest) for all API operations to add, modify and delete data.
 
 
 ## Questions and feedback

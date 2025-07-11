@@ -46,7 +46,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](docs/deploy/config-guides/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -414,6 +414,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
+- `embed-v4.0`
 - `embed-multilingual-v3.0` (Default)
 - `embed-multilingual-light-v3.0`
 - `embed-multilingual-v2.0` (previously `embed-multilingual-22-12`)

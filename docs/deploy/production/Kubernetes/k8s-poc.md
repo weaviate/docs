@@ -22,7 +22,7 @@ Before beginning, ensure that you have the following:
 
 :::note
 
-Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate.io/developers/academy/deployment/k8s) if you need assistance. 
+Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.weaviate.io/academy/deployment/k8s) if you need assistance. 
 
 :::
 
@@ -79,7 +79,7 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://weaviate
     - readonly_user2
     - api-key-user-readOnly
 ```
-[Admin List Configuration](docs/deploy/config-guides/authorization.md#admin-list-kubernetes)
+[Admin List Configuration](/deploy/configuration/authorization.md#admin-list-kubernetes)
 
 </details>
 

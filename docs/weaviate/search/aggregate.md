@@ -33,7 +33,7 @@ To run an `Aggregate` query, specify the following:
 
 - Select at least one sub-property for each selected property
 
-For details, see [Aggregate](/docs/weaviate/api/graphql/aggregate).
+For details, see [Aggregate](/weaviate/api/graphql/aggregate).
 
 </details>
 
@@ -675,7 +675,7 @@ For more specific results, use a `filter` to narrow your search.
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: GraphQL: Aggregate](../api/graphql/aggregate.md)
 
 ## Questions and feedback

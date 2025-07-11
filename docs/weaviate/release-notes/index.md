@@ -5,11 +5,16 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes']
 ---
 
-These are the last five minor releases:
+These are the release notes for the last five minor releases:
 
 import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
+  {
+  title: "v1.31",
+  link: "https://weaviate.io/blog/weaviate-1-31-release",
+  icon: "fa fa-tags",
+  },
   {
   title: "v1.30",
   link: "https://weaviate.io/blog/weaviate-1-30-release",
@@ -30,11 +35,6 @@ export const pythonCardsData = [
   link: "https://weaviate.io/blog/weaviate-1-27-release",
   icon: "fa fa-tags",
   },
-  {
-  title: "v1.26",
-  link: "https://weaviate.io/blog/weaviate-1-26-release",
-  icon: "fa fa-tags",
-  },
 ];
 
 <QuickLinks items={pythonCardsData} />
@@ -42,7 +42,7 @@ export const pythonCardsData = [
 This page lists [developer release notes](https://github.com/weaviate/weaviate/releases) for Weaviate Database.
 
 - To see the GitHub release notes for a particular version, click on the version number.
-- For more information on upgrading Weaviate, see the [Migration Guide](docs/deploy/migration/index.md).
+- For more information on upgrading Weaviate, see the [Migration Guide](/deploy/migration/index.md).
 
 ### Weaviate Database and client releases
 

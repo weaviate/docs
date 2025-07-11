@@ -555,7 +555,7 @@ Question: What is a koala?
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [Model provider integrations](../model-providers/index.md).
 - [API References: GraphQL: Get](../api/graphql/get.md)
 

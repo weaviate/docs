@@ -12,7 +12,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 ## Replication settings
@@ -21,7 +21,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-Configure replication settings, such as [async replication](docs/deploy/config-guides/replication.md#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
+Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -54,14 +54,24 @@ Configure replication settings, such as [async replication](docs/deploy/config-g
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="gonew"
+  />
+</TabItem>
+
   <TabItem value="curl" label="cURL">
 
 ```bash
@@ -96,11 +106,11 @@ http://localhost:8080/v1/schema
      Additional information
   </summary>
 
-To use replication factors greater than one, use a [multi-node deployment](docs/deploy/installation-guides/docker-installation.md#multi-node-configuration).
+To use replication factors greater than one, use a [multi-node deployment](/deploy/installation-guides/docker-installation.md#multi-node-configuration).
 
 For details on the configuration parameters, see the following:
 
-- [Replication](/docs/weaviate/config-refs/schema#replicationconfig)
+- [Replication](/weaviate/config-refs/schema#replicationconfig)
 
 </details>
 
@@ -136,14 +146,33 @@ Configure sharding per collection.
   />
 </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="tsv2"
-    />
-  </TabItem>
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="gonew"
+  />
+</TabItem>
+
 </Tabs>
 
 <details>
@@ -153,7 +182,7 @@ Configure sharding per collection.
 
 For details on the configuration parameters, see the following:
 
-- [Sharding](/docs/weaviate/config-refs/schema#shardingconfig)
+- [Sharding](/weaviate/config-refs/schema#shardingconfig)
 
 </details>
 
@@ -175,8 +204,8 @@ import CodeSchemaShardsUpdate from "/_includes/code/howto/manage-data.shards.upd
 
 ## Further resources
 
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
-- [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- [References: Configuration: Schema](/weaviate/config-refs/schema)
 - [Concepts: Data structure](../concepts/data.md)
 
 ## Questions and feedback

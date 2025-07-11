@@ -180,13 +180,60 @@ public class App {
 
 ## References
 
-All [RESTful endpoints](/docs/weaviate/api/rest) and [GraphQL functions](/docs/weaviate/api) references covered by the Java client, and explained on those reference pages in the code blocks.
+All [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](../api/graphql/index.md) references covered by the Java client, and explained on those reference pages in the code blocks.
+
+## Typed GraphQL Responses
+
+The Weaviate Java client supports automatic deserialization of GraphQL query responses into Java objects. This eliminates the need for manual JSON parsing and provides compile-time type safety when working with your collection data.
+
+For example, you can define a `Pizzas` class to capture the response from the following query:
+
+```java
+@Getter
+public static class Pizzas {
+  @SerializedName(value = "Pizza")
+  List<Pizza> pizzas;
+
+  @Getter
+  public static class Pizza extends GraphQLGetBaseObject {
+    String name;
+    String description;
+    String bestBefore;
+    Float price;
+  }
+}
+
+try (WeaviateAsyncClient asyncClient = client.async()) {
+  return asyncClient.graphQL().get()
+    .withClassName("Pizza")
+    .withFields(Field.builder().name("name").build(), Field.builder().name("description").build())
+    .run(Pizzas.class)
+    .get();
+}
+```
+
+In return, the response will be a `GraphQLTypedResponse<Pizzas>` object:
+
+```java
+Result<GraphQLTypedResponse<Pizzas>> result = getResults();
+
+List<Pizzas.Pizza> pizzas = result.getResult().getData().getObjects().getPizzas();
+
+Pizzas.Pizza pizza = pizzas.get(0);
+
+// access Pizza specific properties
+Float price = pizza.getPrice();
+
+// access _additional values like vector (and others)
+Float[] vector = pizza.getAdditional().getVector();
+Float certainty = pizza.getAdditional().getCertainty();
+```
 
 ## Design
 
 ### Builder pattern
 
-The Java client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/docs/weaviate/api/rest) and the [GraphQL reference pages](/docs/weaviate/api).
+The Java client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/weaviate/api/rest) and the [GraphQL reference pages](../api/graphql/index.md).
 
 The code snippet above shows a simple query similar to `RESTful GET /v1/meta`. The client is initiated by requiring the package and connecting to the running instance. Then, a query is constructed by using the `.metaGetter()` on `.misc()`. The query will be sent with the `.run()` function, this object is thus required for every function you want to build and execute.
 

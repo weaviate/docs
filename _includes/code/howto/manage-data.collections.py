@@ -219,7 +219,15 @@ client.collections.create(
             # highlight-end
         ),
         Property(
-            name="Chunk",
+            name="chunk",
+            data_type=DataType.TEXT,
+            # highlight-start
+            index_filterable=True,
+            index_searchable=True,
+            # highlight-end
+        ),
+        Property(
+            name="chunk_number",
             data_type=DataType.INT,
             # highlight-start
             index_range_filters=True,
@@ -325,7 +333,9 @@ client.collections.create(
     "Article",
     vectorizer_config=Configure.Vectorizer.text2vec_openai(),
     # highlight-start
-    generative_config=Configure.Generative.openai(),
+    generative_config=Configure.Generative.openai(
+        model="gpt-4o"  # set your generative model (optional parameter)
+    ),
     # highlight-end
 )
 # END SetGenerative
@@ -337,35 +347,6 @@ assert config.generative_config.generative == "generative-openai"
 
 # Delete the collection to recreate it
 client.collections.delete("Article")
-
-# =======================================================================
-# ===== CREATE A COLLECTION WITH A GENERATIVE MODULE AND MODEL NAME =====
-# =======================================================================
-
-client.collections.delete("Article")
-
-# START SetGenModel
-from weaviate.classes.config import Configure, Property, DataType
-
-client.collections.create(
-    "Article",
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
-    # highlight-start
-    generative_config=Configure.Generative.openai(
-        model="gpt-4"
-    ),
-    # highlight-end
-)
-# END SetGenModel
-
-# Test
-collection = client.collections.get("Article")
-config = collection.config.get()
-assert config.generative_config.generative == "generative-openai"
-
-# Delete the collection to recreate it
-client.collections.delete("Article")
-
 
 # ===============================================
 # ===== UPDATE A COLLECTION'S GENERATIVE MODULE =====
@@ -568,7 +549,7 @@ from weaviate.classes.config import Configure, Property, DataType, Tokenization
 
 client.collections.create(
     "Article",
-    vectorizer_config=Configure.Vectorizer.text2vec_huggingface(),
+    vectorizer_config=Configure.Vectorizer.text2vec_cohere(),
 
     properties=[
         Property(
@@ -576,7 +557,8 @@ client.collections.create(
             data_type=DataType.TEXT,
             # highlight-start
             vectorize_property_name=True,  # Use "title" as part of the value to vectorize
-            tokenization=Tokenization.LOWERCASE  # Use "lowecase" tokenization
+            tokenization=Tokenization.LOWERCASE,  # Use "lowecase" tokenization
+            description="The title of the article."  # Optional description
             # highlight-end
         ),
         Property(
@@ -612,7 +594,7 @@ articles.config.add_vector(
 collection = client.collections.get("Article")
 config = collection.config.get()
 
-assert config.vectorizer.value == "text2vec-huggingface"
+assert config.vectorizer_config.vectorizer.value == "text2vec-cohere"
 for p in config.properties:
     if p.name == "title":
         assert p.tokenization.name == "LOWERCASE"
@@ -825,32 +807,6 @@ config = collection.config.get()
 assert len(config.properties) == 1
 assert config.properties[0].name == "body"
 
-# ==============================
-# ===== MODIFY A PARAMETER =====
-# ==============================
-
-# START ModifyParam
-from weaviate.classes.config import Reconfigure
-
-# Get the Article collection object
-articles = client.collections.get("Article")
-
-# Update the collection configuration
-# highlight-start
-articles.config.update(
-    # Note, use Reconfigure here (not Configure)
-    inverted_index_config=Reconfigure.inverted_index(
-        stopwords_removals=["a", "the"]
-    )
-)
-# highlight-end
-# END ModifyParam
-
-# Test
-collection = client.collections.get("Article")
-config = collection.config.get()
-assert config.inverted_index_config.stopwords.removals == ["a", "the"]
-
 # ================================
 # ===== READ A COLLECTION =====
 # ================================
@@ -894,7 +850,17 @@ client.collections.create(
     inverted_index_config=Configure.inverted_index(
         bm25_b=0.7,
         bm25_k1=1.2
-    )
+    ),
+    properties=[
+        Property(
+            name="title",
+            data_type=DataType.TEXT,
+        ),
+        Property(
+            name="body",
+            data_type=DataType.TEXT,
+        ),
+    ]
 )
 old_config = articles.config.get()
 
@@ -913,6 +879,10 @@ articles = client.collections.get("Article")
 
 # Update the collection definition
 articles.config.update(
+    description="An updated collection description.",
+    property_descriptions={
+        "title": "The updated title description for article",
+    },  # Available from Weaviate v1.31.0
     inverted_index_config=Reconfigure.inverted_index(
         bm25_k1=1.5
     ),
@@ -930,6 +900,8 @@ new_config = articles.config.get()
 assert old_config.inverted_index_config.bm25.k1 == 1.2
 assert new_config.inverted_index_config.bm25.k1 == 1.5
 
+property_descriptions = {prop.name: prop.description for prop in new_config.properties}
+assert property_descriptions["title"] == "The updated title description for article"
 
 # ================================
 # ===== DELETE A COLLECTION =====

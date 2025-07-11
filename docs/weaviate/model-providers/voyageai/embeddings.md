@@ -43,7 +43,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](docs/deploy/config-guides/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -341,6 +341,9 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
+- voyage-3.5
+- voyage-3.5-lite
+- voyage-3-large
 - voyage-3 (default)
 - voyage-3-lite
 - voyage-large-2 (default for &lt;= `v1.24.24`, `v1.25.17`, `v1.26.4`)

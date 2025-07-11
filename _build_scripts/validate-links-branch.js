@@ -15,17 +15,13 @@ const runBranchValidationOnNetlify = async () => {
     const netlifyPath = findNetlifyPath();
 
     const validator = new LinkValidator({
-        // TODO: change the search value to https://weaviate.io/{x}
-        // any fixed links to weaviate.io, should be redirected to the path on netlify
         urlRewriteExpressions: [
             {
-                // pattern: 'https://weaviate.io/docs',
-                pattern: 'https://weaviate-docs.netlify.app/docs',
+                pattern: 'https://docs.weaviate.io',
                 replacement: `${netlifyPath}/docs`,
             },
             {
-                // pattern: 'https://weaviate.io/og',
-                pattern: 'https://weaviate-docs.netlify.app/og',
+                pattern: 'https://docs.weaviate.io/og',
                 replacement: `${netlifyPath}/og`,
             },
         ],
@@ -40,10 +36,10 @@ const runBranchValidationOnNetlify = async () => {
     }, Verbosity.ERROR)
     
     const paths = [
-        `${netlifyPath}/docs/agents`,
-        `${netlifyPath}/docs/cloud`,
-        `${netlifyPath}/docs/integrations/`,
-        `${netlifyPath}/docs/weaviate`,
+        `${netlifyPath}/agents`,
+        `${netlifyPath}/cloud`,
+        `${netlifyPath}/integrations/`,
+        `${netlifyPath}/weaviate`,
     ]
     
     const success = await validator.validateLinks(paths);

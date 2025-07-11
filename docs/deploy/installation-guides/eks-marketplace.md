@@ -1,5 +1,5 @@
 ---
-title: AWS Marketplace - Kubernetes
+title: Marketplace - Kubernetes
 description: Install Weaviate on an EKS cluster through the AWS Marketplace for quick cloud deployment.
 image: og/docs/installation.jpg
 # tags: ['installation', 'AWS Marketplace']
@@ -146,7 +146,9 @@ The load balancer URL (e.g. `a520f010285b8475eb4b86095cabf265-854109584.eu-north
 
 You can delete the cluster by deleting the CloudFormation stack.
 
-Caution. This action deletes your data from Weaviate. If you want to keep your data, back it up or export the data before you delete the cluster.
+ :::caution 
+ This action deletes your data from Weaviate. If you want to keep your data, back it up or export the data before you delete the cluster.
+:::
 
 ### Some resources many require manual deletion
 
@@ -169,6 +171,12 @@ You must delete these manually.
 You will be charged for Weaviate and associated resources directly by AWS.
 
 This will, for example, include the EC2 instances, EBS volumes, and any other resources used by the cluster.
+
+### Other marketplace offerings
+
+- [Weaviate serverless cloud](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-2&ref_=beagle&applicationId=AWSMPContessa)
+- [Weaviate enterprise cloud](https://aws.amazon.com/marketplace/pp/prodview-27nbweprm7hha?sr=0-3&ref_=beagle&applicationId=AWSMPContessa)
+
 
 ## Questions and feedback
 

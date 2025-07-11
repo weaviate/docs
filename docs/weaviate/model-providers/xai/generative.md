@@ -1,7 +1,7 @@
 ---
 title: Generative AI
 sidebar_position: 51
-image: og/docs/integrations/provider_integrations_xai.jpg
+# image: og/docs/integrations/provider_integrations_xai.jpg
 # tags: ['model providers', 'xAI', 'generative', 'rag']
 ---
 
@@ -42,7 +42,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](docs/deploy/config-guides/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>

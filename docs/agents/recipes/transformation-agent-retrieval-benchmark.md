@@ -65,7 +65,7 @@ Create 2 HSNW indexes from the *same* property in Weaviate!!
 
 On top of that, you can set different embedding models for each!
 
-You can learn more about Weaviate Named Vectors [here](https://weaviate.io/developers/weaviate/config-refs/schema/multi-vector) and the Weaviate Embedding Service [here](https://weaviate.io/developers/wcs/embeddings)!
+You can learn more about Weaviate Named Vectors [here](https://docs.weaviate.io/weaviate/config-refs/schema/multi-vector) and the Weaviate Embedding Service [here](https://docs.weaviate.io/cloud/embeddings)!
 
 ```python
 blogs_collection = weaviate_client.collections.create(
@@ -357,7 +357,7 @@ In essence, we’ve released a multi-agent system that can route queries to one 
 
 ### Routing to Search vs Aggregations
 
-Not all queries are the same. While some may require us to do semantic search using embeddings over a dataset, other queries may require us to make [aggregations](https://weaviate.io/developers/weaviate/api/graphql/aggregate) (such as counting objects, calculating the average value of a property and so on). We can demonstrate the difference with a simple example.
+Not all queries are the same. While some may require us to do semantic search using embeddings over a dataset, other queries may require us to make [aggregations](https://docs.weaviate.io/weaviate/api/graphql/aggregate) (such as counting objects, calculating the average value of a property and so on). We can demonstrate the difference with a simple example.
 Predicted User Query:
 
 How do I decide when to use semantic search versus aggregations in the Weaviate Query Agent?

@@ -16,6 +16,10 @@ This is a new section being created, please bear with us as we add in new conten
 
 :::
 
+Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](https://console.weaviate.cloud/), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
+
+If you are upgrading from a previous version of Weaviate, see the [Migration Guide](docs/deploy/migration/index.md) for any changes that may affect your installation.
+
 Weaviate offers multiple deployment options to satisfy your specific use case in production. 
 
 This section hosts common deployment topics, including Kubernetes, cloud providers, and best practices, along with detailed tutorials and how-to guides.
@@ -26,6 +30,7 @@ Weaviate is designed for:
 - **Flexible Integrations** – Connect with various machine learning models and data sources.
 - **Cloud & On-Prem Deployment** – Deploy on Weaviate Cloud, Kubernetes, or managed cloud services.
 
+
 ## Deployment Options
 
 Choose the best deployment method based on your needs:
@@ -34,12 +39,12 @@ export const deploymentCardsData = [
   {
     tabs: [
       { label: "Evaluation", active: true },
-      { label: "Deployment", active: true },
+      { label: "Development", active: true },
       { label: "Production", active: true },
     ],
     header: "Weaviate Cloud",
-    bgImage: "/docs/img/site/hex-weaviate.svg",
-    bgImageLight: "/docs/img/site/hex-weaviate-light.svg",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
     listItems: [
       "From evaluation (sandbox) to production",
       "Serverless (infrastructure managed by Weaviate)",
@@ -48,18 +53,18 @@ export const deploymentCardsData = [
     ],
     button: {
       text: "Set up a WCD instance",
-      link: "/docs/cloud/manage-clusters/create",
+      link: "/cloud/manage-clusters/create",
     },
   },
   {
     tabs: [
       { label: "Evaluation", active: true },
-      { label: "Deployment", active: true },
+      { label: "Development", active: true },
       { label: "Production", active: false },
     ],
     header: "Docker",
-    bgImage: "/docs/img/site/docker-doc-icon.svg",
-    bgImageLight: "/docs/img/site/docker-doc-icon-light.svg",
+    bgImage: "/img/site/docker-doc-icon.svg",
+    bgImageLight: "/img/site/docker-doc-icon-light.svg",
     listItems: [
       "For local evaluation & development",
       "Local inference containers",
@@ -68,18 +73,18 @@ export const deploymentCardsData = [
     ],
     button: {
       text: "Deploy Weaviate with Docker",
-      link: "/docs/deploy/installation-guides/docker-installation",
+      link: "/deploy/installation-guides/docker-installation",
     },
   },
     {
     tabs: [
       { label: "Evaluation", active: false },
-      { label: "Deployment", active: true },
+      { label: "Development", active: true },
       { label: "Production", active: true },
     ],
     header: "Kubernetes",
-    bgImage: "/docs/img/site/kubernetes-doc-icon.svg",
-    bgImageLight: "/docs/img/site/kubernetes-doc-icon-light.svg",
+    bgImage: "/img/site/kubernetes-doc-icon.svg",
+    bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
     listItems: [
       "From development to production",
       "Local inference containers",
@@ -90,18 +95,18 @@ export const deploymentCardsData = [
     ],
     button: {
       text: "Deploy Weaviate with Kubernetes",
-      link: "/docs/deploy/installation-guides/k8s-installation",
+      link: "/deploy/installation-guides/k8s-installation",
     },
   },
   {
     tabs: [
       { label: "Evaluation", active: true },
-      { label: "Deployment", active: true },
+      { label: "Development", active: true },
       { label: "Production", active: true },
     ],
     header: "AWS",
-    bgImage: "/docs/img/site/aws-marketplace-2.svg",
-    bgImageLight: "/docs/img/site/aws-marketplace-2.svg", 
+    bgImage: "/img/site/aws-marketplace-2.svg",
+    bgImageLight: "/img/site/aws-marketplace-2.svg", 
     listItems: [
       "From evaluation (sandbox) to production",
       "Serverless (bill through AWS)",
@@ -110,18 +115,18 @@ export const deploymentCardsData = [
     ],
     button: {
       text: "Deploy Weaviate on AWS",
-      link: "/docs/deploy/installation-guides/aws-marketplace",
+      link: "/deploy/installation-guides/aws-marketplace",
     },
   },
   {
     tabs: [
       { label: "Evaluation", active: true },
-      { label: "Deployment", active: true },
+      { label: "Development", active: true },
       { label: "Production", active: true },
     ],
     header: "GCP Marketplace",
-    bgImage: "/docs/img/site/gcp-marketplace.svg",
-    bgImageLight: "/docs/img/site/gcp-marketplace.svg",
+    bgImage: "/img/site/gcp-marketplace.svg",
+    bgImageLight: "/img/site/gcp-marketplace.svg",
     listItems: [
       "From evaluation (sandbox) to production",
       "Serverless (bill through GCP)",
@@ -129,9 +134,58 @@ export const deploymentCardsData = [
     ],
     button: {
       text: "Deploy Weaviate with GCP",
-      link: "/docs/deploy/installation-guides/gcp-marketplace",
+      link: "/deploy/installation-guides/gcp-marketplace",
     },
   },
 ];
 
 <DeploymentCards items={deploymentCardsData} />
+
+### Methods
+
+In addition to the above deployment methods, we also have the following:
+
+- **[Weaviate Cloud](docs/cloud/quickstart.mdx)**: Managed services for development and production environments.
+- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
+- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
+
+:::caution Native Windows support
+
+Although Weaviate can be used on Windows via containerized environments like [Docker](docs/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/), we don't offer native Windows support at this time.
+
+:::
+
+## Configuration files
+
+Docker Compose and Kubernetes use `yaml` files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) file. Kubernetes relies on [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
+
+If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
+
+
+## Versions
+
+
+:::tip Version availability across deployment options:
+
+Weaviate version availability may differ across deployment options, Weaviate Cloud generally has the latest versions of all deployment methods. 
+
+:::
+
+import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
+
+<RunUnreleasedImages />
+
+When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
+
+
+## Related pages
+- [Connect to Weaviate](docs/weaviate/connections/index.mdx)
+- [Weaviate Quickstart](docs/weaviate/quickstart/index.md)
+- [Weaviate Cloud Quickstart](docs/cloud/quickstart.mdx)
+- [References: Configuration](docs/weaviate/configuration/index.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 # tags: ['configuration', 'modules']
 ---
 
-Weaviate's functionality can be customized by using [modules](docs/weaviate/concepts/modules.md). This page explains how to enable and configure modules.
+Weaviate's functionality can be customized by using [modules](/weaviate/concepts/modules.md). This page explains how to enable and configure modules.
 
 ## Instance-level configuration
 
@@ -15,10 +15,10 @@ At the instance (i.e. Weaviate cluster) level, you can:
 - Configure the default vectorizer module
 - Configure module-specific variables (e.g. API keys), where applicable
 
-This can be done by setting the appropriate [environment variables](docs/deploy/config-guides/env-vars/index.md) as shown below.
+This can be done by setting the appropriate [environment variables](/deploy/configuration/env-vars/index.md) as shown below.
 
 :::tip What about WCD?
-Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/docs/cloud/manage-clusters/status#enabled-modules) for details.
+Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/cloud/manage-clusters/status#enabled-modules) for details.
 :::
 
 ### Enable individual modules
@@ -135,7 +135,7 @@ Your choice of the `text2vec` module does not restrict your choice of `generativ
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-See the [dedicated page on tenant offloading](docs/deploy/config-guides/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
+See the [dedicated page on tenant offloading](/deploy/configuration/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
 
 ## Custom modules
 

@@ -18,17 +18,9 @@ const sidebars = {
       items: ["weaviate/quickstart/local"],
     },
     {
-      type: "category",
+      type: "link",
       label: "Installation",
-      link: {
-        type: "doc",
-        id: "weaviate/installation/index",
-      },
-      items: [
-        "weaviate/installation/weaviate-cloud-services",
-        "weaviate/installation/embedded",
-        "weaviate/installation/spcs-integration",
-      ],
+      href: "https://docs.weaviate.io/deploy/installation-guides",
     },
     {
       type: "category",
@@ -104,7 +96,7 @@ const sidebars = {
       label: "API-based",
       collapsed: false,
       collapsible: false,
-      className: "sidebar-main-category",
+      className: "sidebar-item",
       items: [
         {
           type: "category",
@@ -324,7 +316,7 @@ const sidebars = {
       label: "Locally hosted",
       collapsed: false,
       collapsible: false,
-      className: "sidebar-main-category",
+      className: "sidebar-item",
       items: [
         {
           type: "category",
@@ -411,6 +403,7 @@ const sidebars = {
         id: "weaviate/configuration/index",
       },
       items: [
+        "weaviate/configuration/authz-authn",
         {
           type: "category",
           label: "Compression",
@@ -422,10 +415,11 @@ const sidebars = {
             "weaviate/configuration/compression/pq-compression",
             "weaviate/configuration/compression/bq-compression",
             "weaviate/configuration/compression/sq-compression",
+            "weaviate/configuration/compression/multi-vectors",
           ],
         },
+        "weaviate/configuration/hnsw-snapshots",
         "weaviate/configuration/modules",
-        "weaviate/configuration/authz-authn",
         {
           type: "category",
           label: "RBAC",
@@ -515,7 +509,7 @@ const sidebars = {
         //"weaviate/tutorials/vector-provision-options",
         //"weaviate/tutorials/query",
         //"weaviate/tutorials/wikipedia",
-        //"weaviate/tutorials/spark-connector",
+        "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/modules",
       ],
     },
@@ -731,6 +725,7 @@ const sidebars = {
     {
       type: "category",
       label: "Installation",
+      className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
       link: {
@@ -749,36 +744,75 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
+          type: "doc",
+          id: "deploy/installation-guides/embedded",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/spcs-integration",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/weaviate-cloud",
+          className: "sidebar-item",
+        },
+        {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
+      ]
+    },
+    {
+      type: "category",
+      label: "AWS",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
         {
-          type: "category",
-          label: "AWS",
+          type: "doc",
+          id: "deploy/installation-guides/aws-marketplace",
           className: "sidebar-item",
-          collapsible: false,
-          collapsed: false,
-          items: [
-            "deploy/installation-guides/aws-marketplace",
-             "deploy/installation-guides/eks-marketplace",
-             "deploy/installation-guides/eks",
-           
-          ],
-        },
-                {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
         },
         {
-          type: "category",
-          label: "GCP",
+          type: "doc",
+          id: "deploy/installation-guides/eks-marketplace",
           className: "sidebar-item",
-          collapsible: false,
-          collapsed: false,
-          items: [
-            "deploy/installation-guides/gcp-marketplace",
-            "deploy/installation-guides/gke-marketplace",           
-          ],
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/ecs-marketplace",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/eks",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "GCP",
+      className: "sidebar-main-category",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy/installation-guides/gcp-marketplace",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/installation-guides/gke-marketplace",
+          className: "sidebar-item",
         },
       ],
     },
@@ -791,113 +825,141 @@ const sidebars = {
       collapsible: false,
       link: {
         type: "doc",
-        id: "deploy/config-guides/index",
+        id: "deploy/configuration/index",
       },
       items: [
         {
           type: "doc",
-          id: "deploy/config-guides/backups",
+          id: "deploy/configuration/backups",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/horizontal-scaling",
+          id: "deploy/configuration/horizontal-scaling",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/monitoring",
+          id: "deploy/configuration/monitoring",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/persistence",
+          id: "deploy/configuration/persistence",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/status",
+          id: "deploy/configuration/status",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/telemetry",
+          id: "deploy/configuration/telemetry",
           className: "sidebar-item",
         },
         {
           type: "doc",
-          id: "deploy/config-guides/tenant-offloading",
+          id: "deploy/configuration/tenant-offloading",
+          className: "sidebar-item",
+        },
+      ]
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Authorization and authentication",
+      className: "sidebar-main-category",
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/authentication",
           className: "sidebar-item",
         },
         {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Authorization and authentication",
+          type: "doc",
+          id: "deploy/configuration/authorization",
           className: "sidebar-item",
-          items: [
-            "deploy/config-guides/authentication",
-            "deploy/config-guides/authorization",
-            "deploy/config-guides/oidc",
-            "deploy/config-guides/configuring-rbac",
-          ],
         },
         {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Replication",
+          type: "doc",
+          id: "deploy/configuration/oidc",
           className: "sidebar-item",
-          items: [
-            "deploy/config-guides/replication",
-            "deploy/config-guides/async-rep",
-          ],
         },
         {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Environment variables",
+          type: "doc",
+          id: "deploy/configuration/configuring-rbac",
           className: "sidebar-item",
-          items: [
-            "deploy/config-guides/env-vars/index",
-            "deploy/config-guides/env-vars/runtime-config",
-          ],
         },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Replication",
+      className: "sidebar-main-category",
+      items: [
         {
-          type: "html",
-          value: "<hr class='sidebar-divider' />",
-        },
-        {
-          type: "category",
-          label: "Cluster information",
+          type: "doc",
+          id: "deploy/configuration/replication",
           className: "sidebar-item",
-          items: [
-            "deploy/config-guides/meta",
-            "deploy/config-guides/nodes",
-          ],
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/async-rep",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Environment variables",
+      className: "sidebar-main-category",
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/env-vars/index",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/env-vars/runtime-config",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Cluster information",
+      className: "sidebar-main-category",
+      items: [
+        {
+          type: "doc",
+          id: "deploy/configuration/meta",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "deploy/configuration/nodes",
+          className: "sidebar-item",
         },
       ],
     },
   ],
-  /*deployAwsSidebar: [
-    {
-      type: "autogenerated",
-      dirName: "deploy/aws",
-    },
-  ],*/
-  /*deployK8sSidebar: [
-    {
-      type: "autogenerated",
-      dirName: "deploy/k8s",
-    },
-  ],*/
   deployProductionSidebar: [
     {
       type: "autogenerated",
@@ -906,15 +968,9 @@ const sidebars = {
   ],
   deployTutorialSidebar: [
     {
-      type: "category",
+      type: "doc",
       label: "RBAC",
-      className: "sidebar-main-category",
-      collapsible: false,
-      link: {
-        type: "doc",
-        id: "deploy/tutorials/rbac",
-      },
-      items: [],
+      id: "deploy/tutorials/rbac",
     },
   ],
   deployFaqsSidebar: [
@@ -930,38 +986,89 @@ const sidebars = {
     },
   ],
   agentsSidebar: [
-    "agents/index",
+    {
+      type: "doc",
+      id: "agents/index",
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
     {
       type: "category",
       label: "Query Agent",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
       link: {
         type: "doc",
         id: "agents/query/index",
       },
-      items: ["agents/query/usage", "agents/query/tutorial-ecommerce"],
+      items: [
+        {
+          type: "doc",
+          id: "agents/query/usage",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/query/tutorial-ecommerce",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "category",
       label: "Transformation Agent",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
       link: {
         type: "doc",
         id: "agents/transformation/index",
       },
       items: [
-        "agents/transformation/usage",
-        "agents/transformation/tutorial-enrich-dataset",
+        {
+          type: "doc",
+          id: "agents/transformation/usage",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/transformation/tutorial-enrich-dataset",
+          className: "sidebar-item",
+        },
       ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "category",
       label: "Personalization Agent",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
       link: {
         type: "doc",
         id: "agents/personalization/index",
       },
       items: [
-        "agents/transformation/usage",
-        "agents/personalization/tutorial-recipe-recommender",
+        {
+          type: "doc",
+          id: "agents/personalization/usage",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "agents/personalization/tutorial-recipe-recommender",
+          className: "sidebar-item",
+        },
       ],
     },
   ],
@@ -969,6 +1076,8 @@ const sidebars = {
     {
       type: "category",
       label: "Recipes",
+      collapsed: false,
+      collapsible: false,
       link: {
         type: "doc",
         id: "agents/recipes",
@@ -1046,24 +1155,84 @@ const sidebars = {
       label: "Quickstart",
     },
     {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
       type: "category",
       label: "Manage a cluster",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
       items: [
-        "cloud/manage-clusters/connect",
-        "cloud/manage-clusters/create",
-        "cloud/manage-clusters/status",
-        "cloud/manage-clusters/upgrade",
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/connect",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/create",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/status",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/upgrade",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/authentication",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/manage-clusters/authorization",
+          className: "sidebar-item",
+        },
       ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "category",
       label: "Tools",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
       items: [
-        "cloud/tools/import-tool",
-        "cloud/tools/collections-tool",
-        "cloud/tools/explorer-tool",
-        "cloud/tools/query-tool",
+        {
+          type: "doc",
+          id: "cloud/tools/import-tool",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/tools/collections-tool",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/tools/explorer-tool",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "cloud/tools/query-tool",
+          className: "sidebar-item",
+        },
       ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "doc",
@@ -1082,7 +1251,6 @@ const sidebars = {
     "cloud/platform/support-levels",
     "cloud/platform/version",
     "cloud/platform/create-account",
-    "cloud/platform/manage-api-keys",
     "cloud/platform/multi-factor-auth",
     "cloud/platform/users-and-organizations",
   ],

@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-  <a href="https://weaviate.io/developers/weaviate">
+  <a href="https://docs.weaviate.io/weaviate">
     <img src="/static/img/github/weaviate-docs-banner.png" alt="Weaviate Docs Banner" />
   </a>
 </div>

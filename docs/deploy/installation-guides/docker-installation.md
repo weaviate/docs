@@ -36,8 +36,8 @@ You can customize your Weaviate configuration by creating a `docker-compose.yml`
 ## Sample Docker Compose file
 
 This starter Docker Compose file allows:
-* Use of any [API-based model provider integrations](docs/weaviate/model-providers/index.md) (e.g. `OpenAI`, `Cohere`, `Google`, and `Anthropic`).
-    * This includes the relevant embedding model, generative, and reranker [integrations](/docs/weaviate/model-providers/index.md).
+* Use of any [API-based model provider integrations](/weaviate/model-providers/index.md) (e.g. `OpenAI`, `Cohere`, `Google`, and `Anthropic`).
+    * This includes the relevant embedding model, generative, and reranker [integrations](/weaviate/model-providers/index.md).
 * Searching pre-vectorized data (without a vectorizer).
 * Mounts a persistent volume called `weaviate_data` to `/var/lib/weaviate` in the container to store data.
 
@@ -120,16 +120,16 @@ volumes:
 ...
 ```
 
-This setup enables API-key based [authentication](docs/deploy/config-guides/authentication.md) and role-based access control [authorization](docs/deploy/config-guides/authorization.md).
+This setup enables API-key based [authentication](/deploy/configuration/authentication.md) and role-based access control [authorization](/deploy/configuration/authorization.md).
 
 It defines the users `user-a` and `user-b` and corresponding keys `user-a-key` and `user-b-key` which serve as authentication credentials for connecting to your Weaviate instance.
 
-The user `user-a` is granted admin access rights using the **Role-based access control (RBAC)** method. A custom role can be assigned to the user `user-b` by following the [authorization and RBAC guide](docs/deploy/config-guides/authorization.md).
+The user `user-a` is granted admin access rights using the **Role-based access control (RBAC)** method. A custom role can be assigned to the user `user-b` by following the [authorization and RBAC guide](/deploy/configuration/authorization.md).
 
   </TabItem>
 </Tabs>
 
-Edit the `docker-compose.yml` file to suit your needs. You can add or remove [environment variables](#environment-variables), change the port mappings, or add additional [model provider integrations](/docs/weaviate/model-providers/index.md), such as [Ollama](/docs/weaviate/model-providers/ollama/index.md), or [Hugging Face Transformers](/docs/weaviate/model-providers/transformers/index.md).
+Edit the `docker-compose.yml` file to suit your needs. You can add or remove [environment variables](#environment-variables), change the port mappings, or add additional [model provider integrations](/weaviate/model-providers/index.md), such as [Ollama](/weaviate/model-providers/ollama/index.md), or [Hugging Face Transformers](/weaviate/model-providers/transformers/index.md).
 
 To start your Weaviate instance, run this command from your shell:
 
@@ -150,7 +150,7 @@ import DocsConfigGen from '@site/src/components/DockerConfigGen';
 You can use environment variables to control your Weaviate setup, authentication and authorization, module settings, and data storage settings.
 
 :::info List of environment variables
-A comprehensive of list environment variables [can be found on this page](/docs/deploy/config-guides/env-vars/index.md).
+A comprehensive of list environment variables [can be found on this page](/deploy/configuration/env-vars/index.md).
 :::
 
 ## Example configurations
@@ -238,7 +238,7 @@ Note that transformer models are neural networks built to run on GPUs. Running W
 
 For more information on how to set up the environment with the
 `text2vec-transformers` integration, see [this
-page](/docs/weaviate/model-providers/transformers/embeddings.md).
+page](/weaviate/model-providers/transformers/embeddings.md).
 
 The `text2vec-transformers` module requires at least Weaviate version `v1.2.0`.
 
@@ -260,7 +260,7 @@ To configure Weaviate to use multiple host nodes, follow these steps:
 - Set the `RAFT_BOOTSTRAP_EXPECT` for each node with the number of voters.
 - Optionally, set the hostname for each node using `CLUSTER_HOSTNAME`.
 
-(Read more about [horizontal replication in Weaviate](/docs/weaviate/concepts/cluster.md).)
+(Read more about [horizontal replication in Weaviate](/weaviate/concepts/cluster.md).)
 
 So, the Docker Compose file includes environment variables for the "founding" member that look like this:
 
@@ -289,7 +289,7 @@ And the other members' configurations may look like this:
       RAFT_BOOTSTRAP_EXPECT: 3
 ```
 
-Below is an example configuration for a 3-node setup. You may be able to test [replication](docs/deploy/config-guides/replication.md) examples locally using this configuration.
+Below is an example configuration for a 3-node setup. You may be able to test [replication](/deploy/configuration/replication.md) examples locally using this configuration.
 
 
 <details>

@@ -23,10 +23,10 @@ Specify a `vectorizer` for a collection.
 <details>
   <summary>Additional information</summary>
 
-Collection level settings override default values and general configuration parameters such as [environment variables](docs/deploy/config-guides/env-vars/index.md).
+Collection level settings override default values and general configuration parameters such as [environment variables](/deploy/configuration/env-vars/index.md).
 
 - [Available model integrations](../model-providers/index.md)
-- [Vectorizer configuration references](/docs/weaviate/config-refs/schema#vectorizer)
+- [Vectorizer configuration references](/weaviate/config-refs/schema#vectorizer)
 
 </details>
 
@@ -73,6 +73,76 @@ Collection level settings override default values and general configuration para
     startMarker="// START CreateCollectionWithVectorizer"
     endMarker="// END CreateCollectionWithVectorizer"
     language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+## Specify vectorizer settings
+
+To configure how a vectorizer works (i.e. what model to use) with a specific collection, set the vectorizer parameters.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ModuleSettings"
+      endMarker="# END ModuleSettings"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START ModuleSettings"
+    endMarker="# END ModuleSettings"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START ModuleSettings"
+    endMarker="// END ModuleSettings"
+    language="gonew"
   />
 </TabItem>
 
@@ -132,6 +202,16 @@ As such, each named vector configuration can include its own vectorizer and vect
     language="java"
   />
 </TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithNamedVectors"
+    endMarker="// END CreateCollectionWithNamedVectors"
+    language="gonew"
+  />
+</TabItem>
+
 </Tabs>
 
 ## Add new named vectors
@@ -193,63 +273,19 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       language="py"
     />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START MultiValueVectorCollection"
+      endMarker="// END MultiValueVectorCollection"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Use quantization and encoding to compress your vectors
 Multi-vector embeddings use up more memory than single vector embeddings. You can use [vector quantization](../configuration/compression/index.md) and [encoding](../configuration/compression/multi-vectors.md#muvera-encoding) to compress them and reduce memory usage.
 :::
-
-## Specify vectorizer settings
-
-To configure how a vectorizer works (i.e. what model to use) with a specific collection, set the vectorizer parameters.
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START ModuleSettings"
-      endMarker="# END ModuleSettings"
-      language="py"
-    />
-  </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START ModuleSettings"
-    endMarker="# END ModuleSettings"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="tsv2"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="java"
-  />
-</TabItem>
-
-</Tabs>
 
 ## Set vector index type
 
@@ -292,12 +328,21 @@ The vector index type can be set for each collection at creation time, between `
   />
 </TabItem>
 
-  <TabItem value="java" label="Java">
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetVectorIndexType"
+    endMarker="// END SetVectorIndexType"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={JavaCode}
+      text={GoCode}
       startMarker="// START SetVectorIndexType"
       endMarker="// END SetVectorIndexType"
-      language="java"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -311,7 +356,7 @@ The vector index type can be set for each collection at creation time, between `
 
 ## Set vector index parameters
 
-Various vector index parameters are configurable at collection creation time, including [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy).
+Set vector index parameters such as [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy) through collection configuration. Some parameters can be [updated later](collection-operations.mdx#update-a-collection-definition) after collection creation.
 
 :::info Filter strategy parameter
 Was added in `v1.27`
@@ -354,12 +399,21 @@ Was added in `v1.27`
   />
 </TabItem>
 
-  <TabItem value="java" label="Java">
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetVectorIndexParams"
+    endMarker="// END SetVectorIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={JavaCode}
+      text={GoCode}
       startMarker="// START SetVectorIndexParams"
       endMarker="// END SetVectorIndexParams"
-      language="java"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -416,12 +470,21 @@ Configure individual properties in a collection. Each property can have it's own
   />
 </TabItem>
 
-  <TabItem value="java" label="Java">
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START PropModuleSettings"
+    endMarker="// END PropModuleSettings"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={JavaCode}
+      text={GoCode}
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
-      language="java"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -467,12 +530,21 @@ If you choose to bring your own vectors, you should specify the `distance metric
   />
 </TabItem>
 
-  <TabItem value="java" label="Java">
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START DistanceMetric"
+    endMarker="// END DistanceMetric"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={JavaCode}
+      text={GoCode}
       startMarker="// START DistanceMetric"
       endMarker="// END DistanceMetric"
-      language="java"
+      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -491,8 +563,8 @@ For details on the configuration parameters, see the following:
 
 ## Further resources
 
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
-- [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- [References: Configuration: Schema](/weaviate/config-refs/schema)
 - [Concepts: Data structure](../concepts/data.md)
 
 ## Questions and feedback

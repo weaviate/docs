@@ -10,7 +10,7 @@ You can save your Google Vertex AI credentials and have Weaviate generate the ne
 
 To do so:
 
-- Set `USE_GOOGLE_AUTH` [environment variable](docs/deploy/config-guides/env-vars/index.md#module-specific) to `true`.
+- Set `USE_GOOGLE_AUTH` [environment variable](/deploy/configuration/env-vars/index.md#module-specific) to `true`.
 - Have the credentials available in one of the following locations.
 
 Once appropriate credentials are found, Weaviate uses them to generate an access token and authenticates itself against Vertex AI. Upon token expiry, Weaviate generates a replacement access token.

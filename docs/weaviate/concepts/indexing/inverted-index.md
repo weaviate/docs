@@ -27,7 +27,7 @@ As always, we recommend upgrading to the latest version of Weaviate to benefit f
 
 The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
 
-If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](docs/deploy/migration/weaviate-1-30.md).
+If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](/deploy/migration/weaviate-1-30.md).
 
 :::note Scoring changes with BlockMax WAND
 
@@ -76,7 +76,7 @@ This chart shows which filter makes the comparison when one or both index type i
 
 #### Inverted index for timestamps
 
-You can also enable an inverted index to search [based on timestamps](/docs/weaviate/config-refs/schema/index.md#indextimestamps).
+You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/schema/index.md#indextimestamps).
 
 Timestamps are currently indexed using the `indexFilterable` index.
 

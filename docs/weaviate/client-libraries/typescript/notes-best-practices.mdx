@@ -14,7 +14,7 @@ import BatchVectorCode from "!!raw-loader!/_includes/code/howto/manage-data.impo
 
 The v3 client provides helper functions to connect your application to your Weaviate instance.
 
-[Embedded Weaviate](/docs/weaviate/installation/embedded) is not supported in the v3 client. The v2 client supports embedded Weaviate.
+[Embedded Weaviate](/deploy/installation-guides/embedded) is not supported in the v3 client. The v2 client supports embedded Weaviate.
 
 ### Connect to Weaviate
 
@@ -115,6 +115,24 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 
 The client sends the headers every it makes a request to the Weaviate instance.
 
+### Initial connection checks
+
+When establishing a connection to the Weaviate server, the client performs a series of checks. These includes checks for the server version, and to make sure that the REST and gRPC ports are available.
+
+You can set `skipInitChecks` to `true` to skip these checks.
+
+```js
+import weaviate from 'weaviate-client';
+Add commentMore actions
+const client = await weaviate.connectToLocal({
+  skipInitChecks: true,
+})
+```
+
+In most cases, you should use the default `false` setting for `skipInitChecks`. However, setting `skipInitChecks: true` may be a useful temporary measure if you have connection issues.
+
+For additional connection configuration, see [Timeout values](#timeout-values).
+
 ## Generics
 
 TypeScript users can define custom Generics. Generics make it easier to manipulate objects and their properties. Compile time type checks help to ensure that operations like `insert()` and `create()` are safe and error free.
@@ -162,3 +180,23 @@ node/cjs/index.d.ts
 ```
 
 The v3 client also adds internal features that make JavaScript development more type-safe.
+
+### Timeout values
+
+You can set timeout values, in seconds, for the client. Use the `timeout` property to configure the timeout values for initialization checks as well as query and insert operations.
+
+```js 
+import weaviate from 'weaviate-client';
+
+const client = await weaviate.connectToLocal({
+  timeout: {
+      query: 20,
+      insert: 120,
+      init: 10,
+  }
+})
+```
+:::tip Timeouts on `generate` queries
+
+If you see errors while using the `generate` submodule, try increasing the query timeout values (`query: 60`). <br/><br/>The `generate` submodule uses a large language model to generate text. The submodule is dependent on the speed of the language model and any API that serves the language model. <br/><br/>Increase the timeout values to allow the client to wait longer for the language model to respond.
+:::

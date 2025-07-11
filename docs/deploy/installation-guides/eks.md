@@ -46,6 +46,23 @@ Ensure that you have adequate permissions to create and interact wth an EKS clus
 
 </details>
 
+<div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
+  <iframe 
+    id="zklzyv5bop" 
+    src="https://app.guideflow.com/embed/zklzyv5bop" 
+    width="100%" 
+    height="100%" 
+    style={{overflow: "hidden", position: "absolute", border: "none"}} 
+    scrolling="no" 
+    allow="clipboard-read; clipboard-write" 
+    webKitAllowFullScreen 
+    mozAllowFullScreen 
+    allowFullScreen 
+    allowTransparency="true"
+  />
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="zklzyv5bop"></script>
+</div>
+
 #### Verify your tools
 
 Before starting, ensure that your tools are installed:
@@ -194,6 +211,7 @@ helm upgrade --install weaviate weaviate/weaviate \
 ```bash
 kubectl get pods -n weaviate
 ```
+
 
 ## Further Resources
 
