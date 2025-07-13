@@ -1210,6 +1210,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "cloud/tools/query-agent",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "cloud/tools/import-tool",
           className: "sidebar-item",
         },
