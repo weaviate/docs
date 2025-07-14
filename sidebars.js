@@ -548,6 +548,12 @@ const sidebars = {
           id: "weaviate/config-refs/distances",
           className: "sidebar-item",
         },
+        {
+          type: "link",
+          label: "Environment variables",
+          href: "https://docs.weaviate.io/deploy/configuration/env-vars",
+          className: "sidebar-item",
+        },
       ],
     },
     {
@@ -762,7 +768,7 @@ const sidebars = {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
-      ]
+      ],
     },
     {
       type: "category",
@@ -863,7 +869,7 @@ const sidebars = {
           id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
-      ]
+      ],
     },
     {
       type: "html",
