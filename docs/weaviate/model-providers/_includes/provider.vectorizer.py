@@ -595,7 +595,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2colbert_jinaai(
+        Configure.MultiVectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"]
         )
@@ -615,7 +615,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2colbert_jinaai(
+        Configure.MultiVectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"],
             model="jina-colbert-v2",
@@ -635,7 +635,7 @@ client.collections.create(
     "DemoCollection",
     # highlight-start
     vector_config=[
-        Configure.Vectors.text2colbert_jinaai(
+        Configure.MultiVectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"],
             # Further options

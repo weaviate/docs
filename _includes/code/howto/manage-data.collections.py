@@ -418,7 +418,7 @@ client.collections.create(
         # Example 1 - Use a model integration
         # The factory function will automatically enable multi-vector support for the HNSW index
         # highlight-start
-        Configure.Vectors.text2vec_jinaai(
+        Configure.MultiVectors.text2vec_jinaai(
             name="jina_colbert",
             source_properties=["text"],
         ),
@@ -574,7 +574,7 @@ from weaviate.classes.config import Configure
 articles = client.collections.get("Article")
 
 articles.config.add_vector(
-    vector_config=Configure.Vectors.text2vec_cohere(
+    vector_config=Configure.Vectors.se(
         name="body_vector",
         source_properties=["body"],
     )
