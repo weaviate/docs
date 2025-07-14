@@ -17,7 +17,7 @@ client.collections.delete("Products_v2")
 # Create a collection first
 client.collections.create(
     name="Articles",
-    vectorizer_config=wvc.config.Configure.Vectorizer.none(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
@@ -59,7 +59,7 @@ if alias_info:
 # Create a new collection for migration
 client.collections.create(
     name="ArticlesV2",
-    vectorizer_config=wvc.config.Configure.Vectorizer.none(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
@@ -85,7 +85,7 @@ client.collections.delete("Articles")
 
 client.collections.create(
     name="Articles",
-    vectorizer_config=wvc.config.Configure.Vectorizer.none(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
@@ -129,7 +129,7 @@ articles.config.add_property(
 # START MigrationExample
 # Step 1: Create original collection with data
 client.collections.create(
-    name="Products_v1", vectorizer_config=wvc.config.Configure.Vectorizer.none()
+    name="Products_v1", vector_config=wvc.config.Configure.Vectors.self_provided()
 )
 
 products_v1 = client.collections.get("Products_v1")
@@ -143,7 +143,7 @@ client.alias.create(alias_name="Products", target_collection="Products_v1")
 # Step 3: Create new collection with updated schema
 client.collections.create(
     name="Products_v2",
-    vectorizer_config=wvc.config.Configure.Vectorizer.none(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="name", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="price", data_type=wvc.config.DataType.NUMBER),

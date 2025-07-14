@@ -66,7 +66,7 @@ from weaviate.classes.config import Configure, DataType, Property
 client.collections.create(
     "Recipes",
     description="A dataset that lists recipes with titles, desctiptions, and labels indicating cuisine",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
     properties=[
         Property(
             name="title", data_type=DataType.TEXT, description="title of the recipe"

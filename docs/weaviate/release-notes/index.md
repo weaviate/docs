@@ -10,11 +10,6 @@ These are the release notes for the last five minor releases:
 import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
-  <!-- {
-  title: "v1.32",
-  link: "https://weaviate.io/blog/weaviate-1-32-release",
-  icon: "fa fa-tags",
-  }, -->
   {
   title: "v1.31",
   link: "https://weaviate.io/blog/weaviate-1-31-release",
