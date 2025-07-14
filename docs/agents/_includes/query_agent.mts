@@ -320,7 +320,10 @@ var query = "What is the weather like in San Francisco?";
 // START StreamResponse
 // Setting includeProgress to false will skip progressMessages, and only stream
 // the streamedTokens / the final response.
-for await (const event of qa.stream(query, { includeProgress: true })) {  // This is true by default, this example is just being explicit
+for await (const event of qa.stream(query, {
+    includeProgress: true,      // Default: True
+    includeFinalState: true,    // Default: True
+})) {
     if (event.outputType === "progressMessage") {
         // The message is a human-readable string, structured info available in event.details
         console.log(event.message);
