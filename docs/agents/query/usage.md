@@ -268,7 +268,7 @@ The Query Agent can even handle follow-up queries, using the previous response a
 
 The Query Agent can also stream responses, allowing you to receive the answer as it is being generated.
 
-A streaming response can be requested the following optional parameters:
+A streaming response can be requested with the following optional parameters:
 
 - `include_progress`: If set to `True`, the Query Agent will stream a progress update as it processes the query.
 - `include_final_state`: If set to `True`, the Query Agent will stream the final answer as it is generated, rather than waiting for the entire answer to be generated before returning it.
