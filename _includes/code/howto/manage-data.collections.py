@@ -574,7 +574,7 @@ from weaviate.classes.config import Configure
 articles = client.collections.get("Article")
 
 articles.config.add_vector(
-    vector_config=Configure.NamedVectors.text2vec_cohere(
+    vector_config=Configure.Vectors.text2vec_cohere(
         name="body_vector",
         source_properties=["body"],
     )
