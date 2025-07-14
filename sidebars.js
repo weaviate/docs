@@ -735,6 +735,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "deploy/installation-guides/weaviate-cloud",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "deploy/installation-guides/docker-installation",
           className: "sidebar-item",
         },
@@ -751,11 +756,6 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/installation-guides/spcs-integration",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/weaviate-cloud",
           className: "sidebar-item",
         },
         {
