@@ -762,7 +762,7 @@ const sidebars = {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
-      ]
+      ],
     },
     {
       type: "category",
@@ -863,7 +863,7 @@ const sidebars = {
           id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
-      ]
+      ],
     },
     {
       type: "html",
@@ -1203,7 +1203,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Tools",
+      label: "Agents",
       className: "sidebar-main-category",
       collapsible: false,
       collapsed: false,
@@ -1213,6 +1213,19 @@ const sidebars = {
           id: "cloud/tools/query-agent",
           className: "sidebar-item",
         },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Tools",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
         {
           type: "doc",
           id: "cloud/tools/import-tool",
