@@ -253,7 +253,8 @@ for output in qa.stream(
     query,
     # Setting this to false will skip ProgressMessages, and only stream
     # the StreamedTokens / the final QueryAgentResponse
-    include_progress=True  # Default is True
+    include_progress=True,      # Default is True
+    include_final_state=True    # Default is True
 ):
     if isinstance(output, ProgressMessage):
         # The message is a human-readable string, structured info available in output.details
