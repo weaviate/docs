@@ -762,7 +762,7 @@ const sidebars = {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
-      ]
+      ],
     },
     {
       type: "category",
@@ -863,7 +863,7 @@ const sidebars = {
           id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
-      ]
+      ],
     },
     {
       type: "html",
@@ -1193,6 +1193,24 @@ const sidebars = {
         {
           type: "doc",
           id: "cloud/manage-clusters/authorization",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Agents",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "cloud/tools/query-agent",
           className: "sidebar-item",
         },
       ],
