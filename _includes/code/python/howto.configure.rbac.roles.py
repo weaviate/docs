@@ -209,6 +209,7 @@ from weaviate.classes.rbac import Permissions
 permissions = [
     Permissions.alias(
         alias="TargetAlias*",  # Applies to all aliases starting with "TargetAlias"
+        collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
         create=True,  # Allow alias creation
         read=True,  # Allow listing aliases
         update=True,  # Allow updating aliases
