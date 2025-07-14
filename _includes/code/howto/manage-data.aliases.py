@@ -17,7 +17,7 @@ client.collections.delete("Products_v2")
 # Create a collection first
 client.collections.create(
     name="Articles",
-    vector_config=wvc.Configure.Vectors.self_provided(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
@@ -59,7 +59,7 @@ if alias_info:
 # Create a new collection for migration
 client.collections.create(
     name="ArticlesV2",
-    vector_config=wvc.Configure.Vectors.self_provided(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
@@ -78,17 +78,14 @@ if success:
     print("Alias updated successfully")
 # END UpdateAlias
 
-# START DeleteAlias
-# Delete an alias (the underlying collection remains)
-client.alias.delete(alias_name="ArticlesProd")
-# END DeleteAlias
+client.collections.delete("Articles")
 
 # START UseAlias
 # Ensure the Articles collection exists (it might have been deleted in previous examples)
 
 client.collections.create(
     name="Articles",
-    vector_config=wvc.Configure.Vectors.self_provided(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="title", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
@@ -96,7 +93,12 @@ client.collections.create(
 )
 
 # Delete alias if it exists from a previous run
-client.alias.delete("MyArticles")
+client.alias.delete(alias_name="MyArticles")
+
+# START DeleteAlias
+# Delete an alias (the underlying collection remains)
+client.alias.delete(alias_name="ArticlesProd")
+# END DeleteAlias
 
 # Create an alias for easier access
 client.alias.create(alias_name="MyArticles", target_collection="Articles")
@@ -117,12 +119,17 @@ results = articles.query.fetch_objects(limit=5)
 
 for obj in results.objects:
     print(f"Found: {obj.properties['title']}")
+
+# Add a new property using the alias
+articles.config.add_property(
+    wvc.config.Property(name="author", data_type=wvc.config.DataType.TEXT)
+)
 # END UseAlias
 
 # START MigrationExample
 # Step 1: Create original collection with data
 client.collections.create(
-    name="Products_v1", vector_config=wvc.Configure.Vectors.self_provided()
+    name="Products_v1", vector_config=wvc.config.Configure.Vectors.self_provided()
 )
 
 products_v1 = client.collections.get("Products_v1")
@@ -136,7 +143,7 @@ client.alias.create(alias_name="Products", target_collection="Products_v1")
 # Step 3: Create new collection with updated schema
 client.collections.create(
     name="Products_v2",
-    vector_config=wvc.Configure.Vectors.self_provided(),
+    vector_config=wvc.config.Configure.Vectors.self_provided(),
     properties=[
         wvc.config.Property(name="name", data_type=wvc.config.DataType.TEXT),
         wvc.config.Property(name="price", data_type=wvc.config.DataType.NUMBER),
