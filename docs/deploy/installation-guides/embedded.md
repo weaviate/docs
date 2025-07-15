@@ -22,6 +22,10 @@ import EmbeddedInstantiation from '/_includes/code/embedded.instantiate.mdx';
 
 <EmbeddedInstantiation />
 
+:::tip Set the log level to reduce verbosity
+Embedded Weaviate can emit a lot of log messages. To reduce the amount of logs, set the `LOG_LEVEL` environment variable to `error` or `warning`, as shown in the example above.
+:::
+
 When you exit the client, the Embedded Weaviate instance also exits.
 
 ### Custom connection configuration
