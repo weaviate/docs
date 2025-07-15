@@ -40,7 +40,7 @@ client.collections.create(
         wc.Property(name="tmdb_id", data_type=wc.DataType.INT),
     ],
     # Define the vectorizer module (none, as we will add our own vectors)
-    vectorizer_config=wc.Configure.Vectorizer.none(),
+    vector_config=wc.Configure.Vectors.self_provided(),
     # Define the generative module
     generative_config=wc.Configure.Generative.cohere()
     # END generativeDefinition  # CreateMovieCollection

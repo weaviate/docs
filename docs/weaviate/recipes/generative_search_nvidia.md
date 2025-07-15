@@ -113,7 +113,7 @@ if (client.collections.exists("BlogChunks")):
 client.collections.create(
     name="BlogChunks",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_nvidia( # specify the vectorizer and model
+    vector_config=wc.Configure.Vectors.text2vec_nvidia( # specify the vectorizer and model
         model="nvidia/nv-embed-v1", # optional, default is nvidia/nv-embed-v1
     ),
 

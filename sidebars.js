@@ -414,6 +414,7 @@ const sidebars = {
           items: [
             "weaviate/configuration/compression/pq-compression",
             "weaviate/configuration/compression/bq-compression",
+            "weaviate/configuration/compression/rq-compression",
             "weaviate/configuration/compression/sq-compression",
             "weaviate/configuration/compression/multi-vectors",
           ],
@@ -454,6 +455,7 @@ const sidebars = {
           },
           items: ["weaviate/manage-collections/tenant-states"],
         },
+        "weaviate/manage-collections/collection-aliases",
         "weaviate/manage-collections/multi-node-setup",
         "weaviate/manage-collections/migrate",
         "weaviate/manage-collections/cross-references",
@@ -915,6 +917,11 @@ const sidebars = {
           id: "deploy/configuration/async-rep",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "deploy/configuration/replica-movement",
+          className: "sidebar-item",
+        },
       ],
     },
     {
@@ -1193,6 +1200,24 @@ const sidebars = {
         {
           type: "doc",
           id: "cloud/manage-clusters/authorization",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Agents",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "cloud/tools/query-agent",
           className: "sidebar-item",
         },
       ],

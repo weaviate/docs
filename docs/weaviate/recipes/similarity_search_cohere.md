@@ -58,7 +58,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_cohere( # specify the vectorizer and model type you"re using
+    vector_config=wc.Configure.Vectors.text2vec_cohere( # specify the vectorizer and model type you"re using
         model="embed-multilingual-v2.0",                       # defaults to embed-multilingual-v2.0 if not set
     ),
 

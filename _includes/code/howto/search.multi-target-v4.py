@@ -28,13 +28,13 @@ if client.collections.exists("JeopardyTiny"):
 collection = client.collections.create(
     name="JeopardyTiny",
     description="Jeopardy game show questions",
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="jeopardy_questions_vector",
             source_properties=["question"],
             vectorize_collection_name=False,
         ),
-        Configure.NamedVectors.text2vec_openai(
+        Configure.Vectors.text2vec_openai(
             name="jeopardy_answers_vector",
             source_properties=["answer"],
             vectorize_collection_name=False,
