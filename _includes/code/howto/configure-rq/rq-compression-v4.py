@@ -21,51 +21,47 @@ client.is_ready()
 # END ConnectCode
 
 # ==============================
-# =====  EnableSQ =====
+# =====  EnableRQ =====
 # ==============================
 
 client.collections.delete("MyCollection")
 
-# START EnableSQ
+# START EnableRQ
 import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
-        name="default",
-        # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.sq(),
-        # highlight-end
+    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    # highlight-start
+    vector_index_config=wc.Configure.VectorIndex.hnsw(
+        quantizer=wc.Configure.VectorIndex.Quantizer.rq()
     ),
+    # highlight-end
 )
-# END EnableSQ
+# END EnableRQ
 
 # ==============================
-# =====  EnableSQ with Options =====
+# =====  EnableRQ with Options =====
 # ==============================
 
 client.collections.delete("MyCollection")
 
-# START SQWithOptions
+# START RQWithOptions
 import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
-        name="default",
+    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_index_config=wc.Configure.VectorIndex.hnsw(
+        distance_metric=wc.VectorDistances.COSINE,
+        vector_cache_max_objects=100000,
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.sq(
-            rescore_limit=200,
-            training_limit=50000,
-            cache=True,
+        quantizer=wc.Configure.VectorIndex.Quantizer.rq(
+            bits=8,  # Number of bits, only 8 is supported for now
         ),
         # highlight-end
-        vector_index_config=wc.Configure.VectorIndex.hnsw(
-            distance_metric=wc.VectorDistances.COSINE,
-            vector_cache_max_objects=100000,
-        ),
     ),
 )
-# END SQWithOptions
+# END RQWithOptions
 
 client.close()

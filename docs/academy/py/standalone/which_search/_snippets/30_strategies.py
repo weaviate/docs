@@ -17,7 +17,7 @@ client.collections.delete("Product")
 # START skipVectorizationExample
 products = client.collections.create(
     name="Product",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(
+    vector_config=wvc.Configure.Vectors.text2vec_openai(
         # highlight-start
         vectorize_collection_name=True
         # highlight-end

@@ -4,6 +4,8 @@ image: og/docs/configuration.jpg
 # tags: ['configuration', 'operations', 'monitoring', 'observability']
 ---
 
+import SkipLink from '/src/components/SkipValidationLink'
+
 Weaviate instances can be replicated. Replication can improve read throughput, improve availability, and enable zero-downtime upgrades.
 
 For more details on how replication is designed and built in Weaviate, see [Replication Architecture](/weaviate/concepts/replication-architecture/index.md).
@@ -118,6 +120,13 @@ In v1.17, only [read queries that get data by ID](/weaviate/manage-objects/read.
 import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx';
 
 <QueryReplication/>
+
+## Replica movement and status
+
+:::info Added in `v1.32`
+:::
+
+Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated <SkipLink href="/weaviate/api/rest#tag/replication">RESTful API endpoints</SkipLink> or [programmatically through client libraries](./replica-movement.mdx).
 
 ## Related pages
 

@@ -100,7 +100,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_mistral( # specify the vectorizer and model
+    vector_config=wc.Configure.Vectors.text2vec_mistral( # specify the vectorizer and model
         model="mistral-embed",
     ),
 

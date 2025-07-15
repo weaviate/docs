@@ -45,7 +45,7 @@ client.collections.delete("Movie")
 client.collections.create(
     "Movie",
     description="A dataset of movies including their metadata.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(
+    vector_config=Configure.Vectors.text2vec_weaviate(
         model="Snowflake/snowflake-arctic-embed-m-v1.5"
     ),
     properties=[
