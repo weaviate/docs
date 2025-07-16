@@ -9,6 +9,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
+import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 
 :::caution Technical preview
 
@@ -37,6 +38,14 @@ RQ can be enabled at collection creation time:
         language="py"
       />
   </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START EnableRQ"
+        endMarker="// END EnableRQ"
+        language="go"
+      />
+  </TabItem>
 </Tabs>
 
 ## Custom configuration
@@ -54,6 +63,14 @@ To tune RQ, use these quantization and vector index parameters:
         startMarker="# START RQWithOptions"
         endMarker="# END RQWithOptions"
         language="py"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START RQWithOptions"
+        endMarker="// END RQWithOptions"
+        language="go"
       />
   </TabItem>
 </Tabs>

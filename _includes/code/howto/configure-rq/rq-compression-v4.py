@@ -31,12 +31,11 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    # highlight-start
-    vector_index_config=wc.Configure.VectorIndex.hnsw(
+    vector_config=wc.Configure.Vectorizer.text2vec_openai(
+        # highlight-start
         quantizer=wc.Configure.VectorIndex.Quantizer.rq()
+        # highlight-end
     ),
-    # highlight-end
 )
 # END EnableRQ
 
@@ -51,15 +50,16 @@ import weaviate.classes.config as wc
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    vector_index_config=wc.Configure.VectorIndex.hnsw(
-        distance_metric=wc.VectorDistances.COSINE,
-        vector_cache_max_objects=100000,
+    vector_config=wc.Configure.Vectorizer.text2vec_openai(
         # highlight-start
         quantizer=wc.Configure.VectorIndex.Quantizer.rq(
             bits=8,  # Number of bits, only 8 is supported for now
         ),
         # highlight-end
+        vector_index_config=wc.Configure.VectorIndex.hnsw(
+            distance_metric=wc.VectorDistances.COSINE,
+            vector_cache_max_objects=100000,
+        ),
     ),
 )
 # END RQWithOptions
