@@ -1,0 +1,100 @@
+---
+title: Cluster Configuration
+description: Reference for sharding and replication parameters in Weaviate.
+---
+
+import RaftRFChangeWarning from '/\_includes/1-25-replication-factor.mdx';
+
+## Introduction
+
+For multi-node Weaviate deployments, you can configure how data is distributed and replicated across the cluster. These settings are crucial for scalability and fault tolerance.
+
+💡 **Why configure sharding and replication?**
+
+- **Sharding** distributes your data across multiple nodes, allowing your dataset to scale beyond the resources of a single machine.
+- **Replication** creates copies of your data on different nodes, ensuring high availability and data safety in case a node fails.
+
+---
+
+### Sharding
+
+Sharding is configured via the `shardingConfig` object in the collection definition. These parameters are immutable and cannot be changed after the collection is created.
+
+| Parameter             | Type    | Default         | Description                                                           |
+| :-------------------- | :------ | :-------------- | :-------------------------------------------------------------------- |
+| `desiredCount`        | Integer | Number of nodes | The number of physical shards to create for the collection.           |
+| `virtualPerPhysical`  | Integer | `128`           | The number of virtual shards per physical shard. Aids in rebalancing. |
+| `strategy`            | String  | `"hash"`        | The strategy for determining which shard an object belongs to.        |
+| `key`                 | String  | `"_id"`         | The property used for hashing to determine the target shard.          |
+| `function`            | String  | `"murmur3"`     | The hashing function used on the `key`.                               |
+| `actualCount`         | Integer | (Read-only)     | The actual number of physical shards that were created.               |
+| `desiredVirtualCount` | Integer | (Read-only)     | Calculated as `desiredCount * virtualPerPhysical`.                    |
+| `actualVirtualCount`  | Integer | (Read-only)     | The actual number of virtual shards created.                          |
+
+---
+
+### Replication
+
+Replication is configured via the `replicationConfig` object.
+
+<RaftRFChangeWarning/>
+
+| Parameter | Type    | Default | Mutable | Description                                                                                                     |
+| :-------- | :------ | :------ | :------ | :-------------------------------------------------------------------------------------------------------------- |
+| `factor`  | Integer | `1`     | Yes     | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas. |
+```
+
+### `shardingConfig`
+
+The `"shardingConfig"` controls how a collection is [sharded and distributed across multiple nodes](../../concepts/cluster.md). All values are optional and default to the following settings:
+
+```json
+  "shardingConfig": {
+    "virtualPerPhysical": 128,
+    "desiredCount": 1,           // defaults to the amount of Weaviate nodes in the cluster
+    "actualCount": 1,
+    "desiredVirtualCount": 128,
+    "actualVirtualCount": 128,
+    "key": "_id",
+    "strategy": "hash",
+    "function": "murmur3"
+  }
+```
+
+These parameters are explained below:
+
+* `"desiredCount"`: *integer, immutable, optional*, defaults to the number of nodes in the cluster. This value controls how many shards should be created for this collection index. The typical setting is that a collection should be distributed across all the nodes in the cluster, but you can explicitly set this value to a lower value. If the `"desiredCount"` is larger than the amount of physical nodes in the cluster, then some nodes will contain multiple shards.
+
+* `"actualCount"`: *integer, read-only*. Typically matches desired count, unless there was a problem initiating the shards at creation time.
+
+* `"virtualPerPhysical"`: *integer, immutable, optional*, defaults to `128`. Weaviate uses virtual shards. This helps in reducing the amount of data moved when resharding.
+
+* `"desiredVirtualCount"`: *integer, readonly*. Matches `desiredCount * virtualPerPhysical`
+
+* `"actualVirtualCount"`: *integer, readonly*. Like `actualCount`, but for virtual shards, instead of physical.
+
+* `"strategy"`: *string, optional, immutable*. Only supports `"hash"`. This value controls how Weaviate should decide which (virtual - and therefore physical) shard a new object belongs to. The hash is performed on the field specified in `"key"`.
+
+* `"key"`: *string, optional, immutable*. Only supports `"_id"`. This value controls the partitioning key that is used for the hashing function to determine the target shard. As of now, only the internal id-field (containing the object's UUID) can be used to determine the target shard. Custom keys may be supported at a later point.
+
+* `"function"`: *string, optional, immutable*. Only `"murmur3"` is supported as a hashing function. It describes the hashing function used on the `"key"` property to determine the hash which in turn determines the target (virtual - and therefore physical) shard. `"murmur3"` creates a 64bit hash making hash collisions very unlikely.
+
+### `replicationConfig`
+
+<RaftRFChangeWarning/>
+
+[Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
+
+The `factor` parameter sets the number of copies of to be stored for objects in this collection.
+
+```json
+{
+  "class": "Article",
+  "vectorizer": "text2vec-openai",
+  // highlight-start
+  "replicationConfig": {
+    "factor": 3,
+  },
+  // highlight-end
+}
+```
