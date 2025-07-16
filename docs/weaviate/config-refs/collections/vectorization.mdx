@@ -5,55 +5,48 @@ description: Reference for configuring vectorizers and named vectors in Weaviate
 
 **Vectorization** is the process of converting data into numerical vector embeddings. Weaviate can automate this process using vectorizer modules. This page covers how to configure the vectorizer and manage vector embeddings for a collection.
 
+## Vector configuration parameters
+
+This table explains the key parameters used to configure vectorization and vector indexing when creating a Weaviate collection. Note that you can either configure a single vector space using the top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`) or multiple named vector spaces using `vectorConfig`, but not both.
+
+| Parameter                                 | Type   | Description                                                                                                                                                                |
+| :---------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vectorizer`                              | String | The name of the vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization and provide vectors manually.                              |
+| `vectorIndexType`                         | String | The type of vector index to use. Common values are `hnsw` (default), `flat`, or `dynamic`.                                                                                 |
+| `vectorIndexConfig`                       | Object | An object containing configuration settings specific to the chosen `vectorIndexType` (e.g., HNSW parameters like `ef`, `maxConnections`).                                  |
+| `vectorConfig`                            | Object | A parent object used to define one or more named vector spaces. Each key within this object is a unique name for a vector space (e.g., "title_vector").                    |
+| ↪ `vectorConfig.<name>.vectorizer`        | Object | A vectorizer configuration specific to the named vector. It defines the module and which properties to vectorize (e.g., `{"text2vec-openai": {"properties": ["title"]}}`). |
+| ↪ `vectorConfig.<name>.vectorIndexType`   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                      |
+| ↪ `vectorConfig.<name>.vectorIndexConfig` | Object | The configuration for the index of this specific named vector.                                                                                                             |
+
+- **For a simple setup with one vector per object:** Use the top-level `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` parameters.
+- **For advanced setups with multiple named vectors per object:** Use the `vectorConfig` object to define each named vector space and its specific configuration. You cannot use the top-level parameters if you use `vectorConfig`.
+
 ## Single vector collections
 
-If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a *single vector* collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
+If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a _single vector_ collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
 
 To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](#configure-semantic-indexing) section.
-
-#### Vectorization Behavior
-
-Within `moduleConfig`, you can control how the vector is generated:
-
-- **`vectorizeClassName`** (Boolean, default `true`): If `true`, the collection's name is included in the text that gets vectorized.
-- At the property level, you can also set `moduleConfig` to:
-  - **`skip`** (Boolean, default `false`): If `true`, this property's content is **not** included in the vectorization.
-  - **`vectorizePropertyName`** (Boolean, default `false`): If `true`, the property's name is included along with its value in the text that gets vectorized.
-
-By default, Weaviate vectorizes all `text` and `text[]` properties, concatenates their values alphabetically, prepends the collection name, and converts the resulting string to lowercase before sending it to the vectorizer.
 
 ---
 
 ## Multiple vector embeddings (named vectors) {#named-vectors}
 
-import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
+import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-
-[comment]: # ( This section is duplicated, with a link to this page, in: multi-vector-support dot mdx )
+[comment]: # " This section is duplicated, with a link to this page, in: multi-vector-support dot mdx "
 
 Collections can have multiple named vectors.
 
 The vectors in a collection can have their own configurations. Each vector space can set its own index, its own compression algorithm, and its own vectorizer. This means you can use different vectorization models, and apply different distance metrics, to the same object.
 
 To work with named vectors, adjust your queries to specify a target vector for [vector search](/weaviate/search/similarity#named-vectors) or [hybrid search](/weaviate/search/hybrid#named-vectors) queries.
-
-## Syntax
-
-Single vector collections are valid and continue to use the original collection syntax. However, if you configure multiple vector embeddings, you must use the new, named vector syntax to query your collections.
-
-### Collection definition
-
-Use the collection definition to [configure the vector spaces](../../manage-collections/vector-config.mdx#define-named-vectors) for each data object.
-
-:::info Adding named vectors to existing collections
-Currently, it is only possible to [add new named vectors](../../manage-collections/vector-config.mdx#add-new-named-vectors) to collections that were initially configured to use named vectors. 
-:::
 
 ### Query a named vector
 
@@ -109,6 +102,6 @@ The ability to add a named vector after collection creation is only available fo
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />
