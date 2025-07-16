@@ -91,7 +91,7 @@ client.collections.create(
         wvc.config.Property(name="content", data_type=wvc.config.DataType.TEXT),
     ],
 )
-
+# END UseAlias
 # Delete alias if it exists from a previous run
 client.alias.delete(alias_name="MyArticles")
 
@@ -99,7 +99,7 @@ client.alias.delete(alias_name="MyArticles")
 # Delete an alias (the underlying collection remains)
 client.alias.delete(alias_name="ArticlesProd")
 # END DeleteAlias
-
+# START UseAlias
 # Create an alias for easier access
 client.alias.create(alias_name="MyArticles", target_collection="Articles")
 

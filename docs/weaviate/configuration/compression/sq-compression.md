@@ -13,7 +13,7 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compres
 import TSCode from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression-v3.ts';
 import TSCodeSQOptions from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression.options-v3.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression-v2.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/configure-sq/sq-compression.go';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/configure/compression.sq_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/sq-compression.java';
 
 :::info Added in v1.26.0
@@ -43,6 +43,14 @@ SQ can be enabled at collection creation time. To enable SQ, set `vector_index_c
         startMarker="# START EnableSQ"
         endMarker="# END EnableSQ"
         language="pyv3"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START EnableSQ"
+        endMarker="// END EnableSQ"
+        language="go"
       />
   </TabItem>
 </Tabs>
@@ -82,6 +90,15 @@ To tune SQ, set these `vectorIndexConfig` parameters.
         startMarker="# START SQWithOptions"
         endMarker="# END SQWithOptions"
         language="pyv3"
+      />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START SQWithOptions"
+        endMarker="// END SQWithOptions"
+        language="go"
       />
   </TabItem>
 </Tabs>
