@@ -1342,6 +1342,7 @@ const sidebars = {
         "integrations/llm-agent-frameworks/haystack/index",
         "integrations/llm-agent-frameworks/langchain/index",
         "integrations/llm-agent-frameworks/llamaindex/index",
+        "integrations/llm-agent-frameworks/n8n/index",
         "integrations/llm-agent-frameworks/semantic-kernel/index",
       ],
     },
