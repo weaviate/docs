@@ -28,7 +28,7 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "MyCollection",
-    vectorizer_config=Configure.Vectorizer.none()
+    vector_config=Configure.Vectors.self_provided()
 )
 
 # ==============================
@@ -242,12 +242,12 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title",
             source_properties=["title"]
         ),
-        Configure.NamedVectors.text2vec_openai(
+        Configure.Vectors.text2vec_openai(
             name="body",
             source_properties=["body"]
         ),
@@ -509,9 +509,9 @@ collection = client.collections.create(
             Property(name="raw", data_type=DataType.TEXT),
             Property(name="sha", data_type=DataType.TEXT),
         ],
-        vectorizer_config=[
-            Configure.NamedVectors.text2vec_cohere(name="cohereFirst"),
-            Configure.NamedVectors.text2vec_cohere(name="cohereSecond"),
+        vector_config=[
+            Configure.Vectors.text2vec_cohere(name="cohereFirst"),
+            Configure.Vectors.text2vec_cohere(name="cohereSecond"),
         ]
     )
 # END BatchVectorClient

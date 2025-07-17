@@ -132,7 +132,7 @@ chunks = client.collections.create(
         ),
     ],
     # highlight-start
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),  # Use `text2vec-openai` as the vectorizer
+    vector_config=wvc.config.Configure.Vectors.text2vec_openai(),  # Use `text2vec-openai` as the vectorizer
     generative_config=wvc.config.Configure.Generative.openai(),  # Use `generative-openai` with default parameters
     # highlight-end
 )

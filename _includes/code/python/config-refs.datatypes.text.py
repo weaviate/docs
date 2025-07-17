@@ -26,8 +26,8 @@ my_collection = client.collections.create(
         ),
     ],
     # END ConfigureDataType
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_ollama(
+    vector_config=[
+        Configure.Vectors.text2vec_ollama(
             name="main",
             source_properties=[
                 "title",

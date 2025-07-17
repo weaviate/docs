@@ -268,6 +268,13 @@ The Query Agent can even handle follow-up queries, using the previous response a
 
 The Query Agent can also stream responses, allowing you to receive the answer as it is being generated.
 
+A streaming response can be requested with the following optional parameters:
+
+- `include_progress`: If set to `True`, the Query Agent will stream a progress update as it processes the query.
+- `include_final_state`: If set to `True`, the Query Agent will stream the final answer as it is generated, rather than waiting for the entire answer to be generated before returning it.
+
+If both `include_progress` and `include_final_state` are set to `False`, the Query Agent will only include the answer tokens as they are generated, without any progress updates or final state.
+
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
@@ -476,23 +483,21 @@ The async Query Agent can also stream responses, allowing you to receive the ans
 
 ### Usage limits
 
-The current usage limit is 500 Query Agent queries per day per Weaviate Cloud [organization](/cloud/platform/users-and-organizations.mdx#organizations).
+import UsageLimits from "/_includes/agents/query-agent-usage-limits.mdx";
+
+<UsageLimits />
 
 ### Custom collection descriptions
 
-The Query Agent makes use of each collection's `description` metadata as well as individual property descriptions in deciding what collection to query.
+import CollectionDescriptions from "/_includes/agents/query-agent-collection-descriptions.mdx";
 
-Both collection descriptions and property descriptions can be updated after the collection has been created. For detailed instructions on updating collection and property descriptions, see the [update collection definition documentation](/docs/weaviate/manage-collections/collection-operations.mdx#update-a-collection-definition).
-
-We are investigating an ability to specify a custom collection description at runtime.
+<CollectionDescriptions />
 
 ### Execution times
 
-The Query Agent performs multiple operations to translate a natural language query into Weaviate queries, and to process the response.
+import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
 
-This typically requires multiple calls to generative models (e.g. LLMs) and multiple queries to Weaviate.
-
-As a result, each Query Agent run may take some time to complete. Depending on the query complexity, it may not be uncommon to see execution times of ~10 seconds.
+<ExecutionTimes />
 
 ## Questions and feedback
 
