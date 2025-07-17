@@ -27,8 +27,6 @@ result = client.backup.create(
     include_collections=["Article", "Publication"],
     wait_for_completion=True,
     backup_location=BackupLocation.FileSystem(path="/tmp/weaviate-backups"),  # Optional, requires Weaviate 1.27.2 / 1.28.0 or above and Python client 4.10.3 or above
-    roles_restore = "all",  # Optional, requires Weaviate 1.32.0 or above and Python client 4.15.0 or above
-    user_restore = "all",  # Optional, requires Weaviate 1.32.0 or above and Python client 4.15.0 or above
 )
 
 print(result)
@@ -67,6 +65,8 @@ result = client.backup.restore(
     exclude_collections="Article",
     wait_for_completion=True,
     backup_location=BackupLocation.FileSystem(path="/tmp/weaviate-backups"),  # Required if a non-default location was used at creation
+    roles_restore = "all",  # Optional, requires Weaviate 1.32.0 or above and Python client 4.16.0 or above
+    users_restore = "all",  # Optional, requires Weaviate 1.32.0 or above and Python client 4.16.0 or above
 )
 
 print(result)
