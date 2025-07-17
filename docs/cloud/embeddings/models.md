@@ -2,6 +2,7 @@
 title: Choose a model
 sidebar_label: Choose a model
 sidebar_position: 2
+description: "List of pre-trained embedding models optimized for enterprise retrieval tasks in multiple languages."
 image: og/wcd/user_guides.jpg
 ---
 

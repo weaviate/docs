@@ -1,6 +1,7 @@
 ---
 title: Interface
 sidebar_position: 85
+description: "RESTful, GraphQL and gRPC API interfaces with client library support for Weaviate integration."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'interface', 'API design']
 ---

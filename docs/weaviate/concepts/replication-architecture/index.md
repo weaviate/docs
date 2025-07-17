@@ -1,6 +1,7 @@
 ---
 title: Replication Architecture
 sidebar_position: 0
+description: "Multi-node data replication design for high availability, reliability, and improved database performance."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---

@@ -1,6 +1,6 @@
 ---
 title: Multiple vector embeddings
-sidebar_position: 20
+description: "Multiple named vector embedding configuration for complex data representations using multiple vector spaces."
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'vector index']
 ---

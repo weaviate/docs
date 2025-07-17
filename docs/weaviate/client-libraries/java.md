@@ -1,6 +1,7 @@
 ---
 title: Java
 sidebar_position: 50
+description: "Official Java client library documentation for integrating Weaviate with Go applications and services."
 image: og/docs/client-libraries.jpg
 # tags: ['java', 'client library']
 ---

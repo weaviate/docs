@@ -1,6 +1,7 @@
 ---
 title: Indexing
 sidebar_position: 0
+description: "Overview of Weaviate's indexing systems for optimized search performance and data retrieval efficiency."
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---

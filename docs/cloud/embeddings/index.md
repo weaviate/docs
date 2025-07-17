@@ -1,6 +1,7 @@
 ---
 title: Weaviate Embeddings
 sidebar_position: 0
+description: "Managed embedding inference service that generates embeddings for data and queries directly from Weaviate Cloud."
 image: og/wcd/user_guides.jpg
 ---
 

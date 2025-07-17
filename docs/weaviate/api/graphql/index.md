@@ -1,6 +1,7 @@
 ---
 title: Search (GraphQL | gRPC)
 sidebar_position: 0
+description: "GraphQL and gRPC API documentation for flexible querying and data retrieval in Weaviate."
 image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---

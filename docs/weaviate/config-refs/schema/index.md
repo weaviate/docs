@@ -1,7 +1,6 @@
 ---
 title: Collection definition
-description: Schema Configuration in Weaviate
-sidebar_position: 10
+description: "Schema configuration reference for defining collections, properties, and database structure in Weaviate."
 image: og/docs/configuration.jpg
 # tags: ['Data types']
 ---

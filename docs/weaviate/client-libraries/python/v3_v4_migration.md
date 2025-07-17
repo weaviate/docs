@@ -1,6 +1,7 @@
 ---
 title: Migrate from v3 to v4
 sidebar_position: 50
+description: "Migration guide for upgrading Python applications from deprecated v3 to current v4 client library."
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---

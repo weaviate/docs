@@ -1,6 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 10
+description: "Overview of Weaviate AI Agents documentation for personalization, querying, and data transformation agents."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started']
 ---

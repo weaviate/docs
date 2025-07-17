@@ -1,6 +1,7 @@
 ---
 title: Inverted indexes
 sidebar_position: 2
+description: "Inverted index architecture for efficient keyword search and filtering with performance improvements."
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---

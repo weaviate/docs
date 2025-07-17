@@ -1,6 +1,7 @@
 ---
 title: Compression (Vector Quantization)
 sidebar_position: 19
+description: "Vector compression techniques reducing memory footprint and costs while improving search speed performance."
 image: og/docs/concepts.jpg
 # tags: ['vector compression', 'quantization']
 ---

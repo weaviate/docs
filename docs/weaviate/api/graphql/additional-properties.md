@@ -1,7 +1,7 @@
 ---
 title: Additional properties (metadata)
-description: Use additional properties in Weaviate's GraphQL API for enriched query results.
 sidebar_position: 45
+description: "GraphQL API guide for accessing metadata and additional properties to enrich query results with extra context."
 image: og/docs/api.jpg
 ---
 
