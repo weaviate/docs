@@ -57,7 +57,7 @@ const config = {
           "Comprehensive guides and references for Weaviate, the open-source vector database.",
         depth: 3,
         content: {
-          excludeRoutes: ["/academy/**", "/contributor-guide/**"],
+          excludeRoutes: ["academy/**", "contributor-guide/**"],
           enableMarkdownFiles: false,
         },
         //logLevel: 3, // Uncomment to enable debug logging
