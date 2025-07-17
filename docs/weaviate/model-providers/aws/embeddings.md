@@ -351,16 +351,16 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 #### Bedrock
 
-- `amazon.titan-embed-text-v1` (no longer available on AWS Bedrock)
+- `amazon.titan-embed-text-v1`
 - `amazon.titan-embed-text-v2:0`
-- `cohere.embed-english-v3` (no longer available on AWS Bedrock)
-- `cohere.embed-multilingual-v3` (no longer available on AWS Bedrock)
+- `cohere.embed-english-v3` 
+- `cohere.embed-multilingual-v3` 
 
-Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out if the model is available in your region and how request access to a model.
 
 ### SageMaker
 
-Any custom SageMaker name (TEI-xxx) can be used as an endpoint.
+Any custom SageMaker name (e.g., "TEI-xxx") can be used as an endpoint.
 
 ## Further resources
 

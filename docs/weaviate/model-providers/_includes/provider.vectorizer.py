@@ -48,7 +48,7 @@ client.collections.create(
             region="us-east-1",
             source_properties=["title"],
             service="sagemaker",
-            endpoint="<custom_sagemaker_name>", # tei-xxx
+            endpoint="<custom_sagemaker_name>", # e.g., "tei-xxx"
         )
     ],
     # highlight-end
