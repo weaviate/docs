@@ -1,5 +1,5 @@
 ---
-title: Migration Guide
+title: Migration and Upgrades 
 sidebar_position: 0
 image: og/docs/more-resources.jpg
 # tags: ['migration']
