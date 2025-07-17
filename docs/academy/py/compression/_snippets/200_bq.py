@@ -26,14 +26,13 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT)
     ],
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
-    # BQBasicConfig
-    # Other configuration not shown
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(
+    vector_config=Configure.Vectors.text2vec_openai(
+        # BQBasicConfig
+        # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.bq()
+        # highlight-end
     ),
-    # highlight-end
+    # Other configuration not shown
 )
 # END BQBasicConfig
 
@@ -41,7 +40,7 @@ client.collections.create(
 # Confirm creation
 c = client.collections.get(collection_name)
 coll_config = c.config.get()
-assert type(coll_config.vector_index_config.quantizer) == BQConfig
+assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == BQConfig
 
 
 client.collections.delete(collection_name)
@@ -53,22 +52,21 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT)
     ],
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
-    # BQCustomConfig
-    # Other configuration not shown
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(
+    vector_config=Configure.Vectors.text2vec_openai(
+        # BQCustomConfig
+        # Other configuration not shown
+        # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.bq(
             rescore_limit=150
         )
+        # highlight-end
     ),
-    # highlight-end
 )
 # END BQCustomConfig
 
 c = client.collections.get(collection_name)
 coll_config = c.config.get()
-assert type(coll_config.vector_index_config.quantizer) == BQConfig
+assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == BQConfig
 # assert coll_config.vector_index_config.quantizer.rescore_limit == 150  # appears to be a bug
 
 

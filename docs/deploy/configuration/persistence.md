@@ -88,7 +88,7 @@ Starting with `v1.12.0` there are two levels of disk usage notifications and act
 
 If a shard was marked `READONLY` due to disk pressure and you want to mark the
 shard as ready again (either because you have made more space available or
-changed the thresholds) you can use the <SkipLink href="/docs/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> to do so.
+changed the thresholds) you can use the <SkipLink href="/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> to do so.
 
 ## Disk access method
 
@@ -103,7 +103,7 @@ In general, `mmap` may be a preferred option with memory management benefits. Ho
 
 
 ## Related pages
-- [Configuration: Backups](docs/deploy/configuration/backups.md)
+- [Configuration: Backups](/deploy/configuration/backups.md)
 
 ## Questions and feedback
 

@@ -23,7 +23,7 @@ As a first step, you'll want to examine your cluster's logs to identify the prob
 #### Resolving the issue
 
 To solve this mystery, you'll need to increase the available disk space for your nodes. Once the disk space is increased, then you'll need to manually mark the affected shards or collections as writeable again.
-You can also set the [`MEMORY_WARNING_PERCENTAGE`](docs/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
+You can also set the [`MEMORY_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
 
 </details>
 
@@ -55,7 +55,7 @@ To confirm and identify the issue, you'll want to first run the same query multi
 
 #### Resolving the issue
 
-Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. Additionally, test the <SkipLink href="/docs/weaviate/api/rest#tag/well-known/GET/.well-known/live">live and ready REST endpoints</SkipLink>. and check the network configuration of the nodes.
+Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. Additionally, test the <SkipLink href="/weaviate/api/rest#tag/well-known/GET/.well-known/live">live and ready REST endpoints</SkipLink>. and check the network configuration of the nodes.
 </details>
 
 ### You've downgraded and now your clusters won't reach the `Ready` state.

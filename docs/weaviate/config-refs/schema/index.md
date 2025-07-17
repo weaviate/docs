@@ -183,7 +183,7 @@ The ability to add a named vector after collection creation is only available fo
 To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
 
 - **Default limit**: `1000` collections.
-- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](docs/deploy/configuration/env-vars/index.md) environment variable to adjust the collection count limit.
+- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md) environment variable to adjust the collection count limit.
 
 :::note
 If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
@@ -291,7 +291,7 @@ This configuration allows stopwords to be configured by collection. If not set, 
 
 As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverted index, but not in the tokenized query. As a result, when the BM25 algorithm is applied, stopwords are ignored in the input for relevance ranking but will affect the score.
 
-Stopwords can now be configured at runtime. You can use the RESTful API to <SkipLink href="/docs/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">update</SkipLink> the list of stopwords after your data has been indexed.
+Stopwords can now be configured at runtime. You can use the RESTful API to <SkipLink href="/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">update</SkipLink> the list of stopwords after your data has been indexed.
 
 Note that stopwords are only removed when [tokenization](#tokenization) is set to `word`.
 
@@ -409,7 +409,7 @@ These parameters are explained below:
 
 <RaftRFChangeWarning/>
 
-[Replication](docs/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
+[Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
 The `factor` parameter sets the number of copies of to be stored for objects in this collection.
 
@@ -631,7 +631,7 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 ### Limit the number of `gse` and `Kagome` tokenizers
 
 The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
-You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](docs/deploy/configuration/env-vars/index.md). 
+You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](/deploy/configuration/env-vars/index.md). 
 
 ### Inverted index types
 
@@ -651,7 +651,7 @@ import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.m
 
 ## Configure semantic indexing
 
-Weaviate can generate vector embeddings for objects using [model provider integrations](/docs/weaviate/model-providers/).
+Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
 
 For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
 
@@ -700,11 +700,31 @@ collection_obj = {
 client.schema.create_class(collection_obj)
 ```
 
-## Related pages
-- [Tutorial: Schema](/docs/weaviate/starter-guides/managing-collections)
+## Collection aliases
+
+:::caution Technical preview
+
+Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
+
+Weaviate automatically routes alias requests to the target collection. This allows you to use aliases wherever collection names are required. This includes [collection management](../../manage-collections/index.mdx), [queries](../../search/index.mdx), and all other operations requiring a specific collection name with the **exception** of deleting collections. To delete a collection you need to use its name. Deleting a collection does not automatically delete aliases pointing to it.
+
+Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>. 
+
+In order to manage collection aliases, you need to posses the right [`Collection aliases`](../../configuration/rbac/index.mdx#available-permissions) permissions. To manage the underlying collection the alias references, you also need the [`Collections`](../../configuration/rbac/index.mdx#available-permissions) permissions for that specific collection. 
+
+## Further resources
+
+- [Tutorial: Schema](/weaviate/starter-guides/managing-collections)
 - [How to: Configure a schema](../../manage-collections/index.mdx)
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
-- [Concepts: Data Structure](/docs/weaviate/concepts/data)
+- [How to: Collection aliases](../../manage-collections/collection-aliases.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
+- [Concepts: Data Structure](/weaviate/concepts/data)
 
 ## Questions and feedback
 

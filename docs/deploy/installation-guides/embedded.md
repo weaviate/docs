@@ -43,7 +43,7 @@ To configure Embedded Weaviate, set these variables in your instantiation code o
 | `hostname` | string | 127.0.0.1 | Hostname or IP address  |
 | `persistence_data_path` | string | varies | Data storage directory.<br/><br/> If `XDG_DATA_HOME` is set, the default is: `XDG_DATA_HOME/weaviate/`<br/><br/>If `XDG_DATA_HOME` is not set, the default is: `~/.local/share/weaviate` |
 | `port` | integer | 8079 | The Weaviate server request port. |
-| `version` | string | Latest stable | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/docs/weaviate/installation/embedded.md#file-url)) |
+| `version` | string | Latest stable | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/deploy/installation-guides/embedded.md#file-url)) |
 
 :::warning Do not modify `XDG_CACHE_HOME` or `XDG_DATA_HOME`
 The `XDG_DATA_HOME` and `XDG_CACHE_HOME` environment variables are widely used system variables. If you modify them, you may break other applications.
@@ -78,7 +78,7 @@ For a list of the files that are included in a release, see the Assets section o
 
 ### File URL
 To get the URL for a particular binary archive file, follow these steps:
-1. Find the Weaviate Database release you want on the [Release Notes](/docs/weaviate/release-notes/index.md) page.
+1. Find the Weaviate Database release you want on the [Release Notes](/weaviate/release-notes/index.md) page.
 1. Click to the release notes for that version. The Assets section includes `linux-amd64` and `linux-arm64` binaries in `tar.gz` format.
 1. Copy the link to the full URL of the `tar.gz` file for your platform.
 
@@ -118,7 +118,7 @@ Embedded Weaviate is supported for Python and TypeScript clients.
 
 ### Python clients
 
-[Python](../client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client v4 requires server version v1.23.7 or higher.
+[Python](docs/weaviate/client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client v4 requires server version v1.23.7 or higher.
 
 ### TypeScript clients
 

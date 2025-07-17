@@ -406,7 +406,7 @@ collection = client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="some_date", data_type=DataType.DATE),
     ],
-    vectorizer_config=Configure.Vectorizer.none()
+    vector_config=Configure.Vectors.self_provided()
 )
 
 with collection.batch.fixed_size(batch_size=200) as batch:

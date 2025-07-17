@@ -59,7 +59,7 @@ os.environ["SSL_CERT_FILE"] = "/path/to/your/cert.crt"
 # Then connect to Weaviate
 client = weaviate.connect_to_custom(
     http_host=weaviate_host,  # Replace with your Weaviate host
-    http_port=443,
+    http_port=8080,
     http_secure=True,
     grpc_host=weaviate_grpc_host,  # Replace with your Weaviate gRPC host
     grpc_port=50051,
@@ -502,7 +502,7 @@ try:
     # Note that you can use `client.collections.create_from_dict()` to create a collection from a v3-client-style JSON object
     collection = client.collections.create(
         name="TestArticle",
-        vectorizer_config=wvcc.Configure.Vectorizer.text2vec_cohere(),
+        vector_config=wvcc.Configure.Vectors.text2vec_cohere(),
         generative_config=wvcc.Configure.Generative.cohere(),
         properties=[
             wvcc.Property(
@@ -544,7 +544,7 @@ client = weaviate.connect_to_local()
 try:
     articles = client.collections.create(
         name="TestArticle",
-        vectorizer_config=wvcc.Configure.Vectorizer.text2vec_cohere(),
+        vector_config=wvcc.Configure.Vectors.text2vec_cohere(),
         generative_config=wvcc.Configure.Generative.cohere(),
         properties=[
             wvcc.Property(
@@ -556,7 +556,7 @@ try:
 
     authors = client.collections.create(
         name="TestAuthor",
-        vectorizer_config=wvcc.Configure.Vectorizer.text2vec_cohere(),
+        vector_config=wvcc.Configure.Vectors.text2vec_cohere(),
         generative_config=wvcc.Configure.Generative.cohere(),
         properties=[
             wvcc.Property(
@@ -649,8 +649,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.custom(
+    vector_config=[
+        Configure.Vectors.custom(
             name="title",
             source_properties=["title"],
             module_name="text2vec-ollama",
@@ -673,7 +673,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=Configure.Vectorizer.custom(
+    vector_config=Configure.Vectors.custom(
         module_name="text2vec-ollama",
         module_config={
             "model": "snowflake-arctic-embed",
@@ -1313,8 +1313,8 @@ async def async_insert(async_client) -> BatchObjectReturn:
     async with async_client:
         collection = await async_client.collections.create(
             name="Movie",
-            vectorizer_config=[
-                Configure.NamedVectors.text2vec_cohere(
+            vector_config=[
+                Configure.Vectors.text2vec_cohere(
                     "overview_vector",
                     source_properties=["overview"]
                 )

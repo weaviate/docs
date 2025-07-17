@@ -25,7 +25,7 @@ Each shard houses three main components:
 
 * An object store, essentially a key-value store
 * An [inverted index](https://en.wikipedia.org/wiki/Inverted_index)
-* A vector index store (plugable, currently a [custom implementation of HNSW](/docs/weaviate/config-refs/schema/vector-index#hnsw-indexes))
+* A vector index store (plugable, currently a [custom implementation of HNSW](/weaviate/config-refs/schema/vector-index#hnsw-indexes))
 
 #### Object and Inverted Index Store
 

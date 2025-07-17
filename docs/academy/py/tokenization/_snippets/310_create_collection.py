@@ -37,7 +37,7 @@ for tokenization in tkn_options:
 client.collections.create(
     name="TokenizationDemo",
     properties=properties,
-    vectorizer_config=Configure.Vectorizer.none()
+    vector_config=Configure.Vectors.self_provided()
 )
 
 client.close()

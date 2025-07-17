@@ -58,7 +58,7 @@ assert response.objects[0].metadata.distance is not None
 # ===== QUERY WITH nearText =====
 # ===============================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 
 # GetNearTextPython
 from weaviate.classes.query import MetadataQuery
@@ -89,7 +89,7 @@ assert response.objects[0].metadata.distance is not None
 # ===== QUERY WITH nearObject =====
 # =================================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearobject
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearobject
 
 jeopardy = client.collections.get("JeopardyQuestion")
 uuid = jeopardy.query.fetch_objects(limit=1).objects[0].uuid
@@ -123,7 +123,7 @@ assert response.objects[0].metadata.distance is not None
 # ===== QUERY WITH nearVector =====
 # =================================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearvector
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearvector
 
 jeopardy = client.collections.get("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(limit=1, include_vector=True)
@@ -159,7 +159,7 @@ assert response.objects[0].metadata.distance is not None
 # ==========================================
 
 
-# Query with LimitOffset - https://weaviate.io/docs/weaviate/api/graphql/filters#limit-argument
+# Query with LimitOffset - https://docs.weaviate.io/weaviate/api/graphql/filters#limit-argument
 
 # GetLimitOffsetPython
 from weaviate.classes.query import MetadataQuery
@@ -198,7 +198,7 @@ assert no_offset_response.objects[1].properties["question"] == response.objects[
 # ===== QUERY WITH DISTANCE =====
 # ===============================
 
-# http://weaviate.io/docs/weaviate/config-refs/distances
+# http://docs.weaviate.io/weaviate/config-refs/distances
 
 # GetWithDistancePython
 from weaviate.classes.query import MetadataQuery
@@ -230,7 +230,7 @@ for o in response.objects:
 # ===== Query with autocut =====
 # ===============================
 
-# http://weaviate.io/docs/weaviate/api/graphql/additional-operators#autocut
+# http://docs.weaviate.io/weaviate/api/graphql/additional-operators#autocut
 
 # START Autocut Python
 from weaviate.classes.query import MetadataQuery
@@ -262,7 +262,7 @@ assert response.objects[0].metadata.distance is not None
 # ==============================
 
 
-# https://weaviate.io/docs/weaviate/api/graphql/get#get-groupby
+# https://docs.weaviate.io/weaviate/api/graphql/get#get-groupby
 # GetWithGroupbyPython
 from weaviate.classes.query import MetadataQuery, GroupBy
 
@@ -314,7 +314,7 @@ for grp, grp_items in response.groups.items():
 # ===== QUERY WITH WHERE =====
 # ============================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 
 # GetWithWherePython
 from weaviate.classes.query import MetadataQuery, Filter

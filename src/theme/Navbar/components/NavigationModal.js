@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function OptionModal({
+export default function NavigationModal({
   isModalOpen,
   setModalOpen,
   styles,
@@ -126,7 +126,7 @@ export default function OptionModal({
                 }}
               >
                 <img
-                  src="/docs/img/site/weaviate-logo-w.png"
+                  src="/img/site/weaviate-logo-w.png"
                   alt="Weaviate Logo"
                   className={styles.askAiIcon}
                 />

@@ -28,7 +28,7 @@ import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
-To configure HNSW, see [Configuration: Vector index](/docs/weaviate/config-refs/schema/vector-index.md) .
+To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md) .
 
 ## Enable PQ compression
 
@@ -187,7 +187,7 @@ Follow these steps to manually enable PQ.
 
 ### 2. Load training data
 
-[Add objects](/docs/weaviate/manage-objects/import.mdx) that will be used to train PQ. Weaviate will use the greater of the training limit, or the collection size, to train PQ.
+[Add objects](/weaviate/manage-objects/import.mdx) that will be used to train PQ. Weaviate will use the greater of the training limit, or the collection size, to train PQ.
 
 We recommend loading a representative sample such that the trained centroids are representative of the entire dataset.
 
@@ -377,10 +377,10 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 ## Related pages
-- [Configuration: Vector index](/docs/weaviate/config-refs/schema/vector-index.md)
-- [Concepts: Vector index](/docs/weaviate/concepts/indexing/vector-index.md)
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Guide: Schemas and collection definitions](/docs/weaviate/starter-guides/managing-collections/index.mdx)
+- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
+- [Guide: Schemas and collection definitions](/weaviate/starter-guides/managing-collections/index.mdx)
 
 ## Questions and feedback
 

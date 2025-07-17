@@ -51,7 +51,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](docs/deploy/configuration/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -385,6 +385,9 @@ Vertex AI:
 - `textembedding-gecko-multilingual@latest`
 - `text-embedding-preview-0409`
 - `text-multilingual-embedding-preview-0409`
+- `gemini-embedding-001` (added in 1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
 
 AI Studio:
 - `embedding-001` (default)

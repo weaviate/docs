@@ -15,7 +15,7 @@ image: og/wcd/user_guides.jpg
 
 import ClusterDetails from '/docs/cloud/img/weaviate-cloud-cluster-details.png';
 
-<ol className="docs-image">
+<ol>
   <li>
     Open the <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
   </li>
@@ -65,7 +65,6 @@ The following fields are part of the `Information` section:
 
 Serverless clusters also have an `Advanced configuration` section to configure or check the status of these additional settings:
 
-- `Enable RBAC`
 - `Enable auto schema generation`
 - `Enable async indexing`
 - `Enable async replication`
@@ -73,7 +72,7 @@ Serverless clusters also have an `Advanced configuration` section to configure o
 
 ## API Endpoint {#api-endpoint}
 
-To get cluster details programmatically, use the [`nodes`](/docs/deploy/configuration/nodes.md) REST endpoint.
+To get cluster details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
 
 import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
 

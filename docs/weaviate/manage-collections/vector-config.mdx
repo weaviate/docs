@@ -16,6 +16,10 @@ import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collect
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
+import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
+
+<VectorConfigSyntax />
+
 ## Specify a vectorizer
 
 Specify a `vectorizer` for a collection.
@@ -23,10 +27,10 @@ Specify a `vectorizer` for a collection.
 <details>
   <summary>Additional information</summary>
 
-Collection level settings override default values and general configuration parameters such as [environment variables](docs/deploy/configuration/env-vars/index.md).
+Collection level settings override default values and general configuration parameters such as [environment variables](/deploy/configuration/env-vars/index.md).
 
 - [Available model integrations](../model-providers/index.md)
-- [Vectorizer configuration references](/docs/weaviate/config-refs/schema#vectorizer)
+- [Vectorizer configuration references](/weaviate/config-refs/schema#vectorizer)
 
 </details>
 
@@ -356,7 +360,7 @@ The vector index type can be set for each collection at creation time, between `
 
 ## Set vector index parameters
 
-Various vector index parameters are configurable at collection creation time, including [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy).
+Set vector index parameters such as [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy) through collection configuration. Some parameters can be [updated later](collection-operations.mdx#update-a-collection-definition) after collection creation.
 
 :::info Filter strategy parameter
 Was added in `v1.27`
@@ -563,8 +567,8 @@ For details on the configuration parameters, see the following:
 
 ## Further resources
 
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
-- [References: Configuration: Schema](/docs/weaviate/config-refs/schema)
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- [References: Configuration: Schema](/weaviate/config-refs/schema)
 - [Concepts: Data structure](../concepts/data.md)
 
 ## Questions and feedback

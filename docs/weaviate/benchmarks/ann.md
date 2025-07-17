@@ -22,7 +22,7 @@ To make the most of this vector database benchmark, you can look at it from diff
 
 - **The overall performance** – Review the [benchmark results](#benchmark-results) to draw conclusions about what to expect from Weaviate in a production setting.
 - **Expectation for your use case** – Find the dataset closest to your production use case, and estimate Weaviate's expected performance for your use case.
-- **Fine Tuning** – If you don't get the results you expect. Find the optimal combinations of the configuration parameters (`efConstruction`, `maxConnections` and `ef`) to achieve the best results for your production configuration. (See [HNSW Configuration Tips](/docs/weaviate/config-refs/schema/vector-index#hnsw-configuration-tips))
+- **Fine Tuning** – If you don't get the results you expect. Find the optimal combinations of the configuration parameters (`efConstruction`, `maxConnections` and `ef`) to achieve the best results for your production configuration. (See [HNSW Configuration Tips](/weaviate/config-refs/schema/vector-index#hnsw-configuration-tips))
 
 <!---
 :::warning TODO
@@ -38,7 +38,7 @@ For each benchmark test, we set these HNSW parameters:
 - **`ef`** - Controls the search quality at query time.
 
 :::info HNSW Parameter Configuration Guide
-For good starting point values and performance tuning advice, see [HNSW Configuration Tips](/docs/weaviate/config-refs/schema/vector-index#hnsw-configuration-tips).
+For good starting point values and performance tuning advice, see [HNSW Configuration Tips](/weaviate/config-refs/schema/vector-index#hnsw-configuration-tips).
 :::
 
 <!---
@@ -268,8 +268,8 @@ We use Go to measure the concurrent (multi-threaded) queries.
 Each language has its own performance characteristics.
 You may get different results if you use a different language to send your queries.
 
-For maximum throughput, we recommend using the [Go](/docs/weaviate/client-libraries/go.md) or
-[Java](/docs/weaviate/client-libraries/java.md) client libraries.
+For maximum throughput, we recommend using the [Go](/weaviate/client-libraries/go.md) or
+[Java](/weaviate/client-libraries/java.md) client libraries.
 
 The complete import and test scripts are available [here](https://github.com/weaviate/weaviate-benchmarking).
 
@@ -278,7 +278,7 @@ The complete import and test scripts are available [here](https://github.com/wea
 ### How can I get the most performance for my use case?
 If your use case is similar to one of the benchmark tests, use the recommended HNSW parameter configurations to start tuning.
 
-For more instructions on how to tune your configuration for best performance, see [HNSW Configuration Tips](/docs/weaviate/config-refs/schema/vector-index#hnsw-configuration-tips).
+For more instructions on how to tune your configuration for best performance, see [HNSW Configuration Tips](/weaviate/config-refs/schema/vector-index#hnsw-configuration-tips).
 
 ### What is the difference between latency and throughput?
 
@@ -351,7 +351,7 @@ Adding more CPUs reaches a point of diminishing returns because of synchronizati
 ### What are `ef`, `efConstruction`, and `maxConnections`?
 
 These parameters refer to the [HNSW build and query
-parameters](/docs/weaviate/config-refs/schema/vector-index.md#hnsw-indexes).
+parameters](/weaviate/config-refs/schema/vector-index.md#hnsw-indexes).
 They represent a trade-off between recall, latency & throughput, index size, and
 memory consumption. This trade-off is highlighted in the benchmark results.
 
@@ -380,7 +380,7 @@ hints to look at:
   it could then be that your benchmark is bottlenecked by those disks.
 
 * Are you using more than 2 million vectors? If yes, make sure to set the
-  [vector cache large enough](/docs/weaviate/concepts/resources.md#vector-cache)
+  [vector cache large enough](/weaviate/concepts/resources.md#vector-cache)
   for maximum performance.
 
 ### Where can I find the scripts to run this benchmark myself?

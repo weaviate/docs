@@ -58,7 +58,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_cohere( # specify the vectorizer and model type you"re using
+    vector_config=wc.Configure.Vectors.text2vec_cohere( # specify the vectorizer and model type you"re using
         model="embed-multilingual-v2.0",                       # defaults to embed-multilingual-v2.0 if not set
     ),
 
@@ -99,11 +99,11 @@ else:
 
 Similarity search options for text objects in **Weaviate**:
 
-1. [near_text](https://weaviate.io/developers/weaviate/search/similarity#an-input-medium)
+1. [near_text](https://docs.weaviate.io/weaviate/search/similarity#an-input-medium)
 
-2. [near_object](https://weaviate.io/developers/weaviate/search/similarity#an-object)
+2. [near_object](https://docs.weaviate.io/weaviate/search/similarity#an-object)
 
-3. [near_vector](https://weaviate.io/developers/weaviate/search/similarity#a-vector)
+3. [near_vector](https://docs.weaviate.io/weaviate/search/similarity#a-vector)
 
 ### nearText Example
 

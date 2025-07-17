@@ -77,7 +77,7 @@ Notes:
 
 In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need a [Cohere](https://dashboard.cohere.com/) account. You can use a free Cohere trial API key.
 
-If you have another preferred [model provider](/docs/weaviate/model-providers), you can use that instead of Cohere.
+If you have another preferred [model provider](/weaviate/model-providers), you can use that instead of Cohere.
 
 <hr/>
 
@@ -89,8 +89,8 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe 
-    id="gky9oo0u4p" 
-    src="https://app.guideflow.com/embed/gky9oo0u4p" 
+    id="xrgwlygc1p" 
+    src="https://app.guideflow.com/embed/xrgwlygc1p" 
     width="100%" 
     height="100%" 
     style={{overflow: "hidden", position: "absolute", border: "none"}} 
@@ -101,7 +101,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
     allowFullScreen 
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="gky9oo0u4p"></script>
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="xrgwlygc1p"></script>
 </div>
 
 <br/>
@@ -137,14 +137,14 @@ You can retrieve them both from the [WCD console](https://console.weaviate.cloud
 
 :::note
 
-New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Access Control)](/docs/weaviate/configuration/rbac/index.mdx) enabled by default. These clusters don't come with API keys, you will need to create an API key yourself and assign it a role (`admin`, `viewer` or a custom role). 
+New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled by default. These clusters don't come with API keys, you will need to create an API key yourself and assign it a role (`admin`, `viewer` or a custom role). 
 
 :::
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe 
-    id="dr9o0g2anr" 
-    src="https://app.guideflow.com/embed/dr9o0g2anr" 
+    id="mk6zxyws6p" 
+    src="https://app.guideflow.com/embed/mk6zxyws6p" 
     width="100%" 
     height="100%" 
     style={{overflow: "hidden", position: "absolute", border: "none"}} 
@@ -155,7 +155,7 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
     allowFullScreen 
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="dr9o0g2anr"></script>
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="mk6zxyws6p"></script>
 </div>
 
 <br/>
@@ -192,8 +192,8 @@ A collection is a set of objects that share the same data structure, like a tabl
 
 The following example creates a _collection_ called `Question` with:
 
-- The [Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md) service for creating vectors during ingestion & queries.
-- Cohere [generative AI integrations](/docs/weaviate/model-providers/cohere/generative.md) for retrieval augmented generation (RAG).
+- The [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for creating vectors during ingestion & queries.
+- Cohere [generative AI integrations](/weaviate/model-providers/cohere/generative.md) for retrieval augmented generation (RAG).
 
 import CreateCollection from '/\_includes/code/quickstart/quickstart.create_collection.mdx'
 
@@ -232,7 +232,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Want to specify object vectors?</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <Link to="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
+        If you prefer to add vectors yourself along with the object data, see <Link to="/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
       </div>
     </div>
   </div>
@@ -338,7 +338,7 @@ flowchart LR
 
 Weaviate used the **Weaviate Embeddings** service to generate a vector embedding for each object during import. During the query, Weaviate similarly converted the query (`biology`) into a vector.
 
-As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/docs/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
+As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
 
 :::
 
@@ -459,7 +459,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <Link to="/docs/weaviate/search">how to perform searches</Link>, such as <Link to="/docs/weaviate/search/bm25">keyword</Link>, <Link to="/docs/weaviate/search/similarity">similarity</Link>, <Link to="/docs/weaviate/search/hybrid">hybrid</Link>, <Link to="/docs/weaviate/search/image">image</Link>, <Link to="/docs/weaviate/search/filters">filtered</Link> and <Link to="/docs/weaviate/search/rerank">reranked</Link> searches.
+            See <Link to="/weaviate/search">how to perform searches</Link>, such as <Link to="/weaviate/search/bm25">keyword</Link>, <Link to="/weaviate/search/similarity">similarity</Link>, <Link to="/weaviate/search/hybrid">hybrid</Link>, <Link to="/weaviate/search/image">image</Link>, <Link to="/weaviate/search/filters">filtered</Link> and <Link to="/weaviate/search/rerank">reranked</Link> searches.
           </p>
         </div>
       </div>
@@ -471,7 +471,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See how to manage data, such as <Link to="/docs/weaviate/manage-collections">manage collections</Link>, <Link to="/docs/weaviate/manage-objects/create">create objects</Link>, <Link to="/docs/weaviate/manage-objects/import">batch import data</Link> and <Link to="/docs/weaviate/manage-collections/multi-tenancy">use multi-tenancy</Link>.
+            See how to manage data, such as <Link to="/weaviate/manage-collections">manage collections</Link>, <Link to="/weaviate/manage-objects/create">create objects</Link>, <Link to="/weaviate/manage-objects/import">batch import data</Link> and <Link to="/weaviate/manage-collections/multi-tenancy">use multi-tenancy</Link>.
           </p>
         </div>
       </div>
@@ -483,7 +483,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <Link to="/docs/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/docs/academy">Weaviate Academy</Link> unit on <Link to="/docs/academy/py/standalone/chunking">chunking</Link>.
+            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/academy">Weaviate Academy</Link> unit on <Link to="/academy/py/standalone/chunking">chunking</Link>.
           </p>
         </div>
       </div>
@@ -548,7 +548,7 @@ import CautionSchemaDeleteClass from '/\_includes/schema-delete-class.mdx'
 <details>
   <summary>See answer</summary>
 
-If you are not sure whether the collection has been created, check the <SkipLink href="/docs/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
+If you are not sure whether the collection has been created, check the <SkipLink href="/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
 
 Replace WEAVIATE_INSTANCE_URL with your instance's REST Endpoint URL.:
 
@@ -585,7 +585,7 @@ Weaviate uses a combination of RESTful and GraphQL APIs. In Weaviate, RESTful AP
 <details>
   <summary>See answer</summary>
 
-To confirm successful data import, check the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
+To confirm successful data import, check the <SkipLink href="/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
 
 Replace WEAVIATE_INSTANCE_URL with your instance REST Endpoint URL:
 

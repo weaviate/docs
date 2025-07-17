@@ -4,16 +4,10 @@ To retrieve your connection details, follow these steps:
 import Link from '@docusaurus/Link';
 import Register from '/docs/cloud/img/weaviate-cloud-api-keys.png';
 
-<div class="row docs-image">
+<div class="row">
   <ol>
-    <li>
-      Open the{' '}
-      <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>{' '}
-      and{' '}
-      <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
-        select your cluster
-      </Link>
-      .
+    <li className="inline-content">
+      Open the <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link> and <Link to="/cloud/manage-clusters/status#select-your-cluster"> ssselect your cluster</Link>.
     </li>
     <li>
       On the <code>Cluster details</code> page, find the <code>Admin</code> API
@@ -55,4 +49,4 @@ import WCDClusterAdminKey from '/docs/weaviate/quickstart/img/cluster_admin_key.
 <br />
 
 :::note REST Endpoint vs gRPC Endpoint
-When using an official Weaviate [client library](/docs/weaviate/client-libraries), you need to authenticate using the `REST Endpoint`. The client will infer the gRPC endpoint automatically and use the more performant gRPC protocol when available.
+When using an official Weaviate [client library](/weaviate/client-libraries), you need to authenticate using the `REST Endpoint`. The client will infer the gRPC endpoint automatically and use the more performant gRPC protocol when available.

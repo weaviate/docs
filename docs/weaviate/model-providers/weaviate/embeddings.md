@@ -17,7 +17,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyConnect from '!!raw-loader!../_includes/provider.connect.weaviate.py';
 import TSConnect from '!!raw-loader!../_includes/provider.connect.weaviate.ts';
 import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go';
-import JavaConnect from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddings.java';
+import JavaConnect from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddingsTest.java';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
@@ -357,7 +357,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### References
 
-- Weaviate Embeddings [Documentation](/docs/cloud/embeddings)
+- Weaviate Embeddings [Documentation](/cloud/embeddings)
 
 ## Questions and feedback
 

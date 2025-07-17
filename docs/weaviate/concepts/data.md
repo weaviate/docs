@@ -467,7 +467,7 @@ Cross-references like these are not supported:
 
 ### Monitoring metrics
 
-To group tenants together for monitoring, set [`PROMETHEUS_MONITORING_GROUP = true`](/docs/deploy/configuration/env-vars/index.md) in your system configuration file.
+To group tenants together for monitoring, set [`PROMETHEUS_MONITORING_GROUP = true`](/deploy/configuration/env-vars/index.md) in your system configuration file.
 
 ### Number of tenants per node
 
@@ -482,7 +482,7 @@ Note that these numbers relate to active tenants only. If you [set unused tenant
 For more information, see the following:
 
 - [How-to: Multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
-- <SkipLink href="/docs/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
 - [How-to: Manage collections](../manage-collections/index.mdx)
 
 ## Summary

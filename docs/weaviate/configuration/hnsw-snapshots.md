@@ -10,7 +10,7 @@ description: Learn about HNSW snapshots in Weaviate for faster startup times and
 
 HNSW (Hierarchical Navigable Small World) snapshots can significantly reduce startup times for instances with large vector indexes.
 
-By default, HNSW snapshotting is **disabled**. To use this feature, configure the [environment variable](/docs/deploy/configuration/env-vars/index.md) shown below.
+By default, HNSW snapshotting is **disabled**. To use this feature, configure the [environment variable](/deploy/configuration/env-vars/index.md) shown below.
 
 :::info Concepts: HNSW snapshots
 See this [concepts page](../concepts/storage.md#hnsw-snapshots) for a detailed description.

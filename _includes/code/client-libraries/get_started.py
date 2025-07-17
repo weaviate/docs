@@ -10,7 +10,7 @@ client = weaviate.connect_to_local()
 # highlight-start
 questions = client.collections.create(
     name="Question",
-    vectorizer_config=Configure.Vectorizer.text2vec_ollama(),  # Configure the Ollama embedding model
+    vector_config=Configure.Vectors.text2vec_ollama(),  # Configure the Ollama embedding model
 )
 # highlight-end
 

@@ -72,7 +72,7 @@ In this Replication Architecture section, you will find information about:
 
 ## What is replication?
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Example setup with replication" width="75%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Example setup with replication" width="75%"/></p>
 
 Database replication refers to keeping a copy of the same data point on multiple nodes of a cluster.
 
@@ -85,7 +85,7 @@ The primary goal of introducing replication is to improve reliability. [Eric Bre
 * **Availability (A)** - Every request receives a non-error response all the time, without the guarantee that it contains the most recent write.
 * **Partition tolerance (P)** - The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes.
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/repliction-cap.png" alt="CAP Theorem" width="60%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/repliction-cap.png" alt="CAP Theorem" width="60%"/></p>
 
 Ideally, you want a database, like Weaviate, to have the highest reliability as possible, but this is limited by the tradeoff between consistency, availability and partition tolerance.
 
@@ -128,7 +128,7 @@ Replication is not the same as [sharding](../cluster.md). Sharding refers to hor
 * **Replication** copies the data to different server nodes. For Weaviate, this increases data availability and provides redundancy in case a single node fails. Query throughput can be improved with replication.
 * **Sharding** handles horizontal scaling across servers by dividing the data and sending the pieces of data (shards) to multiple replica sets. The data is thus divided, and all shards together form the entire set of data. You can use sharding with Weaviate to run larger datasets and speed up imports.
 
-<p align="center"><img src="/docs/img/docs/replication-architecture/replication-replication-vs-sharding.png" alt="Replication vs Sharding" width="60%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-replication-vs-sharding.png" alt="Replication vs Sharding" width="60%"/></p>
 
 Replication and sharding can be combined in a setup, to improve throughput and availability as well as import speed and support for large datasets. For example, you can have 3 replicas of the database and shards set to 3, which means you have 9 shards in total, where each server node holds 3 different shards.
 
@@ -148,7 +148,7 @@ Prior to Weaviate `v1.25`, each cluster metadata change was recorded via a distr
 
 This is a synchronous process, which means that the cluster metadata change is only committed when all nodes have acknowledged the change. In this architecture, any node downtime would temporarily prevent metadata operations. Additionally, only one such operation could be processed at a time.
 
-If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](docs/deploy/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
+If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](/deploy/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
 
 </details>
 
@@ -164,7 +164,7 @@ Read more about how replication works in Weaviate in [Philosophy](./philosophy.m
 
 ## How do I use replication in Weaviate?
 
-See [how to configure replication](docs/deploy/configuration/replication.md). You can enable replication in the collection definition. In queries, you can [specify the desired consistency level](../../search/basics.md#replication).
+See [how to configure replication](/deploy/configuration/replication.md). You can enable replication in the collection definition. In queries, you can [specify the desired consistency level](../../search/basics.md#replication).
 
 ## Roadmap
 
@@ -173,7 +173,7 @@ See [how to configure replication](docs/deploy/configuration/replication.md). Yo
 
 
 ## Related pages
-- [Configuration: Replication](docs/deploy/configuration/replication.md)
+- [Configuration: Replication](/deploy/configuration/replication.md)
 
 ## Questions and feedback
 

@@ -70,7 +70,7 @@ You can instantiate the `WeaviateClient` object directly. However, in most cases
 />
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "Timeout values" -->
-<!-- To configure connection timeout values, see [Timeout values](/docs/weaviate/client-libraries/python#timeout-values). -->
+<!-- To configure connection timeout values, see [Timeout values](/weaviate/client-libraries/python#timeout-values). -->
 
 </TabItem>
 <TabItem value="local" label="Local">

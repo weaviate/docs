@@ -12,6 +12,12 @@ Reranking computes a relevance score between the query and each data object, and
 
 As the reranker works on a smaller subset of data after retrieval, different, potentially more computationally expensive approaches can be used to improve search relevance.
 
+:::info
+
+Learn how to [set up a reranker for your collection](../manage-collections/generative-reranker-models.mdx#specify-a-reranker-model-integration) and [apply reranking to your search results](../search/rerank.md).
+
+:::
+
 ## Reranking in Weaviate
 
 With our reranker modules, you can conveniently perform [multi-stage searches](https://weaviate.io/blog/cross-encoders-as-reranker) without leaving Weaviate.
@@ -66,4 +72,3 @@ You can specify which `property` of the `JeopardyQuestion` class you want to pas
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

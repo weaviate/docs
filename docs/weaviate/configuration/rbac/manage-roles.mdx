@@ -31,7 +31,7 @@ import ConfigureRbac from '/_includes/configuration/configure-rbac.mdx';
 
 Role management requires appropriate `role` resource permissions that can be obtained through:
 
-- A predefined `root` role when [configuring RBAC](docs/deploy/configuration/configuring-rbac.md).
+- A predefined `root` role when [configuring RBAC](/deploy/configuration/configuring-rbac.md).
 - A role with [`Role Management`](#role-management-permissions) permissions granted.
 
 <Tabs groupId="languages">
@@ -404,6 +404,82 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
+#### Create a role with `Collection Aliases` permissions {#aliases-permissions}
+
+This example creates a role called `testRole` with permissions to:
+
+- Create, read, update and delete collection aliases starting with `TargetAlias`.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddAliasPermission"
+      endMarker="# END AddAliasPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### Create a role with `Replications` permissions {#replications-permissions}
+
+This example creates a role called `testRole` with permissions to:
+
+- Create, read, update and delete replica movement operations for collections starting with `TargetCollection` and shards starting with `TargetShard`.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddReplicationsPermission"
+      endMarker="# END AddReplicationsPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
 ### Grant additional permissions
 
 Additional permissions can be granted to a role at any time. The role must already exist.
@@ -679,7 +755,7 @@ Visit the [Manage users](./manage-users.mdx) page to learn more about assigning 
 ## Further resources
 
 - [RBAC: Overview](./index.mdx)
-- [RBAC: Configuration](docs/deploy/configuration/configuring-rbac.md)
+- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
 - [RBAC: Manage users](./manage-users.mdx)
 
 ## Questions and feedback

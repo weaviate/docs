@@ -52,7 +52,7 @@ assert.deepEqual(result.data.Get.JeopardyQuestion.length, 2);
 // ===== With NearText =====
 // =========================
 
-// https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+// https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 // GetNearText
 result = await client.graphql
   .get()
@@ -78,7 +78,7 @@ assert.deepEqual(result.data.Get.JeopardyQuestion.length, 2);
 // ===== With NearVector =====
 // ================================
 
-// https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+// https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 // GetNearVector
 result = await client.graphql
   .get()
@@ -103,7 +103,7 @@ assert.deepEqual(result.data.Get.JeopardyQuestion.length, 2);
 // ===== With NearObject =====
 // ================================
 
-// https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearobject
+// https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearobject
 // GetNearObject
 result = await client.graphql
   .get()
@@ -123,7 +123,7 @@ questionKeys = new Set(Object.keys(result.data.Get.JeopardyQuestion[0]));
 assert.deepEqual(questionKeys, new Set(['question', 'answer', '_additional']));
 assert.deepEqual(result.data.Get.JeopardyQuestion.length, 2);
 
-// Limit - https://weaviate.io/docs/weaviate/api/graphql/filters#limit-argument
+// Limit - https://docs.weaviate.io/weaviate/api/graphql/filters#limit-argument
 // GetLimitOffset
 result = await client.graphql
   .get()
@@ -149,7 +149,7 @@ assert.deepEqual(result.data.Get.JeopardyQuestion.length, 2);
 // ===== With Distance =====
 // =========================
 
-// Distance - http://weaviate.io/docs/weaviate/config-refs/distances
+// Distance - http://docs.weaviate.io/weaviate/config-refs/distances
 // GetWithDistance
 // highlight-start
 const maxDistance = 0.18;
@@ -178,7 +178,7 @@ assert.deepEqual(questionKeys, new Set(['question', 'answer', '_additional']));
 // ===== With Autocut =====
 // ========================
 
-// # http://weaviate.io/docs/weaviate/api/graphql/additional-operators#autocut
+// http://docs.weaviate.io/weaviate/api/graphql/additional-operators#autocut
 
 // START Autocut
 result = await client.graphql
@@ -205,7 +205,7 @@ assert.deepEqual(questionKeys, new Set(['question', 'answer', '_additional']));
 // ===== With GroupBy =====
 // ========================
 
-// groupBy - https://weaviate.io/docs/weaviate/api/graphql/get#get-groupby
+// groupBy - https://docs.weaviate.io/weaviate/api/graphql/get#get-groupby
 // GetWithGroupBy
 result = await client.graphql
   .get()

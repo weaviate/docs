@@ -18,7 +18,7 @@ Here are some tips for writing Weaviate client library code with generative AI m
 
 ### High-performing models
 
-As of April 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/docs/weaviate/client-libraries/python/index.mdx) code.)
+As of April 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/weaviate/client-libraries/python/index.mdx) code.)
 
 - Anthropic `claude-3-7-sonnet-20250219`
 - Google `gemini-2.5-pro-exp-03-25`
@@ -85,7 +85,7 @@ Review the documentation of your specific IDE to see if it has this feature, and
 
 ### Consider using Weaviate Agents
 
-[Weaviate Agents](/docs/agents) are pre-built agentic services designed for specific tasks, such as [querying](/docs/agents/query), [transforming data](/docs/agents/transformation/), and [personalizing content](/docs/agents/personalization).
+[Weaviate Agents](/agents) are pre-built agentic services designed for specific tasks, such as [querying](/agents/query), [transforming data](/agents/transformation/), and [personalizing content](/agents/personalization).
 
 Weaviate agents are available for Weaviate Cloud users to enable interacting with the Weaviate Cloud instance using natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
 

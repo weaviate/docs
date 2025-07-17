@@ -29,6 +29,7 @@ const domainsToIgnore = [
     'https://www.anthropic.com',
     'https://www.computerhope.com',
     'https://console.x.ai/',
+    'https://console.cloud.google.com',
     'https://docs.anthropic.com',
     'https://docs.x.ai',
     'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link

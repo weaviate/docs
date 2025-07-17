@@ -66,7 +66,7 @@ Note that API key and OIDC authentication can be both enabled at the same time.
 The way to configure authentication differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
 
 :::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](/docs/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/docs/cloud/manage-clusters/connect.mdx).
+For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/cloud/manage-clusters/connect.mdx).
 :::
 
 ## API Key Authentication
@@ -75,7 +75,7 @@ API key authentication is a simple and effective way to authenticate users. Each
 
 ### API keys: Database users
 
-When [creating database users programmatically](/docs/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/docs/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key). 
+When [creating database users programmatically](/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key). 
 
 ### API keys: Docker
 
@@ -188,7 +188,7 @@ correct, all contents of the token are trusted, which authenticates the user bas
 
 :::tip TIP: OIDC and RBAC
 
-The [user management API](/docs/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](/docs/weaviate/configuration/rbac/index.mdx).
+The [user management API](/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](/weaviate/configuration/rbac/index.mdx).
 
 :::
 
@@ -347,7 +347,7 @@ authentication:
 ## Further resources
 
 - [Configuration: Authorization and RBAC](./authorization.md)
-- [References: Environment variables / Authentication and Authorization](/docs/deploy/configuration/env-vars#authentication-and-authorization)
+- [References: Environment variables / Authentication and Authorization](/deploy/configuration/env-vars#authentication-and-authorization)
 
 ## Questions and feedback
 
