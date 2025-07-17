@@ -8,20 +8,22 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/weaviate/weaviate-go-client/v5/weaviate"
+	"github.com/weaviate/weaviate-go-client/v5/weaviate/auth"
 	"github.com/weaviate/weaviate-go-client/v5/weaviate/backup"
 	"github.com/weaviate/weaviate/entities/models"
 )
 
 func TestBackupAndRestore(t *testing.T) {
-	// START CreateBackup  // START RestoreBackup  // START StatusCreateBackup  // START StatusRestoreBackup // START CancelBackup
 	ctx := context.Background()
 	cfg := weaviate.Config{
-		Host:   "localhost:8080",
+		Host:   "localhost:8580",
 		Scheme: "http",
+		AuthConfig: auth.ApiKey{
+			Value: "root-user-key",
+		},
 	}
 	client, err := weaviate.NewClient(cfg)
 	require.NoError(t, err)
-	// END CreateBackup  // END RestoreBackup  // END StatusCreateBackup  // END StatusRestoreBackup // END CancelBackup
 
 	// NOTE: This test uses static backup IDs. You will need to manually clear
 	// the backup storage directory on your Weaviate server to re-run this test.
@@ -38,6 +40,13 @@ func TestBackupAndRestore(t *testing.T) {
 		_, err = client.Data().Creator().WithClassName("Publication").WithProperties(map[string]interface{}{"title": "Dummy"}).Do(ctx)
 		require.NoError(t, err)
 
+		// Add a user to be backed up
+		username := "test-user-for-backup"
+		// Clean up user if it exists from a previous failed run
+		client.Users().DB().Deleter().WithUserID(username).Do(ctx)
+		_, err = client.Users().DB().Creator().WithUserID(username).Do(ctx)
+		require.NoError(t, err)
+
 		// Create a backup
 		// START CreateBackup
 		createResponse, err := client.Backup().Creator().
@@ -50,6 +59,13 @@ func TestBackupAndRestore(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, createResponse)
 		assert.Equal(t, "SUCCESS", *createResponse.Status)
+
+		// Delete the user after creating the backup to test restoration
+		deleted, err := client.Users().DB().Deleter().WithUserID(username).Do(ctx)
+		require.NoError(t, err)
+		require.True(t, deleted)
+		_, err = client.Users().DB().Getter().WithUserID(username).Do(ctx)
+		require.Error(t, err) // Verify user is deleted
 
 		// Check the creation status
 		// START StatusCreateBackup
@@ -65,13 +81,17 @@ func TestBackupAndRestore(t *testing.T) {
 		// Delete all classes before restoring to ensure a clean slate
 		require.NoError(t, client.Schema().AllDeleter().Do(ctx))
 
-		// Restore the backup, excluding one class
+		// Restore the backup, excluding one class and including users/roles
 		// START RestoreBackup
 		restoreResponse, err := client.Backup().Restorer().
 			WithExcludeClassNames("Article").
 			WithBackend(backup.BACKEND_FILESYSTEM).
 			WithBackupID("my-very-first-backup").
 			WithWaitForCompletion(true).
+			// The following two methods can be used to restore roles and users separately
+			// .WithRBACRoles(rbac.RBACAll).
+			// .WithRBACUsers(rbac.UserAll).
+			WithRBACAndUsers(). // This is a convenience method to restore both roles and users
 			Do(context.Background())
 		// END RestoreBackup
 		require.NoError(t, err)
@@ -97,6 +117,18 @@ func TestBackupAndRestore(t *testing.T) {
 		class, err = client.Schema().ClassGetter().WithClassName("Article").Do(ctx)
 		require.Error(t, err) // Expect an error because the class should not exist
 		require.Nil(t, class)
+
+		// Verify that the user was restored by listing all users
+		allUsers, err := client.Users().DB().Lister().Do(ctx)
+		require.NoError(t, err)
+		found := false
+		for _, user := range allUsers {
+			if user.UserID == username {
+				found = true
+				break
+			}
+		}
+		require.True(t, found, "restored user %s not found in user list", username)
 	})
 
 	t.Run("Cancel backup", func(t *testing.T) {

@@ -4,13 +4,23 @@
 # ===== INSTANTIATION-COMMON =====
 # ================================
 
-# START CreateBackup  # START RestoreBackup  # START StatusCreateBackup  # START StatusRestoreBackup  # START CancelBackup
 import weaviate
+from weaviate.auth import AuthApiKey
+
+# START CreateBackup  # START RestoreBackup  # START StatusCreateBackup  # START StatusRestoreBackup  # START CancelBackup
 from weaviate.classes.backup import BackupLocation
 
-client = weaviate.connect_to_local()
-
 # END CreateBackup  # END RestoreBackup  # END StatusCreateBackup  # END StatusRestoreBackup  # END CancelBackup
+
+client = weaviate.connect_to_local(
+    port=8580,
+    grpc_port=50551,
+    auth_credentials=AuthApiKey(api_key="root-user-key"),
+)
+
+# ==============================================
+# ===== Create, restore, and check backup =====
+# ==============================================
 
 # Create the collections, whether they exist or not
 client.collections.delete(["Article", "Publication"])
@@ -19,6 +29,13 @@ publications = client.collections.create(name="Publication")
 
 articles.data.insert(properties={"title": "Dummy"})
 publications.data.insert(properties={"title": "Dummy"})
+
+# Add a user to be backed up
+username = "test-user-for-backup"
+# Clean up user if it exists from a previous failed run
+client.users.db.delete(user_id=username)
+client.users.db.create(user_id=username)
+
 
 # START CreateBackup
 result = client.backup.create(
@@ -35,9 +52,10 @@ print(result)
 # Test
 assert result.status == "SUCCESS"
 
-# ==============================================
-# ===== Check status while creating backup =====
-# ==============================================
+# Delete the user after creating the backup to test restoration
+client.users.db.delete(user_id=username)
+assert not any(user.user_id == username for user in client.users.db.list_all())
+
 
 # START StatusCreateBackup
 result = client.backup.get_create_status(
@@ -52,11 +70,8 @@ print(result)
 # Test
 assert result.status == "SUCCESS"
 
-# ==========================
-# ===== Restore backup =====
-# ==========================
-
-client.collections.delete("Publication")
+# Delete all classes before restoring to ensure a clean slate
+client.collections.delete_all()
 
 # START RestoreBackup
 result = client.backup.restore(
@@ -64,9 +79,9 @@ result = client.backup.restore(
     backend="filesystem",
     exclude_collections="Article",
     wait_for_completion=True,
+    roles_restore="all",
+    users_restore="all",
     backup_location=BackupLocation.FileSystem(path="/tmp/weaviate-backups"),  # Required if a non-default location was used at creation
-    roles_restore = "all",  # Optional, requires Weaviate 1.32.0 or above and Python client 4.16.0 or above
-    users_restore = "all",  # Optional, requires Weaviate 1.32.0 or above and Python client 4.16.0 or above
 )
 
 print(result)
@@ -75,9 +90,9 @@ print(result)
 # Test
 assert result.status == "SUCCESS"
 
-# ==============================================
-# ===== Check status while restoring backup =====
-# ==============================================
+# Verify that the user was restored
+assert any(user.user_id == username for user in client.users.db.list_all())
+
 
 # START StatusRestoreBackup
 result = client.backup.get_restore_status(
@@ -94,6 +109,7 @@ assert result.status == "SUCCESS"
 
 # Clean up
 client.collections.delete(["Article", "Publication"])
+
 
 # ==============================================
 # ===== Cancel ongoing backup =====
