@@ -19,8 +19,14 @@ This table explains the key parameters used to configure vectorization and vecto
 | ↪ `vectorConfig.<name>.vectorIndexType`   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                      |
 | ↪ `vectorConfig.<name>.vectorIndexConfig` | Object | The configuration for the index of this specific named vector.                                                                                                             |
 
+:::info
+
 - **For a simple setup with one vector per object:** Use the top-level `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` parameters.
 - **For advanced setups with multiple named vectors per object:** Use the `vectorConfig` object to define each named vector space and its specific configuration. You cannot use the top-level parameters if you use `vectorConfig`.
+
+:::
+
+---
 
 ## Single vector collections
 
@@ -93,6 +99,57 @@ If you want to populate the new named vector for existing objects, update the ob
 :::caution Not available for legacy (unnamed) vectorizers
 The ability to add a named vector after collection creation is only available for collections configured with named vectors.
 :::
+
+## Configure semantic indexing
+
+Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
+
+For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
+
+Unless specified otherwise in the collection definition, the default behavior is to:
+
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
+- Sort properties in alphabetical (a-z) order before concatenating values
+- If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
+- Join the (prepended) property values with spaces
+- Prepend the class name (unless `vectorizeClassName` is `false`)
+- Convert the produced string to lowercase
+
+For example, this data object,
+
+```js
+Article = {
+  summary: "Cows lose their jobs as milk prices drop",
+  text: "As his 100 diary cows lumbered over for their Monday..."
+}
+```
+
+will be vectorized as:
+
+```md
+article cows lose their jobs as milk prices drop as his 100 diary cows lumbered over for their monday...
+```
+
+By default, the calculation includes the  `collection name` and all property `values`, but the property `names` *are not* indexed.
+
+To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
+
+To configure vectorization on a per-property basis, use `skip` and `vectorizePropertyName`.
+
+### Default distance metric
+
+Weaviate allows you to configure the `DEFAULT_VECTOR_DISTANCE_METRIC` which will be applied to every collection unless overridden individually. You can choose from: `cosine` (default), `dot`, `l2-squared`, `manhattan`, `hamming`.
+
+```python
+collection_obj = {
+    "class": "Article",
+    "vectorIndexConfig": {
+        "distance": "dot",
+    },
+}
+
+client.schema.create_class(collection_obj)
+```
 
 ## Related pages
 

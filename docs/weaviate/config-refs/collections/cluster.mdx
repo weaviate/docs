@@ -1,5 +1,5 @@
 ---
-title: Cluster Configuration
+title: Cluster configuration
 description: Reference for sharding and replication parameters in Weaviate.
 ---
 
@@ -20,16 +20,16 @@ For multi-node Weaviate deployments, you can configure how data is distributed a
 
 Sharding is configured via the `shardingConfig` object in the collection definition. These parameters are immutable and cannot be changed after the collection is created.
 
-| Parameter             | Type    | Default         | Description                                                           |
-| :-------------------- | :------ | :-------------- | :-------------------------------------------------------------------- |
-| `desiredCount`        | Integer | Number of nodes | The number of physical shards to create for the collection.           |
-| `virtualPerPhysical`  | Integer | `128`           | The number of virtual shards per physical shard. Aids in rebalancing. |
-| `strategy`            | String  | `"hash"`        | The strategy for determining which shard an object belongs to.        |
-| `key`                 | String  | `"_id"`         | The property used for hashing to determine the target shard.          |
-| `function`            | String  | `"murmur3"`     | The hashing function used on the `key`.                               |
-| `actualCount`         | Integer | (Read-only)     | The actual number of physical shards that were created.               |
-| `desiredVirtualCount` | Integer | (Read-only)     | Calculated as `desiredCount * virtualPerPhysical`.                    |
-| `actualVirtualCount`  | Integer | (Read-only)     | The actual number of virtual shards created.                          |
+| Parameter             | Type    | Description                                                                                                                                                                         | Default         |
+| :-------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- |
+| `desiredCount`        | Integer | **(Optional, Immutable)** The desired number of physical shards for the collection. If this value is larger than the number of cluster nodes, some nodes will host multiple shards. | Number of nodes |
+| `virtualPerPhysical`  | Integer | **(Optional, Immutable)** The number of virtual shards per physical shard. Virtual shards aid in reducing data movement during rebalancing.                                         | `128`           |
+| `strategy`            | String  | **(Optional, Immutable)** The strategy for determining which shard an object belongs to. Only `"hash"` is currently supported. The hash is based on the `key` property.             | `"hash"`        |
+| `key`                 | String  | **(Optional, Immutable)** The property used for hashing to determine the target shard. Currently, only the object's internal UUID (`_id`) can be used.                              | `"_id"`         |
+| `function`            | String  | **(Optional, Immutable)** The hashing function used on the `key`. Only `"murmur3"` is supported, which creates a 64-bit hash, making collisions highly unlikely.                    | `"murmur3"`     |
+| `actualCount`         | Integer | **(Read-only)** The actual number of physical shards created. This typically matches `desiredCount` unless an issue occurred during creation.                                       | `1`             |
+| `desiredVirtualCount` | Integer | **(Read-only)** A calculated value representing `desiredCount * virtualPerPhysical`.                                                                                                | `128`           |
+| `actualVirtualCount`  | Integer | **(Read-only)** The actual number of virtual shards that were created.                                                                                                              | `128`           |
 
 <details>
   <summary>Example sharding configuration</summary>
@@ -50,24 +50,6 @@ An example of a complete `shardingConfig` object:
 ```
 
 </details>
-
-These parameters are explained below:
-
-- `"desiredCount"`: _integer, immutable, optional_, defaults to the number of nodes in the cluster. This value controls how many shards should be created for this collection index. The typical setting is that a collection should be distributed across all the nodes in the cluster, but you can explicitly set this value to a lower value. If the `"desiredCount"` is larger than the amount of physical nodes in the cluster, then some nodes will contain multiple shards.
-
-- `"actualCount"`: _integer, read-only_. Typically matches desired count, unless there was a problem initiating the shards at creation time.
-
-- `"virtualPerPhysical"`: _integer, immutable, optional_, defaults to `128`. Weaviate uses virtual shards. This helps in reducing the amount of data moved when resharding.
-
-- `"desiredVirtualCount"`: _integer, readonly_. Matches `desiredCount * virtualPerPhysical`
-
-- `"actualVirtualCount"`: _integer, readonly_. Like `actualCount`, but for virtual shards, instead of physical.
-
-- `"strategy"`: _string, optional, immutable_. Only supports `"hash"`. This value controls how Weaviate should decide which (virtual - and therefore physical) shard a new object belongs to. The hash is performed on the field specified in `"key"`.
-
-- `"key"`: _string, optional, immutable_. Only supports `"_id"`. This value controls the partitioning key that is used for the hashing function to determine the target shard. As of now, only the internal id-field (containing the object's UUID) can be used to determine the target shard. Custom keys may be supported at a later point.
-
-- `"function"`: _string, optional, immutable_. Only `"murmur3"` is supported as a hashing function. It describes the hashing function used on the `"key"` property to determine the hash which in turn determines the target (virtual - and therefore physical) shard. `"murmur3"` creates a 64bit hash making hash collisions very unlikely.
 
 ---
 
@@ -101,3 +83,13 @@ An example of a complete `replicationConfig` object:
 ```
 
 </details>
+
+## Further resources
+
+- [How-to: Replication](/docs/deploy/configuration/replication.md)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

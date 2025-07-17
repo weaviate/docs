@@ -9,10 +9,10 @@ description: Reference for collection property parameters.
 
 | Parameter             | Type    | Description                                                                                                                                                                     | Default    |
 | :-------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- |
-| `name`                | String  | The name of the property.                                                                                                                                                       | (Required) |
+| `name`                | String  | The name of the property. See the [name](#name) section below for details.                                                                                                      | (Required) |
 | `dataType`            | Array   | An array containing one or more data types. See [Data Types](../datatypes.md) for a full list. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) |
 | `description`         | String  | A description of the property for your reference.                                                                                                                               | `null`     |
-| `tokenization`        | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing. See the [tokenization](#tokenization) section below.                                  | `word`     |
+| `tokenization`        | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing. See the [tokenization](#tokenization) section below for details.                      | `word`     |
 | `indexFilterable`     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering. See [References: Inverted index](../indexing/inverted-index.mdx) for details.      | `true`     |
 | `indexSearchable`     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search. See [References: Inverted index](../indexing/inverted-index.mdx) for details.   | `true`     |
 | `moduleConfig`        | Object  | Module-specific settings, such as skipping vectorization for this property. See [References: Vector index](../indexing/vector-index.mdx) for details.                           | `{}`       |

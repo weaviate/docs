@@ -1,20 +1,20 @@
 ---
-title: Collection Configuration
+title: Collection definition
 description: Reference for Weaviate collection parameters.
 ---
 
 import SkipLink from "/src/components/SkipValidationLink";
 
-A **collection definition** outlines the structure, indexing, and behavior of a group of data objects in Weaviate. This reference section details the available parameters for configuring a collection.
+A **collection definition** describes how to store and index a set of data objects in Weaviate. This page discuses the collection definition, collection parameters and collection configuration.
 
-## Collection Parameters
+## Collection parameters
 
 These are the top-level parameters you can set when creating a collection.
 
 | Parameter             | Type   | Description                                                                                                                                                      |
 | :-------------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `class`               | String | The name of the collection. <br/>See the [class section](#class) below for details.                                                                              |
-| `description`         | String | A description of the collection.                                                                                                                                 |
+| `class`               | String | The name of the collection. See the [class](#class) section below for details.                                                                                   |
+| `description`         | String | A description of the collection. See the [description](#description) section below for details.                                                                  |
 | `properties`          | Object | An array of property objects defining the data schema. <br/>See [References: Properties](./properties.mdx) for details.                                          |
 | `vectorConfig`        | Array  | Configure named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields.                                                     |
 | `vectorizer`          | String | The vectorizer module to use. Set to `"none"` to disable auto-vectorization. <br/>See [References: Vectorization](./vectorization.mdx) for details.              |
@@ -110,9 +110,13 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
 <InitialCaps />
 
+### `description`
+
+A description of the collection. This is for your reference and can also provide additional information to [Weaviate Agents](/docs/agents/index.md).
+
 ### Mutability
 
-Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it.
+Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it. Use [collection aliases](../../starter-guides/managing-collections/index.mdx#migration-workflow-with-collection-aliases) to perform such a migration with zero downtime.
 
 <details>
   <summary>Mutable parameters</summary>
@@ -129,7 +133,7 @@ import CollectionMutableParameters from "/_includes/collection-mutable-parameter
 
 </details>
 
-After you create a collection, you can add new properties. You cannot modify existing properties after you create the collection. You can also [add new named vectors](./vectorization.mdx#adding-a-named-vector-after-collection-creation).
+After you create a collection, you can [add new properties](./properties.mdx#adding-a-property-after-collection-creation). You cannot modify existing properties after you create the collection. You can also [add new named vectors](./vectorization.mdx#adding-a-named-vector-after-collection-creation).
 
 ## Auto-schema
 
@@ -206,10 +210,10 @@ In order to manage collection aliases, you need to posses the right [`Collection
 - [Tutorial: Schema](/weaviate/starter-guides/managing-collections)
 - [How to: Configure a schema](../../manage-collections/index.mdx)
 - [How to: Collection aliases](../../manage-collections/collection-aliases.mdx)
+- [Concepts: Data Structure](/weaviate/concepts/data)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
     References: REST API: Schema
   </SkipLink>
-- [Concepts: Data Structure](/weaviate/concepts/data)
 
 ## Questions and feedback
 
