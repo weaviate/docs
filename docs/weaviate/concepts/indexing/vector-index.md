@@ -59,11 +59,13 @@ Weaviate's `hnsw` index is a [custom implementation](../../more-resources/faq.md
 
 At build time, the HNSW algorithm creates a series of layers. At query time, the HNSW algorithm uses the layers to build a list of approximate nearest neighbors (ANN) quickly and efficiently.
 
-Consider this diagram of a vector search using HNSW.
+Consider this diagram of a vector index using HNSW.
 
-![HNSW layers](../img/hnsw-layers.svg "HNSW layers")
+![HNSW explained](../img/hnsw_1_explained.png "HNSW explained")
 
 An individual object can exist in more than one layer, but every object in the database is represented in the lowest layer (layer zero in the picture). The layer zero data objects are very well connected to each other. Each layer above the lowest layer has fewer data object, and fewer connections. The data objects in the higher layers correspond to the objects in the lower layers, but each higher layer has exponentially fewer objects than the layer below. The HNSW algorithm takes advantage of the layers to efficiently process large amounts of data.
+
+![HNSW search](../img/hnsw_2_search.png "HNSW search")
 
 When a search query comes in, the HNSW algorithm finds the closest matching data points in the highest layer. Then, HNSW goes one layer deeper, and finds the closest data points in that layer to the ones in the higher layer. These are the nearest neighbors. The algorithm searches the lower layer to create a new list of nearest neighbors. Then, HNSW uses the new list and repeats the process on the next layer down. When it gets to the deepest layer, the HNSW algorithm returns the data objects closest to the search query.
 
@@ -71,13 +73,17 @@ Since there are relatively few data objects on the higher layers, HNSW has to se
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
-Have another look at the diagram; it demonstrates how the HNSW algorithm searches. The blue search vector in the top layer connects to a partial result in layer one. The objects in layer one lead HNSW to the result set in layer zero. HNSW makes three hops through the layers (the dotted blue lines) and skips objects that are unrelated to the search query.
+Have another look at the diagram; it demonstrates how the HNSW algorithm searches. The search vector in the top layer connects to a partial result in layer one. The objects in layer one lead HNSW to the result set in layer zero. This allows HNSW to skip objects that are unrelated to the search query.
 
-If your use case values fast data upload higher than super fast query time and high scalability, then other vector index types may be a better solution (e.g. [Spotify's Annoy](https://github.com/spotify/annoy)).
+Inserting a vector into an HNSW index works in a similar way. The HNSW algorithm finds the closest data objects in the highest layer, and then moves down to the next layer. It continues until it finds the best place to insert the new vector. The HNSW algorithm then connects the new vector to the existing vectors in that layer.
+
+![HNSW insertion](../img/hnsw_3_insertion.png "HNSW insertion")
 
 ### Managing search quality vs speed tradeoffs
 
 HNSW parameters can be adjusted to adjust search quality against speed.
+
+![HNSW parameters](../img/hnsw_4_parameters.png "HNSW parameters")
 
 The `ef` parameter is a critical setting for balancing the trade-off between search speed and quality.
 
