@@ -13,6 +13,24 @@ You can use [Google Cloud Marketplace](https://console.cloud.google.com/marketpl
 - (Recommended) Familiarity with Google Cloud and the Google Cloud console.
 :::
 
+<div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
+  <iframe 
+    id="zklzyv5bop" 
+    src="https://app.guideflow.com/embed/8kozdnza5p" 
+    width="100%" 
+    height="100%" 
+    style={{overflow: "hidden", position: "absolute", border: "none"}} 
+    scrolling="no" 
+    allow="clipboard-read; clipboard-write" 
+    webKitAllowFullScreen 
+    mozAllowFullScreen 
+    allowFullScreen 
+    allowTransparency="true"
+  />
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="8kozdnza5p"></script>
+</div>
+
+
 ## Installation instructions
 
 Broadly, the steps are as follows:
