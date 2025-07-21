@@ -28,7 +28,7 @@ const weaviateURL = process.env.WEAVIATE_URL as string
 
 // SinglePromptGeneration // GroupedTaskGeneration
 // Get the collection 
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 // END GroupedTaskGeneration // END SinglePromptGeneration
 
 // SinglePromptGeneration

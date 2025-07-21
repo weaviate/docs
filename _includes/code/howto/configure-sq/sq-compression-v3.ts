@@ -17,7 +17,7 @@ await client.collections.delete(collectionName);
 // START EnableSQ
 const collection = await client.collections.create({
   name: 'MyCollection',
-  vectorizers: weaviate.configure.vectorizer.none({
+  vectorizers: weaviate.configure.vectors.none({
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw({
       quantizer: weaviate.configure.vectorIndex.quantizer.sq(),
     })
@@ -46,7 +46,7 @@ await client.collections.delete(collectionName);
 // START SQWithOptions
 const collection = await client.collections.create({
   name: 'MyCollection',
-  vectorizers: weaviate.configure.vectorizer.none({
+  vectorizers: weaviate.configure.vectors.none({
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw({
       quantizer: weaviate.configure.vectorIndex.quantizer.sq({
         cache: true,     // Enable caching

@@ -34,7 +34,7 @@ try {
 }
 
 // START AddTenantsToClass // START ListTenants // START CreateMtObject // START AddCrossRef
-const multiCollection =  client.collections.get('MultiTenancyCollection');
+const multiCollection =  client.collections.use('MultiTenancyCollection');
 // END AddTenantsToClass // END ListTenants // END CreateMtObject // END AddCrossRef
 
 
@@ -75,7 +75,7 @@ const result = await client.collections.create({
 
 {
 // START UpdateAutoMT
-const multiCollection = client.collections.get('MultiTenancyCollection');
+const multiCollection = client.collections.use('MultiTenancyCollection');
 
 await multiCollection.config.update({
   multiTenancy: weaviate.reconfigure.multiTenancy({
@@ -133,7 +133,7 @@ assert.ok(['tenantA', 'tenantB'].includes(tenants[1].name));
 // =======================================
 {
 // START GetTenantsByName 
-const multiCollection = client.collections.get('MultiTenancyCollection');
+const multiCollection = client.collections.use('MultiTenancyCollection');
 
 // highlight-start
 const tenants = await multiCollection.tenants.getByNames(['tenantA', 'tenantB'])
@@ -148,7 +148,7 @@ console.log(tenants)
 
 {
 // START GetOneTenant
-const multiCollection = client.collections.get('MultiTenancyCollection');
+const multiCollection = client.collections.use('MultiTenancyCollection');
 
 // highlight-start
 const tenant = await multiCollection.tenants.getByName('tenantA')
@@ -162,7 +162,7 @@ console.log(tenant)
 // =======================================
 {
 // START RemoveTenants
-const multiCollection = client.collections.get('MultiTenancyCollection');
+const multiCollection = client.collections.use('MultiTenancyCollection');
 
 // highlight-start
 await multiCollection.tenants.remove([
@@ -182,7 +182,7 @@ assert.deepEqual(tenants.length, 1);
 // =======================================
 {
 // START DeactivateTenants
-const multiCollection = client.collections.get('MultiTenancyCollection')
+const multiCollection = client.collections.use('MultiTenancyCollection')
 
 // highlight-start
 await multiCollection.tenants.update({
@@ -198,7 +198,7 @@ await multiCollection.tenants.update({
 // ===========================
 {
 // START ActivateTenants
-const multiCollection = client.collections.get('MultiTenancyCollection')
+const multiCollection = client.collections.use('MultiTenancyCollection')
 
 // highlight-start
 await multiCollection.tenants.update({
@@ -214,7 +214,7 @@ await multiCollection.tenants.update({
 // ===============================
 {
 // START ChangeTenantState
-const multiCollection = client.collections.get('MultiTenancyCollection')
+const multiCollection = client.collections.use('MultiTenancyCollection')
 
 // highlight-start
 await multiCollection.tenants.update({
@@ -230,7 +230,7 @@ await multiCollection.tenants.update({
 // ==========================
 {
 // START OffloadTenants
-const multiCollection = client.collections.get('MultiTenancyCollection')
+const multiCollection = client.collections.use('MultiTenancyCollection')
 
 // highlight-start
 await multiCollection.tenants.update({
@@ -283,7 +283,7 @@ await multiTenantA.data.insert({
 // =====================
 {
 // START Search
-const multiCollection = client.collections.get('MultiTenancyCollection');
+const multiCollection = client.collections.use('MultiTenancyCollection');
 
 // highlight-start
 const multiTenantA = multiCollection.withTenant('tenantA')

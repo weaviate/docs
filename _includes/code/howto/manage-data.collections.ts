@@ -32,7 +32,7 @@ import { reconfigure } from 'weaviate-client';
 */
 
 // START UpdateCollection // START ReadOneCollection
-let articles = client.collections.get('Article')
+let articles = client.collections.use('Article')
 // END UpdateCollection // END ReadOneCollection
 
 // ================================
@@ -57,8 +57,8 @@ console.log(JSON.stringify(newCollection, null, 2));
 // END BasicCreateCollection
 
 // Test
-// (client.collections.get('ArticleNV').config.get()).vectorizer.body.vectorizer
-result = client.collections.get(collectionName).config.get()
+// (client.collections.use('ArticleNV').config.get()).vectorizer.body.vectorizer
+result = client.collections.use(collectionName).config.get()
 
 console.assert('replication' in result);
 }
@@ -100,7 +100,7 @@ await client.collections.create({
 // ===== READ A CLASS =====
 // ================================
 
-articles = client.collections.get('Article')
+articles = client.collections.use('Article')
 // START ReadOneCollection
 // highlight-start
 const collectionConfig = await articles.config.get()
@@ -153,7 +153,7 @@ await client.collections.create({
 // END BasicNamedVectors
 
 // Test
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 // TODO - fix this test
 // assert.equal(
@@ -193,7 +193,7 @@ await client.collections.create({
 // END Vectorizer
 
 // Test
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 assert.equal(result.vectorizer.default.vectorizer.name, 'text2vec-openai');
 assert.equal(result.properties.length, 2);
@@ -230,7 +230,7 @@ await client.collections.create({
 // END SetVectorIndexType
 
 // Test
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 assert.equal(result.vectorizer.default.vectorizer.name, 'text2vec-openai');
 assert.equal(result.vectorIndexType, 'hnsw');
@@ -269,7 +269,7 @@ await client.collections.create({
 // END SetVectorIndexParams
 
 // Test
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 assert.equal(result.vectorizer.default.vectorizer.name, 'text2vec-openai');
 assert.equal(result.vectorIndexType, 'flat');
@@ -303,7 +303,7 @@ await client.collections.create({
 // END ModuleSettings
 
 // Test
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 assert.equal(result.vectorizer.default.vectorizer.name, 'text2vec-cohere');
 assert.equal(
@@ -351,7 +351,7 @@ const newCollection = await client.collections.create({
 // END PropModuleSettings
 
 // Test vectorizeCollectionName
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 assert.equal(result.vectorizer.default.vectorizer.name, 'text2vec-cohere');
 assert.equal(
@@ -388,7 +388,7 @@ await client.collections.create({
 // END DistanceMetric
 
 // Test
-result = client.collections.get(collectionName).config.get()
+result = client.collections.use(collectionName).config.get()
 
 assert.equal(result.vectorizer.default.indexConfig.distance, 'cosine');
 
@@ -676,7 +676,7 @@ console.log(JSON.stringify(allCollections, null, 2));
 // ===== UPDATE A COLLECTION =====
 // ================================
 
-articles = client.collections.get('Article')
+articles = client.collections.use('Article')
 
 
 // START UpdateCollection
@@ -686,7 +686,7 @@ await articles.config.update({
   invertedIndex: reconfigure.invertedIndex({
     bm25k1: 1.5 // Change the k1 parameter from 1.2
   }),
-    vectorizers: reconfigure.vectorizer.update({
+    vectorizers: reconfigure.vectors.update({
       vectorIndexConfig: reconfigure.vectorIndex.hnsw({
         quantizer: reconfigure.vectorIndex.quantizer.pq(),
         ef: 4,
@@ -714,7 +714,7 @@ await client.collections.create({
 })
 
 // START UpdateReranker
-const collection = client.collections.get('Article')
+const collection = client.collections.use('Article')
 
 await collection.config.update({
     // highlight-start
@@ -739,14 +739,14 @@ client.collections.delete("Article")
 
 client.collections.create({
     name: "Article",
-    vectorizers: configure.vectorizer.text2VecOpenAI(),
+    vectorizers: configure.vectors.text2VecOpenAI(),
     // highlight-start
     generative: configure.generative.openAI()
     // highlight-end
 })
 
 // START UpdateGenerative
-const collection = client.collections.get("Article")
+const collection = client.collections.use("Article")
 
 await collection.config.update({
     // highlight-start

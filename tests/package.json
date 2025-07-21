@@ -6,5 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "for file in howto/*.ts; do node --loader=ts-node/esm $file; done"
+  },
+  "dependencies": {
+    "weaviate-client": "^3.7.0"
   }
 }

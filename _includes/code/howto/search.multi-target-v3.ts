@@ -22,7 +22,7 @@ var jeopardy, result;
 // END-ANY
 
 // START MultiBasic
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearText('a wild animal', {
   limit: 2,
@@ -53,7 +53,7 @@ var v3 = resp.objects[1].vectors.jeopardy_answers_vector;
 
 
 // START MultiTargetNearVector
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearVector({
   // highlight-start
@@ -79,7 +79,7 @@ result.objects.forEach((item) => {
 // ========================
 
 // START MultiTargetWithSimpleJoin
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearText('a wild animal', {
   limit: 2,
@@ -100,7 +100,7 @@ result.objects.forEach((item) => {
 // ========================
 
 // START MultiTargetManualWeights
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearText('a wild animal', {
   limit: 2,
@@ -124,7 +124,7 @@ result.objects.forEach((item) => {
 // ========================
 
 // START MultiTargetRelativeScore
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearText('a wild animal', {
   limit: 2,
@@ -145,7 +145,7 @@ result.objects.forEach((item) => {
 
 
 // START MultiTargetMultipleNearVectorsV1
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearVector({
   // highlight-start
@@ -167,7 +167,7 @@ result.objects.forEach((item) => {
 // END MultiTargetMultipleNearVectorsV1
 
 // START MultiTargetMultipleNearVectorsV2
-jeopardy = client.collections.get('JeopardyTiny');
+jeopardy = client.collections.use('JeopardyTiny');
 
 result = await jeopardy.query.nearVector({
   // highlight-start
