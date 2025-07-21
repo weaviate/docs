@@ -6,16 +6,14 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 import weaviate, { WeaviateClient, vectorIndex } from 'weaviate-client';
-import { vectorizer, reranker, generative, dataType, tokenization, configure, reconfigure, vectorDistances } from 'weaviate-client';
+import { vectorizer, reranker, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
 const openaiKey = process.env.OPENAI_API_KEY as string
 
-const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL, {
-  authCredentials: new weaviate.ApiKey(weaviateKey),
-  headers: {
-     'X-OpenAI-Api-Key': openaiKey,  // Replace with your inference API key
+const client: WeaviateClient = await weaviate.connectToLocal({headers: {
+     'X-OpenAI-Api-Key': openaiKey as string,  // Replace with your inference API key
    }
  }
 )
@@ -729,6 +727,42 @@ assert.equal(config.reranker?.name,"reranker-cohere")
 
 // Delete the collection to recreate it
 client.collections.delete("Article")
+
+// ==========================================
+// ===== MULTI-VECTOR EMBEDDINGS MUVERA
+// ==========================================
+
+// Clean slate
+await client.collections.delete("DemoCollection")
+
+// START MultiValueVectorMuvera
+import { configure } from 'weaviate-client';
+
+await client.collections.create({
+    name: "DemoCollection",
+    vectorizers: [
+        // Example 1 - Use a model integration
+        configure.multiVectors.multi2VecJinaAI({
+            name: "jina_colbert",
+            sourceProperties: ["text"],
+            // highlight-start
+            encoding: configure.vectorIndex.multiVector.encoding.muvera({
+                // Optional parameters for tuning MUVERA
+                ksim: 4,
+                dprojections: 16,
+                repetitions: 20,
+        }),
+            // highlight-end
+}),
+        // Example 2 - User-provided multi-vector representations
+        configure.multiVectors.selfProvided({
+            name: "custom_multi_vector",
+            encoding: configure.vectorIndex.multiVector.encoding.muvera(),
+}),
+    ],
+    // Additional parameters not shown
+})
+// END MultiValueVectorMuvera
 
 
 // ===============================================

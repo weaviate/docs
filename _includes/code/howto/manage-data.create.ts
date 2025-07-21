@@ -7,19 +7,16 @@ import assert from 'assert';
 // ================================
 import weaviate, { WeaviateClient, WeaviateNonGenericObject, WeaviateObject, WeaviateReturn } from 'weaviate-client';
 
-const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
-  process.env.WEAVIATE_URL,
- {
-   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
+const client: WeaviateClient = await weaviate.connectToLocal({
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
  } 
 )
 
 const collectionName = 'JeopardyQuestion';
 const wineRewiews = 'WineReviewNV'
-let result: WeaviateNonGenericObject;
+let result: WeaviateNonGenericObject | null;
 
 // CreateObjectWithDeterministicId START
 // highlight-start
@@ -131,7 +128,7 @@ console.log('UUID: ', uuid)
 result = await jeopardy.query.fetchObjectById(uuid)
 console.log('1')
 // result = await client.data.getterById().withClassName(className).withId(result.id).do();
-assert.equal(result.properties['newProperty'], 123);
+assert.equal(result?.properties['newProperty'], 123);
 
 // =======================================
 // ===== Create object with a vector =====
@@ -196,7 +193,7 @@ console.log('UUID: ', uuid)
 // jeopardy = client.collections.use(wineRewiews)
 
 result = await reviews.query.fetchObjectById('12345678-e64f-5d94-90db-c8cfa3fc1234')
-assert.deepEqual(result.properties, {
+assert.deepEqual(result?.properties, {
   'question': 'This vector DB is OSS and supports automatic property type inference on import',
   'answer': 'Weaviate',
 });
@@ -223,7 +220,7 @@ console.log('UUID: ', uuid)
 // CreateObjectWithDeterministicId END
 
 result = await reviews.query.fetchObjectById(uuid)
-assert.equal(result.uuid, generateUuid5(JSON.stringify(dataObject)));
+assert.equal(result?.uuid, generateUuid5(JSON.stringify(dataObject)));
 
 
 // ===========================
