@@ -7,12 +7,9 @@ import assert from 'assert';
 // ================================
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
-const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
-  process.env.WEAVIATE_URL,
- {
-   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
+const client: WeaviateClient = await weaviate.connectToLocal({
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
  } 
 )

@@ -1,7 +1,10 @@
 import os
 import re
 from pathlib import Path
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 def load_script(script_path: str) -> str:
     with open(script_path, "r") as f:
