@@ -60,7 +60,7 @@ async function createCollection(clientIn: WeaviateClient, collectionName: string
         },
         // Additional settings not shown
         // END CreateCollectionCollectionToCollection  // END CreateCollectionTenantToCollection  // END CreateCollectionCollectionToTenant  // END CreateCollectionTenantToTenant
-        vectorizers: weaviate.configure.vectorizer.text2VecCohere(),
+        vectorizers: weaviate.configure.vectors.text2VecCohere(),
         generative: weaviate.configure.generative.cohere(),
         properties: [
             {
@@ -104,14 +104,14 @@ async function createCollection(clientIn: WeaviateClient, collectionName: string
 
 
 // START CollectionToCollection  
-reviews_src = client_src.collections.get("WineReview")
-reviews_tgt = client_tgt.collections.get("WineReview")
+reviews_src = client_src.collections.use("WineReview")
+reviews_tgt = client_tgt.collections.use("WineReview")
 // END CollectionToCollection   
 
 // START CollectionToTenant
 
-reviews_src = client_src.collections.get("WineReview")
-reviews_mt_tgt = client_tgt.collections.get("WineReviewMT")
+reviews_src = client_src.collections.use("WineReview")
+reviews_mt_tgt = client_tgt.collections.use("WineReviewMT")
 // END CollectionToTenant
 
 // START CollectionToCollection  // START TenantToCollection  // START CollectionToTenant  // START TenantToTenant
@@ -237,9 +237,9 @@ let reviews_src_tenant_a;
 // END TenantToCollection
 
 // START TenantToCollection
-reviews_src = client_src.collections.get("WineReviewMT")
+reviews_src = client_src.collections.use("WineReviewMT")
 reviews_src_tenant_a = reviews_src.withTenant("tenantA")
-reviews_tgt = client_tgt.collections.get("WineReview")
+reviews_tgt = client_tgt.collections.use("WineReview")
 
 migrateData(reviews_src_tenant_a, reviews_tgt)
 // END TenantToCollection
@@ -278,7 +278,7 @@ let tenantsTgt = [
     { name: 'tenantB'}
   ]
 
-reviews_mt_tgt = client_tgt.collections.get("WineReviewMT")
+reviews_mt_tgt = client_tgt.collections.use("WineReviewMT")
 reviews_mt_tgt.tenants.create(tenantsTgt)
 // END CreateTenants
 
@@ -340,7 +340,7 @@ tenantsTgt = [
   ]
 
 
-reviews_mt_tgt = client_tgt.collections.get("WineReviewMT")
+reviews_mt_tgt = client_tgt.collections.use("WineReviewMT")
 reviews_mt_tgt.tenants.create(tenantsTgt)
 // END Re-create tenants
 
@@ -357,9 +357,9 @@ assert.equal(agg_resp.totalCount, 0)
 
 // START TenantToTenant
 // Variables initialized above
-reviews_mt_src = client_src.collections.get("WineReviewMT")
+reviews_mt_src = client_src.collections.use("WineReviewMT")
 reviews_src_tenant_a = reviews_mt_src.withTenant("tenantA")
-reviews_mt_tgt = client_tgt.collections.get("WineReviewMT")
+reviews_mt_tgt = client_tgt.collections.use("WineReviewMT")
 reviews_tgt_tenant_a = reviews_mt_tgt.withTenant(tenantsTgt[0].name)
 
 migrateData(reviews_src_tenant_a, reviews_tgt_tenant_a)

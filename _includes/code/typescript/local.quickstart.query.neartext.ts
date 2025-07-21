@@ -4,7 +4,7 @@ import weaviate, { WeaviateClient } from 'weaviate-client';
 const client: WeaviateClient = await weaviate.connectToLocal();
 
 // highlight-start
-const questions = client.collections.get('Question');
+const questions = client.collections.use('Question');
 
 const result = await questions.query.nearText('biology', {
   limit: 2,

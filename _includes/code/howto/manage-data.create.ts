@@ -29,11 +29,11 @@ import { generateUuid5 } from 'weaviate-client';
 
 // add thing below to pages
 // CreateObject START // CreateObjectWithVector START // CreateObjectWithId START // CreateObjectWithDeterministicId START
-const jeopardy = client.collections.get('JeopardyQuestion')
+const jeopardy = client.collections.use('JeopardyQuestion')
 
 // CreateObject END // CreateObjectWithVector END // CreateObjectWithId END // CreateObjectWithDeterministicId END
 // CreateObjectNamedVectors START
-const reviews = client.collections.get('WineReviewNV')
+const reviews = client.collections.use('WineReviewNV')
 
 // CreateObjectNamedVectors END
 let uuid;
@@ -45,7 +45,7 @@ let uuid;
 const collectionDefinition = {
   name: 'JeopardyQuestion',
   description: 'A Jeopardy! question',
-  vectorizers: weaviate.configure.vectorizer.text2VecOpenAI(),
+  vectorizers: weaviate.configure.vectors.text2VecOpenAI(),
   properties: [
     {
       name: 'question',
@@ -86,17 +86,17 @@ const collectionDefinitionNV = {
     },
   ],
   vectorizers: [
-  weaviate.configure.vectorizer.text2VecOpenAI({
+  weaviate.configure.vectors.text2VecOpenAI({
     name: 'title',
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw(),
     sourceProperties: ['title']
   }),
-  weaviate.configure.vectorizer.text2VecOpenAI({
+  weaviate.configure.vectors.text2VecOpenAI({
     name: 'review_body',
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw(),
     sourceProperties: ['review_body'],
   }),
-  weaviate.configure.vectorizer.text2VecOpenAI({
+  weaviate.configure.vectors.text2VecOpenAI({
     name: 'title_country',
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw(),
     sourceProperties: ['title', 'country'],
@@ -126,7 +126,7 @@ uuid = await jeopardy.data.insert({
 
 console.log('UUID: ', uuid)
 // CreateObject END
-// jeopardy = client.collections.get(collectionName)
+// jeopardy = client.collections.use(collectionName)
 
 result = await jeopardy.query.fetchObjectById(uuid)
 console.log('1')
@@ -193,7 +193,7 @@ uuid = await jeopardy.data.insert({
 
 console.log('UUID: ', uuid)
 // CreateObjectWithId END
-// jeopardy = client.collections.get(wineRewiews)
+// jeopardy = client.collections.use(wineRewiews)
 
 result = await reviews.query.fetchObjectById('12345678-e64f-5d94-90db-c8cfa3fc1234')
 assert.deepEqual(result.properties, {

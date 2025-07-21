@@ -81,7 +81,7 @@ await client.collections.create({
 // END RerankerVoyageAI
 
 // START RerankerQueryExample
-let myCollection = client.collections.get('DemoCollection');
+let myCollection = client.collections.use('DemoCollection');
 
 const results = await myCollection.query.nearText(
   ['A holiday film'],

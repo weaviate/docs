@@ -26,7 +26,7 @@ let result;
 // =======================
 {
 // ReadObject START
-const jeopardy = client.collections.get('JeopardyQuestion')
+const jeopardy = client.collections.use('JeopardyQuestion')
 
 const response = await jeopardy.query.fetchObjectById('ed89d9e7-4c9d-4a6a-8d20-095cb0026f54')
 
@@ -42,7 +42,7 @@ assert.equal(result.properties['answer'], 'San Francisco');
 // ===================================
 {
 // ReadObjectWithVector START
-const jeopardy = client.collections.get('JeopardyQuestion')
+const jeopardy = client.collections.use('JeopardyQuestion')
 
 const response = await jeopardy.query.fetchObjectById('ed89d9e7-4c9d-4a6a-8d20-095cb0026f54',{
   // highlight-start
@@ -66,7 +66,7 @@ assert.equal(result.vector.length, 1536);
 
 // TODO: Attempt not working; Waiting for response from Weaviate
 // ReadObjectNamedVectors START
-const reviews = client.collections.get('WineReviewNV') // Collection with named vectors
+const reviews = client.collections.use('WineReviewNV') // Collection with named vectors
 const objectUuid = '' // Object UUID
 
 const response = await reviews.query.fetchObjectById(objectUuid,{
@@ -97,7 +97,7 @@ const object_uuid = generateUuid5(
 )
 // highlight-end
 
-const authors = client.collections.get('Author')
+const authors = client.collections.use('Author')
 // highlight-start
 const authorExists = await authors.data.exists(object_uuid)
 // highlight-end

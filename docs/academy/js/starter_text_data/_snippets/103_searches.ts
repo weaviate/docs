@@ -31,7 +31,7 @@ headers: {
 // Get the collection
 // END MetadataSemanticSearch
 // MetadataBM25Search // MetadataSemanticSearch // MetadataHybridSearch // FilteredSemanticSearch
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 // END MetadataBM25Search // END MetadataSemanticSearch // END MetadataHybridSearch // END FilteredSemanticSearch
 // MetadataSemanticSearch
 
