@@ -538,8 +538,6 @@ const sidebars = {
           items: [
             "weaviate/config-refs/collections/properties",
             "weaviate/config-refs/collections/vectorization",
-            "weaviate/config-refs/collections/cluster",
-            "weaviate/config-refs/collections/multi-tenancy",
           ],
         },
         {
