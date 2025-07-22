@@ -19,19 +19,26 @@ A **collection definition** describes how to store and index a set of data objec
 
 These are the top-level parameters you can set when creating a collection.
 
-| Parameter             | Type   | Description                                                                                                                                                      |
-| :-------------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `class`               | String | The name of the collection. See the [class](#class) section below for details.                                                                                   |
-| `description`         | String | A description of the collection. See the [description](#description) section below for details.                                                                  |
-| `properties`          | Object | An array of property objects defining the data schema. <br/>See [References: Properties](./properties.mdx) for details.                                          |
-| `vectorConfig`        | Array  | Configure named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields.                                                     |
-| `vectorizer`          | String | The vectorizer module to use. Set to `"none"` to disable auto-vectorization. <br/>See [References: Vectorization](./vectorization.mdx) for details.              |
-| `vectorIndexType`     | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`). <br/>See [References: Vector index](../indexing/vector-index.mdx) for details.                      |
-| `vectorIndexConfig`   | Object | Configuration settings specific to the chosen `vectorIndexType`. <br/>See [References: Vector index](../indexing/vector-index.mdx) for details.                  |
-| `invertedIndexConfig` | Object | Configuration for the inverted index, affecting filtering and keyword search. <br/>See [References: Inverted index](../indexing/inverted-index.mdx) for details. |
-| `shardingConfig`      | Object | Controls sharding behavior in a multi-node cluster. <br/>See [References: Cluster configuration](./cluster.mdx) for details.                                     |
-| `replicationConfig`   | Object | Controls data replication settings for fault tolerance. <br/>See [References: Cluster configuration](./cluster.mdx) for details.                                 |
-| `multiTenancyConfig`  | Object | Configuration to enable multi-tenancy for the collection. <br/>See [References: Multi-tenancy](./multi-tenancy.mdx) for details.                                 |
+| Parameter             | Type   | Description                                                                                                                                                      | Default                                                  | Mutable           |
+| :-------------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------- | :---------------- |
+| `class`               | String | The name of the collection. See the [class](#class) section below for details.                                                                                   | (Required)                                               | No                |
+| `description`         | String | A description of the collection. See the [description](#description) section below for details.                                                                  | `null`                                                   | Yes               |
+| `properties`          | Array  | An array of property objects defining the data schema. <br/>See [References: Properties](./properties.mdx) for details.                                          | `[]`                                                     | Partially\*       |
+| `vectorConfig`        | Object | Configure named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields.                                                     | `null`                                                   | Partially\*\*     |
+| `vectorizer`          | String | The vectorizer module to use. Set to `"none"` to disable auto-vectorization. <br/>See [References: Vectorization](./vectorization.mdx) for details.              | Module-specific default                                  | No                |
+| `vectorIndexType`     | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`). <br/>See [References: Vector index](../indexing/vector-index.mdx) for details.                      | `hnsw`                                                   | No                |
+| `vectorIndexConfig`   | Object | Configuration settings specific to the chosen `vectorIndexType`. <br/>See [References: Vector index](../indexing/vector-index.mdx) for details.                  | Index-specific defaults                                  | Partially\*\*\*   |
+| `invertedIndexConfig` | Object | Configuration for the inverted index, affecting filtering and keyword search. <br/>See [References: Inverted index](../indexing/inverted-index.mdx) for details. | See [Inverted Index section](#inverted-index-parameters) | Yes               |
+| `shardingConfig`      | Object | Controls sharding behavior in a multi-node cluster. <br/>See [References: Cluster configuration](./cluster.mdx) for details.                                     | See [Sharding section](#sharding-parameters)             | No                |
+| `replicationConfig`   | Object | Controls data replication settings for fault tolerance. <br/>See [References: Cluster configuration](./cluster.mdx) for details.                                 | `{"factor": 1}`                                          | Partially\*\*\*\* |
+| `multiTenancyConfig`  | Object | Configuration to enable multi-tenancy for the collection. <br/>See [References: Multi-tenancy](./multi-tenancy.mdx) for details.                                 | `{"enabled": false}`                                     | Partially**\***   |
+| `moduleConfig`        | Object | Module-specific configuration settings.                                                                                                                          | `{}`                                                     | Partially**\*\*** |
+
+\* New properties can be added; existing properties cannot be modified<br/>
+\*\* New named vectors can be added; some vector index settings are mutable<br/> \*** See [vector index mutable parameters](#vector-index-mutable-parameters)<br/>
+\*\*** See [replication mutable parameters](#replication-parameters)<br/>
+\*\***\* See [multi-tenancy mutable parameters](#multi-tenancy-parameters)<br/>
+\*\*\*\*** Only generative and reranker modules are mutable (from v1.26.8 and v1.27.1)
 
 <details>
   <summary>Example collection configuration</summary>
@@ -169,16 +176,16 @@ A description of the collection. This is for your reference and can also provide
 
 ### Property parameters
 
-| Parameter             | Type    | Description                                                                                                                                                                     | Default    |
-| :-------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- |
-| `name`                | String  | The name of the property. See the [name](#name) section below for details.                                                                                                      | (Required) |
-| `dataType`            | Array   | An array containing one or more data types. See [Data Types](../datatypes.md) for a full list. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) |
-| `description`         | String  | A description of the property for your reference.                                                                                                                               | `null`     |
-| `tokenization`        | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing. See the [tokenization](#tokenization) section below for details.                      | `word`     |
-| `indexFilterable`     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering. See [References: Inverted index](../indexing/inverted-index.mdx) for details.      | `true`     |
-| `indexSearchable`     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search. See [References: Inverted index](../indexing/inverted-index.mdx) for details.   | `true`     |
-| `moduleConfig`        | Object  | Module-specific settings, such as skipping vectorization for this property. See [References: Vector index](../indexing/vector-index.mdx) for details.                           | `{}`       |
-| `invertedIndexConfig` | Object  | Property-level overrides for inverted index settings, such as `bm25` parameters. See [References: Inverted index](../indexing/inverted-index.mdx) for details.                  | `{}`       |
+| Parameter             | Type    | Description                                                                                                                                                                     | Default    | Mutable |
+| :-------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- | :------ |
+| `name`                | String  | The name of the property. See the [name](#name) section below for details.                                                                                                      | (Required) | No      |
+| `dataType`            | Array   | An array containing one or more data types. See [Data Types](../datatypes.md) for a full list. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) | No      |
+| `description`         | String  | A description of the property for your reference.                                                                                                                               | `null`     | Yes     |
+| `tokenization`        | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing. See the [tokenization](#tokenization) section below for details.                      | `word`     | No      |
+| `indexFilterable`     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering. See [References: Inverted index](../indexing/inverted-index.mdx) for details.      | `true`     | No      |
+| `indexSearchable`     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search. See [References: Inverted index](../indexing/inverted-index.mdx) for details.   | `true`     | No      |
+| `moduleConfig`        | Object  | Module-specific settings, such as skipping vectorization for this property. See [References: Vector index](../indexing/vector-index.mdx) for details.                           | `{}`       | No      |
+| `invertedIndexConfig` | Object  | Property-level overrides for inverted index settings, such as `bm25` parameters. See [References: Inverted index](../indexing/inverted-index.mdx) for details.                  | `{}`       | No      |
 
 <details>
   <summary>Example property configuration</summary>
@@ -393,15 +400,46 @@ You can limit the combined number of `gse` and `Kagome` tokenizers running at th
 
 This table explains the key parameters used to configure vectorization and vector indexing when creating a Weaviate collection. Note that you can either configure a single vector space using the top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`) or multiple named vector spaces using `vectorConfig`, but not both.
 
-| Parameter                                 | Type   | Description                                                                                                                                                                |
-| :---------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vectorizer`                              | String | The name of the vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization and provide vectors manually.                              |
-| `vectorIndexType`                         | String | The type of vector index to use. Common values are `hnsw` (default), `flat`, or `dynamic`.                                                                                 |
-| `vectorIndexConfig`                       | Object | An object containing configuration settings specific to the chosen `vectorIndexType` (e.g., HNSW parameters like `ef`, `maxConnections`).                                  |
-| `vectorConfig`                            | Object | A parent object used to define one or more named vector spaces. Each key within this object is a unique name for a vector space (e.g., "title_vector").                    |
-| ↪ `vectorConfig.<name>.vectorizer`        | Object | A vectorizer configuration specific to the named vector. It defines the module and which properties to vectorize (e.g., `{"text2vec-openai": {"properties": ["title"]}}`). |
-| ↪ `vectorConfig.<name>.vectorIndexType`   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                      |
-| ↪ `vectorConfig.<name>.vectorIndexConfig` | Object | The configuration for the index of this specific named vector.                                                                                                             |
+| Parameter                                 | Type   | Description                                                                                                                                                                | Default                 | Mutable       |
+| :---------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :------------ |
+| `vectorizer`                              | String | The name of the vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization and provide vectors manually.                              | Module-specific default | No            |
+| `vectorIndexType`                         | String | The type of vector index to use. Common values are `hnsw` (default), `flat`, or `dynamic`.                                                                                 | `hnsw`                  | No            |
+| `vectorIndexConfig`                       | Object | An object containing configuration settings specific to the chosen `vectorIndexType` (e.g., HNSW parameters like `ef`, `maxConnections`).                                  | Index-specific defaults | Partially\*   |
+| `vectorConfig`                            | Object | A parent object used to define one or more named vector spaces. Each key within this object is a unique name for a vector space (e.g., "title_vector").                    | `null`                  | Partially\*\* |
+| ↪ `vectorConfig.<name>.vectorizer`        | Object | A vectorizer configuration specific to the named vector. It defines the module and which properties to vectorize (e.g., `{"text2vec-openai": {"properties": ["title"]}}`). | (Required)              | No            |
+| ↪ `vectorConfig.<name>.vectorIndexType`   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                      | `hnsw`                  | No            |
+| ↪ `vectorConfig.<name>.vectorIndexConfig` | Object | The configuration for the index of this specific named vector.                                                                                                             | Index-specific defaults | Partially\*   |
+
+\* See [vector index mutable parameters](#vector-index-mutable-parameters)<br/>
+\*\* New named vectors can be added after collection creation
+
+### Vector index mutable parameters {#vector-index-mutable-parameters}
+
+The following vector index configuration parameters can be modified after collection creation:
+
+| Parameter                     | Type    | Description                                            | Default      | Mutable |
+| :---------------------------- | :------ | :----------------------------------------------------- | :----------- | :------ |
+| `dynamicEfFactor`             | Integer | Dynamic ef factor for HNSW index                       | `8`          | Yes     |
+| `dynamicEfMin`                | Integer | Minimum dynamic ef for HNSW index                      | `100`        | Yes     |
+| `dynamicEfMax`                | Integer | Maximum dynamic ef for HNSW index                      | `500`        | Yes     |
+| `filterStrategy`              | String  | Filter strategy for HNSW index (introduced in v1.27.0) | `acorn`      | Yes     |
+| `flatSearchCutoff`            | Integer | Threshold for switching from HNSW to flat search       | `40000`      | Yes     |
+| `skip`                        | Boolean | Skip vector indexing for this collection               | `false`      | Yes     |
+| `vectorCacheMaxObjects`       | Integer | Maximum number of objects in vector cache              | `1e12`       | Yes     |
+| **Binary Quantization (BQ)**  |         |                                                        |              |         |
+| `bq.enabled`                  | Boolean | Enable binary quantization                             | `false`      | Yes     |
+| `bq.rescoreLimit`             | Integer | Number of candidates to rescore for BQ                 | `200`        | Yes     |
+| **Product Quantization (PQ)** |         |                                                        |              |         |
+| `pq.enabled`                  | Boolean | Enable product quantization                            | `false`      | Yes     |
+| `pq.centroids`                | Integer | Number of centroids for PQ                             | `256`        | Yes     |
+| `pq.segments`                 | Integer | Number of segments for PQ                              | `128`        | Yes     |
+| `pq.trainingLimit`            | Integer | Training limit for PQ                                  | `100000`     | Yes     |
+| `pq.encoder.type`             | String  | Encoder type for PQ                                    | `kmeans`     | Yes     |
+| `pq.encoder.distribution`     | String  | Distribution for PQ encoder                            | `log-normal` | Yes     |
+| **Scalar Quantization (SQ)**  |         |                                                        |              |         |
+| `sq.enabled`                  | Boolean | Enable scalar quantization                             | `false`      | Yes     |
+| `sq.rescoreLimit`             | Integer | Number of candidates to rescore for SQ                 | `200`        | Yes     |
+| `sq.trainingLimit`            | Integer | Training limit for SQ                                  | `100000`     | Yes     |
 
 :::info
 
@@ -455,17 +493,31 @@ For more code example and configuration guides visit the [How-to: Manage collect
 
 :::
 
+### Inverted index parameters {#inverted-index-parameters}
+
+| Parameter                | Type    | Description                                    | Default | Mutable |
+| :----------------------- | :------ | :--------------------------------------------- | :------ | :------ |
+| `bm25.b`                 | Float   | BM25 b parameter                               | `0.75`  | Yes     |
+| `bm25.k1`                | Float   | BM25 k1 parameter                              | `1.2`   | Yes     |
+| `cleanupIntervalSeconds` | Integer | Cleanup interval in seconds                    | `60`    | Yes     |
+| `stopwords.preset`       | String  | Preset stopword list                           | `en`    | Yes     |
+| `stopwords.additions`    | Array   | Additional custom stopwords                    | `[]`    | Yes     |
+| `stopwords.removals`     | Array   | Stopwords to remove from preset                | `[]`    | Yes     |
+| `indexTimestamps`        | Boolean | Maintain inverted indexes by object timestamps | `false` | No      |
+| `indexNullState`         | Boolean | Maintain inverted indexes for null state       | `false` | No      |
+| `indexPropertyLength`    | Boolean | Maintain inverted indexes by property length   | `false` | No      |
+
 ### Replication parameters
 
 <RaftRFChangeWarning />
 
 [Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
-The `factor` parameter sets the number of copies of to be stored for objects in this collection.
-
-| Parameter | Type    | Default | Mutable | Description                                                                                                     |
-| :-------- | :------ | :------ | :------ | :-------------------------------------------------------------------------------------------------------------- |
-| `factor`  | Integer | `1`     | Yes     | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas. |
+| Parameter          | Type    | Description                                                                                                     | Default                   | Mutable                               |
+| :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------- | :------------------------ | :------------------------------------ |
+| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas. | `1`                       | No in v1.25+, Yes in earlier versions |
+| `asyncEnabled`     | Boolean | Enable asynchronous replication (introduced in v1.26.0)                                                         | `false`                   | Yes                                   |
+| `deletionStrategy` | String  | Strategy for handling deletions in replication (introduced in v1.27.0)                                          | `"NoAutomatedResolution"` | Yes                                   |
 
 <details>
   <summary>Example replication configuration</summary>
@@ -478,7 +530,9 @@ An example of a complete `replicationConfig` object:
   "vectorizer": "text2vec-openai",
   // highlight-start
   "replicationConfig": {
-    "factor": 3
+    "factor": 3,
+    "asyncEnabled": false,
+    "deletionStrategy": "NoAutomatedResolution"
   }
   // highlight-end
 }
@@ -575,16 +629,16 @@ For more code example and configuration guides visit the [How-to: Manage collect
 
 Sharding is configured via the `shardingConfig` object in the collection definition. These parameters are immutable and cannot be changed after the collection is created.
 
-| Parameter             | Type    | Description                                                                                                                                                                         | Default         |
-| :-------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- |
-| `desiredCount`        | Integer | **(Optional, Immutable)** The desired number of physical shards for the collection. If this value is larger than the number of cluster nodes, some nodes will host multiple shards. | Number of nodes |
-| `virtualPerPhysical`  | Integer | **(Optional, Immutable)** The number of virtual shards per physical shard. Virtual shards aid in reducing data movement during rebalancing.                                         | `128`           |
-| `strategy`            | String  | **(Optional, Immutable)** The strategy for determining which shard an object belongs to. Only `"hash"` is currently supported. The hash is based on the `key` property.             | `"hash"`        |
-| `key`                 | String  | **(Optional, Immutable)** The property used for hashing to determine the target shard. Currently, only the object's internal UUID (`_id`) can be used.                              | `"_id"`         |
-| `function`            | String  | **(Optional, Immutable)** The hashing function used on the `key`. Only `"murmur3"` is supported, which creates a 64-bit hash, making collisions highly unlikely.                    | `"murmur3"`     |
-| `actualCount`         | Integer | **(Read-only)** The actual number of physical shards created. This typically matches `desiredCount` unless an issue occurred during creation.                                       | `1`             |
-| `desiredVirtualCount` | Integer | **(Read-only)** A calculated value representing `desiredCount * virtualPerPhysical`.                                                                                                | `128`           |
-| `actualVirtualCount`  | Integer | **(Read-only)** The actual number of virtual shards that were created.                                                                                                              | `128`           |
+| Parameter             | Type    | Description                                                                                                                                               | Default         | Mutable |
+| :-------------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- | :------ |
+| `desiredCount`        | Integer | The desired number of physical shards for the collection. If this value is larger than the number of cluster nodes, some nodes will host multiple shards. | Number of nodes | No      |
+| `virtualPerPhysical`  | Integer | The number of virtual shards per physical shard. Virtual shards aid in reducing data movement during rebalancing.                                         | `128`           | No      |
+| `strategy`            | String  | The strategy for determining which shard an object belongs to. Only `"hash"` is currently supported. The hash is based on the `key` property.             | `"hash"`        | No      |
+| `key`                 | String  | The property used for hashing to determine the target shard. Currently, only the object's internal UUID (`_id`) can be used.                              | `"_id"`         | No      |
+| `function`            | String  | The hashing function used on the `key`. Only `"murmur3"` is supported, which creates a 64-bit hash, making collisions highly unlikely.                    | `"murmur3"`     | No      |
+| `actualCount`         | Integer | **(Read-only)** The actual number of physical shards created. This typically matches `desiredCount` unless an issue occurred during creation.             | `1`             | No      |
+| `desiredVirtualCount` | Integer | **(Read-only)** A calculated value representing `desiredCount * virtualPerPhysical`.                                                                      | `128`           | No      |
+| `actualVirtualCount`  | Integer | **(Read-only)** The actual number of virtual shards that were created.                                                                                    | `128`           | No      |
 
 <details>
   <summary>Example sharding configuration</summary>
@@ -663,11 +717,11 @@ It provides data isolation at a lower overhead than creating a separate collecti
 
 To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyConfig` object. This parameter is immutable and must be set at creation time.
 
-| Parameter              | Type    | Description                                                                                                                              | Default |
-| :--------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------- | :------ |
-| `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                     | `true`  |
-| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant.                                            | `true`  |
-| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. | `true`  |
+| Parameter              | Type    | Description                                                                                                                                                      | Default | Mutable |
+| :--------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
+| `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                             | `false` | No      |
+| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. (introduced in v1.25.0)                                            | `false` | Yes     |
+| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. (introduced in v1.25.2) | `false` | Yes     |
 
 #### Code example
 
