@@ -246,6 +246,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 
 ### Migration workflow with collection aliases
@@ -267,11 +268,12 @@ Here's a complete example showing how to use aliases for a collection migration:
   </TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
-
-```typescript
-// JS/TS support coming soon
-```
-
+<FilteredTextBlock
+      text={TSCode}
+      startMarker="// START MigrationExample"
+      endMarker="// END MigrationExample"
+      language="ts"
+    />
 </TabItem>
 
 <TabItem value="java" label="Java">
