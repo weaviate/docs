@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 import weaviate, { WeaviateClient, vectorIndex } from 'weaviate-client';
-import { vectorizer, reranker, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
+import { vectorizer, reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -326,7 +326,7 @@ import { vectorizer, dataType, tokenization } from 'weaviate-client';
 // START PropModuleSettings
 const newCollection = await client.collections.create({
   name: 'Article',
-  vectorizers: vectorizer.text2VecHuggingFace(),
+  vectorizers: vectors.text2VecHuggingFace(),
   properties: [
     {
       name: 'title',
@@ -360,6 +360,35 @@ assert.equal(
 // Delete the class to recreate it
 await client.collections.delete(collectionName)
 }
+
+// ====================================
+// ===== MODULE SETTINGS PROPERTY =====
+// ====================================
+
+// START AddNamedVectors
+await articles.config.addVector(
+    vectors.text2VecCohere({
+        name: "body_vector",
+        sourceProperties: ["body"],
+    })
+)
+// END AddNamedVectors
+
+// Test
+const testCollection = client.collections.use("Article")
+const testConfig = await testCollection.config.get()
+
+assert.equal(testConfig.vectorizers["body_vector"].vectorizer.name, "text2vec-cohere")
+for (const p of testConfig.properties) {
+    if (p.name == "title") {
+        assert.equal(p.tokenization, "lowercase")
+    }
+    else if (p.name == "body") {
+        assert.equal(p.tokenization, "whitespace")
+    }
+    
+}
+
 
 // ===========================
 // ===== DISTANCE METRIC =====
@@ -795,3 +824,35 @@ assert.equal(config.generative?.name, "generative-cohere")
 
 // Delete the collection to recreate it
 client.collections.delete('Article')
+
+// ======================================================
+// ===== MULTI-VECTOR EMBEDDINGS (ColBERT, ColPali)
+// ======================================================
+
+// Clean slate
+client.collections.delete("DemoCollection")
+
+// START MultiValueVectorCollection
+await client.collections.create({
+    name: "DemoCollection",
+    vectorizers: [
+        // Example 1 - Use a model integration
+        // The factory function will automatically enable multi-vector support for the HNSW index
+        // highlight-start
+        configure.multiVectors.text2VecJinaAI({
+            name: "jina_colbert",
+            sourceProperties: ["text"],
+        }),
+        // highlight-end
+        // Example 2 - User-provided multi-vector representations
+        // Must explicitly enable multi-vector support for the HNSW index
+        // highlight-start
+        configure.multiVectors.selfProvided({
+            // highlight-end
+            name: "custom_multi_vector",
+        }),
+    ],
+    properties: [{ name: "text", dataType: dataType.TEXT }],
+    // Additional parameters not shown
+})
+// END MultiValueVectorCollection
