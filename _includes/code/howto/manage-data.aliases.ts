@@ -167,7 +167,10 @@ await productsV1.data.insertMany([
 ])
 
 // Step 2: Create alias pointing to current collection
-await client.alias.create({alias:"Products", collection: "ProductsV1"})
+await client.alias.create({ 
+    alias:"Products", 
+    collection: "ProductsV1"
+})
 
 // Step 3: Create new collection with updated schema
 await client.collections.create({
