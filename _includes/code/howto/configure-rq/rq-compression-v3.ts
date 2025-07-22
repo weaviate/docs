@@ -35,10 +35,10 @@ await client.collections.create({
         // highlight-start
         quantizer: configure.vectorIndex.quantizer.rq()
         // highlight-end
-}),
-    properties: 
-        [{ name: "title", dataType: weaviate.configure.dataType.TEXT }]
-    
+    }),
+    properties: [
+        { name: "title", dataType: weaviate.configure.dataType.TEXT }
+    ]
 })
 // END EnableRQ
 
@@ -46,7 +46,7 @@ await client.collections.create({
 // =====  EnableRQ with Options =====
 // ==============================
 
-client.collections.delete("MyCollection")
+await client.collections.delete("MyCollection")
 
 // START RQWithOptions
 
@@ -56,16 +56,16 @@ await client.collections.create({
         // highlight-start
         quantizer: configure.vectorIndex.quantizer.rq({
             bits: 8,  // Number of bits, only 8 is supported for now
-    }),
+        }),
         // highlight-end
         vectorIndexConfig: configure.vectorIndex.hnsw({
             distanceMetric: configure.vectorDistances.COSINE,
             vectorCacheMaxObjects: 100000,
+        }),
     }),
-}),
-    properties: [{
-        name: "title", dataType: weaviate.configure.dataType.TEXT,
-}],
+    properties: [
+        { name: "title", dataType: weaviate.configure.dataType.TEXT }
+    ],
 })
 // END RQWithOptions
 
