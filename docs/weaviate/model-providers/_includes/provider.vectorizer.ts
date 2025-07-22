@@ -381,7 +381,6 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>', // Required for Vertex AI
-      modelId: '<google-model-id>',
       // modelId: '<google-model-id>',
       // apiEndpoint: '<google-api_endpoint>',
       // vectorizeClassName: false,
@@ -726,21 +725,49 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicColBERTVectorizerJinaAI
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [ 
+    weaviate.configure.multiVectors.text2VecJinaAI({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    })
+  ]
+})
 // END BasicColBERTVectorizerJinaAI
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START ColBERTVectorizerJinaCustomModel
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [ 
+    weaviate.configure.multiVectors.text2VecJinaAI({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: "jina-colbert-v2",
+    })
+  ]
+})
 // END ColBERTVectorizerJinaCustomModel
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START FullColBERTVectorizerJinaAI
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [ 
+    weaviate.configure.multiVectors.text2VecJinaAI({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      // Further options
+      // model: "jina-colbert-v2",
+      // dimensions: 64,  // e.g. 128, 64 (only applicable for some models)
+    })
+  ]
+})
 // END FullColBERTVectorizerJinaAI
 
 // Clean up
@@ -796,21 +823,51 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [ 
+    weaviate.configure.vectors.text2VecNvidia({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    })
+  ],
+  // Additional parameters not shown
+})
 // END BasicVectorizerNVIDIA
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START VectorizerNVIDIACustomModel
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [ 
+    weaviate.configure.vectors.text2VecNvidia({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: "nvidia/nv-embed-v1"
+    })
+  ],
+  // Additional parameters not shown
+})
 // END VectorizerNVIDIACustomModel
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START FullVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [ 
+    weaviate.configure.vectors.text2VecNvidia({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: "nvidia/nv-embed-v1",
+      baseURL: "https://integrate.api.nvidia.com/v1"
+    })
+  ],
+  // Additional parameters not shown
+})
 // END FullVectorizerNVIDIA
 
 // Clean up
@@ -1715,7 +1772,7 @@ const myCollection = client.collections.use(collectionName)
 // END BatchImportExample  // END NearTextExample  // END HybridExample  // END MMBatchImportExample
 
 // START BatchImportExample
-let dataObjects = []
+let dataObjects = new Array();
 
 for (let srcObject of srcObjects) {
   dataObjects.push({
@@ -1738,7 +1795,7 @@ let mmSrcObjects = [
 ];
 
 // START MMBatchImportExample
-let multiModalObjects = []
+let multiModalObjects = new Array();
 
 for (let mmSrcObject of mmSrcObjects) {
   multiModalObjects.push({
