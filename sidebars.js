@@ -717,6 +717,7 @@ const sidebars = {
         "weaviate/modules/spellcheck",
         "weaviate/modules/sum-transformers",
         "weaviate/modules/custom-modules",
+        "weaviate/modules/usage-modules",
       ],
     },
     "weaviate/more-resources/faq",

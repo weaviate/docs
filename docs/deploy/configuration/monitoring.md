@@ -129,6 +129,11 @@ e effect. | `sha256` | `Gauge` |
 | `weaviate_internal_timer_raft_fsm_apply` | Number of logs committed by the finite state machine since the last interval. | `quantile=0.5, 0.9, 0.99` | `summary` |
 | `weaviate_internal_timer_raft_fsm_enqueue` | Time required to queue up a batch of logs for the finite state machine to apply. | `quantile=0.5, 0.9, 0.99` | `summary` |
 | `weaviate_internal_timer_raft_leader_dispatchLog` | Time required for the leader node to write a log entry to disk. | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_usage_{gcs\|s3}_operations_total` | The total number of operations for module labels. | `operation`:collecct/upload, `status`: success,error |  |
+| `weaviate_usage_{gcs\|s3}_operation_latency_seconds` | Latency of usage operations in seconds. | `operation`: collect/upload |  |
+| `weaviate_usage_{gcs\|s3}_resource_count` | The number of resources tracked by module.  | `resource_type`:collections/shards/backups |  |
+| `weaviate_usage_{gcs\|s3}_uploaded_file_size_bytes` | The size of the uploaded usage file in bytes. |  |  |
+
 
 Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).
 
