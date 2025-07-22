@@ -82,7 +82,7 @@ await client.collections.create({
             name: "multi_vector",
             sourceProperties: ["text"],
             model: "jina-colbert-v2"
-    }),
+        })
         // highlight-end
     ],
     properties: [
