@@ -1110,7 +1110,7 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START SinglePromptExample  // START GroupedTaskExample
-let myCollection = client.collections.get('DemoCollection');
+let myCollection = client.collections.use('DemoCollection');
 
 // START SinglePromptExample  // END GroupedTaskExample
 const singlePromptResults = await myCollection.generate.nearText('A holiday film', {

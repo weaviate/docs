@@ -39,7 +39,7 @@ const client = await weaviate.connectToWeaviateCloud(
 const collectionDefinition = {
   name: 'JeopardyQuestion',
   description: 'A Jeopardy! question',
-  vectorizers: weaviate.configure.vectorizer.text2VecOpenAI()
+  vectorizers: weaviate.configure.vectors.text2VecOpenAI()
 };
 
 // Clean slate
@@ -66,7 +66,7 @@ let dataObjects = [
 ]
 
 // highlight-start
-const myCollection = client.collections.get('MyCollection')
+const myCollection = client.collections.use('MyCollection')
 const response = await myCollection.data.insertMany(dataObjects);
 // highlight-end
 
@@ -110,7 +110,7 @@ let dataObjects = [
   // ...
 ]
 
-const myCollection = client.collections.get('MyCollection')
+const myCollection = client.collections.use('MyCollection')
 await myCollection.data.insertMany(dataObject)
 // END BatchImportWithIDExample
 
@@ -128,7 +128,7 @@ await client.collections.delete('MyCollection');
 // ===========================================
 
 // START BatchImportWithVectorExample
-const myCollection = client.collections.get('MyCollection')
+const myCollection = client.collections.use('MyCollection')
 
 let dataObjects = [
   {
@@ -173,15 +173,15 @@ try {
   await client.collections.create({
     name: 'MyCollection',
     vectorizers: [
-      weaviate.configure.vectorizer.none({name: 'title'}),
-      weaviate.configure.vectorizer.none({name: 'body'}),
+      weaviate.configure.vectors.none({name: 'title'}),
+      weaviate.configure.vectors.none({name: 'body'}),
     ]
   })
 }
 
 {
 // START BatchImportWithNamedVectors
-const myCollection = client.collections.get("MyCollection")
+const myCollection = client.collections.use("MyCollection")
 let dataObjects = [
   {
     properties: { title: 'Object 1' },
@@ -320,7 +320,7 @@ console.log(`Finished importing ${counter} articles.`);
 // ===== Batch with gRPC =====
 // ===========================
 // START BatchGRPC
-const questions = client.collections.get("CollectionName")
+const questions = client.collections.use("CollectionName")
 
 const batchSize = 1000; // define your batch size
 

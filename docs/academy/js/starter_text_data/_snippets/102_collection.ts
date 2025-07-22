@@ -93,7 +93,7 @@ const response = await fetch(dataUrl)
 const data = await response.json()
 
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Set a counter and initialize Weaviate Object
 let itemsToInsert: Object[] = []

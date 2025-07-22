@@ -23,12 +23,12 @@ const client = await weaviate.connectToWeaviateCloud(
 )
 
 // searchSingleFilter // searchLikeFilter // ContainsAnyFilter // ContainsAllFilter // searchMultipleFiltersNested // searchMultipleFiltersAnd // searchFilterNearText // FilterByPropertyLength // searchCrossReference  // searchCrossReference // searchMultipleFiltersNested
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 
 // END searchSingleFilter // END searchLikeFilter // END ContainsAnyFilter // END ContainsAllFilter // END searchMultipleFiltersNested // END searchMultipleFiltersAnd // END searchFilterNearText // END FilterByPropertyLength // END searchCrossReference // END searchCrossReference // END searchMultipleFiltersNested
 
 // FilterByTimestamp // filterById
-const myArticleCollection = client.collections.get('Article');
+const myArticleCollection = client.collections.use('Article');
 // END FilterByTimestamp // END filterById
 
 
@@ -422,7 +422,7 @@ for (let object of result.objects) {
 // ===================================================
 {
 // FilterbyGeolocation
-const publications = client.collections.get('Publication');
+const publications = client.collections.use('Publication');
 
 const geoResult = await publications.query.fetchObjects({
   // highlight-start
