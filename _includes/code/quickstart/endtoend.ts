@@ -39,12 +39,12 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 
 // EndToEndExample  // CustomVectorExample
 // START CreateCollection
-import { vectorizer, generative } from 'weaviate-client' 
+import { vectors, generative } from 'weaviate-client' 
 
 async function createCollection() {
   const questions = await client.collections.create({
     name: 'Question',
-    vectorizers: vectorizer.text2VecOpenAI(),
+    vectorizers: vectors.text2VecOpenAI(),
     generative: generative.openAI(),
   })
   console.log(`Collection ${questions.name} created!`);

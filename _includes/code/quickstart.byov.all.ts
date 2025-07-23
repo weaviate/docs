@@ -1,7 +1,7 @@
 // Bring your own vectors - TypeScript complete sample
 
 import weaviate, { WeaviateClient } from 'weaviate-client'
-import { vectorizer } from 'weaviate-client';
+import { vectors } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -21,7 +21,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 // Collection definition object. Weaviate's autoschema feature will infer properties when importing.
 const newCollection = await client.collections.create({
   name: 'JeopardyQuestion',
-  vectorizers: vectorizer.none(),
+  vectorizers: vectors.selfProvided(),
 });
 
 console.log('We have a new collection!', newCollection['name']);
@@ -43,7 +43,7 @@ async function importQuestionsWithVectors() {
   // Get the questions directly from the URL
   const data = await getJsonData();
   const jeopardyCollection = client.collections.use('JeopardyQuestion');
-  let itemsToInsert = [];
+  let itemsToInsert = new Array()
 
   for (const item of data) {
     // Construct the object to add to insert with insertMany()
