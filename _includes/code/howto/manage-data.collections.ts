@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 import weaviate, { WeaviateClient, vectorIndex } from 'weaviate-client';
-import { vectorizer, reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
+import { reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -112,7 +112,7 @@ console.log(collectionConfig)
 
 /*
 // START BasicNamedVectors
-import { vectorizer, dataType } from 'weaviate-client';
+import { vectors, dataType } from 'weaviate-client';
 
 // END BasicNamedVectors
 */
@@ -172,7 +172,7 @@ await client.collections.delete('ArticleNV')
 
 /*
 // START Vectorizer
-import { vectorizer, dataType } from 'weaviate-client';
+import { vectors, dataType } from 'weaviate-client';
 
 // END Vectorizer
 */
@@ -205,7 +205,7 @@ await client.collections.delete('Article')
 
 /*
 // START SetVectorIndexType
-import { vectorizer, dataType, configure } from 'weaviate-client';
+import { vectors, dataType, configure } from 'weaviate-client';
 
 // END SetVectorIndexType
 */
@@ -243,7 +243,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetVectorIndexParams
-import { configure, vectorizer } from 'weaviate-client';
+import { configure, vectors } from 'weaviate-client';
 
 // END SetVectorIndexParams
 */
@@ -282,7 +282,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START ModuleSettings
-import { vectorizer } from 'weaviate-client';
+import { vectors } from 'weaviate-client';
 
 // END ModuleSettings
 */
@@ -317,7 +317,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START PropModuleSettings
-import { vectorizer, dataType, tokenization } from 'weaviate-client';
+import { vectors, dataType, tokenization } from 'weaviate-client';
 
 // END PropModuleSettings
 */
@@ -395,7 +395,7 @@ for (const p of testConfig.properties) {
 
 /*
 // START DistanceMetric
-import { configure, vectorizer, vectorDistances } from 'weaviate-client';
+import { configure, vectors, vectorDistances } from 'weaviate-client';
 
 // END DistanceMetric
 */
@@ -492,7 +492,7 @@ await client.collections.delete(collectionName)
 // ===============================================
 /*
 // START SetReranker
-import { vectorizer, reranker } from 'weaviate-client';
+import { vectors, reranker } from 'weaviate-client';
 
 // END SetReranker
 /*
@@ -519,7 +519,7 @@ await client.collections.delete(collectionName)
 
 /*
 // START SetGenerative
-import { vectorizer, generative } from 'weaviate-client';
+import { vectors, generative } from 'weaviate-client';
 
 // END SetGenerative
 */
