@@ -528,22 +528,20 @@ const sidebars = {
       },
       items: [
         {
-          type: "category",
-          label: "Collections",
+          type: "doc",
+          id: "weaviate/config-refs/collections",
           className: "sidebar-item",
-          link: {
-            type: "doc",
-            id: "weaviate/config-refs/collections/index",
-          },
-          items: [
-            "weaviate/config-refs/collections/properties",
-            "weaviate/config-refs/collections/vectorization",
-          ],
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/vectorization",
+          className: "sidebar-item",
         },
         {
           type: "category",
           label: "Indexing",
           className: "sidebar-item",
+          collapsed: false,
           items: [
             "weaviate/config-refs/indexing/vector-index",
             "weaviate/config-refs/indexing/inverted-index",
