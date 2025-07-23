@@ -34,7 +34,7 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sass": "^1.83.4",
-    "weaviate-client": "3.8.0-alpha.0"
+    "weaviate-client": "^3.8.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.1",

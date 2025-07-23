@@ -173,8 +173,8 @@ try {
   await client.collections.create({
     name: 'MyCollection',
     vectorizers: [
-      weaviate.configure.vectors.none({name: 'title'}),
-      weaviate.configure.vectors.none({name: 'body'}),
+      weaviate.configure.vectors.selfProvided({ name: 'title' }),
+      weaviate.configure.vectors.selfProvided({ name: 'body' }),
     ]
   })
 }

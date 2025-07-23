@@ -124,19 +124,19 @@ await client.collections.create({
   // highlight-start
   vectorizers: [
     // Set a named vector with the "text2vec-cohere" vectorizer
-    vectorizer.text2VecCohere({
+    vectors.text2VecCohere({
       name: 'title',
       sourceProperties: ['title'],                      // (Optional) Set the source property(ies)
       vectorIndexConfig: configure.vectorIndex.hnsw()   // (Optional) Set the vector index configuration
     }),
     // Set a named vector with the "text2vec-openai" vectorizer
-    vectorizer.text2VecOpenAI({
+    vectors.text2VecOpenAI({
       name: 'title_country',
       sourceProperties: ['title','country'],            // (Optional) Set the source property(ies)
       vectorIndexConfig: configure.vectorIndex.hnsw()   // (Optional) Set the vector index configuration
     }),
     // Set a named vector for your own uploaded vectors
-    vectorizer.none({
+    vectors.selfProvided({
       name: 'custom_vector',
       vectorIndexConfig: configure.vectorIndex.hnsw()   // (Optional) Set the vector index configuration
     })
@@ -181,7 +181,7 @@ import { vectorizer, dataType } from 'weaviate-client';
 await client.collections.create({
   name: 'Article',
   // highlight-start
-  vectorizers: vectorizer.text2VecOpenAI(),
+  vectorizers: vectors.text2VecOpenAI(),
   // highlight-end
   properties: [
     { name: 'title', dataType: dataType.TEXT },
@@ -213,7 +213,7 @@ import { vectorizer, dataType, configure } from 'weaviate-client';
 // START SetVectorIndexType
 await client.collections.create({
   name: 'Article',
-  vectorizers: vectorizer.text2VecOpenAI({
+  vectorizers: vectors.text2VecOpenAI({
     // highlight-start
     vectorIndexConfig: configure.vectorIndex.hnsw(),  // Use HNSW
     // vectorIndexConfig: configure.vectorIndex.flat(),  // Use Flat
@@ -252,7 +252,7 @@ import { configure, vectorizer } from 'weaviate-client';
 await client.collections.create({
   name: 'Article',
   // Additional configuration not shown
-  vectorizers: vectorizer.text2VecCohere({
+  vectorizers: vectors.text2VecCohere({
     // highlight-start
     vectorIndexConfig: configure.vectorIndex.flat({
       quantizer: configure.vectorIndex.quantizer.bq({
@@ -292,9 +292,8 @@ import { vectorizer } from 'weaviate-client';
 await client.collections.create({
   name: 'Article',
   // highlight-start
-  vectorizers: vectorizer.text2VecCohere({
+  vectorizers: vectors.text2VecCohere({
     model: 'embed-multilingual-v2.0',
-    vectorizeCollectionName: true,
   }),
   // highlight-end
 })
@@ -404,7 +403,7 @@ import { configure, vectorizer, vectorDistances } from 'weaviate-client';
 // START DistanceMetric
 await client.collections.create({
   name: 'Article',
-  vectorizers: vectorizer.text2VecOllama({
+  vectorizers: vectors.text2VecOllama({
     // highlight-start
     vectorIndexConfig: configure.vectorIndex.hnsw({
       distanceMetric: vectorDistances.COSINE // or 'cosine'
@@ -500,7 +499,7 @@ import { vectorizer, reranker } from 'weaviate-client';
 // START SetReranker
 await client.collections.create({
   name: 'Article',
-  vectorizers: vectorizer.text2VecOpenAI(),
+  vectorizers: vectors.text2VecOpenAI(),
   // highlight-start
   reranker: reranker.cohere(),
   // highlight-end
@@ -528,7 +527,7 @@ import { vectorizer, generative } from 'weaviate-client';
 // START SetGenerative
 await client.collections.create({
   name: 'Article',
-  vectorizers: vectorizer.text2VecOpenAI(),
+  vectorizers: vectors.text2VecOpenAI(),
   // highlight-start
   generative: generative.openAI({
     model: "gpt-4o"  // set your generative model (optional parameter)
@@ -734,7 +733,7 @@ client.collections.delete("Article")
 
 await client.collections.create({
     name: "Article",
-    vectorizers: vectorizer.text2VecOpenAI(),
+    vectorizers: vectors.text2VecOpenAI(),
     // highlight-start
     reranker: configure.reranker.voyageAI()
     // highlight-end
@@ -771,7 +770,7 @@ await client.collections.create({
     name: "DemoCollection",
     vectorizers: [
         // Example 1 - Use a model integration
-        configure.multiVectors.multi2VecJinaAI({
+        configure.multiVectors.text2VecJinaAI({
             name: "jina_colbert",
             sourceProperties: ["text"],
             // highlight-start

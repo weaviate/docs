@@ -1,7 +1,7 @@
 // Howto: Search -> Filters - TypeScript examples
 
 import assert from 'assert';
-import { vectorizer, dataType } from 'weaviate-client';
+import { vectors, dataType } from 'weaviate-client';
 
 // ================================
 // ===== INSTANTIATION-COMMON =====
@@ -12,12 +12,10 @@ import weaviate, { Filters } from 'weaviate-client';
 
 // END searchMultipleFiltersAnd // END searchMultipleFiltersNested
 
-const client = await weaviate.connectToWeaviateCloud(
-  process.env.WEAVIATE_URL,
- {
-   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
+const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {
+   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
  }
 )
@@ -326,14 +324,15 @@ const collectionWithDate = await client.collections.create({
       dataType: dataType.DATE,
     },
   ],
-  vectorizers: vectorizer.none()
+  vectorizers: vectors.selfProvided()
 })
 
 const insertYears = [2020, 2021, 2022, 2023, 2024]
 const insertMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 const insertDays = [1, 6, 11, 16]
 
-let dataObjects = []
+let dataObjects = new Array()
+
 insertYears.forEach(year => {
   insertMonths.forEach(month => {
     insertDays.forEach(day => {
