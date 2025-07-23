@@ -101,8 +101,7 @@ to obtain the metric for the entire Weaviate instance.
 | `vector_index_tombstone_cleanup_threads` | Number of currently active threads for repairing/cleaning up the vector index after deletes have occurred. | `class_name`, `shard_name` | `Gauge` |
 | `vector_index_tombstones` | Number of currently active tombstones in the vector index. Will go up on each incoming delete and go down after a completed repair operation. | `class_name`, `shard_name` | `Gauge` |
 | `weaviate_build_info` | Provides general information about the build (What version is currently running? How long has this version been running, etc) | `version`, `revision`, `branch`, `goVersion` | `Gauge` |
-| `weaviate_runtime_config_hash` | Hash value of the currently active runtime configuration, useful for tracking when new configurations tak
-e effect. | `sha256` | `Gauge` |
+| `weaviate_runtime_config_hash` | Hash value of the currently active runtime configuration, useful for tracking when new configurations take effect. | `sha256` | `Gauge` |
 | `weaviate_runtime_config_last_load_success` | Indicates whether the last loading attempt was successful (`1` for success, `0` for failure). |  | `Gauge` |
 | `weaviate_schema_collections` | Shows the total number of collections at any given point. | `nodeID` | `Gauge` |
 | `weaviate_schema_shards` | Shows the total number of shards at any given point.  | `nodeID`, `status(HOT, COLD, WARM, FROZEN)` | `Gauge` |
@@ -129,10 +128,10 @@ e effect. | `sha256` | `Gauge` |
 | `weaviate_internal_timer_raft_fsm_apply` | Number of logs committed by the finite state machine since the last interval. | `quantile=0.5, 0.9, 0.99` | `summary` |
 | `weaviate_internal_timer_raft_fsm_enqueue` | Time required to queue up a batch of logs for the finite state machine to apply. | `quantile=0.5, 0.9, 0.99` | `summary` |
 | `weaviate_internal_timer_raft_leader_dispatchLog` | Time required for the leader node to write a log entry to disk. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_usage_{gcs\|s3}_operations_total` | The total number of operations for module labels. | `operation`:collecct/upload, `status`: success,error |  |
-| `weaviate_usage_{gcs\|s3}_operation_latency_seconds` | Latency of usage operations in seconds. | `operation`: collect/upload |  |
-| `weaviate_usage_{gcs\|s3}_resource_count` | The number of resources tracked by module.  | `resource_type`:collections/shards/backups |  |
-| `weaviate_usage_{gcs\|s3}_uploaded_file_size_bytes` | The size of the uploaded usage file in bytes. |  |  |
+| `weaviate_usage_{gcs\|s3}_operations_total` | Total number of operations for module labels | `operation`: collect/upload, `status`: success/error | `Counter` |
+| `weaviate_usage_{gcs\|s3}_operation_latency_seconds` | Latency of usage operations in seconds | `operation`: collect/upload | `Histogram` |
+| `weaviate_usage_{gcs\|s3}_resource_count` | Number of resources tracked by module | `resource_type`: collections/shards/backups | `Gauge` |
+| `weaviate_usage_{gcs\|s3}_uploaded_file_size_bytes` | Size of the uploaded usage file in bytes | NA | `Gauge` |
 
 
 Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).

@@ -115,19 +115,18 @@ import APITable from '@site/src/components/APITable';
 | `SUM_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `sum-transformers` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
 | `GPT4ALL_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `text2vec-gpt4all` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
 | `TRANSFORMERS_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `text2vec-transformers` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
-| `ENABLE_MODULES` | Enable usage modules (GCS, S3, or both) | string | `usage-s3,usage-gcs` |
-| `USAGE_GCS_BUCKET` | GCS bucket name (required if using GCS) | string | `my-weaviate-usage-bucket` |
-| `USAGE_GCS_PREFIX` | Optional object prefix for GCS reports | string | `usage-reports` |
-| `USAGE_S3_BUCKET` | S3 bucket name (required if using S3) | string | `my-weaviate-usage-bucket` |
-| `USAGE_S3_PREFIX` | Optional object prefix for S3 reports | string | `usage-reports` |
-| `RUNTIME_OVERRIDES_ENABLED` | Enable runtime override configuration | boolean | `true` |
-| `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | string | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
-| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config | duration | `30s` |
-| `TRACK_VECTOR_DIMENSIONS` | Enable vector dimension tracking metrics | boolean | `true` |
-| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics | duration | `2h` |
-| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop | duration | `50ms` |
-| `USAGE_POLICY_VERSION` | Optional policy version | string | `2025-06-01` |
-| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start | boolean | `true` |
+| `USAGE_GCS_BUCKET` | GCS bucket name (required if using GCS) | `string` | `my-weaviate-usage-bucket` |
+| `USAGE_GCS_PREFIX` | Optional object prefix for GCS reports | `string` | `usage-reports` |
+| `USAGE_S3_BUCKET` | S3 bucket name (required if using S3) | `string` | `my-weaviate-usage-bucket` |
+| `USAGE_S3_PREFIX` | Optional object prefix for S3 reports | `string` | `usage-reports` |
+| `RUNTIME_OVERRIDES_ENABLED` | Enable runtime override configuration | `boolean` | `true` |
+| `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | `string` | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
+| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config | `duration` | `30s` |
+| `TRACK_VECTOR_DIMENSIONS` | Enable vector dimension tracking metrics | `boolean` | `true` |
+| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics | `duration` | `2h` |
+| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop | `duration` | `50ms` |
+| `USAGE_POLICY_VERSION` | Optional policy version | `string` | `2025-06-01` |
+| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start | `boolean` | `true` |
 
 
 ```mdx-code-block

@@ -3,9 +3,9 @@ title: Usage Module
 description: Add the usage module to collect and upload usage analytics data to Google Cloud Storage (GCS) or AWS S3. 
 ---
 
-## Overview
-
-Starting with `v1.32.0` the usage module collects and uploads usage anaytics data to Google Cloud Storage (GCS) or AWS S3. The modules help to track Weaviate instance usage for analytics and monitoring for the purposes of **billing**. 
+:::info Added in `v1.32`
+The usage module collects and uploads usage anaytics data to Google Cloud Storage (GCS) or AWS S3. The modules help to track Weaviate instance usage for analytics and monitoring for the purposes of **billing**.
+:::
 
 :::danger
 This module is in development and breaking changes can and will happen. 
@@ -162,6 +162,9 @@ AWS_ENDPOINT=minio.weaviate.svc.cluster.local:9000
 ```
 
 ## Further resources
+
+- [Monitoring](/docs/deploy/configuration/monitoring.md)
+- [Environment variables](/docs/deploy/configuration/env-vars/index.md)
 
 ## Questions and feedback
 
