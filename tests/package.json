@@ -8,6 +8,6 @@
     "test": "for file in howto/*.ts; do node --loader=ts-node/esm $file; done"
   },
   "dependencies": {
-    "weaviate-client": "^3.7.0"
+    "weaviate-client": "^3.8.0"
   }
 }

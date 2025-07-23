@@ -1,12 +1,12 @@
 // START GetStarted
-import weaviate, { WeaviateClient, vectorizer } from 'weaviate-client';
+import weaviate, { WeaviateClient, vectors } from 'weaviate-client';
 
 const client: WeaviateClient = await weaviate.connectToLocal();
 
 // highlight-start
 await client.collections.create({
     name: 'Question',
-    vectorizers: vectorizer.text2VecOllama({              // Configure the Ollama embedding integration
+    vectorizers: vectors.text2VecOllama({              // Configure the Ollama embedding integration
         apiEndpoint: 'http://host.docker.internal:11434',   // Allow Weaviate from within a Docker container to contact your Ollama instance
         model: 'nomic-embed-text',                          // The model to use
     }),
