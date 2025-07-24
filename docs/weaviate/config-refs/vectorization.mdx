@@ -149,7 +149,7 @@ In a multi-target vector search, you can specify:
 - The query(ies) to compare to the target vectors
 - The weights to apply to each distance (raw, or normalized) for each target vector
 
-Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
+Read more in [How-to: Multi-target vector search](../search/multi-vector.md).
 
 ### Adding a named vector after collection creation
 
@@ -178,7 +178,7 @@ For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or
 
 Unless specified otherwise in the collection definition, the default behavior is to:
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../manage-collections/vector-config.mdx#property-level-settings))
 - Sort properties in alphabetical (a-z) order before concatenating values
 - If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
 - Join the (prepended) property values with spaces
@@ -212,9 +212,9 @@ Weaviate allows you to configure the `DEFAULT_VECTOR_DISTANCE_METRIC` which will
 
 ## Related pages
 
-- [How-to: Manage collections](../../manage-collections/vector-config.mdx#define-named-vectors): Configure vectors in collections
-- [How-to: Search](../../search/index.mdx): Code examples for search
-- [Weaviate academy: Named vectors](../../../academy/py/named_vectors/index.md)
+- [How-to: Manage collections](../manage-collections/vector-config.mdx#define-named-vectors): Configure vectors in collections
+- [How-to: Search](../search/index.mdx): Code examples for search
+- [Weaviate academy: Named vectors](../../academy/py/named_vectors/index.md)
 
 ## Questions and feedback
 

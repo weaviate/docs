@@ -29,7 +29,7 @@ import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
 ## Create a collection
 
-To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/schema/index.md#auto-schema) creates them.
+To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/collections.mdx#auto-schema) creates them.
 
 import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
@@ -116,7 +116,7 @@ Use properties to configure additional parameters such as data type, index chara
 
 For details, see:
 
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
     API References: REST: Schema
   </SkipLink>
@@ -185,7 +185,7 @@ For details, see:
 
 By default, Weaviate creates missing collections and missing properties. When you configure collections manually, you have more precise control of the collection settings.
 
-To disable [`auto-schema`](../config-refs/schema/index.md#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
+To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
 
 ## Read a single collection definition
 
@@ -474,7 +474,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-You can update a collection definition to change the [mutable collection settings](../config-refs/schema/index.md#mutability).
+You can update a collection definition to change the [mutable collection settings](../config-refs/collections.mdx#mutability).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -566,7 +566,7 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 
 ## Set inverted index parameters
 
-Various [inverted index parameters](../config-refs/schema/index.md#invertedindexconfig) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+Various [inverted index parameters](../config-refs/collections.mdx#invertedindexconfig) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -627,7 +627,7 @@ Various [inverted index parameters](../config-refs/schema/index.md#invertedindex
 ## Further resources
 
 - [Manage collections: Vectorizer and vector index](./vector-config.mdx)
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
     API References: REST: Schema

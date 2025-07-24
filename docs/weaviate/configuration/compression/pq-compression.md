@@ -28,7 +28,7 @@ import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' 
 
 <PQTradeoffs />
 
-To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md) .
+To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx) .
 
 ## Enable PQ compression
 
@@ -377,7 +377,7 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 ## Related pages
-- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+- [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx)
 - [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
 - [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
 - [Guide: Schemas and collection definitions](/weaviate/starter-guides/managing-collections/index.mdx)

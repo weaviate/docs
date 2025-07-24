@@ -10,24 +10,24 @@ import CardsSection from "/src/components/CardsSection";
 
 export const mainReferencesData = [
   {
-    title: "Collection Configuration",
+    title: "Collection definition",
     description:
-      "An overview of all top-level collection parameters and concepts like auto-schema.",
-    link: "/weaviate/config-refs/collections/",
+      "An overview of all top-level collection parameters and concepts.",
+    link: "/weaviate/config-refs/collections",
     icon: "fas fa-cube",
   },
   {
-    title: "Properties",
+    title: "Data Types",
     description:
-      "Define your data structure with properties, data types, and tokenization settings.",
-    link: "/weaviate/config-refs/collections/properties",
-    icon: "fas fa-list-alt",
+      "Reference for supported data types and their handling in Weaviate.",
+    link: "/weaviate/config-refs/datatypes",
+    icon: "fas fa-list-ul",
   },
   {
     title: "Vectorization",
     description:
       "Configure vectorizers, semantic behavior, and single or multiple vector embeddings.",
-    link: "/weaviate/config-refs/collections/vectorization",
+    link: "/weaviate/config-refs/vectorization",
     icon: "fas fa-cogs",
   },
   {
@@ -45,27 +45,6 @@ export const mainReferencesData = [
     icon: "fas fa-filter",
   },
   {
-    title: "Cluster Configuration",
-    description:
-      "Manage sharding and replication for multi-node, scalable deployments.",
-    link: "/weaviate/config-refs/collections/cluster",
-    icon: "fas fa-network-wired",
-  },
-  {
-    title: "Multi-tenancy",
-    description:
-      "Isolate data for different tenants within a single Weaviate instance.",
-    link: "/weaviate/config-refs/collections/multi-tenancy",
-    icon: "fas fa-users", // Icon representing multiple users/tenants
-  },
-  {
-    title: "Data Types",
-    description:
-      "Reference for supported data types and their handling in Weaviate.",
-    link: "/weaviate/config-refs/datatypes",
-    icon: "fas fa-list-ul",
-  },
-  {
     title: "Distance Metrics",
     description:
       "Learn about the distance metrics used for similarity calculations.",
@@ -80,6 +59,6 @@ export const mainReferencesData = [
 
 :::info Deployment documentation
 
-For deployment related topics like security, backups, replication, cluster information and advanced configuration options, visit the [deployment documentation](/docs/deploy/config-refs/index.mdx).
+For deployment related topics like security, backups, replication, cluster information and advanced configuration options, visit the [deployment documentation](/docs/deploy/configuration/index.mdx).
 
 :::

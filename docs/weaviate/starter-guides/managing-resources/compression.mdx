@@ -44,7 +44,7 @@ This table shows the compression algorithms that are available for each index ty
 | RQ | Yes | No | Yes |
 | BQ | Yes | Yes | Yes |
 
-The [dynamic index](/weaviate/config-refs/schema/vector-index#dynamic-indexes) is new in v1.25. This type of index is a [flat index](/weaviate/config-refs/schema/vector-index#flat-indexes) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
+The [dynamic index](/weaviate/config-refs/vectorization.mdx#dynamic-indexes) is new in v1.25. This type of index is a [flat index](/weaviate/config-refs/vectorization.mdx#flat-indexes) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
 
 ### Cost, recall and speed
 
@@ -105,7 +105,7 @@ SQ and BQ both have optional vector caches. Use these configurable caches to loa
 
 Importing and compressing vectors takes slightly longer than importing uncompressed vectors, but this is a one time cost. In contrast, loading a compressed index into memory is faster since there is less data to load. This means restarts are faster.
 
-Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/config-refs/schema/vector-index#asynchronous-indexing) feature which effectively speeds up the import process. Consider enabling asynchronous indexing to improve imports.
+Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/config-refs/vectorization.mdx#asynchronous-indexing) feature which effectively speeds up the import process. Consider enabling asynchronous indexing to improve imports.
 
 ### Activate compression
 

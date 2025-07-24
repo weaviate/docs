@@ -122,7 +122,7 @@ image: og/docs/more-resources.jpg
 <details>
   <summary>Answer</summary>
 
-> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/schema/index.md#tokenization) on the differences.
+> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/collections.mdx#tokenization) on the differences.
 
 </details>
 
@@ -415,7 +415,7 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/schema/vector-index.md#asynchronous-indexing), which separates data ingestion from vectorization.
+> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/vectorization.mdx#asynchronous-indexing), which separates data ingestion from vectorization.
 
 </details>
 

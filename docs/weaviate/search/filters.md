@@ -837,7 +837,7 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 
 ### By object timestamp
 
-This filter requires the [property timestamp](../config-refs/schema/index.md#indextimestamps) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property timestamp](../config-refs/collections.mdx#indextimestamps) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -895,7 +895,7 @@ This filter requires the [property timestamp](../config-refs/schema/index.md#ind
 
 ### By object property length
 
-This filter requires the [property length](../config-refs/schema/index.md#indexpropertylength) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property length](../config-refs/collections.mdx#indexpropertylength) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -953,7 +953,7 @@ This filter requires the [property length](../config-refs/schema/index.md#indexp
 
 ### By object null state
 
-This filter requires the [property null state](../config-refs/schema/index.md#indexnullstate) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property null state](../config-refs/collections.mdx#indexnullstate) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

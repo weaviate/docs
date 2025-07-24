@@ -98,7 +98,7 @@ The output is like this:
 :::info Added in `v1.24`
 :::
 
-A hybrid search on a collection that has [named vectors](../config-refs/schema/multi-vector.md) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
+A hybrid search on a collection that has [named vectors](../config-refs/vectorization.mdx#named-vectors) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

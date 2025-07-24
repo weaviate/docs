@@ -46,7 +46,7 @@ Tokenization for keyword searches refers to how each source text is split up int
 
 The default tokenization method is `word`.
 
-Other tokenization methods such as `whitespace`, `lowercase`, and `field` are available, as well as specialized ones such as `GSE` or `kagome_kr` for other languages ([more details](../../config-refs/schema/index.md#tokenization)).
+Other tokenization methods such as `whitespace`, `lowercase`, and `field` are available, as well as specialized ones such as `GSE` or `kagome_kr` for other languages ([more details](../../config-refs/collections.mdx#tokenization)).
 
 Set the tokenization option [in the inverted index configuration](../../search/bm25.md#set-tokenization) for a collection.
 
@@ -62,7 +62,7 @@ Stopwords are words that are filtered out before processing text.
 
 Weaviate uses configurable stopwords in calculating the BM25 score. Any tokens that are contained in the stopword list will be ignored from the BM25 score calculation.
 
-See the [reference page](../../config-refs/schema/index.md#stopwords-stopword-lists) for more details.
+See the [reference page](../../config-refs/collections.mdx#stopwords-stopword-lists) for more details.
 
 ### BM25 parameters
 

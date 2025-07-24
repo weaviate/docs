@@ -534,7 +534,7 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "weaviate/config-refs/vectorization",
+          id: "weaviate/config-refs/datatypes",
           className: "sidebar-item",
         },
         {
@@ -545,16 +545,12 @@ const sidebars = {
           items: [
             "weaviate/config-refs/indexing/vector-index",
             "weaviate/config-refs/indexing/inverted-index",
+            "weaviate/config-refs/distances",
           ],
         },
         {
           type: "doc",
-          id: "weaviate/config-refs/datatypes",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/distances",
+          id: "weaviate/config-refs/vectorization",
           className: "sidebar-item",
         },
       ],

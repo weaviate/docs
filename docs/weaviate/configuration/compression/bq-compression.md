@@ -17,7 +17,7 @@ import GoCode from '!!raw-loader!/_includes/code/howto/configure.bq-compression.
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
 :::info Added in `v1.23`
-BQ is available for the [`flat` index](/weaviate/concepts/indexing/vector-index.md#flat-index) type from `v1.23` onwards and for the [`hnsw` index](/weaviate/config-refs/schema/vector-index#hnsw-indexes)  type from `v1.24`.
+BQ is available for the [`flat` index](/weaviate/concepts/indexing/vector-index.md#flat-index) type from `v1.23` onwards and for the [`hnsw` index](/weaviate/config-refs/vectorization.mdx#hnsw-indexes)  type from `v1.24`.
 :::
 
 Binary quantization (BQ) is a vector compression technique that can reduce the size of a vector.
@@ -179,7 +179,7 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 ## Related pages
-- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+- [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx)
 - [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
 - [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
 - [Tutorial: Schema](/weaviate/starter-guides/managing-collections/index.mdx)

@@ -31,7 +31,7 @@ Use this type for any text data.
 
 - Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../manage-collections/vector-config.mdx#property-level-settings).
 - If using [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors), the property vectorization is defined in the [named vector definition](../manage-collections/vector-config.mdx#define-named-vectors).
-- Text properties are tokenized prior to being indexed for keyword/BM25 searches. See [collection definition: tokenization](../config-refs/schema/index.md#tokenization) for more information.
+- Text properties are tokenized prior to being indexed for keyword/BM25 searches. See [collection definition: tokenization](../config-refs/collections.mdx#tokenization) for more information.
 
 <details>
   <summary><code>string</code> is deprecated</summary>

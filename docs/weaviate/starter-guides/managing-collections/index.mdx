@@ -20,7 +20,7 @@ This tutorial will guide you through the process of defining a schema for your d
 
 The collection definition specifies how data is stored, organized and retrieved in Weaviate.
 
-If [auto-schema](/weaviate/config-refs/schema#auto-schema) is enabled, Weaviate can infer missing elements and add them to the collection definition. However, it is a best practice to manually define as much of the data schema as possible since manual definition gives you the most control.
+If [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) is enabled, Weaviate can infer missing elements and add them to the collection definition. However, it is a best practice to manually define as much of the data schema as possible since manual definition gives you the most control.
 
 Let's begin with a simple example before diving into the details.
 
@@ -141,7 +141,7 @@ Although we only specified the collection name and properties, the returned defi
 This is because Weaviate infers the definition based on the data schema and default settings. Each of these options can be specified manually at collection creation time.
 
 :::info FAQ: Are collection definitions mutable?
-Yes, to an extent. There are no restrictions against adding new collections or properties. However, not all settings are mutable within existing collections. For example, you can not change the vectorizer or the generative module. You can read more about this in the [collection definition reference](/weaviate/config-refs/schema#mutability).
+Yes, to an extent. There are no restrictions against adding new collections or properties. However, not all settings are mutable within existing collections. For example, you can not change the vectorizer or the generative module. You can read more about this in the [collection definition reference](/weaviate/config-refs/collections.mdx#mutability).
 :::
 
 ## Collection definitions in detail
@@ -164,7 +164,7 @@ And depending on your needs, you might want to change any number of these.
 
 ### Properties
 
-Each property has a number of settings that can be configured, such as the `dataType`, `tokenization`, and `vectorizePropertyName`. You can read more about these in the [collection definition reference](/weaviate/config-refs/schema#properties).
+Each property has a number of settings that can be configured, such as the `dataType`, `tokenization`, and `vectorizePropertyName`. You can read more about these in the [collection definition reference](/weaviate/config-refs/collections.mdx#properties).
 
 So for example, you might specify a collection definition like the one below, with additional options for the `question` and `answer` properties:
 
@@ -228,7 +228,7 @@ We recommend that you read the [concepts page on replication](/weaviate/concepts
 
 #### Sharding
 
-Sharding settings determine how each collection is sharded and distributed across nodes. This is not a setting that is typically changed, but you can use it to control how many shards are created in a cluster, and how many virtual shards are created per physical shard ([read more here](/weaviate/config-refs/schema#shardingconfig)).
+Sharding settings determine how each collection is sharded and distributed across nodes. This is not a setting that is typically changed, but you can use it to control how many shards are created in a cluster, and how many virtual shards are created per physical shard ([read more here](/weaviate/config-refs/collections.mdx#shardingconfig)).
 
 ## Collection aliases
 
@@ -296,13 +296,13 @@ Here's a complete example showing how to use aliases for a collection migration:
 
 ### Collection & property names
 
-Collection names always start with a capital letter. Properties always begin with a small letter. You can use `PascalCase` class names, and property names allow underscores. Read more [here](/weaviate/config-refs/schema).
+Collection names always start with a capital letter. Properties always begin with a small letter. You can use `PascalCase` class names, and property names allow underscores. Read more [here](/weaviate/config-refs/collections.mdx).
 
 ### Related resources
 
 The following resources include more detailed information on collection definition settings and how to use them:
 
-- [Reference: Configuration - Collection definition](/weaviate/config-refs/schema): A reference of all available collection definition settings.
+- [Reference: Configuration - Collection definition](/weaviate/config-refs/collections.mdx): A reference of all available collection definition settings.
 - [How-to: Manage collections](../managing-collections/index.mdx): Code examples for creating and managing collections, including how to configure various settings using client libraries.
 - <SkipLink href="/weaviate/api/rest#tag/schema">
     Reference: REST - Schema
