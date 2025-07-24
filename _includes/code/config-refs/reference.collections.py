@@ -24,6 +24,8 @@ client = weaviate.connect_to_local(
 client.collections.delete("Article")
 
 # START BasicCreateCollection
+from weaviate.classes.config import Configure, Property, DataType
+
 client.collections.create(
     "Article",
     description="A collection of articles",
@@ -31,6 +33,26 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
+        source_properties=["title", "body"],
+        vector_index_config=Configure.VectorIndex.hnsw(
+            ef_construction=300,
+            distance_metric="cosine",
+            filter_strategy="sweeping",
+        ),
+    ),
+    multi_tenancy_config=Configure.multi_tenancy(False),
+    sharding_config=Configure.sharding(
+        virtual_per_physical=128,
+        desired_count=1,
+        desired_virtual_count=128,
+    ),
+    replication_config=Configure.replication(
+        factor=1,
+        async_enabled=False,
+        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
+    ),
 )
 # END BasicCreateCollection
 
@@ -79,10 +101,19 @@ from weaviate.classes.config import Configure, Property, DataType
 client.collections.create(
     "Article",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_openai(),
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",  # (Optional) Set the name of the vector, default name is "default"
+        source_properties=["title", "body"],  # (Optional) Set the source property(ies)
+        vector_index_config=Configure.VectorIndex.hnsw(
+            ef_construction=300,
+            distance_metric="cosine",
+            filter_strategy="sweeping",
+        ),  # (Optional) Set vector index options
+        vectorize_collection_name=True,  # (Optional) Set to True to vectorize the collection name
+    ),
     # highlight-end
     properties=[  # properties configuration is optional
-        Property(name="title", data_type=DataType.TEXT),
+        Property(name="title", data_type=DataType.TEXT, vectorize_property_name=True),
         Property(name="body", data_type=DataType.TEXT),
     ],
 )
@@ -94,6 +125,43 @@ config = collection.config.get()
 
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
 
+# Clean slate
+client.collections.delete("Article")
+
+# START MultipleVectors
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    "Article",
+    # highlight-start
+    vector_config=[Configure.Vectors.text2vec_openai(
+        name="default",  # (Optional) Set the name of the vector, default name is "default"
+        source_properties=["title", "body"],  # (Optional) Set the source property(ies)
+        vector_index_config=Configure.VectorIndex.hnsw(
+            ef_construction=300,
+            distance_metric="cosine",
+            filter_strategy="sweeping",
+        ),  # (Optional) Set vector index options
+        vectorize_collection_name=True,  # (Optional) Set to True to vectorize the collection name
+    ), Configure.Vectors.text2vec_openai(
+        name="body_vectors",
+        source_properties=["body"],
+        vector_index_config=Configure.VectorIndex.flat(),
+    )
+    ]
+    # highlight-end
+    properties=[  # properties configuration is optional
+        Property(name="title", data_type=DataType.TEXT), vectorize_property_name=True,
+        Property(name="body", data_type=DataType.TEXT),
+    ],
+)
+# END MultipleVectors
+
+# Test
+collection = client.collections.get("Article")
+config = collection.config.get()
+
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
 
 # ===============================================
 # ===== CREATE A COLLECTION WITH NAMED VECTORS =====
@@ -185,7 +253,9 @@ from weaviate.collections.classes.config import _VectorIndexConfigHNSW
 collection = client.collections.get("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
-assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
+assert isinstance(
+    config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
+)
 
 # ===========================
 # ===== SET VECTOR INDEX PARAMETERS =====
@@ -222,7 +292,9 @@ client.collections.create(
 collection = client.collections.get("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
-assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
+assert isinstance(
+    config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
+)
 
 
 # ===================================================================
@@ -269,6 +341,9 @@ client.collections.create(
         index_null_state=True,
         index_property_length=True,
         index_timestamps=True,
+        stopwords_preset="en", 
+        stopwords_additions=["example", "stopword"],  
+        stopwords_removals=["the", "and"], 
     ),
     # highlight-end
 )
@@ -538,7 +613,10 @@ client.collections.create(
 collection = client.collections.get("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
-assert config.vector_config["default"].vectorizer.model["model"] == "embed-multilingual-v2.0"
+assert (
+    config.vector_config["default"].vectorizer.model["model"]
+    == "embed-multilingual-v2.0"
+)
 
 # ====================================
 # ===== MODULE SETTINGS PROPERTY =====
@@ -603,34 +681,6 @@ for p in config.properties:
     elif p.name == "body":
         assert p.tokenization.name == "WHITESPACE"
 
-
-
-# =======================
-# ===== REPLICATION =====
-# =======================
-
-client = weaviate.connect_to_local(port=8180)  # Port for demo setup with 3 replicas
-
-# clean slate
-client.collections.delete("Article")
-# START ReplicationSettings
-from weaviate.classes.config import Configure
-
-client.collections.create(
-    "Article",
-    # highlight-start
-    replication_config=Configure.replication(
-        factor=3,
-    ),
-    # highlight-end
-)
-# END ReplicationSettings
-
-# Test
-collection = client.collections.get("Article")
-config = collection.config.get()
-assert config.replication_config.factor == 3
-
 client.close()
 
 # ==============================================
@@ -651,8 +701,8 @@ client.collections.create(
     # highlight-start
     replication_config=Configure.replication(
         factor=3,
-        async_enabled=True,  # Enable asynchronous repair
-        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,  # Added in v1.28; Set the deletion conflict resolution strategy
+        async_enabled=True,
+        deletion_strategy=ReplicationDeletionStrategy.TIME_BASED_RESOLUTION,
     ),
     # highlight-end
 )

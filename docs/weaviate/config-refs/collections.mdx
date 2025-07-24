@@ -12,6 +12,10 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import PyCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
+import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
+import JavaCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
+import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 
 A **collection definition** describes how to store and index a set of data objects in Weaviate. This page discuses the collection definition, collection parameters and collection configuration.
 
@@ -19,20 +23,20 @@ A **collection definition** describes how to store and index a set of data objec
 
 These are the top-level parameters you can set when creating a collection.
 
-| Parameter                                    | Type   | Description                                                                                                                                                      | Default                                                  | Mutable       |
-| :------------------------------------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------- | :------------ |
-| [`class`](#class)                            | String | The name of the collection. See the [class](#class) section below for details.                                                                                   | (Required)                                               | No            |
-| [`description`](#description)                | String | A description of the collection. See the [description](#description) section below for details.                                                                  | `null`                                                   | Yes           |
-| [`properties`](#properties)                  | Array  | An array of property objects defining the data schema. <br/>See [References: Properties](./properties.mdx) for more details.                                     | `[]`                                                     | Partially\*   |
-| [`vectorConfig`](#vector-configuration)      | Object | Configure multiple named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields.                                            | `null`                                                   | Partially\*\* |
-| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use. Set to `"none"` to disable auto-vectorization. <br/>See [References: Vectorization](./vectorization.mdx) for details.              | Module-specific default                                  | No            |
-| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`). <br/>See [References: Vector index](./indexing/vector-index.mdx) for details.                      | `hnsw`                                                   | No            |
-| [`vectorIndexConfig`](#vector-configuration) | Object | Configuration settings specific to the chosen `vectorIndexType`. <br/>See [References: Vector index](./indexing/vector-index.mdx) for details.                  | Index-specific defaults                                  | Partially     |
-| [`invertedIndexConfig`](#inverted-index)     | Object | Configuration for the inverted index, affecting filtering and keyword search. <br/>See [References: Inverted index](./indexing/inverted-index.mdx) for details. | See [Inverted Index section](#inverted-index-parameters) | Yes           |
-| [`shardingConfig`](#sharding)                | Object | Controls sharding behavior in a multi-node cluster.                                                                                                              | See [Sharding section](#sharding-parameters)             | No            |
-| [`replicationConfig`](#replication)          | Object | Controls data replication settings for fault tolerance.                                                                                                          | `{"factor": 1}`                                          | Partially     |
-| [`multiTenancyConfig`](#multi-tenancy)       | Object | Configuration to enable multi-tenancy for the collection.                                                                                                        | `{"enabled": false}`                                     | Partially     |
-| `moduleConfig`                               | Object | Module-specific configuration settings.                                                                                                                          | `{}`                                                     | Partially     |
+| Parameter                                    | Type   | Description                                                                                                           | Default                                                                                                                                                                                               | Mutable       |
+| :------------------------------------------- | :----- | :-------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| [`class`](#class)                            | String | The name of the collection.                                                                                           | (Required)                                                                                                                                                                                            | No            |
+| [`description`](#description)                | String | A description of the collection.                                                                                      | `""`                                                                                                                                                                                                  | Yes           |
+| [`properties`](#properties)                  | Array  | An array of property objects defining the data schema.                                                                | `[]`                                                                                                                                                                                                  | Partially\*   |
+| [`invertedIndexConfig`](#inverted-index)     | Object | Configuration for the inverted index, affecting filtering and keyword search.                                         | See [Inverted Index reference](./indexing/inverted-index.mdx#inverted-index-parameters)                                                                                                               | Yes           |
+| [`vectorConfig`](#vector-configuration)      | Object | Configure multiple named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields. | `null`                                                                                                                                                                                                | Partially\*\* |
+| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | Default vectorizer defined by [environment variable](/deploy/configuration/env-vars#DEFAULT_VECTORIZER_MODULE). See [Model provider](../model-providers/index.md) for module-specific config defaults | No            |
+| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`).                                                          | `hnsw`                                                                                                                                                                                                | No            |
+| [`moduleConfig`](#module-configuration)      | Object | Module-specific configuration settings.                                                                               | See [Module configuration](#module-configuration)                                                                                                                                                     | Partially     |
+| [`vectorIndexConfig`](#vector-configuration) | Object | Configuration settings specific to the chosen `vectorIndexType`.                                                      | See [Vector index reference](./indexing/vector-index.mdx)                                                                                                                                             | Partially     |
+| [`shardingConfig`](#sharding)                | Object | Controls sharding behavior in a multi-node cluster.                                                                   | See [Sharding section](#sharding)                                                                                                                                                                     | No            |
+| [`replicationConfig`](#replication)          | Object | Controls data replication settings for fault tolerance.                                                               | See [Replication section](#replication)                                                                                                                                                               | Partially     |
+| [`multiTenancyConfig`](#multi-tenancy)       | Object | Configuration to enable multi-tenancy for the collection.                                                             | See [Multi-tenancy section](#multi-tenancy)                                                                                                                                                           | Partially     |
 
 \* New properties can be added; existing properties cannot be modified<br/>
 \*\* New named vectors can be added; some vector index settings are mutable<br/>
@@ -144,7 +148,7 @@ This code example shows how to configure the collection parameters through a cli
 
 :::tip Further resources
 
-For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+For more code examples and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
 
 :::
 
@@ -171,25 +175,22 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
 A description of the collection. This is for your reference and can also provide additional information to [Weaviate Agents](/docs/agents/index.md).
 
+---
+
 ### Properties
 
-| Parameter                                | Type    | Description                                                                                                                                                                     | Default    | Mutable |
-| :--------------------------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- | :------ |
-| [`name`](#name)                          | String  | The name of the property. See the [name](#name) section below for details.                                                                                                      | (Required) | No      |
-| [`dataType`](../datatypes.md)            | Array   | An array containing one or more data types. See [Data Types](../datatypes.md) for a full list. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) | No      |
-| `description`                            | String  | A description of the property for your reference.                                                                                                                               | `null`     | Yes     |
-| [`tokenization`](#tokenization)          | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing. See the [tokenization](#tokenization) section below for details.                      | `word`     | No      |
-| [`indexInverted`](#inverted-index)       | Boolean | If `true`, inverted index is enabled for this property. See [References: Inverted index](./indexing/inverted-index.mdx) for details.                                           | `true`     | No      |
-| [`indexFilterable`](#inverted-index)     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering. See [References: Inverted index](./indexing/inverted-index.mdx) for details.      | `true`     | No      |
-| [`indexSearchable`](#inverted-index)     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search. See [References: Inverted index](./indexing/inverted-index.mdx) for details.   | `true`     | No      |
-| [`indexRangeFilters`](#inverted-index)   | Boolean | If `true`, builds a roaring bitmap index for numerical range-based filtering.. See [References: Inverted index](./indexing/inverted-index.mdx) for details.                    | `false`    | No      |
-| [`invertedIndexConfig`](#inverted-index) | Object  | Property-level overrides for inverted index settings, such as `bm25` parameters. See [References: Inverted index](./indexing/inverted-index.mdx) for details.                  | `{}`       | No      |
-| `moduleConfig`                           | Object  | Module-specific settings, such as skipping vectorization for this property. See [References: Vector index](./indexing/vector-index.mdx) for details.                           | `{}`       | No      |
-
-"indexInverted": true,
-"indexFilterable": true,
-"indexSearchable": true,
-"indexRangeFilters": true,
+| Parameter                                | Type    | Description                                                                                                                  | Default    | Mutable |
+| :--------------------------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------- | :--------- | :------ |
+| [`name`](#name)                          | String  | The name of the property.                                                                                                    | (Required) | No      |
+| [`dataType`](../datatypes.md)            | Array   | An array containing one or more data types. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) | No      |
+| `description`                            | String  | A description of the property for your reference.                                                                            | `null`     | Yes     |
+| [`tokenization`](#tokenization)          | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing.                                    | `word`     | No      |
+| [`indexInverted`](#inverted-index)       | Boolean | If `true`, inverted index is enabled for this property.                                                                      | `true`     | No      |
+| [`indexFilterable`](#inverted-index)     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering.                                 | `true`     | No      |
+| [`indexSearchable`](#inverted-index)     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search.                              | `true`     | No      |
+| [`indexRangeFilters`](#inverted-index)   | Boolean | If `true`, builds a roaring bitmap index for numerical range-based filtering.                                                | `false`    | No      |
+| [`invertedIndexConfig`](#inverted-index) | Object  | Property-level overrides for inverted index settings, such as `bm25` parameters.                                             | `{}`       | No      |
+| `moduleConfig`                           | Object  | Module-specific settings, such as skipping vectorization for this property.                                                  | `{}`       | No      |
 
 <details>
   <summary>Example property configuration -  JSON object</summary>
@@ -287,16 +288,12 @@ Additionally, we strongly recommend that you do not use the following words as p
 
 #### `tokenization`
 
-:::note
-This feature was introduced in `v1.12.0`.
-:::
-
 You can customize how `text` data is tokenized and indexed in the inverted index. Tokenization influences the results returned by the [`bm25`](../api/graphql/search-operators.md#bm25) and [`hybrid`](../api/graphql/search-operators.md#hybrid) operators, and [`where` filters](../api/graphql/filters.md).
 
 Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../manage-collections/vector-config.mdx#property-level-settings)
 
 <details>
-  <summary>Example property configuration</summary>
+  <summary>Example property configuration -  JSON object</summary>
 
 ```json
 {
@@ -343,7 +340,8 @@ The following table shows an example scenario showing whether a filter or keywor
 | `whitespace`     | ❌          | ❌            | ✅            | ✅                         |
 | `field`          | ❌          | ❌            | ❌            | ✅                         |
 
-##### `gse` and `trigram` tokenization methods
+<details>
+  <summary>`gse` and `trigram` tokenization methods</summary>
 
 :::info Added in `1.24`
 :::
@@ -357,7 +355,10 @@ The `gse` tokenizer is not loaded by default to save resources. To use it, set t
 - `"素早い茶色の狐が怠けた犬を飛び越えた"`: `["素早", "素早い", "早い", "茶色", "の", "狐", "が", "怠け", "けた", "犬", "を", "飛び", "飛び越え", "越え", "た", "素早い茶色の狐が怠けた犬を飛び越えた"]`
 - `"すばやいちゃいろのきつねがなまけたいぬをとびこえた"`: `["すばや", "すばやい", "やい", "いち", "ちゃ", "ちゃい", "ちゃいろ", "いろ", "のき", "きつ", "きつね", "つね", "ねが", "がな", "なま", "なまけ", "まけ", "けた", "けたい", "たい", "いぬ", "を", "とび", "とびこえ", "こえ", "た", "すばやいちゃいろのきつねがなまけたいぬをとびこえた"]`
 
-##### `kagome_ja` tokenization method
+</details>
+
+<details>
+  <summary>`kagome_ja` tokenization method</summary>
 
 :::caution Experimental feature
 Available starting in `v1.28.0`. This is an experimental feature. Use with caution.
@@ -376,7 +377,10 @@ The `kagome_ja` tokenizer is not loaded by default to save resources. To use it,
 - `"すばやいちゃいろのきつねがなまけたいぬをとびこえた"`:
   - `["すばやい", "ちゃ", "いろ", "の", "きつね", "が", "なまけ", "た", "いぬ", "を", "とびこえ", "た"]`
 
-##### `kagome_kr` tokenization method
+</details>
+
+<details>
+  <summary>`kagome_kr` tokenization method</summary>
 
 :::caution Experimental feature
 Available starting in `v1.25.7`. This is an experimental feature. Use with caution.
@@ -395,47 +399,50 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 - `"결정하겠다"`:
   - `["결정", "하", "겠", "다"]`
 
-##### Limit the number of `gse` and `Kagome` tokenizers
+</details>
+
+<details>
+  <summary>Limit the number of `gse` and `Kagome` tokenizers</summary>
 
 The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
 You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](/deploy/configuration/env-vars/index.md).
 
+</details>
+
+---
+
 ### Inverted index {#inverted-index}
 
-Weaviate uses **inverted indexes** to enable fast and efficient filtering and searching. This behavior is configured on a per-property basis. Disabling indexing for properties you will never query can speed up data imports and reduce disk usage.
-The inverted index maps values (like words or numbers) to the objects that contain them in order to speed-up all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
+Weaviate uses **inverted indexes** to enable fast and efficient filtering and searching. The inverted index maps values (like words or numbers) to the objects that contain them in order to speed-up all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
+Disabling indexing for properties you will never query can speed up data imports and reduce disk usage.
 
 More details about the `indexFilterable`, `indexSearchable`, `indexRangeFilters` and `invertedIndexConfig` parameters can be found in [Reference: Inverted index](./indexing/inverted-index.mdx).
+
+---
 
 ### Vector configuration
 
 This table explains the key parameters used to configure vectorization and vector indexing when creating a Weaviate collection. Note that you can either configure a single vector space using the top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`) or multiple named vector spaces using `vectorConfig`, but not both.
 
-| Parameter                                 | Type   | Description                                                                                                                                                                | Default                 | Mutable       |
-| :---------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :------------ |
-| `vectorizer`                              | String | The name of the vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization and provide vectors manually.                              | Module-specific default | No            |
-| `vectorIndexType`                         | String | The type of vector index to use. Common values are `hnsw` (default), `flat`, or `dynamic`.                                                                                 | `hnsw`                  | No            |
-| `vectorIndexConfig`                       | Object | An object containing configuration settings specific to the chosen `vectorIndexType` (e.g., HNSW parameters like `ef`, `maxConnections`).                                  | Index-specific defaults | Partially\*   |
-| `vectorConfig`                            | Object | A parent object used to define one or more named vector spaces. Each key within this object is a unique name for a vector space (e.g., "title_vector").                    | `null`                  | Partially\*\* |
-| ↪ `vectorConfig.<name>.vectorizer`        | Object | A vectorizer configuration specific to the named vector. It defines the module and which properties to vectorize (e.g., `{"text2vec-openai": {"properties": ["title"]}}`). | (Required)              | No            |
-| ↪ `vectorConfig.<name>.vectorIndexType`   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                      | `hnsw`                  | No            |
-| ↪ `vectorConfig.<name>.vectorIndexConfig` | Object | The configuration for the index of this specific named vector.                                                                                                             | Index-specific defaults | Partially\*   |
+| Parameter                                                                | Type   | Description                                                                                                                                                                                                                        | Default                 | Mutable       |
+| :----------------------------------------------------------------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :------------ |
+| `vectorizer`                                                             | String | The name of the vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` or `self provided` to disable auto-vectorization and provide vectors manually. [List of available model providers](../model-providers/index.md). | Module-specific default | No            |
+| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | The type of vector index to use. Available values are `hnsw` (default), `flat`, or `dynamic`.                                                                                                                                      | `hnsw`                  | No            |
+| [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | An object containing configuration settings specific to the chosen `vectorIndexType` (e.g., HNSW parameters like `ef`, `maxConnections`).                                                                                          | Index-specific defaults | Partially\*   |
+| `vectorConfig`                                                           | Object | A parent object used to define one or more named vector spaces. Each key within this object is a unique name for a vector space (e.g., "title_vector").                                                                            | `null`                  | Partially\*\* |
+| ↪ `vectorConfig.<name>.vectorizer`                                       | Object | A vectorizer configuration specific to the named vector. It defines the module and which properties to vectorize (e.g., `{"text2vec-openai": {"properties": ["title"]}}`).                                                         | (Required)              | No            |
+| [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                                                                              | `hnsw`                  | No            |
+| [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | The configuration for the index of this specific named vector.                                                                                                                                                                     | Index-specific defaults | Partially\*   |
 
-\* See [vector index mutable parameters](#vector-index)<br/>
-\*\* New named vectors can be added after collection creation
+\* See [vector index mutable parameters](./indexing/vector-index.mdx)<br/>
+\*\* New [named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
 
-:::info
+:::info Single vector vs multiple named vectors
 
 - **For a simple setup with one vector per object:** Use the top-level `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` parameters.
 - **For advanced setups with multiple named vectors per object:** Use the `vectorConfig` object to define each named vector space and its specific configuration. You cannot use the top-level parameters if you use `vectorConfig`.
 
 :::
-
-### Vector index {#vector-index}
-
-Vector indexing organizes vector data to make similarity searches fast and efficient. Instead of comparing a query to every vector, an index builds a structure that rapidly narrows the search to the most relevant candidates.
-
-More details about the `vectorIndexType` and `vectorIndexConfig` parameters can be found in [Reference: Vector index](./indexing/vector-index.mdx).
 
 #### Code example
 
@@ -482,20 +489,52 @@ For more code example and configuration guides visit the [How-to: Manage collect
 
 :::
 
+---
+
+### Module configuration
+
+The `moduleConfig` parameter allows you to specify if the vectorizers will include or exclude the collection name in vector calculations (default `true`).
+It is also used to specify reranker and generative [model providers](../model-providers/index.md) at a collection level.
+
+<details>
+  <summary>Example module configuration -  JSON object</summary>
+
+An example of a complete `moduleConfig` object:
+
+```json
+  "moduleConfig": {
+    "text2vec-contextionary": {
+      "vectorizeClassName": true  // Include the collection name in vector calculation (default true)
+    }
+  },
+```
+
+</details>
+
+---
+
+### Vector index {#vector-index}
+
+Vector indexing organizes vector data to make similarity searches fast and efficient. Instead of comparing a query to every vector, an index builds a structure that rapidly narrows the search to the most relevant candidates.
+
+More details about the `vectorIndexType` and `vectorIndexConfig` parameters can be found in [Reference: Vector index](./indexing/vector-index.mdx).
+
+---
+
 ### Replication
 
 <RaftRFChangeWarning />
 
 [Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
-| Parameter          | Type    | Description                                                                                                     | Default                   | Mutable                               |
-| :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------- | :------------------------ | :------------------------------------ |
-| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas. | `1`                       | No in v1.25+, Yes in earlier versions |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication (introduced in v1.26.0)                                                         | `false`                   | Yes                                   |
-| `deletionStrategy` | String  | Strategy for handling deletions in replication (introduced in v1.27.0)                                          | `"NoAutomatedResolution"` | Yes                                   |
+| Parameter          | Type    | Description                                                                                                     | Default                   | Mutable                                 |
+| :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
+| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas. | `1`                       | No in `v1.25+`, Yes in earlier versions |
+| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                               | `false`                   | Yes                                     |
+| `deletionStrategy` | String  | Strategy for handling deletions in replication. Added in `v1.27`                                                | `"NoAutomatedResolution"` | Yes                                     |
 
 <details>
-  <summary>Example replication configuration</summary>
+  <summary>Example replication configuration -  JSON object</summary>
 
 An example of a complete `replicationConfig` object:
 
@@ -519,38 +558,36 @@ An example of a complete `replicationConfig` object:
 
 This code example shows how to configure the property parameters through a client library:
 
-{" "}
-
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START CreateCollectionWithProperties"
-      endMarker="# END CreateCollectionWithProperties"
+      startMarker="# START AllReplicationSettings"
+      endMarker="# END AllReplicationSettings"
       language="py"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
       language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
+      text={JavaReplicationCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
       language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
-      startMarker="// START CreateCollectionWithProperties"
-      endMarker="// END CreateCollectionWithProperties"
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
       language="gonew"
     />
   </TabItem>
@@ -600,6 +637,8 @@ For more code example and configuration guides visit the [How-to: Manage collect
   </TabItem>
 </Tabs>
 
+---
+
 ### Sharding
 
 Sharding is configured via the `shardingConfig` object in the collection definition. These parameters are immutable and cannot be changed after the collection is created.
@@ -616,7 +655,7 @@ Sharding is configured via the `shardingConfig` object in the collection definit
 | `actualVirtualCount`  | Integer | **(Read-only)** The actual number of virtual shards that were created.                                                                                    | `128`           | No      |
 
 <details>
-  <summary>Example sharding configuration</summary>
+  <summary>Example sharding configuration -  JSON object</summary>
 
 An example of a complete `shardingConfig` object:
 
@@ -680,6 +719,8 @@ For more code example and configuration guides visit the [How-to: Manage collect
 
 :::
 
+---
+
 ### Multi-tenancy
 
 Multi-tenancy allows you to isolate data within a single collection, where objects are associated with specific tenants. This is a useful feature for building SaaS applications or any system requiring strict data partitioning.
@@ -692,11 +733,11 @@ It provides data isolation at a lower overhead than creating a separate collecti
 
 To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyConfig` object. This parameter is immutable and must be set at creation time.
 
-| Parameter              | Type    | Description                                                                                                                                                      | Default | Mutable |
-| :--------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
-| `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                             | `false` | No      |
-| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. (introduced in v1.25.0)                                            | `false` | Yes     |
-| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. (introduced in v1.25.2) | `false` | Yes     |
+| Parameter              | Type    | Description                                                                                                                                                 | Default | Mutable |
+| :--------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
+| `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                        | `false` | No      |
+| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. Added in `v1.25`                                              | `false` | Yes     |
+| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. Added in `v1.25.2` | `false` | Yes     |
 
 #### Code example
 
@@ -705,7 +746,7 @@ This code example shows how to configure the property parameters through a clien
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
-      text={PyCode}
+      text={PyCodeMultiTenancy}
       startMarker="# START EnableMultiTenancy"
       endMarker="# END EnableMultiTenancy"
       language="py"
@@ -713,7 +754,7 @@ This code example shows how to configure the property parameters through a clien
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
-      text={TSCode}
+      text={TSCodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="ts"
@@ -721,7 +762,7 @@ This code example shows how to configure the property parameters through a clien
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
-      text={JavaCode}
+      text={JavaCodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="java"
@@ -729,7 +770,7 @@ This code example shows how to configure the property parameters through a clien
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
-      text={GoCode}
+      text={GoCodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="go"
@@ -773,7 +814,7 @@ It will:
 - Create a collection if an object is added to a non-existent collection.
 - Add any missing property from an object being added.
 - Infer array data types, such as `int[]`, `text[]`, `number[]`, `boolean[]`, `date[]` and `object[]`.
-- Infer nested properties for `object` and `object[]` data types (introduced in `v1.22.0`).
+- Infer nested properties for `object` and `object[]` data types.
 - Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
 
 :::tip Define the collection manually for production use

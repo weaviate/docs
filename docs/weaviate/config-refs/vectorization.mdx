@@ -3,10 +3,16 @@ title: Vectorization
 description: Reference for configuring vectorizers and named vectors in Weaviate.
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/config-refs/reference.collections.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
 **Vectorization** is the process of converting data into numerical vector embeddings. Weaviate can automate this process using vectorizer modules. This page covers how to configure the vectorizer and manage vector embeddings for a collection.
-
-
----
 
 ## Single vector collections
 
@@ -14,17 +20,56 @@ If you don't explicitly define a [named vector](#named-vectors) in your collecti
 
 To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](#configure-semantic-indexing) section.
 
----
+#### Code example 
+
+This code example shows how to configure the vectorizer parameters through a client library:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START Vectorizer"
+      endMarker="# END Vectorizer"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Vectorizer"
+      endMarker="// END Vectorizer"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Further resources
+
+For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/index.mdx) guide.
+
+:::
 
 ## Multiple vector embeddings (named vectors) {#named-vectors}
 
 import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
-
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 
 [comment]: # " This section is duplicated, with a link to this page, in: multi-vector-support dot mdx "
 
@@ -33,6 +78,51 @@ Collections can have multiple named vectors.
 The vectors in a collection can have their own configurations. Each vector space can set its own index, its own compression algorithm, and its own vectorizer. This means you can use different vectorization models, and apply different distance metrics, to the same object.
 
 To work with named vectors, adjust your queries to specify a target vector for [vector search](/weaviate/search/similarity#named-vectors) or [hybrid search](/weaviate/search/hybrid#named-vectors) queries.
+
+#### Code example 
+
+This code example shows how to configure multiple named vectors through a client library:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START MultipleVectors"
+      endMarker="# END MultipleVectors"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BasicNamedVectors"
+      endMarker="// END BasicNamedVectors"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Further resources
+
+For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/index.mdx) guide.
+
+:::
 
 ### Query a named vector
 
@@ -100,8 +190,8 @@ For example, this data object,
 ```js
 Article = {
   summary: "Cows lose their jobs as milk prices drop",
-  text: "As his 100 diary cows lumbered over for their Monday..."
-}
+  text: "As his 100 diary cows lumbered over for their Monday...",
+};
 ```
 
 will be vectorized as:
@@ -110,7 +200,7 @@ will be vectorized as:
 article cows lose their jobs as milk prices drop as his 100 diary cows lumbered over for their monday...
 ```
 
-By default, the calculation includes the  `collection name` and all property `values`, but the property `names` *are not* indexed.
+By default, the calculation includes the collection name and all property values, but the property names are not indexed.
 
 To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
 
@@ -119,17 +209,6 @@ To configure vectorization on a per-property basis, use `skip` and `vectorizePro
 ### Default distance metric
 
 Weaviate allows you to configure the `DEFAULT_VECTOR_DISTANCE_METRIC` which will be applied to every collection unless overridden individually. You can choose from: `cosine` (default), `dot`, `l2-squared`, `manhattan`, `hamming`.
-
-```python
-collection_obj = {
-    "class": "Article",
-    "vectorIndexConfig": {
-        "distance": "dot",
-    },
-}
-
-client.schema.create_class(collection_obj)
-```
 
 ## Related pages
 

@@ -28,7 +28,7 @@ Vector quantization is a technique that reduces the memory footprint of vector e
 
 PQ reduces the size of each vector embedding in two steps. First, it reduces the number of vector dimensions to a smaller number of "segments", and then each segment is quantized to a smaller number of bits from the original number of bits (typically a 32-bit float).
 
-import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
+import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
