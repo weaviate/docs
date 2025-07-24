@@ -13,6 +13,7 @@ from pathlib import Path
         "./_includes/code/howto/configure.pq-compression.py",
         "./_includes/code/howto/configure.bq-compression.py",
         "./_includes/code/howto/configure-sq/sq-compression-v4.py",
+        "./_includes/code/howto/configure-rq/rq-compression-v4.py",
     ],
 )
 def test_on_blank_instance_pyv4(empty_weaviates, script_loc):

@@ -5,8 +5,7 @@
 # ==============================
 
 # START ConnectCode
-import weaviate, os, json
-import weaviate.classes.config as wc
+import weaviate, os
 
 client = weaviate.connect_to_local(
     headers={
@@ -27,16 +26,22 @@ client.is_ready()
 client.collections.delete("MyCollection")
 
 # START EnableBQ
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure, Property, DataType
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
+    vector_config=Configure.Vectors.text2vec_openai(
         name="default",
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.bq(),
+        quantizer=Configure.VectorIndex.Quantizer.bq(),
         # highlight-end
     ),
+    properties=[
+        Property(
+            name="text",
+            data_type=DataType.TEXT,
+        )
+    ],
 )
 # END EnableBQ
 
@@ -47,23 +52,25 @@ client.collections.create(
 client.collections.delete("MyCollection")
 
 # START BQWithOptions
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure, Property
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
+    vector_config=Configure.Vectors.text2vec_openai(
         name="default",
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.bq(
-            rescore_limit=200,
-            cache=True
-        ),
+        quantizer=Configure.VectorIndex.Quantizer.bq(rescore_limit=200, cache=True),
         # highlight-end
-        vector_index_config=wc.Configure.VectorIndex.flat(
-            distance_metric=wc.VectorDistances.COSINE,
+        vector_index_config=Configure.VectorIndex.flat(
             vector_cache_max_objects=100000,
         ),
     ),
+    properties=[
+        Property(
+            name="text",
+            data_type=DataType.TEXT,
+        )
+    ],
 )
 # END BQWithOptions
 
