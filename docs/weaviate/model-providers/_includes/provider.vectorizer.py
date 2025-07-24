@@ -1320,11 +1320,14 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START SnowflakeArcticEmbedLV20
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, Property, DataType
 
 client.collections.create(
     "DemoCollection",
     # highlight-start
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
     vector_config=[
         Configure.Vectors.text2vec_weaviate(
             name="title_vector",
