@@ -538,15 +538,19 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "category",
-          label: "Indexing",
+          type: "doc",
+          id: "weaviate/config-refs/distances",
           className: "sidebar-item",
-          collapsed: false,
-          items: [
-            "weaviate/config-refs/indexing/vector-index",
-            "weaviate/config-refs/indexing/inverted-index",
-            "weaviate/config-refs/distances",
-          ],
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/indexing/inverted-index",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
+          id: "weaviate/config-refs/indexing/vector-index",
+          className: "sidebar-item",
         },
         {
           type: "doc",

@@ -14,6 +14,8 @@ import SkipLink from '/src/components/SkipValidationLink'
 
 When [creating a property](../manage-collections/collection-operations.mdx#add-a-property), you must specify a data type. Weaviate accepts the following types.
 
+## Available data types
+
 :::note Array types
 Arrays of a data type are specified by adding `[]` to the type (e.g. `text` ➡ `text[]`). Note that not all data types support arrays.
 :::
