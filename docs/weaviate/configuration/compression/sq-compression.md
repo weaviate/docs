@@ -53,6 +53,14 @@ SQ can be enabled at collection creation time. To enable SQ, set `vector_index_c
         language="go"
       />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START EnableSQ"
+      endMarker="// END EnableSQ"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 :::info Added in `v1.31`
@@ -78,7 +86,6 @@ import SQParameters from '/_includes/configuration/sq-compression-parameters.mdx
         language="py"
       />
   </TabItem>
-
   <TabItem value="py3" label="Python Client v3">
       <FilteredTextBlock
         text={PyCodeV3}
@@ -87,7 +94,6 @@ import SQParameters from '/_includes/configuration/sq-compression-parameters.mdx
         language="pyv3"
       />
   </TabItem>
-
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -95,6 +101,14 @@ import SQParameters from '/_includes/configuration/sq-compression-parameters.mdx
         endMarker="// END SQWithOptions"
         language="go"
       />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SQWithOptions"
+      endMarker="// END SQWithOptions"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
