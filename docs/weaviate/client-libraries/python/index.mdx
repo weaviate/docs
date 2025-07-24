@@ -99,6 +99,10 @@ Get started with Weaviate using this Python example. The code walks you through 
 1. **[Import data](../../manage-objects/import.mdx)**: Fetch sample Jeopardy questions and use Weaviate's batch import for efficient ingestion and automatic vector embedding generation.
 1. **[Search/query the database](../../search/index.mdx)**: Execute a vector search to find questions semantically similar to the query `biology`.
 
+import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
+
+<VectorsAutoSchemaError />
+
 <FilteredTextBlock
   text={PythonCode}
   startMarker="# START GetStarted"
@@ -106,7 +110,7 @@ Get started with Weaviate using this Python example. The code walks you through 
   language="py"
 />
 
-For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section. 
+For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section.
 
 ## Asynchronous usage
 
@@ -125,7 +129,9 @@ import ReleaseHistory from "/_includes/release-history.md";
 
 </details>
 
-#### Vectorizer API changes `v4.16.0` 
+#### Vectorizer API changes `v4.16.0`
+
+<VectorsAutoSchemaError />
 
 Starting with the Weaviate Python client `v4.16.0`, there are multiple changes to the vectorizer configuration API when creating collections:
 - `.vectorizer_config` has been replaced with `.vector_config`
@@ -330,7 +336,7 @@ Use `ReferenceToMulti` for multi-target references.
 
 ##### References
 
-- References are now added through a `references` parameter during collection creation, object insertion and queries. 
+- References are now added through a `references` parameter during collection creation, object insertion and queries.
 - The `FromReference` class is now called `QueryReference`.
 
 ##### Reorganization of classes/parameters
