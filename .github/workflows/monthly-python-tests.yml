@@ -1,0 +1,47 @@
+name: Monthly Python Tests
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Run at 00:00 on the 1st day of every month
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10.16'
+    
+    - name: Create virtual environment
+      run: python -m venv .venv
+    
+    - name: Activate virtual environment and install dependencies
+      run: |
+        source .venv/bin/activate
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      env:
+        WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+        WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+        WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+        WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+        WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+        WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+        WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+        COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+        COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+        HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+        ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+        WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+        WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+      run: |
+        source .venv/bin/activate
+        pytest -m pyv4
