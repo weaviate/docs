@@ -30,7 +30,7 @@ Specify a `vectorizer` for a collection.
 Collection level settings override default values and general configuration parameters such as [environment variables](/deploy/configuration/env-vars/index.md).
 
 - [Available model integrations](../model-providers/index.md)
-- [Vectorizer configuration references](/weaviate/config-refs/collections.mdx#vectorizer)
+- [Vectorizer configuration references](/weaviate/config-refs/collections.mdx#vector-configuration)
 
 </details>
 
@@ -258,7 +258,7 @@ Named vectors can be added to existing collection definitions with named vectors
 </Tabs>
 
 :::caution Objects aren't automatically revectorized
-Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../config-refs/collections.mdx#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
+Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../config-refs/vectorization.mdx#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
 :::
 
 ## Define multi-vector embeddings (e.g. ColBERT, ColPali)

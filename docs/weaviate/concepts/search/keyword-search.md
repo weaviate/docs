@@ -62,7 +62,7 @@ Stopwords are words that are filtered out before processing text.
 
 Weaviate uses configurable stopwords in calculating the BM25 score. Any tokens that are contained in the stopword list will be ignored from the BM25 score calculation.
 
-See the [reference page](../../config-refs/collections.mdx#stopwords-stopword-lists) for more details.
+See the [reference page](../../config-refs/indexing/inverted-index.mdx#stopwords) for more details.
 
 ### BM25 parameters
 

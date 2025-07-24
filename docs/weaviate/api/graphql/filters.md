@@ -147,7 +147,7 @@ See the [Schema property tokenization section](../../config-refs/collections.mdx
 
 #### Stopwords in `text` filters
 
-Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/collections.mdx#stopwords-stopword-lists).
+Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/indexing/inverted-index.mdx#stopwords).
 
 ## Multiple operands
 
@@ -305,7 +305,7 @@ import GraphQLFiltersWhereId from '/_includes/code/graphql.filters.where.id.mdx'
 Filtering can be performed with internal timestamps as well, such as `creationTimeUnix` and `lastUpdateTimeUnix`. These values can be represented either as Unix epoch milliseconds, or as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) formatted datetimes. Note that epoch milliseconds should be passed in as a `valueText`, and an RFC3339 datetime should be a `valueDate`.
 
 :::info
-Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/collections.mdx#indextimestamps) for details.
+Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) for details.
 :::
 
 import GraphQLFiltersWhereTimestamps from '/_includes/code/graphql.filters.where.timestamps.mdx';
@@ -375,7 +375,7 @@ To filter for `Article` class objects with `title` length greater than 10, you w
 ```
 
 :::note
-Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/collections.mdx#indexpropertylength).
+Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/indexing/inverted-index.mdx#indexpropertylength).
 :::
 
 ### By cross-references
@@ -530,7 +530,7 @@ Using the `IsNull` operator allows you to do filter for objects where given prop
 ```
 
 :::note
-Filtering by null-state requires the target class to be configured to index this. See [here](../../config-refs/collections.mdx#indexnullstate) for details.
+Filtering by null-state requires the target class to be configured to index this. See [here](../../config-refs/indexing/inverted-index.mdx#indexnullstate) for details.
 :::
 
 

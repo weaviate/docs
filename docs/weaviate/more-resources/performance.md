@@ -11,8 +11,8 @@ These indexes are available:
 
 Vector Indexes:
 
-- [HNSW](/weaviate/config-refs/vectorization.mdx#hnsw-indexes)
-- [Flat](/weaviate/config-refs/vectorization.mdx#flat-indexes)
+- [HNSW](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index)
+- [Flat](/weaviate/config-refs/indexing/vector-index.mdx#flat-index)
 
 Traditional Indexes:
 

@@ -175,7 +175,7 @@ In some cases, rescoring also includes over-fetching, whereby additional candida
 - [Concepts: Indexing](./indexing/index.md)
 - [Concepts: Vector Indexing](./indexing/vector-index.md)
 - [Configuration: Vector index](../config-refs/vectorization.mdx)
-- [Configuration: Schema (Configure semantic indexing)](../config-refs/collections.mdx#configure-semantic-indexing)
+- [Configuration: Schema (Configure semantic indexing)](../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 - [How to configure: Binary quantization (compression)](../configuration/compression/bq-compression.md)
 - [How to configure: Product quantization (compression)](../configuration/compression/pq-compression.md)
 - [How to configure: Scalar quantization (compression)](../configuration/compression/sq-compression.md)

@@ -32,7 +32,7 @@ Some HNSW parameters are mutable, but others cannot be modified after you create
 | `flatSearchCutoff`       | integer | Optional. Threshold for the [flat-search cutoff](/weaviate/concepts/filtering.md#flat-search-cutoff). To force a vector index search, set `"flatSearchCutoff": 0`.                                                                                                                                                                                                                                                                                                   | 40000      | Yes     |
 | `skip`                   | boolean | When true, do not index the collection. <br/><br/> Weaviate decouples vector creation and vector storage. If you skip vector indexing, but a vectorizer is configured (or a vector is provided manually), Weaviate logs a warning each import. <br/><br/> To skip indexing and vector generation, set `"vectorizer": "none"` when you set `"skip": true`. <br/><br/> See [When to skip indexing](../../concepts/indexing/vector-index.md#when-to-skip-indexing).       | `false`    | No      |
 | `vectorCacheMaxObjects`  | integer | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations).                                                                                                                                                                                    | `1e12`     | Yes     |
-| `pq`                     | object  | Enable and configure [product quantization (PQ)](/weaviate/concepts/indexing/vector-index.md) compression. <br/><br/> PQ assumes some data has already been loaded. You should have 10,000 to 100,000 vectors per shard loaded before you enable PQ. <br/><br/> For PQ configuration details, see [PQ configuration parameters](#pq-configuration-parameters).                                                                                                         | --         | Yes     |
+| `pq`                     | object  | Enable and configure [product quantization (PQ)](/weaviate/concepts/indexing/vector-index.md) compression. <br/><br/> PQ assumes some data has already been loaded. You should have 10,000 to 100,000 vectors per shard loaded before you enable PQ. <br/><br/> For PQ configuration details, see [PQ configuration parameters](#pq-parameters).                                                                                                         | --         | Yes     |
 
 ### Database parameters for HNSW
 
@@ -144,7 +144,7 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 | :---------- | :------ | :----------- | :------------------------------------------------------------------------------------ |
 | `distance`  | string  | `cosine`     | Distance metric. The metric that measures the distance between two arbitrary vectors. |
 | `hnsw`      | object  | default HNSW | [HNSW index configuration](#hnsw-index-parameters) to be used.                        |
-| `flat`      | object  | default Flat | [Flat index configuration](#flat-indexes) to be used.                                 |
+| `flat`      | object  | default Flat | [Flat index configuration](#flat-index) to be used.                                 |
 | `threshold` | integer | 10000        | Threshold object count at which `flat` to `hnsw` conversion happens                   |
 
 ## Index configuration parameters
@@ -202,6 +202,42 @@ The following parameters are available for BQ compression, under `vectorIndexCon
 import BQParameters from "/_includes/configuration/bq-compression-parameters.mdx";
 
 <BQParameters />
+
+## Configure semantic indexing
+
+Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
+
+For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
+
+Unless specified otherwise in the collection definition, the default behavior is to:
+
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
+- Sort properties in alphabetical (a-z) order before concatenating values
+- If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
+- Join the (prepended) property values with spaces
+- Prepend the class name (unless `vectorizeClassName` is `false`)
+- Convert the produced string to lowercase
+
+For example, this data object,
+
+```js
+Article = {
+  summary: "Cows lose their jobs as milk prices drop",
+  text: "As his 100 diary cows lumbered over for their Monday...",
+};
+```
+
+will be vectorized as:
+
+```md
+article cows lose their jobs as milk prices drop as his 100 diary cows lumbered over for their monday...
+```
+
+By default, the calculation includes the collection name and all property values, but the property names are not indexed.
+
+To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
+
+To configure vectorization on a per-property basis, use `skip` and `vectorizePropertyName`.
 
 ## Asynchronous indexing
 

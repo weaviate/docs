@@ -15,7 +15,7 @@ import SkipLink from '/src/components/SkipValidationLink'
 ## Available distance metrics
 
 If not specified explicitly, the default distance metric in Weaviate is
-`cosine`. It can be [set in the vectorIndexConfig](/weaviate/config-refs/vectorization.mdx#hnsw-indexes) field as part of the schema ([example](../manage-collections/vector-config.mdx#specify-a-distance-metric)) to any of the following types:
+`cosine`. It can be [set in the vectorIndexConfig](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) field as part of the schema ([example](../manage-collections/vector-config.mdx#specify-a-distance-metric)) to any of the following types:
 
 :::tip Comparing distances
 In all cases, larger distance values indicate lower similarity. Conversely, smaller distance values indicate higher similarity.

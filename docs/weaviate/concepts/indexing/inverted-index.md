@@ -76,7 +76,7 @@ This chart shows which filter makes the comparison when one or both index type i
 
 #### Inverted index for timestamps
 
-You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/collections.mdx#indextimestamps).
+You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps).
 
 Timestamps are currently indexed using the `indexFilterable` index.
 

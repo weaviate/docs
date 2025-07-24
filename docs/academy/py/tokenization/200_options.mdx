@@ -117,7 +117,7 @@ For keyword searches, `field` tokenization has limited use. A keyword search for
 
 Weaviate supports [stop words](https://en.wikipedia.org/wiki/Stop_word). Stop words are common words which are often filtered out from search queries because they occur frequently and do not carry much meaning.
 
-By default, Weaviate uses a [list of English stop words](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go). You can [configure your own list of stop words](../../../weaviate/config-refs/collections.mdx#stopwords-stopword-lists) in the schema definition.
+By default, Weaviate uses a [list of English stop words](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go). You can [configure your own list of stop words](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords) in the schema definition.
 
 This means that after tokenization, any stop words in the text behave as if they were not present. For example, a filter for `"a computer mouse"` will behave identically to a filter for `"computer mouse"`.
 

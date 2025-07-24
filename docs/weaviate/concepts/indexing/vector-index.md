@@ -258,7 +258,7 @@ The [ANN benchmark page](/weaviate/benchmarks/ann.md) contains a wide variety of
 :::info Related pages
 - [Concepts: Vector quantization (compression)](../vector-quantization.md)
 - [Configuration: Vector index](../../config-refs/vectorization.mdx)
-- [Configuration: Schema (Configure semantic indexing)](../../config-refs/collections.mdx#configure-semantic-indexing)
+- [Configuration: Schema (Configure semantic indexing)](../../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 :::
 
 ## Questions and feedback

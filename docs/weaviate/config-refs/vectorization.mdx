@@ -18,7 +18,7 @@ import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.class
 
 If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a _single vector_ collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
 
-To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](#configure-semantic-indexing) section.
+To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
 
 #### Code example 
 
@@ -169,42 +169,6 @@ If you want to populate the new named vector for existing objects, update the ob
 :::caution Not available for legacy (unnamed) vectorizers
 The ability to add a named vector after collection creation is only available for collections configured with named vectors.
 :::
-
-## Configure semantic indexing
-
-Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
-
-For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
-
-Unless specified otherwise in the collection definition, the default behavior is to:
-
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../manage-collections/vector-config.mdx#property-level-settings))
-- Sort properties in alphabetical (a-z) order before concatenating values
-- If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
-- Join the (prepended) property values with spaces
-- Prepend the class name (unless `vectorizeClassName` is `false`)
-- Convert the produced string to lowercase
-
-For example, this data object,
-
-```js
-Article = {
-  summary: "Cows lose their jobs as milk prices drop",
-  text: "As his 100 diary cows lumbered over for their Monday...",
-};
-```
-
-will be vectorized as:
-
-```md
-article cows lose their jobs as milk prices drop as his 100 diary cows lumbered over for their monday...
-```
-
-By default, the calculation includes the collection name and all property values, but the property names are not indexed.
-
-To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
-
-To configure vectorization on a per-property basis, use `skip` and `vectorizePropertyName`.
 
 ### Default distance metric
 

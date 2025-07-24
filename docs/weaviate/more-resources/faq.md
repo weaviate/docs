@@ -415,7 +415,7 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/vectorization.mdx#asynchronous-indexing), which separates data ingestion from vectorization.
+> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/indexing/vector-index.mdx#asynchronous-indexing), which separates data ingestion from vectorization.
 
 </details>
 

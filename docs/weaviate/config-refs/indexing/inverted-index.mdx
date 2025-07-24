@@ -33,8 +33,8 @@ These parameters are set within the `invertedIndexConfig` object in your collect
 
 | Parameter                                     | Type    | Default                    | Details                                                                                                                                                            |
 | :-------------------------------------------- | :------ | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`bm25`](#bm25)                               | Object  | `{ "k1": 1.2, "b": 0.75 }` | Sets the `k1` and `b` parameters for the BM25 ranking algorithm. Can be overridden at the property level. See [**BM25 Configuration**](#bm25-configuration) below. |
-| [`stopwords`](#stopwords)                     | Object  | (Varies)                   | Defines the stopword list to exclude common words from search queries. See [**Stopwords Configuration**](#stopwords-configuration) below.                          |
+| [`bm25`](#bm25)                               | Object  | `{ "k1": 1.2, "b": 0.75 }` | Sets the `k1` and `b` parameters for the BM25 ranking algorithm. Can be overridden at the property level. See [**BM25 Configuration**](#bm25) below. |
+| [`stopwords`](#stopwords)                     | Object  | (Varies)                   | Defines the stopword list to exclude common words from search queries. See [**Stopwords Configuration**](#stopwords) below.                          |
 | [`indexTimestamps`](#indextimestamps)         | Boolean | `false`                    | If `true`, indexes object creation and update timestamps, enabling filtering by `creationTimeUnix` and `lastUpdateTimeUnix`.                                       |
 | [`indexNullState`](#indexnullstate)           | Boolean | `false`                    | If `true`, indexes the null/non-null state of each property, enabling filtering for `null` values.                                                                 |
 | [`indexPropertyLength`](#indexpropertylength) | Boolean | `false`                    | If `true`, indexes the length of each property, enabling filtering by property length.                                                                             |
@@ -170,7 +170,7 @@ As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverte
 
 Stopwords can now be configured at runtime. You can use the RESTful API to <SkipLink href="/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">update</SkipLink> the list of stopwords after your data has been indexed.
 
-Note that stopwords are only removed when [tokenization](#tokenization) is set to `word`.
+Note that stopwords are only removed when [tokenization](../collections.mdx#tokenization) is set to `word`.
 
 #### `indexTimestamps`
 
