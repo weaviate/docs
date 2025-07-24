@@ -182,7 +182,7 @@ A description of the collection. This is for your reference and can also provide
 | Parameter                                | Type    | Description                                                                                                                  | Default    | Mutable |
 | :--------------------------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------- | :--------- | :------ |
 | [`name`](#name)                          | String  | The name of the property.                                                                                                    | (Required) | No      |
-| [`dataType`](./datatypes.md)            | Array   | An array containing one or more data types. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) | No      |
+| [`dataType`](./datatypes.md)             | Array   | An array containing one or more data types. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) | No      |
 | `description`                            | String  | A description of the property for your reference.                                                                            | `null`     | Yes     |
 | [`tokenization`](#tokenization)          | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing.                                    | `word`     | No      |
 | [`indexInverted`](#inverted-index)       | Boolean | If `true`, inverted index is enabled for this property.                                                                      | `true`     | No      |
@@ -877,12 +877,11 @@ In order to manage collection aliases, you need to posses the right [`Collection
 
 ## Further resources
 
-- [Tutorial: Schema](/weaviate/starter-guides/managing-collections)
-- [How to: Configure a schema](../manage-collections/index.mdx)
-- [How to: Collection aliases](../manage-collections/collection-aliases.mdx)
-- [Concepts: Data Structure](/weaviate/concepts/data)
+- [Starter guides: Collection definition](/weaviate/starter-guides/managing-collections)
+- [How to: Manage collections](../manage-collections/index.mdx)
+- [Concepts: Data structure](/weaviate/concepts/data)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
-    References: REST API: Schema
+    REST API: Collection definition (schema)
   </SkipLink>
 
 ## Questions and feedback

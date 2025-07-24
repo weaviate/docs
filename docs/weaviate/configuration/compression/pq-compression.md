@@ -28,7 +28,7 @@ import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' 
 
 <PQTradeoffs />
 
-To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx) .
+To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx).
 
 ## Enable PQ compression
 

@@ -1,5 +1,6 @@
 ---
-title: Data types
+title: Property data types
+sidebar_label: Data types
 description: Data Types in Weaviate Schema
 sidebar_position: 20
 image: og/docs/configuration.jpg
@@ -11,15 +12,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import SkipLink from '/src/components/SkipValidationLink'
 
-## Introduction
-
 When [creating a property](../manage-collections/collection-operations.mdx#add-a-property), you must specify a data type. Weaviate accepts the following types.
 
 :::note Array types
 Arrays of a data type are specified by adding `[]` to the type (e.g. `text` ➡ `text[]`). Note that not all data types support arrays.
 :::
 
-import DataTypes from '/_includes/datatypes.mdx';
+import DataTypes from '/\_includes/datatypes.mdx';
 
 <DataTypes />
 
@@ -44,8 +43,8 @@ Use `text` instead of `string`. `text` supports the tokenization options that ar
 
 ### Examples
 
-import TextTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.text.py';
-import TextTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.text.ts';
+import TextTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.text.py';
+import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.text.ts';
 
 #### Property definition
 
@@ -95,8 +94,8 @@ The `boolean`, `int`, and `number` types are used for storing boolean, integer, 
 
 ### Examples
 
-import NumericalTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.numerical.py';
-import NumericalTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.numerical.ts';
+import NumericalTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.numerical.py';
+import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.numerical.ts';
 
 #### Property definition
 
@@ -160,8 +159,8 @@ In specific client libraries, you may be able to use the native date object as s
 
 ### Examples
 
-import DateTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.date.py';
-import DateTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.date.ts';
+import DateTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.date.py';
+import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.date.ts';
 
 #### Property definition
 
@@ -207,13 +206,10 @@ import DateTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.data
 
 ## `uuid`
 
-:::info Added in `v1.19`
-:::
-
 The dedicated `uuid` and `uuid[]` data types efficiently store [UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier).
 
--   Each `uuid` is a 128-bit (16-byte) number.
--   The filterable index uses roaring bitmaps.
+- Each `uuid` is a 128-bit (16-byte) number.
+- The filterable index uses roaring bitmaps.
 
 :::note Aggregate/sort currently not possible
 It is currently not possible to aggregate or sort by `uuid` or `uuid[]` types.
@@ -221,8 +217,8 @@ It is currently not possible to aggregate or sort by `uuid` or `uuid[]` types.
 
 ### Examples
 
-import UUIDTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.uuid.py';
-import UUIDTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.uuid.ts';
+import UUIDTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.uuid.py';
+import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.uuid.ts';
 
 #### Property definition
 
@@ -287,8 +283,8 @@ To supply a `geoCoordinates` property, specify the `latitude` and `longitude` as
 
 ### Examples
 
-import GeoTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.geocoordinates.py';
-import GeoTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.geocoordinates.ts';
+import GeoTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.geocoordinates.py';
+import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.geocoordinates.ts';
 
 #### Property definition
 
@@ -332,7 +328,7 @@ import GeoTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datat
   </TabItem>
 </Tabs>
 
-import GeoLimitations from '/_includes/geo-limitations.mdx';
+import GeoLimitations from '/\_includes/geo-limitations.mdx';
 
 <GeoLimitations/>
 
@@ -355,6 +351,7 @@ A `phoneNumber` input will be normalized and validated, unlike the single fields
 ```
 
 There are two fields that accept input. `input` must always be set, while `defaultCountry` must only be set in specific situations. There are two scenarios possible:
+
 - When you enter an international number (e.g. `"+31 20 1234567"`) to the `input` field, no `defaultCountry` needs to be entered. The underlying parser will automatically recognize the number's country.
 - When you enter a national number (e.g. `"020 1234567"`), you need to specify the country in `defaultCountry` (in this case, `"nl"`), so that the parse can correctly convert the number into all formats. The string in `defaultCountry` should be an [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code.
 
@@ -362,8 +359,8 @@ Weaviate will also add further read-only fields such as `internationalFormatted`
 
 ### Examples
 
-import PhoneTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.phonenumber.py';
-import PhoneTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.phonenumber.ts';
+import PhoneTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.phonenumber.py';
+import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.phonenumber.ts';
 
 #### Property definition
 
@@ -410,11 +407,12 @@ import PhoneTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.dat
 ## `blob`
 
 The datatype blob accepts any binary data. The data should be `base64` encoded, and passed as a `string`. Characteristics:
-* Weaviate doesn't make assumptions about the type of data that is encoded. A module (e.g. `img2vec`) can investigate file headers as it wishes, but Weaviate itself does not do this.
-* When storing, the data is `base64` decoded (so Weaviate stores it more efficiently).
-* When serving, the data is `base64` encoded (so it is safe to serve as `json`).
-* There is no max file size limit.
-* This `blob` field is always skipped in the inverted index, regardless of setting. This mean you can not search by this `blob` field in a Weaviate GraphQL `where` filter, and there is no `valueBlob` field accordingly. Depending on the module, this field can be used in module-specific filters (e.g. `nearImage`{} in the `img2vec-neural` filter).
+
+- Weaviate doesn't make assumptions about the type of data that is encoded. A module (e.g. `img2vec`) can investigate file headers as it wishes, but Weaviate itself does not do this.
+- When storing, the data is `base64` decoded (so Weaviate stores it more efficiently).
+- When serving, the data is `base64` encoded (so it is safe to serve as `json`).
+- There is no max file size limit.
+- This `blob` field is always skipped in the inverted index, regardless of setting. This mean you can not search by this `blob` field in a Weaviate GraphQL `where` filter, and there is no `valueBlob` field accordingly. Depending on the module, this field can be used in module-specific filters (e.g. `nearImage`{} in the `img2vec-neural` filter).
 
 <!-- Example:
 
@@ -455,8 +453,8 @@ curl \
 
 ### Examples
 
-import BlobTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.blob.py';
-import BlobTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.blob.ts';
+import BlobTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.blob.py';
+import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.blob.ts';
 
 #### Property definition
 
@@ -517,8 +515,8 @@ Future plans include the ability to index nested properties, for example to allo
 
 ### Examples
 
-import ObjectTypePy from '!!raw-loader!/_includes/code/python/config-refs.datatypes.object.py';
-import ObjectTypeTs from '!!raw-loader!/_includes/code/typescript/config-refs.datatypes.object.ts';
+import ObjectTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.object.py';
+import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.object.ts';
 
 #### Property definition
 
@@ -598,7 +596,7 @@ An object for this class may have a structure such as follows:
 
 ## `cross-reference`
 
-import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+import CrossReferencePerformanceNote from '/\_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
@@ -608,22 +606,20 @@ The `cross-reference` type objects are `arrays` by default. This allows you to l
 
 For more information on cross-references, see the [cross-references](../concepts/data.md#cross-references). To see how to work with cross-references, see [how to manage data: cross-references](../manage-collections/cross-references.mdx).
 
-## More information
-
-:::info Related pages
-- [How-to: Manage collections](../manage-collections/index.mdx)
-- [Concepts: Data Structure](../concepts/data.md)
-- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
-:::
-
-### Notes
+## Notes
 
 #### Formatting in payloads
 
 In raw payloads (e.g. JSON payloads for REST), data types are specified as an array (e.g. `["text"]`, or `["text[]"]`), as it is required for some cross-reference specifications.
 
+## Further resources
+
+- [How-to: Manage collections](../manage-collections/index.mdx)
+- [Concepts: Data structure](../concepts/data.md)
+- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
+
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
