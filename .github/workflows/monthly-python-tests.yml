@@ -48,4 +48,4 @@ jobs:
         WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
       run: |
         source .venv/bin/activate
-        pytest -m pyv4
+        pytest -m pyv4 -v --tb=short tests/test_client.py
