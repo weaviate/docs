@@ -1,9 +1,13 @@
-name: Monthly Python Tests
+name: CI for testing-ci branch
 
 on:
-  schedule:
-    - cron: '0 0 1 * *'  # Run at 00:00 on the 1st day of every month
-  workflow_dispatch:  # Allow manual triggering
+  # Run on pushes to the testing-ci branch
+  push:
+    branches:
+      - testing-ci
+
+  # Allow manual triggering
+  workflow_dispatch:
 
 jobs:
   test:
