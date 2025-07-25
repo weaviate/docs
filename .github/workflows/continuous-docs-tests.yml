@@ -144,20 +144,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/bind-image.tar
-          key: ${{ runner.os }}-docker-image-multi2vec-bind-st-clip-vit-b-32
+          key: ${{ runner.os }}-docker-image-multi2vec-bind-imagebind
           restore-keys: |
             ${{ runner.os }}-docker-image-multi2vec-bind-
 
       # Load or pull the multi2vec-bind image
       - name: Load or pull multi2vec-bind image
         run: |
+          # Define the correct image and tag as a variable
+          BIND_IMAGE="cr.weaviate.io/semitechnologies/multi2vec-bind:imagebind"
+
           if [[ "${{ steps.cache-bind-image.outputs.cache-hit }}" == "true" ]]; then
             echo "✅ Cache hit. Loading multi2vec-bind image from cache."
             docker load --input /tmp/bind-image.tar
           else
             echo "❌ Cache miss. Pulling multi2vec-bind image and saving to cache."
-            docker pull cr.weaviate.io/semitechnologies/multi2vec-bind:sentence-transformers-clip-ViT-B-32
-            docker save cr.weaviate.io/semitechnologies/multi2vec-bind:sentence-transformers-clip-ViT-B-32 -o /tmp/bind-image.tar
+            docker pull $BIND_IMAGE
+            docker save $BIND_IMAGE -o /tmp/bind-image.tar
           fi
 
       # Start Docker containers
