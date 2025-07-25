@@ -204,6 +204,9 @@ client.collections.create(
         ),
         # highlight-end
     ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
 )
 # END SetVectorIndexParams
 
