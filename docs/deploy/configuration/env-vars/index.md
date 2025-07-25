@@ -122,11 +122,10 @@ import APITable from '@site/src/components/APITable';
 | `RUNTIME_OVERRIDES_ENABLED` | Enable runtime override configuration | `boolean` | `true` |
 | `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | `string` | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
 | `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config | `duration` | `30s` |
-| `TRACK_VECTOR_DIMENSIONS` | Enable vector dimension tracking metrics | `boolean` | `true` |
 | `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics | `duration` | `2h` |
-| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop | `duration` | `50ms` |
+| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop, this to avoid overwhelming the filesystem in case there are thousands for shards. | `duration` | `100ms` |
 | `USAGE_POLICY_VERSION` | Optional policy version | `string` | `2025-06-01` |
-| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start | `boolean` | `true` |
+| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start, it is opt-n. | `boolean` | `false` |
 
 
 ```mdx-code-block

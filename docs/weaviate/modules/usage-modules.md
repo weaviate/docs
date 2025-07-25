@@ -36,7 +36,7 @@ RUNTIME_OVERRIDES_PATH="${PWD}/tools/dev/config.runtime-overrides.yaml"
 RUNTIME_OVERRIDES_LOAD_INTERVAL=30s
 
 # in tools/dev/config.runtime-overrides.yaml
-usage_scrape_interval: 1s
+usage_scrape_interval: 1h
 usage_shard_jitter_interval: 100ms  #(optional)
 usage_gcs_bucket: weaviate-usage
 usage_gcs_prefix: billing
@@ -62,7 +62,7 @@ ENABLE_MODULES=usage-s3,usage-gcs # or both
 #### Runtime overrides
 
 :::tip
-`TRACK_VECTOR_DIMENSIONS=true` is required to collect vector dimension metrics in your usage reports. 
+`TRACK_VECTOR_DIMENSIONS=true` is required to collect vector dimension metrics in your usage reports, from `v1.32.1` this will no longer be required. 
 :::
 
 ```shell
@@ -96,7 +96,7 @@ Enable runtime overrides to avoid needing to restart Weaviate when updating usag
 ```yaml
 usage_scrape_interval: 1s
 usage_shard_jitter_interval: 100ms # (optional)
-usage_verify_permissions: true/fasle # (optional)
+usage_verify_permissions: true/false # (optional)
 
 # usage-gcs config
 usage_gcs_bucket: weaviate-usage
