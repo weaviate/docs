@@ -21,11 +21,10 @@ for file in $COMPOSE_FILES; do
     docker compose -f "$file" up -d
 
     # Parse the host port mapped to container port 8080
-    # This uses grep to find lines with 'ports:', then looks for lines with '8080'
-    # and awk to extract the host port (the part before the colon).
-    port=$(grep -A 2 'ports:' "$file" | grep '8080' | awk -F: '{print $1}' | tr -d '[:space:]"')
+    # Look for patterns like "8080:8080" or "- 8080:8080" or "- "8080:8080""
+    port=$(grep -E '^\s*-?\s*"?[0-9]+:8080"?' "$file" | head -1 | sed -E 's/.*"?([0-9]+):8080"?.*/\1/' | tr -d '[:space:]')
 
-    if [[ -n "$port" ]]; then
+    if [[ -n "$port" && "$port" =~ ^[0-9]+$ ]]; then
         echo "Found service in $file on host port: $port"
         HOST_PORTS+=("$port")
     fi
@@ -57,11 +56,15 @@ for port in "${UNIQUE_HOST_PORTS[@]}"; do
         fi
 
         # Use curl to check the readiness endpoint.
+        echo "Checking http://localhost:$port/v1/.well-known/ready"
         if curl -sf -o /dev/null "http://localhost:$port/v1/.well-known/ready"; then
             echo "Weaviate on port $port is ready!"
             break # Exit the while loop for this port
         else
-            echo "Weaviate on port $port is not ready yet. Retrying in $CHECK_INTERVAL_SECONDS seconds..."
+            echo "Weaviate on port $port is not ready yet (curl exit code: $?). Retrying in $CHECK_INTERVAL_SECONDS seconds..."
+            # Optional: show what containers are running
+            echo "Current containers:"
+            docker ps --filter "publish=$port"
             sleep $CHECK_INTERVAL_SECONDS
         fi
     done
