@@ -117,30 +117,49 @@ jobs:
           echo "=== Disk space after Weaviate base image ==="
           df -h
 
-      # Pull remaining model images (these are the heavy ones)
-      - name: Pull additional model images
+      # Cache the multi2vec-clip model image
+      - name: Cache multi2vec-clip image
+        id: cache-clip-image
+        uses: actions/cache@v4
+        with:
+          path: /tmp/clip-image.tar
+          key: ${{ runner.os }}-docker-image-multi2vec-clip-st-clip-vit-b-32
+          restore-keys: |
+            ${{ runner.os }}-docker-image-multi2vec-clip-
+
+      # Load or pull the multi2vec-clip image
+      - name: Load or pull multi2vec-clip image
         run: |
-          echo "Pulling additional model images (not cached due to size)..."
-          
-          # Pull model images that are used by specific compose files
-          model_images=(
-            "cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32"
-            "cr.weaviate.io/semitechnologies/multi2vec-bind:sentence-transformers-clip-ViT-B-32"
-          )
-          
-          for image in "${model_images[@]}"; do
-            echo "Pulling $image..."
-            if docker pull "$image"; then
-              echo "✅ Successfully pulled $image"
-            else
-              echo "⚠️ Failed to pull $image, continuing..."
-            fi
-            
-            # Clean up after each pull to manage disk space
-            docker system prune -f
-            echo "Disk usage after pulling $image:"
-            df -h
-          done
+          if [[ "${{ steps.cache-clip-image.outputs.cache-hit }}" == "true" ]]; then
+            echo "✅ Cache hit. Loading multi2vec-clip image from cache."
+            docker load --input /tmp/clip-image.tar
+          else
+            echo "❌ Cache miss. Pulling multi2vec-clip image and saving to cache."
+            docker pull cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32
+            docker save cr.weaviate.io/semitechnologies/multi2ve-clip:sentence-transformers-clip-ViT-B-32 -o /tmp/clip-image.tar
+          fi
+
+      # Cache the multi2vec-bind model image
+      - name: Cache multi2vec-bind image
+        id: cache-bind-image
+        uses: actions/cache@v4
+        with:
+          path: /tmp/bind-image.tar
+          key: ${{ runner.os }}-docker-image-multi2vec-bind-st-clip-vit-b-32
+          restore-keys: |
+            ${{ runner.os }}-docker-image-multi2vec-bind-
+
+      # Load or pull the multi2vec-bind image
+      - name: Load or pull multi2vec-bind image
+        run: |
+          if [[ "${{ steps.cache-bind-image.outputs.cache-hit }}" == "true" ]]; then
+            echo "✅ Cache hit. Loading multi2vec-bind image from cache."
+            docker load --input /tmp/bind-image.tar
+          else
+            echo "❌ Cache miss. Pulling multi2vec-bind image and saving to cache."
+            docker pull cr.weaviate.io/semitechnologies/multi2vec-bind:sentence-transformers-clip-ViT-B-32
+            docker save cr.weaviate.io/semitechnologies/multi2vec-bind:sentence-transformers-clip-ViT-B-32 -o /tmp/bind-image.tar
+          fi
 
       # Start Docker containers
       - name: Start Weaviate and Ollama containers
@@ -149,7 +168,7 @@ jobs:
           ./tests/start-weaviate.sh
           
           echo "Waiting for containers to be ready..."
-          sleep 30 # Give services time to initialize
+          sleep 15 # Give services time to initialize
           
           echo "=== Container status ==="
           docker ps
