@@ -1,12 +1,9 @@
 name: CI for testing-ci branch
 
 on:
-  # Run on pushes to the testing-ci branch
   push:
     branches:
       - testing-ci
-
-  # Allow manual triggering
   workflow_dispatch:
 
 jobs:
@@ -17,34 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker image cache
-        id: cache-docker-images
-        uses: actions/cache@v4
-        with:
-          path: /tmp/docker-images.tar
-          # The cache key is based on the hash of the docker-compose file.
-          # This invalidates the cache automatically if you change your docker-compose.yml
-          key: ${{ runner.os }}-docker-images-${{ hashFiles('**/docker-compose.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-docker-images-
-
-      - name: Load Docker images from cache or pull
+      # Make the script executable
+      - name: Make scripts executable
         run: |
-          if [[ "${{ steps.cache-docker-images.outputs.cache-hit }}" == "true" ]]; then
-            echo "Cache hit. Loading Docker images from cache."
-            docker load --input /tmp/docker-images.tar
-          else
-            echo "Cache miss. Pulling images from registry."
-            docker compose -f tests/docker-compose.yml pull
-            echo "Saving Docker images to cache."
-            # Get all image names from docker-compose config and save them to a tarball
-            docker save $(docker compose -f tests/docker-compose.yml config --images) -o /tmp/docker-images.tar
-          fi
+          chmod +x tests/start-weaviate.sh
+          chmod +x tests/stop-weaviate.sh
 
-      - name: Start services
-        run: docker compose -f tests/docker-compose.yml up -d
-
-      # Your existing Python test steps
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -79,7 +54,14 @@ jobs:
           source .venv/bin/activate
           pytest -m pyv4 -v --tb=short tests/test_client.py
 
-      # Always run this step to clean up the containers
-      - name: Stop services
+      # Clean up any remaining containers
+      - name: Cleanup containers
         if: always()
-        run: docker compose -f tests/docker-compose.yml down
+        run: |
+          docker ps -a
+          for file in tests/docker-compose*.yml; do
+            if [ -f "$file" ]; then
+              echo "Stopping services from $file"
+              docker compose -f "$file" down || true
+            fi
+          done
