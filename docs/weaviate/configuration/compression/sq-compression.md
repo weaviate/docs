@@ -53,6 +53,14 @@ SQ can be enabled at collection creation time. To enable SQ, set `vector_index_c
         language="go"
       />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START EnableSQ"
+      endMarker="// END EnableSQ"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 :::info Added in `v1.31`
@@ -83,7 +91,6 @@ To tune SQ, set these `vectorIndexConfig` parameters.
         language="py"
       />
   </TabItem>
-
   <TabItem value="py3" label="Python Client v3">
       <FilteredTextBlock
         text={PyCodeV3}
@@ -92,7 +99,6 @@ To tune SQ, set these `vectorIndexConfig` parameters.
         language="pyv3"
       />
   </TabItem>
-
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -100,6 +106,14 @@ To tune SQ, set these `vectorIndexConfig` parameters.
         endMarker="// END SQWithOptions"
         language="go"
       />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SQWithOptions"
+      endMarker="// END SQWithOptions"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 

@@ -3,7 +3,7 @@ package io.weaviate.docs;
 import io.weaviate.client.Config;
 import io.weaviate.client.WeaviateClient;
 import io.weaviate.client.base.Result;
-import io.weaviate.client.v1.misc.model.SQConfig;
+import io.weaviate.client.v1.misc.model.RQConfig;
 import io.weaviate.client.v1.misc.model.VectorIndexConfig;
 import io.weaviate.client.v1.schema.model.DataType;
 import io.weaviate.client.v1.schema.model.Property;
@@ -16,8 +16,8 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Tag("sq")
-class SqCompressionTest {
+@Tag("rq")
+class RqCompressionTest {
 
   private static WeaviateClient client;
 
@@ -47,9 +47,9 @@ class SqCompressionTest {
   }
 
   @Test
-  public void shouldEnableSQ() {
+  public void shouldEnableRQ() {
     // ==============================
-    // ===== EnableSQ =====
+    // ===== EnableRQ =====
     // ==============================
 
     // Delete collection if exists
@@ -57,13 +57,13 @@ class SqCompressionTest {
         .withClassName("MyCollection")
         .run();
 
-    // START EnableSQ
+    // START EnableRQ
     WeaviateClass myCollection = WeaviateClass.builder()
         .className("MyCollection")
         .vectorizer("text2vec-openai")
         .vectorIndexConfig(VectorIndexConfig.builder()
             // highlight-start
-            .sq(SQConfig.builder()
+            .rq(RQConfig.builder()
                 .enabled(true)
                 .build())
             // highlight-end
@@ -78,7 +78,7 @@ class SqCompressionTest {
     Result<Boolean> createResult = client.schema().classCreator()
         .withClass(myCollection)
         .run();
-    // END EnableSQ
+    // END EnableRQ
 
     assertThat(createResult).isNotNull()
         .withFailMessage(() -> createResult.getError().toString())
@@ -88,9 +88,9 @@ class SqCompressionTest {
   }
 
   @Test
-  public void shouldEnableSQWithOptions() {
+  public void shouldEnableRQWithOptions() {
     // ==============================
-    // ===== EnableSQ with Options =====
+    // ===== EnableRQ with Options =====
     // ==============================
 
     // Delete collection if exists
@@ -98,15 +98,16 @@ class SqCompressionTest {
         .withClassName("MyCollection")
         .run();
 
-    // START SQWithOptions
+    // START RQWithOptions
     WeaviateClass myCollection = WeaviateClass.builder()
         .className("MyCollection")
         .vectorizer("text2vec-openai")
         .vectorIndexConfig(VectorIndexConfig.builder()
             // highlight-start
-            .sq(SQConfig.builder()
+            .rq(RQConfig.builder()
                 .enabled(true)
-                .rescoreLimit(20L) // Number of candidates to rescore
+                .bits(8L) // Number of bits, only 8 is supported for now
+                .rescoreLimit(10L)
                 .build())
             // highlight-end
             .build())
@@ -120,7 +121,7 @@ class SqCompressionTest {
     Result<Boolean> createResult = client.schema().classCreator()
         .withClass(myCollection)
         .run();
-    // END SQWithOptions
+    // END RQWithOptions
 
     assertThat(createResult).isNotNull()
         .withFailMessage(() -> createResult.getError().toString())
@@ -139,8 +140,8 @@ class SqCompressionTest {
         .withFailMessage(null)
         .extracting(Result::getResult).isNotNull()
         .extracting(WeaviateClass::getVectorIndexConfig).isNotNull()
-        .extracting(VectorIndexConfig::getSq).isNotNull()
-        .returns(true, SQConfig::getEnabled)
-        .returns(20L, SQConfig::getRescoreLimit);
+        .extracting(VectorIndexConfig::getRq).isNotNull()
+        .returns(true, RQConfig::getEnabled)
+        .returns(8L, RQConfig::getBits);
   }
 }
