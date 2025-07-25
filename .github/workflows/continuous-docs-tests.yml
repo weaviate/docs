@@ -125,7 +125,6 @@ jobs:
           # Pull model images that are used by specific compose files
           model_images=(
             "cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32"
-            "cr.weaviate.io/semitechnologies/multi2vec-bind:imagebind"
           )
           
           for image in "${model_images[@]}"; do
@@ -213,7 +212,7 @@ jobs:
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           source .venv/bin/activate
-          pytest -m pyv4 -v -s tests/test_datatypes.py
+          pytest -m pyv4 -v
 
       # Clean up containers
       - name: Stop Weaviate containers
