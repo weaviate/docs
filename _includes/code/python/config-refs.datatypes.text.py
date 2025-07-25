@@ -33,7 +33,7 @@ my_collection = client.collections.create(
                 "title",
                 "genres",
             ],  # Note that "movie_id" is not included
-            api_endpoint="http://host.docker.internal:11434",  # If using Docker, use this to contact your local Ollama instance
+            api_endpoint="http://ollama:11434",  # If using Docker, use this to contact your local Ollama instance
             model="snowflake-arctic-embed",  # The model to use, e.g. "nomic-embed-text"
         )
     ],
