@@ -14,27 +14,95 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Make the script executable
+      # Free up disk space by removing unnecessary software
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          docker system prune -af
+          docker volume prune -f
+          df -h
+
+      # Make scripts executable
       - name: Make scripts executable
         run: |
           chmod +x tests/start-weaviate.sh
           chmod +x tests/stop-weaviate.sh
 
+      # Set up Python BEFORE Docker operations to reduce memory pressure
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Create virtual environment
-        run: python -m venv .venv
-
-      - name: Activate virtual environment and install dependencies
+      - name: Create virtual environment and install dependencies
         run: |
+          python -m venv .venv
           source .venv/bin/activate
           pip install -r tests/requirements.txt
 
+      # Pull only the images we actually need to reduce disk usage
+      - name: Pull required Docker images
+        run: |
+          echo "Pulling images selectively to save disk space..."
+          for file in tests/docker-compose*.yml; do
+            if [ -f "$file" ]; then
+              echo "Pulling images from $file"
+              # Pull images one at a time and clean up
+              docker compose -f "$file" pull
+              docker system prune -f
+            fi
+          done
+          df -h
+
+      # Start Docker containers
+      - name: Start Weaviate containers
+        run: |
+          echo "Starting Weaviate Docker containers..."
+          ./tests/start-weaviate.sh
+          echo "Waiting for containers to be ready..."
+          sleep 30
+          echo "Container status:"
+          docker ps
+
+      # Wait for services to be ready
+      - name: Wait for Weaviate services
+        run: |
+          echo "Checking if Weaviate services are ready..."
+          # List of ports to check based on your docker-compose files
+          ports=(8099 8580 8080 8090 8280 8180 8181 8182)
+          
+          for port in "${ports[@]}"; do
+            echo "Checking port $port..."
+            timeout=120  # 2 minutes timeout per service
+            count=0
+            
+            while [ $count -lt $timeout ]; do
+              if curl -sf "http://localhost:$port/v1/.well-known/ready" >/dev/null 2>&1; then
+                echo "✅ Service on port $port is ready"
+                break
+              fi
+              
+              if [ $((count % 10)) -eq 0 ]; then
+                echo "⏳ Waiting for service on port $port... (${count}s elapsed)"
+              fi
+              
+              sleep 1
+              count=$((count + 1))
+            done
+            
+            if [ $count -ge $timeout ]; then
+              echo "⚠️ Service on port $port not ready after ${timeout}s, continuing..."
+            fi
+          done
+          
+          echo "Service readiness check completed"
+
       - name: Run tests
         env:
+          GITHUB_ENV: "true"  # Tell conftest.py that GitHub Actions is managing Docker
           WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
           WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
           WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
@@ -52,16 +120,23 @@ jobs:
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           source .venv/bin/activate
-          pytest -m pyv4 -v --tb=short tests/test_client.py
+          pytest -m pyv4 -v -s tests/test_compression.py
 
-      # Clean up any remaining containers
-      - name: Cleanup containers
+      # Clean up containers
+      - name: Stop Weaviate containers
         if: always()
         run: |
-          docker ps -a
+          echo "Stopping Weaviate Docker containers..."
+          ./tests/stop-weaviate.sh || true
+          
+      - name: Final cleanup
+        if: always()
+        run: |
+          echo "Final cleanup of Docker resources..."
           for file in tests/docker-compose*.yml; do
             if [ -f "$file" ]; then
-              echo "Stopping services from $file"
-              docker compose -f "$file" down || true
+              echo "Ensuring $file services are stopped"
+              docker compose -f "$file" down -v || true
             fi
           done
+          docker system prune -af || true
