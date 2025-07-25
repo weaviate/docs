@@ -17,9 +17,6 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.hnsw()
     ),
     # highlight-end
-    properties=[
-        Configure.Property(name="title", data_type=Configure.DataType.TEXT),
-    ],
 )
 # END ConfigHNSW
 
@@ -48,9 +45,6 @@ client.collections.create(
         )
     ),
     # highlight-end
-    properties=[
-        Configure.Property(name="title", data_type=Configure.DataType.TEXT),
-    ],
 )
 # END CustomConfigHNSW
 
@@ -67,9 +61,6 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.flat()
     ),
     # highlight-end
-    properties=[
-        Configure.Property(name="title", data_type=Configure.DataType.TEXT),
-    ],
 )
 # END ConfigFlat
 
@@ -90,9 +81,6 @@ client.collections.create(
         )
     ),
     # highlight-end
-    properties=[
-        Configure.Property(name="title", data_type=Configure.DataType.TEXT),
-    ],
 )
 # END CustomConfigFlat
 
@@ -109,9 +97,6 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.dynamic()
     ),
     multi_tenancy_config=Configure.multi_tenancy(enabled=True), # Dyanmic index works well with multi-tenancy set-ups
-    properties=[
-        Configure.Property(name="title", data_type=Configure.DataType.TEXT),
-    ],
     # highlight-end
 )
 # END ConfigDynamic
