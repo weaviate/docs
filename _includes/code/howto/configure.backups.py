@@ -31,10 +31,9 @@ articles.data.insert(properties={"title": "Dummy"})
 publications.data.insert(properties={"title": "Dummy"})
 
 # Add a user to be backed up
-username = "test-user-for-backup"
 # Clean up user if it exists from a previous failed run
-client.users.db.delete(user_id=username)
-client.users.db.create(user_id=username)
+client.users.db.delete(user_id="test-user-for-backup")
+client.users.db.create(user_id="test-user-for-backup")
 
 
 # START CreateBackup
@@ -53,8 +52,8 @@ print(result)
 assert result.status == "SUCCESS"
 
 # Delete the user after creating the backup to test restoration
-client.users.db.delete(user_id=username)
-assert not any(user.user_id == username for user in client.users.db.list_all())
+client.users.db.delete(user_id="test-user-for-backup")
+assert not any(user.user_id == "test-user-for-backup" for user in client.users.db.list_all())
 
 
 # START StatusCreateBackup
@@ -91,7 +90,7 @@ print(result)
 assert result.status == "SUCCESS"
 
 # Verify that the user was restored
-assert any(user.user_id == username for user in client.users.db.list_all())
+assert any(user.user_id == "test-user-for-backup" for user in client.users.db.list_all())
 
 
 # START StatusRestoreBackup

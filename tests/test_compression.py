@@ -6,7 +6,6 @@ import os
 
 
 @pytest.mark.pyv4
-@pytest.mark.ivan
 @pytest.mark.parametrize(
     "script_loc",
     [

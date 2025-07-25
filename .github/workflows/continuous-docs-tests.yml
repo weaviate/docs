@@ -195,7 +195,7 @@ jobs:
 
       - name: Run tests
         env:
-          GITHUB_ENV: "true"  # Tell conftest.py that GitHub Actions is managing Docker
+          DOCS_GITHUB_ENV: "true"  # Tell conftest.py that GitHub Actions is managing Docker
           WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
           WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
           WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
@@ -213,7 +213,7 @@ jobs:
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           source .venv/bin/activate
-          pytest -m pyv4 -v -s tests/test_compression.py
+          pytest -m pyv4 -v -s tests/test_configure.py
 
       # Clean up containers
       - name: Stop Weaviate containers
