@@ -213,7 +213,7 @@ jobs:
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           source .venv/bin/activate
-          pytest -m pyv4 -v -s tests/test_configure.py
+          pytest -m pyv4 -v -s tests/test_datatypes.py
 
       # Clean up containers
       - name: Stop Weaviate containers
