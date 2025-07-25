@@ -37,24 +37,90 @@ jobs:
         with:
           python-version: "3.10"
 
+      # Cache pip dependencies
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Cache virtual environment
+      - name: Cache virtual environment
+        uses: actions/cache@v4
+        id: cache-venv
+        with:
+          path: .venv
+          key: ${{ runner.os }}-venv-${{ runner.arch }}-python3.10-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-venv-${{ runner.arch }}-python3.10-
+
       - name: Create virtual environment and install dependencies
+        if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           python -m venv .venv
           source .venv/bin/activate
+          pip install --upgrade pip
           pip install -r tests/requirements.txt
 
-      # Pull only the images we actually need to reduce disk usage
-      - name: Pull required Docker images
+      - name: Verify cached virtual environment
+        if: steps.cache-venv.outputs.cache-hit == 'true'
         run: |
-          echo "Pulling images selectively to save disk space..."
-          for file in tests/docker-compose*.yml; do
-            if [ -f "$file" ]; then
-              echo "Pulling images from $file"
-              # Pull images one at a time and clean up
-              docker compose -f "$file" pull
-              docker system prune -f
+          source .venv/bin/activate
+          python --version
+          pip list
+
+      # Cache Docker images
+      - name: Cache Docker images
+        uses: actions/cache@v4
+        id: cache-docker-images
+        with:
+          path: /tmp/docker-images.tar
+          key: ${{ runner.os }}-docker-images-${{ hashFiles('tests/docker-compose*.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-images-
+
+      # Load cached Docker images or pull new ones
+      - name: Load or pull Docker images
+        run: |
+          if [[ "${{ steps.cache-docker-images.outputs.cache-hit }}" == "true" ]]; then
+            echo "Cache hit. Loading Docker images from cache."
+            docker load --input /tmp/docker-images.tar
+          else
+            echo "Cache miss. Pulling images and saving to cache."
+            echo "Pulling images selectively to save disk space..."
+            
+            # Pull all images first
+            for file in tests/docker-compose*.yml; do
+              if [ -f "$file" ]; then
+                echo "Pulling images from $file"
+                docker compose -f "$file" pull
+                docker system prune -f
+              fi
+            done
+            
+            # Save images to cache
+            echo "Saving images to cache..."
+            # Get all unique image names from compose files
+            images=""
+            for file in tests/docker-compose*.yml; do
+              if [ -f "$file" ]; then
+                file_images=$(docker compose -f "$file" config --images 2>/dev/null || true)
+                images="$images $file_images"
+              fi
+            done
+            
+            # Remove duplicates and save
+            unique_images=$(echo $images | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
+            if [[ -n "$unique_images" ]]; then
+              echo "Saving images to cache: $unique_images"
+              docker save $unique_images -o /tmp/docker-images.tar
             fi
-          done
+          fi
+
+          # Clean up after loading/pulling
+          docker system prune -f
           df -h
 
       # Start Docker containers
@@ -73,7 +139,7 @@ jobs:
           echo "Checking if Weaviate services are ready..."
           # List of ports to check based on your docker-compose files
           ports=(8099 8580 8080 8090 8280 8180 8181 8182)
-          
+
           for port in "${ports[@]}"; do
             echo "Checking port $port..."
             timeout=120  # 2 minutes timeout per service
@@ -97,12 +163,12 @@ jobs:
               echo "⚠️ Service on port $port not ready after ${timeout}s, continuing..."
             fi
           done
-          
+
           echo "Service readiness check completed"
 
       - name: Run tests
         env:
-          GITHUB_ENV: "true"  # Tell conftest.py that GitHub Actions is managing Docker
+          GITHUB_ENV: "true" # Tell conftest.py that GitHub Actions is managing Docker
           WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
           WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
           WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
@@ -128,7 +194,7 @@ jobs:
         run: |
           echo "Stopping Weaviate Docker containers..."
           ./tests/stop-weaviate.sh || true
-          
+
       - name: Final cleanup
         if: always()
         run: |
