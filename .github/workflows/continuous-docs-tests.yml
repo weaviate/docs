@@ -136,7 +136,7 @@ jobs:
           else
             echo "❌ Cache miss. Pulling multi2vec-clip image and saving to cache."
             docker pull cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32
-            docker save cr.weaviate.io/semitechnologies/multi2ve-clip:sentence-transformers-clip-ViT-B-32 -o /tmp/clip-image.tar
+            docker save cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32 -o /tmp/clip-image.tar
           fi
 
       # Start Docker containers
