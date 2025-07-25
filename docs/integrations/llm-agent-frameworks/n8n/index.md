@@ -28,4 +28,4 @@ The resources are broken into two categories:
 ### Read and Listen 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Weaviate N8n Community Node | [] | [Add blog]
+| Weaviate N8n Community Node | You can now use Weaviate with n8n for no-code agentic workflows. This article teaches you how. | [Blog](https://weaviate.io/blog/agent-workflow-automation-n8n-weaviate)
