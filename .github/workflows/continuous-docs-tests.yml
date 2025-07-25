@@ -35,14 +35,14 @@ jobs:
             docker load --input /tmp/docker-images.tar
           else
             echo "Cache miss. Pulling images from registry."
-            docker compose pull
+            docker compose -f tests/docker-compose.yml pull
             echo "Saving Docker images to cache."
             # Get all image names from docker-compose config and save them to a tarball
-            docker save $(docker compose config --images) -o /tmp/docker-images.tar
+            docker save $(docker compose -f tests/docker-compose.yml config --images) -o /tmp/docker-images.tar
           fi
 
       - name: Start services
-        run: docker compose up -d
+        run: docker compose -f tests/docker-compose.yml up -d
 
       # Your existing Python test steps
       - name: Set up Python
@@ -82,4 +82,4 @@ jobs:
       # Always run this step to clean up the containers
       - name: Stop services
         if: always()
-        run: docker compose down
+        run: docker compose -f tests/docker-compose.yml down
