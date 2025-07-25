@@ -109,10 +109,10 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.dynamic()
     ),
     multi_tenancy_config=Configure.multi_tenancy(enabled=True), # Dyanmic index works well with multi-tenancy set-ups
-    # highlight-end
     properties=[
         Configure.Property(name="title", data_type=Configure.DataType.TEXT),
     ],
+    # highlight-end
 )
 # END ConfigDynamic
 
@@ -143,9 +143,6 @@ client.collections.create(
         auto_tenant_activation=True,
     ),
     # highlight-end
-    properties=[
-        Configure.Property(name="title", data_type=Configure.DataType.TEXT),
-    ],
 )
 # END CustomConfigDynamic
 
