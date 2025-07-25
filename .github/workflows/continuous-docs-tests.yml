@@ -17,12 +17,30 @@ jobs:
       # Free up disk space by removing unnecessary software
       - name: Free disk space
         run: |
+          echo "=== Initial disk usage ==="
+          df -h
+          
+          echo "=== Removing unnecessary software ==="
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /opt/ghc
           sudo rm -rf /usr/local/share/boost
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          docker system prune -af
-          docker volume prune -f
+          sudo rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          sudo rm -rf /usr/local/lib/node_modules
+          
+          echo "=== Docker cleanup ==="
+          docker system prune -af --volumes
+          docker builder prune -af
+          
+          echo "=== APT cleanup ==="
+          sudo apt-get autoremove -y
+          sudo apt-get autoclean
+          sudo rm -rf /var/lib/apt/lists/*
+          
+          echo "=== Final disk usage ==="
           df -h
 
       # Make scripts executable
@@ -71,67 +89,76 @@ jobs:
           python --version
           pip list
 
-      # Cache Docker images
-      - name: Cache Docker images
+      # Cache the main Weaviate image (used by all compose files)
+      - name: Cache Weaviate base image
         uses: actions/cache@v4
-        id: cache-docker-images
+        id: cache-weaviate-image
         with:
-          path: /tmp/docker-images.tar
-          key: ${{ runner.os }}-docker-images-${{ hashFiles('tests/docker-compose*.yml') }}
+          path: /tmp/weaviate-base.tar
+          key: ${{ runner.os }}-weaviate-image-1.32.0
           restore-keys: |
-            ${{ runner.os }}-docker-images-
+            ${{ runner.os }}-weaviate-image-
 
-      # Load cached Docker images or pull new ones
-      - name: Load or pull Docker images
+      # Load or pull the main Weaviate image
+      - name: Load or pull Weaviate base image
         run: |
-          if [[ "${{ steps.cache-docker-images.outputs.cache-hit }}" == "true" ]]; then
-            echo "Cache hit. Loading Docker images from cache."
-            docker load --input /tmp/docker-images.tar
-          else
-            echo "Cache miss. Pulling images and saving to cache."
-            echo "Pulling images selectively to save disk space..."
-            
-            # Pull all images first
-            for file in tests/docker-compose*.yml; do
-              if [ -f "$file" ]; then
-                echo "Pulling images from $file"
-                docker compose -f "$file" pull
-                docker system prune -f
-              fi
-            done
-            
-            # Save images to cache
-            echo "Saving images to cache..."
-            # Get all unique image names from compose files
-            images=""
-            for file in tests/docker-compose*.yml; do
-              if [ -f "$file" ]; then
-                file_images=$(docker compose -f "$file" config --images 2>/dev/null || true)
-                images="$images $file_images"
-              fi
-            done
-            
-            # Remove duplicates and save
-            unique_images=$(echo $images | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
-            if [[ -n "$unique_images" ]]; then
-              echo "Saving images to cache: $unique_images"
-              docker save $unique_images -o /tmp/docker-images.tar
-            fi
-          fi
-
-          # Clean up after loading/pulling
-          docker system prune -f
+          echo "=== Disk space before Weaviate image operations ==="
           df -h
+          
+          if [[ "${{ steps.cache-weaviate-image.outputs.cache-hit }}" == "true" ]]; then
+            echo "✅ Cache hit. Loading Weaviate base image from cache."
+            docker load --input /tmp/weaviate-base.tar
+          else
+            echo "❌ Cache miss. Pulling Weaviate base image and saving to cache."
+            docker pull cr.weaviate.io/semitechnologies/weaviate:1.32.0
+            docker save cr.weaviate.io/semitechnologies/weaviate:1.32.0 -o /tmp/weaviate-base.tar
+          fi
+          
+          echo "=== Disk space after Weaviate base image ==="
+          df -h
+
+      # Pull remaining model images (these are the heavy ones)
+      - name: Pull additional model images
+        run: |
+          echo "Pulling additional model images (not cached due to size)..."
+          
+          # Pull model images that are used by specific compose files
+          model_images=(
+            "cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32"
+            "cr.weaviate.io/semitechnologies/multi2vec-bind:sentence-transformers-clip-ViT-B-32"
+          )
+          
+          for image in "${model_images[@]}"; do
+            echo "Pulling $image..."
+            if docker pull "$image"; then
+              echo "✅ Successfully pulled $image"
+            else
+              echo "⚠️ Failed to pull $image, continuing..."
+            fi
+            
+            # Clean up after each pull to manage disk space
+            docker system prune -f
+            echo "Disk usage after pulling $image:"
+            df -h
+          done
 
       # Start Docker containers
       - name: Start Weaviate containers
         run: |
+          echo "=== Disk space before starting containers ==="
+          df -h
+          
           echo "Starting Weaviate Docker containers..."
           ./tests/start-weaviate.sh
+          
           echo "Waiting for containers to be ready..."
           sleep 30
-          echo "Container status:"
+          
+          echo "=== Container status ==="
           docker ps
+          
+          echo "=== Disk space after starting containers ==="
+          df -h
 
       # Wait for services to be ready
       - name: Wait for Weaviate services
@@ -139,7 +166,7 @@ jobs:
           echo "Checking if Weaviate services are ready..."
           # List of ports to check based on your docker-compose files
           ports=(8099 8580 8080 8090 8280 8180 8181 8182)
-
+          
           for port in "${ports[@]}"; do
             echo "Checking port $port..."
             timeout=120  # 2 minutes timeout per service
@@ -163,12 +190,12 @@ jobs:
               echo "⚠️ Service on port $port not ready after ${timeout}s, continuing..."
             fi
           done
-
+          
           echo "Service readiness check completed"
 
       - name: Run tests
         env:
-          GITHUB_ENV: "true" # Tell conftest.py that GitHub Actions is managing Docker
+          GITHUB_ENV: "true"  # Tell conftest.py that GitHub Actions is managing Docker
           WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
           WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
           WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
@@ -194,7 +221,7 @@ jobs:
         run: |
           echo "Stopping Weaviate Docker containers..."
           ./tests/stop-weaviate.sh || true
-
+          
       - name: Final cleanup
         if: always()
         run: |
