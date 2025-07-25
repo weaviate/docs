@@ -143,22 +143,22 @@ jobs:
           done
 
       # Start Docker containers
-      - name: Start Weaviate containers
+      - name: Start Weaviate and Ollama containers
         run: |
-          echo "=== Disk space before starting containers ==="
-          df -h
-          
-          echo "Starting Weaviate Docker containers..."
+          echo "Starting Docker containers..."
           ./tests/start-weaviate.sh
           
           echo "Waiting for containers to be ready..."
-          sleep 30
+          sleep 30 # Give services time to initialize
           
           echo "=== Container status ==="
           docker ps
-          
-          echo "=== Disk space after starting containers ==="
-          df -h
+
+      - name: Pull Ollama Model
+        run: |
+          echo "Pulling Ollama model: snowflake-arctic-embed"
+          docker exec ollama ollama pull snowflake-arctic-embed
+          echo "✅ Model pull complete."
 
       # Wait for services to be ready
       - name: Wait for Weaviate services
