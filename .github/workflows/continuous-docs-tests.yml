@@ -145,11 +145,34 @@ jobs:
           echo "Starting Docker containers..."
           ./tests/start-weaviate.sh
           
-          echo "Waiting for containers to be ready..."
-          sleep 30 # Give services time to initialize
-          
           echo "=== Container status ==="
           docker ps
+
+      # Wait for Ollama to be ready before pulling models
+      - name: Wait for Ollama service
+        run: |
+          echo "Checking if Ollama service is ready..."
+          timeout=30  # 30 seconds timeout
+          count=0
+          
+          while [ $count -lt $timeout ]; do
+            if docker exec tests-ollama-1 curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then
+              echo "✅ Ollama service is ready"
+              break
+            fi
+            
+            if [ $((count % 10)) -eq 0 ]; then
+              echo "⏳ Waiting for Ollama service... (${count}s elapsed)"
+            fi
+            
+            sleep 1
+            count=$((count + 1))
+          done
+          
+          if [ $count -ge $timeout ]; then
+            echo "❌ Ollama service not ready after ${timeout}s"
+            exit 1
+          fi
 
       - name: Pull Ollama Model
         run: |

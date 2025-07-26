@@ -704,7 +704,7 @@ client = weaviate.connect_to_local(
     }
 )
 
-d = wd.JeopardyQuestions10k()
+d = wd.JeopardyQuestions1k()
 d.upload_dataset(client, overwrite=True)
 
 categories = client.collections.get("JeopardyCategory")
