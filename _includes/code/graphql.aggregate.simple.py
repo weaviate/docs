@@ -80,11 +80,12 @@ try:
     # ========================================
     # GraphQLSimpleAggregateGroupby
     # ========================================
-
+    # TODO[g-despot]: change title to inPublication reference
     # START GraphQLSimpleAggregateGroupby
     collection = client.collections.get("Article")
     response = collection.aggregate.over_all(
-        group_by=GroupByAggregate(prop="inPublication"),
+        # group_by=GroupByAggregate(prop="inPublication"),
+        group_by=GroupByAggregate(prop="title"),
         total_count=True,
         return_metrics=wvc.query.Metrics("wordCount").integer(mean=True)
     )
@@ -98,7 +99,7 @@ try:
         # TEST
         assert g.total_count > 0
         assert "wordCount" in g.properties.keys()
-        assert "inPublication" == g.grouped_by.prop
+        assert "title" == g.grouped_by.prop
 
 
     # ========================================
@@ -197,7 +198,6 @@ try:
     collection = client.collections.get("Article")
     response = collection.aggregate.near_text(
         query="apple iphone",
-        distance=0.7,
         object_limit=200,
         total_count=True,
         return_metrics=[

@@ -201,7 +201,7 @@ response.display()
 # END QueryAgentRunBasicCollectionSelection
 
 # START QueryAgentRunCollectionConfig
-from weaviate_agents.classes import QueryAgentCollectionConfig
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 response = qa.run(
     "I like vintage clothes and nice shoes. Recommend some of each below $60.",
@@ -269,6 +269,7 @@ for output in qa.stream(
 
 # START InspectResponseExample
 print("\n=== Query Agent Response ===")
+print(f"Original: {response}\n")
 print(f"Original Query: {response.original_query}\n")
 
 print("🔍 Final Answer Found:")
@@ -279,8 +280,8 @@ for collection_searches in response.searches:
     for result in collection_searches:
         print(f"- {result}\n")
 
-if response.has_aggregation_answer:
-    print("📊 Aggregation Results:")
+if response.aggregations:
+    print("📊 Aggregations performed:")
     for collection_aggs in response.aggregations:
         for agg in collection_aggs:
             print(f"- {agg}\n")
@@ -302,12 +303,12 @@ client.close()
 import asyncio
 import os
 import weaviate
+from weaviate.classes.init import Auth
 from weaviate.agents.query import AsyncQueryAgent
-
 
 async_client = weaviate.use_async_with_weaviate_cloud(
     cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=os.environ.get("WEAVIATE_API_KEY"),
+    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
     headers=headers,
 )
 
@@ -323,7 +324,8 @@ async def query_financial_data(async_query_agent: AsyncQueryAgent):
     )
     return ("Financial Contracts", response)
 
-async def run_concurrent_queries():
+async def run_concurrent_queries(async_client):
+    # Create async_client inside this function
     try:
         await async_client.connect()
 
@@ -359,11 +361,15 @@ async def run_concurrent_queries():
     finally:
         await async_client.close()
 
-asyncio.run(run_concurrent_queries())
+asyncio.run(run_concurrent_queries(async_client))
 # END UsageAsyncQueryAgent
 
 
 # START StreamAsyncResponse
+import asyncio
+from weaviate.agents.query import AsyncQueryAgent
+from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
+
 async def stream_query(async_query_agent: AsyncQueryAgent):
     async for output in async_query_agent.stream(
         "What are the top 5 products sold in the last 30 days?",
@@ -381,7 +387,7 @@ async def stream_query(async_query_agent: AsyncQueryAgent):
             # This is the final response, as returned by QueryAgent.run()
             output.display()
 
-async def run_streaming_query():
+async def run_streaming_query(async_client):
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
@@ -404,5 +410,5 @@ async def run_streaming_query():
     finally:
         await async_client.close()
 
-asyncio.run(run_streaming_query())
+asyncio.run(run_streaming_query(async_client))
 # END StreamAsyncResponse

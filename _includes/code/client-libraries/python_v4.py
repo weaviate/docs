@@ -56,18 +56,26 @@ from weaviate.classes.init import AdditionalConfig
 os.environ["GRPC_DEFAULT_SSL_ROOTS_FILE_PATH"] = "/path/to/your/cert.crt"
 os.environ["SSL_CERT_FILE"] = "/path/to/your/cert.crt"
 
+# END CustomSSLExample
+os.environ.pop("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH", None)
+os.environ.pop("SSL_CERT_FILE", None)
+# START CustomSSLExample
 # Then connect to Weaviate
 client = weaviate.connect_to_custom(
     http_host=weaviate_host,  # Replace with your Weaviate host
     http_port=8080,
-    http_secure=True,
+    http_secure=False,
     grpc_host=weaviate_grpc_host,  # Replace with your Weaviate gRPC host
     grpc_port=50051,
-    grpc_secure=True,
+    grpc_secure=False,
     additional_config=AdditionalConfig(trust_env=True)  # Required for custom SSL certificates
 )
 # END CustomSSLExample
 
+try:
+    assert client.is_ready()
+finally:
+    client.close()
 
 # LocalInstantiationSkipChecks
 import weaviate
@@ -697,7 +705,7 @@ client = weaviate.connect_to_local(
     }
 )
 
-d = wd.JeopardyQuestions10k()
+d = wd.JeopardyQuestions1k()
 d.upload_dataset(client, overwrite=True)
 
 categories = client.collections.get("JeopardyCategory")
@@ -928,9 +936,9 @@ response = questions.generate.bm25(
     single_prompt="Translate the following into French: {answer}"
 )
 
-print(response.generated)  # Generated text from grouped task
+print(response.generative.text)  # Generated text from grouped task
 for o in response.objects:
-    print(o.generated)  # Generated text from single prompt
+    print(o.generative.text)  # Generated text from single prompt
     print(o.properties)  # Object properties
 # END BM25GenerateExample
 
@@ -943,9 +951,9 @@ response = questions.generate.near_text(
     single_prompt="Translate the following into French: {answer}"
 )
 
-print(response.generated)  # Generated text from grouped task
+print(response.generative.text)  # Generated text from grouped task
 for o in response.objects:
-    print(o.generated)  # Generated text from single prompt
+    print(o.generative.text)  # Generated text from single prompt
     print(o.properties)  # Object properties
 # END NearTextGenerateExample
 
@@ -1036,11 +1044,11 @@ response = questions.generate.near_text(
 )
 
 print("Grouped Task generated outputs:")
-print(response.generated)
+print(response.generative.text)
 for o in response.objects:
     print(f"Outputs for object {o.uuid}")
     print(f"Generated text:")
-    print(o.generated)
+    print(o.generative.text)
     print(f"Properties:")
     print(o.properties)
     print(f"Metadata")
@@ -1315,7 +1323,7 @@ async def async_insert(async_client) -> BatchObjectReturn:
             name="Movie",
             vector_config=[
                 Configure.Vectors.text2vec_cohere(
-                    "overview_vector",
+                    name="overview_vector",
                     source_properties=["overview"]
                 )
             ],

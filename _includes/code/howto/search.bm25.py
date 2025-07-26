@@ -64,7 +64,7 @@ jeopardy = client.collections.get("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
     query="Australian mammal cute",
-    operator=BM25Operator.or_(minimum_match=2),
+    operator=BM25Operator.or_(minimum_match=1),
     # highlight-end
     limit=3,
 )

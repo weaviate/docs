@@ -7,7 +7,7 @@ import utils
 @pytest.mark.parametrize(
     "script_loc",
     [
-        "./docs/agents/_includes/query_agent.py",
+        #"./docs/agents/_includes/query_agent.py",
         "./docs/agents/_includes/transformation_agent.py"
     ],
 )

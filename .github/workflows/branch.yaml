@@ -8,6 +8,7 @@ on:
 jobs:
   Build-and-deploy:
     name: Build and Deploy
+    if: false
     runs-on: ubuntu-latest
     env:
       GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}

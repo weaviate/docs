@@ -4,8 +4,8 @@ import weaviate_datasets as wd
 from weaviate.classes.init import Auth
 
 # Get credentials from environment variables
-wcd_url = os.environ["WCD_DEMO_URL"]
-wcd_api_key = os.environ["WCD_DEMO_ADMIN_KEY"]
+wcd_url = os.environ["WEAVIATE_HOST"]
+wcd_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api = os.environ["OPENAI_APIKEY"]
 
 headers = {"X-OpenAI-Api-Key": openai_api}
@@ -17,11 +17,11 @@ client = weaviate.connect_to_weaviate_cloud(
     headers=headers,
 )
 
-client.collections.delete("JeopardyQuestion")
-client.collections.delete("JeopardyCategory")
+# client.collections.delete("JeopardyQuestion")
+# client.collections.delete("JeopardyCategory")
 
-dataset = wd.JeopardyQuestions10k()  # Instantiate dataset
-dataset.upload_dataset(client)  # Pass the Weaviate client instance
+# dataset = wd.JeopardyQuestions10k()  # Instantiate dataset
+# dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
 
 client.collections.delete("Article")
@@ -32,9 +32,9 @@ client.collections.delete("Category")
 dataset = wd.NewsArticles()  # Instantiate dataset
 dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
-client.collections.delete("WineReviewNV")
+# client.collections.delete("WineReviewNV")
 
-dataset = wd.WineReviewsNV()  # Instantiate dataset
-dataset.upload_dataset(client)  # Pass the Weaviate client instance
+# dataset = wd.WineReviewsNV()  # Instantiate dataset
+# dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
 client.close()
