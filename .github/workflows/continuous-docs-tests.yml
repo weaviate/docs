@@ -151,28 +151,24 @@ jobs:
       # Wait for Ollama to be ready before pulling models
       - name: Wait for Ollama service
         run: |
-          echo "Checking if Ollama service is ready..."
-          timeout=30  # 30 seconds timeout
+          echo "⏳ Waiting for Ollama service to be ready..."
+          timeout=60
           count=0
           
-          while [ $count -lt $timeout ]; do
-            if docker exec tests-ollama-1 curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then
-              echo "✅ Ollama service is ready"
-              break
-            fi
-            
-            if [ $((count % 10)) -eq 0 ]; then
-              echo "⏳ Waiting for Ollama service... (${count}s elapsed)"
+          until docker exec tests-ollama-1 curl --fail --silent --show-error http://localhost:11434/ > /dev/null; do
+            if [ $count -ge $timeout ]; then
+              echo "❌ Ollama service not ready after ${timeout} seconds."
+              docker logs tests-ollama-1 # Print logs for debugging
+              exit 1
             fi
             
             sleep 1
             count=$((count + 1))
+            echo -n "."
           done
           
-          if [ $count -ge $timeout ]; then
-            echo "❌ Ollama service not ready after ${timeout}s"
-            exit 1
-          fi
+          echo "" # Newline after the dots
+          echo "✅ Ollama service is ready."
 
       - name: Pull Ollama Model
         run: |
