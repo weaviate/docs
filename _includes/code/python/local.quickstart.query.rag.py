@@ -13,7 +13,7 @@ response = questions.generate.near_text(
 )
 # highlight-end
 
-print(response.generated)  # Inspect the generated text
+print(response.generative.text)  # Inspect the generated text
 
 client.close()  # Free up resources
 # END RAG

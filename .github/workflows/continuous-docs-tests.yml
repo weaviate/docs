@@ -138,8 +138,59 @@ jobs:
             docker pull cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32
             docker save cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32 -o /tmp/clip-image.tar
           fi
+      # Cache the Ollama base image
+      - name: Cache Ollama base image
+        uses: actions/cache@v4
+        id: cache-ollama-image
+        with:
+          path: /tmp/ollama-base.tar
+          key: ${{ runner.os }}-ollama-image-latest
+          restore-keys: |
+            ${{ runner.os }}-ollama-image-
 
-      # Start Docker containers
+      # Load or pull the Ollama base image
+      - name: Load or pull Ollama base image
+        run: |
+          echo "=== Disk space before Ollama image operations ==="
+          df -h
+          
+          if [[ "${{ steps.cache-ollama-image.outputs.cache-hit }}" == "true" ]]; then
+            echo "✅ Cache hit. Loading Ollama base image from cache."
+            docker load --input /tmp/ollama-base.tar
+          else
+            echo "❌ Cache miss. Pulling Ollama base image and saving to cache."
+            docker pull ollama/ollama:latest
+            docker save ollama/ollama:latest -o /tmp/ollama-base.tar
+          fi
+          
+          echo "=== Disk space after Ollama base image ==="
+          df -h
+
+      # Cache Ollama models directory
+      - name: Cache Ollama models
+        uses: actions/cache@v4
+        id: cache-ollama-models
+        with:
+          path: ~/.ollama
+          key: ${{ runner.os }}-ollama-models-snowflake-nomic-llama32-v1
+          restore-keys: |
+            ${{ runner.os }}-ollama-models-
+
+      # Prepare Ollama models directory
+      - name: Prepare Ollama models directory
+        run: |
+          echo "=== Preparing Ollama models directory ==="
+          mkdir -p ~/.ollama
+          ls -la ~/.ollama || true
+          
+          if [[ "${{ steps.cache-ollama-models.outputs.cache-hit }}" == "true" ]]; then
+            echo "✅ Ollama models cache hit. Models should be available."
+            ls -la ~/.ollama
+          else
+            echo "❌ Ollama models cache miss. Models will be downloaded."
+          fi
+
+      # Start Docker containers (your existing step - MODIFIED)
       - name: Start Weaviate and Ollama containers
         run: |
           echo "Starting Docker containers..."
@@ -148,13 +199,27 @@ jobs:
           echo "=== Container status ==="
           docker ps
 
-      - name: Pull Ollama Model
+      # MODIFIED - Smart Ollama model pulling
+      - name: Pull Ollama Models (if not cached)
         run: |
-          echo "Pulling Ollama model: snowflake-arctic-embed"
+          echo "Checking Ollama model availability..."
           sleep 5  # Wait for Ollama service to be ready
-          docker exec tests-ollama-1 ollama pull snowflake-arctic-embed
-          docker exec tests-ollama-1 ollama pull nomic-embed-text
-          echo "✅ Model pull complete."
+          
+          models=("snowflake-arctic-embed" "nomic-embed-text" "llama3.2")
+          
+          for model in "${models[@]}"; do
+            echo "Checking model: $model"
+            if docker exec tests-ollama-1 ollama list | grep -q "$model"; then
+              echo "✅ Model $model already available (from cache)"
+            else
+              echo "⬇️ Pulling model: $model"
+              docker exec tests-ollama-1 ollama pull "$model"
+            fi
+          done
+          
+          echo "=== Final model list ==="
+          docker exec tests-ollama-1 ollama list
+          echo "✅ All models ready."
 
       # Wait for services to be ready
       - name: Wait for Weaviate services
