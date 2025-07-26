@@ -84,7 +84,8 @@ try:
     # START GraphQLSimpleAggregateGroupby
     collection = client.collections.get("Article")
     response = collection.aggregate.over_all(
-        group_by=GroupByAggregate(prop="inPublication"),
+        # group_by=GroupByAggregate(prop="inPublication"),
+        group_by=GroupByAggregate(prop="title"),
         total_count=True,
         return_metrics=wvc.query.Metrics("wordCount").integer(mean=True)
     )
