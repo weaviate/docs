@@ -148,31 +148,10 @@ jobs:
           echo "=== Container status ==="
           docker ps
 
-      # Wait for Ollama to be ready before pulling models
-      - name: Wait for Ollama service
-        run: |
-          echo "⏳ Waiting for Ollama service to be ready..."
-          timeout=60
-          count=0
-          
-          until docker exec tests-ollama-1 curl --fail --silent --show-error http://localhost:11434/ > /dev/null; do
-            if [ $count -ge $timeout ]; then
-              echo "❌ Ollama service not ready after ${timeout} seconds."
-              docker logs tests-ollama-1 # Print logs for debugging
-              exit 1
-            fi
-            
-            sleep 1
-            count=$((count + 1))
-            echo -n "."
-          done
-          
-          echo "" # Newline after the dots
-          echo "✅ Ollama service is ready."
-
       - name: Pull Ollama Model
         run: |
           echo "Pulling Ollama model: snowflake-arctic-embed"
+          sleep 5  # Wait for Ollama service to be ready
           docker exec tests-ollama-1 ollama pull snowflake-arctic-embed
           docker exec tests-ollama-1 ollama pull nomic-embed-text
           echo "✅ Model pull complete."
