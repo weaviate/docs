@@ -24,9 +24,9 @@ services:
       CLUSTER_HOSTNAME: 'node1'
       OLLAMA_API_ENDPOINT: 'http://ollama:11434'
   ollama:
-    image: ollama/ollama
+    image: ollama/ollama:0.9.6
     volumes:
-      - ollama_data:/root/.ollama
+      - ~/.ollama:/root/.ollama
     ports:
       - "11434:11434"
     environment:
