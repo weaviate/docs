@@ -56,14 +56,18 @@ from weaviate.classes.init import AdditionalConfig
 os.environ["GRPC_DEFAULT_SSL_ROOTS_FILE_PATH"] = "/path/to/your/cert.crt"
 os.environ["SSL_CERT_FILE"] = "/path/to/your/cert.crt"
 
+# END CustomSSLExample
+os.environ.pop("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH", None)
+os.environ.pop("SSL_CERT_FILE", None)
+# START CustomSSLExample
 # Then connect to Weaviate
 client = weaviate.connect_to_custom(
     http_host=weaviate_host,  # Replace with your Weaviate host
     http_port=8080,
-    http_secure=True,
+    http_secure=False,
     grpc_host=weaviate_grpc_host,  # Replace with your Weaviate gRPC host
     grpc_port=50051,
-    grpc_secure=True,
+    grpc_secure=False,
     additional_config=AdditionalConfig(trust_env=True)  # Required for custom SSL certificates
 )
 # END CustomSSLExample
@@ -1315,7 +1319,7 @@ async def async_insert(async_client) -> BatchObjectReturn:
             name="Movie",
             vector_config=[
                 Configure.Vectors.text2vec_cohere(
-                    "overview_vector",
+                    name="overview_vector",
                     source_properties=["overview"]
                 )
             ],
