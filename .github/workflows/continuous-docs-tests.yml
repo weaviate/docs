@@ -222,7 +222,7 @@ jobs:
           echo "🧪 Running tests..."
           source .venv/bin/activate
           
-          pytest -m pyv4 -v --tb=short --durations=10 tests/test_quickstart.py
+          pytest -m pyv4 -v --tb=short --durations=10
           
           echo "✅ Tests completed"
 
