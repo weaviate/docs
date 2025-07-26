@@ -155,6 +155,7 @@ jobs:
         run: |
           echo "Pulling Ollama model: snowflake-arctic-embed"
           docker exec tests-ollama-1 ollama pull snowflake-arctic-embed
+          docker exec tests-ollama-1 ollama pull nomic-embed-text
           echo "✅ Model pull complete."
 
       # Wait for services to be ready
