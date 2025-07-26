@@ -72,6 +72,10 @@ client = weaviate.connect_to_custom(
 )
 # END CustomSSLExample
 
+try:
+    assert client.is_ready()
+finally:
+    client.close()
 
 # LocalInstantiationSkipChecks
 import weaviate
@@ -701,7 +705,7 @@ client = weaviate.connect_to_local(
     }
 )
 
-d = wd.JeopardyQuestions10k()
+d = wd.JeopardyQuestions1k()
 d.upload_dataset(client, overwrite=True)
 
 categories = client.collections.get("JeopardyCategory")
