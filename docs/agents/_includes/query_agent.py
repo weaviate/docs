@@ -306,6 +306,12 @@ import weaviate
 from weaviate.classes.init import Auth
 from weaviate.agents.query import AsyncQueryAgent
 
+async_client = weaviate.use_async_with_weaviate_cloud(
+    cluster_url=os.environ.get("WEAVIATE_URL"),
+    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
+    headers=headers,
+)
+
 async def query_vintage_clothes(async_query_agent: AsyncQueryAgent):
     response = await async_query_agent.run(
         "I like vintage clothes and nice shoes. Recommend some of each below $60."
@@ -320,12 +326,6 @@ async def query_financial_data(async_query_agent: AsyncQueryAgent):
 
 async def run_concurrent_queries():
     # Create async_client inside this function
-    async_client = weaviate.use_async_with_weaviate_cloud(
-        cluster_url=os.environ.get("WEAVIATE_URL"),
-        auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
-        headers=headers,
-    )
-
     try:
         await async_client.connect()
 
@@ -367,9 +367,6 @@ asyncio.run(run_concurrent_queries())
 
 # START StreamAsyncResponse
 import asyncio
-import os
-import weaviate
-from weaviate.classes.init import Auth
 from weaviate.agents.query import AsyncQueryAgent
 from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
 
@@ -391,13 +388,6 @@ async def stream_query(async_query_agent: AsyncQueryAgent):
             output.display()
 
 async def run_streaming_query():
-    # Create a NEW async_client instance for this function
-    async_client = weaviate.use_async_with_weaviate_cloud(
-        cluster_url=os.environ.get("WEAVIATE_URL"),
-        auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
-        headers=headers,
-    )
-    
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
