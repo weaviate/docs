@@ -6,7 +6,6 @@ from weaviate.client import WeaviateClient
 
 # END CreateCollectionCollectionToCollection  # END CreateCollectionTenantToCollection  # END CreateCollectionCollectionToTenant  # END CreateCollectionTenantToTenant
 from tqdm import tqdm
-import random
 # ===== Load demo dataset for testing =====
 import weaviate_datasets as wd
 import os
@@ -142,6 +141,7 @@ def verify_migration(collection_src, collection_tgt, num_samples=5):
     
     # Sample random objects (or all if less than num_samples)
     sample_size = min(num_samples, len(src_objects))
+    import random
     sampled_objects = random.sample(src_objects, sample_size)
     
     print(f"Verifying {sample_size} random objects...")

@@ -366,6 +366,13 @@ asyncio.run(run_concurrent_queries())
 
 
 # START StreamAsyncResponse
+import asyncio
+import os
+import weaviate
+from weaviate.classes.init import Auth
+from weaviate.agents.query import AsyncQueryAgent
+from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
+
 async def stream_query(async_query_agent: AsyncQueryAgent):
     async for output in async_query_agent.stream(
         "What are the top 5 products sold in the last 30 days?",
@@ -384,14 +391,13 @@ async def stream_query(async_query_agent: AsyncQueryAgent):
             output.display()
 
 async def run_streaming_query():
-    # END StreamAsyncResponse
     # Create a NEW async_client instance for this function
     async_client = weaviate.use_async_with_weaviate_cloud(
         cluster_url=os.environ.get("WEAVIATE_URL"),
         auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
         headers=headers,
     )
-    # START StreamAsyncResponse
+    
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
