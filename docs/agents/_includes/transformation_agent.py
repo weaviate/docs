@@ -137,7 +137,7 @@ response = agent.update_all()
 print(response)  # The response is a TransformationResponse object, including the workflow_id
 # END StartTransformationOperations
 
-# # START MonitorJobStatus
+# START MonitorJobStatus
 print(agent.get_status(workflow_id=response.workflow_id))  # Use the workflow_id to check the status of each operation
 # # END MonitorJobStatus
 

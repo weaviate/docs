@@ -269,6 +269,7 @@ for output in qa.stream(
 
 # START InspectResponseExample
 print("\n=== Query Agent Response ===")
+print(f"Original: {response}\n")
 print(f"Original Query: {response.original_query}\n")
 
 print("🔍 Final Answer Found:")
