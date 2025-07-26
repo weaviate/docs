@@ -269,6 +269,7 @@ for output in qa.stream(
 
 # START InspectResponseExample
 print("\n=== Query Agent Response ===")
+print(f"Original: {response}\n")
 print(f"Original Query: {response.original_query}\n")
 
 print("🔍 Final Answer Found:")
@@ -279,8 +280,8 @@ for collection_searches in response.searches:
     for result in collection_searches:
         print(f"- {result}\n")
 
-if response.has_aggregation_answer:
-    print("📊 Aggregation Results:")
+if response.aggregations:
+    print("📊 Aggregations performed:")
     for collection_aggs in response.aggregations:
         for agg in collection_aggs:
             print(f"- {agg}\n")
