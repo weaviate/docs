@@ -201,7 +201,7 @@ response.display()
 # END QueryAgentRunBasicCollectionSelection
 
 # START QueryAgentRunCollectionConfig
-from weaviate_agents.classes import QueryAgentCollectionConfig
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 response = qa.run(
     "I like vintage clothes and nice shoes. Recommend some of each below $60.",
@@ -303,12 +303,12 @@ client.close()
 import asyncio
 import os
 import weaviate
+from weaviate.classes.init import Auth
 from weaviate.agents.query import AsyncQueryAgent
-
 
 async_client = weaviate.use_async_with_weaviate_cloud(
     cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=os.environ.get("WEAVIATE_API_KEY"),
+    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
     headers=headers,
 )
 
@@ -325,6 +325,72 @@ async def query_financial_data(async_query_agent: AsyncQueryAgent):
     return ("Financial Contracts", response)
 
 async def run_concurrent_queries():
+    try:
+        await async_client.connect()
+
+        async_qa = AsyncQueryAgent(
+            async_client,
+            collections=[
+                QueryAgentCollectionConfig(
+                    name="ECommerce",  # The name of the collection to query
+                    target_vector=["name_description_brand_vector"], # Optional target vector name(s) for collections with named vectors
+                    view_properties=["name", "description", "category", "brand"], # Optional list of property names the agent can view
+                ),
+                QueryAgentCollectionConfig(
+                    name="FinancialContracts",  # The name of the collection to query
+                    # Optional tenant name for collections with multi-tenancy enabled
+                    # tenant="tenantA"
+                ),
+            ],
+        )
+
+        # Wait for both to complete
+        vintage_response, financial_response = await asyncio.gather(
+            query_vintage_clothes(async_qa),
+            query_financial_data(async_qa)
+        )
+
+        # Display results
+        print(f"=== {vintage_response[0]} ===")
+        vintage_response[1].display()
+
+        print(f"=== {financial_response[0]} ===")
+        financial_response[1].display()
+
+    finally:
+        await async_client.close()
+
+asyncio.run(run_concurrent_queries())
+# END UsageAsyncQueryAgent
+
+
+# START UsageAsyncQueryAgent
+import asyncio
+import os
+import weaviate
+from weaviate.classes.init import Auth
+from weaviate.agents.query import AsyncQueryAgent
+
+async def query_vintage_clothes(async_query_agent: AsyncQueryAgent):
+    response = await async_query_agent.run(
+        "I like vintage clothes and nice shoes. Recommend some of each below $60."
+    )
+    return ("Vintage Clothes", response)
+
+async def query_financial_data(async_query_agent: AsyncQueryAgent):
+    response = await async_query_agent.run(
+        "What kinds of contracts are listed? What's the most common type of contract?",
+    )
+    return ("Financial Contracts", response)
+
+async def run_concurrent_queries():
+    # Create async_client inside this function
+    async_client = weaviate.use_async_with_weaviate_cloud(
+        cluster_url=os.environ.get("WEAVIATE_URL"),
+        auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
+        headers=headers,
+    )
+    
     try:
         await async_client.connect()
 
@@ -383,6 +449,14 @@ async def stream_query(async_query_agent: AsyncQueryAgent):
             output.display()
 
 async def run_streaming_query():
+    # END StreamAsyncResponse
+    # Create a NEW async_client instance for this function
+    async_client = weaviate.use_async_with_weaviate_cloud(
+        cluster_url=os.environ.get("WEAVIATE_URL"),
+        auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
+        headers=headers,
+    )
+    # START StreamAsyncResponse
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(

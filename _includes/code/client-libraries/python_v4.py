@@ -932,9 +932,9 @@ response = questions.generate.bm25(
     single_prompt="Translate the following into French: {answer}"
 )
 
-print(response.generated)  # Generated text from grouped task
+print(response.generative.text)  # Generated text from grouped task
 for o in response.objects:
-    print(o.generated)  # Generated text from single prompt
+    print(o.generative.text)  # Generated text from single prompt
     print(o.properties)  # Object properties
 # END BM25GenerateExample
 
@@ -947,9 +947,9 @@ response = questions.generate.near_text(
     single_prompt="Translate the following into French: {answer}"
 )
 
-print(response.generated)  # Generated text from grouped task
+print(response.generative.text)  # Generated text from grouped task
 for o in response.objects:
-    print(o.generated)  # Generated text from single prompt
+    print(o.generative.text)  # Generated text from single prompt
     print(o.properties)  # Object properties
 # END NearTextGenerateExample
 
@@ -1040,11 +1040,11 @@ response = questions.generate.near_text(
 )
 
 print("Grouped Task generated outputs:")
-print(response.generated)
+print(response.generative.text)
 for o in response.objects:
     print(f"Outputs for object {o.uuid}")
     print(f"Generated text:")
-    print(o.generated)
+    print(o.generative.text)
     print(f"Properties:")
     print(o.properties)
     print(f"Metadata")
