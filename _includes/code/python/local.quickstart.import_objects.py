@@ -10,111 +10,83 @@ url = "https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data
 try:
     resp = requests.get(url, timeout=10)
     print(f"DEBUG: Status code: {resp.status_code}")
-    print(f"DEBUG: Content type: {resp.headers.get('content-type', 'unknown')}")
     print(f"DEBUG: Content length: {len(resp.content)} bytes")
-    print(f"DEBUG: Response headers: {dict(resp.headers)}")
     
     if resp.status_code != 200:
-        print(f"DEBUG: HTTP Error - Status: {resp.status_code}")
-        print(f"DEBUG: Response text: {resp.text}")
-        raise Exception(f"HTTP {resp.status_code}: {resp.text}")
+        print(f"DEBUG: HTTP Error - Response: {resp.text}")
+        raise Exception(f"HTTP {resp.status_code}")
     
-    # Check if response is empty
     if not resp.text.strip():
         print("DEBUG: ERROR - Response is empty!")
-        raise Exception("Empty response from server")
+        raise Exception("Empty response")
     
-    # Show first part of response
-    preview = resp.text[:500] if len(resp.text) > 500 else resp.text
-    print(f"DEBUG: Response preview (first 500 chars):")
-    print(f"'{preview}'")
+    print(f"DEBUG: Response preview: {resp.text[:200]}...")
     
-    # Try to parse JSON
-    try:
-        data = json.loads(resp.text)
-        print(f"DEBUG: ✓ JSON parsed successfully, {len(data)} items")
-        
-        # Show structure of first item
-        if data:
-            print(f"DEBUG: First item structure: {data[0]}")
-            print(f"DEBUG: First item keys: {list(data[0].keys())}")
-        
-    except json.JSONDecodeError as je:
-        print(f"DEBUG: ✗ JSON decode failed: {je}")
-        print(f"DEBUG: Error position: line {je.lineno}, column {je.colno}")
-        print(f"DEBUG: Problematic text around error:")
-        start = max(0, je.pos - 50)
-        end = min(len(resp.text), je.pos + 50)
-        print(f"'{resp.text[start:end]}'")
-        raise
-        
-except requests.exceptions.RequestException as e:
-    print(f"DEBUG: ✗ Request failed: {e}")
+    data = json.loads(resp.text)
+    print(f"DEBUG: ✓ JSON parsed successfully, {len(data)} items")
     
-    # Fallback to test data
+    if data and len(data) > 0:
+        print(f"DEBUG: First item: {data[0]}")
+        
+except Exception as e:
+    print(f"DEBUG: ✗ Download failed: {e}")
     print("DEBUG: Using fallback test data")
     data = [
         {"Answer": "DNA", "Question": "What carries genetic information?", "Category": "BIOLOGY"},
         {"Answer": "Photosynthesis", "Question": "Process plants use to make food?", "Category": "BIOLOGY"},
-        {"Answer": "Mitochondria", "Question": "Powerhouse of the cell?", "Category": "BIOLOGY"},
-        {"Answer": "Evolution", "Question": "Theory explaining species change?", "Category": "BIOLOGY"},
-        {"Answer": "Ecosystem", "Question": "Community of living and non-living things?", "Category": "BIOLOGY"}
+        {"Answer": "Mitochondria", "Question": "Powerhouse of the cell?", "Category": "BIOLOGY"}
     ]
-    print(f"DEBUG: Using {len(data)} fallback items")
-
-except Exception as e:
-    print(f"DEBUG: ✗ Unexpected error: {e}")
-    raise
 
 print("=== DEBUG: Starting batch import ===")
-
-# highlight-start
 questions = client.collections.get("Question")
+
+if not data:
+    print("DEBUG: ✗ No data to import")
+    client.close()
+    exit(1)
 
 print(f"DEBUG: About to import {len(data)} objects")
 
+# highlight-start
+successful_imports = 0
+failed_imports = 0
+
 with questions.batch.fixed_size(batch_size=200) as batch:
-    for i, d in enumerate(data):
-        # Validate data structure
-        required_keys = ["Answer", "Question", "Category"]
-        missing_keys = [key for key in required_keys if key not in d]
-        if missing_keys:
-            print(f"DEBUG: ⚠ Item {i} missing keys: {missing_keys}")
-            print(f"DEBUG: Item {i} has keys: {list(d.keys())}")
-            continue
+    for i, item in enumerate(data):
+        try:
+            batch.add_object({
+                "answer": item["Answer"],
+                "question": item["Question"], 
+                "category": item["Category"],
+            })
+            successful_imports += 1
             
-        batch.add_object(
-            {
-                "answer": d["Answer"],
-                "question": d["Question"],
-                "category": d["Category"],
-            }
-        )
-        
-        # Log progress every 50 items
-        if (i + 1) % 50 == 0:
-            print(f"DEBUG: Processed {i + 1}/{len(data)} items")
+            if (i + 1) % 10 == 0:
+                print(f"DEBUG: Processed {i + 1}/{len(data)} items")
+                
+        except KeyError as ke:
+            failed_imports += 1
+            print(f"DEBUG: ✗ Item {i} missing key {ke}: {item}")
+        except Exception as e:
+            failed_imports += 1
+            print(f"DEBUG: ✗ Error with item {i}: {e}")
         
         # highlight-end
         if batch.number_errors > 10:
-            print(f"DEBUG: ✗ Batch import stopped due to excessive errors: {batch.number_errors}")
+            print(f"DEBUG: ✗ Too many batch errors: {batch.number_errors}")
             break
 
-print("DEBUG: Batch import completed")
+print(f"DEBUG: Import attempt completed - Success: {successful_imports}, Failed: {failed_imports}")
 
-# Check for failed imports
 failed_objects = questions.batch.failed_objects
 if failed_objects:
-    print(f"DEBUG: ✗ Number of failed imports: {len(failed_objects)}")
-    print(f"DEBUG: First failed object: {failed_objects[0]}")
-    
-    # Show details of first few failures
-    for i, failed in enumerate(failed_objects[:3]):
-        print(f"DEBUG: Failed object {i+1}: {failed}")
+    print(f"DEBUG: ✗ Batch failed objects: {len(failed_objects)}")
+    if len(failed_objects) > 0:
+        print(f"DEBUG: First failed: {failed_objects[0]}")
 else:
-    print(f"DEBUG: ✓ All imports successful")
+    print("DEBUG: ✓ No batch failures")
 
-# Verify import worked
+# Verify import
 print("=== DEBUG: Verifying import ===")
 try:
     aggregate_result = questions.aggregate.over_all(total_count=True)
@@ -122,17 +94,14 @@ try:
     print(f"DEBUG: ✓ Total objects in collection: {total_count}")
     
     if total_count > 0:
-        # Show a few sample objects
-        sample_objects = questions.query.fetch_objects(limit=3)
-        print(f"DEBUG: Sample imported objects:")
-        for i, obj in enumerate(sample_objects.objects):
-            print(f"  {i+1}: {obj.properties}")
-    else:
-        print("DEBUG: ⚠ No objects found in collection after import")
-        
+        sample_objects = questions.query.fetch_objects(limit=2)
+        print(f"DEBUG: Sample objects:")
+        for obj in sample_objects.objects:
+            print(f"  - {obj.properties}")
+            
 except Exception as e:
-    print(f"DEBUG: ✗ Error verifying import: {e}")
+    print(f"DEBUG: ✗ Verification error: {e}")
 
-client.close()  # Free up resources
-print("DEBUG: Import process completed")
+client.close()
+print("DEBUG: Import completed")
 # END Import
