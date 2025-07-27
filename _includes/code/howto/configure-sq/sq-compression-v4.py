@@ -26,7 +26,7 @@ client.is_ready()
 client.collections.delete("MyCollection")
 
 # START EnableSQ
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
@@ -36,9 +36,6 @@ client.collections.create(
         quantizer=Configure.VectorIndex.Quantizer.sq(),
         # highlight-end
     ),
-    properties=[
-        Property(name="title", data_type=DataType.TEXT),
-    ],
 )
 # END EnableSQ
 
@@ -49,7 +46,7 @@ client.collections.create(
 client.collections.delete("MyCollection")
 
 # START SQWithOptions
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
@@ -66,9 +63,6 @@ client.collections.create(
             vector_cache_max_objects=100000,
         ),
     ),
-    properties=[
-        Property(name="title", data_type=DataType.TEXT),
-    ],
 )
 # END SQWithOptions
 

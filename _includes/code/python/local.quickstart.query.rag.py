@@ -1,5 +1,5 @@
 import time
-time.sleep(5) # Allow Weaviate data import to finish
+time.sleep(5) # Allow Weaviate data import to finish TODO[g-despot]: Implement a better solution to wait for data import to finish
 # RAG
 import weaviate
 
@@ -9,7 +9,7 @@ questions = client.collections.get("Question")
 
 # highlight-start
 response = questions.generate.near_text(
-    query="science",
+    query="biology",
     limit=2,
     grouped_task="Write a tweet with emojis about these facts."
 )

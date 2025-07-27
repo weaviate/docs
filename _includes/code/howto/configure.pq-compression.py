@@ -50,7 +50,7 @@ client.collections.delete("Question")
 
 
 # START CollectionWithAutoPQ
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="Question",
@@ -60,10 +60,6 @@ client.collections.create(
         quantizer=Configure.VectorIndex.Quantizer.pq(training_limit=50000),  # Set the threshold to begin training
         # highlight-end
     ),
-    properties=[
-        Property(name="question", data_type=DataType.TEXT),
-        Property(name="answer", data_type=DataType.TEXT),
-    ],
 )
 
 # END CollectionWithAutoPQ
@@ -86,7 +82,7 @@ assert type(config.vector_config["default"].vector_index_config.quantizer) == _P
 client.collections.delete("Question")
 
 # START InitialSchema
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="Question",
@@ -95,10 +91,6 @@ client.collections.create(
         name="default",
     ),
     generative_config=Configure.Generative.openai(),
-    properties=[
-        Property(name="question", data_type=DataType.TEXT),
-        Property(name="answer", data_type=DataType.TEXT),
-    ],
 )
 
 # END InitialSchema
