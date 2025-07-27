@@ -1,3 +1,5 @@
+import time
+time.sleep(5) # Allow Weaviate data import to finish
 # RAG
 import weaviate
 
