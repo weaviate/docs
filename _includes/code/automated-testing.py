@@ -17,11 +17,11 @@ client = weaviate.connect_to_weaviate_cloud(
     headers=headers,
 )
 
-# client.collections.delete("JeopardyQuestion")
-# client.collections.delete("JeopardyCategory")
+client.collections.delete("JeopardyQuestion")
+client.collections.delete("JeopardyCategory")
 
-# dataset = wd.JeopardyQuestions10k()  # Instantiate dataset
-# dataset.upload_dataset(client)  # Pass the Weaviate client instance
+dataset = wd.JeopardyQuestions10k()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
 
 client.collections.delete("Article")
@@ -32,9 +32,9 @@ client.collections.delete("Category")
 dataset = wd.NewsArticles()  # Instantiate dataset
 dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
-# client.collections.delete("WineReviewNV")
+client.collections.delete("WineReviewNV")
 
-# dataset = wd.WineReviewsNV()  # Instantiate dataset
-# dataset.upload_dataset(client)  # Pass the Weaviate client instance
+dataset = wd.WineReviewsNV()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
 client.close()

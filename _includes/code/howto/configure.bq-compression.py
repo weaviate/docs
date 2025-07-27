@@ -26,7 +26,7 @@ client.is_ready()
 client.collections.delete("MyCollection")
 
 # START EnableBQ
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
@@ -36,12 +36,6 @@ client.collections.create(
         quantizer=Configure.VectorIndex.Quantizer.bq(),
         # highlight-end
     ),
-    properties=[
-        Property(
-            name="text",
-            data_type=DataType.TEXT,
-        )
-    ],
 )
 # END EnableBQ
 
@@ -52,7 +46,7 @@ client.collections.create(
 client.collections.delete("MyCollection")
 
 # START BQWithOptions
-from weaviate.classes.config import Configure, Property
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
@@ -65,12 +59,6 @@ client.collections.create(
             vector_cache_max_objects=100000,
         ),
     ),
-    properties=[
-        Property(
-            name="text",
-            data_type=DataType.TEXT,
-        )
-    ],
 )
 # END BQWithOptions
 
