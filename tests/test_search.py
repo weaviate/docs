@@ -1,6 +1,7 @@
 import pytest
 import utils
 import subprocess
+from pathlib import Path
 
 
 @pytest.mark.pyv4
@@ -25,7 +26,7 @@ def test_pyv4(empty_weaviates, script_loc):
         lang="py",
         custom_replace_pairs=utils.edu_readonly_replacements
     )
-    exec(temp_proc_script_loc.read_text())
+    utils.execute_py_script_as_module(temp_proc_script_loc.read_text(), Path(script_loc).stem)
 
 
 @pytest.mark.ts
