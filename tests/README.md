@@ -6,9 +6,10 @@ This directory contains the setup for executing code snippets used in Weaviate d
 
 This GitHub Actions workflow provides automated testing for the `testing-ci` branch with a comprehensive setup that includes Python environments, Docker services (Weaviate and Ollama), and various AI/ML model integrations.
 
-The CI workflow automatically runs when:
+The CI workflow is executed:
 
-- Code is pushed to the `testing-ci` branch
+- **Periodically**: Every Sunday at midnight CET
+- When code is pushed to the `testing-ci` branch
 - Manually triggered via workflow dispatch
 
 **Runtime**: ~30 minutes maximum (with timeout protection)
