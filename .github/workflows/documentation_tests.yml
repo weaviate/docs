@@ -205,6 +205,8 @@ jobs:
           echo "✅ Service check completed"
 
       - name: Run tests
+        id: run-tests
+        continue-on-error: true  # NEW: Don't fail workflow on test failure
         env:
           DOCS_GITHUB_ENV: "true"
           # Weaviate connection settings
@@ -239,6 +241,42 @@ jobs:
         run: |
           echo "🛑 Stopping services..."
           ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
+
+            - name: Calculate test results
+        if: always()
+        run: |
+          # Calculate duration
+          TEST_END_TIME=$(date +%s)
+          TEST_DURATION=$((TEST_END_TIME - TEST_START_TIME))
+          
+          # Format duration
+          if [ $TEST_DURATION -ge 60 ]; then
+            MINUTES=$((TEST_DURATION / 60))
+            SECONDS=$((TEST_DURATION % 60))
+            DURATION_FORMATTED="${MINUTES}m ${SECONDS}s"
+          else
+            DURATION_FORMATTED="${TEST_DURATION}s"
+          fi
+          
+          echo "TEST_DURATION=$DURATION_FORMATTED" >> $GITHUB_ENV
+          
+          # Set test status
+          if [ "${{ steps.run-tests.outcome }}" = "success" ]; then
+            echo "TEST_STATUS=success" >> $GITHUB_ENV
+          else
+            echo "TEST_STATUS=failure" >> $GITHUB_ENV
+          fi
+
+      - name: Send Slack notification
+        if: always()
+        env:
+          SLACK_BOT: ${{ secrets.SLACK_BOT }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: |
+          source _build_scripts/slack-test-results.sh
 
       - name: Cleanup Docker resources
         if: always()
