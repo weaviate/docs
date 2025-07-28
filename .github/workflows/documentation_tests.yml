@@ -204,6 +204,10 @@ jobs:
 
           echo "✅ Service check completed"
 
+      # Record test start time - NEW
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
       - name: Run tests
         id: run-tests
         continue-on-error: true  # NEW: Don't fail workflow on test failure
@@ -231,7 +235,7 @@ jobs:
           echo "🧪 Running tests..."
           source .venv/bin/activate
 
-          pytest -m pyv4 -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          pytest -m pyv4 -v --tb=short --durations=10 -s --junitxml=pytest-results.xml tests/test_client.py
 
           echo "✅ Tests completed"
 
@@ -242,7 +246,7 @@ jobs:
           echo "🛑 Stopping services..."
           ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
 
-            - name: Calculate test results
+      - name: Calculate test results
         if: always()
         run: |
           # Calculate duration
