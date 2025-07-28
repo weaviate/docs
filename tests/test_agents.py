@@ -8,7 +8,7 @@ import utils
     "script_loc",
     [
         "./docs/agents/_includes/query_agent.py",
-        #"./docs/agents/_includes/transformation_agent.py"
+        "./docs/agents/_includes/transformation_agent.py"
     ],
 )
 def test_on_blank_instance_pyv4(empty_weaviates, script_loc):
