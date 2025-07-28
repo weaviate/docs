@@ -1,10 +1,14 @@
-name: CI for testing-ci branch
+name: Documentation Code Tests - Weekly
 
 on:
+  schedule:
+    # Run every Sunday at midnight CET
+    - cron: "0 23 * * 6"
   push:
+    # Only run when pushed to the testing-ci branch
     branches:
       - testing-ci
-  workflow_dispatch:
+  workflow_dispatch: # Manual trigger option
 
 env:
   # Centralize versions for easier maintenance
@@ -16,8 +20,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
-    # Set timeout for the entire job
+
     timeout-minutes: 30
 
     steps:
@@ -28,7 +31,7 @@ jobs:
         run: |
           echo "=== Initial disk usage ==="
           df -h
-          
+
           echo "=== Removing unnecessary software ==="
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /opt/ghc
@@ -39,11 +42,11 @@ jobs:
           sudo rm -rf /usr/local/share/powershell
           sudo rm -rf /usr/local/share/chromium
           sudo rm -rf /usr/local/lib/node_modules
-          
+
           echo "=== Docker cleanup ==="
           docker system prune -af --volumes || true
           docker builder prune -af || true
-          
+
           echo "=== Final disk usage ==="
           df -h
 
@@ -70,15 +73,14 @@ jobs:
             echo "Creating virtual environment and installing dependencies..."
             python -m venv .venv
           fi
-          
+
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r tests/requirements.txt
-          
+
           echo "✅ Python environment ready. Installed packages:"
           pip list | head -20
 
-      # Parallel Docker image caching - define cache paths
       - name: Cache Docker images
         uses: actions/cache@v4
         id: cache-docker-images
@@ -96,7 +98,7 @@ jobs:
           echo "🐳 Managing Docker images..."
           echo "Initial disk space:"
           df -h | grep -E "^/dev|Filesystem"
-          
+
           # Function to handle image loading/pulling
           load_or_pull_image() {
             local image_name=$1
@@ -112,25 +114,25 @@ jobs:
               docker save "$image_name" -o "$tar_file"
             fi
           }
-          
+
           # Process images
           load_or_pull_image "cr.weaviate.io/semitechnologies/weaviate:${{ env.WEAVIATE_VERSION }}" \
             "/tmp/weaviate-base.tar" \
             "${{ steps.cache-docker-images.outputs.cache-hit }}"
-          
+
           load_or_pull_image "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}" \
             "/tmp/clip-image.tar" \
             "${{ steps.cache-docker-images.outputs.cache-hit }}"
-          
+
           load_or_pull_image "ollama/ollama:${{ env.OLLAMA_VERSION }}" \
             "/tmp/ollama-base.tar" \
             "${{ steps.cache-docker-images.outputs.cache-hit }}"
-          
+
           echo "✅ All Docker images ready"
           echo "Final disk space:"
           df -h | grep -E "^/dev|Filesystem"
 
-      - name: Cache Ollama models (selective)
+      - name: Cache Ollama models
         uses: actions/cache@v4
         id: cache-ollama-models
         with:
@@ -149,7 +151,7 @@ jobs:
           echo "🚀 Starting Weaviate and Ollama services..."
           mkdir -p ~/.ollama
           ./tests/start-weaviate.sh
-          
+
           # Wait for Ollama to be ready before pulling models
           sleep 5  # Wait for Ollama service to be ready
           echo "✅ Services started:"
@@ -158,9 +160,9 @@ jobs:
       - name: Ensure Ollama models are available
         run: |
           echo "🤖 Checking Ollama models..."
-          
+
           declare -a models=("snowflake-arctic-embed" "nomic-embed-text" "llama3.2")
-          
+
           for model in "${models[@]}"; do
             if docker exec tests-ollama-1 ollama list 2>/dev/null | grep -q "$model"; then
               echo "✅ Model $model already available"
@@ -169,14 +171,14 @@ jobs:
               docker exec tests-ollama-1 ollama pull "$model"
             fi
           done
-          
+
           echo "✅ All models ready:"
           docker exec tests-ollama-1 ollama list
 
       - name: Wait for all services to be ready
         run: |
           echo "⏳ Waiting for services to be ready..."
-          
+
           # Define services with their health check endpoints
           declare -A services=(
             ["8099"]="Weaviate Main"
@@ -188,7 +190,7 @@ jobs:
             ["8181"]="Weaviate Instance 5"
             ["8182"]="Weaviate Instance 6"
           )
-          
+
           for port in "${!services[@]}"; do
             service_name="${services[$port]}"
             echo -n "Checking $service_name (port $port)... "
@@ -199,7 +201,7 @@ jobs:
               echo "⚠️ Not responding (may be optional)"
             fi
           done
-          
+
           echo "✅ Service check completed"
 
       - name: Run tests
@@ -226,9 +228,9 @@ jobs:
         run: |
           echo "🧪 Running tests..."
           source .venv/bin/activate
-          
+
           pytest -m pyv4 -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
-          
+
           echo "✅ Tests completed"
 
       # Cleanup steps with consistent error handling
@@ -242,17 +244,17 @@ jobs:
         if: always()
         run: |
           echo "🧹 Cleaning up Docker resources..."
-          
+
           # Stop any remaining containers from compose files
           for compose_file in tests/docker-compose*.yml; do
             if [[ -f "$compose_file" ]]; then
               docker compose -f "$compose_file" down -v --remove-orphans 2>/dev/null || true
             fi
           done
-          
+
           # Clean up dangling resources
           docker system prune -f --volumes 2>/dev/null || true
-          
+
           echo "✅ Cleanup completed"
 
       - name: Upload test results
@@ -263,4 +265,4 @@ jobs:
           path: |
             pytest-results.xml
             .pytest_cache/
-          retention-days: 7
+          retention-days: 9 # Retain for 9 days in order to debug issues
