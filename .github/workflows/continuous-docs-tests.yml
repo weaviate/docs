@@ -130,11 +130,16 @@ jobs:
           echo "Final disk space:"
           df -h | grep -E "^/dev|Filesystem"
 
-      - name: Cache Ollama models
+      - name: Cache Ollama models (selective)
         uses: actions/cache@v4
         id: cache-ollama-models
         with:
-          path: ~/.ollama
+          path: |
+            ~/.ollama/models
+            ~/.ollama/cache
+            !~/.ollama/id_*
+            !~/.ollama/*.key
+            !~/.ollama/*.pem
           key: ${{ runner.os }}-ollama-models-snowflake-nomic-llama32-v2
           restore-keys: |
             ${{ runner.os }}-ollama-models-

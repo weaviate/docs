@@ -6,7 +6,6 @@ on:
 jobs:
   Validate-links:
     name: Validate links
-    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
