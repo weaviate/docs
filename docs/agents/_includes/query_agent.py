@@ -304,7 +304,7 @@ import asyncio
 import os
 import weaviate
 from weaviate.classes.init import Auth
-from weaviate.agents.query import AsyncQueryAgent
+from weaviate_agents.query import AsyncQueryAgent
 
 async_client = weaviate.use_async_with_weaviate_cloud(
     cluster_url=os.environ.get("WEAVIATE_URL"),
@@ -324,7 +324,7 @@ async def query_financial_data(async_query_agent: AsyncQueryAgent):
     )
     return ("Financial Contracts", response)
 
-async def run_concurrent_queries(async_client):
+async def run_concurrent_queries():
     # Create async_client inside this function
     try:
         await async_client.connect()
@@ -361,13 +361,13 @@ async def run_concurrent_queries(async_client):
     finally:
         await async_client.close()
 
-asyncio.run(run_concurrent_queries(async_client))
+asyncio.run(run_concurrent_queries())
 # END UsageAsyncQueryAgent
 
 
 # START StreamAsyncResponse
 import asyncio
-from weaviate.agents.query import AsyncQueryAgent
+from weaviate_agents.query import AsyncQueryAgent
 from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
 
 async def stream_query(async_query_agent: AsyncQueryAgent):
@@ -387,7 +387,7 @@ async def stream_query(async_query_agent: AsyncQueryAgent):
             # This is the final response, as returned by QueryAgent.run()
             output.display()
 
-async def run_streaming_query(async_client):
+async def run_streaming_query():
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
@@ -410,5 +410,5 @@ async def run_streaming_query(async_client):
     finally:
         await async_client.close()
 
-asyncio.run(run_streaming_query(async_client))
+asyncio.run(run_streaming_query())
 # END StreamAsyncResponse
