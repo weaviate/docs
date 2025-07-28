@@ -326,6 +326,7 @@ async def query_financial_data(async_query_agent):
 async def run_concurrent_queries(async_client):
     from weaviate.agents.query import AsyncQueryAgent
     from weaviate.agents.classes import QueryAgentCollectionConfig
+    import asyncio
     # Create async_client inside this function
     try:
         await async_client.connect()
