@@ -312,23 +312,22 @@ async_client = weaviate.use_async_with_weaviate_cloud(
 )
 
 async def run_concurrent_queries(async_client):
+    import asyncio
     from weaviate.agents.query import AsyncQueryAgent
     from weaviate.agents.classes import QueryAgentCollectionConfig
-    import asyncio
 
-    async def query_vintage_clothes(async_query_agent):
+    async def query_vintage_clothes(async_query_agent: AsyncQueryAgent):
         response = await async_query_agent.run(
             "I like vintage clothes and nice shoes. Recommend some of each below $60."
         )
         return ("Vintage Clothes", response)
 
-    async def query_financial_data(async_query_agent):
+    async def query_financial_data(async_query_agent: AsyncQueryAgent):
         response = await async_query_agent.run(
             "What kinds of contracts are listed? What's the most common type of contract?",
         )
         return ("Financial Contracts", response)
 
-    # Create async_client inside this function
     try:
         await async_client.connect()
 
@@ -375,7 +374,7 @@ async def run_streaming_query(async_client):
     from weaviate.agents.query import AsyncQueryAgent
     from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
     
-    async def stream_query(async_query_agent):
+    async def stream_query(async_query_agent: AsyncQueryAgent):
         async for output in async_query_agent.stream(
             "What are the top 5 products sold in the last 30 days?",
             # Setting this to false will skip ProgressMessages, and only stream
