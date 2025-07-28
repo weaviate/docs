@@ -324,7 +324,7 @@ async def query_financial_data(async_query_agent: AsyncQueryAgent):
     )
     return ("Financial Contracts", response)
 
-async def run_concurrent_queries():
+async def run_concurrent_queries(async_client):
     # Create async_client inside this function
     try:
         await async_client.connect()
@@ -361,7 +361,7 @@ async def run_concurrent_queries():
     finally:
         await async_client.close()
 
-asyncio.run(run_concurrent_queries())
+asyncio.run(run_concurrent_queries(async_client))
 # END UsageAsyncQueryAgent
 
 
@@ -387,7 +387,7 @@ async def stream_query(async_query_agent: AsyncQueryAgent):
             # This is the final response, as returned by QueryAgent.run()
             output.display()
 
-async def run_streaming_query():
+async def run_streaming_query(async_client):
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
@@ -410,5 +410,5 @@ async def run_streaming_query():
     finally:
         await async_client.close()
 
-asyncio.run(run_streaming_query())
+asyncio.run(run_streaming_query(async_client))
 # END StreamAsyncResponse
