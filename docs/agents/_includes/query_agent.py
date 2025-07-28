@@ -325,6 +325,7 @@ async def query_financial_data(async_query_agent):
 
 async def run_concurrent_queries(async_client):
     from weaviate.agents.query import AsyncQueryAgent
+    from weaviate.agents.classes import QueryAgentCollectionConfig
     # Create async_client inside this function
     try:
         await async_client.connect()
@@ -367,7 +368,7 @@ asyncio.run(run_concurrent_queries(async_client))
 
 # START StreamAsyncResponse
 import asyncio
-from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
+from weaviate.agents.classes import ProgressMessage, StreamedTokens
 
 async def stream_query(async_query_agent):
     async for output in async_query_agent.stream(
@@ -388,6 +389,7 @@ async def stream_query(async_query_agent):
 
 async def run_streaming_query(async_client):
     from weaviate.agents.query import AsyncQueryAgent
+    from weaviate.agents.classes import QueryAgentCollectionConfig
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
