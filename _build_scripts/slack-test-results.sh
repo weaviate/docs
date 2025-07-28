@@ -1,15 +1,6 @@
 #!/bin/bash
 set -e
 
-# Get commit info
-git_hash=$(echo "$GITHUB_SHA" | cut -c1-7)
-commit_message="$(git log -1 $git_hash --pretty="%s")"
-
-# Replace &, <, and > for Slack
-commit_message=${commit_message//&/&amp;}
-commit_message=${commit_message//</&lt;}
-commit_message=${commit_message//>/&gt;}
-
 # Get test status and duration from environment
 TEST_STATUS=${TEST_STATUS:-"unknown"}
 TEST_DURATION=${TEST_DURATION:-"unknown"}
@@ -52,11 +43,6 @@ MESSAGE="{
           'value': '$TEST_DURATION',
           'short': true
         },
-        {
-          'title': 'Commit',
-          'value': '\`$git_hash\` $commit_message',
-          'short': false
-        }
       ],
       'actions': [
         {
