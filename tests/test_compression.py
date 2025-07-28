@@ -3,6 +3,7 @@ import pytest
 import utils
 import shlex
 import os
+from pathlib import Path
 
 
 @pytest.mark.pyv4
@@ -16,7 +17,7 @@ import os
 )
 def test_on_blank_instance_pyv4(empty_weaviates, script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
-    exec(proc_script)
+    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
 
 
 @pytest.mark.java
