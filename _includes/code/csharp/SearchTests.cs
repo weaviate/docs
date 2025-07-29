@@ -14,7 +14,7 @@ public static class QueryConstants
 
 public class SearchTest
 {
-    readonly WeaviateClient client = Connect.Local(restPort: 8085, grpcPort: 50055);
+    readonly WeaviateClient client = Connect.Local(restPort: 8080, grpcPort: 50051);
 
     [Fact]
     public async Task Should_Fetch_By_Id()
@@ -43,7 +43,7 @@ public class SearchTest
         var collection = client.Collections.Use("JeopardyQuestion");
         var queryResult = await collection.Query.NearText(
             "animals in movies",
-            limit: 2,
+            limit: 1,
             metadata: MetadataOptions.Distance);
 
         Console.WriteLine("Search Results:");

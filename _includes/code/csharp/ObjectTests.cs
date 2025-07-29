@@ -14,7 +14,7 @@ public class ObjectTest
     [Fact]
     public async Task Should_Import_Objects()
     {
-        var client = Connect.Local(restPort: 8085, grpcPort: 50055);
+        var client = Connect.Local(restPort: 8080, grpcPort: 50051);
         // START CreateObject
         var collectionClient = client.Collections.Use(collectionName);
 
@@ -34,7 +34,7 @@ public class ObjectTest
     [Fact]
     public async Task Should_Delete_Objects()
     {
-        var client = Connect.Local(restPort: 8085, grpcPort: 50055);
+        var client = Connect.Local(restPort: 8080, grpcPort: 50051);
 
         if (await client.Collections.Exists(collectionName))
         {

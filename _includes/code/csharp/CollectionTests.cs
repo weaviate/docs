@@ -11,7 +11,7 @@ public class CollectionTest
     [Fact]
     public async Task Should_Create_Collection()
     {
-        var client = Connect.Local(restPort: 8085, grpcPort: 50055);
+        var client = Connect.Local(restPort: 8080, grpcPort: 50051);
         // START BasicCreateCollection
         var collectionName = "Article";
         // END BasicCreateCollection
@@ -37,7 +37,7 @@ public class CollectionTest
     [Fact]
     public async Task Should_Create_Collection_With_Properties()
     {
-        var client = Connect.Local(restPort: 8085, grpcPort: 50055);
+        var client = Connect.Local(restPort: 8080, grpcPort: 50051);
         // START CreateCollectionWithProperties
         var collectionName = "Article";
         // END CreateCollectionWithProperties
@@ -53,7 +53,8 @@ public class CollectionTest
         {
             Name = collectionName,
             Description = "something",
-            Properties = [Property.Int("number_property"),Property.Text("test_property")],
+            Properties = [Property.Int("number_property"), Property.Text("test_property")],
+            // Properties = [.. Property.FromCollection<Product>()], // For dynamic properties, you can use the FromCollection method
         };
 
         var collection = await client.Collections.Create(articleCollection);
@@ -64,7 +65,7 @@ public class CollectionTest
     [Fact]
     public async Task Should_Create_Collection_With_Vectorizer()
     {
-        var client = Connect.Local(restPort: 8085, grpcPort: 50055);
+        var client = Connect.Local(restPort: 8080, grpcPort: 50051);
         // START CreateCollectionWithVectorizer
         var collectionName = "Article";
         // END CreateCollectionWithVectorizer
@@ -80,8 +81,8 @@ public class CollectionTest
         {
             Name = collectionName,
             Description = "something",
-            Properties = [Property.Int("number_property"),Property.Text("test_property")],
-            VectorConfig = new VectorConfig("vector_name", new Vectorizer.Text2VecContextionary())
+            Properties = [Property.Int("number_property"), Property.Text("test_property")],
+            VectorConfig = new VectorConfig("vector_name", new Vectorizer.Text2VecContextionary(), new VectorIndex.HNSW())
         };
 
         var collection = await client.Collections.Create(articleCollection);
@@ -92,7 +93,7 @@ public class CollectionTest
     [Fact]
     public async Task Should_Delete_Collection()
     {
-        var client = Connect.Local(restPort: 8085, grpcPort: 50055);
+        var client = Connect.Local(restPort: 8080, grpcPort: 50051);
         var collectionName = "Article";
 
         // Ensure the collection exists before attempting to delete it
