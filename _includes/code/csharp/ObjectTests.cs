@@ -35,7 +35,6 @@ public class ObjectTest
     public async Task Should_Delete_Objects()
     {
         var client = Connect.Local(restPort: 8085, grpcPort: 50055);
-        var collectionName = "Article";
 
         if (await client.Collections.Exists(collectionName))
         {

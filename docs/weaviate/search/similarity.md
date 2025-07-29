@@ -14,6 +14,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.similarity-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTest.java';
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchTests.cs";
 
 Vector search returns the objects with most similar vectors to that of the query.
 
@@ -82,6 +83,14 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       startMarker="# GetNearTextGraphql"
       endMarker="# END GetNearTextGraphql"
       language="graphql"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetNearText"
+      endMarker="// END GetNearText"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
