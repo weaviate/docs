@@ -258,3 +258,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# C# testing
+_includes/code/csharp/obj/
+_includes/code/csharp/bin/

@@ -20,6 +20,7 @@ import TsCodeV2 from '!!raw-loader!/_includes/code/connections/connect-ts-v2.ts'
 import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
 
 Follow these steps to connect to a locally hosted Weaviate instance.
 
@@ -88,6 +89,14 @@ To connect to a local instance without authentication, follow these examples.
      startMarker="# START LocalNoAuth"
      endMarker="# END LocalNoAuth"
      language="shell"
+   />
+</TabItem>
+<TabItem value="csharp" label="C#">
+   <FilteredTextBlock
+     text={CSharpCode}
+     startMarker="// START LocalNoAuth"
+     endMarker="// END LocalNoAuth"
+     language="csharp"
    />
 </TabItem>
 </Tabs>

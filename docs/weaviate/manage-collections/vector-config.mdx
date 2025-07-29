@@ -15,6 +15,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.t
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/CollectionTests.cs";
 
 import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
@@ -88,7 +89,14 @@ Collection level settings override default values and general configuration para
     language="gonew"
   />
 </TabItem>
-
+<TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Specify vectorizer settings
