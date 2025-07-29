@@ -12,6 +12,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
 
 The [Python Client v4](/weaviate/client-libraries/python) and the [TypeScript Client v3](../client-libraries/typescript/index.mdx) provide helper methods for common connection types. They also provide custom methods for when you need additional connection configuration.
 
@@ -41,6 +42,14 @@ If you are using one of the other clients, the standard connection methods are c
       endMarker="// END CustomConnect"
       language="java"
     />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+   <FilteredTextBlock
+     text={CSharpCode}
+     startMarker="// START CustomConnect"
+     endMarker="// END CustomConnect"
+     language="csharp"
+   />
   </TabItem>
 </Tabs>
 
