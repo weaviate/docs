@@ -13,6 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ObjectTests.cs";
 
 The examples on this page demonstrate how to create individual objects in Weaviate.
 
@@ -63,6 +64,14 @@ This example creates an object in the `JeopardyQuestion` collection.
       startMarker="// CreateObject START"
       endMarker="// CreateObject END"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateObject"
+      endMarker="// END CreateObject"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

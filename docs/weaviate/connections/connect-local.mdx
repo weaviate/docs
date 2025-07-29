@@ -17,6 +17,7 @@ import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaCode from "!!raw-loader!/_includes/code/connections/connect.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
 import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
 
@@ -71,6 +72,14 @@ To connect to a local instance without authentication, follow these examples.
       startMarker="// START LocalNoAuth"
       endMarker="// END LocalNoAuth"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C#">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START LocalNoAuth"
+      endMarker="// END LocalNoAuth"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="shell" label="cURL">
