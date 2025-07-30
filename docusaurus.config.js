@@ -53,6 +53,20 @@ const config = {
         },
       },
     ],
+    [
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        siteTitle: "Weaviate Documentation",
+        siteDescription:
+          "Comprehensive guides and references for Weaviate, the open-source vector database.",
+        depth: 3,
+        content: {
+          //excludeRoutes: ["/academy/**", "/contributor-guide/**"], // Throwing an error in GitHub Actions
+          enableMarkdownFiles: false,
+        },
+        //logLevel: 3, // Uncomment to enable debug logging
+      },
+    ],
   ],
   markdown: {
     mermaid: true,

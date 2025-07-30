@@ -1,6 +1,7 @@
 ---
 title: Vector Indexing
 sidebar_position: 1
+description: "Dynamic vector indexing with HNSW and flat indexes for speed-optimized similarity search operations."
 image: og/docs/concepts.jpg
 slug: /weaviate/concepts/vector-index
 # tags: ['vector index plugins']

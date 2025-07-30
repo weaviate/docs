@@ -1,6 +1,7 @@
 ---
 title: Storage
 sidebar_position: 18
+description: "Persistent, fault-tolerant storage architecture for objects, vectors, and inverted index management."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'storage']
 ---

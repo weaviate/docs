@@ -1,6 +1,7 @@
 ---
 title: Reranking
 sidebar_position: 28
+description: "Search result reordering techniques using alternative models to improve search relevance and accuracy."
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
