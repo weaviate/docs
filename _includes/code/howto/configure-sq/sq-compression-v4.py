@@ -6,7 +6,6 @@
 
 # START ConnectCode
 import weaviate, os
-import weaviate.classes.config as wc
 
 client = weaviate.connect_to_local(
     headers={
@@ -27,14 +26,14 @@ client.is_ready()
 client.collections.delete("MyCollection")
 
 # START EnableSQ
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
+    vector_config=Configure.Vectors.text2vec_openai(
         name="default",
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.sq(),
+        quantizer=Configure.VectorIndex.Quantizer.sq(),
         # highlight-end
     ),
 )
@@ -47,21 +46,20 @@ client.collections.create(
 client.collections.delete("MyCollection")
 
 # START SQWithOptions
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
+    vector_config=Configure.Vectors.text2vec_openai(
         name="default",
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.sq(
+        quantizer=Configure.VectorIndex.Quantizer.sq(
             rescore_limit=200,
             training_limit=50000,
             cache=True,
         ),
         # highlight-end
-        vector_index_config=wc.Configure.VectorIndex.hnsw(
-            distance_metric=wc.VectorDistances.COSINE,
+        vector_index_config=Configure.VectorIndex.hnsw(
             vector_cache_max_objects=100000,
         ),
     ),
