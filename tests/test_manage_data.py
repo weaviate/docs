@@ -3,6 +3,7 @@ import pytest
 import utils
 import shlex
 import os
+from pathlib import Path
 
 
 @pytest.mark.pyv4
@@ -21,7 +22,7 @@ import os
 )
 def test_on_blank_instance_pyv4(empty_weaviates, script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
-    exec(proc_script)
+    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
 
 
 
@@ -39,7 +40,7 @@ def test_on_edu_demo_py_pyv4(empty_weaviates, script_loc):
         lang="py",
         custom_replace_pairs=utils.edu_readonly_replacements
     )
-    exec(temp_proc_script_loc.read_text())
+    utils.execute_py_script_as_module(temp_proc_script_loc.read_text(), Path(script_loc).stem)
 
 
 @pytest.mark.ts
@@ -57,13 +58,13 @@ def test_on_edu_demo_py_pyv4(empty_weaviates, script_loc):
 )
 def test_on_blank_instance_ts(empty_weaviates, script_loc):
     temp_proc_script_loc = utils.load_and_prep_temp_file(script_loc, lang="ts")
-    command = ["node", "--loader=ts-node/esm", temp_proc_script_loc]
+    command = ["node", "--loader=ts-node/esm", str(temp_proc_script_loc)]
 
-    # try:
-    #     # If the script throws an error, this will raise a CalledProcessError
-    #     subprocess.check_call(command)
-    # except subprocess.CalledProcessError as error:
-    #     pytest.fail(f'Script {temp_proc_script_loc} failed with error: {error}')
+    try:
+        # If the script throws an error, this will raise a CalledProcessError
+        subprocess.check_call(command)
+    except subprocess.CalledProcessError as error:
+        pytest.fail(f'Script {temp_proc_script_loc} failed with error: {error}')
 
 
 @pytest.mark.java

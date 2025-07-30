@@ -17,7 +17,7 @@ client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as strin
 type NonGenericReturn = WeaviateReturn<undefined>
 let response: NonGenericReturn
 
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 // END nearTextExample // END nearVectorExample // END nearObjectExample // END bm25Example // END hybridExample
 

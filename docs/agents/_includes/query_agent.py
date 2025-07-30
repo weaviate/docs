@@ -279,7 +279,7 @@ for collection_searches in response.searches:
     for result in collection_searches:
         print(f"- {result}\n")
 
-if response.has_aggregation_answer:
+if len(response.aggregations) > 0:
     print("📊 Aggregation Results:")
     for collection_aggs in response.aggregations:
         for agg in collection_aggs:

@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "link",
       label: "Installation",
-      href: "https://docs.weaviate.io/deploy/installation-guides",
+      href: "https://docs.weaviate.io/deploy",
     },
     {
       type: "category",
@@ -717,6 +717,7 @@ const sidebars = {
         "weaviate/modules/spellcheck",
         "weaviate/modules/sum-transformers",
         "weaviate/modules/custom-modules",
+        "weaviate/modules/usage-modules",
       ],
     },
     "weaviate/more-resources/faq",
@@ -737,6 +738,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "deploy/installation-guides/weaviate-cloud",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "deploy/installation-guides/docker-installation",
           className: "sidebar-item",
         },
@@ -753,11 +759,6 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy/installation-guides/spcs-integration",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/weaviate-cloud",
           className: "sidebar-item",
         },
         {
@@ -1342,6 +1343,7 @@ const sidebars = {
         "integrations/llm-agent-frameworks/haystack/index",
         "integrations/llm-agent-frameworks/langchain/index",
         "integrations/llm-agent-frameworks/llamaindex/index",
+        "integrations/llm-agent-frameworks/n8n/index",
         "integrations/llm-agent-frameworks/semantic-kernel/index",
       ],
     },

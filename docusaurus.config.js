@@ -5,6 +5,7 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from "prism-react-renderer";
+import commonRoomScript from "./src/scripts/commonroom.js";
 
 const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
@@ -30,6 +31,9 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
+
+  headTags: [commonRoomScript],
+
   plugins: [
     "docusaurus-plugin-sass",
     ["@docusaurus/plugin-client-redirects", siteRedirects],

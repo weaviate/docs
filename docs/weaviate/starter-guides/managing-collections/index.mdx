@@ -246,7 +246,9 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
 
 ### Migration workflow with collection aliases
 
@@ -265,24 +267,23 @@ Here's a complete example showing how to use aliases for a collection migration:
       language="py"
     />
   </TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-
-```typescript
-// JS/TS support coming soon
-```
-
-</TabItem>
-
-<TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-</TabItem>
-
-   <TabItem value="go" label="Go">
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START MigrationExample"
+      endMarker="// END MigrationExample"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START MigrationExample"
+      endMarker="// END MigrationExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// MigrationExample START"
@@ -307,8 +308,7 @@ The following resources include more detailed information on collection definiti
 - <SkipLink href="/weaviate/api/rest#tag/schema">
     Reference: REST - Schema
   </SkipLink>
-  : A reference of all available collection definition settings for the REST
-  API.
+  : A reference of all available collection definition settings for the REST API.
 
 ## Questions and feedback
 

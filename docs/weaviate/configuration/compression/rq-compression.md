@@ -10,6 +10,8 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
+import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
 :::caution Technical preview
 
@@ -22,7 +24,7 @@ This means that the feature is still under development and may change in future 
 [**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast untrained vector compression technique that offers 4x compression while retaining almost perfect recall (98-99% on most datasets).
 
 :::note HNSW only
-RQ is currently not supported for the flat index type. 
+RQ is currently not supported for the flat index type.
 :::
 
 ## Basic configuration
@@ -38,6 +40,14 @@ RQ can be enabled at collection creation time:
         language="py"
       />
   </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START EnableRQ"
+        endMarker="// END EnableRQ"
+        language="ts"
+      />
+  </TabItem>
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -46,15 +56,23 @@ RQ can be enabled at collection creation time:
         language="go"
       />
   </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START EnableRQ"
+      endMarker="// END EnableRQ"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ## Custom configuration
 
 To tune RQ, use these quantization and vector index parameters:
 
-| Parameter            | Type    | Default | Details                                                                                  |
-| :------------------- | :------ | :------ | :--------------------------------------------------------------------------------------- |
-| `rq`: `bits`         | integer | 8       | The number of bits used to quantize each data point. Currently only 8 bits is supported. |
+| Parameter    | Type    | Default | Details                                                                                  |
+| :----------- | :------ | :------ | :--------------------------------------------------------------------------------------- |
+| `rq`: `bits` | integer | 8       | The number of bits used to quantize each data point. Currently only 8 bits is supported. |
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -65,6 +83,14 @@ To tune RQ, use these quantization and vector index parameters:
         language="py"
       />
   </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START RQWithOptions"
+        endMarker="// END RQWithOptions"
+        language="ts"
+      />
+  </TabItem>
   <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
@@ -72,6 +98,14 @@ To tune RQ, use these quantization and vector index parameters:
         endMarker="// END RQWithOptions"
         language="go"
       />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START RQWithOptions"
+      endMarker="// END RQWithOptions"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 

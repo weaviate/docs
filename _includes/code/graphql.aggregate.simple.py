@@ -76,30 +76,30 @@ try:
     # TEST
     assert response.total_count > 0
 
-
+    # TODO[g-despot]: Update once fixed client
+    # START GraphQLSimpleAggregateGroupby
+    # Coming soon
+    # END GraphQLSimpleAggregateGroupby
     # ========================================
     # GraphQLSimpleAggregateGroupby
     # ========================================
+    
+    # collection = client.collections.get("Article")
+    # response = collection.aggregate.over_all(
+    #     group_by=GroupByAggregate(prop="title"),
+    #     total_count=True,
+    #     return_metrics=wvc.query.Metrics("wordCount").integer(mean=True)
+    # )
 
-    # START GraphQLSimpleAggregateGroupby
-    collection = client.collections.get("Article")
-    response = collection.aggregate.over_all(
-        group_by=GroupByAggregate(prop="inPublication"),
-        total_count=True,
-        return_metrics=wvc.query.Metrics("wordCount").integer(mean=True)
-    )
-
-    for g in response.groups:
-        print(g.total_count)
-        print(g.properties)
-        print(g.grouped_by)
-    # END GraphQLSimpleAggregateGroupby
-
-        # TEST
-        assert g.total_count > 0
-        assert "wordCount" in g.properties.keys()
-        assert "inPublication" == g.grouped_by.prop
-
+    # for g in response.groups:
+    #     print(g.total_count)
+    #     print(g.properties)
+    #     print(g.grouped_by)
+    
+    #     # TEST
+    #     assert g.total_count > 0
+    #     assert "wordCount" in g.properties.keys()
+    #     assert "title" == g.grouped_by.prop
 
     # ========================================
     # GraphQLnearObjectAggregate
@@ -197,7 +197,6 @@ try:
     collection = client.collections.get("Article")
     response = collection.aggregate.near_text(
         query="apple iphone",
-        distance=0.7,
         object_limit=200,
         total_count=True,
         return_metrics=[

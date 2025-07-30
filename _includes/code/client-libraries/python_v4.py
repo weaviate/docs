@@ -46,6 +46,8 @@ finally:
 weaviate_host = "localhost"
 weaviate_grpc_host = "localhost"
 
+"""
+COMMENTED OUT AS ACTUAL SSL CERTIFICATES ARE NOT PROVIDED IN THIS EXAMPLE
 # START CustomSSLExample
 import os
 import weaviate
@@ -67,7 +69,8 @@ client = weaviate.connect_to_custom(
     additional_config=AdditionalConfig(trust_env=True)  # Required for custom SSL certificates
 )
 # END CustomSSLExample
-
+END OF COMMENTED OUT SECTION
+"""
 
 # LocalInstantiationSkipChecks
 import weaviate
@@ -697,7 +700,7 @@ client = weaviate.connect_to_local(
     }
 )
 
-d = wd.JeopardyQuestions10k()
+d = wd.JeopardyQuestions1k()
 d.upload_dataset(client, overwrite=True)
 
 categories = client.collections.get("JeopardyCategory")
@@ -928,9 +931,9 @@ response = questions.generate.bm25(
     single_prompt="Translate the following into French: {answer}"
 )
 
-print(response.generated)  # Generated text from grouped task
+print(response.generative.text)  # Generated text from grouped task
 for o in response.objects:
-    print(o.generated)  # Generated text from single prompt
+    print(o.generative.text)  # Generated text from single prompt
     print(o.properties)  # Object properties
 # END BM25GenerateExample
 
@@ -943,9 +946,9 @@ response = questions.generate.near_text(
     single_prompt="Translate the following into French: {answer}"
 )
 
-print(response.generated)  # Generated text from grouped task
+print(response.generative.text)  # Generated text from grouped task
 for o in response.objects:
-    print(o.generated)  # Generated text from single prompt
+    print(o.generative.text)  # Generated text from single prompt
     print(o.properties)  # Object properties
 # END NearTextGenerateExample
 
@@ -1036,11 +1039,11 @@ response = questions.generate.near_text(
 )
 
 print("Grouped Task generated outputs:")
-print(response.generated)
+print(response.generative.text)
 for o in response.objects:
     print(f"Outputs for object {o.uuid}")
     print(f"Generated text:")
-    print(o.generated)
+    print(o.generative.text)
     print(f"Properties:")
     print(o.properties)
     print(f"Metadata")
@@ -1315,7 +1318,7 @@ async def async_insert(async_client) -> BatchObjectReturn:
             name="Movie",
             vector_config=[
                 Configure.Vectors.text2vec_cohere(
-                    "overview_vector",
+                    name="overview_vector",
                     source_properties=["overview"]
                 )
             ],

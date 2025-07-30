@@ -33,7 +33,7 @@ await client.collections.create({
     { name: 'Answer', dataType: configure.dataType.TEXT}
   ],
   // Define your Cohere vectorizer and generative model  
-  vectorizers: weaviate.configure.vectorizer.text2VecCohere({
+  vectorizers: weaviate.configure.vectors.text2VecCohere({
     sourceProperties: ["Question", "Answer"]
   }),
 });
@@ -43,7 +43,7 @@ await client.collections.create({
 
     try {
 // START Importing
-let jeopardyCollection = client.collections.get('JeopardyQuestion');
+let jeopardyCollection = client.collections.use('JeopardyQuestion');
 // Download data to import into the "JeopardyQuestion" collection
 const url = 'https://raw.githubusercontent.com/weaviate/weaviate-examples/main/jeopardy_small_dataset/jeopardy_tiny.json'
 const response = await fetch(url);
@@ -57,7 +57,7 @@ await jeopardyCollection.data.insertMany(jeopardyQuestions.data)
       console.error(e);
     }
 // START Search
-const jeopardyCollection = client.collections.get('JeopardyQuestion');
+const jeopardyCollection = client.collections.use('JeopardyQuestion');
 
 const searchResults = await jeopardyCollection.query.nearText(['question about animals'], {
     limit: 3,

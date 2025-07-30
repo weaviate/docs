@@ -19,7 +19,7 @@ const client = await weaviate.connectToWeaviateCloud(
 )
 
 // START Basic // START Score // START Properties // START Boost // START Filter // START autocut // START limit
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 // END Basic // END Score // END Properties // END Boost // END Filter // END autocut // END limit
 
 

@@ -141,6 +141,10 @@ See the [dedicated page on tenant offloading](/deploy/configuration/tenant-offlo
 
 See [here](../modules/custom-modules.md) how you can create and use your own modules.
 
+## Usage modules
+
+The [usage module](../modules/usage-modules.md) collects and uploads usage analytics to GCS or S3. 
+
 ## Related pages
 - [Concepts: Modules](../concepts/modules.md)
 - [References: Modules](../modules/index.md)

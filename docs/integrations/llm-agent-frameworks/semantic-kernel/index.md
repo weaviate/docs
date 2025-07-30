@@ -1,6 +1,6 @@
 ---
 title: Semantic Kernel
-sidebar_position: 6
+sidebar_position: 7
 ---
 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) is an LLM framework developed by Microsoft. Semantic Kernel facilitates building LLM applications with abstractions such as `plugins`, `memory`, `planners`, and more! 
 

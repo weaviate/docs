@@ -93,6 +93,10 @@ Collection level settings override default values and general configuration para
 
 ## Specify vectorizer settings
 
+import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
+
+<VectorsAutoSchemaError />
+
 To configure how a vectorizer works (i.e. what model to use) with a specific collection, set the vectorizer parameters.
 
 <Tabs groupId="languages">
@@ -235,11 +239,12 @@ Named vectors can be added to existing collection definitions with named vectors
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
-
-```typescript
-// TS support coming soon
-```
-
+<FilteredTextBlock
+      text={TSCode}
+      startMarker="// START AddNamedVectors"
+      endMarker="// END AddNamedVectors"
+      language="js"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
 
@@ -276,6 +281,14 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       endMarker="# END MultiValueVectorCollection"
       language="py"
     />
+  </TabItem>
+    <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START MultiValueVectorCollection"
+        endMarker="// END MultiValueVectorCollection"
+        language="js"
+      />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
