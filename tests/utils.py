@@ -1,8 +1,9 @@
 import os
 import re
+import tempfile
+import runpy
 from pathlib import Path
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
@@ -103,3 +104,29 @@ edu_readonly_replacements = [
     ("WEAVIATE_INSTANCE_URL", "edu-demo.weaviate.network"),
     ("YOUR-WEAVIATE-API-KEY", "learn-weaviate")
 ]
+
+
+def execute_py_script_as_module(script_content: str, script_name: str = "temp_script") -> None:
+    """
+    Execute a script string as a proper Python module.
+
+    This avoids scoping issues that can occur with exec() by writing
+    the script to a temporary file and running it with runpy.
+
+    Args:
+        script_content: The Python script content to execute
+        script_name: Optional name for the temporary script (for debugging)
+    """
+    with tempfile.NamedTemporaryFile(
+        mode='w',
+        suffix='.py',
+        prefix=f"{script_name}_",
+        delete=False
+    ) as f:
+        f.write(script_content)
+        temp_path = f.name
+
+    try:
+        runpy.run_path(temp_path)
+    finally:
+        Path(temp_path).unlink()

@@ -46,6 +46,8 @@ finally:
 weaviate_host = "localhost"
 weaviate_grpc_host = "localhost"
 
+"""
+COMMENTED OUT AS ACTUAL SSL CERTIFICATES ARE NOT PROVIDED IN THIS EXAMPLE
 # START CustomSSLExample
 import os
 import weaviate
@@ -67,7 +69,8 @@ client = weaviate.connect_to_custom(
     additional_config=AdditionalConfig(trust_env=True)  # Required for custom SSL certificates
 )
 # END CustomSSLExample
-
+END OF COMMENTED OUT SECTION
+"""
 
 # LocalInstantiationSkipChecks
 import weaviate
@@ -1315,7 +1318,7 @@ async def async_insert(async_client) -> BatchObjectReturn:
             name="Movie",
             vector_config=[
                 Configure.Vectors.text2vec_cohere(
-                    "overview_vector",
+                    name="overview_vector",
                     source_properties=["overview"]
                 )
             ],
