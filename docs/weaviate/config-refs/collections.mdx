@@ -38,8 +38,8 @@ These are the top-level parameters you can set when creating a collection.
 | [`replicationConfig`](#replication)          | Object | Controls data replication settings for fault tolerance.                                                               | See [Replication section](#replication)                                                                                                                                                               | Partially     |
 | [`multiTenancyConfig`](#multi-tenancy)       | Object | Configuration to enable multi-tenancy for the collection.                                                             | See [Multi-tenancy section](#multi-tenancy)                                                                                                                                                           | Partially     |
 
-\* New properties can be added; existing properties cannot be modified<br/>
-\*\* New named vectors can be added; some vector index settings are mutable<br/>
+\* [New properties can be added](../manage-collections/collection-operations.mdx#add-a-property); existing properties cannot be modified<br/>
+\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors); some vector index settings are mutable<br/>
 
 <details>
   <summary>Example collection configuration -  JSON object</summary>
@@ -120,7 +120,7 @@ This code example shows how to configure the collection parameters through a cli
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicCreateCollection"
@@ -143,7 +143,7 @@ This code example shows how to configure the collection parameters through a cli
       endMarker="// END BasicCreateCollection"
       language="gonew"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 :::tip Further resources
@@ -233,34 +233,30 @@ This code example shows how to configure the property parameters through a clien
       language="py"
     />
   </TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START CreateCollectionWithProperties"
-    endMarker="// END CreateCollectionWithProperties"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START CreateCollectionWithProperties"
-    endMarker="// END CreateCollectionWithProperties"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START CreateCollectionWithProperties"
-    endMarker="// END CreateCollectionWithProperties"
-    language="gonew"
-  />
-</TabItem>
-
+  <!-- <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateCollectionWithProperties"
+      endMarker="// END CreateCollectionWithProperties"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateCollectionWithProperties"
+      endMarker="// END CreateCollectionWithProperties"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithProperties"
+      endMarker="// END CreateCollectionWithProperties"
+      language="gonew"
+    />
+  </TabItem> -->
 </Tabs>
 
 :::tip Further resources
@@ -457,7 +453,7 @@ This code example shows how to configure the vectorizer parameters through a cli
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Vectorizer"
@@ -480,7 +476,7 @@ This code example shows how to configure the vectorizer parameters through a cli
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 :::tip Further resources
@@ -527,11 +523,11 @@ More details about the `vectorIndexType` and `vectorIndexConfig` parameters can 
 
 [Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
-| Parameter          | Type    | Description                                                                                                     | Default                   | Mutable                                 |
-| :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
-| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas. | `1`                       | No in `v1.25+`, Yes in earlier versions |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                               | `false`                   | Yes                                     |
-| `deletionStrategy` | String  | Strategy for handling deletions in replication. Added in `v1.27`                                                | `"NoAutomatedResolution"` | Yes                                     |
+| Parameter          | Type    | Description                                                                                                                                    | Default                   | Mutable                                 |
+| :----------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
+| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                                | `1`                       | No in `v1.25+`, Yes in earlier versions |
+| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                              | `false`                   | Yes                                     |
+| `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`. Added in `v1.27` | `"NoAutomatedResolution"` | Yes                                     |
 
 <details>
   <summary>Example replication configuration -  JSON object</summary>
@@ -556,7 +552,7 @@ An example of a complete `replicationConfig` object:
 
 #### Code example
 
-This code example shows how to configure the property parameters through a client library:
+This code example shows how to configure the replication parameters through a client library:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -567,7 +563,7 @@ This code example shows how to configure the property parameters through a clien
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AllReplicationSettings"
@@ -590,7 +586,7 @@ This code example shows how to configure the property parameters through a clien
       endMarker="// END AllReplicationSettings"
       language="gonew"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 :::tip Further resources
@@ -598,44 +594,6 @@ This code example shows how to configure the property parameters through a clien
 For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
 
 :::
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START AllReplicationSettings"
-      endMarker="# END AllReplicationSettings"
-      language="py"
-      docRefs={[
-        "weaviate.collections.classes.html#weaviate.collections.classes.config.Configure",
-      ]}
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="ts"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaReplicationCode}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="gonew"
-    />
-  </TabItem>
-</Tabs>
 
 ---
 
@@ -676,7 +634,7 @@ An example of a complete `shardingConfig` object:
 
 #### Code example
 
-This code example shows how to configure the property parameters through a client library:
+This code example shows how to configure the sharding parameters through a client library:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -687,7 +645,7 @@ This code example shows how to configure the property parameters through a clien
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ShardingSettings"
@@ -710,7 +668,7 @@ This code example shows how to configure the property parameters through a clien
       endMarker="// END ShardingSettings"
       language="gonew"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 :::tip Further resources
@@ -741,7 +699,7 @@ To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyCon
 
 #### Code example
 
-This code example shows how to configure the property parameters through a client library:
+This code example shows how to configure the multi-tenancy parameters through a client library:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -752,7 +710,7 @@ This code example shows how to configure the property parameters through a clien
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
@@ -775,7 +733,7 @@ This code example shows how to configure the property parameters through a clien
       endMarker="// END EnableMultiTenancy"
       language="go"
     />
-  </TabItem>
+  </TabItem> -->
 </Tabs>
 
 :::tip Further resources

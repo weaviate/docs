@@ -539,23 +539,31 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "weaviate/config-refs/distances",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/indexing/inverted-index",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "weaviate/config-refs/indexing/vector-index",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
           id: "weaviate/config-refs/vectorization",
           className: "sidebar-item",
+        },
+        {
+          type: "category",
+          label: "Indexing",
+          className: "sidebar-item",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "weaviate/config-refs/indexing/inverted-index",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/config-refs/indexing/vector-index",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/config-refs/distances",
+              className: "sidebar-item",
+            },
+          ],
         },
       ],
     },
