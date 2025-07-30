@@ -1,7 +1,6 @@
 ---
 title: Module creation in a nutshell
 label: How to build a custom module
-sidebar_position: 3
 image: og/contributor-guide/weaviate-modules.jpg
 # tags: ['contributor-guide', 'weaviate module system', 'custom module']
 ---

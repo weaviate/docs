@@ -6,8 +6,6 @@ image: og/contributor-guide/getting-started.jpg
 # tags: ['contributor-guide']
 ---
 
-## Introduction
-
 Welcome! Working with Weaviate, many of us in the team and the community are exposed to a suite of interesting technologies. They include not only vector databases, but also Docker, Kubernetes, GraphQL, REST and clients in various languages.
 
 This means that is a wide set of opportunities for you to learn about and contribute to! If you are not sure where, we suggest finding something that overlaps with your interests
@@ -18,15 +16,13 @@ These are just some of the ways that you could apply your skills to the project:
 
 * [Suggesting Enhancements](./suggesting-enhancements.md)
 * [Reporting Bugs](./reporting-bugs.md)
-* [Improving Documentation](./improving-docs.md)
-* [Creating content/apps](./writing-blogs.md)
 
 ## Where can I contribute to?
 
 There are four major GitHub repositories of Weaviate, any of which you can contribute to. This includes:
 
-* [Weaviate](https://github.com/weaviate/weaviate) - Weaviate's "core" codebase
-* [Docs](https://github.com/weaviate/docs) - official Weaviate documentation
+* [Weaviate Database](https://github.com/weaviate/weaviate) - Weaviate's "core" codebase
+* [Weaviate Docs](https://github.com/weaviate/docs) - official Weaviate documentation
 * [Weaviate Examples](https://github.com/weaviate/weaviate-examples) - apps built using Weaviate
 * [Awesome Weaviate](https://github.com/weaviate/awesome-weaviate) - list of examples and tutorials on how to use Weaviate
 
@@ -38,7 +34,7 @@ You can also contribute by working on existing issues. Check the issues pages in
 
 ## Background reading
 
-Navigating a new project can be difficult, and it takes time to become acquainted with the codebase. If you haven't yet, we suggest going through the [Weaviate getting started guide](/weaviate/quickstart/index.md).
+Navigating a new project can be difficult, and it takes time to become acquainted with the codebase. If you haven't yet, we suggest going through the [Weaviate Quickstart guide](/weaviate/quickstart/index.md).
 
 Here are additional resources that will help you familiarize with Weaviate and its applications:
 
@@ -47,9 +43,3 @@ Here are additional resources that will help you familiarize with Weaviate and i
 * [Awesome Weaviate](https://github.com/weaviate/awesome-weaviate) – a list of curated examples and tutorials on how to use Weaviate.
 * [Weaviate Examples](https://github.com/weaviate/weaviate-examples) – a repository of various example projects created by the community. Each example shows a different Weaviate use case. You can add your own examples too!
 * [Weaviate's YouTube Channel](https://www.youtube.com/c/SeMI-and-Weaviate/featured) – podcasts and live demos showcasing Weaviate, and providing insight into the vector search space in general.
-
-## Learn about git / GitHub
-
-Like many other open-source projects, the Weaviate community uses the git/GitHub ecosystem for collaborative development. If you are not familiar with git and GitHub basics, we have a guide on [how to contribute to Weaviate with git and GitHub](./git-and-github.md).
-
-Regardless of your choice, we are very excited to have you be a part of our community. Welcome 🙂.

@@ -1,6 +1,5 @@
 ---
 title: Architecture
-sidebar_position: 2
 image: og/contributor-guide/weaviate-modules.jpg
 # tags: ['contributor-guide', 'weaviate module system']
 ---

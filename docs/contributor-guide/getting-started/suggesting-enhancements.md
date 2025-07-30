@@ -1,9 +1,10 @@
 ---
-title: Suggesting Enhancements
+title: Feature requests
 sidebar_position: 2
 image: og/contributor-guide/getting-started.jpg
 # tags: ['contributor-guide']
 ---
+
 We love to hear your ideas.
 
 Here are some guidelines for suggesting enhancements. They are designed to make it easier for the maintainers and the community to understand your proposal, which will make it more likely to be adopted.
@@ -18,7 +19,7 @@ Suggestions are tracked as GitHub issues, such as these in [Weaviate Database](h
 * (If relevant) **Describe the current behavior** and then **explain how it would be altered**.
 * (If relevant) **Include images, animated GIFs, or video links** in support.
 * **Explain why this change would be useful** to Weaviate users.
-* Specify which **version of Weaviate** you're using. Check the version in your `docker-compose.yml` file.
+* Specify which **version of Weaviate** you're using. 
 
 ## Working on your own ideas
 
