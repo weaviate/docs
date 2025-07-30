@@ -40,7 +40,7 @@ A collection can have multiple rerankers. If multiple `reranker` modules are ena
 :::info Added in `v1.24`
 :::
 
-Any vector-based search on collections with [named vectors](../config-refs/schema/multi-vector.md) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
+Any vector-based search on collections with [named vectors](../config-refs/vectorization.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

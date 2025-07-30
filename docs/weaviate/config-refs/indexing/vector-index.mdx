@@ -3,9 +3,14 @@ title: Vector index
 description: Reference for vector index types and parameters in Weaviate.
 ---
 
-[Vector indexes](../../concepts/indexing/vector-index.md) facilitate efficient, vector-first data storage and retrieval.
+**[Vector indexes](../../concepts/indexing/vector-index.md)** facilitate efficient, vector-first data storage and retrieval.
+There are three supported vector index types:
 
-## HNSW indexes
+- **[HNSW index](#hnsw-index)**
+- **[Flat index](#flat-index)**
+- **[Dynamic index](#dynamic-index)**
+
+## HNSW index
 
 HNSW indexes are scalable and super fast at query time, but HNSW algorithms are costly when you add data during the index building process.
 
@@ -13,21 +18,21 @@ HNSW indexes are scalable and super fast at query time, but HNSW algorithms are 
 
 Some HNSW parameters are mutable, but others cannot be modified after you create your collection.
 
-| Parameter | Type | Default | Changeable | Details |
-| :-- | :-- | :-- | :-- | :-- |
-| `cleanupIntervalSeconds` | integer | 300 | Yes | Cleanup frequency. This value does not normally need to be adjusted. A higher value means cleanup runs less frequently, but it does more in a single batch. A lower value means cleanup is more frequent, but it may be less efficient on each run. |
-| `distance` | string | `cosine` | No | Distance metric. The metric that measures the distance between two arbitrary vectors. For available distance metrics, see [supported distance metrics](/weaviate/config-refs/distances.md). |
-| `ef` | integer | -1 | Yes |  Balance search speed and recall. `ef` is the size of the dynamic list that the HNSW uses during search. Search is more accurate when `ef` is higher, but it is also slower. `ef` values greater than 512 show diminishing improvements in recall.<br/><br/>Dynamic `ef`. Weaviate automatically adjusts the `ef` value and creates a dynamic `ef` list when `ef` is set to -1. For more details, see [dynamic ef](../../concepts/indexing/vector-index.md#dynamic-ef). |
-| `efConstruction` | integer | 128 | No | Balance index search speed and build speed. A high `efConstruction` value means you can lower your `ef` settings, but importing is slower.<br/><br/>`efConstruction` must be greater than 0. |
-| `maxConnections` | integer | 32 | No | Maximum number of connections per element. `maxConnections` is the connection limit per layer for layers above the zero layer. The zero layer can have (2 * maxConnections) connections. <br/><br/> `maxConnections` must be greater than 0. |
-| `dynamicEfMin` | integer | 100 | Yes | *New in `v1.10.0`.* <br/><br/> Lower bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against a creating search list that is too short.<br/><br/>This setting is only used when `ef` is -1. |
-| `dynamicEfMax` | integer | 500 | Yes | *New in `v1.10.0`.* <br/><br/> Upper bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against creating a search list that is too long. <br/><br/>If `dynamicEfMax` is higher than the limit, `dynamicEfMax` does not have any effect. In this case, `ef` is the limit.<br/><br/>This setting is only used when `ef` is -1. |
-| `dynamicEfFactor` | integer | 8 | Yes | *Added in `v1.10.0`.* <br/><br/> Multiplier for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Sets the potential length of the search list. <br/><br/>This setting is only used when `ef` is -1. |
-| `filterStrategy` | string | `sweeping` | Yes | Added in `v1.27.0`. The filter strategy to use for filtering the search results. The filter strategy can be set to `sweeping` or `acorn`. <br/><br/> - `sweeping`: The default filter strategy. <br/> - `acorn`: Uses Weaviate's ACORN implementation. [Read more](../../concepts/filtering.md#filter-strategy) |
-| `flatSearchCutoff` | integer | 40000 | Yes | Optional. Threshold for the [flat-search cutoff](/weaviate/concepts/filtering.md#flat-search-cutoff). To force a vector index search, set `"flatSearchCutoff": 0`. |
-| `skip` | boolean | `false` | No | When true, do not index the collection. <br/><br/> Weaviate decouples vector creation and vector storage. If you skip vector indexing, but a vectorizer is configured (or a vector is provided manually), Weaviate logs a warning each import. <br/><br/> To skip indexing and vector generation, set `"vectorizer": "none"` when you set `"skip": true`. <br/><br/> See [When to skip indexing](../../concepts/indexing/vector-index.md#when-to-skip-indexing). |
-| `vectorCacheMaxObjects`| integer | `1e12` | Yes | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations). |
-| `pq` | object | -- | Yes | Enable and configure [product quantization (PQ)](/weaviate/concepts/indexing/vector-index.md) compression. <br/><br/> PQ assumes some data has already been loaded. You should have 10,000 to 100,000 vectors per shard loaded before you enable PQ. <br/><br/> For PQ configuration details, see [PQ configuration parameters](#pq-configuration-parameters). |
+| Parameter                | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Default    | Mutable |
+| :----------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------ |
+| `cleanupIntervalSeconds` | integer | Cleanup frequency. This value does not normally need to be adjusted. A higher value means cleanup runs less frequently, but it does more in a single batch. A lower value means cleanup is more frequent, but it may be less efficient on each run.                                                                                                                                                                                                                    | 300        | Yes     |
+| `distance`               | string  | Distance metric. The metric that measures the distance between two arbitrary vectors. For available distance metrics, see [supported distance metrics](/weaviate/config-refs/distances.md).                                                                                                                                                                                                                                                                            | `cosine`   | No      |
+| `ef`                     | integer | Balance search speed and recall. `ef` is the size of the dynamic list that the HNSW uses during search. Search is more accurate when `ef` is higher, but it is also slower. `ef` values greater than 512 show diminishing improvements in recall.<br/><br/>Dynamic `ef`. Weaviate automatically adjusts the `ef` value and creates a dynamic `ef` list when `ef` is set to -1. For more details, see [dynamic ef](../../concepts/indexing/vector-index.md#dynamic-ef). | -1         | Yes     |
+| `efConstruction`         | integer | Balance index search speed and build speed. A high `efConstruction` value means you can lower your `ef` settings, but importing is slower.<br/><br/>`efConstruction` must be greater than 0.                                                                                                                                                                                                                                                                           | 128        | No      |
+| `maxConnections`         | integer | Maximum number of connections per element. `maxConnections` is the connection limit per layer for layers above the zero layer. The zero layer can have (2 \* `maxConnections`) connections. <br/><br/> `maxConnections` must be greater than 0.                                                                                                                                                                                                                        | 32         | No      |
+| `dynamicEfMin`           | integer | Lower bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against a creating search list that is too short.<br/><br/>This setting is only used when `ef` is -1.                                                                                                                                                                                                                                                                     | 100        | Yes     |
+| `dynamicEfMax`           | integer | Upper bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against creating a search list that is too long. <br/><br/>If `dynamicEfMax` is higher than the limit, `dynamicEfMax` does not have any effect. In this case, `ef` is the limit.<br/><br/>This setting is only used when `ef` is -1.                                                                                                                                      | 500        | Yes     |
+| `dynamicEfFactor`        | integer | Multiplier for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Sets the potential length of the search list. <br/><br/>This setting is only used when `ef` is -1.                                                                                                                                                                                                                                                                                  | 8          | Yes     |
+| `filterStrategy`         | string  | Added in `v1.27.0`. The filter strategy to use for filtering the search results. The filter strategy can be set to `sweeping` or `acorn`. <br/><br/> - `sweeping`: The default filter strategy. <br/> - `acorn`: Uses Weaviate's ACORN implementation. [Read more](../../concepts/filtering.md#filter-strategy)                                                                                                                                                        | `sweeping` | Yes     |
+| `flatSearchCutoff`       | integer | Optional. Threshold for the [flat-search cutoff](/weaviate/concepts/filtering.md#flat-search-cutoff). To force a vector index search, set `"flatSearchCutoff": 0`.                                                                                                                                                                                                                                                                                                   | 40000      | Yes     |
+| `skip`                   | boolean | When true, do not index the collection. <br/><br/> Weaviate decouples vector creation and vector storage. If you skip vector indexing, but a vectorizer is configured (or a vector is provided manually), Weaviate logs a warning each import. <br/><br/> To skip indexing and vector generation, set `"vectorizer": "none"` when you set `"skip": true`. <br/><br/> See [When to skip indexing](../../concepts/indexing/vector-index.md#when-to-skip-indexing).       | `false`    | No      |
+| `vectorCacheMaxObjects`  | integer | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations).                                                                                                                                                                                    | `1e12`     | Yes     |
+| `pq`                     | object  | Enable and configure [product quantization (PQ)](/weaviate/concepts/indexing/vector-index.md) compression. <br/><br/> PQ assumes some data has already been loaded. You should have 10,000 to 100,000 vectors per shard loaded before you enable PQ. <br/><br/> For PQ configuration details, see [PQ configuration parameters](#pq-parameters).                                                                                                         | --         | Yes     |
 
 ### Database parameters for HNSW
 
@@ -65,14 +70,6 @@ The default value for `TOMBSTONE_DELETION_CONCURRENCY` is set to half the number
 
 In a cluster with a large number of cores, you may want to set `TOMBSTONE_DELETION_CONCURRENCY` to a lower value to prevent the cleanup process from consuming too many resources. Conversely, in a cluster with a small number of cores and a large number of deletions, you may want to set `TOMBSTONE_DELETION_CONCURRENCY` to a higher value to speed up the cleanup process.
 
-### PQ configuration parameters
-
-Configure `pq` with these parameters.
-
-import PQParameters from '/_includes/pq-compression/parameters.mdx' ;
-
-<PQParameters />
-
 ### HNSW Configuration tips
 
 To determine reasonable settings for your use case, consider the following questions and compare your answers in the table below:
@@ -81,59 +78,59 @@ To determine reasonable settings for your use case, consider the following quest
 1. Do you expect a lot of imports or updates?
 1. How high should the recall be?
 
-| Number of queries | Many imports or updates | Recall level | Configuration suggestions |
-| --- | --- | --- | --- |
-| not many | no | low | This is the ideal scenario. Keep both the `ef` and `efConstruction` settings low. You don't need a big machine and you will still be happy with the results. |
-| not many | no | high | Here the tricky thing is that your recall needs to be high. Since you're not expecting a lot of requests or imports, you can increase both the `ef` and `efConstruction` settings. Keep increasing them until you are happy with the recall. In this case, you can get pretty close to 100%. |
-| not many | yes | low | Here the tricky thing is the high volume of imports and updates. Be sure to keep `efConstruction` low. Since you don't need a high recall, and you're not expecting a lot of queries, you can adjust the `ef` setting until you've reached the desired recall. |
-| not many | yes | high | The trade-offs are getting harder. You need high recall _and_ you're dealing with a lot of imports or updates. This means you need to keep the `efConstruction` setting low, but you can significantly increase your `ef` setting because your queries per second rate is low. |
-| many | no | low | Many queries per second means you need a low `ef` setting. Luckily you don't need high recall so you can significantly increase the `efConstruction` value. |
-| many | no | high | Many queries per second means a low `ef` setting. Since you need a high recall but you are not expecting a lot of imports or updates, you can increase your `efConstruction` until you've reached the desired recall. |
-| many | yes | low | Many queries per second means you need a low `ef` setting. A high number of imports and updates also means you need a low `efConstruction` setting. Luckily your recall does not have to be as close to 100% as possible. You can set `efConstruction` relatively low to support your input or update throughput, and you can use the `ef` setting to regulate the query per second speed. |
-| many | yes | high | Aha, this means you're a perfectionist _or_ you have a use case that needs the best of all three worlds. Increase your `efConstruction` value until you hit the time limit of imports and updates. Next, increase your `ef` setting until you reach your desired balance of queries per second versus recall. <br/><br/> While many people think they need maximize all three dimensions, in practice that's usually not the case. We leave it up to you to decide, and you can always ask for help in [our forum](https://forum.weaviate.io). |
+| Number of queries | Many imports or updates | Recall level | Configuration suggestions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ----------------- | ----------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| not many          | no                      | low          | This is the ideal scenario. Keep both the `ef` and `efConstruction` settings low. You don't need a big machine and you will still be happy with the results.                                                                                                                                                                                                                                                                                                                                                                                   |
+| not many          | no                      | high         | Here the tricky thing is that your recall needs to be high. Since you're not expecting a lot of requests or imports, you can increase both the `ef` and `efConstruction` settings. Keep increasing them until you are happy with the recall. In this case, you can get pretty close to 100%.                                                                                                                                                                                                                                                   |
+| not many          | yes                     | low          | Here the tricky thing is the high volume of imports and updates. Be sure to keep `efConstruction` low. Since you don't need a high recall, and you're not expecting a lot of queries, you can adjust the `ef` setting until you've reached the desired recall.                                                                                                                                                                                                                                                                                 |
+| not many          | yes                     | high         | The trade-offs are getting harder. You need high recall _and_ you're dealing with a lot of imports or updates. This means you need to keep the `efConstruction` setting low, but you can significantly increase your `ef` setting because your queries per second rate is low.                                                                                                                                                                                                                                                                 |
+| many              | no                      | low          | Many queries per second means you need a low `ef` setting. Luckily you don't need high recall so you can significantly increase the `efConstruction` value.                                                                                                                                                                                                                                                                                                                                                                                    |
+| many              | no                      | high         | Many queries per second means a low `ef` setting. Since you need a high recall but you are not expecting a lot of imports or updates, you can increase your `efConstruction` until you've reached the desired recall.                                                                                                                                                                                                                                                                                                                          |
+| many              | yes                     | low          | Many queries per second means you need a low `ef` setting. A high number of imports and updates also means you need a low `efConstruction` setting. Luckily your recall does not have to be as close to 100% as possible. You can set `efConstruction` relatively low to support your input or update throughput, and you can use the `ef` setting to regulate the query per second speed.                                                                                                                                                     |
+| many              | yes                     | high         | Aha, this means you're a perfectionist _or_ you have a use case that needs the best of all three worlds. Increase your `efConstruction` value until you hit the time limit of imports and updates. Next, increase your `ef` setting until you reach your desired balance of queries per second versus recall. <br/><br/> While many people think they need maximize all three dimensions, in practice that's usually not the case. We leave it up to you to decide, and you can always ask for help in [our forum](https://forum.weaviate.io). |
 
 :::tip
 This set of values is a good starting point for many use cases.
 
-|Parameter|Value|
-|:--|:--|
-|`ef`|`64`|
-|`efConstruction`|`128`|
-|`maxConnections`|`32`|
+| Parameter        | Value |
+| :--------------- | :---- |
+| `ef`             | `64`  |
+| `efConstruction` | `128` |
+| `maxConnections` | `32`  |
+
 :::
 
-
-## Flat indexes
+## Flat index
 
 :::info Added in `v1.23`
 :::
 
 Flat indexes are recommended for use cases where the number of objects per index is low, such as in multi-tenancy use cases.
 
-| Parameter | Type | Default | Changeable | Details |
-| :-- | :-- | :-- | :-- | :-- |
-| `vectorCacheMaxObjects`| integer | `1e12` | Yes | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations). |
-| `bq` | object | -- | No | Enable and configure [binary quantization (BQ)](../../concepts/vector-quantization.md#binary-quantization) compression. <br/><br/> For BQ configuration details, see [BQ configuration parameters](#bq-configuration-parameters). |
+| Parameter               | Type    | Default | Changeable | Details                                                                                                                                                                                                                                                                             |
+| :---------------------- | :------ | :------ | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vectorCacheMaxObjects` | integer | `1e12`  | Yes        | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations). |
+| `bq`                    | object  | --      | No         | Enable and configure [binary quantization (BQ)](../../concepts/vector-quantization.md#binary-quantization) compression. <br/><br/> For BQ configuration details, see [BQ configuration parameters](#bq-configuration-parameters).                                                   |
 
 ### BQ configuration parameters
 
 Configure `bq` with these parameters.
 
-| Parameter | Type | Default | Details |
-| :-- | :-- | :-- | :-- |
-| `enabled` | boolean | `false` | Enable BQ. Weaviate uses binary quantization (BQ) compression when `true`. |
-| `rescoreLimit` | integer | -1 | The minimum number of candidates to fetch before rescoring. |
-| `cache` | boolean | `false` | Whether to use the vector cache. |
+| Parameter      | Type    | Default | Details                                                                    |
+| :------------- | :------ | :------ | :------------------------------------------------------------------------- |
+| `enabled`      | boolean | `false` | Enable BQ. Weaviate uses binary quantization (BQ) compression when `true`. |
+| `rescoreLimit` | integer | -1      | The minimum number of candidates to fetch before rescoring.                |
+| `cache`        | boolean | `false` | Whether to use the vector cache.                                           |
 
-## Dynamic indexes
+## Dynamic index
 
 :::caution Experimental feature
 Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use with caution.
 :::
 
-import DynamicAsyncRequirements from '/_includes/dynamic-index-async-req.mdx';
+import DynamicAsyncRequirements from "/_includes/dynamic-index-async-req.mdx";
 
-<DynamicAsyncRequirements/>
+<DynamicAsyncRequirements />
 
 Using the `dynamic` index will initially create a flat index and once the number of objects exceeds a certain threshold (by default 10,000 objects) it will automatically switch you over to an HNSW index.
 
@@ -143,12 +140,12 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 
 ### Dynamic index parameters
 
-| Parameter | Type | Default | Details |
-| :-- | :-- | :-- | :-- |
-| `distance` | string | `cosine` | Distance metric. The metric that measures the distance between two arbitrary vectors. |
-| `hnsw` | object | default HNSW | [HNSW index configuration](#hnsw-index-parameters) to be used. |
-| `flat` | object | default Flat | [Flat index configuration](#flat-indexes) to be used. |
-| `threshold` | integer | 10000 | Threshold object count at which `flat` to `hnsw` conversion happens |
+| Parameter   | Type    | Default      | Details                                                                               |
+| :---------- | :------ | :----------- | :------------------------------------------------------------------------------------ |
+| `distance`  | string  | `cosine`     | Distance metric. The metric that measures the distance between two arbitrary vectors. |
+| `hnsw`      | object  | default HNSW | [HNSW index configuration](#hnsw-index-parameters) to be used.                        |
+| `flat`      | object  | default Flat | [Flat index configuration](#flat-index) to be used.                                 |
+| `threshold` | integer | 10000        | Threshold object count at which `flat` to `hnsw` conversion happens                   |
 
 ## Index configuration parameters
 
@@ -158,10 +155,10 @@ Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use 
 
 Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-collections/vector-config.mdx#set-vector-index-type).
 
-| Parameter | Type | Default | Details |
-| :-- | :-- | :-- | :-- |
-| `vectorIndexType` | string | `hnsw` | Optional. The index type - can be `hnsw`, `flat` or `dynamic`. |
-| `vectorIndexConfig` | object | - | Optional. Set parameters that are specific to the vector index type. |
+| Parameter           | Type   | Default | Details                                                              |
+| :------------------ | :----- | :------ | :------------------------------------------------------------------- |
+| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat` or `dynamic`.       |
+| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type. |
 
 <details>
   <summary>How to select the index type</summary>
@@ -173,6 +170,74 @@ See [this section](../../concepts/indexing/vector-index.md#which-vector-index-is
 </details>
 
 If faster import speeds are desired, [asynchronous indexing](#asynchronous-indexing) allows de-coupling of indexing from object creation.
+
+### RQ parameters
+
+The following parameters are available for RQ compression, under `vectorIndexConfig`:
+
+import RQParameters from "/_includes/configuration/rq-compression-parameters.mdx";
+
+<RQParameters />
+
+### SQ parameters
+
+The following parameters are available for SQ compression, under `vectorIndexConfig`:
+
+import SQParameters from "/_includes/configuration/sq-compression-parameters.mdx";
+
+<SQParameters />
+
+### PQ parameters
+
+The following parameters are available for PQ compression, under `vectorIndexConfig`:
+
+import PQParameters from "/_includes/configuration/pq-compression/parameters.mdx";
+
+<PQParameters />
+
+### BQ parameters
+
+The following parameters are available for BQ compression, under `vectorIndexConfig`:
+
+import BQParameters from "/_includes/configuration/bq-compression-parameters.mdx";
+
+<BQParameters />
+
+## Configure semantic indexing
+
+Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
+
+For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
+
+Unless specified otherwise in the collection definition, the default behavior is to:
+
+- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
+- Sort properties in alphabetical (a-z) order before concatenating values
+- If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
+- Join the (prepended) property values with spaces
+- Prepend the class name (unless `vectorizeClassName` is `false`)
+- Convert the produced string to lowercase
+
+For example, this data object,
+
+```js
+Article = {
+  summary: "Cows lose their jobs as milk prices drop",
+  text: "As his 100 diary cows lumbered over for their Monday...",
+};
+```
+
+will be vectorized as:
+
+```md
+article cows lose their jobs as milk prices drop as his 100 diary cows lumbered over for their monday...
+```
+
+By default, the calculation includes the collection name and all property values, but the property names are not indexed.
+
+To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
+
+To configure vectorization on a per-property basis, use `skip` and `vectorizePropertyName`.
 
 ## Asynchronous indexing
 
@@ -192,27 +257,26 @@ To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable t
 services:
   weaviate:
     command:
-    - --host
-    - 0.0.0.0
-    - --port
-    - '8080'
-    - --scheme
-    - http
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --scheme
+      - http
     image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
     restart: on-failure:0
     ports:
-     - 8080:8080
-     - 50051:50051
+      - 8080:8080
+      - 50051:50051
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       QUERY_MAXIMUM_RESULTS: 10000
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      ENABLE_API_BASED_MODULES: 'true'
-      CLUSTER_HOSTNAME: 'node1'
-      AUTOSCHEMA_ENABLED: 'false'
-      ASYNC_INDEXING: 'true'
-...
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      ENABLE_API_BASED_MODULES: "true"
+      CLUSTER_HOSTNAME: "node1"
+      AUTOSCHEMA_ENABLED: "false"
+      ASYNC_INDEXING: "true"
 ```
 
 </details>
@@ -224,12 +288,13 @@ To get the index status, check the [node status](/deploy/configuration/nodes.md)
 
 The `nodes/shards/vectorQueueLength` field shows the number of objects that still have to be indexed.
 
-import Nodes from '/_includes/code/nodes.mdx';
+import Nodes from "/_includes/code/nodes.mdx";
 
-<Nodes/>
+<Nodes />
 
 Then, you can check the status of the vector index queue by inspecting the output.
-<br/>
+
+<br />
 
 The `vectorQueueLength` field will show the number of remaining objects to be indexed. In the example below, the vector index queue has 425 objects remaining to be indexed on the `TestArticle` shard, out of a total of 1000 objects.
 
@@ -251,7 +316,7 @@ The `vectorQueueLength` field will show the number of remaining objects to be in
           "vectorIndexingStatus": "INDEXING",
           "vectorQueueLength": 425
           // highlight-end
-        },
+        }
       ],
       "stats": {
         "objectCount": 1000,
@@ -259,24 +324,25 @@ The `vectorQueueLength` field will show the number of remaining objects to be in
       },
       "status": "HEALTHY",
       "version": "1.22.1"
-    },
+    }
   ]
 }
 ```
+
 </details>
 
 ## Multiple vector embeddings (named vectors)
 
-import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
+import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
 
-## Related pages
+## Further resources
 
 - [Concepts: Vector index](../../concepts/indexing/vector-index.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

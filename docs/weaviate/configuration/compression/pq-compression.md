@@ -20,15 +20,15 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 Starting in v1.23, AutoPQ simplifies configuring PQ on new collections.
 :::
 
-import PQOverview from '/_includes/pq-compression/overview-text.mdx' ;
+import PQOverview from '/_includes/configuration/pq-compression/overview-text.mdx' ;
 
 <PQOverview />
 
-import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
+import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
-To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md) .
+To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx).
 
 ## Enable PQ compression
 
@@ -197,7 +197,7 @@ From `v1.27.0`, Weaviate uses a sparse [Fisher-Yates algorithm](https://en.wikip
 
 Update your collection definition to enable PQ. Once PQ is enabled, Weaviate trains the codebook using the training data.
 
-import PQMakesCodebook from '/_includes/pq-compression/makes-a-codebook.mdx' ;
+import PQMakesCodebook from '/_includes/configuration/pq-compression/makes-a-codebook.mdx' ;
 
 <PQMakesCodebook />
 
@@ -269,7 +269,7 @@ If you already have data in your Weaviate instance when you create the codebook,
 
 You can configure PQ compression by setting the following parameters at the collection level.
 
-import PQParameters from '/_includes/pq-compression/parameters.mdx' ;
+import PQParameters from '/_includes/configuration/pq-compression/parameters.mdx' ;
 
 <PQParameters />
 
@@ -377,7 +377,7 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 ## Related pages
-- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+- [Configuration: Vector index](/weaviate/config-refs/vectorization.mdx)
 - [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
 - [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
 - [Guide: Schemas and collection definitions](/weaviate/starter-guides/managing-collections/index.mdx)

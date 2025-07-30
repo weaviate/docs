@@ -1,24 +1,22 @@
-| Name | Exact type | Formatting | Array (`[]`) available (example) | Note |
-|------|------------|------------|---------------------------|------|
-| text | string | `string` | ✅ `["string one", "string two"]` |
-| boolean | boolean | `true`/`false` | ✅ `[true, false]` | |
-| int | int64 (see [notes](/weaviate/config-refs/datatypes#note-graphql-and-int64)) | `123` | ✅ `[123, -456]` | |
-| number | float64 | `0.0` | ✅ `[0.0, 1.1]` | |
-| date | string | [more info](/weaviate/config-refs/datatypes#date) | ✅ | |
-| uuid | string | `"c8f8176c-6f9b-5461-8ab3-f3c7ce8c2f5c"` | ✅ `["c8f8176c-6f9b-5461-8ab3-f3c7ce8c2f5c", "36ddd591-2dee-4e7e-a3cc-eb86d30a4303"]` | |
-| geoCoordinates | string | [more info](/weaviate/config-refs/datatypes#geocoordinates) | ❌ | |
-| phoneNumber | string | [more info](/weaviate/config-refs/datatypes#phonenumber) | ❌ | |
-| blob | base64 encoded string | [more info](/weaviate/config-refs/datatypes#blob) | ❌ | |
-| object | object | `{"child": "I'm nested!"}` | ✅ `[{"child": "I'm nested!"}, {"child": "I'm nested too!"}` | Available from `1.22` |
-| *cross reference* | string | [more info](/weaviate/config-refs/datatypes#cross-reference) | ❌ | |
-
+| Name                                                                 | Exact type                                                                  | Formatting                                                   | Array (`[]`) available (example)                                                      | Note                  |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------- | --------------------- |
+| [text](/weaviate/config-refs/datatypes#text)                         | string                                                                      | `string`                                                     | ✅ `["string one", "string two"]`                                                     |
+| [boolean](/weaviate/config-refs/datatypes#boolean--int--number)      | boolean                                                                     | `true`/`false`                                               | ✅ `[true, false]`                                                                    |                       |
+| [int](/weaviate/config-refs/datatypes#boolean--int--number)          | int64 (see [notes](/weaviate/config-refs/datatypes#note-graphql-and-int64)) | `123`                                                        | ✅ `[123, -456]`                                                                      |                       |
+| [number](/weaviate/config-refs/datatypes#boolean--int--number)       | float64                                                                     | `0.0`                                                        | ✅ `[0.0, 1.1]`                                                                       |                       |
+| [date](/weaviate/config-refs/datatypes#date)                         | string                                                                      | [more info](/weaviate/config-refs/datatypes#date)            | ✅                                                                                    |                       |
+| [uuid](/weaviate/config-refs/datatypes#uuid)                         | string                                                                      | `"c8f8176c-6f9b-5461-8ab3-f3c7ce8c2f5c"`                     | ✅ `["c8f8176c-6f9b-5461-8ab3-f3c7ce8c2f5c", "36ddd591-2dee-4e7e-a3cc-eb86d30a4303"]` |                       |
+| [geoCoordinates](/weaviate/config-refs/datatypes#geocoordinates)     | string                                                                      | [more info](/weaviate/config-refs/datatypes#geocoordinates)  | ❌                                                                                    |                       |
+| [phoneNumber](/weaviate/config-refs/datatypes#phonenumber)           | string                                                                      | [more info](/weaviate/config-refs/datatypes#phonenumber)     | ❌                                                                                    |                       |
+| [blob](/weaviate/config-refs/datatypes#blob)                         | base64 encoded string                                                       | [more info](/weaviate/config-refs/datatypes#blob)            | ❌                                                                                    |                       |
+| [object](/weaviate/config-refs/datatypes#object)                     | object                                                                      | `{"child": "I'm nested!"}`                                   | ✅ `[{"child": "I'm nested!"}, {"child": "I'm nested too!"}`                          | Available from `1.22` |
+| [_cross reference_](/weaviate/config-refs/datatypes#cross-reference) | string                                                                      | [more info](/weaviate/config-refs/datatypes#cross-reference) | ❌                                                                                    |                       |
 
 <details>
   <summary>Deprecated types</summary>
 
-| Name | Exact type | Formatting | Array available (example) | Deprecated from |
-|------|------------|------------|---------------------------|------|
-| string | string | `"string"` | ✅ `["string", "second string"]` | `v1.19` |
-
+| Name   | Exact type | Formatting | Array available (example)        | Deprecated from |
+| ------ | ---------- | ---------- | -------------------------------- | --------------- |
+| string | string     | `"string"` | ✅ `["string", "second string"]` | `v1.19`         |
 
 </details>

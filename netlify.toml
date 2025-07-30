@@ -440,12 +440,12 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/indexes"
-to   = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/indexing/vector-index"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/vector-index-type"
-to   = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/indexing/vector-index"
 status = 301
 
 # Deployment redirects - Configuration
