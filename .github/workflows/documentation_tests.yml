@@ -1,5 +1,8 @@
 name: Documentation Code Tests - Weekly
 
+permissions:
+  contents: read
+
 on:
   schedule:
     # Run every Sunday at midnight CET
