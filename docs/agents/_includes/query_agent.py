@@ -201,7 +201,7 @@ response.display()
 # END QueryAgentRunBasicCollectionSelection
 
 # START QueryAgentRunCollectionConfig
-from weaviate.agents.classes import QueryAgentCollectionConfig
+from weaviate_agents.classes import QueryAgentCollectionConfig
 
 response = qa.run(
     "I like vintage clothes and nice shoes. Recommend some of each below $60.",
@@ -269,7 +269,6 @@ for output in qa.stream(
 
 # START InspectResponseExample
 print("\n=== Query Agent Response ===")
-print(f"Original: {response}\n")
 print(f"Original Query: {response.original_query}\n")
 
 print("🔍 Final Answer Found:")
@@ -280,8 +279,8 @@ for collection_searches in response.searches:
     for result in collection_searches:
         print(f"- {result}\n")
 
-if response.aggregations:
-    print("📊 Aggregations performed:")
+if len(response.aggregations) > 0:
+    print("📊 Aggregation Results:")
     for collection_aggs in response.aggregations:
         for agg in collection_aggs:
             print(f"- {agg}\n")
@@ -303,31 +302,28 @@ client.close()
 import asyncio
 import os
 import weaviate
-from weaviate.classes.init import Auth
+from weaviate.agents.query import AsyncQueryAgent
+
 
 async_client = weaviate.use_async_with_weaviate_cloud(
     cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
+    auth_credentials=os.environ.get("WEAVIATE_API_KEY"),
     headers=headers,
 )
 
-async def run_concurrent_queries(async_client):
-    import asyncio
-    from weaviate.agents.query import AsyncQueryAgent
-    from weaviate.agents.classes import QueryAgentCollectionConfig
+async def query_vintage_clothes(async_query_agent: AsyncQueryAgent):
+    response = await async_query_agent.run(
+        "I like vintage clothes and nice shoes. Recommend some of each below $60."
+    )
+    return ("Vintage Clothes", response)
 
-    async def query_vintage_clothes(async_query_agent: AsyncQueryAgent):
-        response = await async_query_agent.run(
-            "I like vintage clothes and nice shoes. Recommend some of each below $60."
-        )
-        return ("Vintage Clothes", response)
+async def query_financial_data(async_query_agent: AsyncQueryAgent):
+    response = await async_query_agent.run(
+        "What kinds of contracts are listed? What's the most common type of contract?",
+    )
+    return ("Financial Contracts", response)
 
-    async def query_financial_data(async_query_agent: AsyncQueryAgent):
-        response = await async_query_agent.run(
-            "What kinds of contracts are listed? What's the most common type of contract?",
-        )
-        return ("Financial Contracts", response)
-
+async def run_concurrent_queries():
     try:
         await async_client.connect()
 
@@ -363,34 +359,29 @@ async def run_concurrent_queries(async_client):
     finally:
         await async_client.close()
 
-asyncio.run(run_concurrent_queries(async_client))
+asyncio.run(run_concurrent_queries())
 # END UsageAsyncQueryAgent
 
 
 # START StreamAsyncResponse
-import asyncio
+async def stream_query(async_query_agent: AsyncQueryAgent):
+    async for output in async_query_agent.stream(
+        "What are the top 5 products sold in the last 30 days?",
+        # Setting this to false will skip ProgressMessages, and only stream
+        # the StreamedTokens / the final QueryAgentResponse
+        include_progress=True  # Default is True
+    ):
+        if isinstance(output, ProgressMessage):
+            # The message is a human-readable string, structured info available in output.details
+            print(output.message)
+        elif isinstance(output, StreamedTokens):
+            # The delta is a string containing the next chunk of the final answer
+            print(output.delta, end='', flush=True)
+        else:
+            # This is the final response, as returned by QueryAgent.run()
+            output.display()
 
-async def run_streaming_query(async_client):
-    from weaviate.agents.query import AsyncQueryAgent
-    from weaviate.agents.classes import QueryAgentCollectionConfig, ProgressMessage, StreamedTokens
-    
-    async def stream_query(async_query_agent: AsyncQueryAgent):
-        async for output in async_query_agent.stream(
-            "What are the top 5 products sold in the last 30 days?",
-            # Setting this to false will skip ProgressMessages, and only stream
-            # the StreamedTokens / the final QueryAgentResponse
-            include_progress=True  # Default is True
-        ):
-            if isinstance(output, ProgressMessage):
-                # The message is a human-readable string, structured info available in output.details
-                print(output.message)
-            elif isinstance(output, StreamedTokens):
-                # The delta is a string containing the next chunk of the final answer
-                print(output.delta, end='', flush=True)
-            else:
-                # This is the final response, as returned by QueryAgent.run()
-                output.display()
-
+async def run_streaming_query():
     try:
         await async_client.connect()
         async_qa = AsyncQueryAgent(
@@ -413,5 +404,5 @@ async def run_streaming_query(async_client):
     finally:
         await async_client.close()
 
-asyncio.run(run_streaming_query(async_client))
+asyncio.run(run_streaming_query())
 # END StreamAsyncResponse

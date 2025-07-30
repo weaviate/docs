@@ -46,6 +46,8 @@ finally:
 weaviate_host = "localhost"
 weaviate_grpc_host = "localhost"
 
+"""
+COMMENTED OUT AS ACTUAL SSL CERTIFICATES ARE NOT PROVIDED IN THIS EXAMPLE
 # START CustomSSLExample
 import os
 import weaviate
@@ -56,26 +58,19 @@ from weaviate.classes.init import AdditionalConfig
 os.environ["GRPC_DEFAULT_SSL_ROOTS_FILE_PATH"] = "/path/to/your/cert.crt"
 os.environ["SSL_CERT_FILE"] = "/path/to/your/cert.crt"
 
-# END CustomSSLExample
-os.environ.pop("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH", None)
-os.environ.pop("SSL_CERT_FILE", None)
-# START CustomSSLExample
 # Then connect to Weaviate
 client = weaviate.connect_to_custom(
     http_host=weaviate_host,  # Replace with your Weaviate host
     http_port=8080,
-    http_secure=False,
+    http_secure=True,
     grpc_host=weaviate_grpc_host,  # Replace with your Weaviate gRPC host
     grpc_port=50051,
-    grpc_secure=False,
+    grpc_secure=True,
     additional_config=AdditionalConfig(trust_env=True)  # Required for custom SSL certificates
 )
 # END CustomSSLExample
-
-try:
-    assert client.is_ready()
-finally:
-    client.close()
+END OF COMMENTED OUT SECTION
+"""
 
 # LocalInstantiationSkipChecks
 import weaviate
