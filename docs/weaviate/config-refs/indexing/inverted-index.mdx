@@ -31,13 +31,13 @@ import InvertedIndexTypesSummary from "/_includes/inverted-index-types-summary.m
 
 These parameters are set within the `invertedIndexConfig` object in your collection definition.
 
-| Parameter                                     | Type    | Default                    | Details                                                                                                                                                            |
-| :-------------------------------------------- | :------ | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parameter                                     | Type    | Default                    | Details                                                                                                                                              |
+| :-------------------------------------------- | :------ | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`bm25`](#bm25)                               | Object  | `{ "k1": 1.2, "b": 0.75 }` | Sets the `k1` and `b` parameters for the BM25 ranking algorithm. Can be overridden at the property level. See [**BM25 Configuration**](#bm25) below. |
 | [`stopwords`](#stopwords)                     | Object  | (Varies)                   | Defines the stopword list to exclude common words from search queries. See [**Stopwords Configuration**](#stopwords) below.                          |
-| [`indexTimestamps`](#indextimestamps)         | Boolean | `false`                    | If `true`, indexes object creation and update timestamps, enabling filtering by `creationTimeUnix` and `lastUpdateTimeUnix`.                                       |
-| [`indexNullState`](#indexnullstate)           | Boolean | `false`                    | If `true`, indexes the null/non-null state of each property, enabling filtering for `null` values.                                                                 |
-| [`indexPropertyLength`](#indexpropertylength) | Boolean | `false`                    | If `true`, indexes the length of each property, enabling filtering by property length.                                                                             |
+| [`indexTimestamps`](#indextimestamps)         | Boolean | `false`                    | If `true`, indexes object creation and update timestamps, enabling filtering by `creationTimeUnix` and `lastUpdateTimeUnix`.                         |
+| [`indexNullState`](#indexnullstate)           | Boolean | `false`                    | If `true`, indexes the null/non-null state of each property, enabling filtering for `null` values.                                                   |
+| [`indexPropertyLength`](#indexpropertylength) | Boolean | `false`                    | If `true`, indexes the length of each property, enabling filtering by property length.                                                               |
 
 :::caution Performance Impact
 Enabling `indexTimestamps`, `indexNullState`, or `indexPropertyLength` adds overhead as these additional indexes must be created and maintained. Only enable them if you require these specific filtering capabilities.
@@ -131,7 +131,7 @@ An example of a complete collection object with `bm25` configuration:
 
 #### `stopwords`
 
-Part of `invertedIndexConfig`. `text` properties may contain words that are very common and don't contribute to search results. Ignoring them speeds up queries that contain stopwords, as they can be automatically removed from queries as well. This speed up is very notable on scored searches, such as `BM25`.
+Part of `invertedIndexConfig`. `text` properties may contain words that are very common and don't contribute to search results. Ignoring them speeds up queries that contain stopwords, as they can be automatically removed from queries as well. This speedup is very notable on scored searches, such as `BM25`.
 
 The stopword configuration uses a preset system. You can select a preset to use the most common stopwords for a particular language (e.g. [`"en"` preset](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go)). If you need more fine-grained control, you can add additional stopwords or remove stopwords that you believe should not be part of the list. Alternatively, you can create your custom stopword list by starting with an empty (`"none"`) preset and adding all your desired stopwords as additions.
 
@@ -194,7 +194,13 @@ To configure indexing based on property length, set `indexPropertyLength` to `tr
 Using these features requires more resources. The additional inverted indexes must be created and maintained for the lifetime of the collection.
 :::
 
-## Adding a property after collection creation
+## How Weaviate creates inverted indexes
+
+Weaviate creates **separate inverted indexes for each property and each index type**. For example, if you have a `title` property that is both searchable and filterable, 
+Weaviate will create two separate inverted indexes for that property - one optimized for search operations and another for filtering operations. 
+Find out more in [Concepts: Inverted index](../../concepts/indexing/inverted-index.md#how-weaviate-creates-inverted-indexes).
+
+### Adding a property after collection creation
 
 Adding a property after importing objects can lead to limitations in inverted-index related behavior, such as filtering by the new property's length or null status.
 
@@ -210,6 +216,7 @@ We are working on a re-indexing API to allow you to re-index the data after addi
 ## Further resources
 
 - [Concepts: Inverted index](../../concepts/indexing/inverted-index.md)
+- [How-to: Configure collections](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
 
 ## Questions and feedback
 

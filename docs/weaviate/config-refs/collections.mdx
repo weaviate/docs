@@ -17,7 +17,7 @@ import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.m
 import JavaCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 
-A **collection definition** describes how to store and index a set of data objects in Weaviate. This page discuses the collection definition, collection parameters and collection configuration.
+A **collection definition** specifies how to store and index a set of data objects in Weaviate. This page discusses the available parameters for configuring a collection.
 
 ## Collection definition parameters
 
@@ -503,7 +503,7 @@ The vectors in a collection can have their own configurations. Each vector space
 
 To work with named vectors, adjust your queries to specify a target vector for [vector search](/weaviate/search/similarity#named-vectors) or [hybrid search](/weaviate/search/hybrid#named-vectors) queries.
 
-#### Code example  - How to create multiple named vectors
+#### Code example - How to create multiple named vectors
 
 This code example shows how to configure multiple named vectors through a client library:
 
@@ -548,7 +548,6 @@ For more code example and configuration guides visit the [How-to: Vectorizer and
 
 :::
 
-
 ---
 
 ### Module configuration
@@ -587,10 +586,10 @@ More details about the `vectorIndexType` and `vectorIndexConfig` parameters can 
 
 [Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
 
-| Parameter          | Type    | Description                                                                                                                                    | Default                   | Mutable                                 |
-| :----------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
-| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                                | `1`                       | No in `v1.25+`, Yes in earlier versions |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                              | `false`                   | Yes                                     |
+| Parameter          | Type    | Description                                                                                                                                   | Default                   | Mutable                                 |
+| :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
+| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No in `v1.25+`, Yes in earlier versions |
+| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                             | `false`                   | Yes                                     |
 | `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`. Added in `v1.27` | `"NoAutomatedResolution"` | Yes                                     |
 
 <details>
