@@ -1,7 +1,6 @@
 ---
-title: Parsing Objects & Resolving References
+title: Parsing objects & resolving references
 description: Guide to parsing cross-references in Weaviate Database for data linking.
-sidebar_position: 5
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
@@ -64,7 +63,7 @@ The cached resolver is a helper struct with a two-step process:
 * [The reference Resolver](https://github.com/weaviate/weaviate/blob/master/adapters/repos/db/refcache/resolver.go) and its [unit tests](https://github.com/weaviate/weaviate/blob/master/adapters/repos/db/refcache/resolver_test.go)
 * Integration tests for [nested refs](https://github.com/weaviate/weaviate/blob/master/adapters/repos/db/crud_references_integration_test.go) and [refs of different types](https://github.com/weaviate/weaviate/blob/master/adapters/repos/db/crud_references_multiple_types_integration_test.go)
 
-## More Resources
+## Further resources
 
 import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
 

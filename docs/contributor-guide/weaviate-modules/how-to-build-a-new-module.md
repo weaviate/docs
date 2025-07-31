@@ -144,3 +144,9 @@ You can now load in any sample or test dataset. If you only make changes in the 
 
 #### Passing tests
 Before you submit your PR, your new module implementation must pass all existing tests and any new tests that you added. How to run tests, [check this page](../weaviate-core/tests.md#run-the-whole-pipeline).
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

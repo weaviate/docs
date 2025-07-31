@@ -4,8 +4,6 @@ image: og/contributor-guide/weaviate-modules.jpg
 # tags: ['contributor-guide', 'weaviate module system']
 ---
 
-## Architecture (Code Level)
-
 This page describes the code-level architecture. The high-level architecture
 depends on the respective module. For example, `media2vec` modules typically
 use a microservice pattern to offload model inference into a separate
@@ -113,3 +111,9 @@ Take a look at some of the existing modules to get a feel for how they work:
 
 - [`text2vec-contextionary`](https://github.com/weaviate/weaviate/tree/master/modules/text2vec-contextionary)
 - [`text2vec-transformers`](https://github.com/weaviate/weaviate/tree/master/modules/text2vec-transformers)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

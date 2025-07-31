@@ -1106,22 +1106,21 @@ const sidebars = {
   ],
   contributorSidebar: [
     {
-      type: "doc",
-      id: "contributor-guide/index",
-      label: "Open-source at Weaviate",
-    },
-    {
       type: "category",
-      label: "Getting started",
+      label: "Contributor guide",
       link: {
         type: "doc",
-        id: "contributor-guide/getting-started/index",
+        id: "contributor-guide/index",
       },
       collapsed: false,
       items: [
         "contributor-guide/getting-started/suggesting-enhancements",
         "contributor-guide/getting-started/reporting-bugs",
       ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
     {
       type: "category",
@@ -1140,9 +1139,17 @@ const sidebars = {
       ],
     },
     {
-      type: "doc",
-      id: "contributor-guide/weaviate-docs/index",
+      type: "category",
       label: "Weaviate Docs",
+      link: {
+        type: "doc",
+        id: "contributor-guide/weaviate-docs/index",
+      },
+      items: [
+        "contributor-guide/weaviate-docs/development",
+        "contributor-guide/weaviate-docs/style-guide",
+        "contributor-guide/weaviate-docs/llms",
+      ],
     },
     {
       type: "doc",

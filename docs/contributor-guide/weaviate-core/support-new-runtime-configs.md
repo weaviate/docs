@@ -1,6 +1,5 @@
 ---
-title: Adding runtime configurations
-sidebar_position: 6
+title: Runtime configurations
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---

@@ -1,6 +1,5 @@
 ---
-title: CICD Philosophy
-sidebar_position: 2
+title: CICD philosophy
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
@@ -115,7 +114,7 @@ adhere to the following steps:
    changes, and link to the respective issues. Check prior releases for
    inspiration.
 
-## More Resources
+## Further resources
 
 import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
 

@@ -32,14 +32,3 @@ It is important that any contributions such as suggestions or bug reports be mad
 
 You can also contribute by working on existing issues. Check the issues pages in Weaviate's GitHub repositories like the [Weaviate Database repository](https://github.com/weaviate/weaviate/issues). Consider starting with issues tagged '[good first issues](https://github.com/weaviate/weaviate/labels/good-first-issue)'.
 
-## Background reading
-
-Navigating a new project can be difficult, and it takes time to become acquainted with the codebase. If you haven't yet, we suggest going through the [Weaviate Quickstart guide](/weaviate/quickstart/index.md).
-
-Here are additional resources that will help you familiarize with Weaviate and its applications:
-
-* [Weaviate Blog](https://weaviate.io/blog) – a series of blog around Weaviate and the overall vector search space.
-* [Weaviate Newsletter](https://newsletter.weaviate.io) – bi-weekly newsletter with updates on the latest and greatest announcements.
-* [Awesome Weaviate](https://github.com/weaviate/awesome-weaviate) – a list of curated examples and tutorials on how to use Weaviate.
-* [Weaviate Examples](https://github.com/weaviate/weaviate-examples) – a repository of various example projects created by the community. Each example shows a different Weaviate use case. You can add your own examples too!
-* [Weaviate's YouTube Channel](https://www.youtube.com/c/SeMI-and-Weaviate/featured) – podcasts and live demos showcasing Weaviate, and providing insight into the vector search space in general.

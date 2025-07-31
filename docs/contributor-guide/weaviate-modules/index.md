@@ -1,10 +1,8 @@
 ---
-title: Overview
+title: Weaviate module system
 sidebar_position: 1
 image: og/contributor-guide/weaviate-modules.jpg
 ---
-
-## Weaviate Module System
 
 import SkipLink from '/src/components/SkipValidationLink'
 
@@ -80,6 +78,7 @@ other benefits from running the container as a separate service. Most notably:
 A module is a custom code that can extend Weaviate by hooking into specific lifecycle hooks. As Weaviate is written in Go, so module code must also be written in Go. However, some existing modules make use of independent services which can be written in any language, as is often the case with vectorizer modules which bring along model inference containers often written in Python.
 
 Modules can be "vectorizers" (defines how the numbers in the vectors are chosen from the data) or other modules providing additional functions like question answering, custom classification, etc. Modules have the following characteristics:
+
 - Naming convention:
   - Vectorizer: `<media>2vec-<name>-<optional>`, for example `text2vec-contextionary`, `image2vec-RESNET` or `text2vec-transformers`.
   - Other modules: `<functionality>-<name>-<optional>`.
@@ -90,3 +89,9 @@ Modules can be "vectorizers" (defines how the numbers in the vectors are chosen 
 - Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](/weaviate/api/graphql/additional-properties.md).
 - A module can add [filters](/weaviate/api/graphql/filters.md) in GraphQL queries.
 - Which vectorizer and other modules are applied to which data classes is configured in the [schema](../../weaviate/manage-collections/vector-config.mdx#specify-a-vectorizer).
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
