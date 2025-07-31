@@ -702,3 +702,19 @@ status = 301
 from = "/weaviate/retriever-vectorizer-modules/text2vec-transformers*"
 to   = "/weaviate/model-providers/transformers/embeddings"
 status = 301
+
+## Collection definition refactoring
+[[redirects]]
+from = "/weaviate/config-refs/schema"
+to   = "/weaviate/config-refs/collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/schema/multi-vector"
+to   = "/weaviate/config-refs/collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/indexing/vector-index"
+status = 301
