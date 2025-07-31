@@ -70,9 +70,9 @@ RQ can be enabled at collection creation time:
 
 To tune RQ, use these quantization and vector index parameters:
 
-| Parameter    | Type    | Default | Details                                                                                  |
-| :----------- | :------ | :------ | :--------------------------------------------------------------------------------------- |
-| `rq`: `bits` | integer | 8       | The number of bits used to quantize each data point. Currently only 8 bits is supported. |
+import RQParameters from '/_includes/configuration/rq-compression-parameters.mdx' ;
+
+<RQParameters />
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

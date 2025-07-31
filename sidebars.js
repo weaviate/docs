@@ -531,13 +531,22 @@ const sidebars = {
           type: "category",
           label: "Collection definition",
           className: "sidebar-item",
+          collapsed: false,
           link: {
             type: "doc",
-            id: "weaviate/config-refs/schema/index",
+            id: "weaviate/config-refs/collections",
           },
           items: [
-            "weaviate/config-refs/schema/multi-vector",
-            "weaviate/config-refs/schema/vector-index",
+            {
+              type: "doc",
+              id: "weaviate/config-refs/indexing/vector-index",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/config-refs/indexing/inverted-index",
+              className: "sidebar-item",
+            },
           ],
         },
         {
