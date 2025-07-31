@@ -440,12 +440,12 @@ status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/indexes"
-to   = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/indexing/vector-index"
 status = 301
 
 [[redirects]]
 from = "/weaviate/configuration/vector-index-type"
-to   = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/indexing/vector-index"
 status = 301
 
 # Deployment redirects - Configuration
@@ -701,4 +701,20 @@ status = 301
 [[redirects]]
 from = "/weaviate/retriever-vectorizer-modules/text2vec-transformers*"
 to   = "/weaviate/model-providers/transformers/embeddings"
+status = 301
+
+## Collection definition refactoring
+[[redirects]]
+from = "/weaviate/config-refs/schema"
+to   = "/weaviate/config-refs/collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/schema/multi-vector"
+to   = "/weaviate/config-refs/collections"
+status = 301
+
+[[redirects]]
+from = "/weaviate/config-refs/schema/vector-index"
+to   = "/weaviate/config-refs/indexing/vector-index"
 status = 301

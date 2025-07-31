@@ -261,6 +261,25 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 <MultiVectorSupport />
 
+#### Adding a named vector after collection creation
+
+:::info Added in `v1.31`
+:::
+
+A named vector can be added to an existing collection definition after collection creation. This allows you to add new vector representations for objects without having to delete and recreate the collection.
+
+When you add a new named vector to an existing collection definition, it's important to understand that **existing objects' new named vector will remain unpopulated**. Only objects created or updated after the named vector addition will receive these new vector embeddings.
+
+This prevents any unintended side effects, such as incurring large vectorization time or costs for all existing objects in a collection.
+
+If you want to populate the new named vector for existing objects, update the object with the existing object UUID and vectors. This will trigger the vectorization process for the new named vector.
+
+<!-- TODO: I wonder we should show an example - maybe once the vectorizer syntax is updated with 1.32 -->
+
+:::caution Not available for legacy (unnamed) vectorizers
+The ability to add a named vector after collection creation is only available for collections configured with named vectors.
+:::
+
 ## Data Schema
 
 Weaviate requires a data schema before you add data. However, you don't have to create a data schema manually. If you don't provide one, Weaviate generates a schema based on the incoming data.

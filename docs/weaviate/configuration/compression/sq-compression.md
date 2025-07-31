@@ -73,14 +73,9 @@ SQ can also be enabled for an existing collection by updating the collection con
 
 To tune SQ, set these `vectorIndexConfig` parameters.
 
-| Parameter | Type | Default | Details |
-| :-- | :-- | :-- | :-- |
-| `sq`: `enabled` | boolean | `false` | Uses SQ when `true`.  <br/><br/> The Python client v4 does not use the `enabled` parameter. To enable SQ with the v4 client, set a `quantizer` in the collection definition. |
-| `sq`: `rescoreLimit` | integer | -1 | The minimum number of candidates to fetch before rescoring. |
-| `sq`: `trainingLimit` | integer | 100000 | The size of the training set to determine scalar bucket boundaries. |
-| `sq`: `cache` | boolean | `false` | Use the vector cache when true. |
-| `vectorCacheMaxObjects` | integer | `1e12` | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](/weaviate/concepts/indexing/vector-index.md#vector-cache-considerations). |
+import SQParameters from '/_includes/configuration/sq-compression-parameters.mdx' ;
 
+<SQParameters />
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -130,7 +125,7 @@ import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
 <MultiVectorCompress />
 
 ## Related pages
-- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+- [Configuration: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
 - [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
 - [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
 - [Tutorial: Schema](/weaviate/starter-guides/managing-collections/index.mdx)
