@@ -8,7 +8,7 @@ This page describes the code-level architecture. The high-level architecture
 depends on the respective module. For example, `media2vec` modules typically
 use a microservice pattern to offload model inference into a separate
 container, [see this example for the `text2vec-transformers` high-level
-architecture](./overview.md#high-level-architecture).
+architecture](./index.md#high-level-architecture).
 
 ## What is a module (from a Golang perspective?)
 
