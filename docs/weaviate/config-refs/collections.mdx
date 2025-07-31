@@ -418,27 +418,33 @@ More details about the `indexFilterable`, `indexSearchable`, `indexRangeFilters`
 
 ### Vector configuration
 
-This table explains the key parameters used to configure vectorization and vector indexing when creating a Weaviate collection. Note that you can either configure a single vector space using the top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`) or multiple named vector spaces using `vectorConfig`, but not both.
+Weaviate supports two approaches for vector configuration:
 
-| Parameter                                                                | Type   | Description                                                                                                                                                                                                                        | Default                 | Mutable       |
-| :----------------------------------------------------------------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :------------ |
-| `vectorizer`                                                             | String | The name of the vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` or `self provided` to disable auto-vectorization and provide vectors manually. [List of available model providers](../model-providers/index.md). | Module-specific default | No            |
-| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | The type of vector index to use. Available values are `hnsw` (default), `flat`, or `dynamic`.                                                                                                                                      | `hnsw`                  | No            |
-| [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | An object containing configuration settings specific to the chosen `vectorIndexType` (e.g., HNSW parameters like `ef`, `maxConnections`).                                                                                          | Index-specific defaults | Partially\*   |
-| `vectorConfig`                                                           | Object | A parent object used to define one or more named vector spaces. Each key within this object is a unique name for a vector space (e.g., "title_vector").                                                                            | `null`                  | Partially\*\* |
-| ↪ `vectorConfig.<name>.vectorizer`                                       | Object | A vectorizer configuration specific to the named vector. It defines the module and which properties to vectorize (e.g., `{"text2vec-openai": {"properties": ["title"]}}`).                                                         | (Required)              | No            |
-| [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | The index type (`hnsw`, `flat`, etc.) for this specific named vector.                                                                                                                                                              | `hnsw`                  | No            |
-| [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | The configuration for the index of this specific named vector.                                                                                                                                                                     | Index-specific defaults | Partially\*   |
+- **Single vector collections**: One vector space per object using top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`)
+- **Multiple named vectors**: Multiple vector spaces per object using the `vectorConfig` parameter (**recommended**)
 
-\* See [vector index mutable parameters](./indexing/vector-index.mdx)<br/>
-\*\* New [named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
+You cannot combine both approaches in the same collection.
 
-:::info Single vector vs multiple named vectors
+:::tip We recommend using `vectorConfig`
 
-- **For a simple setup with one vector per object:** You can use the top-level `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` parameters.
-- **For advanced setups with multiple named vectors per object:** Use the `vectorConfig` object to define each named vector space and its specific configuration. You cannot use the top-level parameters if you use `vectorConfig`.
+Using the `vectorConfig` parameter allows you to start with one vector per collection and adding [new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors) afterward.
 
 :::
+
+#### Vector configuration parameters
+
+| Parameter                                                                | Type   | Description                                                                                                                                                   | Default                 | Mutable       |
+| :----------------------------------------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------- | :------------ |
+| `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | Module-specific default | No            |
+| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, or `dynamic`                                                                                                     | `hnsw`                  | No            |
+| [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | Configuration settings for your chosen `vectorIndexType`                                                                                                      | Index-specific defaults | Partially\*   |
+| `vectorConfig`                                                           | Object | **Alternative to above**: Define multiple named vector spaces                                                                                                 | `null`                  | Partially\*\* |
+| ↪ `vectorConfig.<name>.vectorizer`                                       | Object | Vectorizer config for this named vector (e.g., `{"text2vec-openai": {"properties": ["title"]}}`)                                                              | (Required)              | No            |
+| [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | Index type for this named vector                                                                                                                              | `hnsw`                  | No            |
+| [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | Index configuration for this named vector                                                                                                                     | Index-specific defaults | Partially\*   |
+
+\* See [vector index mutable parameters](./indexing/vector-index.mdx)  
+\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
 
 #### Single vector collections
 
@@ -446,7 +452,7 @@ If you don't explicitly define a [named vector](#named-vectors) in your collecti
 
 To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
 
-#### Code example - How to create single vector collection
+##### Code example - How to create single vector collection
 
 This code example shows how to configure the vectorizer parameters for a single vector collection through a client library:
 
@@ -497,13 +503,7 @@ import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
 
-Collections can have multiple named vectors.
-
-The vectors in a collection can have their own configurations. Each vector space can set its own index, its own compression algorithm, and its own vectorizer. This means you can use different vectorization models, and apply different distance metrics, to the same object.
-
-To work with named vectors, adjust your queries to specify a target vector for [vector search](/weaviate/search/similarity#named-vectors) or [hybrid search](/weaviate/search/hybrid#named-vectors) queries.
-
-#### Code example - How to create multiple named vectors
+##### Code example - How to create multiple named vectors
 
 This code example shows how to configure multiple named vectors through a client library:
 
