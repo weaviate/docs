@@ -107,7 +107,7 @@ An example of a complete collection object including properties:
 
 </details>
 
-#### Code example
+#### Code example - How to create a collection
 
 This code example shows how to configure the collection parameters through a client library:
 
@@ -220,7 +220,7 @@ An example of a complete property object:
 
 </details>
 
-#### Code example
+#### Code example - How to configure collection properties
 
 This code example shows how to configure the property parameters through a client library:
 
@@ -435,14 +435,20 @@ This table explains the key parameters used to configure vectorization and vecto
 
 :::info Single vector vs multiple named vectors
 
-- **For a simple setup with one vector per object:** Use the top-level `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` parameters.
+- **For a simple setup with one vector per object:** You can use the top-level `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` parameters.
 - **For advanced setups with multiple named vectors per object:** Use the `vectorConfig` object to define each named vector space and its specific configuration. You cannot use the top-level parameters if you use `vectorConfig`.
 
 :::
 
-#### Code example
+#### Single vector collections
 
-This code example shows how to configure the vectorizer parameters through a client library:
+If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a _single vector_ collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
+
+To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
+
+#### Code example - How to create single vector collection
+
+This code example shows how to configure the vectorizer parameters for a single vector collection through a client library:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -453,7 +459,7 @@ This code example shows how to configure the vectorizer parameters through a cli
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Vectorizer"
@@ -476,14 +482,72 @@ This code example shows how to configure the vectorizer parameters through a cli
       endMarker="// END CreateCollectionWithVectorizer"
       language="gonew"
     />
-  </TabItem> -->
+  </TabItem>
 </Tabs>
 
 :::tip Further resources
 
-For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) guide.
 
 :::
+
+#### Multiple vector embeddings (named vectors) {#named-vectors}
+
+import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
+
+<MultiVectorSupport />
+
+Collections can have multiple named vectors.
+
+The vectors in a collection can have their own configurations. Each vector space can set its own index, its own compression algorithm, and its own vectorizer. This means you can use different vectorization models, and apply different distance metrics, to the same object.
+
+To work with named vectors, adjust your queries to specify a target vector for [vector search](/weaviate/search/similarity#named-vectors) or [hybrid search](/weaviate/search/hybrid#named-vectors) queries.
+
+#### Code example  - How to create multiple named vectors
+
+This code example shows how to configure multiple named vectors through a client library:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START MultipleVectors"
+      endMarker="# END MultipleVectors"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BasicNamedVectors"
+      endMarker="// END BasicNamedVectors"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Further resources
+
+For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) guide.
+
+:::
+
 
 ---
 
@@ -550,7 +614,7 @@ An example of a complete `replicationConfig` object:
 
 </details>
 
-#### Code example
+#### Code example - How to configure replication
 
 This code example shows how to configure the replication parameters through a client library:
 
@@ -632,7 +696,7 @@ An example of a complete `shardingConfig` object:
 
 </details>
 
-#### Code example
+#### Code example - How to configure sharding
 
 This code example shows how to configure the sharding parameters through a client library:
 
@@ -697,7 +761,7 @@ To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyCon
 | `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. Added in `v1.25`                                              | `false` | Yes     |
 | `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. Added in `v1.25.2` | `false` | Yes     |
 
-#### Code example
+#### Code example - How to configure multi-tenancy
 
 This code example shows how to configure the multi-tenancy parameters through a client library:
 
@@ -761,7 +825,7 @@ import CollectionMutableParameters from "/_includes/collection-mutable-parameter
 
 </details>
 
-After you create a collection, you can [add new properties](../manage-collections/collection-operations.mdx#add-a-property). You cannot modify existing properties after you create the collection. You can also [add new named vectors](./vectorization.mdx#adding-a-named-vector-after-collection-creation).
+After you create a collection, you can [add new properties](../manage-collections/collection-operations.mdx#add-a-property). You cannot modify existing properties after you create the collection. You can also [add new named vectors](../concepts/data.md#adding-a-named-vector-after-collection-creation).
 
 ## Auto-schema
 

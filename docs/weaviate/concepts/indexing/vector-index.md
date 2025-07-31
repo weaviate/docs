@@ -236,7 +236,7 @@ All of [the distance metrics](/weaviate/config-refs/distances.md), such as cosin
 
 ### How to configure the vector index type in Weaviate?
 
-The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/vectorization.mdx).
+The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/indexing/vector-index.mdx).
 
 ### When to skip indexing
 
@@ -258,7 +258,7 @@ The [ANN benchmark page](/weaviate/benchmarks/ann.md) contains a wide variety of
 
 :::info Related pages
 - [Concepts: Vector quantization (compression)](../vector-quantization.md)
-- [Configuration: Vector index](../../config-refs/vectorization.mdx)
+- [Configuration: Vector index](../../config-refs/indexing/vector-index.mdx)
 - [Configuration: Schema (Configure semantic indexing)](../../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 :::
 

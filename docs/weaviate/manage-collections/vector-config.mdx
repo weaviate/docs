@@ -263,7 +263,7 @@ Named vectors can be added to existing collection definitions with named vectors
 </Tabs>
 
 :::caution Objects aren't automatically revectorized
-Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../config-refs/vectorization.mdx#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
+Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../concepts/data.md#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
 :::
 
 ## Define multi-vector embeddings (e.g. ColBERT, ColPali)
@@ -574,7 +574,7 @@ If you choose to bring your own vectors, you should specify the `distance metric
 For details on the configuration parameters, see the following:
 
 - [Distances](../config-refs/distances.md)
-- [Vector indexes](../config-refs/vectorization.mdx)
+- [Vector indexes](../config-refs/indexing/vector-index.mdx)
 
 </details>
 

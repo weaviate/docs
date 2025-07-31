@@ -145,7 +145,7 @@ To create a collection without any indexes, skip indexing on the collection and 
 
 :::info Related pages
 - [Concepts: Vector Indexing](./vector-index.md)
-- [Configuration: Vector index](../../config-refs/vectorization.mdx)
+- [Configuration: Vector index](../../config-refs/indexing/vector-index.mdx)
 :::
 
 ## Questions and feedback
