@@ -1,6 +1,7 @@
 ---
 title: Notes and best practices
 sidebar_position: 2
+description: "Python client best practices, optimization tips, and recommended implementation patterns for Weaviate."
 image: og/docs/client-libraries.jpg
 ---
 
@@ -125,6 +126,12 @@ Some of the `connect` helper functions take authentication credentials. For exam
   language="py"
 />
 
+:::warning 
+
+Connecting to Weaviate Cloud (WCD) using OIDC is deprecated and will be removed in the near future. Please use API key authentication instead.
+
+:::
+
 </TabItem>
 </Tabs>
 
@@ -144,6 +151,25 @@ When you instantiate a connection directly, you have to call the `.connect()` me
   text={PythonCode}
   startMarker="# DirectInstantiationFull"
   endMarker="# END DirectInstantiationFull"
+  language="py"
+/>
+
+### Using Custom SSL Certificates
+
+The Python client doesn't directly support passing SSL certificates. If you need to work with self-signed certificates (e.g. for enterprise environments), you have two options:
+
+#### Option 1: Add the certificate to the underlying libraries
+
+You can add the custom SSL certificates to the underlying libraries such as `certifi` that the Weaviate client library uses.
+
+#### Option 2: Set the environment variables
+
+Alternatively, you can set the environment variables `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` and `SSL_CERT_FILE` to the path of the certificate file. At instantiation, also set `additional_config=AdditionalConfig(trust_env=True)`. Otherwise, the client library will not use the environment variables.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START CustomSSLExample"
+  endMarker="# END CustomSSLExample"
   language="py"
 />
 

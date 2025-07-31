@@ -5,12 +5,13 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from "prism-react-renderer";
+import commonRoomScript from "./src/scripts/commonroom.js";
 
 const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
 const math = require("remark-math");
 const katex = require("rehype-katex");
-const siteRedirects = require('./site.redirects');
+const siteRedirects = require("./site.redirects");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -30,9 +31,12 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
+
+  headTags: [commonRoomScript],
+
   plugins: [
     "docusaurus-plugin-sass",
-    ['@docusaurus/plugin-client-redirects', siteRedirects],
+    ["@docusaurus/plugin-client-redirects", siteRedirects],
     [
       "@scalar/docusaurus",
       {
@@ -47,6 +51,20 @@ const config = {
           // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
           // hiddenClients: [...],
         },
+      },
+    ],
+    [
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        siteTitle: "Weaviate Documentation",
+        siteDescription:
+          "Comprehensive guides and references for Weaviate, the open-source vector database.",
+        depth: 3,
+        content: {
+          //excludeRoutes: ["/academy/**", "/contributor-guide/**"], // Throwing an error in GitHub Actions
+          enableMarkdownFiles: false,
+        },
+        //logLevel: 3, // Uncomment to enable debug logging
       },
     ],
   ],
@@ -124,7 +142,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ['java'],
+        additionalLanguages: ["java"],
       },
       docs: {
         sidebar: {
