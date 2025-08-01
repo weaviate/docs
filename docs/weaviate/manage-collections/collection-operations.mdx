@@ -91,10 +91,12 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
   </TabItem>
 </Tabs>
 
-:::tip Avoid creating too many collections
-Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants.
+:::tip Production ready collections
 
-For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
+- **Manually define you data schema**: 
+  Avoid using the [`auto-schema`](../config-refs/collections.mdx#auto-schema) feature, instead, manually [define the properties for your collection](#create-a-collection-and-define-properties). 
+- **Avoid creating too many collections**: 
+  Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants. For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
 :::
 
 <!--
@@ -180,6 +182,73 @@ For details, see:
 </TabItem>
 
 </Tabs>
+
+## Create a collection with a vectorizer
+
+Specify a `vectorizer` for a collection that will generate vector embeddings when creating objects and executing vector search queries.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START Vectorizer"
+      endMarker="# END Vectorizer"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START Vectorizer"
+    endMarker="# END Vectorizer"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+:::info Vectorizer configuration
+
+Find out more about the vectorizer and vector index configuration in [Manage collections: Vectorizer and vector index](./vector-config.mdx).
+
+:::
 
 ## Disable auto-schema
 
@@ -627,7 +696,7 @@ Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#i
 ## Further resources
 
 - [Manage collections: Vectorizer and vector index](./vector-config.mdx)
-- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
+- [References: Collection definition](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
     API References: REST: Schema

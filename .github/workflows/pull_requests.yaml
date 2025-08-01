@@ -7,6 +7,8 @@ jobs:
   Validate-links:
     name: Validate links
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_CONTAINER_ID: ${{ secrets.GOOGLE_CONTAINER_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
