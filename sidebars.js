@@ -1313,6 +1313,7 @@ const sidebars = {
       items: [
         "integrations/compute-infrastructure/modal/index",
         "integrations/compute-infrastructure/replicate/index",
+        "integrations/compute-infrastructure/replicated/index"
       ],
     },
     {
