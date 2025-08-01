@@ -67,6 +67,12 @@ const config = {
         //logLevel: 3, // Uncomment to enable debug logging
       },
     ],
+    [
+      "@docusaurus/plugin-google-tag-manager",
+      {
+        containerId: process.env.GOOGLE_CONTAINER_ID || "None",
+      },
+    ],
   ],
   markdown: {
     mermaid: true,
