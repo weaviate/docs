@@ -86,9 +86,7 @@ The following guidelines help us write clean and maintainable code:
 
 ## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 

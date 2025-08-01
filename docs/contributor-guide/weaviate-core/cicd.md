@@ -39,32 +39,14 @@ In practice this means:
   prepared to merge your contribution even if it's not fully complete yet. We
   can always hide unfinished features from users using feature toggles, etc.
 
-## Semantic Versioning
+## Semantic versioning
 
 We generally aim to avoid breaking changes. Having to update a major version
 frequently is annoying - but it is even more annoying for the user to have to
 try to fix a bug themselves.
 
 Weaviate uses semantic versioning to indicate to users that an upgrade path is
-safe. Having said that, pre-`v1.0.0`, there were some special situations:
-
-### Versions 0.x.y
-
-Since we have no good way of indicating breaking changes without raising the
-major version, we have come up with the following scheme while we are below
-version `v1.0.0`:
-
-* Both patches and new features are indicated in the patch version. E.g.
-  `0.22.18` might contain new (non-breaking) features as well as fixes over
-  `0.22.17`.
-* Breaking changes (which should happen very rarely) increase the minor
-  version. E.g. `0.23.0` will contain breaking changes over `0.22.x`. This
-  workaround will no longer be required once version `v1.0.0` is published and
-  proper semantic versioning can be done.
-
-### Versions 1.x.y and larger
-
-Versions v1.0.0 and onwards use Semantic Versioning as it was intended.
+safe. 
 
 ## Deprecations
 
@@ -116,9 +98,7 @@ adhere to the following steps:
 
 ## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 

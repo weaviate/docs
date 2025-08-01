@@ -75,9 +75,7 @@ To make queries from a web interface, use the [WCD console](https://console.weav
 
 ## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 

@@ -65,9 +65,7 @@ The cached resolver is a helper struct with a two-step process:
 
 ## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 

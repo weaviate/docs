@@ -44,18 +44,25 @@ Categorize content using these types:
 
 The documentation is organized into key sections. When contributing, understand where your content fits:
 
-- **Weaviate Database - `/docs/weaviate`:** Get started, How-to manuals & guides, Model integrations, Reference & APIs, Concepts, Recipes, Other (Release notes, Benchmarks, Modules, FAQ, Glossary, Example datasets).
-- **Deployment docs - `/docs/deploy`:** Get started, Configuration, Production guides, Tutorials, FAQs, Migration.
-- **Weaviate Agents - `/docs/agents`:** Documentation, Recipes.
-- **Weaviate Cloud - `/docs/cloud`:** Get started, Weaviate embeddings, Account management.
-- **Academy - `/docs/academy`:** Get started.
-- **Integrations - `/docs/integrations`:** Integrations for working with Weaviate.
-- **Contributor guide - `/docs/contributor-guide`:** Get started, Weaviate database, Weaviate modules, Weaviate clients, Contextionary.
+- **Weaviate Database - `/docs/weaviate`:** Contains getting started tutorials, how-to guides for collection management and search operations, integrations with AI model providers, API reference documentation, technical concepts explanations, code examples for common tasks, release notes, performance benchmarks, module documentation, FAQ, glossary, and sample datasets.
+
+- **Deployment docs - `/docs/deploy`:** Documentation for deploying and operating Weaviate instances. Covers installation methods including Docker and Kubernetes, configuration options for authentication and performance, production deployment patterns, scaling and high availability setups, cloud provider-specific guides, troubleshooting information, and version migration procedures.
+
+- **Weaviate Agents - `/docs/agents`:** Documentation for Weaviate's agent framework. Includes setup instructions, usage examples, and implementation patterns for building AI agents that can interact with Weaviate databases.
+
+- **Weaviate Cloud - `/docs/cloud`:** Documentation for Weaviate's managed cloud service. Contains account setup procedures, Weaviate embeddings service documentation, billing and subscription management, service limitations, and cloud-specific configuration options.
+
+- **Academy - `/docs/academy`:** Educational content and learning materials for Weaviate concepts and implementations. Provides structured learning paths and tutorials for different skill levels.
+
+- **Integrations - `/docs/integrations`:** Documentation for third-party tools and frameworks that work with Weaviate. Covers client libraries, data import tools, visualization platforms, and other ecosystem integrations.
+
+- **Contributor guide - `/docs/contributor-guide`:** Documentation for contributing to Weaviate's open source projects. Includes development setup instructions, coding standards, testing procedures, and contribution workflows for the database, modules, client libraries, and contextionary components.
 
 ---
 
 ## Page layout
 
+- **frontmatter:** The `title` and [`description`](./llms.mdx#best-practices-for-page-descriptions) fields are required. 
 - **Top-level headings:** Do not include redundant top-level headings like `## Introduction` or `## Overview` within the body content; the page title serves this purpose.
 - **Related pages:** Place links to related pages at the **bottom of the page** within a `## Further resources` section.
 - **QA section:** Most pages should and with a `## Questions and feedback` section.
@@ -78,24 +85,25 @@ The documentation is organized into key sections. When contributing, understand 
   - Be aware that H4 and lower headings will not appear in the right-hand-side table of contents.
 - **Code elements:**
   - Use **code font** for all code-related text like method names, environment variables, etc.
-- **Punctuation:** Use **[serial commas](https://developers.google.com/style/commas)**.
+- **Punctuation:** Use [serial commas](https://developers.google.com/style/commas).
 - **American English:** Assume US style for dates, numbers, and dialect for English spelling and usage. Write for a global audience.
 
 ---
 
 ## Terminology
 
-Use clear, direct language. Define acronyms and abbreviations on first use. At least on the **first mention** of a Weaviate method or term on a page, **link to its corresponding reference, concept page or how-to page.**.
+Use clear, direct language. Define acronyms and abbreviations on first use. At least on the **first mention** of a Weaviate method or term on a page, **link to its corresponding reference, concept page or how-to page**.
 
 ---
 
 ## Visual assets
 
-- **Screenshots:** **Avoid using screenshots** due to maintenance challenges. An exception to this rule are the [Weaviate Cloud](/cloud) docs where the WCD console needs to be documented.
+- **Images**
+  - **Dark/light mode images:** Use the [`ThemedImage` component](./development.mdx#themedimage-component) for specifying both light and dark mode variants of the same image.
+  - **Social/preview images:** Use the `image:` frontmatter for social media previews and images available in `static/og/`.
+  - **Screenshots:** Avoid using too many screenshots due to maintenance challenges. An exception to this rule are the [Weaviate Cloud](/cloud) docs where the WCD console needs to be documented visually as well.
 - **Diagrams:** Diagrams are acceptable where they add clarity. We use [Excalidraw](https://app.excalidraw.com/) and [Mermaid](https://mermaid.js.org/).
-- **Videos:** Videos can supplement written documentation but should **not replace it**. Ensure videos are kept up-to-date as the UI evolves.
-- **Dark/light mode images:** Use the [`ThemedImage` component](./development.mdx#themedimage-component) for specifying both light and dark mode variants of the same image.
-- **Social/preview images:** Use the `image:` frontmatter for social media previews and images available in `static/og/`.
+- **Videos:** Videos can supplement written documentation but should not replace it. Ensure videos are kept up-to-date as the UI evolves.
 
 :::info
 

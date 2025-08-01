@@ -718,3 +718,45 @@ status = 301
 from = "/weaviate/config-refs/schema/vector-index"
 to   = "/weaviate/config-refs/indexing/vector-index"
 status = 301
+
+## Contributor guide refactoring
+
+[[redirects]]
+from = "/contributor-guide/getting-started"
+to   = "/contributor-guide"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/getting-started/improving-docs"
+to   = "/contributor-guide/weaviate-docs"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/getting-started/writing-blogs"
+to   = "/contributor-guide"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/getting-started/git-and-github"
+to   = "/contributor-guide"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/getting-started/commit-guidelines"
+to   = "/contributor-guide"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/weaviate-modules/overview"
+to   = "/contributor-guide/weaviate-modules"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/contextionary"
+to   = "/contributor-guide"
+status = 301
+
+[[redirects]]
+from = "/contributor-guide/contextionary/classification-benchmarks"
+to   = "/contributor-guide"
+status = 301
