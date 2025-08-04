@@ -1,11 +1,11 @@
 ---
 title: Text Embeddings
 sidebar_position: 20
-image: og/docs/integrations/provider_integrations_gpt4all.jpg
-# tags: ['model providers', 'gpt4all', 'embeddings']
+image: og/docs/integrations/provider_integrations_model2vec.jpg
+# tags: ['model providers', 'model2vec', 'embeddings']
 ---
 
-# GPT4All Embeddings with Weaviate
+# Model2Vec Embeddings with Weaviate
 
 
 import Tabs from '@theme/Tabs';
@@ -16,28 +16,26 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with GPT4All's models allows you to access their models' capabilities directly from Weaviate.
+Weaviate's integration with Model2Vec's models allows you to access their models' capabilities directly from Weaviate.
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an GPT4All embedding model, and Weaviate will generate embeddings for various operations using the specified model via the GPT4All inference container. This feature is called the *vectorizer*.
+[Configure a Weaviate vector index](#configure-the-vectorizer) to use an Model2Vec embedding model, and Weaviate will generate embeddings for various operations using the specified model via the Model2Vec inference container. This feature is called the *vectorizer*.
 
 At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
 
-![Embedding integration illustration](../_includes/integration_gpt4all_embedding.png)
+![Embedding integration illustration](../_includes/integration_model2vec_embedding.png)
 
 This module is optimized for CPU using the [`ggml` library](https://github.com/ggerganov/ggml), allowing for fast inference even without a GPU.
 
 ## Requirements
 
-Currently, the GPT4All integration is only available for `amd64/x86_64` architecture devices, as the `gpt4all` library currently does not support ARM devices, such as Apple M-series.
-
 ### Weaviate configuration
 
-Your Weaviate instance must be configured with the GPT4All vectorizer integration (`text2vec-gpt4all`) module.
+Your Weaviate instance must be configured with the Model2Vec vectorizer integration (`text2vec-model2vec`) module.
 
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running GPT4All instance.
+This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running Model2Vec instance.
 
 </details>
 
@@ -51,9 +49,9 @@ This integration is not available for Weaviate Cloud (WCD) serverless instances,
 
 #### Configure the integration
 
-To use this integration, you must configure the container image of the GPT4All model, and the inference endpoint of the containerized model.
+To use this integration, you must configure the container image of the Model2Vec model, and the inference endpoint of the containerized model.
 
-The following example shows how to configure the GPT4All integration in Weaviate:
+The following example shows how to configure the Model2Vec integration in Weaviate:
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
@@ -72,28 +70,28 @@ services:
   weaviate:
     # Other Weaviate configuration
     environment:
-      GPT4ALL_INFERENCE_API: http://text2vec-gpt4all:8080  # Set the inference API endpoint
-  text2vec-gpt4all:  # Set the name of the inference container
-    image: cr.weaviate.io/semitechnologies/gpt4all-inference:all-MiniLM-L6-v2
+      MODEL2VEC_INFERENCE_API: http://text2vec-model2vec:8080  # Set the inference API endpoint
+  text2vec-model2vec:  # Set the name of the inference container
+    image: cr.weaviate.io/semitechnologies/model2vec-inference:minishlab-potion-base-32M
 ```
 
-- `GPT4ALL_INFERENCE_API` environment variable sets the inference API endpoint
-- `text2vec-gpt4all` is the name of the inference container
+- `MODEL2VEC_INFERENCE_API` environment variable sets the inference API endpoint
+- `text2vec-model2vec` is the name of the inference container
 - `image` is the container image
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the GPT4All integration in Weaviate by adding or updating the `text2vec-gpt4all` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Configure the Model2Vec integration in Weaviate by adding or updating the `text2vec-model2vec` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
 
 ```yaml
 modules:
 
-  text2vec-gpt4all:
+  text2vec-model2vec:
 
     enabled: true
-    tag: all-MiniLM-L6-v2
-    repo: semitechnologies/gpt4all-inference
+    tag: minishlab-potion-base-8M
+    repo: semitechnologies/model2vec-inference
     registry: cr.weaviate.io
 ```
 
@@ -104,7 +102,7 @@ See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/mas
 
 ### Credentials
 
-As this integration connects to a local GPT4All container, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+As this integration connects to a local Model2Vec container, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
 
 <Tabs groupId="languages">
 
@@ -130,14 +128,14 @@ As this integration connects to a local GPT4All container, no additional credent
 
 ## Configure the vectorizer
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a GPT4All embedding model:
+[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Model2Vec embedding model:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START BasicVectorizerGPT4All"
-      endMarker="# END BasicVectorizerGPT4All"
+      startMarker="# START BasicVectorizerModel2Vec"
+      endMarker="# END BasicVectorizerModel2Vec"
       language="py"
     />
   </TabItem>
@@ -145,15 +143,15 @@ As this integration connects to a local GPT4All container, no additional credent
   <TabItem value="js" label="JS/TS API v3">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START BasicVectorizerGPT4All"
-      endMarker="// END BasicVectorizerGPT4All"
+      startMarker="// START BasicVectorizerModel2Vec"
+      endMarker="// END BasicVectorizerModel2Vec"
       language="ts"
     />
   </TabItem>
 
 </Tabs>
 
-Currently, the only available model is [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+Currently, the only available model is [`minishlab-potion-base-8M`](https://huggingface.co/minishlab/potion-base-8M).
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -196,9 +194,9 @@ If you already have a compatible model vector available, you can provide it dire
 
 ## Searches
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified GPT4All model.
+Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Model2Vec model.
 
-![Embedding integration at search illustration](../_includes/integration_gpt4all_embedding_search.png)
+![Embedding integration at search illustration](../_includes/integration_model2vec_embedding_search.png)
 
 ### Vector (near text) search
 
@@ -270,8 +268,8 @@ The query below returns the `n` best scoring objects from the database, set by `
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START FullVectorizerGPT4All"
-      endMarker="# END FullVectorizerGPT4All"
+      startMarker="# START FullVectorizerModel2Vec"
+      endMarker="# END FullVectorizerModel2Vec"
       language="py"
     />
   </TabItem>
@@ -279,8 +277,8 @@ The query below returns the `n` best scoring objects from the database, set by `
   <TabItem value="js" label="JS/TS API v3">
     <FilteredTextBlock
       text={TSCode}
-      startMarker="// START FullVectorizerGPT4All"
-      endMarker="// END FullVectorizerGPT4All"
+      startMarker="// START FullVectorizerModel2Vec"
+      endMarker="// END FullVectorizerModel2Vec"
       language="ts"
     />
   </TabItem>
@@ -302,7 +300,7 @@ Once the integrations are configured at the collection, the data management and 
 
 ### External resources
 
-- [GPT4All documentation](https://docs.gpt4all.io/)
+- [Model2Vec documentation](https://minish.ai/packages/model2vec/introduction)
 
 ## Questions and feedback
 

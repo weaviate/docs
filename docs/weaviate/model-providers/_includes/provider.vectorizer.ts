@@ -7,7 +7,7 @@ import weaviate from 'weaviate-client';
 
 async function main() {
 
-  
+
 const client = await weaviate.connectToLocal({
   headers: {
     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY || '',
@@ -727,7 +727,7 @@ await client.collections.delete('DemoCollection');
 // START BasicColBERTVectorizerJinaAI
 await client.collections.create({
   name: 'DemoCollection',
-  vectorizers: [ 
+  vectorizers: [
     weaviate.configure.multiVectors.text2VecJinaAI({
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -742,7 +742,7 @@ await client.collections.delete('DemoCollection');
 // START ColBERTVectorizerJinaCustomModel
 await client.collections.create({
   name: 'DemoCollection',
-  vectorizers: [ 
+  vectorizers: [
     weaviate.configure.multiVectors.text2VecJinaAI({
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -758,7 +758,7 @@ await client.collections.delete('DemoCollection');
 // START FullColBERTVectorizerJinaAI
 await client.collections.create({
   name: 'DemoCollection',
-  vectorizers: [ 
+  vectorizers: [
     weaviate.configure.multiVectors.text2VecJinaAI({
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -825,7 +825,7 @@ await client.collections.delete('DemoCollection');
 // START BasicVectorizerNVIDIA
 await client.collections.create({
   name: 'DemoCollection',
-  vectorizers: [ 
+  vectorizers: [
     weaviate.configure.vectors.text2VecNvidia({
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -841,7 +841,7 @@ await client.collections.delete('DemoCollection');
 // START VectorizerNVIDIACustomModel
 await client.collections.create({
   name: 'DemoCollection',
-  vectorizers: [ 
+  vectorizers: [
     weaviate.configure.vectors.text2VecNvidia({
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -858,7 +858,7 @@ await client.collections.delete('DemoCollection');
 // START FullVectorizerNVIDIA
 await client.collections.create({
   name: 'DemoCollection',
-  vectorizers: [ 
+  vectorizers: [
     weaviate.configure.vectors.text2VecNvidia({
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -1586,6 +1586,17 @@ await client.collections.create({
   // Additional parameters not shown
 });
 // END FullVectorizerGPT4All
+
+// START BasicVectorizerModel2Vec
+// Coming soon
+// END BasicVectorizerModel2Vec
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START FullVectorizerModel2Vec
+// Coming soon
+// END FullVectorizerModel2Vec
 
 // START BasicMMVectorizerCLIP
 await client.collections.create({

@@ -1476,6 +1476,46 @@ client.collections.create(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicVectorizerModel2Vec
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_model2vec(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerModel2Vec
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerModel2Vec
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_model2vec(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerModel2Vec
+
+# clean up
+client.collections.delete("DemoCollection")
+
 # START BasicMMVectorizerCLIP
 from weaviate.classes.config import Configure, DataType, Multi2VecField, Property
 
