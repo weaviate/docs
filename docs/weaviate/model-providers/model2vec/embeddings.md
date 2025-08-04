@@ -285,7 +285,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-Currently, the only available model is [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+Currently, the only available model is [`minishlab-potion-base-8M`](https://huggingface.co/minishlab/potion-base-8M).
 
 ## Further resources
 
