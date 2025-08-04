@@ -24,8 +24,6 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 
 ![Embedding integration illustration](../_includes/integration_model2vec_embedding.png)
 
-This module is optimized for CPU using the [`ggml` library](https://github.com/ggerganov/ggml), allowing for fast inference even without a GPU.
-
 ## Requirements
 
 ### Weaviate configuration
