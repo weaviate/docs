@@ -149,7 +149,7 @@ As this integration connects to a local Model2Vec container, no additional crede
 
 </Tabs>
 
-Currently, the only available model is [`minishlab-potion-base-8M`](https://huggingface.co/minishlab/potion-base-8M).
+Note that for this integration, you specify the model to be used in the Weaviate configuration file.
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
@@ -285,7 +285,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 ### Available models
 
-Currently, the only available model is [`minishlab-potion-base-8M`](https://huggingface.co/minishlab/potion-base-8M).
+For the latest list of available models, see the Docker Hub tags for the [model2vec-inference](https://hub.docker.com/r/semitechnologies/model2vec-inference/tags) container.
 
 ## Further resources
 
