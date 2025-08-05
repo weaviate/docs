@@ -5,6 +5,9 @@ image: og/docs/integrations/provider_integrations_model2vec.jpg
 # tags: ['model providers', 'model2vec', 'embeddings']
 ---
 
+:::info Added in `v1.31.0`
+:::
+
 # Model2Vec Embeddings with Weaviate
 
 
