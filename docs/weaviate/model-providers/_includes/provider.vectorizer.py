@@ -1506,6 +1506,7 @@ client.collections.create(
         Configure.Vectors.text2vec_model2vec(
             name="title_vector",
             source_properties=["title"],
+            inference_url="<custom-inference-url>",  # Default - configuration defined through container, e.g. Docker compose file
         )
     ],
     # highlight-end

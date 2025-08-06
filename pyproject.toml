@@ -16,6 +16,6 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "tqdm>=4.67.1",
     "weaviate-agents>=0.12.0",
-    "weaviate-client>=4.16.4",
-    "weaviate-demo-datasets>=0.6.4",
+    "weaviate-client>=4.16.6",
+    "weaviate-demo-datasets>=0.7.0",
 ]
