@@ -9,3 +9,4 @@ Compute Infrastructure solutions provide managed platforms for computationally i
 Learn about how Weaviate integrates with these solutions:
 * [Modal](/integrations/compute-infrastructure/modal)
 * [Replicate](/integrations/compute-infrastructure/replicate)
+* [Replicated](/integrations/compute-infrastructure/replicated)
