@@ -12,11 +12,11 @@ This style guide provides a framework for creating clear, consistent, and user-f
 
 ### Audience
 
-Our documentation serves **developers, data scientists, students, and Weaviate administrators** across various experience levels. When creating quickstart guides, we primarily focus on developers, data scientists, and students, while also considering system evaluators who may be assessing Weaviate for their organizations. We assume readers have **minimal knowledge of vector databases** and provide appropriate context and explanations to help them succeed.
+Our documentation serves **AI developers** across various experience levels. When creating quickstart guides, we primarily focus on developers, data scientists, and students, while also considering system evaluators who may be assessing Weaviate for their organizations. We assume readers have **minimal knowledge of vector databases** and provide appropriate context and explanations to help them succeed.
 
 ### Voice & tone
 
-Address readers directly using **second person ("you")** to create a personal, engaging experience. Maintain a **conversational, non-academic, and friendly tone** throughout all documentation. Avoid overly formal language that creates distance, but also steer clear of frivolous content that undermines credibility. **Adjust the assumed level of user knowledge** based on the specific page content, providing more foundational explanations in introductory materials and allowing for greater technical depth in advanced topics.
+Address readers directly using **active voice** and the **second person ("you")** to create a personal, engaging experience. Maintain a **conversational, non-academic, and friendly tone** throughout all documentation. Avoid overly formal language that creates distance, but also steer clear of frivolous content that undermines credibility. **Adjust the assumed level of user knowledge** based on the specific page content, providing more foundational explanations in introductory materials and allowing for greater technical depth in advanced topics.
 
 ### Inclusion & accessibility
 
@@ -40,7 +40,7 @@ Categorize content using these types:
 
 ---
 
-## Documentation structure
+## Documentation directory structure
 
 The documentation is organized into key sections. When contributing, understand where your content fits:
 
@@ -62,7 +62,7 @@ The documentation is organized into key sections. When contributing, understand 
 
 ## Page layout
 
-- **frontmatter:** The `title` and [`description`](./llms.mdx#best-practices-for-page-descriptions) fields are required. 
+- **Frontmatter:** The `title` and [`description`](./llms.mdx#best-practices-for-page-descriptions) fields are required. 
 - **Top-level headings:** Do not include redundant top-level headings like `## Introduction` or `## Overview` within the body content; the page title serves this purpose.
 - **Related pages:** Place links to related pages at the **bottom of the page** within a `## Further resources` section.
 - **QA section:** Most pages should and with a `## Questions and feedback` section.
@@ -86,7 +86,7 @@ The documentation is organized into key sections. When contributing, understand 
 - **Code elements:**
   - Use **code font** for all code-related text like method names, environment variables, etc.
 - **Punctuation:** Use [serial commas](https://developers.google.com/style/commas).
-- **American English:** Assume US style for dates, numbers, and dialect for English spelling and usage. Write for a global audience.
+- **American English:** Assume US dialect for English spelling and usage. Write for a global audience.
 
 ---
 
@@ -102,7 +102,7 @@ Use clear, direct language. Define acronyms and abbreviations on first use. At l
   - **Dark/light mode images:** Use the [`ThemedImage` component](./development.mdx#themedimage-component) for specifying both light and dark mode variants of the same image.
   - **Social/preview images:** Use the `image:` frontmatter for social media previews and images available in `static/og/`.
   - **Screenshots:** Avoid using too many screenshots due to maintenance challenges. An exception to this rule are the [Weaviate Cloud](/cloud) docs where the WCD console needs to be documented visually as well.
-- **Diagrams:** Diagrams are acceptable where they add clarity. We use [Excalidraw](https://app.excalidraw.com/) and [Mermaid](https://mermaid.js.org/).
+- **Diagrams:** Diagrams are acceptable where they add clarity. We use [Excalidraw](https://app.excalidraw.com/) and [Mermaid](https://mermaid.js.org/) (legacy).
 - **Videos:** Videos can supplement written documentation but should not replace it. Ensure videos are kept up-to-date as the UI evolves.
 
 :::info
