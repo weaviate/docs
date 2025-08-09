@@ -1,7 +1,6 @@
 ---
 title: Module creation in a nutshell
 label: How to build a custom module
-sidebar_position: 3
 image: og/contributor-guide/weaviate-modules.jpg
 # tags: ['contributor-guide', 'weaviate module system', 'custom module']
 ---
@@ -27,14 +26,14 @@ On this page, you'll find how to create a complete new module (option B), so bui
 
 ## Prerequisites
 
-This requires some programming in Golang, since you'll need to build the module for Weaviate, which is written in Go. You don't need to be a very experienced Go programmer, but you'll need some basic understanding of how this statically typed language works. You can view and copy code from other modules to your own project, which is explained later. You'll build a custom module ([part 1 of this image](./architecture.md#visualization)), as well as a custom inference service ([part 2](./architecture.md#visualization)). It is recommended to understand the module architecture of Weaviate which you can read [here](./overview.md) (overview) and [here](./architecture.md) (architecture), before you start building your own module.
+This requires some programming in Golang, since you'll need to build the module for Weaviate, which is written in Go. You don't need to be a very experienced Go programmer, but you'll need some basic understanding of how this statically typed language works. You can view and copy code from other modules to your own project, which is explained later. You'll build a custom module ([part 1 of this image](./architecture.md#visualization)), as well as a custom inference service ([part 2](./architecture.md#visualization)). It is recommended to understand the module architecture of Weaviate which you can read [here](./index.md) (overview) and [here](./architecture.md) (architecture), before you start building your own module.
 
 If you want to make a pull request to Weaviate with your custom module, make sure to adhere to the [code structure](../weaviate-core/structure.md).
 
 ## Design the internal Weaviate Module (part 1)
 
 Before you start programming, make sure you have a good design and idea how your module should look like:
-1. The name of the module should follow the [naming convention](./overview.md#module-characteristics). For a vectorizer: `<media>2vec-<name>-<optional>` and other modules: `<functionality>-<name>-<optional>`.
+1. The name of the module should follow the [naming convention](./index.md#module-characteristics). For a vectorizer: `<media>2vec-<name>-<optional>` and other modules: `<functionality>-<name>-<optional>`.
 2. Optional GraphQL [`_additional` property fields](/weaviate/api/graphql/additional-properties.md). Here you can return any new field with data that you would like. Make sure the field name doesn't clash with existing field names, like `id`, `certainty`, `classification` and `featureProjection`, and `_additional` fields of other modules that you activate in the same startup configuration. New `_additional` fields can also have subfields.
 3. Optional GraphQL [filters](/weaviate/api/graphql/filters.md). You can make a new GraphQL filter on different levels. If your filter is a 'class-level influencer' that influences which results will be returned, you can introduce it at the `Class` level. Examples are `near<Foo>`, `limit` or `ask`. If your module would only enhance existing results, you should scope the filter to the new `_additional` property. An example is `featureProjection`.
 4. Think about what you or another user should be able to configure to use this Weaviate Module. Configuration can be passed in the Weaviate configuration (e.g. in the [docker-compose.yml file](https://github.com/weaviate/weaviate-examples/blob/4edd6ee767d0e80bca1dd8d982db2378992ddb67/weaviate-contextionary-newspublications/docker-compose.yaml#L24-L29)).
@@ -58,7 +57,7 @@ These guidelines follow the example of the [QnA module](https://github.com/weavi
 
 ### 1. First files
 
-1. In the `/modules` folder, make a new folder with the name of your module. Make sure to adhere to the [naming convention](./overview.md#module-characteristics).
+1. In the `/modules` folder, make a new folder with the name of your module. Make sure to adhere to the [naming convention](./index.md#module-characteristics).
 2. Add a file `config.go` ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/config.go)). This file describes some configuration of the module to Weaviate. You can copy/paste most of the example file, make sure to adapt the functions' receiver names.
 2. Add a file `module.go` ([example](https://github.com/weaviate/weaviate/blob/master/modules/qna-transformers/module.go)). This file describes the module as a whole and its capabilities. You will, again, be able to copy most of an example file to your project. Make sure to define which `modulecapabilities` (from [here](https://github.com/weaviate/weaviate/tree/master/entities/modulecapabilities)) you want to use (this will be explained later).
 
@@ -145,3 +144,9 @@ You can now load in any sample or test dataset. If you only make changes in the 
 
 #### Passing tests
 Before you submit your PR, your new module implementation must pass all existing tests and any new tests that you added. How to run tests, [check this page](../weaviate-core/tests.md#run-the-whole-pipeline).
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,6 +1,5 @@
 ---
-title: Weaviate development setup
-sidebar_position: 4
+title: Development setup
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
@@ -74,11 +73,9 @@ The above commands are subject to change as we add more modules and require spec
 
 To make queries from a web interface, use the [WCD console](https://console.weaviate.cloud) to connect to `localhost:8080`.
 
-## More Resources
+## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 
