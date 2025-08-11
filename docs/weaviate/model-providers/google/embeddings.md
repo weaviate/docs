@@ -377,7 +377,16 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 Vertex AI:
-- `textembedding-gecko@001` (default)
+- `gemini-embedding-001` (default, added in 1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+
+<details>
+  <summary>Deprecated models</summary>
+
+The following models have been deprecated by Google and are no longer supported. They may not function as expected.
+
+- `textembedding-gecko@001`
 - `textembedding-gecko@002`
 - `textembedding-gecko@003`
 - `textembedding-gecko@latest`
@@ -385,12 +394,12 @@ Vertex AI:
 - `textembedding-gecko-multilingual@latest`
 - `text-embedding-preview-0409`
 - `text-multilingual-embedding-preview-0409`
-- `gemini-embedding-001` (added in 1.29.9, 1.30.11, 1.31.5 and onwards)
-- `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
-- `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+
+</details>
 
 AI Studio:
-- `embedding-001` (default)
+- `gemini-embedding-001` (default)
+    - `embedding-001` (deprecated name for `gemini-embedding-001`)
 - `text-embedding-004`
 
 ## Further resources
