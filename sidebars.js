@@ -369,6 +369,16 @@ const sidebars = {
         },
         {
           type: "category",
+          label: "Model2Vec",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/model-providers/model2vec/index",
+          },
+          items: ["weaviate/model-providers/model2vec/embeddings"],
+        },
+        {
+          type: "category",
           label: "Ollama",
           className: "sidebar-item",
           link: {
