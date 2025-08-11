@@ -4,9 +4,9 @@ const hubspotScript = {
   attributes: {
     type: "text/javascript",
     id: "hs-script-loader",
-    async: true,
-    defer: true,
-    src: "//js.hs-scripts.com/8738733.js",
+    async: "true",
+    defer: "true",
+    src: "https://js.hs-scripts.com/8738733.js",
   },
 };
 
