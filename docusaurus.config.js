@@ -6,6 +6,7 @@
 
 import { themes as prismThemes } from "prism-react-renderer";
 import commonRoomScript from "./src/scripts/commonroom.js";
+import hubspotScript from "./src/scripts/hubspot.js";
 
 const remarkReplace = require("./src/remark/remark-replace");
 // Math equation plugins
@@ -32,7 +33,7 @@ const config = {
     locales: ["en"],
   },
 
-  headTags: [commonRoomScript],
+  headTags: [commonRoomScript, hubspotScript],
 
   plugins: [
     "docusaurus-plugin-sass",
