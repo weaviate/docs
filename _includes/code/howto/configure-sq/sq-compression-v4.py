@@ -66,4 +66,29 @@ client.collections.create(
 )
 # END SQWithOptions
 
+# ==============================
+# =====  UPDATE SCHEMA =====
+# ==============================
+
+# START UpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.sq(
+                rescore_limit=100
+            ),
+        )
+    )
+)
+# END UpdateSchema
+
+from weaviate.collections.classes.config import _SQConfig
+
+config = client.collections.get("MyCollection").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _SQConfig
+
 client.close()

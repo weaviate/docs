@@ -68,4 +68,29 @@ client.collections.create(
 )
 # END RQWithOptions
 
+# ==============================
+# =====  UPDATE SCHEMA =====
+# ==============================
+
+# START UpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(
+                rescore_limit=200,
+            ),
+        ),
+    )
+)
+# END UpdateSchema
+
+from weaviate.collections.classes.config import _RQConfig
+
+config = client.collections.get("MyCollection").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _RQConfig
+
 client.close()

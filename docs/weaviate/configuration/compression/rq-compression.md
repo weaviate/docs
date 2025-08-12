@@ -11,7 +11,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
+import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
 :::caution Technical preview
 
@@ -27,7 +27,7 @@ This means that the feature is still under development and may change in future 
 RQ is currently not supported for the flat index type.
 :::
 
-## Basic configuration
+## Enable compression for new collection
 
 RQ can be enabled at collection creation time:
 
@@ -66,11 +66,42 @@ RQ can be enabled at collection creation time:
   </TabItem>
 </Tabs>
 
-## Custom configuration
+## Enable compression for existing collection
+
+RQ can also be enabled for an existing collection by updating the collection configuration with the appropriate vector index configuration.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateSchema"
+        endMarker="# END UpdateSchema"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START UpdateSchema"
+        endMarker="// END UpdateSchema"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
+## RQ parameters
 
 To tune RQ, use these quantization and vector index parameters:
 
-import RQParameters from '/_includes/configuration/rq-compression-parameters.mdx' ;
+import RQParameters from '/\_includes/configuration/rq-compression-parameters.mdx' ;
 
 <RQParameters />
 
@@ -117,13 +148,15 @@ For maximum query performance with minimal recall impact, consider setting `resc
 :::
 -->
 
-## Multiple vector embeddings (named vectors)
+## Additional considerations
+
+### Multiple vector embeddings (named vectors)
 
 import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
 
 <NamedVectorCompress />
 
-## Multi-vector embeddings (ColBERT, ColPali, etc.)
+### Multi-vector embeddings (ColBERT, ColPali, etc.)
 
 import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
@@ -135,8 +168,10 @@ RQ supports multi-vector embeddings. Each token vector is rounded up to a multip
 
 ## Further resources
 
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
 - [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
+- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
+- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
 
 ## Questions and feedback
 
