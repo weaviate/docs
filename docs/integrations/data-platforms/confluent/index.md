@@ -34,3 +34,4 @@ The resources are broken into two categories:
 | Topic | Description | Resource | 
 | --- | --- | --- |
 | Make Real-Time AI a Reality with Weaviate + Confluent | Learn how to build an application using Weaviate and Confluent. | [Blog](https://weaviate.io/blog/confluent-and-weaviate) |
+| Introducing the New Weaviate Confluent Apache Kafka® Connector: Real-Time Vector Data Pipelines Made Easy | Learn about the new certified Weaviate Confluent Apache Kafka Connector! | [Blog](https://weaviate.io/blog/weaviate-apache-kafka-connector) |
