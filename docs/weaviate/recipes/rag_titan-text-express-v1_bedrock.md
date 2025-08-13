@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/generative-search/generative_search_aws_bedrock.ipynb
 toc: True
 title: "Generative search (RAG) with AWS Bedrock"
 featured: False
@@ -8,9 +7,7 @@ integration: False
 agent: False
 tags: ['Generative Search', 'RAG', 'AWS']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/generative-search/generative_search_aws_bedrock.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-features/model-providers/aws/rag_titan-text-express-v1_bedrock.ipynb)
 
 ## Dependencies
 
@@ -60,7 +57,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vector_config=wc.Configure.Vectors.text2vec_aws(
+    vectorizer_config=wc.Configure.Vectorizer.text2vec_aws(
         service="bedrock",   #this is crucial
         model="cohere.embed-english-v3", # select the model, make sure it is enabled for your account
         # model="amazon.titan-embed-text-v1", # select the model, make sure it is enabled for your account
