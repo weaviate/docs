@@ -68,7 +68,7 @@ RQ can be enabled at collection creation time:
 
 ## Enable compression for existing collection
 
-RQ can also be enabled for an existing collection by updating the collection configuration with the appropriate vector index configuration.
+RQ can also be enabled for an existing collection by updating the collection configuration with the appropriate vector index configuration:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -79,14 +79,6 @@ RQ can also be enabled for an existing collection by updating the collection con
         language="py"
       />
   </TabItem>
-  <TabItem value="go" label="Go">
-      <FilteredTextBlock
-        text={GoCode}
-        startMarker="// START UpdateSchema"
-        endMarker="// END UpdateSchema"
-        language="go"
-      />
-  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -94,6 +86,14 @@ RQ can also be enabled for an existing collection by updating the collection con
       endMarker="// END UpdateSchema"
       language="java"
     />
+  </TabItem>
+    <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START UpdateSchema"
+        endMarker="// END UpdateSchema"
+        language="go"
+      />
   </TabItem>
 </Tabs>
 

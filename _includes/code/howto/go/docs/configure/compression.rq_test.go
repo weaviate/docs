@@ -23,7 +23,6 @@ func TestRQConfiguration(t *testing.T) {
 	// =====  CONNECT =====
 	// ==============================
 
-	// START ConnectCode
 	config := weaviate.Config{
 		Scheme: "http",
 		Host:   "localhost:8080",
@@ -37,7 +36,6 @@ func TestRQConfiguration(t *testing.T) {
 	ready, err := client.Misc().ReadyChecker().Do(context.Background())
 	require.NoError(t, err)
 	require.True(t, ready)
-	// END ConnectCode
 
 	// Clean up before test
 	err = client.Schema().AllDeleter().Do(ctx)

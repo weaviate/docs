@@ -4,8 +4,6 @@
 // =====  CONNECT =====
 // ==============================
 
-// START ConnectCode
-
 import assert from 'assert';
 import weaviate from 'weaviate-client';
 import { configure } from 'weaviate-client';
@@ -18,8 +16,6 @@ const client = await weaviate.connectToLocal({
 })
 
 await client.isReady()
-
-// END ConnectCode
 
 // ==============================
 // =====  EnableRQ =====

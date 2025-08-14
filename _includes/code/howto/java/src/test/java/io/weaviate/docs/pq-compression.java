@@ -38,58 +38,51 @@ class PqCompressionTest {
 
   @BeforeAll
   public static void beforeAll() {
-    String scheme = EnvHelper.scheme("http");
-    String host = EnvHelper.host("localhost");
-    String port = EnvHelper.port("8080");
+    String scheme = "http";
+    String host = "localhost";
+    String port = "8080";
     String openaiApiKey = EnvHelper.env("OPENAI_APIKEY", "_dummy_");
 
-    Config config = new Config(scheme, host + ":" + port, new HashMap<String, String>() {{
-      put("X-Openai-Api-Key", openaiApiKey);
-    }});
+    Config config = new Config(scheme, host + ":" + port, new HashMap<String, String>() {
+      {
+        put("X-Openai-Api-Key", openaiApiKey);
+      }
+    });
     client = new WeaviateClient(config);
-
-/*
-    // START ConnectCode
-    Config config = new Config("http", "localhost:8080", new HashMap<String, String>() {{
-      put("X-Openai-Api-Key", "OPENAI_API_KEY"); // Replace with your OpenAI API key
-    }});
-
-    WeaviateClient client = new WeaviateClient(config);
-    // END ConnectCode
-*/
 
     Result<Boolean> result = client.schema().allDeleter().run();
     assertThat(result).isNotNull()
-      .withFailMessage(() -> result.getError().toString())
-      .returns(false, Result::hasErrors)
-      .withFailMessage(null)
-      .returns(true, Result::getResult);
+        .withFailMessage(() -> result.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
   }
 
-    // START DownloadData
-    public static class Jeopardy {
-      @SerializedName("Air Date")
-      public Date airDate;
-      @SerializedName("Round")
-      public String round;
-      @SerializedName("Value")
-      public Integer value;
-      @SerializedName("Category")
-      public String category;
-      @SerializedName("Question")
-      public String question;
-      @SerializedName("Answer")
-      public String answer;
-    }
+  // START DownloadData
+  public static class Jeopardy {
+    @SerializedName("Air Date")
+    public Date airDate;
+    @SerializedName("Round")
+    public String round;
+    @SerializedName("Value")
+    public Integer value;
+    @SerializedName("Category")
+    public String category;
+    @SerializedName("Question")
+    public String question;
+    @SerializedName("Answer")
+    public String answer;
+  }
 
-    // END DownloadData
+  // END DownloadData
 
   private List<Jeopardy> downloadFile() throws IOException {
     // START DownloadData
     URL url = new URL("https://raw.githubusercontent.com/weaviate-tutorials/intro-workshop/main/data/jeopardy_1k.json");
     InputStreamReader reader = new InputStreamReader(url.openStream());
 
-    Type listType = new TypeToken<List<Jeopardy>>(){}.getType();
+    Type listType = new TypeToken<List<Jeopardy>>() {
+    }.getType();
     List<Jeopardy> jeopardyList = new Gson().fromJson(reader, listType);
     // END DownloadData
     return jeopardyList;
@@ -98,31 +91,30 @@ class PqCompressionTest {
   private List<Property> properties() {
     // START InitialSchema
     List<Property> properties = Arrays.asList(
-      Property.builder()
-        .name("airDate")
-        .dataType(Arrays.asList(DataType.DATE))
-        .build(),
-      Property.builder()
-        .name("round")
-        .dataType(Arrays.asList(DataType.TEXT))
-        .build(),
-      Property.builder()
-        .name("value")
-        .dataType(Arrays.asList(DataType.INT))
-        .build(),
-      Property.builder()
-        .name("category")
-        .dataType(Arrays.asList(DataType.TEXT))
-        .build(),
-      Property.builder()
-        .name("question")
-        .dataType(Arrays.asList(DataType.TEXT))
-        .build(),
-      Property.builder()
-        .name("answer")
-        .dataType(Arrays.asList(DataType.TEXT))
-        .build()
-    );
+        Property.builder()
+            .name("airDate")
+            .dataType(Arrays.asList(DataType.DATE))
+            .build(),
+        Property.builder()
+            .name("round")
+            .dataType(Arrays.asList(DataType.TEXT))
+            .build(),
+        Property.builder()
+            .name("value")
+            .dataType(Arrays.asList(DataType.INT))
+            .build(),
+        Property.builder()
+            .name("category")
+            .dataType(Arrays.asList(DataType.TEXT))
+            .build(),
+        Property.builder()
+            .name("question")
+            .dataType(Arrays.asList(DataType.TEXT))
+            .build(),
+        Property.builder()
+            .name("answer")
+            .dataType(Arrays.asList(DataType.TEXT))
+            .build());
 
     // END InitialSchema
 
@@ -134,22 +126,22 @@ class PqCompressionTest {
 
     // START InitialSchema
     WeaviateClass jeopardyClass = WeaviateClass.builder()
-      .className("Question")
-      .description("A Jeopardy! question")
-      .properties(properties)
-      .vectorizer("text2vec-openai")
-      .build();
+        .className("Question")
+        .description("A Jeopardy! question")
+        .properties(properties)
+        .vectorizer("text2vec-openai")
+        .build();
 
     Result<Boolean> createResult = client.schema().classCreator()
-      .withClass(jeopardyClass)
-      .run();
+        .withClass(jeopardyClass)
+        .run();
     // END InitialSchema
 
     assertThat(createResult).isNotNull()
-      .withFailMessage(() -> createResult.getError().toString())
-      .returns(false, Result::hasErrors)
-      .withFailMessage(null)
-      .returns(true, Result::getResult);
+        .withFailMessage(() -> createResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
   }
 
   private void populate(List<Jeopardy> jeopardyList) {
@@ -158,16 +150,18 @@ class PqCompressionTest {
 
     jeopardyList.forEach(jeopardy -> {
       WeaviateObject object = WeaviateObject.builder()
-        .className("Question")
-        .properties(new HashMap<String, Object>() {{
-          put("airDate", DateFormatUtils.format(jeopardy.airDate, "yyyy-MM-dd'T'HH:mm:ssZZZZZ"));
-          put("round", jeopardy.round);
-          put("value", jeopardy.value);
-          put("category", jeopardy.category);
-          put("question", jeopardy.question);
-          put("answer", jeopardy.answer);
-        }})
-        .build();
+          .className("Question")
+          .properties(new HashMap<String, Object>() {
+            {
+              put("airDate", DateFormatUtils.format(jeopardy.airDate, "yyyy-MM-dd'T'HH:mm:ssZZZZZ"));
+              put("round", jeopardy.round);
+              put("value", jeopardy.value);
+              put("category", jeopardy.category);
+              put("question", jeopardy.question);
+              put("answer", jeopardy.answer);
+            }
+          })
+          .build();
 
       batcher.withObject(object);
     });
@@ -182,49 +176,49 @@ class PqCompressionTest {
 
     // START UpdateSchema
     WeaviateClass updatedJeopardyClass = WeaviateClass.builder()
-      .className("Question")
-      .description("A Jeopardy! question")
-      .properties(properties)
-      .vectorizer("text2vec-openai")
-      .vectorIndexConfig(VectorIndexConfig.builder()
-        .pq(PQConfig.builder()
-          .enabled(true)
-          .trainingLimit(100_000)
-          .segments(96)
-          .build())
-        .build())
-      .build();
+        .className("Question")
+        .description("A Jeopardy! question")
+        .properties(properties)
+        .vectorizer("text2vec-openai")
+        .vectorIndexConfig(VectorIndexConfig.builder()
+            .pq(PQConfig.builder()
+                .enabled(true)
+                .trainingLimit(100_000)
+                .segments(96)
+                .build())
+            .build())
+        .build();
 
     Result<Boolean> updateResult = client.schema().classUpdater()
-      .withClass(updatedJeopardyClass)
-      .run();
+        .withClass(updatedJeopardyClass)
+        .run();
     // END UpdateSchema
 
     assertThat(updateResult).isNotNull()
-      .withFailMessage(() -> updateResult.getError().toString())
-      .returns(false, Result::hasErrors)
-      .withFailMessage(null)
-      .returns(true, Result::getResult);
+        .withFailMessage(() -> updateResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
   }
 
   private void verifyClassUpdated() {
     // START GetSchema
     Result<WeaviateClass> getResult = client.schema().classGetter()
-      .withClassName("Question")
-      .run();
+        .withClassName("Question")
+        .run();
 
     // END GetSchema
 
     assertThat(getResult).isNotNull()
-      .withFailMessage(() -> getResult.getError().toString())
-      .returns(false, Result::hasErrors)
-      .withFailMessage(null)
-      .extracting(Result::getResult).isNotNull()
-      .extracting(WeaviateClass::getVectorIndexConfig).isNotNull()
-      .extracting(VectorIndexConfig::getPq).isNotNull()
-      .returns(true, PQConfig::getEnabled)
-      .returns(96, PQConfig::getSegments)
-      .returns(100_000, PQConfig::getTrainingLimit);
+        .withFailMessage(() -> getResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .extracting(Result::getResult).isNotNull()
+        .extracting(WeaviateClass::getVectorIndexConfig).isNotNull()
+        .extracting(VectorIndexConfig::getPq).isNotNull()
+        .returns(true, PQConfig::getEnabled)
+        .returns(96, PQConfig::getSegments)
+        .returns(100_000, PQConfig::getTrainingLimit);
 
     // START GetSchema
     PQConfig pqConfig = getResult.getResult().getVectorIndexConfig().getPq();
