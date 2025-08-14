@@ -14,8 +14,8 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go';
 
 
-Weaviate offers two complementary superpowers for scaling your deployment: sharding and replication.
-Sharding divides your data so it can be spread out across multiple nodes, allowing you to handle datasets far larger than a single machine could process.
+Weaviate offers two complementary superpowers for scaling your deployment: sharding and replication. 
+Sharding divides your data across multiple nodes, allowing you to handle datasets far larger than a single machine could process. 
 Meanwhile, replication creates redundant copies of your data, ensuring high availability even when individual nodes fail or need maintenance.
 While each scaling method shines on its own, the true magic happens when they join forces.
 
@@ -25,15 +25,15 @@ Let's explore how you can harness these capabilities to build a deployment that'
 
 
 
-### Replication
+### Replication 
 
-Replication creates redundant copies of your data, it is useful when your data needs to be highly available.
+Replication creates redundant copies of your data, it is useful when your data needs to be highly available. 
 
 ![replication](./img/weaviate-blog-replication.png)
 
 ### Sharding
 
-Sharding divides data across nodes, it is useful when your dataset is too large for just a single node.
+Sharding divides data across nodes, it is useful when your dataset is too large for just a single node. 
 
 ![sharding](./img/weaviate-blog-sharding.png)
 
@@ -254,7 +254,7 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
 
 ### Sharding: Divide and Conquer
 
-You've made the decision to shard your data, now let's get it configured:
+You've made the decision to shard your data, now let's get it configured: 
 
 
 <Tabs groupId="languages">
@@ -294,7 +294,7 @@ These parameters are used to configure your collection shards:
 | Parameter             | Type    | Description                                                                                                                                                                                                                                                                                          |
 | :-------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `desiredCount`        | integer | *Immutable, Optional*. Controls the target number of physical shards for the collection index. Defaults to the number of nodes in the cluster, but can be explicitly set lower. If set higher than the node count, some nodes will host multiple shards.                                                  |
-| `virtualPerPhysical`  | integer | *Immutable, Optional*. Defines how many virtual shards correspond to one physical shard, defaulting to `128`.                                                                                                               |
+| `virtualPerPhysical`  | integer | *Immutable, Optional*. Defines how many virtual shards correspond to one physical shard, defaulting to `128`. Using virtual shards aids in reducing data movement during resharding.                                                                                                               |
 | `desiredVirtualCount` | integer | *Read-only*. Shows the target total number of virtual shards, calculated as `desiredCount * virtualPerPhysical`.                                                                                                                                                                                    |
 
 
@@ -368,10 +368,10 @@ http://localhost:8080/v1/schema
 </Tabs>
 
 
-In a highly available environment, combining sharding and replication leverages the power and
-capabilities of both methods to be a dynamic duo that keeps your deployment highly available.
-If given the opportunity, those two techniques will be your deployment's dynamic duo.
-Specifically using the [`ASYNC_REPLICATION` environment variables](./async-rep.md) introduced in the 1.29 release
+In a highly available environment, combining sharding and replication leverages the power and 
+capabilities of both methods to be a dynamic duo that keeps your deployment highly available. 
+If given the opportunity, those two techniques will be your deployment's dynamic duo. 
+Specifically using the [`ASYNC_REPLICATION` environment variables](./async-rep.md) introduced in the 1.29 release 
 will allow you to unleash the full power of horizontal scaling!
 
 ## Questions and feedback
