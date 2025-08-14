@@ -417,6 +417,7 @@ You can limit the combined number of `gse` and `Kagome` tokenizers running at th
 The `trigram` tokenization method provides fuzzy matching capabilities by breaking text into overlapping 3-character sequences. This enables BM25 searches to find matches even with spelling errors or variations.
 
 **Use cases for trigram fuzzy matching:**
+
 - **Typo tolerance**: Find matches despite spelling errors (e.g., "Reliace" matches "Reliance")
 - **Name reconciliation**: Match entity names with variations across datasets
 - **Search-as-you-type**: Build autocomplete functionality
@@ -425,17 +426,19 @@ The `trigram` tokenization method provides fuzzy matching capabilities by breaki
 **How it works:**
 
 When text is tokenized with `trigram`, it's broken into all possible 3-character sequences:
+
 - `"hello"` → `["hel", "ell", "llo"]`
 - `"world"` → `["wor", "orl", "rld"]`
 
 Similar strings share many trigrams, enabling fuzzy matching:
+
 - `"Morgan Stanley"` and `"Stanley Morgn"` share trigrams like `"sta", "tan", "anl", "nle", "ley"`
 
 **Performance considerations:**
+
 - Creates larger inverted indexes due to more tokens
 - May impact query performance for large datasets
 - Best suited for specific fields requiring fuzzy matching (names, addresses)
-- For English text, trigrams provide optimal balance; quadgrams work better for Chinese
 
 :::tip
 
