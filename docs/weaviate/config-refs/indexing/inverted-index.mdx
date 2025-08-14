@@ -170,7 +170,11 @@ As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverte
 
 Stopwords can now be configured at runtime. You can use the RESTful API to <SkipLink href="/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">update</SkipLink> the list of stopwords after your data has been indexed.
 
-Note that stopwords are only removed when [tokenization](../collections.mdx#tokenization) is set to `word`.
+:::info
+
+Stopwords are only removed when [tokenization](../collections.mdx#tokenization) is set to `word`.
+
+:::
 
 #### `indexTimestamps`
 
@@ -196,8 +200,8 @@ Using these features requires more resources. The additional inverted indexes mu
 
 ## How Weaviate creates inverted indexes
 
-Weaviate creates **separate inverted indexes for each property and each index type**. For example, if you have a `title` property that is both searchable and filterable, 
-Weaviate will create two separate inverted indexes for that property - one optimized for search operations and another for filtering operations. 
+Weaviate creates **separate inverted indexes for each property and each index type**. For example, if you have a `title` property that is both searchable and filterable,
+Weaviate will create two separate inverted indexes for that property - one optimized for search operations and another for filtering operations.
 Find out more in [Concepts: Inverted index](../../concepts/indexing/inverted-index.md#how-weaviate-creates-inverted-indexes).
 
 ### Adding a property after collection creation
@@ -213,10 +217,35 @@ To avoid this, you can either:
 
 We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
 
+## How tokenization affects inverted indexing
+
+For `text` properties, Weaviate first **[tokenizes](../collections.mdx#tokenization)** the text before creating inverted index entries. Tokenization is the process of breaking text into individual tokens (words, phrases, or characters) that can be indexed and searched.
+
+The tokenization method you choose directly impacts:
+
+- What tokens are created from your text
+- How these tokens are stored in the inverted index
+- How search queries and filters match against your data
+
+For example, with the text `"Hello, (beautiful) world"`:
+
+- **`word` tokenization** creates tokens: `["hello", "beautiful", "world"]`
+- **`whitespace` tokenization** creates tokens: `["hello", "(beautiful)", "world"]`
+- **`field` tokenization** creates a single token: `["Hello, (beautiful) world"]`
+
+Each token becomes a separate entry in the inverted index, pointing back to the objects containing that token.
+
+:::tip
+
+Different tokenization methods suit different use cases. Use `word` (default) for general text search, `field` for exact matching, or specialized tokenizers like `gse` or `kagome_ja` for Asian languages. Learn more about [tokenization options](../collections.mdx#tokenization).
+
+:::
+
 ## Further resources
 
 - [Concepts: Inverted index](../../concepts/indexing/inverted-index.md)
-- [How-to: Configure collections](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
+- [How-to: Set inverted index parameters](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
+- [Reference: Tokenization options](../collections.mdx#tokenization) - Learn about different tokenization methods and how they affect text indexing
 
 ## Questions and feedback
 
