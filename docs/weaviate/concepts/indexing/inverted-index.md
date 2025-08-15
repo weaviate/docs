@@ -21,6 +21,13 @@ Understanding Weaviate's indexing architecture is crucial for optimizing perform
 
 This architecture provides flexibility and performance optimization but also means that enabling multiple index types increases storage requirements and indexing overhead.
 
+For `text` properties specifically, the indexing process follows these steps:
+
+1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
+3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
+
+This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
+
 <details>
   <summary>Performance improvements added in Oct 2024</summary>
 
@@ -35,7 +42,7 @@ As always, we recommend upgrading to the latest version of Weaviate to benefit f
 
 </details>
 
-### BlockMax WAND algorithm
+## BlockMax WAND algorithm
 
 :::info Added in `v1.30`
 :::
@@ -50,7 +57,7 @@ Due to the nature of the BlockMax WAND algorithm, the scoring of BM25 and hybrid
 
 :::
 
-### Configure inverted indexes
+## Configure inverted indexes
 
 There are three inverted index types in Weaviate:
 

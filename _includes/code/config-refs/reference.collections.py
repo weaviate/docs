@@ -316,6 +316,7 @@ client.collections.create(
             # highlight-start
             index_filterable=True,
             index_searchable=True,
+            tokenization="word",
             # highlight-end
         ),
         Property(
@@ -324,6 +325,7 @@ client.collections.create(
             # highlight-start
             index_filterable=True,
             index_searchable=True,
+            tokenization="field",
             # highlight-end
         ),
         Property(
