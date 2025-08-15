@@ -55,17 +55,40 @@ client.collections.create(
     vector_config=Configure.Vectors.text2vec_openai(
         # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.rq(
-            bits=8,  # Number of bits, only 8 is supported for now
+            bits=8,  # Optional: Number of bits, only 8 is supported for now
+            rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
         ),
         # highlight-end
-        vector_index_config=Configure.VectorIndex.hnsw(
-            vector_cache_max_objects=100000,
-        ),
     ),
     properties=[
         Property(name="title", data_type=DataType.TEXT),
     ],
 )
 # END RQWithOptions
+
+# ==============================
+# =====  UPDATE SCHEMA =====
+# ==============================
+
+# START UpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(
+                rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
+            ),
+        ),
+    )
+)
+# END UpdateSchema
+
+from weaviate.collections.classes.config import _RQConfig
+
+config = client.collections.get("MyCollection").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _RQConfig
 
 client.close()

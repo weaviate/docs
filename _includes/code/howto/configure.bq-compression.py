@@ -62,4 +62,29 @@ client.collections.create(
 )
 # END BQWithOptions
 
+# ==============================
+# =====  UPDATE SCHEMA =====
+# ==============================
+
+# START UpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.flat(
+            quantizer=Reconfigure.VectorIndex.Quantizer.bq(
+                rescore_limit=20,
+            ),
+        ),
+    )
+)
+# END UpdateSchema
+
+from weaviate.collections.classes.config import _BQConfig
+
+config = client.collections.get("MyCollection").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _BQConfig
+
 client.close()

@@ -23,7 +23,6 @@ func TestRQConfiguration(t *testing.T) {
 	// =====  CONNECT =====
 	// ==============================
 
-	// START ConnectCode
 	config := weaviate.Config{
 		Scheme: "http",
 		Host:   "localhost:8080",
@@ -37,7 +36,6 @@ func TestRQConfiguration(t *testing.T) {
 	ready, err := client.Misc().ReadyChecker().Do(context.Background())
 	require.NoError(t, err)
 	require.True(t, ready)
-	// END ConnectCode
 
 	// Clean up before test
 	err = client.Schema().AllDeleter().Do(ctx)
@@ -104,7 +102,8 @@ func TestRQConfiguration(t *testing.T) {
 		// highlight-start
 		rq_with_options_config := map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 200, // The number of candidates to fetch before rescoring
+			"bits":         8,  // Optional: Number of bits, only 8 is supported for now
+			"rescoreLimit": 20, // Optional: Number of candidates to fetch before rescoring
 		}
 		// highlight-end
 
@@ -116,8 +115,6 @@ func TestRQConfiguration(t *testing.T) {
 				// highlight-start
 				"rq": rq_with_options_config,
 				// highlight-end
-				"distance":              "cosine", // Set the distance metric for HNSW
-				"vectorCacheMaxObjects": 100000,   // Configure the vector cache
 			},
 		}
 
@@ -141,10 +138,73 @@ func TestRQConfiguration(t *testing.T) {
 		require.True(t, ok)
 		assert.Equal(t, true, rqConfig["enabled"])
 		// JSON numbers are unmarshalled as float64
-		assert.Equal(t, float64(200), rqConfig["rescoreLimit"])
+		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
+	})
 
-		// Assert other HNSW settings
-		assert.Equal(t, "cosine", vic["distance"])
-		assert.Equal(t, float64(100000), vic["vectorCacheMaxObjects"])
+	t.Run("Enable RQ on Existing Collection", func(t *testing.T) {
+		className := "MyExistingCollection"
+
+		// First, create a collection without RQ
+		err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Background())
+		if err != nil {
+			log.Printf("Could not delete collection '%s', it might not exist: %v\n", className, err)
+		}
+
+		// Create initial collection without RQ
+		initialClass := &models.Class{
+			Class:      className,
+			Vectorizer: "text2vec-openai",
+			VectorIndexConfig: map[string]interface{}{
+				"distance": "cosine",
+			},
+		}
+
+		err = client.Schema().ClassCreator().
+			WithClass(initialClass).
+			Do(context.Background())
+		require.NoError(t, err)
+
+		// START UpdateSchemaToEnableRQ
+		// Get the existing collection configuration
+		class, err := client.Schema().ClassGetter().
+			WithClassName(className).Do(context.Background())
+
+		if err != nil {
+			log.Fatalf("get class for vec idx cfg update: %v", err)
+		}
+
+		// Get the current vector index configuration
+		cfg := class.VectorIndexConfig.(map[string]interface{})
+
+		// Add RQ configuration to enable scalar quantization
+		cfg["rq"] = map[string]interface{}{
+			"enabled":      true,
+			"rescoreLimit": 20, // Optional: Number of candidates to fetch before rescoring
+		}
+
+		// Update the class configuration
+		class.VectorIndexConfig = cfg
+
+		// Apply the updated configuration to the collection
+		err = client.Schema().ClassUpdater().
+			WithClass(class).Do(context.Background())
+
+		if err != nil {
+			log.Fatalf("update class to use rq: %v", err)
+		}
+		// END UpdateSchemaToEnableRQ
+
+		// Verify the RQ configuration was applied
+		updatedClass, err := client.Schema().ClassGetter().
+			WithClassName(className).Do(context.Background())
+		require.NoError(t, err)
+
+		vic, ok := updatedClass.VectorIndexConfig.(map[string]interface{})
+		require.True(t, ok)
+
+		rqConfig, ok := vic["rq"].(map[string]interface{})
+		require.True(t, ok)
+		assert.Equal(t, true, rqConfig["enabled"])
+		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
 	})
 }
