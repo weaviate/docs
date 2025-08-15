@@ -54,10 +54,6 @@ await client.collections.create({
             bits: 8,  // Number of bits, only 8 is supported for now
         }),
         // highlight-end
-        vectorIndexConfig: configure.vectorIndex.hnsw({
-            distanceMetric: configure.vectorDistances.COSINE,
-            vectorCacheMaxObjects: 100000,
-        }),
     }),
     properties: [
         { name: "title", dataType: weaviate.configure.dataType.TEXT }

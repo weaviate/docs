@@ -119,8 +119,6 @@ func TestPQConfiguration(t *testing.T) {
 				// highlight-start
 				"pq": pq_with_options_config,
 				// highlight-end
-				"distance":              "cosine", // Set the distance metric for HNSW
-				"vectorCacheMaxObjects": 100000,   // Configure the vector cache
 			},
 		}
 
@@ -153,10 +151,6 @@ func TestPQConfiguration(t *testing.T) {
 			assert.Equal(t, "kmeans", encoder["type"])
 			assert.Equal(t, "normal", encoder["distribution"])
 		}
-
-		// Assert other HNSW settings
-		assert.Equal(t, "cosine", vic["distance"])
-		assert.Equal(t, float64(100000), vic["vectorCacheMaxObjects"])
 	})
 
 	t.Run("Enable PQ on Existing Collection", func(t *testing.T) {

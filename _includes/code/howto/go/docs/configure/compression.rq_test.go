@@ -102,7 +102,7 @@ func TestRQConfiguration(t *testing.T) {
 		// highlight-start
 		rq_with_options_config := map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 200, // The number of candidates to fetch before rescoring
+			"rescoreLimit": 20, // The number of candidates to fetch before rescoring
 		}
 		// highlight-end
 
@@ -114,8 +114,6 @@ func TestRQConfiguration(t *testing.T) {
 				// highlight-start
 				"rq": rq_with_options_config,
 				// highlight-end
-				"distance":              "cosine", // Set the distance metric for HNSW
-				"vectorCacheMaxObjects": 100000,   // Configure the vector cache
 			},
 		}
 
@@ -139,11 +137,7 @@ func TestRQConfiguration(t *testing.T) {
 		require.True(t, ok)
 		assert.Equal(t, true, rqConfig["enabled"])
 		// JSON numbers are unmarshalled as float64
-		assert.Equal(t, float64(200), rqConfig["rescoreLimit"])
-
-		// Assert other HNSW settings
-		assert.Equal(t, "cosine", vic["distance"])
-		assert.Equal(t, float64(100000), vic["vectorCacheMaxObjects"])
+		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
 	})
 
 	t.Run("Enable RQ on Existing Collection", func(t *testing.T) {
@@ -184,7 +178,7 @@ func TestRQConfiguration(t *testing.T) {
 		// Add RQ configuration to enable scalar quantization
 		cfg["rq"] = map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 200, // Optional: number of candidates to fetch before rescoring
+			"rescoreLimit": 20, // Optional: number of candidates to fetch before rescoring
 		}
 
 		// Update the class configuration
@@ -210,6 +204,6 @@ func TestRQConfiguration(t *testing.T) {
 		rqConfig, ok := vic["rq"].(map[string]interface{})
 		require.True(t, ok)
 		assert.Equal(t, true, rqConfig["enabled"])
-		assert.Equal(t, float64(200), rqConfig["rescoreLimit"])
+		assert.Equal(t, float64(20), rqConfig["rescoreLimit"])
 	})
 }
