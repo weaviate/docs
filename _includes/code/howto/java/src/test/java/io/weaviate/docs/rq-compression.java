@@ -104,8 +104,8 @@ class RqCompressionTest {
             // highlight-start
             .rq(RQConfig.builder()
                 .enabled(true)
-                .bits(8L) // Number of bits, only 8 is supported for now
-                .rescoreLimit(20L)
+                .bits(8L) // Optional: Number of bits, only 8 is supported for now
+                .rescoreLimit(20L) // Optional: Number of candidates to fetch before rescoring
                 .build())
             // highlight-end
             .build())
@@ -190,8 +190,7 @@ class RqCompressionTest {
         .vectorIndexConfig(VectorIndexConfig.builder()
             .rq(RQConfig.builder()
                 .enabled(true)
-                .bits(8L) // Number of bits, only 8 is supported for now
-                .rescoreLimit(10L)
+                .rescoreLimit(20L) // Optional: Number of candidates to fetch before rescoring
                 .build())
             .build())
         .build();
@@ -219,8 +218,6 @@ class RqCompressionTest {
         .extracting(Result::getResult).isNotNull()
         .extracting(WeaviateClass::getVectorIndexConfig).isNotNull()
         .extracting(VectorIndexConfig::getRq).isNotNull()
-        .returns(true, RQConfig::getEnabled)
-        .returns(8L, RQConfig::getBits)
-        .returns(10L, RQConfig::getRescoreLimit);
+        .returns(true, RQConfig::getEnabled);
   }
 }

@@ -29,7 +29,7 @@ RQ is currently not supported for the flat index type.
 
 ## Enable compression for new collection
 
-RQ can be enabled at collection creation time:
+RQ can be enabled at collection creation time through the collection definition:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -68,7 +68,7 @@ RQ can be enabled at collection creation time:
 
 ## Enable compression for existing collection
 
-RQ can also be enabled for an existing collection by updating the collection configuration with the appropriate vector index configuration:
+RQ can also be enabled for an existing collection by updating the collection definition:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

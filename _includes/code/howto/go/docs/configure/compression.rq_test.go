@@ -102,7 +102,8 @@ func TestRQConfiguration(t *testing.T) {
 		// highlight-start
 		rq_with_options_config := map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 20, // The number of candidates to fetch before rescoring
+			"bits":         8,  // Optional: Number of bits, only 8 is supported for now
+			"rescoreLimit": 20, // Optional: Number of candidates to fetch before rescoring
 		}
 		// highlight-end
 
@@ -178,7 +179,7 @@ func TestRQConfiguration(t *testing.T) {
 		// Add RQ configuration to enable scalar quantization
 		cfg["rq"] = map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 20, // Optional: number of candidates to fetch before rescoring
+			"rescoreLimit": 20, // Optional: Number of candidates to fetch before rescoring
 		}
 
 		// Update the class configuration

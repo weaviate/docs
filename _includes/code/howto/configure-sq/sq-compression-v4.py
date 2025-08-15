@@ -79,7 +79,7 @@ collection.config.update(
         name="default",
         vector_index_config=Reconfigure.VectorIndex.hnsw(
             quantizer=Reconfigure.VectorIndex.Quantizer.sq(
-                rescore_limit=100
+                rescore_limit=20
             ),
         )
     )

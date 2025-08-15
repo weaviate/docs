@@ -33,9 +33,7 @@ To use BQ, enable it as shown below and add data to the collection.
 
 ## Enable compression for new collection
 
-Each collection can be configured to use BQ compression. BQ can be enabled at collection creation time, before data is added to it.
-
-This can be done by setting the `vector_index_config` of the collection to enable BQ compression.
+BQ can be enabled at collection creation time through the collection definition:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -99,7 +97,7 @@ This can be done by setting the `vector_index_config` of the collection to enabl
 The ability to enable BQ compression after collection creation was added in Weaviate `v1.31`.
 :::
 
-BQ can also be enabled for an existing collection by updating the collection configuration with the appropriate vector index configuration.
+BQ can also be enabled for an existing collection by updating the collection definition:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

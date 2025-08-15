@@ -75,7 +75,7 @@ collection.config.update(
         name="default",
         vector_index_config=Reconfigure.VectorIndex.flat(
             quantizer=Reconfigure.VectorIndex.Quantizer.bq(
-                rescore_limit=100,
+                rescore_limit=20,
             ),
         ),
     )
