@@ -23,9 +23,8 @@ This architecture provides flexibility and performance optimization but also mea
 
 For `text` properties specifically, the indexing process follows these steps:
 
-1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property
-2. **Token processing**: Tokens may be further processed (e.g., lowercased, stopwords handled)
-3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it
+1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
+3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
 
 This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
 
