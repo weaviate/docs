@@ -97,12 +97,11 @@ func TestBQConfiguration(t *testing.T) {
 		}
 
 		// START BQWithOptions
-		// Define a custom configuration for BQ.
-		// Note: BQ may not support all parameters - check your Weaviate version's documentation
+		// Define a custom configuration for BQ
 		// highlight-start
 		bq_with_options_config := map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 200,  // May not be supported for BQ - check documentation
+			"rescoreLimit": 200,  // The minimum number of candidates to fetch before rescoring
 			"cache":        true, // Enable caching of binary quantized vectors
 		}
 		// highlight-end
@@ -191,11 +190,10 @@ func TestBQConfiguration(t *testing.T) {
 		cfg := class.VectorIndexConfig.(map[string]interface{})
 
 		// Add BQ configuration to enable binary quantization
-		// Note: Some parameters like rescoreLimit may not be supported for BQ
 		cfg["bq"] = map[string]interface{}{
 			"enabled":      true,
-			"rescoreLimit": 200,  // Optional: may not be supported for BQ
-			"cache":        true, // Optional: enable caching of binary quantized vectors
+			"rescoreLimit": 200,
+			"cache":        true,
 		}
 
 		// Update the class configuration
@@ -222,9 +220,6 @@ func TestBQConfiguration(t *testing.T) {
 		require.True(t, ok)
 		assert.Equal(t, true, bqConfig["enabled"])
 
-		// Note: rescoreLimit and cache parameters might not be returned in the response
-		// depending on Weaviate version or BQ implementation
-		// Check if they exist before asserting
 		if rescoreLimit, exists := bqConfig["rescoreLimit"]; exists {
 			assert.Equal(t, float64(200), rescoreLimit)
 		}
