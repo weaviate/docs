@@ -39,9 +39,9 @@ import APITable from '@site/src/components/APITable';
 | `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
 | `ENABLE_API_BASED_MODULES` | Enable all API-based modules. (Experimental as of `v1.26.0`) | `boolean` | `true` |
 | `ENABLE_MODULES` | Specify Weaviate modules to enable | `string - comma separated names` | `text2vec-openai,generative-openai` |
-| `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/schema/index.md#gse-and-trigram-tokenization-methods) for use | `boolean` | `true` |
-| `ENABLE_TOKENIZER_KAGOME_JA` | Enable the [`Kagome` tokenizer for Japanese](/weaviate/config-refs/schema/index.md#kagome_ja-tokenization-method) for use (Experimental as of `v1.28.0`) | `boolean` | `true` |
-| `ENABLE_TOKENIZER_KAGOME_KR` | Enable the [`Kagome` tokenizer for Korean](/weaviate/config-refs/schema/index.md#kagome_kr-tokenization-method) for use (Experimental as of `v1.25.7`) | `boolean` | `true` |
+| `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
+| `ENABLE_TOKENIZER_KAGOME_JA` | Enable the [`Kagome` tokenizer for Japanese](/weaviate/config-refs/collections.mdx) for use (Experimental as of `v1.28.0`) | `boolean` | `true` |
+| `ENABLE_TOKENIZER_KAGOME_KR` | Enable the [`Kagome` tokenizer for Korean](/weaviate/config-refs/collections.mdx#) for use (Experimental as of `v1.25.7`) | `boolean` | `true` |
 | `GODEBUG` | Controls debugging variables within the runtime. [See official Go docs](https://pkg.go.dev/runtime). | `string - comma-separated list of name=val pairs` | `gctrace=1` |
 | `GOMAXPROCS` | Set the maximum number of threads that can be executing simultaneously. If this value is set, it be respected by `LIMIT_RESOURCES`. | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `GOMEMLIMIT` | Set the memory limit for the Go runtime. A suggested value is between 90-80% of your total memory for Weaviate. The Go runtime tries to make sure that long-lived and temporary memory allocations do not exceed this value by making the garbage collector more aggressive as the memory usage approaches the limit. [Learn more about GOMEMLIMIT](https://weaviate.io/blog/gomemlimit-a-game-changer-for-high-memory-applications). | `string - memory limit in SI units` | `4096MiB` |
@@ -51,7 +51,7 @@ import APITable from '@site/src/components/APITable';
 | `GRPC_PORT` | The port on which Weaviate's gRPC server listens for incoming requests. Default: `50051` | `string - number` | `50052` |
 | `LIMIT_RESOURCES` | If `true`, Weaviate will automatically attempt to auto-detect and limit the amount of resources (memory & threads) it uses to (0.8 * total memory) and (number of cores-1). It will override any `GOMEMLIMIT` values, however it will respect `GOMAXPROCS` values. | `boolean` | `false` |
 | `LOG_FORMAT` | Set the Weaviate logging format <br/><br/>Default: Outputs log data to json. e.g.: `{"action":"startup","level":"debug","msg":"finished initializing modules","time":"2023-04-12T05:07:43Z"}` <br/>`text`: Outputs log data to a string. e.g. `time="2023-04-12T04:54:23Z" level=debug msg="finished initializing modules" action=startup` | `string` |  |
-| `LOG_LEVEL` | Sets the Weaviate logging level. Default: `info`<br/><br/>`panic`: Panic entries only. (new in `v1.24`) <br/>`fatal`: Fatal entries only. (new in `v1.24`)  <br/> `error`: Error entries only. (new in `v1.24`) <br/>`warning`: Warning entries only. (new in `v1.24`) <br/>`info`: General operational entries. <br/> `debug`: Very verbose logging. <br/>`trace`: Even finer-grained informational events than `debug`. | `string` | | 
+| `LOG_LEVEL` | Sets the Weaviate logging level. Default: `info`<br/><br/>`panic`: Panic entries only. (new in `v1.24`) <br/>`fatal`: Fatal entries only. (new in `v1.24`)  <br/> `error`: Error entries only. (new in `v1.24`) <br/>`warning`: Warning entries only. (new in `v1.24`) <br/>`info`: General operational entries. <br/> `debug`: Very verbose logging. <br/>`trace`: Even finer-grained informational events than `debug`. | `string` | |
 | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | Maximum allowed number of collections in a Weaviate node. A value of `-1` removes the limit. Default: `1000` <br/><br/>Instead of raising the collections count limit, consider [rethinking your architecture](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx).<br/>Added in `v1.30`| `string - number` | `20` |
 | `MEMORY_READONLY_PERCENTAGE` | If memory usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. (Default: `0` - i.e. no limit) | `string - number` | `75` |
 | `MEMORY_WARNING_PERCENTAGE` | If memory usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. (Default: `0` - i.e. no limit) | `string - number` | `85` |
@@ -78,7 +78,7 @@ import APITable from '@site/src/components/APITable';
 | `TOMBSTONE_DELETION_CONCURRENCY` | The maximum number of cores to use for tombstone deletion. Set this to limit the number of cores used for cleanup. Default: Half of the available cores. (New in `v1.24.0`) | `string - int` | `4` |
 | `TOMBSTONE_DELETION_MAX_PER_CYCLE` | Maximum number of tombstones to delete per cleanup cycle. Set this to limit cleanup cycles, as they are resource-intensive. As an example, set a maximum of 10000000 (10M) for a cluster with 300 million-object shards. Default: none | `string - int` (New in `v1.24.15` / `v1.25.2`) | `10000000` |
 | `TOMBSTONE_DELETION_MIN_PER_CYCLE` | Minimum number of tombstones to delete per cleanup cycle. Set this to prevent triggering unnecessary cleanup cycles below a threshold. As an example, set a minimum of 1000000 (1M) for a cluster with 300 million-object shards. Default: 0 (New in `v1.24.15`, `v1.25.2`) | `string - int` | `100000` |
-| `USE_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/schema/index.md#gse-and-trigram-tokenization-methods) for use. <br/> (The same as `ENABLE_TOKENIZER_GSE`. We recommend using `ENABLE_TOKENIZER_GSE` for consistency in naming with other optional tokenizers.) | `boolean` | `true` |
+| `USE_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/collections.mdx) for use. <br/> (The same as `ENABLE_TOKENIZER_GSE`. We recommend using `ENABLE_TOKENIZER_GSE` for consistency in naming with other optional tokenizers.) | `boolean` | `true` |
 | `USE_INVERTED_SEARCHABLE` | Store searchable properties using a more efficient in-disk format, designed for the BlockMax WAND algorithm. Set as `true` together with `USE_BLOCKMAX_WAND` to enable BlockMax WAND at query time. <br/><br/>Added in `v1.28` default: `false` <br/> From `v1.30` default: `true` <br/><Link to="/weaviate/concepts/indexing/inverted-index#blockmax-wand-algorithm">Read more</Link> | `boolean` | `true` |
 | `USE_BLOCKMAX_WAND` | Use BlockMax WAND algorithm for BM25 and hybrid searches. Enable it together with `USE_INVERTED_SEARCHABLE` to get the performance benefits. <br/><br/>Added in `v1.28` default: `false` <br/> From `v1.30` default: `true` <br/><Link to="/weaviate/concepts/indexing/inverted-index#blockmax-wand-algorithm">Read more</Link> | `boolean` | `true` |
 
@@ -105,7 +105,7 @@ import APITable from '@site/src/components/APITable';
 | `OFFLOAD_S3_BUCKET_AUTO_CREATE` | Whether to automatically create the S3 bucket for offloading if it does not exist (default: `false`) | `boolean` | `true` |
 | `OFFLOAD_S3_CONCURRENCY` | The maximum number of parts that will be uploaded/downloaded in parallel during offloading operations (default: `25`) | `string - number` | `10` |
 | `OFFLOAD_TIMEOUT` | The request timeout value, in seconds (default: `120`) | `string - number` | `60` |
-| `TRANSFORMERS_INFERENCE_API` | The endpoint where to reach the transformers module if enabled | `string` | `http://t2v-transformers:8080` |
+| `TRANSFORMERS_INFERENCE_API` | The endpoint where to reach the transformers module if enabled | `string` | `http://text2vec-transformers:8080` |
 | `USE_GOOGLE_AUTH` | Automatically look for Google Cloud credentials, and generate Vertex AI access tokens for Weaviate to use as needed ([read more](/weaviate/model-providers/google/index.md)). (default: `false`) | `boolean` | `true` |
 | `USE_SENTENCE_TRANSFORMERS_VECTORIZER` | (EXPERIMENTAL) Use the `sentence-transformer` vectorizer instead of the default vectorizer (from the `transformers` library). Applies to custom images only. | `boolean` | `true` |
 | `CLIP_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `multi2vec-clip` module to start up before starting (default: `true`).  | `boolean` | `true` |
@@ -115,6 +115,18 @@ import APITable from '@site/src/components/APITable';
 | `SUM_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `sum-transformers` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
 | `GPT4ALL_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `text2vec-gpt4all` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
 | `TRANSFORMERS_WAIT_FOR_STARTUP` | If `true`, Weaviate waits for the `text2vec-transformers` module to start up before starting (default: `true`). (Available from `v1.25.27`, `v1.26.12`, `v1.27.7`) | `boolean` | `true` |
+| `USAGE_GCS_BUCKET` | GCS bucket name (required if using GCS) | `string` | `my-weaviate-usage-bucket` |
+| `USAGE_GCS_PREFIX` | Optional object prefix for GCS reports | `string` | `usage-reports` |
+| `USAGE_S3_BUCKET` | S3 bucket name (required if using S3) | `string` | `my-weaviate-usage-bucket` |
+| `USAGE_S3_PREFIX` | Optional object prefix for S3 reports | `string` | `usage-reports` |
+| `RUNTIME_OVERRIDES_ENABLED` | Enable runtime override configuration | `boolean` | `true` |
+| `RUNTIME_OVERRIDES_PATH` | Path to the runtime override config file | `string` | `${PWD}/tools/dev/config.runtime-overrides.yaml` |
+| `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Reload interval for runtime override config | `duration` | `30s` |
+| `USAGE_SCRAPE_INTERVAL` | Interval for scraping usage metrics | `duration` | `2h` |
+| `USAGE_SHARD_JITTER_INTERVAL` | Optional jitter for shard loop, this to avoid overwhelming the filesystem in case there are thousands for shards. | `duration` | `100ms` |
+| `USAGE_POLICY_VERSION` | Optional policy version | `string` | `2025-06-01` |
+| `USAGE_VERIFY_PERMISSIONS` | Verify bucket permissions on start, it is opt-n. | `boolean` | `false` |
+
 
 ```mdx-code-block
 </APITable>
@@ -187,7 +199,9 @@ For more information on authentication and authorization, see the [Authenticatio
 | `RAFT_GRPC_MESSAGE_MAX_SIZE` | The maximum internal raft gRPC message size in bytes. Defaults to 1073741824 | `string - number` | `1073741824` |
 | `RAFT_JOIN` | Manually set Raft voter nodes. If set, RAFT_BOOTSTRAP_EXPECT needs to be adjusted manually to match the number of Raft voters. | `string` | `weaviate-0,weaviate-1` |
 | `RAFT_METADATA_ONLY_VOTERS` | If `true`, voter nodes only handle the schema. They do not accept any data. | `boolean` | `false` |
+| `REPLICATION_ENGINE_MAX_WORKERS` | The number of workers to process replica movements in parallel. Default: `10` <br/>Added in `v1.32` | `string - number` | `5` |
 | `REPLICATION_MINIMUM_FACTOR` | The minimum replication factor for all collections in the cluster. | `string - number` | `3` |
+| `REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` | How long replica movement waits after file copy but before finalizing the move in order for in progress writes to finish. Default: `60` seconds <br/>Added in `v1.32` | `string - number` | `90` |
 
 ```mdx-code-block
 </APITable>

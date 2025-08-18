@@ -48,9 +48,19 @@ export default function NavbarWrapper(props) {
   useKeyboardShortcut("u", () => setModalOpen((prev) => !prev));
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+    const selectedItem = secondaryNavOptions[option];
+
     setModalOpen(false);
-    history.push(secondaryNavOptions[option].link);
+
+    if (selectedItem.href) {
+      // For EXTERNAL links, just open the link.
+      // Do NOT change the selection state.
+      window.open(selectedItem.href, "_blank");
+    } else if (selectedItem.link) {
+      // For INTERNAL links, update the state and navigate.
+      setSelectedOption(option);
+      history.push(selectedItem.link);
+    }
   };
 
   return (

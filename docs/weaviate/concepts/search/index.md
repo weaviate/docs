@@ -1,6 +1,7 @@
 ---
 title: Search
 sidebar_position: 5
+description: "Overview of search capabilities designed for billion-scale datasets and real-time queries."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search']
 ---
@@ -379,6 +380,35 @@ Weaviate uses a variety of metrics to rank search results of a given query. The 
 - Vector distance: A vector distance measure between the query and the object.
 - BM25F score: A keyword search score calculated using the BM25F algorithm.
 - Hybrid score: A combined score from vector and keyword searches.
+
+## Named vectors
+
+### Query a specific named vector
+
+To do a vector search on a collection with named vectors, specify the vector space to search.
+
+Use named vectors with [vector similarity searches](/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/weaviate/search/hybrid#named-vectors).
+
+Named vector collections support hybrid search, but only for one vector at a time.
+
+[Keyword search](/weaviate/search/bm25) syntax does not change if a collection has named vectors.
+
+### Query multiple named vectors
+
+:::info Added in `v1.26`
+:::
+
+Where multiple named vectors are defined in a collection, you can query them in a single search. This is useful for comparing the similarity of an object to multiple named vectors.
+
+This is called a "multi-target vector search".
+
+In a multi-target vector search, you can specify:
+
+- The target vectors to search
+- The query(ies) to compare to the target vectors
+- The weights to apply to each distance (raw, or normalized) for each target vector
+
+Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
 
 ## Further resources
 

@@ -9,6 +9,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.py';
+import TSCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.ts';
+
 
 Multi-vector embeddings represent a single data object, like a document or image, using a set of multiple vectors rather than a single vector. This approach allows for a more granular capture of semantic information, as each vector can represent different parts of the object. However, this leads to a significant increase in memory consumption, as multiple vectors are stored for each item.
 
@@ -29,12 +31,13 @@ Compression techniques become especially crucial for multi-vector systems to man
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
-
-```typescript
-// TS/JS support coming soon
-```
-
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START MultiValueVectorMuvera"
+      endMarker="// END MultiValueVectorMuvera"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
 
@@ -86,7 +89,7 @@ These parameters can be used to fine-tune MUVERA:
   of the original multi-vector similarity.
 
 :::note Quantization
-Quantization is also available as a compression technique for multi-vector embeddings. It reduces the memory footprint of individual vectors by approximating their values with less precision. Just like with single vectors, multi-vectors support [PQ](./pq-compression.md), [BQ](./bq-compression.md) and [SQ](./sq-compression.md) quantization.
+Quantization is also available as a compression technique for multi-vector embeddings. It reduces the memory footprint of individual vectors by approximating their values with less precision. Just like with single vectors, multi-vectors support [PQ](./pq-compression.md), [BQ](./bq-compression.md), [RQ](./rq-compression.md) and [SQ](./sq-compression.md) quantization.
 :::
 
 ## Further resources

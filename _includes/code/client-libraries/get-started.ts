@@ -1,12 +1,12 @@
 // START GetStarted
-import weaviate, { WeaviateClient, vectorizer } from 'weaviate-client';
+import weaviate, { WeaviateClient, vectors } from 'weaviate-client';
 
 const client: WeaviateClient = await weaviate.connectToLocal();
 
 // highlight-start
 await client.collections.create({
     name: 'Question',
-    vectorizers: vectorizer.text2VecOllama({              // Configure the Ollama embedding integration
+    vectorizers: vectors.text2VecOllama({              // Configure the Ollama embedding integration
         apiEndpoint: 'http://host.docker.internal:11434',   // Allow Weaviate from within a Docker container to contact your Ollama instance
         model: 'nomic-embed-text',                          // The model to use
     }),
@@ -25,7 +25,7 @@ async function getJsonData() {
 // Note: The TS client does not have a `batch` method yet
 // We use `insertMany` instead, which sends all of the data in one request
 async function importQuestions() {
-    const questions = client.collections.get('Question');
+    const questions = client.collections.use('Question');
     const data = await getJsonData();
     const result = await questions.data.insertMany(data);
     console.log('Insertion response: ', result);
@@ -35,7 +35,7 @@ await importQuestions();
 // highlight-end
 
 // highlight-start
-const questions = client.collections.get('Question');
+const questions = client.collections.use('Question');
 
 const result = await questions.query.nearText('biology', {
     limit: 2,

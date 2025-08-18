@@ -1,16 +1,16 @@
 ---
 title: Enrich your dataset with a Transformation Agent
-sidebar_label: 'Tutorial: Enrich your dataset'
-description: Learn how to create additional properties in your dataset with the Weaviate Transformation Agent.
+sidebar_label: "Tutorial: Enrich your dataset"
+description: "Tutorial showing how to add new and update existing properties in Weaviate collections using the Transformation Agent."
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/transformation_agent_tutorial_enrich_dataset.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/docs/agents/_includes/transformation_agent_tutorial_enrich_dataset.py";
 
 :::caution Technical Preview
 
@@ -35,7 +35,7 @@ We've prepared a public dataset that you can use to explore the Transformation A
 
 The Transformation Agent is able to access a Weaviate collection of your choosing and perform operations on the objects within it. However, each operation for the agent can be defined in natural language. The agent will then use an LLM to complete the instructions in the operation.
 
-import WeaviateAgentsArxivFlowchart from '/docs/agents/_includes/transformation_agent_tutorial_arxiv_flowchart.png';
+import WeaviateAgentsArxivFlowchart from "/docs/agents/_includes/transformation_agent_tutorial_arxiv_flowchart.png";
 
 <div class="row">
   <div class="card">
@@ -102,7 +102,7 @@ pip install datasets
 </TabItem>
 </Tabs>
 
-import ForcePipInstall from '../_includes/_force_pip_install.mdx';
+import ForcePipInstall from "../_includes/_force_pip_install.mdx";
 
 <ForcePipInstall />
 
@@ -129,13 +129,13 @@ In the following code blocks, we are pulling our demo datasets from Hugging Face
 
 ### 2.1 Define the Collections
 
-import WeaviateAgentsArxivDataset from '/docs/agents/_includes/transformation_agent_tutorial_arxiv_dataset.png';
+import WeaviateAgentsArxivDataset from "/docs/agents/_includes/transformation_agent_tutorial_arxiv_dataset.png";
 
 <div class="row">
   <div class="col col--3">
     <br />
     <p>
-      In this image, you can see what the objects in the dataset{' '}
+      In this image, you can see what the objects in the dataset{" "}
       <code>ArxivPapers</code> look like.
     </p>
   </div>
@@ -153,7 +153,7 @@ import WeaviateAgentsArxivDataset from '/docs/agents/_includes/transformation_ag
 </div>
 <br />
 
-For the collection `ArxivPapers`, we are going to use the [`auto-schema`](../../weaviate/config-refs/schema/index.md#auto-schema) option, which creates properties automatically based on the imported data.
+For the collection `ArxivPapers`, we are going to use the [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) option, which creates properties automatically based on the imported data.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -329,13 +329,13 @@ By calling `update_all()`, we get the agent to spin up individual workflows for 
   </TabItem>
 </Tabs>
 
-import WeaviateAgentsExplorerTool from '/docs/agents/_includes/transformation_agent_tutorial_explorer_tool.png';
+import WeaviateAgentsExplorerTool from "/docs/agents/_includes/transformation_agent_tutorial_explorer_tool.png";
 
 <div class="row">
   <div class="col col--3">
     <p>
-      Now, you can open the{' '}
-      <a href="https://console.weaviate.cloud/apps/explorer">Explorer tool</a>{' '}
+      Now, you can open the{" "}
+      <a href="https://console.weaviate.cloud/apps/explorer">Explorer tool</a>{" "}
       to check the results of the transformation.
     </p>
   </div>
@@ -400,6 +400,6 @@ The Transformation Agent automatically interprets natural language instructions 
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

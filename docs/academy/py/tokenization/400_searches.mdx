@@ -133,7 +133,7 @@ The results here are similar to the filter example, but more nuanced and quite i
 
 Under `word` tokenization, the search for `computer mouse` produces identical results to the search for `a computer mouse`. This is because the stop word `a` is not considered in the search.
 
-But note that the scores are different for returned objects where the only differences are stopwords, such as `"computer mouse"` and `"a computer mouse"`. This is because the BM25f algorithm does [index stopwords](../../../weaviate/config-refs/schema/index.md#stopwords-stopword-lists), and they do impact the score.
+But note that the scores are different for returned objects where the only differences are stopwords, such as `"computer mouse"` and `"a computer mouse"`. This is because the BM25f algorithm does [index stopwords](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords), and they do impact the score.
 
 As a user, you should keep this in mind, and you can configure the stop words in the collection definition to suit your desired behavior.
 

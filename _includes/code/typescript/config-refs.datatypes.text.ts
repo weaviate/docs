@@ -2,7 +2,7 @@ import assert from 'assert';
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
 // START ConfigureDataType
-import { vectorizer, dataType, tokenization } from 'weaviate-client';
+import { vectors, dataType, tokenization } from 'weaviate-client';
 
 // END ConfigureDataType
 
@@ -33,7 +33,7 @@ const myCollection = await client.collections.create({
   ],
   // END ConfigureDataType
   vectorizers: [
-    vectorizer.text2VecOllama({
+    vectors.text2VecOllama({
       name: 'main',
       sourceProperties: ['title', 'genres'],
       apiEndpoint: 'http://host.docker.internal:11434', // If using Docker, use this to contact your local Ollama instance

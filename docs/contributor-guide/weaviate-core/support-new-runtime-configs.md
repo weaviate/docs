@@ -1,6 +1,5 @@
 ---
-title: Adding runtime configurations
-sidebar_position: 6
+title: Runtime configurations
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
@@ -87,3 +86,14 @@ To access the current value of the config, use `config.MaxLimit.Get()` instead o
 :::info
 When `RUNTIME_OVERRIDES_ENABLED=false`, your config still behaves as a static config and uses the default value (`12` in this example) provided via `NewDynamicValue(12)`.
 :::
+
+## Further resources
+
+- [Configuration: Runtime configuration management](/deploy/configuration/env-vars/runtime-config.md)
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

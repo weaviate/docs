@@ -1,6 +1,5 @@
 ---
-title: Code structure and Style
-sidebar_position: 1
+title: Code structure and style
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
@@ -85,11 +84,9 @@ The following guidelines help us write clean and maintainable code:
   not be 100% obvious. It's better to have a few 100-line comments, than to
   have 100s of 1-line comments which don't add any value.
 
-## More Resources
+## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 

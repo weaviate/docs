@@ -1,7 +1,7 @@
 ---
 title: Object-level queries (Get)
-description: Fetch data from Weaviate with GraphQL's get queries for efficient retrieval.
 sidebar_position: 10
+description: "Fetch data from Weaviate with GraphQL's get queries for efficient retrieval."
 image: og/docs/api.jpg
 # tags: ['graphql', 'get{}']
 ---

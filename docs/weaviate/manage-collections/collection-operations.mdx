@@ -24,9 +24,13 @@ Every object in Weaviate belongs to exactly one collection. Use the examples on 
 Newer Weaviate documentation discuses "collections." Older Weaviate documentation refers to "classes" instead. Expect to see both terms throughout the documentation.
 :::
 
+import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
+
+<VectorConfigSyntax />
+
 ## Create a collection
 
-To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/schema/index.md#auto-schema) creates them.
+To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/collections.mdx#auto-schema) creates them.
 
 import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
@@ -97,10 +101,12 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
   </TabItem>
 </Tabs>
 
-:::tip Avoid creating too many collections
-Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants.
+:::tip Production ready collections
 
-For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
+- **Manually define you data schema**: 
+  Avoid using the [`auto-schema`](../config-refs/collections.mdx#auto-schema) feature, instead, manually [define the properties for your collection](#create-a-collection-and-define-properties). 
+- **Avoid creating too many collections**: 
+  Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants. For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
 :::
 
 <!--
@@ -122,7 +128,7 @@ Use properties to configure additional parameters such as data type, index chara
 
 For details, see:
 
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
     API References: REST: Schema
   </SkipLink>
@@ -196,11 +202,78 @@ For details, see:
 
 </Tabs>
 
+## Create a collection with a vectorizer
+
+Specify a `vectorizer` for a collection that will generate vector embeddings when creating objects and executing vector search queries.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START Vectorizer"
+      endMarker="# END Vectorizer"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START Vectorizer"
+    endMarker="# END Vectorizer"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+:::info Vectorizer configuration
+
+Find out more about the vectorizer and vector index configuration in [Manage collections: Vectorizer and vector index](./vector-config.mdx).
+
+:::
+
 ## Disable auto-schema
 
 By default, Weaviate creates missing collections and missing properties. When you configure collections manually, you have more precise control of the collection settings.
 
-To disable [`auto-schema`](../config-refs/schema/index.md#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
+To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
 
 ## Read a single collection definition
 
@@ -489,7 +562,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-You can update a collection definition to change the [mutable collection settings](../config-refs/schema/index.md#mutability).
+You can update a collection definition to change the [mutable collection settings](../config-refs/collections.mdx#mutability).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -581,7 +654,7 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 
 ## Set inverted index parameters
 
-Various [inverted index parameters](../config-refs/schema/index.md#invertedindexconfig) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -642,7 +715,7 @@ Various [inverted index parameters](../config-refs/schema/index.md#invertedindex
 ## Further resources
 
 - [Manage collections: Vectorizer and vector index](./vector-config.mdx)
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [References: Collection definition](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
     API References: REST: Schema

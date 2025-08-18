@@ -1,6 +1,7 @@
 ---
 title: Aggregate
 sidebar_position: 15
+description: "Aggregation queries documentation for performing calculations and statistical operations on Weaviate data sets."
 image: og/docs/api.jpg
 # tags: ['graphql', 'aggregate', 'aggregate{}', 'meta']
 ---
@@ -232,7 +233,7 @@ import GraphQLAggGroupby from '/_includes/code/graphql.aggregate.groupby.mdx';
 
 Aggregating data makes the `topOccurrences` property available. Note that the counts are not dependent on tokenization. The `topOccurrences` count is based on occurrences of the entire property, or one of the values if the property is an array.
 
-You can optionally specify a `limit` parameter as a minimum count for the top occurrences. For example, `limit: 5` will filter the top occurrences to those with a count of 5 or higher.
+You can optionally specify a `limit` parameter to limit the returned objects. For example, `limit: 5` will return the top 5 most frequent occurrences.
 
 ### Consistency levels
 

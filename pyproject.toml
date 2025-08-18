@@ -1,0 +1,21 @@
+[project]
+name = "docs"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "boto3>=1.39.15",
+    "click>=8.2.1",
+    "cohere>=5.16.1",
+    "datasets>=4.0.0",
+    "fastapi>=0.116.1",
+    "jupyter>=1.1.1",
+    "pandas>=2.3.1",
+    "pytest>=8.4.1",
+    "python-dotenv>=1.1.1",
+    "tqdm>=4.67.1",
+    "weaviate-agents>=0.12.0",
+    "weaviate-client>=4.16.6",
+    "weaviate-demo-datasets>=0.7.0",
+]

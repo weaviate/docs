@@ -13,7 +13,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 );
 
 // highlight-start
-const questions = client.collections.get('Question');
+const questions = client.collections.use('Question');
 
 const result = await questions.query.nearText('biology', {
   limit: 2,

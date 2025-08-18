@@ -1,7 +1,7 @@
 ---
 title: Search operators
-description: Leverage search operators in Weaviate's GraphQL API for targeted data retrieval.
 sidebar_position: 20
+description: "GraphQL search operators guide for advanced query construction and precise data targeting techniques."
 image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---
@@ -462,7 +462,7 @@ The search is case-insensitive, and case matching does not confer a score advant
 
 ### Schema configuration
 
-The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/schema/index.md#bm25) for more details.
+The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/indexing/inverted-index.mdx#bm25) for more details.
 
 ### Variables
 The `bm25` operator supports the following variables:

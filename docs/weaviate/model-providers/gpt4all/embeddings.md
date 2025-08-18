@@ -73,12 +73,12 @@ services:
     # Other Weaviate configuration
     environment:
       GPT4ALL_INFERENCE_API: http://text2vec-gpt4all:8080  # Set the inference API endpoint
-  t2v-gpt4all:  # Set the name of the inference container
+  text2vec-gpt4all:  # Set the name of the inference container
     image: cr.weaviate.io/semitechnologies/gpt4all-inference:all-MiniLM-L6-v2
 ```
 
 - `GPT4ALL_INFERENCE_API` environment variable sets the inference API endpoint
-- `t2v-gpt4all` is the name of the inference container
+- `text2vec-gpt4all` is the name of the inference container
 - `image` is the container image
 
 </TabItem>

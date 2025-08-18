@@ -14,7 +14,7 @@ import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.b
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure.backups-v2.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/configure.backups.go';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/configure.backups.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
@@ -511,6 +511,14 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CancelBackup"
+      endMarker="// END CancelBackup"
+      language="go"
+    />
+  </TabItem>
 </Tabs>
 
 This operation is particularly useful if you have started a backup by accident, or if you would like to stop a backup that is taking too long.
@@ -534,6 +542,8 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | ---- | ---- | ---- | ---- |---- |
 | `cpuPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
 | `Path`            | string | Required if created at a custom path | `""` | An optional string to manually set the backup location. If not provided, the backup will be restored from the default location. Introduced in Weaviate `v1.27.2`. |
+| `rolesOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
+| `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -721,6 +731,7 @@ For example, consider the following situation: You would like to do a load test 
 - Single node backup is available starting in Weaviate `v1.15`. Multi-node backups is available starting in `v1.16`.
 - In some cases, backups can take a long time, or get "stuck", causing Weaviate to be unresponsive. If this happens, you can [cancel the backup](#cancel-backup) and try again.
 - If a backup module is misconfigured, such as having an invalid backup path, it can cause Weaviate to not start. Review the system logs for any errors.
+- RBAC roles and users are not restored by default. You need to enable them manually through the configuration properties when [restoring a backup](#restore-backup).
 
 ## Related pages
 - <SkipLink href="/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>

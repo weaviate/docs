@@ -12,15 +12,15 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "ECommerce",
             description="A dataset that lists clothing items, their brands, prices, and more.",
-            vectorizer_config=[
-                Configure.NamedVectors.text2vec_weaviate(
+            vector_config=[
+                Configure.Vectors.text2vec_weaviate(
                     name="description_vector",
                     source_properties=[
                         "description",
                     ],
                     vector_index_config=Configure.VectorIndex.hnsw(),
                 ),
-                Configure.NamedVectors.text2vec_weaviate(
+                Configure.Vectors.text2vec_weaviate(
                     name="name_description_brand_vector",
                     source_properties=[
                         "name",
@@ -74,7 +74,7 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "Weather",
             description="Daily weather information including temperature, wind speed, precipitation, pressure etc.",
-            vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+            vector_config=Configure.Vectors.text2vec_weaviate(),
             properties=[
                 Property(name="date", data_type=DataType.DATE),
                 Property(name="humidity", data_type=DataType.NUMBER),
@@ -94,7 +94,7 @@ def populate_weaviate(client, overwrite_existing=False):
         client.collections.create(
             "FinancialContracts",
             description="A dataset of financial contracts between individuals and/or companies, as well as information on the type of contract and who has authored them.",
-            vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+            vector_config=Configure.Vectors.text2vec_weaviate(),
         )
 
     from datasets import load_dataset
@@ -253,7 +253,8 @@ for output in qa.stream(
     query,
     # Setting this to false will skip ProgressMessages, and only stream
     # the StreamedTokens / the final QueryAgentResponse
-    include_progress=True  # Default is True
+    include_progress=True,      # Default is True
+    include_final_state=True    # Default is True
 ):
     if isinstance(output, ProgressMessage):
         # The message is a human-readable string, structured info available in output.details
@@ -278,7 +279,7 @@ for collection_searches in response.searches:
     for result in collection_searches:
         print(f"- {result}\n")
 
-if response.has_aggregation_answer:
+if len(response.aggregations) > 0:
     print("📊 Aggregation Results:")
     for collection_aggs in response.aggregations:
         for agg in collection_aggs:

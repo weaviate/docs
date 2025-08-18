@@ -1,6 +1,7 @@
 ---
 title: Go
 sidebar_position: 70
+description: "Official Go client library documentation for integrating Weaviate with Go applications and services."
 image: og/docs/client-libraries.jpg
 # tags: ['go', 'client library']
 ---

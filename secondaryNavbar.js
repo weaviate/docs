@@ -151,31 +151,19 @@ const secondaryNavbarItems = {
     link: "/contributor-guide",
     links: [
       {
-        label: "Get Started",
+        label: "Documentation",
         link: "/contributor-guide",
         sidebar: "contributorSidebar",
       },
-      {
-        label: "Weaviate Database",
-        link: "/contributor-guide/weaviate-core",
-        sidebar: "contributorCoreSidebar",
-      },
-      {
-        label: "Weaviate Modules",
-        link: "/contributor-guide/weaviate-modules",
-        sidebar: "contributorModulesSidebar",
-      },
-      {
-        label: "Weaviate Clients",
-        link: "/contributor-guide/weaviate-clients",
-        sidebar: "contributorClientsSidebar",
-      },
-      {
-        label: "Contextionary",
-        link: "/contributor-guide/contextionary",
-        sidebar: "contributorContextionarySidebar",
-      },
     ],
+  },
+  events: {
+    title: "Events & Workshops",
+    icon: "fa fa-calendar-days",
+    isSmall: true,
+    description: "",
+    href: "https://weaviate.io/community/events",
+    links: [],
   },
 };
 

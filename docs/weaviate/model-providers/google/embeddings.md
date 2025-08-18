@@ -1,6 +1,6 @@
 ---
 title: Text Embeddings
-description: "Weaviate's integration with Google AI Studio and Google Vertex AI APIs allows you to access their models' capabilities directly from Weaviate."
+description: "Weaviate's integration with Google Gemini API and Google Vertex AI APIs allows you to access their models' capabilities directly from Weaviate."
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_google.jpg
 # tags: ['model providers', 'google', 'embeddings']
@@ -19,7 +19,7 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with [Google AI Studio](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate's integration with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use a Google embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Google API key. This feature is called the *vectorizer*.
 
@@ -27,8 +27,8 @@ At [import time](#data-import), Weaviate generates text object embeddings and sa
 
 ![Embedding integration illustration](../_includes/integration_google_embedding.png)
 
-:::info AI Studio availability
-At the time of writing (November 2023), AI Studio is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
+:::info Gemini API availability
+At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
 :::
 
 ## Requirements
@@ -60,9 +60,9 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 
 You must provide valid API credentials to Weaviate for the appropriate integration.
 
-#### AI Studio
+#### Gemini API
 
-Go to [Google AI Studio](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
+Go to [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
 
 #### Vertex AI
 
@@ -90,7 +90,7 @@ import GCPTokenExpiryNotes from '/_includes/gcp.token.expiry.notes.mdx';
 
 Provide the API key to Weaviate at runtime, as shown in the examples below.
 
-Note the separate headers that are available for [AI Studio](#ai-studio) and [Vertex AI](#vertex-ai) users.
+Note the separate headers that are available for [Gemini API](#gemini-api) and [Vertex AI](#vertex-ai) users.
 
 import ApiKeyNote from '../_includes/google-api-key-note.md';
 
@@ -131,7 +131,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Google embedding model:
 
-Note that the required parameters differ between Vertex AI and AI Studio.
+Note that the required parameters differ between Vertex AI and Gemini API.
 
 You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
 
@@ -169,7 +169,7 @@ Vertex AI users must provide the Google Cloud project ID in the vectorizer confi
 
 </Tabs>
 
-### AI Studio
+### Gemini API
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -216,7 +216,7 @@ The following examples show how to configure Google-specific options.
 
 - `projectId` (Only required if using Vertex AI): e.g. `cloud-large-language-models`
 - `apiEndpoint` (Optional): e.g. `us-central1-aiplatform.googleapis.com`
-- `modelId` (Optional): e.g. `textembedding-gecko@001` (Vertex AI) or `embedding-001` (AI Studio)
+- `modelId` (Optional): e.g. `gemini-embedding-001`
 <!-- - `titleProperty` (Optional): The Weaviate property name for the `gecko-002` or `gecko-003` model to use as the title. -->
 
 <Tabs groupId="languages">
@@ -377,7 +377,16 @@ The query below returns the `n` best scoring objects from the database, set by `
 ### Available models
 
 Vertex AI:
-- `textembedding-gecko@001` (default)
+- `gemini-embedding-001` (default, added in 1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+- `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+
+<details>
+  <summary>Deprecated models</summary>
+
+The following models have been deprecated by Google and are no longer supported. They may not function as expected.
+
+- `textembedding-gecko@001`
 - `textembedding-gecko@002`
 - `textembedding-gecko@003`
 - `textembedding-gecko@latest`
@@ -386,8 +395,11 @@ Vertex AI:
 - `text-embedding-preview-0409`
 - `text-multilingual-embedding-preview-0409`
 
-AI Studio:
-- `embedding-001` (default)
+</details>
+
+Gemini API:
+- `gemini-embedding-001` (default)
+    - `embedding-001` (deprecated name for `gemini-embedding-001`)
 - `text-embedding-004`
 
 ## Further resources
@@ -406,7 +418,7 @@ Once the integrations are configured at the collection, the data management and 
 ### External resources
 
 - [Google Vertex AI](https://cloud.google.com/vertex-ai)
-- [Google AI Studio](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
+- [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
 
 ## Questions and feedback
 

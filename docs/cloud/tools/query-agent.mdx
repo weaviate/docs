@@ -1,0 +1,124 @@
+---
+title: Query Agent
+image: og/wcd/user_guides.jpg
+---
+
+The **Weaviate Cloud (WCD) Query Agent** provides and interactive console for using the Weaviate [Query Agent](/docs/agents/query/index.md), a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
+
+The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
+
+## Query a collection
+
+In order to use the Query Agent, log into your Weaviate Cloud account and select `Agents` in the sidebar panel.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="dkd5mgyugr"
+    src="https://app.guideflow.com/embed/dkd5mgyugr"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webkitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+</div>
+
+## Additional parameters for querying
+
+In addition to selecting one or more collections to query, you can also:
+
+- Specify API keys for external model providers (like OpenAI, Anthropic, etc.)
+- Select which vectors in a collection to query (if there are multiple vectors in the collection)
+- Specify a _system prompt_ that provides additional information or instructions to the agent (for example, setting the tone, language, etc.)
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="mk68j60hqp"
+    src="https://app.guideflow.com/embed/mk68j60hqp"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webkitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+</div>
+
+## Generate code snippets
+
+After executing a query, you can also generate a code snippet that performs the same task through one of the available Weaviate Agents client libraries, either Python or TypeScript.
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="zklz3v9sop"
+    src="https://app.guideflow.com/embed/zklz3v9sop"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webkitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+</div>
+
+## Usage and limitations
+
+### Usage limits
+
+import UsageLimits from "/_includes/agents/query-agent-usage-limits.mdx";
+
+<UsageLimits />
+
+### Custom collection descriptions
+
+import CollectionDescriptions from "/_includes/agents/query-agent-collection-descriptions.mdx";
+
+<CollectionDescriptions />
+
+### Execution times
+
+import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
+
+<ExecutionTimes />
+
+### Multi-tenancy
+
+The WCD Query Agent does not support multi-tenancy. In order to utilize multi-tenancy with the Query Agent, use a [client library](/docs/agents/query/usage.md#configure-collections).
+
+## Further resources
+
+- [Weaviate Agents: Query Agent](/docs/agents/query/index.md)
+
+## Support
+
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
+
+<SupportAndTrouble />

@@ -1,7 +1,7 @@
 ---
 title: Conditional filters
-description: Apply filters in Weaviate's GraphQL API to refine search and data queries.
 sidebar_position: 35
+description: "GraphQL filtering documentation for applying conditional logic to refine search results."
 image: og/docs/api.jpg
 # tags: ['graphql', 'filters']
 ---
@@ -143,11 +143,11 @@ Weaviate doesn't have an operator to invert a filter (e.g. `Not Like ...` ). If 
 
 The behavior for the `Equal` operator on multi-word textual properties in `where` filters depends on the `tokenization` of the property.
 
-See the [Schema property tokenization section](../../config-refs/schema/index.md#tokenization) for the difference between the available tokenization types.
+See the [Schema property tokenization section](../../config-refs/collections.mdx#tokenization) for the difference between the available tokenization types.
 
 #### Stopwords in `text` filters
 
-Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/schema/index.md#stopwords-stopword-lists).
+Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/indexing/inverted-index.mdx#stopwords).
 
 ## Multiple operands
 
@@ -305,7 +305,7 @@ import GraphQLFiltersWhereId from '/_includes/code/graphql.filters.where.id.mdx'
 Filtering can be performed with internal timestamps as well, such as `creationTimeUnix` and `lastUpdateTimeUnix`. These values can be represented either as Unix epoch milliseconds, or as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) formatted datetimes. Note that epoch milliseconds should be passed in as a `valueText`, and an RFC3339 datetime should be a `valueDate`.
 
 :::info
-Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/schema/index.md#indextimestamps) for details.
+Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) for details.
 :::
 
 import GraphQLFiltersWhereTimestamps from '/_includes/code/graphql.filters.where.timestamps.mdx';
@@ -375,7 +375,7 @@ To filter for `Article` class objects with `title` length greater than 10, you w
 ```
 
 :::note
-Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/schema/index.md#indexpropertylength).
+Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/indexing/inverted-index.mdx#indexpropertylength).
 :::
 
 ### By cross-references
@@ -530,7 +530,7 @@ Using the `IsNull` operator allows you to do filter for objects where given prop
 ```
 
 :::note
-Filtering by null-state requires the target class to be configured to index this. See [here](../../config-refs/schema/index.md#indexnullstate) for details.
+Filtering by null-state requires the target class to be configured to index this. See [here](../../config-refs/indexing/inverted-index.mdx#indexnullstate) for details.
 :::
 
 

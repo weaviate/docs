@@ -78,7 +78,7 @@ volumes:
 ```
 
 :::caution
-Anonymous access is strongly discouraged except for development or evaluation purposes. 
+Anonymous access is strongly discouraged except for development or evaluation purposes.
 :::
 
   </TabItem>
@@ -225,9 +225,9 @@ services:
       PERSISTENCE_DATA_PATH: "./data"
       DEFAULT_VECTORIZER_MODULE: text2vec-transformers
       ENABLE_MODULES: text2vec-transformers
-      TRANSFORMERS_INFERENCE_API: http://t2v-transformers:8080
+      TRANSFORMERS_INFERENCE_API: http://text2vec-transformers:8080
       CLUSTER_HOSTNAME: 'node1'
-  t2v-transformers:
+  text2vec-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
     environment:
       ENABLE_CUDA: 0 # set to 1 to enable

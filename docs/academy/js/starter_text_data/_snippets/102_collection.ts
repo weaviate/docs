@@ -2,7 +2,7 @@
 import weaviate from "weaviate-client";
 // END BatchImportData // END CreateMovieCollection // END SubmoduleImport
 // CreateMovieCollection // SubmoduleImport
-import { WeaviateClient, configure, vectorizer } from "weaviate-client";
+import { WeaviateClient, configure, vectors } from "weaviate-client";
 // END CreateMovieCollection  // END SubmoduleImport
 
 
@@ -58,7 +58,7 @@ await client.collections.create({
         { name: "tmdb_id", dataType: configure.dataType.INT},
     ],
     // Define the vectorizer module
-    vectorizers: vectorizer.text2VecOpenAI(),
+    vectorizers: vectors.text2VecOpenAI(),
     // Define the generative module
     generative: configure.generative.openAI(),
     // END generativeDefinition  // CreateMovieCollection
@@ -93,7 +93,7 @@ const response = await fetch(dataUrl)
 const data = await response.json()
 
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Set a counter and initialize Weaviate Object
 let itemsToInsert: Object[] = []

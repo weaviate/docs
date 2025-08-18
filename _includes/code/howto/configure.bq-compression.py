@@ -5,8 +5,7 @@
 # ==============================
 
 # START ConnectCode
-import weaviate, os, json
-import weaviate.classes.config as wc
+import weaviate, os
 
 client = weaviate.connect_to_local(
     headers={
@@ -27,16 +26,16 @@ client.is_ready()
 client.collections.delete("MyCollection")
 
 # START EnableBQ
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    # highlight-start
-    vector_index_config=wc.Configure.VectorIndex.flat(
-        quantizer=wc.Configure.VectorIndex.Quantizer.bq()
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.bq(),
+        # highlight-end
     ),
-    # highlight-end
 )
 # END EnableBQ
 
@@ -47,22 +46,45 @@ client.collections.create(
 client.collections.delete("MyCollection")
 
 # START BQWithOptions
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="MyCollection",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    vector_index_config=wc.Configure.VectorIndex.flat(
-        distance_metric=wc.VectorDistances.COSINE,
-        vector_cache_max_objects=100000,
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.bq(
-            rescore_limit=200,
-            cache=True
-        )
+        quantizer=Configure.VectorIndex.Quantizer.bq(rescore_limit=200, cache=True),
         # highlight-end
+        vector_index_config=Configure.VectorIndex.flat(
+            vector_cache_max_objects=100000,
+        ),
     ),
 )
 # END BQWithOptions
+
+# ==============================
+# =====  UPDATE SCHEMA =====
+# ==============================
+
+# START UpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.flat(
+            quantizer=Reconfigure.VectorIndex.Quantizer.bq(
+                rescore_limit=20,
+            ),
+        ),
+    )
+)
+# END UpdateSchema
+
+from weaviate.collections.classes.config import _BQConfig
+
+config = client.collections.get("MyCollection").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _BQConfig
 
 client.close()

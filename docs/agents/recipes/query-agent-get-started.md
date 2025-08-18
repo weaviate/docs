@@ -73,14 +73,14 @@ from weaviate.classes.config import Configure, Property, DataType
 client.collections.create(
     "Brands",
     description="A dataset that lists information about clothing brands, their parent companies, average rating and more.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate()
+    vector_config=Configure.Vectors.text2vec_weaviate()
 )
 
 # client.collections.delete("Ecommerce")
 client.collections.create(
     "Ecommerce",
     description="A dataset that lists clothing items, their brands, prices, and more.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
     properties=[
         Property(name="collection", data_type=DataType.TEXT),
         Property(name="category", data_type=DataType.TEXT),
@@ -101,7 +101,7 @@ client.collections.create(
 client.collections.create(
     "Weather",
     description="Daily weather information including temperature, wind speed, percipitation, pressure etc.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
     properties=[
         Property(name="date", data_type=DataType.DATE),
         Property(name="humidity", data_type=DataType.NUMBER),
@@ -117,7 +117,7 @@ client.collections.create(
 client.collections.create(
     "Financial_contracts",
     description="A dataset of financial contracts between indivicuals and/or companies, as well as information on the type of contract and who has authored them.",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
 )
 ```
 

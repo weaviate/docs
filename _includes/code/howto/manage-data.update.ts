@@ -7,10 +7,7 @@ import assert from 'assert';
 // ================================
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
-const client = await weaviate.connectToWeaviateCloud(
-  'WEAVIATE_INSTANCE_URL',  // Replace WEAVIATE_INSTANCE_URL with your instance URL
- {
-   authCredentials: new weaviate.ApiKey('api-key'),
+const client = await weaviate.connectToLocal({
    headers: {
      'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY || '',  // Replace with your inference API key
    }
@@ -20,7 +17,7 @@ const client = await weaviate.connectToWeaviateCloud(
 const collectionName = 'JeopardyQuestion';
 
 // UpdateProps START // Replace START
-const myCollection = client.collections.get('JeopardyQuestion') 
+const myCollection = client.collections.use('JeopardyQuestion') 
 // UpdateProps END // Replace END
 
 // ============================
@@ -30,7 +27,7 @@ const myCollection = client.collections.get('JeopardyQuestion')
 const collectionDefinition = {
   name: 'JeopardyQuestion',
   description: 'A Jeopardy! question',
-  vectorizers: weaviate.configure.vectorizer.text2VecCohere(),
+  vectorizers: weaviate.configure.vectors.text2VecCohere(),
 };
 
 // Clean slate
@@ -71,7 +68,7 @@ console.log(response)
 // =========================
 {
 // UpdateVector START
-const jeopardy = client.collections.get('Jeopardy')
+const jeopardy = client.collections.use('Jeopardy')
 const response = await jeopardy.data.update({
   id: 'ed89d9e7-4c9d-4a6a-8d20-095cb0026f54',
   // highlight-start
@@ -114,7 +111,7 @@ console.log(response)
 
 // DelProps START
 async function deleteProperties(client: WeaviateClient, uuidToUpdate: string, collectionName: string, propNames: string[]) {
-  const collection = client.collections.get(collectionName);
+  const collection = client.collections.use(collectionName);
   const objectData = await collection.query.fetchObjectById(uuidToUpdate);
   const propertiesToUpdate = objectData?.properties;
   

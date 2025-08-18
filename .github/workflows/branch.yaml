@@ -13,10 +13,7 @@ jobs:
       GH_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
       SLACK_BOT: ${{ secrets.SLACK_BOT }}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      # NETLIFY_URL: ${{ secrets.NETLIFY_URL }}
-      # GOOGLE_CONTAINER_ID: ${{ secrets.GOOGLE_CONTAINER_ID }}
-      # GOOGLE_TRACKING_ID: ${{ secrets.GOOGLE_TRACKING_ID }}
-      # GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      GOOGLE_CONTAINER_ID: ${{ secrets.GOOGLE_CONTAINER_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

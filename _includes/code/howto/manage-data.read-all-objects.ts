@@ -18,7 +18,7 @@ const client = await weaviate.connectToWeaviateCloud(
 // ============================
 {
 // START ReadAllProps
-const myCollection = client.collections.get("WineReview");
+const myCollection = client.collections.use("WineReview");
 
 for await (let item of myCollection.iterator()) {
   console.log(item.uuid, item.properties);
@@ -30,7 +30,7 @@ for await (let item of myCollection.iterator()) {
 // =========================================
 {
 // START ReadAllVectors
-const myCollection = client.collections.get("WineReview");
+const myCollection = client.collections.use("WineReview");
 
 for await (let item of myCollection.iterator({
     includeVector: true
@@ -46,7 +46,7 @@ for await (let item of myCollection.iterator({
 // =========================================
 {
 // START ReadAllTenants
-const multiCollection = client.collections.get("WineReviewMT");
+const multiCollection = client.collections.use("WineReviewMT");
 
 const tenants = await multiCollection.tenants.get()
 
