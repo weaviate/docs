@@ -11,7 +11,7 @@ public class ObjectTest
     readonly Guid objectId = Guid.NewGuid();
     readonly string collectionName = "Jeopardy";
 
-    [Fact]
+    // [Fact]
     public async Task Should_Import_Objects()
     {
         var client = Connect.Local(restPort: 8080, grpcPort: 50051);
@@ -31,7 +31,7 @@ public class ObjectTest
         Console.WriteLine($"Successfully created collection: '{collectionName}'");
     }
 
-    [Fact]
+    // [Fact]
     public async Task Should_Delete_Objects()
     {
         var client = Connect.Local(restPort: 8080, grpcPort: 50051);

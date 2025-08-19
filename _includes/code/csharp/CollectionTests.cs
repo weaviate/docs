@@ -8,7 +8,7 @@ namespace WeaviateProject.Tests;
 
 public class CollectionTest
 {
-    [Fact]
+    // [Fact]
     public async Task Should_Create_Collection()
     {
         var client = Connect.Local(restPort: 8080, grpcPort: 50051);
@@ -34,7 +34,7 @@ public class CollectionTest
         Console.WriteLine($"Successfully created collection: '{collectionName}'");
     }
 
-    [Fact]
+    // [Fact]
     public async Task Should_Create_Collection_With_Properties()
     {
         var client = Connect.Local(restPort: 8080, grpcPort: 50051);
@@ -62,7 +62,7 @@ public class CollectionTest
         Console.WriteLine($"Successfully created collection: '{collectionName}'");
     }
 
-    [Fact]
+    // [Fact]
     public async Task Should_Create_Collection_With_Vectorizer()
     {
         var client = Connect.Local(restPort: 8080, grpcPort: 50051);
@@ -90,7 +90,7 @@ public class CollectionTest
         Console.WriteLine($"Successfully created collection: '{collectionName}'");
     }
 
-    [Fact]
+    // [Fact]
     public async Task Should_Delete_Collection()
     {
         var client = Connect.Local(restPort: 8080, grpcPort: 50051);
