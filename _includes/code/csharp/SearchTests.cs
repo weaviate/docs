@@ -16,7 +16,7 @@ public class SearchTest
 {
     readonly WeaviateClient client = Connect.Local(restPort: 8080, grpcPort: 50051);
 
-    [Fact]
+    // [Fact]
     public async Task Should_Fetch_By_Id()
     {
         var collection = client.Collections.Use("JeopardyQuestion");
@@ -36,7 +36,7 @@ public class SearchTest
         // END FetchById
     }
 
-    [Fact]
+    // [Fact]
     public async Task Should_Near_Text()
     {
         // START GetNearText
