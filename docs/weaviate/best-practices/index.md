@@ -52,6 +52,13 @@ For environments with high reliability requirements, high query loads or latency
 - [Configuration: Replication](/deploy/configuration/replication.md)
 :::
 
+#### Replication settings
+
+If using high availability (HA) configurations, consider the following replication settings:
+
+- **Replication factor**: Set the replication factor to an odd number to ensure quorum (majority of cluster size) is possible without excessive replication. Note: If the number of nodes is fewer than the replication factor, Weaviate will not start.
+- **Deletion strategy**: Use a deletion strategy that fits your use case. The `NoAutomatedResolution` strategy is generally recommended.
+
 ### Use multi-tenancy for data subsets
 
 If your use cases involves multiple subsets of data which meet all of the following criteria:
