@@ -265,10 +265,13 @@ client.collections.create(
 
 # Collection with high availability
 # Used to create collections with multiple replicas on multi-node clusters
+from weaviate.classes.config import ReplicationDeletionStrategy
+
 client.collections.create(
     "Article",
     replication_config=Configure.replication(
-        factor=3,  # Use odd numbers to ensure quorum is possible without excessive replication
+        factor=3,  # Use odd numbers to allow quorum without excessive replication; Note: If (number of nodes < replication factor): Weaviate will not start
+        strategy=ReplicationDeletionStrategy.NO_AUTOMATED_RESOLUTION  # Generally recommended
     )
 )
 
