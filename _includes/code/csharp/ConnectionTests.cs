@@ -43,7 +43,6 @@ public class ConnectionSnippetsTest
     public async Task Should_Perform_Custom_Connection_With_ApiKey()
     {
         // START CustomConnect
-        // START ConnectWithApiKeyExample
         var httpHost = Environment.GetEnvironmentVariable("WEAVIATE_HTTP_HOST");
         var grpcHost = Environment.GetEnvironmentVariable("WEAVIATE_GRPC_HOST");
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
@@ -58,7 +57,6 @@ public class ConnectionSnippetsTest
         );
         var client = new WeaviateClient(config);
         // END CustomConnect
-        // END ConnectWithApiKeyExample
 
         try
         {
