@@ -82,6 +82,10 @@ const FilteredTextBlock = ({
     let withinMarkers = false;
     let format;
     switch (language) {
+        case 'csharp': // Add this new case
+            // remove leading indent of 4 spaces
+            format = (input) => input.replace(/^        /, '');
+            break;
         case 'java':
             // remove leading indent of 4 spaces
             format = (input) => input.replace(/^    /, '');

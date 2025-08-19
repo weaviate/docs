@@ -1,0 +1,499 @@
+using Xunit;
+using Weaviate.Client;
+using Weaviate.Client.Models;
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+public class ManageDataTests : IAsyncLifetime
+{
+    private readonly WeaviateClient weaviate;
+    private readonly List<string> _collectionNamesToDelete = new List<string>();
+
+    public ManageDataTests()
+    {
+        weaviate = new WeaviateClient(
+            new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 }
+        );
+    }
+
+    private string AddTestCollection(string name)
+    {
+        _collectionNamesToDelete.Add(name);
+        return name;
+    }
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
+        foreach (string name in _collectionNamesToDelete)
+        {
+            await weaviate.Collections.Delete(name);
+        }
+    }
+
+    [Fact]
+    public async Task CreateBasicCollection()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START BasicCreateCollection
+        Collection articleCollection = new Collection { Name = collectionName };
+        await weaviate.Collections.Create(articleCollection);
+        // END BasicCreateCollection
+
+        bool exists = await weaviate.Collections.Exists(collectionName);
+        Assert.True(exists);
+    }
+
+    [Fact]
+    public async Task CreateCollectionWithProperties()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START CreateCollectionWithProperties
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            Properties = new List<Property>
+            {
+                Property.Text("title"),
+                Property.Text("body"),
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END CreateCollectionWithProperties
+
+        Collection collection = await weaviate.Collections.Export(collectionName);
+        Assert.NotNull(collection);
+        Assert.Equal(2, collection.Properties.Count);
+    }
+
+    [Fact]
+    public async Task CreateCollectionWithVectorizer()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START Vectorizer
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = Configure.Vectors.Text2VecOpenAI("default").New(),
+            Properties = new List<Property>
+            {
+                Property.Text("title"),
+                Property.Text("body"),
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END Vectorizer
+
+        Collection collection = await weaviate.Collections.Export(collectionName);
+        Assert.NotNull(collection.VectorConfig);
+        Assert.Equal("text2vec-openai", collection.VectorConfig["default"].Vectorizer.Identifier);
+    }
+
+    [Fact]
+    public async Task CreateCollectionWithNamedVectors()
+    {
+        string collectionName = AddTestCollection("ArticleNV");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START BasicNamedVectors
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = new VectorConfigList
+            {
+                // TODO[g-despot]: How to specify source properties
+                //Configure.Vectors.Text2VecCohere(sourceProperties: new[] { "title" }).New("title"),
+                //Configure.Vectors.Text2VecOpenAI(sourceProperties: new[] { "title", "country" }).New("title_country"),
+                Configure.Vectors.SelfProvided("default"),
+            },
+            Properties = new List<Property>
+            {
+                Property.Text("title"),
+                Property.Text("country"),
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END BasicNamedVectors
+
+        Collection collection = await weaviate.Collections.Export(collectionName);
+        Assert.Equal(1, collection.VectorConfig.Count);
+        // Assert.Equal(new[] { "title" }, collection.VectorConfig["title"].Vectorizer.SourceProperties);
+    }
+
+    [Fact]
+    public async Task SetVectorIndexType()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START SetVectorIndexType
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = new VectorConfigList
+            {
+                new VectorConfig(
+                    name: "default",
+                    vectorizer: new Vectorizer.Text2VecOpenAI(),
+                    vectorIndexConfig: new VectorIndex.HNSW()
+                )
+            },
+            Properties = new List<Property>
+            {
+                Property.Text("title"),
+                Property.Text("body"),
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END SetVectorIndexType
+
+        Collection collection = await weaviate.Collections.Export(collectionName);
+        Assert.IsType<VectorIndex.HNSW>(collection.VectorConfig["default"].VectorIndexConfig);
+    }
+
+    [Fact]
+    public async Task SetVectorIndexParams()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START SetVectorIndexParams
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = new VectorConfigList
+            {
+                new VectorConfig(
+                    name: "default",
+                    vectorizer: new Vectorizer.Text2VecOpenAI(),
+                    vectorIndexConfig: new VectorIndex.HNSW
+                    {
+                        EfConstruction = 300,
+                        Distance = VectorIndexConfig.VectorDistance.Cosine,
+                        FilterStrategy = VectorIndexConfig.VectorIndexFilterStrategy.Sweeping
+                    }
+                )
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END SetVectorIndexParams
+
+        Collection collection = await weaviate.Collections.Export(collectionName);
+        VectorIndex.HNSW hnswConfig = Assert.IsType<VectorIndex.HNSW>(collection.VectorConfig["default"].VectorIndexConfig);
+        Assert.Equal(300, hnswConfig.EfConstruction);
+    }
+
+    [Fact]
+    public async Task SetInvertedIndexParams()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START SetInvertedIndexParams
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            Properties = new List<Property>
+            {
+                Property.Text("title", indexFilterable: true, indexSearchable: true),
+                Property.Text("chunk", indexFilterable: true, indexSearchable: true),
+                Property.Int("chunk_number", indexRangeFilters: true),
+            },
+            InvertedIndexConfig = new InvertedIndexConfig
+            {
+                Bm25 = new BM25Config { B = 0.7f, K1 = 1.25f },
+                IndexNullState = true,
+                IndexPropertyLength = true,
+                IndexTimestamps = true,
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END SetInvertedIndexParams
+
+        Collection collection = await weaviate.Collections.Export(collectionName);
+        Assert.Equal(0.7f, collection.InvertedIndexConfig.Bm25.B);
+        Assert.Equal(1.25f, collection.InvertedIndexConfig.Bm25.K1);
+    }
+
+    [Fact]
+    public async Task SetAndReadModules()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START SetReranker
+        Collection articleReranker = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = Configure.Vectors.Text2VecOpenAI().New(),
+            RerankerConfig = new Reranker.Cohere()
+        };
+        await weaviate.Collections.Create(articleReranker);
+        // END SetReranker
+
+        Collection collectionConfig = await weaviate.Collections.Export(collectionName);
+        Assert.Equal("reranker-cohere", (collectionConfig.RerankerConfig as Reranker.Cohere)?.Type);
+
+        await weaviate.Collections.Delete(collectionName);
+
+        // START SetGenerative
+        Collection articleGenerative = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = Configure.Vectors.Text2VecOpenAI().New(),
+            //TODO[g-despot]: Missing model parameter for generative OpenAIConfig
+            GenerativeConfig = new Generative.OpenAIConfig()
+        };
+        await weaviate.Collections.Create(articleGenerative);
+        // END SetGenerative
+
+        collectionConfig = await weaviate.Collections.Export(collectionName);
+        Assert.Equal("generative-openai", (collectionConfig.GenerativeConfig as Generative.OpenAIConfig)?.Type);
+    }
+
+    [Fact]
+    public async Task UpdateModules()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        Collection initialCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = Configure.Vectors.Text2VecOpenAI().New(),
+            RerankerConfig = new Reranker.VoyageAI()
+        };
+        await weaviate.Collections.Create(initialCollection);
+
+        // START UpdateReranker
+        CollectionClient<object> collectionToUpdate = weaviate.Collections.Use<object>(collectionName);
+        await collectionToUpdate.Config.Update(c =>
+        {
+            c.RerankerConfig = new Reranker.Cohere();
+        });
+        // END UpdateReranker
+
+        Collection config = await weaviate.Collections.Export(collectionName);
+        Assert.Equal("reranker-cohere", (config.RerankerConfig as Reranker.Cohere)?.Type);
+    }
+
+    [Fact]
+    public async Task ConfigureModuleSettings()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START ModuleSettings
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            // highlight-start
+            VectorConfig = new VectorConfigList
+            {
+                new VectorConfig(
+                    name: "default",
+                    vectorizer: new Vectorizer.Text2VecCohere
+                    {
+                        Model = "embed-multilingual-v2.0",
+                        VectorizeCollectionName = true
+                    }
+                )
+            }
+            // highlight-end
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END ModuleSettings
+
+        Collection config = await weaviate.Collections.Export(collectionName);
+        Vectorizer.Text2VecCohere cohereVectorizer = Assert.IsType<Vectorizer.Text2VecCohere>(config.VectorConfig["default"].Vectorizer);
+        Assert.Equal("embed-multilingual-v2.0", cohereVectorizer.Model);
+    }
+
+    [Fact]
+    public async Task ConfigurePropertyModuleSettings()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START PropModuleSettings
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = Configure.Vectors.Text2VecCohere().New(),
+            Properties = new List<Property>
+            {
+                Property.Text(
+                    "title",
+                    // TODO[g-despot]: Missing vectorizePropertyName
+                    // vectorizePropertyName: true,
+                    tokenization: PropertyTokenization.Lowercase
+                ),
+                Property.Text(
+                    "body",
+                    // TODO[g-despot]: Missing vectorizePropertyName
+                    // skipVectorization: true,
+                    tokenization: PropertyTokenization.Whitespace
+                ),
+            }
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END PropModuleSettings
+
+        // START AddNamedVectors
+        CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
+        // TODO[g-despot]: AddVector throws error
+        // await articles.Config.AddVector(
+        // TODO[g-despot]: Missing sourceProperties
+        // Configure.Vectors.Text2VecCohere(sourceProperties: new[] { "body" }).New("body_vector")
+        //    Configure.Vectors.Text2VecCohere().New("body_vector")
+        // );
+        // END AddNamedVectors
+
+        Collection config = await weaviate.Collections.Export(collectionName);
+        Assert.Equal(1, config.VectorConfig.Count);
+        //Assert.NotNull(config.VectorConfig["body_vector"]);
+    }
+
+    [Fact]
+    public async Task SetDistanceMetric()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START DistanceMetric
+        Collection articleCollection = new Collection
+        {
+            Name = collectionName,
+            // highlight-start
+            VectorConfig = new VectorConfigList
+            {
+                new VectorConfig(
+                    name: "default",
+                    vectorizer: new Vectorizer.Text2VecOpenAI(),
+                    vectorIndexConfig: new VectorIndex.HNSW
+                    {
+                        Distance = VectorIndexConfig.VectorDistance.Cosine
+                    }
+                )
+            }
+            // highlight-end
+        };
+        await weaviate.Collections.Create(articleCollection);
+        // END DistanceMetric
+
+        Collection config = await weaviate.Collections.Export(collectionName);
+        VectorIndex.HNSW hnswConfig = Assert.IsType<VectorIndex.HNSW>(config.VectorConfig["default"].VectorIndexConfig);
+        Assert.Equal(VectorIndexConfig.VectorDistance.Cosine, hnswConfig.Distance);
+    }
+
+    [Fact]
+    public async Task ConfigureReplicationAndSharding()
+    {
+        // --- Replication Part ---
+        // Connect to the Weaviate instance configured for replication tests on port 8180
+        WeaviateClient replicationClient = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8180 });
+        string replicationCollectionName = AddTestCollection("ArticleReplication");
+        await replicationClient.Collections.Delete(replicationCollectionName);
+
+        // START ReplicationSettings
+        Collection replCollection = new Collection
+        {
+            Name = replicationCollectionName,
+            ReplicationConfig = new ReplicationConfig { Factor = 3 }
+        };
+        await replicationClient.Collections.Create(replCollection);
+        // END ReplicationSettings
+
+        Collection config = await replicationClient.Collections.Export(replicationCollectionName);
+        Assert.Equal(3, config.ReplicationConfig.Factor);
+        await replicationClient.Collections.Delete(replicationCollectionName); // Clean up using the replication client
+
+
+        // --- Sharding Part ---
+        // Use the default client for sharding tests
+        string shardingCollectionName = AddTestCollection("ArticleSharding");
+        await weaviate.Collections.Delete(shardingCollectionName);
+
+        // START ShardingSettings
+        Collection shardCollection = new Collection
+        {
+            Name = shardingCollectionName,
+            ShardingConfig = new ShardingConfig
+            {
+                VirtualPerPhysical = 128,
+                DesiredCount = 1,
+                DesiredVirtualCount = 128,
+            }
+        };
+        await weaviate.Collections.Create(shardCollection);
+        // END ShardingSettings
+
+        config = await weaviate.Collections.Export(shardingCollectionName);
+        Assert.Equal(128, config.ShardingConfig.VirtualPerPhysical);
+    }
+
+    [Fact]
+    public async Task ConfigureMultiTenancyAndProperties()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START Multi-tenancy
+        Collection mtCollection = new Collection
+        {
+            Name = collectionName,
+            MultiTenancyConfig = new MultiTenancyConfig { Enabled = true }
+        };
+        await weaviate.Collections.Create(mtCollection);
+        // END Multi-tenancy
+
+        Collection config = await weaviate.Collections.Export(collectionName);
+        Assert.True(config.MultiTenancyConfig.Enabled);
+
+        // START AddProp
+        CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
+        // TODO[g-despot]: AddProperty is internal
+        // await articles.Config.AddProperty(Property.Text("body"));
+        // END AddProp
+
+        config = await weaviate.Collections.Export(collectionName);
+        // Assert.Contains(config.Properties, p => p.Name == "body");
+    }
+
+    [Fact]
+    public async Task ReadAndDeleteCollections()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+        await weaviate.Collections.Create(new Collection { Name = collectionName });
+
+        // START ReadOneCollection
+        CollectionClient<object> articlesClient = weaviate.Collections.Use<object>(collectionName);
+        Collection articlesConfig = await articlesClient.Get();
+        Console.WriteLine(articlesConfig.Name);
+        // END ReadOneCollection
+        Assert.Equal(collectionName, articlesConfig.Name);
+
+        // START ReadAllCollections
+        await foreach (Collection collection in weaviate.Collections.List())
+        {
+            Console.WriteLine(collection.Name);
+        }
+        // END ReadAllCollections
+
+        // START DeleteCollection
+        await weaviate.Collections.Delete(collectionName);
+        // END DeleteCollection
+
+        bool exists = await weaviate.Collections.Exists(collectionName);
+        Assert.False(exists);
+    }
+}
