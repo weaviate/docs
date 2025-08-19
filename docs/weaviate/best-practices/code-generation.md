@@ -18,11 +18,11 @@ Here are some tips for writing Weaviate client library code with generative AI m
 
 ### High-performing models
 
-As of April 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/weaviate/client-libraries/python/index.mdx) code.)
+As of July 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/weaviate/client-libraries/python/index.mdx) code.)
 
-- Anthropic `claude-3-7-sonnet-20250219`
-- Google `gemini-2.5-pro-exp-03-25`
-- OpenAI `gpt-4.5-preview-2025-02-27` /
+- Anthropic `claude-sonnet-4-20250514`
+- Google `gemini-2.5-pro`
+- Google `gemini-2.5-flash`
 
 If you are using the Python client library, we recommend that you try out one of the above models to see if it performs well for your use case.
 
