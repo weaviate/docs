@@ -7,7 +7,7 @@ image: og/docs/integrations/provider_integrations_google.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Google offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with [Google AI Studio](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs, allowing users to leverage Google's models directly from the Weaviate Database.
+Google offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs, allowing users to leverage Google's models directly from the Weaviate Database.
 
 These integrations empower developers to build sophisticated AI-driven applications with ease.
 
@@ -54,7 +54,7 @@ import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.
 
 ## Get started
 
-Weaviate integrates with both [Google AI Studio](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) or [Google Vertex AI](https://cloud.google.com/vertex-ai).
+Weaviate integrates with both [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) or [Google Vertex AI](https://cloud.google.com/vertex-ai).
 
 Go to the relevant integration page to learn how to configure Weaviate with the Google models and start using them in your applications.
 

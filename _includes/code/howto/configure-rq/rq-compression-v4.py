@@ -6,7 +6,6 @@
 
 # START ConnectCode
 import weaviate, os
-import weaviate.classes.config as wc
 
 client = weaviate.connect_to_local(
     headers={
@@ -27,17 +26,17 @@ client.is_ready()
 client.collections.delete("MyCollection")
 
 # START EnableRQ
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure, Property, DataType
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
+    vector_config=Configure.Vectors.text2vec_openai(
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.rq()
+        quantizer=Configure.VectorIndex.Quantizer.rq()
         # highlight-end
     ),
     properties=[
-        wc.Property(name="title", data_type=wc.DataType.TEXT),
+        Property(name="title", data_type=DataType.TEXT),
     ],
 )
 # END EnableRQ
@@ -49,25 +48,47 @@ client.collections.create(
 client.collections.delete("MyCollection")
 
 # START RQWithOptions
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure, Property, DataType
 
 client.collections.create(
     name="MyCollection",
-    vector_config=wc.Configure.Vectors.text2vec_openai(
+    vector_config=Configure.Vectors.text2vec_openai(
         # highlight-start
-        quantizer=wc.Configure.VectorIndex.Quantizer.rq(
-            bits=8,  # Number of bits, only 8 is supported for now
+        quantizer=Configure.VectorIndex.Quantizer.rq(
+            bits=8,  # Optional: Number of bits, only 8 is supported for now
+            rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
         ),
         # highlight-end
-        vector_index_config=wc.Configure.VectorIndex.hnsw(
-            distance_metric=wc.VectorDistances.COSINE,
-            vector_cache_max_objects=100000,
-        ),
     ),
     properties=[
-        wc.Property(name="title", data_type=wc.DataType.TEXT),
+        Property(name="title", data_type=DataType.TEXT),
     ],
 )
 # END RQWithOptions
+
+# ==============================
+# =====  UPDATE SCHEMA =====
+# ==============================
+
+# START UpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.get("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(
+                rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
+            ),
+        ),
+    )
+)
+# END UpdateSchema
+
+from weaviate.collections.classes.config import _RQConfig
+
+config = client.collections.get("MyCollection").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _RQConfig
 
 client.close()

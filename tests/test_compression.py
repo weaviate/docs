@@ -3,6 +3,7 @@ import pytest
 import utils
 import shlex
 import os
+from pathlib import Path
 
 
 @pytest.mark.pyv4
@@ -12,11 +13,12 @@ import os
         "./_includes/code/howto/configure.pq-compression.py",
         "./_includes/code/howto/configure.bq-compression.py",
         "./_includes/code/howto/configure-sq/sq-compression-v4.py",
+        "./_includes/code/howto/configure-rq/rq-compression-v4.py",
     ],
 )
 def test_on_blank_instance_pyv4(empty_weaviates, script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
-    exec(proc_script)
+    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
 
 
 @pytest.mark.java

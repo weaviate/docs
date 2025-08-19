@@ -255,7 +255,7 @@ client.collections.create(
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
-            model_id="textembedding-gecko@latest"
+            model_id="gemini-embedding-001"
         )
     ],
     # highlight-end
@@ -278,7 +278,7 @@ client.collections.create(
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
-            model_id="text-embedding-004"
+            model_id="embedding-001"
         )
     ],
     # highlight-end
@@ -1472,6 +1472,47 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullVectorizerGPT4All
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicVectorizerModel2Vec
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_model2vec(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerModel2Vec
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerModel2Vec
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_model2vec(
+            name="title_vector",
+            source_properties=["title"],
+            inference_url="<custom-inference-url>",  # Default - configuration defined through container, e.g. Docker compose file
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerModel2Vec
 
 # clean up
 client.collections.delete("DemoCollection")

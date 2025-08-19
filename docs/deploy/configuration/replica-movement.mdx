@@ -8,6 +8,8 @@ image: og/docs/configuration.jpg
 
 Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/docs/weaviate/api/rest.md) or through the client library API described below.
 
+When a replica movement is initiated, it changes the replication factor of that shard *only*, not the entire collection. A collection has a particular replication factor, but a shard (a subset of a collection), can have its own replication factor which can be different. If a replica COPY operation is made, this can be incremented.
+
 ## Check shard state
 
 Before initiating any movement, you might want to inspect the current distribution of replicas. You can retrieve the sharding state of an entire collection, or its specific shard.

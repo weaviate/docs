@@ -31,7 +31,7 @@ Specify a `vectorizer` for a collection.
 Collection level settings override default values and general configuration parameters such as [environment variables](/deploy/configuration/env-vars/index.md).
 
 - [Available model integrations](../model-providers/index.md)
-- [Vectorizer configuration references](/weaviate/config-refs/schema#vectorizer)
+- [Vectorizer configuration references](/weaviate/config-refs/collections.mdx#vector-configuration)
 
 </details>
 
@@ -271,7 +271,7 @@ Named vectors can be added to existing collection definitions with named vectors
 </Tabs>
 
 :::caution Objects aren't automatically revectorized
-Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../config-refs/schema/index.md#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
+Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../concepts/data.md#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
 :::
 
 ## Define multi-vector embeddings (e.g. ColBERT, ColPali)
@@ -456,7 +456,7 @@ Configure individual properties in a collection. Each property can have it's own
 
 - Vectorize the property
 - Vectorize the property name
-- Set a [tokenization type](../config-refs/schema/index.md#tokenization)
+- Set a [tokenization type](../config-refs/collections.mdx#tokenization)
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -582,14 +582,14 @@ If you choose to bring your own vectors, you should specify the `distance metric
 For details on the configuration parameters, see the following:
 
 - [Distances](../config-refs/distances.md)
-- [Vector indexes](../config-refs/schema/vector-index.md)
+- [Vector indexes](../config-refs/indexing/vector-index.mdx)
 
 </details>
 
 ## Further resources
 
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 
 ## Questions and feedback

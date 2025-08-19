@@ -1,6 +1,7 @@
 import subprocess
 import pytest
 import utils
+from pathlib import Path
 
 
 @pytest.mark.pyv4
@@ -14,4 +15,4 @@ import utils
 )
 def test_pyv4(empty_weaviates, script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
-    exec(proc_script)
+    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)

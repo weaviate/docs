@@ -1,6 +1,7 @@
 ---
 title: Compression (Vector Quantization)
 sidebar_position: 19
+description: "Vector compression techniques reducing memory footprint and costs while improving search speed performance."
 image: og/docs/concepts.jpg
 # tags: ['vector compression', 'quantization']
 ---
@@ -28,7 +29,7 @@ Vector quantization is a technique that reduces the memory footprint of vector e
 
 PQ reduces the size of each vector embedding in two steps. First, it reduces the number of vector dimensions to a smaller number of "segments", and then each segment is quantized to a smaller number of bits from the original number of bits (typically a 32-bit float).
 
-import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
+import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
@@ -74,7 +75,7 @@ After the PQ conversion completes, query and write to the index as normal. Dista
 
 In the configuration above you can see that you can set the `encoder` object to specify how the codebook centroids are generated. Weaviate's PQ supports using two different encoders. The default is `kmeans` which maps to the traditional approach used for creating centroid.
 
-Alternatively, there is also the `tile` encoder. This encoder is currently experimental but does have faster import times and better recall on datasets like SIFT and GIST. The `tile` encoder has an additional `distribution` parameter that controls what distribution to use when generating centroids. You can configure the encoder by setting `type` to `tile` or `kmeans` the encoder creates the codebook for product quantization. For configuration details, see [Configuration: Vector index](../config-refs/schema/vector-index.md).
+Alternatively, there is also the `tile` encoder. This encoder is currently experimental but does have faster import times and better recall on datasets like SIFT and GIST. The `tile` encoder has an additional `distribution` parameter that controls what distribution to use when generating centroids. You can configure the encoder by setting `type` to `tile` or `kmeans` the encoder creates the codebook for product quantization. For configuration details, see [Configuration: Vector index](../config-refs/indexing/vector-index.mdx).
 
 ### Distance calculation
 
@@ -174,8 +175,8 @@ In some cases, rescoring also includes over-fetching, whereby additional candida
 :::info Related pages
 - [Concepts: Indexing](./indexing/index.md)
 - [Concepts: Vector Indexing](./indexing/vector-index.md)
-- [Configuration: Vector index](../config-refs/schema/vector-index.md)
-- [Configuration: Schema (Configure semantic indexing)](../config-refs/schema/index.md#configure-semantic-indexing)
+- [Configuration: Vector index](../config-refs/indexing/vector-index.mdx)
+- [Configuration: Schema (Configure semantic indexing)](../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 - [How to configure: Binary quantization (compression)](../configuration/compression/bq-compression.md)
 - [How to configure: Product quantization (compression)](../configuration/compression/pq-compression.md)
 - [How to configure: Scalar quantization (compression)](../configuration/compression/sq-compression.md)

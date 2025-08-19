@@ -22,7 +22,7 @@ NETLIFY_URL=$(echo ${NETLIFY_LOC:20})
 
 # Prepare the message and send it to Slack
 branch_name=${GITHUB_REF##*/}
-MESSAGE="{'text': ':construction: Hey $AUTHOR_NAME - your :docusaurus: :weaviate-logo: website build (<https://github.com/weaviate/docs/tree/$branch_name|$branch_name>) is ready on Netlify:\n $NETLIFY_URL/docs/weaviate \n> $commit_message' }"
+MESSAGE="{'text': ':construction: Hey $AUTHOR_NAME - your :docusaurus: :weaviate-logo: website build (<https://github.com/weaviate/docs/tree/$branch_name|$branch_name>) is ready on Netlify:\n $NETLIFY_URL/weaviate \n> $commit_message' }"
 
 echo $MESSAGE > payload_netlify.json
 

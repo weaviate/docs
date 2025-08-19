@@ -27,7 +27,6 @@ class SqCompressionTest {
     // ===== CONNECT =====
     // ==============================
 
-    // START ConnectCode
     String scheme = "http";
     String host = "localhost";
     String port = "8080";
@@ -35,7 +34,6 @@ class SqCompressionTest {
     Config config = new Config(scheme, host + ":" + port);
 
     client = new WeaviateClient(config);
-    // END ConnectCode
 
     // Clean up any existing schema
     Result<Boolean> result = client.schema().allDeleter().run();
@@ -106,7 +104,7 @@ class SqCompressionTest {
             // highlight-start
             .sq(SQConfig.builder()
                 .enabled(true)
-                .rescoreLimit(20L) // Number of candidates to rescore
+                .rescoreLimit(20L)
                 .build())
             // highlight-end
             .build())
@@ -142,5 +140,83 @@ class SqCompressionTest {
         .extracting(VectorIndexConfig::getSq).isNotNull()
         .returns(true, SQConfig::getEnabled)
         .returns(20L, SQConfig::getRescoreLimit);
+  }
+
+  @Test
+  public void shouldUpdateSchemaWithSQ() {
+    // ==============================
+    // ===== UpdateSchema =====
+    // ==============================
+
+    // Delete collection if exists
+    client.schema().classDeleter()
+        .withClassName("MyCollection")
+        .run();
+
+    // First create a collection without SQ
+    WeaviateClass initialCollection = WeaviateClass.builder()
+        .className("MyCollection")
+        .description("A collection without SQ")
+        .vectorizer("text2vec-openai")
+        .properties(Arrays.asList(
+            Property.builder()
+                .name("title")
+                .dataType(Arrays.asList(DataType.TEXT))
+                .build()))
+        .build();
+
+    Result<Boolean> createResult = client.schema().classCreator()
+        .withClass(initialCollection)
+        .run();
+
+    assertThat(createResult).isNotNull()
+        .withFailMessage(() -> createResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
+
+    // START UpdateSchema
+    WeaviateClass updatedCollection = WeaviateClass.builder()
+        .className("MyCollection")
+        .description("Updated collection with SQ compression")
+        .properties(Arrays.asList(
+            Property.builder()
+                .name("title")
+                .dataType(Arrays.asList(DataType.TEXT))
+                .build()))
+        .vectorizer("text2vec-openai")
+        .vectorIndexConfig(VectorIndexConfig.builder()
+            .sq(SQConfig.builder()
+                .enabled(true)
+                .rescoreLimit(10L)
+                .build())
+            .build())
+        .build();
+
+    Result<Boolean> updateResult = client.schema().classUpdater()
+        .withClass(updatedCollection)
+        .run();
+    // END UpdateSchema
+
+    assertThat(updateResult).isNotNull()
+        .withFailMessage(() -> updateResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
+
+    // Verify the SQ configuration was applied
+    Result<WeaviateClass> getResult = client.schema().classGetter()
+        .withClassName("MyCollection")
+        .run();
+
+    assertThat(getResult).isNotNull()
+        .withFailMessage(() -> getResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .extracting(Result::getResult).isNotNull()
+        .extracting(WeaviateClass::getVectorIndexConfig).isNotNull()
+        .extracting(VectorIndexConfig::getSq).isNotNull()
+        .returns(true, SQConfig::getEnabled)
+        .returns(10L, SQConfig::getRescoreLimit);
   }
 }

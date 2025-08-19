@@ -1,7 +1,7 @@
 ---
 title: Best practices
-description: Best practices for using Weaviate
 sidebar_position: 10
+description: "Expert recommendations and optimization strategies for maximizing Weaviate performance."
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---
@@ -220,7 +220,7 @@ Instead, consider directly embedding the information in each object as another p
 
 ### Explicitly define your data schema
 
-Weaviate includes a convenient ["auto-schema" functionality](../config-refs/schema/index.md#auto-schema) that can automatically infer the schema of your data.
+Weaviate includes a convenient ["auto-schema" functionality](../config-refs/collections.mdx#auto-schema) that can automatically infer the schema of your data.
 
 However, for production use cases, we recommend explicitly defining your schema, and disabling the auto-schema functionality (set `AUTOSCHEMA_ENABLED: 'false'`). This will ensure that your data is correctly interpreted by Weaviate, and that malformed data is not ingested into the system, rather than to potentially create unexpected properties.
 
@@ -256,7 +256,7 @@ This will ensure that only objects with the correct schema are ingested into Wea
 
 :::tip Further resources
 - [Concepts: Data schema](../concepts/data.md#data-schema)
-- [References: Collection definition - Auto-schema](../config-refs/schema/index.md#auto-schema)
+- [References: Collection definition - Auto-schema](../config-refs/collections.mdx#auto-schema)
 :::
 
 ### Accelerate data ingestion with batch imports

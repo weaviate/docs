@@ -332,7 +332,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 :::info Added in `v1.24`
 :::
 
-To search a collection that has [named vectors](../config-refs/schema/multi-vector.md), use the `target vector` field to specify which named vector to search.
+To search a collection that has [named vectors](../config-refs/collections.mdx#named-vectors), use the `target vector` field to specify which named vector to search.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

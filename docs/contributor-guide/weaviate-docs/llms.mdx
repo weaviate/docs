@@ -1,0 +1,70 @@
+---
+title: Optimizing docs for LLMs
+image: og/contributor-guide/welcome.jpg
+# tags: ['contributor-guide', 'docs']
+---
+
+As AI tools and language models become increasingly important for developers, optimizing our documentation for LLM consumption ensures that users can get accurate, helpful answers when interacting with AI assistants about Weaviate.
+
+## General LLM optimization guidelines
+
+- **[Clear heading hierarchy](./style-guide.mdx#formatting--styling-rules)** is essential for LLM comprehension. A well-organized page with logical H1, H2, and H3 headings helps AI models understand the relationships between different sections of your documentation. This structure enables more accurate responses when users ask questions about specific topics.
+
+- **Consistent formatting** across pages helps LLMs recognize patterns and provide more reliable answers. Use the same heading styles, code block formats, and section organization throughout the documentation.
+
+- **Self-contained sections** work best for AI processing. Rather than spreading related information across multiple pages or external links, keep relevant content directly in your documentation. LLMs have difficulty parsing linked files and external pages, so inline information provides better context.
+
+- **Troubleshooting as Q&A** is particularly effective for LLMs since it mirrors the question-and-answer format that users typically employ when interacting with AI assistants. Structure troubleshooting sections with clear questions followed by comprehensive answers.
+
+- **Include self-standing code snippets** rather than fragments that require context from other sections. This is especially important for products with complex SDKs or APIs, as LLMs can provide more accurate code examples when they have complete, runnable snippets to reference.
+
+- **Describe visual information in text** alongside screenshots and diagrams. While images can be helpful for human readers, LLMs parse text more efficiently, so ensure that information conveyed through visuals is also available in written form.
+
+- **[Define acronyms and specialized terminology](./style-guide.mdx#terminology)** within your documentation rather than assuming prior knowledge. This helps LLMs provide more accurate explanations when users ask about technical concepts.
+
+- **[Use clear, direct language](./style-guide.mdx#content-guidelines)** that focuses on conveying information efficiently. Avoid overly complex sentence structures that might confuse AI models during parsing.
+
+## `docusaurus-plugin-llms-txt` plugin
+
+### What is `llms.txt`?
+
+llms.txt is a proposed standard that provides LLM-friendly content by adding a `/llms.txt` markdown file to websites to offer brief background information, guidance, and links to detailed markdown files. Think of it as a "sitemap for AI" - while robots.txt tells crawlers what to avoid and sitemap.xml provides a basic URL list, llms.txt gives AI models structured, meaningful information about your content.
+
+### How to use the plugin
+
+We use the [`@signalwire/docusaurus-plugin-llms-txt`](https://www.npmjs.com/package/@signalwire/docusaurus-plugin-llms-txt) Docusaurus plugin to automatically generate our llms.txt file. The plugin leverages the `description` field from each page's frontmatter to create meaningful summaries in the generated llms.txt file. This means that writing good page descriptions directly improves our AI optimization.
+
+When you run `yarn build`, the plugin processes all documentation pages and creates the llms.txt file in the `build/llms.txt` directory, making it available at `https://docs.weaviate.io/llms.txt`. The plugin intelligently organizes documents into categories with configurable depth and provides flexible filtering by content type.
+
+### Best practices for page descriptions
+
+Since our llms.txt generation relies on frontmatter descriptions, follow these guidelines when writing them:
+
+```yaml
+---
+title: Vector index
+description: Learn how to configure vector indexing parameters, choose between HNSW and flat indexing, and optimize performance for your specific use case.
+---
+```
+
+- **Be specific and actionable**: Describe what users will learn or accomplish, not just what the page covers.
+- **Include key concepts**: Mention important terms and concepts that users might search for.
+- **Keep it concise but comprehensive**: Aim for 1-2 sentences that capture the page's value and scope.
+- **Use consistent terminology**: Match the language and terms used throughout the rest of the documentation.
+
+<!-- ## Measuring success
+
+Monitor the effectiveness of your LLM optimization efforts by:
+
+- **Testing AI interactions**: Regularly test how well AI assistants can answer questions about your documentation
+- **Reviewing feedback**: Pay attention to user feedback about AI-generated responses
+- **Checking llms.txt coverage**: Ensure important pages have meaningful descriptions and are included in the generated file
+- **Updating content**: Keep information current and accurate, as outdated content in llms.txt can mislead AI models
+
+Remember that LLM optimization is an ongoing process. As AI tools evolve and your documentation grows, continue refining your approach to ensure the best possible experience for users interacting with AI about your product. -->
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

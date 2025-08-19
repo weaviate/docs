@@ -1,7 +1,7 @@
 ---
 title: Build a recipe recommender with the Personalization Agent
 sidebar_label: 'Tutorial: Recipe recommender'
-description: Learn how to build a simple recipe recommender service with the Weaviate Personalization Agent.
+description: "Tutorial for creating a recipe recommendation system using the Personalization Agent."
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['personalization', 'recommendation']
@@ -147,7 +147,7 @@ import WeaviateAgentsPersonalizationFoodDataset from '/docs/agents/_includes/per
 </div>
 <br />
 
-For the collection `Recipes`, we will manually define the properties and include descriptions. While using [`auto-schema`](../../weaviate/config-refs/schema/index.md#auto-schema) is an option, providing explicit descriptions helps the Personalization Agent (especially the underlying LLM, when used for re-ranking) understand the context of your data better.
+For the collection `Recipes`, we will manually define the properties and include descriptions. While using [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) is an option, providing explicit descriptions helps the Personalization Agent (especially the underlying LLM, when used for re-ranking) understand the context of your data better.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

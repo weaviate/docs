@@ -23,7 +23,6 @@ func TestSQConfiguration(t *testing.T) {
 	// =====  CONNECT =====
 	// ==============================
 
-	// START ConnectCode
 	config := weaviate.Config{
 		Scheme: "http",
 		Host:   "localhost:8080",
@@ -37,7 +36,6 @@ func TestSQConfiguration(t *testing.T) {
 	ready, err := client.Misc().ReadyChecker().Do(context.Background())
 	require.NoError(t, err)
 	require.True(t, ready)
-	// END ConnectCode
 
 	// Clean up before test
 	err = client.Schema().AllDeleter().Do(ctx)
@@ -149,5 +147,75 @@ func TestSQConfiguration(t *testing.T) {
 		// Assert other HNSW settings
 		assert.Equal(t, "cosine", vic["distance"])
 		assert.Equal(t, float64(100000), vic["vectorCacheMaxObjects"])
+	})
+
+	t.Run("Enable SQ on Existing Collection", func(t *testing.T) {
+		className := "MyExistingCollection"
+
+		// First, create a collection without SQ
+		err := client.Schema().ClassDeleter().WithClassName(className).Do(context.Background())
+		if err != nil {
+			log.Printf("Could not delete collection '%s', it might not exist: %v\n", className, err)
+		}
+
+		// Create initial collection without SQ
+		initialClass := &models.Class{
+			Class:      className,
+			Vectorizer: "text2vec-openai",
+			VectorIndexConfig: map[string]interface{}{
+				"distance": "cosine",
+			},
+		}
+
+		err = client.Schema().ClassCreator().
+			WithClass(initialClass).
+			Do(context.Background())
+		require.NoError(t, err)
+
+		// START UpdateSchemaToEnableSQ
+		// Get the existing collection configuration
+		class, err := client.Schema().ClassGetter().
+			WithClassName(className).Do(context.Background())
+
+		if err != nil {
+			log.Fatalf("get class for vec idx cfg update: %v", err)
+		}
+
+		// Get the current vector index configuration
+		cfg := class.VectorIndexConfig.(map[string]interface{})
+
+		// Add SQ configuration to enable scalar quantization
+		cfg["sq"] = map[string]interface{}{
+			"enabled":       true,
+			"rescoreLimit":  200,   // Optional: number of candidates to fetch before rescoring
+			"trainingLimit": 50000, // Optional: number of vectors to use for training
+			"cache":         true,  // Optional: enable caching of quantized vectors
+		}
+
+		// Update the class configuration
+		class.VectorIndexConfig = cfg
+
+		// Apply the updated configuration to the collection
+		err = client.Schema().ClassUpdater().
+			WithClass(class).Do(context.Background())
+
+		if err != nil {
+			log.Fatalf("update class to use sq: %v", err)
+		}
+		// END UpdateSchemaToEnableSQ
+
+		// Verify the SQ configuration was applied
+		updatedClass, err := client.Schema().ClassGetter().
+			WithClassName(className).Do(context.Background())
+		require.NoError(t, err)
+
+		vic, ok := updatedClass.VectorIndexConfig.(map[string]interface{})
+		require.True(t, ok)
+
+		sqConfig, ok := vic["sq"].(map[string]interface{})
+		require.True(t, ok)
+		assert.Equal(t, true, sqConfig["enabled"])
+		assert.Equal(t, float64(200), sqConfig["rescoreLimit"])
+		assert.Equal(t, float64(50000), sqConfig["trainingLimit"])
 	})
 }

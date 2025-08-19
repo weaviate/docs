@@ -1,26 +1,48 @@
 ---
 title: Inverted indexes
 sidebar_position: 2
+description: "Inverted index architecture for efficient keyword search and filtering with performance improvements."
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
 
+Inverted indexes in Weaviate map values (like words or numbers) to the objects that contain them, enabling fast keyword search and filtering operations.
+
+## How Weaviate creates inverted indexes
+
+Understanding Weaviate's indexing architecture is crucial for optimizing performance and resource usage. Weaviate creates **individual inverted indexes for each property and each index type**. This means:
+
+- Each property in your collection gets its own dedicated inverted index(es)
+- Meta properties (like creation timestamps) also get their own separate inverted indexes
+- A single property can have multiple inverted indexes if it supports multiple index types
+- All aggregations and combinations across properties happen at query time, not at index time
+
+**Example**: A `title` property with both `indexFilterable: true` and `indexSearchable: true` will result in two separate inverted indexes - one optimized for search operations and another for filtering operations.
+
+This architecture provides flexibility and performance optimization but also means that enabling multiple index types increases storage requirements and indexing overhead.
+
+For `text` properties specifically, the indexing process follows these steps:
+
+1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
+3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
+
+This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
+
 <details>
   <summary>Performance improvements added in Oct 2024</summary>
 
-In Weaviate versions `v1.24.26`, `v1.25.20`, `v1.26.6` and `v1.27.0`, we introduced performance improvements and bugfixes for the BM25F scoring algorithm.
-<br/>
+In Weaviate versions `v1.24.26`, `v1.25.20`, `v1.26.6` and `v1.27.0`, we introduced performance improvements and bugfixes for the BM25F scoring algorithm:
 
-- The BM25 segment merging algorithm was made faster.
-- Improved WAND algorithm to remove exhausted terms from score computation and only do a full sort when necessary.
-- Solved a bug in BM25F multi-prop search that could lead to not summing all the query term score for all segments.
-- The BM25 scores are now calculated concurrently for multiple segments.
+- The BM25 segment merging algorithm was made faster
+- Improved WAND algorithm to remove exhausted terms from score computation and only do a full sort when necessary
+- Solved a bug in BM25F multi-prop search that could lead to not summing all the query term score for all segments
+- The BM25 scores are now calculated concurrently for multiple segments
 
 As always, we recommend upgrading to the latest version of Weaviate to benefit from improvements such as these.
 
 </details>
 
-### BlockMax WAND algorithm
+## BlockMax WAND algorithm
 
 :::info Added in `v1.30`
 :::
@@ -35,7 +57,7 @@ Due to the nature of the BlockMax WAND algorithm, the scoring of BM25 and hybrid
 
 :::
 
-### Configure the inverted index
+## Configure inverted indexes
 
 There are three inverted index types in Weaviate:
 
@@ -76,15 +98,18 @@ This chart shows which filter makes the comparison when one or both index type i
 
 #### Inverted index for timestamps
 
-You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/schema/index.md#indextimestamps).
+You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps).
 
 Timestamps are currently indexed using the `indexFilterable` index.
 
 ## Collections without indexes
 
-If you don't want to set an index at all, this is possible too.
+If you don't want to set an index at all, this is possible too. To create a collection without any indexes, skip indexing on the collection and on the properties.
 
-To create a collection without any indexes, skip indexing on the collection and on the properties.
+<details>
+  <summary>Example collection configuration without inverted indexes -  JSON object</summary>
+
+An example of a complete collection object without inverted indexes:
 
 ```js
 {
@@ -140,15 +165,19 @@ To create a collection without any indexes, skip indexing on the collection and 
 }
 ```
 
+</details>
+
 ## Further resources
 
 :::info Related pages
-- [Concepts: Vector Indexing](./vector-index.md)
-- [Configuration: Vector index](../../config-refs/schema/vector-index.md)
+
+- [Configuration: Inverted index](../../config-refs/indexing/inverted-index.mdx)
+- [How-to: Configure collections](../../manage-collections/vector-config.mdx#property-level-settings)
+
 :::
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

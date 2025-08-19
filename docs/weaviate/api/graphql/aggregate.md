@@ -1,6 +1,7 @@
 ---
 title: Aggregate
 sidebar_position: 15
+description: "Aggregation queries documentation for performing calculations and statistical operations on Weaviate data sets."
 image: og/docs/api.jpg
 # tags: ['graphql', 'aggregate', 'aggregate{}', 'meta']
 ---
