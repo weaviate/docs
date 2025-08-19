@@ -1,0 +1,53 @@
+---
+title: How-to manuals and Guides
+sidebar_label: Overview
+sidebar_position: 0
+image: og/docs/introduction.jpg
+# tags: []
+---
+
+Weaviate を設定、管理、およびクエリするための簡潔なガイドをご覧ください。高度な設定を行う場合でもデータ操作を扱う場合でも、段階的な手順と例により Weaviate を迅速に習得できます。
+
+import CardsSection from "/src/components/CardsSection";
+
+## 操作マニュアル
+
+import { howToGuidesCardsData } from "/_includes/configuration/how-to-manuals.js";
+
+<br />
+<CardsSection items={howToGuidesCardsData} />
+<br />
+
+## その他のガイドとチュートリアル
+
+export const otherGuidesCardsData = [
+  {
+    title: "デプロイ ガイド",
+    description: "本番環境向けに Weaviate をインストールして設定する方法を学べます。",
+    link: "/deploy/configuration",
+    icon: "fa fa-database",
+  },
+  {
+    title: "チュートリアル",
+    description: "ステップバイステップのガイドと実践的な例。",
+    link: "/weaviate/tutorials",
+    icon: "fas fa-chalkboard-teacher",
+  },
+  {
+    title: "スターター ガイド",
+    description: "Weaviate を使い始める新規ユーザー向けのガイドとヒント。",
+    link: "/weaviate/starter-guides",
+    icon: "fas fa-compass",
+  },
+  {
+    title: "レシピ",
+    description:
+      "さまざまなユースケースと機能を紹介する Jupyter Notebook。",
+    link: "/weaviate/recipes",
+    icon: "fas fa-scroll",
+  },
+];
+
+<br />
+<CardsSection items={otherGuidesCardsData} />
+<br />

@@ -30,7 +30,7 @@ const config = {
 
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "ja"],
   },
 
   headTags: [commonRoomScript, hubspotScript],
@@ -144,6 +144,10 @@ const config = {
             position: "right",
             className: "hiddenSearch",
           },
+          {
+            type: "localeDropdown",
+            position: "right",
+          }
         ],
       },
       prism: {
