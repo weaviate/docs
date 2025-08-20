@@ -469,6 +469,71 @@ public class ManageDataTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task Should_Update_Collection_Configuration()
+    {
+        // Arrange: Create a collection with initial settings to be updated
+        string collectionName = "ArticleForUpdate";
+        await weaviate.Collections.Delete(collectionName); // Ensure clean state
+
+        Collection initialCollection = new Collection
+        {
+            Name = collectionName,
+            Description = "An old collection description.",
+            InvertedIndexConfig = new InvertedIndexConfig
+            {
+                Bm25 = new BM25Config { K1 = 1.2f }
+            },
+            Properties =
+            [
+                Property.Text(
+                    "title"
+                ),
+            ],
+            VectorConfig = new VectorConfigList
+        {
+            new VectorConfig(
+                "default",
+                new Vectorizer.Text2VecOpenAI(),
+                new VectorIndex.HNSW { FilterStrategy = VectorIndexConfig.VectorIndexFilterStrategy.Sweeping }
+            )
+        },
+            ReplicationConfig = new ReplicationConfig()
+        };
+        await weaviate.Collections.Create(initialCollection);
+
+        CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
+
+        // Act: Update the collection
+        // START UpdateCollection
+        await articles.Config.Update(c =>
+        {
+            c.Description = "An updated collection description.";
+            // TODO[g-despot]: Updating property descriptions is missing
+            c.InvertedIndexConfig.Bm25.K1 = 1.5f;
+
+            VectorConfigUpdate vectorConfig = c.VectorConfig["default"];
+            vectorConfig.VectorIndexConfig.UpdateHNSW(vic =>
+            {
+                vic.FilterStrategy = VectorIndexConfig.VectorIndexFilterStrategy.Acorn;
+            });
+
+            c.ReplicationConfig.DeletionStrategy = DeletionStrategy.TimeBasedResolution;
+        });
+        // END UpdateCollection
+
+        // Assert: Fetch the updated config and verify changes
+        Collection newConfig = await weaviate.Collections.Export(collectionName);
+
+        Assert.Equal("An updated collection description.", newConfig.Description);
+        Assert.Equal(1.5f, newConfig.InvertedIndexConfig.Bm25.K1);
+
+        VectorIndex.HNSW hnswConfig = Assert.IsType<VectorIndex.HNSW>(newConfig.VectorConfig["default"].VectorIndexConfig);
+        Assert.Equal(VectorIndexConfig.VectorIndexFilterStrategy.Acorn, hnswConfig.FilterStrategy);
+
+        Assert.Equal(DeletionStrategy.TimeBasedResolution, newConfig.ReplicationConfig.DeletionStrategy);
+    }
+
+    [Fact]
     public async Task ReadAndDeleteCollections()
     {
         string collectionName = AddTestCollection("Article");
