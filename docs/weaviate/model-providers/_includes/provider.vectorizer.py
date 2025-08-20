@@ -278,7 +278,7 @@ client.collections.create(
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
-            model_id="embedding-001"
+            model_id="gemini-embedding-001"
         )
     ],
     # highlight-end

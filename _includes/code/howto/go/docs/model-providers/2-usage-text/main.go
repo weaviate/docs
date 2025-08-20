@@ -289,7 +289,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-google": map[string]interface{}{
 						"project_id": "<google-cloud-project-id>",
-						"model_id":   "textembedding-gecko@latest", // (Optional) To manually set the model ID
+						"model_id":   "gemini-embedding-001", // (Optional) To manually set the model ID
 					},
 				},
 			},
@@ -322,7 +322,7 @@ func main() {
 				Vectorizer: map[string]interface{}{
 					"text2vec-google": map[string]interface{}{
 						"properties": []string{"title"},
-						"model_id":   "text-embedding-004", // (Optional) To manually set the model ID
+						"model_id":   "gemini-embedding-001", // (Optional) To manually set the model ID
 					},
 				},
 			},
