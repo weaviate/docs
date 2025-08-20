@@ -1,21 +1,21 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python Client v4">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START AddProperty"
     endMarker="END AddProperty"
     language="py"
   />
-</TabItem>
-
-<TabItem value="py3" label="Python Client v3">
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
 
 ```python
 add_prop = {
@@ -28,28 +28,28 @@ add_prop = {
 client.schema.property.create("Article", add_prop)
 ```
 
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
 
 ```js
-let articles = client.collections.get('Article')
+let articles = client.collections.get("Article");
 
 // highlight-start
 articles.config.addProperty({
-  name: 'onHomepage',
-  dataType: 'boolean'
-})
+  name: "onHomepage",
+  dataType: "boolean",
+});
 // highlight-end
 ```
 
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
+  </TabItem>
+  <TabItem value="js2" label="JS/TS Client v2">
 
 ```js
-const className = 'Article';
+const className = "Article";
 const prop = {
-  dataType: ['boolean'],
-  name: 'onHomepage',
+  dataType: ["boolean"],
+  name: "onHomepage",
 };
 
 const response = await client.schema
@@ -60,8 +60,8 @@ const response = await client.schema
 console.log(JSON.stringify(response, null, 2));
 ```
 
-</TabItem>
-<TabItem value="go" label="Go">
+  </TabItem>
+  <TabItem value="go" label="Go">
 
 ```go
 package main
@@ -99,9 +99,16 @@ func main() {
 }
 ```
 
-</TabItem>
-
- <TabItem value="java" label="Java">
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddProperty"
+      endMarker="// END AddProperty"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
      <FilteredTextBlock
        text={JavaCode}
        startMarker="// AddProperty START"
@@ -109,5 +116,4 @@ func main() {
        language="java"
      />
   </TabItem>
-
 </Tabs>
