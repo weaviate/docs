@@ -13,7 +13,6 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.aggregate-v3.py'
 import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.aggregate-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
-import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/AggregateTestV6.java';
 
 `Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
 
@@ -84,15 +83,6 @@ Return the number  of objects matched by the query.
       startMarker="// START MetaCount"
       endMarker="// END MetaCount"
       language="gonew"
-    />
-  </TabItem>
-
-  <TabItem value="java6" label="Java Client V6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START MetaCount"
-      endMarker="// END MetaCount"
-      language="java"
     />
   </TabItem>
 
@@ -169,15 +159,6 @@ This example counts occurrence frequencies:
     />
   </TabItem>
 
-  <TabItem value="java6" label="Java Client V6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START TextProp"
-      endMarker="// END TextProp"
-      language="java"
-    />
-  </TabItem>
-
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -248,15 +229,6 @@ This example shows aggregation with integers.
       startMarker="// START IntProp"
       endMarker="// END IntProp"
       language="gonew"
-    />
-  </TabItem>
-
-  <TabItem value="java6" label="Java Client V6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START IntProp"
-      endMarker="// END IntProp"
-      language="java"
     />
   </TabItem>
 
@@ -332,15 +304,6 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       startMarker="// START groupBy"
       endMarker="// END groupBy"
       language="gonew"
-    />
-  </TabItem>
-
-  <TabItem value="java6" label="Java Client V6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START GroupBy"
-      endMarker="// END GroupBy"
-      language="java"
     />
   </TabItem>
 
