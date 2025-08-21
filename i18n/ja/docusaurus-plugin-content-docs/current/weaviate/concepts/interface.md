@@ -134,7 +134,7 @@ GraphQL クエリは直感的で Weaviate の機能に適合するよう設計�
 
 [Weaviate Console](https://console.weaviate.cloud) は、 WCD の Weaviate クラスターを管理し、他の場所で稼働する Weaviate インスタンスへアクセスするためのダッシュボードです。 Query Module を使って GraphQL クエリを実行できます。
 
-![Weaviate Console の GraphQL クエリモジュール](./img/console-capture.png)
+![Weaviate Console の GraphQL クエリモジュール](../../../../../../docs/weaviate/concepts/img/console-capture.png)
 
 ## Weaviate クライアント
 

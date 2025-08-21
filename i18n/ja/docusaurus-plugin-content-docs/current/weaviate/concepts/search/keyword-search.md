@@ -137,8 +137,8 @@ flowchart LR
 
 指定がない場合、デフォルトは `or` で `minimumOrTokensMatch` は `1` です。つまり、少なくとも 1 トークンを含むオブジェクトが返されます。
 
-import BM25OperatorsLight from '../img/bm25_operators_light.png';
-import BM25OperatorsDark from '../img/bm25_operators_dark.png';
+import BM25OperatorsLight from '../../../../../../../docs/weaviate/concepts/img/bm25_operators_light.png';
+import BM25OperatorsDark from '../../../../../../../docs/weaviate/concepts/img/bm25_operators_dark.png';
 
 <ThemedImage
   alt="BM25 オペレーター"

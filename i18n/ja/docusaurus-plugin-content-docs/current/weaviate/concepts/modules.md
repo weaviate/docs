@@ -14,7 +14,7 @@ image: og/docs/concepts.jpg
  Weaviate にはモジュール化された構造があります。ベクトル化やバックアップなどの機能は、オプションのモジュールによって処理されます。
 
 モジュールが何も付いていない  Weaviate のコアは、純粋な ベクトル ネイティブ データベースです。  
-[![ Weaviate モジュールの紹介](./img/weaviate-module-diagram.svg " Weaviate モジュール図")](./img/weaviate-module-diagram.svg)
+[![ Weaviate モジュールの紹介](../../../../../../docs/weaviate/concepts/img/weaviate-module-diagram.svg " Weaviate モジュール図")](../../../../../../docs/weaviate/concepts/img/weaviate-module-diagram.svg)
 
  Weaviate では、データはオブジェクトとその ベクトル の組み合わせとして保存され、これらの ベクトル は提供されている [ベクトル インデックス アルゴリズム](../concepts/indexing/vector-index.md) によって検索できます。ベクトライザー モジュールが一つも接続されていない場合、 Weaviate はオブジェクトをどのように ベクトル 化するか、つまりオブジェクトから ベクトル を計算する方法を認識しません。
 
@@ -31,7 +31,7 @@ image: og/docs/concepts.jpg
 - ベクトライザーおよび追加機能モジュール
 - その他のモジュール
 
-![ Weaviate モジュール エコシステム](./img/weaviate-modules.png " Weaviate モジュール エコシステム")
+![ Weaviate モジュール エコシステム](../../../../../../docs/weaviate/concepts/img/weaviate-modules.png " Weaviate モジュール エコシステム")
 
 ### ベクトライザー & ランカー モジュール
 

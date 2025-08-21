@@ -7,7 +7,7 @@
 /* NAVBAR STYLES */
 .defaultNavbar {
   position: sticky;
-  z-index: 1000; /* Ensure this is below secondaryNavbar if they overlap */
+  z-index: 1004; /* Ensure this is below secondaryNavbar if they overlap */
 }
 
 .onlyDefaultNavbar {

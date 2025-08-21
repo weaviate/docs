@@ -28,13 +28,13 @@ Weaviate では現在、4 種類のベクトル量子化手法を提供してい
 
 PQ は各ベクトル埋め込みのサイズを 2 段階で削減します。まずベクトルの次元を小さい数の「セグメント」に分割し、その後、各セグメントを元のビット数 (通常は 32-bit フロート) からより少ないビット数に量子化します。
 
-import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
+import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
 PQ では、元のベクトル埋め込みを「セグメント」または「サブスペース」と呼ばれる小さなベクトルの積として表現します。次に、各セグメントを独立に量子化して圧縮ベクトル埋め込みを生成します。
 
-![PQ illustrated](./img/pq-illustrated.png "PQ illustrated")
+![PQ illustrated](../../../../../../docs/weaviate/concepts/img/pq-illustrated.png "PQ illustrated")
 
 セグメント作成後、各セグメントの `centroids` を計算するためのトレーニングステップがあります。デフォルトでは、Weaviate は各セグメントを 256 個のセントロイドにクラスタリングします。これらのセントロイドはコードブックを構成し、後続の圧縮ステップで使用されます。
 

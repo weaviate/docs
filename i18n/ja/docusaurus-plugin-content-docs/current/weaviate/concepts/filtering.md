@@ -107,7 +107,7 @@ Weaviate のカスタム HNSW 実装では、HNSW グラフのリンクを通常
 
 <!-- TODO - replace this graph with ACORN test figures -->
 
-![Recall for filtered vector search](./img/recall-of-filtered-vector-search.png "Recall of filtered vector search in Weaviate")
+![Recall for filtered vector search](../../../../../../docs/weaviate/concepts/img/recall-of-filtered-vector-search.png "Recall of filtered vector search in Weaviate")
 
 ## フラットサーチ カットオフ
 
@@ -117,11 +117,11 @@ Weaviate のカスタム HNSW 実装では、HNSW グラフのリンクを通常
 
 次の図は、フィルタの厳しさが左（0%）から右（100%）へ高まる様子を示しています。**カットオフはデータセットの約 15%** に設定されており、点線の右側ではブルートフォース検索が使用されます。
 
-![Prefiltering with flat search cutoff](./img/prefiltering-response-times-with-filter-cutoff.png "Prefiltering with flat search cutoff")
+![Prefiltering with flat search cutoff](../../../../../../docs/weaviate/concepts/img/prefiltering-response-times-with-filter-cutoff.png "Prefiltering with flat search cutoff")
 
 参考として、カットオフなしで純粋に HNSW のみを使用した場合は次のようになります。
 
-![Prefiltering with pure HNSW](./img/prefiltering-pure-hnsw-without-cutoff.png "Prefiltering without cutoff, i.e. pure HNSW")
+![Prefiltering with pure HNSW](../../../../../../docs/weaviate/concepts/img/prefiltering-pure-hnsw-without-cutoff.png "Prefiltering without cutoff, i.e. pure HNSW")
 
 カットオフ値は、各コレクションの [スキーマ内 `vectorIndexConfig` 設定](/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) で個別に設定できます。
 
@@ -139,7 +139,7 @@ Each search uses a completely unique (random) search vector, meaning that only t
 
 <!-- TODO - replace table with updated post-roaring bitmaps figures -->
 
-<!-- [![Performance of filtered vector search with caching](./img/filtered-vector-search-with-caches-performance.png "Performance of filtered vector searches with 1M 384d objects")](./img/filtered-vector-search-with-caches-performance.png) -->
+<!-- [![Performance of filtered vector search with caching](../../../../../../docs/weaviate/concepts/img/filtered-vector-search-with-caches-performance.png "Performance of filtered vector searches with 1M 384d objects")](../../../../../../docs/weaviate/concepts/img/filtered-vector-search-with-caches-performance.png) -->
 
 <!-- :::note
 Wildcard filters show considerably worse performance than exact match filters. This is because - even with caching - multiple rows need to be read from disk to make sure that no stale entries are served when using wildcards. See also "Automatic Cache Invalidation" below.

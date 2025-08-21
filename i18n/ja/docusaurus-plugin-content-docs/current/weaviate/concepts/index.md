@@ -48,7 +48,7 @@ image: og/docs/concepts.jpg
 
 次の図は、Weaviate のアーキテクチャを 30,000 フィートの視点で示しています。
 
-[![Weaviate モジュール API の概要](./img/weaviate-architecture-overview.svg "Weaviate のシステムとアーキテクチャの概要")](./img/weaviate-architecture-overview.svg)
+[![Weaviate モジュール API の概要](../../../../../../docs/weaviate/concepts/img/weaviate-architecture-overview.svg "Weaviate のシステムとアーキテクチャの概要")](../../../../../../docs/weaviate/concepts/img/weaviate-architecture-overview.svg)
 
 この図の各コンポーネントについては、以下のガイドで詳しく学べます。
 

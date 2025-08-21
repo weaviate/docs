@@ -31,11 +31,11 @@ Weaviate は以下の ベクトル インデックス タイプをサポート�
 
 この表現の詳細については ([GloVe](https://github.com/stanfordnlp/GloVe)) および [ベクトル 埋め込み](https://weaviate.io/blog/vector-embeddings-explained#what-exactly-are-vector-embeddings) を参照してください。
 
-![2D Vector embedding visualization](../img/vectors-2d.png "2D Vectors visualization")
+![2D Vector embedding visualization](../../../../../../../docs/weaviate/concepts/img/vectors-2d.png "2D Vectors visualization")
 
 別の例えとして、スーパーマーケットでの商品の配置を考えてみましょう。`Apples` は `Bananas` 近くに置かれていることが期待されます。両方とも果物だからです。しかし `Magazine` を探すときは、`Apples` や `Bananas` から離れ、例えば `Newspapers` のある通路に向かいます。これは使用するモジュールによって ベクトル の数値が計算される方法次第で、Weaviate における概念のセマンティクスも同様に保存できます。単語やテキストだけでなく、画像、動画、DNA 配列なども ベクトル 化してインデックスできます。どのモデルを使うかの詳細は [こちら](/weaviate/modules/index.md) をお読みください。
 
-![Supermarket map visualization as analogy for vector indexing](../img/supermarket.svg "Supermarket map visualization")
+![Supermarket map visualization as analogy for vector indexing](../../../../../../../docs/weaviate/concepts/img/supermarket.svg "Supermarket map visualization")
 
 :::tip
 弊社ブログ記事 [Vector search explained](https://weaviate.io/blog/vector-search-explained) もぜひご覧ください。
@@ -53,7 +53,7 @@ Weaviate の `hnsw` インデックスは、Hierarchical Navigable Small World�
 
 以下は HNSW を用いた ベクトル 検索の概念図です。
 
-![HNSW layers](../img/hnsw-layers.svg "HNSW layers")
+![HNSW layers](../../../../../../../docs/weaviate/concepts/img/hnsw-layers.svg "HNSW layers")
 
 1 つのオブジェクトは複数のレイヤーに存在する場合がありますが、すべてのオブジェクトは最下層（図のレイヤー 0）に必ず存在します。レイヤー 0 ではデータオブジェクト同士が密に接続されています。上位レイヤーに進むほどオブジェクト数と接続数は減少します。上位レイヤーのデータオブジェクトは下位レイヤーと対応していますが、各レイヤーは直下のレイヤーより指数関数的に少ないオブジェクトを持ちます。HNSW アルゴリズムはこれらのレイヤー構造を活用して大量データを効率的に処理します。
 
