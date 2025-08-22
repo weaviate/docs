@@ -21,7 +21,10 @@ This means that the feature is still under development and may change in future 
 
 :::
 
-[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast untrained vector compression technique that offers 4x compression while retaining almost perfect recall (98-99% on most datasets).
+[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast untrained vector compression technique:
+
+- **8-bit RQ**: Up to 4x compression while retaining almost perfect recall (98-99% on most datasets).
+- **1-bit RQ**: Close to 32x compression as dimensionality increases with moderate recall across various datasets.
 
 :::note HNSW only
 RQ is currently not supported for the flat index type.
