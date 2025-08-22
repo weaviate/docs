@@ -6,6 +6,7 @@ import io.weaviate.client6.v1.api.collections.Sharding;
 import io.weaviate.client6.v1.api.collections.vectorindex.Distance;
 import io.weaviate.client6.v1.api.collections.Vectorizer;
 import io.weaviate.client6.v1.api.collections.Vectorizers;
+import io.weaviate.client6.v1.api.collections.Replication.DeletionStrategy;
 import io.weaviate.client6.v1.api.collections.config.Shard;
 import io.weaviate.client6.v1.api.collections.config.ShardStatus;
 import io.weaviate.client6.v1.api.collections.Reranker;
@@ -69,7 +70,7 @@ class ManageCollectionsTest {
   void testCreateCollectionWithVectorizer() throws IOException {
     // START Vectorizer
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate())
+        .vectors(Vectorizers.text2vecContextionary())
         .properties(
             Property.text("title"),
             Property.text("body")));
@@ -88,8 +89,8 @@ class ManageCollectionsTest {
     // Weaviate
     client.collections.create("ArticleNV", col -> col
         .vectors(
-            Vectorizers.text2VecWeaviate("title"),
-            Vectorizers.text2VecWeaviate("title_country"),
+            Vectorizers.text2vecContextionary("title"),
+            Vectorizers.text2vecContextionary("title_country"),
             Vectorizers.none("custom_vector"))
         .properties(
             Property.text("title"),
@@ -108,7 +109,7 @@ class ManageCollectionsTest {
   void testSetVectorIndexType() throws IOException {
     // START SetVectorIndexType
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate(vec -> vec
+        .vectors(Vectorizers.text2vecContextionary(vec -> vec
             .vectorIndex(Hnsw.of())))
         .properties(
             Property.text("title"),
@@ -124,7 +125,7 @@ class ManageCollectionsTest {
   void testSetVectorIndexParams() throws IOException {
     // START SetVectorIndexParams
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate(vec -> vec
+        .vectors(Vectorizers.text2vecContextionary(vec -> vec
             .vectorIndex(Hnsw.of(hnsw -> hnsw
                 .efConstruction(300)
                 .distance(Distance.COSINE))))));
@@ -160,7 +161,7 @@ class ManageCollectionsTest {
   void testSetReranker() throws IOException {
     // START SetReranker
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate())
+        .vectors(Vectorizers.text2vecContextionary())
         .rerankerModules(Reranker.cohere()));
     // END SetReranker
 
@@ -174,12 +175,12 @@ class ManageCollectionsTest {
   void testSetGenerative() throws IOException {
     // START SetGenerative
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate())
+        .vectors(Vectorizers.text2vecContextionary())
         .generativeModule(Generative.cohere()));
     // END SetGenerative
 
     var config = client.collections.getConfig("Article").get();
-    System.out.println("thirsd: " + config);
+    System.out.println("third: " + config);
     // assertThat(config.generativeModule().name()).isEqualTo("generative-cohere");
     // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
   }
@@ -187,9 +188,10 @@ class ManageCollectionsTest {
   @Test
   void testModuleSettings() throws IOException {
     // START ModuleSettings
+    // TODO[g-despot]: Add model once other vectorizers are available
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate(vec -> vec
-            .model("Snowflake/snowflake-arctic-embed-m-v1.5"))));
+        .vectors(Vectorizers.text2vecContextionary()));
+    // vec -> vec.model("Snowflake/snowflake-arctic-embed-m-v1.5"))));
     // .vectorizeClassName(true))));
     // END ModuleSettings
 
@@ -202,7 +204,7 @@ class ManageCollectionsTest {
   void testDistanceMetric() throws IOException {
     // START DistanceMetric
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2VecWeaviate(vec -> vec
+        .vectors(Vectorizers.text2vecContextionary(vec -> vec
             .vectorIndex(Hnsw.of(hnsw -> hnsw
                 .distance(Distance.COSINE))))));
     // END DistanceMetric
@@ -242,7 +244,8 @@ class ManageCollectionsTest {
     client.collections.create("Article", col -> col
         .replication(Replication.of(rep -> rep
             .replicationFactor(1)
-            .asyncEnabled(true))));
+            .asyncEnabled(true)
+            .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION))));
     // END AllReplicationSettings
 
     var config = client.collections.getConfig("Article").get();

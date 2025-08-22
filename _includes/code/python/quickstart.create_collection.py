@@ -22,7 +22,7 @@ client.collections.delete("Question")
 # highlight-start
 questions = client.collections.create(
     name="Question",
-    vector_config=Configure.Vectors.text2vec_weaviate(), # Configure the Weaviate Embeddings integration
+    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(), # Configure the Weaviate Embeddings integration
     generative_config=Configure.Generative.cohere()             # Configure the Cohere generative AI integration
 )
 # highlight-end

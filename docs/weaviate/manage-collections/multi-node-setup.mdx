@@ -12,7 +12,8 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
-import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
+import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 ## Replication settings
@@ -35,43 +36,46 @@ Configure replication settings, such as [async replication](/deploy/configuratio
       ]}
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START AllReplicationSettings"
-    endMarker="# END AllReplicationSettings"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START AllReplicationSettings"
-    endMarker="// END AllReplicationSettings"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaReplicationCode}
-    startMarker="// START AllReplicationSettings"
-    endMarker="// END AllReplicationSettings"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START AllReplicationSettings"
-    endMarker="// END AllReplicationSettings"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START AllReplicationSettings"
+      endMarker="# END AllReplicationSettings"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+      <FilteredTextBlock
+        text={JavaV6Code}
+        startMarker="// START AllReplicationSettings"
+        endMarker="// END AllReplicationSettings"
+        language="java"
+      />
+    </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaReplicationCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="gonew"
+    />
+  </TabItem>
   <TabItem value="curl" label="cURL">
 
 ```bash
@@ -98,7 +102,7 @@ curl \
 http://localhost:8080/v1/schema
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 <details>
@@ -127,52 +131,54 @@ Configure sharding per collection.
       language="py"
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START ShardingSettings"
-    endMarker="# END ShardingSettings"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="tsv2"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaReplicationCode}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ShardingSettings"
+      endMarker="# END ShardingSettings"
+      language="pyv3"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="js2" label="JS/TS Client v2">
+    <FilteredTextBlock
+      text={TSCodeLegacy}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="tsv2"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaReplicationCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="gonew"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -204,7 +210,9 @@ import CodeSchemaShardsUpdate from "/_includes/code/howto/manage-data.shards.upd
 
 ## Further resources
 
-- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
+    API References: REST: Schema
+  </SkipLink>
 - [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 

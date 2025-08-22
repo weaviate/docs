@@ -4,18 +4,18 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
-  <FilteredTextBlock
-    text={PyCode}
-    startMarker="START InspectCollectionShards"
-    endMarker="END InspectCollectionShards"
-    language="py"
-  />
-</TabItem>
-
-<TabItem value="py3" label="Python Client v3">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="START InspectCollectionShards"
+      endMarker="END InspectCollectionShards"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
 
 ```python
 # highlight-start
@@ -80,7 +80,15 @@ func main() {
 }
 ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START InspectCollectionShards"
+      endMarker="// END InspectCollectionShards"
+      language="java"
+    />
+  </TabItem>
  <TabItem value="java" label="Java">
      <FilteredTextBlock
        text={JavaCode}
