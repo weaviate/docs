@@ -13,6 +13,7 @@ import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 :::tip Embedding models / Vectorizers
@@ -73,6 +74,14 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
       startMarker="// START SetReranker"
       endMarker="// END SetReranker"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -192,6 +201,14 @@ Specify a `generative` model integration for a collection (for RAG).
       text={JavaCode}
       startMarker="// START SetGenModel"
       endMarker="// END SetGenModel"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
       language="java"
     />
   </TabItem>

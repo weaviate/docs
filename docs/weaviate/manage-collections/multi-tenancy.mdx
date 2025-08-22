@@ -12,6 +12,7 @@ import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenan
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/MultiTenancyTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
 import CurlCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh";
@@ -81,6 +82,14 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="java"
     />
   </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -132,6 +141,14 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="py"
     />
   </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableAutoMT"
+      endMarker="// END EnableAutoMT"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ### Update a collection
@@ -161,6 +178,14 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       startMarker="// Start update autoMT"
       endMarker="// END update autoMT"
       language="bash"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateAutoMT"
+      endMarker="// END UpdateAutoMT"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -240,6 +265,14 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="go"
     />
   </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddTenantsToClass"
+      endMarker="// END AddTenantsToClass"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ## List all tenants
@@ -302,6 +335,14 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="go"
     />
   </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListTenants"
+      endMarker="// END ListTenants"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ## Get tenants by name
@@ -328,7 +369,14 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
     language="ts"
   />
 </TabItem>
-
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetTenantsByName"
+      endMarker="// END GetTenantsByName"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ## Get one tenant
@@ -418,6 +466,14 @@ Deleting a tenant deletes all associated objects.
       startMarker="// START RemoveTenants"
       endMarker="// END RemoveTenants"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START RemoveTenants"
+      endMarker="// END RemoveTenants"
+      language="java"
     />
   </TabItem>
 </Tabs>

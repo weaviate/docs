@@ -14,7 +14,6 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.aggregate-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
 
-
 `Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
 
 <details>
@@ -112,14 +111,14 @@ Return the number  of objects matched by the query.
 
 ## Aggregate `text` properties
 
-This example counts occurrence frequencies in the `question` property:
+This example counts occurrence frequencies:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# TextProp Python"
-      endMarker="# END TextProp Python"
+      endMarker="# END TextProp Python"f
       language="py"
     />
   </TabItem>
@@ -185,7 +184,7 @@ This example counts occurrence frequencies in the `question` property:
 
 ## Aggregate `int` properties
 
-This  example sums the `points` property.
+This example shows aggregation with integers. 
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
