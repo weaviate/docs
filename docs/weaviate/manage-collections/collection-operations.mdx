@@ -93,9 +93,9 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
 :::tip Production ready collections
 
-- **Manually define you data schema**: 
-  Avoid using the [`auto-schema`](../config-refs/collections.mdx#auto-schema) feature, instead, manually [define the properties for your collection](#create-a-collection-and-define-properties). 
-- **Avoid creating too many collections**: 
+- **Manually define you data schema**:
+  Avoid using the [`auto-schema`](../config-refs/collections.mdx#auto-schema) feature, instead, manually [define the properties for your collection](#create-a-collection-and-define-properties).
+- **Avoid creating too many collections**:
   Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants. For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
 :::
 
@@ -255,6 +255,29 @@ Find out more about the vectorizer and vector index configuration in [Manage col
 By default, Weaviate creates missing collections and missing properties. When you configure collections manually, you have more precise control of the collection settings.
 
 To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
+
+## Check if a collection exists
+
+Get a boolean indicating whether a given collection exists.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckIfExists"
+      endMarker="# END CheckIfExists"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CheckIfExists"
+      endMarker="// END CheckIfExists"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
 
 ## Read a single collection definition
 
