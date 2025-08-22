@@ -795,6 +795,14 @@ assert len(config.properties) == 1
 assert config.properties[0].name == "body"
 
 # ================================
+# ===== CHECK IF A COLLECTION EXISTS =====
+# ================================
+
+# START CheckIfExists
+exists = client.collections.exists("Article")  # Returns a boolean
+# END CheckIfExists
+
+# ================================
 # ===== READ A COLLECTION =====
 # ================================
 

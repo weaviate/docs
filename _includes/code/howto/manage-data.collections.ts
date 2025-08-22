@@ -95,7 +95,15 @@ await client.collections.create({
 // END CreateCollectionWithProperties
 
 // ================================
-// ===== READ A CLASS =====
+// ===== CHECK IF A COLLECTION EXISTS =====
+// ================================
+
+// START CheckIfExists
+var exists = client.collections.exists("Article")  // Returns a boolean
+// END CheckIfExists
+
+// ================================
+// ===== READ A COLLECTION =====
 // ================================
 
 articles = client.collections.use('Article')
@@ -385,7 +393,7 @@ for (const p of testConfig.properties) {
     else if (p.name == "body") {
         assert.equal(p.tokenization, "whitespace")
     }
-    
+
 }
 
 
