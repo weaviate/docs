@@ -24,7 +24,14 @@ client = weaviate.connect_to_local(
 client.collections.delete("Article")
 
 # START BasicCreateCollection
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import (
+    Configure,
+    DataType,
+    Property,
+    ReplicationDeletionStrategy,
+    VectorDistances,
+    VectorFilterStrategy,
+)
 
 client.collections.create(
     "Article",
@@ -38,8 +45,8 @@ client.collections.create(
         source_properties=["title", "body"],
         vector_index_config=Configure.VectorIndex.hnsw(
             ef_construction=300,
-            distance_metric="cosine",
-            filter_strategy="sweeping",
+            distance_metric=VectorDistances.COSINE,
+            filter_strategy=VectorFilterStrategy.SWEEPING,
         ),
     ),
     multi_tenancy_config=Configure.multi_tenancy(False),
@@ -86,7 +93,7 @@ client.collections.create(
 # Test
 articles = client.collections.get("Article")
 assert client.collections.exists("Article")
-assert len(articles.config.get().properties) == 2
+assert len(articles.config.get().properties) == 3
 
 # ===============================================
 # ===== CREATE A COLLECTION WITH VECTORIZER =====
@@ -96,7 +103,13 @@ assert len(articles.config.get().properties) == 2
 client.collections.delete("Article")
 
 # START Vectorizer
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import (
+    Configure,
+    DataType,
+    Property,
+    VectorDistances,
+    VectorFilterStrategy,
+)
 
 client.collections.create(
     "Article",
@@ -106,8 +119,8 @@ client.collections.create(
         source_properties=["title", "body"],  # (Optional) Set the source property(ies)
         vector_index_config=Configure.VectorIndex.hnsw(
             ef_construction=300,
-            distance_metric="cosine",
-            filter_strategy="sweeping",
+            distance_metric=VectorDistances.COSINE,
+            filter_strategy=VectorFilterStrategy.SWEEPING,
         ),  # (Optional) Set vector index options
         vectorize_collection_name=True,  # (Optional) Set to True to vectorize the collection name
     ),
@@ -129,29 +142,40 @@ assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai
 client.collections.delete("Article")
 
 # START MultipleVectors
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import (
+    Configure,
+    DataType,
+    Property,
+    VectorDistances,
+    VectorFilterStrategy,
+)
 
 client.collections.create(
     "Article",
     # highlight-start
-    vector_config=[Configure.Vectors.text2vec_openai(
-        name="default",  # (Optional) Set the name of the vector, default name is "default"
-        source_properties=["title", "body"],  # (Optional) Set the source property(ies)
-        vector_index_config=Configure.VectorIndex.hnsw(
-            ef_construction=300,
-            distance_metric="cosine",
-            filter_strategy="sweeping",
-        ),  # (Optional) Set vector index options
-        vectorize_collection_name=True,  # (Optional) Set to True to vectorize the collection name
-    ), Configure.Vectors.text2vec_openai(
-        name="body_vectors",
-        source_properties=["body"],
-        vector_index_config=Configure.VectorIndex.flat(),
-    )
-    ]
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
+            name="default",  # (Optional) Set the name of the vector, default name is "default"
+            source_properties=[
+                "title",
+                "body",
+            ],  # (Optional) Set the source property(ies)
+            vector_index_config=Configure.VectorIndex.hnsw(
+                ef_construction=300,
+                distance_metric=VectorDistances.COSINE,
+                filter_strategy=VectorFilterStrategy.SWEEPING,
+            ),  # (Optional) Set vector index options
+            vectorize_collection_name=True,  # (Optional) Set to True to vectorize the collection name
+        ),
+        Configure.Vectors.text2vec_openai(
+            name="body_vectors",
+            source_properties=["body"],
+            vector_index_config=Configure.VectorIndex.flat(),
+        ),
+    ],
     # highlight-end
     properties=[  # properties configuration is optional
-        Property(name="title", data_type=DataType.TEXT), vectorize_property_name=True,
+        Property(name="title", data_type=DataType.TEXT, vectorize_property_name=True),
         Property(name="body", data_type=DataType.TEXT),
     ],
 )
@@ -304,7 +328,13 @@ assert isinstance(
 client.collections.delete("Article")
 
 # START SetInvertedIndexParams
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import (
+    Configure,
+    DataType,
+    Property,
+    StopwordsPreset,
+    Tokenization,
+)
 
 client.collections.create(
     "Article",
@@ -316,7 +346,7 @@ client.collections.create(
             # highlight-start
             index_filterable=True,
             index_searchable=True,
-            tokenization="word",
+            tokenization=Tokenization.WORD,
             # highlight-end
         ),
         Property(
@@ -325,7 +355,7 @@ client.collections.create(
             # highlight-start
             index_filterable=True,
             index_searchable=True,
-            tokenization="field",
+            tokenization=Tokenization.FIELD,
             # highlight-end
         ),
         Property(
@@ -343,9 +373,9 @@ client.collections.create(
         index_null_state=True,
         index_property_length=True,
         index_timestamps=True,
-        stopwords_preset="en", 
-        stopwords_additions=["example", "stopword"],  
-        stopwords_removals=["the", "and"], 
+        stopwords_preset=StopwordsPreset.EN,
+        stopwords_additions=["example", "stopword"],
+        stopwords_removals=["the", "and"],
     ),
     # highlight-end
 )

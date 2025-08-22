@@ -355,6 +355,36 @@ const newCollection = await client.collections.create({
 })
 // END PropModuleSettings
 
+// Delete the class to recreate it
+await client.collections.delete(collectionName)
+
+// ====================================
+// ======= TRIGRAM TOKENIZATION =======
+// ====================================
+
+/*
+// START TrigramTokenization
+import { vectors, dataType, tokenization } from 'weaviate-client';
+
+// END TrigramTokenization
+*/
+{
+// START TrigramTokenization
+const newCollection = await client.collections.create({
+  name: 'Article',
+  vectorizers: vectors.text2VecHuggingFace(),
+  properties: [
+    {
+      name: 'title',
+      dataType: dataType.TEXT,
+      // highlight-start
+      tokenization: tokenization.TRIGRAM  // Use "trigram" tokenization
+      // highlight-end
+    },
+  ],
+})
+// END TrigramTokenization
+
 // Test vectorizeCollectionName
 result = client.collections.use(collectionName).config.get()
 

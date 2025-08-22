@@ -565,6 +565,31 @@ client.collections.create(
 # END PropModuleSettings
 
 # ====================================
+# ======= TRIGRAM TOKENIZATION =======
+# ====================================
+
+# Clean slate
+client.collections.delete("Article")
+
+# START TrigramTokenization
+from weaviate.classes.config import Configure, Property, DataType, Tokenization
+
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_cohere(),
+    properties=[
+        Property(
+            name="title",
+            data_type=DataType.TEXT,
+            # highlight-start
+            tokenization=Tokenization.TRIGRAM,  # Use "trigram" tokenization
+            # highlight-end
+        ),
+    ],
+)
+# END TrigramTokenization
+
+# ====================================
 # ===== MODULE SETTINGS PROPERTY =====
 # ====================================
 
