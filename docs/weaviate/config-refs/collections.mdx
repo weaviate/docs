@@ -436,6 +436,7 @@ Similar strings share many trigrams, enabling fuzzy matching:
 
 **Performance considerations:**
 
+- Filtering behavior will change significantly, as text filtering will be done based on trigram-tokenized text, instead of whole words
 - Creates larger inverted indexes due to more tokens
 - May impact query performance for large datasets
 
