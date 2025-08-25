@@ -564,6 +564,18 @@ client.collections.create(
 )
 # END PropModuleSettings
 
+# Test
+collection = client.collections.get("Article")
+config = collection.config.get()
+
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
+for p in config.properties:
+    if p.name == "title":
+        assert p.tokenization.name == "LOWERCASE"
+    elif p.name == "body":
+        assert p.tokenization.name == "WHITESPACE"
+
+
 # ====================================
 # ======= TRIGRAM TOKENIZATION =======
 # ====================================
@@ -611,11 +623,8 @@ collection = client.collections.get("Article")
 config = collection.config.get()
 
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
-for p in config.properties:
-    if p.name == "title":
-        assert p.tokenization.name == "LOWERCASE"
-    elif p.name == "body":
-        assert p.tokenization.name == "WHITESPACE"
+assert config.vector_config["body_vector"].vectorizer.vectorizer == "text2vec-cohere"
+assert config.properties[0].tokenization.name == "TRIGRAM"
 
 
 # ===========================
