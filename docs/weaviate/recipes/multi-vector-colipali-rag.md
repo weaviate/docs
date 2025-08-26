@@ -14,56 +14,56 @@ tags: ['ColPali', 'Named Vectors']
 
 ## Introduction
 
-This notebook will demonstrate how to use Weaviate's multi-vector feature to 
-effectively index a collection of PDF documents in order to support textual 
+This notebook will demonstrate how to use Weaviate's multi-vector feature to
+effectively index a collection of PDF documents in order to support textual
 queries against the contents of the documents, including both text and figures.
 
-In this demonstration we will be working with a dataset of the [top-40 most 
-cited AI papers on arXiv](https://arxiv.org/abs/2412.12121) from the period 
-2023-01-01 to 2024-09-30. 
+In this demonstration we will be working with a dataset of the [top-40 most
+cited AI papers on arXiv](https://arxiv.org/abs/2412.12121) from the period
+2023-01-01 to 2024-09-30.
 
-We will be performing retrieval against this collection of PDF documents by 
-embedding both the individual pages of the documents and our queries into the 
-same multi-vector space, reducing the problem to approximate nearest-neighbor 
-search on ColBERT-style multi-vectors under the MaxSim similarity measure. 
+We will be performing retrieval against this collection of PDF documents by
+embedding both the individual pages of the documents and our queries into the
+same multi-vector space, reducing the problem to approximate nearest-neighbor
+search on ColBERT-style multi-vectors under the MaxSim similarity measure.
 
-The approach we will be using to generate embeddings is outlined in the recent 
-paper [ColPali: Efficient Document Retrieval with Vision Language Models](https://arxiv.org/abs/2407.01449). 
-The paper demonstrates that it is possible to both simplify and 
-speed up traditional approaches to preprocessing PDF documents for retrieval, 
-which involves the use of OCR (Optical Character Recognition) software and 
-separate processing of text and figures, by instead feeding images (screenshots) 
+The approach we will be using to generate embeddings is outlined in the recent
+paper [ColPali: Efficient Document Retrieval with Vision Language Models](https://arxiv.org/abs/2407.01449).
+The paper demonstrates that it is possible to both simplify and
+speed up traditional approaches to preprocessing PDF documents for retrieval,
+which involves the use of OCR (Optical Character Recognition) software and
+separate processing of text and figures, by instead feeding images (screenshots)
 of entire pages to a Vision Language Model that produces a ColBERT-style embedding.
 
 ![colipali pipeline](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/figures/colipali_pipeline.jpeg)
 
-Specifically, we will be using the publicly available model 
-[ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) to generate 
+Specifically, we will be using the publicly available model
+[ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) to generate
 embeddings.
 
 ## Retrieval example
 
-As an example of what we are going to build consider the following actual demo 
+As an example of what we are going to build consider the following actual demo
 query and resulting PDF page from our collection (nearest neighbor):
 
 - Query: "How does DeepSeek-V2 compare against the LLaMA family of LLMs?"
-- Nearest neighbor:  "DeepSeek-V2: A Strong Economical and Efficient 
+- Nearest neighbor:  "DeepSeek-V2: A Strong Economical and Efficient
 Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1.
 
-By inspecting the first page of the 
-[DeepSeek-V2 paper](https://arxiv.org/abs/2405.04434) we see that it does indeed 
+By inspecting the first page of the
+[DeepSeek-V2 paper](https://arxiv.org/abs/2405.04434) we see that it does indeed
 contain a figure that is relevant for answering our query:
 
 ![deepseek efficiency](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/figures/deepseek_efficiency.jpeg)
 
 ## Extension to Retrieval Augmented Generation (RAG)
 
-The above example gives us the most relevant pages to begin looking at in order 
-to answer our query. Vision language models are now powerful enough that we can 
-instead give the query and relevant pages to such a model and have it produce an 
-answer to our query in plain text! 
+The above example gives us the most relevant pages to begin looking at in order
+to answer our query. Vision language models are now powerful enough that we can
+instead give the query and relevant pages to such a model and have it produce an
+answer to our query in plain text!
 
-In order to accomplish this we are going to feed the top results into the 
+In order to accomplish this we are going to feed the top results into the
 state-of-the-art VLM [Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct).
 
 ## Demonstration overview
@@ -71,10 +71,10 @@ state-of-the-art VLM [Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Q
 The demonstration will proceed through the following steps in order to set up a
  running retrieval example:
 
-1. Loading the ColQwen model from huggingface and adding convenience functions 
+1. Loading the ColQwen model from huggingface and adding convenience functions
 to vectorize images and queries.
 2. Load an example dataset of PDF pages from huggingface.
-3. Spinning up a local Weaviate server and creating a collection of 
+3. Spinning up a local Weaviate server and creating a collection of
 bring-your-own multivectors.
 4. Querying the collection and displaying results.
 5. Setting up Qwen2.5-VL to support retrieval-augmented generation.
@@ -85,12 +85,12 @@ bring-your-own multivectors.
 - A machine capable of running neural networks using 5-10 GB of memory.
 - A local instance of Weaviate version >= 1.29.0
 
-To install all dependencies as listed in the [Pipfile](https://github.com/weaviate/recipes/blob/main/weaviate-features/multi-vector/Pipfile) use `pipenv install` to set 
-up the local environment for this notebook. 
+To install all dependencies as listed in the [Pipfile](https://github.com/weaviate/recipes/blob/main/weaviate-features/multi-vector/Pipfile) use `pipenv install` to set
+up the local environment for this notebook.
 
-The demonstration uses two different vision language models that both require 
-several gigabytes of memory. See the documentation for each individual model and 
-the general pytorch docs in order to figure out how to best run the models on 
+The demonstration uses two different vision language models that both require
+several gigabytes of memory. See the documentation for each individual model and
+the general pytorch docs in order to figure out how to best run the models on
 your hardware.
 
 ```python
@@ -147,7 +147,7 @@ Python output:
 ```text
 Running cells with 'Python 3.13.1' requires the ipykernel package.
 
-Install 'ipykernel' into the Python environment. 
+Install 'ipykernel' into the Python environment.
 
 Command: '/opt/homebrew/bin/python3 -m pip install ipykernel -U --user --force-reinstall'
 ```
@@ -217,9 +217,9 @@ client.close()
 # Load data into weaviate.
 import numpy as np
 client = weaviate.connect_to_local()
-pages = client.collections.get("Pages")
+pages = client.collections.use("Pages")
 
-# Map of page ids to images to support displaying the image corresponding to a 
+# Map of page ids to images to support displaying the image corresponding to a
 # particular page id.
 page_images = {}
 
@@ -231,13 +231,13 @@ with pages.batch.dynamic() as batch:
         batch.add_object(
             properties={
                 "page_id": p["page_id"],
-                "paper_title": p["paper_title"], 
-                "paper_arxiv_id": p["paper_arxiv_id"], 
+                "paper_title": p["paper_title"],
+                "paper_arxiv_id": p["paper_arxiv_id"],
                 "page_number": p["page_number"]
                 }, vector={"colqwen": p["colqwen_embedding"]})
-        
+
         if i % 25 == 0:
-            print(f"Added {i+1}/{len(page_data)} Page objects to Weaviate.") 
+            print(f"Added {i+1}/{len(page_data)} Page objects to Weaviate.")
 
 client.close()
 ```
@@ -252,7 +252,7 @@ query_text = "How does DeepSeek-V2 compare against the LLaMA family of LLMs?"
 query_embedding = colqwen.multi_vectorize_text(query_text).cpu().float().numpy()
 
 with weaviate.connect_to_local() as client:
-    pages = client.collections.get("Pages")
+    pages = client.collections.use("Pages")
     response = pages.query.near_vector(
         near_vector=query_embedding,
         target_vector="colqwen",
@@ -269,7 +269,7 @@ with weaviate.connect_to_local() as client:
 ```
 
 ```python
-# Setting up Qwen2.5-VL-3B-Instruct for generating answers from a query string 
+# Setting up Qwen2.5-VL-3B-Instruct for generating answers from a query string
 # plus a collection of (images of) PDF pages.
 # Note: I had to install the transformers package using the command
 # pip install git+https://github.com/huggingface/transformers accelerate
@@ -350,12 +350,12 @@ The most relevant documents for the query "How did DeepSeek-V2 manage to outperf
 
 The answer from Qwen2.5-VL-3B-Instruct based on these documents:
 ```
-DeepSeek-V2 achieved this by optimizing the attention modules and Feed-Forward 
-Networks (FFNs) within the Transformer framework, introducing Multi-head 
-Latent Attention (MLA) and DeepSeekMoE architectures, and employing expert 
-segmentation and shared expert isolation for higher potential in expert 
+DeepSeek-V2 achieved this by optimizing the attention modules and Feed-Forward
+Networks (FFNs) within the Transformer framework, introducing Multi-head
+Latent Attention (MLA) and DeepSeekMoE architectures, and employing expert
+segmentation and shared expert isolation for higher potential in expert
 specialization. Additionally, it demonstrated strong performance with only 21B
-activated parameters, saving 42.5% of training costs, reducing the KV cache by 
+activated parameters, saving 42.5% of training costs, reducing the KV cache by
 93.3%, and boosting the maximum generation throughput to 5.76 times
 ```
 
@@ -369,10 +369,10 @@ The most relevant documents for the query "Describe the figure on the front page
 
 The answer from Qwen2.5-VL-3B-Instruct based on these documents:
 ```
-The figure on the front page of the paper "Adding Conditional Control to 
-Text-to-Image Diffusion Models" is titled "Figure 1: Controlling Stable 
-Diffusion with learned conditions." It illustrates how users can control the 
-image generation of large pretrained diffusion models using learned 
+The figure on the front page of the paper "Adding Conditional Control to
+Text-to-Image Diffusion Models" is titled "Figure 1: Controlling Stable
+Diffusion with learned conditions." It illustrates how users can control the
+image generation of large pretrained diffusion models using learned
 conditions, such as Canny edges, human pose, and other attributes.
 
 Here's a detailed description of the figure:
@@ -395,12 +395,12 @@ The most relevant documents for the query "Why do we need the retrieval step whe
 The answer from Qwen2.5-VL-3B-Instruct based on these documents:
 
 ```
-The retrieval step is necessary in Retrieval-Augmented Generation (RAG) because 
-it allows the model to access and utilize external knowledge from databases or 
-other sources. This external knowledge can provide context, enhance the accuracy 
-of the generated response, and help the model understand the user's query 
-better. By incorporating this external knowledge, RAG can improve its 
-performance on tasks that require domain-specific knowledge or require 
+The retrieval step is necessary in Retrieval-Augmented Generation (RAG) because
+it allows the model to access and utilize external knowledge from databases or
+other sources. This external knowledge can provide context, enhance the accuracy
+of the generated response, and help the model understand the user's query
+better. By incorporating this external knowledge, RAG can improve its
+performance on tasks that require domain-specific knowledge or require
 continuous updates based on new information.
 ```
 
@@ -417,15 +417,15 @@ query_text = "Why do we need the retrieval step when performing retrieval augmen
 query_embedding = colqwen.multi_vectorize_text(query_text).cpu().float().numpy()
 
 with weaviate.connect_to_local() as client:
-    pages = client.collections.get("Pages")
+    pages = client.collections.use("Pages")
     response = pages.query.near_vector(
-        near_vector=query_embedding, 
+        near_vector=query_embedding,
         target_vector="colqwen",
         limit=3,
         return_metadata=MetadataQuery(distance=True)
     )
     print(f"The most relevant documents for the query \"{query_text}\" by order of relevance:\n")
-    result_images = [] 
+    result_images = []
     for i, o in enumerate(response.objects):
         p = o.properties
         print(
@@ -435,6 +435,6 @@ with weaviate.connect_to_local() as client:
             + f"Page: {int(p['page_number'])}"
         )
         result_images.append(page_images[p["page_id"]])
-    
+
 print(f"\nThe answer from Qwen2.5-VL-3B-Instruct based on these documents:\n{qwenvl.query_images(query_text, result_images)}")
 ```
