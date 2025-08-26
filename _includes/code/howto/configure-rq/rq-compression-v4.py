@@ -73,7 +73,7 @@ client.collections.create(
 # START UpdateSchema
 from weaviate.classes.config import Reconfigure
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 collection.config.update(
     vector_config=Reconfigure.Vectors.update(
         name="default",
@@ -88,7 +88,7 @@ collection.config.update(
 
 from weaviate.collections.classes.config import _RQConfig
 
-config = client.collections.get("MyCollection").config.get()
+config = client.collections.use("MyCollection").config.get()
 assert type(config.vector_config["default"].vector_index_config.quantizer) == _RQConfig
 
 client.close()

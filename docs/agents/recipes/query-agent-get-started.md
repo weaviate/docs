@@ -129,10 +129,10 @@ ecommerce_dataset = load_dataset("weaviate/agents", "query-agent-ecommerce", spl
 weather_dataset = load_dataset("weaviate/agents", "query-agent-weather", split="train", streaming=True)
 financial_dataset = load_dataset("weaviate/agents", "query-agent-financial-contracts", split="train", streaming=True)
 
-brands_collection = client.collections.get("Brands")
-ecommerce_collection = client.collections.get("Ecommerce")
-weather_collection = client.collections.get("Weather")
-financial_collection = client.collections.get("Financial_contracts")
+brands_collection = client.collections.use("Brands")
+ecommerce_collection = client.collections.use("Ecommerce")
+weather_collection = client.collections.use("Weather")
+financial_collection = client.collections.use("Financial_contracts")
 
 with brands_collection.batch.dynamic() as batch:
     for item in brands_dataset:
@@ -267,10 +267,10 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics   
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬──────┐
 │ LLM Requests:  │ 3    │
 │ Input Tokens:  │ 7774 │
@@ -356,10 +356,10 @@ print_query_agent_response(new_response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics    
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬───────┐
 │ LLM Requests:  │ 4     │
 │ Input Tokens:  │ 9783  │
@@ -408,10 +408,10 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics   
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬──────┐
 │ LLM Requests:  │ 3    │
 │ Input Tokens:  │ 3976 │
@@ -513,10 +513,10 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics    
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬───────┐
 │ LLM Requests:  │ 5     │
 │ Input Tokens:  │ 9728  │

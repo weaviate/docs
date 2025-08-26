@@ -10,7 +10,7 @@ resp = requests.get(
 data = json.loads(resp.text)
 
 # highlight-start
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 
 with questions.batch.fixed_size(batch_size=200) as batch:
     for d in data:

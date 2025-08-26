@@ -36,7 +36,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # MetadataSemanticSearch
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.near_text(
@@ -62,7 +62,7 @@ client.connect()
 
 # MetadataBM25Search
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.bm25(
@@ -88,7 +88,7 @@ client.connect()
 
 # MetadataHybridSearch
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.hybrid(
@@ -114,7 +114,7 @@ client.connect()
 
 # FilteredSemanticSearch
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.near_text(

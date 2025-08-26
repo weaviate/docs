@@ -18,7 +18,7 @@ if not client.collections.exists(collection_name):
         replication_config=Configure.replication(factor=2),
     )
 else:
-    replica_collection = client.collections.get(collection_name)
+    replica_collection = client.collections.use(collection_name)
 
 replica_collection.data.insert(
     {

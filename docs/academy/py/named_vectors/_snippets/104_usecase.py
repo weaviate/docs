@@ -31,7 +31,7 @@ def url_to_base64(url):
 
 
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 src_img_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/img/1927_Boris_Bilinski_(1900-1948)_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg"
@@ -52,7 +52,7 @@ response = movies.generate.near_image(
 # Inspect the response
 for o in response.objects:
     print(o.properties["title"])  # Print the title
-print(response.generated)  # Print the generated text (the commonalities between them)
+print(response.generative.text)  # Print the generated text (the commonalities between them)
 
 client.close()
 # END PosterSearchGeneration
@@ -65,7 +65,7 @@ client.connect()
 
 # TitleSerachLoop
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 # highlight-start
@@ -85,7 +85,7 @@ for tgt_vector in ["title", "overview"]:
     # Inspect the response
     for o in response.objects:
         print(o.properties["title"])  # Print the title
-    print(response.generated)  # Print the generated text (the commonalities between them)
+    print(response.generative.text)  # Print the generated text (the commonalities between them)
 
 client.close()
 # END TitleSerachLoop

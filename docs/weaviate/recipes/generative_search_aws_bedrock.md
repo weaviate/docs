@@ -75,9 +75,9 @@ client.collections.create(
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
+        wc.Property(name="Question", data_type=wc.DataType.TEXT),
         wc.Property(name="Answer", data_type=wc.DataType.TEXT),
-        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True), 
+        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
     ]
 )
 
@@ -93,7 +93,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)
@@ -111,14 +111,14 @@ else:
 
 ### Single Result
 
-Single Result makes a generation for each individual search result. 
+Single Result makes a generation for each individual search result.
 
-In the below example, I want to create a Facebook ad from the Jeopardy question about Elephants. 
+In the below example, I want to create a Facebook ad from the Jeopardy question about Elephants.
 
 ```python
 generatePrompt = "Turn the following Jeogrady question into a Facebook Ad: {question}"
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Elephants",
     limit=2,
@@ -134,14 +134,14 @@ for item in response.objects:
 
 ### Grouped Result
 
-Grouped Result generates a single response from all the search results. 
+Grouped Result generates a single response from all the search results.
 
-The below example is creating a Facebook ad from the 2 retrieved Jeoprady questions about animals. 
+The below example is creating a Facebook ad from the 2 retrieved Jeoprady questions about animals.
 
 ```python
 generateTask = "Explain why these Jeopardy questions are under the Animals category."
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Animals",
     limit=3,

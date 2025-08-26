@@ -66,7 +66,7 @@ client.collections.create(
 
 
 # Confirm that the collection has been created with the right settings
-collection = client.collections.get("Question")
+collection = client.collections.use("Question")
 config = collection.config.get()
 
 from weaviate.collections.classes.config import _PQConfig
@@ -94,7 +94,7 @@ client.collections.create(
 )
 
 # END InitialSchema
-config = client.collections.get("Question").config.get()
+config = client.collections.use("Question").config.get()
 assert config.vector_config["default"].vector_index_config.quantizer is None
 
 # ==============================
@@ -116,7 +116,7 @@ def parse_data(data):
     return object_list
 
 
-jeopardy = client.collections.get("Question")
+jeopardy = client.collections.use("Question")
 jeopardy.data.insert_many(parse_data(data))
 # END LoadData
 
@@ -131,7 +131,7 @@ assert response.total_count == 1000
 # START UpdateSchema
 from weaviate.classes.config import Reconfigure
 
-jeopardy = client.collections.get("Question")
+jeopardy = client.collections.use("Question")
 jeopardy.config.update(
     vector_config=Reconfigure.Vectors.update(
         name="default",
@@ -144,7 +144,7 @@ jeopardy.config.update(
 )
 # END UpdateSchema
 
-config = client.collections.get("Question").config.get()
+config = client.collections.use("Question").config.get()
 assert type(config.vector_config["default"].vector_index_config.quantizer) == _PQConfig
 
 # ==============================
@@ -152,7 +152,7 @@ assert type(config.vector_config["default"].vector_index_config.quantizer) == _P
 # ==============================
 
 # START GetSchema
-jeopardy = client.collections.get("Question")
+jeopardy = client.collections.use("Question")
 config = jeopardy.config.get()
 pq_config = config.vector_config["default"].vector_index_config.quantizer
 

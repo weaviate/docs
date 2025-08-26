@@ -12,13 +12,13 @@ tags: ['Weaviate Embeddings', 'Weaviate Cloud']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://console.weaviate.cloud/) database instance. 
+[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://console.weaviate.cloud/) database instance.
 
 *Please note this service is part of Weaviate Cloud and cannot be accessed through open-source. Additionally, this service is currently under technical preview, and you can request access [here](https://events.weaviate.io/embeddings-preview).*
 
 This notebook will show you how to:
 1. Define a Weaviate Collection
-1. Run a vector search query 
+1. Run a vector search query
 1. Run a hybrid search query
 1. Run a hybrid search query with metadata filters
 1. Run a generative search query (RAG)
@@ -93,12 +93,12 @@ client.collections.create(
         model="Snowflake/snowflake-arctic-embed-l-v2.0", # default model
     ),
 
-    generative_config=wc.Configure.Generative.openai( 
-        model="gpt-4o-mini" # select model, default is gpt-3.5-turbo 
+    generative_config=wc.Configure.Generative.openai(
+        model="gpt-4o-mini" # select model, default is gpt-3.5-turbo
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
+        wc.Property(name="Question", data_type=wc.DataType.TEXT),
         wc.Property(name="Answer", data_type=wc.DataType.TEXT, skip_vectorization=True),
         wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
         wc.Property(name="Value", data_type=wc.DataType.TEXT, skip_vectorization=True)
@@ -125,7 +125,7 @@ df = pd.read_csv(StringIO(resp.text))
 
 ```python
 # Get a collection object for "JeopardyQuestion"
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 # Insert data objects with batch import
 with collection.batch.dynamic() as batch:
@@ -152,7 +152,7 @@ Insert complete.
 ```python
 # count the number of objects
 
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 response = collection.aggregate.over_all(total_count=True)
 
 print(response.total_count)
@@ -167,10 +167,10 @@ Python output:
 ### Vector Search
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.near_text(
-    query="marine mamal with tusk", 
+    query="marine mamal with tusk",
     limit=2 # limit to only 2
 )
 
@@ -185,29 +185,29 @@ Data: {
   "answer": "the narwhal",
   "question": "A part of this marine mammal was prized by medieval folk, who thought it belonged to a unicorn",
   "category": "THE ANIMAL KINGDOM"
-} 
+}
 
 Data: {
   "value": "$400",
   "answer": "the walrus",
   "question": "You could say this Arctic mammal, Odobenus rosmarus, has a Wilford Brimley mustache",
   "category": "MAMMALS"
-} 
+}
 ```
 ### Hybrid Search
 
 The goal of this notebook is to show you how to use the embedding service. For more information on hybrid search, check out [this folder](https://github.com/weaviate/recipes/tree/main/weaviate-features/hybrid-search) and/or the [documentation](https://docs.weaviate.io/weaviate/search/hybrid).
 
-The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search. 
+The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search.
 
 Alpha is an optional parameter. The default is set to `0.75`.
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.hybrid(
     query="unicorn-like artic animal",
-    alpha=0.7, 
+    alpha=0.7,
     limit=2
 )
 
@@ -222,21 +222,21 @@ Data: {
   "answer": "the narwhal",
   "question": "A part of this marine mammal was prized by medieval folk, who thought it belonged to a unicorn",
   "category": "THE ANIMAL KINGDOM"
-} 
+}
 
 Data: {
   "value": "$400",
   "answer": "the walrus",
   "question": "You could say this Arctic mammal, Odobenus rosmarus, has a Wilford Brimley mustache",
   "category": "MAMMALS"
-} 
+}
 ```
 ### Fetch Objects with Metadata Filters
 
 Learn more about the different filter operators [here](https://docs.weaviate.io/weaviate/search/filters).
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.fetch_objects(
     limit=2,
@@ -254,28 +254,28 @@ Data: {
   "answer": "Disney",
   "question": "This company operates the 4 most popular theme parks in North America",
   "category": "BUSINESS & INDUSTRY"
-} 
+}
 
 Data: {
   "value": "$400",
   "answer": "Yamaha",
   "question": "This firm began in 1897 as Nippon Gakki Company, an organ manufacturer; electronic organs came along in 1959",
   "category": "BUSINESS & INDUSTRY"
-} 
+}
 ```
 ### Generative Search (RAG)
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.generate.hybrid(
     query="unicorn-like artic animal",
-    alpha=0.7, 
+    alpha=0.7,
     grouped_task="Explain why people thought these animals were unicorn-like",
     limit=2
 )
 
-print(f"Generated output: {response.generated}") 
+print(f"Generated output: {response.generated}")
 ```
 
 Python output:

@@ -90,7 +90,7 @@ from datasets import load_dataset
 
 dataset = load_dataset("weaviate/agents", "personalization-agent-recipes", split="train", streaming=True)
 
-recipes_collection = client.collections.get("Recipes")
+recipes_collection = client.collections.use("Recipes")
 
 with recipes_collection.batch.dynamic() as batch:
     for item in dataset:
@@ -164,7 +164,7 @@ Once we have at least one persona for our agent, we can start adding interaction
 Each interaction can have a weight between -1.0 (negative) and 1.0 positive. So, we can add some reviews for a number or dishes below.
 
 It's a good idea to think about what kind of end application may be forwarding these interactions and have a rule around what each weight might represent. For example, let's imagine a recipes website
-- 1.0: favorite meal  
+- 1.0: favorite meal
 - 0.8: user liked the dish
 - 0.5: user viewed the recipe page
 - -0.5: user disliked the dish
