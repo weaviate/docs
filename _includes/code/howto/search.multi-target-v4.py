@@ -65,7 +65,7 @@ for row in data:
     )
 
 # Upload the sample data
-nvjc_collection = client.collections.get("JeopardyTiny")
+nvjc_collection = client.collections.use("JeopardyTiny")
 with nvjc_collection.batch.fixed_size(batch_size=200) as batch:
     for q in question_objects:
         batch.add_object(properties=q)
@@ -79,7 +79,7 @@ with nvjc_collection.batch.fixed_size(batch_size=200) as batch:
 # START MultiBasic
 from weaviate.classes.query import MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_text(
     query="a wild animal",
@@ -108,7 +108,7 @@ v2 = some_result.objects[1].vector["jeopardy_answers_vector"]
 # START MultiTargetNearVector
 from weaviate.classes.query import MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_vector(
     # highlight-start
@@ -142,7 +142,7 @@ v3 = some_result.objects[2].vector["jeopardy_answers_vector"]
 # START MultiTargetMultipleNearVectorsV1
 from weaviate.classes.query import MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_vector(
     # highlight-start
@@ -169,7 +169,7 @@ for o in response.objects:
 # START MultiTargetMultipleNearVectorsV2
 from weaviate.classes.query import TargetVectors, MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_vector(
     # highlight-start
@@ -201,7 +201,7 @@ for o in response.objects:
 # START MultiTargetWithSimpleJoin
 from weaviate.classes.query import TargetVectors, MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_text(
     query="a wild animal",
@@ -226,7 +226,7 @@ for o in response.objects:
 # START MultiTargetManualWeights
 from weaviate.classes.query import TargetVectors, MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_text(
     query="a wild animal",
@@ -253,7 +253,7 @@ for o in response.objects:
 # START MultiTargetRelativeScore
 from weaviate.classes.query import TargetVectors, MetadataQuery
 
-collection = client.collections.get("JeopardyTiny")
+collection = client.collections.use("JeopardyTiny")
 
 response = collection.query.near_text(
     query="a wild animal",

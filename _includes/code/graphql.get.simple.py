@@ -35,7 +35,7 @@ try:
 # END GraphQLGetSimple  # END ConsistencyExample
 
     # START GraphQLGetSimple
-    collection = client.collections.get("JeopardyQuestion")
+    collection = client.collections.use("JeopardyQuestion")
     response = collection.query.fetch_objects()
 
     for o in response.objects:
@@ -51,7 +51,7 @@ try:
     # ========================================
 
     # START GroupByExample
-    questions = client.collections.get("JeopardyQuestion")
+    questions = client.collections.use("JeopardyQuestion")
     response = questions.query.near_text(
         query="animals",
         group_by=wvc.query.GroupBy(
@@ -78,7 +78,7 @@ try:
     # ========================================
 
     # START ConsistencyExample
-    questions = client.collections.get("JeopardyQuestion").with_consistency_level(consistency_level=wvc.config.ConsistencyLevel.QUORUM)
+    questions = client.collections.use("JeopardyQuestion").with_consistency_level(consistency_level=wvc.config.ConsistencyLevel.QUORUM)
     response = collection.query.fetch_objects()
 
     for o in response.objects:
@@ -94,7 +94,7 @@ try:
     # ========================================
 
     # START GetCrossRefProp
-    questions = client.collections.get("JeopardyQuestion")
+    questions = client.collections.use("JeopardyQuestion")
     response = questions.query.fetch_objects(
         return_references=wvc.query.QueryReference(
             link_on="hasCategory",

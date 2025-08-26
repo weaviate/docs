@@ -104,7 +104,7 @@ client.alias.delete(alias_name="ArticlesProd")
 client.alias.create(alias_name="MyArticles", target_collection="Articles")
 
 # Use the alias just like a collection name
-articles = client.collections.get("MyArticles")
+articles = client.collections.use("MyArticles")
 
 # Insert data using the alias
 articles.data.insert(
@@ -132,7 +132,7 @@ client.collections.create(
     name="Products_v1", vector_config=wvc.config.Configure.Vectors.self_provided()
 )
 
-products_v1 = client.collections.get("Products_v1")
+products_v1 = client.collections.use("Products_v1")
 products_v1.data.insert_many(
     [{"name": "Product A", "price": 100}, {"name": "Product B", "price": 200}]
 )
@@ -154,7 +154,7 @@ client.collections.create(
 )
 
 # Step 4: Migrate data to new collection
-products_v2 = client.collections.get("Products_v2")
+products_v2 = client.collections.use("Products_v2")
 old_data = products_v1.query.fetch_objects().objects
 
 for obj in old_data:
@@ -170,7 +170,7 @@ for obj in old_data:
 client.alias.update(alias_name="Products", new_target_collection="Products_v2")
 
 # All queries using "Products" alias now use the new collection
-products = client.collections.get("Products")
+products = client.collections.use("Products")
 result = products.query.fetch_objects(limit=1)
 print(result.objects[0].properties)  # Will include the new "category" field
 

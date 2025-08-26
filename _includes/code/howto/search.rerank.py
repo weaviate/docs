@@ -24,7 +24,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ==================================
 
 # START nearText Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="flying",
     limit=10,
@@ -47,7 +47,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # START nearTextRerank Python
 from weaviate.classes.query import Rerank, MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 response = jeopardy.query.near_text(
     query="flying",
@@ -78,7 +78,7 @@ assert response.objects[0].metadata.score is not None
 # START bm25Rerank Python
 from weaviate.classes.query import Rerank, MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 response = jeopardy.query.bm25(
     query="paper",

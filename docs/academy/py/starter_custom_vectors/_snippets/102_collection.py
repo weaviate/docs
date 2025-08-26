@@ -154,7 +154,7 @@ embs_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/m
 emb_df = pd.read_csv(embs_path)
 
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Enter context manager
 with movies.batch.fixed_size(batch_size=200) as batch:

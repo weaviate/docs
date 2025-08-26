@@ -31,7 +31,7 @@ def url_to_base64(url):
 
 # SinglePromptGeneration
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 src_img_path = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img/International_Space_Station_after_undocking_of_STS-132.jpg?raw=true"
@@ -63,7 +63,7 @@ client.connect()
 
 # GroupedTaskGeneration
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 src_img_path = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img/International_Space_Station_after_undocking_of_STS-132.jpg?raw=true"

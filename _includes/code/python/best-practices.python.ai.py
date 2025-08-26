@@ -297,7 +297,7 @@ client.collections.create(
 # Note - a collection has this type:
 from weaviate.collections import Collection
 
-collection: Collection = client.collections.get("Article")
+collection: Collection = client.collections.use("Article")
 
 # Check if collection exists
 exists = client.collections.exists("Article")
@@ -308,7 +308,7 @@ collections = client.collections.list_all()
 # Update a collection
 from weaviate.classes.config import Reconfigure
 
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 collection.config.update(
     inverted_index_config=Reconfigure.inverted_index(
         bm25_k1=1.5
@@ -334,7 +334,7 @@ Creating, updating, and retrieving objects
 """
 
 # Insert a single object
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 uuid = collection.data.insert({
     "title": "My first article",
     "body": "This is the body of my first article.",
@@ -362,7 +362,7 @@ collection.data.insert(
 )
 
 # Insert with named vectors
-collection = client.collections.get("ArticleNV")
+collection = client.collections.use("ArticleNV")
 collection.data.insert(
     properties={
         "title": "Named vector article",
@@ -404,7 +404,7 @@ collection.data.delete_by_id(uuid)
 
 # Working with references
 article_uuid = collection.data.insert({"title": "Referenced Article"})
-author_collection = client.collections.get("Author")
+author_collection = client.collections.use("Author")
 author_uuid = author_collection.data.insert({"name": "John Doe"})
 
 # Add a reference
@@ -426,7 +426,7 @@ Batch import for better performance
 """
 
 # Fixed size batch (Recommended option)
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 with collection.batch.fixed_size(batch_size=50) as batch:
     for i in range(100):
         batch.add_object(
@@ -498,7 +498,7 @@ Various search methods (semantic, keyword, hybrid)
 """
 
 # Basic search (fetch objects)
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 response = collection.query.fetch_objects(
     limit=10,
     return_properties=["title", "body"]
@@ -693,7 +693,7 @@ A "grouped prompt" generates a single response for a group of objects.
 """
 
 # Basic generation
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 query = "artificial intelligence"
 response = collection.generate.near_text(
     query=query,
@@ -786,7 +786,7 @@ client.collections.create(
     )
 )
 
-mt_collection: Collection = client.collections.get("MultiTenantArticle")
+mt_collection: Collection = client.collections.use("MultiTenantArticle")
 
 # Add tenants
 from weaviate.classes.tenants import Tenant
@@ -833,7 +833,7 @@ Iterating over large datasets
 """
 
 # Basic iteration
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 for article in collection.iterator():
     print(article.properties)
 

@@ -49,7 +49,7 @@ try:
         ],
     )
 
-    c = client.collections.get("Article")
+    c = client.collections.use("Article")
     for i in range(50):
         c.data.insert(
             properties={"title": f"Article {i}"},
@@ -61,7 +61,7 @@ try:
     # ========================================
 
     # START BasicFetchObjects
-    articles = client.collections.get("Article")
+    articles = client.collections.use("Article")
     response = articles.query.fetch_objects()
 
     for o in response.objects:
@@ -73,14 +73,14 @@ try:
     # CreateObject
     # ========================================
 
-    publications = client.collections.get("Publication")
+    publications = client.collections.use("Publication")
     publications.data.insert(
         properties={"title": "TempPub"},
         uuid="f81bfe5e-16ba-4615-a516-46c2ae2e5a80",
     )
 
     # START CreateObject
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     obj_uuid = "36ddd591-2dee-4e7e-a3cc-eb86d30a4303"
     # articles = articles.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
@@ -105,7 +105,7 @@ try:
     # ========================================
 
     # START WithGeoCoordinates
-    publications = client.collections.get("Publication")
+    publications = client.collections.use("Publication")
 
     publications.data.insert(
         properties={
@@ -142,7 +142,7 @@ try:
     custom_uuid = generate_uuid5("CustomVectorObj")
 
     # START SpecifyVectorInObject
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     # authors = authors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     authors.data.insert(
@@ -179,7 +179,7 @@ try:
     )
 
     # START GetAnObject  # START CheckForAnObject
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     # authors = authors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     fetched_obj = authors.query.fetch_object_by_id(uuid=object_uuid)  # If it does not exist, it will return None
@@ -218,7 +218,7 @@ try:
     # START UpdateAnObject
     object_uuid = generate_uuid5("SomeUUIDSeed")
 
-    actors = client.collections.get("Actor")
+    actors = client.collections.use("Actor")
     # actors = actors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     # ===== Insert the original object =====
@@ -288,7 +288,7 @@ try:
     assert actors.query.fetch_object_by_id(uuid=object_uuid) is not None
 
     # START DeleteAnObject
-    actors = client.collections.get("Actor")
+    actors = client.collections.use("Actor")
     # actors = actors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     object_uuid = generate_uuid5("SomeUUIDSeed")
@@ -313,8 +313,8 @@ try:
     # ========================================
 
 
-    authors = client.collections.get("Author")
-    publications = client.collections.get("Publication")
+    authors = client.collections.use("Author")
+    publications = client.collections.use("Publication")
 
     pub_uuid = generate_uuid5("SomePublication")
     publications.data.insert(
@@ -330,7 +330,7 @@ try:
     )
 
     # START AddReferenceToObject
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     # authors = authors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     authors.data.reference_add(
@@ -367,7 +367,7 @@ try:
         )
 
     # START UpdateReferenceToObject
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     # authors = authors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     authors.data.reference_replace(
@@ -418,7 +418,7 @@ try:
     # START DeleteReferenceToObject
     pub_uuid = generate_uuid5("SomePublication")
 
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     # authors = authors.with_consistency_level(wvc.config.ConsistencyLevel.ALL)  # If you want to set the consistency level
 
     authors.data.reference_delete(

@@ -41,7 +41,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ========================================
 
 # START SingleConditionFilter
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 response = collection.query.fetch_objects(
     filters=Filter.by_property("wordCount").greater_than(1000),
     limit=5
@@ -57,7 +57,7 @@ for o in response.objects:
 # ========================================
 
 # START MultipleConditionsFilter
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 response = collection.query.fetch_objects(
     filters=(
         Filter.by_property("wordCount").greater_than(1000)
@@ -76,7 +76,7 @@ for o in response.objects:
 # ========================================
 
 # START FilterWithLike
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 response = collection.query.fetch_objects(
     filters=Filter.by_property("title").like("New *"),
     limit=5
@@ -92,7 +92,7 @@ for o in response.objects:
 # ========================================
 
 # START FilterById
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 response = collection.query.fetch_objects(
     filters=Filter.by_id().equal("00037775-1432-35e5-bc59-443baaef7d80")
 )
@@ -110,7 +110,7 @@ assert len(response.objects) == 1
 # ========================================
 
 # START FilterByTimestamps
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 year2k = datetime.strptime("2000-01-01T00:00:00Z", "%Y-%m-%dT%H:%M:%SZ")
 
 response = collection.query.fetch_objects(
@@ -130,7 +130,7 @@ for o in response.objects:
 # ========================================
 
 # START FilterByReference
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 
 response = collection.query.fetch_objects(
     filters=Filter.by_ref(link_on="inPublication").by_property("name").like("*New*"),
@@ -167,7 +167,7 @@ for o in response.objects:
 # FilterByGeoCoordinates
 # ========================================
 
-publications = client.collections.get("Publication")
+publications = client.collections.use("Publication")
 
 # START FilterByGeoCoordinates
 response = publications.query.fetch_objects(

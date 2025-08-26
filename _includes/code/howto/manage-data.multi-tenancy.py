@@ -71,7 +71,7 @@ assert collection.config.get().multi_tenancy_config.auto_tenant_creation == Fals
 # START UpdateAutoMT
 from weaviate.classes.config import Reconfigure
 
-collection = client.collections.get(collection_name)
+collection = client.collections.use(collection_name)
 
 # highlight-start
 collection.config.update(
@@ -86,7 +86,7 @@ assert collection.config.get().multi_tenancy_config.auto_tenant_creation == True
 # ===== Add tenants to collection =====
 # =====================================
 
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # START AddTenantsToClass
 from weaviate.classes.tenants import Tenant
@@ -103,7 +103,7 @@ multi_collection.tenants.create(
 # END AddTenantsToClass
 
 # Test
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 multi_config=multi_collection.config.get()
 assert multi_config.multi_tenancy_config.enabled == True
 
@@ -112,7 +112,7 @@ assert multi_config.multi_tenancy_config.enabled == True
 # ===================================
 
 # START ListTenants
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # highlight-start
 tenants = multi_collection.tenants.get()
@@ -130,7 +130,7 @@ assert "tenantB" in tenants
 # ===================================
 
 # START GetTenantsByName
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # highlight-start
 tenant_names = ["tenantA", "tenantB", "nonExistentTenant"]  # `nonExistentTenant`` does not exist and will be ignored
@@ -152,7 +152,7 @@ for k, v in tenants_response.items():
 tenant_name = "tenantA"
 
 # START GetOneTenant
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # highlight-start
 tenant_obj = multi_collection.tenants.get_by_name(tenant_name)
@@ -169,7 +169,7 @@ assert tenant_obj.name == tenant_name
 # =======================================
 
 # START RemoveTenants
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # Remove a list of tenants - tenantX will be ignored.
 # highlight-start
@@ -190,7 +190,7 @@ assert ("tenantB" in tenants) == False
 # START DeactivateTenants
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 # highlight-start
 multi_collection.tenants.update(tenants=[
     Tenant(
@@ -214,7 +214,7 @@ assert tenants["tenantA"].activity_status.name == "INACTIVE"
 # START ActivateTenants
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 # highlight-start
 multi_collection.tenants.update(tenants=[
     Tenant(
@@ -239,7 +239,7 @@ assert tenants["tenantA"].activity_status.name == "ACTIVE"
 # START ChangeTenantState
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 # highlight-start
 multi_collection.tenants.update(tenants=[
     Tenant(
@@ -259,7 +259,7 @@ multi_collection.tenants.update(tenants=[
 # START OffloadTenants
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 # highlight-start
 multi_collection.tenants.update(tenants=[
     Tenant(
@@ -312,7 +312,7 @@ assert multi_collection.config.get().multi_tenancy_config.auto_tenant_activation
 # ============================
 
 # START CreateMtObject
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # Get collection specific to the required tenant
 # highlight-start
@@ -337,7 +337,7 @@ assert result != None
 # =====================
 
 # START Search
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 
 # Get collection specific to the required tenant
 # highlight-start
@@ -362,7 +362,7 @@ assert 'question' in result.objects[0].properties
 # ===== Add cross-reference =====
 # ===============================
 
-jeopardy = client.collections.get("JeopardyCategory")
+jeopardy = client.collections.use("JeopardyCategory")
 category_id = jeopardy.data.insert(
     properties={
         "category": "Software"
@@ -372,7 +372,7 @@ category_id = jeopardy.data.insert(
 # START AddCrossRef
 from weaviate.classes.config import ReferenceProperty
 
-multi_collection = client.collections.get("MultiTenancyCollection")
+multi_collection = client.collections.use("MultiTenancyCollection")
 # Add the cross-reference property to the multi-tenancy class
 multi_collection.config.add_reference(
     ReferenceProperty(

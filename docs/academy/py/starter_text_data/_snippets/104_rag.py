@@ -26,7 +26,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # SinglePromptGeneration
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.generate.near_text(
@@ -55,7 +55,7 @@ client.connect()
 
 # GroupedTaskGeneration
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.generate.near_text(
