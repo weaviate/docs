@@ -33,7 +33,7 @@ async function urlToBase64(imageUrl: string) {
 
 // SinglePromptGeneration // GroupedTaskGeneration
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Perform query
 const srcImgPath = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img/International_Space_Station_after_undocking_of_STS-132.jpg?raw=true"
