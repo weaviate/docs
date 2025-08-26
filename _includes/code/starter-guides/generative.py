@@ -35,10 +35,10 @@ response = chunks.generate.near_text(
     # highlight-end
 )
 
-print(response.generated)
+print(response.generative.text)
 # END TransformResultSets
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 
 # TransformIndividualObjects
 collection_name = "WineReview"
@@ -184,10 +184,10 @@ response = chunks.generate.fetch_objects(
     grouped_task="Write a trivia tweet based on this text. Use emojis and make it succinct and cute."
 )
 
-print(response.generated)
+print(response.generative.text)
 # END GroupedTask
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 
 
 # NearTextGroupedTask
@@ -197,10 +197,10 @@ response = chunks.generate.near_text(
     grouped_task="Write a trivia tweet based on this text. Use emojis and make it succinct and cute."
 )
 
-print(response.generated)
+print(response.generative.text)
 # END NearTextGroupedTask
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 
 
 # SecondNearTextGroupedTask
@@ -210,8 +210,8 @@ response = chunks.generate.near_text(
     grouped_task="Write a trivia tweet based on this text. Use emojis and make it succinct and cute."
 )
 
-print(response.generated)
+print(response.generative.text)
 # END SecondNearTextGroupedTask
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 client.close()
