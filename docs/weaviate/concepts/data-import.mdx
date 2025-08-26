@@ -27,6 +27,14 @@ For **code examples**, check out the [How-to: Batch import](../manage-objects/im
 
 ## Server-side batching
 
+:::caution Technical preview
+
+Server-side batching was added in **`v1.33`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
 Weaviate's server-side batching, also known as **automatic batching**, is an intelligent mechanism designed to make data ingestion simpler, faster, and more robust. Instead of manually tuning batch parameters on the client side, you can let the server dynamically manage the data flow for optimal performance.
 
 This mode is a drop-in replacement for `fixed_size` or `dynamic` batching and is the recommended method for importing data.
