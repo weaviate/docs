@@ -93,8 +93,8 @@ ecommerce_dataset = load_dataset(
     "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
 )
 
-brands_collection = client.collections.get("Brands")
-ecommerce_collection = client.collections.get("ECommerce")
+brands_collection = client.collections.use("Brands")
+ecommerce_collection = client.collections.use("ECommerce")
 
 with brands_collection.batch.fixed_size(batch_size=200) as batch:
     for item in brands_dataset:

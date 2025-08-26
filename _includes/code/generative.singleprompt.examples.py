@@ -49,7 +49,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # START-ANY
 try:
-    reviews = client.collections.get("WineReview")
+    reviews = client.collections.use("WineReview")
 
     # instruction for the generative module
     generate_prompt = "Describe the following as a Facebook Ad: {review_body}"

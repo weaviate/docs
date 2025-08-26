@@ -31,7 +31,7 @@ def url_to_base64(url):
 
 
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 src_img_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/img/1927_Boris_Bilinski_(1900-1948)_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg"
@@ -65,7 +65,7 @@ client.connect()
 
 # TitleSerachLoop
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 # highlight-start

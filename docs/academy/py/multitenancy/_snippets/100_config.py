@@ -251,7 +251,7 @@ mt_collection.tenants.create(["travis1989"])
 # UpdateOneTenantStatus
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-mt_collection = client.collections.get(mt_collection_name)
+mt_collection = client.collections.use(mt_collection_name)
 
 mt_collection.tenants.update(
     Tenant(name="travis1989", activity_status=TenantActivityStatus.INACTIVE)
@@ -268,7 +268,7 @@ inactive_users = [f"user{100+i}" for i in range(10)]
 # UpdateMultipleTenantStatuses
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-mt_collection = client.collections.get(mt_collection_name)
+mt_collection = client.collections.use(mt_collection_name)
 
 tenants_to_deactivate = [
     Tenant(name=user, activity_status=TenantActivityStatus.INACTIVE)
@@ -283,7 +283,7 @@ tenant_names_to_offload = []  # List of tenants to offload
 # OffloadMultipleTenants
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-mt_collection = client.collections.get(mt_collection_name)
+mt_collection = client.collections.use(mt_collection_name)
 
 tenants_to_offload = [
     Tenant(name=user, activity_status=TenantActivityStatus.OFFLOADED)
@@ -298,7 +298,7 @@ tenant_names_to_activate = []  # List of tenants to offload
 # ActivateMultipleTenants
 from weaviate.classes.tenants import Tenant, TenantActivityStatus
 
-mt_collection = client.collections.get(mt_collection_name)
+mt_collection = client.collections.use(mt_collection_name)
 
 tenants_to_activate = [
     Tenant(name=user, activity_status=TenantActivityStatus.ACTIVE)
@@ -315,7 +315,7 @@ mt_collection.tenants.update(tenants_to_activate)
 # RemoveTenants
 from weaviate.classes.tenants import Tenant
 
-mt_collection = client.collections.get(mt_collection_name)
+mt_collection = client.collections.use(mt_collection_name)
 
 # Caution - this will remove all of the associated data for the tenants
 mt_collection.tenants.remove([
@@ -329,7 +329,7 @@ mt_collection.tenants.remove([
 # ================================================================================
 
 #
-mt_collection = client.collections.get(mt_collection_name)
+mt_collection = client.collections.use(mt_collection_name)
 
 all_tenants = mt_collection.tenants.get()
 for k, v in all_tenants.items():

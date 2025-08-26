@@ -308,7 +308,7 @@ client = weaviate.connect_to_custom(
     grpc_secure=False
 )
 
-collection = client.collections.get("Questions")
+collection = client.collections.use("Questions")
 
 # Simple search
 response = collection.query.near_text(query="animal",limit=2, include_vector=True)

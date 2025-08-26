@@ -17,7 +17,7 @@ assert client.is_ready()
 # DataRetrieval
 collection_name = "GitBookChunk"
 
-chunks = client.collections.get(collection_name)
+chunks = client.collections.use(collection_name)
 response = chunks.query.near_text(query="history of git", limit=3)
 # END DataRetrieval
 
@@ -26,7 +26,7 @@ assert len(response.objects) == 3
 # TransformResultSets
 collection_name = "GitBookChunk"
 
-chunks = client.collections.get(collection_name)
+chunks = client.collections.use(collection_name)
 response = chunks.generate.near_text(
     query="history of git",
     limit=3,
@@ -43,7 +43,7 @@ assert len(response.generated) > 10
 # TransformIndividualObjects
 collection_name = "WineReview"
 
-reviews = client.collections.get(collection_name)
+reviews = client.collections.use(collection_name)
 response = reviews.generate.near_text(
     query="fruity white wine",
     limit=3,

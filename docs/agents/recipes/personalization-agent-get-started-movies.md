@@ -128,7 +128,7 @@ from datasets import load_dataset
 
 dataset = load_dataset("weaviate/agents", "personalization-agent-movies", split="train", streaming=True)
 
-movies_collection = client.collections.get("Movies")
+movies_collection = client.collections.use("Movies")
 
 with movies_collection.batch.dynamic() as batch:
     for item in dataset:
@@ -192,7 +192,7 @@ Once we have at least one persona for our agent, we can start adding interaction
 Each interaction can have a weight between -1.0 (negative) and 1.0 positive. So, we can add some reviews for a number or films below.
 
 It's a good idea to think about what kind of end application may be forwarding these interactions and have a rule around what each weight might represent. For example:
-- 1.0: favorite movie  
+- 1.0: favorite movie
 - 0.8: user liked the movie
 - 0.5: user viewed and did not review the movie
 - -0.5: user disliked the movie

@@ -40,7 +40,7 @@ data_rows = [
     {"title": f"Object {i+1}"} for i in range(5)
 ]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
 with collection.batch.fixed_size(batch_size=200) as batch:
@@ -93,7 +93,7 @@ data = [
     ),
 ]
 
-collection = client.collections.get("MyCollection")  # Replace with your collection name
+collection = client.collections.use("MyCollection")  # Replace with your collection name
 collection.data.insert_many(data)
 # END InsertManytWithIDExample
 
@@ -133,7 +133,7 @@ data = [
     ),
 ]
 
-collection = client.collections.get("MyCollection")  # Replace with your collection name
+collection = client.collections.use("MyCollection")  # Replace with your collection name
 collection.data.insert_many(data)
 # END InsertManyWithVectorExample
 
@@ -165,7 +165,7 @@ from weaviate.util import generate_uuid5  # Generate a deterministic ID
 # START BatchImportWithIDExample
 data_rows = [{"title": f"Object {i+1}"} for i in range(5)]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
 with collection.batch.fixed_size(batch_size=200) as batch:
@@ -201,7 +201,7 @@ client.collections.delete(collection.name)
 data_rows = [{"title": f"Object {i+1}"} for i in range(5)]
 vectors = [[0.1] * 1536 for i in range(5)]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
 with collection.batch.fixed_size(batch_size=200) as batch:
@@ -263,7 +263,7 @@ data_rows = [{
 title_vectors = [[0.12] * 1536 for _ in range(5)]
 body_vectors = [[0.34] * 1536 for _ in range(5)]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
 with collection.batch.fixed_size(batch_size=200) as batch:
@@ -328,7 +328,7 @@ publications.data.insert(
 target_uuid = publications.query.fetch_objects(limit=1).objects[0].uuid
 
 # BatchImportWithRefExample
-collection = client.collections.get("Author")
+collection = client.collections.use("Author")
 
 with collection.batch.fixed_size(batch_size=100) as batch:
     batch.add_reference(
@@ -408,7 +408,7 @@ print(f"Finished importing {counter} articles.")
 # END JSON streaming
 
 # Tests
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.over_all(total_count=True)
 assert response.total_count == 1000
 
@@ -482,7 +482,7 @@ print(f"Finished importing {counter} articles.")
 # END CSV streaming
 
 # Tests
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.over_all(total_count=True)
 assert response.total_count == 1000
 
@@ -545,7 +545,7 @@ integrations = [
 client.integrations.configure(integrations)
 # END BatchVectorizationClientModify
 
-collection = client.collections.get("NewCollection")
+collection = client.collections.use("NewCollection")
 
 collection.data.insert_many(
     {"title": f"Some title {i}", "summary": f"Summary {i}", "body": f"Body {i}"} for i in range(5)

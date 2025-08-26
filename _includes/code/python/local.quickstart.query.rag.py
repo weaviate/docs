@@ -5,7 +5,7 @@ import weaviate
 
 client = weaviate.connect_to_local()
 
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 
 # highlight-start
 response = questions.generate.near_text(

@@ -128,7 +128,7 @@ Methods that involve sending requests to Weaviate will be async functions. For e
 
 Methods that execute in a local context are likely to be synchronous. For example, each of the following operations is a sync function:
 
-- `async_client.collections.get("<COLLECTION_NAME>")`: Create a Python object to interact with an existing collection (this does not create a collection)
+- `async_client.collections.use("<COLLECTION_NAME>")`: Create a Python object to interact with an existing collection (this does not create a collection)
 - `async_client.is_connected()`: Check the last known connection status to the Weaviate server
 
 ## Context manager

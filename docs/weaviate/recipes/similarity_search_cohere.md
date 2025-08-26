@@ -63,9 +63,9 @@ client.collections.create(
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
+        wc.Property(name="Question", data_type=wc.DataType.TEXT),
         wc.Property(name="Answer", data_type=wc.DataType.TEXT),
-        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True), 
+        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
     ]
 )
 
@@ -81,7 +81,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)
@@ -112,7 +112,7 @@ Find a `JeopardyQuestion` about "animals in movies". Limit it to only 4 response
 ```python
 # note, you can reuse the collection object from the previous cell.
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 response = jeopardy.query.near_text(
     query="african beasts",
