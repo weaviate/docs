@@ -52,7 +52,7 @@ response = movies.generate.near_image(
 # Inspect the response
 for o in response.objects:
     print(o.properties["title"])  # Print the title
-print(response.generated)  # Print the generated text (the commonalities between them)
+print(response.generative.text)  # Print the generated text (the commonalities between them)
 
 client.close()
 # END PosterSearchGeneration
@@ -85,7 +85,7 @@ for tgt_vector in ["title", "overview"]:
     # Inspect the response
     for o in response.objects:
         print(o.properties["title"])  # Print the title
-    print(response.generated)  # Print the generated text (the commonalities between them)
+    print(response.generative.text)  # Print the generated text (the commonalities between them)
 
 client.close()
 # END TitleSerachLoop

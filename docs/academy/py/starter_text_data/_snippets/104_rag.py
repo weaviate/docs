@@ -71,7 +71,7 @@ response = movies.generate.near_text(
 for o in response.objects:
     print(o.properties["title"])  # Print the title
 # highlight-start
-print(response.generated)  # Print the generated text (the commonalities between them)
+print(response.generative.text)  # Print the generated text (the commonalities between them)
 # highlight-end
 
 client.close()

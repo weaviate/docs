@@ -60,7 +60,7 @@ try:
         limit=5
     )
 
-    print(response.generated)  # "Grouped task" generations are attributes of the entire response
+    print(response.generative.text)  # "Grouped task" generations are attributes of the entire response
     for o in response.objects:
         print(o.properties)  # To inspect the retrieved object
 finally:

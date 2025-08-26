@@ -1320,7 +1320,7 @@ response = collection.generate.near_text(
     # highlight-end
 )
 
-print(f"Generated output: {response.generated}")  # Note that the generated output is per query
+print(f"Generated output: {response.generative.text}")  # Note that the generated output is per query
 for obj in response.objects:
     print(obj.properties["title"])
 # END GroupedTaskExample

@@ -1389,7 +1389,7 @@ finally:
     loop.close()
 
 
-print(response.generated)
+print(response.generative.text)
 for o in response.objects:
     print(o.properties["title"])
 # END AsyncSearchExample

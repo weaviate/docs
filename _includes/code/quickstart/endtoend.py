@@ -145,12 +145,12 @@ try:
         grouped_task="Write a tweet with emojis about these facts."
     )
 
-    print(response.generated)  # Inspect the generated text
+    print(response.generative.text)  # Inspect the generated text
     # END GenerativeSearchGroupedTaskExample
 
     # ===== Test query responses =====
     assert len(response.objects) == 2
-    assert len(response.generated) > 0
+    assert len(response.generative.text) > 0
 
     # Cleanup
 
