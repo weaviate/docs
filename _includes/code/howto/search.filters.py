@@ -137,6 +137,37 @@ assert (token_list[0] in response.objects[0].properties["question"].lower() and 
 
 
 # ==========================================
+# ===== ContainsNoneFilter =====
+# ==========================================
+
+# ContainsNoneFilter
+from weaviate.classes.query import Filter
+
+jeopardy = client.collections.get("JeopardyQuestion")
+
+# highlight-start
+token_list = ["blue", "red"]
+# highlight-end
+
+response = jeopardy.query.fetch_objects(
+    # highlight-start
+    # Find objects where the `question` property contains none of the strings in `token_list`
+    filters=Filter.by_property("question").contains_none(token_list),
+    # highlight-end
+    limit=3
+)
+
+for o in response.objects:
+    print(o.properties)
+# END ContainsNoneFilter
+
+# Test results
+assert response.objects[0].collection == "JeopardyQuestion"
+assert (token_list[0] not in response.objects[0].properties["question"].lower() and token_list[1] not in response.objects[0].properties["question"].lower())
+# End test
+
+
+# ==========================================
 # ===== Partial Match Filter =====
 # ==========================================
 
