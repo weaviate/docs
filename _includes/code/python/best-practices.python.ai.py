@@ -687,6 +687,11 @@ for obj in response.objects:
 
 """
 Using generative models with Weaviate
+
+To use these integrated RAG capabilities, Weaviate must be able to determine which generative integration to use.
+This can be configured at the collection configuration with the `generative_config` parameter, like `generative_config=Configure.Generative.anthropic()` for the desired provider and model.
+Alternatively, it can be provided at query time using the `generative_provider` parameter, like `generative_provider=GenerativeConfig.openai()` for the desired provider and model.
+
 A "single prompt" generates a response for each object in the collection. It performs a RAG query for each object.
 A "single prompt" query requires names of the properties to include in the prompt in curly braces. Note this is not an f-string. If using an f-string, escape the curly braces.
 A "grouped prompt" generates a single response for a group of objects.
