@@ -6,7 +6,7 @@ Complete example of how to configure RBAC with OIDC groups in Weaviate
 
 import requests
 import sys
-from typing import Dict, Any, Optional
+from typing import Optional
 import weaviate
 from weaviate.classes.init import Auth
 from weaviate.classes.rbac import Permissions
@@ -56,50 +56,6 @@ def test_keycloak_connection(keycloak_ports: list = [8081]) -> Optional[str]:
     print("Hint: Make sure you have '127.0.0.1 keycloak' in /etc/hosts")
     print("Hint: Run: echo '127.0.0.1 keycloak' | sudo tee -a /etc/hosts")
     return None
-
-
-def get_client_secret_instructions():
-    """Print instructions for getting client secret"""
-    print("\n" + "=" * 60)
-    print("KEYCLOAK SETUP INSTRUCTIONS")
-    print("=" * 60)
-    print("Your Keycloak is running! Now you need to set it up:")
-    print("")
-    print("1. Go to http://keycloak:8081 (make sure you have keycloak in /etc/hosts)")
-    print("2. Login with username: admin, password: admin")
-    print("3. CREATE REALM:")
-    print("   - Click dropdown next to 'master' (top-left)")
-    print("   - Click 'Create Realm'")
-    print("   - Realm name: weaviate-test")
-    print("   - Click 'Create'")
-    print("")
-    print("4. CREATE CLIENT:")
-    print("   - Go to 'Clients' → 'Create client'")
-    print("   - Client ID: weaviate")
-    print("   - Client type: OpenID Connect")
-    print("   - Click 'Next'")
-    print("   - Enable 'Client authentication'")
-    print("   - Enable 'Direct access grants'")
-    print("   - Click 'Save'")
-    print("")
-    print("5. GET CLIENT SECRET:")
-    print("   - Go to 'Credentials' tab")
-    print("   - Copy the 'Client secret' value")
-    print("")
-    print("6. CREATE GROUPS:")
-    print("   - Go to 'Groups'")
-    print("   - Create: /admin-group, /viewer-group, /my-test-group")
-    print("")
-    print("7. CREATE USERS:")
-    print("   - Go to 'Users' → 'Create new user'")
-    print("   - Username: test-admin, set password: password123")
-    print("   - Add to groups: /admin-group, /my-test-group")
-    print("   - Create test-viewer user, add to /viewer-group")
-    print("")
-    print("8. CONFIGURE GROUP & AUDIENCE CLAIMS:")
-    print("   - Go to the 'weaviate' client -> 'Client scopes' -> 'weaviate-dedicated'")
-    print("   - Add mapper -> Group Membership & Audience")
-    print("=" * 60)
 
 
 def get_oidc_token(
@@ -169,21 +125,11 @@ def setup_and_validate_oidc() -> tuple[Optional[str], Optional[str]]:
 
     if not realm_exists:
         print(f"\nWarning: The 'weaviate-test' realm doesn't exist yet.")
-        print("Manual setup instructions")
-
-        get_client_secret_instructions()
-        setup_choice = (
-            input("\nHave you completed the manual setup? (y/n): ").strip().lower()
+        print(
+            "Please complete the Keycloak setup first with keycloak_helper_script.py, then run this script again."
         )
-        if setup_choice != "y":
-            print(
-                "Please complete the Keycloak setup first, then run this script again."
-            )
-            return None, None
-        client_secret = input("Enter Keycloak client secret: ").strip()
-        if not client_secret:
-            print("Error: Client secret required.")
-            return None, None
+        return None, None
+
     else:
         print(f"OK: weaviate-test realm accessible")
         print("\n" + "-" * 30)
