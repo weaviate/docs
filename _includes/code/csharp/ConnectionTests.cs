@@ -126,6 +126,9 @@ public class ConnectionSnippetsTest
     {
         // START LocalAuth
         var localApiKey = Environment.GetEnvironmentVariable("WEAVIATE_LOCAL_API_KEY");
+        // END LocalAuth
+        localApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        // START LocalAuth
 
         var client = Connect.Local(
             restPort: 8099,

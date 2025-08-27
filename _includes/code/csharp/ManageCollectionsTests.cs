@@ -4,13 +4,16 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using static Weaviate.Client.Models.VectorIndex;
 
-public class ManageDataTests : IAsyncLifetime
+namespace WeaviateProject.Tests;
+
+public class ManageCollectionsTests : IAsyncLifetime
 {
     private readonly WeaviateClient weaviate;
     private readonly List<string> _collectionNamesToDelete = new List<string>();
 
-    public ManageDataTests()
+    public ManageCollectionsTests()
     {
         weaviate = new WeaviateClient(
             new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 }
@@ -109,7 +112,8 @@ public class ManageDataTests : IAsyncLifetime
             Name = collectionName,
             VectorConfig = new VectorConfigList
             {
-                // TODO[g-despot]: How to specify source properties
+                // TODO[g-despot]: How to specify source properties, it's currently source properties
+                
                 //Configure.Vectors.Text2VecCohere(sourceProperties: new[] { "title" }).New("title"),
                 //Configure.Vectors.Text2VecOpenAI(sourceProperties: new[] { "title", "country" }).New("title_country"),
                 Configure.Vectors.SelfProvided("default"),
@@ -249,8 +253,10 @@ public class ManageDataTests : IAsyncLifetime
         {
             Name = collectionName,
             VectorConfig = Configure.Vectors.Text2VecOpenAI().New(),
-            //TODO[g-despot]: Missing model parameter for generative OpenAIConfig
-            GenerativeConfig = new Generative.OpenAIConfig()
+            GenerativeConfig = new Generative.OpenAIConfig
+            {
+                Model = "gpt-4o"
+            },
         };
         await weaviate.Collections.Create(articleGenerative);
         // END SetGenerative
@@ -349,8 +355,8 @@ public class ManageDataTests : IAsyncLifetime
 
         // START AddNamedVectors
         CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
-        // TODO[g-despot]: AddVector throws error
-        // await articles.Config.AddVector(
+        // TODO[g-despot]: AddVector throws error: vectorizer config of vector \"default\" is immutable
+        await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", properties: "body"));
         // TODO[g-despot]: Missing sourceProperties
         // Configure.Vectors.Text2VecCohere(sourceProperties: new[] { "body" }).New("body_vector")
         //    Configure.Vectors.Text2VecCohere().New("body_vector")
@@ -458,11 +464,11 @@ public class ManageDataTests : IAsyncLifetime
         Collection config = await weaviate.Collections.Export(collectionName);
         Assert.True(config.MultiTenancyConfig.Enabled);
 
-        // START AddProp
+        // START AddProperty
         CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
         // TODO[g-despot]: AddProperty is internal
         // await articles.Config.AddProperty(Property.Text("body"));
-        // END AddProp
+        // END AddProperty
 
         config = await weaviate.Collections.Export(collectionName);
         // Assert.Contains(config.Properties, p => p.Name == "body");
@@ -510,7 +516,7 @@ public class ManageDataTests : IAsyncLifetime
             c.Description = "An updated collection description.";
             // TODO[g-despot]: Updating property descriptions is missing
             c.InvertedIndexConfig.Bm25.K1 = 1.5f;
-
+            
             VectorConfigUpdate vectorConfig = c.VectorConfig["default"];
             vectorConfig.VectorIndexConfig.UpdateHNSW(vic =>
             {
@@ -548,6 +554,7 @@ public class ManageDataTests : IAsyncLifetime
         Assert.Equal(collectionName, articlesConfig.Name);
 
         // START ReadAllCollections
+        // TODO[g-despot]: Strange error: System.ArgumentException : Unsupported vectorizer type: text2colbert-jinaai (Parameter 'type')
         await foreach (Collection collection in weaviate.Collections.List())
         {
             Console.WriteLine(collection.Name);
@@ -560,5 +567,174 @@ public class ManageDataTests : IAsyncLifetime
 
         bool exists = await weaviate.Collections.Exists(collectionName);
         Assert.False(exists);
+    }
+
+    [Fact]
+    public async Task UpdateGenerativeModule()
+    {
+        string collectionName = AddTestCollection("Article");
+        await weaviate.Collections.Delete(collectionName);
+
+        // Arrange: Create a collection with the OpenAI generative module
+        Collection initialCollection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = new VectorConfigList { new VectorConfig("default", new Vectorizer.Text2VecOpenAI()) },
+            GenerativeConfig = new Generative.OpenAIConfig()
+        };
+        await weaviate.Collections.Create(initialCollection);
+
+        CollectionClient<object> collectionToUpdate = weaviate.Collections.Use<object>(collectionName);
+
+        // Act: Update the generative module to Cohere
+        // START UpdateGenerative
+        await collectionToUpdate.Config.Update(c =>
+        {
+            c.GenerativeConfig = new Generative.OpenAIConfig(); // Update the generative module
+        });
+        // END UpdateGenerative
+
+        // Assert: Verify the change
+        Collection config = await weaviate.Collections.Export(collectionName);
+        Assert.Equal("generative-openai", (config.GenerativeConfig as Generative.Custom)?.Type);
+    }
+
+    [Fact]
+    public async Task CreateCollectionWithMultiVectors()
+    {
+        string collectionName = AddTestCollection("DemoCollection");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START MultiValueVectorCollection
+        Collection collection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = new VectorConfigList
+        {
+            // The factory function will automatically enable multi-vector support for the HNSW index
+            Configure.MultiVectors.Text2VecJinaAI().New("jina_colbert"),
+            // Must explicitly enable multi-vector support for the HNSW index
+            Configure.MultiVectors.SelfProvided("custom_multi_vector"),
+        },
+            Properties = new List<Property> { Property.Text("text") },
+        };
+        await weaviate.Collections.Create(collection);
+        // END MultiValueVectorCollection
+
+        // Assert
+        Collection config = await weaviate.Collections.Export(collectionName);
+        Assert.True(config.VectorConfig.ContainsKey("jina_colbert"));
+        Assert.True(config.VectorConfig.ContainsKey("custom_multi_vector"));
+    }
+
+    // [Fact]
+    // public async Task CreateCollectionWithMultiVectorsAndMuvera()
+    // {
+    //     string collectionName = AddTestCollection("DemoCollection");
+    //     await weaviate.Collections.Delete(collectionName);
+
+    //     // START MultiValueVectorMuvera
+    //     Collection collection = new Collection
+    //     {
+    //         Name = collectionName,
+    //         VectorConfig = new VectorConfigList
+    //     {
+    //         Configure.MultiVectors.Text2VecJinaAI(
+    //             "jina_colbert",
+    //             indexConfig: new VectorIndex.HNSW
+    //             {
+    //                     MultiVector = new VectorIndexConfig.MultiVectorConfig
+    //                     {
+    //                         Encoding = new VectorIndexConfig.MuveraEncoding() { },
+    //                     },
+    //             }
+    //         ),
+    //         Configure.MultiVectors.SelfProvided(
+    //             "custom_multi_vector",
+    //             indexConfig: new VectorIndex.HNSW
+    //             {
+    //                 MultiVector = new VectorIndexConfig.MultiVectorConfig
+    //                 {
+    //                     Encoding = new VectorIndexConfig.MuveraEncoding()
+    //                 }
+    //             }
+    //         ),
+    //     }
+    //     };
+    //     await weaviate.Collections.Create(collection);
+    //     // END MultiValueVectorMuvera
+
+    //     // Assert
+    //     Collection config = await weaviate.Collections.Export(collectionName);
+    //     VectorIndex.HNSW jinaConfig = Assert.IsType<VectorIndex.HNSW>(config.VectorConfig["jina_colbert"].VectorIndexConfig);
+    //     Assert.IsType<VectorIndexConfig.MuveraEncoding>(jinaConfig.MultiVector?.Encoding);
+    // }
+
+    [Fact]
+    public async Task CreateCollectionWithMultiVectorsAndPQ()
+    {
+        string collectionName = AddTestCollection("DemoCollection");
+        await weaviate.Collections.Delete(collectionName);
+
+        // START MultiValueVectorPQ
+        Collection collection = new Collection
+        {
+            Name = collectionName,
+            VectorConfig = new VectorConfigList
+        {
+            // Configure.MultiVectors.Text2VecJinaAI(
+            //     "jina_colbert",
+            //     //sourceProperties: new[] { "text" },
+            //     // TODO[g-despot]: Why is vectorIndexConfig missing from Text2VecJinaAI?
+            //     vectorIndexConfig: new VectorIndex.HNSW
+            //     {
+            //         Quantizer = new Quantizers.BQ() { Cache = true, RescoreLimit = 64 },
+            //     }
+            // ),
+            Configure.MultiVectors.SelfProvided(
+                "custom_multi_vector",
+                indexConfig: new VectorIndex.HNSW
+                {
+                    Quantizer = new Quantizers.BQ() { Cache = true, RescoreLimit = 64 },
+                }
+            ),
+        }
+        };
+        await weaviate.Collections.Create(collection);
+        // END MultiValueVectorPQ
+
+        // Assert
+        Collection config = await weaviate.Collections.Export(collectionName);
+        // VectorIndex.HNSW jinaConfig = Assert.IsType<VectorIndex.HNSW>(config.VectorConfig["jina_colbert"].VectorIndexConfig);
+        // VectorIndex.Quantizers.PQ quantizer = Assert.IsType<VectorIndex.Quantizers.PQ>(jinaConfig.Quantizer);
+        // Assert.Equal(100000, quantizer.TrainingLimit);
+    }
+
+    [Fact]
+    public async Task ConfigureAllReplicationSettings()
+    {
+        // Connect to the Weaviate instance configured for replication tests on port 8180
+        WeaviateClient replicationClient = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8180 });
+        string collectionName = AddTestCollection("Article");
+        await replicationClient.Collections.Delete(collectionName);
+
+        // START AllReplicationSettings
+        Collection collection = new Collection
+        {
+            Name = collectionName,
+            ReplicationConfig = new ReplicationConfig
+            {
+                Factor = 3,
+                AsyncEnabled = true,
+                DeletionStrategy = DeletionStrategy.TimeBasedResolution,
+            },
+        };
+        await replicationClient.Collections.Create(collection);
+        // END AllReplicationSettings
+
+        // Assert
+        Collection config = await replicationClient.Collections.Export(collectionName);
+        Assert.True(config.ReplicationConfig.AsyncEnabled);
+        Assert.Equal(DeletionStrategy.TimeBasedResolution, config.ReplicationConfig.DeletionStrategy);
     }
 }
