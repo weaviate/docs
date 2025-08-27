@@ -4,6 +4,6 @@
 You control the number of segments, segment granularity, and the size of the training set.
 - [Scalar Quantization (SQ)](/weaviate/configuration/compression/sq-compression) SQ reduces the size of each vector dimension from 32 bits to 8 bits. SQ trains on your data to create custom buckets for each dimension. This training helps SQ to preserve data characteristics when it maps information from the 32 bit dimensions into 8 bit buckets.
 
-- [Rotational Quantization (RQ)](/weaviate/configuration/compression/rq-compression) RQ reduces the size of each vector dimension from 32 bits to 8 bits without requiring training. RQ first applies a fast pseudorandom rotation to the vector, then quantizes each dimension to 8 bits. The rotation spreads information evenly across dimensions, enabling up to 98-99% recall without any configuration or training phase.
+- [Rotational Quantization (RQ)](/weaviate/configuration/compression/rq-compression) RQ reduces the size of each vector dimension from 32 bits to 8 bits (or 1 bit) without requiring training. RQ first applies a fast pseudorandom rotation to the vector, then quantizes each dimension. The rotation spreads information evenly across dimensions, enabling up to 98-99% recall without any configuration or training phase.
 
 - [Binary Quantization (BQ)](/weaviate/configuration/compression/bq-compression) BQ reduces the size of each vector dimension to a single bit. This compression algorithm works best for vectors with high dimensionality.

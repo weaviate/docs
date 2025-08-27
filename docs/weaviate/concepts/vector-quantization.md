@@ -116,7 +116,9 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 :::caution Technical preview
 
-Rotational quantization (RQ) was added in **`v1.32`** as a **technical preview**.<br/><br/>
+**8-bit Rotational quantization (RQ)** was added in **`v1.32`** as a **technical preview**.<br/>
+**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **technical preview**.<br/><br/>
+
 This means that the feature is still under development and may change in future releases, including potential breaking changes.
 **We do not recommend using this feature in production environments at this time.**
 
@@ -142,7 +144,7 @@ This means that the feature is still under development and may change in future 
    - **Data vectors**: Quantized using 1 bit per dimension by storing only the sign of each entry
    - **Query vectors**: Scalar quantized using 5 bits per dimension during search
 
-This asymmetric approach improves recall compared to symmetric 1-bit schemes (such as BQ) by using more precision for query vectors during distance calculation. On datasets well-suited for BQ (like OpenAI embeddings), 1-bit RQ essentially matches BQ recall. It also works well on datasets where BQ performs poorly (such as [SIFT](https://arxiv.org/abs/2504.09081))
+This asymmetric approach improves recall compared to symmetric 1-bit schemes (such as BQ) by using more precision for query vectors during distance calculation. On datasets well-suited for BQ (like OpenAI embeddings), 1-bit RQ essentially matches BQ recall. It also works well on datasets where BQ performs poorly (such as [SIFT](https://arxiv.org/abs/2504.09081)).
 
 ### RQ characteristics
 
