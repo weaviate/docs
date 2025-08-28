@@ -114,21 +114,26 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ## Rotational quantization
 
-:::caution Technical preview
+:::info Added in `v1.32`
 
-**8-bit Rotational quantization (RQ)** was added in **`v1.32`** as a **technical preview**.<br/>
-**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **technical preview**.<br/><br/>
+**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+
+:::
+
+:::caution Preview
+
+**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
 
 This means that the feature is still under development and may change in future releases, including potential breaking changes.
 **We do not recommend using this feature in production environments at this time.**
 
 :::
 
-**Rotational quantization (RQ)** is an untrained quantization technique that provides significant compression while maintaining high recall on most datasets. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in two variants: **8-bit RQ** and **1-bit RQ**.
+**Rotational quantization (RQ)** is a quantization technique that provides significant compression while maintaining high recall in internal testing. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in two variants: **8-bit RQ** and **1-bit RQ**.
 
 ### 8-bit RQ
 
-8-bit RQ provides 4x compression while maintaining 98-99% recall on most datasets. RQ works in two steps:
+8-bit RQ provides 4x compression while maintaining 98-99% recall in internal testing. The method works as follows:
 
 1. **Fast pseudorandom rotation**: The input vector is transformed using a fast rotation based on the Walsh Hadamard Transform. This rotation takes approximately 7-10 microseconds for a 1536-dimensional vector. The output dimension is rounded up to the nearest multiple of 64.
 
@@ -136,7 +141,7 @@ This means that the feature is still under development and may change in future 
 
 ### 1-bit RQ
 
-1-bit RQ is an untrained asymmetric quantization method that provides close to 32x compression as dimensionality increases. This method is inspired by 1-bit RaBitQ and works as follows:
+1-bit RQ is an asymmetric quantization method that provides close to 32x compression as dimensionality increases. The method works as follows:
 
 1. **Fast pseudorandom rotation**: The same rotation process as 8-bit RQ is applied to the input vector.
 
@@ -144,20 +149,17 @@ This means that the feature is still under development and may change in future 
    - **Data vectors**: Quantized using 1 bit per dimension by storing only the sign of each entry
    - **Query vectors**: Scalar quantized using 5 bits per dimension during search
 
+<!-- TODO[g-despot]: Clarify how 5 bit search vectors are compared to 1 bit -->
+
 This asymmetric approach improves recall compared to symmetric 1-bit schemes (such as BQ) by using more precision for query vectors during distance calculation. On datasets well-suited for BQ (like OpenAI embeddings), 1-bit RQ essentially matches BQ recall. It also works well on datasets where BQ performs poorly (such as [SIFT](https://arxiv.org/abs/2504.09081)).
 
 ### RQ characteristics
 
 The rotation step provides multiple benefits. It tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly. It also distributes the distance information more evenly across all dimensions, providing a better starting point for distance estimation.
 
-It's worth noting that both RQ variants round up dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression.
+It's worth noting that both RQ variants round up the number of dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression.
 
-While inspired by extended RaBitQ, this implementation differs significantly for performance reasons. It uses fast pseudorandom rotations instead of truly random rotations.
-
-- For 8-bit RQ: employs scalar quantization instead of RaBitQ's encoding algorithm
-- For 1-bit RQ: uses word-level parallelism across dimensions for faster distance estimation
-
-From the user perspective, 1-bit RQ is not a separate quantization method, but rather a configuration setting for RQ.
+While inspired by extended [RaBitQ](https://arxiv.org/abs/2405.12497), this implementation differs significantly for performance reasons. It uses fast pseudorandom rotations instead of truly random rotations.
 
 :::tip
 
