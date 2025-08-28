@@ -25,7 +25,7 @@ Vector quantization is a technique that reduces the memory footprint of vector e
 
 ## Product quantization
 
-[Product quantization](https://ieeexplore.ieee.org/document/5432202) is a multi-step quantization technique that is available for use with `hnsw` indexes in Weaivate.
+[Product quantization](https://ieeexplore.ieee.org/document/5432202) is a multi-step quantization technique that is available for use with `hnsw` indexes in Weaviate.
 
 PQ reduces the size of each vector embedding in two steps. First, it reduces the number of vector dimensions to a smaller number of "segments", and then each segment is quantized to a smaller number of bits from the original number of bits (typically a 32-bit float).
 
@@ -141,9 +141,11 @@ This means that the feature is still under development and may change in future 
 
 ### 1-bit RQ
 
-1-bit RQ is an asymmetric quantization method that provides close to 32x compression as dimensionality increases. The method works as follows:
+1-bit RQ is an asymmetric quantization method that provides close to 32x compression as dimensionality increases. **1-bit RQ serves as a more robust and accurate alternative to BQ** with only a slight performance trade-off (approximately 10% decrease in throughput in internal testing compared to BQ). While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned PQ.
 
-1. **Fast pseudorandom rotation**: The same rotation process as 8-bit RQ is applied to the input vector.
+The method works as follows:
+
+1. **Fast pseudorandom rotation**: The same rotation process as 8-bit RQ is applied to the input vector. For 1-bit RQ, the output dimension is always padded to at least 256 bits to improve performance on low-dimensional data.
 
 2. **Asymmetric quantization**:
    - **Data vectors**: Quantized using 1 bit per dimension by storing only the sign of each entry
@@ -157,13 +159,17 @@ This asymmetric approach improves recall compared to symmetric 1-bit schemes (su
 
 The rotation step provides multiple benefits. It tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly. It also distributes the distance information more evenly across all dimensions, providing a better starting point for distance estimation.
 
-It's worth noting that both RQ variants round up the number of dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression.
+Both RQ variants round up the number of dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression. Additionally, several factors affect the actual compression rates:
+
+- **Auxiliary data storage**: 16 bytes for 8-bit RQ and 8 bytes for 1-bit RQ are stored with the compressed codes
+- **Dimension rounding**: Dimensionality is rounded up to the nearest multiple of 64 and 1-bit RQ is also padded to at least 256 bits
+
+Due to these factors, the 4x and 32x compression rates are only approached as dimensionality increases. These effects are more pronounced for low-dimensional vectors.
 
 While inspired by extended [RaBitQ](https://arxiv.org/abs/2405.12497), this implementation differs significantly for performance reasons. It uses fast pseudorandom rotations instead of truly random rotations.
-
 :::tip
 
-Learn more about how to [configure rotational quantization](../configuration/compression/rq-compression.md) in Weaviate.
+Learn more about how to [configure rotational quantization](../configuration/compression/rq-compression.md) in Weaviate or dive deer into the [implementation details and theoretical background](https://weaviate.io/blog/8-bit-rotational-quantization).
 
 :::
 
