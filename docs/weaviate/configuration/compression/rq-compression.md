@@ -1,6 +1,5 @@
 ---
 title: Rotational Quantization (RQ)
-sidebar_position: 25
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'rq']
 ---
