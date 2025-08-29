@@ -515,9 +515,52 @@ The output is like this:
 
 </details>
 
-## `ContainsAny` and `ContainsAll` with batch delete
+## `ContainsNone` Filter
 
-If you want to do a batch delete, see [Delete objects](../manage-objects/delete.mdx#containsany--containsall).
+The `ContainsNone` operator works on text properties and take an array of values as input. It will match objects where the property **contains none** of the values in the array.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# ContainsNoneFilter"
+      endMarker="# END ContainsNoneFilter"
+      language="python"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>Example response</summary>
+
+The output is like this:
+
+</details>
+
+## `ContainsAny`, `ContainsAll` and `ContainsNone` with batch delete
+
+If you want to do a batch delete, see [Delete objects](../manage-objects/delete.mdx#containsany--containsall--containsnone).
 
 ## Filter text on partial matches
 
