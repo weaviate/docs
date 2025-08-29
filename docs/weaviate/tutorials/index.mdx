@@ -18,13 +18,6 @@ import CardsSection from "/src/components/CardsSection";
 
 export const advancedFeaturesData = [
   {
-    title: "Load Data into Weaviate with Spark",
-    description:
-      "Use the Spark Connector to efficiently import large datasets from Apache Spark into Weaviate with batch processing and vectorization options.",
-    link: "/weaviate/tutorials/spark-connector",
-    icon: "fas fa-fire",
-  },
-  {
     title: "Use Multi-Vector Embeddings (ColBERT, etc.)",
     description:
       "Implement advanced multi-vector representations for improved search relevance using models like ColBERT.",
@@ -39,11 +32,25 @@ export const advancedFeaturesData = [
     icon: "fas fa-share	",
   },
   {
+    title: "Import data in bulk",
+    description:
+      "Learn how to import data efficiently using client-side and server-side batching in Weaviate.",
+    link: "/weaviate/tutorials/import",
+    icon: "fas fa-file-import",
+  },
+  {
     title: "Manage Relationships with Cross-References",
     description:
       "Define, create, and query links between objects to model complex data relationships effectively.",
     link: "/weaviate/tutorials/cross-references",
     icon: "fas fa-link",
+  },
+  {
+    title: "Load Data into Weaviate with Spark",
+    description:
+      "Use the Spark Connector to efficiently import large datasets from Apache Spark into Weaviate with batch processing and vectorization options.",
+    link: "/weaviate/tutorials/spark-connector",
+    icon: "fas fa-fire",
   },
   {
     title: "Set up Role-Based Access Control (RBAC)",
