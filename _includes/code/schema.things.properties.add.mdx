@@ -32,7 +32,7 @@ client.schema.property.create("Article", add_prop)
 <TabItem value="js" label="JS/TS Client v3">
 
 ```js
-let articles = client.collections.get('Article')
+let articles = client.collections.use('Article')
 
 // highlight-start
 articles.config.addProperty({

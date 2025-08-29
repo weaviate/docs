@@ -57,7 +57,7 @@ client.collections.create(
 # =========================
 
 # CreateObject START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # highlight-start
 uuid = jeopardy.data.insert({
@@ -80,7 +80,7 @@ assert result.properties["newProperty"] == 123
 # =======================================
 
 # CreateObjectWithVector START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 uuid = jeopardy.data.insert(
     properties={
         "question": "This vector DB is OSS and supports automatic property type inference on import",
@@ -100,7 +100,7 @@ print(uuid)  # the return value is the object's UUID
 # =======================================
 
 # CreateObjectNamedVectors START
-reviews = client.collections.get("WineReviewNV")  # This collection must have named vectors configured
+reviews = client.collections.use("WineReviewNV")  # This collection must have named vectors configured
 uuid = reviews.data.insert(
     properties={
         "title": "A delicious Riesling",
@@ -139,7 +139,7 @@ data_object = {
     "answer": "Weaviate",
 }
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 uuid = jeopardy.data.insert(
     properties=data_object,
     # highlight-start
@@ -162,7 +162,7 @@ properties = {
     "question": "This vector DB is OSS and supports automatic property type inference on import",
     "answer": "Weaviate",
 }
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 uuid = jeopardy.data.insert(
     properties=properties,
     # highlight-start
@@ -183,7 +183,7 @@ assert result.properties["question"] == properties["question"]
 # ========================================
 
 # START WithGeoCoordinates
-publications = client.collections.get("Publication")
+publications = client.collections.use("Publication")
 
 publications.data.insert(
     properties={
@@ -228,7 +228,7 @@ object_uuid = generate_uuid5({"name": "Author to fetch"})
 
 # END CheckForAnObject
 
-authors = client.collections.get("Author")
+authors = client.collections.use("Author")
 authors.data.insert(
     properties={"name": "Author to fetch"},
     vector=[0.3] * 1536,  # If you want to specify a vector
@@ -236,7 +236,7 @@ authors.data.insert(
 )
 
 # START CheckForAnObject
-authors = client.collections.get("Author")
+authors = client.collections.use("Author")
 # highlight-start
 author_exists = authors.data.exists(object_uuid)
 # highlight-end
@@ -258,7 +258,7 @@ assert authors.data.exists(object_uuid) == False
 # ValidateObject END
 
 # # ValidateObject-TODO START
-# jeopardy = client.collections.get("JeopardyQuestion")
+# jeopardy = client.collections.use("JeopardyQuestion")
 # # highlight-start
 # #TODO: see if this is supported
 # result = jeopardy.data.validate(

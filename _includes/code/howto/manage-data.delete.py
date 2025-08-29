@@ -20,7 +20,7 @@ client.collections.create("EphemeralObject")
 uuid_to_delete = "..."  # replace with the id of the object you want to delete
 # END DeleteObject
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 uuid_to_delete = collection.data.insert({
     "name": "EphemeralObjectA",
 })
@@ -30,7 +30,7 @@ assert collection.query.fetch_object_by_id(uuid_to_delete)  # Should not fail if
 
 # START DeleteObject
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 collection.data.delete_by_id(
     uuid_to_delete
 )
@@ -76,7 +76,7 @@ assert response.total_count == 5
 # START DeleteBatch
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 collection.data.delete_many(
     # highlight-start
     where=Filter.by_property("name").like("EphemeralObject*")
@@ -102,7 +102,7 @@ collection.data.insert_many([{
 # START DeleteContains
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 collection.data.delete_many(
     # highlight-start
     where=Filter.by_property("name").contains_any(["europe", "asia"])
@@ -118,7 +118,7 @@ collection.data.delete_many(
 client.collections.delete("EphemeralObject")
 client.collections.create("EphemeralObject")
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 
 N = 5
 for i in range(N):
@@ -129,7 +129,7 @@ for i in range(N):
 # START DryRun
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 result = collection.data.delete_many(
     where=Filter.by_property("name").like("EphemeralObject*"),
     # highlight-start
@@ -160,14 +160,14 @@ for i in range(N):
 response = collection.aggregate.over_all(total_count=True)
 assert response.total_count == 5
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 response = collection.query.fetch_objects(limit=3)
 ids = [o.uuid for o in response.objects]
 
 # START DeleteByIDBatch
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("EphemeralObject")
+collection = client.collections.use("EphemeralObject")
 
 response = collection.query.fetch_objects(limit=3)  # Fetch 3 object IDs
 ids = [o.uuid for o in response.objects]  # These can be lists of strings, or `UUID` objects

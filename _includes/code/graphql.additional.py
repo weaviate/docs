@@ -41,7 +41,7 @@ try:
     # ===================
 
     # START LimitOnly
-    articles = client.collections.get("Article")
+    articles = client.collections.use("Article")
     response = articles.query.fetch_objects(
         # highlight-start
         limit=5
@@ -59,7 +59,7 @@ try:
     # ===================
 
     # START LimitWithOffset
-    articles = client.collections.get("Article")
+    articles = client.collections.use("Article")
     response = articles.query.fetch_objects(
         # highlight-start
         limit=5,
@@ -78,7 +78,7 @@ try:
     # ===================
 
     # START LimitWithAfter
-    articles = client.collections.get("Article")
+    articles = client.collections.use("Article")
     response = articles.query.fetch_objects(
         # highlight-start
         limit=5,
@@ -97,7 +97,7 @@ try:
     # ===================
 
     # START Sorting Python
-    article=client.collections.get("JeopardyQuestion")
+    article=client.collections.use("JeopardyQuestion")
     response = article.query.fetch_objects(
         # highlight-start
         sort=Sort.by_property(name="answer", ascending=True),
@@ -119,7 +119,7 @@ try:
     # ==========================================
 
     # START MultiplePropSorting Python
-    questions=client.collections.get("JeopardyQuestion")
+    questions=client.collections.use("JeopardyQuestion")
     response = questions.query.fetch_objects(
         # Note: To sort by multiple properties, chain the relevant `by_xxx` methods.
         sort=Sort.by_property(name="points", ascending=False).by_property(name="answer", ascending=True),
@@ -142,7 +142,7 @@ try:
     # ===========================================
 
     # START AdditionalPropSorting Python
-    article=client.collections.get("JeopardyQuestion")
+    article=client.collections.use("JeopardyQuestion")
     response = article.query.fetch_objects(
         return_metadata=wvc.query.MetadataQuery(creation_time=True),
         sort=Sort.by_property(name="_creationTimeUnix", ascending=True),

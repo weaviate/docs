@@ -44,7 +44,7 @@ uuid = "..."  # replace with the id of the object you want to update
 # UpdateProps END
 
 # Actually get the ID for testing
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 uuid = jeopardy.data.insert({
     "question": "Test question",
@@ -53,7 +53,7 @@ uuid = jeopardy.data.insert({
 })
 
 # UpdateProps START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 jeopardy.data.update(
     uuid=uuid,
     # highlight-start
@@ -72,7 +72,7 @@ assert result.properties["points"] == 100
 # ===== Update vector =====
 # =========================
 # UpdateVector START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 jeopardy.data.update(
     uuid=uuid,
     properties={
@@ -95,12 +95,12 @@ assert str(result.vector["default"][0])[:5] == str(0.123)
 # ================================
 
 # Commented as updating named vectors is not yet available in the Python client
-# reviews = client.collections.get("WineReviewNV")
+# reviews = client.collections.use("WineReviewNV")
 # review_uuid = reviews.query.fetch_objects(limit=1).objects[0].uuid
 
 
 # # UpdateNamedVector START
-# reviews = client.collections.get("WineReviewNV")
+# reviews = client.collections.use("WineReviewNV")
 # reviews.data.update(
 #     uuid=review_uuid,
 #     properties={
@@ -129,7 +129,7 @@ assert str(result.vector["default"][0])[:5] == str(0.123)
 # ===== Replace object =====
 # ==========================
 # Replace START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 jeopardy.data.replace(
 # highlight-end
@@ -157,7 +157,7 @@ from typing import List
 from weaviate import WeaviateClient
 
 def del_props(client: WeaviateClient, uuid_to_update: str, collection_name: str, prop_names: List[str]) -> None:
-    collection = client.collections.get(collection_name)
+    collection = client.collections.use(collection_name)
 
     # fetch the object to update
     object_data = collection.query.fetch_object_by_id(uuid_to_update)

@@ -24,7 +24,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ===============================
 
 # MetaCount Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.aggregate.over_all(total_count=True)
 # highlight-end
@@ -44,7 +44,7 @@ assert response.total_count > 0
 # TextProp Python
 from weaviate.classes.query import Metrics
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.over_all(
     # highlight-start
     return_metrics=Metrics("answer").text(
@@ -71,7 +71,7 @@ assert response.properties["answer"].top_occurrences[0].count >= 5
 # IntProp Python
 from weaviate.classes.query import Metrics
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.over_all(
     # highlight-start
     # Use `.number` for floats (`NUMBER` datatype in Weaviate)
@@ -98,7 +98,7 @@ assert response.properties["points"].maximum > 0
 # groupBy Python
 from weaviate.classes.aggregate import GroupByAggregate
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.over_all(
     # highlight-start
     group_by=GroupByAggregate(prop="round")
@@ -124,7 +124,7 @@ assert response.groups[0].total_count > 0
 # nearTextWithLimit Python
 from weaviate.classes.query import Metrics
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.near_text(
     query="animals in space",
     # highlight-start
@@ -150,7 +150,7 @@ assert response.properties["points"].sum_ > 0
 # HybridExample
 from weaviate.classes.query import Metrics, BM25Operator
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.hybrid(
     query="animals in space",
     bm25_operator=BM25Operator.and_(),  # Additional parameters available, such as `bm25_operator`, `filter` etc.
@@ -176,7 +176,7 @@ assert response.properties["points"].sum_ > 0
 # nearTextWithDistance Python
 from weaviate.classes.query import Metrics
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.near_text(
     query="animals in space",
     # highlight-start
@@ -203,7 +203,7 @@ assert response.properties["points"].sum_ > 0
 from weaviate.classes.query import Filter
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.aggregate.over_all(
     # highlight-start
     filters=Filter.by_property("round").equal("Final Jeopardy!"),

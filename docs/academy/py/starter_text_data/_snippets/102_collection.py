@@ -89,7 +89,7 @@ resp = requests.get(data_url)
 df = pd.DataFrame(resp.json())
 
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Enter context manager
 with movies.batch.fixed_size(batch_size=200) as batch:

@@ -35,7 +35,7 @@ try:
     # ========================================
 
     # START MetadataUUIDDistance
-    articles = client.collections.get("Article")
+    articles = client.collections.use("Article")
 
     response = articles.query.near_text(
         query="fashion",
