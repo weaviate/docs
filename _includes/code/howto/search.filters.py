@@ -140,13 +140,13 @@ assert (token_list[0] in response.objects[0].properties["question"].lower() and 
 # ===== ContainsNoneFilter =====
 # ==========================================
 
-# ContainsNoneFilter
+# START ContainsNoneFilter
 from weaviate.classes.query import Filter
 
 jeopardy = client.collections.get("JeopardyQuestion")
 
 # highlight-start
-token_list = ["blue", "red"]
+token_list = ["bird", "animal"]
 # highlight-end
 
 response = jeopardy.query.fetch_objects(

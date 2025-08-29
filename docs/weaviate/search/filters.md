@@ -94,7 +94,7 @@ The output is like this:
 
 ## Filter with multiple conditions
 
-To filter with two or more conditions, use `And` or `Or` to define the relationship between the conditions.
+To filter with two or more conditions, use `And`, `Or` and `Not` to define the relationship between the conditions.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -523,7 +523,7 @@ The `ContainsNone` operator works on text properties and take an array of values
   <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# ContainsNoneFilter"
+      startMarker="# START ContainsNoneFilter"
       endMarker="# END ContainsNoneFilter"
       language="python"
     />
@@ -543,11 +543,12 @@ The `ContainsNone` operator works on text properties and take an array of values
 
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="gonew"
+    />
   </TabItem>
 </Tabs>
 
@@ -555,6 +556,44 @@ The `ContainsNone` operator works on text properties and take an array of values
   <summary>Example response</summary>
 
 The output is like this:
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "Frank Lloyd Wright",
+          "hasCategory": [
+            {
+              "title": "PEOPLE"
+            }
+          ],
+          "question": "In 1939 this famous architect polished off his Johnson Wax Building in Racine, Wisconsin"
+        },
+        {
+          "answer": "a luffa",
+          "hasCategory": [
+            {
+              "title": "FOOD"
+            }
+          ],
+          "question": "When it's young & tender, this gourd used in the bathtub can be eaten like a squash"
+        },
+        {
+          "answer": "a snail",
+          "hasCategory": [
+            {
+              "title": "SCIENCE & NATURE"
+            }
+          ],
+          "question": "Like an escargot, the abalone is an edible one of these gastropods"
+        }
+      ]
+    }
+  }
+}
+```
 
 </details>
 
