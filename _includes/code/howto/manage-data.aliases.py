@@ -1,8 +1,10 @@
 import weaviate
 import weaviate.classes as wvc
 
-# Connect to Weaviate
+# START ConnectToWeaviate
+# Connect to local Weaviate instance
 client = weaviate.connect_to_local()
+# END ConnectToWeaviate
 
 # Cleanup
 client.alias.delete(alias_name="ArticlesProd")
@@ -32,10 +34,8 @@ client.alias.create(alias_name="ArticlesProd", target_collection="Articles")
 # Get all aliases in the instance
 all_aliases = client.alias.list_all()
 
-# Filter to show only aliases from this example
 for alias_name, alias_info in all_aliases.items():
-    if alias_info.collection in ["Articles", "ArticlesV2"]:
-        print(f"Alias: {alias_info.alias} -> Collection: {alias_info.collection}")
+    print(f"Alias: {alias_info.alias} -> Collection: {alias_info.collection}")
 # END ListAllAliases
 
 # START ListCollectionAliases
@@ -100,9 +100,6 @@ client.alias.delete(alias_name="MyArticles")
 client.alias.delete(alias_name="ArticlesProd")
 # END DeleteAlias
 # START UseAlias
-# Create an alias for easier access
-client.alias.create(alias_name="MyArticles", target_collection="Articles")
-
 # Use the alias just like a collection name
 articles = client.collections.get("MyArticles")
 
@@ -119,15 +116,10 @@ results = articles.query.fetch_objects(limit=5)
 
 for obj in results.objects:
     print(f"Found: {obj.properties['title']}")
-
-# Add a new property using the alias
-articles.config.add_property(
-    wvc.config.Property(name="author", data_type=wvc.config.DataType.TEXT)
-)
 # END UseAlias
 
-# START MigrationExample
-# Step 1: Create original collection with data
+# START Step1CreateOriginal
+# Create original collection with data
 client.collections.create(
     name="Products_v1", vector_config=wvc.config.Configure.Vectors.self_provided()
 )
@@ -136,11 +128,28 @@ products_v1 = client.collections.get("Products_v1")
 products_v1.data.insert_many(
     [{"name": "Product A", "price": 100}, {"name": "Product B", "price": 200}]
 )
+# END Step1CreateOriginal
 
-# Step 2: Create alias pointing to current collection
+# START Step2CreateAlias
+# Create alias pointing to current collection
 client.alias.create(alias_name="Products", target_collection="Products_v1")
+# END Step2CreateAlias
 
-# Step 3: Create new collection with updated schema
+# START MigrationUseAlias
+# Your application always uses the alias name "Products"
+products = client.collections.use("Products")
+
+# Insert data through the alias
+products.data.insert({"name": "Product C", "price": 300})
+
+# Query through the alias
+results = products.query.fetch_objects(limit=5)
+for obj in results.objects:
+    print(f"Product: {obj.properties['name']}, Price: ${obj.properties['price']}")
+# END MigrationUseAlias
+
+# START Step3NewCollection
+# Create new collection with updated schema
 client.collections.create(
     name="Products_v2",
     vector_config=wvc.config.Configure.Vectors.self_provided(),
@@ -152,8 +161,10 @@ client.collections.create(
         ),  # New field
     ],
 )
+# END Step3NewCollection
 
-# Step 4: Migrate data to new collection
+# START Step4MigrateData
+# Migrate data to new collection
 products_v2 = client.collections.get("Products_v2")
 old_data = products_v1.query.fetch_objects().objects
 
@@ -165,18 +176,22 @@ for obj in old_data:
             "category": "General",  # Default value for new field
         }
     )
+# END Step4MigrateData
 
-# Step 5: Switch alias to new collection (instant switch!)
+# START Step5UpdateAlias
+# Switch alias to new collection (instant switch!)
 client.alias.update(alias_name="Products", new_target_collection="Products_v2")
 
 # All queries using "Products" alias now use the new collection
 products = client.collections.get("Products")
 result = products.query.fetch_objects(limit=1)
 print(result.objects[0].properties)  # Will include the new "category" field
+# END Step5UpdateAlias
 
-# Step 6: Clean up old collection after verification
+# START Step6Cleanup
+# Clean up old collection after verification
 client.collections.delete("Products_v1")
-# END MigrationExample
+# END Step6Cleanup
 
 
 # Cleanup

@@ -14,12 +14,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
 
-:::caution Technical preview
-
-Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
+:::info Added in `v1.32`
 :::
 
 Collection aliases allow you to create alternative names for your collections. This is useful for changing collection definitions without downtime, A/B testing, or providing more convenient names for collections. An alias acts as a reference to a collection - when you query using an alias name, Weaviate automatically routes the request to the target collection.
@@ -285,7 +280,7 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
 
 ## Using aliases in operations
 
-Once created, aliases can be used instead of collection names in most operations (except when deleting collections):
+Once created, aliases can be used instead of collection names in all object-related operations, like data import and querying. Aliases cannot be used to update collection definitions or to delete collections. 
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">

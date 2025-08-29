@@ -528,11 +528,12 @@ const sidebars = {
       items: [
         "weaviate/tutorials/multi-vector-embeddings",
         "weaviate/tutorials/import",
+        "weaviate/tutorials/aliases",
         "weaviate/tutorials/cross-references",
+        "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/vector-provision-options",
         //"weaviate/tutorials/query",
         //"weaviate/tutorials/wikipedia",
-        "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/modules",
       ],
     },
