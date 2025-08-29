@@ -13,15 +13,25 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
-:::caution Technical preview
+:::info Added in `v1.32`
 
-Rotational quantization (RQ) was added in **`v1.32`** as a **technical preview**.<br/><br/>
+**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+
+:::
+
+:::caution Preview
+
+**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
+
 This means that the feature is still under development and may change in future releases, including potential breaking changes.
 **We do not recommend using this feature in production environments at this time.**
 
 :::
 
-[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast untrained vector compression technique that offers 4x compression while retaining almost perfect recall (98-99% on most datasets).
+[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast vector compression technique that offers significant performance benefits. Two RQ variants are available in Weaviate:
+
+- **8-bit RQ**: Up to 4x compression while retaining almost perfect recall (98-99% on most datasets).
+- **1-bit RQ**: Close to 32x compression as dimensionality increases with moderate recall across various datasets.
 
 :::note HNSW only
 RQ is currently not supported for the flat index type.
