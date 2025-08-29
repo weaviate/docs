@@ -21,14 +21,6 @@ Before starting this tutorial, ensure you have:
 - An API key for your inference API (OpenAI, Cohere, etc.) if using vectorization
 - A dataset to import (we'll provide a sample)
 
-:::tip Download sample data
-
-We'll use a small Jeopardy dataset for this tutorial. Download it to your working directory:
-
-[Download jeopardy_tiny.json](https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json)
-
-:::
-
 ## Introduction
 
 Weaviate offers multiple methods for importing your data:
@@ -44,11 +36,9 @@ When importing data into Weaviate, **always use batch imports** instead of impor
 - Enabling parallel processing
 - Optimizing database write operations
 
-## Tutorial: Importing data with batching
-
 Let's walk through importing data using both approaches. We'll create a collection for Jeopardy questions and import sample data.
 
-### Step 1: Connect to Weaviate
+## Step 1: Connect to Weaviate
 
 First, connect to your Weaviate instance.
 
@@ -63,7 +53,7 @@ First, connect to your Weaviate instance.
   </TabItem>
 </Tabs>
 
-### Step 2: Create a collection
+## Step 2: Create a collection
 
 Create a collection to store the Jeopardy questions.
 
@@ -78,7 +68,7 @@ Create a collection to store the Jeopardy questions.
   </TabItem>
 </Tabs>
 
-### Step 3: Load your data
+## Step 3: Prepare your data
 
 Load the data from the JSON file.
 
@@ -93,7 +83,9 @@ Load the data from the JSON file.
   </TabItem>
 </Tabs>
 
-## Option A: Server-side batching (Recommended)
+## Step 4: Import the data
+
+### Option A: Server-side batching (Recommended)
 
 :::caution Preview
 
@@ -128,7 +120,7 @@ The benefits of server-side batching are:
 - **Better resilience**: Handles cluster scaling events gracefully
 - **Simplified code**: Less configuration needed
 
-## Option B: Client-side batching
+### Option B: Client-side batching
 
 Client-side batching gives you direct control over batch size and timing. You configure parameters like batch size and manage the import flow manually.
 
