@@ -1,4 +1,3 @@
----
 services:
   weaviate_rbac:
     command:
@@ -8,11 +7,13 @@ services:
     - '8080'
     - --scheme
     - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.32.0
+    image: cr.weaviate.io/semitechnologies/weaviate:1.33.0-rc.0
     ports:
     - 8580:8080
     - 50551:50051
     restart: on-failure:0
+    depends_on:
+      - keycloak
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
@@ -21,11 +22,44 @@ services:
       ENABLE_API_BASED_MODULES: 'true'
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       CLUSTER_HOSTNAME: 'node1'
-      # AuthN and AuthZ settings
       AUTHENTICATION_APIKEY_ENABLED: 'true'
       AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'root-user-key'
       AUTHENTICATION_APIKEY_USERS: 'root-user'
       AUTHORIZATION_RBAC_ENABLED: 'true'
       AUTHORIZATION_RBAC_ROOT_USERS: 'root-user'
       AUTHENTICATION_DB_USERS_ENABLED: 'true'
-...
+      AUTHENTICATION_OIDC_ENABLED: 'true'
+      # Changed to use service name instead of localhost
+      #AUTHENTICATION_OIDC_ISSUER: 'http://localhost:8081/realms/weaviate-test'
+      AUTHENTICATION_OIDC_ISSUER: 'http://keycloak:8081/realms/weaviate-test'
+      AUTHENTICATION_OIDC_USERNAME_CLAIM: 'preferred_username'
+      AUTHENTICATION_OIDC_GROUPS_CLAIM: 'groups'
+      AUTHENTICATION_OIDC_CLIENT_ID: 'weaviate'
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.3
+    ports:
+      - "8081:8081"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: 'true'
+      KC_HTTP_PORT: '8081' 
+      KC_HOSTNAME_STRICT: 'false'
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      # Use localhost so it works from both inside and outside Docker
+      #KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8081
+      # This makes Keycloak use localhost URLs in OIDC discovery
+      KC_FRONTEND_URL: 'http://localhost:8081'
+    command:
+      - start-dev
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    # Remove health check for now since Keycloak is working
+    # healthcheck:
+    #   test: ["CMD", "echo", "healthy"]
+    #   interval: 10s
+
+volumes:
+  keycloak_data:

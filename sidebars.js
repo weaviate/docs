@@ -450,6 +450,7 @@ const sidebars = {
           items: [
             "weaviate/configuration/rbac/manage-roles",
             "weaviate/configuration/rbac/manage-users",
+            "weaviate/configuration/rbac/manage-groups",
           ],
         },
       ],
