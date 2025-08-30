@@ -528,7 +528,7 @@ const sidebars = {
       items: [
         "weaviate/tutorials/multi-vector-embeddings",
         "weaviate/tutorials/import",
-        "weaviate/tutorials/aliases",
+        "weaviate/tutorials/collection-aliases",
         "weaviate/tutorials/cross-references",
         "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/vector-provision-options",
