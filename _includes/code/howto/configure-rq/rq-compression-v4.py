@@ -41,6 +41,28 @@ client.collections.create(
 )
 # END EnableRQ
 
+# =========================
+# =====  Uncompressed =====
+# =========================
+
+client.collections.delete("MyCollection")
+
+# START Uncompressed
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    name="MyCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.none()
+        # highlight-end
+    ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+)
+# END Uncompressed
+
 # ==============================
 # =====  EnableRQ with Options =====
 # ==============================

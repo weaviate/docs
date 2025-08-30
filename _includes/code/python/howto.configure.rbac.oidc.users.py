@@ -31,11 +31,11 @@ client.roles.create(role_name="testRole", permissions=permissions)
 # START AssignOidcUserRole
 client.users.oidc.assign_roles(user_id="custom-user", role_names=["testRole", "viewer"])
 # END AssignOidcUserRole
-assert "testRole" in client.users.oidc.get_assigned_roles("custom-user")
-assert "viewer" in client.users.oidc.get_assigned_roles("custom-user")
+assert "testRole" in client.users.oidc.get_assigned_roles(user_id="custom-user")
+assert "viewer" in client.users.oidc.get_assigned_roles(user_id="custom-user")
 
 # START ListOidcUserRoles
-user_roles = client.users.oidc.get_assigned_roles("custom-user")
+user_roles = client.users.oidc.get_assigned_roles(user_id="custom-user")
 
 for role in user_roles:
     print(role)
@@ -46,6 +46,6 @@ assert "viewer" in user_roles
 # START RevokeOidcUserRoles
 client.users.oidc.revoke_roles(user_id="custom-user", role_names="testRole")
 # END RevokeOidcUserRoles
-assert "testRole" not in client.users.oidc.get_assigned_roles("custom-user")
+assert "testRole" not in client.users.oidc.get_assigned_roles(user_id="custom-user")
 
 client.close()
