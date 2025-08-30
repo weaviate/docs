@@ -51,6 +51,10 @@ A collection alias is a pointer to an underlying collection. When you query usin
 
 Collection aliases are ideal for **schema migrations** (updating properties or vectorization settings), **A/B testing**, and **disaster recovery**. They add minimal routing overhead and enable instant switching between collection versions without code changes.
 
+import CollectionAliasUsage from "/_includes/collection-alias-usage.mdx";
+
+<CollectionAliasUsage />
+
 ### How aliases enable zero-downtime migration
 
 Aliases allow you to keep your application code unchanged as it references the stable alias name. You can switch between collections instantly and roll back quickly if needed.

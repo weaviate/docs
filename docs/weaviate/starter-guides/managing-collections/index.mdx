@@ -237,6 +237,10 @@ Sharding settings determine how each collection is sharded and distributed acros
 
 Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. When you query using an alias, Weaviate automatically routes the request to the target collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/schema">REST endpoints</SkipLink>.
 
+import CollectionAliasUsage from "/_includes/collection-alias-usage.mdx";
+
+<CollectionAliasUsage />
+
 ## Notes
 
 #### Collection & property names
