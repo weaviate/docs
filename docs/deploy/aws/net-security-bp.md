@@ -240,7 +240,7 @@ Istio also has a zero-trust model which has these features:
 - Regular policy auditing and optimization.
 - Automated testing to ensure policy effectiveness.
 
-## Secure administrative Access
+## Secure administrative access
 
 ### VPN strategy
 
@@ -265,11 +265,7 @@ Our AWS-specific best practices are aligned with the following security framewor
 - **ISO 27001:** Information security management system implementation.
 - **SOC 2:** Trust services criteria compliance for security, availability, and confidentiality.
 
-## Conclusion
-
-These network security best practices provide a robust, scalable foundation for protection your Weaviate application deployed in AWS. This framework provides flexibility for customizing to your specific needs while maintaining essential security principles and industry best practices.
-
-# Questions and feedback
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
