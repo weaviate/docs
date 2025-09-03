@@ -1,5 +1,5 @@
 ---
-title: 'Quickstart: Locally hosted'
+title: 'クイックスタート: ローカルホスト'
 sidebar_label: Locally hosted
 image: og/docs/quickstart-tutorial.jpg
 hide_table_of_contents: true
@@ -9,16 +9,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import SkipLink from '/src/components/SkipValidationLink'
 
-<span class="badge badge--secondary">Expected time: 30 minutes</span> <span class="badge badge--secondary">Prerequisites: None</span>
+<span class="badge badge--secondary">所要時間: 30 分</span> <span class="badge badge--secondary">前提条件: なし</span>
 <br/><br/>
 
-:::info What you will learn
+:::info 学習内容
 
-This quickstart shows you how to combine open-source Weaviate and Ollama to:
+このクイックスタートでは、オープンソースの Weaviate と Ollama を組み合わせて次のことを行います:
 
-1. Set up a Weaviate instance. (10 minutes)
-1. Add and vectorize your data. (10 minutes)
-1. Perform a semantic search and retrieval augmented generation (RAG). (10 minutes)
+1. Weaviate インスタンスをセットアップします。 (10 分)
+1. データを追加し、ベクトル化します。 (10 分)
+1. セマンティック検索と検索拡張生成 (RAG) を実行します。 (10 分)
 
 ```mermaid
 flowchart LR
@@ -62,35 +62,35 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#7AD6EB,stroke-width:2px,color:#130C49
 ```
 
-Notes:
+注意:
 
-- The code examples here are self-contained. You can copy and paste them into your own environment to try them out.
+- ここに掲載しているコード例は自己完結型です。ご自身の環境にコピー & ペーストしてお試しください。
 <!-- - Python users can try [our Jupyter notebook](https://github.com/weaviate-tutorials/quickstart/blob/main/quickstart_end_to_end.ipynb) locally or on [Google Colab](https://colab.research.google.com/github/weaviate-tutorials/quickstart/blob/main/quickstart_end_to_end.ipynb). -->
-- If you prefer to use cloud-based resources, see [Quickstart: with cloud resources](./local.md).
+- クラウドベースのリソースを使用したい場合は、[クイックスタート: クラウドリソース](./local.md) をご覧ください。
 :::
 
 <!-- Vectors are mathematical representations of data objects, which enable similarity-based searches in vector databases like Weaviate. -->
 
-### Prerequisites
+### 前提条件
 
-Before we get started, install [Docker](https://docs.docker.com/get-started/get-docker/) and [Ollama](https://ollama.com/download) on your machine.
+始める前に、お使いのマシンに [Docker](https://docs.docker.com/get-started/get-docker/) と [Ollama](https://ollama.com/download) をインストールしてください。
 
-Then, download the `nomic-embed-text` and `llama3.2` models by running the following command:
+次に、`nomic-embed-text` と `llama3.2` の各モデルをダウンロードするために、以下のコマンドを実行します。
 
 ```bash
 ollama pull nomic-embed-text
 ollama pull llama3.2
 ```
 
-We will be running Weaviate and language models locally. We recommend that you use a modern computer with at least 8GB or RAM, preferably 16GB or more.
+Weaviate と言語モデルはローカルで実行します。少なくとも 8GB、可能であれば 16GB 以上の RAM を搭載した最新のコンピューターを推奨します。
 
 <hr/>
 
-## Step 1: Set up Weaviate
+## ステップ 1: Weaviate のセットアップ
 
-### 1.1 Create a Weaviate database
+### 1.1 Weaviate データベースの作成
 
-Save the following code to a file named `docker-compose.yml` in your project directory.
+次のコードをプロジェクトディレクトリにある `docker-compose.yml` というファイルに保存します。
 
 ```yaml
 ---
@@ -122,122 +122,121 @@ volumes:
 ...
 ```
 
-Run the following command to start a Weaviate instance using Docker:
+以下のコマンドを実行して、Docker で Weaviate インスタンスを起動します。
 
 ```bash
 docker-compose up -d
 ```
 
-### 1.2 Install a client library
+### 1.2 クライアントライブラリーのインストール
 
-We recommend using a [client library](../client-libraries/index.mdx) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+Weaviate を操作するには [クライアントライブラリー](../client-libraries/index.mdx) の利用を推奨します。以下の手順に従って、公式クライアントライブラリー ( [Python](../client-libraries/python/index.mdx)、[JavaScript/TypeScript](../client-libraries/typescript/index.mdx)、[Go](../client-libraries/go.md)、[Java](../client-libraries/java.md) ) のいずれかをインストールしてください。
 
 import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
 
 <CodeClientInstall />
 
-### 1.3: Connect to Weaviate
+### 1.3 Weaviate への接続
 
-Now you can connect to your Weaviate instance.
+これで Weaviate インスタンスに接続できます。
 
-The example below shows how to connect to Weaviate and perform a basic operation, like checking the cluster status.
+以下の例では、Weaviate に接続し、クラスターのステータスを確認する基本的な操作を行います。
 
 import ConnectIsReady from '/_includes/code/quickstart/local.quickstart.is_ready.mdx'
 
 <ConnectIsReady />
 
-If you did not see any errors, you are ready to proceed. We will replace the simple cluster status check with more meaningful operations in the next steps.
+エラーが表示されなければ、次へ進む準備ができています。次のステップでは、この簡単なステータスチェックをより実用的な操作に置き換えていきます。
 
 <hr/>
 
-## Step 2: Populate the database
+## ステップ 2: データベースの投入
 
-Now, we can populate our database by first defining a collection then adding data.
+データベースにデータを投入するには、まずコレクションを定義し、その後データを追加します。
 
-### 2.1 Define a collection
+### 2.1 コレクションの定義
 
-:::info What is a collection?
-A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed.
+:::info コレクションとは
+コレクションは、同じデータ構造を共有するオブジェクトの集合で、リレーショナルデータベースにおけるテーブルや NoSQL データベースにおけるコレクションと同様の概念です。さらに、データオブジェクトの保存方法とインデックス方法を定義する追加設定も含まれます。
 :::
 
-The following example creates a *collection* called `Question` with:
-  - Ollama [embedding model integration](../model-providers/ollama/embeddings.md) to create vectors during ingestion & queries, using the `nomic-embed-text` model, and
-  - Ollama [generative AI integrations](../model-providers/ollama/generative.md) for retrieval augmented generation (RAG), using the `llama3.2` model.
+次の例では、`Question` という *collection* を作成します。構成内容は以下のとおりです。
+  - Ollama の [埋め込みモデル統合](../model-providers/ollama/embeddings.md) を使用し、`nomic-embed-text` モデルで取り込み時とクエリ時にベクトルを生成
+  - Ollama の [生成 AI 統合](../model-providers/ollama/generative.md) を使用し、`llama3.2` モデルで検索拡張生成 (RAG) を実行
 
 import CreateCollection from '/_includes/code/quickstart/local.quickstart.create_collection.mdx'
 
 <CreateCollection />
 
-Run this code to create the collection to which you can add data.
+このコードを実行して、データを追加できるコレクションを作成します。
 
 <details>
-  <summary>Do you prefer a different setup?</summary>
+  <summary>別のセットアップをご希望ですか？</summary>
 
-Weaviate is very flexible. If you prefer a different model provider integration, or prefer to import your own vectors, see one of the following guides:
+Weaviate は非常に柔軟です。別のモデルプロバイダー統合を利用したい場合や、ご自身でベクトルをインポートしたい場合は、以下のガイドをご覧ください。
 
 <div class="row">
   <div class="col col--6 margin-top--xs padding-top--xs">
     <div class="card">
       <div class="card__header">
-        <h4>Prefer a different model provider?</h4>
+        <h4>別のモデルプロバイダーを利用したい場合</h4>
       </div>
       <div class="card__body">
-        See <Link to="#can-i-use-different-integrations">this section</Link> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
+        AWS、Cohere、Google など、他のプロバイダーを利用する方法については <Link to="#can-i-use-different-integrations">こちら</Link> をご覧ください。
       </div>
     </div>
   </div>
   <div class="col col--6 margin-top--xs padding-top--xs">
     <div class="card">
       <div class="card__header">
-        <h4>Want to specify object vectors?</h4>
+        <h4>オブジェクトベクトルを指定したい場合</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <Link to="/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
+        ご自身でベクトルを追加したい場合は、<Link to="/weaviate/starter-guides/custom-vectors">スターターガイド: ベクトルを持ち込む</Link> をご覧ください。
       </div>
     </div>
   </div>
 </div>
 
 </details>
+### 2.2 オブジェクトの追加
 
-### 2.2 Add objects
+これでコレクションにデータを追加できるようになりました。
 
-We can now add data to our collection.
-
-The following example:
-- Loads objects, and
-- Adds objects to the target collection (`Question`) using a batch process.
+次の例では、
+- オブジェクトを読み込み、
+- バッチ処理を使用して対象コレクション ( `Question` ) にオブジェクトを追加します。
 
 :::tip Batch imports
-([Batch imports](../manage-objects/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-objects/import.mdx) guide for more information.
+[バッチインポート](../manage-objects/import.mdx) は、複数のオブジェクトを 1 回のリクエストで送信するため、大量データを追加する最も効率的な方法です。詳しくは [ハウツー: バッチインポート](../manage-objects/import.mdx) ガイドをご覧ください。
 :::
 
 import ImportObjects from '/_includes/code/quickstart/local.quickstart.import_objects.mdx'
 
 <ImportObjects />
 
-Run this code to add the demo data.
+このコードを実行してデモデータを追加します。
 
 <hr/>
 
-## Step 3: Queries
+## ステップ 3: クエリ
 
-Weaviate provides a wide range of query tools to help you find the right data. We will try a few searches here.
+Weaviate は、目的のデータを見つけるためのさまざまなクエリツールを提供しています。ここではいくつかの検索を試してみましょう。
 
-### 3.1 Semantic search
+### 3.1 セマンティック検索
 
-Semantic search finds results based on meaning. This is called `nearText` in Weaviate.
+セマンティック検索は意味に基づいて結果を見つけます。Weaviate では `nearText` と呼ばれます。
 
-The following example searches for 2 objects whose meaning is most similar to that of `biology`.
+次の例では、`biology` に最も近い意味を持つ 2 つのオブジェクトを検索します。
 
 import QueryNearText from '/_includes/code/quickstart/local.quickstart.query.neartext.mdx'
 
 <QueryNearText />
 
-Run this code to perform the query. Our query found entries for `DNA` and `species`.
+このコードを実行してクエリを実行します。クエリの結果として、`DNA` と `species` のエントリが見つかりました。
 
 <details>
-  <summary>Example full response in JSON format</summary>
+  <summary>JSON 形式の完全なレスポンス例</summary>
 
 ```json
 {
@@ -256,11 +255,11 @@ Run this code to perform the query. Our query found entries for `DNA` and `speci
 
 </details>
 
-If you inspect the full response, you will see that the word `biology` does not appear anywhere.
+完全なレスポンスを確認すると、`biology` という単語がどこにも含まれていないことが分かります。
 
-Even so, Weaviate was able to return biology-related entries. This is made possible by *vector embeddings* that capture meaning. Under the hood, semantic search is powered by vectors, or vector embeddings.
+それでも、Weaviate は生物学関連のエントリを返すことができました。これは意味を捉える *ベクトル埋め込み* によって実現されています。裏側では、セマンティック検索はベクトル、つまりベクトル埋め込みによって動作しています。
 
-Here is a diagram showing the workflow in Weaviate.
+以下は Weaviate におけるワークフローを示す図です。
 
 ```mermaid
 flowchart LR
@@ -292,24 +291,22 @@ flowchart LR
 ```
 
 :::info Where did the vectors come from?
-Weaviate used the locally hosted Ollama model to generate a vector embedding for each object during import. During the query, Weaviate similarly converted the query (`biology`) into a vector.
+インポート時、Weaviate はローカルでホストされた Ollama モデルを使用して各オブジェクトのベクトル埋め込みを生成しました。クエリ時には、Weaviate は同様にクエリ ( `biology` ) をベクトルに変換します。
 
-As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
+これは必須ではありません。独自のベクトルを提供したい場合は、[Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) をご覧ください。
 :::
 
 :::tip More search types available
-
-Weaviate is capable of many types of searches. See, for example, our how-to guides on [similarity searches](../search/similarity.md), [keyword searches](../search/bm25.md), [hybrid searches](../search/hybrid.md), and [filtered searches](../search/filters.md).
-
+Weaviate は多様な検索に対応しています。たとえば [類似度検索](../search/similarity.md)、[キーワード検索](../search/bm25.md)、[ハイブリッド検索](../search/hybrid.md)、[フィルタ付き検索](../search/filters.md) のハウツーガイドをご覧ください。
 :::
 
-### 3.2 Retrieval augmented generation
+### 3.2 検索拡張生成
 
-Retrieval augmented generation (RAG), also called generative search, combines the power of generative AI models such as large language models (LLMs) with the up-to-date truthfulness of a database.
+検索拡張生成 ( RAG )、別名 生成検索 は、大規模言語モデル ( LLM ) などの生成 AI モデルのパワーと、データベースの最新かつ正確な情報を組み合わせた手法です。
 
-RAG works by prompting a large language model (LLM) with a combination of a *user query* and *data retrieved from a database*.
+RAG は、*ユーザークエリ* と *データベースから取得したデータ* を組み合わせて大規模言語モデル ( LLM ) にプロンプトを送ることで動作します。
 
-This diagram shows the RAG workflow in Weaviate.
+次の図は Weaviate における RAG のワークフローを示しています。
 
 ```mermaid
 flowchart LR
@@ -361,13 +358,13 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-The following example combines the same search (for `biology`) with a prompt to generate a tweet.
+次の例では、同じ検索 ( `biology` ) とツイートを生成するプロンプトを組み合わせています。
 
 import QueryRAG from '/_includes/code/quickstart/local.quickstart.query.rag.mdx'
 
 <QueryRAG />
 
-Run this code to perform the query. Here is one possible response (your response will likely be different).
+このコードを実行してクエリを行います。以下は一例のレスポンスです (実際のレスポンスは異なる場合があります)。
 
 ```text
 🧬 In 1953 Watson & Crick built a model of the molecular structure of DNA, the gene-carrying substance! 🧬🔬
@@ -375,40 +372,40 @@ Run this code to perform the query. Here is one possible response (your response
 🦢 2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new species! 🦢🌿 #ScienceFacts #DNA #SpeciesClassification
 ```
 
-The response should be new, yet familiar. This because you have seen the entries above for `DNA` and `species` in the [semantic search](#31-semantic-search) section.
+レスポンスは新しい内容でありながら見覚えがあるはずです。これは、[セマンティック検索](#31-セマンティック検索) のセクションで `DNA` と `species` のエントリを確認済みだからです。
 
-The power of RAG comes from the ability to transform your own data. Weaviate helps you in this journey by making it easy to perform a combined search & generation in just a few lines of code.
-
-<hr/>
-
-## Recap
-
-In this quickstart guide, you:
-
-- Created a Serverless Weaviate sandbox instance on Weaviate Cloud.
-- Defined a collection and added data.
-- Performed queries, including:
-    - Semantic search, and
-    - Retrieval augmented generation.
-
-Where to go next is up to you. We include some suggested steps and resources below.
+RAG の強みは、自分のデータを変換できる点にあります。Weaviate は、検索と生成をわずか数行のコードで組み合わせられるようサポートします。
 
 <hr/>
 
-## Next
+## まとめ
 
-Try these additional resources to learn more about Weaviate:
+このクイックスタートガイドでは、次のことを行いました:
+
+- Weaviate Cloud 上に Serverless Weaviate サンドボックスインスタンスを作成しました。
+- コレクションを定義し、データを追加しました。
+- 以下を含むクエリを実行しました。
+    - セマンティック検索
+    - 検索拡張生成 ( RAG )
+
+次に何をするかはあなた次第です。以下にいくつかの推奨ステップとリソースを示します。
+
+<hr/>
+
+## 次のステップ
+
+Weaviate についてさらに学ぶために、以下の追加リソースをお試しください。
 
 <div class="container margin-top--xs padding-top--xs">
   <div class="row">
     <div class="col col--6 margin-bottom--md">
       <div class="card">
         <div class="card__header">
-          <h4>More on search</h4>
+          <h4>検索をもっと知る</h4>
         </div>
         <div class="card__body">
           <p>
-            See <Link to="/weaviate/search">how to perform searches</Link>, such as <Link to="/weaviate/search/bm25">keyword</Link>, <Link to="/weaviate/search/similarity">similarity</Link>, <Link to="/weaviate/search/hybrid">hybrid</Link>, <Link to="/weaviate/search/image">image</Link>, <Link to="/weaviate/search/filters">filtered</Link> and <Link to="/weaviate/search/rerank">reranked</Link> searches.
+            <Link to="/weaviate/search">検索方法</Link> では、<Link to="/weaviate/search/bm25">キーワード</Link>、<Link to="/weaviate/search/similarity">類似度</Link>、<Link to="/weaviate/search/hybrid">ハイブリッド</Link>、<Link to="/weaviate/search/image">画像</Link>、<Link to="/weaviate/search/filters">フィルタ付き</Link>、<Link to="/weaviate/search/rerank">リランク</Link> 検索などを紹介しています。
           </p>
         </div>
       </div>
@@ -416,11 +413,11 @@ Try these additional resources to learn more about Weaviate:
     <div class="col col--6 margin-bottom--md">
       <div class="card">
         <div class="card__header">
-          <h4>Manage data</h4>
+          <h4>データ管理</h4>
         </div>
         <div class="card__body">
           <p>
-            See how to manage data, such as <Link to="/weaviate/manage-collections">manage collections</Link>, <Link to="/weaviate/manage-objects/create">create objects</Link>, <Link to="/weaviate/manage-objects/import">batch import data</Link> and <Link to="/weaviate/manage-collections/multi-tenancy">use multi-tenancy</Link>.
+            <Link to="/weaviate/manage-collections">コレクションの管理</Link>、<Link to="/weaviate/manage-objects/create">オブジェクトの作成</Link>、<Link to="/weaviate/manage-objects/import">バッチインポート</Link>、<Link to="/weaviate/manage-collections/multi-tenancy">マルチテナンシー</Link> などの方法をご覧ください。
           </p>
         </div>
       </div>
@@ -432,7 +429,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/academy">Weaviate Academy</Link> unit on <Link to="/academy/py/standalone/chunking">chunking</Link>.
+            <Link to="/weaviate/starter-guides/generative">Starter guide: 検索拡張生成</Link> と、<Link to="/academy">Weaviate Academy</Link> の <Link to="/academy/py/standalone/chunking">チャンク化</Link> ユニットをチェックしてください。
           </p>
         </div>
       </div>
@@ -440,11 +437,11 @@ Try these additional resources to learn more about Weaviate:
     <div class="col col--6 margin-bottom--md">
       <div class="card">
         <div class="card__header">
-          <h4>Workshops and office hours</h4>
+          <h4>ワークショップ & オフィスアワー</h4>
         </div>
         <div class="card__body">
           <p>
-          We hold in-person and online <Link to="https://weaviate.io/community/events">workshops, office hours and events</Link> for different experience levels. Join us!
+          対面およびオンラインで開催する <Link to="https://weaviate.io/community/events">ワークショップ、オフィスアワー、イベント</Link> にぜひご参加ください。
           </p>
         </div>
       </div>
@@ -453,37 +450,37 @@ Try these additional resources to learn more about Weaviate:
 </div>
 
 <hr/>
+## FAQ とトラブルシューティング
 
-## FAQs & Troubleshooting
+一般的なご質問や想定される問題への回答を以下にまとめました。
 
-We provide answers to some common questions, or potential issues below.
+### 質問
 
-### Questions
-
-#### Can I use different integrations?
+#### 異なるインテグレーションを使用できますか？
 
 <details>
-  <summary>See answer</summary>
+  <summary>回答を見る</summary>
 
-In this example, we use the `OpenAI` inference API. But you can use others.
+この例では、`OpenAI` 推論 API を使用していますが、他のものも利用できます。
 
-If you do want to change the embeddings, or the generative AI integrations, you can. You will need to:
-- Ensure that the Weaviate module is available in the Weaviate instance you are using,
-- Modify your collection definition to use your preferred integration, and
-- Make sure to use the right API key(s) (if necessary) for your integration.
+埋め込みや生成 AI のインテグレーションを変更したい場合は、以下を行ってください。
+- 使用している Weaviate インスタンスで対象モジュールが利用可能であることを確認する  
+- コレクション定義を編集し、希望するインテグレーションを設定する  
+- 必要に応じて、インテグレーション用の正しい API キーを使用する  
 
-See the [model providers integration](../model-providers/index.md) section for more information.
+詳細は [モデルプロバイダーのインテグレーション](../model-providers/index.md) セクションをご覧ください。
 
 </details>
 
-### Troubleshooting
+### トラブルシューティング
 
-#### If you see <code>Error: Name 'Question' already used as a name for an Object class</code>
+#### <code>Error: Name 'Question' already used as a name for an Object class</code> が表示された場合
 
 <details>
-  <summary>See answer</summary>
+  <summary>回答を見る</summary>
 
-You may see this error if you try to create a collection that already exists in your instance of Weaviate. In this case, you can follow these instructions to delete the collection.
+Weaviate にすでに存在するコレクションを作成しようとすると、このエラーが表示されることがあります。  
+その場合は、以下の手順でコレクションを削除してください。
 
 import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 
@@ -491,20 +488,20 @@ import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 
 </details>
 
-#### How to confirm collection creation
+#### コレクション作成を確認する方法
 
 <details>
-  <summary>See answer</summary>
+  <summary>回答を見る</summary>
 
-If you are not sure whether the collection has been created, check the <SkipLink href="/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
+コレクションが作成済みかどうか不明な場合は、<SkipLink href="/weaviate/api/rest#tag/schema">`schema`</SkipLink> エンドポイントを確認してください。
 
-Replace WEAVIATE_INSTANCE_URL with your instance's REST Endpoint URL.:
+WEAVIATE_INSTANCE_URL をお使いの REST エンドポイント URL に置き換えて実行します。
 
 ```
 https://WEAVIATE_INSTANCE_URL/v1/schema
 ```
 
-You should see:
+次のような結果が返ります。
 
 ```json
 {
@@ -518,28 +515,29 @@ You should see:
 }
 ```
 
-Where the schema should indicate that the `Question` collection has been added.
+ここで、`Question` コレクションが追加されていることを確認できます。
 
-:::note REST & GraphQL in Weaviate
-Weaviate uses a combination of RESTful and GraphQL APIs. In Weaviate, RESTful API endpoints can be used to add data or obtain information about the Weaviate instance, and the GraphQL interface to retrieve data.
+:::note Weaviate における REST と GraphQL
+Weaviate では RESTful API と GraphQL API の両方を使用します。  
+RESTful API エンドポイントはデータの追加やインスタンス情報の取得に、GraphQL インターフェースはデータの取得に利用します。
 :::
 
 </details>
 
-#### How to confirm data import
+#### データインポートを確認する方法
 
 <details>
-  <summary>See answer</summary>
+  <summary>回答を見る</summary>
 
-To confirm successful data import, check the <SkipLink href="/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
+データのインポートが成功したかどうかは、<SkipLink href="/weaviate/api/rest#tag/objects">`objects`</SkipLink> エンドポイントで全オブジェクトが取り込まれているかを確認してください。
 
-Replace WEAVIATE_INSTANCE_URL with your instance REST Endpoint URL:
+WEAVIATE_INSTANCE_URL をお使いの REST エンドポイント URL に置き換えて実行します。
 
 ```
 https://WEAVIATE_INSTANCE_URL/v1/objects
 ```
 
-You should see:
+次のような結果が返ります。
 
 ```json
 {
@@ -551,25 +549,25 @@ You should see:
 }
 ```
 
-Where you should be able to confirm that you have imported all `10` objects.
+ここで `10` 件すべてのオブジェクトがインポートされていることを確認できます。
 
 </details>
 
-#### If the `nearText` search is not working
+#### `nearText` 検索が機能しない場合
 
 <details>
-  <summary>See answer</summary>
+  <summary>回答を見る</summary>
 
-To perform text-based (`nearText`) similarity searches, you need to have a vectorizer enabled, and configured in your collection.
+テキストベース (`nearText`) の類似検索を行うには、コレクションにベクトライザーが有効化・設定されている必要があります。
 
-Make sure the vectorizer is configured [like this](#21-define-a-collection).
+ベクトライザーが [こちら](#21-define-a-collection) のように設定されているかご確認ください。
 
-If the search still doesn't work, [contact us](#questions-and-feedback)!
+それでも検索が機能しない場合は、[お問い合わせください](#questions-and-feedback)。
 
 </details>
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

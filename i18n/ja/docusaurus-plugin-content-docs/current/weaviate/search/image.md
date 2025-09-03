@@ -1,5 +1,5 @@
 ---
-title: Image search
+title: 画像検索
 sidebar_position: 25
 image: og/docs/howto.jpg
 # tags: ['how to', 'image']
@@ -15,16 +15,16 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.image-v2.ts'
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-image_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/ImageSearchTest.java';
 
-`Image` search uses an **image as a search input** to perform vector similarity search.
+`Image` 検索は **検索入力として画像を使用** し、 ベクトル 類似検索を実行します。
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-**Configure image search**
+**画像検索の設定**
 
-To use images as search inputs, configure an image vectorizer integration for your collection. See the model provider integrations page for a [list of available integrations](../model-providers/index.md).
+画像を検索入力として使用するには、コレクションに画像 ベクトライザー 統合を設定します。利用可能な統合の一覧については、モデルプロバイダー統合のページを参照してください [利用可能な統合一覧](../model-providers/index.md)。
 
 </details>
 
@@ -35,10 +35,10 @@ To use images as search inputs, configure an image vectorizer integration for yo
 
 <!-- Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector. -->
 
-## By local image path
+## ローカル画像パスによる検索
 
-Use the `Near Image` operator to execute image search.<br/>
-If your query image is stored in a file, you can use the client library to search by its filename.
+`Near Image` オペレーターを使用して画像検索を実行します。<br/>
+クエリ画像がファイルとして保存されている場合、クライアントライブラリを利用してファイル名で検索できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -72,7 +72,7 @@ If your query image is stored in a file, you can use the client library to searc
 
   <TabItem value="js2" label="JS/TS Client v2">
 
-  > Not available yet. Vote for the [feature request](https://github.com/weaviate/typescript-client/issues/65). DIY code below.
+  > まだ利用できません。 [この機能要望](https://github.com/weaviate/typescript-client/issues/65) への投票をお願いします。以下に DIY コードを示します。
 
   <FilteredTextBlock
     text={TSCodeLegacy}
@@ -104,7 +104,7 @@ If your query image is stored in a file, you can use the client library to searc
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
   <FilteredTextBlock
     text={TSCode}
@@ -116,9 +116,9 @@ If your query image is stored in a file, you can use the client library to searc
 </details>
 
 
-## By the base64 representation
+## base64 表現による検索
 
-You can search by a base64 representation of an image:
+画像の base64 表現を使用して検索できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -178,7 +178,7 @@ You can search by a base64 representation of an image:
 
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
   <FilteredTextBlock
     text={PyCode}
@@ -188,11 +188,9 @@ You can search by a base64 representation of an image:
   />
 
 </details>
+## オンライン画像の base64 表現の作成
 
-
-## Create a base64 representation of an online image.
-
-You can create a base64 representation of an online image, and use it as input for similarity search [as shown above](#by-the-base64-representation).
+オンライン画像の base64 表現を生成し、[上記](#by-the-base64-representation) のとおり類似検索の入力として使用できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -232,17 +230,17 @@ You can create a base64 representation of an online image, and use it as input f
 
 </Tabs>
 
-## Combination with other operators
+## 他のオペレーターとの組み合わせ
 
-A `Near Image` search can be combined with any other operators (like filter, limit, etc.), just as other similarity search operators.
+`Near Image` 検索は、 filter や limit などの他のオペレーターと同様に、他のすべてのオペレーターと組み合わせて使用できます。
 
-See the [`similarity search`](./similarity.md) page for more details.
+詳細については、[`similarity search`](./similarity.md) ページをご覧ください。
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Weaviate に接続](/weaviate/connections/index.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

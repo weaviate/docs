@@ -1,41 +1,41 @@
 ---
-title: Collection definitions (schemas)
-description: Begin with collection definition setup in Weaviate to structure your data effectively.
+title: コレクション定義 (スキーマ)
+description: Weaviate でコレクション定義を設定し、データを効果的に構造化しましょう。
 sidebar_position: 0
 image: og/docs/tutorials.jpg
 ---
 
 import SkipLink from "/src/components/SkipValidationLink";
 
-This tutorial will guide you through the process of defining a schema for your data, including commonly used settings and key considerations.
+このチュートリアルでは、一般的によく使われる設定や重要な考慮事項を含め、データのスキーマを定義する手順を案内します。
 
-:::info Prerequisites
+:::info 前提条件
 
-- (Recommended) Complete the [Quickstart tutorial](/weaviate/quickstart).
-- A Weaviate instance with an administrator API key.
-- Install your preferred Weaviate client library.
-  :::
+- （推奨）[クイックスタート チュートリアル](/weaviate/quickstart) を完了してください。  
+- 管理者 API キーを持つ Weaviate インスタンス。  
+- お好みの Weaviate クライアントライブラリをインストールします。  
+:::
 
-## Collection definition: An Introduction
+## コレクション定義の概要
 
-The collection definition specifies how data is stored, organized and retrieved in Weaviate.
+コレクション定義は、Weaviate においてデータをどのように保存・整理・取得するかを指定します。
 
-If [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) is enabled, Weaviate can infer missing elements and add them to the collection definition. However, it is a best practice to manually define as much of the data schema as possible since manual definition gives you the most control.
+[auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) が有効になっている場合、Weaviate は不足している要素を推論し、コレクション定義に追加できます。しかし、できる限り手動でデータスキーマを定義することがベストプラクティスです。手動定義のほうが制御度が高くなるためです。
 
-Let's begin with a simple example before diving into the details.
+詳細に入る前に、まずは簡単な例から始めましょう。
 
-### Basic collection creation
+### 基本的なコレクション作成
 
-This example creates a collection called `Question`. The collection has three properties, `answer`, `question`, and `category`. The definition specifies the `text2vec-openai` vectorizer and the `generative-cohere` module for RAG.
+この例では `Question` というコレクションを作成します。コレクションには `answer`、`question`、`category` の 3 つのプロパティがあります。定義では `text2vec-openai` ベクトライザーと `generative-cohere` モジュールを RAG 用に指定しています。
 
 import CodeCreateSchema from "/_includes/code/tutorial.schema.create.mdx";
 
 <CodeCreateSchema />
 
-The returned configuration looks similar to this:
+返される設定は次のようになります。
 
 <details>
-  <summary>See the returned collection definition</summary>
+  <summary>返されたコレクション定義を表示</summary>
 
 ```json
 {
@@ -136,111 +136,110 @@ The returned configuration looks similar to this:
 
 </details>
 
-Although we only specified the collection name and properties, the returned definition includes much more information.
+コレクション名とプロパティだけを指定したにもかかわらず、返された定義にははるかに多くの情報が含まれています。
 
-This is because Weaviate infers the definition based on the data schema and default settings. Each of these options can be specified manually at collection creation time.
+これは、Weaviate がデータスキーマと既定値をもとに定義を推論するためです。これらの各設定は、コレクション作成時に手動で指定することもできます。
 
-:::info FAQ: Are collection definitions mutable?
-Yes, to an extent. There are no restrictions against adding new collections or properties. However, not all settings are mutable within existing collections. For example, you can not change the vectorizer or the generative module. You can read more about this in the [collection definition reference](/weaviate/config-refs/collections.mdx#mutability).
+:::info FAQ: コレクション定義は変更できますか？
+ある程度までは可能です。新しいコレクションやプロパティを追加する制限はありません。ただし、既存のコレクションではすべての設定を変更できるわけではありません。たとえば、ベクトライザーや生成モジュールは変更できません。詳細は [コレクション定義リファレンス](/weaviate/config-refs/collections.mdx#mutability) をご覧ください。
 :::
 
-## Collection definitions in detail
+## コレクション定義の詳細
 
-Conceptually, it may be useful to think of each Weaviate instance as consisting of multiple collections, each of which is a set of objects that share a common structure.
+概念的には、各 Weaviate インスタンスは複数のコレクションで構成され、それぞれが共通の構造を持つオブジェクトの集合体と考えると分かりやすいでしょう。
 
-For example, you might have a movie database with `Movie` and `Actor` collections, each with their own properties. Or you might have a news database with `Article`, `Author` and `Publication` collections.
+たとえば、映画データベースでは `Movie` と `Actor` のコレクションがあり、それぞれに固有のプロパティがあります。あるいはニュースデータベースでは `Article`、`Author`、`Publication` のコレクションがあるかもしれません。
 
-### Available settings
+### 利用可能な設定
 
-For the most part, each collection should be thought of as isolated from the others (in fact, they are!). Accordingly, they can be configured independently. Each collection has:
+基本的に各コレクションはほかのコレクションから独立しています（実際にそうです）。そのため、コレクションごとに独立して設定できます。各コレクションには次の要素があります。
 
-- A set of `properties` specifying the object data structure.
-- Multi-tenancy settings.
-- Vectorizer and generative modules.
-- Index settings (for vector and inverted indexes).
-- Replication and sharding settings.
+- オブジェクトのデータ構造を指定する `properties`  
+- マルチテナンシー設定  
+- ベクトライザーと生成モジュール  
+- インデックス設定（ベクトルインデックスと転置インデックス）  
+- レプリケーションとシャーディング設定  
 
-And depending on your needs, you might want to change any number of these.
+ニーズに応じて、これらのいずれかを変更できます。
 
-### Properties
+### プロパティ
 
-Each property has a number of settings that can be configured, such as the `dataType`, `tokenization`, and `vectorizePropertyName`. You can read more about these in the [collection definition reference](/weaviate/config-refs/collections.mdx#properties).
+各プロパティには `dataType`、`tokenization`、`vectorizePropertyName` など、設定可能な項目が複数あります。詳細は [コレクション定義リファレンス](/weaviate/config-refs/collections.mdx#properties) を参照してください。
 
-So for example, you might specify a collection definition like the one below, with additional options for the `question` and `answer` properties:
+たとえば、以下のように `question` と `answer` プロパティに追加オプションを指定したコレクション定義を作成できます。
 
 import SchemaWithPropertyOptions from "/_includes/code/tutorial.schema.properties.options.mdx";
 
 <SchemaWithPropertyOptions />
 
-#### Cross-references
+#### クロスリファレンス
 
 import CrossReferencePerformanceNote from "/_includes/cross-reference-performance-note.mdx";
 
 <CrossReferencePerformanceNote />
 
-This is also where you would specify cross-references, which are a special type of property that links to another collection.
+ここでは、別のコレクションへのリンクとなる特別なプロパティであるクロスリファレンスも指定できます。
 
-Cross-references can be very useful for creating relationships between objects. For example, you might have a `Movie` collection with a `withActor` cross-reference property that points to the `Actor` collection. This will allow you to retrieve relevant actors for each movie.
+クロスリファレンスはオブジェクト間の関係を作成するのに非常に便利です。たとえば、`Movie` コレクションに `withActor` というクロスリファレンスプロパティを作成し、`Actor` コレクションを指し示すことで、各映画に関連する俳優を取得できます。
 
-However, cross-references can be costly in terms of performance. Use them sparingly. Additionally, cross-reference properties do not affect the object's vector. So if you want the related properties to be considered in a vector search, they should be included in the object's vectorized properties.
+ただし、クロスリファレンスはパフォーマンス面でコストが高くなる場合がありますので、必要最小限に留めてください。また、クロスリファレンスプロパティはオブジェクトのベクトルには影響しません。関連プロパティをベクトル検索で考慮したい場合は、それらをオブジェクトのベクトル化対象プロパティに含める必要があります。
 
-You can find examples of how to define and use cross-references [here](/weaviate/manage-collections/cross-references).
+クロスリファレンスの定義と使用例は [こちら](/weaviate/manage-collections/cross-references) をご覧ください。
 
-### Vectorizer and generative modules
+### ベクトライザーと生成モジュール
 
-Each collection can be configured with a vectorizer and a generative module. The vectorizer is used to generate vectors for each object and also for any un-vectorized queries, and the generative module is used to perform retrieval augmented generation (RAG) queries.
+各コレクションにはベクトライザーと生成モジュールを設定できます。ベクトライザーは各オブジェクトや非ベクトル化クエリのベクトルを生成し、生成モジュールは 検索拡張生成 (RAG) クエリを実行します。
 
-If you are not sure where to start, modules that integrate with popular API-based model providers such as Cohere or OpenAI are good starting points. You can find a [list of available model integrations here](/weaviate/model-providers).
+どこから始めれば良いか分からない場合は、Cohere や OpenAI などの API ベースのモデルプロバイダーと連携するモジュールが取り組みやすい選択肢です。[利用可能なモデル統合の一覧はこちら](/weaviate/model-providers) をご覧ください。
 
-### Multi-tenancy settings
+### マルチテナンシー設定
 
-Starting from version `v1.20.0`, each collection can be configured as a multi-tenancy collection. This allows separation of data between tenants, typically end-users, at a much lower overhead than creating separate collections for each tenant.
+バージョン `v1.20.0` から、各コレクションをマルチテナンシーコレクションとして設定できます。これにより、テナント（通常はエンドユーザー）間でのデータ分離を、テナントごとに別コレクションを作成するよりも低いオーバーヘッドで実現できます。
 
-This is useful if you want to use Weaviate as a backend for a multi-tenant (e.g. SaaS) application, or if data isolation is required for any other reason.
+Weaviate をマルチテナント (SaaS など) アプリケーションのバックエンドとして使用したい場合や、その他の理由でデータ隔離が必要な場合に便利です。
 
-:::info How many collections is too many?
-To learn more about the performance benefits of multi-tenancy compared to separate collections for each tenant, visit [this guide](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
+:::info コレクションはいくつが多すぎる？
+テナントごとに別コレクションを作成する場合と比べたマルチテナンシーのパフォーマンス利点については、[こちらのガイド](/weaviate/starter-guides/managing-collections/collections-scaling-limits) をご覧ください。
 :::
 
 import SchemaWithMT from "/_includes/code/tutorial.schema.multi-tenancy.mdx";
 
 <SchemaWithMT />
 
-### Index settings
+### インデックス設定
 
-Weaviate uses two types of indexes: [vector indexes](/weaviate/concepts/indexing/vector-index.md) and [inverted indexes](/weaviate/concepts/indexing/inverted-index.md). Vector indexes are used to store and organize vectors for fast vector similarity-based searches. Inverted indexes are used to store data for fast filtering and keyword searches.
+Weaviate では 2 種類のインデックスを使用します：[ベクトルインデックス](/weaviate/concepts/indexing/vector-index.md) と [転置インデックス](/weaviate/concepts/indexing/inverted-index.md) です。ベクトルインデックスはベクトルを保存・整理し、高速なベクトル類似度検索を実現します。転置インデックスは高速なフィルタリングとキーワード検索のためにデータを保存します。
 
-The default vector index type is [HNSW](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index). The other options are [flat](/weaviate/concepts/vector-index#flat-index), which is suitable for small collections, such as those in a multi-tenancy collection, or [dynamic](/weaviate/concepts/vector-index#dynamic-index), which starts as a flat index before switching to an HNSW index if its size grows beyond a predetermined threshold.
+既定のベクトルインデックスタイプは [HNSW](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) です。その他のオプションとして、小規模コレクション（マルチテナンシーコレクションなど）に適した [flat](/weaviate/concepts/vector-index#flat-index)、または最初は flat インデックスとして開始し、サイズが所定の閾値を超えると HNSW に切り替わる [dynamic](/weaviate/concepts/vector-index#dynamic-index) があります。
 
 import SchemaWithIndexSettings from "/_includes/code/tutorial.schema.index-settings.mdx";
 
 <SchemaWithIndexSettings />
+### レプリケーションおよびシャーディング設定
 
-### Replication and sharding settings
+#### レプリケーション
 
-#### Replication
+レプリケーション設定は、データのコピーをいくつ保持するかを決定します。例えば、レプリケーション設定を 3 にすると、各オブジェクトは 3 つの異なるレプリカに保存されます。これは、本番環境で冗長性とフォールトトレランスを提供するために重要です。（デフォルトのレプリケーションファクターは 1 です。）
 
-Replication settings determine how many copies of the data are stored. For example, a replication setting of 3 means that each object is stored on 3 different replicas. This is important for providing redundancy and fault tolerance in production. (The default replication factor is 1.)
+これは整合性設定と密接に関連しており、整合性設定は操作が成功と見なされるまでに何台のレプリカが応答する必要があるかを決定します。
 
-This goes hand-in-hand with consistency settings, which determine how many replicas must respond before an operation is considered successful.
+レプリケーションが Weaviate でどのように機能するかについては、[レプリケーションの概念ページ](/weaviate/concepts/replication-architecture)をご覧ください。レプリケーションファクターを指定する手順は、[こちらの How-to](../../manage-collections/multi-node-setup.mdx#replication-settings)を参照してください。
 
-We recommend that you read the [concepts page on replication](/weaviate/concepts/replication-architecture) for information on how replication works in Weaviate. To specify a replication factor, follow [this how-to](../../manage-collections/multi-node-setup.mdx#replication-settings).
+#### シャーディング
 
-#### Sharding
+シャーディング設定は、各コレクションをどのようにシャーディングし、ノード間で分散させるかを決定します。通常は変更しない設定ですが、クラスター内で作成されるシャード数や、物理シャードあたりに作成される仮想シャード数を制御できます（詳細は[こちら](/weaviate/config-refs/collections.mdx#sharding)）。
 
-Sharding settings determine how each collection is sharded and distributed across nodes. This is not a setting that is typically changed, but you can use it to control how many shards are created in a cluster, and how many virtual shards are created per physical shard ([read more here](/weaviate/config-refs/collections.mdx#sharding)).
-
-## Collection aliases
+## コレクションエイリアス
 
 :::caution Technical preview
 
-Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+コレクションエイリアスは **`v1.32`** で **テクニカルプレビュー**として追加されました。<br/><br/>
+この機能は現在開発中であり、将来のリリースで変更される可能性があります。互換性が破壊される変更も含まれる場合があります。  
+**本番環境での使用は現時点では推奨しません。**
 
 :::
 
-Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. When you query using an alias, Weaviate automatically routes the request to the target collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>.
+コレクションエイリアスは、Weaviate コレクションに対する別名（ポインター）で、1 つのコレクションを複数の名前で参照できるようにします。エイリアスを使ってクエリを実行すると、Weaviate は自動的に対象コレクションへリクエストをルーティングします。コレクションエイリアスは、[クライアントライブラリーを通じてプログラムから設定](../../manage-collections/collection-aliases.mdx)するか、<SkipLink href="/weaviate/api/rest#tag/aliases">REST エンドポイント</SkipLink>を使用して設定できます。
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -250,13 +249,13 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
 
-### Migration workflow with collection aliases
+### コレクションエイリアスを用いた移行ワークフロー
 
-Collection aliases enable collection migrations with zero downtime. Previously, migrating to a new collection required creating the new collection, pausing your application, updating all collection references in your code, then restarting the application, resulting in service interruption.
+コレクションエイリアスを使用すると、ダウンタイムなしでコレクションを移行できます。従来は、新しいコレクションを作成し、アプリケーションを停止し、コード内のすべてのコレクション参照を更新してからアプリケーションを再起動する必要があり、サービスが中断していました。
 
-Now with aliases, simply create a new collection with your updated collection definition, migrate your data, then instantly [switch the alias](../../manage-collections/collection-aliases.mdx#update-an-alias) to point to the new collection. All your existing queries will continue running uninterrupted. Your application code remains unchanged, as it references the stable alias name rather than the underlying collection.
+エイリアスを利用する現在の方法では、更新したコレクション定義で新しいコレクションを作成し、データを移行した後、エイリアスを瞬時に[新しいコレクションへ切り替え](../../manage-collections/collection-aliases.mdx#update-an-alias)るだけです。既存のクエリは中断なく動作し続けます。アプリケーションコードは安定したエイリアス名を参照しているため、変更は不要です。
 
-Here's a complete example showing how to use aliases for a collection migration:
+以下は、移行にエイリアスを使用する方法を示す完全な例です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -293,22 +292,22 @@ Here's a complete example showing how to use aliases for a collection migration:
   </TabItem>
 </Tabs>
 
-## Notes
+## 補足
 
-#### Collection & property names
+#### コレクション名とプロパティ名
 
-Collection names always start with a capital letter. Properties always begin with a small letter. You can use `PascalCase` class names, and property names allow underscores. Read more [here](/weaviate/config-refs/collections.mdx).
+コレクション名は必ず大文字で始まります。プロパティは必ず小文字で始まります。`PascalCase` のクラス名を使用でき、プロパティ名にはアンダースコアを使用できます。詳細は[こちら](/weaviate/config-refs/collections.mdx)を参照してください。
 
-## Further resources
+## 追加リソース
 
-The following resources include more detailed information on collection definition settings and how to use them:
+以下のリソースでは、コレクション定義設定の詳細とその使用方法について説明しています。
 
-- [Reference: Configuration - Collection definition](/weaviate/config-refs/collections.mdx): A reference of all available collection definition settings.
-- [How-to: Manage collections](../managing-collections/index.mdx): Code examples for creating and managing collections, including how to configure various settings using client libraries.
-- <SkipLink href="/weaviate/api/rest#tag/schema">Reference: REST - Schema</SkipLink>
-: A reference of all available collection definition settings for the REST API.
+- [リファレンス: Configuration - Collection definition](/weaviate/config-refs/collections.mdx)：利用可能なすべてのコレクション定義設定のリファレンス。
+- [How-to: Manage collections](../managing-collections/index.mdx)：クライアントライブラリーを使用して各種設定を構成するコード例を含む、コレクションの作成と管理方法。
+- <SkipLink href="/weaviate/api/rest#tag/schema">リファレンス: REST - Schema</SkipLink>
+: REST API で利用可能なすべてのコレクション定義設定のリファレンス。
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 

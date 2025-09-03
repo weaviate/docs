@@ -1,5 +1,5 @@
 ---
-title: Hybrid search
+title: ハイブリッド検索
 sidebar_position: 40
 image: og/docs/howto.jpg
 # tags: ['how to', 'hybrid search']
@@ -15,13 +15,13 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.hybrid-v2.ts
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
 import GQLCode from '!!raw-loader!/_includes/code/howto/search.hybrid.gql.py';
 
-`Hybrid` search combines the results of a vector search and a keyword (BM25F) search by fusing the two result sets.
+`Hybrid` 検索は、ベクトル検索とキーワード（ BM25F ）検索の結果セットを融合し、両方の結果を組み合わせます。
 
-The [fusion method](#change-the-fusion-method) and the [relative weights](#balance-keyword-and-vector-search) are configurable.
+[融合手法](#change-the-fusion-method) と [相対ウェイト](#balance-keyword-and-vector-search) は設定で調整できます。
 
-## Basic hybrid search
+## 基本的なハイブリッド検索
 
-Combine the results of a vector search and a keyword search. The search uses a single query string.
+ベクトル検索とキーワード検索の結果を結合します。検索には 1 つのクエリ文字列を使用します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -80,7 +80,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 The output is like this:
 
@@ -93,12 +93,12 @@ The output is like this:
 
 </details>
 
-## Named vectors
+## 名前付きベクトル
 
-:::info Added in `v1.24`
+:::info `v1.24` で追加
 :::
 
-A hybrid search on a collection that has [named vectors](../config-refs/collections.mdx#named-vectors) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
+[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を持つコレクションでハイブリッド検索を行う場合は、`target` ベクトルを指定する必要があります。Weaviate はクエリベクトルを使用して、指定されたターゲットベクトル空間を検索します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -144,7 +144,7 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 The output is like this:
 
@@ -156,10 +156,9 @@ The output is like this:
 />
 
 </details>
+## 検索結果の説明
 
-## Explain the search results
-
-To see the object rankings, set the `explain score` field in your query. The search rankings are part of the object metadata. Weaviate uses the score to order the search results.
+オブジェクトのランキングを確認するには、クエリで `explain score` フィールドを設定します。検索ランキングはオブジェクトのメタデータの一部です。 Weaviate はこのスコアを利用して検索結果を並べ替えます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -218,9 +217,9 @@ To see the object rankings, set the `explain score` field in your query. The sea
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例のレスポンス</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -231,12 +230,12 @@ The output is like this:
 
 </details>
 
-## Balance keyword and vector search
+## キーワード検索とベクトル検索のバランス
 
-Hybrid search results can favor the keyword component or the vector component. To change the relative weights of the keyword and vector components, set the `alpha` value in your query.
+ハイブリッド検索の結果は、キーワード成分またはベクトル成分のいずれかを優先できます。キーワード成分とベクトル成分の相対的な重みを変更するには、クエリで `alpha` 値を設定します。
 
-- An `alpha` of `1` is a pure vector search.
-- An `alpha` of `0` is a pure keyword search.
+- `alpha` が `1` の場合、純粋なベクトル検索になります。
+- `alpha` が `0` の場合、純粋なキーワード検索になります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -295,9 +294,9 @@ Hybrid search results can favor the keyword component or the vector component. T
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例のレスポンス</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -307,13 +306,12 @@ The output is like this:
 />
 
 </details>
+## 融合手法の変更
 
-## Change the fusion method
+`Relative Score Fusion` は `v1.24` からデフォルトの融合手法です。
 
-`Relative Score Fusion` is the default fusion method starting in `v1.24`.
-
-- To use the keyword and vector search relative scores instead of the search rankings, use `Relative Score Fusion`.
-- To use [`autocut`](../api/graphql/additional-operators.md#autocut) with the `hybrid` operator, use `Relative Score Fusion`.
+- 検索ランキングではなく、キーワード検索と ベクトル 検索の相対スコアを使用する場合は `Relative Score Fusion` を使用してください。  
+- `hybrid` 演算子と [`autocut`](../api/graphql/additional-operators.md#autocut) を併用する場合も `Relative Score Fusion` を使用してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -372,9 +370,9 @@ The output is like this:
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -387,23 +385,23 @@ The output is like this:
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-For a discussion of fusion methods, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms) and [this reference page](../api/graphql/search-operators.md#variables-2)
+融合手法の詳細な解説については、[このブログ記事](https://weaviate.io/blog/hybrid-search-fusion-algorithms) と [このリファレンスページ](../api/graphql/search-operators.md#variables-2) を参照してください。
 
 </details>
 
-## Keyword search operators
+## キーワード検索演算子
 
-:::info Added in `v1.31`
+:::info `v1.31` で追加
 :::
 
-Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present in the object to be returned. The options are `and`, or `or` (default).
+Keyword (BM25) 検索演算子では、オブジェクトが返されるために含まれている必要があるクエリ [トークン](#tokenization) の最小数を指定します。選択肢は `and` または `or`（デフォルト）です。
 
 ### `or`
 
-With the `or` operator, the search returns objects that contain at least `minimumOrTokensMatch` of the tokens in the search string.
+`or` 演算子では、検索語のトークンのうち `minimumOrTokensMatch` 以上を含むオブジェクトが返されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -426,7 +424,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
 
 ### `and`
 
-With the `and` operator, the search returns objects that contain all tokens in the search string.
+`and` 演算子では、検索語のすべてのトークンを含むオブジェクトが返されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -446,13 +444,12 @@ With the `and` operator, the search returns objects that contain all tokens in t
     />
   </TabItem>
 </Tabs>
+## キーワード検索プロパティの指定
 
-## Specify keyword search properties
-
-:::info Added in `v1.19.0`
+:::info `v1.19.0` で追加
 :::
 
-The keyword search portion of hybrid search can be directed to only search a subset of object properties. This does not affect the vector search portion.
+ハイブリッド検索におけるキーワード検索部分では、オブジェクトのプロパティの一部だけを検索対象にできます。これは ベクトル 検索部分には影響しません。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -511,9 +508,9 @@ The keyword search portion of hybrid search can be directed to only search a sub
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+以下のような出力になります:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -524,9 +521,9 @@ The output is like this:
 
 </details>
 
-## Set weights on property values
+## プロパティ値の重み付け設定
 
-Specify the relative value of an object's `properties` in the keyword search. Higher values increase the property's contribution to the search score.
+オブジェクトの `properties` に対して、キーワード検索時の相対的な重要度を指定できます。値が大きいほど、そのプロパティの検索スコアへの寄与が高まります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -585,9 +582,9 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+以下のような出力になります:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -597,10 +594,9 @@ The output is like this:
 />
 
 </details>
+## 検索ベクトルの指定
 
-## Specify a search vector
-
-The vector component of hybrid search can use a query string or a query vector. To specify a query vector instead of a query string, provide a query vector (for the vector search) and a query string (for the keyword search) in your query.
+ハイブリッド検索のベクトル要素は、クエリ 文字列またはクエリ ベクトルを使用できます。クエリ 文字列の代わりにクエリ ベクトルを指定する場合は、クエリ内でベクトル検索用のクエリ ベクトルと、キーワード検索用のクエリ 文字列の両方を渡してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -659,9 +655,9 @@ The vector component of hybrid search can use a query string or a query vector. 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -672,13 +668,13 @@ The output is like this:
 
 </details>
 
-## Vector search parameters
+## ベクトル検索パラメーター
 
-:::info Added in `v1.25`
-Note that the hybrid threshold (`max_vector_distance`) was introduced later in `v1.26.3`.
+:::info `v1.25` で追加
+ハイブリッド閾値（`max_vector_distance`）は後の `v1.26.3` で導入されました。
 :::
 
-You can specify [vector similarity search](/weaviate/search/similarity) parameters similar to [near text](/weaviate/search/similarity.md#search-with-text) or [near vector](/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
+[ベクトル類似検索](/weaviate/search/similarity) では、`group by` や `move to` / `move away` など、[near text](/weaviate/search/similarity.md#search-with-text) や [near vector](/weaviate/search/similarity.md#search-with-a-vector) と同様のパラメーターを指定できます。ベクトル検索における同等の距離しきい値は、`max vector distance` パラメーターで設定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -709,25 +705,25 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
   startMarker="# Expected VectorSimilarityGraphQL results"
-  endMarker="# END Expected VectorSimilarityGraphQL results"
+  endMarker="# END VectorSimilarityGraphQL results"
   language="json"
 />
 
 </details>
 
-## Hybrid search thresholds
+## ハイブリッド検索のしきい値
 
 :::info Added in `v1.25`
 :::
 
-The only available search threshold is `max vector distance`, which will set the maximum allowable distance for the vector search component.
+利用可能なしきい値は `max vector distance` のみで、これはベクトル検索コンポーネントに許容される最大距離を設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -752,12 +748,12 @@ The only available search threshold is `max vector distance`, which will set the
   </TabItem>
 </Tabs>
 
-## Group results
+## 結果のグループ化
 
 :::info Added in `v1.25`
 :::
 
-Define criteria to group search results.
+検索結果をグループ化するための条件を定義します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -780,9 +776,9 @@ Define criteria to group search results.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例のレスポンス</summary>
 
-The response is like this:
+レスポンスは次のようになります。
 
 ```
 'Jeopardy!'
@@ -791,11 +787,11 @@ The response is like this:
 
 </details>
 
-## `limit` & `offset`
+## `limit` と `offset`
 
-Use `limit` to set a fixed maximum number of objects to return.
+`limit` を使用して、返されるオブジェクト数の上限を固定します。
 
-Optionally, use `offset` to paginate the results.
+必要に応じて `offset` を使用して結果をページネーションできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -852,10 +848,9 @@ Optionally, use `offset` to paginate the results.
     />
   </TabItem>
 </Tabs>
+## 結果グループの制限
 
-## Limit result groups
-
-To limit results to groups with similar distances from the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter. Specify the `Relative Score Fusion` ranking method when you use autocut with hybrid search.
+クエリからの距離が類似しているグループに結果を制限するには、[`autocut`](../api/graphql/additional-operators.md#autocut) フィルターを使用します。`autocut` をハイブリッド検索と併用する場合は、ランキング手法として `Relative Score Fusion` を指定してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -914,9 +909,9 @@ To limit results to groups with similar distances from the query, use the [`auto
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -927,9 +922,9 @@ The output is like this:
 
 </details>
 
-## Filter results
+## 結果のフィルタリング
 
-To narrow your search results, use a [`filter`](../api/graphql/filters.md).
+検索結果をさらに絞り込むには、[`filter`](../api/graphql/filters.md) を使用します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -988,9 +983,9 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -1000,23 +995,22 @@ The output is like this:
 />
 
 </details>
-
-### Tokenization
+### トークナイゼーション
 
 import TokenizationNote from '/_includes/tokenization.mdx'
 
 <TokenizationNote />
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
-- [Weaviate Academy: Tokenization](../../academy/py/tokenization/index.md)
-- About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
-- For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [API リファレンス: 検索オペレーター # Hybrid](../api/graphql/search-operators.md#hybrid)
+- [Weaviate Academy: トークナイゼーション](../../academy/py/tokenization/index.md)
+- [ハイブリッド フュージョン アルゴリズム](https://weaviate.io/blog/hybrid-search-fusion-algorithms) について
+- チュートリアルについては [クエリ](/weaviate/tutorials/query.md) を参照してください
+- GraphQL API を使用した検索については [GraphQL API](../api/graphql/get.md) を参照してください。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

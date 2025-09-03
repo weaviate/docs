@@ -1,43 +1,45 @@
 ---
-title: APIs
-description: "API documentation covering REST, GraphQL, and gRPC interfaces for Weaviate database operations."
+title: API
+description: "REST、GraphQL、gRPC インターフェースでの Weaviate データベース操作に関する API ドキュメント。"
 image: og/docs/api.jpg
 # tags: ['schema']
 ---
 
-Weaviate provides multiple Application Programming Interfaces (APIs) to interact with the database, manage instances, and perform searches. Weaviate exposes three main APIs:
+ Weaviate は、データベースとやり取りし、インスタンスを管理し、検索を実行するための複数の Application Programming Interface (API) を提供します。 Weaviate が公開している主な API は次の 3 つです。
 
-- **[RESTful API](./rest.md)**: Enables almost complete management of a Weaviate instance.
+- **[RESTful API](./rest.md)**: Weaviate インスタンスをほぼ完全に管理できます。
 
-  - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
+  - コレクションの管理（コレクションとその定義の作成、読み取り、更新、削除）、個々のデータオブジェクトに対する基本的な CRUD (Create, Read, Update, Delete) 操作、ノードステータスの確認、バックアップ、クラスターヘルスの管理などを含みます。
 
-- **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
+- **[Search API - GraphQL](./graphql/index.md)**: データのクエリと探索に特化しています。
 
-  - Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
+  - セマンティック（ ベクトル ）検索（ `nearText`、`nearVector` など）、キーワード検索（ `bm25` ）、ハイブリッド検索、フィルタリング、特定プロパティの取得、集計、データオブジェクト間の接続（クロスリファレンス）の探索など、複雑な検索操作を実行できます。
 
-- **[Search API - gRPC](./grpc.md)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
+- **[Search API - gRPC](./grpc.md)**: 高負荷なデータ操作において GraphQL の高性能な代替手段です。
 
-  - gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
+  - gRPC はさまざまな Weaviate 操作、特に検索／クエリ機能とバッチデータインポートに向けて段階的に実装が進んでいます。 Protocol Buffers を活用し、従来の REST/JSON 通信と比べて高速なシリアライズ、低レイテンシー、効率的なデータストリーミングを実現します。
 
-## Client libraries and API usage
+## クライアントライブラリーと API の利用
 
-Weaviate offers official client libraries for these programming languages:
+ Weaviate は次のプログラミング言語向けに公式クライアントライブラリーを提供しています。
 
 - **[Python](../client-libraries/python/index.mdx)**
 - **[TypeScript/JavaScript](../client-libraries/typescript/index.mdx)**
 - **[Go](../client-libraries/go.md)**
 - **[Java](../client-libraries/java.md)**
 
-:::tip **TIP:** Using the official client libraries for interacting with Weaviate
+:::tip **TIP:** Weaviate と対話するために公式クライアントライブラリーを使用する
 
-The client libraries abstract away the complexities of making direct REST, GraphQL, or gRPC calls. You interact with Weaviate using idiomatic methods and objects in your preferred language.
+クライアントライブラリーは、直接 REST、GraphQL、gRPC を呼び出す際の複雑さを抽象化します。お好みの言語で、慣用的なメソッドやオブジェクトを使って Weaviate とやり取りできます。
 
-Modern versions of the client libraries (e.g., Python v4+, TypeScript v3+) are designed to **automatically utilize the more performant gRPC interface** for search and query operations whenever possible and supported by the Weaviate instance you are connected to. They handle the negotiation and use the optimal protocol under the hood, typically requiring only the standard connection details (like the REST endpoint URL and authentication keys) for setup.
+最新バージョンのクライアントライブラリー（例: Python v4+、TypeScript v3+）は、可能であれば接続先の Weaviate インスタンスがサポートする gRPC インターフェースを **自動的に利用** して検索・クエリ処理を行うよう設計されています。ライブラリーがプロトコルのネゴシエーションと最適な選択を内部で処理するため、通常は標準的な接続情報（REST エンドポイントの URL や認証キーなど）を指定するだけでセットアップできます。
 
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+
+

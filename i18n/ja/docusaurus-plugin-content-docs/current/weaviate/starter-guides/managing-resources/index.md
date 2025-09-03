@@ -1,38 +1,38 @@
 ---
-title: Managing resources (Hot, Warm, Cold)
-description: Learn to manage resources effectively in Weaviate for optimized performance.
+title: リソース管理（ホット・ウォーム・コールド）
+description: Weaviate で最適なパフォーマンスを得るための効果的なリソース管理方法を学びます。
 sidebar_position: 10
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-Weaviate provides flexible resource management features that help you to balance search speeds; search accuracy and recall; and system resource costs.
+Weaviate は、検索速度・検索精度およびリコール・システムリソースコストのバランスを取るための柔軟なリソース管理機能を提供します。
 
-This guide provides an overview of these topics to help you make allocate resources effectively:
+本ガイドでは、効果的にリソースを割り当てるための概要を説明します。
 
-- **[Storage tiers (*hot, warm, cold*)](#storage-tiers---temperatures)**
-- **[Vector index types](#vector-index-types)**
-- **[Vector compression](#vector-compression)**
-- **[Tenant states](#tenant-states)**
-- **[Tips](#tips)**
+- **[ストレージ階層（ホット・ウォーム・コールド）](#storage-tiers---temperatures)**
+- **[ベクトルインデックスタイプ](#vector-index-types)**
+- **[ベクトル圧縮](#vector-compression)**
+- **[テナント状態](#tenant-states)**
+- **[ヒント](#tips)**
 
 :::tip Resource management Tips
 
-- Start with the dynamic [index type](#vector-index-types) unless you have a reason not to.
-- Consider [vector compression](#vector-compression) techniques if some loss of accuracy is acceptable.
-    - This will improve query speeds.
-    - For HNSW indexes, this will reduce memory usage.
-- Avoid overprovisioning storage. Especially *hot* storage.
-    - Can you use [tenant states](#tenant-states) to reduce costs?
-    - Can you use [vector compression](#vector-compression) to reduce memory usage?
+- 理由がない限り、まずは動的な [index type](#vector-index-types) を使用してください。
+- 多少の精度低下が許容できる場合は、[vector compression](#vector-compression) を検討しましょう。
+    - クエリ速度が向上します。
+    - HNSW インデックスではメモリ使用量が削減されます。
+- ストレージの過度なプロビジョニング、特に *ホット* ストレージを避けましょう。
+    - [tenant states](#tenant-states) を活用してコストを削減できますか？
+    - [vector compression](#vector-compression) でメモリ使用量を抑えられますか？
 
 :::
 
-## Storage Tiers - Temperatures
+## ストレージ階層 - 温度
 
 ![Storage Tiers](./img/storage-tiers.jpg)
 
-We categorize storage resources using three tiers: [*hot*](#-hot), [*warm*](#-warm), and [*cold*](#-cold). Each tier has different performance characteristics and costs.
+ストレージリソースは、[*ホット*](#-hot)・[*ウォーム*](#-warm)・[*コールド*](#-cold) の 3 つの階層で分類されます。各階層には異なるパフォーマンス特性とコストがあります。
 
 | Tier     | Vector <br/> Index Type | Vector <br/> Compression | Tenant State  | Storage    | Performance           | Cost      |
 |----------|-------------------|--------------------|---------------|------------|-----------------------|----------|
@@ -40,27 +40,27 @@ We categorize storage resources using three tiers: [*hot*](#-hot), [*warm*](#-wa
 | 🟨 Warm  | Flat              | BQ                 | Active        | SSD       | Slower                 | Moderate |
 | 🟦 Cold  | Any               | Any                | Inactive      | Cloud     | Resource not available | Low      |
 
-### 🟥 Hot
+### 🟥 ホット
 
 ![Storage Tiers - Hot](./img/storage-tiers-hot.jpg)
 
-- Describes memory usage
-- Fastest and most expensive
-- Primarily driven by [`HNSW`](./indexing.mdx#hnsw-indexes) vector indexes
-- Always available (active) for use
-- Costs increase rapidly with scale
+- メモリ使用量を示します  
+- 最速かつ最も高価  
+- 主に [`HNSW`](./indexing.mdx#hnsw-indexes) ベクトルインデックスにより実現  
+- 常に利用可能（Active）  
+- スケール拡大に伴いコストが急激に増加  
 
-### 🟨 Warm
+### 🟨 ウォーム
 
 ![Storage Tiers - Warm](./img/storage-tiers-warm.jpg)
 
-- Describes data stored on disk (SSD)
-- Slower than [hot](#-hot) tier but less expensive
-- Driven by [flat](./indexing.mdx#flat-indexes) vector index, object data, and [inverted indexes](./indexing.mdx#inverted-indexes)
-- Always available (active) for use
-- Costs increase more slowly than hot tier as data grows
+- ディスク（SSD）に保存されたデータを示します  
+- [ホット](#-hot) 階層より遅いが低コスト  
+- [flat](./indexing.mdx#flat-indexes) ベクトルインデックス、オブジェクトデータ、および [転置インデックス](./indexing.mdx#inverted-indexes) により実現  
+- 常に利用可能（Active）  
+- データ増加に伴うコスト増はホット階層より緩やか  
 
-### 🟦 Cold
+### 🟦 コールド
 
 ![Storage Tiers - Cold](./img/storage-tiers-cold.jpg)
 
@@ -68,32 +68,31 @@ import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-- Describes data stored in cloud storage
-- Slowest and least expensive tier
-- Primarily driven by [offloaded tenants](#tenant-states)
-- Resources are not available (inactive) for use
-- Requires [reactivation](#tenant-states) to access
+- クラウドストレージに保存されたデータを示します  
+- 最も遅く最安価な階層  
+- 主に [offloaded tenants](#tenant-states) により実現  
+- リソースは利用不可（Inactive）  
+- アクセスには [reactivation](#tenant-states) が必要  
 
+## リソース管理の主要要因
 
-## Resource Management - Key Factors
+Weaviate での効果的なリソース管理は、パフォーマンス・コスト・データ可用性のバランスを取ることです。主な調整レバーは以下のとおりです。
 
-Effective resource management in Weaviate involves balancing performance, cost, and data accessibility. The key levers to manage resources are:
+- **[ベクトルインデックスタイプ](#vector-index-types)**: オブジェクト数と望ましいパフォーマンスに基づき適切なインデックスタイプを選択します。  
+- **[ベクトル圧縮](#vector-compression)**: 精度をある程度犠牲にしてメモリ使用量を削減し、クエリ性能を向上させます。  
+- **[テナント状態](#tenant-states)**: テナントの状態を管理してコストとパフォーマンスを調整します。  
 
-- **[Vector index types](#vector-index-types)**: Choose the right index type based on the number of objects and desired performance.
-- **[Vector compression](#vector-compression)**: Use compression techniques to reduce memory usage and improve query performance at the cost of some accuracy.
-- **[Tenant states](#tenant-states)**: Manage tenant states to balance cost and performance.
+### ベクトルインデックスタイプ
 
-### Vector index types
-
-The choice of vector index type can have a significant impact on performance and resource usage. Weaviate supports the following index types:
+インデックスタイプの選択は、パフォーマンスとリソース使用量に大きく影響します。Weaviate は以下のインデックスタイプをサポートしています。
 
 | Index Type | Resource Usage | Performance | Suitable for      | Description |
 |------------|----------------|-------------|-------------------|-------------|
-| HNSW       | 🟥 Hot         | Fast        | Any object count  | A memory-based, fast index ([read more](./indexing.mdx#hnsw-indexes)) |
-| Flat       | 🟨 Warm        | Medium      | &lt;~10k objects    | A disk-based, brute-force index ([read more](./indexing.mdx#flat-indexes)) |
-| Dynamic    | Depends        | Depends     | Any object count  | Transitions from flat to HNSW index at a specified threshold ([read more](./indexing.mdx#dynamic-indexes)) |
+| HNSW       | 🟥 Hot         | Fast        | Any object count  | メモリベースで高速なインデックス（[詳細](./indexing.mdx#hnsw-indexes)） |
+| Flat       | 🟨 Warm        | Medium      | &lt;~10k objects    | ディスクベースの総当たりインデックス（[詳細](./indexing.mdx#flat-indexes)） |
+| Dynamic    | Depends        | Depends     | Any object count  | 指定閾値で flat から HNSW へ自動移行するインデックス（[詳細](./indexing.mdx#dynamic-indexes)） |
 
-The choice of index type depends on the number of objects and the desired performance. As a rule of thumb, use the following guidelines for a multi-tenant collection:
+インデックスタイプは、オブジェクト数と要求される性能に応じて決定します。マルチテナントコレクションの目安は次のとおりです。
 
 ```mermaid
 flowchart LR
@@ -126,27 +125,27 @@ flowchart LR
     style vectorIndex fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-If you are unsure which index type to use, the dynamic index type is a good starting point, as it automatically transitions from a flat to an HNSW index based on the number of objects.
+どのインデックスタイプを使用するか迷う場合は、動的インデックスタイプから始めると良いでしょう。オブジェクト数に基づき flat から HNSW へ自動で移行します。
 
-- [Starter guide: indexes](./indexing.mdx)
-- [How-to: Set the vector index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
+- [スターターガイド: インデックス](./indexing.mdx)  
+- [How-to: ベクトルインデックスタイプの設定](../../manage-collections/vector-config.mdx#set-vector-index-type)  
 
-### Vector compression
+### ベクトル圧縮
 
-Vector compression techniques reduce the size of vectors by quantizing them into a smaller representation.
+ベクトル圧縮は、ベクトルを量子化して小さい表現に変換し、サイズを削減する技術です。
 
-This can have the impact of reducing memory usage, or improving performance by reducing the amount of data that needs to be read from disk. The trade-off is that the resulting search quality may be lower.
+これによりメモリ使用量を削減したり、ディスクから読み込むデータ量を減らして性能を向上させたりできます。その代償として検索品質が低下する場合があります。
 
-Weaviate supports the following vector compression methods:
+Weaviate がサポートするベクトル圧縮方法は次のとおりです。
 
 | Compression Method        | Index Type | Requires Training | Description |
 |---------------------------|------------|-------------------|-------------|
-| Product Quantization (PQ) | HNSW       | Yes               | Each vector becomes an array of integer-based centroids ([read more](../../concepts/vector-quantization.md#product-quantization)) |
-| Binary Quantization (BQ)  | HNSW, Flat | No                | Each vector dimension becomes a bit ([read more](../../concepts/vector-quantization.md#binary-quantization)) |
-| Scalar Quantization (SQ)  | HNSW       | Yes               | Each vector dimension becomes an integer ([read more](../../concepts/vector-quantization.md#scalar-quantization)) |
-| Rotational Quantization (RQ) | HNSW    | No                | Each vector is rotated then quantized to an integer ([read more](../../concepts/vector-quantization.md#rotational-quantization)) |
+| Product Quantization (PQ) | HNSW       | Yes               | 各ベクトルを整数ベースのセントロイド配列に変換（[詳細](../../concepts/vector-quantization.md#product-quantization)） |
+| Binary Quantization (BQ)  | HNSW, Flat | No                | 各ベクトル次元をビットに変換（[詳細](../../concepts/vector-quantization.md#binary-quantization)） |
+| Scalar Quantization (SQ)  | HNSW       | Yes               | 各ベクトル次元を整数に量子化（[詳細](../../concepts/vector-quantization.md#scalar-quantization)） |
+| Rotational Quantization (RQ) | HNSW    | No                | ベクトルを回転後、整数に量子化（[詳細](../../concepts/vector-quantization.md#rotational-quantization)） |
 
-As a starting point, use the following guidelines for selecting a compression method:
+圧縮方法を選択する際の目安は次のとおりです。
 
 ```mermaid
 flowchart LR
@@ -184,24 +183,23 @@ flowchart LR
     style compression fill:#ffffff,stroke:#7AD6EB,stroke-width:2px,color:#130C49
 ```
 
-If you are unsure which index type to use, scalar quantization is a good starting point, provided that you have a representative sample of your likely final dataset.
+迷う場合は、代表的なサンプルデータセットが用意できるなら scalar quantization から始めると良いでしょう。
 
-- [Starter guide: Vector compression](./compression.mdx)
-- [How-to: Configure vector compression](../../configuration/compression/index.md)
+- [スターターガイド: ベクトル圧縮](./compression.mdx)  
+- [How-to: ベクトル圧縮の設定](../../configuration/compression/index.md)  
+### テナント状態
 
-### Tenant states
+マルチテナントコレクションを使用すると、分離されたデータサブセットを効率的に管理できます。すべてのテナントは同じスキーマと設定を共有します。
 
-Multi-tenant collections enable you to efficiently manage isolated subsets of data. Each tenant share the same schema and configuration.
+Weaviate は、以下のテナント状態をサポートします。
 
-Weaviate supports the following tenant states:
+| テナント状態 | CRUD とクエリ | ベクトルインデックス | 転置インデックス | オブジェクトデータ | アクティブ化までの時間 | 説明 |
+|--------------|--------------|---------------------|------------------|-------------------|------------------------|------|
+| アクティブ (デフォルト) | **はい** | Hot/Warm | Warm | Warm | なし | テナントは利用可能です |
+| インアクティブ | **いいえ** | Warm | Warm | Warm | 速い | テナントはローカルに保存されていますが利用できません |
+| オフロード済み | **いいえ** | Cold | Cold | Cold | 遅い | テナントはクラウドストレージに保存されており利用できません |
 
-| Tenant state     | CRUD & Queries | Vector Index | Inverted Index | Object Data | Time to Activate |Description |
-|------------------|----------------|--------------|----------------|-------------|------------------|------------|
-| Active (default) | **Yes**        | Hot/Warm     | Warm           | Warm        | None             |Tenant is available for use |
-| Inactive         | **No**         | Warm         | Warm           | Warm        | Fast             |Tenant is locally stored but not available for use |
-| Offloaded        | **No**         | Cold         | Cold           | Cold        | Slow             |Tenant is stored in cloud storage and not available for use |
-
-*Hot* tenants can be deactivated to *warm* storage to reduce memory usage, and any tenant can be offloaded to *cold* storage to reduce memory and disk usage. Conversely, any tenant can be reactivated when needed.
+*Hot* なテナントは *warm* ストレージへ非アクティブ化することでメモリ使用量を削減でき、また任意のテナントを *cold* ストレージへオフロードしてメモリとディスク使用量を削減できます。必要に応じて、どのテナントでも再アクティブ化できます。
 
 ```mermaid
 flowchart LR
@@ -230,41 +228,41 @@ flowchart LR
     style tenantData fill:#ffffff,stroke:#61BD73,stroke-width:2px,color:#130C49
 ```
 
-Consider a strategy of deactivating tenants that are not frequently accessed, and offloading tenants that are rarely accessed.
+アクセス頻度が高くないテナントを非アクティブ化し、ほとんどアクセスされないテナントをオフロードする戦略を検討してください。
 
-- [Starter guide: tenant states](./tenant-states.mdx)
-- [How-to: Configure tenant offloading](/deploy/configuration/tenant-offloading.md)
-- [How-to: Manage tenant states](../../manage-collections/tenant-states.mdx)
+- [スターターガイド: テナント状態](./tenant-states.mdx)
+- [ハウツー: テナントオフロードを設定する](/deploy/configuration/tenant-offloading.md)
+- [ハウツー: テナント状態を管理する](../../manage-collections/tenant-states.mdx)
 
-## Tips
+## ヒント
 
-### Best Practices
+### ベストプラクティス
 
-- Start with the dynamic [index type](#vector-index-types) for new collections. This is particularly useful for multi-tenant collections, as it allows each tenant to use the most appropriate index type.
-- Use [vector compression](#vector-compression) techniques to optimize storage and query performance, especially for large collections or tenants.
-- Conduct thorough testing when changing index types or compression methods to ensure performance meets your requirements.
+- 新しいコレクションでは、まず動的 [インデックス種類](#vector-index-types) を使用してください。これはマルチテナントコレクションで特に有用で、各テナントが最適なインデックス種類を利用できるようにします。  
+- [ベクトル圧縮](#vector-compression) 技術を使用して、ストレージとクエリ性能を最適化してください。特に大規模なコレクションやテナントで効果的です。  
+- インデックス種類や圧縮方式を変更する際は、性能が要件を満たしていることを確認するために十分なテストを実施してください。  
 
-### Common Pitfalls
+### よくある落とし穴
 
-- Overprovisioning hot storage: Keeping all data in hot storage can lead to unnecessary costs. Regularly assess what data truly needs the fastest access.
-- Neglecting to plan for growth: Not anticipating data growth can lead to performance issues. Always design your resource management strategy with scalability in mind.
-- Improper tenant management: In multi-tenant scenarios, forgetting to [offload inactive tenants](#tenant-states) can lead to resource waste. Implement automated processes to manage tenant states based on usage patterns.
-- Mismatch between quantization techniques, model and data: When using compression technique, ensure that the quantization technique is compatible with the model (e.g. BQ) and that the data is sufficient and representative for training (e.g. PQ, SQ).
+- ホットストレージの過剰割り当て: すべてのデータをホットストレージに保持すると不要なコストが発生します。どのデータが本当に最速のアクセスを必要としているかを定期的に評価してください。  
+- 成長計画の欠如: データの増加を想定していないと性能問題につながります。常にスケーラビリティを考慮してリソース管理戦略を設計してください。  
+- 不適切なテナント管理: マルチテナント環境で [非アクティブテナントのオフロード](#tenant-states) を忘れるとリソースが浪費されます。利用パターンに基づきテナント状態を管理する自動化プロセスを導入してください。  
+- 量子化手法、モデル、データの不一致: 圧縮技術を使用する際は、量子化手法がモデル ( 例:  BQ ) と互換性があり、学習用データが十分かつ代表的であること ( 例:  PQ, SQ ) を確認してください。  
 
-## Related pages
+## 関連ページ
 
-- [Starter guide: Compression](./compression.mdx)
-- [Starter guide: Indexing](./indexing.mdx)
-- [Starter guide: Tenant states](./tenant-states.mdx)
-- [Concepts: Vector Index](../../concepts/indexing/vector-index.md)
-- [Concepts: Vector Quantization](../../concepts/vector-quantization.md)
-- [Concepts: Multi-Tenancy](../../concepts/data.md#multi-tenancy)
-- [How-to: Set the vector index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
-- [How-to: Configure vector compression](../../configuration/compression/index.md)
-- [How-to: Perform multi-tenancy operations](../../manage-collections/multi-tenancy.mdx)
-- [How-to: Manage tenant states](../../manage-collections/tenant-states.mdx)
+- [スターターガイド: 圧縮](./compression.mdx)
+- [スターターガイド: インデックス作成](./indexing.mdx)
+- [スターターガイド: テナント状態](./tenant-states.mdx)
+- [コンセプト: ベクトルインデックス](../../concepts/indexing/vector-index.md)
+- [コンセプト: ベクトル量子化](../../concepts/vector-quantization.md)
+- [コンセプト: マルチテナンシー](../../concepts/data.md#multi-tenancy)
+- [ハウツー: ベクトルインデックス種類を設定する](../../manage-collections/vector-config.mdx#set-vector-index-type)
+- [ハウツー: ベクトル圧縮を設定する](../../configuration/compression/index.md)
+- [ハウツー: マルチテナンシー操作を実行する](../../manage-collections/multi-tenancy.mdx)
+- [ハウツー: テナント状態を管理する](../../manage-collections/tenant-states.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

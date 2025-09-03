@@ -1,0 +1,46 @@
+---
+title: インポート - ベクトル提供オプション
+description: Weaviate でベクトル提供オプションを探索して、データ設定を調整しましょう。
+sidebar_position: 45
+image: og/docs/tutorials.jpg
+# tags: ['how-to', 'options for vectors']
+---
+
+import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
+
+<UpdateInProgressNote />
+
+import ReactPlayer from 'react-player/lazy'
+
+:::info この動画では、インポート時にベクトルを追加する方法のオプションを扱います。
+:::
+
+オブジェクトを Weaviate にインポートする際、次のいずれかを選択できます。  
+- **オブジェクトのベクトルを提供** して Weaviate に渡す  
+- **ベクトライザーを設定** してインポート時にベクトルを取得する  
+- **これらを組み合わせる** ことで、ベクトライザーを設定しつつ明示的にベクトルを提供する  
+
+この **5 分間の動画** では、3 つのワークフローすべてを Python のコード例とともに概観します。
+
+### 前提条件
+
+この動画を見る前に、[Quickstart チュートリアル](docs/weaviate/quickstart/index.md) を一通り試すか、Weaviate のスキーマ、インポート、クエリの基本に慣れておくことをおすすめします。
+
+### Jupyter notebook とデータ
+
+対応する Jupyter notebook とデータは [こちらのリポジトリ](https://github.com/weaviate-tutorials/vector-provision-options) にあります。
+
+## 動画 (4 分 46 秒)
+
+<ReactPlayer className="react-player" url='https://www.youtube.com/watch?v=x9ztOHUxALg' width="100%" controls="true"/>
+<br/>
+
+### タイムスタンプ
+
+- 0:00: Introduction  
+- 0:15: Overview  
+- 0:30: Weaviate クライアントのインスタンス化 & データ読み込み  
+- 1:18: Weaviate が取得したベクトルでのデータインポート  
+- 2:17: ユーザー指定ベクトルでのデータインポート  
+- 3:14: 併用オプション - ユーザー指定ベクトルでインポートしつつベクトライザーを指定  
+- 4:20: まとめ

@@ -1,0 +1,52 @@
+---
+title: チュートリアル
+description: データ管理とクエリに関する実践的なガイダンスとして Weaviate のチュートリアルを探求しましょう。
+sidebar_position: 0
+image: og/docs/tutorials.jpg
+hide_table_of_contents: true
+# tags: ['how to', 'schema']
+---
+
+import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
+
+<BasicPrereqs />
+
+チュートリアルは、_あなた_ の特定のニーズに基づいて Weaviate を活用できるよう支援することを目的としています。  
+ここでは、次の方法を学べます:
+
+import CardsSection from "/src/components/CardsSection";
+
+export const advancedFeaturesData = [
+  {
+    title: "Spark で Weaviate にデータをロードする",
+    description:
+      "Spark コネクターを使用し、バッチ処理とベクトル化のオプションで Apache Spark から大規模データセットを Weaviate に効率的にインポートします。",
+    link: "/weaviate/tutorials/spark-connector",
+    icon: "fas fa-fire",
+  },
+  {
+    title: "マルチベクトル埋め込み (ColBERT など) を利用する",
+    description:
+      "ColBERT などのモデルを用いて高度なマルチベクトル表現を実装し、検索の関連性を向上させます。",
+    link: "/weaviate/tutorials/multi-vector-embeddings",
+    icon: "fas fa-puzzle-piece",
+  },
+  {
+    title: "クロスリファレンスでリレーションシップを管理する",
+    description:
+      "オブジェクト間のリンクを定義・作成・クエリし、複雑なデータリレーションシップを効果的にモデル化します。",
+    link: "/weaviate/tutorials/cross-references",
+    icon: "fas fa-link",
+  },
+  {
+    title: "ロールベースアクセス制御 (RBAC) を設定する",
+    description:
+      "Weaviate で安全なアクセス制御を実現するため、ロール・権限・ユーザー割り当てを設定します。",
+    link: "/deploy/tutorials/rbac",
+    icon: "fas fa-user-shield",
+  },
+];
+
+<br />
+<CardsSection items={advancedFeaturesData} />
+<br />

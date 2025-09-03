@@ -1,389 +1,376 @@
 ---
-title: Consistency
+title: 一貫性
 sidebar_position: 4
-description: "Replication factor configuration and data consistency models across Weaviate cluster replicas."
+description: " Weaviate クラスター内のレプリカ間でのレプリケーションファクター設定とデータ整合性モデル。"
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-The replication factor in Weaviate determines how many copies of shards (also called replicas) will be stored across a Weaviate cluster.
+ Weaviate におけるレプリケーションファクターは、シャード（レプリカとも呼ばれます）のコピーをクラスター全体にいくつ保持するかを決定します。
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-factor.png" alt="Replication factor" width="80%"/></p>
 
-When the replication factor is > 1, consistency models balance the system's reliability, scalability, and/or performance requirements.
+レプリケーションファクターが  > 1 になると、整合性モデルはシステムの信頼性、スケーラビリティ、パフォーマンス要件のバランスを取ります。
 
-Weaviate uses multiple consistency models. One for its cluster metadata and another for its data objects.
+ Weaviate は複数の整合性モデルを使用します。クラスター メタデータ用とデータオブジェクト用で、それぞれ異なるモデルです。
 
-### Consistency models in Weaviate
+### Weaviate における整合性モデル
 
-Weaviate uses the [Raft](https://raft.github.io/) consensus algorithm for [cluster metadata replication](./cluster-architecture.md#metadata-replication-raft). Cluster metadata in this context includes the collection definitions and tenant activity statuses. This allows cluster metadata updates to occur even when some nodes are down.
+ Weaviate は [Raft](https://raft.github.io/) コンセンサスアルゴリズムを使用して [クラスター メタデータのレプリケーション](./cluster-architecture.md#metadata-replication-raft) を行います。ここでのクラスター メタデータには、コレクション定義やテナントのアクティビティ ステータスが含まれます。これにより、一部ノードがダウンしていてもメタデータを更新できます。
 
-Data objects are replicated using a [leaderless design](./cluster-architecture.md#data-replication-leaderless) using tunable consistency levels. So, data operations can be tuned to be more consistent or more available, depending on the desired tradeoff.
+データオブジェクトは、[リーダーレス設計](./cluster-architecture.md#data-replication-leaderless) と調整可能な整合性レベルを用いてレプリケートされます。そのため、データ操作をより一貫性重視にも可用性重視にも調整でき、望ましいトレードオフを実現できます。
 
-These designs reflect the trade-off between consistency and availability that is described in the [CAP Theorem](./index.md#cap-theorem).
+これらの設計は、[CAP 定理](./index.md#cap-theorem) で説明される整合性と可用性のトレードオフを反映しています。
 
-:::tip Rule of thumb on consistency
-The strength of consistency can be determined by applying the following conditions:
-* If r + w > n, then the system is strongly consistent.
-    * r is the consistency level of read operations
-    * w is the consistency level of write operations
-    * n is the replication factor (number of replicas)
-* If r + w &lt;= n, then eventual consistency is the best that can be reached in this scenario.
+:::tip 整合性に関する経験則
+整合性の強さは、次の条件で判断できます。
+* r + w  > n の場合、システムは強い整合性を持ちます。  
+    * r は読み取り操作の整合性レベル  
+    * w は書き込み操作の整合性レベル  
+    * n はレプリケーションファクター（レプリカ数）
+* r + w &lt;= n の場合、このシナリオで到達できるのは最終的な整合性です。
 :::
 
-## Cluster metadata
+## クラスター メタデータ
 
-The cluster metadata in Weaviate makes use of the Raft algorithm.
+クラスター メタデータは Raft アルゴリズムを使用します。
 
-From `v1.25`, Weaviate uses the [Raft](https://raft.github.io/) consensus algorithm for cluster metadata replication. Raft is a consensus algorithm with an elected leader node that coordinates replication across the cluster using a log-based approach.
+ `v1.25` 以降、 Weaviate はクラスター メタデータのレプリケーションに [Raft](https://raft.github.io/) コンセンサスアルゴリズムを採用しています。Raft はリーダー選出型のコンセンサス アルゴリズムで、ログベースの方式によりクラスター全体へレプリケーションを調整します。
 
-As a result, each request that changes the cluster metadata will be sent to the leader node. The leader node will apply the change to its logs, then propagate the changes to the follower nodes. Once a quorum of nodes has acknowledged the cluster metadata change, the leader node will commit the change and confirm it to the client.
+その結果、クラスター メタデータを変更するリクエストはすべてリーダーノードへ送信されます。リーダーノードは自分のログに変更を適用した後、フォロワーノードへ変更を伝播します。ノードの過半数が変更を承認すると、リーダーノードが変更をコミットし、クライアントへ確定を返します。
 
-This architecture ensures that cluster metadata changes are consistent across the cluster, even in the event of (a minority of) node failures.
+このアーキテクチャにより、少数のノード障害が発生してもクラスター全体でメタデータの整合性が保たれます。
 
 <details>
-  <summary>Pre-<code>v1.25</code> cluster metadata consensus algorithm</summary>
+  <summary><code>v1.25</code> 以前のクラスター メタデータ コンセンサス アルゴリズム</summary>
 
-Prior to using Raft, a cluster metadata update was done via a [Distributed Transaction](https://en.wikipedia.org/wiki/Distributed_transaction) algorithm. This is a set of operations that is done across databases on different nodes in the distributed network. Weaviate used a [two-phase commit (2PC)](https://en.wikipedia.org/wiki/Two-phase_commit_protocol) protocol, which replicates the cluster metadata updates in a short period of time (milliseconds).
+Raft を導入する前は、クラスター メタデータの更新は [分散トランザクション](https://en.wikipedia.org/wiki/Distributed_transaction) アルゴリズムで実施していました。これは分散ネットワーク上の複数ノードのデータベースを横断して一連の操作を行う手法です。 Weaviate では [2 フェーズコミット (2PC)](https://en.wikipedia.org/wiki/Two-phase_commit_protocol) プロトコルを使用し、ミリ秒単位でクラスター メタデータをレプリケートしていました。
 
-A clean (without fails) execution has two phases:
-1. The commit-request phase (or voting phase), in which a coordinator node asks each node whether they are able to receive and process the update.
-2. The commit phase, in which the coordinator commits the changes to the nodes.
+フェイルがない正常実行では 2 つのフェーズがあります。  
+1. コミット要求フェーズ（投票フェーズ）: コーディネーターノードが各ノードへ更新を受け取り処理できるかを確認します。  
+2. コミットフェーズ: コーディネーターノードが各ノードへ変更をコミットします。
 
 </details>
 
-### Collection definition requests in queries
+### クエリにおけるコレクション定義の取得
 
-:::info Added in `v1.27.10`, `v1.28.4`
+:::info `v1.27.10`, `v1.28.4` で追加
 :::
 
-Some queries require the collection definition. Prior to the introduction of this feature, every such query led to the local (requesting) node to fetch the collection definition from the leader node. This meant that the definition was strongly consistent, but it could lead to additional traffic and load.
+一部のクエリではコレクション定義が必要です。この機能導入前は、そのようなクエリのたびにローカルノードがリーダーノードから定義を取得していました。これにより整合性は強く保たれますが、トラフィックと負荷が増加する可能性がありました。
 
-Where available, the `COLLECTION_RETRIEVAL_STRATEGY` [environment variable](/deploy/configuration/env-vars/index.md#multi-node-instances) can be set to `LeaderOnly`, `LocalOnly`, or `LeaderOnMismatch`.
+対応している場合、`COLLECTION_RETRIEVAL_STRATEGY` [環境変数](/deploy/configuration/env-vars/index.md#multi-node-instances) に `LeaderOnly`、`LocalOnly`、`LeaderOnMismatch` を設定できます。
 
-- `LeaderOnly` (default): Always requests the definition from the leader node. This is the most consistent behavior but can lead to higher intra-cluster traffic.
-- `LocalOnly`: Always use the local definition; leading to eventually consistent behavior while reducing intra-cluster traffic.
-- `LeaderOnMismatch`: Checks if the local definition is outdated, and requests the definition if necessary. Balances consistency and intra-cluster traffic.
+- `LeaderOnly` (デフォルト): 常にリーダーノードから定義を取得します。最も整合性が高い一方、クラスター内部トラフィックが増える可能性があります。
+- `LocalOnly`: 常にローカルの定義を使用します。最終的な整合性となりますが、クラスター内部トラフィックを削減できます。
+- `LeaderOnMismatch`: ローカル定義が古いかをチェックし、必要に応じてリーダーから取得します。整合性とトラフィックのバランスを取ります。
 
-The default behavior is `LeaderOnly` to achieve strong consistency. However, `LocalOnly` and `LeaderOnMismatch` can be used to reduce intra-cluster traffic according to the desired consistency level.
+デフォルトは強い整合性を得るため `LeaderOnly` です。ただし、`LocalOnly` や `LeaderOnMismatch` を用いることで、望ましい整合性レベルに応じてトラフィックを削減できます。
 
-## Data objects
+## データオブジェクト
 
-Weaviate uses two-phase commits for objects, adjusted for the consistency level. For example for a `QUORUM` write (see below), if there are 5 nodes, 3 requests will be sent out, each of them using a 2-phase commit under the hood.
+ Weaviate はデータオブジェクトに対して、整合性レベルに応じて調整された 2 フェーズコミットを使用します。たとえば `QUORUM` 書き込み（後述）の場合、5 ノードが存在すると 3 件のリクエストが送信され、それぞれが内部で 2 フェーズコミットを実行します。
 
-As a result, data objects in Weaviate are eventually consistent. Eventual consistency provides BASE semantics:
+その結果、 Weaviate のデータオブジェクトは最終的に整合性が取られます。最終的な整合性は BASE セマンティクスを提供します。
 
-* **Basically available**: reading and writing operations are as available as possible
-* **Soft-state**: there are no consistency guarantees since updates might not yet have converged
-* **Eventually consistent**: if the system functions long enough, after some writes, all nodes will be consistent.
+* **Basically available**: 読み取りおよび書き込み操作は可能な限り利用可能  
+* **Soft-state**: 更新がまだ収束していないため整合性保証はありません  
+* **Eventually consistent**: システムが十分に長く稼働し書き込みが行われた後、すべてのノードが整合性を持つようになります  
 
-Weaviate uses eventual consistency to improve availability. Read and write consistency are tunable, so you can tradeoff between availability and consistency to match your application needs.
+ Weaviate は可用性向上のため最終的な整合性を採用しています。読み取りと書き込みの整合性は調整可能で、アプリケーション要件に合わせて可用性と整合性のトレードオフを選択できます。
 
-*The animation below is an example of how a write or a read is performed with Weaviate with a replication factor of 3 and 8 nodes. The blue node acts as the coordinator node. The consistency level is set to `QUORUM`, so the coordinator node only waits for two out of three responses before sending the result back to the client.*
+*下のアニメーションは、レプリケーションファクター 3、ノード数 8 の環境で `QUORUM` 整合性を設定した書き込みまたは読み取りの例です。青色のノードがコーディネーターノードとして動作します。`QUORUM` が設定されているため、コーディネーターノードは 3 件中 2 件のレスポンスを受け取った時点でクライアントへ結果を返します。*
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-quorum-animation.gif" alt="Write consistency QUORUM" width="75%"/></p>
 
-### Tunable write consistency
+### 書き込み整合性の調整
 
-Adding or changing data objects are **write** operations.
+データオブジェクトの追加または変更は **書き込み** 操作です。
 
 :::note
-Write operations are tunable starting with Weaviate v1.18, to `ONE`, `QUORUM` (default) or `ALL`. In v1.17, write operations are always set to `ALL` (highest consistency).
+書き込み操作の整合性は、 Weaviate  v1.18 から `ONE`、`QUORUM`（デフォルト）、`ALL` に調整できます。 v1.17 では書き込み整合性は常に `ALL`（最高整合性）です。
 :::
 
-The main reason for introducing configurable write consistency in v1.18 is because that is also when automatic repairs are introduced. A write will always be written to n (replication factor) nodes, regardless of the chosen consistency level. The coordinator node however waits for acknowledgments from `ONE`, `QUORUM` or `ALL` nodes before it returns. To guarantee that a write is applied everywhere without the availability of repairs on read requests, write consistency is set to `ALL` for now. Possible settings in v1.18+ are:
-* **ONE** - a write must receive an acknowledgment from at least one replica node. This is the fastest (most available), but least consistent option.
-* **QUORUM** - a write must receive an acknowledgment from at least `QUORUM` replica nodes. `QUORUM` is calculated as _n / 2 + 1_, where _n_ is the number of replicas (replication factor). For example, using a replication factor of 6, the quorum is 4, which means the cluster can tolerate 2 replicas down.
-* **ALL** - a write must receive an acknowledgment from all replica nodes. This is the most consistent, but 'slowest' (least available) option.
+書き込み整合性を設定可能にした主な理由は、 v1.18 で自動修復が導入されたためです。書き込みは選択した整合性レベルにかかわらず n（レプリケーションファクター） ノードに対して必ず行われます。ただしコーディネーターノードが待機する ACK 数が `ONE`、`QUORUM`、`ALL` で異なります。読み取りリクエストでの修復機能がない状況で、すべてのノードに確実に書き込みを適用するため、 v1.17 までは書き込み整合性が `ALL` に固定されていました。 v1.18 以降の設定は以下のとおりです:
+* **ONE** - 少なくとも 1 つのレプリカから ACK を受け取れば書き込み完了とみなします。最も高速（高可用性）ですが、整合性は最低です。
+* **QUORUM** - 少なくとも `QUORUM` レプリカから ACK を受け取る必要があります。`QUORUM` は _n / 2 + 1_ で計算されます（_n_ はレプリカ数）。例: レプリケーションファクター 6 ではクォーラムは 4 で、2 レプリカのダウンに耐えられます。
+* **ALL** - すべてのレプリカから ACK を受け取る必要があります。最も整合性が高いですが、最も遅く（低可用性）な選択肢です。
 
-
-*Figure below: a replicated Weaviate setup with write consistency of ONE. There are 8 nodes in total out of which 3 replicas.*
+*下図: レプリケーションファクター 3、ノード数 8、書き込み整合性 `ONE` の Weaviate レプリケート構成。*
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ONE.png" alt="Write consistency ONE" width="60%"/></p>
 
-*Figure below: a replicated Weaviate setup with Write Consistency of `QUORUM` (n/2+1). There are 8 nodes in total, out of which 3 replicas.*
-
+*下図: レプリケーションファクター 3、ノード数 8、書き込み整合性 `QUORUM`（n/2+1）の構成。*
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Write consistency QUORUM" width="60%"/></p>
 
-*Figure below: a replicated Weaviate setup with Write Consistency of `ALL`. There are 8 nodes in total, out of which 3 replicas.*
+*下図: レプリケーションファクター 3、ノード数 8、書き込み整合性 `ALL` の構成。*
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ALL.png" alt="Write consistency ALL" width="60%"/></p>
 
+### 読み取り整合性の調整
 
-### Tunable read consistency
-
-Read operations are GET requests to data objects in Weaviate. Like write, read consistency is tunable, to `ONE`, `QUORUM` (default) or `ALL`.
+読み取り操作は Weaviate のデータオブジェクトに対する GET リクエストです。書き込みと同様、読み取り整合性も `ONE`、`QUORUM`（デフォルト）、`ALL` に調整可能です。
 
 :::note
-Prior to `v1.18`, read consistency was tunable only for [requests that obtained an object by id](../../manage-objects/read.mdx#get-an-object-by-id), and all other read requests had a consistency of `ALL`.
+`v1.18` 以前は、[ID でオブジェクトを取得するリクエスト](../../manage-objects/read.mdx#get-an-object-by-id) にのみ整合性レベルを設定でき、それ以外の読み取りリクエストはすべて `ALL` でした。
 :::
 
-The following consistency levels are applicable to most read operations:
+以下の整合性レベルはほとんどの読み取り操作に適用されます。
 
-- Starting with `v1.18`, consistency levels are applicable to REST endpoint operations.
-- Starting with `v1.19`, consistency levels are applicable to GraphQL `Get` requests.
-- All gRPC based read and write operations support tunable consistency levels.
+- `v1.18` 以降、REST エンドポイントで整合性レベルを指定できます。  
+- `v1.19` 以降、GraphQL `Get` リクエストでも整合性レベルを指定できます。  
+- すべての gRPC ベースの読み書き操作は調整可能な整合性レベルをサポートします。
 
-* **ONE** - a read response must be returned by at least one replica. This is the fastest (most available), but least consistent option.
-* **QUORUM** - a response must be returned by `QUORUM` amount of replica nodes. `QUORUM` is calculated as _n / 2 + 1_, where _n_ is the number of replicas (replication factor). For example, using a replication factor of 6, the quorum is 4, which means the cluster can tolerate 2 replicas down.
-* **ALL** - a read response must be returned by all replicas. The read operation will fail if at least one replica fails to respond. This is the most consistent, but 'slowest' (least available) option.
+* **ONE** - 少なくとも 1 つのレプリカからレスポンスが得られれば読み取り完了とみなします。最も高速（高可用性）ですが、整合性は最低です。
+* **QUORUM** - `QUORUM` 数のレプリカからレスポンスが必要です。`QUORUM` は _n / 2 + 1_ で計算されます。例: レプリケーションファクター 6 ではクォーラムは 4 で、2 レプリカのダウンに耐えられます。
+* **ALL** - すべてのレプリカからレスポンスを受け取る必要があります。少なくとも 1 つのレプリカが応答しないと読み取りは失敗します。最も整合性が高いですが、最も遅い（低可用性）選択肢です。
 
-Examples:
-* **ONE**<br/>
-  In a single datacenter with a replication factor of 3 and a read consistency level of ONE, the coordinator node will wait for a response from one replica node.
+例:
+* **ONE**  
+  単一データセンターでレプリケーションファクター 3、読み取り整合性 `ONE` の場合、コーディネーターノードは 1 つのレプリカからのレスポンスを待ちます。
 
   <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ONE.png" alt="Write consistency ONE" width="60%"/></p>
 
-* **QUORUM**<br/>
-  In a single datacenter with a replication factor of 3 and a read consistency level of `QUORUM`, the coordinator node will wait for n / 2 + 1 = 3 / 2 + 1 = 2 replicas nodes to return a response.
+* **QUORUM**  
+  単一データセンターでレプリケーションファクター 3、読み取り整合性 `QUORUM` の場合、コーディネーターノードは n / 2 + 1 = 3 / 2 + 1 = 2 つのレプリカからレスポンスを待ちます。
 
   <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Write consistency QUORUM" width="60%"/></p>
 
-* **ALL**<br/>
-  In a single datacenter with a replication factor of 3 and a read consistency level of `ALL`, the coordinator node will wait for all 3 replicas nodes to return a response.
+* **ALL**  
+  単一データセンターでレプリケーションファクター 3、読み取り整合性 `ALL` の場合、コーディネーターノードは 3 つすべてのレプリカからレスポンスを待ちます。
 
   <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-ALL.png" alt="Write consistency ALL" width="60%"/></p>
+### 調整可能な一貫性戦略
 
-### Tunable consistency strategies
+一貫性と速度のトレードオフに応じて、以下に書き込み / 読み取り操作の一般的な一貫性レベルの組み合わせを示します。これらは最終的な一貫性を保証するための _最小_ 要件です:  
+* `QUORUM` / `QUORUM` => 書き込みと読み取りのレイテンシがバランス  
+* `ONE` / `ALL` => 書き込みが高速、読み取りが低速 (書き込み最適化)  
+* `ALL` / `ONE` => 書き込みが低速、読み取りが高速 (読み取り最適化)
 
-Depending on the desired tradeoff between consistency and speed, below are three common consistency level pairings for write / read operations. These are _minimum_ requirements that guarantee eventually consistent data:
-* `QUORUM` / `QUORUM` => balanced write and read latency
-* `ONE` / `ALL` => fast write and slow read (optimized for write)
-* `ALL` / `ONE` => slow write and fast read (optimized for read)
+### 調整可能な一貫性とクエリ
 
-### Tunable consistency and queries
+読み取り操作における調整可能な一貫性レベルは、クエリで返されるオブジェクト一覧の一貫性には影響しません。言い換えると、クエリで返されるオブジェクトの UUID 一覧は、コーディネーターノード (および必要に応じたその他のシャード) のローカルインデックスのみに依存し、読み取り一貫性レベルとは無関係です。
 
-Note that tunable consistency levels for read operations do not affect consistency of the list of objects returned by a query. In other words, the list of object UUIDs returned by a query depends only on the coordinator node's (and any other required shards') local index, and is independent of the read consistency level.
+これは、各クエリがコーディネーターノードと、クエリを解決するために必要な他のシャードによって実行されるためです。読み取り一貫性レベルを `ALL` に設定しても、複数のレプリカにクエリを発行して結果をマージするわけではありません。
 
-This is due to the fact that each query is performed by the coordinator node and any other shards required to answer the query. Even if the read consistency level is set to `ALL`, it does not mean that multiple replicas will be queried and the results merged together.
+読み取り一貫性レベルが適用されるのは、特定されたオブジェクトをレプリカから取得する際です。たとえば、読み取り一貫性レベルを `ALL` に設定すると、コーディネーターノードはすべてのレプリカからオブジェクトが返されるのを待ちます。`ONE` に設定した場合、コーディネーターノードは自身だけからオブジェクトを返すことがあります。
 
-Where the read consistency level is applied is in retrieving the identified objects from the replicas. For example, if the read consistency level is set to `ALL`, the coordinator node will wait for all replicas to return the identified objects. And if the read consistency level is set to `ONE`, the coordinator node may simply return the objects from itself.
+つまり、読み取り一貫性レベルは取得されるオブジェクトのバージョンには影響しますが、クエリ結果をより (あるいはより少なく) 一貫性のあるものにするわけではありません。
 
-In other words, the read consistency level only affects which versions of the objects are retrieved, but it does not lead to a more (or less) consistent query result.
-
-:::note When might this occur?
-
-By default, Weaviate writes to all nodes on an insert/update/delete. So, most of the time this won't matter as all shards will have identical local indexes to each other. This is a rare care which may only occur if there is a problem, such as a node being down, or there is a network problem.
-
+:::note いつ発生する可能性がありますか?
+デフォルトでは、Weaviate は挿入 / 更新 / 削除時にすべてのノードへ書き込みを行います。そのため、ほとんどの場合すべてのシャードは同一のローカルインデックスを持ち、この問題は発生しません。これはノードがダウンしている、ネットワークに問題があるなどの稀なケースでのみ発生します。
 :::
 
-### Tenant states and data objects
+### テナント状態とデータオブジェクト
 
-Each tenant in a [multi-tenant collection](../data.md#multi-tenancy) has a configurable [tenant state](../../starter-guides/managing-resources/tenant-states.mdx), which determines the availability and location of the tenant's data. The tenant state can be set to `active`, `inactive`, or `offloaded`.
+[マルチテナントコレクション](../data.md#multi-tenancy) では、各テナントに設定可能な [テナント状態](../../starter-guides/managing-resources/tenant-states.mdx) があり、データの可用性と配置を決定します。テナント状態は `active`, `inactive`, `offloaded` に設定できます。
 
-An `active` tenant's data should be available for queries and updates, while `inactive` or `offloaded` tenants are not.
+`active` テナントのデータはクエリと更新が可能であるはずですが、`inactive` や `offloaded` テナントはそうではありません。
 
-However, there can be a delay between the time a tenant state is set, and when the tenant's data reflects the (declarative) tenant state.
+しかし、テナント状態が変更されてから、データがその (宣言的な) テナント状態を反映するまでに遅延が発生する場合があります。
 
-As a result, a tenant's data may be available for queries for a period of time even if the tenant state is set to `inactive` or `offloaded`. Conversely, a tenant's data may not be available for queries and updates for a period of time even if the tenant state is set to `active`.
+その結果、テナント状態が `inactive` や `offloaded` に設定されていても、一定期間データがクエリ可能である場合があります。逆に、`active` に設定されていても、一定期間データがクエリや更新に利用できない場合があります。
 
-:::info Why is this not addressed by repair-on-read?
-For speed, data operations on a tenant occur independently of any tenant activity status operations. As a result, tenant states are not updated by repair-on-read operations.
+:::info なぜ repair-on-read で解決されないのですか?
+速度を優先するため、テナントに対するデータ操作はテナントのアクティビティ状態操作とは独立して行われます。そのため、テナント状態は repair-on-read 操作では更新されません。
 :::
 
-## Repairs
+## 修復
 
-In distributed systems like Weaviate, object replicas can become inconsistent due to any number of reasons - network issues, node failures, or timing conflicts. When Weaviate detects inconsistent data across replicas, it attempts to repair the out of sync data.
+Weaviate のような分散システムでは、ネットワーク問題、ノード障害、タイミング競合などによりオブジェクトレプリカが不整合になることがあります。Weaviate はレプリカ間で不整合を検出すると、同期していないデータを修復しようとします。
 
-Weaviate uses [async replication](#async-replication), [deletion resolution](#deletion-resolution-strategies) and [repair-on-read](#repair-on-read) strategies to maintain consistency across replicas.
+Weaviate は [非同期レプリケーション](#async-replication)、[削除解決](#deletion-resolution-strategies)、[repair-on-read](#repair-on-read) の各戦略を用いてレプリカ間の一貫性を維持します。
 
-### Async replication
+### 非同期レプリケーション
 
-:::info Added in `v1.26`
+:::info `v1.26` で追加
 :::
 
-Async replication is a background synchronization process in Weaviate that ensures eventual consistency across nodes storing the same data. When each shard is replicated across multiple nodes, async replication guarantees that all nodes holding copies of the same data remain in sync by periodically comparing and propagating data.
+非同期レプリケーションは、同じデータを保持するノード間で最終的な一貫性を確保する Weaviate のバックグラウンド同期プロセスです。各シャードが複数ノードにレプリケートされる場合、非同期レプリケーションは定期的にデータを比較・伝播し、すべてのノードが同期を保つよう保証します。
 
-It uses a Merkle tree (hash tree) algorithm to monitor and compare the state of nodes within a cluster. If the algorithm identifies an inconsistency, it resyncs the data on the inconsistent node.
+このプロセスでは Merkle ツリー (ハッシュツリー) アルゴリズムを使用してクラスタ内ノードの状態を監視・比較します。不整合が検出されると、対象ノードのデータを再同期します。
 
-Repair-on-read works well with one or two isolated repairs. Async replication is effective in situations where there are many inconsistencies. For example, if an offline node misses a series of updates, async replication quickly restores consistency when the node returns to service.
+repair-on-read は 1 つまたは 2 つの孤立した修復には効果的ですが、非同期レプリケーションは多数の不整合が存在する状況で効果を発揮します。たとえばオフラインノードが複数の更新を逃した場合、ノードが復旧すると非同期レプリケーションが迅速に一貫性を回復します。
 
-Async replication supplements the repair-on-read mechanism. If a node becomes inconsistent between sync checks, the repair-on-read mechanism catches the problem at read time.
+非同期レプリケーションは repair-on-read を補完します。同期チェックの合間にノードが不整合になった場合、repair-on-read が読み取り時に問題を検知します。
 
-To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-collections/multi-node-setup.mdx#replication-settings). Visit the [How-to: Replication](/deploy/configuration/replication.md#async-replication-settings) page to learn more about the available async replication settings.
+非同期レプリケーションを有効化するには、コレクション定義の [`replicationConfig` セクション](../../manage-collections/multi-node-setup.mdx#replication-settings) で `asyncEnabled` を true に設定します。利用可能な設定の詳細は [How-to: Replication](/deploy/configuration/replication.md#async-replication-settings) を参照してください。
 
-#### Memory and performance considerations for async replication
+#### 非同期レプリケーションのメモリおよびパフォーマンスの考慮事項
 
-:::info Added in `v1.29`
+:::info `v1.29` で追加
 :::
 
-Async replication uses a hash tree to compare and synchronize data between the database cluster nodes, based on objects' latest update time. The additional memory required for this process is determined by the height of the hash tree (`H`). A higher hash tree uses more memory but allows faster hashing, reducing the time required to detect and repair inconsistencies.
+非同期レプリケーションは、オブジェクトの最新更新時間に基づき、ハッシュツリーを用いてクラスタノード間でデータを比較・同期します。この処理に必要な追加メモリは、ハッシュツリーの高さ `H` によって決まります。ツリーが高いほどメモリ消費は増えますが、ハッシュが高速化され、不整合の検出・修復時間が短縮されます。
 
-The trade-offs can be summarized like this:
-  - **Higher** `H`: Higher memory usage, faster replication.
-  - **Lower** `H`: Lower memory usage, slower replication.
+トレードオフは次のとおりです:  
+  - **高い** `H`: メモリ使用量が多いが、レプリケーションが速い  
+  - **低い** `H`: メモリ使用量が少ないが、レプリケーションが遅い  
 
-:::tip Memory management for multi-tenancy
-Each tenant is backed by a shard. Therefore, when there is a high number of tenants, the memory consumption of async replication can be significant. (e.g. 1,000 tenants with a hash tree height of 16 will require an extra ~2 GB of memory per node, while a height of 20 will require ~34 GB per node).
+:::tip マルチテナンシーにおけるメモリ管理
+各テナントはシャードによってバックアップされています。そのため、テナント数が多い場合、非同期レプリケーションのメモリ消費は大きくなります。(例: 1,000 テナントでハッシュツリーの高さが 16 の場合、ノードあたり約 2 GB の追加メモリが必要ですが、高さ 20 ではノードあたり約 34 GB が必要になります)  
 <br/>
 
-To reduce memory consumption, reduce the hash tree height. Keep in mind that this will result in slower hashing and potentially slower replication.
+メモリ消費を抑えるにはハッシュツリーの高さを下げてください。ただし、その分ハッシュ処理が遅くなり、レプリケーションも遅くなる可能性があります。
 :::
 
-Use the following formulas and examples as a quick reference:
+クイックリファレンスとして、以下の計算式と例を利用してください。
 
-##### Memory calculation
+##### メモリ計算
 
-- **Total number of nodes in the hash tree:**
-  For a hash tree with height `H`, the total number of nodes is:
+- **ハッシュツリー内の総ノード数:**  
+  高さ `H` のハッシュツリーにおける総ノード数は次のとおりです:  
   ```
   Number of hash tree nodes = 2^(H+1) - 1 ≈ 2^(H+1)
   ```
 
-- **Total memory required (per shard/tenant on each node):**
-  Each hash tree node uses approximately **16 bytes** of memory.
+- **必要な総メモリ (各ノードの各シャード / テナント):**  
+  各ハッシュツリーノードは約 **16 バイト** のメモリを使用します。  
   ```
   Memory Required ≈ 2^(H+1) * 16 bytes
   ```
 
-##### Examples
+##### 例
 
-- Hash tree with height `16`:
-  - `Total hash tree nodes ≈ 2^(16+1) = 131,072`
-  - `Memory required ≈ 131072 * 16 bytes ≈ 2,097,152 bytes (~2 MB)`
+- 高さ `16` のハッシュツリー:  
+  - `総ノード数 ≈ 2^(16+1) = 131,072`  
+  - `必要メモリ ≈ 131072 * 16 bytes ≈ 2,097,152 bytes (~2 MB)`  
 
-- Hash tree with height `20`:
-  - `Total hash tree nodes ≈ 2^(20+1) = 2,097,152`
-  - `Memory required ≈ 2,097,152 * 16 bytes ≈ 33,554,432 bytes (~33 MB)`
+- 高さ `20` のハッシュツリー:  
+  - `総ノード数 ≈ 2^(20+1) = 2,097,152`  
+  - `必要メモリ ≈ 2,097,152 * 16 bytes ≈ 33,554,432 bytes (~33 MB)`  
 
-##### Performance Consideration: Number of Leaves
+##### パフォーマンスの考慮: 葉ノードの数
 
-The objects in a shard (e.g. tenant) are distributed among the leaves of the hash tree.
-A larger hash tree means less data for each leaf to hash, leading to faster comparisons and faster replication.
+シャード (例: テナント) 内のオブジェクトはハッシュツリーの葉ノードに分散されます。ツリーが大きいほど、各葉ノードがハッシュするデータ量が減り、比較とレプリケーションが高速化されます。
 
-- **Number of Leaves in the hash tree:**
+- **ハッシュツリーの葉ノード数:**  
   ```
   Number of leaves = 2^H
   ```
 
-##### Examples
+##### 例
 
-- Hash tree with height `16`:
-  - `Number of Leaves = 2^16 = 65,536`
+- 高さ `16` のハッシュツリー:  
+  - `葉ノード数 = 2^16 = 65,536`  
 
-- Hash tree with height `20`:
-  - `Number of Leaves = 2^20 = 1,048,576`
+- 高さ `20` のハッシュツリー:  
+  - `葉ノード数 = 2^20 = 1,048,576`  
 
-:::note Default settings
-The default hash tree height of `16` is chosen to balance memory consumption with replication performance. Adjust this value based on your cluster node’s available resources and performance requirements.
+:::note デフォルト設定
+デフォルトのハッシュツリー高さ `16` は、メモリ消費とレプリケーション性能のバランスを取るために選定されています。クラスタノードの利用可能リソースと性能要件に応じて調整してください。
 :::
 
-### Deletion resolution strategies
+### 削除解決戦略
 
-:::info Added in `v1.28`
+:::info `v1.28` で追加
 :::
 
-When an object is present on some replicas but not others, this can be because a creation has not yet been propagated to all replicas, or because a deletion has not yet been propagated to all replicas. It is important to distinguish between these two cases.
+オブジェクトが一部のレプリカに存在し、別のレプリカには存在しない場合、それは作成がまだ全レプリカに伝播されていないか、削除がまだ全レプリカに伝播されていないかのいずれかです。この 2 つを区別することが重要です。
 
-Deletion resolution works alongside async replication and repair-on-read to ensure consistent handling of deleted objects across the cluster. For each collection, [you can set one of the following](../../manage-collections/multi-node-setup.mdx#replication-settings) deletion resolution strategies:
+削除解決は、非同期レプリケーションおよび repair-on-read と連携し、クラスタ全体で削除されたオブジェクトを一貫して扱います。各コレクションに対して、以下の削除解決戦略のいずれかを [設定できます](../../manage-collections/multi-node-setup.mdx#replication-settings):
 
 - `NoAutomatedResolution`
 - `DeleteOnConflict`
 - `TimeBasedResolution`
 
-Deletion resolution strategies are mutable. [Read more about how to update collection definitions](../../manage-collections/collection-operations.mdx#update-a-collection-definition).
-
+削除解決戦略は可変です。[コレクション定義の更新方法](../../manage-collections/collection-operations.mdx#update-a-collection-definition) を参照してください。
 #### `NoAutomatedResolution`
 
-This is the default setting, and the only setting available in Weaviate versions prior to `v1.28`. In this mode, Weaviate does not treat deletion conflicts as a special case. If an object is present on some replicas but not others, Weaviate may potentially restore the object on the replicas where it is missing.
+これはデフォルト設定であり、 `v1.28` より前の Weaviate バージョンで利用できる唯一の設定です。このモードでは、削除の競合を特別扱いしません。あるオブジェクトが一部のレプリカに存在し、他のレプリカに存在しない場合、Weaviate は欠落しているレプリカに対してオブジェクトを復元する可能性があります。
 
 #### `DeleteOnConflict`
 
-A deletion conflict in `deleteOnConflict` is always resolved by deleting the object on all replicas.
+`deleteOnConflict` での削除競合は、常にすべてのレプリカからオブジェクトを削除することで解決されます。
 
-To do so, Weaviate updates an object as a deleted object on a replica upon receiving a deletion request, rather than removing all traces of the object.
+そのために、Weaviate は削除リクエストを受け取った際にオブジェクトを完全に消去するのではなく、削除済みオブジェクトとしてマークします。
 
 #### `TimeBasedResolution`
 
-A deletion conflict in `timeBasedResolution` is resolved based on the timestamp of the deletion request, in comparison to any subsequent updates to the object such as a creation or an update.
+`timeBasedResolution` では、削除リクエストのタイムスタンプと、その後に行われた作成や更新などのオブジェクト操作のタイムスタンプを比較して競合を解決します。
 
-If the deletion request has a timestamp that is later than the timestamp of any subsequent updates, the object is deleted on all replicas. If the deletion request has a timestamp that is earlier than the timestamp of any subsequent updates, the later updates are applied to all replicas.
+削除リクエストのタイムスタンプが後であれば、すべてのレプリカでオブジェクトが削除されます。削除リクエストのタイムスタンプが前であれば、その後の更新がすべてのレプリカに適用されます。
 
-For example:
-- If an object is deleted at timestamp 100 and then recreated at timestamp 90, the recreation wins
-- If an object is deleted at timestamp 100 and then recreated at timestamp 110, the deletion wins
+例:
+- オブジェクトがタイムスタンプ 100 で削除され、その後タイムスタンプ 90 で再作成された場合、再作成が優先されます  
+- オブジェクトがタイムスタンプ 100 で削除され、その後タイムスタンプ 110 で再作成された場合、削除が優先されます
 
-#### Choosing a strategy
+#### 選択の指針
 
-- Use `NoAutomatedResolution` when you want maximum control and handle conflicts manually
-- Use `DeleteOnConflict` when you want to ensure deletions are always honored
-- Use `TimeBasedResolution` when you want the most recent operation to take precedence
+- 競合を手動で管理し、最大限のコントロールを得たい場合は `NoAutomatedResolution` を使用します
+- 削除を必ず反映させたい場合は `DeleteOnConflict` を使用します
+- 最新の操作を優先させたい場合は `TimeBasedResolution` を使用します
 
 ### Repair-on-read
 
-:::info Added in `v1.18`
+:::info v1.18 で追加
 :::
 
-If your read consistency is set to `All` or `Quorum`, the read coordinator will receive responses from multiple replicas. If these responses differ, the coordinator can attempt to repair the inconsistency, as shown in the examples below. This process is called "repair-on-read", or "read repairs".
+読み取り整合性を `All` もしくは `Quorum` に設定している場合、リードコーディネーターは複数のレプリカから応答を受け取ります。応答が異なる場合、コーディネーターは不整合を修復しようとします。これを「repair-on-read」または「read repair」と呼びます。
 
-| Problem | Action |
+| 問題 | 対応 |
 | :- | :- |
-| Object never existed on some replicas. | Propagate the object to the missing replicas. |
-| Object is out of date. | Update the object on stale replicas. |
-| Object was deleted on some replicas. | Returns an error. Deletion may have failed, or the object may have been partially recreated. |
+| オブジェクトが一部のレプリカに存在しない | 欠落しているレプリカへオブジェクトを伝搬します |
+| オブジェクトが古い | ステールなレプリカを更新します |
+| オブジェクトが一部のレプリカで削除されている | エラーを返します。削除が失敗したか、オブジェクトが部分的に再作成された可能性があります |
 
-The read repair process also depends on the read and write consistency levels used.
+リードリペアは、使用する読み取りおよび書き込み整合性レベルにも依存します。
 
-| Write consistency level | Read consistency level | Action |
+| 書き込み整合性レベル | 読み取り整合性レベル | 対応 |
 | :- | :- |
-| `ONE` | `ALL` | Weaviate has to verify all nodes to guarantee repair. |
-| `QUORUM` | `QUORUM` or `ALL` | Weaviate attempts to fix the sync issues. |
-| `ALL` | - | This situation should not occur. The write should have failed. |
+| `ONE` | `ALL` | すべてのノードを検証して修復を保証します |
+| `QUORUM` | `QUORUM` または `ALL` | 同期の問題を修正しようとします |
+| `ALL` | - | この状況は発生しないはずです。書き込みが失敗しているはずです |
 
-Repairs only happen on read, so they do not create a lot of background overhead. While nodes are in an inconsistent state, read operations with consistency level of `ONE` may return stale data.
+修復は読み取り時にのみ発生するため、バックグラウンドの負荷は大きくありません。ただしノードが不整合状態の間、整合性レベル `ONE` の読み取りは古いデータを返す可能性があります。
 
 ## Replica movement
 
-:::info Added in `v1.32`
+:::info v1.32 で追加
 :::
 
-A shard represents a part of the collection in a single-tenant collection, or a whole tenant in a multi-tenant collection. Weaviate allows users to manually move or copy individual shard replicas from a source node to a destination node in a Weaviate cluster. This capability addresses operational scenarios such as cluster rebalancing after scaling, node decommissioning, optimizing data locality for improved performance, or increasing data availability.
+シャードは、単一テナントコレクションではコレクションの一部、多テナントコレクションでは 1 テナント全体を表します。Weaviate では、クラスター内のソースノードからデスティネーションノードへ個々のシャードレプリカを手動で移動またはコピーできます。これにより、スケール後のクラスター再バランス、ノードの廃止、データローカリティの最適化によるパフォーマンス向上、データ可用性の向上などの運用シナリオに対応できます。
 
-Replica movement operates as a state machine with stages that ensure data integrity throughout the process. The feature works for both single-tenant collections and multi-tenant collections. 
+レプリカ移動はステートマシンとして動作し、プロセス全体でデータ整合性を確保します。この機能は単一テナントコレクションと多テナントコレクションの両方で利用可能です。
 
-Unlike the static replication factor configured at collection creation, replica movement allows the replication factor to be adjusted for specific shards as replicas are moved or copied across the cluster. When a copy operation is performed, the newly created replica increases the replication factor for that specific shard. While a collection may have a default replication factor, individual shards within that collection can have a higher replication factor. However, shards can't have a replication factor lower then the one set on the collection level. 
+コレクション作成時に設定する静的なレプリケーションファクターとは異なり、レプリカ移動ではクラスター内でレプリカを移動またはコピーすることで特定のシャードに対して複製数を調整できます。コピー操作を行うと新しいレプリカが作成され、そのシャードのレプリケーションファクターが増加します。コレクションにはデフォルトのレプリケーションファクターが設定されていますが、個々のシャードはそれより高い値を持つことができます。ただし、コレクションレベルより低いレプリケーションファクターにはできません。
 
 :::info
 
-The [`REPLICATION_ENGINE_MAX_WORKERS` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICATION_ENGINE_MAX_WORKERS) can be used to adjust the number of workers that process replica movements in parallel. 
+[`REPLICATION_ENGINE_MAX_WORKERS`](/docs/deploy/configuration/env-vars/index.md#REPLICATION_ENGINE_MAX_WORKERS) 環境変数を使用すると、レプリカ移動を並列に処理するワーカー数を調整できます。
 
 :::
 
 ### Movement states
 
-Each replica movement operation progresses through a workflow designed to maintain data consistency and availability. The workflow comprises of the following states:
+各レプリカ移動操作は、データ整合性と可用性を保つためのワークフローを次のステートで進行します。
 
-- **REGISTERED**: The movement operation has been initiated and logged by the Raft leader. The request has been received and the operation is queued for processing.
+- **REGISTERED**: 移動操作が開始され、Raft リーダーに記録されました。リクエストが受信され、処理待ちキューに登録されています。
+- **HYDRATING**: デスティネーションノードで新しいレプリカを作成中です。データセグメントが既存のレプリカ（通常はソースレプリカ、または他の利用可能なピア）から転送されます。
+- **FINALIZING**: 大量データの転送が完了し、転送中に発生した書き込みをキャッチアップしています。これにより、レプリカは最新データと完全に同期されます。進行中の書き込みが完了しターゲットノードへ複製されるまでの待機時間は、 [`REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT`](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT) で調整できます。
+- **DEHYDRATING**: 移動 (Move) 操作の場合、新しいレプリカが準備完了した後、ソースノード上の元のレプリカを削除しています。
+- **READY**: 操作が正常に完了しました。新しいレプリカは完全に同期され、トラフィックを処理できます。Move 操作の場合、ソースレプリカは削除されています。
+- **CANCELLED**: 操作が完了する前にキャンセルされました。手動で中断された場合や、回復不能なエラーが発生した場合に起こります。
 
-- **HYDRATING**: A new replica is being created on the destination node. Data segments are transferred from an existing replica (usually the source replica, or another available peer) to establish the new replica.
+レプリカ移動は 2 つのモードをサポートします。
 
-- **FINALIZING**: The bulk data transfer is complete, and the new replica is catching up on any writes that occurred during the transfer. This ensures the replica is fully synchronized with the latest data. You can use the [`REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT) to adjust the wait time which ensures that any in progress writes have been completed and replicated to the target node.
-
-- **DEHYDRATING**: For move operations, after the new replica is ready, the original replica on the source node is being removed. 
-
-- **READY**: The operation has completed successfully. The new replica is fully synchronized and ready to serve traffic. For move operations, the source replica has been removed.
-
-- **CANCELLED**: The operation has been cancelled before completion. This can happen either through manual intervention or if the operation encounters an unrecoverable error.
-
-Replica movement supports two distinct operation modes:
-
-- **Move**: Move a replica from one node to another, maintaining the same replication factor
-- **Copy**: Copy a replica from one node to another and increase the shard replication factor by one for that specific shard
+- **Move**: レプリカをあるノードから別のノードへ移動し、レプリケーションファクターは維持します  
+- **Copy**: レプリカをコピーして別のノードへ追加し、そのシャードのレプリケーションファクターを 1 増やします
 
 :::note Replication factor and quorum
 
-When a shard replica is copied, the increased replication factor may become an even number. This can make achieving a quorum more difficult, as it now requires `(n/2 + 1)` nodes instead of `(n/2 + 0.5)` nodes. For example, going from `RF=3` to `RF=4` increases the required nodes for quorum from 2 to 3 (67% to 75% of replicas).
+シャードレプリカをコピーすると、レプリケーションファクターが偶数になる場合があります。これにより、クォーラム達成には `n/2 + 1` ノードが必要となり、以前の `n/2 + 0.5` より難しくなることがあります。たとえば `RF=3` から `RF=4` に増やすと、クォーラムに必要なノード数は 2 から 3 へ（ 67% から 75% のレプリカ）増加します。
 
 :::
 
-## Related pages
-- [API References | GraphQL | Get | Consistency Levels](../../api/graphql/get.md#consistency-levels)
-- <SkipLink href="/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
+## 関連ページ
+- [API リファレンス | GraphQL | Get | 整合性レベル](../../api/graphql/get.md#consistency-levels)
+- <SkipLink href="/weaviate/api/rest#tag/objects">API リファレンス | REST | オブジェクト</SkipLink>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

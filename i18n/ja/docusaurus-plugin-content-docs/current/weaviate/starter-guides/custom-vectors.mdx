@@ -1,5 +1,5 @@
 ---
-title: 'Quickstart: Bring your own vectors'
+title: 'クイックスタート: 独自ベクトルを使用する'
 sidebar_label: Bring your own vectors
 sidebar_position: 2
 image: og/docs/tutorials.jpg
@@ -15,36 +15,36 @@ import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
 import ByovAllTsCodeLegacy from '!!raw-loader!/_includes/code/quickstart.byov.all.legacy.ts';
 import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
 
-Weaviate is a vector database. [Vector databases](https://weaviate.io/blog/what-is-a-vector-database) store data objects and vectors that represent those objects. The vector embedding is also called an "embedding."
+ Weaviate はベクトル データベースです。[ベクトル データベース](https://weaviate.io/blog/what-is-a-vector-database) はデータ オブジェクトと、それらを表すベクトルを保存します。ベクトル埋め込み (embedding) は「埋め込み」とも呼ばれます。
 
-When you import data, you can pass pre-existing vectors or generate new ones. "Bring your own vectors" means you supply the vector embeddings when you upload your data. The embeddings you provide can be custom vectors or vectors that are pre-generated using a [model provider](/weaviate/model-providers).
+データをインポートする際、既存のベクトルを渡すことも、新しいベクトルを生成することもできます。「独自ベクトルの持ち込み」とは、データをアップロードするときにベクトル埋め込みを自分で指定することを意味します。提供する埋め込みはカスタム ベクトルでも、[model provider](/weaviate/model-providers) を使用して事前生成したベクトルでも構いません。
 
-This guide discusses importing data that has pre-existing vectors.
+本ガイドでは、既にベクトルを持つデータのインポート方法を説明します。
 
-## Guide steps
+## ガイド手順
 
-To use this guide to import data that has pre-existing vectors, follow these steps:
+既存ベクトル付きデータをインポートするには、次の手順に従ってください。
 
-1. [Review the setup steps.](#setup)
-1. [Connect to a Weaviate instance.](#connect-to-weaviate)
-1. [Import data that specifies its own vectors.](#import-data-and-vectors)
-1. [Perform a vector search.](#query)
+1. [セットアップ手順を確認する](#setup)
+1. [ Weaviate に接続する](#connect-to-weaviate)
+1. [ベクトルを含むデータをインポートする](#import-data-and-vectors)
+1. [ベクトル検索を行う](#query)
 
-## Setup
+## セットアップ
 
-This section introduces setup requirements and the example data that this guide uses.
+このセクションでは、前提となるセットアップと、本ガイドで使用するサンプル データを紹介します。
 
-### Example Data
+### サンプル データ
 
-The example data is based on a set of ten questions from the "Jeopardy!" television program. The [import data file](https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny_with_vectors_all-OpenAI-ada-002.json) is a JSON formatted document that contains the vectors and the underlying data.
+サンプル データはテレビ番組「Jeopardy!」の 10 問を基にしています。[インポート データ ファイル](https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny_with_vectors_all-OpenAI-ada-002.json) は、ベクトルと元データを含む JSON 形式のドキュメントです。
 
 <details>
-  <summary>The sample data</summary>
+  <summary>サンプル データ</summary>
 
-The JSON file is based on this data. The vector embeddings are generated with the OpenAI API [`text-embedding-ada-002` model](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings).
-  <br/>
-  Your vectors can come from any source, including your own vectorizer model or another model provider such as Cohere or Hugging Face.
-  <br/>
+この JSON ファイルは上記データを基にしています。ベクトル埋め込みは OpenAI API の [`text-embedding-ada-002` model](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings) で生成しました。  
+<br/>
+ベクトルは、独自のベクトライザー モデルや Cohere、Hugging Face など他のモデル プロバイダーなど、任意のソースから取得できます。  
+<br/>
 
   | Category | Question | Answer | Vector |
   | :- |:- |:- | :- |
@@ -61,19 +61,19 @@ The JSON file is based on this data. The vector embeddings are generated with th
 
 </details>
 
-### Weaviate Instance
+### Weaviate インスタンス
 
-Weaviate is open source. You can [run Weaviate](/deploy/index.mdx) locally, in the cloud, or as a service. If you want to follow this guide without setting up an instance of your own, consider using a free, Sandbox instance in [Weaviate Cloud](/cloud/quickstart).
+ Weaviate はオープン ソースです。ローカル、クラウド、またはサービスとして[ Weaviate を実行](/deploy/index.mdx)できます。自身でインスタンスを用意せずにガイドを試す場合は、[Weaviate Cloud](/cloud/quickstart) の無償 Sandbox インスタンスの利用を検討してください。
 
-### Client library
+### クライアント ライブラリー
 
-[Client libraries](/weaviate/client-libraries) simplify working with Weaviate. Clients are available for multiple programming languages. This guide provides examples in Python, Typescript, and cURL.
+[クライアント ライブラリー](/weaviate/client-libraries) を使用すると Weaviate の操作が簡単になります。複数のプログラミング言語向けに提供されています。本ガイドでは Python、Typescript、cURL の例を示します。
 
-To install a client library, use the installer for the client language:
+クライアントをインストールするには、使用言語のインストーラーを実行してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
-The v4 client requires Weaviate 1.23.7 or higher.<br/><br/>
+v4 クライアントは Weaviate 1.23.7 以上が必要です。<br/><br/>
 
 ```bash
 pip install -U weaviate-client
@@ -99,67 +99,66 @@ npm install weaviate-ts-client
 </TabItem>
 </Tabs>
 
-## Connect to Weaviate
+## Weaviate への接続
 
-This guide uses a Weaviate Cloud instance to host the collection. To [connect to a Weaviate Cloud instance](/cloud/manage-clusters/connect), you need the following information:
+本ガイドでは、コレクションをホストするために Weaviate Cloud インスタンスを使用します。[Weaviate Cloud インスタンスへ接続](/cloud/manage-clusters/connect)するには、次の情報が必要です。
 
-- The Weaviate URL
-- The Weaviate API key
+- Weaviate URL
+- Weaviate API キー
 
-If you are using a Sandbox instance, the URL and API keys are listed in the [details panel](/cloud/manage-clusters/connect.mdx) for your instance.
+Sandbox インスタンスを使用している場合、URL と API キーはインスタンスの[詳細パネル](/cloud/manage-clusters/connect.mdx)に表示されます。
 
-To connect to Weaviate, run the code for your language to create a client object. Re-use the `client` object in the later steps to connect to your instance and run the sample code.
+ Weaviate に接続するには、使用言語のコードを実行して client オブジェクトを作成します。後続のステップでも同じ `client` オブジェクトを再利用してインスタンスへ接続し、サンプル コードを実行します。
 
 import ConnectToWeaviate from '/_includes/code/quickstart/connect.partial.mdx'
 
 <ConnectToWeaviate />
 
-## Collection definition
+## コレクション定義
 
-Weaviate stores [data](../concepts/data.md) in collections. Each data object in a collection has a set of properties and a vector embedding. Before you import data, you should create a [collection definition](/weaviate/config-refs/collections.mdx) to define the data properties for the collection.
+ Weaviate は[データ](../concepts/data.md)をコレクションに保存します。コレクション内の各データ オブジェクトは、一連のプロパティとベクトル埋め込みを持ちます。データをインポートする前に、コレクションのデータ プロパティを定義する[コレクション定義](/weaviate/config-refs/collections.mdx)を作成する必要があります。
 
-The data property definitions are called a schema. Vectorizers are defined at the collection level. Additional details, such as the specific model or behavior, are sometimes defined at the property level.
+データ プロパティの定義はスキーマと呼ばれます。ベクトライザーはコレクション レベルで定義します。モデルや動作などの詳細は、プロパティ レベルで指定する場合もあります。
 
-This guide assumes you already have vector embeddings for your data. Since the vector embeddings are included with the import file, the sample configuration code sets the vectorizer to `none` on the collection level .
+本ガイドでは、すでにデータのベクトル埋め込みが存在することを前提としています。インポート ファイルにベクトルが含まれているため、サンプルの設定コードではコレクション レベルで vectorizer を `none` に設定します。
 
-For more on configurations, see [vectorizer settings](../manage-collections/vector-config.mdx#specify-vectorizer-settings).
+設定の詳細については、[ベクトライザー設定](../manage-collections/vector-config.mdx#specify-vectorizer-settings)を参照してください。
 
-### Define the collection
+### コレクションの定義
 
 import CreateSchema from '/_includes/code/quickstart.byov.schema.mdx'
 
 <CreateSchema />
+### オプション: 互換ベクトライザー設定
+ご使用のカスタム ベクトルを生成するためのベクトライザーに対して、 Weaviate の[統合](/weaviate/model-providers)が存在する場合は、コレクション定義にそのベクトライザーを追加することをご検討ください。ベクトライザーを指定すると、 Weaviate は必要に応じて新しいベクトルを生成できます。
 
-### Optional: Set a compatible vectorizer
-If Weaviate has an [integration](/weaviate/model-providers) for the vectorizer that you use to generate your custom vectors, consider adding your vectorizer to the collection definition. If you specify a vectorizer, Weaviate can generate new vectors when it needs them.
+この例では、ベクトルは OpenAI `ada-002` モデルによって生成されています。 Weaviate の `text2vec-openai` 統合は `ada-002` モデルにアクセスできるため、コレクション定義では `text2vec-openai` を指定します。
 
-In this example, the vectors are generated by the OpenAI `ada-002` model. The Weaviate `text2vec-openai` integration can access the `ada-002` model, so you would specify `text2vec-openai` in the collection definition.
+インポート時には、コレクションでベクトライザーを指定していても、 Weaviate は提供されたベクトルを使用します。
 
-At import time, Weaviate uses the vectors you provide even if the collection specifies a vectorizer.
+## データとベクトルのインポート
 
-## Import data and vectors
-
-For large datasets, batch import is more efficient than importing individual objects. This batch import code imports the question objects and their vectors.
+大規模なデータセットでは、個別にオブジェクトをインポートするよりもバッチ インポートの方が効率的です。次のバッチ インポート コードは、質問オブジェクトとそのベクトルをインポートします。
 
 import ImportQuestionsWithVectors from '/_includes/code/quickstart.import.questions-and-vectors.mdx'
 
 <ImportQuestionsWithVectors />
 
-:::tip Vectors are not object properties
-If a vector is listed in the properties section, Weaviate processes it as a regular property rather than as a vector embedding.
-Be careful not to mislabel vectors as properties when you specify the elements of your batch import.
+:::tip ベクトルはオブジェクトのプロパティではありません
+プロパティ セクションにベクトルを記載した場合、 Weaviate はそれをベクトル埋め込みではなく通常のプロパティとして処理します。  
+バッチ インポートの要素を指定する際に、ベクトルを誤ってプロパティとしてラベル付けしないようご注意ください。
 :::
 
-## Query
+## クエリ
 
-In order to query your stored vectors, Weaviate needs a vector embedding of the query.
+保存済みベクトルを検索するには、 Weaviate にクエリのベクトル埋め込みが必要です。
 
-- If the collection definition specifies a vectorizer, Weaviate uses that vectorizer to generate a vector embedding.
-- If the collection doesn't specify a vectorizer, provide a query vector when you search.
+- コレクション定義でベクトライザーを指定している場合、 Weaviate はそのベクトライザーを使用してベクトル埋め込みを生成します。  
+- コレクションでベクトライザーを指定していない場合は、検索時にクエリ ベクトルを提供してください。
 
-When you create a query vector, use the same vectorizer that you use to create the data embeddings.
+クエリ ベクトルを作成する際は、データの埋め込みを生成するときに使用したものと同じベクトライザーを使用してください。
 
-This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supplies a query vector. The query vector is an embedding of the query string, "biology".
+次の [`nearVector`](/weaviate/search/similarity#search-with-a-vector) クエリでは、クエリ ベクトルを提供しています。このクエリ ベクトルは、クエリ文字列「 biology 」の埋め込みです。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -207,7 +206,7 @@ This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supp
 <details>
   <summary>Query response</summary>
 
-The response is like this:
+レスポンスは次のようになります:
 
 import BiologyQuestionsJson from '/_includes/code/quickstart/response.biology.questions.mdx';
 
@@ -215,13 +214,13 @@ import BiologyQuestionsJson from '/_includes/code/quickstart/response.biology.qu
 
 </details>
 
-## Related pages
+## 関連ページ
 
-- [Batch import](../manage-objects/import.mdx)
-- [Manage collections](../manage-collections/index.mdx)
-- [Vector similarity search](../search/similarity.md)
+- [バッチ インポート](../manage-objects/import.mdx)
+- [コレクションの管理](../manage-collections/index.mdx)
+- [ベクトル類似性検索](../search/similarity.md)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

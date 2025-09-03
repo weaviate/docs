@@ -1,155 +1,164 @@
 ---
-title: Resource Planning
+title: リソース計画
 sidebar_position: 90
-description: "CPU, memory, and GPU resource planning guidelines for optimal Weaviate performance at scale."
+description: "大規模環境で Weaviate のパフォーマンスを最適化するための CPU・メモリ・GPU リソース計画ガイドライン。"
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'resource', 'cpu', 'memory', 'gpu']
 ---
 
-Weaviate scales well for large projects. Smaller projects, less than 1M objects, do not require resource planning. For medium and large-scale projects, you should plan how to get the best performance from your resources. While you design you system, keep in mind CPU and memory management. CPU and memory are the primary resources for Weaviate instances. Depending on the modules you use, GPUs may also play a role.
+Weaviate は大規模プロジェクトでも高いスケーラビリティを発揮します。100 万件未満の小規模プロジェクトであれば特別なリソース計画は不要です。中規模・大規模プロジェクトでは、リソースから最大のパフォーマンスを引き出す計画が必要です。システム設計時には、 CPU とメモリの管理を意識してください。 CPU とメモリが Weaviate インスタンスの主要リソースです。使用するモジュールによっては GPU も重要になります。
 
 
-## Limit available resources
+## 利用可能リソースの制限
 
-You can set [environment variables](/deploy/configuration/env-vars/index.md) to manage Weaviate's resource usage, as to prevent Weaviate from using all available resources. The following environment variables are available:
+Weaviate のリソース使用量を制御してシステム全体のリソースを使い切らないようにするには、[環境変数](/deploy/configuration/env-vars/index.md)を設定します。利用できる環境変数は次のとおりです。
 
-- `LIMIT_RESOURCES`: When set to true, Weaviate automatically limits its resource usage. It sets memory usage to 80% of the total memory and uses all but one CPU core. It overrides any `GOMEMLIMIT` values but respects `GOMAXPROCS` settings.
+- `LIMIT_RESOURCES`: `true` に設定すると、Weaviate は自動的にリソース使用量を制限します。メモリ使用量を総メモリの 80% に設定し、 CPU コアは 1 つを除いてすべて使用します。`GOMEMLIMIT` の設定を上書きしますが、`GOMAXPROCS` の設定は尊重します。
 
-- `GOMEMLIMIT`: This sets the memory limit for the Go runtime, which should be around 10-20% of the total memory available for Weaviate. It controls the aggressiveness of the Garbage Collector as memory usage approaches this limit.
+- `GOMEMLIMIT`: Go ランタイムのメモリ上限を設定します。Weaviate に割り当てるメモリの総量の 10〜20% 程度に設定してください。メモリ使用量がこの上限に近づくとガベージコレクタの動作が積極的になります。
 
-- `GOMAXPROCS`: This sets the maximum number of threads for concurrent execution. If set, it's respected by `LIMIT_RESOURCES`, allowing users to specify the exact number of CPU cores Weaviate should use.
+- `GOMAXPROCS`: 同時実行のために使用する最大スレッド数を設定します。指定すると `LIMIT_RESOURCES` もこの設定を尊重し、Weaviate が使用する CPU コア数を明示的に指定できます。
 
-These settings help in optimizing Weaviate's performance by balancing resource utilization with the available system resources.
+これらの設定により、システムリソースとバランスを取りながら Weaviate のパフォーマンスを最適化できます。
 
 
-## The role of CPUs
-
-:::tip Rule of thumb
-The CPU has a direct effect on query and import speed, but does not affect dataset size.
-:::
-
-Vector search is the most CPU intensive process in Weaviate operations. Queries are CPU-bound, but imports are also CPU-bound because imports rely on vector search for indexing. Weaviate uses the HNSW (Hierarchical Navigable Small World) algorithm to index vectors. You can [tune the HNSW index](../config-refs/indexing/vector-index.mdx) on a per collection basis in order to maximize performance for your primary use case.
-
-To use multiple CPUs efficiently, create multiple shards for your collection. For the fastest imports, create multiple shards even on a single node.
-
-Each insert, or search, is single-threaded. However, if you make multiple searches or inserts at the same time, Weaviate can make use of multiple threads. [Batch inserts](/weaviate/manage-objects/import) use multiple threads to process data in parallel.
-
-### When to add more CPUs
-
-When CPU utilization is high during importing, add CPUs to increases import speed.
-
-When search throughput is limited, add CPUs to increase the number of queries per second.
-
-## The role of memory
+## CPU の役割
 
 :::tip Rule of thumb
-Memory determines the maximum supported dataset size. Memory does not directly influence query speed.
+CPU はクエリ速度およびインポート速度に直接影響しますが、データセットサイズには影響しません。
 :::
 
-The HNSW index must be stored in memory. The memory required is directly related to the size of your dataset. There is no correlation between the size of your dataset and the current query load. You can use [`product quantization (PQ)`](/weaviate/concepts/vector-quantization#product-quantization) to compress the vectors in your dataset in increase the number of vectors your can hold in memory.
+ベクトル検索は Weaviate の操作の中で最も CPU 集約的な処理です。クエリは CPU ボトルネックになりやすく、インポートもインデックス作成時にベクトル検索を行うため CPU ボトルネックになります。Weaviate はベクトルをインデックスするために HNSW (Hierarchical Navigable Small World) アルゴリズムを使用します。主用途に合わせて [HNSW インデックスを調整](../config-refs/indexing/vector-index.mdx) できます。
 
-Weaviate let's you configure a limit to the number of vectors held in memory in order to prevent unexpected Out-of-Memory ("OOM") situations. The default value is one trillion (`1e12`) objects.  per collection. To adjust the number of objects, update the value of [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) in your index settings.
+複数の CPU を効率的に利用するには、コレクションに複数シャードを作成してください。単一ノードでも最速のインポートを実現するには複数シャードを作成します。
 
-Weaviate also uses [memory-mapped files](https://en.wikipedia.org/wiki/Memory-mapped_file) for data stored on disks. Memory-mapped files are efficient, but disk storage is much slower than in-memory storage.
+各挿入および検索はシングルスレッドで実行されます。ただし、複数の検索や挿入を同時に行う場合、Weaviate はマルチスレッドを利用できます。[バッチ挿入](/weaviate/manage-objects/import)は複数スレッドで並列処理を行います。
 
-### Which factors drive memory usage?
+### CPU を追加すべきタイミング
 
-The HNSW vector index is the primary driver of memory usage. These factors influence the amount of memory Weaviate uses:
+インポート時に CPU 使用率が高い場合は CPU を追加してインポート速度を向上させます。
 
-- **The total number of object vectors**. The number of vectors is important, but the raw size of the original objects is not important. Only the vector is stored in memory. The size of the original text or other data is not a limiting factor.
-- **The `maxConnections` HNSW index setting**. Each object in memory has at most [`maxConnections`](../config-refs/indexing/vector-index.mdx) connections per layer. Each of the connections uses 8-10B of memory. Note that the base layer allows for `2 * maxConnections`.
+検索スループットが制限されている場合は CPU を追加して 1 秒当たりのクエリ数を増やします。
 
-### An example calculation
+## メモリの役割
+
+:::tip Rule of thumb
+メモリはサポートできる最大データセットサイズを決定します。メモリは直接的にはクエリ速度に影響しません。
+:::
+
+HNSW インデックスはメモリ上に保持される必要があります。必要なメモリ量はデータセットサイズに直接比例します。データセットサイズと現在のクエリ負荷には相関がありません。ベクトルを圧縮する [`product quantization (PQ)`](/weaviate/concepts/vector-quantization#product-quantization) を利用すると、メモリに保持できるベクトル数を増やせます。
+
+Weaviate では、予期しない Out-of-Memory（「 OOM 」）を防ぐためにメモリ上に保持するベクトル数の上限を設定できます。デフォルト値はコレクションごとに 1 兆 (`1e12`) オブジェクトです。この値を変更するには、インデックス設定の [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) を更新してください。
+
+また、Weaviate はディスク上のデータに対して [メモリマップトファイル](https://en.wikipedia.org/wiki/Memory-mapped_file) を使用します。メモリマップトファイルは効率的ですが、ディスクストレージはメモリより遥かに遅い点に注意してください。
+
+### メモリ使用量を左右する要因
+
+HNSW ベクトルインデックスがメモリ使用量の主因です。以下の要因が影響します。
+
+- **オブジェクトベクトルの総数**  
+  ベクトル数が重要であり、元オブジェクトの生データサイズは重要ではありません。メモリに格納されるのはベクトルのみで、元のテキストやその他データのサイズは制限要因になりません。
+
+- **`maxConnections` HNSW インデックス設定**  
+  メモリ上の各オブジェクトはレイヤーごとに最大 [`maxConnections`](../config-refs/indexing/vector-index.mdx) 本の接続を持ちます。各接続は 8〜10B のメモリを使用します。ベースレイヤーは `2 * maxConnections` である点に注意してください。
+
+### 計算例
 
 :::note
-The following calculation assumes that you want to hold all vectors in memory. For a hybrid approach that combines in memory and on-disk storage, see [Vector Cache](#vector-cache) below.
+以下の計算はすべてのベクトルをメモリに保持する前提です。メモリとディスクを組み合わせるハイブリッド方式については後述の [Vector Cache](#vector-cache) を参照してください。
 :::
 
-To estimate your memory needs, use the following rule of thumb:
+メモリ必要量を概算する経験則は次のとおりです。
 
-`Memory usage = 2 * (the memory footprint of all vectors)`
+`メモリ使用量 = 2 * (全ベクトルのメモリフットプリント)`
 
-For example, consider a model that has one million 384-dimensional vectors of type `float32`.
+例として、384 次元の `float32` 型ベクトルが 100 万件あるモデルを考えます。
 
-- The memory requirement for a single vector is: `384 * 4 B = 1536 B`.
+- 単一ベクトルのメモリ量は `384 * 4 B = 1536 B`  
+- 100 万件のメモリ量は `1e6 * 1536 B = 1.5 GB`
 
-- The memory requirement for one million objects is: `1e6 * 1536 B = 1.5G B`
+経験則によりメモリ量を 2 倍します。したがって必要メモリは `2 * 1e6 * 1536 B = 3 GB` です。
 
-The rule of thumb says to double the memory requirement. The total memory requirement for one million 384-dimensional vectors of type `float32` is: `2 * 1e6 * 1536 B = 3 GB`.
+より正確な計算を行うには、単純に 2 倍する代わりに [`maxConnections`](../config-refs/indexing/vector-index.mdx) の影響を考慮します。
 
-For a more accurate calculation, include a factor for the [`maxConnections`](../config-refs/indexing/vector-index.mdx) setting instead of multiplying the base requirement by two.
+例として `maxConnections` が 64 の場合、より正確な見積もりは  
+`1e6 * (1536 B + (64 * 10)) = 2.2 GB` です。
 
-For example, if `maxConnections` is 64 and the other values are the same, a more accurate memory estimate is `1e6 * (1536B + (64 * 10)) = 2.2 GB`.
+`maxConnections` を含めた見積もりは経験則より小さくなります。ただしこの見積もりにはガベージコレクションによるオーバーヘッドが含まれていません。ガベージコレクションについては次章で説明します。
 
-The estimate that includes `maxConnections` is smaller than the rule of thumb estimate. However, the `maxConnections` estimate doesn't account for garbage collection. Garbage collection adds overhead that is explained in the next section.
+## ガベージコレクションの影響
 
-## Effects of garbage collection
+Weaviate はガベージコレクションを持つ Go で実装されています。そのため、不要になったメモリが即座に再利用可能になるとは限りません。ガベージコレクタが非同期でメモリを解放する必要があります。これによりメモリ使用に 2 つの影響が出ます。
 
-Weaviate is written in Go, which is a garbage-collected language. This means some memory is not immediately available for reuse when it is no longer needed. The application has to wait for an asynchronous process, the garbage collector, to free up the memory. This has two distinct effects on memory use:
+- [ガベージコレクタのメモリオーバーヘッド](#メモリオーバーヘッド-for-ガベージコレクタ)
+- [ガベージコレクションによる OOM 問題](#ガベージコレクションによる-oom-問題)
 
-- [Memory overhead](#memory-overhead-for-the-garbage-collector)
-- [Out-of-memory issues](#out-of-memory-issues-due-to-garbage-collection)
+### メモリオーバーヘッド for ガベージコレクタ
+`maxConnections` を含むメモリ計算はシステムが安定した状態を表します。しかし、Weaviate がベクトルをインポートしている間は追加のメモリが割り当てられ、最終的にガベージコレクタが解放します。ガベージコレクションは非同期であるため、この追加メモリも考慮が必要です。前述の「経験則」はこの点を加味しています。
 
-### Memory overhead for the garbage collector
-The memory calculation that includes `maxConnections` describes the system state at rest. However, while Weaviate imports vectors, additional memory is allocated and eventually freed by the garbage collector. Since garbage collection is an asynchronous process, this additional memory must also be accounted for. The 'rule of thumb' formula accounts for garbage collection.
+### ガベージコレクションによる OOM 問題
+まれに、特に大規模マシンで非常に高速なインポートを行う場合、Weaviate がメモリを割り当てる速度がガベージコレクタが解放する速度を上回ることがあります。この場合、システムカーネルが `out of memory kill (OOM-Kill)` を発動する可能性があります。これは既知の問題であり、Weaviate で改善に取り組んでいます。
 
-### Out-of-Memory issues due to garbage collection
-In rare situations - typically on large machines with very high import speeds - Weaviate can allocate memory faster than the garbage collector can free it. When this happens, the system kernel can trigger an `out of memory kill (OOM-Kill)`. This is a known issue that Weaviate is actively working on.
+### データインポート
+インポート中の OOM を避けるには、`LIMIT_RESOURCES` を `True` に設定するか、`GOMEMLIMIT` 環境変数を設定してください。詳細は [環境変数](/deploy/configuration/env-vars/index.md) を参照してください。
 
-### Data import
-To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](/deploy/configuration/env-vars/index.md).
+## メモリ使用量を削減する戦略
 
-## Strategies to reduce memory usage
+以下の方法で Weaviate のメモリ使用量を削減できます。
 
-The following tactics can help to reduce Weaviate's memory usage:
+- **ベクトル圧縮を使用する**  
+  直積量子化 (PQ) はベクトルサイズを縮小する技術です。ベクトル圧縮はリコール性能に影響を与えるため、本番導入前にデータセットでテストすることを推奨します。  
+  詳細は [Product Quantization](/weaviate/concepts/vector-quantization) を参照してください。  
+  PQ の設定方法は [Compression](../configuration/compression/pq-compression.md) を参照してください。
 
-- **Use vector compression**. Product quantization (PQ) is a technique that reduces the size of vectors. Vector compression impacts recall performance, so we recommend testing PQ on your dataset before using it in production. <br/><br/> For more information, see [Product Quantization](/weaviate/concepts/vector-quantization). <br/> To configure PQ, see [Compression](../configuration/compression/pq-compression.md).
+- **ベクトルの次元数を削減する**  
+  メモリサイズを最も効果的に削減する方法は、ベクトルあたりの次元数を減らすことです。高次元ベクトルを使用している場合は、次元の少ないモデルを検討してください。たとえば、384 次元モデルは 1536 次元モデルより遥かにメモリを消費しません。
 
-- **Reduce the dimensionality of your vectors.** The most effective approach to reducing memory size, is to reduce the number of dimensions per vector. If you have high dimension vectors, consider using a model that uses fewer dimensions. For example, a model that has 384 dimensions uses far less memory than a model with 1536 dimensions.
+- **HNSW の [`maxConnections`](../config-refs/indexing/vector-index.mdx) を減らす**  
+  メモリ上の各オブジェクトは最大 `maxConnections` 本の接続を持ち、各接続は 8〜10B のメモリを使用します。`maxConnections` を減らすとメモリフットプリントを削減できます。
 
-- **Reduce the number of [`maxConnections`](../config-refs/indexing/vector-index.mdx) in your HNSW index settings**. Each object in memory has up to `maxConnections` connections. Each of those connections uses 8-10B of memory. To reduce the overall memory footprint, reduce `maxConnections`.
+  `maxConnections` を減らすと HNSW のリコール性能が低下します。これを緩和するために `efConstruction` と `ef` のいずれか、または両方を増やしてください。
 
-Reducing `maxConnections` adversely affects HNSW recall performance. To mitigate this effect, increase one or both of the `efConstruction` and `ef` parameters.
+  - `efConstruction` を増やすとインポート時間が増え、クエリ時間には影響しません。  
+  - `ef` を増やすとクエリ時間が増え、インポート時間には影響しません。
 
-- Increasing `efConstruction` increases import time without affecting query times.
-- Increasing `ef` increases query times without affecting import times.
-
-- **Use a vector cache that is smaller than the total amount of your vectors (not recommended)**. This strategy is described under [Vector Cache](#vector-cache) below. It has a significant performance impact, and is only recommended in specific, limited situations.
+- **全ベクトル数より小さいベクトルキャッシュを使用する（非推奨）**  
+  この戦略は後述の [Vector Cache](#vector-cache) で説明します。パフォーマンスに大きな影響があるため、限定的な状況でのみ推奨されます。
 
 ## Vector Cache
 
-For optimal search and import performance, all previously imported vectors need to be held in memory. The size of the vector cache is specified by the [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) parameter in the collection definition. By default this limit is set to one trillion (`1e12`) objects when you create a new collection.
+検索およびインポートを最適化するには、インポート済みのベクトルをすべてメモリに保持する必要があります。ベクトルキャッシュのサイズは、コレクション定義の [`vectorCacheMaxObjects`](../config-refs/indexing/vector-index.mdx) パラメータで指定します。新規コレクションではデフォルトで 1 兆 (`1e12`) オブジェクトに設定されています。
 
-You can reduce the size of `vectorCacheMaxObjects`, but a disk lookup for a vector is orders of magnitudes slower than memory lookup. Only reduce the size of `vectorCacheMaxObjects` with care and as a last resort.
+`vectorCacheMaxObjects` を小さく設定することもできますが、ディスクからのベクトル取得はメモリ取得より何桁も遅くなります。`vectorCacheMaxObjects` を減らす場合は十分注意し、最後の手段としてのみ行ってください。
 
-Generally we recommend that:
-- During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drop drastically when there isn't enough memory to hold all of the vectors in the cache.
+一般的な推奨事項は次のとおりです。
+- インポート中は `vectorCacheMaxObjects` をすべてのベクトルをメモリに保持できる値に設定してください。インポートでは複数回の検索が行われ、キャッシュに全ベクトルがないとインポート性能が大幅に低下します。
 
-- After import, when your workload is mostly querying, experiment with vector cache limits that are less than your total dataset size.
+- インポート後にクエリ中心のワークロードになる場合は、データセット総量より小さいキャッシュサイズを試してください。
 
-  Vectors that aren't currently in cache are added to the cache if there is still room. If the cache fills, Weaviate drops the whole cache. All future vectors have to be read from disk for the first time. Then, subsequent queries runs against the cache, until it fills again and the procedure repeats. Note that the cache can be a very valuable tool if you have a large dataset, and a large percentage of users only query a specific subset of vectors. In this case you might be able to serve the largest user group from cache while requiring disk lookups for "irregular" queries.
+  キャッシュに存在しないベクトルは空きがあればキャッシュに追加されます。キャッシュが満杯になると、Weaviate はキャッシュ全体を破棄します。その後、すべてのベクトルが初回はディスクから読み込まれ、再びキャッシュが満杯になるまでキャッシュが使用されます。  
+  大規模データセットで多くのユーザーが特定のベクトル集合のみを検索するケースでは、キャッシュが非常に有効です。大多数のユーザーはキャッシュから、高頻度でないクエリはディスク読み込みで対応できます。
+### Weaviate マシンまたはクラスターのメモリ増設タイミング
 
-### When to add more Memory to your Weaviate machine or cluster
+メモリを追加するべきケース:  
+- より大きなデータセットをインポートしたい場合（より一般的）。  
+- 正確検索 ( exact lookups ) がディスク依存になっており、メモリを増やすことでページキャッシュ ( page-caching ) を改善できる場合（あまり一般的ではありません）。
 
-Consider adding more memory if:
-- You want to import a larger dataset (more common).
-- Exact lookups are disk-bound and more memory will improve page-caching (less common).
+## Weaviate における GPU の役割
 
-## The role of GPUs in Weaviate
+Weaviate Database 自体は GPU を使用しません。 しかし、Weaviate がモジュールとして提供するモデルの中には GPU での実行を想定しているものがあります。 例えば `text2vec-transformers`、`qna-transformers`、`ner-transformers` などです。 これらのモジュールは分離されたコンテナ内で動作するため、モジュールのコンテナを GPU アクセラレートされたハードウェア上で実行しつつ、Weaviate Database を低コストの CPU のみのハードウェアで実行できます。
 
-Weaviate Database itself does not make use of GPUs. However, some of the models that Weaviate includes as modules are meant to run with GPUs, for example `text2vec-transformers`, `qna-transformers`, and `ner-transformers`. These modules run in isolated containers, so you can run the module containers on GPU-accelerated hardware while running Weaviate Database on low-cost CPU-only hardware.
+## ディスク: SSD と HDD ( Spinning Disk ) の比較
 
-## Disks: SSD vs Spinning Disk
+Weaviate は Solid-State Disk ( SSD ) での利用に最適化されています。 ただし、回転式ハードディスク ( HDD ) でも、ある程度の性能低下を受け入れれば使用可能です。
 
-Weaviate is optimized to work with Solid-State Disks (SSDs). However, spinning hard-disks can also be used with some performance penalties.
+## ファイルシステム
 
-## File system
+最適な性能と信頼性を確保するため、Weaviate の永続ボリューム ( [`PERSISTENCE_DATA_PATH`](/deploy/configuration/env-vars/index.md) ) には NFS などのファイルシステムを使用しないでください。
 
-For optimal performance and reliability, avoid using `NFS` or similar file systems for the Weaviate persistent volume ([`PERSISTENCE_DATA_PATH`](/deploy/configuration/env-vars/index.md)). 
+代わりに、Ext4 や XFS といったファイルシステムを SAN ストレージ ( 例: EBS ) と組み合わせて使用することで、最高のパフォーマンスを得られます。
 
-Instead, use file systems like `Ext4` or `XFS` in combination with SAN storage (e.g. `EBS`) to ensure the best performance.
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

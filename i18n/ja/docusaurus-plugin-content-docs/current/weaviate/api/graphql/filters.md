@@ -1,7 +1,7 @@
 ---
-title: Conditional filters
+title: 条件付きフィルター
 sidebar_position: 35
-description: "GraphQL filtering documentation for applying conditional logic to refine search results."
+description: "検索結果を絞り込むための条件ロジックを適用する GraphQL フィルタリングのドキュメント。"
 image: og/docs/api.jpg
 # tags: ['graphql', 'filters']
 ---
@@ -11,19 +11,19 @@ import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
 <TryEduDemo />
 
-Conditional filters may be added to queries such as [`Object-level`](./get.md) and [`Aggregate`](./aggregate.md) queries, as well as [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects). The operator used for filtering is also called a `where` filter.
+条件付きフィルターは [`Object-level`](./get.md) や [`Aggregate`](./aggregate.md) の各クエリ、さらに [バッチ削除](../../manage-objects/delete.mdx#delete-multiple-objects) に追加できます。フィルタリングに使用される演算子は `where` フィルターとも呼ばれます。
 
-A filter may consist of one or more conditions, which are combined using the `And` or `Or` operators. Each condition consists of a property path, an operator, and a value.
+フィルターは 1 つ以上の条件で構成でき、`And` または `Or` 演算子で結合されます。各条件はプロパティパス・演算子・値で構成されます。
 
 
-## Single operand (condition)
+## 単一オペランド（条件）
 
-Each set of algebraic conditions is called an "operand". For each operand, the required properties are:
-- The operator type,
-- The property path, and
-- The value as well as the value type.
+代数的条件の各セットは「オペランド」と呼ばれます。各オペランドに必要なプロパティは次のとおりです。  
+- 演算子タイプ  
+- プロパティパス  
+- 値および値の型  
 
-For example, this filter will only allow objects from the class `Article` with a `wordCount` that is `GreaterThan` than `1000`.
+たとえば、次のフィルターはクラス `Article` のうち、`wordCount` が `GreaterThan` 1000 のオブジェクトのみを許可します。
 
 import GraphQLFiltersWhereSimple from '/_includes/code/graphql.filters.where.simple.mdx';
 
@@ -52,11 +52,11 @@ import GraphQLFiltersWhereSimple from '/_includes/code/graphql.filters.where.sim
 
 </details>
 
-## Filter structure
+## フィルター構造
 
-The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebraic_structure), which takes the following arguments:
+`where` フィルターは [代数的オブジェクト](https://en.wikipedia.org/wiki/Algebraic_structure) で、次の引数を取ります。
 
-- `Operator` (which takes one of the following values)
+- `Operator`（以下のいずれか）
   - `And`
   - `Or`
   - `Equal`
@@ -68,19 +68,19 @@ The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebr
   - `Like`
   - `WithinGeoRange`
   - `IsNull`
-  - `ContainsAny`  (*Only for array and text properties)
-  - `ContainsAll`  (*Only for array and text properties)
-- `Path`: Is a list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style, indicating the property name of the collection.
-  - If the property is a cross-reference, the path should be followed as a list of strings. For a `inPublication` reference property that refers to `Publication` collection, the path selector for `name` will be `["inPublication", "Publication", "name"]`.
+  - `ContainsAny`  (*配列および text プロパティのみ*)
+  - `ContainsAll`  (*配列および text プロパティのみ*)
+- `Path`：コレクションのプロパティ名を示す [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) 形式の文字列リスト。  
+  - プロパティがクロスリファレンスの場合、パスは文字列のリストとしてたどります。たとえば `inPublication` というリファレンスプロパティが `Publication` コレクションを参照している場合、`name` を指定するパスセレクターは `["inPublication", "Publication", "name"]` になります。
 - `valueType`
-  - `valueInt`: For `int` data type.
-  - `valueBoolean`: For `boolean` data type.
-  - `valueString`: For `string` data type (note: `string` has been deprecated).
-  - `valueText`: For `text`, `uuid`, `geoCoordinates`, `phoneNumber` data types.
-  - `valueNumber`: For `number` data type.
-  - `valueDate`: For `date` (ISO 8601 timestamp, formatted as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/)) data type.
+  - `valueInt`：`int` データ型
+  - `valueBoolean`：`boolean` データ型
+  - `valueString`：`string` データ型（`string` は非推奨）
+  - `valueText`：`text`、`uuid`、`geoCoordinates`、`phoneNumber` データ型
+  - `valueNumber`：`number` データ型
+  - `valueDate`：`date` データ型（ISO 8601 タイムスタンプ、[RFC3339](https://datatracker.ietf.org/doc/rfc3339/) 形式）
 
-If the operator is `And` or `Or`, the operands are a list of `where` filters.
+演算子が `And` または `Or` の場合、オペランドは `where` フィルターのリストになります。
 
 <details>
   <summary>Example filter structure (GraphQL)</summary>
@@ -133,28 +133,28 @@ If the operator is `And` or `Or`, the operands are a list of `where` filters.
 
 </details>
 
-:::note `Not` operator
-Weaviate doesn't have an operator to invert a filter (e.g. `Not Like ...` ). If you would like us to add one, please [upvote the issue](https://github.com/weaviate/weaviate/issues/3683).
+:::note `Not` operator  
+Weaviate にはフィルターを反転する演算子（例：`Not Like ...`）はありません。追加をご希望の場合は [問題をアップボートしてください](https://github.com/weaviate/weaviate/issues/3683)。  
 :::
 
-### Filter behaviors
+### フィルターの挙動
 
-#### Multi-word queries in `Equal` filters
+#### `Equal` フィルターでの複数語クエリ
 
-The behavior for the `Equal` operator on multi-word textual properties in `where` filters depends on the `tokenization` of the property.
+`where` フィルターにおける `Equal` 演算子の複数語テキストプロパティに対する挙動は、そのプロパティの `tokenization` 設定によって異なります。
 
-See the [Schema property tokenization section](../../config-refs/collections.mdx#tokenization) for the difference between the available tokenization types.
+利用可能なトークナイゼーションタイプの違いについては、[スキーマプロパティのトークナイゼーション](../../config-refs/collections.mdx#tokenization) を参照してください。
 
-#### Stopwords in `text` filters
+#### `text` フィルターにおけるストップワード
 
-Starting with `v1.12.0` you can configure your own [stopword lists for the inverted index](/weaviate/config-refs/indexing/inverted-index.mdx#stopwords).
+`v1.12.0` 以降、[転置インデックスのストップワードリスト](/weaviate/config-refs/indexing/inverted-index.mdx#stopwords) を独自に設定できます。
 
-## Multiple operands
+## 複数オペランド
 
-You can set multiple operands or [nest conditions](../../search/filters.md#nested-filters).
+複数のオペランドを設定したり、[条件をネスト](../../search/filters.md#nested-filters) することができます。
 
-:::tip
-You can filter datetimes similarly to numbers, with the `valueDate` given as `string` in [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) format.
+:::tip  
+`valueDate` を [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) 形式の `string` として指定すれば、日時も数値と同様にフィルタリングできます。  
 :::
 
 import GraphQLFiltersWhereOperands from '/_includes/code/graphql.filters.where.operands.mdx';
@@ -186,17 +186,17 @@ import GraphQLFiltersWhereOperands from '/_includes/code/graphql.filters.where.o
 
 </details>
 
-## Filter operators
+## フィルター演算子
 
 ### `Like`
 
-The `Like` operator filters `text` data based on partial matches. It can be used with the following wildcard characters:
+`Like` 演算子は、部分一致に基づいて `text` データをフィルタリングします。次のワイルドカードを使用できます。
 
-- `?` -> exactly one unknown character
-  - `car?` matches `cart`, `care`, but not `car`
-- `*` -> zero, one or more unknown characters
-  - `car*` matches `car`, `care`, `carpet`, etc
-  - `*car*` matches `car`, `healthcare`, etc.
+- `?` → ちょうど 1 文字の不明文字  
+  - `car?` は `cart`、`care` にマッチしますが `car` にはマッチしません
+- `*` → 0 文字以上の不明文字  
+  - `car*` は `car`、`care`、`carpet` などにマッチします  
+  - `*car*` は `car`、`healthcare` などにマッチします。
 
 import GraphQLFiltersWhereLike from '/_includes/code/graphql.filters.where.like.mdx';
 
@@ -230,40 +230,42 @@ import GraphQLFiltersWhereLike from '/_includes/code/graphql.filters.where.like.
 
 </details>
 
-#### Performance of `Like`
 
-Each `Like` filter iterates over the entire inverted index for that property. The search time will go up linearly with the dataset size, and may become slow for large datasets.
 
-#### Wildcard literal matches with `Like`
+#### `Like` のパフォーマンス
 
-Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters. For example, it is currently not possible to only match the string `car*` and not `car`, `care` or `carpet`. This is a known limitation and may be addressed in future versions of Weaviate.
+各 `Like` フィルターは、そのプロパティの全ての 転置インデックス を走査します。検索時間はデータセット サイズに比例して増加し、大規模なデータセットでは遅くなる可能性があります。
+
+#### `Like` でのワイルドカード文字のリテラル一致
+
+現在、`Like` フィルターはワイルドカード文字（`?` と `*`）をリテラル文字として一致させることができません。たとえば、`car`、`care`、`carpet` ではなく文字列 `car*` のみを一致させることは現状では不可能です。これは既知の制限であり、将来の Weaviate のバージョンで対応される可能性があります。
 
 
 ### `ContainsAny` / `ContainsAll`
 
-The `ContainsAny` and `ContainsAll` operators filter objects using values of an array as criteria.
+`ContainsAny` と `ContainsAll` の各オペレーターは、配列の値を基準にオブジェクトをフィルターします。
 
-Both operators expect an array of values and return objects that match based on the input values.
+両オペレーターとも値の配列を受け取り、入力値に基づいて一致するオブジェクトを返します。
 
 :::note `ContainsAny` and `ContainsAll` notes:
-- The `ContainsAny` and `ContainsAll` operators treat texts as an array. The text is split into an array of tokens based on the chosen tokenization scheme, and the search is performed on that array.
-- When using `ContainsAny` or `ContainsAll` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the text array must be specified with the `valueTextArray` argument. This is different from the usage in search, where the `valueText` argument that can be used.
+- `ContainsAny` と `ContainsAll` の各オペレーターはテキストを配列として扱います。テキストは選択されたトークナイゼーション方式に基づいてトークン配列に分割され、その配列に対して検索が行われます。  
+- REST API を使った [バッチ削除](../../manage-objects/delete.mdx#delete-multiple-objects) で `ContainsAny` または `ContainsAll` を使用する場合、テキスト配列は `valueTextArray` 引数で指定する必要があります。検索時の使用方法とは異なり、`valueText` 引数は使用できません。
 :::
 
 
 #### `ContainsAny`
 
-`ContainsAny` returns objects where at least one of the values from the input array is present.
+`ContainsAny` は、入力配列の値のうち少なくとも 1 つが存在するオブジェクトを返します。
 
-Consider a dataset of `Person`, where each object represents a person with a `languages_spoken` property with a `text` datatype.
+`Person` データセットを想定し、各オブジェクトが `text` 型の `languages_spoken` プロパティを持つとします。
 
-A `ContainsAny` query on a path of `["languages_spoken"]` with a value of `["Chinese", "French", "English"]` will return objects where at least one of those languages is present in the `languages_spoken` array.
+`path` が `["languages_spoken"]`、`value` が `["Chinese", "French", "English"]` の `ContainsAny` クエリは、`languages_spoken` 配列にこれらの言語のいずれかが含まれるオブジェクトを返します。
 
 #### `ContainsAll`
 
-`ContainsAll` returns objects where all the values from the input array are present.
+`ContainsAll` は、入力配列の全ての値が存在するオブジェクトを返します。
 
-Using the same dataset of `Person` objects as above, a `ContainsAll` query on a path of `["languages_spoken"]` with a value of `["Chinese", "French", "English"]` will return objects where all three of those languages are present in the `languages_spoken` array.
+上記と同じ `Person` データセットで、`path` が `["languages_spoken"]`、`value` が `["Chinese", "French", "English"]` の `ContainsAll` クエリは、`languages_spoken` 配列に 3 つ全ての言語が含まれるオブジェクトを返します。
 
 ## Filter performance
 
@@ -271,11 +273,11 @@ import RangeFilterPerformanceNote from '/_includes/range-filter-performance-note
 
 <RangeFilterPerformanceNote />
 
-## Special cases
+## 特殊ケース
 
-### By id
+### ID でのフィルター
 
-You can filter object by their unique id or uuid, where you give the `id` as `valueText`.
+オブジェクトは一意の ID または UUID でフィルターできます。この場合、`id` を `valueText` として渡します。
 
 import GraphQLFiltersWhereId from '/_includes/code/graphql.filters.where.id.mdx';
 
@@ -300,12 +302,12 @@ import GraphQLFiltersWhereId from '/_includes/code/graphql.filters.where.id.mdx'
 
 </details>
 
-### By timestamps
+### タイムスタンプでのフィルター
 
-Filtering can be performed with internal timestamps as well, such as `creationTimeUnix` and `lastUpdateTimeUnix`. These values can be represented either as Unix epoch milliseconds, or as [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) formatted datetimes. Note that epoch milliseconds should be passed in as a `valueText`, and an RFC3339 datetime should be a `valueDate`.
+`creationTimeUnix` や `lastUpdateTimeUnix` などの内部タイムスタンプでもフィルターできます。これらの値は Unix エポックミリ秒、または [RFC3339](https://datatracker.ietf.org/doc/rfc3339/) 形式の日時として表現可能です。エポックミリ秒は `valueText`、RFC3339 形式の日時は `valueDate` として渡す必要があります。
 
 :::info
-Filtering by timestamp requires the target class to be configured to index  timestamps. See [here](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) for details.
+タイムスタンプでのフィルターには、対象クラスがタイムスタンプの インデックス を有効化している必要があります。詳細は [こちら](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) を参照してください。
 :::
 
 import GraphQLFiltersWhereTimestamps from '/_includes/code/graphql.filters.where.timestamps.mdx';
@@ -332,14 +334,14 @@ import GraphQLFiltersWhereTimestamps from '/_includes/code/graphql.filters.where
 
 </details>
 
-### By property length
+### プロパティ長でのフィルター
 
-Filtering can be performed with the length of properties.
+プロパティの長さを基準にフィルターできます。
 
-The length of properties is calculated differently depending on the type:
-- array types: the number of entries in the array is used, where null (property not present) and empty arrays both have the length 0.
-- strings and texts: the number of characters (unicode characters such as 世 count as one character).
-- numbers, booleans, geo-coordinates, phone-numbers and data-blobs are not supported.
+長さの計算方法は型によって異なります。  
+- 配列型: 配列の要素数を使用します。null（プロパティが存在しない）と空配列はいずれも長さ 0 と見なされます。  
+- 文字列およびテキスト: 文字数（たとえば Unicode 文字の「世」は 1 文字としてカウントされます）。  
+- 数値、ブーリアン、地理座標、電話番号、データ ブロブはサポートされていません。
 
 ```graphql
 {
@@ -354,11 +356,12 @@ The length of properties is calculated differently depending on the type:
   }
 }
 ```
-Supported operators are `(not) equal` and `greater/less than (equal)` and values need to be 0 or larger.
 
-Note that the `path` value is a string, where the property name is wrapped in `len()`. For example, to filter for objects based on the length of the `title` property, you would use `path: ["len(title)"]`.
+サポートされるオペレーターは `(not) equal` と `greater/less than (equal)` で、値は 0 以上である必要があります。
 
-To filter for `Article` class objects with `title` length greater than 10, you would use:
+`path` の値は文字列であり、プロパティ名を `len()` でラップします。たとえば `title` プロパティの長さでフィルターする場合は `path: ["len(title)"]` を使用します。
+
+`Article` クラスのオブジェクトで `title` の長さが 10 文字を超えるものを取得するには、次のようにします。
 
 ```graphql
 {
@@ -375,14 +378,14 @@ To filter for `Article` class objects with `title` length greater than 10, you w
 ```
 
 :::note
-Filtering by property length requires the target class to be [configured to index the length](/weaviate/config-refs/indexing/inverted-index.mdx#indexpropertylength).
+プロパティ長でのフィルターには、対象クラスで [プロパティ長のインデックス](/weaviate/config-refs/indexing/inverted-index.mdx#indexpropertylength) を有効化している必要があります。
 :::
 
-### By cross-references
+### クロスリファレンスでのフィルター
 
-You can also search for the value of the property of a cross-references, also called beacons.
+クロスリファレンス（ビーコン）先のプロパティ値でも検索できます。
 
-For example, these filters select based on the class Article but who have `inPublication` set to New Yorker.
+例えば、`inPublication` が New Yorker に設定されている `Article` クラスを対象にフィルターする場合は次のようになります。
 
 import GraphQLFiltersWhereBeacon from '/_includes/code/graphql.filters.where.beacon.mdx';
 
@@ -421,9 +424,9 @@ import GraphQLFiltersWhereBeacon from '/_includes/code/graphql.filters.where.bea
 
 </details>
 
-### By count of reference
+### 参照数でのフィルター
 
-Above example shows how filter by reference can solve straightforward questions like "Find all articles that are published by New Yorker". But questions like "Find all articles that are written by authors that wrote at least two articles", cannot be answered by the above query structure. It is however possible to filter by reference count. To do so, simply provide one of the existing compare operators (`Equal`, `LessThan`, `LessThanEqual`, `GreaterThan`, `GreaterThanEqual`) and use it directly on the reference element. For example:
+前述の例では「New Yorker が出版した全ての記事を探す」のような単純な質問を解決できますが、「少なくとも 2 本の記事を書いた著者が執筆した記事を探す」のような質問は対応できません。ただし、参照数でフィルターすることは可能です。既存の比較オペレーター（`Equal`、`LessThan`、`LessThanEqual`、`GreaterThan`、`GreaterThanEqual`）を参照要素に直接指定します。例:
 
 import GraphQLFiltersWhereBeaconCount from '/_includes/code/graphql.filters.where.beacon.count.mdx';
 
@@ -468,11 +471,11 @@ import GraphQLFiltersWhereBeaconCount from '/_includes/code/graphql.filters.wher
 
 </details>
 
-### By geo coordinates
+### Geo 座標
 
-A special case of the `Where` filter is with geoCoordinates. This filter is only supported by the `Get{}` function. If you've set the `geoCoordinates` property type, you can search in an area based on kilometers.
+`Where` フィルターの特別なケースとして geoCoordinates が存在します。このフィルターは `Get{}` 関数でのみサポートされます。geoCoordinates プロパティタイプを設定している場合、キロメートル単位でエリア内を検索できます。
 
-For example, this curious returns all in a radius of 2KM around a specific geo-location:
+例えば、次のクエリは特定の地理位置を中心とした半径 2 KM 内のすべてを返します:
 
 import GraphQLFiltersWhereGeocoords from '/_includes/code/graphql.filters.where.geocoordinates.mdx';
 
@@ -508,15 +511,15 @@ import GraphQLFiltersWhereGeocoords from '/_includes/code/graphql.filters.where.
 
 </details>
 
-Note that `geoCoordinates` uses a vector index under the hood.
+geoCoordinates は内部で ベクトル インデックスを使用していることに注意してください。
 
 import GeoLimitations from '/_includes/geo-limitations.mdx';
 
 <GeoLimitations/>
 
-### By null state
+### Null 状態
 
-Using the `IsNull` operator allows you to do filter for objects where given properties are `null` or `not null`. Note that zero-length arrays and empty strings are equivalent to a null value.
+`IsNull` オペレーターを使用すると、指定したプロパティが `null` か `not null` かでオブジェクトをフィルタリングできます。長さ 0 の配列や空文字列は null 値と同等であることに注意してください。
 
 ```graphql
 {
@@ -530,18 +533,19 @@ Using the `IsNull` operator allows you to do filter for objects where given prop
 ```
 
 :::note
-Filtering by null-state requires the target class to be configured to index this. See [here](../../config-refs/indexing/inverted-index.mdx#indexnullstate) for details.
+null 状態でのフィルタリングを行うには、対象クラスがこれをインデックス化するように設定されている必要があります。詳細は [こちら](../../config-refs/indexing/inverted-index.mdx#indexnullstate) を参照してください。
 :::
 
 
-## Related pages
+## 関連ページ
 
-- [How-to search: Filters](../../search/filters.md)
+- [検索方法: フィルター](../../search/filters.md)
 
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

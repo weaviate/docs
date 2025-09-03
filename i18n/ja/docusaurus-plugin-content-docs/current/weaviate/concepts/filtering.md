@@ -1,92 +1,92 @@
 ---
-title: Filtering
+title: フィルタリング
 sidebar_position: 26
-description: "Filtered vector search capabilities combining semantic similarity with structured scalar filtering."
+description: "意味的類似度と構造化されたスカラー フィルタリングを組み合わせたフィルタ付き ベクトル検索機能。"
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'filtered vector search', 'pre-filtering']
 ---
 
-Weaviate provides powerful filtered vector search capabilities, allowing you to combine vector searches with structured, scalar filters. This enables you to find the closest vectors to a query vector that also match certain conditions.
+Weaviate は強力なフィルタ付き ベクトル検索機能を提供しており、ベクトル検索と構造化されたスカラー フィルターを組み合わせることができます。これにより、クエリ ベクトルに最も近いベクトルのうち、特定の条件を満たすものを検索できます。
 
-Filtered vector search in Weaviate is based on the concept of pre-filtering. This means that the filter is constructed before the vector search is performed. Unlike some pre-filtering implementations, Weaviate's pre-filtering does not require a brute-force vector search and is highly efficient.
+Weaviate におけるフィルタ付き ベクトル検索はプリフィルタリングという概念に基づいています。これは、ベクトル検索を実行する前にフィルターを構築する方式です。一般的なプリフィルタリング実装とは異なり、Weaviate のプリフィルタリングはブルートフォース ベクトル検索を必要とせず、高い効率を実現しています。
 
-Starting in `v1.27`, Weaviate introduces its implementation of the [`ACORN`](#acorn) filter strategy. This filtering method significantly improves performance for large datasets, especially when the filter has low correlation with the query vector.
+`v1.27` から、Weaviate は [`ACORN`](#acorn) フィルター戦略を実装しました。このフィルタリング手法は、特にフィルターとクエリ ベクトルの相関が低い場合に、大規模データセットでの性能を大きく向上させます。
 
-## Post-Filtering vs Pre-Filtering
+## ポストフィルタリングとプリフィルタリング
 
-Systems that cannot make use of pre-filtering typically have to make use of post-filtering. This is an approach where a vector search is performed first and then some results are removed which do not match the filter. This leads to two major disadvantages:
+プリフィルタリングを利用できないシステムでは、通常ポストフィルタリングを行います。これはまずベクトル検索を実行し、その後フィルター条件を満たさない結果を除外する方式です。これには次の 2 つの大きな欠点があります。
 
-1. You cannot easily predict how many elements will be contained in the search, as the filter is applied to an already reduced list of candidates.
-2. If the filter is very restrictive, i.e. it matches only a small percentage of data points relative to the size of the data set, there is a chance that the original vector search does not contain any match at all.
+1. フィルターが既に絞り込まれた候補リストに適用されるため、検索結果に何件含まれるかを予測しづらい。
+2. フィルターが非常に厳しい場合（データセット全体のごく一部しか一致しない場合）、元のベクトル検索結果に一致するものが 1 件も含まれない可能性がある。
 
-The limitations of post-filtering are overcome by pre-filtering. Pre-Filtering describes an approach where eligible candidates are determined before a vector search is started. The vector search then only considers candidates that are present on the "allow" list.
+プリフィルタリングはこれらの制限を克服します。プリフィルタリングでは、ベクトル検索を開始する前に許可リスト（allow-list）を作成し、検索はこのリストに含まれる候補のみを対象とします。
 
 :::note
-Some authors make a distinction between "pre-filtering" and "single-stage filtering" where the former implies a brute-force search and the latter does not. We do not make this distinction, as Weaviate does not have to resort to brute-force searches, even when pre-filtering due to the its combined inverted index and HNSW index.
+著者によっては「プリフィルタリング」と「シングルステージフィルタリング」を区別し、前者はブルートフォース検索を伴い後者は伴わないと定義する場合があります。本ドキュメントではこの区別を行いません。Weaviate は転置インデックスと HNSW インデックスを組み合わせているため、プリフィルタリングでもブルートフォース検索に頼る必要がないからです。
 :::
 
-## Efficient Pre-Filtered Searches in Weaviate
+## Weaviate における効率的なプリフィルタ付き検索
 
-In the section about Storage, [we have described in detail which parts make up a shard in Weaviate](./storage.md). Most notably, each shard contains an inverted index right next to the HNSW index. This allows for efficient pre-filtering. The process is as follows:
+[ストレージについてのセクション](./storage.md) で、シャードを構成する要素を詳細に説明しました。特に重要なのは、各シャードが HNSW インデックスのすぐ隣に転置インデックスを保持していることです。これにより効率的なプリフィルタリングが実現します。プロセスは次のとおりです。
 
-1. An inverted index (similar to a traditional search engine) is used to create an allow-list of eligible candidates. This list is essentially a list of `uint64` ids, so it can grow very large without sacrificing efficiency.
-2. A vector search is performed where the allow-list is passed to the HNSW index. The index will move along any node's edges normally, but will only add ids to the result set that are present on the allow list. The exit conditions for the search are the same as for an unfiltered search: The search will stop when the desired limit is reached and additional candidates no longer improve the result quality.
+1. 転置インデックス（従来の検索エンジンと同様）を使用して、対象候補の許可リストを作成します。このリストは `uint64` の ID の集合であり、大きくなっても効率が低下しません。
+2. ベクトル検索を実行し、許可リストを HNSW インデックスに渡します。インデックスは通常どおりノードのエッジを辿りますが、許可リストに含まれる ID だけを結果集合に追加します。終了条件はフィルターなしの検索と同じで、希望する件数に達し、追加候補が結果品質を向上させなくなった時点で検索を停止します。
 
-## Filter strategy
+## フィルターストラテジー
 
-As of `v1.27`, Weaviate supports two filter strategies: `sweeping` and `acorn` specifically for the HNSW index type.
+`v1.27` 現在、HNSW インデックスタイプ向けに `sweeping` と `acorn` の 2 種類のフィルターストラテジーをサポートしています。
 
 ### ACORN
 
 :::info Added in `1.27`
 :::
 
-Weaviate `1.27` adds the a new filtering algorithm that is based on the [`ACORN`](https://arxiv.org/html/2403.04871v1) paper. We refer to this as `ACORN`, but the actual implementation in Weaviate is a custom implementation that is inspired by the paper. (References to `ACORN` in this document refer to the Weaviate implementation.)
+Weaviate `1.27` では、新しいフィルタリングアルゴリズムとして [`ACORN`](https://arxiv.org/html/2403.04871v1) 論文をベースにした実装を追加しました。Weaviate ではこれを `ACORN` と呼びますが、実際の実装は論文に着想を得た独自実装です（本ドキュメントでの `ACORN` は Weaviate 実装を指します）。
 
-The `ACORN` algorithm is designed to speed up filtered searches with the [HNSW index](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) by the following:
+`ACORN` アルゴリズムは、[HNSW インデックス](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) でのフィルタ付き検索を高速化するため、次のように動作します。
 
-- Objects that do not meet the filters are ignored in distance calculations.
-- The algorithm reaches the relevant part of the HNSW graph faster, by using a multi-hop approach to evaluate the neighborhood of candidates.
-- Additional entrypoints matching the filter are randomly seeded to speed up convergence to the filtered zone.
+- フィルターを満たさないオブジェクトは距離計算の対象外にします。
+- 複数ホップで候補の近傍を評価することで、HNSW グラフの関連領域へより早く到達します。
+- フィルターに一致する追加のエントリポイントをランダムにシードし、フィルタリング領域への収束を加速します。
 
-The `ACORN` algorithm is especially useful when the filter has low correlation with the query vector. In other words, when a filter excludes many objects in the region of the graph most similar to the query vector.
+`ACORN` アルゴリズムは、特にフィルターとクエリ ベクトルの相関が低い場合に有効です。つまり、フィルターがクエリ ベクトルに最も近いグラフ領域の多くのオブジェクトを除外する場合に効果を発揮します。
 
-Our internal testing indicates that for lowly correlated, restrictive filters, the `ACORN` algorithm can be significantly faster, especially for large datasets. If this has been a bottleneck for your use case, we recommend enabling the `ACORN` algorithm.
+社内テストでは、相関が低く制限的なフィルター条件下で、特に大規模データセットにおいて `ACORN` が大幅に高速化することを確認しています。もしこれがボトルネックになっている場合は、`ACORN` の有効化を推奨します。
 
-As of `v1.27`, the `ACORN` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
+`v1.27` では、対象の HNSW ベクトルインデックスの [コレクション設定](../manage-collections/vector-config.mdx#set-vector-index-parameters) で `filterStrategy` フィールドを設定することで `ACORN` アルゴリズムを有効化できます。
 
 ### Sweeping
 
-The existing and current default filter strategy in Weaviate is referred to as `sweeping`. This strategy is based on the concept of "sweeping" through the HNSW graph.
+既存であり、現在のデフォルトフィルターストラテジーは `sweeping` です。この方式は HNSW グラフを「スイープ（掃引）」する概念に基づいています。
 
-The algorithm starts at the root node and traverses the graph, evaluating the distance to the query vector at each node, while keeping the "allow list" of the filter as context. If the filter is not met, the node is skipped and the traversal continues. This process is repeated until the desired number of results is reached.
+アルゴリズムはルートノードから開始し、グラフを走査しながらクエリ ベクトルとの距離を評価し、フィルターの「許可リスト」をコンテキストとして保持します。フィルターを満たさないノードはスキップし、走査を継続します。このプロセスを、所定の件数に到達するまで繰り返します。
 
 ## `indexFilterable` {#indexFilterable}
 
 :::info Added in `1.18`
 :::
 
-Weaviate `v1.18.0` adds the `indexFilterable` index that speeds up match-based filtering through use of Roaring Bitmaps. Roaring Bitmaps employ various strategies to add efficiencies, whereby it divides data into chunks and applies an appropriate storage strategy to each one. This enables high data compression and set operations speeds, resulting in faster filtering speeds for Weaviate.
+Weaviate `v1.18.0` では、Roaring Bitmap を利用してマッチベースのフィルタリングを高速化する `indexFilterable` インデックスを追加しました。Roaring Bitmap はデータをチャンクに分け、それぞれに適切なストレージ戦略を適用して効率化を図ります。これにより高いデータ圧縮率と高速な集合演算が実現し、Weaviate のフィルタリング速度が向上します。
 
-If you are dealing with a large dataset, this will likely improve your filtering performance significantly and we therefore encourage you to migrate and re-index.
+大規模データセットを扱う場合、フィルタリング性能が大幅に向上する可能性が高いため、移行して再インデックスすることを推奨します。
 
-In addition, our team maintains our underlying Roaring Bitmap library to address any issues and make improvements as needed.
+また、弊社チームは基盤となる Roaring Bitmap ライブラリをメンテナンスし、問題への対処や改善を行っています。
 
-#### `indexFilterable` for `text` properties
+#### `text` プロパティ向け `indexFilterable`
 
 :::info Added in `1.19`
 :::
 
-A roaring bitmap index for `text` properties is available from `1.19` and up, and it is implemented using two separate (`filterable` & `searchable`) indexes, which replaces the existing single index. You can configure the new `indexFilterable` and `indexSearchable` parameters to determine whether to create the roaring set index and the BM25-suitable Map index, respectively. (Both are enabled by default.)
+`1.19` 以降、`text` プロパティ向けの Roaring Bitmap インデックスが利用可能です。この実装では `filterable` と `searchable` の 2 つのインデックスに分割され、従来の単一インデックスを置き換えます。新しい `indexFilterable` と `indexSearchable` パラメーターを設定して、Roaring Set インデックスと BM25 用 Map インデックスを生成するかを決定できます（どちらもデフォルトで有効）。
 
-#### Migration to `indexFilterable` {#migration-to-indexFilterable}
+#### `indexFilterable` への移行 {#migration-to-indexFilterable}
 
-If you are using Weaviate version `< 1.18.0`, you can take advantage of roaring bitmaps by migrating to `1.18.0` or higher, and going through a one-time process to create the new index. Once your Weaviate instance creates the Roaring Bitmap index, it will operate in the background to speed up your work.
+Weaviate `1.18.0` 未満を使用している場合は、`1.18.0` 以降へアップグレードし、新しいインデックスを作成する 1 回限りのプロセスを実行することで Roaring Bitmap を利用できます。Weaviate が Roaring Bitmap インデックスを作成すると、その後はバックグラウンドで動作し、作業を高速化します。
 
-This behavior is set through the <code>REINDEX<wbr />_SET_TO<wbr />_ROARINGSET<wbr />_AT_STARTUP</code> [environment variable](/deploy/configuration/env-vars/index.md). If you do not wish for reindexing to occur, you can set this to `false` prior to upgrading.
+この挙動は <code>REINDEX<wbr />_SET_TO<wbr />_ROARINGSET<wbr />_AT_STARTUP</code> [環境変数](/deploy/configuration/env-vars/index.md) で制御できます。再インデックスを行いたくない場合は、アップグレード前に `false` に設定してください。
 
 :::info Read more
-To learn more about Weaviate's roaring bitmaps implementation, see the [in-line documentation](https://pkg.go.dev/github.com/weaviate/weaviate/adapters/repos/db/lsmkv/roaringset).
+Weaviate の Roaring Bitmap 実装の詳細は、[インラインドキュメント](https://pkg.go.dev/github.com/weaviate/weaviate/adapters/repos/db/lsmkv/roaringset) をご覧ください。
 :::
 
 ## `indexRangeFilters`
@@ -94,42 +94,42 @@ To learn more about Weaviate's roaring bitmaps implementation, see the [in-line 
 :::info Added in `1.26`
 :::
 
-Weaviate `1.26` introduces the `indexRangeFilters` index, which is a range-based index for filtering by numerical ranges. This index is available for `int`, `number`, or `date` properties. The index is not available for arrays of these data types.
+Weaviate `1.26` では、数値範囲でのフィルタリングに対応した範囲ベースインデックス `indexRangeFilters` を導入しました。このインデックスは `int`、`number`、`date` プロパティに利用できます（これらの配列型には対応していません）。
 
-Internally, rangeable indexes are implemented as roaring bitmap slices. This data structure limits the index to values that can be stored as 64 bit integers.
+内部的には、範囲インデックスは Roaring Bitmap のスライスとして実装されています。このデータ構造により、64 ビット整数として保存できる値に限定されます。
 
-`indexRangeFilters` is only available for new properties. Existing properties cannot be converted to use the rangeable index.
+`indexRangeFilters` は新規プロパティでのみ利用可能です。既存プロパティを範囲インデックスへ変換することはできません。
 
-## Recall on Pre-Filtered Searches
+## プリフィルタ付き検索のリコール
 
-Thanks to Weaviate's custom HNSW implementation, which persists in following all links in the HNSW graph normally and only applying the filter condition when considering the result set, graph integrity is kept intact. The recall of a filtered search is typically not any worse than that of an unfiltered search.
+Weaviate 独自の HNSW 実装は、HNSW グラフ内のリンクを通常どおり辿りつつ、結果集合を評価する際にのみフィルター条件を適用するため、グラフの整合性が保たれます。そのため、フィルター付き検索のリコールは通常、フィルターなし検索と同等です。
 
-The graphic below shows filters of varying levels of restrictiveness. From left (100% of dataset matched) to right (1% of dataset matched) the filters become more restrictive without negatively affecting recall on `k=10`, `k=15` and `k=20` vector searches with filters.
+次の図は、制限度合いの異なるフィルターを示しています。左（データセットの 100% に一致）から右（1% に一致）に進むにつれてフィルターが厳しくなりますが、`k=10`、`k=15`、`k=20` のフィルター付き ベクトル検索でもリコールは低下していません。
 
 <!-- TODO - replace this graph with ACORN test figures -->
 
 ![Recall for filtered vector search](./img/recall-of-filtered-vector-search.png "Recall of filtered vector search in Weaviate")
 
-## Flat-Search Cutoff
+## フラット検索への切り替え (Cutoff)
 
 <!-- Need to update this section with ACORN figures. -->
 
-Version `v1.8.0` introduces the ability to automatically switch to a flat (brute-force) vector search when a filter becomes too restrictive. This scenario only applies to combined vector and scalar searches. For a detailed explanation of why HNSW requires switching to a flat search on certain filters, see this article at [medium](https://medium.com/data-science/effects-of-filtered-hnsw-searches-on-recall-and-latency-434becf8041c). In short, if a filter is very restrictive (i.e. a small percentage of the dataset is matched), an HNSW traversal becomes exhaustive. In other words, the more restrictive the filter becomes, the closer the performance of HNSW is to a brute-force search on the entire dataset. However, with such a restrictive filter, we have already narrowed down the dataset to a small fraction. So if the performance is close to brute-force anyway, it is much more efficient to only search on the matching subset as opposed to the entire dataset.
+`v1.8.0` では、フィルターが極端に厳しくなった場合に自動でフラット（ブルートフォース） ベクトル検索へ切り替える機能が導入されました。このシナリオはベクトル検索とスカラー検索を組み合わせた場合にのみ適用されます。HNSW が特定のフィルターでフラット検索へ切り替える必要がある理由の詳細は、[medium](https://medium.com/data-science/effects-of-filtered-hnsw-searches-on-recall-and-latency-434becf8041c) の記事をご参照ください。要するに、フィルターが非常に制限的な場合（データセットのごく一部しか一致しない場合）、HNSW のトラバーサルは実質的に網羅的になります。つまり、フィルターが厳しくなるほど、HNSW の性能は全データセットに対するブルートフォース検索に近づきます。ただし、このようにフィルターでデータセットを小さな集合に絞り込んでいる場合は、同じブルートフォースに近い性能でも、対象を一致集合のみに限定して検索する方が効率的です。
 
-The following graphic shows filters with varying restrictiveness. From left (0%) to right (100%), the filters become more restrictive. The **cut-off is configured at ~15% of the dataset** size.  This means the right side of the dotted line uses a brute-force search.
+次の図は制限度合いの異なるフィルターを示しています。左（0%）から右（100%）へ進むほどフィルターが厳しくなります。**点線より右側** はデータセットの約 15% をカットオフ値としてブルートフォース検索に切り替えています。
 
 ![Prefiltering with flat search cutoff](./img/prefiltering-response-times-with-filter-cutoff.png "Prefiltering with flat search cutoff")
 
-As a comparison, with pure HNSW - without the cutoff - the same filters would look like the following:
+比較として、同じフィルターを純粋な HNSW（カットオフなし）で実行した場合は以下のようになります。
 
 ![Prefiltering with pure HNSW](./img/prefiltering-pure-hnsw-without-cutoff.png "Prefiltering without cutoff, i.e. pure HNSW")
 
-The cutoff value can be configured as [part of the `vectorIndexConfig` settings in the schema](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) for each collection separately.
+カットオフ値は、各コレクションの [スキーマ内 `vectorIndexConfig` 設定](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) で個別に設定できます。
 
 <!-- TODO - replace figures with updated post-roaring bitmaps figures -->
 
-:::note Performance improvements from roaring bitmaps
-From `v1.18.0` onwards, Weaviate implements 'Roaring bitmaps' for the inverted index which decreased filtering times, especially for large allow lists. In terms of the above graphs, the *blue* areas will be reduced the most, especially towards the left of the figures.
+:::note Roaring Bitmap による性能向上
+`v1.18.0` 以降、転置インデックスに Roaring Bitmap を実装したことにより、特に大きな許可リストを扱う場合のフィルタリング時間が短縮されました。上記グラフの *青色* 領域は、特に図の左側で最も大きく削減されます。
 :::
 
 <!-- ## Performance of vector searches with cached filters
@@ -149,13 +149,12 @@ Wildcard filters show considerably worse performance than exact match filters. T
 <!-- ## Automatic Cache Invalidation
 
 The cache is built in a way that it cannot ever serve a stale entry. Any write to the inverted index updates a hash for the specific row. This hash is used as part of the key in the cache. This means that if the underlying inverted index is changed, the new query would first read the updated hash and then run into a cache miss (as opposed to ever serving a stale entry). The cache has a fixed size and entries for stale hashes - which cannot be accessed anymore - are overwritten when it runs full. -->
-
-## Further resources
-:::info Related pages
-- [References: GraphQL API](../api/graphql/index.md)
+## 追加リソース
+:::info 関連ページ
+- [リファレンス: GraphQL API](../api/graphql/index.md)
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

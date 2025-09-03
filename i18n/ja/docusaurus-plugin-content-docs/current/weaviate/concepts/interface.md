@@ -1,56 +1,61 @@
 ---
-title: Interface
+title: インターフェース
 sidebar_position: 85
-description: "RESTful, GraphQL and gRPC API interfaces with client library support for Weaviate integration."
+description: "Weaviate と統合するための RESTful、GraphQL、gRPC API インターフェースおよびクライアントライブラリのサポート。"
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'interface', 'API design']
 ---
 
-You can manage and use Weaviate through its APIs. Weaviate has a RESTful API and a GraphQL API. The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. Additionally, the APIs are intuitive, so it is easy to integrate into your existing data landscape.
+Weaviate は、その API を通じて管理および利用できます。Weaviate には RESTful API と GraphQL API が あり、すべての言語向けクライアントライブラリは全 API 機能をサポートしています。Python クライアントなど一部のクライアントでは、完全なスキーマ管理やバッチ処理などの追加機能も提供されています。これにより、Weaviate はカスタムプロジェクトで簡単に利用でき、API も直感的で既存のデータ環境への統合が容易です。
 
-This page contains information on how Weaviate's APIs are designed, and how you can use Weaviate Console to search through your Weaviate instance with GraphQL.
+このページでは、Weaviate の API 設計と、GraphQL を使用して Weaviate Console からインスタンスを検索する方法について説明します。
 
-## API Design
+## API 設計
 
-### Design: UX & Weaviate Features
+### 設計: UX と Weaviate の機能
 
-User Experience (UX) is one of our most valuable principles. Weaviate should be easy to understand, intuitive to use and valuable, desirable and usable to the community. The interaction with Weaviate is naturally very important for its UX. Weaviate's APIs are designed from the perspective of user needs, keeping the software features in mind. We do user research, user testing and prototyping to make sure all features resonate with our users. User requirements are continuously gathered during collaborative discussions. We match user needs with the functions of Weaviate. When there is a strong need from the user or application perspective, we may extend Weaviate's functions and APIs. When there is a new Weaviate function, this will naturally be accessible via (new) API functions.
+ユーザーエクスペリエンス (UX) は、私たちの最も重要な原則の 1 つです。Weaviate は理解しやすく、直感的に使え、コミュニティにとって価値があり、望まれ、使いやすいものでなければなりません。その UX において Weaviate とのインタラクションは非常に重要です。Weaviate の API はユーザーニーズの観点から設計されており、ソフトウェアの機能を考慮しています。私たちはユーザーリサーチ、ユーザーテスト、プロトタイピングを行い、すべての機能がユーザーに共感されるよう努めています。共同ディスカッションを通じてユーザー要件を継続的に収集し、ユーザーニーズと Weaviate の機能を照合します。ユーザーまたはアプリケーションの観点から強い要望がある場合、Weaviate の機能や API を拡張することがあります。新しい Weaviate の機能が追加された場合、それは新しい API 機能として自然に利用可能になります。
 
-The UX of Weaviate's APIs is designed following the UX Honeycomb usability rules, defined by Peter Morville.
+Weaviate の API UX は、Peter Morville によって定義された UX ハニカムの使いやすさのルールに従って設計されています。
 
-### RESTful API and GraphQL API
+### RESTful API と GraphQL API
 
-Weaviate has both a RESTful API and a GraphQL API. Currently, there is no feature parity between both APIs (this will be implemented later, there is an [issue](https://github.com/weaviate/weaviate/issues/1540) on GitHub). The RESTful APIs are mostly used for DB management and CRUD operations. The GraphQL API is mostly used to access data objects in Weaviate, whether it's a simple lookup or a combination of scalar and vector search. The APIs support the following user needs, roughly speaking:
+Weaviate には RESTful API と GraphQL API の両方が あります。現時点では両 API 間で機能の完全なパリティはありません (後に実装予定で、GitHub 上に [issue](https://github.com/weaviate/weaviate/issues/1540) があります)。RESTful API は主に DB 管理と CRUD 操作に使用されます。GraphQL API は主に Weaviate 内のデータオブジェクトへアクセスするために使用され、単純なルックアップからスカラー検索と ベクトル 検索の組み合わせまで対応します。大まかに言えば、API は以下のユーザーニーズをサポートします:
 
-* **Adding, retrieving, updating and deleting data CRUD** -> RESTful API
-* **Weaviate management operations** -> RESTful API
-* **Data search** -> GraphQL API
-* **Explorative data search** -> GraphQL API
-* **Data analysis (meta data)** -> GraphQL API
-* **Near real time on very large datasets in production** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
-* **Easy to integrate in applications** -> Client libraries (Python, Go, Java, JavaScript) using both APIs under the hood
+* **データの追加、取得、更新、削除 (CRUD)** -> RESTful API
+* **Weaviate の管理操作** -> RESTful API
+* **データ検索** -> GraphQL API
+* **探索的データ検索** -> GraphQL API
+* **データ解析 (メタデータ)** -> GraphQL API
+* **本番環境での非常に大きなデータセットに対するほぼリアルタイム処理** -> クライアントライブラリ (Python、Go、Java、JavaScript) が内部で両 API を使用
+* **アプリケーションへの容易な統合** -> クライアントライブラリ (Python、Go、Java、JavaScript) が内部で両 API を使用
 
 ## GraphQL
 
-### Why GraphQL?
-We have chosen to use a GraphQL API, for multiple reasons:
+### GraphQL を採用した理由
 
-* **Data structure**.
-  * Data in Weaviate follows a class-property structure. Data objects can be queried by their class and properties with GraphQL.
-  * It is possible to link data in Weaviate with cross-references. A Graph query language like GraphQL is very useful here.
-* **Performance**.
-  * With GraphQL, there is no over/under-fetching. You get back exactly the information about data objects that you query, nothing more and nothing less. This is beneficial for performance.
-  * Reducing the number of requests. With GraphQl, you can make highly efficient and precise queries that usually require many more queries with a traditional RESTful API for the same results.
-* **User Experience**
-  * Reducing complexity.
-  * Less error-prone (because of its typed schema)
-  * Custom design
-  * Data exploration and fuzzy search is possible
+GraphQL API を採用した理由は複数あります:
 
-### GraphQL Design Principles
-GraphQL queries are designed to be intuitive and fit Weaviate's features. [This article on Hackernoon](https://hackernoon.com/how-weaviates-graphql-api-was-designed-t93932tl) tells you more about how GraphQL API was designed (note that examples show an older Weaviate and GraphQL API version). The following three points are key in the design:
+* **データ構造**  
+  * Weaviate のデータは クラス-プロパティ 構造に従います。GraphQL を使うことで、クラスとプロパティを指定してデータオブジェクトをクエリできます。  
+  * Weaviate ではクロスリファレンスでデータをリンクできます。この点で GraphQL のようなグラフクエリ言語が非常に有用です。  
 
-* **Natural language**. The GraphQL queries follow a natural language pattern as much as possible. The function of a query is easy to understand and queries are easy to write and remember. An example query where you can recognize human language is: "*Get* the *title* of the *Articles* where the *wordcount* is *greater than* *1000*. The most important words in this query are also used in the GraphQL query:
+* **パフォーマンス**  
+  * GraphQL ではオーバーフェッチ/アンダーフェッチがありません。クエリした分だけ正確に情報を取得でき、パフォーマンス面で有利です。  
+  * リクエスト数の削減。GraphQL では非常に効率的かつ精密なクエリが可能で、同じ結果を得るために従来の RESTful API で必要となる多数のクエリを減らせます。  
+
+* **ユーザーエクスペリエンス**  
+  * 複雑さの軽減  
+  * 型付きスキーマによりエラーが起こりにくい  
+  * カスタムデザインが可能  
+  * データ探索やファジー検索が可能  
+
+### GraphQL の設計原則
+
+GraphQL クエリは直感的で Weaviate の機能に合うよう設計されています。[Hackernoon のこの記事](https://hackernoon.com/how-weaviates-graphql-api-was-designed-t93932tl) では GraphQL API がどのように設計されたかを詳しく説明しています (例は古い Weaviate と GraphQL API バージョンを示しています)。設計の鍵となる 3 点は次のとおりです:
+
+* **自然言語**  
+  GraphQL クエリは可能な限り自然言語パターンに従っています。クエリの機能が理解しやすく、書きやすく覚えやすいです。以下のクエリ例では、人間の言語を認識できます: 「*Get* the *title* of the *Articles* where the *wordcount* is *greater than* *1000*」。このクエリの最も重要な語が GraphQL クエリにも使われています:
 
 ```graphql
 {
@@ -66,9 +71,10 @@ GraphQL queries are designed to be intuitive and fit Weaviate's features. [This 
 }
 ```
 
-There are currently three main functions in a GraphQL request: "Get{}", "Explore{}" and "Aggregate{}".
+現在、GraphQL リクエストには主に `Get{}`、`Explore{}`、`Aggregate{}` の 3 つの関数があります。
 
-* **Classes & properties**. Data in Weaviate has a class-property structure, where cross-references may appear between data object. The class name of the data to return is written one layer deeper than the 'main function'. The next layer consists of the properties and cross-reference properties to return per class:
+* **クラスとプロパティ**  
+  Weaviate のデータは クラス-プロパティ 構造を持ち、データオブジェクト間にクロスリファレンスが存在する場合があります。返すデータのクラス名は「メイン関数」の 1 階層下に書かれます。次の階層には、クラスごとに返すプロパティとクロスリファレンスプロパティを記述します:
 
 ```graphql
 {
@@ -90,7 +96,8 @@ There are currently three main functions in a GraphQL request: "Get{}", "Explore
 }
 ```
 
-* **Query filters (search arguments) dependent on database setup**. You can add filters on class level to filter objects. Scalar (`where` filters) can be combined with vector (`near<...>`) filters. Depending on your Weaviate setup (which modules you have connected), additional filters may be used. A filter can look like (using the [`qna-transformers` module](/weaviate/modules/qna-transformers.md)):
+* **データベース設定に依存するクエリフィルター (検索引数)**  
+  オブジェクトをフィルターするためにクラスレベルでフィルターを追加できます。スカラー (`where` フィルター) と ベクトル (`near<...>`) フィルターを組み合わせることが可能です。Weaviate のセットアップ (接続しているモジュール) に応じて、追加のフィルターが使用できます。以下は [`qna-transformers` モジュール](/weaviate/modules/qna-transformers.md) を使用したフィルターの例です:
 
 ```graphql
 {
@@ -113,37 +120,40 @@ There are currently three main functions in a GraphQL request: "Get{}", "Explore
 }
 ```
 
-### GraphQL Design of Main Functions
+### GraphQL メイン関数の設計
 
-1. **Data search: `Get {}`**: to search for data objects when you know the class name of the data objects you're looking for.
-2. **Explorative & fuzzy search: `Explore {}`**: to search in a fuzzy way, when you don't know the data schema and class names.
-3. **Data analysis (meta data): `Aggregate {}`**: to search for meta data, and do data analysis of data aggregations.
+1. **データ検索: `Get {}`**  
+   データオブジェクトのクラス名が分かっている場合に検索します。  
+2. **探索的 & ファジー検索: `Explore {}`**  
+   データスキーマやクラス名が分からない場合にファジー検索を行います。  
+3. **データ解析 (メタデータ): `Aggregate {}`**  
+   メタデータを検索し、データ集計の解析を行います。  
 
-## gRPC API support
+## gRPC API サポート
 
-Starting with version `1.19`, Weaviate is introducing support for the gRPC (gRPC Remote Procedure Calls) API, with the aim of making Weaviate even faster over time.
+バージョン `1.19` から、Weaviate は gRPC (gRPC Remote Procedure Calls) API のサポートを導入し、時間とともにさらに高速化を図っています。
 
-This will not result in any user-facing API changes. As of May 2023, gRPC has been added at a very small scale, with the goal of rolling it out further over time to the core library as well as the clients.
+これによりユーザー向け API の変更は発生しません。2023 年 5 月時点で、gRPC はごく小規模に追加されており、今後コアライブラリおよびクライアントへの展開が予定されています。
 
 ## Weaviate Console
 
-The [Weaviate Console](https://console.weaviate.cloud) is a dashboard to manage Weaviate clusters from WCD, and access Weaviate instances running elsewhere. You can use the Query Module to make GraphQL queries.
+[Weaviate Console](https://console.weaviate.cloud) は、WCD から Weaviate クラスターを管理し、他の場所で稼働する Weaviate インスタンスへアクセスするためのダッシュボードです。GraphQL クエリを実行するために Query Module を使用できます。
 
 ![GraphQL Query Module in Weaviate Console](./img/console-capture.png)
 
-## Weaviate Clients
+## Weaviate クライアント
 
-Weaviate has several client libraries: in [Go](/weaviate/client-libraries/go.md), [Java](/weaviate/client-libraries/java.md), [Python](/weaviate/client-libraries/python/index.mdx) and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx). The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. The APIs are intuitive to use, so it is easy to integrate Weaviate into your existing data landscape.
+Weaviate には [Go](/weaviate/client-libraries/go.md)、[Java](/weaviate/client-libraries/java.md)、[Python](/weaviate/client-libraries/python/index.mdx)、[TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx) のクライアントライブラリがあります。すべての言語向けクライアントライブラリは全 API 機能をサポートしています。一部のクライアント (例: Python クライアント) では、完全なスキーマ管理やバッチ処理などの追加機能も提供されています。これにより、Weaviate はカスタムプロジェクトで簡単に利用でき、API も直感的なため既存のデータ環境への統合が容易です。
 
-## Further resources
-:::info Related pages
-- [References: GraphQL API](../api/graphql/index.md)
-- [References: RESTful API](/weaviate/api/rest).
-- [References: Client Libraries](../client-libraries/index.mdx).
+## さらなるリソース
+:::info 関連ページ
+- [リファレンス: GraphQL API](../api/graphql/index.md)
+- [リファレンス: RESTful API](/weaviate/api/rest)
+- [リファレンス: クライアントライブラリ](../client-libraries/index.mdx)
 :::
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

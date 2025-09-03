@@ -1,5 +1,5 @@
 ---
-title: Retrieval Augmented Generation (RAG)
+title: 検索拡張生成 (RAG)
 sidebar_position: 70
 image: og/docs/howto.jpg
 # tags: ['how to', 'generative']
@@ -14,18 +14,18 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.generative-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
 
-Retrieval Augmented Generation (RAG) combines information retrieval with generative AI models.
+検索拡張生成 (RAG) は、情報検索と生成 AI モデルを組み合わせます。
 
-In Weaviate, a RAG query consists of two parts: *a search query*, and a *prompt for the model*. Weaviate first performs the search, then passes both the search results and your prompt to a generative AI model before returning the generated response.
+Weaviate では、RAG クエリは 2 つの要素で構成されます: *検索クエリ* と *モデルへのプロンプト* です。Weaviate はまず検索を実行し、その検索結果とプロンプトの両方を生成 AI モデルに渡した後、生成された応答を返します。
 
-## Configure a generative model provider
+## 生成モデルプロバイダーの設定
 
-:::info Added in `v1.30`
+:::info `v1.30` で追加
 :::
 
-To use RAG with a [generative model integration](../model-providers/index.md):
-- [set a default configuration for the collection](../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) and/or
-- provide the settings as a part of the query:
+[generative model integration](../model-providers/index.md) で RAG を使用する場合は、以下を行います。
+- [コレクションのデフォルト設定を指定](../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) する、または
+- クエリの一部として設定を提供します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -62,7 +62,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
 ```
 Properties: {'country': 'Austria', 'title': 'Gebeshuber 2013 Frizzante Rosé Pinot Noir (Österreichischer Perlwein)', 'review_body': "With notions of cherry and cinnamon on the nose and just slight fizz, this is a refreshing, fruit-driven sparkling rosé that's full of strawberry and cherry notes—it might just be the very definition of easy summer wine. It ends dry, yet refreshing.", 'points': 85, 'price': 21.0}
@@ -82,15 +82,15 @@ The second review is for the Stadt Krems 2009 Steinterrassen Riesling from Austr
 
 :::tip
 
-For more information on the available modeld and their additional options, see the [model providers section](../model-providers/index.md).
+利用可能なモデルや追加オプションの詳細については、[モデルプロバイダーのセクション](../model-providers/index.md) を参照してください。
 
 :::
-## Named vectors
+## 名前付きベクトル
 
-:::info Added in `v1.24`
+:::info `v1.24` で追加
 :::
 
-Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
+[named vectors](../config-refs/collections.mdx#named-vectors) を設定したコレクションでベクトルベース検索を行う場合、クエリに `target` ベクトル名を含める必要があります。これにより、Weaviate はクエリ ベクトルと比較する正しいベクトルを見つけることができます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -140,7 +140,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
 ```
 Properties: {'country': 'Austria', 'title': 'Gebeshuber 2013 Frizzante Rosé Pinot Noir (Österreichischer Perlwein)', 'review_body': "With notions of cherry and cinnamon on the nose and just slight fizz, this is a refreshing, fruit-driven sparkling rosé that's full of strawberry and cherry notes—it might just be the very definition of easy summer wine. It ends dry, yet refreshing.", 'points': 85, 'price': 21.0}
@@ -157,12 +157,11 @@ The second review is for the Stadt Krems 2009 Steinterrassen Riesling from Austr
 ```
 
 </details>
+## 単一プロンプト検索
 
-## Single prompt search
-
-Single prompt search returns a generated response for each object in the query results.<br/>
-Define object `properties` – using `{prop-name}` syntax – to interpolate retrieved content in the prompt.<br/>
-The properties you use in the prompt do not have to be among the properties you retrieve in the query.
+単一プロンプト検索では、クエリ結果に含まれる各オブジェクトに対して生成されたレスポンスを返します。<br/>
+取得した内容をプロンプト内に挿入するために、`{prop-name}` 構文を使用してオブジェクトの `properties` を定義します。<br/>
+プロンプトで使用するプロパティは、クエリで取得するプロパティと一致している必要はありません。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -221,7 +220,7 @@ The properties you use in the prompt do not have to be among the properties you 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 ```
 Property 'question': Including, in 19th century, one quarter of world's land & people, the sun never set on it
@@ -233,12 +232,12 @@ Single prompt result: Which country in ancient history had more kings than any o
 
 </details>
 
-### Additional parameters
+### 追加パラメーター
 
-:::info Added in `v1.30`
+:::info `v1.30` で追加
 :::
 
-You can use *generative parameters* to specify additional options when performing a single prompt search:
+単一プロンプト検索を実行する際、追加オプションを指定するために *generative parameters* を利用できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -274,7 +273,7 @@ You can use *generative parameters* to specify additional options when performin
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 ```
 Properties: {'points': 400, 'answer': 'the British Empire', 'air_date': datetime.datetime(1984, 12, 10, 0, 0, tzinfo=datetime.timezone.utc), 'question': "Including, in 19th century, one quarter of world's land & people, the sun never set on it", 'round': 'Double Jeopardy!'}
@@ -304,9 +303,9 @@ Metadata: usage {
 
 </details>
 
-## Grouped task search
+## グループ化タスク検索
 
-Grouped task search returns one response that includes all of the query results. By default grouped task search uses all object `properties` in the prompt.
+グループ化タスク検索では、クエリ結果をすべて含む 1 件のレスポンスを返します。デフォルトでは、プロンプトにはすべてのオブジェクト `properties` が使用されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -365,17 +364,16 @@ Grouped task search returns one response that includes all of the query results.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 ```
 Grouped task result: All of these animals are mammals.
 ```
 
 </details>
+### グループ化タスクのプロンプトプロパティの設定
 
-### Set grouped task prompt properties
-
-Define object `properties` to use in the prompt. This limits the information in the prompt and reduces prompt length.
+プロンプトで使用するオブジェクト `properties` を定義します。これによりプロンプト内の情報量が制限され、プロンプトの長さが短縮されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -434,7 +432,7 @@ Define object `properties` to use in the prompt. This limits the information in 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 ```
 Grouped task result: The commonality among these animals is that they are all native to Australia.
@@ -442,12 +440,12 @@ Grouped task result: The commonality among these animals is that they are all na
 
 </details>
 
-### Additional parameters
+### 追加パラメーター
 
-:::info Added in `v1.30`
+:::info `v1.30` で追加
 :::
 
-You can use *generative parameters* to specify additional options when performing grouped tasks:
+グループ化タスクを実行する際に追加のオプションを指定するために、 *generative parameters* を使用できます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -483,7 +481,7 @@ You can use *generative parameters* to specify additional options when performin
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 ```
 Grouped task result: They are all animals.
@@ -496,12 +494,12 @@ Metadata: usage {
 
 </details>
 
-## Working with images
+## 画像の取り扱い
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
-The following fields are available for generative search with images:
-- `images`: A base64 encoded string of the image bytes.
-- `image_properties`: Names of the properties in Weaviate that store images for additional context.
+単一プロンプトおよびグループ化タスクで検索拡張生成を行う際、入力の一部として画像を提供することもできます。  
+画像を用いた生成検索で利用可能なフィールドは次のとおりです:
+- `images`: 画像のバイト列を base64 でエンコードした文字列。  
+- `image_properties`: 追加コンテキストとして画像を保存する Weaviate のプロパティ名。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -537,7 +535,7 @@ The following fields are available for generative search with images:
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 ```
 Properties: {'points': 800, 'answer': 'sheep', 'air_date': datetime.datetime(2007, 12, 13, 0, 0, tzinfo=datetime.timezone.utc), 'question': 'Australians call this animal a jumbuck or a monkey', 'round': 'Jeopardy!'}
@@ -552,14 +550,13 @@ Question: What is a koala?
 ```
 
 </details>
+## 関連ページ
 
-## Related pages
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [モデルプロバイダー統合](../model-providers/index.md).
+- [API リファレンス: GraphQL: Get](../api/graphql/get.md)
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [Model provider integrations](../model-providers/index.md).
-- [API References: GraphQL: Get](../api/graphql/get.md)
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

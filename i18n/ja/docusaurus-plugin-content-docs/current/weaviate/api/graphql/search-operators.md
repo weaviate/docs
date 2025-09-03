@@ -1,7 +1,7 @@
 ---
-title: Search operators
+title: 検索オペレーター
 sidebar_position: 20
-description: "GraphQL search operators guide for advanced query construction and precise data targeting techniques."
+description: "高度なクエリ構築と精密なデータターゲティング手法のための GraphQL 検索オペレーターガイド。"
 image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---
@@ -11,53 +11,53 @@ import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
 <TryEduDemo />
 
-This page covers the search operators that can be used in queries, such as vector search operators (`nearText`, `nearVector`, `nearObject`, etc), keyword search operator (`bm25`), hybrid search operator (`hybrid`).
+このページでは、クエリで使用できる検索オペレーターについて説明します。ベクトル検索オペレーター（ `nearText` 、 `nearVector` 、 `nearObject` など）、キーワード検索オペレーター（ `bm25` ）、ハイブリッド検索オペレーター（ `hybrid` ）などがあります。
 
-Only one search operator can be added to queries on the collection level.
+コレクションレベルのクエリには、検索オペレーターを 1 つだけ追加できます。
 
-## Operator availability
+## オペレーターの利用可否
 
-### Built-in operators
+### 組み込みオペレーター
 
-These operators are available in all Weaviate instances regardless of configuration.
+これらのオペレーターは、設定に関係なくすべての Weaviate インスタンスで利用できます。
 
 * [nearVector](#nearvector)
 * [nearObject](#nearobject)
 * [hybrid](#hybrid)
 * [bm25](#bm25)
 
-### Module-specific operators
+### モジュール固有のオペレーター
 
-Module-specific search operators are made available in certain Weaviate modules.
+モジュール固有の検索オペレーターは、特定の Weaviate モジュールを追加することで利用可能になります。
 
-By adding relevant modules, you can use the following operators:
-* [nearText](#neartext)
-* [Multimodal search](#multimodal-search)
-* [ask](#ask)
+関連するモジュールを追加すると、次のオペレーターを使用できます。  
+* [nearText](#neartext)  
+* [Multimodal search](#multimodal-search)  
+* [ask](#ask)  
 
 
-## Vector search operators
+## ベクトル検索オペレーター
 
-`nearXXX` operators allow you to find data objects based on their vector similarity to the query. They query can be a raw vector (`nearVector`) or an object UUID (`nearObject`).
+`nearXXX` オペレーターを使用すると、クエリとのベクトル類似度に基づいてデータオブジェクトを検索できます。クエリには生のベクトル（ `nearVector` ）またはオブジェクトの UUID（ `nearObject` ）を指定できます。
 
-If the appropriate vectorizer model is enabled, a text query (`nearText`), an image (`nearImage`), or another media input may be be used as the query.
+適切な ベクトライザー モデルを有効化している場合、テキストクエリ（ `nearText` ）、画像（ `nearImage` ）、その他のメディア入力をクエリとして使用することもできます。
 
-All vector search operators can be used with a `certainty` or `distance` threshold specified, as well as a [`limit` operator](./additional-operators.md#limit-argument) or an [`autocut` operator](./additional-operators.md#autocut) to specify the desired similarity or distance between the query and the results
+すべてのベクトル検索オペレーターは、 `certainty` または `distance` の閾値、さらに [`limit` オペレーター](./additional-operators.md#limit-argument) や [`autocut` オペレーター](./additional-operators.md#autocut) と組み合わせて使用し、クエリと結果の類似度または距離を指定できます。
 
 
 ### nearVector
 
-`nearVector` finds data objects closest to an input vector.
+`nearVector` は、入力ベクトルに最も近いデータオブジェクトを検索します。
 
-#### Variables
+#### 変数
 
-| Variable | Required | Type | Description |
+| 変数 | 必須 | 型 | 説明 |
 | --- | --- | --- | --- |
-| `vector` | yes | `[float]` | This variable takes a vector embedding in the form of an array of floats. The array should have the same length as the vectors in this collection. |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
-| `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
+| `vector` | yes | `[float]` | ベクトル埋め込みを `float` の配列として渡します。配列の長さは、このコレクション内のベクトルと同じである必要があります。 |
+| `distance` | no | `float` | 指定した検索入力に対して許容される最大距離。 `certainty` 変数と同時には使用できません。距離値の解釈は [使用している距離メトリック](/weaviate/config-refs/distances.md) に依存します。 |
+| `certainty` | no | `float` | 結果アイテムと検索ベクトル間の正規化された距離。0（完全に反対）〜 1（同一ベクトル）の範囲に正規化されます。 `distance` 変数と同時には使用できません。 |
 
-#### Example
+#### 例
 
 import GraphQLFiltersNearVector from '/_includes/code/graphql.filters.nearVector.mdx';
 
@@ -66,28 +66,28 @@ import GraphQLFiltersNearVector from '/_includes/code/graphql.filters.nearVector
 
 ### nearObject
 
-`nearVector` finds data objects closest to an existing object in the same collection. The object is typically specified by its UUID.
+`nearObject` は、同じコレクション内の既存オブジェクトに最も近いデータオブジェクトを検索します。通常、検索対象のオブジェクトはその UUID で指定します。
 
-* Note: You can specify an object's `id` or `beacon` in the argument, along with a desired `certainty`.
-* Note that the first result will always be the object used for search.
+* 注: 引数にはオブジェクトの `id` または `beacon` と、必要に応じて `certainty` を指定できます。  
+* 注: 検索に使用したオブジェクトは、常に結果の 1 件目として返されます。
 
-#### Variables
+#### 変数
 
-| Variable | Required | Type | Description |
+| 変数 | 必須 | 型 | 説明 |
 | --------- | -------- | ---- | ----------- |
-| `id` | yes | `UUID` | Data object identifier in the uuid format. |
-| `beacon` | no | `url` | Data object identifier in the beacon URL format. E.g., `weaviate://<hostname>/<kind>/id`. |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
-| `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
+| `id` | yes | `UUID` | UUID 形式のデータオブジェクト識別子。 |
+| `beacon` | no | `url` | Beacon URL 形式のデータオブジェクト識別子。例: `weaviate://<hostname>/<kind>/id` |
+| `distance` | no | `float` | 指定した検索入力に対して許容される最大距離。 `certainty` 変数と同時には使用できません。距離値の解釈は [使用している距離メトリック](/weaviate/config-refs/distances.md) に依存します。 |
+| `certainty` | no | `float` | 結果アイテムと検索ベクトル間の正規化された距離。0（完全に反対）〜 1（同一ベクトル）の範囲に正規化されます。 `distance` 変数と同時には使用できません。 |
 
-#### Example
+#### 例
 
 import GraphQLFiltersNearObject from '/_includes/code/graphql.filters.nearObject.mdx';
 
 <GraphQLFiltersNearObject/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>想定されるレスポンス</summary>
 
 ```json
 {
@@ -131,49 +131,49 @@ import GraphQLFiltersNearObject from '/_includes/code/graphql.filters.nearObject
 
 ### nearText
 
-The `nearText` operator finds data objects based on their vector similarity to a natural language query.
+`nearText` オペレーターは、自然言語クエリとのベクトル類似度に基づいてデータオブジェクトを検索します。
 
-This operator is enabled if a compatible vectorizer module is configured for the collection. Compatible vectorizer modules are:
+このオペレーターは、コレクションに互換性のある ベクトライザー モジュールが設定されている場合に有効になります。互換性のある ベクトライザー モジュールは以下のとおりです。
 
-* Any `text2vec` module
-* Any `multi2vec` module
+* 任意の `text2vec` モジュール
+* 任意の `multi2vec` モジュール
 
 
-#### Variables
+#### 変数
 
-| Variable | Required | Type | Description |
+| 変数 | 必須 | 型 | 説明 |
 | --- | --- | --- | --- |
-| `concepts` | yes | `[string]` | An array of strings that can be natural language queries, or single words. If multiple strings are used, a centroid is calculated and used. Learn more about how the concepts are parsed [here](#concept-parsing). |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
-| `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
-| `autocorrect` | no | `boolean` | Autocorrect input text values. Requires the [`text-spellcheck` module](../../modules/spellcheck.md) to be present & enabled.  |
-| `moveTo` | no | `object{}` | Move your search term closer to another vector described by keywords |
-| `moveTo{concepts}`| no | `[string]` | An array of strings - natural language queries or single words. If multiple strings are used, a centroid is calculated and used. |
-| `moveTo{objects}`| no | `[UUID]` | Object IDs to move the results to. This is used to "bias" NLP search results into a certain direction in vector space. |
-| `moveTo{force}`| no | `float` | The force to apply to a particular movement. Must be between 0 and 1 where 0 is equivalent to no movement and 1 is equivalent to largest movement possible. |
-| `moveAwayFrom` | no | `object{}` | Move your search term away from another vector described by keywords |
-| `moveAwayFrom{concepts}`| no | `[string]` | An array of strings - natural language queries or single words. If multiple strings are used, a centroid is calculated and used. |
-| `moveAwayFrom{objects}`| no | `[UUID]` | Object IDs to move the results from. This is used to "bias" NLP search results into a certain direction in vector space. |
-| `moveAwayFrom{force}`| no | `float` | The force to apply to a particular movement. Must be between 0 and 1 where 0 is equivalent to no movement and 1 is equivalent to largest movement possible. |
+| `concepts` | yes | `[string]` | 自然言語クエリや単語を含む文字列配列。複数の文字列を指定した場合、セントロイドを計算して使用します。コンセプトの解析方法の詳細は [こちら](#concept-parsing) を参照してください。 |
+| `distance` | no | `float` | 指定した検索入力に対して許容される最大距離。 `certainty` 変数と同時には使用できません。距離値の解釈は [使用している距離メトリック](/weaviate/config-refs/distances.md) に依存します。 |
+| `certainty` | no | `float` | 結果アイテムと検索ベクトル間の正規化された距離。0（完全に反対）〜 1（同一ベクトル）の範囲に正規化されます。 `distance` 変数と同時には使用できません。 |
+| `autocorrect` | no | `boolean` | 入力テキストを自動修正します。 [`text-spellcheck` モジュール](../../modules/spellcheck.md) が存在し、かつ有効になっている必要があります。 |
+| `moveTo` | no | `object{}` | キーワードで表される別のベクトルに検索語を近づけます。 |
+| `moveTo{concepts}` | no | `[string]` | 自然言語クエリや単語を含む文字列配列。複数の文字列を指定した場合、セントロイドを計算して使用します。 |
+| `moveTo{objects}` | no | `[UUID]` | 結果を近づけたいオブジェクト ID。NLP 検索結果をベクトル空間上の特定方向にバイアスするために使用します。 |
+| `moveTo{force}` | no | `float` | 移動に適用する強さ。0 は移動なし、1 は最大移動量を表します。 |
+| `moveAwayFrom` | no | `object{}` | キーワードで表される別のベクトルから検索語を遠ざけます。 |
+| `moveAwayFrom{concepts}` | no | `[string]` | 自然言語クエリや単語を含む文字列配列。複数の文字列を指定した場合、セントロイドを計算して使用します。 |
+| `moveAwayFrom{objects}` | no | `[UUID]` | 結果を遠ざけたいオブジェクト ID。NLP 検索結果をベクトル空間上の特定方向にバイアスするために使用します。 |
+| `moveAwayFrom{force}` | no | `float` | 移動に適用する強さ。0 は移動なし、1 は最大移動量を表します。 |
 
-#### Example I
+#### 例 I
 
-This example shows an example usage the `nearText` operator, including how to bias results towards another search query.
+この例は `nearText` オペレーターの使用例を示しており、別の検索クエリへ結果をバイアスする方法も含みます。
 
 import GraphQLFiltersNearText from '/_includes/code/graphql.filters.nearText.mdx';
 
 <GraphQLFiltersNearText/>
 
-#### Example II
+#### 例 II
 
-You can also bias results toward other data objects. For example, in this query, we move our query about "travelling in asia", towards an article on food.
+結果を他のデータオブジェクトへバイアスすることもできます。たとえばこのクエリでは、「 travelling in asia 」に関するクエリを、フードに関する記事へ寄せています。
 
 import GraphQLFiltersNearText2Obj from '/_includes/code/graphql.filters.nearText.2obj.mdx';
 
 <GraphQLFiltersNearText2Obj/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>期待されるレスポンス</summary>
 
 ```json
 {
@@ -203,102 +203,102 @@ import GraphQLFiltersNearText2Obj from '/_includes/code/graphql.filters.nearText
 
 </details>
 
-#### Additional information
+#### 追加情報
 
-##### Concept parsing
+##### コンセプト解析
 
-A `nearText` query will interpret each term in an array input as distinct strings to be vectorized. If multiple strings are passed, the query vector will be an average vector of the individual string vectors.
+`nearText` クエリは、配列入力の各要素を別々の文字列として ベクトル 化します。複数の文字列が渡された場合、クエリ ベクトル は各文字列 ベクトル の平均となります。
 
-- `["New York Times"]` = one vector position is determined based on the occurrences of the words
-- `["New", "York", "Times"]` = all concepts have a similar weight.
-- `["New York", "Times"]` = a combination of the two above.
+- `["New York Times"]` = 単一の ベクトル 位置が語の出現に基づいて決定される  
+- `["New", "York", "Times"]` = すべてのコンセプトが同じ重みを持つ  
+- `["New York", "Times"]` = 上記 2 つの組み合わせ  
 
-A practical example would be: `concepts: ["beatles", "John Lennon"]`
+実用例: `concepts: ["beatles", "John Lennon"]`
 
-##### Semantic Path
+##### セマンティックパス
 
-* Only available in `txt2vec-contextionary` module
+* `txt2vec-contextionary` モジュールのみで利用可能
 
-The semantic path returns an array of concepts from the query to the data object. This allows you to see which steps Weaviate took and how the query and data object are interpreted.
+セマンティックパスは、クエリからデータオブジェクトまでのコンセプトの配列を返します。これにより、Weaviate がどのようなステップを踏んだか、およびクエリとデータオブジェクトがどのように解釈されたかを確認できます。
 
-| Property | Description |
+| Property | 説明 |
 | --- | --- |
-| `concept` | the concept that is found in this step. |
-| `distanceToNext` | the distance to the next step (null for the last step). |
-| `distanceToPrevious` | this distance to the previous step (null for the first step). |
-| `distanceToQuery` | the distance of this step to the query. |
-| `distanceToResult` | the distance of the step to this result. |
+| `concept` | このステップで見つかったコンセプト |
+| `distanceToNext` | 次のステップまでの距離（最後のステップの場合は null） |
+| `distanceToPrevious` | 前のステップまでの距離（最初のステップの場合は null） |
+| `distanceToQuery` | このステップからクエリまでの距離 |
+| `distanceToResult` | このステップから結果までの距離 |
 
-_Note: Building a semantic path is only possible if a [`nearText: {}` operator](#neartext) is set as the explore term represents the beginning of the path and each search result represents the end of the path. Since `nearText: {}` queries are currently exclusively possible in GraphQL, the `semanticPath` is therefore not available in the REST API._
+_注: セマンティックパスを構築できるのは、探索語がパスの開始、各検索結果がパスの終端を表すため [`nearText: {}` オペレーター](#neartext) が設定されている場合のみです。現在 `nearText: {}` クエリは GraphQL でのみ利用可能なため、`semanticPath` は REST API では利用できません。_
 
-Example: showing a semantic path without edges.
+例: エッジなしでセマンティックパスを表示
 
 import GraphQLUnderscoreSemanticpath from '/_includes/code/graphql.underscoreproperties.semanticpath.mdx';
 
 <GraphQLUnderscoreSemanticpath/>
 
 
-### Multimodal search
+### マルチモーダル検索
 
-Depending on the vectorizer module, you can use additional modalities such as images, audio, or video as the query, and retrieve corresponding, compatible objects.
+使用している ベクトライザー モジュールによっては、画像・音声・動画など追加のモダリティをクエリとして使用し、対応する互換オブジェクトを取得できます。
 
-Some modules, such as `multi2vec-clip` and `multi2vec-bind` allow you to search across modalities. For example, you can search for images using a text query, or search for text using an image query.
+`multi2vec-clip` や `multi2vec-bind` など一部のモジュールでは、モダリティを跨いだ検索が可能です。たとえばテキストクエリで画像を検索したり、画像クエリでテキストを検索したりできます。
 
-For more information, see specific module pages such as these:
+詳細は以下の各モジュールページをご覧ください。
 
-* [Transformers multimodal embeddings](../../model-providers/transformers/embeddings-multimodal.md)
-* [ImageBind multimodal embeddings](../../model-providers/imagebind/embeddings-multimodal.md)
+* [Transformers マルチモーダル埋め込み](../../model-providers/transformers/embeddings-multimodal.md)
+* [ImageBind マルチモーダル埋め込み](../../model-providers/imagebind/embeddings-multimodal.md)
 
 
 ## hybrid
 
-This operator allows you to combine [BM25](#bm25) and vector search to get a "best of both worlds" type search results set.
+このオペレーターを使用すると、[ BM25 ](#bm25) と ベクトル 検索を組み合わせて「良いとこ取り」の検索結果セットを取得できます。
 
-### Variables
+### 変数
 
 | Variables    | Required | Type       | Description                                                                 |
 |--------------|----------|------------|-----------------------------------------------------------------------------|
-| `query`      | yes      | `string`   | search query                                                                |
-| `alpha`      | no       | `float`    | weighting for each search algorithm, default 0.75                           |
-| `vector`     | no       | `[float]`  | optional to supply your own vector                                          |
-| `properties` | no       | `[string]` | list of properties to limit the BM25 search to, default all text properties |
-| `fusionType` | no       | `string` | the type of hybrid fusion algorithm (available from `v1.20.0`)              |
-| `bm25SearchOperator` | no | `object` | set how many of the (bm25) query tokens must be present in the target object for it to be considered a match. (available from `v1.31.0`) |
+| `query`      | yes      | `string`   | 検索クエリ                                                                  |
+| `alpha`      | no       | `float`    | 各検索アルゴリズムの重み付け。デフォルトは 0.75                             |
+| `vector`     | no       | `[float]`  | 独自の ベクトル を指定する場合に使用                                         |
+| `properties` | no       | `[string]` | BM25 検索対象を特定のプロパティに限定。デフォルトはすべてのテキストプロパティ |
+| `fusionType` | no       | `string` | ハイブリッド融合アルゴリズムの種類（ `v1.20.0` から利用可能）               |
+| `bm25SearchOperator` | no | `object` | ターゲットオブジェクトがマッチと見なされるために含むべき (bm25) クエリトークン数を設定（ `v1.31.0` から利用可能） |
 
-* Notes:
-    * `alpha` can be any number from 0 to 1, defaulting to 0.75.
-        * `alpha` = 0 forces using a pure **keyword** search method (BM25)
-        * `alpha` = 1 forces using a pure **vector** search method
-        * `alpha` = 0.5 weighs the BM25 and vector methods evenly
-    * `fusionType` can be `rankedFusion` or `relativeScoreFusion`
-        * `rankedFusion` (default) adds inverted ranks of the BM25 and vector search methods
-        * `relativeScoreFusion` adds normalized scores of the BM25 and vector search methods
+* 注:
+    * `alpha` は 0〜1 の数値で、デフォルトは 0.75  
+        * `alpha` = 0 で純粋な **キーワード** 検索（ BM25 ）のみ  
+        * `alpha` = 1 で純粋な **ベクトル** 検索のみ  
+        * `alpha` = 0.5 で BM25 と ベクトル を同等に重み付け  
+    * `fusionType` は `rankedFusion` または `relativeScoreFusion`  
+        * `rankedFusion` （デフォルト）は BM25 と ベクトル 検索の順位を反転して加算  
+        * `relativeScoreFusion` は正規化された BM25 と ベクトル のスコアを加算  
 
-### Fusion algorithms
+### 融合アルゴリズム
 
 #### Ranked fusion
 
-The `rankedFusion` algorithm is Weaviate's original hybrid fusion algorithm.
+`rankedFusion` アルゴリズムは Weaviate のオリジナルのハイブリッド融合アルゴリズムです。
 
-In this algorithm, each object is scored according to its position in the results for that search (vector or keyword). The top-ranked objects in each search get the highest scores. Scores decrease going from top to least ranked. The total score is calculated by adding the rank-based scores from the vector and keyword searches.
+このアルゴリズムでは、各オブジェクトが検索結果（ ベクトル またはキーワード）の順位に基づいてスコアリングされます。それぞれの検索で最上位のオブジェクトが最高スコアを得て、下位になるほどスコアは低下します。最終スコアは ベクトル 検索とキーワード検索の順位ベーススコアを合算して算出されます。
 
 #### Relative score fusion
 
-:::info Added in `v1.20`
+:::info `v1.20` で追加
 :::
-:::info Relative Score Fusion is the default in `v1.24` and higher.
+:::info `v1.24` 以降のデフォルトは Relative Score Fusion
 :::
 
-In `relativeScoreFusion` the vector search and keyword search scores are scaled between `0` and `1`. The highest raw score becomes `1` in the scaled scores. The lowest value is assigned `0`. The remaining values are ranked between `0` and `1`. The total score is a scaled sum of the normalized vector similarity and normalized BM25 scores.
+`relativeScoreFusion` では、 ベクトル 検索とキーワード検索のスコアが 0〜1 にスケーリングされます。スケーリング後、最高値は 1、最低値は 0 となり、その間の値が 0〜1 の範囲で割り当てられます。最終スコアは、正規化された ベクトル 類似度と正規化された BM25 スコアの合計（スケーリング済み）です。
 
 <details>
-  <summary>Fusion scoring comparison</summary>
+  <summary>融合スコアリング比較</summary>
 
-This example uses a small search result set to compare the ranked fusion and relative fusion algorithms. The table shows the following information:
+この例では、小さな検索結果セットを用いて ranked fusion と relative fusion のアルゴリズムを比較します。表には以下の情報が示されています。
 
-- `document id`, from 0 to 4
-- `keyword score`, sorted
-- `vector search score`, sorted
+- `document id`（ 0 〜 4 ）  
+- `keyword score`（ソート済み）  
+- `vector search score`（ソート済み）  
 
 <table>
   <tr>
@@ -315,15 +315,15 @@ This example uses a small search result set to compare the ranked fusion and rel
   </tr>
 </table>
 
-The ranking algorithms use these scores to derive the hybrid ranking.
+ランキングアルゴリズムはこれらのスコアを用いてハイブリッドランキングを導出します。
 
-#### Ranked fusion
+#### ランク融合
 
-The score depends on the rank of the result. The score is equal to `1/(RANK + 60)`:
+結果の rank によって score が決まります。score は `1/(RANK + 60)` で計算されます。
 
 <table>
   <tr>
-    <th>Search Type</th>
+    <th>検索タイプ</th>
     <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
   </tr>
   <tr>
@@ -336,15 +336,15 @@ The score depends on the rank of the result. The score is equal to `1/(RANK + 60
   </tr>
 </table>
 
-As you can see, the results of each rank is identical, regardless of the input score.
+表が示すように、入力 score に関係なく、各ランクの結果は同一です。
 
-#### Relative score fusion
+#### 相対スコア融合
 
-Here, we normalize the scores – the largest score is set to 1 and the lowest to 0, and all entries in-between are scaled according to their **relative distance** to the **maximum** and **minimum values**.
+ここでは score を正規化します。最大 score を 1、最小を 0 とし、その間は **最大値** と **最小値** からの **相対距離** に基づいてスケーリングされます。
 
 <table>
   <tr>
-    <th>Search Type</th>
+    <th>検索タイプ</th>
     <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
   </tr>
   <tr>
@@ -357,17 +357,17 @@ Here, we normalize the scores – the largest score is set to 1 and the lowest t
   </tr>
 </table>
 
-Here, the scores reflect the relative distribution of the original scores. For example, the vector search scores of the first 4 documents were almost identical, which is still the case for the normalized scores.
+ここでの score は元の score の相対的な分布を反映しています。例えば、vector 検索の先頭 4 件の score はほぼ同一であり、正規化後も同様です。
 
-#### Weighting & final scores
+#### 重み付けと最終スコア
 
-Before adding these scores up, they are weighted according to the alpha parameter. Let’s assume `alpha=0.5`, meaning both search types contribute equally to the final result and therefore each score is multiplied by 0.5.
+これらの score を合算する前に、alpha パラメーターに従って重み付けされます。ここでは alpha=0.5 とし、両検索タイプが最終結果に等しく寄与するため、各 score に 0.5 を掛けます。
 
-Now, we can add the scores for each document up and compare the results from both fusion algorithms.
+これで各ドキュメントの score を合算し、両方の融合アルゴリズムの結果を比較できます。
 
 <table>
   <tr>
-    <th>Algorithm Type</th>
+    <th>アルゴリズムタイプ</th>
     <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
   </tr>
   <tr>
@@ -380,115 +380,115 @@ Now, we can add the scores for each document up and compare the results from bot
   </tr>
 </table>
 
-#### What can we learn from this?
+#### 考察
 
-For the vector search, the scores for the top 4 objects (**IDs 2, 4, 0, 1**) were almost identical, and all of them were good results. While for the keyword search, one object (**ID 1**) was much better than the rest.
+vector 検索では、上位 4 オブジェクト（**ID 2, 4, 0, 1**）の score がほぼ同一で、いずれも良好な結果でした。一方、keyword 検索では 1 つのオブジェクト（**ID 1**）が他を大きく上回っていました。
 
-This is captured in the final result of `relativeScoreFusion`, which identified the object **ID 1** the top result. This is justified because this document was the best result in the keyword search with a big gap to the next-best score and in the top group of vector search.
+これは `relativeScoreFusion` の最終結果に反映され、オブジェクト **ID 1** がトップに選ばれました。これは、このドキュメントが keyword 検索で次点と大きな差を付けて最良であり、かつ vector 検索でも上位グループに入っていたためです。
 
-In contrast, for `rankedFusion`, the object **ID 2** is the top result, closely followed by objects **ID 1** and **ID 0**.
+これに対し、`rankedFusion` ではオブジェクト **ID 2** がトップとなり、**ID 1** と **ID 0** が僅差で続きました。
 
 </details>
 
-For a fuller discussion of fusion methods, see [this blog post](https://weaviate.io/blog/hybrid-search-fusion-algorithms)
+融合メソッドの詳細については、[こちらのブログ記事](https://weaviate.io/blog/hybrid-search-fusion-algorithms) を参照してください。
 
-### Additional metadata response
+### 追加メタデータのレスポンス
 
-Hybrid search results are sorted by a score, derived as a fused combination of their BM25F score and `nearText` similarity (higher is more relevant). This `score`, and additionally the `explainScore` metadata can be optionally retrieved in the response.
+Hybrid 検索の結果は、BM25F score と `nearText` 類似度を融合した score によって並べ替えられます（値が大きいほど関連性が高い）。この `score` と、さらに `explainScore` メタデータはレスポンスで任意に取得できます。
 
 
-### Example
+### 例
 
 import GraphQLFiltersHybrid from '/_includes/code/graphql.filters.hybrid.mdx';
 
 <GraphQLFiltersHybrid/>
 
-### Example with vector specified
+### ベクトルを指定した例
 
-You can optionally supply the vector query to the `vector` variable. This will override the `query` variable for the vector search component of the hybrid search.
+`vector` 変数にベクトルクエリを指定することもできます。これにより、ハイブリッド検索の vector 検索コンポーネントでは `query` 変数を上書きします。
 
 import GraphQLFiltersHybridVector from '/_includes/code/graphql.filters.hybrid.vector.mdx';
 
 <GraphQLFiltersHybridVector/>
 
-### Hybrid with a conditional filter
+### 条件フィルター付きハイブリッド
 
-:::info Added in `v1.18.0`
+:::info v1.18.0 で追加
 :::
 
-A [conditional (`where`) filter](../graphql/filters.md) can be used with `hybrid`.
+`hybrid` では [条件 (`where`) フィルター](../graphql/filters.md) を使用できます。
 
 import GraphQLFiltersHybridFilterExample from '/_includes/code/graphql.filters.hybrid.filter.example.mdx';
 
 <GraphQLFiltersHybridFilterExample/>
 
 
-### Specify object properties for BM25 search
+### BM25 検索対象プロパティの指定
 
-:::info Added in `v1.19`
+:::info v1.19 で追加
 :::
 
-A `hybrid` operator can accept an array of strings to limit the set of properties for the BM25 component of the search. If unspecified, all text properties will be searched.
+`hybrid` オペレーターでは、BM25 コンポーネントの検索対象プロパティを制限するために文字列の配列を受け取れます。指定しない場合、すべてのテキストプロパティが検索されます。
 
 import GraphQLFiltersHybridProperties from '/_includes/code/graphql.filters.hybrid.properties.mdx';
 
 <GraphQLFiltersHybridProperties/>
 
-### Oversearch with `relativeScoreFusion`
+### `relativeScoreFusion` のオーバーサーチ
 
-:::info Added in `v1.21`
+:::info v1.21 で追加
 :::
 
-When `relativeScoreFusion` is used as the `fusionType` with a small search `limit`, a result set can be very sensitive to the limit parameter due to the normalization of the scores.
+`relativeScoreFusion` を `fusionType` として使用し、検索の `limit` が小さい場合、score の正規化により結果セットが limit パラメーターに対して非常に敏感になることがあります。
 
-To mitigate this effect, Weaviate automatically performs a search with a higher limit (100) and then trims the results down to the requested limit.
+この影響を緩和するため、Weaviate は自動的により大きい limit（100）で検索を行い、その後要求された limit まで結果を切り詰めます。
 
-### BM25 search operator
+### BM25 検索オペレーター
 
 :::info Added in `v1.31`
 :::
 
-Use `bm25SearchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match in the keyword (bm25) search portion of the hybrid search. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
+`bm25SearchOperator` を使用すると、キーワード検索 ( bm25 ) 部分のハイブリッド検索で、クエリトークンのうち何個が対象オブジェクトに含まれていれば一致とみなすかを設定できます。これにより、関連するキーワードを一定数以上含むオブジェクトのみを返したい場合に便利です。
 
-The available options are `And`, or `Or`. If `Or` is set, an additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must match for the object to be considered a match.
+利用可能なオプションは `And` と `Or` です。`Or` を設定した場合は、追加パラメーター `minimumOrTokensMatch` を指定する必要があります。これは、一致と判断するためにクエリトークンが何個一致する必要があるかを定義します。
 
-If not yet, the keyword search will behave as if `Or` was set with `minimumOrTokensMatch` equal to 1.
+未指定の場合、キーワード検索は `Or` が設定され、`minimumOrTokensMatch` が 1 と同等に動作します。
 
 ## BM25
 
-The `bm25` operator performs a keyword (sparse vector) search, and uses the BM25F ranking function to score the results. BM25F (**B**est **M**atch **25** with Extension to Multiple Weighted **F**ields) is an extended version of BM25 that applies the scoring algorithm to multiple fields (`properties`), producing better results.
+`bm25` オペレーターはキーワード (スパース ベクトル) 検索を実行し、BM25F ランキング関数で結果にスコアを付けます。BM25F ( **B**est **M**atch **25** with Extension to Multiple Weighted **F**ields) は、複数フィールド ( `properties` ) にスコアリングアルゴリズムを適用することで精度を高めた BM25 の拡張版です。
 
-The search is case-insensitive, and case matching does not confer a score advantage. Stop words are removed. [Stemming is not supported yet](https://github.com/weaviate/weaviate/issues/2439).
+検索は大文字小文字を区別せず、大文字小文字の一致によるスコア上昇はありません。ストップワードは除去されます。[ステミングはまだサポートされていません](https://github.com/weaviate/weaviate/issues/2439)。
 
-### Schema configuration
+### スキーマ設定
 
-The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/indexing/inverted-index.mdx#bm25) for more details.
+[自由パラメーター `k1` と `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) は任意で設定できます。詳細は [スキーマリファレンス](../../config-refs/indexing/inverted-index.mdx#bm25) を参照してください。
 
-### Variables
-The `bm25` operator supports the following variables:
+### 変数
+`bm25` オペレーターでは以下の変数をサポートしています。
 
-| Variables | Required | Description |
+| 変数 | 必須 | 説明 |
 | --------- | -------- | ----------- |
-| `query`   | yes      | The keyword search query. |
-| `properties` | no    | Array of properties (fields) to search in, defaulting to all properties in the collection. |
-| `searchOperator` | no | set how many of the query tokens must be present in the target object for it to be considered a match. (available from `v1.31.0`) |
+| `query`   | yes      | キーワード検索クエリ。 |
+| `properties` | no    | 検索対象とするプロパティ (フィールド) の配列。指定しない場合はコレクション内のすべてのプロパティが対象になります。 |
+| `searchOperator` | no | 対象オブジェクトを一致とみなすために、クエリトークンがいくつ含まれている必要があるかを設定します ( v1.31.0 以降で利用可能)。 |
 
 :::info Boosting properties
-Specific properties can be boosted by a factor specified as a number after the caret sign, for example `properties: ["title^3", "summary"]`.
+特定のプロパティはキャレット記号の後に数値を付けて重み付けできます。例: `properties: ["title^3", "summary"]`
 :::
 
-### Additional metadata response
+### 追加メタデータの取得
 
-The BM25F `score` metadata can be optionally retrieved in the response. A higher score indicates higher relevance.
+BM25F の `score` メタデータをレスポンスで取得できます。スコアが高いほど関連性が高いことを示します。
 
-### Example query
+### クエリ例
 
 import GraphQLFiltersBM25 from '/_includes/code/graphql.filters.bm25.mdx';
 
 <GraphQLFiltersBM25/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>想定されるレスポンス</summary>
 
 ```json
 {
@@ -512,19 +512,19 @@ import GraphQLFiltersBM25 from '/_includes/code/graphql.filters.bm25.mdx';
 
 </details>
 
-### BM25 with a conditional filter
+### 条件フィルター付き BM25
 
 :::info Added in `v1.18`
 :::
 
-A [conditional (`where`) filter](../graphql/filters.md) can be used with `bm25`.
+`bm25` は [条件 (`where`) フィルター](../graphql/filters.md) と併用できます。
 
 import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm25.filter.example.mdx';
 
 <GraphQLFiltersBM25FilterExample/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>想定されるレスポンス</summary>
 
 ```json
 {
@@ -549,45 +549,47 @@ import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm2
 
 </details>
 
-### Search operator
+### 検索オペレーター
 
 :::info Added in `v1.31`
 :::
 
-Use `searchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
+`searchOperator` を使用すると、クエリトークンのうち何個が対象オブジェクトに含まれていれば一致とみなすかを設定できます。これにより、関連キーワードを一定数以上含むオブジェクトのみを返したい場合に便利です。
 
-The available options are `And`, or `Or`. If `Or` is set, an additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must match for the object to be considered a match.
+利用可能なオプションは `And` と `Or` です。`Or` を設定した場合は、追加パラメーター `minimumOrTokensMatch` を指定する必要があります。これは、一致と判断するためにクエリトークンが何個一致する必要があるかを定義します。
 
-If not yet, the keyword search will behave as if `Or` was set with `minimumOrTokensMatch` equal to 1.
+未指定の場合、キーワード検索は `Or` が設定され、`minimumOrTokensMatch` が 1 と同等に動作します。
 
-## ask
+## ask オペレーター
 
-Enabled by the module: [Question Answering](/weaviate/modules/qna-transformers.md).
+モジュール [Question Answering](/weaviate/modules/qna-transformers.md) によって有効化されます。
 
-This operator allows you to return answers to questions by running the results through a Q&A model.
+このオペレーターは、取得した結果を Q&A モデルに通すことで質問への回答を返します。
 
-### Variables
+### 変数
 
-| Variable | Required | Type | Description |
+| 変数 | 必須 | 型 | 説明 |
 | --------- | -------- | ---- | ----------- |
-| `question` 	| yes	| `string` | The question to be answered. |
-| `certainty` | no 	| `float` | Desired minimal certainty or confidence of answer to the question. The higher the value, the stricter the search becomes. The lower the value, the fuzzier the search becomes. If no certainty is set, any answer that could be extracted will be returned. |
-| `properties`	| no 	| `[string]` | The properties of the queries collection which contains text. If no properties are set, all are considered.	|
-| `rerank` 	| no 	| `boolean`	| If enabled, the qna module will rerank the result based on the answer score. For example, if the 3rd result - as determined by the previous (semantic) search contained the most likely answer, result 3 will be pushed to position 1, etc. *Supported since v1.10.0* |
+| `question` 	| yes	| `string` | 質問文。 |
+| `certainty` | no 	| `float` | 求める最小確信度。値が高いほど検索は厳密に、低いほど曖昧になります。設定しない場合、抽出できたすべての回答が返されます。 |
+| `properties`	| no 	| `[string]` | テキストを含むクエリコレクションのプロパティ。指定しない場合はすべてが対象になります。 |
+| `rerank` 	| no 	| `boolean`	| 有効にすると、qna モジュールが回答スコアを基に結果を再ランク付けします。例として、以前の (セマンティック) 検索で 3 番目だった結果に最も可能性の高い回答が含まれていた場合、その結果が 1 位に繰り上がります。*v1.10.0 以降でサポート* |
 
-### Example
+### 例
 
 import QNATransformersAsk from '/_includes/code/qna-transformers.ask.mdx';
 
 <QNATransformersAsk/>
 
-### Additional metadata response
+### 追加メタデータの取得
 
-The `answer` and a `certainty` can be retrieved.
+`answer` と `certainty` を取得できます。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

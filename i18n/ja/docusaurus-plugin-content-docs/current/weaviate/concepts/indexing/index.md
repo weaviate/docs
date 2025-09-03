@@ -1,23 +1,23 @@
 ---
-title: Indexing
+title: インデックス作成
 sidebar_position: 0
-description: "Overview of Weaviate's indexing systems for optimized search performance and data retrieval efficiency."
+description: "最適化された検索性能とデータ取得効率を実現する Weaviate のインデックス システムの概要。"
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
 
-Weaviate supports several types of indexes.
+Weaviate は複数種類のインデックスをサポートしています。
 
-1. **[Vector indexes](./vector-index.md)** - a vector index (e.g. HNSW or flat) is used to serve all vector-search queries.
-   - **HNSW** - an approximate nearest neighbor (ANN) search-based vector index. HNSW indexes scale well with large datasets.
-   - **Flat** - a vector index that is used for brute-force searches. This is useful for small datasets.
-   - **Dynamic** - a vector index that is flat when the dataset is small and switches to HNSW when the dataset is large.
-1. **[Inverted indexes](./inverted-index.md)** - inverted indexes enable BM25 queries or speed up filtering.
+1. **[ベクトル インデックス](./vector-index.md)** - ベクトル インデックス（例: HNSW または flat）は、すべてのベクトル検索クエリを処理します。  
+   - **HNSW** - 近似最近傍検索 (ANN) ベースのベクトル インデックスです。HNSW インデックスは大規模データセットでもスケールします。  
+   - **Flat** - 小規模データセット向けのブルートフォース検索を行うベクトル インデックスです。  
+   - **Dynamic** - 小規模データセットでは flat、大規模データセットでは HNSW に切り替わるベクトル インデックスです。  
+1. **[転置インデックス](./inverted-index.md)** - 転置インデックスは BM25 クエリを可能にし、フィルタリングを高速化します。
 
-You can configure indexes in Weaviate per collection.
+インデックスはコレクション単位で設定できます。
 
-:::tip Tips for indexing
+:::tip インデックス作成のヒント
 
-Especially for large datasets, configuring the indexes is important because the more you index, the more storage is needed. A rule of thumb - if you don't query over a specific field or vector space, don't index it.
+特に大規模データセットでは、インデックスをどのように設定するかが重要です。多くをインデックス化するほどストレージが多く必要になるため、ルール オブ サムとして、特定のフィールドやベクトル空間をクエリしない場合はインデックス化しないようにしましょう。
 
 :::

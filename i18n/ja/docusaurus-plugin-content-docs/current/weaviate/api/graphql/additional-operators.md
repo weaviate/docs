@@ -1,7 +1,7 @@
 ---
-title: Additional operators
+title: 追加オペレーター
 sidebar_position: 40
-description: "Syntax reference for additional operators that extend query functionality (limits, sorting, grouping, etc.)."
+description: "クエリ機能を拡張する追加オペレーター（ limit 、 sort 、 group など）の構文リファレンスです。"
 image: og/docs/api.jpg
 # tags: ['graphql', 'additional operators']
 ---
@@ -22,9 +22,9 @@ import CurlCode from '!!raw-loader!/_includes/code/graphql.additional.sh';
 <TryEduDemo />
 
 
-## Syntax
+## 構文
 
-Functions such as `limit`, `autocut`, and `sort` modify queries at the class level.
+ `limit` 、 `autocut` 、 `sort` などの関数は、クラス レベルでクエリを修正します。
 <!--
 For example:
 
@@ -33,9 +33,9 @@ import GraphQLFiltersExample from '/_includes/code/graphql.filters.example.mdx';
 <GraphQLFiltersExample/> -->
 
 
-## Limit argument
+## limit 引数
 
-The `limit` argument restricts the number of results. These functions support `limit`:
+ `limit` 引数は結果数を制限します。次の関数が `limit` をサポートしています:
 
 - `Get`
 - `Explore`
@@ -46,7 +46,7 @@ import GraphQLFiltersLimit from '/_includes/code/graphql.filters.limit.mdx';
 <GraphQLFiltersLimit/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>想定されるレスポンス</summary>
 
 ```json
 {
@@ -76,20 +76,20 @@ import GraphQLFiltersLimit from '/_includes/code/graphql.filters.limit.mdx';
 
 </details>
 
-## Pagination with `offset`
+## `offset` を用いたページネーション
 
-To return sets of results, "pages", use `offset` and `limit` together to specify a sub-set of the query response.
+結果をページ単位で取得するには、 `offset` と `limit` を併用してレスポンスのサブセットを指定します。
 
-For example, to list the first ten results, set `limit: 10` and `offset: 0`. To display the next ten results, set `offset: 10`. To continue iterating over the results, increase the offset again. For more details, see [performance considerations](./additional-operators.md#performance-considerations)
+たとえば最初の 10 件を表示するには、 `limit: 10` と `offset: 0` を設定します。次の 10 件を表示する場合は `offset: 10` にします。さらに続けて取得する場合は offset を増やしてください。詳細は [パフォーマンス上の考慮事項](./additional-operators.md#performance-considerations) を参照してください。
 
-The `Get` and `Explore` functions support `offset`.
+ `Get` と `Explore` の各関数は `offset` をサポートしています。
 
 import GraphQLFiltersOffset from '/_includes/code/graphql.filters.offset.mdx';
 
 <GraphQLFiltersOffset/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>想定されるレスポンス</summary>
 
 ```json
 {
@@ -119,48 +119,48 @@ import GraphQLFiltersOffset from '/_includes/code/graphql.filters.offset.mdx';
 
 </details>
 
-### Performance considerations
+### パフォーマンス上の考慮事項
 
-Pagination is not a cursor-based implementation. This has the following implications:
+ページネーションはカーソル ベース実装ではありません。これには次の影響があります:
 
-- **Response time and system load increase as the number of pages grows**. As the offset grows, each additional page request requires a new, larger call against your collection. For example, if your `offset` and `limit` specify results from 21-30, Weaviate retrieves 30 objects and drops the first 20. On the next call, Weaviate retrieves 40 objects and drops the first 30.
-- **Resource requirements are amplified in multi-shard configurations.** Each shard retrieves a full list of objects. Each shard also drops the objects before the offset. If you have 10 shards configured and ask for results 91-100, Weaviate retrieves 1000 objects (100 per shard) and drops 990 of them.
-- **The number of objects you can retrieve is limited**. A single query returns up to `QUERY_MAXIMUM_RESULTS`. If the sum of `offset` and `limit` exceeds `QUERY_MAXIMUM_RESULTS`, Weaviate returns an error. To change the limit, edit the `QUERY_MAXIMUM_RESULTS` environment variable. If you increase `QUERY_MAXIMUM_RESULTS`, use the lowest value possible to avoid performance problems.
- - **Pagination is not stateful**. If the database state changes between calls, your pages might miss results. An insertion or a deletion will change the object count. An update could change object order. However, if there are no writes the overall results set is the same if you retrieve a large single page or many smaller ones.
+- **ページ数が増えるとレスポンス時間とシステム負荷が増大します**。 offset が増えるたびに、各ページ リクエストではコレクション全体に対してより大きな呼び出しが行われます。たとえば `offset` と `limit` が 21–30 の結果を指定する場合、Weaviate は 30 個のオブジェクトを取得し、最初の 20 個を破棄します。次の呼び出しでは 40 個を取得し、最初の 30 個を破棄します。
+- **マルチ シャード構成ではリソース要件が増幅されます。** 各シャードがオブジェクト一覧全体を取得し、 offset 以前のオブジェクトを破棄します。たとえば 10 シャード構成で 91–100 の結果を要求すると、Weaviate は 1,000 個（各シャード 100 個）のオブジェクトを取得し、そのうち 990 個を破棄します。
+- **取得できるオブジェクト数に制限があります。** 1 回のクエリで返されるのは最大 `QUERY_MAXIMUM_RESULTS` 件です。 `offset` と `limit` の合計が `QUERY_MAXIMUM_RESULTS` を超えると、Weaviate はエラーを返します。上限を変更するには `QUERY_MAXIMUM_RESULTS` 環境変数を編集してください。値を上げる場合は、パフォーマンス問題を避けるため最小限にしてください。
+ - **ページネーションはステートフルではありません。** 呼び出し間にデータベース状態が変化すると、ページが結果を取り逃す可能性があります。挿入や削除はオブジェクト数を変化させ、更新はオブジェクトの順序を変える可能性があります。ただし書き込みがなければ、大きな 1 ページで取得しても複数の小さなページで取得しても、全体の結果セットは同一です。
 
 
-## Autocut
+## autocut
 
-The autocut function limits results based on discontinuities in the result set. Specifically, autocut looks for discontinuities, or jumps, in result metrics such as vector distance or search score.
+autocut 関数は、結果セット内の不連続（ジャンプ）に基づいて結果を制限します。具体的には、ベクトル 距離や検索スコアなどの結果メトリクスにおけるジャンプを検出します。
 
-To use autocut, specify how many jumps there should be in your query. The query stops returning results after the specified number of jumps.
+autocut を使用するには、クエリ内で許容するジャンプ数を指定します。指定したジャンプ数を超えた時点で、それ以降の結果は返されません。
 
-For example, consider a `nearText` search that returns objects with these distance values:
+例として、 `nearText` 検索が次の距離値を返すとします。
 
- `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`.
+ `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`
 
-Autocut returns the following:
+autocut の返却結果は以下のようになります。
 
 - `autocut: 1`: `[0.1899, 0.1901, 0.191]`
-- `autocut: 2`:  `[0.1899, 0.1901, 0.191, 0.21, 0.215]`
-- `autocut: 3`:  `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`
+- `autocut: 2`: `[0.1899, 0.1901, 0.191, 0.21, 0.215]`
+- `autocut: 3`: `[0.1899, 0.1901, 0.191, 0.21, 0.215, 0.23]`
 
-Autocut works with these functions:
+autocut が利用できる関数:
 
 - `nearXXX`
 - `bm25`
 - `hybrid`
 
-To use autocut with the `hybrid` search, specify the `relativeScoreFusion` ranking method.
+ `hybrid` 検索で autocut を使用する場合は、 `relativeScoreFusion` ランキング メソッドを指定してください。
 
-Autocut is disabled by default. To explicitly disable autocut, set the number of jumps to `0` or a negative value.
+autocut はデフォルトで無効です。明示的に無効化するには、ジャンプ数を `0` または負の値に設定します。
 
-If autocut is combined with the limit filter, autocut only considers the first objects returned up to the value of `limit`.
+autocut と limit フィルターを組み合わせると、autocut は `limit` で制限された最初のオブジェクトのみを対象に評価します。
 
 <!-- TODO: Update with link to blog:
 For more `autocut` examples and to learn about the motivation behind this filter, see the [v1.20 release blog post](https://weaviate.io/blog). -->
 
-Sample client code:
+サンプル クライアント コード:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -201,7 +201,7 @@ Sample client code:
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: 応答</summary>
 
 The output is like this:
 
@@ -214,20 +214,19 @@ The output is like this:
 
 </details>
 
-For more client code examples for each functional category, see these pages:
+各機能カテゴリごとのクライアント コード例については、次のページを参照してください。
 
-- [Autocut with similarity search](../../search/similarity.md#limit-result-groups).
-- [Autocut with `bm25` search](../../search/bm25.md#limit-result-groups).
-- [Autocut with `hybrid` search](../../search/hybrid.md#limit-result-groups).
+- [類似度検索での autocut](../../search/similarity.md#limit-result-groups)
+- [ `bm25` 検索での autocut](../../search/bm25.md#limit-result-groups)
+- [ `hybrid` 検索での autocut](../../search/hybrid.md#limit-result-groups)
 
+## `after` を用いたカーソル
 
-## Cursor with `after`
+バージョン `v1.18` からは、`after` を使用してオブジェクトを順次取得できます。たとえば、`after` を使ってコレクション内のオブジェクトを一式取得できます。
 
-Starting with version `v1.18`, you can use `after` to retrieve objects sequentially. For example, you can use `after` to retrieve a complete set of objects from a collection.
+`after` は、単一シャード構成およびマルチシャード構成のどちらにも対応したカーソルを生成します。
 
-`after` creates a cursor that is compatible with single shard and multi-shard configurations.
-
-The `after` function relies on object ids, and thus it only works with list queries. `after` is not compatible with `where`, `near<Media>`, `bm25`, `hybrid`, or similar searches, or in combination with filters. For those use cases, use pagination with `offset` and `limit`.
+`after` はオブジェクト ID に基づいて機能するため、リストクエリでのみ使用できます。`after` は `where`、`near<Media>`、`bm25`、`hybrid` などの検索や、フィルターとの併用には対応していません。これらの用途では、`offset` と `limit` を用いたページネーションを使用してください。
 
 import GraphQLFiltersAfter from '/_includes/code/graphql.filters.after.mdx';
 
@@ -279,48 +278,47 @@ import GraphQLFiltersAfter from '/_includes/code/graphql.filters.after.mdx';
 
 </details>
 
-## Sorting
+## ソート
 
-You can sort results by any primitive property, such as `text`, `number`, or `int`. 
+結果は `text`、`number`、`int` などのプリミティブプロパティでソートできます。 
 
-### Sorting considerations
+### ソートの考慮事項
 
-Sorting can be applied when fetching objects, but it's **unavailable when using search operators**. Search operators don’t support sorting because they automatically rank results according to factors such as [`certainty` or `distance`](./search-operators.md#vector-search-operators), which reflect the relevance of each result.
+オブジェクト取得時にはソートを適用できますが、**検索オペレーター使用時には利用できません**。検索オペレーターは自動的に [`certainty` または `distance`](./search-operators.md#vector-search-operators) などの要素で結果をランク付けするため、ソートはサポートされていません。
 
-Weaviate's sorting implementation does not lead to massive memory spikes. Weaviate does not load all object properties into memory; only the property values being sorted are kept in memory.
+Weaviate のソート実装では大きなメモリスパイクは発生しません。Weaviate はすべてのオブジェクトプロパティをメモリにロードせず、ソート対象のプロパティ値のみを保持します。
 
-Weaviate does not use any sorting-specific data structures on disk. When objects are sorted, Weaviate identifies the object and extracts the relevant properties. This works reasonably well for small scales (100s of thousand or millions of objects). It is expensive if you sort large lists of objects (100s of millions, billions). In the future, Weaviate may add a column-oriented storage mechanism to overcome this performance limitation.
+ディスク上にソート専用のデータ構造も使用していません。オブジェクトをソートする際、Weaviate はオブジェクトを特定し、該当プロパティを抽出します。これは小規模（数十万〜数百万オブジェクト）では十分に機能しますが、非常に大きなリスト（数億〜数十億オブジェクト）をソートする場合は高コストです。将来的には、この性能制限を克服するためにカラム指向ストレージメカニズムが追加される可能性があります。
 
-### Sort order
+### ソート順
 
-#### boolean values
-`false` is considered smaller than `true`. `false` comes before `true` in ascending order and after `true` in descending order.
+#### boolean 値
+`false` は `true` より小さい値と見なされます。昇順では `false` が `true` の前に、降順では `true` の後に配置されます。
 
-#### null values
-`null` values are considered smaller than any non-`null` values. `null` values come first in ascending order and last in descending order.
+#### null 値
+`null` はすべての非 `null` 値より小さいと見なされます。昇順では `null` が最初に、降順では最後に配置されます。
 
-#### arrays
-Arrays are compared by each element separately. Elements at the same position are compared to each other, starting from the beginning of an array. When Weaviate finds an array element in one array that is smaller than its counterpart in the second array, Weaviate considers the whole first array to be smaller than the second one.
+#### 配列
+配列は要素ごとに比較されます。配列の先頭から同じ位置の要素を比較し、ある位置で一方の配列の要素がもう一方より小さい場合、その配列全体が小さいと判断されます。
 
-Arrays are equal if they have the same length and all elements are equal. If one array is subset of another array it is considered smaller.
+配列の長さが同じで全要素が等しい場合は等しいと見なされます。一方の配列がもう一方のサブセットである場合、サブセットの方が小さいと見なされます。
 
-Examples:
+例:
 - `[1, 2, 3] = [1, 2, 3]`
 - `[1, 2, 4] < [1, 3, 4]`
 - `[2, 2] > [1, 2, 3, 4]`
 - `[1, 2, 3] < [1, 2, 3, 4]`
 
-### Sorting API
+### ソート API
 
-Sorting can be performed by one or more properties. If the values for the first property are identical, Weaviate uses the second property to determine the order, and so on.
+ソートは 1 つ以上のプロパティで実行できます。最初のプロパティ値が同一の場合、Weaviate は次のプロパティで順序を決定します。
 
-The sort function takes either an object, or an array of objects, that describe a property and a sort order.
+sort 関数には、プロパティとソート順を記述したオブジェクト、またはその配列を渡します。
 
-| Parameter | Required | Type            | Description                                               |
-|-----------|----------|-----------------|-----------------------------------------------------------|
-| `path`    | yes      | `text`        | The path to the sort field is an single element array that contains the field name. GraphQL supports specifying the field name directly. |
-| `order`   | varies by client       | `asc` or `desc` | The sort order, ascending (default) or descending.|
-
+| パラメーター | 必須 | 型            | 説明 |
+|-------------|------|---------------|------|
+| `path`      | yes  | `text`        | ソート対象フィールドへのパス。単一要素の配列でフィールド名を含みます。GraphQL ではフィールド名を直接指定できます。 |
+| `order`     | クライアントにより異なる | `asc` または `desc` | ソート順。昇順 (デフォルト) または降順。|
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -419,9 +417,10 @@ The sort function takes either an object, or an array of objects, that describe 
 
 </details>
 
-#### Sorting by multiple properties
 
-To sort by more than one property, pass an array of { `path`, `order` } objects to the sort function:
+#### 複数プロパティによるソート
+
+複数のプロパティでソートするには、`{ path, order }` オブジェクトの配列を sort 関数に渡します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -489,11 +488,11 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
 </Tabs>
 
 
-#### Metadata properties
+#### メタデータプロパティ
 
-To sort with metadata, add an underscore to the property name.
+メタデータでソートするには、プロパティ名の前にアンダースコアを追加します。
 
-| Property Name | Sort Property  Name |
+| プロパティ名 | ソート用プロパティ名 |
 | :- | :- |
 | `id` | `_id` |
 | `creationTimeUnix` | `_creationTimeUnix` |
@@ -565,39 +564,41 @@ To sort with metadata, add an underscore to the property name.
 </Tabs>
 
 <details>
-  <summary>Python client v4 property names</summary>
+  <summary>Python クライアント v4 のプロパティ名</summary>
 
-| Property Name | Sort Property  Name |
+| プロパティ名 | ソート用プロパティ名 |
 | :- | :- |
-| `uuid` |`_id` |
+| `uuid` | `_id` |
 | `creation_time` | `_creationTimeUnix` |
 | `last_update_time` | `_lastUpdateTimeUnix` |
 
 </details>
 
-## Grouping
 
-You can use a group to combine similar concepts (also known as _entity merging_). There are two ways of grouping semantically similar objects together, `closest` and `merge`. To return the closest concept, set `type: closest`. To combine similar entities into a single string, set `type: merge`
 
-### Variables
+## グルーピング
 
-| Variable | Required | Type | Description |
+類似したコンセプトをまとめるために group を使用できます（ _entity merging_ とも呼ばれます）。意味的に類似したオブジェクトをグループ化する方法は 2 つあり、`closest` と `merge` です。最も近いコンセプトを返すには `type: closest` を設定します。類似したエンティティを 1 つの文字列に結合するには `type: merge` を設定します。
+
+### 変数
+
+| 変数 | 必須 | 型 | 説明 |
 | --------- | -------- | ---- | ----------- |
-| `type` | yes | `string` | Either `closest` or `merge` |
-| `force` | yes | `float` | The force to apply for a particular movements.<br/>Must be between `0` and `1`. `0` is no movement. `1` is maximum movement. |
+| `type` | yes | `string` | `closest` または `merge` |
+| `force` | yes | `float` | 特定の移動に適用する force です。<br/>`0` から `1` の間で指定します。`0` は移動なし、`1` は最大移動です。 |
 
-### Example
+### 例
 
 import GraphQLFiltersGroup from '/_includes/code/graphql.filters.group.mdx';
 
 <GraphQLFiltersGroup/>
 
-The query merges the results for `International New York Times`, `The New York Times Company` and `New York Times`.
+このクエリは `International New York Times`、`The New York Times Company`、`New York Times` の結果をマージします。
 
-The central concept in the group, `The New York Times Company`, leads the group. Related values follow in parentheses.
+グループの中心となるコンセプトである `The New York Times Company` が先頭に表示され、関連する値が括弧内に続きます。
 
 <details>
-  <summary>Expected response</summary>
+  <summary>期待されるレスポンス</summary>
 
 ```json
 {
@@ -645,8 +646,9 @@ The central concept in the group, `The New York Times Company`, leads the group.
 
 </details>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

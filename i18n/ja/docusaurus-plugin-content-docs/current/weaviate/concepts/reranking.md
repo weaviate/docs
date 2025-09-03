@@ -1,32 +1,32 @@
 ---
-title: Reranking
+title: リランキング
 sidebar_position: 28
-description: "Search result reordering techniques using alternative models to improve search relevance and accuracy."
+description: "検索結果の関連性と精度を向上させるために、別モデルを用いて結果を並べ替える手法。"
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
 
-Reranking seeks to improve search relevance by reordering the result set returned by a search with a different model.
+リランキングは、検索で返された結果セットを別のモデルで並べ替えることにより、検索の関連性を改善します。
 
-Reranking computes a relevance score between the query and each data object, and returns the list of objects sorted from the most to the least relevant. Computing this score for all `(query, data_object)` pairs would typically be prohibitively slow, which is why reranking is used as a second stage after retrieving the relevant objects first.
+リランキングはクエリと各データオブジェクトとの関連度スコアを計算し、最も関連性の高いものから低いものへ並べ替えたリストを返します。すべての `(query, data_object)` ペアでこのスコアを計算することは通常非常に時間がかかるため、リランキングはまず関連オブジェクトを取得した後の第 2 段階として使用されます。
 
-As the reranker works on a smaller subset of data after retrieval, different, potentially more computationally expensive approaches can be used to improve search relevance.
+リランキングは取得後の小さなデータサブセットに対して動作するため、計算コストが高いアプローチを用いても検索関連性を改善できます。
 
 :::info
 
-Learn how to [set up a reranker for your collection](../manage-collections/generative-reranker-models.mdx#specify-a-reranker-model-integration) and [apply reranking to your search results](../search/rerank.md).
+コレクションに対して [リランキングモデルを設定](../manage-collections/generative-reranker-models.mdx#specify-a-reranker-model-integration) し、[検索結果にリランキングを適用](../search/rerank.md) する方法をご覧ください。
 
 :::
 
-## Reranking in Weaviate
+## Weaviate におけるリランキング
 
-With our reranker modules, you can conveniently perform [multi-stage searches](https://weaviate.io/blog/cross-encoders-as-reranker) without leaving Weaviate.
+当社のリランキングモジュールを使用すると、Weaviate 内で簡単に [マルチステージ検索](https://weaviate.io/blog/cross-encoders-as-reranker) を実行できます。
 
-In other words, you can perform a search - for example, a vector search - and then use a reranker to re-rank the results of that search. Our reranker modules are compatible with all of vector, bm25, and hybrid searches.
+言い換えると、例えばベクトル検索を実行し、その結果をリランキングで再度並べ替えることができます。リランキングモジュールはベクトル検索、bm25 検索、ハイブリッド検索のすべてと互換性があります。
 
-### An example GraphQL query with a reranker
+### リランキングを含む GraphQL クエリ例
 
-You can use reranking in a GraphQL query as follows:
+以下のように GraphQL クエリでリランキングを利用できます。
 
 ```graphql
 {
@@ -53,21 +53,21 @@ You can use reranking in a GraphQL query as follows:
 }
 ```
 
-This query retrieves 10 results from the `JeopardyQuestion` class, using a hybrid search with the query “flying”. It then re-ranks the results using the `answer` property, and the query “floating”.
+このクエリは `JeopardyQuestion` クラスから 10 件の結果を取得し、クエリ “flying” を用いたハイブリッド検索を実行します。その後、`answer` プロパティとクエリ “floating” を使って結果を再ランク付けします。
 
-You can specify which `property` of the `JeopardyQuestion` class you want to pass to the reranker. Note that here, the returned `score` will include the score from the reranker.
+リランキングに渡す `JeopardyQuestion` クラスの `property` を指定できます。ここで返される `score` にはリランキングによるスコアが含まれる点に注意してください。
 
-## Further resources
+## さらなるリソース
 
 :::info Related pages
-- [API References: GraphQL - Additional properties](../api/graphql/additional-properties.md#rerank)
-- [How-to search: Rerank](../search/rerank.md)
-- [Cohere reranker integration](../model-providers/cohere/reranker.md)
-- [Transformers reranker integration](../model-providers/transformers/reranker.md)
-- [VoyageAI reranker integration](../model-providers/voyageai/reranker.md)
+- [API 参照: GraphQL - 追加プロパティ](../api/graphql/additional-properties.md#rerank)
+- [検索の方法: リランキング](../search/rerank.md)
+- [Cohere リランキング統合](../model-providers/cohere/reranker.md)
+- [Transformers リランキング統合](../model-providers/transformers/reranker.md)
+- [VoyageAI リランキング統合](../model-providers/voyageai/reranker.md)
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

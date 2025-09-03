@@ -1,224 +1,228 @@
 ---
-title: Best Practices
+title: ベストプラクティス
 sidebar_position: 5
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'optimization']
 ---
 
-# Search: Best Practices
+# 検索：ベストプラクティス
 
-This page lays out suggested best practices for optimizing search quality and performance.
+このページでは、検索の品質とパフォーマンスを最適化するための推奨ベストプラクティスを示します。
 
-## Filters
+## フィルター
 
-Filters narrow down search results based on specific criteria related to properties or metadata.
+フィルターはプロパティやメタデータに関連する特定の条件に基づいて検索結果を絞り込みます。
 
-Weaviate applies [pre-filtering](../filtering.md) where filtering is done, and passed to the search as a parameter. This helps to keep the recall high even when the filter is very restrictive.
+Weaviate では [事前フィルター](../filtering.md) を適用し、フィルターを実行してその結果をパラメーターとして検索に渡します。これにより、フィルターが非常に厳しい場合でも再現率を高く保つことができます。
 
-Enable or disable [indexes for each property](#index-types-and-filters) or [index optional metadata](#optional-metadata-filtering) to trade off filter performance against disk usage.
+各プロパティごとに [インデックスを有効化または無効化](#index-types-and-filters) したり、[オプションのメタデータをインデックス化](#optional-metadata-filtering) したりして、フィルタリング性能とディスク使用量のトレードオフを調整します。
 
-### Index types and filters
+### インデックスの種類とフィルター
 
-Weaviate makes use of indexes to speed up filtering operations.
+Weaviate はフィルター処理を高速化するためにインデックスを利用します。
 
-[Roaring bitmap indexes (`indexFilterable`)](../filtering.md#indexfilterable) were added in `v1.18` to improve the performance of filtering operations. [Range-based indexes (`indexRangeFilters`)](../filtering.md#indexrangefilters) were added in `v1.26` to speed up range-based numerical filtering for `int`, `number`, or `date` properties.
+`v1.18` で、フィルター性能を向上させるために [Roaring ビットマップインデックス (`indexFilterable`)](../filtering.md#indexfilterable) が追加されました。さらに、`int`、`number`、`date` プロパティの範囲ベースの数値フィルターを高速化するため、`v1.26` で [範囲ベースインデックス (`indexRangeFilters`)](../filtering.md#indexrangefilters) が追加されました。
 
-These indexes can be [enabled or disabled](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters) for each property.
+これらのインデックスはプロパティごとに [有効化または無効化](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters) できます。
 
-Enabling these indexes will speed up search, at the cost of slight increase in storage requirements both on disk and memory.
+インデックスを有効化すると検索は高速化しますが、ディスクおよびメモリの使用量がわずかに増加します。
 
-As a rule of thumb, we recommend enabling both `indexFilterable` and `indexRangeFilters` unless you are certain that filtering is not required for that property.
+一般的な目安として、そのプロパティでフィルタリングが不要であると確信している場合を除き、`indexFilterable` と `indexRangeFilters` の両方を有効にすることを推奨します。
 
-### Optional metadata filtering
+### オプションのメタデータフィルター
 
-Each property can optionally be configured for further metadata filtering, if enabled at property creation.
+プロパティ作成時に設定しておけば、各プロパティに対して追加のメタデータフィルターをオプションで構成できます。
 
-These options are:
+これらのオプションは次のとおりです。
 
-- `indexTimestamps`: for timestamp-based filtering (creation time or last modified time)
-- `indexNullState`: for filtering by null value
-- `indexPropertyLength`: for filtering by text property length
+- `indexTimestamps`: タイムスタンプベースのフィルター（作成日時または最終更新日時）用  
+- `indexNullState`: null 値によるフィルター用  
+- `indexPropertyLength`: テキストプロパティの長さによるフィルター用  
 
-These indexing options will enable corresponding filtering options, at the cost of slight increase in storage requirements both on disk and memory.
+これらのインデックスオプションを有効化すると対応するフィルターが利用可能になりますが、ディスクおよびメモリの使用量がわずかに増加します。
 
-## Vector Search
+## ベクトル検索
 
-Vector search is a similarity-based search that compares a vector query against stored vector to find the closest matches.
+ベクトル検索は、クエリのベクトルと保存済みのベクトルを比較し、最も近い一致を見つける類似度ベースの検索です。
 
-Weaviate supports integrated vectorization of media such as text or image using a configured [model provider integration](../../model-providers/index.md) at import time and at query time.
+Weaviate は、インポート時およびクエリ時に設定済みの [モデルプロバイダー統合](../../model-providers/index.md) を使用して、テキストや画像などのメディアを統合的にベクトル化します。
 
-### Vectorizer model selection
+### ベクトライザーモデルの選択
 
-Vectorization is the process of converting data (text, images, etc.) into numerical vectors using a vectorizer model.
+ベクトル化とは、ベクトライザーモデルを用いてデータ（テキスト、画像など）を数値ベクトルに変換するプロセスです。
 
-1. **Embedding Models**: Weaviate uses machine learning models (e.g., transformers) to convert input data into vector embeddings.
-2. **Dimensionality**: Vectors typically have high dimensionality (e.g., 768 or 1536 dimensions) to capture complex semantic relationships.
-3. **Semantic Meaning**: The position of vectors in the high-dimensional space represents their semantic relationship to other vectors.
+1. **Embedding モデル** : Weaviate は機械学習モデル（例: Transformer）を使用して入力データをベクトル埋め込みに変換します。  
+2. **次元数** : ベクトルは通常 768 や 1536 次元など高次元となり、複雑な意味関係を捉えます。  
+3. **意味的表現** : 高次元空間におけるベクトルの位置は、他のベクトルとの意味的関係を表します。  
 
-### Approximate Nearest Neighbor (ANN) Search
+### 近似最近傍 (ANN) 検索
 
-Vector search in Weaviate uses ANN algorithms to efficiently find similar vectors in high-dimensional spaces.
+Weaviate のベクトル検索は、ANN アルゴリズムを使用して高次元空間内で類似ベクトルを効率的に検索します。
 
-1. **Exact vs. Approximate**: While exact nearest neighbor search guarantees finding the closest vectors, it's computationally expensive. ANN trades a small amount of accuracy for significant speed improvements.
-2. **ANN Algorithms**: Weaviate supports various ANN algorithms, including:
-   - HNSW (Hierarchical Navigable Small World): Creates a multi-layer graph structure for efficient searching.
-   - PQ (Product Quantization): Compresses vectors to reduce memory usage and speed up search.
-3. **Index Building**: Weaviate constructs ANN indexes during data ingestion, optimizing them for fast retrieval during search operations.
+1. **厳密検索 vs. 近似検索** : 厳密な最近傍検索は最も近いベクトルを保証しますが、計算コストが高くなります。ANN は精度をわずかに犠牲にする代わりに大幅な速度向上を得ます。  
+2. **ANN アルゴリズム** : Weaviate は次のような ANN アルゴリズムをサポートします。  
+   - HNSW (Hierarchical Navigable Small World): 多層グラフ構造を構築し、高速検索を実現します。  
+   - PQ (直積量子化): ベクトルを圧縮してメモリ使用量を削減し、検索速度を向上させます。  
+3. **インデックス構築** : データ取り込み時に ANN インデックスを構築し、検索時の高速取得に最適化します。  
 
-### Distance Metrics
+### 距離計算指標
 
-Vector similarity is measured using distance metrics. Weaviate supports several distance metrics:
+ベクトルの類似度は距離計算指標を用いて測定します。Weaviate は複数の指標をサポートします。
 
-1. **Cosine Similarity**: Measures the cosine of the angle between vectors (default for most use cases).
-2. **Euclidean Distance**: Measures the straight-line distance between vectors.
-3. **Dot Product**: Calculates the dot product of vectors (useful for certain types of normalized embeddings).
+1. **コサイン類似度** : ベクトル間の角度のコサインを計算します（多くのユースケースでのデフォルト）。  
+2. **ユークリッド距離** : ベクトル間の直線距離を測定します。  
+3. **ドット積** : ベクトルのドット積を計算します（正規化された埋め込みの一部で有用）。  
 
-## Keyword Search
+## キーワード検索
 
-### Inverted Indexes
+### 転置インデックス
 
-Keyword search in Weaviate relies on inverted indexes, a data structure that maps terms to the documents containing them.
+Weaviate のキーワード検索は、語を含むドキュメントへのマッピングを行うデータ構造である 転置インデックス に依存しています。
 
-1. **Index Construction**: During data ingestion, Weaviate breaks text into tokens and creates an index mapping each token to the documents it appears in.
-2. **Tokenization**: Text is split into individual words or subwords, considering factors like language, stemming, and stop words.
-3. **Posting Lists**: For each term, the inverted index maintains a list of documents containing that term, along with additional information like term frequency.
+1. **インデックス構築** : データ取り込み時に、Weaviate はテキストをトークンに分割し、それぞれのトークンが含まれるドキュメントをマッピングするインデックスを作成します。  
+2. **トークナイズ** : 言語、ステミング、ストップワードなどを考慮しつつテキストを単語またはサブワードに分割します。  
+3. **ポスティングリスト** : 各語について、その語を含むドキュメントのリストや語の出現回数などの追加情報を保持します。  
 
-### BM25 Algorithm
+### BM25 アルゴリズム
 
-Weaviate uses the BM25F algorithm to rank results in keyword searches.
+Weaviate はキーワード検索の結果をランク付けするために BM25F アルゴリズムを使用します。
 
-1. **Term Frequency (TF)**: Measures how often a term appears in a document.
-2. **Inverse Document Frequency (IDF)**: Measures how rare or common a term is across all documents.
-3. **Field Weights**: BM25F allows different weights for different fields in a document.
-4. **Scoring**: Combines TF, IDF, and field weights to produce a relevance score for each document.
+1. **Term Frequency (TF)** : ある語がドキュメント内で出現する頻度を測定します。  
+2. **Inverse Document Frequency (IDF)** : その語が全ドキュメントの中でどれだけ希少か／一般的かを測定します。  
+3. **フィールド重み** : BM25F ではドキュメント内のフィールドごとに異なる重みを設定できます。  
+4. **スコアリング** : TF、IDF、およびフィールド重みを組み合わせてドキュメントの関連度スコアを算出します。  
 
-## Hybrid Search
+## ハイブリッド検索
 
-Hybrid search combines vector and keyword search to leverage the strengths of both approaches.
+ハイブリッド検索はベクトル検索とキーワード検索を組み合わせ、両者の長所を活用します。
 
-### Fusion Methods
+### 融合手法
 
-Weaviate offers two fusion methods to combine vector and keyword search results:
+Weaviate では、ベクトル検索結果とキーワード検索結果を統合する 2 つの融合手法を提供します。
 
-1. **Relative Score Fusion**:
-   - Normalizes vector similarities and BM25 scores to a common scale.
-   - Combines normalized scores using a weighted sum.
-2. **Ranked Fusion**:
-   - Assigns scores based on the rank of each object in vector and keyword results.
-   - Combines rank-based scores to produce final ordering.
+1. **相対スコア融合** :  
+   - ベクトル類似度と BM25 スコアを共通のスケールに正規化します。  
+   - 正規化されたスコアを重み付き合計で結合します。  
+2. **ランク融合** :  
+   - ベクトル検索結果とキーワード検索結果でのオブジェクトの順位に基づいてスコアを付与します。  
+   - 順位ベースのスコアを統合し、最終的な並び順を決定します。  
 
-### Alpha parameter
+### Alpha パラメーター
 
-The alpha parameter controls the balance between vector and keyword search in hybrid searches:
+Alpha パラメーターはハイブリッド検索におけるベクトル検索とキーワード検索のバランスを制御します。
 
-- Alpha = 0: Pure keyword search
-- Alpha = 1: Pure vector search
-- 0 < Alpha < 1: Weighted combination of both
+- Alpha = 0: キーワード検索のみ  
+- Alpha = 1: ベクトル検索のみ  
+- 0 < Alpha < 1: 両者の重み付き組み合わせ  
 
-## Performance Considerations
+## パフォーマンスの考慮事項
 
-1. **Indexing**: Building efficient indexes (both ANN and inverted) is crucial for search performance.
-2. **Sharding**: Weaviate can distribute data across multiple shards for improved scalability.
-3. **Caching**: Proper caching strategies can significantly improve response times for repeated or similar queries.
-4. **Hardware**: GPU acceleration can boost performance, especially for vector operations.
+1. **インデックス作成** : 高速な検索性能には ANN と 転置インデックス の両方で効率的なインデックスを構築することが重要です。  
+2. **シャーディング** : Weaviate は複数のシャードにデータを分散してスケーラビリティを向上できます。  
+3. **キャッシュ** : 適切なキャッシュ戦略により、繰り返しまたは類似したクエリの応答時間を大幅に短縮できます。  
+4. **ハードウェア** : 特にベクトル演算では GPU アクセラレーションが性能を向上させる場合があります。  
+## リランキング
 
-## Reranking
+リランキングは、検索結果の関連性を向上させるために、最初に取得した検索結果をより高度なモデルや異なる基準で再順位付けする手法です。
 
-Reranking is a technique used to improve search relevance by reordering initial search results using a more sophisticated model or different criteria.
+### Cross-Encoder モデル
 
-### Cross-Encoder Models
+1. **Bi-Encoder vs. Cross-Encoder** : 初期取得では効率性のために Bi-Encoder モデルがよく使用されますが、リランキングでは通常、より高い精度のために Cross-Encoder モデルが用いられます。  
+2. **Attention Mechanism** : Cross-Encoder はクエリとドキュメントのペアを同時に処理し、関連性をより細かく理解できます。  
+3. **Computational Trade-off** : Cross-Encoder は計算コストが高いため、最初に取得した結果のうち少量のサブセットに対してのみ使用されます。  
 
-1. **Bi-Encoder vs. Cross-Encoder**: While initial retrieval often uses bi-encoder models for efficiency, reranking typically employs cross-encoder models for higher accuracy.
-2. **Attention Mechanism**: Cross-encoders process query and document pairs together, allowing for more nuanced understanding of relevance.
-3. **Computational Trade-off**: Cross-encoders are more computationally expensive, hence their use on a smaller subset of initially retrieved results.
 
+## 関連性の最適化
 
-## Optimizing Relevance
+検索の関連性は次の要素によって影響を受けます。
 
-Search relevance may be affected by the following aspects.
+### ベクトル検索品質
 
-### Vector Search Quality
+#### ベクトライザー・モデルの選定
 
-#### Vectorizer model selection
+ベクトライザー・モデルは、オブジェクトをどのように ベクトル に変換するかを決定します。  
+モデルは、テキスト・画像・音声など、データのモダリティに適している必要があります。ドメイン特化モデルの採用や、モデルの複雑さとパフォーマンス要件のバランスを検討してください。  
 
-The vectorizer model determines how an object is converted into a vector.
+ Weaviate は ::model provider integrations:: と統合できます。
 
-The model should be appropriate for your data modality (text, images, audio, etc.). Consider domain-specific models, and balancing model complexity and performance requirements.
+#### ベクトル化するフィールド
 
-Weaviate integrates with ::model provider integrations::
+意味理解に最も寄与するフィールドを特定してください。複数のフィールドを 1 つのベクトル埋め込みにまとめることも検討します。構造化データと非構造化データをベクトル化した場合の影響を評価しましょう。
 
-#### Which fields to vectorize
+#### ANN インデックス設定
 
-Identify fields that contribute most to semantic understanding. Consider combining multiple fields into a single vector embedding. Evaluate the impact of vectorizing structured vs. unstructured data
 
-#### ANN index settings
+### キーワード検索
 
-### Keyword Search
+- インデックスプロパティの長さ、null プロパティなど  
+- これらの設定が検索動作や利用可能なクエリに与える影響  
+- k1 と b の値  
 
-- Index property length, null properties, etc.
-- How these settings affect search behavior and available queries
-- k1 and b values
+### ハイブリッド検索
 
-### Hybrid search
+- ハイブリッド融合方法  
+- Alpha 値  
 
-- Hybrid fusion method
-- Alpha values
 
-## Search Performance and Scalability
+## 検索パフォーマンスとスケーラビリティ
 
-- Vector index settings & query performance
-- Quantization and queries
-- Best practices for optimizing search in large datasets
+- ベクトルインデックス設定とクエリパフォーマンス  
+- 量子化とクエリ  
+- 大規模データセットで検索を最適化するためのベストプラクティス  
 
-## Retrieval Augmented Generation (RAG)
 
-Retrieval Augmented Generation (RAG), also known as generative search, combines traditional search mechanisms with generative AI models to produce new content based on retrieved information.
+## 検索拡張生成 ( RAG )
 
-### RAG Architecture
+検索拡張生成 ( RAG ) は 生成検索 とも呼ばれ、従来の検索メカニズムと生成系 AI モデルを組み合わせ、取得した情報に基づいて新しいコンテンツを生成します。
 
-1. **Retriever**: Uses Weaviate's search capabilities (vector, keyword, or hybrid) to find relevant information.
-2. **Generator**: Employs a large language model (LLM) to generate responses based on the retrieved information and the user query.
-3. **Prompt Engineering**: Crafts effective prompts that combine the user query with retrieved information to guide the LLM's output.
+### RAG アーキテクチャ
 
-### Integration with Language Models
+1. **Retriever** :  Weaviate の検索機能（ベクトル、キーワード、またはハイブリッド）を使用して関連情報を取得します。  
+2. **Generator** : 取得した情報とユーザーのクエリを基に、大規模言語モデル ( LLM ) を用いて応答を生成します。  
+3. **Prompt Engineering** : ユーザーのクエリと取得情報を組み合わせた効果的なプロンプトを設計し、 LLM の出力を誘導します。  
 
-1. **API Connections**: Weaviate integrates with various LLM providers like OpenAI, Cohere, and Google.
-2. **Model Selection**: Users can choose appropriate models based on factors like performance, cost, and specific use case requirements.
-3. **Token Management**: Handles token limits and truncation to ensure effective use of LLM APIs.
+### 言語モデルとの統合
 
-### RAG Workflow
+1. **API Connections** :  Weaviate は OpenAI、Cohere、Google など、さまざまな LLM プロバイダーと統合できます。  
+2. **Model Selection** : ユーザーは、パフォーマンス、コスト、ユースケースの要件などを考慮して適切なモデルを選択できます。  
+3. **Token Management** : トークン上限や切り捨て処理を管理し、 LLM API を効果的に利用します。  
 
-1. **Query Processing**: Analyze the user query to determine search parameters.
-2. **Information Retrieval**: Use Weaviate's search capabilities to find relevant documents or data points.
-3. **Context Preparation**: Prepare retrieved information as context for the generative model.
-4. **Response Generation**: Send the query and prepared context to the LLM to generate a response.
-5. **Post-processing**: Optionally refine or format the generated response before returning it to the user.
+### RAG ワークフロー
 
+1. **Query Processing** : ユーザーのクエリを解析し、検索パラメータを決定します。  
+2. **Information Retrieval** :  Weaviate の検索機能を使用して、関連するドキュメントやデータポイントを取得します。  
+3. **Context Preparation** : 取得した情報を生成モデルのコンテキストとして準備します。  
+4. **Response Generation** : クエリと準備したコンテキストを LLM に送信して応答を生成します。  
+5. **Post-processing** : 必要に応じて生成された応答を整形またはフォーマットし、ユーザーへ返します。  
 
-## AI Models and Search
 
-### Overview
+## AI モデルと検索
 
-- Role of AI models in searches (vector search; reranking; gen search) (clarify their role in others)
+### 概要
 
-### Model selection guide
+- 検索における AI モデルの役割（ベクトル検索、リランキング、生成検索など）  
 
-- Criteria for choosing appropriate models
-- Trade-offs between different model types
+### モデル選定ガイド
 
-## Search Relevance and Ranking
+- 適切なモデルを選択するための基準  
+- 異なるモデルタイプ間のトレードオフ  
 
-- How Weaviate determines result order
-- Techniques for improving search relevance
 
-## Common Use Cases
+## 検索関連性とランキング
 
-- E-commerce product search
-- Content recommendation systems
-- Semantic document retrieval
-- Image and multimedia search
+-  Weaviate が結果の順序を決定する方法  
+- 検索関連性を向上させる手法  
 
-## Troubleshooting and Common Pitfalls
 
-- Addressing frequent issues in search implementation
-- Tips for diagnosing and resolving search-related problems
+## 一般的なユースケース
+
+- EC 商品検索  
+- コンテンツ推薦システム  
+- セマンティックドキュメント検索  
+- 画像・マルチメディア検索  
+
+
+## トラブルシューティングとよくある落とし穴
+
+- 検索実装でよくある問題への対処  
+- 検索に関する問題の診断と解決のヒント  

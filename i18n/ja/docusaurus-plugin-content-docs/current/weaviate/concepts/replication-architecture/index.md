@@ -1,7 +1,7 @@
 ---
-title: Replication Architecture
+title: レプリケーション アーキテクチャ
 sidebar_position: 0
-description: "Multi-node data replication design for high availability, reliability, and improved database performance."
+description: "高可用性・信頼性・データベース性能向上を実現する、マルチノードのデータレプリケーション設計。"
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
@@ -9,173 +9,170 @@ image: og/docs/concepts.jpg
 :::info Added in `v1.17`
 :::
 
-Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-collections/multi-node-setup.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
+Weaviate は、[replication factor](../../manage-collections/multi-node-setup.mdx#replication-settings) を 1 より大きく設定することで、マルチノード クラスター間のデータレプリケーションを実現します。これにより、[高可用性](./motivation.md#high-availability-redundancy) など、さまざまな[利点](./motivation.md)が得られます。データベースのレプリケーションは、信頼性・スケーラビリティ・パフォーマンスを向上させます。
 
-Weaviate utilizes multiple replication architectures:
+Weaviate では複数のレプリケーション方式を採用しています。
 
-- [Cluster metadata replication](./consistency.md#cluster-metadata) is managed by the [Raft](https://raft.github.io/) consensus algorithm.
-- [Data replication](./consistency.md#data-objects) is [tunable](./consistency.md) and leaderless.
+- [クラスター メタデータのレプリケーション](./consistency.md#cluster-metadata) は [Raft](https://raft.github.io/) コンセンサス アルゴリズムによって管理されます。
+- [データレプリケーション](./consistency.md#data-objects) は [チューナブル](./consistency.md) かつリーダーレスです。
 
 <details>
-  <summary>What is the cluster <code>metadata</code>?</summary>
+  <summary>クラスター <code>metadata</code> とは？</summary>
 
-Weaviate cluster `metadata` includes collection definitions and tenant activity statuses.
+Weaviate クラスターの `metadata` には、コレクション定義やテナントのアクティビティ ステータスが含まれます。
 <br/>
 
-All cluster metadata is always replicated across all nodes, regardless of the replication factor.
+すべてのクラスター メタデータは、replication factor に関係なく常に全ノードにレプリケートされます。
 <br/>
 
-Note that this is different to object metadata, such as the object creation time. Object metadata is stored alongside the object data according to the specified replication factor.
+これは、オブジェクトの作成時刻などのオブジェクト メタデータとは異なります。オブジェクト メタデータは、指定された replication factor に従いオブジェクト データと一緒に保存されます。
 
 </details>
 
-In this Replication Architecture section, you will find information about:
+この「レプリケーション アーキテクチャ」セクションでは、次の情報を提供します。
 
-* **General Concepts**, on this page
-  * What is replication?
-  * CAP Theorem
-  * Why replication for Weaviate?
-  * Replication vs. Sharding
-  * How does replication work in Weaviate?
-  * Roadmap
+* **General Concepts**（本ページ）
+  * レプリケーションとは？
+  * CAP 定理
+  * Weaviate にレプリケーションが必要な理由
+  * レプリケーションとシャーディングの違い
+  * Weaviate におけるレプリケーションの仕組み
+  * ロードマップ
 
 
 * **[Use Cases](./motivation.md)**
-  * Motivation
-  * High Availability
-  * Increased (Read) Throughput
-  * Zero Downtime Upgrades
-  * Regional Proximity
+  * モチベーション
+  * 高可用性
+  * 読み取りスループット向上
+  * ゼロダウンタイム アップグレード
+  * リージョナル近接性
 
 
 * **[Philosophy](./philosophy.md)**
-  * Typical Weaviate use cases
-  * Reasons for a leaderless architecture
-  * Gradual rollout
-  * Large-scale testing
+  * 典型的な Weaviate のユースケース
+  * リーダーレス アーキテクチャを選んだ理由
+  * 段階的ロールアウト
+  * 大規模テスト
 
 
 * **[Cluster Architecture](./cluster-architecture.md)**
-  * Leaderless design
+  * リーダーレス設計
   * Replication Factor
-  * Write and Read operations
+  * 書き込み・読み取り操作
 
 
 * **[Consistency](./consistency.md)**
-  * Cluster metadata
-  * Data objects
-  * Repairs
+  * クラスター メタデータ
+  * データオブジェクト
+  * 修復
 
 
 * **[Multi-DataCenter](./multi-dc.md)**
-  * Regional Proximity
+  * リージョナル近接性
 
-## What is replication?
+## レプリケーションとは？
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-c-QUORUM.png" alt="Example setup with replication" width="75%"/></p>
 
-Database replication refers to keeping a copy of the same data point on multiple nodes of a cluster.
+データベース レプリケーションとは、同じデータポイントのコピーをクラスター内の複数ノードに保持することを指します。
 
-The resulting system is a distributed database. A distributed database consists of multiple nodes, all of which can contain a copy of the data. So if one node (server) goes down, users can still access data from another node. In addition, query throughput can be improved with replication.
+その結果として得られるシステムは分散データベースです。分散データベースは複数ノードで構成され、それぞれがデータのコピーを保持できます。そのため、あるノード（サーバー）がダウンしても、ユーザーは別のノードからデータにアクセスできます。さらに、レプリケーションによりクエリ スループットも向上します。
 
-## CAP Theorem
+## CAP 定理
 
-The primary goal of introducing replication is to improve reliability. [Eric Brewer](https://en.wikipedia.org/wiki/Eric_Brewer_(scientist)) states that there are some limits on reliability for distributed databases, described by the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem). The CAP theorem states that a distributed database can only provide two of the following three guarantees:
-* **Consistency (C)** - Every read receives the most recent write or an error, ensuring all nodes see the same data at the same time.
-* **Availability (A)** - Every request receives a non-error response all the time, without the guarantee that it contains the most recent write.
-* **Partition tolerance (P)** - The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes.
+レプリケーション導入の主目的は信頼性の向上です。[Eric Brewer](https://en.wikipedia.org/wiki/Eric_Brewer_(scientist)) は、分散データベースの信頼性には制限があることを [CAP 定理](https://en.wikipedia.org/wiki/CAP_theorem) で示しました。CAP 定理によれば、分散データベースは次の 3 つの保証のうち 2 つしか同時に提供できません。
+* **Consistency (C)** - すべての読み取りが最新の書き込み、またはエラーを返し、全ノードが同一のデータを同時に参照できることを保証します。
+* **Availability (A)** - すべてのリクエストに対し常にエラーのない応答を返しますが、最新の書き込みを含む保証はありません。
+* **Partition tolerance (P)** - ノード間でネットワークにより任意のメッセージが失われたり遅延したりしても、システムが動作を継続できることを意味します。
 
 <p align="center"><img src="/img/docs/replication-architecture/repliction-cap.png" alt="CAP Theorem" width="60%"/></p>
 
-Ideally, you want a database, like Weaviate, to have the highest reliability as possible, but this is limited by the tradeoff between consistency, availability and partition tolerance.
+理想的には、Weaviate のようなデータベースが最高の信頼性を持つことが望まれますが、これは一貫性・可用性・パーティション耐性間のトレードオフによって制限されます。
 
-### Consistency vs Availability
+### 一貫性と可用性のトレードオフ
 
 :::tip
-Only two out of Consistency (C), Availability (A), and Partition tolerance (P) can be guaranteed simultaneously
+Consistency (C)、Availability (A)、Partition tolerance (P) のうち、同時に保証できるのは 2 つだけです。
 
-Given that partition tolerance is required, consider which of the other two are more important for your system.
+Partition tolerance が必須であるとすると、残りの 2 つのうちシステムにとって重要な方を選択する必要があります。
 :::
 
-Only two out of consistency, availability, and partition tolerance can be guaranteed. Since by definition a cluster is a distributed system in which network partitions are present, only two options are left for designing the system: **consistency (C)** or **availability (A)**.
+一貫性・可用性・パーティション耐性のうち、同時に保証できるのは 2 つだけです。クラスターは分散システムであり、ネットワーク パーティションが発生する前提のため、設計の際には **一貫性 (C)** か **可用性 (A)** のいずれかを選択することになります。
 
-When you prioritize **consistency** over availability, the database will return an error or timeout when it cannot be guaranteed that the data is up to date due to network partitioning. When prioritizing **availability** over consistency, the database will always process the query and try to return the most recent version of data even if it cannot guarantee it is up to date due to network partitioning.
+**一貫性** を可用性より優先すると、ネットワーク パーティションによりデータが最新であることを保証できない場合、データベースはエラーやタイムアウトを返します。**可用性** を一貫性より優先すると、データベースは常にクエリを処理し、最新である保証がなくても可能な限り最新のデータを返そうとします。
 
-C over A is preferred when the database contains critical data, such as transactional bank account data. For transactional data, you want the data to always be consistent (otherwise your bank balance is not guaranteed to be correct if you make transactions while some nodes (e.g. ATMs) are down).
+C を A より優先すべき典型例は、トランザクションを扱う銀行口座データなどのクリティカル データベースです。取引データでは、常に一貫性がなければ残高が正しくなくなる可能性があります。
 
-When a database involves less-critical data, A over C can be preferred. An example can be a messaging service, where you can tolerate showing some old data but the application should be highly available and handle large amounts of writes with minimal latency.
+一方、重要度が低いデータベースでは、A を C より優先できます。例としてメッセージング サービスが挙げられます。多少古いデータが表示されても許容されますが、高可用性と低レイテンシーで大量の書き込みを処理する必要があります。
 
-Weaviate generally follows this latter design, since Weaviate typically deals with less critical data and is used for approximate search as a secondary database in use cases with more critical data. More about this design decision in [Philosophy](./philosophy.md). However, you can use Weaviate's [tunable consistency](./consistency.md#tunable-consistency-strategies) options according to your needs.
+Weaviate は一般的に後者の設計に従います。多くの場合、Weaviate はクリティカル データよりも比較的重要度の低いデータを扱い、近似検索のセカンダリ データベースとして利用されるためです。詳細は [Philosophy](./philosophy.md) を参照してください。ただし、必要に応じて Weaviate の [チューナブル コンシステンシー](./consistency.md#tunable-consistency-strategies) を利用できます。
 
-## Why replication for Weaviate?
+## Weaviate にレプリケーションが必要な理由
 
-Weaviate, as a database, must provide reliable answers to users' requests. As discussed above, database reliability consists of various parts. Below are Weaviate use cases in which replication is desired. For detailed information, visit the [Replication Use Cases (Motivation) page](./motivation.md).
+Weaviate はデータベースとして、ユーザーのリクエストに対し信頼できる応答を提供しなければなりません。前述のとおり、データベースの信頼性にはさまざまな要素があります。以下は、Weaviate でレプリケーションが望ましいユースケースです。詳細は [Replication Use Cases (Motivation)](./motivation.md) をご覧ください。
 
-1. **High availability (redundancy)**<br/>
-  With a distributed (replicated) database structure, service will not be interrupted if one server node goes down. The database can still be available, read queries will just be (unnoticeably) redirected to an available node.
-2. **Increased (read) throughput**<br/>
-  Adding extra server nodes to your database setup means that the throughput scales with it. The more server nodes, the more users (read operations) the system will be able to handle. When reading with consistency level of `ONE`, then scaling the replication factor (i.e. how many database server nodes) increases the throughput linearly.
-3. **Zero downtime upgrades**<br/>
-  Without replication, there is a window of downtime when you update a Weaviate instance. This is because the single node needs to stop, update and restart before it's ready to serve again. With replication, upgrades are done using a rolling update, in which at most one node is unavailable at any point in time while the other nodes can still serve traffic.
-4. **Regional proximity**<br/>
-  When users are located in different regional areas (e.g. Iceland and Australia as extreme examples), you cannot ensure low latency for all users due to the physical distance between the database server and the users. With a distributed database, you can place nodes in different local regions to decrease this latency. This depends on the Multi-Datacenter feature of replication.
+1. **高可用性（冗長性）**<br/>
+   分散（レプリケートされた）データベース構成では、1 台のサーバーノードがダウンしてもサービスは中断されません。データベースは引き続き利用可能で、読み取りクエリは利用可能なノードに（ほぼ気付かれずに）リダイレクトされます。  
+2. **読み取りスループットの向上**<br/>
+   データベース構成にサーバーノードを追加すると、スループットも比例して増加します。ノードが多いほど、システムが処理できるユーザー（読み取り操作）数が増えます。コンシステンシー レベル `ONE` で読み取りを行う場合、replication factor（すなわちノード数）を増やすとスループットは線形に向上します。  
+3. **ゼロダウンタイム アップグレード**<br/>
+   レプリケーションがない場合、Weaviate インスタンスをアップグレードする際にダウンタイムが発生します。単一ノードを停止・更新・再起動して再び利用可能になるまでサービスは停止します。レプリケーションがあればローリング アップデートが可能になり、常に最大でも 1 ノードのみが停止し、他のノードがトラフィックを継続的に処理します。  
+4. **リージョナル近接性**<br/>
+   ユーザーが異なる地域（例：アイスランドとオーストラリア）にいる場合、データベース サーバーとの物理的距離によりすべてのユーザーに低レイテンシーを保証できません。分散データベースを使用すると、異なるローカル地域にノードを配置してレイテンシーを削減できます。これはレプリケーションの Multi-Datacenter 機能に依存します。
+## レプリケーションとシャーディング
 
+レプリケーションは [シャーディング](../cluster.md) とは異なります。シャーディングは水平スケーリングを指し、Weaviate には v1.8 で導入されました。
 
-## Replication vs. Sharding
+* **レプリケーション** はデータを別々のサーバーノードにコピーします。Weaviate では、これによりデータの可用性が向上し、単一ノードが障害を起こした場合の冗長性が確保されます。クエリスループットもレプリケーションによって改善できます。
+* **シャーディング** はデータを分割し、その断片（シャード）を複数のレプリカセットに送ることで、サーバー間の水平スケーリングを行います。データは分割され、すべてのシャードを合わせると完全なデータセットになります。Weaviate でシャーディングを使用すると、大規模データセットの運用やインポート速度の向上が可能です。
 
-Replication is not the same as [sharding](../cluster.md). Sharding refers to horizontal scaling, and was introduced to Weaviate in v1.8.
+<p align="center"><img src="/img/docs/replication-architecture/replication-replication-vs-sharding.png" alt="レプリケーションとシャーディング" width="60%"/></p>
 
-* **Replication** copies the data to different server nodes. For Weaviate, this increases data availability and provides redundancy in case a single node fails. Query throughput can be improved with replication.
-* **Sharding** handles horizontal scaling across servers by dividing the data and sending the pieces of data (shards) to multiple replica sets. The data is thus divided, and all shards together form the entire set of data. You can use sharding with Weaviate to run larger datasets and speed up imports.
+レプリケーションとシャーディングは組み合わせて使用でき、スループットと可用性を高めるとともに、インポート速度の向上や大規模データセットへの対応が可能になります。たとえば、データベースのレプリカ数を 3、シャード数を 3 に設定すると、合計 9 個のシャードが生成され、各サーバーノードが 3 つの異なるシャードを保持します。
 
-<p align="center"><img src="/img/docs/replication-architecture/replication-replication-vs-sharding.png" alt="Replication vs Sharding" width="60%"/></p>
+## Weaviate でのレプリケーションの仕組み
 
-Replication and sharding can be combined in a setup, to improve throughput and availability as well as import speed and support for large datasets. For example, you can have 3 replicas of the database and shards set to 3, which means you have 9 shards in total, where each server node holds 3 different shards.
+### クラスタメタデータのレプリケーション
 
-## How does replication work in Weaviate?
+Weaviate のクラスタメタデータ変更は Raft によって管理され、クラスタ全体で一貫性を確保しています。（これにはコレクション定義やテナントのアクティブステータスが含まれます。）
 
-### Cluster metadata replication
-
-Weaviate’s cluster metadata changes are managed through Raft to provide consistency across the cluster. (This includes collection definitions and tenant activity statuses.)
-
-From Weaviate `v1.25`, cluster metadata changes are committed using the Raft consensus algorithm. Raft is a leader-based consensus algorithm. A leader node is responsible for cluster metadata changes. Raft ensures that these changes are consistent across the cluster, even in the event of (a minority of) node failures.
+Weaviate `v1.25` から、クラスタメタデータの変更は Raft コンセンサスアルゴリズムを使用してコミットされます。Raft はリーダーベースのコンセンサスアルゴリズムで、リーダーノードがクラスタメタデータの変更を担当します。Raft により、少数ノードの障害が発生しても変更内容はクラスタ全体で一貫性を保ちます。
 
 <details>
-  <summary>Metadata replication pre-<code>v1.25</code></summary>
+  <summary>メタデータレプリケーション（<code>v1.25</code> 以前）</summary>
 
-Prior to Weaviate `v1.25`, each cluster metadata change was recorded via a distributed transaction with a two-phase commit.
+Weaviate `v1.25` 以前では、各クラスタメタデータの変更は 2 フェーズコミットを用いた分散トランザクションで記録されていました。
 <br/>
 
-This is a synchronous process, which means that the cluster metadata change is only committed when all nodes have acknowledged the change. In this architecture, any node downtime would temporarily prevent metadata operations. Additionally, only one such operation could be processed at a time.
+これは同期プロセスであり、すべてのノードが変更を認証して初めてコミットされます。このアーキテクチャでは、ノードがダウンするとメタデータ操作が一時的に停止します。さらに、一度に処理できる操作は 1 件のみでした。
 
-If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](/deploy/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
+Weaviate `v1.24` 以前をお使いの場合は、クラスタメタデータ変更に Raft コンセンサスアルゴリズムを利用するために [ `v1.25` へのアップグレード](/deploy/migration/weaviate-1-25.md) をご検討ください。
 
 </details>
 
-### Data replication
+### データレプリケーション
 
-In Weaviate, availability is generally favored over consistency. Weaviate's data replication uses a leaderless design, which means there are no primary and secondary nodes. When writing and reading data, the client contacts one or more nodes. A load balancer exists between the user and the nodes, so the user doesn't know which node they are talking to (Weaviate will forward internally if a user is requesting a wrong node).
+Weaviate では、一般的に一貫性よりも可用性を優先します。データレプリケーションにはリーダーレス設計を採用しており、プライマリやセカンダリの概念はありません。データの読み書き時、クライアントは 1 つ以上のノードに接続します。ユーザーとノードの間にはロードバランサーがあり、ユーザーはどのノードと通信しているかを意識する必要がありません（ユーザーが誤ったノードにリクエストしても Weaviate が内部で転送します）。
 
-The number of nodes that need to acknowledge the read or write (from v1.18) operation is tunable, to `ONE`, `QUORUM` (n/2+1) or `ALL`. When write operations are carried out with consistency level `ALL`, the database works synchronously. If write is not set to `ALL` (possible from v1.18), writing data is asynchronous from the user's perspective.
+読み書き（v1.18 以降）で確認応答が必要なノード数は `ONE`、`QUORUM`（n/2+1）、`ALL` に設定できます。書き込み操作で整合性レベルを `ALL` にすると、データベースは同期的に動作します。`ALL` 以外に設定した場合（v1.18 以降）、ユーザー視点では非同期で書き込みが行われます。
 
-The number of replicas doesn't have to match the number of nodes (cluster size). It is possible to split data in Weaviate based on collections. Note that this is [different from Sharding](#replication-vs-sharding).
+レプリカ数はノード数（クラスタサイズ）と一致している必要はありません。Weaviate ではコレクション単位でデータを分割することが可能です。これは [シャーディングとは異なります](#replication-vs-sharding)。
 
-Read more about how replication works in Weaviate in [Philosophy](./philosophy.md), [Cluster Architecture](./cluster-architecture.md) and [Consistency](./consistency.md).
+レプリケーションの詳細は [Philosophy](./philosophy.md)、[Cluster Architecture](./cluster-architecture.md)、[Consistency](./consistency.md) をご覧ください。
 
-## How do I use replication in Weaviate?
+## Weaviate でレプリケーションを利用するには
 
-See [how to configure replication](/deploy/configuration/replication.md). You can enable replication in the collection definition. In queries, you can [specify the desired consistency level](../../search/basics.md#replication).
+[レプリケーションの設定方法](/deploy/configuration/replication.md) を参照してください。コレクション定義でレプリケーションを有効化できます。クエリでは、[希望する整合性レベルを指定](../../search/basics.md#replication) できます。
 
-## Roadmap
+## ロードマップ
 
-* Not scheduled yet
-  * Multi-Datacenter replication (you can upvote this feature [here](https://github.com/weaviate/weaviate/issues/2436))
+* 未定
+  * マルチデータセンターレプリケーション（この機能への投票は [こちら](https://github.com/weaviate/weaviate/issues/2436)）
 
-
-## Related pages
+## 関連ページ
 - [Configuration: Replication](/deploy/configuration/replication.md)
 
-## Questions and feedback
+## ご質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

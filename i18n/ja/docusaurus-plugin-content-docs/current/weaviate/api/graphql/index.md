@@ -1,7 +1,7 @@
 ---
-title: Search (GraphQL | gRPC)
+title: 検索（GraphQL | gRPC）
 sidebar_position: 0
-description: "GraphQL and gRPC API documentation for flexible querying and data retrieval in Weaviate."
+description: "Weaviate で柔軟なクエリとデータ取得を行うための GraphQL と gRPC API ドキュメント。"
 image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---
@@ -9,45 +9,45 @@ image: og/docs/api.jpg
 
 ## API
 
-Weaviate offers [GraphQL](https://graphql.org/) and gRPC APIs for queries.
+Weaviate は、クエリ用に [GraphQL](https://graphql.org/) と gRPC の API を提供しています。
 
-We recommend using a Weaviate [client library](../../client-libraries/index.mdx), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
+基盤となる API 呼び出しを抽象化し、アプリケーションへの Weaviate 統合を容易にするため、Weaviate クライアントライブラリ（[client library](../../client-libraries/index.mdx)）の使用を推奨します。
 
-However, you can query Weaviate directly using GraphQL with a POST request to the `/graphql` endpoint, or write your own `gRPC` calls based on the [gRPC](../grpc.md) protobuf specification.
+しかし、`/graphql` エンドポイントに対して POST リクエストを送信して GraphQL を直接使用して Weaviate をクエリしたり、[gRPC](../grpc.md) の protobuf 仕様に基づいて独自の `gRPC` 呼び出しを作成したりすることもできます。
 
 
-## All references
+## すべてのリファレンス
 
-All references have their individual subpages. Click on one of the references below for more information.
+各リファレンスには個別のサブページがあります。詳細については、以下のリンクをクリックしてください。
 
-- [Object-level queries](./get.md)
-- [Aggregate](./aggregate.md)
-- [Search operators](./search-operators.md)
-- [Conditional filters](./filters.md)
-- [Additional operators](./additional-operators.md)
-- [Additional properties](./additional-properties.md)
-- [Explore](./explore.md)
+- [オブジェクトレベルクエリ](./get.md)
+- [集約](./aggregate.md)
+- [検索演算子](./search-operators.md)
+- [条件フィルター](./filters.md)
+- [追加演算子](./additional-operators.md)
+- [追加プロパティ](./additional-properties.md)
+- [探索](./explore.md)
 
 
 ## GraphQL API
 
-### Why GraphQL?
+### GraphQL を選ぶ理由
 
-GraphQL is a query language built on using graph data structures. It is an efficient method of data retrieval and mutation, since it mitigates the common over-fetching and under-fetching problems of other query languages.
+GraphQL はグラフデータ構造を利用して構築されたクエリ言語です。他のクエリ言語でよく発生する over-fetch と under-fetch の問題を軽減するため、データの取得および変更を効率的に行えます。
 
 :::tip GraphQL is case-sensitive
-GraphQL is case-sensitive ([reference](https://spec.graphql.org/June2018/#sec-Names)), so make sure to use the correct casing when writing your queries.
+GraphQL は大文字と小文字を区別します（[reference](https://spec.graphql.org/June2018/#sec-Names)）。クエリを記述する際は正しい大文字・小文字を使用してください。
 :::
 
-### Query structure
+### クエリ構造
 
-You can POST a GraphQL query to Weaviate as follows:
+GraphQL クエリは次のように Weaviate へ POST できます。
 
 ```bash
 curl http://localhost/v1/graphql -X POST -H 'Content-type: application/json' -d '{GraphQL query}'
 ```
 
-A GraphQL JSON object is defined as:
+GraphQL JSON オブジェクトは次のように定義されます。
 
 ```json
 {
@@ -55,8 +55,7 @@ A GraphQL JSON object is defined as:
 }
 ```
 
-GraphQL queries follow a defined structure. Queries are structured as follows:
-
+GraphQL クエリは定義済みの構造に従います。クエリは次のように構成されます。
 
 ```graphql
 {
@@ -69,25 +68,26 @@ GraphQL queries follow a defined structure. Queries are structured as follows:
 }
 ```
 
-### Limitations
+### 制限事項
 
-GraphQL _integer_ data currently only supports `int32`, and does not support `int64`. This means that currently _integer_ data fields in Weaviate with integer values larger than `int32`, will not be returned using GraphQL queries. We are working on solving this [issue](https://github.com/weaviate/weaviate/issues/1563). As current workaround is to use a `string` instead.
+GraphQL の _integer_ データは現在 `int32` のみをサポートし、`int64` には対応していません。そのため、Weaviate の _integer_ フィールドに `int32` を超える値が入っている場合、GraphQL クエリでは返されません。この[課題](https://github.com/weaviate/weaviate/issues/1563)に取り組んでいます。現時点での回避策としては `string` を使用してください。
 
-### Consistency level
+### 整合性レベル
 
-GraphQL (`Get`) queries are run with a tunable [consistency level](../../concepts/replication-architecture/consistency.md#tunable-read-consistency).
+GraphQL（`Get`）クエリは、可変の [整合性レベル](../../concepts/replication-architecture/consistency.md#tunable-read-consistency)で実行されます。
 
 ## gRPC API
 
-Starting with Weaviate v1.19.0, a gRPC interface is being progressively added to Weaviate.
+Weaviate v1.19.0 から、gRPC インターフェースが段階的に追加されています。
 
-gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
+gRPC は高性能でオープンソースの汎用 RPC フレームワークで、契約ベースであらゆる環境で利用できます。HTTP/2 と Protocol Buffers を基盤としているため、高速かつ効率的です。
 
-Read more about the gRPC API [here](../grpc.md).
+gRPC API の詳細は[こちら](../grpc.md)をご覧ください。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

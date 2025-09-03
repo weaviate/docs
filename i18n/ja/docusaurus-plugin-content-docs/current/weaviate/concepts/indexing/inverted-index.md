@@ -1,91 +1,91 @@
 ---
-title: Inverted indexes
+title: 転置インデックス
 sidebar_position: 2
-description: "Inverted index architecture for efficient keyword search and filtering with performance improvements."
+description: "キーワード検索とフィルタリングを効率化する転置インデックス アーキテクチャとその性能向上"
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
 
-Inverted indexes in Weaviate map values (like words or numbers) to the objects that contain them, enabling fast keyword search and filtering operations.
+Weaviate の転置インデックスは、単語や数値などの値をそれを含むオブジェクトへマッピングし、高速なキーワード検索とフィルタリングを実現します。
 
-## How Weaviate creates inverted indexes
+## Weaviate における転置インデックスの作成
 
-Understanding Weaviate's indexing architecture is crucial for optimizing performance and resource usage. Weaviate creates **individual inverted indexes for each property and each index type**. This means:
+Weaviate のインデックス アーキテクチャを理解することは、パフォーマンスとリソース使用量の最適化に欠かせません。Weaviate は **各プロパティと各インデックスタイプごとに個別の転置インデックス** を作成します。つまり:
 
-- Each property in your collection gets its own dedicated inverted index(es)
-- Meta properties (like creation timestamps) also get their own separate inverted indexes
-- A single property can have multiple inverted indexes if it supports multiple index types
-- All aggregations and combinations across properties happen at query time, not at index time
+- コレクション内の各プロパティごとに専用の転置インデックスが作成されます  
+- 作成日時などのメタプロパティにも、それぞれ独立した転置インデックスが作成されます  
+- 1 つのプロパティが複数のインデックスタイプをサポートしている場合、その数だけ転置インデックスが作成されます  
+- プロパティをまたぐ集約や組み合わせはインデックス作成時ではなくクエリ実行時に行われます  
 
-**Example**: A `title` property with both `indexFilterable: true` and `indexSearchable: true` will result in two separate inverted indexes - one optimized for search operations and another for filtering operations.
+**例**: `title` プロパティで `indexFilterable: true` と `indexSearchable: true` の両方を設定すると、検索用に最適化されたインデックスとフィルタリング用に最適化されたインデックスの 2 つが生成されます。
 
-This architecture provides flexibility and performance optimization but also means that enabling multiple index types increases storage requirements and indexing overhead.
+このアーキテクチャは柔軟性とパフォーマンスを提供する一方で、複数のインデックスタイプを有効にするとストレージ消費とインデックス作成コストが増加する点に注意してください。
 
-For `text` properties specifically, the indexing process follows these steps:
+`text` プロパティの場合、インデックス作成は次の手順で行われます:
 
-1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
-3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
+1. **トークン化**: まず、プロパティに設定された [tokenization method](../../config-refs/collections.mdx#tokenization) に従ってテキストをトークン化します。  
+3. **インデックス エントリーの作成**: 処理された各トークンに対し、そのトークンを含むオブジェクトを指すインデックス エントリーを作成します。  
 
-This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
+このプロセスにより、テキスト検索やフィルタリングで対象トークンを含むオブジェクトを素早く特定できます。
 
 <details>
-  <summary>Performance improvements added in Oct 2024</summary>
+  <summary>2024 年 10 月に追加されたパフォーマンス向上</summary>
 
-In Weaviate versions `v1.24.26`, `v1.25.20`, `v1.26.6` and `v1.27.0`, we introduced performance improvements and bugfixes for the BM25F scoring algorithm:
+Weaviate バージョン `v1.24.26`、`v1.25.20`、`v1.26.6`、`v1.27.0` では、 BM25F スコアリング アルゴリズムに関して以下のパフォーマンス向上とバグ修正を行いました。
 
-- The BM25 segment merging algorithm was made faster
-- Improved WAND algorithm to remove exhausted terms from score computation and only do a full sort when necessary
-- Solved a bug in BM25F multi-prop search that could lead to not summing all the query term score for all segments
-- The BM25 scores are now calculated concurrently for multiple segments
+- BM25 セグメント マージ アルゴリズムを高速化  
+- WAND アルゴリズムを改良し、スコア計算から尽きたタームを除外、必要な場合のみ完全ソートを実施  
+- マルチプロパティ検索で、すべてのセグメントのクエリターム スコアを合算しない場合があるバグを修正  
+- BM25 スコアを複数セグメントで並列計算するように変更  
 
-As always, we recommend upgrading to the latest version of Weaviate to benefit from improvements such as these.
+常に最新の Weaviate へのアップグレードを推奨します。これらの改善点を含む最新機能を利用できます。
 
 </details>
 
-## BlockMax WAND algorithm
+## BlockMax WAND アルゴリズム
 
 :::info Added in `v1.30`
 :::
 
-The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
+BlockMax WAND アルゴリズムは、 BM25 やハイブリッド検索の高速化に用いられる WAND アルゴリズムの派生版です。転置インデックスをブロック単位に整理し、クエリに無関係なブロックをスキップできるようにします。これによりスコアリングが必要なドキュメント数を大幅に削減し、検索性能を向上させます。
 
-If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](/deploy/migration/weaviate-1-30.md).
+BM25（またはハイブリッド）検索が遅い場合で `v1.30` より前の Weaviate を使用している場合は、 BlockMax WAND アルゴリズムを搭載した新しいバージョンへ移行し、パフォーマンスが向上するかお試しください。以前のバージョンからデータを移行する必要がある場合は、[v1.30 移行ガイド](/deploy/migration/weaviate-1-30.md) を参照してください。
 
-:::note Scoring changes with BlockMax WAND
+:::note BlockMax WAND によるスコア変化
 
-Due to the nature of the BlockMax WAND algorithm, the scoring of BM25 and hybrid searches may differ slightly from the default WAND algorithm. Additionally BlockMax WAND scores on single and multiple property search may be different due to different IDF and property length normalization calculations. This is expected behavior and is not a bug.
+BlockMax WAND アルゴリズムの特性上、 BM25 やハイブリッド検索のスコアはデフォルトの WAND アルゴリズムと若干異なる場合があります。また、単一プロパティ検索と複数プロパティ検索で IDF やプロパティ長正規化の計算が異なるため、スコアも変わる可能性があります。これは仕様でありバグではありません。
 
 :::
 
-## Configure inverted indexes
+## 転置インデックスの設定
 
-There are three inverted index types in Weaviate:
+Weaviate には 3 種類の転置インデックスがあります。
 
-- `indexSearchable` - a searchable index for BM25 or hybrid search
-- `indexFilterable` - a match-based index for fast [filtering](../filtering.md) by matching criteria
-- `indexRangeFilters` - a range-based index for [filtering](../filtering.md) by numerical ranges
+- `indexSearchable` - BM25 またはハイブリッド検索用の検索インデックス  
+- `indexFilterable` - 一致条件による高速 [フィルタリング](../filtering.md) 用のインデックス  
+- `indexRangeFilters` - 数値範囲による [フィルタリング](../filtering.md) 用のインデックス  
 
-Each inverted index can be set to `true` (on) or `false` (off) on a property level. The `indexSearchable` and `indexFilterable` indexes are on by default, while the `indexRangeFilters` index is off by default.
+各転置インデックスはプロパティ単位で `true`（有効）または `false`（無効）を設定できます。`indexSearchable` と `indexFilterable` はデフォルトで有効、`indexRangeFilters` はデフォルトで無効です。
 
-The filterable indexes are only capable of [filtering](../filtering.md), while the searchable index can be used for both searching and filtering (though not as fast as the filterable index).
+フィルタリング用インデックスは [フィルタリング](../filtering.md) 専用ですが、検索用インデックスは検索とフィルタリングの両方に使用できます（ただしフィルタリング速度はフィルタリング用インデックスに劣ります）。
 
-So, setting `"indexFilterable": false` and `"indexSearchable": true` (or not setting it at all) will have the trade-off of worse filtering performance but faster imports (due to only needing to update one index) and lower disk usage.
+そのため、`"indexFilterable": false` で `"indexSearchable": true`（または未設定）とすると、フィルタリング性能は低下しますが、インポートが速くなり（1 つのインデックスのみ更新）、ディスク使用量も減少するというトレードオフがあります。
 
-See the [related how-to section](../../manage-collections/vector-config.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
+プロパティ単位で転置インデックスを有効・無効にする方法は、[関連 How-to セクション](../../manage-collections/vector-config.mdx#property-level-settings) をご覧ください。
 
-A rule of thumb to follow when determining whether to switch off indexing is: _if you will never perform queries based on this property, you can turn it off._
+インデックスを無効にするかどうかの目安としては、_そのプロパティを基にクエリを実行することがない場合は、無効にして構いません。_
 
-#### Inverted index types summary
+#### 転置インデックス タイプの概要
 
 import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.mdx';
 
 <InvertedIndexTypesSummary/>
 
-- Enable one or both of `indexFilterable` and `indexRangeFilters` to index a property for faster filtering.
-    - If only one is enabled, the respective index is used for filtering.
-    - If both are enabled, `indexRangeFilters` is used for operations involving comparison operators, and `indexFilterable` is used for equality and inequality operations.
+- `indexFilterable` と `indexRangeFilters` のいずれか、または両方を有効にすると、フィルタリングが高速化されます。  
+    - 片方のみ有効の場合、そのインデックスがフィルタリングに使用されます。  
+    - 両方有効の場合、`indexRangeFilters` は比較演算子を伴う操作に、`indexFilterable` は等価・不等価の操作に使用されます。  
 
-This chart shows which filter makes the comparison when one or both index type is `true` for an applicable property.
+次の表は、適用可能なプロパティで 1 つまたは両方のインデックスタイプが `true` の場合、どちらのフィルターが比較を行うかを示しています。
 
 | Operator | `indexRangeFilters` only | `indexFilterable` only | Both enabled |
 | :- | :- | :- | :- |
@@ -96,20 +96,20 @@ This chart shows which filter makes the comparison when one or both index type i
 | Less than | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
 | Less than equal | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
 
-#### Inverted index for timestamps
+#### タイムスタンプ用転置インデックス
 
-You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps).
+[タイムスタンプ検索](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps) のためにインデックスを有効にすることもできます。
 
-Timestamps are currently indexed using the `indexFilterable` index.
+タイムスタンプは現在、`indexFilterable` インデックスでインデックス化されます。
 
-## Collections without indexes
+## インデックスなしのコレクション
 
-If you don't want to set an index at all, this is possible too. To create a collection without any indexes, skip indexing on the collection and on the properties.
+インデックスを一切設定しないことも可能です。コレクションとプロパティの両方でインデックスをスキップすることで、インデックスなしのコレクションを作成できます。
 
 <details>
-  <summary>Example collection configuration without inverted indexes -  JSON object</summary>
+  <summary>インデックスなしの転置インデックス設定例 - JSON オブジェクト</summary>
 
-An example of a complete collection object without inverted indexes:
+転置インデックスを使用しない完全なコレクション オブジェクトの例:
 
 ```js
 {
@@ -167,7 +167,7 @@ An example of a complete collection object without inverted indexes:
 
 </details>
 
-## Further resources
+## 参照資料
 
 :::info Related pages
 
@@ -176,7 +176,7 @@ An example of a complete collection object without inverted indexes:
 
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 

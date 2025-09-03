@@ -1,54 +1,54 @@
 ---
-title: Starter guides
+title: スターターガイド
 image: og/docs/tutorials.jpg
 hide_table_of_contents: true
 # tags: ['getting started']
 ---
 
-This section helps you to get started with Weaviate.
+このセクションでは、 Weaviate を使い始めるための手順を説明します。
 
 import CardsSection from "/src/components/CardsSection";
 
 export const starterConceptsData = [
   {
-    title: "Which Weaviate setup?",
+    title: "最適な Weaviate セットアップ",
     description:
-      "Find the right Weaviate deployment option (Cloud, Docker, K8s, Embedded) for your needs.",
+      "用途に合った Weaviate のデプロイ オプション（Cloud、Docker、K8s、Embedded）を見つけます。",
     link: "/weaviate/starter-guides/which-weaviate",
     icon: "fas fa-map-signs",
   },
   {
-    title: "Collection definitions & schema",
+    title: "コレクションの定義とスキーマ",
     description:
-      "Learn how to define collection settings, properties, and data schema effectively.",
+      "コレクションの設定、プロパティ、およびデータスキーマを効果的に定義する方法を学びます。",
     link: "/weaviate/starter-guides/managing-collections/",
     icon: "fas fa-sitemap",
   },
   {
-    title: "Collection scaling limits",
+    title: "コレクションのスケーリング制限",
     description:
-      "Learn why multi-tenancy helps when scaling beyond many collections.",
+      "多数のコレクションを超えてスケールする際にマルチテナンシーが役立つ理由を学びます。",
     link: "/weaviate/starter-guides/managing-collections/collections-scaling-limits",
     icon: "fas fa-expand-arrows-alt",
   },
   {
-    title: "Retrieval Augmented Generation (RAG)",
+    title: "検索拡張生成 (RAG)",
     description:
-      "Perform generative search (RAG) by augmenting LLM prompts with search results.",
+      "検索結果を LLM のプロンプトに追加して生成検索 (RAG) を実行します。",
     link: "/weaviate/starter-guides/generative",
     icon: "fas fa-robot",
   },
   {
-    title: "Indexing",
+    title: "インデックス作成",
     description:
-      "How Weaviate indexes data for fast search and filtering, and choosing index settings.",
+      "Weaviate が高速な検索とフィルタリングのためにデータをインデックス化する方法と、インデックス設定の選択について説明します。",
     link: "/weaviate/starter-guides/managing-resources/indexing",
     icon: "fas fa-search-plus",
   },
   {
-    title: "Managing resources",
+    title: "リソースの管理",
     description:
-      "Balance search speed, recall, and cost with compression and other features.",
+      "圧縮などの機能を使用して検索速度、リコール、コストのバランスを取ります。",
     link: "/weaviate/starter-guides/managing-resources/",
     icon: "fas fa-balance-scale",
   },
@@ -58,25 +58,25 @@ export const starterConceptsData = [
 <CardsSection items={starterConceptsData} />
 <br />
 
-## Other guides and tutorials
+## その他のガイドとチュートリアル
 
 export const otherGuidesCardsData = [
   {
-    title: "How-to manuals",
-    description: "Instructions on how to use most Weaviate features.",
+    title: "ハウツーマニュアル",
+    description: "ほとんどの Weaviate 機能の使い方手順です。",
     link: "/weaviate/guides",
     icon: "fas fa-compass",
   },
   {
-    title: "Tutorials",
-    description: "Step-by-step guides and practical examples.",
+    title: "チュートリアル",
+    description: "ステップバイステップのガイドと実用例です。",
     link: "/weaviate/tutorials",
     icon: "fas fa-chalkboard-teacher",
   },
   {
-    title: "Recipes",
+    title: "レシピ",
     description:
-      "Jupyter Notebooks that showcase various use cases and functionalities.",
+      "さまざまなユースケースと機能を示す Jupyter Notebook です。",
     link: "/weaviate/recipes",
     icon: "fas fa-scroll",
   },

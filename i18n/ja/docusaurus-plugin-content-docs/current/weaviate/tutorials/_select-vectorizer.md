@@ -1,5 +1,5 @@
 ---
-title: (PLACEHOLDER) Select the right vectorizer
+title: (PLACEHOLDER) 適切な ベクトライザー を選択する
 sidebar_position: 1
 image: og/docs/tutorials.jpg
 # tags: ['how to']
@@ -8,13 +8,14 @@ image: og/docs/tutorials.jpg
 <!-- :::caution This page is under construction.
 ::: -->
 
-This tutorial will help Weaviate users select a suitable vectorizer module for their data, available resources and use case.
+このチュートリアルでは、 Weaviate ユーザーが自身のデータ、利用可能なリソース、ユースケースに適したベクトライザー モジュールを選択できるよう支援します。
 
-Some of you might already have a strong intuition on differences between vectorizer models or APIs, including training or fine-tuning custom models. Those of you may be already familiar with the material covered in this tutorial.
+既にベクトライザーのモデルや API の違い、さらにカスタムモデルの学習やファインチューニングについての強い直感をお持ちの方もいるでしょう。そのような方々は、本チュートリアルで扱う内容にすでに馴染みがあるかもしれません。
 
-On the other hand, if you are looking for some heuristics or approximate tips on model types to choose based on might be best suited for certain data types and end use tasks, you may find this tutorial particularly useful.
+一方で、特定のデータタイプや最終的なタスクに最も適したモデルの種類を選ぶためのヒューリスティックやおおよその指針をお探しの場合は、本チュートリアルが特に役立つはずです。
 
-Moreover, we will discuss these in the context of Weaviate modules, so that you are able to hit the ground running with the right Weaviate module that will provide you with access to the right vectorizer.
+さらに、これらを Weaviate モジュールの文脈で解説しますので、適切なベクトライザーへアクセスできる正しい Weaviate モジュールをすぐに利用できるようになります。
+
 <!--
 ## Prerequisites
 

@@ -1,5 +1,5 @@
 ---
-title: Filters
+title: フィルター
 sidebar_position: 90
 image: og/docs/howto.jpg
 # tags: ['how to', 'apply conditional filters']
@@ -15,12 +15,12 @@ import JavaScriptCodeLegacy from '!!raw-loader!/_includes/code/howto/search.filt
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
 
 
-Filters let you include, or exclude, particular objects from your result set based on provided conditions.<br/>
-For a list of filter operators, see the [API reference page](../api/graphql/filters.md#filter-structure).
+フィルターを使用すると、指定した条件に基づいて特定のオブジェクトを結果セットに含めたり除外したりできます。<br/>
+フィルター演算子の一覧については、[API リファレンス](../api/graphql/filters.md#filter-structure)をご覧ください。
 
-## Filter with one condition
+## 単一条件でのフィルター
 
-Add a `filter` to your query, to limit the result set.
+結果セットを制限するには、クエリに `filter` を追加します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -79,9 +79,9 @@ Add a `filter` to your query, to limit the result set.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+出力例は以下のとおりです。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -92,24 +92,24 @@ The output is like this:
 
 </details>
 
-## Filter with multiple conditions
+## 複数条件でのフィルター
 
-To filter with two or more conditions, use `And` or `Or` to define the relationship between the conditions.
+2 つ以上の条件でフィルターを行う場合、`And` または `Or` を使用して条件間の関係を定義します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
 
-  The `v4` Python client API provides  filtering by `any_of`, or `all_of`, as well as using `&` or `|` operators.
+  `v4` Python クライアント API では、`any_of` や `all_of`、さらには `&` や `|` 演算子によるフィルターが利用できます。  
   <br/>
 
   <ul>
-    <li>Use <code>any_of</code> or <code>all_of</code> for filtering by any, or all of a list of provided filters.</li>
-    <li>Use <code>&</code> or <code>|</code> for filtering by pairs of provided filters.</li>
+    <li><code>any_of</code> または <code>all_of</code> を使用すると、指定したフィルター リストのうち「いずれか」または「すべて」に一致するオブジェクトでフィルタリングできます。</li>
+    <li><code>&</code> または <code>|</code> を使用すると、2 つのフィルターを組み合わせてフィルタリングできます。</li>
   </ul>
 
   <br/>
 
-  #### Filter with `&` or `|`
+  #### `&` または `|` を使用したフィルター
 
   <FilteredTextBlock
     text={PyCode}
@@ -118,7 +118,7 @@ To filter with two or more conditions, use `And` or `Or` to define the relations
     language="python"
   />
 
-  #### Filter with `any of`
+  #### `any of` を使用したフィルター
 
   <FilteredTextBlock
     text={PyCode}
@@ -127,7 +127,7 @@ To filter with two or more conditions, use `And` or `Or` to define the relations
     language="python"
   />
 
-  #### Filter with `all of`
+  #### `all of` を使用したフィルター
 
   <FilteredTextBlock
     text={PyCode}
@@ -149,10 +149,10 @@ To filter with two or more conditions, use `And` or `Or` to define the relations
 
   <TabItem value="js" label="JS/TS Client v3">
 
-  Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API.
+  JS/TS `v3` API では、`Filters.and` と `Filters.or` メソッドを使用してフィルターを組み合わせます。  
   <br/>
 
-  These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To pass an array (e.g. `fs`) as an argument, provide it like so: `Filters.and(...fs)` which will spread the array into its elements.
+  これらのメソッドは可変長引数を取ります（例: `Filters.and(f1, f2, f3, ...)`）。配列（例: `fs`）を引数として渡す場合は、`Filters.and(...fs)` のようにスプレッド構文を使って配列を要素に展開してください。  
   <br/>
 
   <FilteredTextBlock
@@ -192,9 +192,9 @@ To filter with two or more conditions, use `And` or `Or` to define the relations
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+出力例は以下のとおりです。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -204,10 +204,9 @@ The output is like this:
 />
 
 </details>
+## ネストされたフィルター
 
-## Nested filters
-
-You can group and nest filters.
+フィルターはグループ化してネストできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -266,9 +265,9 @@ You can group and nest filters.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例：
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -281,21 +280,21 @@ The output is like this:
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-To create a nested filter, follow these steps.
+ネストされたフィルターを作成する手順は次のとおりです。
 
-- Set the outer `operator` equal to `And` or `Or`.
-- Add `operands`.
-- Inside an `operand` expression, set `operator` equal to `And` or `Or` to add the nested group.
-- Add `operands` to the nested group as needed.
+- 外側の `operator` を `And` または `Or` に設定します。  
+- `operands` を追加します。  
+- `operand` 式の中で、ネストされたグループを追加するために `operator` を `And` または `Or` に設定します。  
+- 必要に応じてネストされたグループに `operands` を追加します。  
 
 </details>
 
-## Combine filters and search operators
+## フィルターと検索オペレーターの組み合わせ
 
-Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
+フィルターは `nearXXX`、`hybrid`、および `bm25` などの検索オペレーターと一緒に使用できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -354,9 +353,9 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例：
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -366,10 +365,9 @@ The output is like this:
 />
 
 </details>
+## `ContainsAny` フィルター
 
-## `ContainsAny` Filter
-
-The `ContainsAny` operator works on text properties and take an array of values as input. It will match objects where the property **contains any (i.e. one or more)** of the values in the array.
+`ContainsAny` 演算子はテキスト プロパティに対して動作し、入力として値の配列を受け取ります。この演算子は、そのプロパティが配列内の値の **いずれか（1 つ以上）** を含むオブジェクトとマッチします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -428,9 +426,9 @@ The `ContainsAny` operator works on text properties and take an array of values 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -441,9 +439,9 @@ The output is like this:
 
 </details>
 
-## `ContainsAll` Filter
+## `ContainsAll` フィルター
 
-The `ContainsAll` operator works on text properties and take an array of values as input. It will match objects where the property **contains all** of the values in the array.
+`ContainsAll` 演算子はテキスト プロパティに対して動作し、入力として値の配列を受け取ります。この演算子は、そのプロパティが配列内の **すべて** の値を含むオブジェクトとマッチします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -502,9 +500,9 @@ The `ContainsAll` operator works on text properties and take an array of values 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -514,14 +512,13 @@ The output is like this:
 />
 
 </details>
+## `ContainsAny` と `ContainsAll` を用いたバッチ削除
 
-## `ContainsAny` and `ContainsAll` with batch delete
+バッチ削除を行いたい場合は、[オブジェクトの削除](../manage-objects/delete.mdx#containsany--containsall) を参照してください。
 
-If you want to do a batch delete, see [Delete objects](../manage-objects/delete.mdx#containsany--containsall).
+## 部分一致でのテキストフィルター
 
-## Filter text on partial matches
-
-If the object property is a `text`, or `text`-like data type such as object ID, use `Like` to filter on partial text matches.
+オブジェクト プロパティが `text`、またはオブジェクト ID など `text` に類似したデータ型の場合、部分一致でフィルタリングするには `Like` を使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -580,9 +577,9 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力は次のようになります。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -595,23 +592,22 @@ The output is like this:
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-  The `*` wildcard operator matches zero or more characters. The `?` operator matches exactly one character.
+  `*` ワイルドカード演算子は 0 文字以上に一致します。`?` 演算子はちょうど 1 文字に一致します。
   <br/>
 
-  Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters ([read more](../api/graphql/filters.md#wildcard-literal-matches-with-like)).
-
+  現在、`Like` フィルターはワイルドカード文字（`?` と `*`）をリテラル文字として一致させることはできません（[詳細はこちら](../api/graphql/filters.md#wildcard-literal-matches-with-like)）。
 </details>
 
-## Filter using cross-references
+## クロスリファレンスを用いたフィルター
 
 import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
-To filter on properties from a cross-referenced object, add the collection name to the filter.
+クロスリファレンス先オブジェクトのプロパティでフィルターするには、コレクション名をフィルターに追加します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -650,7 +646,7 @@ To filter on properties from a cross-referenced object, add the collection name 
     />
   </TabItem>
 
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START CrossReference"
@@ -670,9 +666,9 @@ To filter on properties from a cross-referenced object, add the collection name 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力は次のようになります。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -682,8 +678,7 @@ The output is like this:
 />
 
 </details>
-
-## By geo-coordinates
+## ジオ座標によるフィルター
 
 import GeoLimitations from '/_includes/geo-limitations.mdx';
 
@@ -743,9 +738,9 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
   </TabItem>
 </Tabs>
 
-## By `DATE` datatype
+## `DATE` データ型によるフィルター
 
-To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) timestamp, or a client library-compatible type such as a Python `datetime` object.
+`DATE` データ型のプロパティでフィルターするには、日付／時刻を RFC 3339 タイムスタンプとして指定するか、 Python `datetime` オブジェクトなどクライアントライブラリで使用できる型を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -774,13 +769,13 @@ To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](
   </TabItem>
 </Tabs>
 
-## Filter by metadata
+## メタデータによるフィルター
 
-Filters also work with metadata properties such as object id, property length, and timestamp.
+フィルターは、オブジェクト ID、プロパティの長さ、タイムスタンプなどのメタデータプロパティにも適用できます。
 
-For the full list, see [API references: Filters](../api/graphql/filters.md#special-cases).
+完全な一覧は、[API リファレンス：Filters](../api/graphql/filters.md#special-cases) を参照してください。
 
-### By object `id`
+### オブジェクト `id` によるフィルター
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -834,10 +829,9 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
     />
   </TabItem>
 </Tabs>
+### オブジェクトの timestamp によるフィルター
 
-### By object timestamp
-
-This filter requires the [property timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+このフィルターを使用するには、[プロパティ timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) を [インデックスに登録](../manage-collections/collection-operations.mdx#set-inverted-index-parameters) しておく必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -893,9 +887,9 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
   </TabItem>
 </Tabs>
 
-### By object property length
+### オブジェクト length プロパティによるフィルター
 
-This filter requires the [property length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+このフィルターを使用するには、[プロパティ length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) を [インデックスに登録](../manage-collections/collection-operations.mdx#set-inverted-index-parameters) しておく必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -951,9 +945,9 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
   </TabItem>
 </Tabs>
 
-### By object null state
+### オブジェクト null 状態によるフィルター
 
-This filter requires the [property null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+このフィルターを使用するには、[プロパティ null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) を [インデックスに登録](../manage-collections/collection-operations.mdx#set-inverted-index-parameters) しておく必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -998,28 +992,28 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
   </TabItem>
 </Tabs>
 
-## Filter considerations
+## フィルターの考慮事項
 
-### Tokenization
+### トークン化
 
 import TokenizationNote from '/_includes/tokenization.mdx'
 
 <TokenizationNote />
 
-### Improve filter performance
+### フィルターのパフォーマンス向上
 
-If you encounter slow filter performance, consider adding a `limit` parameter or additional `where` operators to restrict the size of your data set.
+フィルターの実行速度が遅い場合は、データセットのサイズを制限するために `limit` パラメーターや追加の `where` 演算子の利用をご検討ください。
 
-## List of filter operators
+## フィルター演算子の一覧
 
-For a list of filter operators, see [the reference page](../api/graphql/filters.md#filter-structure).
+フィルター演算子の一覧については、[参照ページ](../api/graphql/filters.md#filter-structure)をご覧ください。
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [API References: Filters](../api/graphql/filters.md)
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [API リファレンス: フィルター](../api/graphql/filters.md)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

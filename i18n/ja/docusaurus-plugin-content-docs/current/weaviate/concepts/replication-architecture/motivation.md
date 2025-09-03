@@ -1,93 +1,93 @@
 ---
-title: Use Cases (Motivation)
+title: ユースケース（動機）
 sidebar_position: 1
-description: "Four key use cases demonstrating the benefits and configuration requirements for Weaviate replication."
+description: "Weaviate のレプリケーションの利点と設定要件を示す 4 つの主要なユースケース。"
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
 
-On this page you will find four use cases which motivate replication for Weaviate. Each of them serves a different purpose and, as a result, may require different configuration.
+このページでは、 Weaviate のレプリケーションを導入する動機となる 4 つのユースケースを紹介します。目的が異なるため、それぞれに必要な設定も変わる場合があります。
 
-## High Availability (Redundancy)
+## 高可用性（冗長化）
 
-High availability of a database means that the database is designed to operate continuously without service interruptions. That means that the database system should be tolerant to failures and errors, which should be handled automatically.
+データベースの高可用性とは、サービスを中断することなく継続的に稼働できるよう設計されていることを意味します。つまり、障害やエラーが発生しても自動的に処理できる耐障害性が求められます。
 
-This is solved by replication, where redundant nodes can handle requests when other nodes fail.
+これはレプリケーションによって解決できます。冗長ノードが存在すれば、ほかのノードが停止してもリクエストを処理できます。
 
-Weaviate considers cluster metadata operations critical, so it treats them differently than it does data operations.
+Weaviate はクラスターメタデータ操作を重要視しており、データ操作とは異なる方法で扱います。
 
-From Weaviate `v1.25`, Weaviate uses the Raft consensus algorithm for cluster metadata replication. This is a leader-based consensus algorithm, where a leader node is responsible for cluster metadata changes. Use of Raft ensures that cluster metadata changes are consistent across the cluster, even in the event of (a minority of) node failures.
+Weaviate `v1.25` からは、クラスターメタデータのレプリケーションに Raft コンセンサスアルゴリズムを採用しています。 Raft はリーダーベースのアルゴリズムで、リーダーノードがクラスターメタデータの変更を担当します。これにより、一部のノードが障害を起こしてもクラスターメタデータの整合性が保たれます。
 
-Prior to Weaviate `v1.25`, Weaviate used a leaderless design with two-phase commit for cluster metadata operations. This required all nodes for a cluster metadata operation such as a collection definition update, or a tenant state update. This meant that one or more nodes being down temporarily prevented cluster metadata operations. Additionally, only one cluster metadata operation could be processed at a time.
+Weaviate `v1.25` 以前は、クラスターメタデータ操作にリーダーレス設計と 2 フェーズコミットを使用していました。そのため、コレクション定義の更新やテナント状態の更新といったクラスターメタデータ操作にはすべてのノードが必要でした。ノードが一時的にダウンするとクラスターメタデータ操作が行えず、また同時に実行できるクラスターメタデータ操作は 1 件のみという制限もありました。
 
-Regarding data operations, read or write queries may still be available in a distributed database structure even when a node goes down, so single points of failure are eliminated. Users' queries will be automatically (unnoticeably) redirected to an available replica node.
+データ操作に関しては、分散データベース構成ではノードがダウンしても読み書きクエリが利用可能な場合があり、単一障害点は排除されます。ユーザーのクエリは利用可能なレプリカノードに自動的（かつ透過的に）ルーティングされます。
 
-Examples of applications where High Availability is desired are emergency services, enterprise IT systems, social media, and website search. Nowadays, users are used to highly available applications, so they expect little to no downtime. For e.g. website search, service (read queries) should not be interrupted if a node goes down. In that case, if writing is temporarily unavailable, it is acceptable and in the worst case scenario the site search will be stale, but still available for read requests.
+高可用性が求められるアプリケーションの例としては、救急サービス、企業向け IT システム、ソーシャルメディア、ウェブサイト検索などが挙げられます。現代のユーザーは高い可用性を当たり前と考えており、ほとんどダウンタイムを許容しません。たとえばウェブサイト検索では、ノードがダウンしてもサービス（読み取りクエリ）が停止してはいけません。書き込みが一時的に利用できなくなっても許容範囲であり、最悪の場合でも検索結果が古くなるだけで読み取りは可能です。
 
-<p align="center"><img src="/img/docs/replication-architecture/replication-high-availability.png" alt="High Availability" width="75%"/></p>
+<p align="center"><img src="/img/docs/replication-architecture/replication-high-availability.png" alt="高可用性" width="75%"/></p>
 
+高可用性は次の設定例で示せます。  
+1. Write `ALL`, Read `ONE`  
+   書き込み時は `ALL` ノードの応答が必要なため高可用性はありません。読み取り時は `ONE` であるため、すべてのノードがダウンしても 1 つ残っていれば読み取り操作が可能です。  
+2. Write `QUORUM`, Read `QUORUM` (n/2+1)  
+   少数のノードがダウンしても過半数が稼働していれば読み取りと書き込みの両方が可能です。  
+3. Write `ONE`, Read `ONE`  
+   もっとも可用性が高い構成です。 1 ノードを除いてすべてがダウンしても読み取り・書き込みが可能です。ただし、この非常に高い可用性は低い整合性保証と表裏一体です。結果整合性のため、アプリケーション側で一時的なデータの古さに対応できる必要があります。
 
-High Availability can be illustrated by the following configuration examples:
-1. Write `ALL`, Read `ONE` - There is no High Availability during writing because `ALL` nodes need to respond to write requests. There is High Availability on read requests: all nodes can go down except one while reading and the read operations are still available.
-2. Write `QUORUM`, Read `QUORUM` (n/2+1) - A minority of nodes could go down, the majority of nodes should be up and running, and you can still do both reading and writing.
-3. Write `ONE`, Read `ONE` - This is the most available configuration. All but one node can go down and both read and write operations are still possible. Note that this super High Availability comes with a cost of Low Consistency guarantees. Due to eventual consistency, your application must be able to deal with temporarily showing out-of-date data.
+## スループット（読み取り）の向上
 
+多数のユーザー向けアプリケーションを構築しており、 Weaviate インスタンスに多くの読み取りリクエストが発生する場合、データベースは高いスループットをサポートする必要があります。スループットは QPS（Queries Per Second）で測定します。データベースにサーバーノードを追加するとスループットも比例して増加します。ノード数が増えるほど、システムが処理できるユーザー（読み取り操作）数も増えます。つまり、 Weaviate をレプリケートするとスループットが向上します。
 
-## Increased (Read) Throughput
-When you have many read requests on your Weaviate instance, for example because you're building an application for many users, the database setup should be able to support high throughput. Throughput is measured in Queries Per Second (QPS). Adding extra server nodes to your database setup means that the throughput scales with it. The more server nodes, the more users (read operations) the system will be able to handle. Thus, replicating your Weaviate instance increases throughput.
+読み取りの整合性レベルを低く（例： `ONE`）設定すると、レプリケーションファクター（サーバーノード数）を増やすことでスループットは線形に向上します。たとえば読み取り整合性が `ONE` で、 1 ノードあたり 10,000 QPS を達成できる場合、 3 レプリカノードの構成では 30,000 QPS が見込めます。
 
-When reading is set to a low consistency level (i.e. `ONE`), then scaling the replication factor (i.e. the number of database server nodes) increases the throughput linearly. For example, when the read consistency level is `ONE`, if one node can reach 10,000 QPS, then a setup with 3 replica nodes can receive 30,000 QPS.
+<p align="center"><img src="/img/docs/replication-architecture/replication-increased-throughput.png" alt="スループットの向上" width="75%"/></p>
 
-<p align="center"><img src="/img/docs/replication-architecture/replication-increased-throughput.png" alt="Increased Throughput" width="75%"/></p>
+## ゼロダウンタイムアップグレード
 
+レプリケーションがない場合、 Weaviate インスタンスを更新するとダウンタイムが発生します。単一ノードは停止・アップデート・再起動を経て再びサービス可能になるまで待つ必要があります。レプリケーションを行うと、ローリングアップデートでアップグレードが実施され、同時に停止するのは最大 1 ノードとなり、ほかのノードは引き続きトラフィックを処理できます。
 
-## Zero Downtime Upgrades
+例として、 Weaviate のバージョンを v1.19 から v1.20 へ更新する場合を考えます。レプリケーションがないと次のようなダウンタイムが発生します。  
+1. ノードがトラフィックを処理中  
+2. ノードを停止、リクエスト不可  
+3. ノードイメージを新しいバージョンへ差し替え  
+4. ノードを再起動  
+5. ノードが準備完了まで待機  
+6. ノードが再びトラフィックを処理
 
-Without replication, there is a window of downtime when you update a Weaviate instance. The single node needs to stop, update and restart before it's ready to serve again. With replication, upgrades are done using a rolling update, in which at most one node is unavailable at the same time while the other nodes can still serve traffic.
+ステップ 2 から 6 までは Weaviate サーバーがリクエストを受け付けられず、ユーザー体験が損なわれます。
 
-As an example, consider you're updating the version of a Weaviate instance from v1.19 to v1.20. Without replication there is a window of downtime:
-1. Node is ready to serve traffic
-2. Node is stopped, no requests can be served
-3. Node image is replaced with newer version
-4. Node is restarted
-5. Node takes time to be ready
-6. Node is ready to serve traffic.
+レプリケーション（例：レプリケーションファクター 3）があれば、 Weaviate のバージョンアップグレードはローリングアップデートで行われ、同時に停止するのは最大 1 ノードです。  
+1. 3 ノードすべてがトラフィックを処理中  
+2. ノード 1 を置き換え、ノード 2 と 3 がトラフィックを処理  
+3. ノード 2 を置き換え、ノード 1 と 3 がトラフィックを処理  
+4. ノード 3 を置き換え、ノード 1 と 2 がトラフィックを処理  
 
-From step 2 until step 6 the Weaviate server cannot receive and respond to any requests. This leads to bad user experience.
+<p align="center"><img src="/img/docs/replication-architecture/replication-zero-downtime.gif" alt="ゼロダウンタイムアップグレード" width="75%"/></p>
 
-With replication (e.g. replication factor of 3), upgrades to the Weaviate version are done using a rolling update. At most one node will be unavailable at the same time, so all other nodes can still serve traffic.
-1. 3 nodes ready to serve traffic
-2. node 1 being replaced, nodes 2,3 can serve traffic
-3. node 2 being replaced, nodes 1,3 can serve traffic
-4. node 3 being replaced, nodes 1,2 can serve traffic
+## 地域的近接性
 
-<p align="center"><img src="/img/docs/replication-architecture/replication-zero-downtime.gif" alt="Zero downtime upgrades" width="75%"/></p>
+ユーザーが異なる地域（例：アイスランドとオーストラリアのような遠距離）にいる場合、データベースサーバーとユーザー間の物理距離のため、すべてのユーザーに低レイテンシを保証するのは困難です。データベースサーバーは 1 か所にしか配置できないため、どこに設置するかという課題が生じます。  
+1. オプション 1 - クラスターを中間地点に配置（例：インド）<br/>
+   アイスランドとインド、オーストラリアとインド間でデータが往復するため、すべてのユーザーが比較的高いレイテンシを被ります。
 
+    <p align="center"><img src="/img/docs/replication-architecture/replication-regional-proximity-1.png" alt="地理的中間地点にクラスターを配置" width="75%"/></p>
 
-## Regional Proximity
+2. オプション 2 - クラスターを一方のユーザーグループに近づける（例：アイスランド）<br/>
+   アイスランドのユーザーは非常に低レイテンシになりますが、オーストラリアのユーザーはデータ伝送距離が長くなるため高レイテンシを経験します。
 
-When users are located in different regional areas (e.g. Iceland and Australia as extreme examples), you cannot ensure low latency for all users due to the physical distance between the database server and the users. You can only place the database server at one geographical location, so the question arises where you put the server:
-1. Option 1 - Put the cluster in the middle (e.g. India).<br/>
-   All users will have relatively high latency, since data needs to travel between Iceland and India, and Australia and India.
+   データクラスタを 2 つの地理的ロケーションにレプリケートできる場合、別の選択肢が生まれます。これを Multi-Datacenter（Multi-DC）レプリケーションと呼びます。  
+3. オプション 3 - アイスランドとオーストラリアの双方にサーバークラスターを持つ Multi-DC レプリケーション<br/>
+   アイスランドとオーストラリアのユーザーはそれぞれローカルクラスターからサービスを受けるため、双方が低レイテンシを享受できます。
 
-    <p align="center"><img src="/img/docs/replication-architecture/replication-regional-proximity-1.png" alt="Cluster in the geographical middle" width="75%"/></p>
+    <p align="center"><img src="/img/docs/replication-architecture/replication-regional-proximity-3.png" alt="Multi-DC レプリケーション" width="75%"/></p>
 
-2. Option 2 - Put the cluster close to one user group (e.g. Iceland)<br/>
-   Users from Iceland have very low latency while users from Australia experience relatively high latency since data needs to travel a long distance.
-
-   Another option arises when you have the option to replicate your data cluster to two different geographical locations. This is called Multi-Datacenter (Multi-DC) replication.
-3. Option 3 - Multi-DC replication with server clusters in both Iceland and Australia.<br/>
-   Users from Iceland and Australia now both experience low latency, because each user group is served from local clusters.
-
-    <p align="center"><img src="/img/docs/replication-architecture/replication-regional-proximity-3.png" alt="Replication multi-dc" width="75%"/></p>
-
-Multi-DC replication also comes with the additional benefit that data is redundant on more physical locations, which means that in the rare case of an entire datacenter going down, data can still be served from another location.
+Multi-DC レプリケーションには、データが複数の物理ロケーションに冗長化されるという追加メリットもあります。非常にまれですがデータセンター全体がダウンしても、別のロケーションからデータを提供できます。
 
 :::note
-Note, Regional Proximity depends on the Multi-Datacenter feature of replication, which you can [vote for here](https://github.com/weaviate/weaviate/issues/2436).
+Regional Proximity はレプリケーションの Multi-Datacenter 機能に依存します。関心のある方は[こちら](https://github.com/weaviate/weaviate/issues/2436)で投票できます。
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

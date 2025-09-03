@@ -1,172 +1,171 @@
 ---
-title: Compression
+title: 圧縮
 sidebar_position: 30
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-Weaviate stores vector embeddings, also called "embeddings" or simply "vectors." Each element of a vector embedding is a dimension. The values are commonly stored as 32 bit floats. A single vector with 1536 dimensions uses about 6 KB of storage.
+Weaviate はベクトル埋め込み（「埋め込み」または単に「 ベクトル 」とも呼ばれます）を保存します。 ベクトル 埋め込みの各要素は次元です。値は一般的に 32 bit フロートとして保存されます。1536 次元の単一 ベクトル は約 6 KB のストレージを使用します。
 
-When collections have millions of objects, the total storage size for the vectors can be very large. The vectors are not just stored, they are indexed as well. This index can also grow very large. The resource costs to host the vectors and the index can be expensive.
+コレクションに数百万件のオブジェクトがある場合、 ベクトル 全体のストレージサイズは非常に大きくなります。 ベクトル は保存されるだけでなく、インデックス化も行われます。このインデックスも非常に大きくなる可能性があります。 ベクトル とインデックスをホストするためのリソースコストは高額になる場合があります。
 
-Weaviate creates indexes to search the vector space for your collection. The default vector index is a [Hierarchical Navigable Small World (HNSW)](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) index. This data structure includes the vectors as well as an index graph. HNSW indexes allow fast vector searches while maintaining excellent recall, but they can be expensive to use because they are stored in RAM memory.
+Weaviate はコレクションの ベクトル 空間を検索するためのインデックスを作成します。デフォルトの ベクトル インデックスは [Hierarchical Navigable Small World (HNSW)](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) インデックスです。このデータ構造には ベクトル とインデックスグラフが含まれます。HNSW インデックスは高速な ベクトル 検索と優れたリコールを維持しますが、RAM メモリに保存されるためコストが高くなる場合があります。
 
-Updating the default index configuration settings can result in significant cost savings and even performance improvements. In many cases, you can use compression or a different index type to change the way Weaviate stores and searches your data, and still maintain high levels of recall.
+デフォルトのインデックス設定を変更すると、コストを大幅に削減できるだけでなく、パフォーマンスが向上することもあります。多くの場合、圧縮や別のインデックスタイプを使用して、データの保存と検索方法を変更しながら、高いリコールを維持できます。
 
-This page discusses compression algorithms. For more on indexes, see [Vector indexing](/weaviate/concepts/vector-index).
+本ページでは圧縮アルゴリズムについて説明します。インデックスの詳細は [Vector indexing](/weaviate/concepts/vector-index) を参照してください。
 
-## Compression algorithms
+## 圧縮アルゴリズム
 
-These compression algorithms are available:
+利用可能な圧縮アルゴリズムは以下のとおりです。
 
 import CompressionAlgorithms from '/_includes/starter-guides/compression-types.mdx';
 
 <CompressionAlgorithms />
 
-When you compress vectors, the quality of your search results depends heavily on the characteristics of the uncompressed vectors. The embedding model produces these vectors. Therefore the embedding model is key to retrieval performance of the compressed vectors. Before moving to production, experiment with different compression settings and embedding models and review the model documentation to find the combination that works best with your data set.
+ ベクトル を圧縮すると、検索結果の品質は非圧縮 ベクトル の特性に大きく依存します。埋め込みモデルがこれらの ベクトル を生成するため、埋め込みモデルは圧縮 ベクトル の検索性能の鍵となります。本番環境に移行する前に、さまざまな圧縮設定と埋め込みモデルを試し、モデルのドキュメントを確認して、データセットに最適な組み合わせを見つけてください。
 
-## Compression considerations
+## 圧縮の検討事項
 
-Before choosing a compression algorithm, consider the [underlying vector index type](#underlying-vector-index). The index type determines which compression algorithms you can use. Some compression algorithms aren't available with some index types.
+圧縮アルゴリズムを選択する前に、[基盤となる ベクトル インデックスタイプ](#underlying-vector-index) を考慮してください。インデックスタイプによって使用できる圧縮アルゴリズムが決まります。一部の圧縮アルゴリズムは特定のインデックスタイプでは利用できません。
 
-The vectorizer that you use to create your object vectors may also limit your compression choices. For example, some embedding models are tuned specifically for BQ compression.
+オブジェクト ベクトル の作成に使用する ベクトライザー によっても、選択できる圧縮方式が制限される場合があります。たとえば、特定の埋め込みモデルは BQ 圧縮専用に調整されています。
 
-Performance and cost are also important considerations. See [Cost, recall, and speed](#cost-recall-and-speed) for details.
+パフォーマンスとコストも重要な検討事項です。詳細は [コスト、リコール、速度](#cost-recall-and-speed) を参照してください。
 
-### Underlying vector index
+### 基盤となる ベクトル インデックス
 
-This table shows the compression algorithms that are available for each index type.
+次の表は、各インデックスタイプで利用可能な圧縮アルゴリズムを示しています。
 
-| Compression type | HNSW index | Flat index | Dynamic index |
+| 圧縮タイプ | HNSW インデックス | Flat インデックス | Dynamic インデックス |
 | :- | :- | :- | :- |
 | PQ | Yes | No | Yes |
 | SQ | Yes | No | Yes |
 | RQ | Yes | No | Yes |
 | BQ | Yes | Yes | Yes |
 
-The [dynamic index](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) is new in v1.25. This type of index is a [flat index](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) until a collection reaches a threshold size. When the collection grows larger than the threshold size, the default is 10,000 objects, the collection is automatically reindexed and converted to an HNSW index.
+[Dynamic インデックス](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) は v1.25 で新しく追加されました。このインデックスは、コレクションがしきい値サイズに達するまでは [Flat インデックス](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) です。コレクションがデフォルト値の 10,000 オブジェクトを超えると、自動的に再インデックスされ HNSW インデックスに変換されます。
 
-### Cost, recall and speed
+### コスト、リコール、速度
 
-Performance includes speed and recall. In real world systems, these factors have to be balanced against cost. As you develop familiarity with your application, you can tune Weaviate to match your project and budget requirements.
+パフォーマンスには速度とリコールが含まれます。実際のシステムでは、これらの要素をコストとバランスさせる必要があります。アプリケーションに慣れてきたら、プロジェクトと予算に合わせて Weaviate をチューニングできます。
 
-#### Cost
+#### コスト
 
-These compression algorithms have different functional tradeoffs, but they all help to control costs the same way. They reduce the size of the vectors so the indexes are smaller. Smaller indexes need less resources so you save money.
+これらの圧縮アルゴリズムには機能面でのトレードオフがありますが、コスト削減の仕組みは共通しています。 ベクトル のサイズを小さくしてインデックスを縮小します。インデックスが小さければ必要なリソースが少なくなり、コストを削減できます。
 
-Compressed indexes use less RAM when they are loaded into memory, however they also use more disk space than uncompressed vectors. Weaviate stores the uncompressed vector and the compressed vector index. This means increased disk storage costs. However, since the cost of RAM is orders of magnitude higher than the cost of disk, the overall cost to use a compressed index is much lower than the cost of using an uncompressed index.
+圧縮インデックスはメモリにロードした際、非圧縮 ベクトル よりも少ない RAM を使用します。ただし、ディスク上では非圧縮 ベクトル よりも多くの容量を使用します。Weaviate は非圧縮 ベクトル と圧縮 ベクトル インデックスの両方を保存するため、ディスクストレージコストは増加します。しかし RAM のコストはディスクの何桁も高いため、圧縮インデックスを使用した場合の総コストは非圧縮インデックスよりはるかに低くなります。
 
-The cost savings are most visible with in-memory indexes such as HNSW. More RAM reduction means less cost.
+コスト削減の効果は、HNSW のようなインメモリインデックスで最も顕著です。RAM が多く削減されるほどコストも低下します。
 
-- PQ compressed vectors typically use 85% less memory than uncompressed vectors.
-- SQ compressed vectors use 75% less memory than uncompressed vectors.
-- RQ compressed vectors typically use 75% less memory than uncompressed vectors.
-- BQ compressed vectors use 97% less memory than uncompressed vectors.
+- PQ 圧縮 ベクトル は通常、非圧縮 ベクトル と比べて RAM を 85% 削減します。
+- SQ 圧縮 ベクトル は非圧縮 ベクトル と比べて RAM を 75% 削減します。
+- RQ 圧縮 ベクトル は通常、非圧縮 ベクトル と比べて RAM を 75% 削減します。
+- BQ 圧縮 ベクトル は非圧縮 ベクトル と比べて RAM を 97% 削減します。
 
-An HNSW index comprises a connection graph as well as the vectors. Quantization methods reduce the size of the vectors, but does not affect the size of the graph. As a result the overall reduction in memory usage is less than the reduction in vector size, but still significant.
+HNSW インデックスは接続グラフと ベクトル で構成されます。量子化方式は ベクトル のサイズを減らしますが、グラフのサイズには影響しません。そのため、メモリ使用量の総削減率は ベクトル の削減率より小さくなりますが、それでも大幅に削減されます。
 
-#### Recall
+#### リコール
 
-Recall measures how well an algorithm finds true positive matches in a data set.
+リコールは、アルゴリズムがデータセット内の真陽性をどれだけ見つけられるかを測定します。
 
-A compressed vector has less information than the corresponding uncompressed vector. An uncompressed vector that would normally match a search query might be missed if the target information is missing in the compressed vector. That missed match lowers recall.
+圧縮 ベクトル は対応する非圧縮 ベクトル より情報量が少なくなります。非圧縮 ベクトル では検索クエリにマッチするはずの対象が、圧縮 ベクトル では情報が欠落しているため見逃される可能性があります。失われたマッチはリコールを低下させます。
 
-Typical recall rates:
-- PQ: Varies based on configuration
-- SQ: 95-97% recall
-- RQ: 98-99% recall
-- BQ: Varies significantly based on data and model characteristics
+一般的なリコール率:
+- PQ: 設定により変動
+- SQ: 95-97% のリコール
+- RQ: 98-99% のリコール
+- BQ: データとモデル特性により大きく変動
 
-To improve recall with compressed vectors, Weaviate over-fetches a list of candidate vectors during a search. For each item on the candidate list, Weaviate fetches the corresponding uncompressed vector. To determine the final ranking, Weaviate calculates the distances from the uncompressed vectors to the query vector.
+圧縮 ベクトル でリコールを改善するため、Weaviate は検索時に候補 ベクトル を過剰に取得（オーバーフェッチ）します。候補リストの各項目に対して、対応する非圧縮 ベクトル を取得します。最終的なランク付けを決定するため、Weaviate は非圧縮 ベクトル とクエリ ベクトル の距離を計算します。
 
 import RescoringIllustration from '/docs/weaviate/starter-guides/managing-resources/img/rescore-uncompressed-vectors.png';
 
 <img src={RescoringIllustration} width="100%" alt="Rescoring illustration"/>
 
-The rescoring process is slower than an in-memory search, but since Weaviate only has to search a limited number of uncompressed vectors, the search is still very fast. Most importantly, rescoring with the uncompressed vectors greatly improves recall.
+リスコアリングはインメモリ検索よりも遅くなりますが、Weaviate は限られた数の非圧縮 ベクトル だけを検索すればよいので、検索自体は非常に高速です。最も重要なのは、非圧縮 ベクトル でリスコアリングすることでリコールが大幅に向上する点です。
 
-The search algorithm uses over-fetching and rescoring so that you get the benefits of compression without losing the precision of an uncompressed vector search.
+検索アルゴリズムはオーバーフェッチとリスコアリングを使用することで、圧縮による利点を享受しながら、非圧縮 ベクトル 検索の精度を失いません。
 
-#### Query speed
+#### クエリ速度
 
-Each compression algorithm has its own characteristics with regard to speed.
+各圧縮アルゴリズムには速度に関する特性があります。
 
-- PQ indexes have response rates that approach the response rates of uncompressed indexes when recall reaches 97 percent and higher. At those levels of recall, the [speed profile](https://weaviate.io/blog/pq-rescoring#qps-vs-recall-experiments) for PQ compressed indexes matches the profile for uncompressed indexes.
+- PQ インデックスはリコールが 97% 以上になると、非圧縮インデックスの応答速度に近づきます。そのリコールレベルでは、PQ 圧縮インデックスの [速度プロファイル](https://weaviate.io/blog/pq-rescoring#qps-vs-recall-experiments) は非圧縮インデックスと同等です。
 
-- BQ uses fast, bitwise calculations. BQ's bitwise calculations are extremely efficient. Efficient calculations are important because the flat index relies on brute-force search so it is calculation intensive. Searches of BQ compressed vectors can be as much as [10 to 20 times as fast](https://weaviate.io/blog/binary-quantization/#-performance-improvements-with-bq) as similar searches of uncompressed vectors and with equivalent rates of recall. BQ is sensitive to the underlying data. If you use a flat index, evaluate BQ compression to verify the performance improvements with your data set.
+- BQ は高速なビット演算を使用します。BQ のビット演算は非常に効率的です。効率的な計算はブルートフォース検索に依存する Flat インデックスでは重要で、計算量が多くなります。BQ 圧縮 ベクトル の検索は、同等の非圧縮 ベクトル の検索と比べて [10〜20 倍高速](https://weaviate.io/blog/binary-quantization/#-performance-improvements-with-bq) で、リコール率も同等です。BQ は基盤データに敏感なので、Flat インデックスを使用する場合はデータセットで BQ 圧縮を評価して性能向上を確認してください。
 
-- SQ significantly improves search speeds. It is faster than PQ, perhaps 3 to 4 times as fast as searching uncompressed vectors. SQ has a higher dimensional resolution than BQ that helps recall. Look for an upcoming blog post that discusses the tradeoffs with SQ compression.
+- SQ は検索速度を大幅に向上させます。PQ より高速で、非圧縮 ベクトル 検索の 3〜4 倍程度高速です。SQ は BQ より高い次元分解能を持つためリコールを助けます。SQ 圧縮のトレードオフについては近日公開予定のブログ記事をご覧ください。
 
-- RQ provides the fastest query performance among 8-bit quantization methods. RQ uses SIMD-optimized distance computations that are typically 2-3x faster than uncompressed vectors. RQ can be faster than SQ while providing better recall. For maximum performance, RQ can run without rescoring with minimal impact on recall.
+- RQ は 8-bit 量子化方式の中で最速のクエリ性能を提供します。RQ は SIMD 最適化された距離計算を使用し、通常は非圧縮 ベクトル より 2〜3 倍高速です。RQ は SQ より高速で、リコールも向上する場合があります。最大のパフォーマンスを得るために、リコールへの影響を最小限に抑えつつリスコアリングなしで実行することも可能です。
 
-SQ and BQ both have optional vector caches. Use these configurable caches to load frequently used, uncompressed vectors into memory to improve overall search times.
+SQ と BQ にはオプションの ベクトル キャッシュがあります。構成可能なキャッシュを使用して使用頻度の高い非圧縮 ベクトル をメモリにロードし、検索時間を改善できます。
 
-#### Import speed
+#### インポート速度
 
-Importing and compressing vectors takes slightly longer than importing uncompressed vectors, but this is a one time cost. In contrast, loading a compressed index into memory is faster since there is less data to load. This means restarts are faster.
+ ベクトル をインポートして圧縮するには、非圧縮 ベクトル をインポートするよりわずかに時間がかかりますが、これは一度限りのコストです。対照的に、圧縮インデックスをメモリにロードする方がデータ量が少ないため速くなります。つまり再起動が速くなります。
 
-Starting in v1.22, Weaviate has an optional, [asynchronous indexing](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing) feature which effectively speeds up the import process. Consider enabling asynchronous indexing to improve imports.
+v1.22 以降、Weaviate にはオプションで [非同期インデックス作成](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing) 機能があり、インポートプロセスを実質的に高速化します。インポートを改善するために非同期インデックス作成を有効にすることを検討してください。
 
-### Activate compression
+### 圧縮を有効化する
 
-- BQ, SQ, and RQ have to be enabled when you create the collection.
+- BQ、SQ、RQ はコレクション作成時に有効化する必要があります。
 
-- PQ and SQ both require training data before they begin to compress data.
+- PQ と SQ はどちらも圧縮を開始する前にトレーニングデータが必要です。
 
-  - PQ's training step defines centroids for each segment.
-  - SQ's training step determines the minimum and maximum values for bucket boundaries.
-  - PQ and SQ both begin to compress data after you have imported a large enough training set and the training step is complete.
+  - PQ のトレーニングステップでは各セグメントのセントロイドを定義します。
+  - SQ のトレーニングステップではバケット境界の最小値と最大値を決定します。
+  - PQ と SQ は十分なトレーニングセットをインポートし、トレーニングが完了した後に圧縮を開始します。
 
-- RQ requires no training and begins compressing data immediately upon vector insertion. This makes RQ ideal for applications that need immediate compression without waiting for a training phase.
+- RQ はトレーニングを必要とせず、 ベクトル 挿入後すぐに圧縮を開始します。このため、トレーニングフェーズを待たずに即時圧縮が必要なアプリケーションに適しています。
 
-- If you have async indexing and [AutoPQ enabled](/weaviate/configuration/compression/pq-compression#configure-autopq), PQ compression can be enabled anytime. If AutoPQ is not enabled, you should only enable PQ after you have imported enough objects to [train the algorithm](/weaviate/configuration/compression/pq-compression#manually-configure-pq).
+- 非同期インデックス作成と [AutoPQ を有効化](/weaviate/configuration/compression/pq-compression#configure-autopq) している場合、PQ 圧縮はいつでも有効にできます。AutoPQ が有効でない場合は、[アルゴリズムをトレーニング](/weaviate/configuration/compression/pq-compression#manually-configure-pq) できる十分なオブジェクトをインポートした後にのみ PQ を有効にするべきです。
 
-- BQ doesn't require a training step.
+- BQ はトレーニングステップを必要としません。
+## 推奨事項
 
-## Recommendations
+ほとんどのアプリケーションは圧縮の恩恵を受けます。コスト削減効果は大きく、たとえば [Weaviate Cloud](https://weaviate.io/pricing) では、圧縮コレクションは非圧縮コレクションよりも 80% 以上安価になる場合があります。
 
-Most applications benefit from compression. The cost savings are significant. In [Weaviate Cloud](https://weaviate.io/pricing), for example, compressed collections can be more than 80% cheaper than uncompressed collections.
+- シンプルさ・パフォーマンス・リコールのバランスを重視する HNSW インデックス利用者には、**RQ 圧縮** を検討してください。RQ は 4 倍の圧縮率で 98–99% のリコールを実現し、設定やトレーニングは不要です。OpenAI などのプロバイダーから得た標準的な埋め込みに最適です。
 
-- For most users with HNSW indexes who want the best combination of simplicity, performance, and recall, **consider RQ compression**. RQ provides 4x compression with 98-99% recall and requires no configuration or training. It's ideal for standard use cases with embeddings from providers like OpenAI.
+- フラットインデックスを使用する小規模コレクションの場合は、BQ インデックスを検討してください。BQ インデックスは非圧縮の同等構成に比べて 32 倍小さく、かつ高速です。
 
-- If you have a small collection that uses a flat index, consider a BQ index. The BQ index is 32 times smaller and much faster than the uncompressed equivalent.
+- 大規模なデータセットや専門的な検索ニーズがある場合は、PQ 圧縮を検討してください。PQ 圧縮は高度に設定可能ですが、SQ・RQ・BQ よりもチューニングには専門知識が必要です。
 
-- If you have a very large data set or specialized search needs, consider PQ compression. PQ compression is very configurable, but it requires more expertise to tune well than SQ, RQ, or BQ.
+成長が見込まれる小規模コレクションには、ダイナミックインデックスの利用を検討してください。ダイナミックインデックスタイプを設定するだけでなく、インデックスがフラットの間は BQ 圧縮を使用し、コレクションが大きくなってフラットインデックスから HNSW インデックスへ移行するタイミングで RQ 圧縮を使用するよう設定します。
 
-For collections that are small, but that are expected to grow, consider a dynamic index. In addition to setting the dynamic index type, configure the collection to use BQ compression while the index is flat and RQ compression when the collection grows large enough to move from a flat index to an HNSW index.
+## 関連ページ
 
-## Related pages
+詳細については、以下のドキュメントページとブログ記事をご覧ください。
 
-For more information, see these documentation pages and blog posts.
+### ドキュメントページ
 
-### Documentation pages
+圧縮を有効にする手順は次のページをご参照ください。
 
-To enable compression, follow the steps on these pages:
+- [直積量子化 (PQ)](../../configuration/compression/pq-compression.md)
+- [スカラー量子化 (SQ)](../../configuration/compression/sq-compression.md)
+- [回転量子化 (RQ)](../../configuration/compression/rq-compression.md)
+- [バイナリ量子化 (BQ)](../../configuration/compression/bq-compression.md)
 
-- [Product quantization (PQ)](../../configuration/compression/pq-compression.md)
-- [Scalar quantization (SQ)](../../configuration/compression/sq-compression.md)
-- [Rotational quantization (RQ)](../../configuration/compression/rq-compression.md)
-- [Binary quantization (BQ)](../../configuration/compression/bq-compression.md)
+さらに詳しいドキュメントは以下をご覧ください。
 
-For more documentation details, see:
+- [圧縮に関する議論](/weaviate/concepts/vector-quantization)
 
-- [Compression discussion](/weaviate/concepts/vector-quantization)
+### ブログ記事
 
-### Blog posts
+詳細な解説は以下をご覧ください。
 
-For in-depth discussions, see:
+- [PQ とメモリ削減](https://weaviate.io/blog/pq-rescoring)
+- [BQ とメモリ削減](https://weaviate.io/blog/binary-quantization)
+- [PQ と HNSW の解説](https://weaviate.io/blog/ann-algorithms-hnsw-pq)
 
-- [PQ and memory reduction](https://weaviate.io/blog/pq-rescoring)
-- [BQ and memory reduction](https://weaviate.io/blog/binary-quantization)
-- [PQ and HNSW explained](https://weaviate.io/blog/ann-algorithms-hnsw-pq)
+### 料金計算機
 
-### Pricing calculator
+圧縮および非圧縮 ベクトル の Weaviate Cloud 料金を確認するには、以下を参照してください。
 
-To review Weaviate Cloud pricing for compressed and uncompressed vectors, see:
+[Weaviate Cloud 料金計算機](https://weaviate.io/pricing)
 
-[Weaviate cloud pricing calculator](https://weaviate.io/pricing)
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

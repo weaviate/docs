@@ -1,5 +1,5 @@
 ---
-title: Multiple target vectors
+title: 複数ターゲット ベクトル
 sidebar_position: 50
 image: og/docs/howto.jpg
 # tags: ['how to', 'hybrid search']
@@ -12,32 +12,32 @@ import PyCodeV4 from '!!raw-loader!/_includes/code/howto/search.multi-target-v4.
 import TSCodeV3 from '!!raw-loader!/_includes/code/howto/search.multi-target-v3.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/search.multi-target.go';
 
-:::info Added in `v1.26`
+:::info `v1.26` で追加
 :::
 
-In a multi-target vector search, Weaviate searches multiple target vector spaces concurrently. These results are combined using a ["join strategy"](#available-join-strategies) to produce a single set of search results.
+マルチターゲット ベクトル検索では、Weaviate は複数のターゲット ベクトル空間を同時に検索します。これらの結果は、単一の検索結果セットを生成するために["結合戦略"](#available-join-strategies)で統合されます。
 
-There are multiple ways to specify the target vectors and query vectors, such as:
+ターゲット ベクトルおよびクエリ ベクトルを指定する方法には、次のようなものがあります。
 
-- [Specify target vector names only](#specify-target-vector-names-only)
-- [Specify query vectors](#specify-query-vectors)
-- [Specify target vector names and join strategy](#specify-target-vector-names-and-join-strategy)
-- [Weight raw vector distances](#weight-raw-vector-distances)
-- [Weight normalized vector distances](#weight-normalized-vector-distances)
+- [ターゲット ベクトル名のみを指定](#specify-target-vector-names-only)
+- [クエリ ベクトルを指定](#specify-query-vectors)
+- [ターゲット ベクトル名と結合戦略を指定](#specify-target-vector-names-and-join-strategy)
+- [生のベクトル距離に重み付け](#weight-raw-vector-distances)
+- [正規化ベクトル距離に重み付け](#weight-normalized-vector-distances)
 
 <!-- TODO: Move most of the description/prose to a new "vector.md" page under concepts/search. -->
 
-### Available join strategies.
+### 利用可能な結合戦略
 
-- **minimum** (*default*) Use the minimum of all vector distances.
-- **sum** Use the sum of the vector distances.
-- **average** Use the average of the vector distances.
-- **manual weights** Use the sum of weighted distances, where the weight is provided for each target vector.
-- **relative score** Use the sum of weighted normalized distances, where the weight is provided for each target vector.
+- **minimum** (*デフォルト*) すべてのベクトル距離の最小値を使用します。
+- **sum** ベクトル距離の合計を使用します。
+- **average** ベクトル距離の平均を使用します。
+- **manual weights** 各ターゲット ベクトルに対して指定された重みを使い、加重距離の合計を使用します。
+- **relative score** 各ターゲット ベクトルに対して指定された重みを使い、正規化された距離の加重合計を使用します。
 
-## Specify target vector names only
+## ターゲット ベクトル名のみを指定
 
-As a minimum, specify the target vector names as an array of named vectors. This will use the [default join strategy](#available-join-strategies).
+最低限、名前付きベクトルの配列としてターゲット ベクトル名を指定します。これにより[デフォルトの結合戦略](#available-join-strategies)が使用されます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -75,9 +75,9 @@ As a minimum, specify the target vector names as an array of named vectors. This
 </TabItem>
 </Tabs>
 
-## Specify query vectors
+## クエリ ベクトルを指定
 
-You can specify multiple query vectors in the search query with a `nearVector` search. This allows use of a different query vector for each corresponding target vector.
+`nearVector` 検索に複数のクエリ ベクトルを指定できます。これにより、それぞれのターゲット ベクトルに対して異なるクエリ ベクトルを使用できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -98,20 +98,20 @@ You can specify multiple query vectors in the search query with a `nearVector` s
 </TabItem>
 </Tabs>
 
-You can also specify the query vectors as an array of vectors. The array will be parsed according to the order of the specified target vectors.
+また、クエリ ベクトルをベクトルの配列として指定することもできます。配列は、指定されたターゲット ベクトルの順序に従って解釈されます。
 
-### Specify array(s) of query vectors
+### クエリ ベクトル配列の指定
 
-:::info Added in `v1.27`
+:::info `v1.27` で追加
 :::
 
-You can also specify the same target vector multiple times with different query vectors. In other words, you can use multiple query vectors for the same target vector.
+同じターゲット ベクトルを異なるクエリ ベクトルで複数回指定することも可能です。つまり、同一のターゲット ベクトルに対して複数のクエリ ベクトルを使用できます。
 
-The query vectors in this case are specified as an array of vectors. There are multiple ways to specify the target vectors in this case:
+この場合、クエリ ベクトルはベクトルの配列として指定します。ターゲット ベクトルの指定方法はいくつかあります。
 
-#### Target vector names only
+#### ターゲット ベクトル名のみ
 
-The target vectors can be specified as an array as shown here.
+ターゲット ベクトルを次のように配列で指定できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -132,10 +132,9 @@ The target vectors can be specified as an array as shown here.
 />
 </TabItem>
 </Tabs>
+#### ターゲット ベクトルと重み
 
-#### Target vectors and weights
-
-If you want to provide weights for each target vector you can do it as shown here.
+各ターゲット ベクトルに重みを指定したい場合は、以下の例をご参照ください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -157,11 +156,11 @@ If you want to provide weights for each target vector you can do it as shown her
 </TabItem>
 </Tabs>
 
-## Specify target vector names and join strategy
+## ターゲット ベクトル名と結合戦略の指定
 
-Specify target vectors as an array of named vectors and how to join the result sets.
+ターゲット ベクトルを名前付き配列で指定し、結果セットの結合方法を設定します。
 
-The `sum`, `average`, `minimum` join strategies only require the name of the strategy and the target vectors.
+`sum`、`average`、`minimum` の各結合戦略では、戦略名とターゲット ベクトルのみを指定すれば十分です。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -182,14 +181,14 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
 </TabItem>
 </Tabs>
 
-## Weight raw vector distances
+## 生のベクトル距離に重み付け
 
-Search by sums of weighted, **raw** distances to each target vector.
+各ターゲット ベクトルとの **生** 距離に重みを掛け、その合計で検索します。
 
 <details>
-  <summary>The weighting in detail</summary>
+  <summary>重み付けの詳細</summary>
 
-Each distance between the query vector and the target vector is multiplied by the specified weight, then the resulting weighted distances are summed for each object to produce a combined distance. The search results are sorted by this combined distance.
+クエリ ベクトルとターゲット ベクトル間の各距離に指定した重みを掛け、その結果を合計してオブジェクトごとの合算距離を算出します。検索結果はこの合算距離でソートされます。
 
 </details>
 
@@ -212,16 +211,16 @@ Each distance between the query vector and the target vector is multiplied by th
 </TabItem>
 </Tabs>
 
-## Weight normalized vector distances
+## 正規化したベクトル距離に重み付け
 
-Search by sums of weighted, **normalized** distances to each target vector.
+各ターゲット ベクトルとの **正規化** 距離に重みを掛け、その合計で検索します。
 
 <details>
-  <summary>The weighting in detail</summary>
+  <summary>重み付けの詳細</summary>
 
-Each distance is normalized against other results for that target vector. Each normalized distance between the query vector and the target vector is multiplied by the specified weight. The resulting weighted distances are summed for each object to produce a combined distance. The search results are sorted by this combined distance.
+距離をターゲット ベクトルごとの他結果に対して正規化した後、クエリ ベクトルとの正規化距離に指定した重みを掛けます。得られた重み付き距離を合計してオブジェクトごとの合算距離を算出し、検索結果はこの合算距離でソートされます。
 
-For a more detailed explanation of how scores are normalized, see the blog post on [hybrid relative score fusion](https://weaviate.io/blog/hybrid-search-fusion-algorithms#relative-score-fusion)
+スコアの正規化方法を詳しく知りたい方は、[ハイブリッド相対スコアフュージョン](https://weaviate.io/blog/hybrid-search-fusion-algorithms#relative-score-fusion) に関するブログ記事をご覧ください。
 </details>
 
 <Tabs groupId="languages">
@@ -243,11 +242,11 @@ For a more detailed explanation of how scores are normalized, see the blog post 
 </TabItem>
 </Tabs>
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- [Weaviate への接続](/weaviate/connections/index.mdx)
 
-## Questions and feedback
+## ご質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

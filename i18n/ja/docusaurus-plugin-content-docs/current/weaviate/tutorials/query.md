@@ -1,6 +1,6 @@
 ---
-title: Queries in detail
-description: Learn effective query techniques in Weaviate to retrieve accurate results.
+title: クエリの詳細
+description: Weaviate で正確な結果を取得するための効果的なクエリ手法を学びます。
 sidebar_position: 50
 image: og/docs/tutorials.jpg
 # tags: ['basics']
@@ -10,67 +10,67 @@ import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 <UpdateInProgressNote />
 
-In this section, we will explore different queries that you can perform with Weaviate. Here, we will expand on the `nearText` queries that you may have seen in the [Quickstart tutorial](docs/weaviate/quickstart/index.md) to show you different query types, filters and metrics that can be used.
+このセクションでは、 Weaviate で実行できるさまざまなクエリを紹介します。ここでは、 [クイックスタート チュートリアル](docs/weaviate/quickstart/index.md) でご覧いただいた `nearText` クエリを拡張し、異なるクエリタイプ、フィルター、メトリクスの使い方を説明します。
 
-By the end of this section, you will have performed vector and scalar searches separately as well as in combination to retrieve individual objects and aggregations.
+このセクションを終える頃には、ベクトル検索とスカラー検索を別々に、そして組み合わせて実行し、個々のオブジェクトとアグリゲーションを取得できるようになります。
 
-## Prerequisites
+## 前提条件
 
-We recommend you complete the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first.
+まずは [クイックスタート チュートリアル](docs/weaviate/quickstart/index.md) を終えておくことをお勧めします。
 
-Before you start this tutorial, you should follow the steps in the Quickstart to have:
+クイックスタートの手順を実施して、以下を準備してください。
 
-- An instance of Weaviate running (e.g. on the [Weaviate Cloud](https://console.weaviate.cloud)),
-- An API key for your preferred inference API, such as OpenAI, Cohere, or Hugging Face,
-- Installed your preferred Weaviate client library,
-- Set up a `Question` class in your schema, and
-- Imported the `jeopardy_tiny.json` data.
+- Weaviate のインスタンス（例: [Weaviate Cloud](https://console.weaviate.cloud)）を起動済み
+- OpenAI、 Cohere、 Hugging Face など、お好みの推論 API 用の API キー
+- ご利用のプログラミング言語向け Weaviate クライアントライブラリをインストール
+- スキーマに `Question` クラスを作成
+- `jeopardy_tiny.json` データをインポート済み
 
-## Object retrieval with `Get`
+## `Get` を使用したオブジェクト取得
 
 :::tip GraphQL
-Weaviate's queries are built using GraphQL. If this is new to you, don't worry. We will take it step-by-step and build up from the basics. Also, in many cases, the GraphQL syntax is abstracted by the client.
+Weaviate のクエリは GraphQL を使用して構築されています。初めて触れる方もご安心ください。基本から段階的に解説します。また、多くの場合クライアントライブラリが GraphQL 構文を抽象化してくれます。
 
-You can query Weaviate using one or a combination of a semantic (i.e. vector) search and a lexical (i.e. scalar) search. As you've seen, a vector search allows for similarity-based searches, while scalar searches allow filtering by exact matches.
+Weaviate では、セマンティック（ベクトル）検索とレキシカル（スカラー）検索を単独または組み合わせて実行できます。ベクトル検索は類似度検索を、スカラー検索は完全一致によるフィルタリングを提供します。
 :::
 
-First, we will start by making queries to Weaviate to retrieve **Question** objects that we imported earlier.
+まずは、インポート済みの **Question** オブジェクトを取得するクエリを実行しましょう。
 
-The Weaviate function for retrieving objects is `Get`.
+Weaviate でオブジェクトを取得する関数は `Get` です。
 
-This might be familiar for some of you. If you have completed our [Imports in detail tutorial](./import.md), you may have performed a `Get` query to confirm that the data import was successful. Here is the same code as a reminder:
+この操作に見覚えがある方もいるかもしれません。 [インポート詳細チュートリアル](./import.md) を完了していれば、データインポートが成功したか確認するために `Get` クエリを実行したはずです。以下に同じコードを示します。
 
 import CodeImportGet from '/_includes/code/quickstart.import.get.mdx';
 
 <CodeImportGet />
 
-This query simply asks Weaviate for *some* objects of this (`Question`) class.
+このクエリは単に Weaviate に対して、この (`Question`) クラスのオブジェクトを *いくつか* 返すよう依頼しています。
 
-Of course, in most cases we would want to retrieve information on some criteria. Let's build on this query by adding a vector search.
+もちろん、ほとんどの場合は何らかの条件で情報を取得したいでしょう。ここではベクトル検索を追加してクエリを発展させます。
 
-### `Get` with `nearText`
+### `nearText` を用いた `Get`
 
-This is a vector search using a `Get` query.
+こちらは `Get` クエリによるベクトル検索です。
 
 import CodeAutoschemaNeartext from '/_includes/code/quickstart/neartext.mdx'
 
 <CodeAutoschemaNeartext />
 
-This might also look familiar, as it was used in the [Quickstart tutorial](docs/weaviate/quickstart/index.md). But let's break it down a little.
+これもクイックスタートで使用しましたが、少し詳しく見ていきましょう。
 
-Here, we are using a `nearText` operator. What we are doing is to provide Weaviate with a query `concept` of `biology`. Weaviate then converts this into a vector through the inference API (OpenAI in this particular example) and uses that vector as the basis for a vector search.
+ここでは `nearText` オペレーターを使用しています。 `concept` として `biology` を渡すと、 Weaviate は推論 API（この例では OpenAI）を通じてこれをベクトル化し、そのベクトルを検索の基準にします。
 
-Also note here that we pass the API key in the header. This is required as the inference API is used to vectorize the input query.
+また、ヘッダーに API キーを渡している点にも注目してください。入力クエリのベクトル化に推論 API を使用するため、必須となります。
 
-Additionally, we use the `limit` argument to only fetch a maximum of two (2) objects.
+さらに `limit` 引数を指定して、最大 2 件のオブジェクトのみを取得しています。
 
-If you run this query, you should see the entries on *"DNA"* and *"species"* returned by Weaviate.
+このクエリを実行すると、 *"DNA"* と *"species"* に関するエントリが返されるはずです。
 
-### `Get` with `nearVector`
+### `nearVector` を用いた `Get`
 
-In some cases, you might wish to input a vector directly as a search query. For example, you might be running Weaviate with a custom, external vectorizer. In such a case, you can use the `nearVector` operator to provide the query vector to Weaviate.
+場合によっては、検索クエリとして直接ベクトルを入力したいことがあります。たとえば、独自の外部ベクトライザーで Weaviate を実行しているケースです。その場合は `nearVector` オペレーターを使い、クエリベクトルを Weaviate に渡せます。
 
-For example, here is an example Python code obtaining an OpenAI embedding manually and providing it through the `nearVector` operator:
+以下は、 OpenAI の埋め込みを手動で取得し、 `nearVector` オペレーター経由で渡す Python 例です。
 
 ```python
 import openai
@@ -95,21 +95,21 @@ result = (
 print(json.dumps(result, indent=4))
 ```
 
-And it should return the same results as above.
+上記と同じ結果が返るはずです。
 
-Note that we used the same OpenAI embedding model (`text-embedding-ada-002`) here so that the vectors are in the same vector "space".
+同じ OpenAI 埋め込みモデル（ `text-embedding-ada-002` ）を使用している点に注意してください。これにより、ベクトルが同じベクトル空間に配置されます。
 
-You might also have noticed that we have added a `certainty` argument in the `with_near_vector` method. This lets you specify a similarity threshold for objects, and can be very useful for ensuring that no distant objects are returned.
+また、 `with_near_vector` メソッドに `certainty` 引数を追加していることにも気づいたでしょう。これはオブジェクトの類似度しきい値を設定でき、離れたオブジェクトが返されないようにするのに便利です。
 
-## Additional properties
+## 追加プロパティ
 
-We can ask Weaviate to return `_additional` properties for any returned objects. This allows us to obtain properties such as the `vector` of each returned object as well as the actual `certainty` value, so we can verify how close each object is to our query vector. Here is a query that will return the `certainty` value:
+返却されるオブジェクトに対して `_additional` プロパティを要求できます。これにより、各オブジェクトの `vector` や実際の `certainty` 値などを取得し、クエリベクトルとの距離を確認できます。以下は `certainty` を返すクエリです。
 
 import CodeQueryNeartextAdditional from '/_includes/code/quickstart.query.neartext.additional.mdx'
 
 <CodeQueryNeartextAdditional />
 
-Try it out, and you should see a response like this:
+実行すると、次のようなレスポンスが得られるはずです。
 
 ```json
 {
@@ -138,23 +138,23 @@ Try it out, and you should see a response like this:
 }
 ```
 
-You can try modifying this query to see if you retrieve the vector (note - it will be a looooong response 😉).
+このクエリを変更してベクトルを取得してみてください（注: 非常に長いレスポンスになります 😉）。
 
-We encourage you to also try out different queries and see how that changes the results and distances not only with this dataset but also with different datasets, and/or vectorizers.
+また、異なるクエリやデータセット、ベクトライザーで結果と距離がどのように変わるかをぜひ試してみてください。
 
-## Filters
+## フィルター
 
-As useful as it is, sometimes vector search alone may not be sufficient. For example, you may actually only be interested in **Question** objects in a particular category, for instance.
+便利なベクトル検索ですが、それだけでは十分でない場合もあります。たとえば、特定カテゴリの **Question** オブジェクトだけを対象にしたい場合などです。
 
-In these cases, you can use Weaviate's scalar filtering capabilities - either alone, or in combination with the vector search.
+そんなときは、 Weaviate のスカラーフィルタリング機能をベクトル検索と単独、または組み合わせて使用できます。
 
-Try the following:
+次のクエリを試してみてください。
 
 import CodeQueryWhere1 from '/_includes/code/quickstart.query.where.1.mdx'
 
 <CodeQueryWhere1 />
 
-This query asks Weaviate for **Question** objects whose category contains the string `ANIMALS`. You should see a result like this:
+このクエリは、カテゴリに `ANIMALS` を含む **Question** オブジェクトを取得します。結果は次のようになります。
 
 ```json
 {
@@ -187,17 +187,17 @@ This query asks Weaviate for **Question** objects whose category contains the st
 }
 ```
 
-Now that you've seen a scalar filter, let's see how it can be combined with vector search functions.
+スカラーフィルターを確認したところで、ベクトル検索とどのように組み合わせられるかを見てみましょう。
 
-### Vector search with scalar filters
+### スカラーフィルターとのベクトル検索
 
-Combining a filter with a vector search is an additive process. Let us show you what we mean by that.
+フィルターとベクトル検索の組み合わせは加算的なプロセスです。具体例をご覧ください。
 
 import CodeQueryWhere2 from '/_includes/code/quickstart.query.where.2.mdx'
 
 <CodeQueryWhere2 />
 
-This query asks Weaviate for **Question** objects that are closest to "biology", but within the category of `ANIMALS`. You should see a result like this:
+このクエリは「biology」に最も近い **Question** オブジェクトを、カテゴリ `ANIMALS` 内に限定して取得します。結果は次のようになります。
 
 ```json
 {
@@ -226,25 +226,24 @@ This query asks Weaviate for **Question** objects that are closest to "biology",
 }
 ```
 
-Note that the results are confined to the choices from the 'animals' category. Note that these results, while not being cutting-edge science, are biological factoids.
+結果が 'animals' カテゴリ内に限定されていることに注目してください。最先端の科学というわけではありませんが、生物学的な豆知識が返ってきます。
+## `Aggregate` によるメタデータ
 
-## Metadata with `Aggregate`
+名前が示すとおり、`Aggregate` 関数を使用すると、クラス全体やオブジェクトのグループといった集約データを表示できます。
 
-As the name suggests, the `Aggregate` function can be used to show aggregated data such as on entire classes or groups of objects.
-
-For example, the following query will return the number of data objects in the `Question` class:
+例えば、次のクエリは `Question` クラスに含まれるデータオブジェクトの数を返します。
 
 import CodeQueryAggregate1 from '/_includes/code/quickstart.query.aggregate.1.mdx'
 
 <CodeQueryAggregate1 />
 
-And you can also use the `Aggregate` function with filters, just as you saw with the `Get` function above. For example, this query will return the number of **Question** objects with the category "ANIMALS".
+また、上の `Get` 関数と同様に、`Aggregate` 関数でもフィルターを使用できます。例えば、このクエリはカテゴリが "ANIMALS" の **Question** オブジェクトの数を返します。
 
 import CodeQueryAggregate2 from '/_includes/code/quickstart.query.aggregate.2.mdx'
 
 <CodeQueryAggregate2 />
 
-And as you saw above, there are four objects that match the query filter.
+上記のとおり、クエリフィルターに一致するオブジェクトは 4 件あります。
 
 ```json
 {
@@ -262,33 +261,32 @@ And as you saw above, there are four objects that match the query filter.
 }
 ```
 
-Here, Weaviate has identified the same objects that you saw earlier in the similar `Get` queries. The difference is that instead of returning the individual objects you are seeing the requested aggregated statistic (count) here.
+ここで Weaviate は、先ほどの類似した `Get` クエリで確認したのと同じオブジェクトを特定しています。違いは、個々のオブジェクトではなく、要求された集約統計（count）を返している点です。
 
-As you can see, the `Aggregate` function can return handy aggregated, or metadata, information from the Weaviate Database.
+このように、`Aggregate` 関数を使用すると、Weaviate データベースから便利な集約情報、つまりメタデータを取得できます。
 
-## Recap
+## まとめ
 
-* `Get` queries are used for retrieving data objects.
-* `Aggregate` queries can be used to retrieve metadata, or aggregated data.
-* Operators such as `nearText` or `nearVector` can be used for vector queries.
-* Scalar filters can be used for exact filtering, taking advantage of inverted indexes.
-* Vector and scalar filters can be combined, and are available on both `Get` and `Aggregate` queries
+* `Get` クエリはデータオブジェクトの取得に使用します。  
+* `Aggregate` クエリはメタデータや集約データの取得に使用できます。  
+* `nearText` や `nearVector` などのオペレーターはベクトル クエリに使用できます。  
+* スカラー フィルターは転置インデックスを活用して厳密なフィルタリングを行えます。  
+* ベクトル フィルターとスカラー フィルターは組み合わせて使用でき、`Get` と `Aggregate` の両クエリで利用可能です。  
 
-## Suggested reading
+## 参考資料
 
-- [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
-- [Tutorial: Import in detail](./import.md)
-- [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
+- [チュートリアル: スキーマを詳しく理解する](../starter-guides/managing-collections/index.mdx)
+- [チュートリアル: インポートを詳しく理解する](./import.md)
+- [チュートリアル: モジュールの紹介](./modules.md)
+- [チュートリアル: Weaviate Console 入門](/cloud/tools/query-tool.mdx)
 
 ## Notes
 
-### How is certainty calculated?
+### certainty はどのように計算されますか？
 
-`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](/weaviate/config-refs/distances#distance-vs-certainty).
+Weaviate における `certainty` は、ベクトルとデータオブジェクトとの距離を測る指標です。`certainty` を基にコサイン類似度を計算する方法については、[こちら](/weaviate/config-refs/distances#distance-vs-certainty) をご覧ください。
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,5 +1,5 @@
 ---
-title: Aggregate data
+title: データの集計
 sidebar_position: 85
 image: og/docs/howto.jpg
 # tags: ['how to', 'aggregate data']
@@ -15,31 +15,31 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.aggregate-v2
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
 
 
-`Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
+`Aggregate` クエリは結果セットを処理して計算結果を返します。`aggregate` クエリは、オブジェクトのグループや結果セット全体に対して使用します。
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-To run an `Aggregate` query, specify the following:
+`Aggregate` クエリを実行するには、次の項目を指定します。
 
-- A target collection to search
-- One or more aggregated properties, such as:
+- 検索対象となるコレクション
+- 1 つ以上の集計対象プロパティ。例:
+  
+   - メタプロパティ
+   - オブジェクトプロパティ
+   - `groupedBy` プロパティ
 
-   - A meta property
-   - An object property
-   - The `groupedBy` property
+- 選択した各プロパティについて、少なくとも 1 つのサブプロパティを選択
 
-- Select at least one sub-property for each selected property
-
-For details, see [Aggregate](/weaviate/api/graphql/aggregate).
+詳細については、[Aggregate](/weaviate/api/graphql/aggregate) を参照してください。
 
 </details>
 
-## Retrieve the `count` meta property
+## `count` メタプロパティの取得
 
-Return the number  of objects matched by the query.
+クエリに一致したオブジェクトの数を返します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -98,9 +98,9 @@ Return the number  of objects matched by the query.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-  The output is like this:
+  出力例は次のとおりです:
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -110,9 +110,9 @@ Return the number  of objects matched by the query.
   />
 </details>
 
-## Aggregate `text` properties
+## `text` プロパティの集計
 
-This example counts occurrence frequencies in the `question` property:
+この例では、`question` プロパティの出現頻度をカウントします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -171,9 +171,9 @@ This example counts occurrence frequencies in the `question` property:
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-  The output is like this:
+  出力例は次のとおりです:
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -182,10 +182,9 @@ This example counts occurrence frequencies in the `question` property:
     language="json"
   />
 </details>
+## `int` プロパティの集計
 
-## Aggregate `int` properties
-
-This  example sums the `points` property.
+この例では、`points` プロパティを合計します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -244,9 +243,9 @@ This  example sums the `points` property.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-  The output is like this:
+  出力は次のようになります:
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -256,11 +255,11 @@ This  example sums the `points` property.
   />
 </details>
 
-## Aggregate `groupedBy` properties
+## `groupedBy` プロパティの集計
 
-To group your results, use `groupBy` in the query.
+結果をグループ化するには、クエリで `groupBy` を使用します。
 
-To retrieve aggregate data for each group, use the `groupedBy` properties.
+各グループの集計データを取得するには、`groupedBy` プロパティを使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -320,9 +319,9 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
 
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-  The output is like this:
+  出力は次のようになります:
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -335,13 +334,12 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
 import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
 
 <GroupbyLimitations />
+## `similarity search` を用いた Aggregate
 
-## Aggregate with a `similarity search`
-
-You can use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `Near` operators).
+`Aggregate` は [similarity search](./similarity.md) オペレーター（ `Near` オペレーターの一種）と組み合わせて使用できます。
 
 <!-- Make sure to [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space).<br/> -->
-Use `objectLimit` to specify the maximum number of objects to aggregate.
+集約するオブジェクトの最大数を指定するには、 `objectLimit` を使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -412,12 +410,12 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
   />
 </details>
 
-### Set a similarity `distance`
+### 類似度 `distance` の設定
 
-You can use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `Near` operators).
+`Aggregate` は [similarity search](./similarity.md) オペレーター（ `Near` オペレーターの一種）と組み合わせて使用できます。
 
 <!-- Make sure to [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space).<br/> -->
-Use `distance` to specify how similar the objects should be.
+オブジェクトの類似度を指定するには、 `distance` を使用します。
 
 <!-- If you use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `nearXXX` operators), [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space). To specify how similar the objects should be, use the `distance` operator. -->
 
@@ -489,10 +487,9 @@ Use `distance` to specify how similar the objects should be.
     language="json"
   />
 </details>
+## `hybrid search` を用いた集計
 
-## Aggregate with a `hybrid search`
-
-You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
+`Aggregate` を [ハイブリッド検索](./hybrid.md) 演算子と組み合わせて使用できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -551,9 +548,9 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-  The output is like this:
+  出力例:
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -563,9 +560,9 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
   />
 </details>
 
-## Filter results
+## 結果のフィルタリング
 
-For more specific results, use a `filter` to narrow your search.
+より具体的な結果を得るには、 `filter` を使用して検索範囲を絞り込みます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -624,9 +621,9 @@ For more specific results, use a `filter` to narrow your search.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-  The output is like this:
+  出力例:
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -636,13 +633,12 @@ For more specific results, use a `filter` to narrow your search.
   />
 
 </details>
+## 関連ページ
 
-## Related pages
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [API リファレンス: GraphQL: Aggregate](../api/graphql/aggregate.md)
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [API References: GraphQL: Aggregate](../api/graphql/aggregate.md)
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

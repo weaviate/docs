@@ -1,6 +1,6 @@
 ---
-title: Manage relationships with cross-references
-description: Learn to use cross-references in Weaviate for connected data insights.
+title: クロスリファレンスによるリレーションシップ管理
+description: Weaviate でクロスリファレンスを使用し、関連データの洞察を得る方法を学びます。
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 ---
@@ -28,52 +28,52 @@ import SearchBasicsTSCode from '!!raw-loader!/_includes/code/howto/search.basics
 import FilterPythonCode from '!!raw-loader!/_includes/code/howto/search.filters.py';
 import FilterJavaScriptCode from '!!raw-loader!/_includes/code/howto/search.filters.ts';
 
-In this tutorial, you will learn how to use cross-references to manage relationships between objects, and to use them to enhance your queries.
+このチュートリアルでは、クロスリファレンスを使用してオブジェクト間のリレーションシップを管理し、クエリを強化する方法を学びます。
 
-Many applications require the ability to manage relationships between objects. For example, a blog application might need to store information about the author of each post. Or, a document store may chunk documents into smaller pieces and store them in separate objects, each with a reference to the original document.
+多くのアプリケーションでは、オブジェクト間のリレーションシップを管理する機能が必要です。たとえば、ブログアプリでは各投稿の著者情報を保存する必要があります。あるいは、ドキュメントストアがドキュメントをチャンクに分割し、それぞれを別々のオブジェクトとして保存し、元のドキュメントへの参照を持たせる場合もあります。
 
-In Weaviate, you can use cross-references to manage relationships between objects. In the preceding examples, a blog post class could have a cross-reference property called `hasAuthor` to link each post to its author, or a chunk class could have a cross-reference property called `sourceDocument` to link each chunk to its original document.
+Weaviate では、クロスリファレンスを使用してオブジェクト間のリレーションシップを管理できます。前述の例では、ブログ投稿クラスに `hasAuthor` というクロスリファレンス プロパティを追加して各投稿をその著者とリンクしたり、チャンククラスに `sourceDocument` というクロスリファレンス プロパティを追加して各チャンクを元のドキュメントとリンクしたりできます。
 
-We will refer to the originating object as the **source** object, and the object that is being linked to (cross-referenced object) as the **target** object.
+ここでは、リンク元のオブジェクトを **source** オブジェクト、リンク先（クロスリファレンス対象）のオブジェクトを **target** オブジェクトと呼びます。
 
-### Prerequisites
+### 前提条件
 
-This tutorial assumes that you have completed the [QuickStart tutorial](docs/weaviate/quickstart/index.md) and have access to a Weaviate instance with write access.
+本チュートリアルでは、[クイックスタート チュートリアル](docs/weaviate/quickstart/index.md) を完了し、書き込み権限のある Weaviate インスタンスにアクセスできることを前提とします。
 
-## When to use cross-references
+## クロスリファレンスの使用タイミング
 
-Cross-references are useful when you need to establish relationships between objects in Weaviate. For example, you might want to link:
+クロスリファレンスは、Weaviate 内でオブジェクト間のリレーションシップを確立する必要がある場合に便利です。たとえば、以下のようにリンクしたい場合があります。
 
-- A blog post (source) to its author (target).
-- A document chunk (source) to its original document (target).
-- A product (source) to its manufacturer (target).
-- A quiz item (source) to its category (target).
+- ブログ投稿 (source) とその著者 (target)
+- ドキュメントチャンク (source) と元ドキュメント (target)
+- 製品 (source) と製造元 (target)
+- クイズ項目 (source) とそのカテゴリ (target)
 
-In each of these cases, you can use a cross-reference property to link the objects together.
+これらのケースでは、クロスリファレンス プロパティを使用してオブジェクト同士をリンクできます。
 
-## How cross-references work
+## クロスリファレンスの仕組み
 
-In Weaviate, cross-reference relationships are defined at the source class as a property. Each of these properties is characterized by a name and a data type. Each cross-reference property can be directed to one or more target classes. For example, a `hasAuthor` cross-reference property might be directed to the `Author` class, while a `sourceDocument` cross-reference property might be directed to the `Document` class.
+Weaviate では、クロスリファレンスは source クラスにプロパティとして定義されます。各プロパティには名前とデータ型があり、一つ以上の target クラスを指定できます。たとえば、`hasAuthor` クロスリファレンス プロパティは `Author` クラスを参照し、`sourceDocument` クロスリファレンス プロパティは `Document` クラスを参照するといった具合です。
 
-### Directionality of cross-references
+### クロスリファレンスの向き
 
-Cross-references are uni-directional; to establish a bi-directional relationship, two distinct cross-reference properties are required, facilitating linkage in both directions.
+クロスリファレンスは単方向です。双方向のリレーションシップを確立するには、両方向をリンクする 2 つの独立したクロスリファレンス プロパティを作成する必要があります。
 
-### Cross references and vectors
+### クロスリファレンスと ベクトル
 
-Linking objects with cross-references does not affect the vectorization of the objects.
+オブジェクトをクロスリファレンスでリンクしても、オブジェクトのベクトル化には影響しません。
 
-For example, linking a blog post to its author with a cross-reference will not affect the vector of the author object or the blog object.
+たとえば、ブログ投稿を著者とリンクしても、著者オブジェクトやブログ投稿オブジェクトのベクトルには影響しません。
 
-## Managing cross-references
+## クロスリファレンスの管理
 
-Each cross-reference can be created, updated, and deleted independently of the objects that it links. This allows you to manage relationships between objects without having to modify the objects themselves.
+各クロスリファレンスは、それがリンクするオブジェクトとは独立して作成、更新、削除できます。これにより、オブジェクト自体を変更することなくリレーションシップを管理できます。
 
-To create a cross-reference, you must include the cross-reference property in the source class, and then add the cross-reference to the source object.
+クロスリファレンスを作成するには、まず source クラスにクロスリファレンス プロパティを含め、その後に source オブジェクトへクロスリファレンスを追加します。
 
-### Include a cross-reference property
+### クロスリファレンス プロパティの追加
 
-A cross-reference property must be included in the class definition. For example, to create a `hasAuthor` cross-reference property in the `BlogPost` class, you would include the following in the class definition:
+クロスリファレンス プロパティはクラス定義に含める必要があります。たとえば、`BlogPost` クラスに `hasAuthor` クロスリファレンス プロパティを作成するには、クラス定義に次のように追加します。
 
 ```json
 {
@@ -91,15 +91,15 @@ A cross-reference property must be included in the class definition. For example
 }
 ```
 
-### Create a cross-reference
+### クロスリファレンスの作成
 
-To create a cross-reference, Weaviate requires the following information:
+クロスリファレンスを作成する際、Weaviate には以下の情報が必要です。
 
-- The class and UUID of the source (from) object.
-- The class and UUID of the target (to) object.
-- The name of the cross-reference property.
+- source (from) オブジェクトのクラスと UUID
+- target (to) オブジェクトのクラスと UUID
+- クロスリファレンス プロパティ名
 
-An example syntax is shown below:
+例として、次のような構文になります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -141,21 +141,20 @@ An example syntax is shown below:
     />
   </TabItem>
 </Tabs>
+## クロスリファレンスを用いたクエリ
 
-## Queries with cross-references
+オブジェクト間にクロスリファレンスを設定すると、それを検索クエリの拡張に利用できます。例えば、クロスリファレンスを使用して次のことができます。
 
-Once you have established cross-references between objects, you can use them to enhance your search queries. For example, you can use cross-references to:
+- 参照先オブジェクトのプロパティを取得する  
+- 参照先オブジェクトのプロパティを基準にオブジェクトをフィルタリングする  
 
-- Retrieve properties of target objects.
-- Filter objects based on properties of target objects.
+### 参照先オブジェクトのプロパティを取得する
 
-### Retrieve properties of a target object
+参照先オブジェクトのプロパティは、ソースオブジェクトのプロパティと同じ方法で取得できます。
 
-You can retrieve properties of a target object just as you would retrieve properties of the source object.
+例えば、ドキュメントチャンクが元のドキュメントへのクロスリファレンスを含んでいる場合、そのクロスリファレンスを使って元ドキュメントのプロパティを取得できます。これにより、チャンク自身の `text` プロパティを取得するのと同じ方法で、ドキュメントの `title` や `author` などを取得できます。
 
-For example, where a document chunk includes a cross-reference to its original document, you can use the cross-reference to retrieve properties of the original document. Accordingly, you can retrieve the title of the document or the author of the document, just as you would retrieve a property of the chunk itself such as the text of the chunk.
-
-Take a look at the snippet below in which we retrieve objects from the `JeopardyQuestion` class. Here, the `JeopardyQuestion` class contains the `hasCategory` cross-reference property, linking objects to the `JeopardyCategory` class. This query retrieves the `title` property of the target `JeopardyCategory` class, as well as the `question` property of the source `JeopardyQuestion` class.
+以下のスニペットでは `JeopardyQuestion` クラスのオブジェクトを取得しています。このクラスには `JeopardyCategory` クラスへリンクする `hasCategory` クロスリファレンスプロパティがあります。このクエリでは、参照先である `JeopardyCategory` クラスの `title` プロパティと、ソースである `JeopardyQuestion` クラスの `question` プロパティを取得しています。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -190,13 +189,13 @@ Take a look at the snippet below in which we retrieve objects from the `Jeopardy
 </TabItem>
 </Tabs>
 
-### Filter using cross-references
+### クロスリファレンスを使用したフィルタリング
 
-You can configure a filter to include or exclude objects based on properties of the target object.
+参照先オブジェクトのプロパティを基に、対象オブジェクトを含めたり除外したりするフィルターを設定できます。
 
-For example, you can filter articles based on an attribute of the author, such as the author's name or the author's location.
+例えば、記事を著者の属性（著者名や所在地など）でフィルタリングすることが可能です。
 
-Take a look at the snippet below, This query looks through the `JeopardyQuestion` class, but the results are filtered using the `title` property of its cross-referenced `JeopardyCategory` class. The `title` property must include the substring `Sport`.
+次のスニペットは `JeopardyQuestion` クラスを検索しますが、結果はクロスリファレンス先である `JeopardyCategory` クラスの `title` プロパティを使ってフィルタリングされます。`title` プロパティに `Sport` というサブストリングが含まれているものだけが対象になります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -225,26 +224,26 @@ Take a look at the snippet below, This query looks through the `JeopardyQuestion
 </TabItem>
 </Tabs>
 
-:::tip Two-stage queries
+:::tip 二段階クエリ
 
-Because cross-references do not affect vectors, you cannot use vector searches to filter objects based on properties of the target object.
+クロスリファレンスは ベクトル には影響しないため、ベクトル検索を利用して参照先オブジェクトのプロパティでオブジェクトをフィルタリングすることはできません。
 
-However, you could use two separate queries to achieve a similar result. For example, you could perform a vector search to identify `JeopardyCategory` objects that are similar to a given vector, resulting in a list of `JeopardyCategory` objects. You could then use the unique `title` properties of these objects in a second query filter the results as shown above. This will result in `JeopardyQuestion` objects that are cross-referenced to the `JeopardyCategory` objects identified in the first query.
+しかし、二つのクエリを組み合わせれば同様の結果を得ることができます。まず、ベクトル検索を実行して指定したベクトルに類似する `JeopardyCategory` オブジェクトを取得し、リスト化します。次に、それらのオブジェクトの一意な `title` プロパティを使用して二つ目のクエリを実行し、上記のように結果をフィルタリングします。これにより、一つ目のクエリで取得した `JeopardyCategory` オブジェクトにクロスリファレンスされている `JeopardyQuestion` オブジェクトが得られます。
 
 :::
 
-## Further information
+## さらに詳しく
 
-### Managing cross-references
+### クロスリファレンスの管理
 
-For further information on how to manage cross-references, see the [how-to guide on cross-references](../manage-collections/cross-references.mdx). It includes information on how to:
+クロスリファレンスの管理方法については、[クロスリファレンスのハウツーガイド](../manage-collections/cross-references.mdx)をご覧ください。このガイドでは、次の内容を扱っています。
 
-- [Create a cross-reference](../manage-collections/cross-references.mdx#add-a-one-way-cross-reference)
-- [Update a cross-reference](../manage-collections/cross-references.mdx#update-a-cross-reference)
-- [Delete a cross-reference](../manage-collections/cross-references.mdx#delete-a-cross-reference)
-- [Retrieve a cross-reference](../manage-collections/cross-references.mdx#read-cross-references)
+- [クロスリファレンスを作成する](../manage-collections/cross-references.mdx#add-a-one-way-cross-reference)  
+- [クロスリファレンスを更新する](../manage-collections/cross-references.mdx#update-a-cross-reference)  
+- [クロスリファレンスを削除する](../manage-collections/cross-references.mdx#delete-a-cross-reference)  
+- [クロスリファレンスを取得する](../manage-collections/cross-references.mdx#read-cross-references)  
 
-:::info Related pages
-- [How-to search: Filters](../search/filters.md)
+:::info 関連ページ
+- [検索の方法: フィルター](../search/filters.md)
 - <SkipLink href="/weaviate/api/rest#tag/objects">API References: Objects</SkipLink>
 :::

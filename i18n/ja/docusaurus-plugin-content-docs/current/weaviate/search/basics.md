@@ -1,5 +1,5 @@
 ---
-title: Search patterns and basics
+title: 検索パターンと基本
 sidebar_position: 10
 image: og/docs/howto.jpg
 # tags: ['how to', 'semantic search']
@@ -15,13 +15,13 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.basics-v2.ts
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
 
-With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#specify-object-properties) and [metadata](#retrieve-metadata-values) to return.
+Weaviate では、[ ベクトル 類似度検索](./similarity.md)、[ キーワード検索](./bm25.md)、または両者を組み合わせた [ ハイブリッド検索](./hybrid.md) を使用してデータをクエリできます。返却するオブジェクトの [ プロパティ ](#specify-object-properties) や [ メタデータ ](#retrieve-metadata-values) を制御できます。
 
-This page provides fundamental search syntax to get you started.
+このページでは、検索を始めるための基本的な構文を紹介します。
 
-## List objects
+## オブジェクト一覧
 
-You can get objects without specifying any parameters. This returns objects in ascending UUID order.
+パラメーターを指定せずにオブジェクトを取得できます。この場合、オブジェクトは UUID の昇順で返されます。
 
 <Tabs groupId="languages">
 
@@ -97,7 +97,7 @@ You can get objects without specifying any parameters. This returns objects in a
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 The output is like this:
 
@@ -111,15 +111,15 @@ The output is like this:
 </details>
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-  Specify the information that you want your query to return. You can return object properties, object IDs, and object metadata.
+  クエリで返したい情報を指定します。オブジェクトのプロパティ、オブジェクト ID、メタデータを返すことができます。
 
 </details>
 
-## `limit` returned objects
+## 返却オブジェクトの `limit` 指定
 
-Use `limit` to set a fixed maximum number of objects to return.
+`limit` を使用して返却するオブジェクトの最大数を固定で設定します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -193,7 +193,7 @@ Use `limit` to set a fixed maximum number of objects to return.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
 The output is like this:
 
@@ -205,10 +205,9 @@ The output is like this:
 />
 
 </details>
+## `limit` と `offset` を使用したページネーション
 
-## Paginate with `limit` and `offset`
-
-To start in the middle of your result set, define an `offset`. Set a `limit` to return objects starting at the offset.
+結果セットの途中から開始するには `offset` を指定します。`offset` から始めて返すオブジェクトの数を `limit` で設定します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -282,9 +281,9 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -295,12 +294,12 @@ The output is like this:
 
 </details>
 
-To paginate through the entire database, use a [cursor](../manage-objects/read-all-objects.mdx) instead of offset and limit.
+データベース全体をページネートする場合は、 `offset` と `limit` の代わりに [カーソル](../manage-objects/read-all-objects.mdx) を使用してください。
 
 
-## Specify object `properties`
+## オブジェクト `properties` の指定
 
-You can specify which object properties to return.
+返却するオブジェクトのプロパティを指定できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -376,9 +375,9 @@ You can specify which object properties to return.
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -388,10 +387,9 @@ The output is like this:
 />
 
 </details>
+## オブジェクトの `vector` を取得
 
-## Retrieve the object `vector`
-
-You can retrieve the object vector. (Also applicable where [named vectors](../config-refs/collections.mdx#named-vectors) are used.)
+オブジェクトの `vector` を取得できます。（[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を使用している場合にも適用されます。）
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -465,9 +463,9 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -478,9 +476,9 @@ The output is like this:
 
 </details>
 
-## Retrieve the object `id`
+## オブジェクトの `id` を取得
 
-You can retrieve the object `id` (uuid).
+オブジェクトの `id` （ uuid ）を取得できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -556,9 +554,9 @@ You can retrieve the object `id` (uuid).
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -568,18 +566,17 @@ The output is like this:
 />
 
 </details>
-
-## Retrieve cross-referenced properties
+## クロス参照プロパティの取得
 
 import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
-To retrieve properties from cross-referenced objects, specify:
+クロス参照オブジェクトからプロパティを取得するには、次を指定します:
 
-- The cross-reference property
-- The target cross-referenced collection
-- The properties to retrieve
+- クロス参照プロパティ
+- 対象のクロス参照コレクション
+- 取得するプロパティ
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -645,9 +642,9 @@ To retrieve properties from cross-referenced objects, specify:
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The output is like this:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -658,9 +655,9 @@ The output is like this:
 
 </details>
 
-## Retrieve metadata values
+## メタデータ値の取得
 
-You can specify metadata fields to be returned.
+返却するメタデータフィールドを指定できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -734,12 +731,10 @@ You can specify metadata fields to be returned.
 </TabItem>
 </Tabs>
 
-For a comprehensive list of metadata fields, see [GraphQL: Additional properties](../api/graphql/additional-properties.md).
+メタデータフィールドの一覧については、[ GraphQL: 追加プロパティ](../api/graphql/additional-properties.md) を参照してください。
+## マルチテナンシー
 
-
-## Multi-tenancy
-
-If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the tenant parameter in each query.
+[マルチテナンシー](../concepts/data.md#multi-tenancy) を有効にしている場合、すべてのクエリで tenant パラメーターを指定してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -799,22 +794,22 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
 
 </Tabs>
 
-## Replication
+## レプリケーション
 
-For collections with replication enabled, you can specify the consistency level in your queries. This applies to CRUD queries as well as searches.
+レプリケーションを有効にしたコレクションでは、クエリで整合性レベルを指定できます。これは CRUD クエリと検索の両方に適用されます。
 
 import QueryReplication from '/_includes/code/replication.get.object.by.id.mdx';
 
 <QueryReplication/>
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections)
-- [API References: GraphQL: Get](../api/graphql/get.md)
-- For tutorials, see [Queries](/weaviate/tutorials/query.md)
-- For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md)
+- [Weaviate に接続する](/weaviate/connections)
+- [API リファレンス: GraphQL: Get](../api/graphql/get.md)
+- チュートリアルについては、[クエリ](/weaviate/tutorials/query.md) をご覧ください
+- GraphQL API を使用した検索については、[GraphQL API](../api/graphql/get.md) をご覧ください
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

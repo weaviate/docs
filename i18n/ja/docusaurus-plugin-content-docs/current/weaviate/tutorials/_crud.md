@@ -1,23 +1,23 @@
 ---
-title: (NEW) Perform CRUD operations
+title: (NEW) CRUD 操作の実行
 sidebar_position: 5
 image: og/docs/tutorials.jpg
 # tags: ['how to', 'CRUD']
 ---
 
-In this tutorial, you will learn how to perform various CRUD operations with Weaviate.
+本チュートリアルでは、Weaviate でさまざまな CRUD 操作を実行する方法を学習します。
 
 <!-- :::caution This page is under construction.
 ::: -->
 
 :::tip
-When working with a database, you want [full CRUD support](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete). Not all approximate nearest neighbor algorithms support this, and not all incumbent databases (or search engines) are optimized for this type of indexing. These reasons are -among others- the most important to why Weaviate exists. You can also learn more about this by reading [this blog post](https://db-engines.com/en/blog_post/87).
+データベースを扱う際には、[完全な CRUD サポート](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) が求められます。すべての approximate nearest neighbor アルゴリズムがこれをサポートしているわけではなく、従来のデータベース（や検索エンジン）のすべてがこの種類のインデックス作成に最適化されているわけでもありません。これらの理由が、Weaviate が存在する最も重要な理由の一部です。詳しくは、[こちらのブログ記事](https://db-engines.com/en/blog_post/87) もご覧ください。
 :::
 
-## Prerequisites
+## 前提条件
 
-## Background
+## 背景
 
-## Body
+## 本文
 
-## Summary
+## まとめ

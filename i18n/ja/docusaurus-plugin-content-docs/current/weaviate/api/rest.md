@@ -1,4 +1,5 @@
 ---
 title: RESTful API
-description: "REST API reference for managing Weaviate Database configuration, collections, objects and querying programmatically."
+description: "Weaviate Database の設定、コレクション、オブジェクトの管理およびプログラムによるクエリ実行のための REST API リファレンスです。"
 ---
+

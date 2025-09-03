@@ -1,0 +1,249 @@
+---
+title: クロスリファレンスによるリレーションシップ管理
+description: クロスリファレンスを使用して Weaviate で接続されたデータからインサイトを得る方法を学びます。
+sidebar_position: 40
+image: og/docs/tutorials.jpg
+---
+
+import SkipLink from '/src/components/SkipValidationLink'
+import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
+
+<UpdateInProgressNote />
+
+import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+
+<CrossReferencePerformanceNote />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import XRefCrudPythonCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
+import XRefCrudTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
+import XRefCrudJavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.cross-refs.java';
+import XRefCrudGoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross-refs_test.go';
+
+import SearchBasicsPythonCode from '!!raw-loader!/_includes/code/howto/search.basics.py';
+import SearchBasicsTSCode from '!!raw-loader!/_includes/code/howto/search.basics.ts';
+
+import FilterPythonCode from '!!raw-loader!/_includes/code/howto/search.filters.py';
+import FilterJavaScriptCode from '!!raw-loader!/_includes/code/howto/search.filters.ts';
+
+このチュートリアルでは、クロスリファレンスを使用してオブジェクト間のリレーションシップを管理し、それをクエリに活用する方法を学びます。
+
+多くのアプリケーションでは、オブジェクト間のリレーションシップを管理する機能が必要です。たとえばブログ アプリでは、各投稿の著者情報を保存する必要があります。あるいはドキュメント ストアでは、ドキュメントを小さなチャンクに分割し、それぞれを別々のオブジェクトとして保存し、元のドキュメントへの参照を持たせる場合があります。
+
+Weaviate では、クロスリファレンスを使用してオブジェクト間のリレーションシップを管理できます。前述の例では、ブログ投稿クラスは各投稿を著者にリンクする `hasAuthor` というクロスリファレンス プロパティを持つことができます。また、チャンク クラスは元のドキュメントにつなぐ `sourceDocument` というクロスリファレンス プロパティを持つことができます。
+
+ここでは、参照元のオブジェクトを **ソース** オブジェクト、リンク先（参照される）オブジェクトを **ターゲット** オブジェクトと呼びます。
+
+### 前提条件
+
+本チュートリアルでは、[QuickStart チュートリアル](docs/weaviate/quickstart/index.md) を完了し、書き込み権限のある Weaviate インスタンスにアクセスできることを前提とします。
+
+## クロスリファレンスを使用するタイミング
+
+クロスリファレンスは、Weaviate 内でオブジェクト同士のリレーションシップを確立する必要がある場合に有用です。例えば、以下のようなリンクを作成できます。
+
+- ブログ投稿 (ソース) とその著者 (ターゲット)
+- ドキュメント チャンク (ソース) と元のドキュメント (ターゲット)
+- 製品 (ソース) とその製造元 (ターゲット)
+- クイズ アイテム (ソース) とそのカテゴリ (ターゲット)
+
+これらのケースでは、クロスリファレンス プロパティを使用してオブジェクト同士をリンクできます。
+
+## クロスリファレンスの仕組み
+
+Weaviate では、クロスリファレンスはソース クラス側でプロパティとして定義されます。各プロパティは名前とデータ型によって特徴付けられます。クロスリファレンス プロパティは、1 つ以上のターゲット クラスを指すことができます。例えば、`hasAuthor` プロパティは `Author` クラスを、`sourceDocument` プロパティは `Document` クラスを指すことが想定されます。
+
+### クロスリファレンスの向き
+
+クロスリファレンスは単方向です。双方向のリレーションシップを確立するには、2 つの独立したクロスリファレンス プロパティを作成し、双方からリンクできるようにする必要があります。
+
+### クロスリファレンスと ベクトル
+
+オブジェクトをクロスリファレンスでリンクしても、そのオブジェクトのベクトル化には影響しません。
+
+例えば、ブログ投稿を著者オブジェクトにリンクしても、著者オブジェクトやブログ投稿オブジェクトのベクトルは変化しません。
+
+## クロスリファレンスの管理
+
+クロスリファレンスは、それぞれがリンクしているオブジェクトとは独立して作成・更新・削除できます。これにより、オブジェクト自体を変更することなくリレーションシップを管理できます。
+
+クロスリファレンスを作成するには、まずソース クラスにクロスリファレンス プロパティを含め、その後ソース オブジェクトにクロスリファレンスを追加します。
+
+### クロスリファレンス プロパティの追加
+
+クロスリファレンス プロパティは、クラス定義に含める必要があります。例えば、`BlogPost` クラスで `hasAuthor` プロパティを作成するには、クラス定義に次のように追加します。
+
+```json
+{
+    "class": "BlogPost",
+    "properties": [
+        ...  // other class properties
+        // highlight-start
+        {
+            "name": "hasAuthor",
+            "dataType": ["Author"],
+        },
+        // highlight-end
+    ],
+    ...  // other class attributes (e.g. vectorizer)
+}
+```
+
+### クロスリファレンスの作成
+
+クロスリファレンスを作成する際、Weaviate には以下の情報が必要です。
+
+- ソース (from) オブジェクトのクラスと UUID
+- ターゲット (to) オブジェクトのクラスと UUID
+- クロスリファレンス プロパティの名前
+
+例となる構文を以下に示します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+
+  <FilteredTextBlock
+    text={XRefCrudPythonCode}
+    startMarker="# START OneWay"
+    endMarker="# END OneWay"
+    language="py"
+  />
+
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v2">
+
+  <FilteredTextBlock
+    text={XRefCrudTSCode}
+    startMarker="// START OneWay"
+    endMarker="// END OneWay"
+    language="tsv2"
+  />
+
+  </TabItem>
+
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={XRefCrudJavaCode}
+      startMarker="// START OneWay"
+      endMarker="// END OneWay"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={XRefCrudGoCode}
+      startMarker="// START OneWay"
+      endMarker="// END OneWay"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+## クロスリファレンスを使用したクエリ
+
+オブジェクト間にクロスリファレンスを設定したら、それを検索クエリに利用して検索精度を高めることができます。たとえば、クロスリファレンスを使って次のようなことが可能です。
+
+- ターゲットオブジェクトのプロパティを取得する  
+- ターゲットオブジェクトのプロパティを基にオブジェクトをフィルタリングする
+
+### ターゲットオブジェクトのプロパティを取得する
+
+ターゲットオブジェクトのプロパティは、ソースオブジェクトのプロパティと同様に取得できます。
+
+たとえば、ドキュメントチャンクに元ドキュメントへのクロスリファレンスが含まれている場合、クロスリファレンスを使って元ドキュメントのプロパティを取得できます。これにより、チャンク自体の `text` のようなプロパティと同様に、ドキュメントの `title` や `author` を取得できます。
+
+以下のスニペットでは、 `JeopardyQuestion` クラスからオブジェクトを取得しています。ここでは、 `JeopardyQuestion` クラスに `hasCategory` クロスリファレンスプロパティがあり、オブジェクトを `JeopardyCategory` クラスにリンクしています。このクエリでは、ターゲットである `JeopardyCategory` クラスの `title` プロパティと、ソースである `JeopardyQuestion` クラスの `question` プロパティを取得します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+<FilteredTextBlock
+  text={SearchBasicsPythonCode}
+  startMarker="# GetWithCrossRefsPython"
+  endMarker="# END GetWithCrossRefsPython"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="js" label="JS/TS Client v2">
+
+<FilteredTextBlock
+  text={SearchBasicsTSCode}
+  startMarker="// GetWithCrossRefs"
+  endMarker="// END GetWithCrossRefs"
+  language="tsv2"
+/>
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+<FilteredTextBlock
+  text={SearchBasicsPythonCode}
+  startMarker="# GetWithCrossRefsGraphQL"
+  endMarker="# END GetWithCrossRefsGraphQL"
+  language="graphql"
+/>
+
+</TabItem>
+</Tabs>
+
+### クロスリファレンスを用いたフィルタリング
+
+ターゲットオブジェクトのプロパティを条件に含めたり除外したりして、フィルタを設定できます。
+
+たとえば、著者名や著者の所在地といった著者の属性を基に記事をフィルタリングすることができます。
+
+以下のスニペットでは、 `JeopardyQuestion` クラスを検索しつつ、クロスリファレンス先である `JeopardyCategory` クラスの `title` プロパティを条件にフィルタを行っています。 `title` プロパティには `Sport` という部分文字列が含まれている必要があります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={FilterPythonCode}
+  startMarker="# CrossReferencePython"
+  endMarker="# END CrossReferencePython"
+  language="python"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v2">
+<FilteredTextBlock
+  text={FilterJavaScriptCode}
+  startMarker="// searchSingleFilter"
+  endMarker="// END searchSingleFilter"
+  language="tsv2"
+/>
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+<FilteredTextBlock
+  text={FilterPythonCode}
+  startMarker="# CrossReferenceGraphQL"
+  endMarker="# END CrossReferenceGraphQL"
+  language="graphql"
+/>
+</TabItem>
+</Tabs>
+
+:::tip 二段階クエリ
+
+クロスリファレンスはベクトルに影響を与えないため、ベクトル検索でターゲットオブジェクトのプロパティを基にオブジェクトをフィルタリングすることはできません。
+
+ただし、2 つのクエリを組み合わせて同様の結果を得ることは可能です。たとえば、まずベクトル検索を実行して、あるベクトルと類似した `JeopardyCategory` オブジェクトを取得し、 `JeopardyCategory` の一覧を得ます。次に、それらの一意な `title` プロパティを使用して 2 つ目のクエリを実行し、上記のようにフィルタリングを行います。これにより、最初のクエリで特定した `JeopardyCategory` オブジェクトにクロスリファレンスされている `JeopardyQuestion` オブジェクトが得られます。
+
+:::
+
+## さらに詳しく
+
+### クロスリファレンスの管理
+
+クロスリファレンスの管理方法については、[クロスリファレンスのハウツーガイド](../manage-collections/cross-references.mdx) を参照してください。このガイドでは次の内容を扱っています。
+
+- [クロスリファレンスを作成する](../manage-collections/cross-references.mdx#add-a-one-way-cross-reference)
+- [クロスリファレンスを更新する](../manage-collections/cross-references.mdx#update-a-cross-reference)
+- [クロスリファレンスを削除する](../manage-collections/cross-references.mdx#delete-a-cross-reference)
+- [クロスリファレンスを取得する](../manage-collections/cross-references.mdx#read-cross-references)
+
+:::info 関連ページ
+- [ハウツー検索: フィルタ](../search/filters.md)
+- <SkipLink href="/weaviate/api/rest#tag/objects">API リファレンス: Objects</SkipLink>
+:::

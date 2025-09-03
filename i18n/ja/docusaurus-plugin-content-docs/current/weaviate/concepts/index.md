@@ -1,7 +1,7 @@
 ---
-title: Concepts
+title: コンセプト
 sidebar_position: 0
-description: "Foundational concepts and architecture principles behind Weaviate's vector search and AI-native database capabilities."
+description: "Weaviate の ベクトル 検索 と AI ネイティブ データベース機能 を支える 基本 コンセプト と アーキテクチャ 原則"
 image: og/docs/concepts.jpg
 # tags: ['getting started']
 ---
@@ -16,74 +16,74 @@ image: og/docs/concepts.jpg
   - Note: Configuration options from `HNSW` are now in `References: Configuration/Vector index#How to configure HNSW`
 ::: -->
 
-The **Concepts** section explains various aspects related to Weaviate and its architecture to help you get the most out of it. You can read these sections in any order.
+**コンセプト** セクションでは、Weaviate とそのアーキテクチャに関するさまざまな側面を解説し、最大限に活用するための理解を助けます。これらのセクションはどの順番でもお読みいただけます。
 
 :::info
-If you are after a practical guide, try the [quickstart tutorial](/weaviate/quickstart/index.md).
+実践的なガイドをお求めの場合は、[クイックスタート チュートリアル](/weaviate/quickstart/index.md) をご覧ください。
 :::
 
 ## Core concepts
 
-**[Data structure](./data.md)**
+**[データ構造](./data.md)**
 
-- How Weaviate deals with data objects, including how they are stored, represented, and linked to each other.
+- Weaviate がデータ オブジェクトをどのように保存・表現し、相互にリンクするかを解説します。
 
-**[Modules](./modules.md)**
+**[モジュール](./modules.md)**
 
-- An overview of Weaviate's module system, including what can be done with modules, existing module types, and custom modules.
+- Weaviate のモジュール システムの概要、モジュールでできること、既存のモジュール タイプ、およびカスタム モジュールについて説明します。
 
-**[Indexing](./indexing/index.md)**
+**[インデックス作成](./indexing/index.md)**
 
-- Read how data is indexed within Weaviate using inverted and ANN indexes, and about configurable settings.
+- 転置 インデックス と ANN インデックスを用いたデータのインデックス方法と、設定可能なオプションについて読めます。
 
-**[Vector indexing](./indexing/vector-index.md)**
+**[ベクトル インデックス作成](./indexing/vector-index.md)**
 
-- Read more about Weaviate's vector indexing architecture, such as the HNSW algorithm, distance metrics, and configurable settings.
+- HNSW アルゴリズム、距離計測法、設定可能なオプションなど、Weaviate の ベクトル インデックス作成のアーキテクチャについて詳しく解説します。
 
-**[Vector quantization](./vector-quantization.md)**
+**[ベクトル 量子化](./vector-quantization.md)**
 
-- Read more about Weaviate's vector quantization options.
+- Weaviate の ベクトル 量子化オプションについて詳しく読めます。
 
-## Weaviate Architecture
+## Weaviate アーキテクチャ
 
-The figure below gives a 30,000 feet view of Weaviate's architecture.
+以下の図は、Weaviate のアーキテクチャを 30,000 フィートの視点で示しています。
 
 [![Weaviate module APIs overview](./img/weaviate-architecture-overview.svg "Weaviate System and Architecture Overview")](./img/weaviate-architecture-overview.svg)
 
-You can learn more about the individual components in this figure by following these guides:
+この図の各コンポーネントについては、以下のガイドで学べます。
 
-**[Learn about storage inside a shard](./storage.md)**
-  * How Weaviate stores data
-  * How Weaviate makes writes durable
-  * How an inverted index, a vector index and an object store interact with each other
+**[シャード内ストレージの詳細](./storage.md)**
+  * Weaviate がデータを保存する方法
+  * Weaviate が書き込みを永続化する方法
+  * 転置 インデックス、 ベクトル インデックス、オブジェクト ストアがどのように相互作用するか
 
-**[Ways to scale Weaviate horizontally](./cluster.md)**
-  * Different motivations to scale
-  * Sharding vs. Replication
-  * Configuring a cluster
-  * Consistency
+**[Weaviate を水平スケールする方法](./cluster.md)**
+  * スケールするさまざまな動機
+  * シャーディング vs. レプリケーション
+  * クラスターの設定
+  * 一貫性
 
-**[How to plan resources](./resources.md)**
-  * The roles of CPU, Memory and GPUs
-  * How to size a cluster correctly
-  * Speeding up specific processes
-  * Preventing bottlenecks
+**[リソース計画方法](./resources.md)**
+  *  CPU 、メモリ、 GPU の役割
+  * クラスターを適切にサイズ設定する方法
+  * 特定のプロセスを高速化する方法
+  * ボトルネックを防ぐ方法
 
-**[Filtered vector search](./filtering.md)**
-  * Combine vector search with filters
-  * Learn how combining an HNSW with an inverted index leads to high-recall, high-speed filtered queries
+**[フィルター付き ベクトル 検索](./filtering.md)**
+  * ベクトル 検索とフィルターを組み合わせる
+  * HNSW と 転置 インデックスを組み合わせることで、高リコールかつ高速なフィルター付きクエリを実現する方法を学ぶ
 
-**[User-facing interfaces](./interface.md)**
-  * Design philosophy behind user-facing APIs
-  * Role of the REST and GraphQL APIs
+**[ユーザー向けインターフェイス](./interface.md)**
+  * ユーザー向け API の設計哲学
+  * REST と GraphQL API の役割
 
-**[Replication architecture](./replication-architecture/index.md)**
-  * About replication
-  * Weaviate's implementation
-  * Use cases
+**[レプリケーション アーキテクチャ](./replication-architecture/index.md)**
+  * レプリケーションについて
+  * Weaviate の実装
+  * ユースケース
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

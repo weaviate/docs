@@ -1,34 +1,33 @@
 ---
-title: Explore
+title: Explore 関数
 sidebar_position: 99
-description: "Explore function reference for discovering data relationships when single inference modules are enabled."
+description: "単一の推論モジュールが有効な場合にデータ間の関連性を発見するための Explore 関数リファレンス。"
 image: og/docs/api.jpg
 # tags: ['graphql', 'explore{}']
 ---
 
+:::note ベクトル空間と Explore
 
-:::note Vector spaces and Explore
+複数の推論モジュール（例: `text2vec-xxx`）が有効な場合、`Explore` 関数は無効になります。
 
-The `Explore` function is disabled where multiple inference (e.g. `text2vec-xxx`) modules are enabled.
-
-As a result, `Explore` is not available on [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) as its clusters are pre-configured with multiple inference modules for AWS, Cohere, Google, OpenAI and so on.
+そのため、AWS、Cohere、Google、OpenAI など複数の推論モジュールが事前構成されている Weaviate Cloud (WCD) では `Explore` を利用できません。
 
 :::
 
-Use `Explore` to perform vector searches across multiple collections. Note that `Explore` is currently not available in the gRPC API.
+`Explore` を使用して、複数のコレクションにまたがる ベクトル 検索を実行できます。なお、`Explore` は現在 gRPC API では利用できません。
 
-### Requirements
+### 要件
 
-For `Explore`:
+`Explore` を利用するには次の要件を満たす必要があります。
 
-- The Weaviate instance to be configured with a maximum of one vectorizer (e.g. `text2vec-transformers`, `text2vec-openai`) module.
-- Each `Explore` query can only be a vector search using `nearText` or `nearVector`.
+- Weaviate インスタンスに設定できる ベクトライザー モジュールは最大 1 つまでです（例: `text2vec-transformers`, `text2vec-openai`）。
+- 各 `Explore` クエリは `nearText` または `nearVector` を使用した ベクトル 検索のみ実行できます。
 
-## `Explore` queries
+## `Explore` クエリ
 
-### `Explore` structure and syntax
+### `Explore` の構造と構文
 
-The `Explore` function has the following syntax:
+`Explore` 関数の構文は次のとおりです。
 
 ```graphql
 {
@@ -58,13 +57,13 @@ The `Explore` function has the following syntax:
 }
 ```
 
-An example query:
+クエリ例:
 
 import GraphQLExploreVec from '/_includes/code/graphql.explore.vector.mdx';
 
 <GraphQLExploreVec/>
 
-The result might look like this:
+結果例:
 
 ```json
 {
@@ -81,27 +80,25 @@ The result might look like this:
 }
 ```
 
-### Search operators
+### 検索オペレーター
 
-The `nearText` and `nearVector` operators work in `Explore` as they do in other queries. See [search operators](search-operators.md) for more information.
+`nearText` と `nearVector` オペレーターは、他のクエリと同様に `Explore` でも動作します。詳細は [検索オペレーター](search-operators.md) を参照してください。
 
+### フィルター
 
-### Filters
+`Explore` クエリはフィルターと組み合わせることができます。詳細は [フィルター](filters.md) を参照してください。
 
-`Explore` queries can be combined with filters. See [filters](filters.md) for more information.
+### ページネーション
 
+`Explore` クエリでは、ページネーション（`limit` と `offset`）は使用できません。
 
-### Pagination
+#### 移動
 
-Pagination (i.e. `limit` with `offset`) is not possible in `Explore` queries.
+多次元ストレージではページネーションができないため、さらなるクエリの洗練が必要な場合は `moveTo` と `moveAwayFrom` の使用を推奨します。これらは他のクエリと同様に動作します。詳細は [検索オペレーター#nearText](search-operators.md#neartext) を参照してください。
 
-#### Moving
-
-Because pagination is not possible in multidimensional storage, we recommend using `moveTo` and `moveAwayFrom` if further query refinement is sought. They work as they do in other queries. See [search operators#nearText](search-operators.md#neartext) for more information.
-
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

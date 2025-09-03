@@ -1,5 +1,5 @@
 ---
-title: Reranking
+title: リランキング
 sidebar_position: 75
 image: og/docs/howto.jpg
 # tags: ['how to', 'rank']
@@ -20,27 +20,27 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-re
 
 
 
-Reranking modules reorder the search result set according to a different set of criteria or a different (e.g. more expensive) algorithm.
+リランキングモジュールは、異なる基準や別の（たとえば、よりコストの高い）アルゴリズムに基づいて検索結果セットを並べ替えます。
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-**Configure reranking**
+ **リランキングの設定**
 
-To rerank search results, enable a reranker [model integration](../model-providers/index.md) for your collection.
+検索結果をリランキングするには、コレクションに対してリランカーの [モデル統合](../model-providers/index.md) を有効にします。
 
-A collection can have multiple rerankers. If multiple `reranker` modules are enabled, specify the module you want to use in the `moduleConfig` section of your schema.
+1 つのコレクションに複数のリランカーを設定できます。複数の `reranker` モジュールが有効になっている場合は、スキーマの `moduleConfig` セクションで使用したいモジュールを指定してください。
 
 </details>
 
-## Named vectors
+## 名前付きベクトル
 
 :::info Added in `v1.24`
 :::
 
-Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
+[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を設定したコレクションでベクトルベースの検索を行う場合、クエリに `target` ベクトル名を含める必要があります。これにより Weaviate は、クエリベクトルと比較する正しいベクトルを見つけることができます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -98,9 +98,9 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
 </Tabs>
 
-## Rerank vector search results
+## ベクトル検索結果のリランキング
 
-To rerank the results of a vector search, configure the object properties to sort on.
+ベクトル検索の結果をリランキングするには、ソート対象となるオブジェクトプロパティを設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -159,9 +159,9 @@ To rerank the results of a vector search, configure the object properties to sor
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例のレスポンス</summary>
 
-The response should look like this:
+レスポンスの例は次のようになります。
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -172,9 +172,9 @@ The response should look like this:
 
 </details>
 
-## Rerank keyword search results
+## キーワード検索結果のリランク
 
-To rerank the results of a keyword search, configure the object properties to sort on.
+キーワード検索の結果をリランクするには、ソート対象となるオブジェクト プロパティを設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -233,9 +233,9 @@ To rerank the results of a keyword search, configure the object properties to so
 </Tabs>
 
 <details>
-  <summary>Example response</summary>
+  <summary>例: レスポンス</summary>
 
-The response should look like this:
+レスポンスは次のようになります。
 
   <FilteredTextBlock
     text={PyCodeV3}
@@ -246,15 +246,15 @@ The response should look like this:
 
 </details>
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [API References: GraphQL - Additional properties](../api/graphql/additional-properties.md#rerank)
-- [API References: GraphQL - Sorting](/weaviate/api/graphql/additional-operators#sorting-api)
-- [Concepts: Reranking](../concepts/reranking.md)
-- [Model providers integrations](../model-providers/index.md)
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [API リファレンス: GraphQL - 追加プロパティ](../api/graphql/additional-properties.md#rerank)
+- [API リファレンス: GraphQL - ソート](/weaviate/api/graphql/additional-operators#sorting-api)
+- [コンセプト: リランク](../concepts/reranking.md)
+- [モデルプロバイダー連携](../model-providers/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

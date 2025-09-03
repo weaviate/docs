@@ -1,6 +1,6 @@
 ---
-title: Modules - an introduction
-description: Learn about Weaviate modules and enhance your data solutions with specialized features.
+title: モジュール - 入門
+description: Weaviate のモジュールについて学び、専門機能でデータ ソリューションを強化しましょう。
 sidebar_position: 90
 image: og/docs/tutorials.jpg
 # tags: ['modules']
@@ -10,15 +10,15 @@ import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 <UpdateInProgressNote />
 
-In this guide, you will get an introduction to the role that modules play in Weaviate.
+このガイドでは、モジュールが Weaviate で果たす役割について紹介します。
 
-As their name suggest, Weaviate modules are options components to enhance Weaviate's functionality, such as to vectorize data or process results (e.g., question answering). The structure of the module name (`x2vec`) informs you of what the module does. E.g., `text2vec` generates text embeddings, `img2vec` image embeddings, etc.
+名前が示すとおり、Weaviate のモジュールはオプションのコンポーネントで、データのベクトル化や結果の処理（例: 質問応答）など、Weaviate の機能を拡張します。モジュール名の構造（`x2vec`）は、そのモジュールが何を行うかを示しています。たとえば、`text2vec` はテキスト埋め込みを生成し、`img2vec` は画像埋め込みを生成します。
 
-## Vectorizers & Rerankers
+## ベクトライザー & リランカー
 
-Vectorizers and rerankers are used for vector search, which goes both for vectorizing the data objects and the queries. For example, if you enable an embedding model integration, semantic searches (`nearText`) become available. It will automatically vectorize your query and match it against the vectors stored in the index.
+ベクトライザーとリランカーはベクトル検索に使用され、データ オブジェクトとクエリの両方をベクトル化します。たとえば、埋め込みモデル統合を有効にすると、セマンティック検索（`nearText`）が利用できるようになります。クエリが自動的にベクトル化され、インデックスに保存されているベクトルと照合されます。
 
-You can set up the vectorization per class as follows:
+クラスごとに以下のようにベクトル化を設定できます:
 
 ```json
 {
@@ -27,7 +27,7 @@ You can set up the vectorization per class as follows:
 }
 ```
 
-Next, you need to tell Weaviate what you want to have vectorized. Only the payload, or do you also want to include the class name and the property name?
+次に、どの部分をベクトル化するかを Weaviate に指定します。ペイロードだけにするか、クラス名やプロパティ名も含めるかを選択できます。
 
 ```json
 {
@@ -51,10 +51,10 @@ Next, you need to tell Weaviate what you want to have vectorized. Only the paylo
 ```
 
 :::note
-The reason you can index class names and property names is that they sometimes give semantic context. For example, a class _Product_ could have the property _name_. If you vectorize everything you get a vector for _Product_ with the _name_ _some product_. This only goes for `text2vec` modules.
+クラス名とプロパティ名をインデックス化できる理由は、それらがセマンティックな文脈を与える場合があるためです。たとえば、_Product_ というクラスに _name_ というプロパティがあるとします。すべてをベクトル化すると、_Product_ に _some product_ という _name_ を持つベクトルが生成されます。これは `text2vec` モジュールでのみ有効です。
 :::
 
-If you don't want to vectorize a property at all, you can simply skip it.
+プロパティをまったくベクトル化したくない場合は、単に省略できます。
 
 ```json
 {
@@ -78,13 +78,13 @@ If you don't want to vectorize a property at all, you can simply skip it.
 }
 ```
 
-## Example
+## 例
 
-The following code is a complete example of a schema.
+以下のコードはスキーマの完全な例です。
 
-Let's take a look at the definition for the `Article` class. Look for the `"moduleConfig"` entries on the class and on the property level.
+`Article` クラスの定義を見てみましょう。クラスレベルとプロパティレベルの `"moduleConfig"` エントリを探してください。
 
-You will see that the class and property names are not indexed, but the article _itself_ is. So if you now retrieve a single article, you know that the vector comes from the transformers module.
+クラス名とプロパティ名はインデックス化されていませんが、記事 _自体_ はインデックス化されています。そのため、単一の記事を取得すると、そのベクトルが transformers モジュール由来であることがわかります。
 
 ```json
 {
@@ -269,11 +269,11 @@ You will see that the class and property names are not indexed, but the article 
 }
 ```
 
-## Readers & Generators
+## リーダー & ジェネレーター
 
-Readers & Generators are used to process data after retrieving the data from the database. Question answering is a good example of this. If you set a limit of 10, the 10 results will be run through the Q&A module.
+リーダー & ジェネレーターは、データベースからデータを取得した後にデータを処理するために使用されます。質問応答はその良い例です。limit を 10 に設定すると、取得された 10 件の結果が Q&A モジュールで処理されます。
 
-Some such modules can enables the GraphQL API, for example as shown here.
+これらのモジュールの中には、ここで示すように GraphQL API を有効にできるものもあります。
 
 ```graphql
 {
@@ -297,12 +297,12 @@ Some such modules can enables the GraphQL API, for example as shown here.
 }
 ```
 
-## Recap
+## まとめ
 
-Modules are add-ons to Weaviate that can perform additional functions. You don't have to use them, but you can.
+モジュールは Weaviate に追加機能を提供するアドオンです。必ずしも使用する必要はありませんが、必要に応じて利用できます。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

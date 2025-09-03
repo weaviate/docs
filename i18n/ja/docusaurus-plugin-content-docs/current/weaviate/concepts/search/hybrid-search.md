@@ -1,24 +1,24 @@
 ---
-title: Hybrid search
+title: ハイブリッド検索
 sidebar_position: 60
-description: "Combined vector (semantic) and keyword search leveraging semantic similarity and exact keyword matching strengths."
+description: "ベクトル（セマンティック）検索とキーワード検索を組み合わせ、セマンティック類似度と正確なキーワード一致の強みを活用します。"
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'hybrid search', 'vector search', 'keyword search', 'bm25']
 ---
 
-Hybrid search combines [vector search](./vector-search.md) and [keyword search (BM25)](./keyword-search.md) to leverage the strengths of both approaches. This takes into account results' semantic similarity (vector search) and exact keyword relevance (BM25), providing more comprehensive search results.
+ハイブリッド検索は [ ベクトル検索 ](./vector-search.md) と [ キーワード検索（BM25）](./keyword-search.md) を組み合わせ、それぞれの強みを活かします。これにより、セマンティック類似度（ベクトル検索）と正確なキーワード関連度（BM25）を考慮し、より包括的な検索結果を提供します。
 
-A hybrid search runs both search types in parallel and combines their scores to produce a final ranking of results. This makes it versatile and robust, suitable for a wide range of search use cases.
+ハイブリッド検索では両方の検索を並列で実行し、それぞれのスコアを組み合わせて最終的なランキングを生成します。これにより多様で堅牢な検索が可能となり、幅広いユースケースに適しています。
 
-## How hybrid search works
+## ハイブリッド検索の仕組み
 
-In Weaviate, a hybrid search performs the following steps:
+Weaviate でハイブリッド検索を行う際の手順は次のとおりです。
 
-1. Executes both searches in parallel:
-   - Vector search to find semantically similar content
-   - BM25 search to find keyword matches
-1. Combines the normalized scores using a [fusion method](#fusion-strategies)
-1. Returns results ranked by the combined scores
+1. 両方の検索を並列で実行  
+   - ベクトル検索でセマンティックに類似したコンテンツを取得  
+   - BM25 検索でキーワード一致を取得  
+1. 正規化したスコアを [ 融合戦略 ](#fusion-strategies) で結合  
+1. 結合スコアでランク付けした結果を返却
 
 ```mermaid
 %%{init: {
@@ -74,124 +74,123 @@ flowchart LR
     linkStyle default stroke:#718096,stroke-width:3px,fill:none,background-color:white
 ```
 
-### Fusion strategies
+### 融合戦略
 
-Weaviate supports two strategies (`relativeScoreFusion` and `rankedFusion`) for combining vector and keyword search scores:
+Weaviate では、ベクトル検索とキーワード検索のスコアを組み合わせる方法として `relativeScoreFusion` と `rankedFusion` の 2 つをサポートしています。
 
-With `relativeScoreFusion` (default from `v1.24`), each object is scored by *normalizing* the metrics output by the vector search and keyword search respectively. The highest value becomes 1, the lowest value becomes 0, and others end up in between according to this scale. The total score is thus calculated by a scaled sum of normalized vector distance and normalized BM25 score.
+`relativeScoreFusion`（`v1.24` 以降のデフォルト）では、各オブジェクトのスコアをベクトル検索とキーワード検索それぞれで *正規化* します。最大値は 1、最小値は 0 とし、その間をスケールします。最終スコアは、正規化されたベクトル距離と正規化された BM25 スコアのスケール済み合計として計算されます。
 
-With `rankedFusion` (default for `v1.23` and lower), each object is scored according to its position in the results for the given search, starting from the highest score for the top-ranked object and decreasing down the order. The total score is calculated by adding these rank-based scores from the vector and keyword searches.
+`rankedFusion`（`v1.23` 以前のデフォルト）では、各オブジェクトは検索結果内の順位に基づいてスコアリングされます。最上位のオブジェクトが最も高いスコアを受け取り、順位が下がるにつれてスコアが減少します。最終スコアは、ベクトル検索とキーワード検索の順位ベーススコアを合算して算出します。
 
-Generally, `relativeScoreFusion` might be a a good choice, which is why it is the default.
+一般的には `relativeScoreFusion` が良い選択肢であることが多いため、デフォルトになっています。
 
-The main reason is that `relativeScoreFusion` retains more information from the original searches than `rankedFusion`, which only retains the rankings. More generally we believe that the nuances captured in the vector and keyword search metrics are more likely to be reflected in rankings produced by `relativeScoreFusion`.
+主な理由は、`relativeScoreFusion` が元の検索スコアからより多くの情報を保持するのに対し、`rankedFusion` は順位のみを保持する点です。ベクトル検索とキーワード検索で得られる微妙な違いは、`relativeScoreFusion` の方がランキングに反映されやすいと考えられます。
 
-We include a concrete example of the two fusion strategies below.
+以下に 2 つの融合戦略の具体例を示します。
 
-### Fusion example
+### 融合例
 
-Let's say that a search returns **five objects** with **document id** (from 0 to 4), and **scores** from **keyword** and **vector search**, **ordered by score**:
+検索により **5 件**のオブジェクトが返され、それぞれ **ドキュメント ID**（0 ～ 4）と **キーワード検索スコア**、**ベクトル検索スコア**が **スコア順** に並んでいるとします。
 
 <table>
   <tr>
-    <th>Search Type</th>
+    <th>検索タイプ</th>
     <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
   </tr>
   <tr>
-    <td>Keyword</td>
+    <td>キーワード</td>
     <td>(1): 5</td><td>(0): 2.6</td><td>(2): 2.3</td><td>(4): 0.2</td><td>(3): 0.09</td>
   </tr>
   <tr>
-    <td>Vector</td>
+    <td>ベクトル</td>
     <td>(2): 0.6</td><td>(4): 0.598</td><td>(0): 0.596</td><td>(1): 0.594</td><td>(3): 0.009</td>
   </tr>
 </table>
 
-#### Ranked fusion
+#### ランクベース融合
 
-The score depends on the rank of each result and is computed according to `1/(RANK + 60)`, resulting in:
+スコアは各結果の順位に依存し、`1/(RANK + 60)` で計算されます。
 
 <table>
   <tr>
-    <th>Search Type</th>
+    <th>検索タイプ</th>
     <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
   </tr>
   <tr>
-    <td>Keyword</td>
+    <td>キーワード</td>
     <td>(1): 0.0154</td><td>(0): 0.0160</td><td>(2): 0.0161</td><td>(4): 0.0167</td><td>(3): 0.0166</td>
   </tr>
   <tr>
-    <td>Vector</td>
+    <td>ベクトル</td>
     <td>(2): 0.016502</td><td>(4): 0.016502</td><td>(0): 0.016503</td><td>(1): 0.016503</td><td>(3): 0.016666</td>
   </tr>
 </table>
 
-As you can see, the results for each rank are identical, regardless of the input score.
+ご覧のとおり、スコアがどれだけ異なっていても、同じ順位であれば結果は同一になります。
 
-#### Relative score fusion
+#### 相対スコア融合
 
-In relative score fusion, the largest score is set to 1 and the lowest to 0, and all entries in-between are scaled according to their **relative distance** to the **maximum** and **minimum values**.
+相対スコア融合では、最大スコアを 1、最小スコアを 0 とし、**最大値**と**最小値**までの**相対距離**に応じてスコールします。
 
 <table>
   <tr>
-    <th>Search Type</th>
+    <th>検索タイプ</th>
     <th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th><th>(id): score</th>
   </tr>
   <tr>
-    <td>Keyword</td>
+    <td>キーワード</td>
     <td>(1): 1.0</td><td>(0): 0.511</td><td>(2): 0.450</td><td>(4): 0.022</td><td>(3): 0.0</td>
   </tr>
   <tr>
-    <td>Vector</td>
+    <td>ベクトル</td>
     <td>(2): 1.0</td><td>(4): 0.996</td><td>(0): 0.993</td><td>(1): 0.986</td><td>(3): 0.0</td>
   </tr>
 </table>
 
-The scores therefore reflect the relative distribution of the original scores. For example, the vector search scores of the first 4 documents were almost identical, which is still the case for the normalized scores.
+この方法では、元のスコア分布が反映されます。たとえば、ベクトル検索の上位 4 件のスコアはほぼ同一であり、正規化後もその関係は維持されています。
 
-#### Comparison
+#### 比較
 
-For the vector search, the scores for the top 4 objects (**IDs 2, 4, 0, 1**) were almost identical, and all of them were good results. While for the keyword search, one object (**ID 1**) was much better than the rest.
+ベクトル検索では上位 4 件（ID 2, 4, 0, 1）のスコアがほぼ同じで、いずれも良好な結果でした。一方、キーワード検索では 1 件（ID 1）が他より大きな差をつけて優れていました。
 
-This is captured in the final result of `relativeScoreFusion`, which identified the object **ID 1** the top result. This is justified because this document was the best result in the keyword search with a big gap to the next-best score and in the top group of vector search.
+`relativeScoreFusion` の最終結果では、ID 1 がトップになりました。これは、キーワード検索で大きく抜きん出ており、ベクトル検索でも上位グループに入っていたため妥当です。
 
-In contrast, for `rankedFusion`, the object **ID 2** is the top result, closely followed by objects **ID 1** and **ID 0**.
+対して `rankedFusion` では、ID 2 がトップで、ID 1 と ID 0 が僅差で続きます。
 
-### Alpha parameter
+### Alpha パラメーター
 
-The alpha value determines the weight of the vector search results in the final hybrid search results. The alpha value can range from 0 to 1:
+alpha 値は、最終的なハイブリッド検索結果におけるベクトル検索の重みを決定します。alpha は 0 から 1 の範囲で指定します。
 
-- `alpha = 0.5` (default): Equal weight to both searches
-- `alpha > 0.5`: More weight to vector search
-- `alpha < 0.5`: More weight to keyword search
+- `alpha = 0.5`（デフォルト）: 両検索に同等の重み  
+- `alpha > 0.5`: ベクトル検索により重み付け  
+- `alpha < 0.5`: キーワード検索により重み付け  
 
-## Search thresholds
+## 検索しきい値
 
-Hybrid search supports a maximum vector distance threshold through the `max vector distance` parameter.
+ハイブリッド検索では `max vector distance` パラメーターで最大ベクトル距離のしきい値を設定できます。
 
-This threshold applies only to the vector search component of the hybrid search, allowing you to filter out results that are too dissimilar in vector space, regardless of their keyword search scores.
+このしきい値はハイブリッド検索のベクトル検索部分のみに適用され、たとえキーワード検索スコアが高くても、ベクトル空間で類似度が低すぎる結果を除外できます。
 
-For example, consider a maximum vector distance of `0.3`. This means objects with a vector distance higher than `0.3` will be excluded from the hybrid search results, even if they have high keyword search scores.
+たとえば `0.3` を指定すると、ベクトル距離が `0.3` を超えるオブジェクトはハイブリッド検索結果から除外されます。
 
-This can be useful when you want to ensure semantic similarity meets a minimum standard while still taking advantage of keyword matching.
+これにより、セマンティック類似度が一定基準以上であることを保証しつつ、キーワード一致の利点も享受できます。
 
-There is no equivalent threshold parameter for the keyword (BM25) component of hybrid search or the final combined scores.
+キーワード（BM25）部分や最終結合スコアには同等のしきい値パラメーターはありません。
 
-This is because BM25 scores are not normalized or bounded like vector distances, making a universal threshold less meaningful.
+これは、BM25 スコアがベクトル距離のように正規化・制約されておらず、一般的なしきい値を設定しても意味が薄いためです。
+## キーワード (BM25) 検索パラメーター
 
-## Keyword (BM25) search parameters
+Weaviate のハイブリッド検索では、キーワード (BM25) 検索で利用できるすべてのパラメーターを使用できます。これには、たとえばトークン化方式、ストップワード、BM25 パラメーター (k1、b)、検索演算子 ( `and` または `or` )、検索対象とする特定のプロパティや、特定のプロパティをブーストする機能などが含まれます。
 
-Hybrid search in Weaviate supports all the parameters available for keyword (BM25) search. This includes, for example, the ability to set the tokenization method, stopwords, BM25 parameters (k1, b), search operators (`and` or `or`), specific properties to search and/or to boost particular properties.
+これらのパラメーターの詳細については、[キーワード検索のページ](./keyword-search.md) をご覧ください。
 
-For more information on these parameters, see the [keyword search page](./keyword-search.md).
-
-## Further resources
+## さらなるリソース
 
 - [How-to: Search](../../search/index.mdx)
 - [How-to: Hybrid search](../../search/hybrid.md)
 - [Blog: A deep dive into Weaviate's fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,7 +1,7 @@
 ---
-title: Additional properties (metadata)
+title: 追加プロパティ（メタデータ）
 sidebar_position: 45
-description: "GraphQL API guide for accessing metadata and additional properties to enrich query results with extra context."
+description: "クエリ結果に追加のコンテキストを付与するためのメタデータおよび追加プロパティへアクセスする GraphQL API ガイド。"
 image: og/docs/api.jpg
 ---
 
@@ -10,32 +10,32 @@ import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
 <TryEduDemo />
 
-Various 'additional properties', also called 'metadata', can be retrieved in queries.
+クエリでは、いわゆる「追加プロパティ」（メタデータ）を取得できます。
 
-### Available additional properties
+### 利用可能な追加プロパティ
 
-The fields `id`, `vector`, `certainty`, `distance`, `featureProjection` and `classification` are available by default.
+`id`、`vector`、`certainty`、`distance`、`featureProjection`、`classification` フィールドはデフォルトで利用できます。
 
-Further additional properties may be available for each query, depending on the query type as well as enabled Weaviate modules.
+クエリの種類や有効化されている Weaviate モジュールに応じて、さらに追加プロパティが利用できる場合があります。
 
-Note that only the `id` is available from cross-referenced objects.
+クロスリファレンスされたオブジェクトから取得できるのは `id` のみである点にご注意ください。
 
-### Requesting additional properties
+### 追加プロパティを要求する
 
-In GraphQL queries, all additional properties to be retrieved can be set through the reserved `_additional{}` property.
+GraphQL クエリでは、取得したいすべての追加プロパティを予約済みプロパティ `_additional{}` で指定できます。
 
-Each of the client libraries may handle this differently. See the examples below.
+クライアントライブラリごとに指定方法が異なる場合があります。以下の例をご参照ください。
 
-### Usage example
+### 使用例
 
-An example query getting the [UUID](#id) and the [distance](#distance).
+ここでは [UUID](#id) と [distance](#distance) を取得するクエリ例を示します。
 
 import GraphQLUnderscoreDistance from '/_includes/code/graphql.underscoreproperties.distance.mdx';
 
 <GraphQLUnderscoreDistance/>
 
 <details>
-  <summary>Expected response</summary>
+  <summary>期待されるレスポンス</summary>
 
 ```json
 {
@@ -65,121 +65,118 @@ import GraphQLUnderscoreDistance from '/_includes/code/graphql.underscorepropert
 
 </details>
 
-## Additional properties
+## 追加プロパティ
 
 ### id
 
-Use the `id` field to fetch the object [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+オブジェクトの [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) を取得するには `id` フィールドを使用します。
 
 ### vector
 
-Use the `vector` field to fetch the vector embedding of the data object
+データオブジェクトの ベクトル 埋め込みを取得するには `vector` フィールドを使用します。
 
 ### generate
 
-:::info Requires a [generative model integration](../../model-providers/index.md)
+:::info [生成モデル統合](../../model-providers/index.md) が必要です
 :::
 
-The `generate` field can be used to perform [retrieval augmented generation](../../search/generative.md).
+`generate` フィールドを使用すると、[検索拡張生成](../../search/generative.md) を実行できます。
 
-A `generate` query will cause corresponding additional result fields to be available, such as `singleResult`, `groupedResult` and `error`.
+`generate` クエリを実行すると、`singleResult`、`groupedResult`、`error` などの追加結果フィールドが利用可能になります。
 
-For examples, see the [related how-to page](../../search/generative.md).
-
+例については、[関連の How-to ページ](../../search/generative.md) をご覧ください。
 
 ### rerank
 
-:::info Requires a [reranker integration](../../model-providers/index.md)
+:::info [リランカー統合](../../model-providers/index.md) が必要です
 :::
 
-The `rerank` field can be used to [reorder the search results](../../search/rerank.md). It accepts two parameters:
+`rerank` フィールドは [検索結果を再順位付け](../../search/rerank.md) するために使用できます。受け取れるパラメータは 2 つです:
 
-| Parameter    | Required | Type       | Description  |
-|--------------|----------|------------|--------------|
-| `property`   | yes      | `string`   | Which property to pass to the reranker. For example, you may want to run a similarity search on a Products collection, then rerank specifically on the Name field. |
-| `query`      | no       | `string`    | Optionally specify a different query. |
+| パラメータ | 必須 | 型 | 説明 |
+|------------|------|----|------|
+| `property` | yes  | `string` | リランカーに渡すプロパティを指定します。たとえば Products コレクションで類似検索を行い、その後 Name フィールドだけでリランクしたい場合などに利用します。 |
+| `query`    | no   | `string` | 別のクエリを任意で指定できます。 |
 
-A `rerank` query will cause corresponding additional `score` field to be available.
+`rerank` クエリを実行すると、追加の `score` フィールドが利用可能になります。
 
-For examples, see the [related how-to page](../../search/rerank.md).
-
+例については、[関連の How-to ページ](../../search/rerank.md) をご覧ください。
 
 ### creationTimeUnix
 
-Use the `creationTimeUnix` field to fetch the data object creation timestamp.
+データオブジェクトの作成タイムスタンプを取得するには `creationTimeUnix` フィールドを使用します。
 
 ### lastUpdateTimeUnix
 
-Use the `lastUpdateTimeUnix` field to fetch the data object last updated timestamp.
+データオブジェクトの最終更新タイムスタンプを取得するには `lastUpdateTimeUnix` フィールドを使用します。
 
-### Vector search metadata
+### ベクトル検索メタデータ
 
-Use the `distance` or `certainty` field to fetch a vector similarity metric between the query vector and each result of a vector search.
+検索クエリ ベクトル と各検索結果との類似度メトリックを取得するには、`distance` または `certainty` フィールドを使用します。
 
 #### Distance
 
 :::info Added in `v1.14.0`
 :::
 
-`Distance` is the raw distance determined as part of the vector search, displayed in the same unit as the distance metric used.
+`Distance` は ベクトル 検索で計算された生の距離であり、使用している距離メトリックと同じ単位で表示されます。
 
-See the full overview of [distance metrics and the expected distance ranges](../../config-refs/distances.md#available-distance-metrics).
+[距離メトリックと想定される距離範囲](../../config-refs/distances.md#available-distance-metrics) の詳細な概要をご覧ください。
 
-A lower value for a distance always means that two vectors are closer to one another than a higher value.
+距離の値が小さいほど、2 つのベクトルが互いに近いことを示します。
 
-#### Certainty (only for cosine distance)
+#### Certainty（コサイン距離のみ）
 
-`Certainty` is an opinionated measure that always returns a number between 0 and 1. It is therefore only usable with fixed-range distance metrics, such as `cosine`.
+`Certainty` は 0 から 1 の間の値を返す経験的な指標です。そのため `cosine` のような固定範囲の距離メトリックでのみ利用できます。
 
-### Keyword search metadata
+### キーワード検索メタデータ
 
-Use the `score` and `explainScore` field to fetch the scores and explanations of each result of a keyword (BM25) search.
-
-#### Score
-
-The `score` will be the BM25F score of the result. Note that this score is relative to the dataset and query.
-
-#### ExplainScore
-
-The `explainScore` will explain the BM25F score of the result, broken down into its components. This can be used to understand why a result was scored the way it was.
-
-
-### Hybrid search metadata
-
-Use the `score` and `explainScore` field to fetch the scores and explanations of each result of a hybrid search.
+キーワード（BM25）検索の各結果に対するスコアおよびその説明を取得するには、`score` と `explainScore` フィールドを使用します。
 
 #### Score
 
-The `score` will be the hybrid score of the result, based on the nominated [fusion algorithm](./search-operators.md#fusion-algorithms). Note that this score is relative to the dataset and query.
+`score` は結果の BM25F スコアです。このスコアはデータセットおよびクエリに依存する相対値である点にご注意ください。
 
 #### ExplainScore
 
-The `explainScore` will be the hybrid score of the result, broken down into its vector and keyword search components. This can be used to understand why a result was scored the way it was.
+`explainScore` は結果の BM25F スコアを構成要素ごとに分解して説明します。これにより、結果がそのスコアになった理由を理解できます。
+
+### ハイブリッド検索メタデータ
+
+ハイブリッド検索の各結果について、そのスコアとスコアリング理由を取得するには、 `score` フィールドと `explainScore` フィールドを使用します。
+
+#### スコア
+
+`score` は、指定された [融合アルゴリズム](./search-operators.md#fusion-algorithms) に基づくハイブリッドスコアです。この値はデータセットとクエリに対して相対的なものです。
+
+#### ExplainScore
+
+`explainScore` は、結果のハイブリッドスコアをベクトル検索成分とキーワード検索成分に分解したものです。これにより、特定のスコアが付いた理由を理解できます。
 
 
-### Classification
+### 分類
 
-When a data-object has been <SkipLink href="/weaviate/api/rest#tag/classifications">subjected to classification</SkipLink>, you can get additional information about how the object was classified by running the following command:
+データオブジェクトが <SkipLink href="/weaviate/api/rest#tag/classifications">分類の対象になった</SkipLink> 場合、次のコマンドを実行するとオブジェクトがどのように分類されたかの追加情報を取得できます。
 
 import GraphQLUnderscoreClassification from '/_includes/code/graphql.underscoreproperties.classification.mdx';
 
 <GraphQLUnderscoreClassification/>
 
-### Feature Projection
+### 特徴射影
 
-Use feature projection to reduce the results' vectors to 2d or 3d for easy visualization. Currently [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) is used.
+特徴射影 (feature projection) を使用すると、結果のベクトルを 2d または 3d に次元削減し、可視化しやすくできます。現在は [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) が使用されています。
 
-To tweak the feature projection optional parameters (currently GraphQL-only) can be provided. The values and their defaults are:
+特徴射影の詳細設定を行うために、オプションパラメーター（現在は GraphQL のみ対応）を指定できます。各パラメーターとそのデフォルト値は次のとおりです。
 
 | Parameter | Type | Default | Implication |
 |--|--|--|--|
-| `dimensions` | `int` | `2` | Target dimensionality, usually `2` or `3` |
-| `algorithm` | `string` | `tsne` | Algorithm to be used, currently supported: `tsne` |
-| `perplexity` | `int` | `min(5, len(results)-1)` | The `t-SNE` perplexity value, must be smaller than the `n-1` where `n` is the number of results to be visualized |
-| `learningRate` | `int` | `25` | The `t-SNE` learning rate |
-| `iterations` | `int` | `100` | The number of iterations the `t-SNE` algorithm runs. Higher values lead to more stable results at the cost of a larger response time |
+| `dimensions` | `int` | `2` | 目標次元数。通常は `2` または `3` |
+| `algorithm` | `string` | `tsne` | 使用するアルゴリズム。現在サポートされているのは `tsne` |
+| `perplexity` | `int` | `min(5, len(results)-1)` | `t-SNE` のパープレキシティ値。可視化対象の件数 `n` に対して `n-1` 未満である必要があります |
+| `learningRate` | `int` | `25` | `t-SNE` の学習率 |
+| `iterations` | `int` | `100` | `t-SNE` アルゴリズムを実行する反復回数。値を大きくすると結果が安定しますが、応答時間が長くなります |
 
-An example with default settings:
+デフォルト設定を使用した例:
 
 import GraphQLUnderscoreFeature from '/_includes/code/graphql.underscoreproperties.featureprojection.mdx';
 
@@ -224,18 +221,19 @@ import GraphQLUnderscoreFeature from '/_includes/code/graphql.underscoreproperti
 
 </details>
 
-The above result can be plotted as follows (where the result in red is the first result):
+上記の結果は次のようにプロットできます（赤色が最初の結果）。
 
 ![Weaviate T-SNE example](./img/plot-noSettings.png?i=1 "Weaviate T-SNE example")
 
-####  best practices and notes
-* Due to the O(n^2) complexity of the `t-SNE` algorithm, we recommend to keep the request size at or below 100 items.
-* `t-SNE` is non-deterministic and lossy, and happens in real-time per query. The dimensions returned have no meaning across queries.
-* Due to the relatively high cost of the underlying algorithm, we recommend to limit requests including a `featureProjection` in high-load situations where response time matters. Avoid parallel requests including a `featureProjection`, so that some threads stay available to serve other, time-critical requests.
+#### ベストプラクティスおよび注意事項
+* `t-SNE` アルゴリズムは O(n^2) の計算量を持つため、リクエストサイズは 100 項目以下に抑えることを推奨します。
+* `t-SNE` は非決定的かつ損失を伴い、クエリごとにリアルタイムで実行されます。そのため、返される次元はクエリ間で意味を持ちません。
+* コストの高いアルゴリズムであるため、応答時間が重要な高負荷状況では `featureProjection` を含むリクエストの数を制限してください。 `featureProjection` を含む並列リクエストは避け、他の時間的制約があるリクエストを処理するスレッドを確保しましょう。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

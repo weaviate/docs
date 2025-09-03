@@ -1,19 +1,19 @@
 ---
-title: Data structure
+title: データ構造
 sidebar_position: 10
-description: "Core data object concepts, schema design, and data organization principles in Weaviate."
+description: "Weaviate におけるコア データオブジェクトの概念、スキーマ設計、およびデータ整理の基本原則。"
 image: og/docs/concepts.jpg
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-## Data object concepts
+## データオブジェクトの概念
 
-Each data object in Weaviate belongs to a `collection` and has one or more `properties`.
+Weaviate の各データオブジェクトは `collection` に属し、1 つ以上の `properties` を持ちます。
 
-Weaviate stores `data objects` in class-based collections. Data objects are represented as JSON-documents. Objects normally include a `vector` that is derived from a machine learning model. The vector is also called an `embedding` or a `vector embedding`.
+Weaviate は `data objects` をクラスベースのコレクションに格納します。データオブジェクトは JSON ドキュメントとして表現されます。通常、オブジェクトには機械学習モデルから生成された `vector` が含まれます。このベクトルは `embedding`、`vector embedding` と呼ばれることもあります。
 
-Each collection contains objects of the same `class`. The objects are defined by a common `schema`.
+各コレクションには同じ `class` のオブジェクトが含まれます。これらのオブジェクトは共通の `schema` で定義されます。
 
 ```mermaid
 flowchart LR
@@ -96,9 +96,9 @@ import InitialCaps from '/_includes/schemas/initial-capitalization.md'
 
 <InitialCaps />
 
-### JSON documents as objects
+### JSON ドキュメントとしてのオブジェクト
 
-Imagine we need to store information about an author named Alice Munro. In JSON format the data looks like this:
+たとえば、 Alice Munro という著者の情報を保存するとします。JSON 形式では次のようになります。
 
 ```json
 {
@@ -110,11 +110,11 @@ Imagine we need to store information about an author named Alice Munro. In JSON 
 }
 ```
 
-### Vectors
+### ベクトル
 
-You can also attach `vector` representations to your data objects. Vectors are arrays of numbers that are stored under the `"vector"` property.
+データオブジェクトには `vector` 表現を付加することもできます。ベクトルは数値の配列で、`"vector"` プロパティに保存されます。
 
-In this example, the `Alice Munro` data object has a small vector. The vector is some information about Alice, maybe a story or an image, that a machine learning model has transformed into an array of numerical values.
+この例では、`Alice Munro` のデータオブジェクトには小さなベクトルが付いています。このベクトルは、 Alice に関するテキストや画像などの情報を、機械学習モデルが数値の配列へ変換したものです。
 
 ```json
 {
@@ -132,13 +132,13 @@ In this example, the `Alice Munro` data object has a small vector. The vector is
 }
 ```
 
-To generate vectors for your data, use one of Weaviate's vectorizer [modules](./modules.md). You can also use your own vectorizer.
+データのベクトルを生成するには、Weaviate のベクトライザー [modules](./modules.md) のいずれかを使用するか、ご自身のベクトライザーを利用できます。
 
-### Collections
+### コレクション
 
-Collections are groups of objects that share a schema definition.
+コレクションは、同じスキーマ定義を共有するオブジェクトの集合です。
 
-In this example, the `Author` collection holds objects that represent different authors.
+この例では、`Author` コレクションにはさまざまな著者を表すオブジェクトが格納されています。
 
 <!-- [Alice Munro
 Born: July 10, 1931 (age 91)
@@ -154,7 +154,7 @@ Nobel Prize Winner
 "Paul Robin Krugman is an American economist and public intellectual, who is..."
 ] -->
 
-The collection looks like this:
+コレクションは次のようになります。
 
 ```json
 [{
@@ -190,33 +190,33 @@ The collection looks like this:
 }]
 ```
 
-Every collection has its own vector space. This means that different collections can have different embeddings of the same object.
+各コレクションは独自のベクトル空間を持ちます。つまり、異なるコレクションでは同じオブジェクトでも異なる埋め込みを持つことができます。
 
-### UUIDs
+### UUID
 
-Every object stored in Weaviate has a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier). The UUID guarantees uniqueness across all collections.
+Weaviate に保存されるすべてのオブジェクトには [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) が割り当てられます。UUID はあらゆるコレクションを通じて一意性を保証します。
 
-You can [use a deterministic UUID](../manage-objects/import.mdx#specify-an-id-value) to ensure that the same object always has the same UUID. This is useful when you want to update an object without changing its UUID.
+常に同じオブジェクトが同じ UUID を持つようにしたい場合は、[決定論的 UUID を使用](../manage-objects/import.mdx#specify-an-id-value) できます。これは UUID を変更せずにオブジェクトを更新したいときに便利です。
 
-If you don't specify an ID, Weaviate generates a random UUID for you.
+ID を指定しなかった場合、Weaviate がランダムな UUID を自動生成します。
 
-In requests without any other ordering specified, Weaviate processes them in ascending UUID order. This means that requests to [list objects](../search/basics.md#list-objects), use of the [cursor API](../manage-objects/read-all-objects.mdx), or requests to [delete objects](../manage-objects/delete.mdx#delete-multiple-objects-by-id), without any other ordering specified, will be processed in ascending UUID order.
+並び順が指定されていないリクエストでは、Weaviate は UUID の昇順で処理します。したがって、[オブジェクトの一覧取得](../search/basics.md#list-objects)、[cursor API](../manage-objects/read-all-objects.mdx) の利用、または [オブジェクトの削除](../manage-objects/delete.mdx#delete-multiple-objects-by-id) など、順序が指定されていないリクエストはすべて UUID の昇順で処理されます。
 
-### Cross-references
+### クロスリファレンス
 
 import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
-If data objects are related, you can use [cross-references](../manage-collections/cross-references.mdx) to represent the relationships. Cross-references in Weaviate are like links that help you retrieve related information. Cross-references capture relationships, but they do not change the vectors of the underlying objects.
+データオブジェクトに関連がある場合、それらの関係を表現するために [クロスリファレンス](../manage-collections/cross-references.mdx) を使用できます。Weaviate のクロスリファレンスは関連情報を取得するためのリンクのようなものです。関係を表現しますが、元のオブジェクトのベクトルは変更しません。
 
-To create a reference, use a property from one collection to specify the value of a related property in the other collection.
+リファレンスを作成するには、片方のコレクションのプロパティを使用して、もう一方のコレクションで関連するプロパティの値を指定します。
 
-#### Cross-reference example
+#### クロスリファレンスの例
 
-For example, *"Paul Krugman writes for the New York Times"* describes a relationship between Paul Krugman and the New York Times. To capture that relationship, create a cross-reference between the `Publication` object that represents the New York Times and the `Author` object that represents Paul Krugman.
+たとえば、「Paul Krugman writes for the New York Times」という文は、 Paul Krugman と New York Times の間の関係を示しています。この関係を表現するには、New York Times を表す `Publication` オブジェクトと、Paul Krugman を表す `Author` オブジェクトの間にクロスリファレンスを作成します。
 
-The New York Times `Publication` object looks like this. Note the UUID in the `"id"` field:
+New York Times の `Publication` オブジェクトは次のようになります。`"id"` フィールドにある UUID に注目してください。
 
 ```json
 {
@@ -229,7 +229,7 @@ The New York Times `Publication` object looks like this. Note the UUID in the `"
 }
 ```
 
-The Paul Krugman `Author` object adds a new property, `writesFor`, to capture the relationship.
+Paul Krugman の `Author` オブジェクトには、関係を表す新しいプロパティ `writesFor` が追加されています。
 
 ```json
 {
@@ -251,62 +251,62 @@ The Paul Krugman `Author` object adds a new property, `writesFor`, to capture th
 }
 ```
 
-The value of the `beacon` sub-property is the `id` value from the New York Times `Publication` object.
+`beacon` サブプロパティの値は、New York Times の `Publication` オブジェクトの `id` の値です。
 
-Cross-reference relationships are directional. To make the link bi-directional, update the `Publication` collection to add a `hasAuthors` property points back to the `Author` collection.
+クロスリファレンスは方向性を持ちます。双方向リンクにするには、`Publication` コレクションに `hasAuthors` プロパティを追加し、`Author` コレクションを参照させます。
 
-### Multiple vector embeddings (named vectors)
+### 複数ベクトル埋め込み（名前付きベクトル）
 
 import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 <MultiVectorSupport />
 
-#### Adding a named vector after collection creation
+#### コレクション作成後に名前付きベクトルを追加する
 
 :::info Added in `v1.31`
 :::
 
-A named vector can be added to an existing collection definition after collection creation. This allows you to add new vector representations for objects without having to delete and recreate the collection.
+名前付きベクトルは、コレクション作成後でも既存のコレクション定義に追加できます。これにより、コレクションを削除・再作成することなく、オブジェクトに新しいベクトル表現を追加できます。
 
-When you add a new named vector to an existing collection definition, it's important to understand that **existing objects' new named vector will remain unpopulated**. Only objects created or updated after the named vector addition will receive these new vector embeddings.
+既存のコレクション定義に新しい名前付きベクトルを追加した場合、**既存オブジェクトの新しい名前付きベクトルは空のまま** であることに注意してください。追加後に作成または更新されたオブジェクトのみが、新しいベクトル埋め込みを受け取ります。
 
-This prevents any unintended side effects, such as incurring large vectorization time or costs for all existing objects in a collection.
+これにより、コレクション内のすべての既存オブジェクトをベクトル化する時間やコストが大量に発生するといった予期しない副作用を防げます。
 
-If you want to populate the new named vector for existing objects, update the object with the existing object UUID and vectors. This will trigger the vectorization process for the new named vector.
+既存オブジェクトにも新しい名前付きベクトルを設定したい場合は、既存オブジェクトの UUID とベクトルを含めてオブジェクトを更新してください。これにより、新しい名前付きベクトルのベクトル化プロセスがトリガーされます。
 
 <!-- TODO: I wonder we should show an example - maybe once the vectorizer syntax is updated with 1.32 -->
 
-:::caution Not available for legacy (unnamed) vectorizers
-The ability to add a named vector after collection creation is only available for collections configured with named vectors.
+:::caution レガシー（名前なし）ベクトライザーでは利用できません
+コレクション作成後に名前付きベクトルを追加できる機能は、名前付きベクトルで設定されたコレクションにのみ利用できます。
 :::
 
-## Data Schema
+## データ スキーマ
 
-Weaviate requires a data schema before you add data. However, you don't have to create a data schema manually. If you don't provide one, Weaviate generates a schema based on the incoming data.
+Weaviate では、データを追加する前に データ スキーマ が必要です。ただし、スキーマ を手動で作成する必要はありません。スキーマ を提供しない場合、Weaviate は入力データに基づいて スキーマ を生成します。
 
 import SchemaDef from '/_includes/definition-schema.md';
 
 <SchemaDef/>
 
-:::note Schema vs. Taxonomy
-A Weaviate data schema is slightly different from a taxonomy. A taxonomy has a hierarchy. Read more about how taxonomies, ontologies and schemas are related in this Weaviate [blog post](https://medium.com/semi-technologies/taxonomies-ontologies-and-schemas-how-do-they-relate-to-weaviate-9f76739fc695).
+:::note スキーマ と タクソノミー
+Weaviate の データ スキーマ はタクソノミーとは少し異なります。タクソノミーには階層があります。タクソノミー・オントロジー・スキーマ の関係については、Weaviate の [ブログ記事](https://medium.com/semi-technologies/taxonomies-ontologies-and-schemas-how-do-they-relate-to-weaviate-9f76739fc695) をご覧ください。
 :::
 
-Schemas fulfill several roles:
+スキーマ は次の役割を果たします:
 
-1. Schemas define collections and properties.
-1. Schemas define cross-references that link collections, even collections that use different embeddings.
-1. Schemas let you configure module behavior, ANN index settings, reverse indexes, and other features on a collection level.
+1. コレクションとプロパティを定義します。  
+1. 異なるエンベディングを使用するコレクション間も含め、コレクションをリンクするクロスリファレンスを定義します。  
+1. モジュールの動作、ANN インデックス設定、リバース インデックス、その他の機能をコレクション単位で設定できます。  
 
-For details on configuring your schema, see the [schema tutorial](../starter-guides/managing-collections/index.mdx) or [How-to: Manage collections](../manage-collections/index.mdx).
+スキーマ の設定方法の詳細は、[スキーマ チュートリアル](../starter-guides/managing-collections/index.mdx) または [How-to: Manage collections](../manage-collections/index.mdx) をご覧ください。
 
-## Multi-tenancy
+## マルチテナンシー
 
 :::info Multi-tenancy availability
-- Multi-tenancy added in `v1.20`
+- `v1.20` で マルチテナンシー が追加されました
 :::
 
-To separate data within a cluster, use multi-tenancy. Weaviate partitions the cluster into shards. Each shard holds data for a single tenant.
+クラスタ内のデータを分離するには、マルチテナンシー を使用します。Weaviate はクラスタを シャード に分割し、各シャード は 1 つのテナントのデータのみを保持します。
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'background': '#f5f5f5' }}}%%
@@ -384,59 +384,59 @@ flowchart TB
     style SingleCollectionConfig fill:#f5f5f5,stroke:#130C49,color:#130C49,stroke-width:2px
 ```
 
-Sharding has several benefits:
+シャーディングの利点:
 
-- Data isolation
-- Fast, efficient querying
-- Easy and robust setup and clean up
+- データの分離  
+- 高速で効率的なクエリ  
+- シンプルかつ堅牢なセットアップとクリーンアップ  
 
-Tenant shards are more lightweight. You can easily have 50,000, or more, active shards per node. This means that you can support 1M concurrently active tenants with just 20 or so nodes.
+テナント シャード は軽量です。1 ノードあたり 50,000 個以上の アクティブ シャード を簡単に扱えます。つまり、およそ 20 ノード で 同時に 1M の アクティブ テナント をサポートできます。
 
-Multi-tenancy is especially useful when you want to store data for multiple customers, or when you want to store data for multiple projects.
+マルチテナンシー は、複数の顧客のデータを保存したい場合や、複数のプロジェクトのデータを保存したい場合に特に有用です。
 
-:::caution Tenant deletion == Tenant data deletion
-Deleting a tenant deletes the associated shard. As a result, deleting a tenant also deletes all of its objects.
+:::caution テナント削除 ＝ テナントデータ削除
+テナントを削除すると、そのテナントに対応するシャードが削除されます。結果として、テナントを削除すると そのテナントのすべてのオブジェクトも削除されます。
 :::
 
-### Tenant states
+### テナント 状態
 
 :::info Multi-tenancy availability
-- Tenant activity status setting added in `v1.21`
-- `OFFLOADED` status added in `v1.26`
+- テナントのアクティビティ ステータス設定は `v1.21` で追加  
+- `OFFLOADED` ステータスは `v1.26` で追加  
 :::
 
-Tenants have an activity status (also called a tenant state) that reflects their availability and storage location. A tenant can be `ACTIVE`, `INACTIVE`, `OFFLOADED`, `OFFLOADING`, or `ONLOADING`.
+テナントには、その利用可否と保存場所を示す アクティビティ ステータス (テナント状態) があります。テナントは `ACTIVE`、`INACTIVE`、`OFFLOADED`、`OFFLOADING`、`ONLOADING` のいずれかです。
 
-- `ACTIVE` tenants are loaded and available for read and write operations.
-- In all other states, the tenant is not available for read or write access. Access attempts return an error message.
-    - `INACTIVE` tenants are stored on local disk storage for quick activation.
-    - `OFFLOADED` tenants are stored on cloud storage. This status is useful for long-term storage for tenants that are not frequently accessed.
-    - `OFFLOADING` tenants are being moved to cloud storage. This is a transient status, and therefore not user-specifiable.
-    - `ONLOADING` tenants are being loaded from cloud storage. This is a transient status, and therefore not user-specifiable. An `ONLOADING` tenant may be being warmed to a `ACTIVE` status or a `INACTIVE` status.
+- `ACTIVE` テナントは読み書きが可能な状態でロードされています。  
+- その他の状態では、テナントは読み書き不可で、アクセスしようとするとエラーになります。  
+    - `INACTIVE` テナントはローカル ディスクに保存され、すぐにアクティブ化できます。  
+    - `OFFLOADED` テナントはクラウド ストレージに保存されます。頻繁にアクセスしないテナントの長期保存に便利です。  
+    - `OFFLOADING` テナントはクラウド ストレージへ移動中です。一時的な状態で、ユーザーは指定できません。  
+    - `ONLOADING` テナントはクラウド ストレージからロード中です。一時的な状態で、ユーザーは指定できません。`ONLOADING` テナントは `ACTIVE` または `INACTIVE` へウォームアップされている最中かもしれません。  
 
-For more details on managing tenants, see [Multi-tenancy operations](../manage-collections/multi-tenancy.mdx).
+テナントの管理詳細は [Multi-tenancy operations](../manage-collections/multi-tenancy.mdx) をご覧ください。
 
-| Status | Available | Description | User-specifiable |
+| Status | 利用可 | 説明 | ユーザー指定可 |
 | :-- | :-- | :-- | :-- |
-| `ACTIVE` | Yes | Loaded and available for read/write operations. | Yes |
-| `INACTIVE` | No | On local disk storage, no read / write access. Access attempts return an error message. | Yes |
-| `OFFLOADED` | No | On cloud storage, no read / write access. Access attempts return an error message. | Yes |
-| `OFFLOADING` | No | Being moved to cloud storage, no read / write access. Access attempts return an error message. | No |
-| `ONLOADING` | No | Being loaded from cloud storage, no read / write access. Access attempts return an error message. | No |
+| `ACTIVE` | Yes | 読み書き可能な状態でロードされています。 | Yes |
+| `INACTIVE` | No | ローカル ディスクに保存され、読み書き不可。アクセスするとエラーになります。 | Yes |
+| `OFFLOADED` | No | クラウド ストレージに保存され、読み書き不可。アクセスするとエラーになります。 | Yes |
+| `OFFLOADING` | No | クラウド ストレージへ移動中で、読み書き不可。アクセスするとエラーになります。 | No |
+| `ONLOADING` | No | クラウド ストレージからロード中で、読み書き不可。アクセスするとエラーになります。 | No |
 
 :::info Tenant status renamed in `v1.26`
-In `v1.26`, the `HOT` status was renamed to `ACTIVE` and the `COLD` status was renamed to `INACTIVE`.
+`v1.26` で `HOT` は `ACTIVE` に、`COLD` は `INACTIVE` に名称変更されました。
 :::
 
-:::info Tenant state propagation
-A tenant state change may take some time to propagate across a cluster, especially a multi-node cluster.
+:::info テナント状態の伝播
+テナント状態の変更がクラスタ全体に行き渡るまで、特にマルチノード クラスタでは時間がかかることがあります。
 
 <br/>
 
-For example, data may not be immediately available after reactivating an offloaded tenant. Similarly, data may not be immediately unavailable after offloading a tenant. This is because the [tenant states are eventually consistent](../concepts/replication-architecture/consistency.md#tenant-states-and-data-objects), and the change must be propagated to all nodes in the cluster.
+たとえば、オフロードされたテナントを再アクティブ化した後でも、データがすぐには利用可能にならない場合があります。同様に、テナントをオフロードした直後にデータがすぐに利用不可にならない場合もあります。これは、[テナント状態は最終的整合性](../concepts/replication-architecture/consistency.md#tenant-states-and-data-objects) を持ち、変更がクラスタ内のすべてのノードへ伝播する必要があるためです。
 :::
 
-#### Offloaded tenants
+#### オフロードされたテナント
 
 :::info Added in `v1.26.0`
 :::
@@ -445,76 +445,76 @@ import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-Offloading tenants requires the relevant `offload-<storage>` module to be [enabled](../configuration/modules.md) in the Weaviate cluster.
+テナントをオフロードするには、対応する `offload-<storage>` モジュールが Weaviate クラスタで [有効化](../configuration/modules.md) されている必要があります。
 
-When a tenant is offloaded, the entire tenant shard is moved to cloud storage. This is useful for long-term storage of tenants that are not frequently accessed. Offloaded tenants are not available for read or write operations until they are loaded back into the cluster.
+テナントをオフロードすると、そのテナント シャード 全体がクラウド ストレージへ移動します。これは、頻繁にアクセスしないテナントを長期保存するのに便利です。オフロードされたテナントは、クラスタへ再ロードされるまで読み書きできません。
 
-### Backups
+### バックアップ
 
-:::caution Backups do not include inactive or offloaded tenants
-Backups of multi-tenant collections will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](../manage-collections/multi-tenancy.mdx#manage-tenant-states) before creating a backup to ensure all data is included.
+:::caution バックアップには Inactive または Offloaded テナントは含まれません
+マルチテナント コレクションのバックアップには `active` テナントのみが含まれ、`inactive` や `offloaded` テナントは含まれません。すべてのデータを含めるには、バックアップ作成前に [テナントをアクティブ化](../manage-collections/multi-tenancy.mdx#manage-tenant-states) してください。
 :::
 
-### Tenancy and IDs
+### テナンシー と ID
 
-Each tenancy is like a namespace, so different tenants could, in theory, have objects with the same IDs. To avoid naming problems, object IDs in multi-tenant clusters combine the tenant ID and the object ID to create an ID that is unique across tenants.
+各テナンシーは名前空間のようなものです。そのため、異なるテナントが同じオブジェクト ID を持つことも理論上は可能です。命名衝突を避けるため、マルチテナント クラスタではオブジェクト ID に テナント ID を組み合わせ、テナントをまたいで一意となる ID を生成します。
 
-### Tenancy and cross-references
+### テナンシー と クロスリファレンス
 
-Multi-tenancy supports some cross-references.
+マルチテナンシー では、一部のクロスリファレンスがサポートされています。
 
-Cross-references like these are supported:
+サポートされるクロスリファレンス:
 
-- From a multi-tenancy object to a non-multi-tenancy object.
-- From a multi-tenancy object to another multi-tenancy object, as long as they belong to the same tenant.
+- マルチテナンシー オブジェクト から 非マルチテナンシー オブジェクト への参照  
+- 同一テナント内での、マルチテナンシー オブジェクト 同士の参照  
 
-Cross-references like these are not supported:
+サポートされないクロスリファレンス:
 
-- From a non-multi-tenancy object to a multi-tenancy object.
-- From a multi-tenancy object to another multi-tenancy object if they belong to different tenants.
+- 非マルチテナンシー オブジェクト から マルチテナンシー オブジェクト への参照  
+- 異なるテナント間の マルチテナンシー オブジェクト 同士の参照  
 
-### Key features
+### 主な機能
 
-- Each tenant has a dedicated, high-performance vector index. Dedicated indexes mean faster query speeds. Instead of searching a shared index space, each tenant responds as if it was the only user on the cluster.
-- Each tenant's data is isolated on a dedicated shard. This means that deletes are fast and do not affect other tenants.
-- To scale out, add a new node to your cluster. Weaviate does not redistribute existing tenants, however Weaviate adds new tenants to the node with the least resource usage.
+- 各テナントは専用の高性能 ベクトル インデックスを持ちます。専用インデックスにより、共有インデックス空間を検索するのではなく、各テナントがクラスタ上で唯一のユーザーであるかのように高速に応答します。  
+- 各テナントのデータは専用シャードに隔離されます。これにより、削除が高速で、他のテナントに影響しません。  
+- スケールアウトするには、クラスタにノードを追加するだけです。Weaviate は既存テナントを再分散しませんが、新しいテナントは最もリソース使用率の低いノードに配置されます。  
 
-:::info Related pages
+:::info 関連ページ
 - [How-to: Manage Data | Multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
-- [Multi-tenancy blog](https://weaviate.io/blog/multi-tenancy-vector-search)
+- [Multi-tenancy ブログ](https://weaviate.io/blog/multi-tenancy-vector-search)
 :::
 
-### Monitoring metrics
+### 監視メトリクス
 
-To group tenants together for monitoring, set [`PROMETHEUS_MONITORING_GROUP = true`](/deploy/configuration/env-vars/index.md) in your system configuration file.
+モニタリング用にテナントをグループ化するには、システム設定ファイルで [`PROMETHEUS_MONITORING_GROUP = true`](/deploy/configuration/env-vars/index.md) を設定します。
 
-### Number of tenants per node
+### ノードあたりのテナント数
 
-The number of tenants per node is limited by operating system constraints. The number of tenants cannot exceed the Linux open file limit per process.
+ノードあたりのテナント数は、オペレーティングシステムの制約によって決まります。テナント数は、プロセスごとの Linux の open file 制限を超えることはできません。
 
-For example, a 9-node test cluster built on `n1-standard-8` machines holds around 170k active tenants. There are 18,000 to 19,000 tenants per node.
+たとえば、`n1-standard-8` マシンで構築した 9 ノードのテストクラスターでは、約 170k のアクティブテナントを保持できます。ノードあたり 18,000 ～ 19,000 のテナントが存在します。
 
-Note that these numbers relate to active tenants only. If you [set unused tenants as `inactive`](../manage-collections/multi-tenancy.mdx#manage-tenant-states), the open file per process limit does not apply.
+これらの数値はアクティブテナントにのみ関係します。未使用のテナントを [`inactive` に設定](../manage-collections/multi-tenancy.mdx#manage-tenant-states) した場合、プロセスごとの open file 制限は適用されません。
 
-## Related pages
+## 関連ページ
 
-For more information, see the following:
+以下もご参照ください。
 
-- [How-to: Multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
-- [How-to: Manage collections](../manage-collections/index.mdx)
+- [How-to: マルチテナンシー操作](../manage-collections/multi-tenancy.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/schema">リファレンス: REST API: Schema</SkipLink>
+- [How-to: コレクションを管理する](../manage-collections/index.mdx)
 
-## Summary
+## まとめ
 
-* The schema defines collections and properties.
-* Collections contain data objects that are describe in JSON documents.
-* Data objects can contain a vector and properties.
-* Vectors come from machine learning models.
-* Different collections represent different vector spaces.
-* Cross-references link objects between schemas.
-* Multi-tenancy isolates data for each tenant.
+* スキーマはコレクションとプロパティを定義します。
+* コレクションには JSON ドキュメントで記述されたデータオブジェクトが含まれます。
+* データオブジェクトには ベクトル とプロパティを含めることができます。
+* ベクトル は機械学習モデルから生成されます。
+* 異なるコレクションは異なる ベクトル 空間を表します。
+* クロスリファレンスはスキーマ間でオブジェクトをリンクします。
+* マルチテナンシーは各テナントのデータを分離します。
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

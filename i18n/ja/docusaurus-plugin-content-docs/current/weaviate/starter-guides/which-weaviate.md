@@ -1,106 +1,105 @@
 ---
-title: Weaviate configurations
+title: Weaviate の設定
 sidebar_position: 1
 image: og/docs/tutorials.jpg
 # tags: ['getting started']
 ---
 
-Weaviate can be configured and deployed in many different ways. Important configuration decisions include:
+Weaviate は多様な方法で設定およびデプロイできます。主な設定に関する決定事項は次のとおりです。
 
-- The [deployment setup](/deploy/index.mdx)
-- The [model integration](../model-providers/index.md) to enable
+- [デプロイ構成](/deploy/index.mdx)
+- 有効にする [モデル統合](../model-providers/index.md)
 
-This page helps you to find the right combination for your project.
+このページでは、プロジェクトに最適な組み合わせを見つけるお手伝いをします。
 
-## Deploy Weaviate
+## Weaviate のデプロイ
 
-Weaviate can be deployed in the following ways:
+Weaviate は次の方法でデプロイできます:
 - [Embedded Weaviate](/deploy/installation-guides/embedded.md)
 - [Docker-Compose](/deploy/installation-guides/docker-installation.md)
 - [Weaviate Cloud (WCD)](/deploy/installation-guides/weaviate-cloud.md)
-- [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
+- [自己管理 Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 
-## Vectorization options
+## ベクトル化のオプション
 
-When adding data objects to Weaviate, you have two choices:
-- Specify the object vector directly.
-- Use a Weaviate vectorizer module to generate the object vector.
+データオブジェクトを Weaviate に追加するとき、次の 2 つの選択肢があります:
+- オブジェクトのベクトルを直接指定する。
+- Weaviate のベクトライザー モジュールを使用してオブジェクトのベクトルを生成する。
 
-If you are using a vectorizer module, your choices depend on your input medium/modality, as well as whether you would prefer a local or API-based vectorizer.
+ベクトライザー モジュールを使用する場合、入力メディア / モダリティと、ローカルか API ベースかのどちらのベクトライザーを選ぶかによって選択肢が変わります。
 
-Generally speaking, an API-based vectorizer is more convenient to use, but it incurs additional costs. A local vectorizer can cost less, but may require specialized hardware (such as a GPU) to run at comparable speeds.
+一般に API ベースのベクトライザーの方が便利ですが、追加コストが発生します。ローカル ベクトライザーはコストを抑えられる可能性がありますが、同等の速度で動作させるには GPU などの専用ハードウェアが必要になる場合があります。
 
-For text, [this open-source benchmark](https://huggingface.co/blog/mteb) provides a good overview of the performance of different vectorizers. Remember, domain-specific and real-world performance may vary.
+テキストの場合、[このオープンソースのベンチマーク](https://huggingface.co/blog/mteb) がさまざまなベクトライザーの性能を概観しています。ただし、ドメイン固有または実環境での性能は異なる可能性がある点にご注意ください。
 
-## Use cases
+## ユースケース
 
-Here are some recommendations for different use cases.
+ユースケースごとの推奨構成を以下に示します。
 
-### Quick evaluation
+### クイック評価
 
-If you are evaluating Weaviate, we recommend using one of these instance types to get started quickly:
+Weaviate を評価する段階では、次のインスタンスタイプのいずれかを使用すると迅速に開始できます:
 
-- [Weaviate Cloud (WCD)](/cloud) sandbox
+- Weaviate Cloud (WCD) サンドボックス
 - [Embedded Weaviate](/deploy/installation-guides/embedded)
 
-Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or  `text2vec-google`.
+インスタンスでは推論 API ベースのテキスト ベクトライザーを使用してください。例: `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, `text2vec-google`.
 
-The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
+[クイックスタート ガイド](/weaviate/quickstart) では WCD サンドボックスと API ベースのベクトライザーを使用して例を実行しています。
 
-### Development
+### 開発
 
-For development, we recommend using
+開発用途には、次の構成を推奨します。
 
-- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/deploy/installation-guides/docker-installation.md).
-- A vectorization strategy that matches your production vectorization strategy.
+- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) または [Docker-Compose](/deploy/installation-guides/docker-installation.md)
+- 本番環境と一致するベクトル化戦略
 
-#### Docker-Compose vs. Weaviate Cloud (WCD)
+#### Docker-Compose と Weaviate Cloud (WCD) の比較
 
-Of the two, Docker-Compose is more flexible as it exposes all configuration options, and can be used in a local development environment. Additionally, it can use local vectorizer modules such as `text2vec-transformers` or `multi2vec-clip` for example.
+2 つのうち Docker-Compose はすべての設定項目にアクセスでき、ローカル開発環境で使用できるため柔軟性が高いです。さらに `text2vec-transformers` や `multi2vec-clip` などのローカル ベクトライザーモジュールも利用できます。
 
-On the other hand, WCD instances are easier to spin up, and takes away the need to manage the deployment yourself.
+一方、WCD インスタンスは立ち上げが簡単で、デプロイを自分で管理する必要がありません。
 
-Note that Embedded Weaviate is currently not recommended for serious development use as it is at an experimental phase.
+Embedded Weaviate は現在実験段階のため、本格的な開発用途には推奨していません。
 
-#### Vectorization strategy
+#### ベクトル化戦略
 
-For development, we recommend using a vectorizer module that at least approximates your needs.
+開発環境では、少なくとも要件を概ね満たすベクトライザーモジュールの使用をお勧めします。
 
-As a first point, you must choose:
-- Whether to vectorize data yourself and import it into Weaviate, or
-- To use a Weaviate vectorizer module.
+まず次のいずれかを選択してください:
+- データを自分でベクトル化して Weaviate にインポートする。
+- Weaviate のベクトライザーモジュールを使用する。
 
-Then, we recommend choosing a vectorizer module that is as close as possible to your production needs. For example, if search quality is of paramount importance, we suggest using your preferred vectorizer module in development as well.
+そのうえで、本番環境の要件にできるだけ近いベクトライザーモジュールを選びましょう。たとえば検索品質が最重要な場合、開発環境でも同じベクトライザーモジュールを使用することをお勧めします。
 
-Keep in mind two other factors, which are cost, and their footprint.
-- Vectorization, such as with an API-based vectorizer, can be expensive. This is especially true if you are dealing with very large datasets.
-- Vector lengths can vary by a factor of ~5, which will impact both your storage and memory requirements. This can ultimately impact cost down the line.
+考慮すべきその他の要素としてコストとフットプリントがあります。
+- API ベースのベクトライザーなどによるベクトル化は高価になる場合があります。特に非常に大きなデータセットを扱う場合は要注意です。
+- ベクトル長は最大で約 5 倍異なることがあり、これがストレージとメモリの要件に影響します。最終的にはコストにも反映されます。
 
-### Production
+### 本番環境
 
-For production deployments, consider one of these hosting models:
+本番環境のデプロイでは、次のホスティングモデルを検討してください。
 
 - [Weaviate Cloud (WCD)](/cloud)
-- [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
+- [自己管理 Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](/cloud)
 
-All of these options are scalable. Kubernetes and Hybrid SaaS offer the most configuration flexibility.
+すべてスケーラブルですが、Kubernetes と Hybrid SaaS が最も柔軟に設定できます。
 
-A WCD-based solution is the easiest way to deploy Weaviate in terms of setup and maintenance. A self-managed Kubernetes deployment combines flexibility and scalability.
+セットアップと保守が最も簡単なのは WCD ベースのソリューションです。自己管理 Kubernetes は柔軟性とスケーラビリティを両立します。
 
-If you need additional configuration control, but you don't want to manage your Weaviate deployment, Hybrid SaaS offers a best-of-both-worlds solution.
+さらに詳細な設定を行いたいが Weaviate の運用管理は任せたい場合、Hybrid SaaS が両方の長所を兼ね備えています。
 
-## By Vectorizer & Reranker
+## ベクトライザー & リランカー別
 
-Weaviate makes various vectorizer & reranker modules available for different media types, also called modalities.
+Weaviate は、モダリティ (メディアタイプ) ごとにさまざまなベクトライザー & リランカーモジュールを提供しています。
 
-Some model types such as Ollama or Transformers models are locally hosted, while others such as Cohere or OpenAI are API-based. This affects their availability in different Weaviate setups.
+Ollama や Transformers モデルなど一部のモデルはローカルホスト型ですが、Cohere や OpenAI などは API ベースであり、Weaviate のセットアップによって利用可否が変わります。
 
-We recommend reviewing from the available [model integrations](../model-providers/index.md) and their availability in different Weaviate setups. Then, choose the one that best fits your needs.
+利用可能な [モデル統合](../model-providers/index.md) と、各 Weaviate セットアップでの可用性を確認し、ニーズに最適なものを選択してください。
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

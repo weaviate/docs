@@ -1,6 +1,6 @@
 ---
-title: Retrieval augmented generation (RAG)
-description: Get started with generative search in Weaviate for personalized data retrieval.
+title: 検索拡張生成 (RAG)
+description: Weaviate でパーソナライズされたデータ検索のための生成検索を始めましょう。
 sidebar_position: 3
 image: og/docs/tutorials.jpg
 # tags: ['getting started']
@@ -17,56 +17,56 @@ import TSCodeLocal from '!!raw-loader!/_includes/code/starter-guides/generative_
 import TSCodeLocalLegacy from '!!raw-loader!/_includes/code/starter-guides/generative_local-v2.ts';
 
 :::info Related pages
-- [Which Weaviate is right for me?](./which-weaviate.md)
-- [How-to: Retrieval augmented generation](../search/generative.md)
+- [自分に合った Weaviate はどれ？](./which-weaviate.md)
+- [ハウツー: 検索拡張生成](../search/generative.md)
 :::
 
-This pages introduces you to retrieval augmented generation (RAG) using Weaviate. It covers:
+このページでは、 Weaviate を使った検索拡張生成 ( RAG ) の概要をご紹介します。内容は次のとおりです。
 
-- What RAG is.
-- How to configure Weaviate for RAG.
-- How to perform RAG.
-- Importing data with RAG in mind.
+- RAG とは何か  
+- Weaviate を RAG 用に設定する方法  
+- RAG を実行する方法  
+- RAG を念頭に置いたデータのインポート方法  
 
-### Prerequisites
+### 前提条件
 
-This guide assumes some familiarity with Weaviate, but it is not required. If you are new to Weaviate, we suggest starting with the [Weaviate Quickstart guide](docs/weaviate/quickstart/index.md).
+本ガイドは Weaviate にある程度慣れていることを想定していますが、必須ではありません。初めての方は、まず [Weaviate クイックスタートガイド](docs/weaviate/quickstart/index.md) をご覧ください。
 
-## Background
+## 背景
 
-### What is retrieval augmented generation?
+### 検索拡張生成とは？
 
-Retrieval augmented generation is a powerful technique that retrieves relevant data to provide to large language models (LLMs) as context, along with the task prompt. It is also called RAG, generative search, or in-context learning in some cases.
+検索拡張生成 ( RAG ) は、大規模言語モデル ( LLM ) に対してタスクのプロンプトと共に関連データをコンテキストとして提供する強力な手法です。 RAG 、生成検索、あるいは場合によっては in-context learning とも呼ばれます。
 
-### Why use RAG?
+### なぜ RAG を使うのか？
 
-LLM are incredibly powerful, but can suffer from two important limitations. These limitation are that:
-- They can confidently produce incorrect, or outdated, information (also called 'hallucination'); and
-- They might simply not be trained on the information you need.
+ LLM は非常に強力ですが、重要な 2 つの制限があります。  
+- 正しくない、あるいは古い情報を自信満々に生成してしまうこと（「幻覚」とも呼ばれます）  
+- 必要な情報が学習データに含まれていない可能性があること  
 
-RAG remedies this problem with a two-step process.
+RAG は 2 段階のプロセスでこの問題を解決します。
 
-The first step is to retrieve relevant data through a query. Then, in the second step, the LLM is prompted with a combination of the retrieve data with a user-provided query.
+まず、クエリを使って関連データを検索します。次に、取得したデータとユーザーからのクエリを組み合わせて LLM にプロンプトを送ります。
 
-This provides in-context learning for the LLM, which causes it to use the relevant and up-to-date data rather than rely on recall from its training, or even worse, hallucinated outputs.
+これにより LLM に in-context learning が提供され、学習時の記憶や幻覚に頼らず、関連性が高く最新のデータを用いて回答を生成できます。
 
-### Weaviate and retrieval augmented generation
+### Weaviate と検索拡張生成
 
-Weaviate incorporates key functionalities to make RAG easier and faster.
+ Weaviate には RAG をより簡単かつ高速にするための主要機能が組み込まれています。
 
-For one, Weaviate's search capabilities make it easier to find relevant information. You can use any of similarity, keyword and hybrid searches, along with filtering capabilities to find the information you need.
+まず、 Weaviate の検索機能により関連情報を簡単に見つけられます。類似度検索、キーワード検索、ハイブリッド検索に加え、フィルタリング機能を使って必要な情報を取得できます。
 
-Additionally, Weaviate has integrated RAG capabilities, so that the retrieval and generation steps are combined into a single query. This means that you can use Weaviate's search capabilities to retrieve the data you need, and then in the same query, prompt the LLM with the same data.
+さらに、 Weaviate には RAG 機能が統合されているため、検索と生成を 1 つのクエリで実行できます。つまり、 Weaviate の検索機能でデータを取得し、同じクエリ内でそのデータを使って LLM にプロンプトを送ることができます。
 
-This makes it easier, faster and more efficient to implement RAG workflows in your application.
+これにより、アプリケーションでの RAG ワークフローをより簡単・高速・効率的に実装できます。
 
-## Examples of RAG
+## RAG の例
 
-Let's begin by viewing examples of RAG in action. We will then explore how to configure Weaviate for RAG.
+まず、 RAG が実際に動作する例を見てみましょう。その後、 Weaviate を RAG 用に設定する方法を解説します。
 
-We have run this demo with an OpenAI language model and a cloud instance of Weaviate. But you can run it with any [deployment method](./which-weaviate.md) and with any generative AI [model integration](../model-providers/index.md).
+ここでは OpenAI の言語モデルとクラウド版 Weaviate を使ってデモを実行しましたが、任意の [デプロイ方法](./which-weaviate.md) と任意の生成 AI [モデル統合](../model-providers/index.md) で実行できます。
 
-Connect to the instance like so, remembering to replace the API key for the LLM used (OpenAI in this case) with your own API key:
+以下のようにインスタンスへ接続してください。使用する LLM （ここでは OpenAI）の API キーを必ずご自身のものに置き換えてください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -105,11 +105,11 @@ Connect to the instance like so, remembering to replace the API key for the LLM 
 
 </Tabs>
 
-### Data retrieval
+### データ検索
 
-Let's take an illustrative example with passages from a book. Here, the Weaviate instance contains a collection of passages from the [Pro Git book](https://git-scm.com/book/en/v2).
+次に、書籍の抜粋を例にとってみましょう。ここでは、 [Pro Git book](https://git-scm.com/book/en/v2) からの抜粋を含むコレクションが Weaviate インスタンスに保存されています。
 
-Before we can generate text, we need to retrieve relevant data. Let's retrieve the three most similar passages to the meaning of `history of git` with a semantic search.
+テキストを生成する前に、関連データを取得する必要があります。意味検索を使って `history of git` の意味に最も近い 3 つの抜粋を取得してみましょう。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -146,7 +146,7 @@ Before we can generate text, we need to retrieve relevant data. Let's retrieve t
 </TabItem>
 </Tabs>
 
-This should return a set of results like the following (truncated for brevity):
+結果は次のようになります（簡略化しています）。
 
 ```
 {
@@ -174,12 +174,11 @@ This should return a set of results like the following (truncated for brevity):
 }
 
 ```
+### 結果セットの変換
 
-### Transform result sets
+この結果セットは、コードを少し変更するだけで ​RAG​ を用いて新しいテキストへ変換できます。まず、`grouped task` プロンプトを使用して情報を要約してみましょう。
 
-We can transform this result set into new text using RAG with just a minor modification of the code. First, let's use a `grouped task` prompt to summarize this information.
-
-Run the following code snippet, and inspect the results:
+以下のコードスニペットを実行し、結果を確認してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -216,7 +215,7 @@ Run the following code snippet, and inspect the results:
 </TabItem>
 </Tabs>
 
-Here is our generated text:
+生成されたテキストは以下のとおりです。
 
 ```
 - Git began as a replacement for the proprietary DVCS called BitKeeper, which was used by the Linux kernel project.
@@ -228,27 +227,27 @@ Here is our generated text:
 - This book was written using Git version 2, but most commands should work in older versions as well.
 ```
 
-In a `grouped task` RAG query, Weaviate:
-- Retrieves the three most similar passages to the meaning of `history of git`.
-- Then prompts the LLM with a combination of:
-    - Text from all of the search results, and
-    - The user-provided prompt, `Summarize the key information here in bullet points`.
+`grouped task` ​RAG​ クエリでは、Weaviate は以下を行います。
+- `history of git`​ の意味に最も近い 3 件のパッセージを取得します。
+- そして LLM を以下の内容でプロンプトします。
+    - すべての検索結果からのテキスト
+    - ユーザー提供プロンプト `Summarize the key information here in bullet points`
 
-Note that the user-provided prompt did not contain any information about the subject matter. But because Weaviate retrieved the relevant data about the history of git, it was able to summarize the information relating to this subject matter using verifiable data.
+ユーザーが入力したプロンプトには、対象トピックに関する情報は入っていません。しかし Weaviate が git の歴史に関する関連データを取得したため、その検証可能なデータを用いて要約を生成できました。
 
-That's how easy it is to perform RAG queries in Weaviate.
+これほど簡単に Weaviate で ​RAG​ クエリを実行できます。
 
-:::note Your results may vary
-There will be variability in the actual text that has been generated. This due to the randomness in LLMs' behaviors, and variability across models. This is perfectly normal.
+:::note あなたの結果は異なる場合があります
+生成されたテキストにはばらつきが生じます。これは LLM のランダム性やモデル間の違いによるもので、正常な挙動です。
 :::
 
-### Transform individual objects
+### 個別オブジェクトの変換
 
-In this example, we will take a look at how to transform individual objects. This is useful when you want to generate text for each object individually, rather than for the entire result set.
+次に、個別オブジェクトを変換する方法を見てみましょう。これは結果セット全体ではなく、各オブジェクトごとにテキストを生成したい場合に便利です。
 
-Here we prompt the model to translate individual wine reviews into French, using emojis. The reviews is a subset from a [publicly available dataset of wine reviews](https://www.kaggle.com/zynicide/wine-reviews).
+ここでは、ワインレビューをフランス語かつ絵文字付きで翻訳するようモデルに依頼します。レビューは [公開データセット](https://www.kaggle.com/zynicide/wine-reviews) からのサブセットです。
 
-Note that in this query, we apply a `single prompt` parameter. This means that the LLM is prompted with each object individually, rather than with the entire result set.
+今回のクエリでは `single prompt` パラメーターを適用しています。つまり LLM は結果セット全体ではなく、各オブジェクト単位でプロンプトされます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -285,9 +284,9 @@ Note that in this query, we apply a `single prompt` parameter. This means that t
 </TabItem>
 </Tabs>
 
-As the query was run with a limit of 5, you should see 5 objects returned, including generated texts.
+クエリを 5 件の制限で実行したため、生成テキストを含む 5 件のオブジェクトが返されるはずです。
 
-Here is our generated text for the first object, and the source text:
+最初のオブジェクトについて、生成テキストと元テキストは次のとおりです。
 
 ```
 ===== Generated text =====
@@ -303,39 +302,37 @@ Title: Schmitz 24 Brix 2012 Sauvignon Blanc (Sierra Foothills)
 Review body Not at all a typical Sauvignon Blanc, this smells like apricot and honeysuckle and tastes like marmalade. It is dry, yet tastes like a late-harvest dessert wine. Expect a little taste adventure here.
 ```
 
-Here, Weaviate has:
-- Retrieved five most similar wine reviews to the meaning of `fruity white wine`.
-- For each result, prompted the LLM with:
-    - The user-provided prompt, replacing `{country}`, `{title}`, and `{review_body}` with the corresponding text.
+ここで Weaviate は以下を実行しました。
+- `fruity white wine`​ の意味に最も類似したワインレビューを 5 件取得。
+- 各結果に対し、ユーザープロンプトで `{country}`、`{title}`、`{review_body}` を該当テキストに置き換えて LLM に提示。
 
-In both examples, you saw Weaviate return new text that is original, but grounded in the retrieved data. This is what makes RAG powerful, by combining the best of data retrieval and language generation.
+どちらの例でも、Weaviate は取得したデータに基づきながらもオリジナルの新しいテキストを返しています。これにより、データ検索と自然言語生成の強みを組み合わせた ​RAG​ の力を実感できます。
 
-## RAG, end-to-end
+## RAG のエンドツーエンド
 
-Now, let's go through an end-to-end example for using Weaviate for RAG.
+では、Weaviate を用いた ​RAG​ のエンドツーエンド例を見ていきましょう。
 
-### Your own Weaviate instance
+### ご自身の Weaviate インスタンス
 
-For this example, you will need access to a Weaviate instance that you can write to. You can use any Weaviate instance, such as a local Docker instance, or a WCD instance.
-
-### Configure Weaviate for RAG
+この例では、書き込み権限のある Weaviate インスタンスが必要です。ローカル Docker インスタンスや WCD インスタンスなど、任意の Weaviate を使用できます。
+### RAG 用 Weaviate 設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-To use RAG, the appropriate `generative-xxx` module must be:
-- Enabled in Weaviate, and
-- Specified in the collection definition.
+RAG を使用するには、適切な `generative-xxx` モジュールを次のように設定する必要があります:  
+- Weaviate で有効化されていること  
+- コレクション定義で指定されていること  
 
-Each module is tied to a specific group of LLMs, such as `generative-cohere` for Cohere models, `generative-openai` for OpenAI models and `generative-google` for Google models.
+各モジュールは特定の LLM グループに紐付けられています。たとえば `generative-cohere` は Cohere モデル、`generative-openai` は OpenAI モデル、`generative-google` は Google モデル向けです。
 
-If you are using WCD, you will not need to do anything to enable modules.
+WCD を使用している場合、モジュールを有効化するための設定は不要です。
 
 <details>
-  <summary>How to list enabled modules</summary>
+  <summary>有効なモジュールを一覧表示する方法</summary>
 
-You can check which modules are enabled by viewing the `meta` information for your Weaviate instance, as shown below:
+以下のように Weaviate インスタンスの `meta` 情報を確認すると、どのモジュールが有効になっているかを確認できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -372,14 +369,14 @@ You can check which modules are enabled by viewing the `meta` information for yo
 </TabItem>
 </Tabs>
 
-The response will include a list of modules. Check that your desired module is enabled.
+レスポンスにはモジュールの一覧が含まれます。目的のモジュールが有効になっているか確認してください。
 
 </details>
 
 <details>
-  <summary>How to enable modules</summary>
+  <summary>モジュールを有効化する方法</summary>
 
-For configurable deployments, you can specify enabled modules. For example, in a Docker deployment, you can do so by listing them on the `ENABLE_MODULES` environment variable, as shown below:
+設定可能なデプロイメントでは、有効化するモジュールを指定できます。たとえば Docker デプロイでは、以下のように `ENABLE_MODULES` 環境変数にリストすることで設定できます。
 
 ```yaml
 services:
@@ -388,16 +385,16 @@ services:
       ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-openai,text2vec-google,generative-cohere,generative-openai,generative-googles'
 ```
 
-Check the specific documentation for your deployment method ([Docker](/deploy/installation-guides/docker-installation.md), [Kubernetes](/deploy/installation-guides/k8s-installation.md), [Embedded Weaviate](/deploy/installation-guides/embedded.md)) for more information on how to configure it.
+設定方法の詳細は、使用しているデプロイメント方法のドキュメント（[Docker](/deploy/installation-guides/docker-installation.md)、[Kubernetes](/deploy/installation-guides/k8s-installation.md)、[Embedded Weaviate](/deploy/installation-guides/embedded.md)）をご参照ください。
 
 </details>
 
 <details>
-  <summary>How to configure the language model</summary>
+  <summary>言語モデルを設定する方法</summary>
 
-Model properties are exposed through the Weaviate module configuration. Accordingly, you can customize them through the `moduleConfig` parameter in the collection definition.
+モデルのプロパティは Weaviate モジュール設定として公開されています。そのため、コレクション定義の `moduleConfig` パラメーターでカスタマイズできます。
 
-For example, the `generative-cohere` module has the following properties:
+たとえば `generative-cohere` モジュールでは、次のプロパティを設定できます。
 
 ```json
     "moduleConfig": {
@@ -412,7 +409,7 @@ For example, the `generative-cohere` module has the following properties:
     }
 ```
 
-And the `generative-openai` module may be configured as follows:
+また `generative-openai` モジュールは次のように設定できます。
 
 ```json
     "moduleConfig": {
@@ -427,19 +424,19 @@ And the `generative-openai` module may be configured as follows:
     }
 ```
 
-See the [documentation](../model-providers/index.md) for various model provider integrations.
+さまざまなモデルプロバイダー統合については、[ドキュメント](../model-providers/index.md)をご覧ください。
 
 </details>
 
-### Populate database
+### データベースの投入
 
-Adding data to Weaviate for RAG is similar to adding data for other purposes. However, there are some important considerations to keep in mind, such as chunking and data structure.
+RAG 用に Weaviate にデータを追加する方法は、他の用途の場合とほぼ同じです。ただし、チャンク化やデータ構造など、いくつか重要なポイントがあります。
 
-You can read further discussions in the [Best practices & tips](#best-practices--tips) section. Here, we will use a chunk length of 150 words and a 25-word overlap. We will also include the title of the book, the chapter it is from, and the chunk number. This will allow us to search through the chunks, as well as filter it.
+詳細は [ベストプラクティスとヒント](#best-practices--tips) セクションで説明しています。ここではチャンク長を 150 ワード、オーバーラップを 25 ワードに設定します。また、書籍のタイトル、章、チャンク番号を含めます。これにより、チャンクを検索したりフィルターしたりできるようになります。
 
-#### Download & chunk
+#### ダウンロードとチャンク化
 
-In the following snippet, we download a chapter of the `Pro Git` book, clean it and chunk it.
+次のスニペットでは、`Pro Git` のある章をダウンロードし、クリーニングしてチャンク化します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -476,13 +473,12 @@ In the following snippet, we download a chapter of the `Pro Git` book, clean it 
 </TabItem>
 </Tabs>
 
-This will download the text from the chapter, and return a list/array of strings of 150 word chunks, with a 25-word overlap added in front.
+このコードは章のテキストをダウンロードし、150 ワードのチャンクを 25 ワードのオーバーラップ付きで文字列のリスト／配列として返します。
+#### コレクション定義の作成
 
-#### Create collection definitions
+これでチャンク用のコレクション定義を作成できます。RAG を使用するには、下記のように生成モジュールをコレクションレベルで指定する必要があります。
 
-We can now create a collection definition for the chunks. To use RAG, your desired generative module must be specified at the collection level as shown below.
-
-The below collection definition for the `GitBookChunk` collection specifies `text2vec-openai` as the vectorizer and `generative-openai` as the generative module. Note that the `generative-openai` parameter can have an empty dictionary/object as its value, which will use the default parameters.
+以下の `GitBookChunk` コレクションの定義では、`text2vec-openai` をベクトライザーに、`generative-openai` を生成モジュールに設定しています。`generative-openai` パラメーターには空の辞書／オブジェクトを指定することもでき、その場合はデフォルトのパラメーターが使用されます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -519,9 +515,9 @@ The below collection definition for the `GitBookChunk` collection specifies `tex
 </TabItem>
 </Tabs>
 
-#### Import data
+#### データのインポート
 
-Now, we can import the data into Weaviate.
+次に、データを Weaviate にインポートします。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -558,7 +554,7 @@ Now, we can import the data into Weaviate.
 </TabItem>
 </Tabs>
 
-Once this is done, you should have imported a collection of chunks from the chapter into Weaviate. You can check this by running a simple aggregation query:
+これが完了すると、章から取得したチャンクのコレクションが Weaviate にインポートされているはずです。簡単な集約クエリを実行して確認できます:
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -595,15 +591,14 @@ Once this is done, you should have imported a collection of chunks from the chap
 </TabItem>
 </Tabs>
 
-Which should indicate that there are `10` chunks in the database.
+これにより、データベースに `10` 個のチャンクが存在することが確認できます。
 
-### Generative queries
+### 生成クエリ
 
-Now that we have configured Weaviate and populated it with data, we can perform generative queries as you saw in the examples above.
+Weaviate の設定とデータの投入が完了したので、上記の例で示したように生成クエリを実行できます。
+#### 単一 (オブジェクトごと) プロンプト
 
-#### Single (per-object) prompts
-
-Single prompts tell Weaviate to generate text based on each retrieved object and the user-provided prompt. In this example, we retrieve two objects and prompt the language model to write a haiku based on the text of each chunk.
+単一プロンプトでは、取得した各オブジェクトとユーザーが入力したプロンプトに基づいて Weaviate にテキストを生成させます。次の例では 2 件のオブジェクトを取得し、それぞれのチャンクのテキストをもとに言語モデルへ俳句の作成を依頼します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -640,7 +635,7 @@ Single prompts tell Weaviate to generate text based on each retrieved object and
 </TabItem>
 </Tabs>
 
-It should return haiku-like text, such as:
+返却される結果は、次のような俳句風のテキストになります。
 
 ```
 ===== Object index: [1] =====
@@ -654,11 +649,11 @@ Untracked, modified, staged.
 Commit to save changes.
 ```
 
-#### Grouped tasks
+#### グループ化タスク
 
-A grouped task is a prompt that is applied to a group of objects. This allows you to prompt the language model with the entire set of search results, such as source documents or relevant passages.
+グループ化タスクは、検索で得られたオブジェクトの集合に対して 1 つのプロンプトを適用する機能です。これにより、ソースドキュメントや関連するパッセージなど、検索結果全体を材料にして言語モデルへ指示を出せます。
 
-In this example, we prompt the language model to write a trivia tweet based on the result.
+この例では、検索結果をもとにトリビア風ツイートを作成するようモデルに依頼します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -695,7 +690,7 @@ In this example, we prompt the language model to write a trivia tweet based on t
 </TabItem>
 </Tabs>
 
-It should return a factoid written for social media, such as:
+結果は、次のようなソーシャルメディア向けのファクトイドになります。
 
 ```
 Did you know? 🤔 Git thinks of its data as snapshots, not just changes to files.
@@ -703,11 +698,11 @@ Did you know? 🤔 Git thinks of its data as snapshots, not just changes to file
 📂🔗 #GitTrivia
 ```
 
-#### Pairing with search
+#### 検索との組み合わせ
 
-RAG in Weaviate is a two-step process under the hood, involving retrieval of objects and then generation of text. This means that you can use the full power of Weaviate's search capabilities to retrieve the objects you want to use for generation.
+Weaviate における RAG は、オブジェクトの取得とテキスト生成という 2 段階のプロセスで構成されています。つまり、生成に使用したいオブジェクトを取得する際に Weaviate の強力な検索機能をフル活用できます。
 
-In this example, we search the chapter for passages that relate to the states of git before generating a tweet as before.
+次の例では、まず git のステートに関連するパッセージをチャプターから検索し、その結果をもとにツイートを生成します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -744,7 +739,7 @@ In this example, we search the chapter for passages that relate to the states of
 </TabItem>
 </Tabs>
 
-This should return text like:
+生成結果は次のようなテキストになります。
 
 ```
 📝 Did you know? Git has three main states for files: modified, staged, and committed.
@@ -752,7 +747,7 @@ This should return text like:
 #GitBasics #Trivia
 ```
 
-Now, simply by changing the search query, we can generate similar content about different topics.
+検索クエリを変更するだけで、異なるトピックについて同様のコンテンツを生成できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -789,7 +784,7 @@ Now, simply by changing the search query, we can generate similar content about 
 </TabItem>
 </Tabs>
 
-In this case, the result should be something like:
+この場合、生成されるテキストは次のようになります。
 
 ```
 Did you know? 🤔 Git stores everything by the hash value of its contents, not by file name!
@@ -799,61 +794,60 @@ Did you know? 🤔 Git stores everything by the hash value of its contents, not 
 🌐💨 #GitTrivia
 ```
 
-As you can see, Weaviate allows you to use the full power of search to retrieve the objects you want to use for generation. This allows you to ground the language model in the context of up-to-date information, which you can retrieve with the full power of Weaviate's search capabilities.
-
-## Best practices & tips
-
-
-### Chunking
-
-In the context of language processing, "chunking" refers to the process of splitting texts into smaller pieces of texts, i.e. "chunks".
-
-For RAG, chunking affects both the information retrieval and the amount of contextual information provided.
-
-While there is no one-size-fits all chunking strategy that we can recommend, we can provide some general guidelines. Chunking by semantic markers, or text length may both be viable strategies.
-
-#### Chunking by semantic markers
-
-Using semantic markers, such as paragraphs, or sections can be a good strategy that will allows you to retain related information in each chunk. Some potential risks are that chunk lengths may vary significantly, and outlier conditions may occur common (e.g. chunks with headers that are not particularly meaningful).
-
-#### Chunking by text length
-
-Using text length, such as 100-150 words, can be a robust baseline strategy. This will allow you to retrieve relevant information without having to worry about the exact length of the text. One potential risk is that chunks may be cut off where they are not semantically meaningful, cutting off important contextual information.
-
-You could use a sliding window approach to mitigate this risk, by overlapping chunks. The length of each chunk can be adjusted to your needs, and based on any unit, such as words, tokens, or even characters.
-
-A baseline strategy could involve using chunks created with a 100-200 word sliding window and a 50-word overlap.
-
-#### Mixed-strategy chunking
-
-Another, slightly more complicated strategy may be using paragraph-based chunks with a maximum and a minimum length, say of 200 words and 50 words respectively.
-
-### Data structure
-
-Another important consideration is the data structure. For example, your chunk object could also contain any additional source-level data, such as the title of the book, the chapter it is from, and the chunk number.
-
-This will allow you to search through the chunks, as well as filter it. Then, you could use this information to control the generation process, such as by prompting the LLM with contextual data (chunks) in the order that they appear in the source document.
-
-Additionally, you could link the chunks to the source document, allowing you to retrieve the source document, or even the entire source document, if needed.
-
-### Complex prompts
-
-While the field of prompting is relatively new, it has seen significant advancements already.
-
-As one example, a technique called "[chain-of-thought prompting](https://arxiv.org/abs/2201.11903)" can be an effective technique. It suggests that the prompt can be used to nudge the model towards producing intermediate reasoning steps, which improves the quality of the answer.
-
-We recommend keeping up to date with the latest developments in the field, and experimenting with different techniques.
-
-Our own [Connor Shorten's podcast](https://weaviate.io/podcast) is a great resource for keeping up with the research, as are resources such as [Arxiv](https://arxiv.org/).
-
-## Wrap-up
-
-We've explored the dynamic capabilities of RAG in Weaviate, showcasing how it enhances large language models through retrieval-augmented generation.
-
-To learn more about specific search capabilities, check out the [How-to: search guide](../search/index.mdx). And to learn more about individual modules, check out the [Modules section](../modules/index.md).
+ご覧のとおり、Weaviate の検索機能を活用して生成に使用したいオブジェクトを取得できるため、最新情報という文脈に基づいて言語モデルを適切にグラウンディングできます。
+## ベストプラクティスとヒント
 
 
-## Questions and feedback
+### チャンキング
+
+言語処理の文脈では、 「チャンキング」 とはテキストをより小さな単位、すなわち “チャンク” に分割するプロセスを指します。
+
+ RAG では、チャンキングは情報検索と提供される文脈情報の量の両方に影響します。
+
+万能なチャンキング戦略は存在しませんが、一般的なガイドラインをいくつかご紹介します。セマンティックマーカーによる方法とテキスト長による方法の両方が有効な戦略になり得ます。
+
+#### セマンティックマーカーによるチャンキング
+
+段落やセクションなどのセマンティックマーカーを用いると、各チャンク内に関連情報を保持できるため有効な戦略になります。ただし、チャンクの長さが大きく変動しやすい点や、あまり意味のないヘッダーのみのチャンクが発生するといったリスクがあります。
+
+#### テキスト長によるチャンキング
+
+100〜150 ワードのようにテキスト長で区切る方法は、堅牢なベースライン戦略になります。テキストの正確な長さを気にせずに関連情報を取得できますが、文脈的に意味のある部分で区切られず重要な情報が切り落とされる可能性があります。
+
+このリスクを軽減するため、スライディングウィンドウを用いてチャンクを重ねる方法を取れます。チャンク長はワード、トークン、文字など任意の単位で調整可能です。
+
+ベースラインとしては、100〜200 ワードのスライディングウィンドウと 50 ワードのオーバーラップでチャンクを作成する方法が考えられます。
+
+#### 混合戦略によるチャンキング
+
+もう少し複雑な方法としては、段落単位で区切りつつ最大 200 ワード、最小 50 ワードといった制限を設ける混合戦略もあります。
+
+### データ構造
+
+もう一つ重要なのがデータ構造です。たとえば、チャンクオブジェクトに書籍タイトルや章、チャンク番号といったソースレベルの追加データを含めることができます。
+
+これによりチャンクを検索・フィルタリングでき、さらに LLM へのプロンプトにソース文書内の順序でチャンクを渡すなど、生成プロセスを制御できます。
+
+加えて、チャンクをソース文書へ紐付けておくことで、必要に応じてソースの一部または全文を取得することも可能です。
+
+### 複雑なプロンプト
+
+プロンプティングの分野は比較的新しいものの、すでに大きな進歩が見られます。
+
+一例として “[chain-of-thought prompting](https://arxiv.org/abs/2201.11903)” という手法があります。これはプロンプトによってモデルに中間的な推論ステップを促し、回答品質を向上させるものです。
+
+最新の研究動向を追い、さまざまな手法を試すことをおすすめします。
+
+弊社の [Connor Shorten のポッドキャスト](https://weaviate.io/podcast) や、[Arxiv](https://arxiv.org/) などのリソースも情報収集に役立ちます。
+
+## まとめ
+
+本記事では、 Weaviate における RAG のダイナミックな能力を紹介し、検索拡張生成によって大規模言語モデルがどのように強化されるかを説明しました。
+
+具体的な検索機能については、[How-to: search ガイド](../search/index.mdx) をご覧ください。各モジュールの詳細は [Modules セクション](../modules/index.md) で確認できます。
+
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

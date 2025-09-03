@@ -1,72 +1,72 @@
 ---
-title: Weaviate console - an introduction
+title: Weaviate コンソール概要
 sidebar_position: 90
 image: og/docs/quickstart-tutorial.jpg
 # tags: ['Weaviate console']
 ---
 
-Here you can learn how to use the Weaviate console.
+ここでは、Weaviate コンソールの使い方を学べます。
 
-The Weaviate console allows you to connect to Weaviate instances that are running on the [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) (our SaaS solution), on your own cluster, on your local machine, or all the public demo datasets. Note that the console never collects any data from your Weaviate instance; you can safely connect every instance, also over VPN.
+Weaviate コンソールを使用すると、[Weaviate Cloud (WCD)](https://console.weaviate.cloud/)（弊社の SaaS ソリューション）上や、ご自身のクラスター、ローカルマシン、またはすべてのパブリックデモデータセットで稼働している Weaviate インスタンスに接続できます。コンソールが Weaviate インスタンスからデータを収集することは決してありません。VPN 越しでも安全にあらゆるインスタンスへ接続できます。
 
 :::tip
-The console is available on: [console.weaviate.cloud](https://console.weaviate.cloud).
+コンソールはこちらでご利用いただけます: [console.weaviate.cloud](https://console.weaviate.cloud)
 :::
 
-## Login page
+## ログインページ
 
-When opening the [Weaviate Console](https://console.weaviate.cloud), you'll see two options:
+[Weaviate コンソール](https://console.weaviate.cloud) を開くと、次の 2 つのオプションが表示されます:
 
-1. ["Sign in with the Weaviate Cloud"](#weaviate-cloud)
+1. ["Weaviate Cloud でサインイン"](#weaviate-cloud)
 2. ["Self-hosted Weaviate"](#connect-to-a-self-hosted-weaviate)
 
 ## Weaviate Cloud
 
-Use Weaviate Cloud to create serverless instances on our infrastructure. Self-hosted and serverless instances offer the same features. The main difference is that you don't have to manage the server or infrastructure for a serverless instance.
+Weaviate Cloud を使うと、弊社インフラ上にサーバーレス インスタンスを作成できます。セルフホストとサーバーレスのインスタンスは同じ機能を提供します。主な違いは、サーバーレス インスタンスではサーバーやインフラの管理が不要な点です。
 
 import SandBoxExpiry from '/_includes/sandbox.expiry.mdx';
 
 <SandBoxExpiry/>
 
-## Connect to a self-hosted Weaviate
+## セルフホストされた Weaviate への接続
 
-You can connect to any Weaviate instance as long as your computer has access to it (yes, this also includes over a VPN). The GraphiQL editor runs locally, and we don't forward any result or query to our servers.
+お使いのコンピューターからアクセスできる限り、あらゆる Weaviate インスタンスへ接続できます（はい、VPN 越しも含まれます）。GraphiQL エディターはローカルで動作し、結果やクエリが当社サーバーに転送されることはありません。
 
-When you're connected, you can use the [GraphiQL](#graphiql) interface to interact with your Weaviate instance.
+接続後は、[GraphiQL](#graphiql) インターフェースを使って Weaviate インスタンスと対話できます。
 
 ## GraphiQL
 
-[GraphiQL](https://github.com/graphql/graphiql) is a graphical interface that allows you to write GraphQL queries interactively, with autocompletion and inline documentation. Curious? Try out the console [right now](https://link.weaviate.io/3ThS9hG) with the news publication dataset.
+[GraphiQL](https://github.com/graphql/graphiql) は、オートコンプリートやインライン ドキュメント付きで対話的に GraphQL クエリを作成できるグラフィカル インターフェースです。興味がありますか？ニュース出版物データセットで今すぐコンソールをお試しください。
 
-## Try out the console
+## コンソールを試す
 
-1. Go to: [this link](https://link.weaviate.io/3ThS9hG)
-2. Start querying :)
+1. 次にアクセスします: [このリンク](https://link.weaviate.io/3ThS9hG)  
+2. クエリを開始してください :)
 
-## Try out the console with your own instance
+## ご自身のインスタンスでコンソールを試す
 
-1. Go to: [https://console.weaviate.cloud](https://console.weaviate.cloud)
-2. In the Self-hosted Weaviate section, provide the endpoint of you instance. If you run Weaviate locally this will be `http://localhost:8080`.
-3. Click "connect"
+1. [https://console.weaviate.cloud](https://console.weaviate.cloud) にアクセスします。  
+2. Self-hosted Weaviate セクションで、ご自身のインスタンスのエンドポイントを入力します。ローカルで Weaviate を実行している場合は `http://localhost:8080` になります。  
+3. 「connect」をクリックします。
 
 :::note
-The console might ask to downgrade to HTTP. This is done to avoid [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) errors.
+コンソールから HTTP へのダウングレードを求められる場合があります。これは [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) エラーを回避するためです。
 :::
 
-## Recap
+## まとめ
 
-* You can use the Weaviate Console to connect to any Weaviate instance.
-* You can use the Weaviate Console to connect to the Weaviate Cloud to create serverless Weaviate instances.
-* Because Weaviate uses GraphQL, you can easily query it with the console's GraphiQL integration.
+* Weaviate コンソールを使って、任意の Weaviate インスタンスに接続できます。  
+* Weaviate コンソールを使って Weaviate Cloud に接続し、サーバーレス Weaviate インスタンスを作成できます。  
+* Weaviate は GraphQL を採用しているため、コンソールの GraphiQL 統合で簡単にクエリを実行できます。
 
-## What next?
+## 次のステップ
 
-- [References: Installation](../installation/index.md)
-- [References: Configuration](../configuration/index.mdx)
-- [References: API](../api/index.mdx)
-- [Concepts](../concepts/index.md)
+- [リファレンス: インストール](../installation/index.md)
+- [リファレンス: 設定](../configuration/index.mdx)
+- [リファレンス: API](../api/index.mdx)
+- [コンセプト](../concepts/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

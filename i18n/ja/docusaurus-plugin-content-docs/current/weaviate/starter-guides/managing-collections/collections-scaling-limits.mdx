@@ -1,26 +1,26 @@
 ---
-title: Scaling limits with collections
-sidebar_label: Scaling limits with collections
+title: コレクションのスケーリング制限
+sidebar_label: コレクションのスケーリング制限
 sidebar_position: 1
 image: og/docs/more-resources.jpg
 # tags: ['performance']
 ---
 
-:::info Added in **`v1.30`**
+:::info **`v1.30`** で追加
 :::
 
-:::caution Have you hit the collections count limit?
-If you see an error that the collection count limit has been reached, it means you **can't create any more collections**. This limit aims to ensure Weaviate remains performant. If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.<br /><br />
-**Instead of simply raising the limit, consider rethinking your architecture**. If you really need to change the limit, use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md) environment variable.
+:::caution コレクション数の上限に達しましたか？
+コレクション数の上限に達したというエラーが表示された場合、**これ以上コレクションを作成することはできません**。この上限は、Weaviate のパフォーマンスを保つためのものです。既に上限を超えているインスタンスでは、新しいコレクションの作成は許可されませんが、既存のコレクションが削除されることはありません。<br /><br />
+**単純に上限を引き上げるのではなく、アーキテクチャを再検討することをお勧めします。** どうしても上限を変更する必要がある場合は、[`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md) 環境変数を使用してください。
 :::
 
-This guide offers an overview of the available architectural choices of using **multi-tenancy** or defining a **dedicated collection** for each subset of data.
+このガイドでは、**マルチテナンシー**を利用するか、データセットごとに**専用コレクション**を定義するかというアーキテクチャの選択肢について概説します。
 
-Consider a scenario where a developer is creating a SaaS platform for product recommendations that allows end users (merchants) to recommend products to their shoppers. In this scenario, each merchant will upload and work only with their own data.
+たとえば、開発者が SaaS プラットフォームを構築し、エンドユーザー（販売者）が自分の顧客に商品を推薦できるようにするケースを考えます。このとき、各販売者は自分のデータのみをアップロードして扱います。
 
-One option is for the developer to create a dedicated collection for each merchant's dataset. However, as the number of merchants grows, so does the number of collections, potentially leading to performance bottlenecks and increased operational complexity. This leads us to an important architectural question: Should you use **"Multi-tenancy"** or **"One collection per dataset"**?
+1 つの選択肢として、開発者が販売者ごとに専用のコレクションを作成する方法があります。しかし、販売者の数が増えるにつれてコレクション数も増え、パフォーマンスのボトルネックや運用の複雑化が生じる可能性があります。そこで重要になるのが、**「マルチテナンシー」**と**「データセットごとに 1 コレクション」**のどちらを採用すべきかというアーキテクチャ上の判断です。
 
-## Choosing the right architecture
+## 最適なアーキテクチャの選択
 
 import MultiTenanyVsMultipleCollections from '/docs/weaviate/starter-guides/img/weaviate-multi-tenancy-vs-multiple-collections.png';
 
@@ -36,33 +36,29 @@ import MultiTenanyVsMultipleCollections from '/docs/weaviate/starter-guides/img/
 </div>
 <br />
 
-When designing a vector database collection definition (data schema) in Weaviate, you must decide between **multi-tenancy** (storing data for multiple tenants in a single collection) or creating **separate collections for each dataset** (the "One collection per dataset" strategy). Each approach has its own advantages and trade-offs, especially in terms of performance, scalability, and management.
+Weaviate でベクトルデータベースのコレクション定義（データスキーマ）を設計する際、**マルチテナンシー**（複数テナントのデータを 1 つのコレクションに格納）と、**データセットごとに専用コレクションを作成**（「データセットごとに 1 コレクション」戦略）のいずれかを選択する必要があります。各アプローチには、パフォーマンス、スケーラビリティ、および管理面でそれぞれ利点とトレードオフがあります。
 
-This guide aims to clarify these concepts and highlight the implications of each approach, focusing on the benefits and drawbacks:
+本ガイドでは、それぞれの概念を明確にし、利点と欠点に焦点を当てて解説します。
 
-- **["One collection per dataset" architecture](#one-collection-per-dataset-architecture)**
-- **[Multi-tenancy architecture](#multi-tenancy-architecture)**
+- **["データセットごとに 1 コレクション" アーキテクチャ](#one-collection-per-dataset-architecture)**
+- **[マルチテナンシー アーキテクチャ](#multi-tenancy-architecture)**
 
-### "One collection per dataset" architecture
+### "データセットごとに 1 コレクション" アーキテクチャ
 
-In this approach, **each dataset is assigned a dedicated collection** to ensure the separation of data between them. Before the implementation of multi-tenancy in Weaviate, this was the best approach for managing multiple datasets.
+この方式では、**各データセットに専用コレクション**を割り当てることで、データを相互に分離します。マルチテナンシーが Weaviate に実装される前は、複数データセットを扱う最良の方法でした。
 
 import MultipleCollectionsExample from '/docs/weaviate/starter-guides/img/weaviate-multiple-collections-example.png';
 
 <div class="row">
   <div class="col col--4">
     <p>
-      When a book store registers on our platform, we create the collection{' '}
-      <code>BookStoreProducts</code>. This allows the store
-      to customize the collection and add properties that are specific to
-      their e-commerce platform, like author, title, genre, etc.
+      書店がプラットフォームに登録すると、<code>BookStoreProducts</code> コレクションを作成します。これにより、著者、タイトル、ジャンルなど、
+      その EC プラットフォーム固有のプロパティを追加できます。
       <br />
       <br />
-      Creating a new collection per dataset (<code>ShoeStoreProducts</code>, <code>
+      データセットごとに新しいコレクション（<code>ShoeStoreProducts</code>、<code>
         GameStoreProducts
-      </code>, etc.) might seem like a simple and effective way to maintain data
-      isolation. However, as the platform scales, this approach quickly encounters
-      significant challenges.
+      </code> など）を作成する方法は、データ分離を維持するシンプルで効果的なやり方に思えます。しかしプラットフォームがスケールすると、この方法はすぐに重大な課題に直面します。
     </p>
   </div>
   <div class="col col--8">
@@ -74,30 +70,30 @@ import MultipleCollectionsExample from '/docs/weaviate/starter-guides/img/weavia
         />
       </div>
       <div class="card__body">
-        "One collection per dataset" architecture example.
+        "データセットごとに 1 コレクション" アーキテクチャの例
       </div>
     </div>
   </div>
 </div>
 <br />
 
-#### Advantages
+#### 利点
 
-- **Customizability**: Collection definition changes or optimizations can be tailored to individual collections without affecting others.
-- **Data isolation**: Datasets are completely separated through the use of dedicated collections.
+- **カスタマイズ性**: コレクション定義の変更や最適化を、他のコレクションに影響を与えず個別に行えます。
+- **データ分離**: 専用コレクションにより、データセットが完全に分離されます。
 
-#### Challenges
+#### 課題
 
-- **Resource overhead:** Each collection requires its own definition, indexes, and storage, leading to increased memory and disk usage. Managing managing millions or even thousands of collections becomes nearly impossible.
-- **Operational complexity:** Collection definition changes must be applied individually to each collection. Every collection must be updated separately and this takes a lot of time and computational effort.
+- **リソースのオーバーヘッド**: 各コレクションは独自の定義、インデックス、およびストレージを必要とし、メモリとディスクの使用量が増加します。何千、何百万というコレクションの管理はほぼ不可能です。
+- **運用の複雑さ**: コレクション定義の変更を各コレクションに個別適用する必要があります。各コレクションを個別に更新するため、多大な時間と計算リソースがかかります。
 
 :::tip
-If you are creating more than `20` collections, take a moment to consider if multi-tenancy might be utilized.
+`20` 個以上のコレクションを作成する場合は、マルチテナンシーの利用を検討してください。
 :::
 
-### Multi-tenancy architecture
+### マルチテナンシー アーキテクチャ
 
-Multi-tenancy refers to the practice of dividing a single collection to multiple datasets (tenants). Each tenant’s data is logically isolated through the use of tenant names. Multi-tenancy is especially useful when you want to store data for multiple customers or when you want to store similarly structured data for multiple projects.
+マルチテナンシーとは、1 つのコレクションを複数のデータセット（テナント）に分割して使用することです。テナント名によって各テナントのデータが論理的に分離されます。複数顧客のデータを保存したい場合や、複数プロジェクトで同様の構造のデータを扱いたい場合に特に有用です。
 
 import MultiTenancyExample from '/docs/weaviate/starter-guides/img/weaviate-multi-tenancy-example.png';
 
@@ -105,14 +101,10 @@ import MultiTenancyExample from '/docs/weaviate/starter-guides/img/weaviate-mult
   <div class="col col--4">
     <br />
     <p>
-      Each tenant is identified by their name, ensuring that their products
-      remain logically separated within the same collection. When a "book store"
-      registers on our platform, we can create a new tenant called{' '}
-      <code>BookStore</code> in the collection <code>Products</code>.
+      各テナントは名前で識別され、同じコレクション内でも論理的に分離された状態が保たれます。書店がプラットフォームに登録するときは、<code>Products</code> コレクションに <code>BookStore</code> という新しいテナントを作成できます。
       <br />
       <br />
-      Queries can also be filtered based on the name to retrieve only the relevant
-      data.
+      クエリは名前でフィルタリングして、関連するデータのみを取得することも可能です。
     </p>
   </div>
   <div class="col col--8">
@@ -123,47 +115,46 @@ import MultiTenancyExample from '/docs/weaviate/starter-guides/img/weaviate-mult
           alt="Multi-tenancy architecture example"
         />
       </div>
-      <div class="card__body">Multi-tenancy architecture example.</div>
+      <div class="card__body">マルチテナンシー アーキテクチャの例</div>
     </div>
   </div>
 </div>
 <br />
+#### 利点
 
-#### Advantages
+多数のテナントをサポートしつつ、リソース効率とスケーラビリティを重視する場合は、マルチテナンシーを使用してください。
 
-Use multi-tenancy when you need to support a large number of tenants and prioritize resource efficiency and scalability.
+- **コレクション定義の管理が容易:** 定義を更新するとすべてのテナントに一括で適用されます。たとえば、すべての商品に新しいプロパティを追加する作業がはるかに簡単になります。  
+- **インデックスのスケーラビリティ:** インデックスを複数のコレクションに分割せず、単一のコレクション用に最適化できます。各テナントには専用の高性能 ベクトル インデックスが割り当てられるため、クエリ速度が向上します。共有インデックス空間を検索する代わりに、各テナントはクラスター上で唯一のユーザーであるかのように応答します。  
+- **データ分離:** 各テナントのデータは完全に分離されています。これにより、データ削除もはるかに容易かつ高速になります。
 
-- **Easier collection definition management:** Definition updates apply universally to all tenants. For example, adding a new property to all products is now much easier.
-- **Index scalability**: Indexes can be optimized for a single collection rather than fragmented across multiple collections. Each tenant has a dedicated, high-performance vector index, which results in faster query speeds. Instead of searching a shared index space, each tenant responds as if it were the only user on the cluster.
-- **Data isolation**: Each tenant’s data is completely segregated. This also means that data deletion is much easier and faster.
+#### 課題
 
-#### Challenges
+- **アクセス制御の複雑さ:** テナント間のデータ分離を保証するために、[きめ細かなアクセス制御](/deploy/configuration/authorization.md) を実装する必要があります。  
+- **コレクション定義の統一:** すべてのテナントが同じコレクション スキーマと設定を共有する必要があります。
 
-- **Access control complexity**: [Fine-grained access control](/deploy/configuration/authorization.md) must be implemented to ensure data isolation between tenants.
-- **Uniform collection definition**: All tenants must share the same collection schema and configuration.
-
-:::tip Reduce storage costs
-You can change the [state of a tenant](../managing-resources/tenant-states.mdx) into `inactive` (stored locally on disk) or `offloaded` (stored on cloud storage) in order to save resources.
+:::tip ストレージコストの削減
+リソースを節約するため、[テナントの state](../managing-resources/tenant-states.mdx) を `inactive`（ローカルディスクに保存）または `offloaded`（クラウドストレージに保存）に変更できます。
 
 <br />
 
-Find out more about managing multi-tenancy in [How to: Multi-tenancy operations](../../manage-collections/multi-tenancy.mdx).
+マルチテナンシーの管理については、[How-to: マルチテナンシー操作](../../manage-collections/multi-tenancy.mdx) を参照してください。
 :::
 
-## Conclusion
+## 結論
 
-While the choice between multi-tenancy and dedicated collections depends on your specific use case, the substantial **performance benefits of multi-tenancy** make it the preferred approach for most scenarios. With multi-tenancy, you gain significant resource efficiency by reducing indexing overhead and streamlining collection definition updates across all tenants.
+マルチテナンシーと専用コレクションのどちらを選択するかはユースケースによって異なりますが、マルチテナンシーには大きなパフォーマンス上の利点があり、ほとんどのシナリオで推奨されます。マルチテナンシーを利用すると、インデックス作成のオーバーヘッドを削減し、テナント全体でのコレクション定義の更新を簡素化することで、大幅なリソース効率を得られます。
 
-Although dedicated collections can offer enhanced data isolation and flexibility in certain cases, their operational complexity and increased resource demands often outweigh these benefits. Regularly monitoring query performance, index size, and resource utilization is crucial to fine-tune your architecture, ensuring it meets both current and future needs.
+専用コレクションはケースによってはより高度なデータ分離と柔軟性を提供できますが、運用の複雑さとリソース要求の増大がこれらの利点を上回ることがよくあります。クエリ性能、インデックスサイズ、リソース使用率を定期的に監視し、アーキテクチャを微調整することが、現在および将来のニーズを満たすうえで不可欠です。
 
-## Further resources
+## 参考リソース
 
-To find out more about multi-tenancy, visit the following pages:
+マルチテナンシーの詳細については、次のページをご覧ください。
 
-- [How-to: Multi-tenancy operations](../../manage-collections/multi-tenancy.mdx)
-- [How-to: Manage tenant states](../../manage-collections/tenant-states.mdx)
+- [How-to: マルチテナンシー操作](../../manage-collections/multi-tenancy.mdx)
+- [How-to: テナント state の管理](../../manage-collections/tenant-states.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

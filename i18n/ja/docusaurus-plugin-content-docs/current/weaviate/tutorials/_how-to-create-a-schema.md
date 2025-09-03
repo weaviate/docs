@@ -1,48 +1,48 @@
 ---
-title: How to define a schema
+title: スキーマの定義方法
 sidebar_position: 2
 image: og/docs/tutorials.jpg
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-This tutorial is designed to show you an example of how to create a schema in Weaviate.
+このチュートリアルでは、Weaviate でスキーマを作成する例をご紹介します。
 
-By the end of this tutorial, you should have a good idea of how to create a schema. You will begin to see why it is important, and where to find the relevant information required for schema definition.
+最後まで読み終えると、スキーマの作成方法がよく理解でき、その重要性や定義に必要な情報をどこで確認できるかが分かるようになります。
 
-### Key points
+### 要点
 
-- A schema consists of classes and properties, which define concepts.
-- Words in the schema (names of classes and properties) must be part of the `text2vec-contextionary`.
-- The schema can be modified through the <SkipLink href="/weaviate/api/rest#tag/schema">RESTful API</SkipLink>. Python, JavaScript and Go clients are available.
-- A class or property in Weaviate becomes immutable, but can always be extended.
-- Learn about Concepts, Classes, Properties and dataTypes in the [API reference guide](/weaviate/api/index.mdx).
+- スキーマはコンセプトを定義するクラスとプロパティで構成されます。  
+- スキーマ内の語（クラス名とプロパティ名）は `text2vec-contextionary` に含まれている必要があります。  
+- スキーマは <SkipLink href="/weaviate/api/rest#tag/schema">RESTful API</SkipLink> を介して変更できます。 Python 、 JavaScript 、 Go の各クライアントも利用可能です。  
+- Weaviate ではクラスやプロパティはイミュータブルですが、いつでも拡張できます。  
+- [API リファレンスガイド](/weaviate/api/index.mdx) で Concepts、Classes、Properties、dataTypes について学べます。  
 
-## Prerequisites
+## 前提条件
 
-We recommend reading the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first before tackling this tutorial.
+このチュートリアルに進む前に、まず [クイックスタートチュートリアル](docs/weaviate/quickstart/index.md) をお読みいただくことをおすすめします。
 
-For the tutorial, you will need a Weaviate instance running with the `text2vec-contextionary` module. We assume your instance is running at `http://localhost:8080`.
+このチュートリアルでは `text2vec-contextionary` モジュールを有効にした Weaviate インスタンスが必要です。ここでは `http://localhost:8080` で稼働していると仮定します。
 
-## What is a schema?
+## スキーマとは
 
 import SchemaDef from '/_includes/definition-schema.md';
 
 <SchemaDef/>
 
-If you begin to import data without having defined a schema, it will trigger the [auto-schema feature](/weaviate/config-refs/collections.mdx#auto-schema) and Weaviate will create a schema for you.
+スキーマを定義せずにデータのインポートを開始すると、[auto-schema 機能](/weaviate/config-refs/collections.mdx#auto-schema) が起動し、Weaviate が自動的にスキーマを作成します。
 
-While this may be suitable in some circumstances, in many cases you may wish to explicitly define a schema. Manually defining the schema will help you ensure that the schema is suited for your specific data and needs.
+状況によってはこれで十分な場合もありますが、多くの場合はスキーマを明示的に定義したいでしょう。手動でスキーマを定義することで、ご自身のデータや要件に最適化されたスキーマを確実に作成できます。
 
-## Creating your first schema (with the Python client)
+## はじめてのスキーマ作成（ Python クライアントの場合）
 
-Let's say you want to create a schema for a [news publications](../more-resources/example-datasets.md) dataset. This dataset consists of random news **articles** from **publications** like Financial Times, New York Times, CNN, Wired, etcetera. You also want to capture the **authors**, and some metadata about these objects like publication dates.
+たとえば、[ニュース出版物](../more-resources/example-datasets.md) データセット用にスキーマを作成したいとします。このデータセットには Financial Times、New York Times、CNN、Wired などの **出版物** からランダムに抽出したニュース **記事** が含まれています。さらに **著者** と、発行日などのメタデータも保持したいとします。
 
-Follow these steps to create and upload the schema.
+以下の手順でスキーマを作成し、アップロードします。
 
-**1. Start with an empty schema in JSON format.**
+**1. JSON 形式の空のスキーマから始める。**
 
-Schemas are defined in JSON format. An empty schema to start with:
+スキーマは JSON 形式で定義します。まずは次のような空のスキーマを用意します:
 
 ```json
 {
@@ -50,15 +50,15 @@ Schemas are defined in JSON format. An empty schema to start with:
 }
 ```
 
-**2. Define classes and properties.**
+**2. クラスとプロパティを定義する。**
 
-Let's say there are three classes you want to capture from this dataset in Weaviate: `Publication`, `Article` and `Author`. Notice that these words are *singular* (which is best practice, each data object is *one* of these classes).
+このデータセットから Weaviate で取り込みたいクラスは `Publication`、`Article`、`Author` の 3 つだとします。これらの語は *単数形* であることに注意してください（ベストプラクティスとして、各データオブジェクトはこれらのクラスの *1 つ* だからです）。
 
-Classes always start with a capital letter. Properties always begin with a small letter. When you want to concatenate words into one class name or one property name, you can do that with camelCasing the words. Read more about schema classes, properties and data types [here](/weaviate/config-refs/collections.mdx).
+クラス名は必ず大文字で始めます。プロパティ名は必ず小文字で始めます。複数の単語を連結してクラス名やプロパティ名にする場合は camelCase を用います。スキーマのクラス、プロパティ、データ型についての詳細は[こちら](/weaviate/config-refs/collections.mdx)をご覧ください。
 
-Let's define the class `Publication` with the properties `name`, `hasArticles` and `headquartersGeoLocation` in JSON format. `name` will be the name of the `Publication`, in string format. `hasArticles` will be a reference to Article objects. We need to define the class `Article` in the same schema to make sure the reference is possible. `headquartersGeoLocation` will be of the special dataType `geoCoordinates`.
+では、`Publication` クラスをプロパティ `name`、`hasArticles`、`headquartersGeoLocation` で定義しましょう。`name` は `Publication` の名称で、型は string です。`hasArticles` は Article オブジェクトへの参照になります。この参照を可能にするため、同じスキーマ内で `Article` クラスも定義する必要があります。`headquartersGeoLocation` は特別なデータ型 `geoCoordinates` です。
 
-Note that the property `"title"` of the class `"Article"` has dataType `"string"`, while the property `"content"` is of dataType `"text"`. `string` values and `text` values are tokenized differently to each other.
+なお、`Article` クラスのプロパティ `"title"` はデータ型 `"string"` ですが、`"content"` のデータ型は `"text"` です。`string` と `text` の値は異なる方法でトークン化されます。
 
 ```json
 {
@@ -90,7 +90,7 @@ Note that the property `"title"` of the class `"Article"` has dataType `"string"
 }
 ```
 
-Add the classes `Article` and `Author` to the same schema, so you will end up with the following classes:
+クラス `Article` と `Author` も同じスキーマに追加すると、次のようなクラス一覧になります:
 
 ```json
 [{
@@ -167,7 +167,7 @@ Add the classes `Article` and `Author` to the same schema, so you will end up wi
 }]
 ```
 
-Now, add this list of classes to the schema, which will look like this:
+次に、このクラス一覧をスキーマに追加すると、スキーマは次のようになります:
 
 ```json
 {
@@ -246,46 +246,45 @@ Now, add this list of classes to the schema, which will look like this:
 }
 ```
 
-**3. Upload the schema to Weaviate with the Python client.**
+**3. Python クライアントでスキーマを Weaviate にアップロードする。**
 
 import HowtoSchemaCreatePython from '/_includes/code/howto.schema.create.python/index.mdx';
 
 <HowtoSchemaCreatePython/>
 
-## Creating your first schema (RESTful API, Python or JavaScript)
+## はじめてのスキーマ作成（ RESTful API 、 Python または JavaScript ）
 
-Currently, only with the Python client it is possible to upload a whole schema at once. If you are not using Python, you need to upload classes to Weaviate one by one. The schema from the previous example can be uploaded in the following steps:
+現在、スキーマ全体を一度にアップロードできるのは Python クライアントのみです。Python を使用しない場合は、クラスを 1 つずつ Weaviate にアップロードする必要があります。前述のスキーマは次の手順でアップロードできます:
 
-**1. Create the classes without references.**
+**1. 参照なしでクラスを作成する。**
 
-   References to other classes can only be added if those classes exist in the Weaviate schema. Therefore, we first create the classes with all properties without references, and we will add the references in the step 2.
+他のクラスへの参照は、そのクラスがすでに Weaviate スキーマに存在している場合にのみ追加できます。そのため、まずは参照を含まないすべてのプロパティを持つクラスを作成し、ステップ 2 で参照を追加します。
 
-   Add a class `Publication` without the property `hasArticles`, and add this to a running Weaviate instance as follows:
+`hasArticles` プロパティを含まない `Publication` クラスを作成し、次のように稼働中の Weaviate インスタンスに追加します:
 
 import HowtoSchemaCreate from '/_includes/code/howto.schema.create.mdx';
 
 <HowtoSchemaCreate/>
 
-   Perform a similar request with the `Article` and `Author` class.
+`Article` クラスと `Author` クラスについても同様のリクエストを実行してください。
 
-**2. Add reference properties to the existing classes.**
+**2. 既存クラスに参照プロパティを追加する。**
 
-   There are three classes in your Weaviate schema now, but we did not link them to each other with cross-references yet. Let's add the reference between `Publication` and `Articles` in the property `hasArticles` like this:
+現在 Weaviate スキーマには 3 つのクラスがありますが、まだクロスリファレンスで相互にリンクされていません。`Publication` と `Articles` を結ぶ参照 `hasArticles` を次のように追加します:
 
 import HowtoSchemaPropertyAdd from '/_includes/code/howto.schema.property.add.mdx';
 
 <HowtoSchemaPropertyAdd/>
 
-   Repeat this action with a property `wroteArticles` and `writesFor` of `Author` referring to `Articles` and `Publication` respectively.
+同様に、`Author` クラスの `wroteArticles` プロパティで `Articles` を、`writesFor` プロパティで `Publication` を参照するように設定してください。
 
-## Next steps
+## 次のステップ
 
 <!-- - Go to the [next "How-to" guide]  (./how-to-import-data.md) to learn how to import data. -->
-- Check out the <SkipLink href="/weaviate/api/rest#tag/schema">RESTful API reference</SkipLink> for an overview of all schema API operations.
-- Read this article on [Weaviate and schema creation](https://hackernoon.com/what-is-weaviate-and-how-to-create-data-schemas-in-it-7hy3460)
+- すべてのスキーマ API 操作の概要については <SkipLink href="/weaviate/api/rest#tag/schema">RESTful API リファレンス</SkipLink> をご覧ください。  
+- [Weaviate とスキーマ作成](https://hackernoon.com/what-is-weaviate-and-how-to-create-data-schemas-in-it-7hy3460) に関するこの記事もぜひお読みください。  
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

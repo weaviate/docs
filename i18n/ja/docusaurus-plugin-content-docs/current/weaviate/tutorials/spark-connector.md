@@ -1,6 +1,6 @@
 ---
-title: Load data into Weaviate with Spark
-description: Discover Spark connector integration with Weaviate for large data processing.
+title: Spark を使用して Weaviate にデータをロードする
+description: 大規模データ処理のための Spark コネクターと Weaviate の統合を確認します。
 sidebar_position: 80
 image: og/docs/tutorials.jpg
 # tags: ['how to', 'spark connector', 'spark']
@@ -11,42 +11,42 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/spark-tutorial.py';
 
-This tutorial is designed to show you an example of how to use the [Spark Connector](https://github.com/weaviate/spark-connector) to import data into Weaviate from Spark.
+このチュートリアルでは、 [ Spark Connector ](https://github.com/weaviate/spark-connector) を使用して Spark から Weaviate にデータをインポートする方法の一例を示します。
 
-By the end of this tutorial, you'll be able to see how to you can import your data into [Apache Spark](https://spark.apache.org/) and then use the Spark Connector to write your data to Weaviate.
+チュートリアル終了時には、 [ Apache Spark ](https://spark.apache.org/) にデータを取り込み、 Spark Connector を使ってそのデータを Weaviate に書き込む手順を理解できます。
 
-## Installation
+## インストール
 
-We recommend reading the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first before tackling this tutorial.
+まずは [ クイックスタートチュートリアル ](docs/weaviate/quickstart/index.md) をご覧いただくことをおすすめします。
 
-We will install the python `weaviate-client` and also run Spark locally for which we need to install the python `pyspark` package. Use the following command in your terminal to get both:
+Python の `weaviate-client` をインストールし、ローカルで Spark を実行するために Python の `pyspark` パッケージもインストールします。両方を取得するには、ターミナルで次のコマンドを実行してください。  
 ```bash
 pip3 install pyspark weaviate-client
 ```
 
-For demonstration purposes this tutorial runs Spark locally. See the Apache Spark docs or consult your cloud environment for installation and deploying a Spark cluster and choosing a language runtime other than Python.
+このチュートリアルはデモ目的で Spark をローカル実行します。 Spark クラスターのインストールやデプロイ、Python 以外のランタイム言語の選択については Apache Spark のドキュメントやクラウド環境のガイドを参照してください。
 
-We will also need the Weaviate Spark connector. You can download this by running the following command in your terminal:
+Weaviate Spark コネクターも必要です。ターミナルで次のコマンドを実行してダウンロードしてください。
 
 ```bash
 curl https://github.com/weaviate/spark-connector/releases/download/v||site.spark_connector_version||/spark-connector-assembly-||site.spark_connector_version||.jar --output spark-connector-assembly-||site.spark_connector_version||.jar
 ```
 
-For this tutorial, you will also need a Weaviate instance running at `http://localhost:8080`. This instance does not need to have any modules and can be setup by following the [Quickstart tutorial](docs/weaviate/quickstart/index.md).
+また、 `http://localhost:8080` で稼働する Weaviate インスタンスも必要です。モジュールは不要で、 [ クイックスタートチュートリアル ](docs/weaviate/quickstart/index.md) に従ってセットアップできます。
 
-You will also need Java 8+ and Scala 2.12 installed. You can get these separately setup or a more convenient way to get both of these set up is to install [IntelliJ](https://www.jetbrains.com/idea/).
+Java 8+ と Scala 2.12 も必要です。個別にセットアップしても構いませんが、 [ IntelliJ ](https://www.jetbrains.com/idea/) をインストールすると両方をまとめて手軽に導入できます。
 
-## What is the Spark connector?
+## Spark コネクターとは？
 
-The Spark Connector gives you the ability to easily write data from Spark data structures into Weaviate. This is quite useful when used in conjunction with Spark extract, transform, load (ETLs) processes to populate a Weaviate vector database.
+ Spark Connector は、 Spark のデータ構造から Weaviate へデータを書き込む作業を容易にします。これは、 Spark の ETL（抽出・変換・ロード）プロセスと組み合わせて Weaviate ベクトルデータベースを構築する際に非常に便利です。
 
-The Spark Connector is able to automatically infer the correct Spark DataType based on your schema for the collection in Weaviate. You can choose to vectorize your data when writing to Weaviate, or if you already have vectors available, you can supply them. By default, the Weaviate client will create document IDs for you for new documents but if you already have IDs you can also supply those in the `dataframe`. All of this and more can be specified as options in the Spark Connector.
+Spark Connector は Weaviate のコレクションスキーマを基に、適切な Spark DataType を自動推論します。書き込み時にデータをベクトル化することも、既に ベクトル がある場合はそれを渡すことも可能です。新規ドキュメントには Weaviate クライアントがデフォルトで ID を生成しますが、既存の ID がある場合は `dataframe` で指定することもできます。これらはすべて Spark Connector のオプションで設定できます。
 
-## Initializing a Spark session
+## Spark セッションの初期化
 
-Often a Spark Session will be created as part of your Spark environment (such as a Databricks notebook) and the only task is to add the Weaviate Spark Connector jar as a library to your cluster.
+通常、 Spark セッションは（ Databricks ノートブックなどの） Spark 環境で自動的に作成され、クラスターに Weaviate Spark コネクターの jar をライブラリとして追加するだけで済みます。
 
-If you want to create a local Spark Session manually, use the following code to create a session with the connector:
+ローカルで Spark セッションを手動作成する場合は、次のコードを使用してコネクター付きのセッションを作成してください。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -59,21 +59,21 @@ If you want to create a local Spark Session manually, use the following code to 
   </TabItem>
 </Tabs>
 
-You should now have a Spark Session created and will be able to view it using the **Spark UI** at `http://localhost:4040`.
+これで Spark セッションが作成され、 `http://localhost:4040` の **Spark UI** で確認できます。
 
-You can also verify the local Spark Session is running by executing:
+ローカル Spark セッションが稼働していることを次のコマンドで確認することもできます。
 
 ```python
 spark
 ```
 
-## Reading data into Spark
+## Spark へのデータ読み込み
 
-For this tutorial we will read in a subset of the Sphere dataset, containing 100k lines, into the Spark Session that was just started.
+このチュートリアルでは Sphere データセットの 100k 行のサブセットを、先ほど開始した Spark セッションに読み込みます。
 
-You can download this dataset from [here](https://storage.googleapis.com/sphere-demo/sphere.100k.jsonl.tar.gz). Once downloaded extract the dataset.
+データセットは [こちら](https://storage.googleapis.com/sphere-demo/sphere.100k.jsonl.tar.gz) からダウンロードできます。ダウンロード後に展開してください。
 
-The following line of code can be used to read the dataset into your Spark Session:
+次のコードでデータセットを Spark セッションに読み込めます。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -86,7 +86,7 @@ The following line of code can be used to read the dataset into your Spark Sessi
   </TabItem>
 </Tabs>
 
-To verify this is done correctly we can have a look at the first few records:
+正しく読み込まれたかを確認するため、先頭の数レコードを表示してみましょう。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -99,13 +99,13 @@ To verify this is done correctly we can have a look at the first few records:
   </TabItem>
 </Tabs>
 
-## Writing to Weaviate
+## Weaviate への書き込み
 
 :::tip
-Prior to this step, make sure your Weaviate instance is running at `http://localhost:8080`. You can refer to the [Quickstart tutorial](docs/weaviate/quickstart/index.md) for instructions on how to set that up.
+この手順の前に、 Weaviate インスタンスが `http://localhost:8080` で稼働していることを確認してください。セットアップ方法は [ クイックスタートチュートリアル ](docs/weaviate/quickstart/index.md) を参照してください。
 :::
 
-To quickly get a Weaviate instance running you can save the following `docker-compose.yml` file to your local machine:
+手早く Weaviate を起動するには、次の `docker-compose.yml` ファイルをローカルに保存します。
 
 ```yaml
 ---
@@ -136,13 +136,13 @@ volumes:
 ...
 ```
 
-Then, navigate to the directory and start Weaviate according to the `docker-compose.yml` using:
+そのディレクトリへ移動し、次のコマンドで `docker-compose.yml` に従って Weaviate を起動します。
 
 ```bash
 docker compose up -d
 ```
 
-The Spark Connector assumes that a schema has already been created in Weaviate. For this reason we will use the Python client to create this schema. For more information on how we create the schema see this [tutorial](../starter-guides/managing-collections/index.mdx).
+Spark Connector は Weaviate にスキーマが既に作成されていることを前提とします。そのため、 Python クライアントを使ってスキーマを作成します。スキーマの詳細な作成方法については、こちらの [チュートリアル](../starter-guides/managing-collections/index.mdx) をご覧ください。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -155,7 +155,7 @@ The Spark Connector assumes that a schema has already been created in Weaviate. 
   </TabItem>
 </Tabs>
 
-Next we will write the Spark `dataframe` to Weaviate. The `.limit(1500)` could be removed to load the full dataset.
+続いて Spark の `dataframe` を Weaviate に書き込みます。 `.limit(1500)` を削除すればフルデータセットをロードできます。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -168,7 +168,7 @@ Next we will write the Spark `dataframe` to Weaviate. The `.limit(1500)` could b
   </TabItem>
 </Tabs>
 
-And don't forget to close the connection to Weaviate after you are done.
+作業が終わったら Weaviate との接続を忘れずに閉じてください。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -180,34 +180,33 @@ And don't forget to close the connection to Weaviate after you are done.
     />
   </TabItem>
 </Tabs>
+## Spark Connector オプション
 
-## Spark connector options
+上記のコードを詳しく確認し、Spark Connector で何が起こっているのかと、使用できるすべての設定を理解しましょう。
 
-Let's examine the code above to understand exactly what's happening and all the settings for the Spark Connector.
+- `.option("host", "localhost:8080")` を使用して、書き込み先の Weaviate インスタンスを指定します。
 
-- Using `.option("host", "localhost:8080")` we specify the Weaviate instance we want to write to
+- `.option("className", "Sphere")` を使用して、データを先ほど作成したコレクションに書き込むようにします。
 
-- Using `.option("className", "Sphere")` we ensure that the data is written to the collection we just created.
+- すでに `dataframe` にドキュメント ID がある場合、`.withColumnRenamed("id", "uuid")` でそれを `uuid` にリネームし、続けて `.option("id", "uuid")` を指定することで、Weaviate にその ID を渡せます。
 
-- Since we already have document IDs in our `dataframe`, we can supply those for use in Weaviate by renaming the column that is storing them to `uuid` using `.withColumnRenamed("id", "uuid")` followed by the `.option("id", "uuid")`.
+- `.option("vector", "vector")` を使用すると、`dataframe` の `vector` 列に保存されているベクトルを Weaviate に利用させ、ゼロから再ベクトル化する代わりにそれらを使用させることができます。
 
-- Using `.option("vector", "vector")` we can specify for Weaviate to use the vectors stored in our `dataframe` under the column named `vector` instead of re-vectorizing the data from scratch.
+- `.option("batchSize", 200)` を使用して、Weaviate へ書き込む際のバッチサイズを指定します。バッチ処理に加えて、ストリーミングも可能です。
 
-- Using `.option("batchSize", 200)` we specify how to batch the data when writing to Weaviate. Aside from batching operations, streaming is also allowed.
+- `.mode("append")` を使用して、書き込みモードを `append` に指定します。現在サポートされている書き込みモードは `append` のみです。
 
-- Using `.mode("append")` we specify the write mode as `append`. Currently only the append write mode is supported.
-
-By now we've written our data to Weaviate, and we understand the capabilities of the Spark connector and its settings. As a last step, we can query the data via the Python client to confirm that the data has been loaded.
+ここまででデータを書き込み、Spark Connector の機能と設定を理解しました。最後のステップとして、Python client を使ってデータがロードされたことを確認できます。
 
 ```python
 client.query.get("Sphere", "title").do()
 ```
 
-## Additional options
+## 追加オプション
 
-### Connecting to Weaviate
+### Weaviate への接続
 
-If using an authenticated cluster such as on [WCD](/cloud/index.mdx) you can provide `.option("apiKey", WEAVIATE_API_KEY)` for api key authentication like below:
+[WCD](/cloud/index.mdx) などの認証付きクラスターを使用する場合、API キー認証として `.option("apiKey", WEAVIATE_API_KEY)` を以下のように指定できます。
 
 ```python
 df.limit(1500).withColumnRenamed("id", "uuid").write.format("io.weaviate.spark.Weaviate") \
@@ -221,23 +220,23 @@ df.limit(1500).withColumnRenamed("id", "uuid").write.format("io.weaviate.spark.W
     .mode("append").save()
 ```
 
-- Using `.option("retries", 2)` will set the number of retries (default 2). Note that Spark will also retry failed stages.
+- `.option("retries", 2)` を使用するとリトライ回数を設定できます（デフォルト 2）。Spark も失敗したステージをリトライする点に注意してください。
 
-- Using `.option("retriesBackoff", 2)` time to wait in seconds between retries (default 2 seconds).
+- `.option("retriesBackoff", 2)` を使用すると、リトライ間で待機する時間（秒）を設定できます（デフォルト 2 秒）。
 
-- Using `.option("timeout", 60)` will set the timeout for a single batch (default 60 seconds).
+- `.option("timeout", 60)` を使用すると、1 バッチあたりのタイムアウトを設定できます（デフォルト 60 秒）。
 
-- Arbitrary headers can be supplied with the option prefix `header:`. For example to provide an `OPENAI_APIKEY` header the following can be used `.option("header:OPENAI_APIKEY", ...)`.
+- `header:` プレフィックスを付けることで任意のヘッダーを設定できます。たとえば `OPENAI_APIKEY` ヘッダーを渡すには `.option("header:OPENAI_APIKEY", ...)` を使用します。
 
-- Additionally OIDC options are supported `.option("oidc:username", ...)`, `.option("oidc:password", ...)`, `.option("oidc:clientSecret", ...)`, `.option("oidc:accessToken", ...)`, `.option("oidc:accessTokenLifetime", ...)`, `.option("oidc:refreshToken", ...)`. For more information on these options See the [Java client documentation](../client-libraries/java.md#oidc-authentication).
+- さらに OIDC オプションもサポートされています。`.option("oidc:username", ...)`、`.option("oidc:password", ...)`、`.option("oidc:clientSecret", ...)`、`.option("oidc:accessToken", ...)`、`.option("oidc:accessTokenLifetime", ...)`、`.option("oidc:refreshToken", ...)` です。詳細は [Java client ドキュメント](../client-libraries/java.md#oidc-authentication) を参照してください。
 
-### Named vectors and multi-vector embeddings
+### 名前付きベクトルとマルチベクトル埋め込み
 
-The Spark Connector supports Weaviate named vectors, enabling users to import multiple vectors (including multi-vector embeddings) into a collection. If the collection is defined with named vectors, you can reference them using `vectors:*` or `multiVectors:*` options.
+Spark Connector は Weaviate の名前付きベクトルをサポートしており、複数のベクトル（マルチベクトル埋め込みを含む）をコレクションへインポートできます。コレクションが名前付きベクトルで定義されている場合、`vectors:*` または `multiVectors:*` オプションで参照できます。
 
-For example, let's create a `BringYourOwnVectors` collection with two named vectors:
-- `regular` - normal embedding (example: `[0.1, 0.2]`)
-- `colbert` - multi vector embedding (example: `[[0.1, 0.2], [0.3, 0.4]]`)
+例として、2 つの名前付きベクトルを持つ `BringYourOwnVectors` コレクションを作成してみましょう。
+- `regular` ‐ 通常の埋め込み（例: `[0.1, 0.2]`）
+- `colbert` ‐ マルチベクトル埋め込み（例: `[[0.1, 0.2], [0.3, 0.4]]`）
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -250,7 +249,7 @@ For example, let's create a `BringYourOwnVectors` collection with two named vect
   </TabItem>
 </Tabs>
 
-The corresponding Spark code that will insert `regularVector` and `multiVector` data into `regular` and `colbert` named vectors looks like this:
+`regular` と `colbert` の名前付きベクトルに、それぞれ `regularVector` と `multiVector` のデータを挿入する Spark コードは次のようになります。
 
 <Tabs groupId="languages">
  <TabItem value="py" label="Python Client v4">
@@ -263,7 +262,7 @@ The corresponding Spark code that will insert `regularVector` and `multiVector` 
   </TabItem>
 </Tabs>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

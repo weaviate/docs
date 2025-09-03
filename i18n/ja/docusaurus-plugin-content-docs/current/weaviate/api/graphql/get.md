@@ -1,7 +1,7 @@
 ---
-title: Object-level queries (Get)
+title: オブジェクトレベルクエリ（Get）
 sidebar_position: 10
-description: "Fetch data from Weaviate with GraphQL's get queries for efficient retrieval."
+description: " GraphQL の get クエリで Weaviate からデータを効率的に取得します。"
 image: og/docs/api.jpg
 # tags: ['graphql', 'get{}']
 ---
@@ -12,45 +12,43 @@ import TryEduDemo from '/_includes/try-on-edu-demo.mdx';
 
 <TryEduDemo />
 
-This page covers object-level query functions. They are collectively referred to as `Get` queries within.
+このページでは、オブジェクトレベルのクエリ機能について説明します。これらは本文中で `Get` クエリと総称されます。
 
 
-### Parameters
+### パラメーター
 
-A `Get` query requires the target collection to be specified.
+`Get` クエリでは、対象のコレクションを指定する必要があります。
 
-- In GraphQL calls, the properties to be retrieved to be must be specified explicitly.
-- In gRPC calls, all properties are fetched by default.
+-  GraphQL 呼び出しでは、取得するプロパティを明示的に指定する必要があります。  
+-  gRPC 呼び出しでは、すべてのプロパティがデフォルトで取得されます。  
 
-- Metadata retrieval is optional in both GraphQL and gRPC calls.
+-  GraphQL と gRPC のいずれの呼び出しでも、メタデータ取得は任意です。
 
-#### Available arguments
+#### 使用可能な引数
 
-Each `Get` query can include any of the following types of arguments:
-
-| Argument | Description | Required |
+| 引数 | 説明 | 必須 |
 | -------- | ----------- | -------- |
-| Collection | Also called "class". The object collection to be retrieved from. | Yes |
-| Properties | Properties to be retrieved | Yes (GraphQL) <br/> (No if using gRPC API) |
-| Cross-references | Cross-references to be retrieved | No |
-| [Metadata](./additional-properties.md) | Metadata (additional properties) to be retrieved | No |
-| [Conditional filters](./filters.md) | Filter the objects to be retrieved | No |
-| [Search operators](./search-operators.md) | Specify the search strategy (e.g. near text, hybrid, bm25) | No |
-| [Additional operators](./additional-operators.md) | Specify additional operators (e.g. limit, offset, sort) | No |
-| [Tenant name](#multi-tenancy) | Specify the tenant name | Yes, if multi-tenancy enabled. ([Read more: what is multi-tenancy?](../../concepts/data.md#multi-tenancy)) |
-| [Consistency level](#consistency-levels) | Specify the consistency level | No |
+| Collection | 「クラス」とも呼ばれます。取得対象のオブジェクトコレクション。 | Yes |
+| Properties | 取得するプロパティ | Yes (GraphQL) <br/> (No if using gRPC API) |
+| Cross-references | 取得するクロスリファレンス | No |
+| [メタデータ](./additional-properties.md) | 取得するメタデータ（追加プロパティ） | No |
+| [条件フィルター](./filters.md) | 取得するオブジェクトをフィルタリング | No |
+| [検索オペレーター](./search-operators.md) | 検索戦略を指定（例: near text、hybrid、bm25） | No |
+| [追加オペレーター](./additional-operators.md) | 追加オペレーターを指定（例: limit、offset、sort） | No |
+| [Tenant name](#multi-tenancy) | テナント名を指定 | Yes, if multi-tenancy enabled. ([詳細: マルチテナンシーとは?](../../concepts/data.md#multi-tenancy)) |
+| [Consistency level](#consistency-levels) | コンシステンシーレベルを指定 | No |
 
 
-#### Example usage
+#### 使用例
 
 import GraphQLGetSimple from '/_includes/code/graphql.get.simple.mdx';
 
 <GraphQLGetSimple/>
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-The above query will result in something like the following:
+上記のクエリを実行すると、次のような結果が得られます:
 
 ```
 {'points': 400.0, 'answer': 'Refrigerator Car', 'air_date': '1997-02-14', 'hasCategory': 'TRANSPORTATION', 'question': 'In the 19th century Gustavus Swift developed this type of railway car to preserve his packed meat', 'round': 'Jeopardy!'}
@@ -68,30 +66,30 @@ The above query will result in something like the following:
 </details>
 
 <details>
-  <summary>Order of retrieved objects</summary>
+  <summary>取得オブジェクトの順序</summary>
 
-Without any arguments, the objects are retrieved according to their ID.
+引数を指定しない場合、オブジェクトは ID 順で取得されます。  
 
-Accordingly, such a `Get` query is not suitable for a substantive object retrieval strategy. Consider the [Cursor API](./additional-operators.md#cursor-with-after) for that purpose.
+したがって、このような `Get` クエリは実質的なオブジェクト検索戦略には適していません。その用途には [Cursor API](./additional-operators.md#cursor-with-after) の使用をご検討ください。
 
 </details>
 
-:::tip Read more
-- [How-to search: Basics](../../search/basics.md)
+:::tip さらに詳しく
+- [検索方法: 基本](../../search/basics.md)
 :::
 
 ### `Get` groupBy
 
-You can use retrieve groups of objects that match the query.
+クエリに一致するオブジェクトをグループ単位で取得できます。
 
-The groups are defined by a property, and the number of groups and objects per group can be limited.
+グループはプロパティによって定義され、グループ数やグループごとのオブジェクト数を制限できます。
 
 import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
 
 <GroupbyLimitations />
 
 
-#### Syntax
+#### 構文
 
 ```graphql
 {
@@ -126,7 +124,7 @@ import GroupbyLimitations from '/_includes/groupby-limitations.mdx';
 }
 ```
 
-#### Example usage:
+#### 使用例:
 
 
 import GraphQLGroupBy from '/_includes/code/graphql.get.groupby.mdx';
@@ -134,47 +132,49 @@ import GraphQLGroupBy from '/_includes/code/graphql.get.groupby.mdx';
 <GraphQLGroupBy/>
 
 
-### Consistency levels
+### コンシステンシーレベル
 
 :::info Added in `v1.19`
 :::
 
-Where replication is enabled, you can specify a `consistency` argument with a `Get` query. The available options are:
+レプリケーションが有効な場合、`Get` クエリに `consistency` 引数を指定できます。利用可能なオプションは次のとおりです:
 - `ONE`
 - `QUORUM` (Default)
 - `ALL`
 
-Read more about consistency levels [here](../../concepts/replication-architecture/consistency.md).
+コンシステンシーレベルの詳細は [こちら](../../concepts/replication-architecture/consistency.md) を参照してください。
 
 import GraphQLGetConsistency from '/_includes/code/graphql.get.consistency.mdx';
 
 <GraphQLGetConsistency/>
 
-### Multi-tenancy
+### マルチテナンシー
 
 :::info Added in `v1.20`
 :::
 
-In a multi-tenancy collection, each `Get` query must specify a tenant.
+マルチテナンシーコレクションでは、各 `Get` クエリでテナントを指定する必要があります。
 
 import GraphQLGetMT from '/_includes/code/graphql.get.multitenancy.mdx';
 
 <GraphQLGetMT/>
 
 
-:::tip Read more
-- [How-to manage data: Multi-tenancy operations](../../manage-collections/multi-tenancy.mdx)
+:::tip さらに詳しく
+- [データ管理方法: マルチテナンシー操作](../../manage-collections/multi-tenancy.mdx)
 :::
 
-## Cross-references
+
+
+## クロスリファレンス
 
 import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
-Weaviate supports cross-references between objects. Each cross-reference behaves like a property.
+Weaviate では、オブジェクト間のクロスリファレンスをサポートしています。各クロスリファレンスはプロパティのように振る舞います。
 
-You can retrieve cross-referenced properties with a `Get` query.
+クロスリファレンスされたプロパティは `Get` クエリで取得できます。
 
 import GraphQLGetBeacon from '/_includes/code/graphql.get.beacon.mdx';
 
@@ -183,7 +183,7 @@ import GraphQLGetBeacon from '/_includes/code/graphql.get.beacon.mdx';
 import GraphQLGetBeaconUnfiltered from '!!raw-loader!/_includes/code/graphql.get.beacon.v3.py';
 
 <details>
-  <summary>Expected response</summary>
+  <summary>期待されるレスポンス</summary>
 
 <FilteredTextBlock
   text={GraphQLGetBeaconUnfiltered}
@@ -195,90 +195,91 @@ import GraphQLGetBeaconUnfiltered from '!!raw-loader!/_includes/code/graphql.get
 </details>
 
 :::tip Read more
-- [How-to retrieve cross-referenced properties](../../search/basics.md#retrieve-cross-referenced-properties)
+- [クロスリファレンスされたプロパティの取得方法](../../search/basics.md#retrieve-cross-referenced-properties)
 :::
 
-## Additional properties / metadata
+## 追加プロパティ / メタデータ
 
-Various metadata properties may be retrieved with `Get{}` requests. They include:
+さまざまなメタデータプロパティは `Get{}` リクエストで取得できます。以下が例です:
 
 Property | Description |
 -------- | ----------- |
-`id` | Object id |
-`vector` | Object vector |
-`generate` | Generative module outputs |
-`rerank` | Reranker module outputs |
-`creationTimeUnix` | Object creation time |
-`lastUpdateTimeUnix` | Object last updated time |
-`distance` | Vector distance to query (vector search only) |
-`certainty` | Vector distance to query, normalized to certainty (vector search only) |
-`score` | Search score (BM25 and hybrid only) |
-`explainScore` | Explanation of the score (BM25 and hybrid only) |
-`classification` | Classification outputs |
-`featureProjection` | Feature projection outputs |
+`id` | オブジェクト ID |
+`vector` | オブジェクト ベクトル |
+`generate` | 生成モジュールの出力 |
+`rerank` | リランカー モジュールの出力 |
+`creationTimeUnix` | オブジェクトの作成時刻 |
+`lastUpdateTimeUnix` | オブジェクトの最終更新時刻 |
+`distance` | クエリとの ベクトル 距離（ベクトル検索のみ） |
+`certainty` | クエリとの ベクトル 距離を確信度に正規化（ベクトル検索のみ） |
+`score` | 検索スコア（BM25 およびハイブリッドのみ） |
+`explainScore` | スコアの説明（BM25 およびハイブリッドのみ） |
+`classification` | 分類モジュールの出力 |
+`featureProjection` | 特徴量プロジェクションの出力 |
 
-They are returned through the `_additional` properties in the response.
+これらはレスポンスの `_additional` プロパティを通じて返されます。
 
-For further information see:
+詳細は以下を参照してください:
 
 :::tip Read more
-- [References: GraphQL: Additional properties](./additional-properties.md)
-- [How-to search: Specify fetched properties](../../search/basics.md#specify-object-properties)
+- [リファレンス: GraphQL: Additional properties](./additional-properties.md)
+- [ハウツー検索: 取得プロパティの指定](../../search/basics.md#specify-object-properties)
 :::
 
 
-## Search operators
+## 検索オペレーター
 
-The following search operators are available.
+利用可能な検索オペレーターは以下のとおりです。
 
-| Argument | Description | Required integration type | Learn more |
+| Argument | 説明 | 必要な統合タイプ | 詳細 |
 | --- | --- | --- | --- |
-| `nearObject` | Vector search using a Weaviate object | *none* | [Learn more](./search-operators.md#nearobject) |
-| `nearVector` | Vector search using a raw vector | *none* | [Learn more](./search-operators.md#nearvector) |
-| `nearText` | Vector search using a text query | Text embedding model |  |
-| `nearImage` | Vector search using an image | Multi-modal embedding model |
-| `hybrid` | Combine vector and BM25 search results |  *none* | [Learn more](../graphql/search-operators.md#hybrid) |
-| `bm25`   | Keyword search with BM25F ranking  | *none* | [Learn more](../graphql/search-operators.md#bm25) |
+| `nearObject` | Weaviate オブジェクトを使用した ベクトル検索 | *none* | [Learn more](./search-operators.md#nearobject) |
+| `nearVector` | 生の ベクトル を使用した ベクトル検索 | *none* | [Learn more](./search-operators.md#nearvector) |
+| `nearText` | テキストクエリを使用した ベクトル検索 | Text embedding model |  |
+| `nearImage` | 画像を使用した ベクトル検索 | Multi-modal embedding model |
+| `hybrid` | ベクトル検索結果と BM25 検索結果を組み合わせます | *none* | [Learn more](../graphql/search-operators.md#hybrid) |
+| `bm25`   | BM25F ランキングによるキーワード検索  | *none* | [Learn more](../graphql/search-operators.md#bm25) |
 
-For further information see:
+詳細は以下を参照してください:
 
 :::tip Read more
-- [References: GraphQL: Search operators](./search-operators.md)
-- [How-to search: Similarity search](../../search/similarity.md)
-- [How-to search: Image search](../../search/image.md)
-- [How-to search: BM25 search](../../search/bm25.md)
-- [How-to search: Hybrid search](../../search/hybrid.md)
+- [リファレンス: GraphQL: Search operators](./search-operators.md)
+- [ハウツー検索: 類似度検索](../../search/similarity.md)
+- [ハウツー検索: 画像検索](../../search/image.md)
+- [ハウツー検索: BM25 検索](../../search/bm25.md)
+- [ハウツー検索: ハイブリッド検索](../../search/hybrid.md)
 :::
 
-## Conditional filters
+## 条件付きフィルター
 
-`Get{}` queries can be combined with a conditional filter.
+`Get{}` クエリは条件付きフィルターと組み合わせることができます。
 
-For further information see:
-
-:::tip Read more
-- [References: GraphQL: Conditional Filters](./filters.md)
-- [How-to search: Filters](../../search/filters.md)
-:::
-
-
-## Additional operators
-
-`Get{}` queries can be combined with additional operators such as `limit`, `offset`, `autocut`, `after` or `sort`.
-
-For further information see:
+詳細は以下を参照してください:
 
 :::tip Read more
-- [References: GraphQL: Additional Operators](./additional-operators.md)
+- [リファレンス: GraphQL: Conditional Filters](./filters.md)
+- [ハウツー検索: フィルター](../../search/filters.md)
 :::
 
 
-##  Related pages
-- [How-to: Search: Basics](../../search/basics.md)
+## 追加オペレーター
+
+`Get{}` クエリは `limit`, `offset`, `autocut`, `after`, `sort` などの追加オペレーターと組み合わせることができます。
+
+詳細は以下を参照してください:
+
+:::tip Read more
+- [リファレンス: GraphQL: Additional Operators](./additional-operators.md)
+:::
 
 
-## Questions and feedback
+## 関連ページ
+- [ハウツー: 検索: 基本](../../search/basics.md)
+
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

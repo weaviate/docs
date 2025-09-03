@@ -1,6 +1,6 @@
 ---
-title: Imports in detail
-description: Understand data import techniques in Weaviate for efficient data integration.
+title: インポートの詳細
+description: Weaviate における効率的なデータ統合のためのデータインポート手法を理解する。
 sidebar_position: 4
 image: og/docs/tutorials.jpg
 ---
@@ -12,33 +12,33 @@ import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 import { DownloadButton } from '/src/theme/Buttons';
 
-In this section, we will explore data import, including details of the batch import process. We will discuss points such as how vectors are imported, what a batch import is, how to manage errors, and some advice on optimization.
+本セクションでは、データインポート、特にバッチインポート処理の詳細を解説します。 ベクトル の取り込み方法、バッチインポートとは何か、エラーの管理方法、そして最適化のためのアドバイスについて説明します。
 
-## Prerequisites
+## 前提条件
 
-Before you start this tutorial, you should follow the steps in the tutorials to have:
+このチュートリアルを開始する前に、以下のチュートリアルの手順を実行し、次を準備してください。
 
-- An instance of Weaviate running (e.g. on the [Weaviate Cloud](https://console.weaviate.cloud)),
-- An API key for your preferred inference API, such as OpenAI, Cohere, or Hugging Face,
-- Installed your preferred Weaviate client library, and
-- Set up a `Question` class in your schema.
-    - You can follow the Quickstart guide, or the [schema tutorial](../starter-guides/managing-collections/index.mdx) to construct the Question class if you have not already.
+- 例として [ Weaviate Cloud ](https://console.weaviate.cloud) 上などで稼働している Weaviate インスタンス
+- OpenAI、Cohere、Hugging Face など、お好みの推論 API 用の API キー
+- ご利用のプログラミング言語向けの Weaviate クライアントライブラリのインストール
+- スキーマ内に `Question` クラスを作成  
+    - 未作成の場合はクイックスタートや [スキーマチュートリアル](../starter-guides/managing-collections/index.mdx) を参照して `Question` クラスを構築してください。
 
-We will use the dataset below. We suggest that you download it to your working directory.
+以下のデータセットを使用します。作業ディレクトリにダウンロードしておくことを推奨します。
 
 <p>
-  <DownloadButton link="https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json">Download jeopardy_tiny.json</DownloadButton>
+  <DownloadButton link="https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json">jeopardy_tiny.json をダウンロード</DownloadButton>
 </p>
 
-## Import setup
+## インポート設定
 
-As mentioned in the [schema tutorial](../starter-guides/managing-collections/index.mdx), the `schema` specifies the data structure for Weaviate.
+[スキーマチュートリアル](../starter-guides/managing-collections/index.mdx) で説明したとおり、`schema` は Weaviate のデータ構造を定義します。
 
-So the data import must map properties of each record to those of the relevant class in the schema. In this case, the relevant class is **Question** as defined in the previous section.
+そのため、データインポートでは各レコードのプロパティをスキーマ内の該当クラスのプロパティへマッピングする必要があります。ここでは、前節で定義した **Question** クラスが該当します。
 
-### Data object structure
+### データオブジェクトの構造
 
-Each Weaviate data object is structured as follows:
+各 Weaviate データオブジェクトは次のような構造になっています。
 
 ```json
 {
@@ -50,69 +50,69 @@ Each Weaviate data object is structured as follows:
 }
 ```
 
-Most commonly, Weaviate users import data through a Weaviate client library.
+多くの場合、 Weaviate ユーザーは Weaviate クライアントライブラリを介してデータをインポートします。
 
-It is worth noting, however, that data is ultimately added through the RESTful API, either through the <SkipLink href="/weaviate/api/rest#tag/objects">`objects` endpoint</SkipLink> or the <SkipLink href="/weaviate/api/rest#tag/batch">`batch` endpoint</SkipLink>.
+ただし、最終的には <SkipLink href="/weaviate/api/rest#tag/objects">`objects` エンドポイント</SkipLink> または <SkipLink href="/weaviate/api/rest#tag/batch">`batch` エンドポイント</SkipLink> を通じて RESTful API でデータが追加される点に留意してください。
 
-As the names suggest, the use of these endpoints depend on whether objects are being imported as batches or individually.
+名前が示すとおり、どちらのエンドポイントを使用するかは、オブジェクトを個別に取り込むかバッチで取り込むかによって決まります。
 
-### To batch or not to batch
+### バッチインポートの是非
 
-For importing data, we **strongly suggest that you use batch imports** unless you have a specific reason not to. Batch imports can greatly improve performance by sending multiple objects in a single request.
+データをインポートする際、特別な理由がない限り **バッチインポートの利用を強く推奨** します。バッチインポートでは複数のオブジェクトを 1 回のリクエストで送信できるため、パフォーマンスが大幅に向上します。
 
-We note that batch imports are carried out through the [`batch` REST endpoint](../manage-objects/import.mdx).
+バッチインポートは [`batch` REST エンドポイント](../manage-objects/import.mdx) を使用して実行されます。
 
-### Batch import process
+### バッチインポートの流れ
 
-A batch import process generally looks like this:
+一般的なバッチインポート処理は次のようになります。
 
-1. Connect to your Weaviate instance
-1. Load objects from the data file
-1. Prepare a batch process
-1. Loop through the records
-    1. Parse each record and build an object
-    1. Push the object through a batch process
-1. Flush the batch process – in case there are any remaining objects in the buffer
+1. Weaviate インスタンスへ接続  
+1. データファイルからオブジェクトを読み込み  
+1. バッチ処理を準備  
+1. レコードをループ処理  
+    1. 各レコードを解析してオブジェクトを構築  
+    1. オブジェクトをバッチ処理に追加  
+1. バッチ処理をフラッシュして、バッファに残っているオブジェクトを送信  
 
-Here is the full code you need to import the **Question** objects:
+以下は **Question** オブジェクトをインポートするための完全なコード例です。
 
 import CodeImportQuestions from '/_includes/code/quickstart.import.questions.mdx';
 
 <CodeImportQuestions />
 
-There are a couple of things to note here.
+ここでいくつか注目すべき点があります。
 
-#### Batch size
+#### バッチサイズ
 
-Some clients include this as a parameter (e.g. `batch_size` in the Python client), or it can be manually set by periodically flushing the batch.
+一部のクライアントではパラメーターとして指定できます（例： Python クライアントの `batch_size`）。または、定期的にバッチをフラッシュすることで手動設定することも可能です。
 
-Typically, a size between 20 and 100 is a reasonable starting point, although this depends on the size of each data object. A smaller size may be preferable for larger data objects, such as if vectors are included in each object upload.
+一般的には 20〜100 件程度が出発点として妥当ですが、これは各データオブジェクトのサイズに依存します。各オブジェクトに ベクトル を含める場合など、サイズが大きいときはより小さい値が望ましい場合があります。
 
-#### Where are the vectors?
+#### ベクトル はどこに？
 
-You may have noticed that we do not provide a vector. As a `vectorizer` is specified in our schema, Weaviate will send a request to the appropriate module (`text2vec-openai` in this case) to vectorize the data, and the vector in the response will be indexed and saved as a part of the data object.
+ベクトル を指定していない点にお気付きかもしれません。スキーマで `vectorizer` が設定されているため、 Weaviate は適切なモジュール（ここでは `text2vec-openai`）へリクエストを送り、データをベクトル化します。レスポンスで返された ベクトル はインデックス化され、データオブジェクトの一部として保存されます。
 
-### Bring your own vectors
+### 独自ベクトルのアップロード
 
-If you wish to upload your own vectors, you can do so with Weaviate. Refer to the [this page](../manage-objects/import.mdx#specify-a-vector).
+独自の ベクトル をアップロードしたい場合は、 Weaviate で実行可能です。詳細は [こちら](../manage-objects/import.mdx#specify-a-vector) を参照してください。
 
-You can also manually upload existing vectors and use a vectorizer module for vectorizing queries.
+既存の ベクトル を手動でアップロードし、クエリのベクトル化にはベクトライザーモジュールを使用することもできます。
 
-## Confirm data import
+## データインポートの確認
 
-You can quickly check the imported object by opening `<weaviate-endpoint>/v1/objects` in a browser, like this (replace with your Weaviate endpoint):
+インポートしたオブジェクトはブラウザで `<weaviate-endpoint>/v1/objects` を開くことで簡単に確認できます（実際の Weaviate エンドポイントに置き換えてください）。
 
 ```
 https://some-endpoint.semi.network/v1/objects
 ```
 
-Or you can read the objects in your project, like this:
+または、プロジェクト内のオブジェクトを読み取ることもできます。
 
 import CodeImportGet from '/_includes/code/quickstart.import.get.mdx';
 
 <CodeImportGet />
 
-The result should look something like this:
+結果は次のようになります。
 
 ```json
 {
@@ -124,54 +124,52 @@ The result should look something like this:
 }
 ```
 
-## Data import - best practices
+## データインポートのベストプラクティス
 
-When importing large datasets, it may be worth planning out an optimized import strategy. Here are a few things to keep in mind.
+大規模なデータセットをインポートする際は、最適化されたインポート戦略を計画する価値があります。以下の点に留意してください。
 
-1. The most likely bottleneck is the import script. Accordingly, aim to max out all the CPUs available.
-1. To use multiple CPUs efficiently, enable sharding when you import data. For the fastest imports, enable sharding even on a single node.
-1. Use [parallelization](https://www.computerhope.com/jargon/p/parallelization.htm); if the CPUs are not maxed out, just add another import process.
-1. Use `htop` when importing to see if all CPUs are maxed out.
-1. To avoid out-of-memory issues during imports, set `LIMIT_RESOURCES` to `True` or configure the `GOMEMLIMIT` environment variable. For details, see [Environment variables](/deploy/configuration/env-vars/index.md).
-1. For Kubernetes, a few large machines are faster than many small machines (due to network latency).
+1. もっとも発生しやすいボトルネックはインポートスクリプトです。そのため、利用可能なすべての CPU を最大限活用することを目指してください。  
+1. CPU を効率的に使用するには、データインポート時にシャーディングを有効にします。最速のインポートを行うには、単一ノードでもシャーディングを有効にしてください。  
+1. [並列化](https://www.computerhope.com/jargon/p/parallelization.htm) を使用します。CPU が最大限使用されていない場合は、インポートプロセスを追加するだけです。  
+1. インポート中に `htop` を使用して、すべての CPU が最大限に使われているか確認します。  
+1. インポート中のメモリ不足を避けるため、`LIMIT_RESOURCES` を `True` に設定するか、`GOMEMLIMIT` 環境変数を設定してください。詳細は [環境変数](/deploy/configuration/env-vars/index.md) を参照してください。  
+1. Kubernetes 環境では、多数の小さなマシンよりも少数の大きなマシンの方が高速です（ネットワーク遅延のため）。  
 
-Our rules of thumb are:
-* You should always use batch import.
-* Use multiple shards.
-* As mentioned above, max out your CPUs (on the Weaviate cluster). Often your import script is the bottleneck.
-* Process error messages.
-* Some clients (e.g. Python) have some built-in logic to efficiently control batch importing.
-
-### Error handling
+私たちの経験則は次のとおりです。  
+* 常にバッチインポートを使用してください。  
+* 複数シャードを使用してください。  
+* 上述のとおり、CPU（ Weaviate クラスター上）を最大限活用してください。インポートスクリプトがボトルネックになりがちです。  
+* エラーメッセージを処理してください。  
+* 一部のクライアント（例： Python）は、バッチインポートを効率的に制御する組み込みロジックを備えています。
+### エラー処理
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "this example" -->
-We recommend that you implement error handling at an object level, such as in this example.
+この例のように、オブジェクト レベルでエラー処理を実装することを推奨します。
 
 :::tip `200` status code != 100% batch success
-It is important to note that an HTTP `200` status code only indicates that the **request** has been successfully sent to Weaviate. In other words, there were no issues with the connection or processing of the batch and no malformed request.
+HTTP `200` ステータス コードは、 **リクエスト** が Weaviate に正常に送信されたことのみを示します。つまり、接続やバッチ処理に問題がなく、リクエストが不正でなかったことを意味します。
 
-A request with a `200` response may still include object-level errors, which is why error handling is critical.
+`200` 応答を受け取ったリクエストでも、オブジェクト レベルのエラーが含まれている可能性があります。そのため、エラー処理が重要です。
 :::
 
-## Recap
+## まとめ
 
-* Data to be imported should match the database schema
-* Use batch import unless you have a good reason not to
-* For importing large datasets, make sure to consider and optimize your import strategy.
+* インポートするデータはデータベース スキーマと一致している必要があります  
+* 特別な理由がない限り、バッチ インポートを使用してください  
+* 大規模なデータセットをインポートする際は、インポート戦略を検討し最適化するようにしてください  
 
-## Suggested reading
+## 参考資料
 
-- [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
-- [Tutorial: Queries in detail](./query.md)
-- [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
+- [チュートリアル: スキーマの詳細](../starter-guides/managing-collections/index.mdx)
+- [チュートリアル: クエリの詳細](./query.md)
+- [チュートリアル: モジュールの紹介](./modules.md)
+- [チュートリアル: Weaviate Console の紹介](/cloud/tools/query-tool.mdx)
 
-### Other object operations
+### その他のオブジェクト操作
 
-All other CRUD object operations are available in the [manage-data](../manage-collections/index.mdx) section.
+その他の CRUD オブジェクト操作については、[manage-data](../manage-collections/index.mdx) セクションをご覧ください。
 
-
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,157 +1,158 @@
 ---
-title: Indexing
+title: インデックス
 sidebar_position: 50
 image: og/docs/indexing.jpg
 ---
 
-Weaviate uses two types of indexes to facilitate fast, scalable search and filtering. It uses vector indexes for vector searches and inverted indexes for filtering and keyword searches.
+Weaviate は、高速でスケーラブルな検索とフィルタリングを実現するために 2 種類のインデックスを使用します。ベクトル検索には ベクトル インデックスを、フィルタリングやキーワード検索には 転置インデックス を使用します。
 
-This page introduces the [vector indexes](#vector-indexes) and [inverted indexes](#inverted-indexes) available in Weaviate, so you can arrive at an informed indexing strategy.
+このページでは、Weaviate で利用できる [ベクトル インデックス](#vector-indexes) と [転置インデックス](#inverted-indexes) を紹介し、適切なインデックス戦略を立てられるようにします。
 
-:::info Indexing and resource usage
-Vector indexes can use *hot* or *warm* resources, depending on the index type. Inverted indexes use *warm* resources. For more on resource types, see [Managing resources](./index.md).
+:::info インデックス作成とリソース使用
+ベクトル インデックスはインデックスタイプに応じて *hot* または *warm* リソースを使用します。転置インデックスは *warm* リソースを使用します。リソースの種類については [リソース管理](./index.md) を参照してください。
 :::
 
-:::tip Indexing recommendations
+:::tip インデックス作成の推奨事項
 
-- For multi-tenant configurations, use a [dynamic index](#dynamic-indexes).
-- Consider the size of your data set when choosing an index type:
-    - If your object count is low, consider a flat index.
-    - For larger data sets, use an HNSW index.
-    - If you are unsure, use a dynamic index.
-- If you can trade off some accuracy, consider using [compression](./compression.mdx):
-    - For HNSW indexes, [PQ](../../configuration/compression/pq-compression.md)/[SQ](../../configuration/compression/sq-compression.md)/[BQ](../../configuration/compression/bq-compression.md) can reduce memory requirements.
-    - For flat indexes, [binary quantization (BQ)](../../configuration/compression/bq-compression.md) can improve search speeds.
-- Consider your query needs when configuring inverted indexes:
-    - If disk space is not a concern, [index all properties](#property-level-configuration) for searching & filtering.
-    - If metadata filtering is important, index it [at the collection level](#collection-level-configuration).
+- マルチテナント構成の場合は、[ダイナミック インデックス](#dynamic-indexes) を使用してください。
+- インデックスタイプを選択する際はデータセットのサイズを考慮してください。
+    - オブジェクト数が少ない場合は フラット インデックス を検討してください。
+    - 大規模なデータセットには HNSW インデックス を使用してください。
+    - 迷った場合は ダイナミック インデックス を使用してください。
+- 多少の精度を犠牲にできる場合は、[圧縮](./compression.mdx) を検討してください。
+    - HNSW インデックスには、[PQ](../../configuration/compression/pq-compression.md) / [SQ](../../configuration/compression/sq-compression.md) / [BQ](../../configuration/compression/bq-compression.md) を適用してメモリ要件を削減できます。
+    - フラット インデックスには、[バイナリ 量子化 (BQ)](../../configuration/compression/bq-compression.md) を使用して検索速度を向上できます。
+- 転置インデックスを設定する際は、クエリ要件を考慮してください。
+    - ディスク容量が問題でなければ、[すべてのプロパティをインデックス](#property-level-configuration) して検索とフィルタリングを高速化します。
+    - メタデータ フィルタリングが重要な場合は、[コレクションレベル](#collection-level-configuration) でインデックスしてください。
 
 :::
 
-## Vector indexes
+## ベクトル インデックス
 
-Weaviate offers three types of vector indexes, [Hierarchical Navigable Small World (HNSW) indexes](#hnsw-indexes), [flat indexes](#flat-indexes) and [dynamic indexes](#dynamic-indexes).
+Weaviate では 3 種類のベクトル インデックス、[Hierarchical Navigable Small World ( HNSW ) インデックス](#hnsw-indexes)、[フラット インデックス](#flat-indexes)、そして [ダイナミック インデックス](#dynamic-indexes) を提供しています。
 
-- HNSW indexes enable fast, scalable vector searching that works well even with very large data sets.
-- Flat indexes are memory-efficient indexes that work best with small data sets.
-- Dynamic indexes switch from a flat index to an HNSW index when a [collection](../../concepts/data.md#collections) or [tenant](../../concepts/data.md#multi-tenancy) reaches a threshold size.
+- HNSW インデックスは、大規模データセットでも高速かつスケーラブルな ベクトル 検索を実現します。
+- フラット インデックスはメモリ効率に優れ、小規模データセットで最適に動作します。
+- ダイナミック インデックスは、[コレクション](../../concepts/data.md#collections) や [テナント](../../concepts/data.md#multi-tenancy) が閾値サイズに達したとき、フラット インデックスから HNSW インデックスへ切り替わります。
 
-#### HNSW indexes
+#### HNSW インデックス
 
-[HNSW](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) are high-performance, in-memory indexes. HNSW indexes scale well, meaning that vector searches remain fast even for very large data sets.
+[HNSW](/weaviate/concepts/vector-index#hierarchical-navigable-small-world-hnsw-index) は高性能なインメモリ インデックスです。HNSW インデックスはスケール性能に優れており、非常に大規模なデータセットでも ベクトル 検索が高速に保たれます。
 
-HNSW indexes achieve this by building a multi-layered graph of objects, allowing for fast, approximate nearest neighbor searches.
+HNSW インデックスはオブジェクトの多層グラフを構築し、高速な近似近傍検索を実現します。
 
-While HNSW indexes enable fast searches, they use a lot of [*hot* resources](./index.md#-hot), as they load the graph structure and vectors into memory.
+一方で HNSW インデックスはグラフ構造とベクトルをメモリにロードするため、[*hot* リソース](./index.md#-hot) を多く消費します。
 
-Consider using [compression](./compression.mdx) to reduce the size of for your HNSW indexes. Weaviate offers several ways to compress your data:
+HNSW インデックスのサイズ削減には [圧縮](./compression.mdx) の使用を検討してください。Weaviate では複数の圧縮方法を提供しています。
 
 import CompressionAlgorithms from '/_includes/starter-guides/compression-types.mdx';
 
 <CompressionAlgorithms/>
 
-#### Flat indexes
+#### フラット インデックス
 
-[Flat indexes](/weaviate/concepts/vector-index#flat-index) are memory-efficient. They are disk based indexes that perform brute-force vector searches. These searches are fast for small data sets, but the search speed increases linearly as the number of indexed objects grows.
+[フラット インデックス](/weaviate/concepts/vector-index#flat-index) はメモリ効率が高いディスクベースのインデックスで、全件走査による ベクトル 検索を行います。小規模データセットでは高速ですが、インデックスされたオブジェクト数が増えるにつれて検索速度は線形に遅くなります。
 
-Flat indexes are best suited for cases where the number of objects is low and will not grow significantly.
+フラット インデックスは、オブジェクト数が少なく大きく増えないケースに最適です。
 
-[Binary quantization (BQ)](/weaviate/configuration/compression/bq-compression) can improve flat indexes' search speeds. BQ improves search time by reducing the amount of data to read, and speeding up time taken to calculate the distance between vectors.
+[バイナリ 量子化 ( BQ )](/weaviate/configuration/compression/bq-compression) を使用すると、フラット インデックスの検索速度を向上できます。BQ は読み込むデータ量を削減し、ベクトル間距離の計算を高速化します。
 
-#### Dynamic indexes
+#### ダイナミック インデックス
 
-:::info Added in `v1.25`
+:::info `v1.25` で追加
 :::
 
 import DynamicAsyncRequirements from '/_includes/dynamic-index-async-req.mdx';
 
 <DynamicAsyncRequirements/>
 
-[Dynamic indexes](/weaviate/concepts/vector-index#dynamic-index) offer a flexible approach to indexing. A dynamic index starts as a flat index and converts automatically to an HNSW index when the object count reaches a threshold value.
+[ダイナミック インデックス](/weaviate/concepts/vector-index#dynamic-index) は柔軟なインデックス方式です。ダイナミック インデックスはフラット インデックスとして開始し、オブジェクト数が閾値に達すると自動的に HNSW インデックスへ変換されます。
 
-In multi-tenant configurations where different tenants have different object counts, dynamic indexes are a good index choice. Collections with dynamic indexes have less overhead since tenants can use flat indexes when the HNSW index isn't needed.
+テナントごとにオブジェクト数が異なるマルチテナント構成では、ダイナミック インデックスが適しています。必要ない場合はテナントごとにフラット インデックスを使用できるため、オーバーヘッドが減ります。
 
-The default index conversion threshold is 10,000 objects. You can configure the threshold value when you create the dynamic index.
+デフォルトのインデックス変換閾値は 10,000 オブジェクトです。ダイナミック インデックス作成時にこの閾値を設定できます。
 
-This table shows how a dynamic index changes as the number of objects in a collection grows. The example configuration is for a dynamic index with the following properties:
+次の表は、コレクション内のオブジェクト数が増えるにつれてダイナミック インデックスがどのように変化するかを示しています。例では以下の設定を行っています。
 
-- A conversion threshold of 10,000 objects.
-- Flat index with BQ configured.
-- HNSW index with SQ configured
-- The training threshold for SQ is 100,000 objects.
+- 変換閾値: 10,000 オブジェクト
+- BQ を適用したフラット インデックス
+- SQ を適用した HNSW インデックス
+- SQ の学習閾値: 100,000 オブジェクト
 
-| Number of objects | Index type | Compression | Notes |
+| オブジェクト数 | インデックスタイプ | 圧縮 | 備考 |
 | :- | :- | :- | :- |
-| 0 - 9,999 | Flat index | BQ | Flat index and BQ are active. |
-| 10,000 | Flat -> HNSW | None | The index converts to HNSW. The index is stored in RAM. |
-| 100,000 | HNSW | Training | The collection's object count reaches the SQ training threshold. |
-| 100,001 | HNSW | SQ | HNSW and SQ are active. |
+| 0 - 9,999 | フラット インデックス | BQ | フラット インデックスと BQ が有効 |
+| 10,000 | フラット → HNSW | なし | インデックスが HNSW に変換され、RAM にロードされる |
+| 100,000 | HNSW | 学習中 | オブジェクト数が SQ 学習閾値に到達 |
+| 100,001 | HNSW | SQ | HNSW と SQ が有効 |
 
-:::info Configure the flat index and the HNSW index
-Configure the flat index and the HNSW index when you define the dynamic index. The dynamic index uses the flat index initially, then switches to the HNSW index. Both indexes should be configured before they are used.
+:::info フラット インデックスと HNSW インデックスを設定
+ダイナミック インデックスを定義するときに、フラット インデックスと HNSW インデックスの両方を設定してください。ダイナミック インデックスは最初にフラット インデックスを使用し、その後 HNSW インデックスへ切り替わります。どちらのインデックスも事前に設定しておく必要があります。
 :::
 
-### Asynchronous vector indexing
+### 非同期 ベクトル インデックス作成
 
-:::info Added in `v1.22`
+:::info `v1.22` で追加
 :::
 
-Building an HNSW index can be resource-intensive and slow down the time it takes to import objects into Weaviate.
+HNSW インデックスの構築はリソース消費が大きく、Weaviate へのオブジェクト取り込み時間を遅くする可能性があります。
 
-[Asynchronous vector indexing](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing) allows you to import objects into Weaviate without waiting for the HNSW index to be built.
+[非同期 ベクトル インデックス作成](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing) を使用すると、HNSW インデックスの構築を待たずにオブジェクトを Weaviate に取り込めます。
 
-This allows decoupling of data ingestion from vector index creation.
+これにより、データ取り込みと ベクトル インデックス作成を分離できます。
 
-With asynchronous vector indexing, you can import objects into Weaviate without waiting for the HNSW index to finish building. You should be aware that vector searches during this time may be based on an incomplete index, which can affect search results.
+非同期 ベクトル インデックス作成を使用すると、HNSW インデックスの構築が完了するのを待たずにオブジェクトを取り込めます。ただし、この間の ベクトル 検索は未完成のインデックスに基づく可能性があり、検索結果に影響を与える点に注意してください。
 
-## Inverted indexes
+## 転置インデックス
 
-Weaviate uses inverted indexes for keyword searches as well as filtering.
+Weaviate はキーワード検索とフィルタリングに 転置インデックス を使用します。
 
-There are multiple types of inverted indexes, including:
-- `indexSearchable`: for keyword searches
-- `indexFilterable`: for faster filtering
-- `indexRangeFilters`: for faster filtering on numerical ranges
+転置インデックスには複数のタイプがあります。
+- `indexSearchable`: キーワード検索用
+- `indexFilterable`: 高速フィルタリング用
+- `indexRangeFilters`: 数値範囲フィルタリングを高速化
 
-Aspects of these indexes can be configured at the collection and property level.
+インデックスの各要素はコレクションレベルおよびプロパティレベルで設定できます。
 
-### Collection level configuration
+### コレクションレベルの設定
 
-The inverted index is configurable on a collection level. The collection level settings determine BM25 parameters, and what metadata is indexed for filtering. For example, you can configure whether timestamps, null state, or property lengths are indexed.
+転置インデックスはコレクションレベルで設定できます。コレクションレベルの設定では BM25 パラメータや、フィルタリング用にどのメタデータをインデックスするかを決定します。たとえば、タイムスタンプ、null 状態、プロパティ長をインデックスするかどうかを設定できます。
 
-For details, see [set inverted index parameters](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
+詳細は [転置インデックスパラメータの設定](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters) を参照してください。
+### プロパティレベル設定
 
-### Property level configuration
+プロパティレベルの設定はさらに限定されています。プロパティごとに個別のインデックスを有効化または無効化でき、キーワードのトークナイズオプションを設定できます。  
 
-Property level configuration is more limited. Individual indexes can be turned on or off at the property level, and keyword tokenization options can be set.
+`indexSearchable` は、プロパティがキーワード検索用にインデックス化されるかどうかを決定します。  
+`indexFilterable` は、マッチベースのフィルタリングを高速化するためにプロパティをインデックス化するかどうかを決定します。  
+`indexRangeFilters` は、数値範囲フィルタ用にプロパティをインデックス化するかどうかを決定します。
 
-`indexSearchable` determines whether a property is indexed for keyword searches. `indexFilterable` determines whether a property is indexed to speed up match-based filtering. `indexRangeFilters` determines whether a property is indexed for numerical range filters.
+フィルタの詳細については [フィルタリング](/weaviate/concepts/filtering) をご覧ください。
 
-For more on filters, see [Filtering](/weaviate/concepts/filtering).
+## 関連ページ
 
-## Related pages
+詳細については、以下のドキュメントページやブログ記事をご参照ください。
 
-For more information, see these documentation pages and blog posts.
+### ドキュメントページ
 
-### Documentation pages
+インデックスを設定するには、次のページの手順に従ってください。
 
-To configure indexing, follow the steps on these pages:
+- [ベクトル インデックスの設定](/weaviate/config-refs/indexing/vector-index.mdx)
+- [転置インデックスの設定](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
 
-- [Configure vector indexes](/weaviate/config-refs/indexing/vector-index.mdx)
-- [Configure inverted indexes](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
+さらに詳しく知りたい場合は、以下をご覧ください。
 
-For more documentation details, see:
+- [ベクトル インデックス](/weaviate/concepts/vector-index)
+- [転置インデックス](/weaviate/concepts/indexing)
 
-- [Vector indexing](/weaviate/concepts/vector-index)
-- [Inverted indexes](/weaviate/concepts/indexing)
+### Weaviate アカデミー
 
-### Weaviate academy
+ベクトル インデックスに関する短いコースはこちら:
 
-For a short course on vector indexes, see:
+- [ベクトル インデックス](/academy/py/vector_index)
 
-- [Vector indexing](/academy/py/vector_index)
-
-## Questions and feedback
+## ご質問やフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

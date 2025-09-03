@@ -1,6 +1,6 @@
 ---
-title: Imports - Vector provision options
-description: Explore vector provisioning options in Weaviate to tailor your data setup.
+title: インポート - ベクトル提供オプション
+description: Weaviate でのベクトル提供オプションを探求して、データ設定を調整します。
 sidebar_position: 45
 image: og/docs/tutorials.jpg
 # tags: ['how-to', 'options for vectors']
@@ -12,35 +12,35 @@ import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 import ReactPlayer from 'react-player/lazy'
 
-:::info This video covers options for adding a vector during import.
+:::info このビデオでは、インポート時にベクトルを追加するためのオプションについて説明します。
 :::
 
-When importing objects into Weaviate, you can choose to:
-- **Provide object vectors** to Weaviate,
-- **Configure a vectorizer** to obtain vectors at import time, or
-- **Combine these options** to configure a vectorizer while explicitly providing vectors.
+オブジェクトを Weaviate にインポートする際、次の方法を選択できます。  
+- **オブジェクト ベクトルを提供** して Weaviate に登録する  
+- **ベクトライザーを設定** してインポート時にベクトルを取得する  
+- **これらを組み合わせる** ことで、ベクトライザーを設定しつつ明示的にベクトルを提供する
 
-This **5-minute video** provides an overview of all three workflows, with code examples shown in Python.
+この **5 分間のビデオ** では、3 つのワークフローすべてを Python のコード例とともに概観します。
 
-### Prerequisites
+### 前提条件
 
-We recommend that you go through the [Quickstart tutorial](docs/weaviate/quickstart/index.md) before watching this video, or to make sure you are familiar with the basic of a schema, import, and query in Weaviate.
+ビデオを視聴する前に、または Weaviate のスキーマ、インポート、クエリの基本に慣れておくために、[クイックスタート チュートリアル](docs/weaviate/quickstart/index.md) をご覧いただくことを推奨します。
 
-### Jupyter notebook & data
+### Jupyter notebook & データ
 
-You can find the accompanying Jupyter notebook and data at [this repository](https://github.com/weaviate-tutorials/vector-provision-options).
+対応する Jupyter notebook とデータは [こちらのリポジトリ](https://github.com/weaviate-tutorials/vector-provision-options) で入手できます。
 
-## Video (4mins 46secs)
+## ビデオ (4 分 46 秒)
 
 <ReactPlayer className="react-player" url='https://www.youtube.com/watch?v=x9ztOHUxALg' width="100%" controls="true"/>
 <br/>
 
-### Timestamps
+### タイムスタンプ
 
-- 0:00: Introduction
-- 0:15: Overview
-- 0:30: Instantiate Weaviate client & load data
-- 1:18: Import data with Weaviate-obtained vectors
-- 2:17: Import data with user-specified vectors
-- 3:14: Combined option - import with user-specified vectors and specify a vectorizer
-- 4:20: Wrap-up
+- 0:00: イントロダクション  
+- 0:15: 概要  
+- 0:30: Weaviate クライアントのインスタンス化 & データ読み込み  
+- 1:18: Weaviate 取得ベクトルによるデータインポート  
+- 2:17: ユーザ指定ベクトルによるデータインポート  
+- 3:14: 併用オプション － ユーザ指定ベクトルを使いつつベクトライザーを指定  
+- 4:20: まとめ

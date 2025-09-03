@@ -1,32 +1,32 @@
 ---
-title: Philosophy
+title: 設計哲学
 sidebar_position: 2
-description: "Design principles and user-centric approach behind Weaviate's replication architecture decisions."
+description: "Weaviate のレプリケーションアーキテクチャの決定の背後にある設計原則とユーザー中心アプローチ。"
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
 
-## A design modeled after how our users use Weaviate
+## ユーザーの利用方法をモデルにした設計
 
-The architecture that guides the principles for Weaviate’s replication systems is modeled after how users typically use Weaviate. Weaviate powers site search, recommendation, knowledge extraction, and other information retrieval cases. These cases all have a few things in common:
-* They are often **very-large-scale** (with datasets in the billions of objects and vectors)
-* They often incur **large parallel usage with strict latency requirements** (i.e. high throughput with low p99 latencies)
-* It is vital that the service is **highly-available** and resilient to unplanned outages or planned maintenance, such as version upgrades.
-* It is often tolerable if data is temporarily out of sync, as long as **consistency is reached eventually**.
-* Weaviate is sometimes used alongside strongly consistent, transactional databases if transactional data exists in a use case. In cases where Weaviate is used as the primary database, data is typically not transactional.
-* Weaviate’s users have a lot of experience working with cloud-native technologies, including NoSQL databases, and know how an application needs to be structured to deal with eventually consistent systems correctly.
+Weaviate が採用するレプリケーションシステムのアーキテクチャは、ユーザーが Weaviate をどのように利用しているかをモデルにしています。Weaviate はサイト検索、レコメンデーション、ナレッジ抽出などの情報検索ユースケースを支えています。これらのユースケースには共通点があります。  
+* 多くの場合、 **非常に大規模** (数 10 億件のオブジェクトと ベクトル を含むデータセット) です  
+* 厳しいレイテンシ要件を伴う **大規模な並列利用** が発生します (高スループットかつ低い p99 レイテンシ)  
+* バージョンアップグレードなどの計画停止や予期しない障害に対しても、サービスが **高可用** であることが不可欠です  
+* 一時的にデータが同期していなくても、最終的に **整合性が確保される** のであれば許容されることが多いです  
+* トランザクション性が必要な場合、Weaviate は強整合性のあるトランザクションデータベースと併用されることがあります。Weaviate が主要なデータベースとして使われる場合、データは通常トランザクション性を持ちません  
+* Weaviate のユーザーはクラウドネイティブ技術、とりわけ NoSQL データベースの利用経験が豊富で、結果整合性システムを正しく扱うアプリケーション設計を理解しています  
 
-Based on the above usage patterns, and keeping the [CAP theorem](./index.md#cap-theorem) trade-offs in mind, Weaviate implements two different architectures for cluster metadata and data replication.
+上記の利用パターンと [CAP 定理](./index.md#cap-theorem) のトレードオフを踏まえ、Weaviate ではクラスターメタデータとデータのレプリケーションに対して 2 種類のアーキテクチャを実装しています。
 
-1. **Cluster metadata replication** is based on the [Raft consensus algorithm](https://raft.github.io/), which provides log-based consistency operations coordinated by an elected leader. This means that cluster metadata changes can be made even in the event of (a minority of) node failures.
+1. **クラスターメタデータのレプリケーション** は [Raft 合意アルゴリズム](https://raft.github.io/) を基にしており、選出されたリーダーがログベースで整合性を維持します。これにより、(少数の) ノード障害が発生してもメタデータの変更が可能です。  
 
-2. **Data replication** is based on a leaderless design with tunable consistency. This means there is no central leader or primary node that will replicate to follower nodes. Weaviate’s data replication architecture **prefers availability over consistency**. Nevertheless, individual requests might have stricter consistency requirements than others. For those cases, Weaviate offers both [tunable read and write consistency](./consistency.md).
+2. **データレプリケーション** はリーダーレス設計で調整可能な整合性を採用しています。中央リーダーやプライマリノードがフォロワーノードへレプリケーションを行う仕組みは存在しません。Weaviate のデータレプリケーションアーキテクチャは **可用性を整合性より優先** します。ただし、リクエストによってはより厳格な整合性が要求される場合があります。そのようなケースでは、Weaviate は [読み取り・書き込み整合性のチューニング](./consistency.md) を提供します。  
 
-## Reasons for a leaderless architecture
+## リーダーレスアーキテクチャを選択した理由
 
-Weaviate’s replication architecture is inspired by other modern, Internet-scale databases that serve similar goals; [Apache Cassandra](https://cassandra.apache.org/_/index.html) is a notable example. Weaviate’s [Replication Architecture](./cluster-architecture.md) has significant similarities to Cassandra's. Unsurprisingly, a leaderless pattern was chosen to achieve both availability and throughput goals. In a leaderful setup, leader nodes have two significant disadvantages: Firstly, leaders become a performance bottleneck, e.g., because every write request needs to pass through the leader. Secondly, a leader's failure involves the election of a new leader, which can be a complex and costly process that can lead to temporary unavailability. The main advantage of a leaderful system is that it may be easier to provide specific consistency guarantees. As outlined in the motivation above, Weaviate prefers large-scale use cases, linear scaling, and availability over strict consistency.
+Weaviate のレプリケーションアーキテクチャは、同様の目的で設計されたモダンな Internet スケールデータベース、特に [Apache Cassandra](https://cassandra.apache.org/_/index.html) から着想を得ています。Weaviate の [レプリケーションアーキテクチャ](./cluster-architecture.md) は Cassandra と多くの共通点があります。可用性とスループットを両立するために、当然ながらリーダーレスパターンが選択されました。リーダーフル構成では、主に 2 つの欠点があります。第一に、すべての書き込み要求がリーダーを経由するため、リーダーが性能上のボトルネックになります。第二に、リーダーが障害を起こすと新しいリーダーの選出が必要になり、このプロセスは複雑かつコストが高く、一時的なサービス停止を招く可能性があります。リーダーフルシステムの主な利点は、特定の整合性保証を比較的容易に提供できる点です。しかし先述の動機から、Weaviate は大規模ユースケース、リニアスケーリング、可用性を厳格な整合性より重視しています。  
 
-## Questions and feedback
+## 質問やフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

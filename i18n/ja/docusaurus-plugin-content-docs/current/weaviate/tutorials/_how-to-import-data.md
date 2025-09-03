@@ -1,22 +1,22 @@
 ---
-title: How to import data
+title: データをインポートする方法
 sidebar_position: 3
 image: og/docs/tutorials.jpg
 # tags: ['how to', 'import']
 ---
 
-In this tutorial, you will learn how to import data into Weaviate using the batch import method.
+このチュートリアルでは、バッチ インポート方法を使用して Weaviate にデータをインポートする方法を学びます。
 
-By the end of this tutorial, you should have a good idea of the steps involved in importing data, and when to use the batch import method.
+チュートリアルの最後には、データをインポートする手順と、バッチ インポート方法を使用するタイミングについて理解できるようになります。
 
 <!-- :::caution Under construction.
 Migrated from "How to import data" tutorial from Weaviate Docs Classic
 ::: -->
 
 
-# Introduction
+# 概要
 
-Data is added through the RESTful API. The syntax of a data object is as follows:
+データは RESTful API を通じて追加します。データオブジェクトの構文は次のとおりです。
 
 ```json
 {
@@ -28,46 +28,46 @@ Data is added through the RESTful API. The syntax of a data object is as follows
 }
 ```
 
-# Prerequisites
+# 前提条件
 
-We recommend reading the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first before tackling this tutorial.
+まずは [Quickstart チュートリアル](docs/weaviate/quickstart/index.md) をお読みいただくことをおすすめします。
 
-1. **Connect to a Weaviate instance.**
-For the tutorial, you will need a Weaviate instance running with the `text2vec-contextionary` module. We assume your instance is running at `http://localhost:8080`.
-2. **Upload a schema**.
-Learn how to create and upload a schema [here](./how-to-create-a-schema.md). In this guide we assume you have a similar schema uploaded with the classes `Publication`, `Article` and `Author`.
+1. **Weaviate インスタンスへの接続**  
+   このチュートリアルを実行するには、`text2vec-contextionary` モジュールが動作している Weaviate インスタンスが必要です。ここでは、`http://localhost:8080` でインスタンスが稼働していると想定します。  
+2. **スキーマのアップロード**  
+   スキーマの作成とアップロード方法は [こちら](./how-to-create-a-schema.md) をご覧ください。本ガイドでは、`Publication`、`Article`、`Author` のクラスを含む類似のスキーマがすでにアップロードされていることを前提とします。
 
-# Add a data object
+# データオブジェクトの追加
 
-Let's add a `Publication` with the name `New York Times` to your Weaviate instance. Not all properties have to be filled when adding a data object, so we will skip the `hasArticles` property for now, since we don't have any `Article` objects yet. Note that the `UUID` is given in the `id` parameter now, this is optional.
+`Publication` クラスに `New York Times` という名前のデータオブジェクトを追加してみましょう。データオブジェクトを追加する際、すべてのプロパティを設定する必要はありません。`Article` オブジェクトがまだないため、ここでは `hasArticles` プロパティは省略します。`UUID` を `id` パラメーターで指定していますが、これは任意です。
 
 import CodeAddData from '/_includes/code/howto.add.data.things.mdx';
 
 <CodeAddData />
 
-# Add a data object with reference
+# 参照付きデータオブジェクトの追加
 
-If you want to add data object with a reference in a property, you need to use the `UUID` of the reference data object. Let's add the `Author` named `Jodi Kantor`, who writes for the `New York Times`:
+プロパティに参照を含むデータオブジェクトを追加する場合は、参照先データオブジェクトの `UUID` を使用する必要があります。`New York Times` に記事を書く `Author` クラスの `Jodi Kantor` を追加してみましょう。
 
 import CodeAddRef from '/_includes/code/howto.add.data.things.reference.mdx';
 
 <CodeAddRef />
 
-You can also add references later, when the data object is already created. The following example first creates the `Author` with `name`, and later adds the reference to a `Publication`. This comes in handy when you need to create data objects first before you can add references.
+すでにデータオブジェクトを作成した後で参照を追加することもできます。次の例では、まず `name` だけで `Author` を作成し、その後で `Publication` への参照を追加しています。先にデータオブジェクトを作成し、後から参照を設定したい場合に便利です。
 
 import CodeAddRefLater from '/_includes/code/howto.add.data.things.add.reference.mdx';
 
 <CodeAddRefLater />
 
-# Next steps
+# 次のステップ
 
 <!-- TODO: point it towards search or the relevant content -->
 <!-- - Take a look at [How to query data](./how-to-query-data) to learn how to interact with the data you just added. -->
 
-- See the RESTful [API reference pages](/weaviate/api/rest) for all API operations to add, modify and delete data.
+- データの追加・変更・削除に関するすべての API 操作については、RESTful [API リファレンス](/weaviate/api/rest) をご覧ください。
 
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
