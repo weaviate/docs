@@ -87,7 +87,13 @@ grpcService:
 
 #### Authentication and authorization
 
-An example configuration for authentication is shown below.
+:::tip
+
+Weaviate Helm charts automatically generate random username/password values each time Weaviate is deployed to Kubernetes, this means that when Weaviate is deployed with Helm charts internode communication is always secured.
+
+:::
+
+An example configuration for authentication:
 
 ```yaml
 authentication:
@@ -116,6 +122,7 @@ authorization:
     readonly_users:
       - readonly@example.com
 ```
+
 
 In this example, the key `readonly-key` will authenticate a user as the `readonly@example.com` identity, and `secr3tk3y` will authenticate a user as `admin@example.com`.
 
