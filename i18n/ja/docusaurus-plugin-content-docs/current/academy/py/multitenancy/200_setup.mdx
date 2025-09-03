@@ -1,5 +1,5 @@
 ---
-title: Database setup
+title: データベースのセットアップ
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,33 +7,33 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_snippets/100_config.py';
 
-Let's see we can build a Weaviate instance to support `MyPrivateJournal`'s requirements.
+`MyPrivateJournal` の要件を満たす Weaviate インスタンスを構築できるか見てみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Project requirements
+## <i class="fa-solid fa-square-chevron-right"></i> プロジェクト要件
 
-As a SaaS application, `MyPrivateJournal` has determined that they need the following features:
+SaaS アプリケーションである `MyPrivateJournal` は、次の機能が必要だと判断しました。
 
-- **Data isolation**: Each user's data should be private.
-- **Efficient scalability**:
-    - As `MyPrivateJournal` grows, it should be able to handle tens or hundreds of thousands users.
-    - It must be fast for active users, but inactive users should not consume resources.
-- **Ease of management**:
-    - Adding new users should be simple and fast.
-    - Removing users should be straightforward.
-- **Flexibility**:
-    - It should be efficient for low-volume users as well as high-volume users.
-- **Fault tolerance**:
-    - A node failure should not lead to complete downtime for a user.
-- **Developer experience**:
-    - These features should be easy to implement and maintain.
+- **データの分離**: 各ユーザーのデータはプライベートであること。
+- **効率的なスケーラビリティ**:
+    - `MyPrivateJournal` が成長しても、数万〜数十万ユーザーを扱えること。
+    - アクティブユーザーに対しては高速であり、非アクティブユーザーはリソースを消費しないこと。
+- **管理の容易さ**:
+    - 新しいユーザーの追加が簡単かつ高速であること。
+    - ユーザーの削除が容易であること。
+- **柔軟性**:
+    - 低トラフィックのユーザーにも高トラフィックのユーザーにも効率的であること。
+- **フォールトトレランス**:
+    - ノード障害が発生しても、そのユーザーが完全にダウンしないこと。
+- **開発者体験**:
+    - これらの機能が実装・保守しやすいこと。
 
-After reviewing potential solutions, we determined that Weaviate with multi-tenant collections can meet these challenges. Let's see how we can implement a proof-of-concept (PoC) solution for `MyPrivateJournal`.
+検討の結果、マルチテナントコレクションを備えた Weaviate がこれらの課題を解決できると判断しました。ここでは `MyPrivateJournal` 向け PoC を実装してみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Weaviate configuration
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate の設定
 
-As a development setup, we will use a local Weaviate instance with Docker. This will allow us to quickly set up a Weaviate instance for development and testing.
+開発環境として、Docker を使ったローカル Weaviate インスタンスを利用します。これにより、開発とテスト用の Weaviate を素早く立ち上げられます。
 
-Here is our `docker-compose.yml` file:
+こちらが `docker-compose.yml` ファイルです。
 
 ```yaml
 ---
@@ -69,15 +69,15 @@ services:
 ```
 
 <details>
-  <summary>What about a multi-node setup?</summary>
+  <summary>マルチノード構成の場合は？</summary>
 
-Great question! As you probably noticed, we are using a single-node setup here for simplicity.
+良い質問です！ご覧のとおり、簡潔さのためにここではシングルノード構成を使用しています。
 <br/>
 
-But we can easily extend this to a multi-node setup by adding additional services. This will allow you to scale your Weaviate instance horizontally, and provide fault tolerance with replication.
+しかし、サービスを追加することで簡単にマルチノード構成へ拡張できます。これにより、水平方向のスケーリングやレプリケーションによるフォールトトレランスが可能になります。
 <br/>
 
-For example, here is a multi-node setup with three nodes.
+例として、3 ノード構成は次のとおりです。
 
 ```yaml
 ---
@@ -176,16 +176,16 @@ services:
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Configuration highlights
+### <i class="fa-solid fa-chalkboard"></i> 設定のハイライト
 
-You may have seen Docker configurations elsewhere ([e.g. Docs](/deploy/installation-guides/docker-installation.md), [Academy](../starter_text_data/101_setup_weaviate/20_create_instance/20_create_docker.mdx)). But these highlighted configurations may be new to you:
+他の Docker 設定 ([例: Docs](/deploy/installation-guides/docker-installation.md), [Academy](../starter_text_data/101_setup_weaviate/20_create_instance/20_create_docker.mdx)) に見覚えがあるかもしれませんが、以下の設定は新しいかもしれません。
 
-- `ASYNC_INDEXING`: This will enable asynchronous indexing. This is useful for high-volume data insertion, and enables us to use the `dynamic` index type, which you will learn about later on.
-- `ENABLE_MODULES`: We enable `offload-s3` to demonstrate tenant offloading later on. Offloading helps us to manage inactive users' data efficiently.
-- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: These are the AWS credentials that Weaviate will use to access the S3 bucket.
-- `OFFLOAD_S3_BUCKET_AUTO_CREATE`: This will automatically create the S3 bucket if it does not exist.
+- `ASYNC_INDEXING`: 非同期インデックス作成を有効にします。大量データ挿入に便利で、後ほど学ぶ `dynamic` インデックスタイプを使用できます。
+- `ENABLE_MODULES`: 今回は `offload-s3` を有効にし、後でテナントオフロードを実演します。オフロードは非アクティブユーザーのデータ管理に役立ちます。
+- `AWS_ACCESS_KEY_ID` と `AWS_SECRET_ACCESS_KEY`: Weaviate が S3 バケットへアクセスするための AWS 資格情報です。
+- `OFFLOAD_S3_BUCKET_AUTO_CREATE`: 該当バケットが存在しない場合に自動で作成します。
 
-Save the file to `docker-compose.yaml`, and run the following command to start Weaviate:
+ファイルを `docker-compose.yaml` として保存し、次のコマンドで Weaviate を起動します。
 
 ```bash
 docker compose up
@@ -195,17 +195,17 @@ import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-### <i class="fa-solid fa-chalkboard"></i> Your Weaviate instance details
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
 
-Once the instance is created, you can access it at `http://localhost:8080`.
+インスタンスが作成されたら、`http://localhost:8080` でアクセスできます。
 
-Now, we are ready to create a collection for `MyPrivateJournal`.
+では、`MyPrivateJournal` 用のコレクションを作成しましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Create a collection
+## <i class="fa-solid fa-square-chevron-right"></i> コレクションの作成
 
-### <i class="fa-solid fa-code"></i> Enable multi-tenancy
+### <i class="fa-solid fa-code"></i> マルチテナンシーの有効化
 
-A collection must be specified as multi-tenant when it is created. So, we enable multi-tenancy in the collection configuration.
+コレクションは作成時にマルチテナントとして指定する必要があります。そのため、コレクション設定でマルチテナンシーを有効にします。
 
 <FilteredTextBlock
   text={PyCode}
@@ -214,64 +214,63 @@ A collection must be specified as multi-tenant when it is created. So, we enable
   language="py"
 />
 
-We also set `auto_tenant_creation` and `auto_tenant_activation` here to `true`. You'll learn more about these features later on. But here is a brief overview:
+ここでは `auto_tenant_creation` と `auto_tenant_activation` を `true` に設定しています。詳細は後ほど説明しますが、簡単に概要を示します。
 
-- `auto_tenant_activation`: if `true`, activate any deactivated (`INACTIVE` or `OFFLOADED`) tenants when they are accessed.
-- `auto_tenant_creation`: if `true`, automatically create the tenant when an object is inserted against a non-existent tenant.
+- `auto_tenant_activation`: `true` の場合、非アクティブ (`INACTIVE` または `OFFLOADED`) なテナントがアクセスされた際に自動的にアクティブ化されます。
+- `auto_tenant_creation`: `true` の場合、存在しないテナントに対してオブジェクトが挿入された際に自動でテナントを作成します。
 
-You will see these features in action later on.
+これらの機能は後ほど実際に確認します。
 
 <details>
-  <summary>More about <code>auto_tenant_creation</code></summary>
+  <summary><code>auto_tenant_creation</code> について詳しく</summary>
 
-:::info Added in `v1.25`
-The auto tenant creation feature is available from `v1.25.0` for batch imports, and from `v1.25.2` for single object insertions.
+:::info `v1.25` で追加
+auto tenant creation 機能は、バッチインポートでは `v1.25.0`、単一オブジェクト挿入では `v1.25.2` から利用できます。
 :::
 
-Enabling `auto_tenant_creation` will cause Weaviate to automatically create the tenant when an object is inserted against a non-existent tenant.
+`auto_tenant_creation` を有効にすると、存在しないテナントに対してオブジェクトが挿入された際に Weaviate が自動でテナントを作成します。
 <br/>
 
-This option is particularly useful for bulk data ingestion, as it removes the need to create the tenant prior to object insertion. Instead, `auto_tenant_creation` will allow the object insertion process to continue without interruption.
+大量データ取り込み時に便利で、事前にテナントを作成する手間が省けます。`auto_tenant_creation` により、インポート処理を中断せずに続行できます。
 <br/>
 
-A risk of using `auto_tenant_creation` is that an error in the source data will not be caught during import. For example, a source object with erroneously spelt `"TenntOn"` instead of `"TenantOne"` will create a new tenant for `"TenntOne"` instead of raising an error.
+ただし、ソースデータの誤りがインポート中に検知されないリスクがあります。例えば、誤って `"TenntOn"` とスペルされたオブジェクトが `"TenantOne"` ではなく `"TenntOne"` という新しいテナントを作成してしまいます。
 <br/>
 
-The server-side default for `auto_tenant_creation` is `false`.
+サーバー側のデフォルト値は `false` です。
 </details>
 
 <details>
-  <summary>More about <code>auto_tenant_activation</code></summary>
+  <summary><code>auto_tenant_activation</code> について詳しく</summary>
 
-:::info Added in `v1.25.2`
-The auto tenant activation feature is available from `v1.25.2`.
+:::info `v1.25.2` で追加
+auto tenant activation 機能は `v1.25.2` から利用できます。
 :::
 
-If `auto_tenant_activation` is enabled, Weaviate will automatically activate any deactivated (`INACTIVE` or `OFFLOADED`) tenants when they are accessed.
+`auto_tenant_activation` を有効にすると、非アクティブ (`INACTIVE` または `OFFLOADED`) なテナントがアクセスされた際に自動でアクティブ化されます。
 <br/>
 
-This option is particularly useful for scenarios where you have a large number of tenants, but only a subset of them are active at any given time. An example is a SaaS app where some tenants may be unlikely due to their local time zone, or their recent activity level.
+多数のテナントが存在し、そのうち常に一部のみがアクティブというシナリオに最適です。例えば、SaaS アプリでタイムゾーンや最近のアクティビティによりアクセスが少ないテナントがある場合などです。
 <br/>
 
-By enabling `auto_tenant_activation`, you can safely set those less active users to be inactive, knowing that they will be loaded onto memory once requested.
+`auto_tenant_activation` を有効にすることで、これらのテナントを安心して非アクティブにでき、リクエスト時にメモリへロードされます。
 <br/>
 
-This can help to reduce the memory footprint of your Weaviate instance, as only the active tenants are loaded into memory.
+これにより、Weaviate インスタンスのメモリ使用量を削減できます。アクティブなテナントのみがメモリに読み込まれるためです。
 <br/>
 
-The server-side default for `auto_tenant_activation` is `false`.
+サーバー側のデフォルト値は `false` です。
 
 </details>
+### <i class="fa-solid fa-code"></i> ベクトルインデックスの設定
 
-### <i class="fa-solid fa-code"></i> Configure vector index
+他のジャーナルのユースケースから分かっていることとして、大多数のユーザーはエントリー数が少ない一方で、少数のユーザーは大量のエントリーを持つ場合があります。
 
-From what we know about other journal use cases, a majority of users will only have a small number of entries. But, a few of those users may have a large number of entries.
+これはバランスを取るのが難しい状況です。`hnsw` インデックスを使用すると、多くのエントリーを持つユーザーに対して高速ですが、メモリを多く消費します。`flat` インデックスを使用するとメモリ消費は抑えられますが、多くのエントリーを持つユーザーに対しては速度が遅くなる可能性があります。
 
-This is a tricky situation to balance. If we use a `hnsw` index, it will be fast for users with many entries, but it will require a lot of memory. If we use a `flat` index, it will require less memory, but potentially slower for users with many entries.
+そこで選択できるのが `dynamic` インデックスです。`dynamic` インデックスは、エントリー数がしきい値を超えると自動的に `flat` から `hnsw` へ切り替わります。これにより、メモリ使用量と速度のバランスを取ることができます。
 
-What we can do here is to choose a `dynamic` index. A `dynamic` index will automatically switch from `flat` to `hnsw` once it passes a threshold count. This way, we can balance the memory usage and speed for our users.
-
-Here is an example code snippet, configuring a "note" named vector with a `dynamic` index.
+以下は、`dynamic` インデックスを使用して "note" という名前のベクトルを設定する例です。
 
 <FilteredTextBlock
   text={PyCode}
@@ -280,13 +279,13 @@ Here is an example code snippet, configuring a "note" named vector with a `dynam
   language="py"
 />
 
-Note (no pun intended) that the `dynamic` index configuration accepts both `flat` and `hnsw` index configurations. Each index configuration is used when the `dynamic` index is in that state.
+ここで（ダジャレではありませんが）注意したいのは、`dynamic` インデックス構成では `flat` と `hnsw` の両方のインデックス設定を受け付ける点です。`dynamic` インデックスがそれぞれの状態にあるときに、該当する設定が使用されます。
 
-### <i class="fa-solid fa-code"></i> Full code snippet
+### <i class="fa-solid fa-code"></i> 完全なコードスニペット
 
-Here is the complete code snippet to create the collection. Take a look at the configuration and see if you agree with our choices.
+以下はコレクションを作成する完全なコードスニペットです。設定を確認し、私たちの選択に同意できるか見てみてください。
 
-In our PoC, we create just the one collection (`"JournalEntry"`), with `"text"`, `"date"`, and `"tags"` properties to keep things simple.
+ PoC  では、シンプルにするために 1 つのコレクション（`"JournalEntry"`）だけを作成し、`"text"`、`"date"`、`"tags"` プロパティを持たせています。
 
 <FilteredTextBlock
   text={PyCode}
@@ -295,13 +294,13 @@ In our PoC, we create just the one collection (`"JournalEntry"`), with `"text"`,
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Summary
+### <i class="fa-solid fa-chalkboard"></i> まとめ
 
-In this section, we set up a Weaviate instance with multi-tenancy enabled. We also created a collection for `MyPrivateJournal`, with multi-tenancy and a dynamic index configuration.
+このセクションでは、マルチテナンシーを有効にした Weaviate インスタンスをセットアップしました。また、マルチテナンシーと dynamic インデックス設定を持つ `MyPrivateJournal` 用のコレクションを作成しました。
 
-Now, the `MyPrivateJournal` team can start onboarding users and storing their journal entries in the collection.
+これで、`MyPrivateJournal` チームはユーザーのオンボーディングを開始し、ジャーナルエントリーをコレクションに保存できるようになります。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,36 +1,38 @@
 ---
-title: Weaviate Typescript client
-description: Client Setup for Multimodal Data in Weaviate
+title: Weaviate TypeScript クライアント
+description: Weaviate でマルチモーダルデータを扱うためのクライアントセットアップ
 ---
 
-## <i class="fa-solid fa-code"></i> Installation
+## <i class="fa-solid fa-code"></i> インストール
 
-The latest Weaviate TypeScript client library can be installed using npm. The client library is tested on Node v18 and later. Install it using the following command:
+最新の Weaviate TypeScript クライアントライブラリは npm でインストールできます。  
+このクライアントライブラリは Node v18 以降でテストされています。  
+以下のコマンドでインストールしてください:
 
 ```bash
 npm install weaviate-client
 ```
 
-The latest major version is `v3` (e.g. `3.x.x`). You can check the version like so:
+最新のメジャーバージョンは `v3`（例: `3.x.x`）です。  
+バージョンは次のように確認できます:
 
 ```bash
 npm view weaviate-client version
 ```
 
-## <i class="fa-solid fa-code"></i> Basic usage
+## <i class="fa-solid fa-code"></i> 基本的な使い方
 
-You can import the Weaviate client library like so:
+Weaviate クライアントライブラリは次のようにインポートできます:
 
 ```typescript
 import weaviate, { generateUuid5, ApiKey } from "weaviate-client"
 ```
 
-The client provides sets of helper functions (e.g. `generateUuid5, ApiKey`) to make it easier to interact with Weaviate.
+クライアントには、Weaviate とのやり取りを簡単にするための補助関数（例: `generateUuid5, ApiKey`）が用意されています。
 
-Next, we'll show you how create a Weaviate instance and connect to it.
+次に、Weaviate インスタンスを作成して接続する方法を示します。
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

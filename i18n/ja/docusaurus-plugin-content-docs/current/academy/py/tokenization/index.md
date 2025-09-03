@@ -1,6 +1,6 @@
 ---
-title: "275 (Keyword) Tokenization"
-description: Dive into tokenization in Weaviate to enhance text search accuracy.
+title: "275 （キーワード）トークナイゼーション"
+description: "Weaviate におけるトークナイゼーションを深く学び、テキスト検索の精度を向上させます。"
 sidebar_position: 275
 ---
 
@@ -8,22 +8,22 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 import CourseUnits from '/src/components/Academy/courseUnits.jsx';
 import { courseData } from '/src/components/Academy/courseData.js';
 
-## <i class="fa-solid fa-chalkboard-user"></i> Course overview
+## <i class="fa-solid fa-chalkboard-user"></i> コース概要
 
-:::info Pre-requisites
-This course is self-contained. However, we recommend that you go through one of the 101-level courses, such as that for working with [text](../starter_text_data/index.md), [your own vectors](../starter_custom_vectors/index.md), or [multimodal data](../starter_multimodal_data/index.md).
+:::info 前提条件
+このコースは単体で完結しています。ただし、[テキスト](../starter_text_data/index.md)、[独自ベクトル](../starter_custom_vectors/index.md)、または[マルチモーダル データ](../starter_multimodal_data/index.md)を扱う 101 レベルのいずれかのコースを先に受講することをおすすめします。
 :::
 
-This course will introduce you to tokenization, and how it relates to Weaviate. Specifically, it will discuss what it is, how it relates to search and how to configure it.
+このコースではトークナイゼーションと Weaviate の関係について紹介します。具体的には、トークナイゼーションとは何か、検索との関係、そして設定方法を説明します。
 
-Note that tokenization is a concept that applies to keyword search and filtering, as well as in the context of language models.
+トークナイゼーションはキーワード検索とフィルタリングだけでなく、言語モデルの文脈にも関連する概念であることに注意してください。
 
-**This course focuses on the keyword aspect**, but will briefly discuss how tokenization impacts language models.
+**本コースはキーワードの側面に焦点を当てます** が、トークナイゼーションが言語モデルに与える影響についても簡単に触れます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 <LearningGoals courseName="tokenization"/>
 
-## <i class="fa-solid fa-book-open-reader"></i> Units
+## <i class="fa-solid fa-book-open-reader"></i> ユニット
 
 <CourseUnits courseData={courseData} courseName="tokenization" />

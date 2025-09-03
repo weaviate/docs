@@ -1,79 +1,79 @@
 ---
-title: Common model types
+title: 一般的なモデルタイプ
 sidebar_position: 2
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Types of vector representations
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル表現の種類
 
 :::warning TODO
-Intro video here
+イントロ動画はこちら
 :::
 
-When we talk about vectors, we are typically referring to vectors that are derived by machine-learning models. More specifically, we refer to vectors that are derived from neural networks, called "dense" vectors.
+ここでいうベクトルとは、通常、機械学習モデルから生成されたベクトルを指します。より具体的には、ニューラルネットワークから得られる「 dense ベクトル」と呼ばれるベクトルを指します。
 
-However, there are other vector representations that are used to represent meaning, especially in relation to textual meaning. They include:
+しかし、特にテキストの意味を表す際には、他にも次のようなベクトル表現があります。
 
 - One-hot encoding
-- TF-IDF (term frequency-inverse document frequency) vectors
-- BM25 vectors
+- TF-IDF ( term frequency-inverse document frequency ) ベクトル
+- BM25 ベクトル
 
-Let's take a brief look at each one, as well as dense vectors.
+以下では、これらと dense ベクトルについて簡単に説明します。
 
 ### One-hot encoding
 
-One-hot encodings represent text as a collection of 0s and 1s, where each 1 represents the presence of a word in the text. Sometimes this is also referred to as a "bag of words" representation.
+One-hot encoding では、テキストを 0 と 1 の集合で表現し、1 はその単語がテキスト内に存在することを示します。これは「 bag of words 」表現とも呼ばれることがあります。
 
-Accordingly, this representation ends up being very sparse, with most of the vector being 0s. This is because most words are not present in a given text.
+そのため、この表現は大部分が 0 になる非常にスパースなベクトルになります。これは、ほとんどの単語が特定のテキストには存在しないためです。
 
-A limitation of this method is that it is not able to capture similarity of words, as each word is simply represented as being present or not present. Additionally, it is not able to take into account the relative importance of words in a text.
+この方法の制限として、各単語は「存在する／しない」のみで表されるため、単語間の類似性を捉えられません。また、テキスト内での単語の相対的重要性を考慮できません。
 
-### TF-IDF vectors
+### TF-IDF ベクトル
 
-A TF-IDF representation improves on the one-hot encoding by taking into account the relative importance of words in a text.
+TF-IDF 表現は、テキスト内での単語の相対的重要性を考慮することで One-hot encoding を改良したものです。
 
-TF-IDF stands for "term frequency-inverse document frequency". It is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus.
+TF-IDF は「 term frequency-inverse document frequency 」の略で、コーパス内の文書において単語がどれほど重要かを示す統計量です。
 
-The TF-IDF value increases proportionally to the number of times a word appears in the document, but is offset by the frequency of the word in the corpus. This means that common words across all documents such as "the", "a", "is" and "are" are penalized, whereas words that are rare across all documents are given more weight.
+TF-IDF の値は、その単語が文書内に出現する回数に比例して増加しますが、コーパス全体での単語の出現頻度によって調整されます。これにより、"the"、"a"、"is"、"are" のような全文書で頻出する単語は減点され、全体でまれな単語に高い重みが付きます。
 
-Intuitively, this means that TF-IDF is able to capture the relative importance of words in a text by weighting rare words more heavily.
+直感的には、TF-IDF はまれな単語により大きな重みを与えることで、テキスト内での単語の相対的重要性を捉えます。
 
-### BM25 vectors
+### BM25 ベクトル
 
-BM25 vectors are similar to TF-IDF vectors, but they are able to take into account the length of a document. This is important because longer documents will have more words, and therefore a higher TF-IDF score, even if they are not more relevant than shorter documents.
+BM25 ベクトルは TF-IDF ベクトルに似ていますが、文書の長さを考慮できる点が異なります。長い文書は単語数が多くなるため、それだけで TF-IDF スコアが高くなる可能性がありますが、必ずしも短い文書より関連性が高いとは限りません。
 
-Accordingly, BM25 vectors normalize the TF-IDF score by the length of the document.
+そのため、BM25 ベクトルは文書の長さで TF-IDF スコアを正規化します。
 
-### Dense Vectors
+### Dense ベクトル
 
-#### Word vectors
+#### Word ベクトル
 
-Word vectors are a type of vector representation that is derived from neural networks. They are able to capture the meaning of words by learning the context in which they appear.
+Word ベクトルはニューラルネットワークから得られるベクトル表現の一種で、単語が現れる文脈を学習することで単語の意味を捉えます。
 
-Models such as "word2vec" and "GloVe" popularized this type of representational learning. One key shortcoming of word-based vectors is that they are not able to take into account local context, such as the context of a word as a part of its parent sentence.
+" word2vec " や " GloVe " といったモデルが、この種の表現学習を一般化しました。Word ベクトルの主な欠点は、親文のローカルな文脈、つまり文中での単語の使われ方を考慮できないことです。
 
-This meant that where words need to be disambiguated, such as in the case of homonyms, word vectors were not able to capture the meaning of the word in the context of the sentence. (For example, the word "bank" can mean a financial institution or a river bank.)
+そのため、同音異義語のように語義の判別が必要な場合、Word ベクトルは文脈内での単語の意味を捉えられません（たとえば "bank" が金融機関なのか川岸なのか）。
 
 :::note Word vectors + weighting
-Word vectors in a text can be combined with a weighting method such as TF-IDF or BM25 to capture the relative importance of words in the text. The resulting vector can be used to represent the entire text.
+Word ベクトルに TF-IDF や BM25 のような重み付け手法を組み合わせることで、テキスト内での単語の相対的重要性を反映したベクトルを生成できます。得られたベクトルはテキスト全体の表現として利用できます。
 :::
 
-#### Transformer-derived vectors
+#### Transformer 由来のベクトル
 
-Most modern vector database use vectors that are derived from what are called "transformer" models.
+現在の多くのベクトルデータベースは、Transformer モデルから得られたベクトルを使用しています。
 
-Transformers are a type of neural network that are able to take into account the context of its parent sentence in determining the meaning of each word. This means that they are able to disambiguate words that have multiple meanings, such as the word "bank" in the example above.
+Transformer はニューラルネットワークの一種で、親文の文脈を考慮して単語の意味を決定します。これにより、前述の "bank" の例のように複数の意味を持つ単語を文脈に応じて判別できます。
 
-Their current key shortcoming is their resource-intensive nature, especially as the input size (e.g. text length) increases.
+現在の主な課題は、入力サイズ（例: テキスト長）が大きくなるにつれて計算資源を多く消費することです。
 
 <Quiz questions={sparseOrDense} />
 
 <Quiz questions={wordVecVsTransformer} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> By media type
+## <i class="fa-solid fa-square-chevron-right"></i> メディアタイプ別
 
-## <i class="fa-solid fa-square-chevron-right"></i> Text vectorizer types
+## <i class="fa-solid fa-square-chevron-right"></i> テキストベクトライザーの種類
 
-## <i class="fa-solid fa-square-chevron-right"></i> Multi-media vectorizers
+## <i class="fa-solid fa-square-chevron-right"></i> マルチメディアベクトライザー
 
 import Quiz from '/src/components/Academy/quiz.js'
 const sparseOrDense = [

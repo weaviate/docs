@@ -1,6 +1,6 @@
 ---
-title: Keyword & Hybrid search
-description: "Combine keyword and hybrid searches for efficient data retrieval in Weaviate."
+title: キーワード & ハイブリッド検索
+description: "Weaviate で効率的にデータを取得するために、キーワード検索とハイブリッド検索を組み合わせます。"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/103_searches.ts';
 
-You can also perform keyword (BM25) searches to find items based on their keyword similarity, or hybrid searches that combine BM25 and semantic/vector searches.
+キーワード（ BM25 ）検索を実行してキーワード類似度に基づいてアイテムを検索したり、BM25 とセマンティック／ ベクトル 検索を組み合わせたハイブリッド検索を実行したりできます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Keyword search
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" with the highest keyword search scores for the term "history", and prints out the title and release year of the top 5 matches.
+この例では、"Movie" クラス内で「history」という語に対して最も高いキーワード検索スコアを持つエントリを取得し、上位 5 件のタイトルと公開年を表示します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -23,16 +23,16 @@ This example finds entries in "Movie" with the highest keyword search scores for
   language="ts"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-The results are based on a keyword search score using what's called the [BM25f](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm.
+結果は [BM25f](https://en.wikipedia.org/wiki/Okapi_BM25) アルゴリズムを用いたキーワード検索スコアに基づいています。
 
-The `limit` parameter here sets the maximum number of results to return.
+`limit` パラメーターは、返される結果の最大件数を指定します。
 
-The `returnMetadata` parameter takes an array of strings to set metadata to return in the search results. The current query returns the `score`, which is the BM25 score of the result.
+`returnMetadata` パラメーターには文字列の配列を渡し、検索結果に含めるメタデータを指定します。ここでは BM25 スコアである `score` を返しています。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例の結果</summary>
 
 ```text
 American History X 1998
@@ -54,11 +54,11 @@ BM25 score: 1.529
 </details>
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Hybrid search
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" with the highest hybrid search scores for the term "history", and prints out the title and release year of the top 5 matches.
+この例では、"Movie" クラス内で「history」という語に対して最も高いハイブリッド検索スコアを持つエントリを取得し、上位 5 件のタイトルと公開年を表示します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -67,16 +67,16 @@ This example finds entries in "Movie" with the highest hybrid search scores for 
   language="ts"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-The results are based on a hybrid search score. A hybrid search blends results of BM25 and semantic/vector searches.
+結果はハイブリッド検索スコアに基づいています。ハイブリッド検索は BM25 とセマンティック／ ベクトル 検索の結果を組み合わせます。
 
-The `limit` parameter here sets the maximum number of results to return.
+`limit` パラメーターは、返される結果の最大件数を指定します。
 
-The `returnMetadata` parameter takes an array of strings to set metadata to return in the search results. The current query returns the `score`, which is the hybrid score of the result.
+`returnMetadata` パラメーターには文字列の配列を渡し、検索結果に含めるメタデータを指定します。ここではハイブリッドスコアである `score` を返しています。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例の結果</summary>
 
 ```text
 Legends of the Fall 1994
@@ -98,7 +98,7 @@ Hybrid score: 0.012
 </details>
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

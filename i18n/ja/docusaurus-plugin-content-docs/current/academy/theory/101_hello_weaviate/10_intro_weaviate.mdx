@@ -1,26 +1,26 @@
 ---
-title: Introduction to Weaviate
-description: Introduction to Weaviate Theory
+title: Weaviate 入門
+description: Weaviate 理論の概要
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> What is Weaviate?
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate とは
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/MQgm126pKkU' controls='true' />
 <br/>
 
-Weaviate is an open-source [vector database](https://weaviate.io/blog/what-is-a-vector-database). But what does that mean? Let's unpack it here.
+ Weaviate はオープンソースの ベクトル データベースです。ですが、それは具体的にどういう意味でしょうか？ここで詳しく見ていきましょう。
 
-### <i class="fa-solid fa-chalkboard"></i> Vector database
+### <i class="fa-solid fa-chalkboard"></i> ベクトル データベース
 
-Weaviate is a fantastic tool for retrieving the information you need, quickly and accurately. It does this by being an amazing **vector database**.
+ Weaviate は、必要な情報を素早く正確に取得できる優れたツールです。その核心となるのが、卓越した **ベクトル データベース** である点です。
 
-You may be familiar with traditional databases such as relational databases that use SQL. A database can catalog, store and retrieve information. A **vector** database can carry out these tasks also, with the key difference being that they can perform these tasks based on similarity.
+従来の SQL を使うリレーショナルデータベースなどはご存じかもしれません。データベースは情報を整理し、保存し、検索できます。**ベクトル** データベースも同じことができますが、大きな違いは「類似度」に基づいて操作できる点です。
 
-#### <i class="fa-solid fa-memo-pad"></i> How traditional searches work
+#### <i class="fa-solid fa-memo-pad"></i> 従来の検索方法
 
-Imagine that you are searching a relational database containing articles on cities, to retrieve a list of "major" European cities. Using SQL, you might construct a query like this:
+ヨーロッパの都市に関する記事を収めたリレーショナルデータベースから、「主要な」ヨーロッパの都市を取得したいと想像してください。SQL で次のようなクエリを書くかもしれません。
 
 ```sql
 SELECT city_name wiki_summary
@@ -36,89 +36,89 @@ WHERE (wiki_summary LIKE '%major European city%' OR
     (… and so on)
 ```
 
-Which would return cities that contained any of these strings (`major`, `important`, `prominent`, ... etc) in the `wiki_summary` column.
+このクエリは、`wiki_summary` 列にこれらの文字列（`major`、`important`、`prominent` など）が含まれる都市を返します。
 
-This works well in many circumstances. However, there are two significant limitations with this approach.
+多くの場面で問題なく機能しますが、この方法には大きく 2 つの制約があります。
 
-#### <i class="fa-solid fa-memo-pad"></i> Limitations of traditional search
+#### <i class="fa-solid fa-memo-pad"></i> 従来検索の制約
 
-Using this type of search requires you to identify terms that *may* have been used to describe the concept, which is no easy feat.
+この検索方法では、概念を表すかもしれない語句を自分で特定する必要があります。これは簡単ではありません。
 
-What's more, this doesn't solve the problem of how to rank the list of resulting objects.
+さらに、結果として得られたオブジェクトをどのようにランキングするかという問題も解決できません。
 
-With the above search query, an entry merely containing a mention of a different European city (i.e. not very relevant) would be given equal weighting to an entry for Paris, or Rome, which would be highly relevant.
+上記の検索では、関連性の低い「別のヨーロッパの都市」についての記述がたった一度登場しただけのエントリでも、パリやローマといった高い関連性を持つエントリと同じ重み付けになります。
 
-A vector database makes this job simpler by enabling searches based on similarity.
+ベクトル データベースは、類似度検索によってこの作業をよりシンプルにします。
 
-#### <i class="fa-solid fa-memo-pad"></i> Examples of vector search
+#### <i class="fa-solid fa-memo-pad"></i> ベクトル検索の例
 
-Instead of searching for an exact match, you could perform a query to find objects that are "nearest" to "Major European city".
+完全一致を探す代わりに、「Major European city」に *最も近い* オブジェクトを検索するクエリを実行できます。
 
-What it would then return is a list of entries that are *ranked by their similarity* to the query.
+その結果として返ってくるのは、クエリとの *類似度でランク付けされた* エントリのリストです。
 
-In other words, the results would reflect their similarity to the idea, or meaning, of "Major European city".
+言い換えると、結果は「Major European city」というアイデア、つまり意味に対する類似度を反映します。
 
-What's more, Weaviate "indexes" the data based on their similarity, making this type of data retrieval lightning-fast.
+さらに、 Weaviate はデータを類似度に基づいて「インデックス化」するため、この種のデータ取得を非常に高速に行えます。
 
-Weaviate can help you to do all this, and actually a lot more. Another way to think about Weaviate is that it supercharges the way you use information.
+ Weaviate はこれらすべてを手助けし、実際にはさらに多くのことが可能です。別の言い方をすれば、 Weaviate は情報の活用方法を強化します。
 
-:::info Vector vs semantic search
-A vector search is also referred to as a "semantic search" because it returns results based on the similarity of meaning (therefore "semantic").
+:::info ベクトル検索 vs セマンティック検索
+ベクトル検索は「セマンティック検索」とも呼ばれます。意味（セマンティクス）の類似度に基づいて結果を返すためです。
 :::
 
-### <i class="fa-solid fa-chalkboard"></i> Open-source
+### <i class="fa-solid fa-chalkboard"></i> オープンソース
 
-Weaviate is open-source. In other words, its [codebase is available online](https://github.com/weaviate/weaviate) for anyone to see and use<sup>[(1)](#-notes)</sup>.
+ Weaviate はオープンソースです。つまり、その [コードベースはオンラインで公開](https://github.com/weaviate/weaviate) されており、誰でも閲覧・利用できます<sup>[(1)](#-notes)</sup>。
 
-And that is *the* codebase, regardless of how you use it. So whether you run Weaviate on your own computer, on a cloud computing environment, or through our managed service [Weaviate Cloud (WCD)](https://console.weaviate.cloud/), you are using the exact same technology.
+しかも、それはどのように利用しても *同じ* コードベースです。自身の PC で動かす場合も、クラウド環境で動かす場合も、マネージドサービスである [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) を使う場合も、まったく同じ技術を使用しています。
 
-So, if you want, you can run Weaviate for free on your own device, or use our managed service for convenience. You can also take comfort in that you can see exactly what you are running, and be a part of the open-source community, as well as to shape its development.
+そのため、希望すれば自身のデバイスで無料で Weaviate を動かしたり、利便性のためにマネージドサービスを利用したりできます。さらに、実際に何を動かしているかを確認でき、オープンソースコミュニティの一員として開発に貢献することも可能です。
 
-It also means that your knowledge about Weaviate is fungible, between local, cloud, or managed instances of Weaviate. So anything you learn here about Weaviate using WCD will be equally applicable to running it locally, and vice versa. 😉
+また、 Weaviate に関する知識はローカル、クラウド、マネージドインスタンス間で互換性があります。WCD で学んだことはローカル環境でも同様に適用でき、その逆も同じです。😉
 
-### <i class="fa-solid fa-chalkboard"></i> Information, made dynamic
+### <i class="fa-solid fa-chalkboard"></i> 情報をダイナミックに
 
-We are used to thinking of information as static, like a book. But with Weaviate and modern AI-driven language models, we can do much more than just retrieve static information but easily build on top of it. Take a look at these examples:
+情報を本のような静的なものとして捉えがちですが、 Weaviate と現代の AI 駆動型言語モデルを組み合わせれば、単に静的情報を取得するだけでなく、その上に簡単に構築できます。以下の例をご覧ください。
 
-#### <i class="fa-solid fa-memo-pad"></i> Question answering
+#### <i class="fa-solid fa-memo-pad"></i> 質問応答
 
-Given a list of Wikipedia entries, you could ask Weaviate:
+Wikipedia のエントリ一覧があるとして、 Weaviate に次のように尋ねられます。
 
 :::note We asked Weaviate:
 When was Lewis Hamilton born?
 :::
 
-And it would answer with:
+すると、次のように回答します。
 
 :::note Weaviate responded:
 Lewis Hamilton was born on January 7, 1985. ([check for yourself](https://en.wikipedia.org/wiki/Lewis_Hamilton))
 :::
 
-#### <i class="fa-solid fa-memo-pad"></i> Generative search
+#### <i class="fa-solid fa-memo-pad"></i> 生成検索
 
-Or you can synthesize passages using retrieved information with Weaviate:
+あるいは、 Weaviate で取得した情報を使って文章を合成することもできます。
 
-Here is one, where we searched Weaviate for an entry on a "racing driver", and produce the result in the format of:
+次の例では、「レーシングドライバー」に関するエントリを検索し、以下の形式で結果を生成しています。
 
 :::note We asked Weaviate:
 Write a fun tweet encouraging people to read about this: ## \{title} by summarizing highlights from: ## \{wiki_summary}
 :::
 
-Which produces:
+生成された結果は以下のとおりです。
 
 :::note Weaviate responded:
 Check out the amazing story of Lewis Hamilton, the 7-time Formula One World Drivers' Championship winner! From his humble beginnings to becoming one of the world's most influential people, his journey is an inspiring one. #LewisHamilton #FormulaOne #Motorsport #Racing
 :::
 
-We will cover these and many more capabilities, such as vectorization, summarization and classification, in our units.
+これらに加え、ベクトライゼーション、要約、分類など、さらに多くの機能をユニットで取り上げます。
 
-For now, keep in mind that Weaviate is a vector database at its core which can also leverage AI tools to do more with the retrieved information.
+現時点では、 Weaviate はベクトル データベースを核とし、取得した情報に対して AI ツールを活用してより多くのことを実現できる、と覚えておいてください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> まとめ
 
-In this section, you learned about what Weaviate is and how it works at a very high level. You have also been introduced to what vector search is at a high level, that it is a similarity-based search method.
+このセクションでは、 Weaviate が何であるか、そして概要レベルでどのように機能するかを学びました。また、ベクトル検索とは「類似度ベースの検索方法」であるという高レベルの概念も紹介しました。
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercises
+### <i class="fa-solid fa-pen-to-square"></i> 練習問題
 
 <Quiz questions={weaviateOpenSource} />
 
@@ -131,19 +131,18 @@ Input box for user to put answer in and get back a similarity score & our defini
 - What is a vector search
 - What is Weaviate
 ::: -->
+### <i class="fa-solid fa-lightbulb-on"></i> 主なポイント
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+- Weaviate はオープンソースのベクトルデータベースです。  
+- Weaviate のコアライブラリは、ローカル、クラウド、または WCD で実行しても同じです。  
+- ベクトル検索は類似度ベースの検索です。  
+- Weaviate は、取得したデータを返す前に変換することもできます。  
 
-- Weaviate is an open source vector database.
-- The core Weaviate library is the same whether you run it locally, on the cloud, or with WCD.
-- Vector searches are similarity-based searches.
-- Weaviate can also transform your data after retrieving it before returning it to you.
+## <i class="fa-solid fa-square-chevron-right"></i> 注記
 
-## <i class="fa-solid fa-square-chevron-right"></i> Notes
+<a name="1"></a>(1) もちろん、ライセンス条件に従います。
 
-<a name="1"></a>(1) Subject to terms of its license, of course.
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

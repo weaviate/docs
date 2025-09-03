@@ -1,6 +1,6 @@
 ---
-title: How to import data
-description: Learn data import techniques in Weaviate for seamless data integration.
+title: データのインポート方法
+description: Weaviate におけるデータインポート手法を学び、シームレスなデータ統合を実現します。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,59 +8,59 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PythonCodeExample from '!!raw-loader!./_snippets/30_import.py';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/fpmjEN-93Og' controls='true' />
 <br/>
 
-So far, you've learned that data in Weaviate is represented by objects, which belong to a `class`, and have a set of `properties`. In the previous section on the `schema`, you learned how to create a framework for this structure.
+これまでに、データは  Weaviate ではオブジェクトとして表され、それらは `class` に属し、複数の `properties` を持つことを学習しました。前の `schema` セクションでは、この構造のための枠組みを作成する方法を学びました。
 
-In this section, you will learn how to import data into Weaviate, including our recommended best practices, and some key considerations. Once you're done with this section, you will be ready to import a real dataset into Weaviate by putting together what we've learned about the schema and imports.
+このセクションでは、  Weaviate へのデータインポート方法を、推奨されるベストプラクティスと重要な考慮事項とともに学びます。このセクションを終えると、スキーマとインポートについて学んだ内容を組み合わせ、実際のデータセットを  Weaviate へインポートできるようになります。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Imports: A high-level view
+## <i class="fa-solid fa-square-chevron-right"></i> インポート : ハイレベルビュー
 
-### <i class="fa-solid fa-chalkboard"></i> Object creation
+### <i class="fa-solid fa-chalkboard"></i> オブジェクト作成
 
-To create a Weaviate object, you must:
+ Weaviate オブジェクトを作成するには、以下を行います。
 
-- Load your source data,
-- Build a data object with any desired properties, and
-- Add it to your desired class in Weaviate.
+- ソースデータを読み込む  
+- 必要なプロパティを含むデータオブジェクトを構築する  
+-  Weaviate の目的のクラスに追加する  
 
-Optionally, you can manually specify:
+必要に応じて、次も手動で指定できます。
 
-- An object ID, and
-- A vector
+- オブジェクト ID
+- ベクトル
 
 :::info Optional properties
 
-- An object ID is required. So, if one is not specified, Weaviate will create one.
-- If a vector is not specified, Weaviate will create one if a vectorizer is set for the class.
+- オブジェクト ID は必須です。そのため、指定しない場合は  Weaviate が自動生成します。  
+- ベクトルを指定しない場合、クラスにベクトライザーが設定されていれば  Weaviate が生成します。  
 
-We'll cover these in more detail later on.
+これらについては後ほど詳しく説明します。  
 :::
 
-### <i class="fa-solid fa-chalkboard"></i> Use batch imports
+### <i class="fa-solid fa-chalkboard"></i> バッチインポートを使用する
 
-Weaviate offers a "batch import" process to maximize the import speed. Take a look at this diagram that shows the object creation process:
+ Weaviate ではインポート速度を最大化するために「バッチインポート」プロセスを提供しています。以下の図はオブジェクト作成プロセスを示しています。
 
 import ImportConceptualImg from './images/academy_103_import_process_conceptual.png';
 
 <img src={ImportConceptualImg} alt="Conceptual diagram of the import process" width="100%"/>
 
-In the figure, a request is made to create an object based on the provided data.
+図では、指定されたデータを基にオブジェクトを作成するリクエストが送信されています。
 
-If the vector is not provided and a vectorizer is specified, Weaviate (core) will send a request to the vectorizer module for a vector embedding. If that module is an inference-API based module, such as `text2vec-cohere`, it must then contact the inference API to request the appropriate vector.
+ベクトルが提供されず、かつベクトライザーが指定されている場合、  Weaviate (core) はベクトル埋め込みを取得するためにベクトライザーモジュールへリクエストを送信します。そのモジュールが `text2vec-cohere` のような推論 API ベースのモジュールである場合、さらに該当の推論 API へベクトルを要求する必要があります。
 
-You can imagine that in such a configuration, the network latencies may add a significant amount of time for large datasets, or become a bottleneck.
+このような構成では、ネットワーク遅延が大規模データセットに対して大きな時間を要したり、ボトルネックになる可能性があります。
 
-A batch import significantly reduces the impact of network latencies by processing multiple objects per request, and our clients (e.g. the Python client) can parallelize the process as well. You should use batch imports unless you have a good reason not to, as it will significantly improve the speed of data ingestion.
+バッチインポートは 1 つのリクエストで複数のオブジェクトを処理することでネットワーク遅延の影響を大幅に低減し、クライアント（例 : Python クライアント）はさらに処理を並列化できます。特別な理由がない限りバッチインポートを使用することを推奨します。データ取り込み速度が大きく向上します。
 
-### <i class="fa-solid fa-code"></i> Batch import syntax
+### <i class="fa-solid fa-code"></i> バッチインポート構文
 
-The batch syntax is shown below, with some of the parameters:
+以下に、いくつかのパラメータを含むバッチ構文を示します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -73,35 +73,35 @@ The batch syntax is shown below, with some of the parameters:
 </TabItem>
 </Tabs>
 
-Note that here, each `data_object` would be a Python dictionary whose keys correspond to the class properties.
+ここで各 `data_object` はクラスのプロパティに対応するキーを持つ Python の辞書である点に注意してください。
 
-:::tip Do *not* specify vectors as a part of the `data_object`
-Vectors should be specified separately so that Weaviate knows it to be **the** object vector and it can be indexed. See [below](#-example-with-id--vector) for the right syntax on how to specify the vector.
+:::tip `data_object` の一部としてベクトルを指定 *しない*  
+ベクトルは別項目として指定してください。  Weaviate がそれを **オブジェクトのベクトル** と認識し、インデックス化できるようにするためです。ベクトルを指定する正しい構文は [下記](#-example-with-id--vector) を参照してください。  
 :::
 
-### <i class="fa-solid fa-chalkboard"></i> Error handling
+### <i class="fa-solid fa-chalkboard"></i> エラーハンドリング
 
-The batch import process is configured to handle errors at a batch level, and at individual object level.
+バッチインポートプロセスは、バッチレベルおよび個別オブジェクトレベルでエラーを処理するよう設定されています。
 
-#### Batch-level errors
+#### バッチレベルのエラー
 
-Any batch-level errors are indicated via the HTTP response code for the batch request.
-- A 200 response code indicates that batch was successfully sent, connected and processed.
-- A 4xx status code indicates that the request was malformed.
+バッチレベルのエラーはバッチリクエストの HTTP レスポンスコードで示されます。  
+- 200 レスポンスコード : バッチが正常に送信・接続・処理された  
+- 4xx ステータスコード : リクエストが不正
 
-#### Object-level errors
+#### オブジェクトレベルのエラー
 
-Since a batch contains multiple objects, individual errors may occur during import even when the request was successful.
+バッチには複数のオブジェクトが含まれるため、リクエストが成功しても個々のオブジェクトでエラーが発生する場合があります。
 
-Accordingly, object-level errors are returned as a part of the response the batch creation requests.
+そのため、オブジェクトレベルのエラーはバッチ作成リクエストのレスポンス内で返されます。
 
-### <i class="fa-solid fa-code"></i> Error handling syntax
+### <i class="fa-solid fa-code"></i> エラーハンドリング構文
 
-If there are any object-level errors during import, they will be visible in the returned responses to `batch.create_objects()` or `batch.create_references()`.
+インポート中にオブジェクトレベルのエラーが発生した場合、それらは `batch.create_objects()` または `batch.create_references()` へのレスポンス内で確認できます。
 
-In the response, each object's `result["result"]["errors"]` value can be inspected to see if there were any errors.
+レスポンスでは各オブジェクトの `result["result"]["errors"]` 値を調べることでエラーの有無を確認できます。
 
-A convenient way to do so is to define a callback function and specifying it while initializing the batch:
+便利な方法として、コールバック関数を定義しバッチ初期化時に指定する方法があります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -114,39 +114,38 @@ A convenient way to do so is to define a callback function and specifying it whi
 </TabItem>
 </Tabs>
 
-This pattern would capture and print any object-level errors found during the import process.
+このパターンを使うことで、インポート処理中に発生したオブジェクトレベルのエラーを捕捉して表示できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Optional parameters
-
+## <i class="fa-solid fa-square-chevron-right"></i> オプションパラメータ
 ### <i class="fa-solid fa-chalkboard"></i> ID
 
-Each object in Weaviate has a unique identifier. This ID must be a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier), and can be user-provided, but if not, Weaviate will generate a random UUID.
+Weaviate の各オブジェクトには一意の識別子があります。 この ID は [ UUID ](https://en.wikipedia.org/wiki/Universally_unique_identifier) である必要があり、ユーザーが指定することもできますが、指定しない場合は Weaviate がランダムな UUID を生成します。
 
-Weaviate does not check if a duplicate object is being created. As a result, using a deterministic uuid may prevent accidental creation of duplicate objects.
+Weaviate は重複オブジェクトが作成されているかどうかをチェックしません。 その結果、決定論的な UUID を使用すると、誤って重複オブジェクトを作成することを防げる場合があります。
 
-### <i class="fa-solid fa-chalkboard"></i> Vector
+### <i class="fa-solid fa-chalkboard"></i> ベクトル
 
-Each object in Weaviate can have a vector embedding to represent it, although this is not mandatory.
+Weaviate の各オブジェクトは、それを表すベクトル埋め込みを持つことができますが、必須ではありません。
 
-- If a vector is specified at creation time, Weaviate will use that vector to represent the object.
-- If a vector is not specified, Weaviate will check to see if a vectorizer setting applies to the relevant class.
-    - If so, Weaviate will send a request to that vectorizer module for a vector embedding.
-    - If not, the object will not have a vector representation.
+- 作成時にベクトルを指定した場合、 Weaviate はそのベクトルをオブジェクトの表現として使用します。  
+- ベクトルを指定しなかった場合、 Weaviate は関連クラスにベクトライザー設定が適用されるかどうかを確認します。  
+    - 適用される場合、 Weaviate はそのベクトライザーモジュールにベクトル埋め込みのリクエストを送信します。  
+    - 適用されない場合、オブジェクトはベクトル表現を持ちません。  
 
-:::info How is a vectorizer determined for the class?
-- If a vectorizer was set in the schema for the class, this vectorizer will be used.
-- If not, Weaviate will check for a default vectorizer setting for that Weaviate instance.
+:::info クラスのベクトライザーはどのように決まるのですか？
+- スキーマでクラスにベクトライザーが設定されている場合、そのベクトライザーが使用されます。  
+- 設定されていない場合、 Weaviate はそのインスタンスのデフォルトベクトライザー設定を確認します。  
 :::
 
-:::note Upload vectors and use a vectorizer
-It is possible to both upload your own vectors and specify a vectorizer for Weaviate. For example, if you are importing a large dataset and have vectorized the data using a vectorizer that is also available through Weaviate, this may be a useful approach. This will allow you to use Weaviate to vectorize any updates to the dataset, as well as to vectorize queries as necessary.
+:::note ベクトルをアップロードしてベクトライザーを使用する
+独自のベクトルをアップロードしつつ、ベクトライザーも指定することが可能です。 例えば、大規模データセットをインポートする際に、 Weaviate でも利用可能なベクトライザーで事前にベクトル化している場合に便利です。 これにより、データセットの更新を Weaviate でベクトル化できるほか、クエリも必要に応じてベクトル化できます。  
 :::
 
-We will explore these options in more detail in another unit.
+これらのオプションについては別のユニットで詳しく説明します。
 
-### <i class="fa-solid fa-code"></i> Example with id & vector
+### <i class="fa-solid fa-code"></i> id & ベクトルを指定した例
 
-To manually specify the object ID and vector, the syntax is as follows.
+オブジェクトの ID とベクトルを手動で指定する場合、構文は以下のとおりです。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -159,30 +158,30 @@ To manually specify the object ID and vector, the syntax is as follows.
 </TabItem>
 </Tabs>
 
-With these parameters, you have the option of manually specifying the object ID and vector.
+これらのパラメーターを使うことで、オブジェクトごとに ID とベクトルを手動で指定できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
 
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-- After studying the batch import process, try to explain it in your own words.
-    - Include in your explanation what the batch import process is, why it is used, and how it improves the speed of data ingestion.
-- Can you recall which parameters were optional in the object creation process?
-    - Can you imagine scenarios in which you might want to, or not want to, specify these parameters?
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+- バッチインポートプロセスを学習したあと、自分の言葉で説明してみましょう。  
+    - バッチインポートプロセスとは何か、なぜ使用するのか、そしてデータ取り込み速度をどのように向上させるのかを含めてください。  
+- オブジェクト作成時にオプションだったパラメーターを思い出せますか？  
+    - それらのパラメーターを指定したい場合、または指定したくない場合のシナリオを想像できますか？  
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- To create a Weaviate object, you need to build a data object with properties, and add it to your desired class.
-- Use batch imports to maximize import speed and minimize network latency. Batch import processes multiple objects per request, and clients can parallelize the process.
-- Error handling during import can be done at the batch level or individual object level.
-- You can manually specify an object ID and vector for each object in Weaviate.
-    - If an ID is not specified, Weaviate will create one.
-    - If a vector is not specified, Weaviate will create one if a vectorizer is specified.
-    - The vectorizer setting can be set in the schema.
+- Weaviate オブジェクトを作成するには、プロパティを持つデータオブジェクトを構築し、目的のクラスに追加します。  
+- インポート速度を最大化しネットワーク遅延を最小化するには、バッチインポートを使用します。バッチインポートは 1 リクエストで複数オブジェクトを処理でき、クライアント側で並列化も可能です。  
+- インポート中のエラーハンドリングは、バッチ単位または個々のオブジェクト単位で行えます。  
+- Weaviate では各オブジェクトに対して ID とベクトルを手動で指定できます。  
+    - ID を指定しない場合、 Weaviate が生成します。  
+    - ベクトルを指定しない場合、ベクトライザーが設定されていれば Weaviate が生成します。  
+    - ベクトライザー設定はスキーマ内で指定できます。  
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

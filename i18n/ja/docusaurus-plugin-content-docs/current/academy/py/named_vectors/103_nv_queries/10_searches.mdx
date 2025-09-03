@@ -1,5 +1,5 @@
 ---
-title: Searches
+title: 検索
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,15 +7,15 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/103_searches.py';
 
-As collections with named vectors can include multiple vector embeddings, any vector or similarity search must specify a "target" vector.
+named vectors を持つコレクションには複数の ベクトル 埋め込みを含めることができるため、あらゆる ベクトル 検索または類似度検索では「target」 ベクトル を指定する必要があります。
 
-This applies for `near_text` and `near_vector` searches, as well as multimodal searches such as `near_image` and so on. Let's explore a few examples here.
+これは `near_text` と `near_vector` 検索だけでなく、`near_image` などのマルチモーダル検索にも適用されます。ここではいくつかの例を見てみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Text searches
+## <i class="fa-solid fa-square-chevron-right"></i> テキスト検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-Here, we look for entries in "MovieNVDemo" based on their similarity to the phrase `"A joyful holiday film"`. Note, however, that we show multiple versions of the same query, each with a different `target_vector` parameter:
+ここでは "MovieNVDemo" 内から、フレーズ `"A joyful holiday film"` と意味的に近いエントリーを検索します。ただし、同じクエリでも `target_vector` パラメーターを変えた複数バージョンを示しています。
 
 <Tabs groupId="targetVector">
   <TabItem value="title" label="Title">
@@ -44,31 +44,29 @@ Here, we look for entries in "MovieNVDemo" based on their similarity to the phra
   </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-Each named vector here is based on a different property of the movie data.
+ここで使用している各 named vector は、映画データの異なるプロパティに基づいています。
 
-The first search compares the meaning of the movie **title** with the query, the second search compares the **entire summary** (overview) with the query, and the third compares the **poster (and the title)** with the query.
+最初の検索は映画の **タイトル** の意味をクエリと比較し、2 番目の検索は映画の **全文サマリー**（overview）を比較し、3 番目は **ポスター（およびタイトル）** を比較します。
 
-Weaviate also allows each named vector to be set with a different vectorizer. You will recall that the `poster_title` vector is created by the CLIP models, while the `title` and `overview` properties are created by the OpenAI model.
+Weaviate では、各 named vector に異なる ベクトライザー を設定することもできます。ご存じのとおり `poster_title` ベクトルは CLIP モデルによって作成され、`title` と `overview` プロパティは OpenAI モデルによって作成されています。
 
-As a result, each named vector can be further specialized by using the right model for the right property.
+その結果、適切なプロパティに対して適切なモデルを使用することで、各 named vector をさらに特化させることができます。
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the results
+### <i class="fa-solid fa-chalkboard"></i> 結果の説明
 
-The results of each search are different, as they are based on different properties of the movie data.
+検索はそれぞれ異なるプロパティを基にしているため、結果も異なります。
 
 #### `title` vs `overview`
 
-Note that the search with the `overview` target vector includes titles like "Home Alone" and "Home Alone 2: Lost in New York", which are not included in the other searches.
+`overview` ターゲット ベクトルでの検索結果には、「Home Alone」や「Home Alone 2: Lost in New York」など、他の検索には含まれていないタイトルが表示されています。
 
-This is because the plots of these movies are holiday-themed, even though the titles are not obviously joyful or holiday-related.
+これは、これらの映画のストーリーがホリデーをテーマにしている一方で、タイトル自体は明らかに楽しい休日やホリデーを示唆していないためです。
 
 #### `poster`
 
-The search with `poster_title` target vector interestingly includes "Misery" - the Stephen King horror movie! This is very likely because the poster of the movie is a snowy scene. And since the CLIP vectorizer is trained to identify elements of images, it identifies this terrifying film as a result of the search.
-
-Given the imagery of the poster only and no other context, you would have to say that the search isn't wrong, even though anyone who's read the book or watched the movie would agree.
+`poster_title` ターゲット ベクトルでの検索結果には興味深いことにスティーヴン・キング原作のホラー映画「Misery」が含まれています。これは映画のポスターが雪景色であり、CLIP ベクトライザーが画像の要素を認識するよう訓練されているためと考えられます。この恐ろしい映画でも、ポスターだけを見れば検索結果として「間違い」とは言い切れません。本や映画を知っている人なら同意するでしょうが。
 
 <Tabs groupId="targetVector">
   <TabItem value="title" label="Title">
@@ -113,7 +111,7 @@ Distance to query: 0.176
   </TabItem>
   <TabItem value="poster" label="Poster">
 
-Posters for the top 5 matches:
+上位 5 件のポスター：
 <img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/637_poster.jpg" alt="Life Is Beautiful" width="200" />
 <img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/137_poster.jpg" alt="Groundhog Day" width="200" />
 <img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/9279_poster.jpg" alt="Jingle All the Way" width="200" />
@@ -140,11 +138,11 @@ Distance to query: 0.632
   </TabItem>
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Hybrid search
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "MovieNVDemo" with the highest hybrid search scores for the term "history", and prints out the title and release year of the top 5 matches.
+次の例では "MovieNVDemo" 内から "history" という語のハイブリッド検索スコアが最も高いエントリーを探し、上位 5 件のタイトルと公開年を表示します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -153,30 +151,29 @@ This example finds entries in "MovieNVDemo" with the highest hybrid search score
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-Hybrid search with named vectors works the same way as other vector searches with named vectors. You must provide a `target_vector` parameter to specify the named vector for the vector search component of the hybrid search.
+named vectors でのハイブリッド検索は、他の named vector を使った ベクトル 検索と同じ仕組みで動作します。ハイブリッド検索の ベクトル 検索部分で使用する named vector を指定するために、`target_vector` パラメーターを必ず渡してください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Keyword search
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
 
-As named vectors affect the vector representations of objects, they do not affect keyword searches. You can perform keyword searches on named vector collections using the same syntax as you would for any other collections.
+named vectors はオブジェクトの ベクトル 表現に影響を与えますが、キーワード検索には影響しません。named vector コレクションでも、他のコレクションと同じ構文でキーワード検索を実行できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Named vectors in search
+## <i class="fa-solid fa-square-chevron-right"></i> 検索における名前付き ベクトル
 
-The use of named vectors enables flexible search options that can be tailored to your needs.
+named vectors を使用すると、ニーズに合わせて柔軟な検索オプションを設定できます。
 
-Each object can have as many named vectors as you would like, with any combinations of properties and vectorizers, or even multiple custom vectors provided by your own models.
+各オブジェクトには、任意のプロパティと ベクトライザー の組み合わせ、あるいは独自モデルで作成した複数のカスタム ベクトル など、必要なだけ多くの named vectors を持たせることができます。
 
-This flexibility allows you to create databases with vector representations that are tailored to your specific use case, and to search for similar items based on any combination of properties.
+この柔軟性により、特定のユースケースに最適化された ベクトル 表現を持つデータベースを構築し、任意のプロパティの組み合わせに基づいて類似アイテムを検索できます。
+## <i class="fa-solid fa-square-chevron-right"></i> RAG について
 
-## <i class="fa-solid fa-square-chevron-right"></i> What about RAG?
+ RAG （検索拡張生成）クエリで名前付き ベクトル を使用する場合も、他の名前付き ベクトル を使った ベクトル 検索と同じ方法で動作します。 RAG クエリの ベクトル 検索コンポーネントで使用する名前付き ベクトル を指定するには、`target_vector` パラメーターを必ず指定してください。
 
-RAG, or retrieval augmented generation, queries with named vectors work the same way as with other vector searches with named vectors. You must provide a `target_vector` parameter to specify the named vector for the vector search component of the RAG query.
-
-This, in turn, can improve the quality of the generation. Let's explore a few examples in the [next section](./20_use_cases.mdx).
+これにより、生成結果の品質を向上させられる可能性があります。いくつかの例を [次のセクション](./20_use_cases.mdx) で見ていきましょう。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

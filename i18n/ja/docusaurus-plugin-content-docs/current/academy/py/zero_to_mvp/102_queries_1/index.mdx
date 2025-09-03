@@ -1,6 +1,6 @@
 ---
-title: P3_102 Queries 1 (Python)
-description: Begin querying Weaviate with basic search and filter techniques.
+title: P3_102 クエリ 1 (Python)
+description: 基本的な検索とフィルター手法で Weaviate へのクエリを開始します。
 sidebar_position: 102
 ---
 
@@ -8,30 +8,30 @@ import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/dep
 
 <ZeroToMvpDeprecationNote/>
 
-## <i class="fa-solid fa-chalkboard-user"></i> Unit overview
+## <i class="fa-solid fa-chalkboard-user"></i> ユニット概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/Fk9pDfBhnTI' controls='true' />
 <br/>
 
-In this unit, you will learn how to efficiently retrieve relevant objects or aggregated information from Weaviate.
+このユニットでは、 Weaviate から関連オブジェクトや集約情報を効率的に取得する方法を学びます。
 
-You have already encountered some examples of vector searches. In this section, we will delve deeper by reviewing the various vector search methods available in Weaviate, such as `nearVector`, `nearObject`, and `nearText`.
+すでに ベクトル検索 の例をいくつか見てきました。本セクションでは、`nearVector`、`nearObject`、`nearText` といった Weaviate で利用可能なさまざまな ベクトル検索 メソッドを詳しく見ていきます。
 
-Along with vector search methods, you will also discover filters that can be employed to accompany search operators. For instance, you will learn how to search for data objects that exclude specific criteria.
+ベクトル検索 メソッドに加え、検索オペレーターと組み合わせて使用できるフィルターも紹介します。たとえば、特定の条件を除外してデータオブジェクトを検索する方法を学びます。
 
-As we examine these capabilities, we will simultaneously use them as a means to gain insight into the inner workings of Weaviate.
+これらの機能を確認しながら、同時に Weaviate の内部動作についても理解を深めていきます。
 
-Upon completing this unit, you will possess a thorough understanding of how to effectively query Weaviate to obtain desired results, as well as the underlying mechanisms that make it all possible.
+このユニットを修了すると、目的の結果を得るために Weaviate へ効果的にクエリを実行する方法と、その背後にあるメカニズムを十分に理解できます。
 
-### <i class="fa-solid fa-clipboard-list-check"></i> Prerequisites
+### <i class="fa-solid fa-clipboard-list-check"></i> 前提条件
 
-- (**Required**) A Python (3) environment with `weaviate-client` installed.
-- (**Required**) Complete [101A Weaviate Academy Preparation](../setup.mdx)
-- (*Recommended*) Complete [Hello, Weaviate](../101_hello_weaviate/index.mdx)
+- (**Required**) `weaviate-client` がインストールされた Python (3) 環境  
+- (**Required**) [101A Weaviate Academy Preparation](../setup.mdx) を完了  
+- (*Recommended*) [Hello, Weaviate](../101_hello_weaviate/index.mdx) を完了  
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
 
@@ -41,7 +41,7 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 
 <LearningGoals unitName="queries_1"/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

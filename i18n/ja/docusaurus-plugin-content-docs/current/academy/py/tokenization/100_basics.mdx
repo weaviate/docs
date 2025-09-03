@@ -1,56 +1,55 @@
 ---
-title: Overview of tokenization
+title: トークナイゼーションの概要
 ---
 
-Tokenization is the process of breaking text into smaller units, called tokens. This is an important step that impacts how text is processed in a variety of contexts.
+トークナイゼーションとは、テキストをトークンと呼ばれるより小さな単位に分割する処理です。これは、テキストを多様な文脈で扱う方法に影響を与える重要なステップです。
 
-Consider text like:
+例えば、次のようなテキストを考えてみましょう:
 
 ```text
 Ankh-Morpork's police captain
 ```
 
-This text could be tokenized in a variety of ways. All of the following are perfectly valid tokenizations:
+このテキストは、さまざまな方法でトークン化できます。以下はすべて正しいトークナイゼーションの例です。
 
 1. `["Ankh-Morpork's", "police", "captain"]`
 1. `["ankh", "morpork", "police", "captain"]`
 1. `['An', '##kh', '-', 'Mo', '##rp', '##or', '##k', "'", 's', 'police', 'captain']`
 
-Methods 1 and 2 are examples of *word tokenization*, while method 3 is an example of *subword tokenization*.
+方法 1 と 2 は単語トークナイゼーションの例であり、方法 3 はサブワード トークナイゼーションの例です。
 
-The choice of tokenization method will depend on the context in which the text is being used.
+トークナイゼーション方式の選択は、テキストが使用される文脈によって異なります。
 
-### <i class="fa-solid fa-chalkboard"></i> For keyword search & filtering
+### <i class="fa-solid fa-chalkboard"></i> キーワード検索・フィルタリング向け
 
-The choice of tokenization method will significantly impact the result of keyword search and filtering. This can cause it to either meet or miss the user's expectations.
+トークナイゼーション方式の選択は、キーワード検索とフィルタリングの結果に大きく影響し、ユーザーの期待に合う場合もあれば外れる場合もあります。
 
-In a database of television shows, you would expect a search for `"Superman"`, or `"Clark"` to include the show `"Lois & Clark: The New Adventures of Superman"`. Selecting the right tokenization method will ensure that this is the case.
+テレビ番組のデータベースでは、`"Superman"` や `"Clark"` という検索で `"Lois & Clark: The New Adventures of Superman"` がヒットすることを期待します。適切なトークナイゼーション方式を選択すれば、これを実現できます。
 
-But, in a database of email addresses, you would not expect a search for `"john@example.com"` to include `"john.doe@example.com"`. In this case, your tokenization strategy might be different to above.
+しかし、メールアドレスのデータベースでは、`"john@example.com"` の検索結果に `"john.doe@example.com"` が含まれることは想定しません。この場合、上記とは異なるトークナイゼーション戦略が必要になるでしょう。
 
-And what about all the cases in between? Should a search for `"clark"`, or `"lois and clark"` include the show? That might depend on how you want the search to behave.
+では、その中間的なケースはどうでしょうか。`"clark"` や `"lois and clark"` の検索で番組を含めるべきかどうかは、検索をどのように機能させたいかによって決まります。
 
-Because of varying needs like these, Weaviate allows you to configure the tokenization method to suit your use case. From the next section onwards, we will discuss the different tokenization methods available in Weaviate, and how to configure them.
+このような多様なニーズに対応するため、 Weaviate ではユースケースに合わせてトークナイゼーション方式を設定できます。次のセクションからは、 Weaviate で利用できるトークナイゼーション方式とその設定方法について説明します。
 
-### <i class="fa-solid fa-chalkboard"></i> For language models
+### <i class="fa-solid fa-chalkboard"></i> 言語モデル向け
 
-Language models digest and work with the overall meaning of the text to embed or produce text. So, each token for a language model is designed to represent meaning.
+言語モデルは、テキスト全体の意味を理解し、埋め込みや生成を行います。そのため、言語モデル用の各トークンは意味を表現するよう設計されています。
 
-To balance the need for a manageable vocabulary size with the need to capture the meaning of the text, subword tokenization (method 3 above) is often used. This is a key part of the architecture of language models.
+語彙サイズを適切に保ちつつテキストの意味を捉えるために、サブワード トークナイゼーション（上記方法 3）がよく採用されます。これは言語モデルのアーキテクチャの重要な要素です。
 
-At a user level, however, the choice of tokenization method is abstracted away. Because the tokenization method must be consistent between model development (training) and usage (inference), it is baked into the model.
+ただしユーザーレベルでは、トークナイゼーション方式を意識する必要はありません。モデルの開発（学習）と利用（推論）の間で方式を一致させる必要があるため、トークナイゼーションはモデルに組み込まれています。
 
-This means that as you use Weaviate to vectorize text, or perform retrieval augmented generation (RAG) tasks, you don't need to worry about the tokenization method. The chosen model will simply take care of this for you.
+そのため、 Weaviate でテキストを ベクトル化 したり、検索拡張生成 (RAG) を行ったりする場合でも、トークナイゼーション方式を気にする必要はありません。選択したモデルが自動的に処理します。
 
-As a result, this course does not go into detail on tokenization in the context of language models.
+結果として、このコースでは言語モデルの文脈におけるトークナイゼーションの詳細には触れません。
 
-:::info Interested in tokenization for language models?
-This is a rich area of study. So if you would like to read more about tokenization in the context of language models, this [Hugging Face conceptual guide on the topic](https://huggingface.co/transformers/tokenizer_summary.html) is a great resource. Hugging Face also provides this guide on [using tokenizers](https://huggingface.co/learn/nlp-course/en/chapter2/4) in its `transformers` library.
+:::info 言語モデル用トークナイゼーションに興味がありますか？
+この分野は奥が深く、学ぶことが多くあります。詳細を知りたい場合は、 Hugging Face が提供する [トピックの概念ガイド](https://huggingface.co/transformers/tokenizer_summary.html) が参考になります。さらに、 Hugging Face の `transformers` ライブラリを使用した [トークナイザー利用ガイド](https://huggingface.co/learn/nlp-course/en/chapter2/4) もご覧ください。
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

@@ -1,20 +1,20 @@
 ---
-title: Create a collection
-description: Creating Multimodal Data Collections
+title: コレクションの作成
+description: マルチモーダルデータコレクションの作成
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import TSCode from '!!raw-loader!../_snippets/102_collection.mts';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import TSCode from '!!raw-loader!../_snippets/102_collection.mts';  
 
-Weaviate stores data in "collections". A collection is a set of objects that share the same data structure. In our movie database, we might have a collection of movies, a collection of actors, and a collection of reviews.
+ Weaviate はデータを「コレクション」に保存します。コレクションとは、同じデータ構造を共有するオブジェクトの集合です。映画データベースでは、映画のコレクション、俳優のコレクション、レビューのコレクションなどを作成できます。  
 
-Here we will create a collection of movies.
+ここでは映画のコレクションを作成します。  
 
-## <i class="fa-solid fa-code"></i> Code
+## <i class="fa-solid fa-code"></i> コード
 
-This example creates a collection for the movie data:
+次の例では、映画データ用のコレクションを作成しています。
 
 <FilteredTextBlock
   text={TSCode}
@@ -23,29 +23,29 @@ This example creates a collection for the movie data:
   language="ts"
 />
 
-Each collection definition must have a name. Then, you can define additional parameters like we've done in this example.
+各コレクション定義には名前が必須です。そのうえで、この例のように追加パラメーターを設定できます。  
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-### <i class="fa-solid fa-chalkboard"></i> Properties
+### <i class="fa-solid fa-chalkboard"></i> プロパティ
 
-Properties are the object attributes that you want to store in the collection. Each property has a name and a data type.
+プロパティは、コレクションに保存したいオブジェクト属性です。各プロパティには名前とデータ型があります。  
 
-In our movie database, we have properties like `title`, `release_date` and `genre_ids`, with data types like `TEXT` (string), `DATE` (date), or `INT` (integer). It's also possible to have arrays of integers, like we have with `genre_ids`.
+映画データベースでは、`title`、`release_date`、`genre_ids` といったプロパティがあり、データ型は `TEXT`（文字列）、`DATE`（日付）、`INT`（整数）などです。`genre_ids` のように整数の配列を持つことも可能です。  
 
-As a multimodal object, we also have the `poster` property which is the image data, which is saved as a `BLOB` (binary large object) data type.
+マルチモーダルオブジェクトとして、画像データである `poster` プロパティもあり、これは `BLOB`（バイナリ大規模オブジェクト）型で保存されます。  
 
-#### Auto-schema
+#### 自動スキーマ
 
-Weaviate can automatically [infer the schema](/weaviate/config-refs/collections#auto-schema) from the data. However, it's a good practice to define the properties explicitly, for better control and to avoid surprises.
+ Weaviate はデータから自動で [スキーマを推論](/weaviate/config-refs/collections#auto-schema)できます。ただし、制御性を高め予期せぬ挙動を防ぐために、プロパティを明示的に定義することを推奨します。  
 
-### <i class="fa-solid fa-chalkboard"></i> Vectorizer configuration
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザー設定
 
-If you do not specify the vector yourself, Weaviate will use a specified vectorizer to generate vector embeddings from your data.
+自分でベクトルを指定しない場合、 Weaviate は指定された ベクトライザー を使用してデータからベクトル埋め込みを生成します。  
 
-In this code example, we specify the `multi2vec-voyageai` module. This module uses the **voyage-multimodal-3** model to generate vector embeddings from the text and image data.
+このコード例では `multi2vec-voyageai` モジュールを指定しています。このモジュールは **voyage-multimodal-3** モデルを用いてテキストと画像データからベクトル埋め込みを生成します。  
 
-You can specify any number of text and image properties to be used for vectorization, and weight them differently. The weights are used to determine the relative importance of each property in the vector embedding generation process. In this example, we vectorize the `poster` property (an image) with a 90% weight and the `title` property (a string) with a 10% weight.
+ベクトル化に利用するテキストおよび画像プロパティを任意の数だけ指定でき、それぞれに異なる重みを設定できます。重みは、ベクトル埋め込み生成プロセスにおける各プロパティの相対的重要度を決定します。この例では、`poster` プロパティ（画像）に 90% の重み、`title` プロパティ（文字列）に 10% の重みを設定しています。  
 
 <FilteredTextBlock
   text={TSCode}
@@ -54,11 +54,11 @@ You can specify any number of text and image properties to be used for vectoriza
   language="ts"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Generative configuration
+### <i class="fa-solid fa-chalkboard"></i> 生成設定
 
-If you wish to use your collection with a generative model (e.g. a large language model), you must specify the generative module.
+コレクションを生成モデル（例: 大規模言語モデル）で使用する場合、生成モジュールの指定が必要です。  
 
-In this code example, we specify the `cohere` module (`generative-cohere` is the full name) with default options.
+このコード例では、`cohere` モジュール（正式名称は `generative-cohere`）をデフォルト設定で指定しています。  
 
 <FilteredTextBlock
   text={TSCode}
@@ -67,13 +67,13 @@ In this code example, we specify the `cohere` module (`generative-cohere` is the
   language="ts"
 />
 
-import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
+import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';  
 
 <MutableGenerativeConfig />
 
-### <i class="fa-solid fa-code"></i> TypeScript named imports 
+### <i class="fa-solid fa-code"></i> TypeScript の名前付きインポート
 
-The code example makes use of named imports such as `vectorizer` and `configure`. They are defined in the `weaviate` module and are used during the collection definition.
+このコード例では、`vectorizer` や `configure` などの名前付きインポートを使用しています。これらは `weaviate` モジュールで定義されており、コレクション定義時に利用します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -82,8 +82,8 @@ The code example makes use of named imports such as `vectorizer` and `configure`
   language="ts"
 />
 
-## Questions and feedback
+## 質問とフィードバック
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/_includes/docs-feedback.mdx';  
 
 <DocsFeedback/>

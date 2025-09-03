@@ -1,27 +1,27 @@
 ---
-title: "Custom benchmarks: an example"
-description: An example of running your own benchmarks for embedding model evaluation
+title: "カスタム ベンチマークの例"
+description: 埋め込みモデル評価のために独自ベンチマークを実行する例
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
-## <i class="fa-solid fa-chalkboard-user"></i> Example custom benchmark
+## <i class="fa-solid fa-chalkboard-user"></i> カスタム ベンチマークの例
 
-Here is how you might perform a custom benchmark.
+ここでは、カスタム ベンチマークを実行する方法を示します。
 
-Imagine your end goal is to implement a [RAG (retrieval augmented generation)](https://weaviate.io/blog/introduction-to-rag) system over your company's technical documentation (e.g., product documentation, code examples, support forum logs).
+最終的な目的として、会社の技術ドキュメント（製品ドキュメント、コード例、サポートフォーラムのログなど）に対して [RAG（検索拡張生成）](https://weaviate.io/blog/introduction-to-rag) システムを実装すると想像してください。
 
-You've shortlisted two embedding models (Model A and Model B) to retrieve objects based on MTEB scores and practical considerations. Let’s go through the steps discussed earlier.
+MTEB スコアと実用面を考慮して、埋め込みモデルを 2 つ（Model A と Model B）候補に挙げました。ここでは前述した手順を追っていきます。
 
-### <i class="fa-solid fa-chalkboard"></i> Set benchmark objectives
+### <i class="fa-solid fa-chalkboard"></i> ベンチマーク目標の設定
 
-Since your data comes from different sources, you may be concerned that the targets are very diverse, whether it be writing style (informal forum posts vs formal documentation), text lengths (comprehensive snippets vs short answers) or language (code vs English).
+データが複数のソースから来ているため、ターゲットの多様性が気になるかもしれません。たとえば、文体（カジュアルなフォーラム投稿 vs 公式ドキュメント）、テキスト長（詳細なスニペット vs 短い回答）、言語（コード vs 英語）などです。
 
-So you may set the goal of testing *how each model deals with the style, length and language variability*.
+そこで、*各モデルが文体・長さ・言語のばらつきにどのように対処するか* をテストすることを目標に設定できます。
 
-### <i class="fa-solid fa-code"></i> Determine metrics to use
+### <i class="fa-solid fa-code"></i> 使用するメトリクスの決定
 
-This is a classic retrieval problem, where some results are more relevant than others. So, we can use an NDCG@k metric. NDCG@k can be calculated as follows:
+これは古典的な検索問題であり、結果には関連度の高低があります。そのため、NDCG@k メトリックを使用できます。NDCG@k は次のように計算されます。
 
 ```python
 def calculate_dcg(relevance_scores: list[int], k: Optional[int] = None) -> float:
@@ -54,11 +54,11 @@ def calculate_ndcg(
     return dcg / idcg if idcg > 0 else 0.0
 ```
 
-Note: some libraries such as [scikit-learn have built-in implementations](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.ndcg_score.html) of NDCG.
+注: [scikit-learn には組み込み実装](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.ndcg_score.html) の NDCG が用意されています。
 
-### <i class="fa-solid fa-code"></i> Curate a benchmark dataset
+### <i class="fa-solid fa-code"></i> ベンチマーク データセットの作成
 
-The benchmark dataset should be suitable for achieving the stated goal. Since we want to assess *how each model deals with the style, length and language variability*, the dataset might look something like this:
+ベンチマーク データセットは、設定した目的を達成できるものであるべきです。*各モデルが文体・長さ・言語のばらつきにどのように対処するか* を評価したいので、データセットは次のようになるかもしれません。
 
 ```python
 dataset = {
@@ -101,18 +101,18 @@ dataset = {
 }
 ```
 
-The example dataset here contains a mix of document with varying relevance scores. Equally importantly, it includes a mix of document types, lengths, and languages. Ideally, each variable would be sufficiently represented, so that any disparities in retrieval performance would show up.
+この例のデータセットには、さまざまな関連スコアを持つドキュメントが混在しています。同じくらい重要なのは、ドキュメントの種類・長さ・言語も混在している点です。理想的には各変数が十分に表現されており、検索性能の差異が顕在化するようになっています。
 
-### <i class="fa-solid fa-code"></i> Run benchmark
+### <i class="fa-solid fa-code"></i> ベンチマークの実行
 
-Now, follow these steps for each embedding model:
+各埋め込みモデルについて、次の手順を実行します。
 
-1. Create embeddings of each document and query
-2. Perform retrieval for the top `k` results, using these embeddings
-3. Calculate the quantitative metrics (e.g. NDCG@k)
-4. Collate results (top k results vs true top k labels) for qualitative analysis
+1. 各ドキュメントとクエリの埋め込みを作成  
+2. これらの埋め込みを使って上位 `k` 件を検索  
+3. 定量的メトリクス（例: NDCG@k）を計算  
+4. 定性的分析のために結果（上位 k 件と真のラベル）をまとめる  
 
-In pseudocode form, it might look something like this:
+擬似コードで表すと、次のようになります。
 
 ```python
 import numpy as np
@@ -205,13 +205,13 @@ def run_benchmark_example():
         print(f"{model_name}: NDCG@5 = {metrics['avg_ndcg']:.4f}")
 ```
 
-### <i class="fa-solid fa-code"></i> Evaluate the results
+### <i class="fa-solid fa-code"></i> 結果の評価
 
-Once the benchmarks are run, you'll have a set of results to analyze. Combine both quantitative metrics and qualitative observations to get a complete picture of model performance.
+ベンチマークを実行すると、一連の結果が得られます。定量的メトリクスと定性的な観察を組み合わせて、モデル性能を総合的に把握しましょう。
 
-#### Quantitative analysis
+#### 定量的分析
 
-Start by comparing the overall metrics for each model:
+まず、各モデルの全体的なメトリクスを比較します。
 
 ```python
 # Example benchmark results
@@ -225,41 +225,41 @@ for model_name, metrics in results.items():
     print(f"{model_name}: NDCG@10 = {metrics['avg_ndcg']:.4f}")
 ```
 
-Look beyond the averages to understand:
+平均値だけでなく、次の点にも目を向けます。
 
-- **Score distribution**: Does a model perform consistently, or excel in some areas while failing in others?
-- **Performance by query type**: Group scores by query characteristics (length, complexity, domain)
-- **Statistical significance**: For larger benchmark sets, determine if differences are statistically significant
+- **スコア分布**: モデルは一貫して高性能なのか、一部の領域だけ優れているのか  
+- **クエリタイプ別の性能**: クエリの特徴（長さ、複雑さ、ドメイン）ごとにスコアを分類  
+- **統計的有意性**: ベンチマークが大規模な場合、違いが統計的に有意かどうか  
 
-#### Qualitative analysis
+#### 定性的分析
 
-Examining actual retrieval results often reveals more actionable insights:
+実際の検索結果を確認すると、より実践的な洞察が得られます。
 
-1. **Identify patterns in successes and failures**
-    - Does a model struggle with certain document types? (code, long-form text)
-    - Are there consistent mismatches between queries and retrieved documents?
-2. **Compare results across models**
-    - Do models prioritize different aspects of relevance?
-    - Where do models disagree most significantly?
-3. **Domain-specific considerations**
-    - Are technical terms and jargon handled appropriately?
-    - How well do models interpret domain context?
+1. **成功と失敗のパターンを特定**  
+    - あるモデルは特定のドキュメントタイプで苦戦しているか？（コード、長文テキスト など）  
+    - クエリと取得ドキュメントの間に一貫したミスマッチがあるか？  
+2. **モデル間で結果を比較**  
+    - モデルごとに関連度の判断基準が異なるか？  
+    - モデル間で大きく意見が分かれる部分はどこか？  
+3. **ドメイン固有の観点**  
+    - 専門用語や業界用語は適切に扱われているか？  
+    - モデルはドメイン文脈をどれだけ理解しているか？  
 
-### <i class="fa-solid fa-chalkboard"></i> Making the final decision
+### <i class="fa-solid fa-chalkboard"></i> 最終決定
 
-With both quantitative and qualitative insights, you can make an informed decision that balances:
+定量的・定性的な洞察を組み合わせて、次のバランスを取りながら判断します。
 
-- **Raw performance**: Which model achieves the best metrics?
-- **Specific strengths**: Does a model excel in areas most critical to your application?
-- **Practical considerations**: Remember factors like cost, latency, and deployment requirements
+- **純粋な性能**: どのモデルが最も高いメトリクスを達成しているか  
+- **特定の強み**: アプリケーションで特に重要な領域で優れているモデルはどれか  
+- **実用面**: コスト、レイテンシ、デプロイ要件などの要素  
 
-And remember to take results of the standard benchmark in this evaluation process as well.
+標準ベンチマークの結果も、この評価プロセスに組み込むことを忘れないでください。
 
-The ideal model isn't necessarily the one with the highest average score. It's the one that best addresses your specific requirements and performs well on the queries and document types that matter most to your application.
+理想のモデルは、必ずしも平均スコアが最も高いモデルとは限りません。特定の要件を最もよく満たし、アプリケーションにとって重要なクエリとドキュメントタイプで良好に機能するモデルが最適です。
 
-Note that this evaluation process isn't just about selecting a model—it's also about understanding its strengths and limitations. This knowledge will help you design more effective systems around the embedding model and set appropriate expectations for its performance.
+この評価プロセスは、モデルを選定するだけでなく、その強みと限界を理解するためのものでもあります。この知識は、埋め込みモデルを中心としたより効果的なシステム設計や、適切な性能期待の設定に役立ちます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

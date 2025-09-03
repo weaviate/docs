@@ -1,6 +1,6 @@
 ---
-title: "'Grouped task' generation"
-description: Grouped Task Setup for RAG
+title: "「Grouped task」生成"
+description: "RAG 向け Grouped Task 設定"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/104_rag.py';
 
-A 'grouped task' generation will perform RAG queries on the set of retrieved objects. This is useful when you want to transform the set of objects as a whole, with one prompt.
+「Grouped task」生成では、取得したオブジェクトの集合に対して RAG クエリを実行します。これにより、1 つのプロンプトでオブジェクト全体をまとめて変換したい場合に便利です。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" based on their similarity to the input vector. Then, instructs the large language model to find commonalities between them.
+この例では、入力ベクトルとの類似度に基づいて「Movie」内のエントリーを検索します。その後、大規模言語モデルに対し、取得したエントリー間の共通点を見つけるよう指示します。
 
-The generated text, and each of the results are then printed out to the console.
+生成されたテキストと、それぞれの検索結果がコンソールに出力されます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -23,13 +23,14 @@ The generated text, and each of the results are then printed out to the console.
   language="py"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-For `grouped_task` queries, you simply pass on the prompt to the `grouped_task` parameter. This will instruct Weaviate to pass on the:
-- text properties from all retrieved objects, and
-- the prompt
+`grouped_task` クエリでは、プロンプトを `grouped_task` パラメーターにそのまま渡すだけです。これにより Weaviate は
 
-to the large language model.
+- 取得したすべてのオブジェクトのテキストプロパティ
+- プロンプト
+
+を大規模言語モデルに渡します。
 
 <details>
   <summary>Example results</summary>
@@ -45,15 +46,15 @@ These movies all take place in a futuristic or dystopian society where the chara
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Optional parameters
+### <i class="fa-solid fa-chalkboard"></i> オプションパラメーター
 
-You can also pass on a list of properties to be used, as the `grouped_properties` parameter. This can be useful to reduce the amount of data passed on to the large language model and omit irrelevant properties.
+使用するプロパティのリストを `grouped_properties` パラメーターとして渡すこともできます。これにより、大規模言語モデルに渡すデータ量を削減し、不要なプロパティを省くのに役立ちます。
 
-### <i class="fa-solid fa-chalkboard"></i> Response object
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
 
-A RAG query with the `grouped_task` parameter will return a response with an additional `generated` attribute. This attribute will contain the generated output for the set of objects.
+`grouped_task` パラメーター付きの RAG クエリは、`generated` という追加属性を持つレスポンスを返します。この属性にはオブジェクト集合に対して生成された出力が含まれます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

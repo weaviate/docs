@@ -1,5 +1,5 @@
 ---
-title: Preparation
+title: 準備
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,25 +7,25 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/101_connect.py';
 
-:::info Pre-requisites
-This course is self-contained. However, we recommend that you go through one of the 101-level courses, such as that for working with [text](../../starter_text_data/index.md), [your own vectors](../../starter_custom_vectors/index.md), or [multimodal data](../../starter_multimodal_data/index.md).
+:::info 前提条件
+このコースは単独でも完結しています。しかし、[テキスト](../../starter_text_data/index.md)、[独自ベクトル](../../starter_custom_vectors/index.md)、または[マルチモーダル データ](../../starter_multimodal_data/index.md) を扱う 101 レベルのいずれかのコースを先に受講することをおすすめします。
 :::
 
-This page briefly covers the required resources and setup, including the Weaviate Python client library, and a Weaviate instance with the multi-modal vectorizer.
+このページでは、必要なリソースとセットアップ手順について簡単に説明します。具体的には、Weaviate Python クライアント ライブラリと、マルチモーダル ベクトライザーを搭載した Weaviate インスタンスを準備します。
 
-## <i class="fa-solid fa-code"></i> Weaviate Python client library
+## <i class="fa-solid fa-code"></i> Weaviate Python クライアント ライブラリ
 
-Install the latest (`v4`, e.g. `4.5.0`) Weaviate Python client library with:
+最新の（`v4` 例: `4.5.0`）Weaviate Python クライアント ライブラリを次のコマンドでインストールします:
 
 ```bash
 pip install -U weaviate-client
 ```
 
-## <i class="fa-solid fa-chalkboard"></i> Set up Weaviate
+## <i class="fa-solid fa-chalkboard"></i> Weaviate をセットアップ
 
-Install Docker on your machine. We recommend following the [official Docker installation guide](https://docs.docker.com/get-docker/).
+マシンに Docker をインストールします。公式の [Docker インストール ガイド](https://docs.docker.com/get-docker/) に従うことをおすすめします。
 
-Create a new directory and navigate to it in your terminal. Then, create a new file called `docker-compose.yml` and add the following content:
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。次に、`docker-compose.yml` というファイルを作成し、以下の内容を追加します:
 
 ```yaml
 ---
@@ -63,23 +63,23 @@ volumes:
 
 ```
 
-### <i class="fa-solid fa-chalkboard"></i> Create a Weaviate instance
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスを作成
 
-Run the following command to start Weaviate:
+次のコマンドを実行して Weaviate を起動します:
 
 ```bash
 docker compose up
 ```
 
-### <i class="fa-solid fa-chalkboard"></i> Your Weaviate instance details
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
 
-Once the instance is created, you can access it at `http://localhost:8080`.
+インスタンスが作成されると、`http://localhost:8080` でアクセスできます。
 
-## <i class="fa-solid fa-code"></i> Work with Weaviate
+## <i class="fa-solid fa-code"></i> Weaviate を操作する
 
-### <i class="fa-solid fa-code"></i> Connect to your Weaviate instance
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへ接続
 
-To connect to the Weaviate instance, use the `connect_to_local` function. We also provide API keys here for any inference APIs (e.g. OpenAI, Cohere, Google, AWS etc.) that Weaviate may use.
+Weaviate インスタンスへ接続するには、`connect_to_local` 関数を使用します。ここでは、Weaviate が利用する推論 API（例: OpenAI、Cohere、Google、AWS など）の API キーも設定します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -88,9 +88,9 @@ To connect to the Weaviate instance, use the `connect_to_local` function. We als
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Check Weaviate status
+### <i class="fa-solid fa-code"></i> Weaviate のステータスを確認
 
-You can check whether the Weaviate instance is up using the `is_live` function.
+`is_live` 関数を使って、Weaviate インスタンスが起動しているかどうかを確認できます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -99,9 +99,9 @@ You can check whether the Weaviate instance is up using the `is_live` function.
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Retrieve server meta information
+### <i class="fa-solid fa-code"></i> サーバーのメタ情報を取得
 
-You can retrieve meta information about the Weaviate instance using the `meta` function.
+`meta` 関数を使用して、Weaviate インスタンスのメタ情報を取得できます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -110,12 +110,12 @@ You can retrieve meta information about the Weaviate instance using the `meta` f
   language="py"
 />
 
-This will print the server meta information to the console. The output will look similar to the following:
+このコマンドを実行すると、サーバーのメタ情報がコンソールに表示されます。出力は次のようになります:
 
 <details>
-  <summary>Example <code>get_meta</code> output</summary>
+  <summary>例 <code>get_meta</code> 出力</summary>
 
-Note that this output is a little longer due to the additional details from the CLIP models.
+CLIP モデルに関する追加情報が含まれるため、出力は少し長くなります。
 
 <FilteredTextBlock
   text={PyCode}
@@ -125,11 +125,11 @@ Note that this output is a little longer due to the additional details from the 
 />
 </details>
 
-### <i class="fa-solid fa-code"></i> Close the connection
+### <i class="fa-solid fa-code"></i> 接続を閉じる
 
-After you have finished using the Weaviate client, you should close the connection. This frees up resources and ensures that the connection is properly closed.
+Weaviate クライアントの使用が終わったら、接続を閉じてください。これによりリソースが解放され、接続が適切に終了します。
 
-We suggest using a `try`-`finally` block as a best practice. For brevity, we will not include the `try`-`finally` blocks in the remaining code snippets.
+ベストプラクティスとして、`try`-`finally` ブロックを使用することを推奨します。簡潔さのため、以降のコード スニペットでは `try`-`finally` ブロックを省略します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -138,14 +138,14 @@ We suggest using a `try`-`finally` block as a best practice. For brevity, we wil
   language="py"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Source data
+## <i class="fa-solid fa-chalkboard"></i> ソース データ
 
-We are going to use a movie dataset sourced from [TMDB](https://www.themoviedb.org/). The dataset can be found in this [GitHub repository](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024.json), and it contains bibliographic information on ~700 movies released between 1990 and 2024.
+今回は、[TMDB](https://www.themoviedb.org/) から取得した映画データセットを使用します。データセットはこの [GitHub リポジトリ](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024.json) にあり、1990 年から 2024 年までに公開された約 700 本の映画に関する書誌情報が含まれています。
 
-As a multimodal project, we'll also use [corresponding posters for each movie](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024_posters.zip), which are available in the same repository.
+マルチモーダル プロジェクトとして、同じリポジトリにある[各映画のポスター](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024_posters.zip) も使用します。
 
 <details>
-  <summary>See sample text data</summary>
+  <summary>サンプル テキスト データを見る</summary>
 
 |    | backdrop_path                    | genre_ids       |   id | original_language   | original_title              | overview                                                                                                                                                                                                                                                                                                                                                                                                                        |   popularity | poster_path                      | release_date   | title                       | video   |   vote_average |   vote_count |
 |---:|:---------------------------------|:----------------|-----:|:--------------------|:----------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------:|:---------------------------------|:---------------|:----------------------------|:--------|---------------:|-------------:|
@@ -156,8 +156,7 @@ As a multimodal project, we'll also use [corresponding posters for each movie](h
 |  4 | /3tuWpnCTe14zZZPt6sI1W9ByOXx.jpg | [35, 10749]     |  114 | en                  | Pretty Woman                | When a millionaire wheeler-dealer enters a business contract with a Hollywood hooker Vivian Ward, he loses his heart in the bargain.                                                                                                                                                                                                                                                                                            |       97.953 | /hVHUfT801LQATGd26VPzhorIYza.jpg | 1990-03-23     | Pretty Woman                | False   |            7.5 |         7671 |
 
 </details>
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

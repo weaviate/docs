@@ -1,5 +1,5 @@
 :::info
-This course was written for the Weaviate Python client API (`v3`), and is now deprecated.
+このコースは Weaviate Python クライアント API （ `v3` ）向けに作成されたもので、現在は非推奨です。
 
-If you are new to Weaviate, we recommend you start with one of the 100-level courses written with the `v4` client API, such as those for working with [text data](/academy/py/starter_text_data/index.md), [your own vectors](/academy/py/starter_custom_vectors/index.md), or [multimodal data](/academy/py/starter_multimodal_data/index.md).
+Weaviate を初めてご利用になる場合は、`v4` クライアント API で作成された 100 レベル コースのうち、[テキストデータ](/academy/py/starter_text_data/index.md)、[独自の ベクトル](/academy/py/starter_custom_vectors/index.md)、または [マルチモーダルデータ](/academy/py/starter_multimodal_data/index.md) を扱うコースから始めることをお勧めします。
 :::

@@ -1,6 +1,6 @@
 ---
-title: Example part 2 - Search
-description: Discover how to search chunked data in Weaviate efficiently.
+title: 例 パート 2 - 検索
+description: Weaviate でチャンク化されたデータを効率的に検索する方法を学びます。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,28 +16,28 @@ import PreviewUnit from '../../../_snippets/preview.mdx'
 
 <PreviewUnit />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-In the [preceding section](./30_example_chunking.mdx), we imported multiple chapters of a book into Weaviate using different chunking techniques. They were:
+[前のセクション](./30_example_chunking.mdx) では、異なるチャンク化手法を用いて本の複数章を Weaviate にインポートしました。使用した方法は次のとおりです。
 
-- Fixed-length chunks (and 20% overlap)
-    - With 25 words per chunk, and
-    - With 100 words per chunk
-- Variable-length chunks, using paragraph markers, and
-- Mixed-strategy chunks, using paragraph markers and a minimum chunk length of 25 words.
+- 固定長チャンク (20% のオーバーラップ)
+    - チャンク 1 件あたり 25 語
+    - チャンク 1 件あたり 100 語
+- 段落マーカーを利用した可変長チャンク
+- 段落マーカーと最小長 25 語を組み合わせた混合戦略チャンク
 
-Now, we will use Weaviate to search through the book and evaluate the impact of the chunking techniques.
+今回は Weaviate を使って本を検索し、チャンク化手法の影響を評価します。
 
-Since the data comes from the first two chapters of a book about Git, let's search for various git-related concepts and see how the different chunking strategies perform.
+データは Git についての本の最初の 2 章から取得したものなので、さまざまな Git 関連の概念を検索し、各チャンク化戦略のパフォーマンスを確認します。
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Search / recall
+## <i class="fa-solid fa-square-chevron-right"></i> 検索 / リコール
 
-First of all, we'll retrieve information from our Weaviate instance using various search terms. We'll use a semantic search (`nearText`) to aim to retrieve the most relevant chunks.
+まず、さまざまな検索語を用いて Weaviate インスタンスから情報を取得します。意味検索 (`nearText`) を使い、最も関連性の高いチャンクを取得することを目指します。
 
-### <i class="fa-solid fa-code"></i> Search syntax
+### <i class="fa-solid fa-code"></i> 検索構文
 
-The search is carried out as follows, looping through each chunking strategy by filtering our dataset. We'll obtain a couple of top results for each search term.
+次のように検索を実行し、データセットをフィルタリングして各チャンク化戦略を順番に処理します。各検索語について、上位数件の結果を取得します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -50,17 +50,17 @@ The search is carried out as follows, looping through each chunking strategy by 
 </TabItem>
 </Tabs>
 
-Using these search terms:
+使用する検索語:
 - `"history of git"`
 - `"how to add the url of a remote repository"`
 
-### <i class="fa-solid fa-chalkboard"></i> Results & discussions
+### <i class="fa-solid fa-chalkboard"></i> 結果と考察
 
-We get the following results:
+得られた結果は次のとおりです。
 
 #### Example 1
 
-:::info Results for a search for `"history of git"`.
+:::info `"history of git"` の検索結果  
 :::
 
 <Tabs groupId="chunking">
@@ -98,15 +98,15 @@ We get the following results:
 </TabItem>
 </Tabs>
 
-The query in this example is a broad one on the `history of git`. The result is that here, the longer chunks seem to perform better.
+このクエリは `history of git` という包括的な内容です。その結果、長めのチャンクのほうが良いパフォーマンスを示しています。
 
-Inspecting the result, we see that while the 25-word chunks may be semantically similar to the query `history of git`, they do not contain enough contextual information to enhance the readers' understanding of the topic.
+25 語チャンクはクエリと意味的には近いものの、トピックの理解を深めるのに十分な文脈情報を含んでいません。
 
-On the other hand, the paragraph chunks retrieved - especially those with a minimum length of 25 words - contain a good amount of holistic information that will teach the reader about the history of git.
+一方、取得された段落チャンク、特に最小長 25 語のチャンクは Git の歴史について体系的な情報を含んでおり、読者の学習に適しています。
 
 #### Example 2
 
-:::info Results for a search for `"how to add the url of a remote repository"`.
+:::info `"how to add the url of a remote repository"` の検索結果  
 :::
 
 <Tabs groupId="chunking">
@@ -144,28 +144,25 @@ On the other hand, the paragraph chunks retrieved - especially those with a mini
 </TabItem>
 </Tabs>
 
-The query in this example was a more specific one, for example one that might be run by a user looking to identify how to add the url of a remote repository.
+このクエリはユーザーがリモートリポジトリの URL を追加する方法を知りたい場合のような、より具体的なものです。
 
-In contrast to the first scenario, the 25-word chunks are more useful here. Because the question was very specific, Weaviate was able to identify the chunk containing the most suitable passage - how to add a remote repository (`git remote add <shortname> <url>`).
+先ほどとは対照的に、25 語チャンクのほうが有用でした。質問が非常に具体的だったため Weaviate は最も適切な一節、すなわちリモートリポジトリを追加する方法 (`git remote add <shortname> <url>`) を含むチャンクを特定できました。
 
-While the other result sets also contain some of this information, it may be worth considering how the result may be used and displayed. The longer the result, the more cognitive effort it may take the user to identify the relevant information.
+ほかの結果にも同じ情報が含まれてはいますが、結果をどのように利用・表示するかを考慮する価値があります。結果が長くなるほど、ユーザーが必要な情報を見つけるのに要する認知的負荷は大きくなるかもしれません。
+## <i class="fa-solid fa-square-chevron-right"></i> 検索拡張生成 (RAG)
 
+次に、チャンク化が RAG に与える影響を見てみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Retrieval augmented generation (RAG)
+[チャンクサイズと RAG の関係については前に説明しました](./10_introduction.mdx#-for-optimal-retrieval-augmented-generation-rag)。短いチャンクを使うと、より多くのソースオブジェクトから情報を取り込めますが、各オブジェクトに含まれる文脈情報は少なくなります。反対に、長いチャンクを使うと各チャンクにより多くの文脈情報が含まれますが、取得できるソースオブジェクトは少なくなります。
 
-Next, let's take a look at the impact of chunking on RAG.
+これがどのように現れるか、いくつか RAG の例で試してみましょう。
 
-We [discussed the relationship between chunk size and RAG earlier](./10_introduction.mdx#-for-optimal-retrieval-augmented-generation-rag). Using shorter chunks will allow you to include information from a wider range of source objects than longer chunks, but each object will not include as much contextual information. On the other hand, using longer chunks means each chunk will include more contextual information, but you will be limited to fewer source objects.
+### <i class="fa-solid fa-code"></i> クエリ構文
 
-Let's try a few RAG examples to see how this manifests itself.
+以下にクエリ構文を示します。基本的には先ほどと同じですが、2 つの点で異なります。
 
-### <i class="fa-solid fa-code"></i> Query syntax
-
-The query syntax is shown below. The syntax is largely the same as above, except for two aspects.
-
-One is that to account for varying chunk sizes, we will retrieve more chunks where the chunk size is smaller.
-
-The other is that the query has been modified to perform RAG, rather than a simple retrieval. The query asks the target LLM to summarize the results into point form.
+1. チャンクサイズが小さい場合は、より多くのチャンクを取得するようにしています。  
+2. 単なる検索ではなく RAG を行うようにクエリを変更しています。クエリでは、対象 LLM に結果を箇条書きで要約するよう依頼しています。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -178,15 +175,15 @@ The other is that the query has been modified to perform RAG, rather than a simp
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-chalkboard"></i> Results & discussions
+### <i class="fa-solid fa-chalkboard"></i> 結果と考察
 
-#### Example 1
+#### 例 1
 
-:::info Results for a search for `"history of git"`.
+:::info 「`history of git`」の検索結果。
 :::
 
 <Tabs groupId="chunking">
-<TabItem value="fixed_size_25" label="25 word chunks">
+<TabItem value="fixed_size_25" label="25 ワードチャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START fixed_size_25 generative_search_git_history"
@@ -194,7 +191,7 @@ The other is that the query has been modified to perform RAG, rather than a simp
   language="text"
 />
 </TabItem>
-<TabItem value="fixed_size_100" label="100 word chunks">
+<TabItem value="fixed_size_100" label="100 ワードチャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START fixed_size_100 generative_search_git_history"
@@ -202,7 +199,7 @@ The other is that the query has been modified to perform RAG, rather than a simp
   language="text"
 />
 </TabItem>
-<TabItem value="para_chunks" label="Paragraph chunks">
+<TabItem value="para_chunks" label="段落チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START para_chunks generative_search_git_history"
@@ -210,7 +207,7 @@ The other is that the query has been modified to perform RAG, rather than a simp
   language="text"
 />
 </TabItem>
-<TabItem value="para_chunks_min_25" label="Paragraph chunks with minimum length">
+<TabItem value="para_chunks_min_25" label="最小長の段落チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START para_chunks_min_25 generative_search_git_history"
@@ -220,15 +217,15 @@ The other is that the query has been modified to perform RAG, rather than a simp
 </TabItem>
 </Tabs>
 
-The findings here are similar to the semantic search results. The longer chunks contain more information, and are more useful for a broad topic like the history of git.
+ここでの結果はセマンティック検索と同様でした。長いチャンクのほうが情報量が多く、git の歴史のような幅広いトピックには有用です。
 
-#### Example 2
+#### 例 2
 
-:::info Results for a search for `"available git remote commands"`.
+:::info 「`available git remote commands`」の検索結果。
 :::
 
 <Tabs groupId="chunking">
-<TabItem value="fixed_size_25" label="25 word chunks">
+<TabItem value="fixed_size_25" label="25 ワードチャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START fixed_size_25 generative_search_git_remote"
@@ -236,7 +233,7 @@ The findings here are similar to the semantic search results. The longer chunks 
   language="text"
 />
 </TabItem>
-<TabItem value="fixed_size_100" label="100 word chunks">
+<TabItem value="fixed_size_100" label="100 ワードチャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START fixed_size_100 generative_search_git_remote"
@@ -244,7 +241,7 @@ The findings here are similar to the semantic search results. The longer chunks 
   language="text"
 />
 </TabItem>
-<TabItem value="para_chunks" label="Paragraph chunks">
+<TabItem value="para_chunks" label="段落チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START para_chunks generative_search_git_remote"
@@ -252,7 +249,7 @@ The findings here are similar to the semantic search results. The longer chunks 
   language="text"
 />
 </TabItem>
-<TabItem value="para_chunks_min_25" label="Paragraph chunks with minimum length">
+<TabItem value="para_chunks_min_25" label="最小長の段落チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START para_chunks_min_25 generative_search_git_remote"
@@ -262,41 +259,40 @@ The findings here are similar to the semantic search results. The longer chunks 
 </TabItem>
 </Tabs>
 
-The results of the generative search here for `available git remote commands` are perhaps even more illustrative than before.
+`available git remote commands` に対する生成検索の結果は、先ほどよりもさらに示唆的です。
 
-Here, the shortest chunks were able to retrieve the highest number of `git remote` commands from the book. This is because we were able to retrieve more chunks from various locations throughout the corpus (book).
+ここでは、最も短いチャンクが書籍から最も多くの `git remote` コマンドを取得できました。これは、コーパス（書籍）内のさまざまな場所から多くのチャンクを取り出せたためです。
 
-Contrast this result to the one where longer chunks are used. Here, using longer chunks, we were only able to retrieve one `git remote` command, because we retrieved fewer chunks than before.
+一方、長いチャンクを使った場合は、取得したチャンクが少なくなったため、`git remote` コマンドは 1 つしか取り出せませんでした。
 
-#### Discussions
+#### 考察
 
-You see here the trade-off between using shorter and longer chunks.
+ここでは短いチャンクと長いチャンクのトレードオフが見て取れます。
 
-Using shorter chunks allows you to retrieve more information from more objects, but each object will contain less contextual information. On the other hand, using longer chunks allows you to retrieve less information from fewer objects, but each object will contain more contextual information.
+短いチャンクを使うと、より多くのオブジェクトから多くの情報を取得できますが、各オブジェクトの文脈情報は少なくなります。長いチャンクを使うと、取得できるオブジェクトは少なくなりますが、各オブジェクトに含まれる文脈情報は多くなります。
 
-Even when using LLMs with very large context windows, this is something to keep in mind. Longer input texts means higher fees for the API use, or inference time. In other words, there are costs associated with using longer chunks.
+たとえ非常に大きなコンテキストウィンドウを持つ LLM を使う場合でも、この点は忘れないでください。入力テキストが長いほど API 料金や推論時間が増えるため、長いチャンクにはコストが伴います。
 
-Often, this is *the* trade-off that you will need to consider when deciding on the chunking strategy for a RAG use-case.
+しばしば、これは RAG のチャンク化戦略を決める際に検討すべき *唯一の* トレードオフです。
 
 <!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
 
 <Quiz questions={varName} />
 
 Any quiz questions
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
-
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out ...
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+試してみてください…
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
 :::info
-Add summary
+要約を追加してください
 ::: -->
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

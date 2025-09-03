@@ -1,28 +1,28 @@
 ---
-title: (v3) Zero to MVP
-description: Build a Weaviate MVP from scratch, covering setup, data queries, and schema.
+title: (v3) ゼロから MVP
+description: セットアップ、データクエリ、スキーマを含め、ゼロから Weaviate の MVP を構築します。
 ---
 
 import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 import CourseUnits from '/src/components/Academy/courseUnits.jsx';
 import { courseData } from '/src/components/Academy/courseData.js'
 
-## <i class="fa-solid fa-chalkboard-user"></i> Course overview
+## <i class="fa-solid fa-chalkboard-user"></i> コース概要
 
 import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/deprecation.md';
 
 <ZeroToMvpDeprecationNote/>
 
-This course is designed to get you started with Weaviate, so that you can go from being new to Weaviate to building an MVP-level product with Weaviate in a short period of time.
+このコースは、 Weaviate の利用を開始し、 Weaviate 初心者から短時間で Weaviate を用いた MVP レベルのプロダクトを構築できるようになることを目的としています。
 
-Along the way, you'll develop intuitions about not only how Weaviate works, but also how vectors work, and how vector searches work. You'll also learn how to use Weaviate's client library so that you can get going in a language that you are familiar with.
+その過程で、 Weaviate の仕組みだけでなく、ベクトルの仕組みやベクトル検索の動作についての直感も身に付けられます。また、慣れ親しんだ言語で操作できるよう、 Weaviate のクライアントライブラリの使い方も学びます。
 
-By the time you're done with these short units, you'll be able to build your own instance of Weaviate with your own data, and have a suite of search tools at your disposal so that you can get the data you want in the format you want it.
+これらの短いユニットを終える頃には、ご自身のデータで Weaviate のインスタンスを構築し、求めるデータを望む形式で取得できる検索ツール一式を自由に使えるようになっています。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 <LearningGoals courseName="zero_to_mvp"/>
 
-## <i class="fa-solid fa-book-open-reader"></i> Units
+## <i class="fa-solid fa-book-open-reader"></i> ユニット
 
 <CourseUnits courseData={courseData} courseName="zero_to_mvp" />

@@ -1,5 +1,5 @@
 ---
-title: HNSW index in depth
+title: HNSW インデックスの詳細
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,21 +7,19 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_snippets/100_config.py';
 
-HNSW, or "Hierarchical Navigable Small World", is a powerful and flexible vector index type that allows for fast and accurate searches of high-dimensional vectors.
+HNSW（「Hierarchical Navigable Small World」）は、高次元の ベクトル を高速かつ高精度に検索できる強力で柔軟な ベクトル インデックス タイプです。
 
-It also has the advantage of being very scalable, while being tunable to allow for different trade-offs between search speed, accuracy, and resource requirements.
+検索速度・精度・リソース要件のトレードオフを調整できる一方で、高いスケーラビリティを備えている点も大きな利点です。
 
-HNSW is the default index type in Weaviate, and if you are not sure which index type to use, you should start with HNSW.
+HNSW は Weaviate のデフォルト インデックス タイプで、どのインデックス タイプを使用するか迷った場合は、まず HNSW から始めることをおすすめします。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Key ideas
+## <i class="fa-solid fa-square-chevron-right"></i> 主なアイデア
 
-HNSW is all about creating connections between vectors in a way that allows for both fast global traversal of the graph and accurate search of similar vectors.
+HNSW は、グラフを高速に大域的トラバーサルしつつ類似 ベクトル を正確に検索できるよう、 ベクトル 間に接続を作成することに主眼を置いています。
 
-It does this by creating multiple layers of vectors, where each layer includes a subset of the vectors in the layer below. This means that as you move up the layers, finding the correct general area of the graph becomes faster.
+具体的には複数のレイヤーを作成し、上位レイヤーほど下位レイヤーの ベクトル をサブセットとして保持します。レイヤーを上がるにつれグラフの大まかな位置を特定する処理が高速になり、位置が定まった後は下位レイヤーへ下りながらよりローカルな検索を行います。
 
-And once the general area is found, the search then becomes more local, by moving down the layers, where more of the vectors are included.
-
-Ultimately, the search reaches the bottom layer, which includes all the available vectors.
+最終的には、すべての ベクトル が含まれる最下層に到達します。
 
 import HNSWDiagram from './_snippets/hnsw_diagram.png';
 
@@ -29,48 +27,48 @@ import HNSWDiagram from './_snippets/hnsw_diagram.png';
   <img src={HNSWDiagram} alt="Outline of HNSW graph, showing nodes connected in multiple layers"/>
 </div>
 
-This method allows a search to quickly find the right general area of the graph before carrying out a comprehensive search of the dense bottom layer.
+この方法により、検索はまずグラフの適切な領域を素早く特定し、その後最下層で網羅的な検索を実行できます。
 
-Intuitively, an HNSW graph can be thought of as a high-dimensional skip list of sorts, where the higher layers are used to global search, and the lower layers are used for local search.
+直感的には、HNSW グラフは高次元版のスキップリストのように捉えられます。上位レイヤーで大域検索を、下位レイヤーでローカル検索を行うイメージです。
 
-### <i class="fa-solid fa-chalkboard"></i> Trade-offs
+### <i class="fa-solid fa-chalkboard"></i> トレードオフ
 
-HNSW is a very flexible index type that allows for a wide range of trade-offs.
+HNSW は非常に柔軟で、幅広いトレードオフを実現できます。
 
-The key trade-offs are between search speed, accuracy, and resource requirements. These trade-offs can be made by tuning the parameters of the HNSW index, as well as by [quantizing the vectors](../compression/index.md).
+検索速度・精度・リソース要件のバランスは、HNSW のパラメーター調整や [ ベクトル の量子化](../compression/index.md) によって最適化できます。
 
-### <i class="fa-solid fa-chalkboard"></i> Resource requirements
+### <i class="fa-solid fa-chalkboard"></i> リソース要件
 
-HNSW is an in-memory index, where each node in the graph as well as each edge between nodes are stored in memory.
+HNSW はインメモリ インデックスであり、グラフ内の各ノードとエッジはすべてメモリに保持されます。
 
-This means that the size of the index in memory is directly proportional to the number of vectors in the index, as well as the number of connections between vectors.
+したがって、インデックスのメモリサイズは ベクトル 数と ベクトル 間の接続数にほぼ比例します。
 
-The size of an HNSW index is dominated by the number of vectors; take a look at the table below for an example:
+HNSW インデックスのサイズは ベクトル 数が支配的です。以下の表は一例です。
 
-| Component | Size derivation | Typical size | Size @1M vectors | Size @100M vectors |
+| コンポーネント | サイズ算出 | 典型的サイズ | サイズ @1M ベクトル | サイズ @100M ベクトル |
 | --- | --- | --- | --- | --- |
-| Node | 4B (float) x N dimensions | 2-12kB | 2-12GB | 200-1200GB |
-| Edge | 10B x 20 connections | 200B | 200MB | 20GB |
+| Node | 4B (float) × N dimensions | 2-12 kB | 2-12 GB | 200-1200 GB |
+| Edge | 10B × 20 connections | 200 B | 200 MB | 20 GB |
 
-As you can see, the memory requirements of an HNSW index can quickly become a bottleneck. This is where [quantization](../compression/index.md) can be used to reduce the size of the index in memory.
+ご覧のように、HNSW インデックスのメモリ要件は急速にボトルネックになり得ます。その際は [量子化](../compression/index.md) を用いてメモリサイズを削減できます。
 
-### <i class="fa-solid fa-chalkboard"></i> Distance metric
+### <i class="fa-solid fa-chalkboard"></i> 距離メトリック
 
 ![Vector Distance Calculations](./img/vector_distance.png)
 
-The distance metric used in the index determines how the distance between vectors is calculated. In an HNSW index, it impacts where each vector is placed in the graph.
+インデックスで使用する距離メトリックは、 ベクトル 間の距離計算方法を決定します。HNSW では、これが各 ベクトル のグラフ上の配置に影響します。
 
-You must choose a metric that suits the vectors in your collection. To find this, consult the documentation of the model that generated your vectors.
+コレクション内の ベクトル に適したメトリックを選択してください。判断には、 ベクトル を生成したモデルのドキュメントを参照します。
 
-Weaviate's default metric is cosine, but you can also use any number of [other available metrics](/weaviate/config-refs/distances.md).
+Weaviate のデフォルトは cosine ですが、[他にも多数のメトリック](/weaviate/config-refs/distances.md) が利用可能です。
 
-If you are unsure, the cosine distance is a good, robust, default choice that is used by a majority of models.
+迷った場合は、多くのモデルで採用されている cosine 距離が堅牢なデフォルトとして推奨されます。
 
-### <i class="fa-solid fa-code"></i> Specify HNSW as the index type
+### <i class="fa-solid fa-code"></i> HNSW をインデックス タイプとして指定
 
-HNSW is Weaviate's default vector index type. So, if you do not specify a collection to use a specific index type, it will use HNSW.
+HNSW は Weaviate のデフォルト ベクトル インデックス タイプです。そのため、コレクションで特定のインデックス タイプを指定しなければ HNSW が使用されます。
 
-But you can explicitly specify it as follows:
+明示的に指定したい場合は、以下のように設定します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -79,16 +77,16 @@ But you can explicitly specify it as follows:
   language="py"
 />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Tuning HNSW
+## <i class="fa-solid fa-square-chevron-right"></i> HNSW のチューニング
 
-An HNSW index can be tuned to achieve different trade-offs between search speed, accuracy, and resource requirements.
+HNSW インデックスは、検索速度・精度・リソース要件のトレードオフを調整するためにチューニングできます。
 
-The key aspects to tune are:
-- The number of connections between nodes,
-- The size of a "dynamic list", and
-- Quantization
+主に調整する項目は次のとおりです。
+- ノード間の接続数
+- 「ダイナミックリスト」のサイズ
+- 量子化
 
-### <i class="fa-solid fa-chalkboard"></i> Number of connections
+### <i class="fa-solid fa-chalkboard"></i> 接続数
 
 import maxConnectionsDiagram from './_snippets/maxConnections.png';
 
@@ -96,21 +94,21 @@ import maxConnectionsDiagram from './_snippets/maxConnections.png';
   <img src={maxConnectionsDiagram} alt="Outline of HNSW graph, highlighting connections"/>
 </div>
 
-The maximum number of connections between nodes (`maxConnections`) determine how densely the graph is connected.
+ノード間の最大接続数（`maxConnections`）は、グラフの密結合度を決定します。
 
-A higher number of connections will allow for more accurate searches, but will also slow down searches, and require more memory.
+接続数が多いほど検索精度は向上しますが、検索速度が低下し、メモリ使用量も増加します。
 
-The default value is `32`. Note that on the bottom layer of the graph each node can have up to (`2 * maxConnections`) connections.
+デフォルト値は `32` です。最下層では各ノードが最大で `2 * maxConnections` 本の接続を持つ点に注意してください。
 
-### <i class="fa-solid fa-chalkboard"></i> Dynamic list size
+### <i class="fa-solid fa-chalkboard"></i> ダイナミックリストのサイズ
 
-The "dynamic list" in HNSW refers to the list of nodes that are considered by the algorithm. Note that dynamic lists are used in two different contexts:
+HNSW における「ダイナミックリスト」とは、アルゴリズムが検討対象とするノードの一覧を指します。ダイナミックリストは二つの場面で使用されます。
 
-During search, the dynamic list is used to keep track of the nodes that are being considered, and to ensure that the search is comprehensive.
+検索時には、リストで検討中のノードを追跡し、検索が網羅的になるようにします。
 
-During index construction, the dynamic list is used to keep track of candidate nodes that are being considered for connection. The HNSW algorithm will then choose the best `maxConnections` connections from the dynamic list, taking into account not only proximity but also aspects such as overall connectivity of the graph.
+インデックス構築時には、接続候補となるノードを保持し、HNSW アルゴリズムが `maxConnections` 本の最適な接続を選定します。この際は近接度だけでなく、グラフ全体の接続性も考慮されます。
 
-#### Search dynamic list size
+#### 検索用ダイナミックリストサイズ
 
 import EfDiagram from './_snippets/ef.png';
 
@@ -118,23 +116,22 @@ import EfDiagram from './_snippets/ef.png';
   <img src={EfDiagram} alt="Outline of HNSW graph, with a hypothetical dynamic list"/>
 </div>
 
-You can set the dynamic list size for search statically or dynamically.
+検索時のダイナミックリストサイズは、静的または動的に設定できます。
 
-To set it statically, provide the `ef` parameter when creating the collection. The default value is `-1`, which defers this to a dynamic setting.
+静的に設定する場合は、コレクション作成時に `ef` パラメーターを指定します。デフォルトは `-1` で、この値は動的設定に委ねることを意味します。
 
-To set it dynamically, provide a combination of `dynamicEfMin`, `dynamicEfMax` and `dynamicEfFactor`.
+動的に設定する場合は、`dynamicEfMin`、`dynamicEfMax`、`dynamicEfFactor` を組み合わせて指定します。
 
-The dynamic list size will be set as the query limit multiplied by `dynamicEfFactor`, modified by a minimum of `dynamicEfMin` and a maximum of `dynamicEfMax`.
+ダイナミックリストサイズは、クエリの limit × `dynamicEfFactor` を基準として、最小値 `dynamicEfMin`、最大値 `dynamicEfMax` によって制限されます。
 
-In code, this can be expressed as:
+コードで表すと次のようになります。
 
 ```python
 ef = min(max(dynamicEfMin, queryLimit * dynamicEfFactor), dynamicEfMax)
 ```
 
-The default values are `dynamicEfMin=100`, `dynamicEfMax=500`, and `dynamicEfFactor=8`.
-
-#### Index construction dynamic list size
+デフォルト値は `dynamicEfMin = 100`、`dynamicEfMax = 500`、`dynamicEfFactor = 8` です。
+#### インデックス構築時の動的リストサイズ
 
 import EfConstructionDiagram from './_snippets/efConstruction.png';
 
@@ -142,23 +139,23 @@ import EfConstructionDiagram from './_snippets/efConstruction.png';
   <img src={EfConstructionDiagram} alt="Outline of HNSW graph, with a note for Ef"/>
 </div>
 
-To set the dynamic list size for index construction, provide the `efConstruction` parameter when creating the collection.
+インデックス構築時の動的リストサイズを設定するには、コレクション作成時に `efConstruction` パラメーターを指定します。
 
-This will improve your search performance, at a cost of the index construction process. The default value is `128`.
+これにより検索パフォーマンスが向上しますが、インデックス構築処理に負荷がかかります。デフォルト値は `128` です。
 
-### <i class="fa-solid fa-chalkboard"></i> Quantization
+### <i class="fa-solid fa-chalkboard"></i> 量子化
 
-Enabling quantization with HNSW reduces the size of the index in memory by using compressed vectors. Note that the full vector is still stored on disk, which is used to rescore the vectors after they are fetched from the index.
+HNSW で量子化を有効にすると、圧縮された ベクトル を使用することでメモリ上のインデックスサイズを削減できます。なお、完全な ベクトル はディスクに保存されており、インデックスから取得後の再スコアリングに使用されます。
 
-This can be a powerful way to reduce the memory requirements of your Weaviate instance, especially if you have a large number of vectors.
+これは特に大量の ベクトル を扱う場合、Weaviate インスタンスのメモリ要件を大幅に削減する強力な方法となります。
 
-Learn more about quantization [with this Weaviate Academy course](../compression/index.md).
+量子化の詳細は [Weaviate Academy のコース](../compression/index.md) で学習できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Configure HNSW in Weaviate
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate で HNSW を設定する
 
-Each of these parameters can be provided when creating a collection in Weaviate. Note that out of the discussed parameters, only the `dynamicEf` related parameters are mutable.
+これらの各パラメーターは、Weaviate でコレクションを作成する際に指定できます。なお、ここで取り上げたパラメーターのうち、変更可能なのは `dynamicEf` 関連のパラメーターのみです。
 
-### <i class="fa-solid fa-code"></i> Code example
+### <i class="fa-solid fa-code"></i> コード例
 
 <FilteredTextBlock
   text={PyCode}
@@ -167,28 +164,28 @@ Each of these parameters can be provided when creating a collection in Weaviate.
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Further options
+### <i class="fa-solid fa-chalkboard"></i> 追加オプション
 
-There are more, advanced HNSW parameters that can be set in Weaviate. These are not typically needed for most use cases, but can be useful in specific situations.
+Weaviate では、さらに高度な HNSW パラメーターを設定できます。一般的なユースケースでは不要ですが、特定の状況で役立つ場合があります。
 
-#### Collection-level parameters
+#### コレクションレベルのパラメーター
 
-- `cleanup_interval_seconds`: Sets the interval at which a cleanup process is triggered for deleted nodes.
-- `flat_search_cutoff`: Sets the number below which a brute-force search is used instead of the HNSW index.
-- `vector_cache_max_objects` : Sets the maximum number of vectors that can be cached in memory.
+- `cleanup_interval_seconds`: 削除済みノードのクリーンアップ処理を実行する間隔を設定します。
+- `flat_search_cutoff`: この数値より小さい場合は HNSW インデックスではなく総当たり検索を使用します。
+- `vector_cache_max_objects`: メモリにキャッシュできる ベクトル の最大数を設定します。
 
-#### Environment variables
+#### 環境変数
 
-- `PERSISTENCE_HNSW_MAX_LOG_SIZE`: Maximum size of the HNSW [write-ahead-log](/weaviate/concepts/storage.md#hnsw-vector-index-storage). Increase this to improve log compaction efficiency, or decrease to reduce memory requirements.
+- `PERSISTENCE_HNSW_MAX_LOG_SIZE`: HNSW の [write-ahead-log](/weaviate/concepts/storage.md#hnsw-vector-index-storage) の最大サイズです。値を大きくするとログ圧縮の効率が向上し、小さくするとメモリ要件を削減できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Further resources
+## <i class="fa-solid fa-square-chevron-right"></i> 追加リソース
 
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
-- [References: Vector index parameters](/weaviate/config-refs/indexing/vector-index.mdx)
-- [How-to manage collections](../../../weaviate/manage-collections/index.mdx)
-- [Weaviate Academy: Compression](../compression/index.md)
+- [コンセプト: ベクトルインデックス](/weaviate/concepts/indexing/vector-index.md)
+- [リファレンス: ベクトルインデックスのパラメーター](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コレクションを管理する方法](../../../weaviate/manage-collections/index.mdx)
+- [Weaviate Academy: 圧縮](../compression/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

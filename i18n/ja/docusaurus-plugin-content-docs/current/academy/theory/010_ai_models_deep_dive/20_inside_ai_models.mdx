@@ -1,17 +1,17 @@
 ---
-title: AI models in general
-description: A look inside AI models
+title: 一般的な AI モデル
+description: AI モデルの内部を覗く
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
-A big percentage of modern AI models are deep learning models. Many generative and embedding models fit into this category, as do many regression models or classification models.
+現代の AI モデルの大部分はディープラーニングモデルです。多くの生成モデルや埋め込みモデルがこのカテゴリに含まれ、回帰モデルや分類モデルの多くも同様です。
 
-So, let’s take a look at some of their common features.
+では、これらの共通点をいくつか見てみましょう。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Deep learning models
+## <i class="fa-solid fa-chalkboard-user"></i> ディープラーニングモデル
 
-You may have seen a visual representation of a deep learning model like this.
+次のようなディープラーニングモデルの図を目にしたことがあるかもしれません。
 
 <!-- Source for figures: https://link.excalidraw.com/l/4CqHmtSPftM/5wFoOmDz8oT -->
 
@@ -19,7 +19,7 @@ import NNBasicLight from './_img/nn_explained_01_basic.png';
 import NNBasicDark from './_img/nn_explained_01_basic_dark.png';
 
 <ThemedImage
-  alt="Neural Network Basic Diagram"
+  alt="ニューラルネットワークの基本図"
   sources={{
     light: NNBasicLight,
     dark: NNBasicDark,
@@ -27,15 +27,15 @@ import NNBasicDark from './_img/nn_explained_01_basic_dark.png';
   width="300"
 />
 
-This might not look like much, but it’s actually quite an accurate representation of a deep learning model. Let’s dive into the details.
+見た目はシンプルですが、これはディープラーニングモデルをかなり正確に表しています。詳細を見ていきましょう。
 
-If we were to add details to this diagram, it may look like this. The model takes some input (array `[x1, x2, x3]` in this example) and transforms it to an output (array `[y1, y2, y3]` in this example).
+この図に詳細を追加すると、次のようになります。モデルは入力（この例では配列 `[x1, x2, x3]`）を取り、出力（同じく配列 `[y1, y2, y3]`）へと変換します。
 
 import NNBasicLabellingLight from './_img/nn_explained_05_basic_labelling.png';
 import NNBasicLabellingDark from './_img/nn_explained_05_basic_labelling_dark.png';
 
 <ThemedImage
-  alt="Neural Network Basic Diagram with Labels"
+  alt="ラベル付きニューラルネットワーク基本図"
   sources={{
     light: NNBasicLabellingLight,
     dark: NNBasicLabellingDark,
@@ -43,21 +43,21 @@ import NNBasicLabellingDark from './_img/nn_explained_05_basic_labelling_dark.pn
   width="350"
 />
 
-This transformation is carried out by a set of “nodes”, typically called the “hidden layers”.
+この変換は「ノード」と呼ばれる要素、通常「隠れ層」と呼ばれる層によって実行されます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Inputs and outputs
+## <i class="fa-solid fa-chalkboard-user"></i> 入力と出力
 
-We mentioned above that the inputs and outputs can be in a variety of formats, and represent a range of different aspects. And that’s exactly the case here.
+前述のとおり、入力と出力はさまざまな形式を取り、さまざまな事柄を表現できます。そして、まさにここでそれが当てはまります。
 
-While the example shows an array of three values as an input and the output, the inputs and outputs can comprise any length of values.
+例では 3 つの値の配列を入力・出力としていますが、実際には任意の長さの配列を扱えます。
 
-A regression model may take inputs such as `[<number of rooms>, <postcode>, <house size>, <house type>, <land size>, <number of garages>, <house age>, ...]` and output a value in dollars. A classification model, on the other hand, might take in the same inputs but instead output an array of probabilities like `[0.05, 0.65, 0.20, 0.10]`, representing the likelihood of the house falling into different price brackets such as "budget," "mid-range," "luxury," or "premium luxury."
+たとえば回帰モデルなら、`[<number of rooms>, <postcode>, <house size>, <house type>, <land size>, <number of garages>, <house age>, ...]` のような入力を取り、ドル建ての金額を出力します。一方、分類モデルでは同じ入力を受け取りつつ、`[0.05, 0.65, 0.20, 0.10]` のような確率の配列を出力し、住宅が「低価格」「中価格」「高級」「超高級」といった価格帯に入る可能性を示します。
 
 import NNInputsOutputsLight from './_img/nn_explained_10_inputs_and_outputs.png';
 import NNInputsOutputsDark from './_img/nn_explained_10_inputs_and_outputs_dark.png';
 
 <ThemedImage
-  alt="Neural Network Inputs and Outputs"
+  alt="ニューラルネットワークの入力と出力"
   sources={{
     light: NNInputsOutputsLight,
     dark: NNInputsOutputsDark,
@@ -65,15 +65,15 @@ import NNInputsOutputsDark from './_img/nn_explained_10_inputs_and_outputs_dark.
   width="700"
 />
 
-One restriction of these models is that both inputs and outputs must be numerical. This is so that these inputs can be transformed into outputs. (We will discuss how to represent objects such as texts, or image inputs as numbers.)
+これらのモデルの制約のひとつは、入力と出力の両方が数値でなければならない点です。これは、入力を出力へ変換するために必要です。（テキストや画像などをどのように数値化するかは後で説明します。）
 
-So, how do these models convert inputs into outputs, exactly? As it turns out, through a series of calculations such as those shown below. This diagram shows how the value of a particular node (`h11`, for node on row 1, column 1) is calculated.
+それでは、モデルは実際にどのように入力を出力へ変換しているのでしょうか。実際には、以下に示すような計算を一連で行っています。この図では、特定のノード（行 1、列 1 のノード `h11`）の値がどのように計算されるかを示しています。
 
 import NNNodeCalcsLight from './_img/nn_explained_20_node_calculation.png';
 import NNNodeCalcsDark from './_img/nn_explained_20_node_calculation_dark.png';
 
 <ThemedImage
-  alt="Neural Network Node Calculations"
+  alt="ニューラルネットワークのノード計算"
   sources={{
     light: NNNodeCalcsLight,
     dark: NNNodeCalcsDark,
@@ -81,21 +81,21 @@ import NNNodeCalcsDark from './_img/nn_explained_20_node_calculation_dark.png';
   width="450"
 />
 
-As you can see, the calculation is relatively simple. Some form of linear algebra is performed to calculate the value of the node from values of the connected nodes from the preceding layer. This is where the “weights” and “biases” are applied in carrying the values forward.
+ご覧のように、計算自体は比較的シンプルです。前の層にある接続ノードの値を線形代数で組み合わせてノードの値を算出し、その過程で「重み」と「バイアス」を適用します。
 
-Then, an “activation function” is applied to introduce non-linearity, allowing the network to learn complex patterns. This enables AI models to capture the sophisticated relationships in data that would not be possible only with combinations of linear layers. (In fact, without activation functions, the additional layers will simply be wasted!)
+その後に「活性化関数」を適用して非線形性を導入し、ネットワークが複雑なパターンを学習できるようにします。活性化関数がなければ、追加した層は無駄になってしまいます。
 
-And that’s really all a deep learning model does. Except - it does it at scale.
+ディープラーニングモデルが行うことは、実のところこれだけです。ただし ―― 大規模に行います。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Parameters
+## <i class="fa-solid fa-chalkboard-user"></i> パラメータ
 
-As you can see here, each node’s value is determined by the previous layer, and its weights and biases. Each of these weights and biases is called a parameter. Sum up all the parameters in a model, and we have the model’s parameter count, which is used as a shorthand for the model’s size.
+ご覧のように、各ノードの値は前の層およびその重み・バイアスによって決まります。これらの重みとバイアスそれぞれがパラメータと呼ばれます。モデル内のすべてのパラメータを合計したものがパラメータ数であり、モデルのサイズを示す指標として使われます。
 
 import NNTotalParamsLight from './_img/nn_explained_25_total_parameters.png';
 import NNTotalParamsDark from './_img/nn_explained_25_total_parameters_dark.png';
 
 <ThemedImage
-  alt="Neural Network Parameters"
+  alt="ニューラルネットワークのパラメータ"
   sources={{
     light: NNTotalParamsLight,
     dark: NNTotalParamsDark,
@@ -103,15 +103,15 @@ import NNTotalParamsDark from './_img/nn_explained_25_total_parameters_dark.png'
   width="450"
 />
 
-Large AI models have billions of these. The largest version of Meta’s Llama3 models has 405 billion parameters, and the original GPT-4 model was rumored to have ~1.8 trillion parameters.
+大規模な AI モデルは数十億ものパラメータを持ちます。Meta の Llama3 最大モデルは 4050 億パラメータを持ち、初期の GPT-4 モデルは約 1.8 兆パラメータと言われています。
 
-And that is how a model turns a bunch of inputs into outputs under-the-hood.
+こうしてモデルは内部で入力の集合を出力へと変換します。
 
 import NNFinalOutputLight from './_img/nn_explained_30_final_output.png';
 import NNFinalOutputDark from './_img/nn_explained_30_final_output_dark.png';
 
 <ThemedImage
-  alt="Neural Network Final Output"
+  alt="ニューラルネットワークの最終出力"
   sources={{
     light: NNFinalOutputLight,
     dark: NNFinalOutputDark,
@@ -119,24 +119,23 @@ import NNFinalOutputDark from './_img/nn_explained_30_final_output_dark.png';
   width="550"
 />
 
-As it turns out, once a model is given enough parameters, these parameters can be tuned to imbue these models with incredible power.
+十分なパラメータ数を与えられると、それらを調整することでモデルに驚異的な能力を持たせることができます。
 
-:::info So, are larger models always better?
+:::info より大きなモデルが常に優れているのでしょうか？
 
-Not quite. Even if you weren’t building and training these models, using, larger models involve overhead. Larger models require more resources (memory) to run, slower to generate outputs, and are therefore more expensive. While larger models may be more capable on average, it may be possible to find smaller models that work just as well for a given purpose.
+必ずしもそうではありません。モデルを構築・学習しない場合でも、巨大なモデルを利用するにはオーバーヘッドがあります。大きなモデルは実行に多くのリソース（メモリ）を必要とし、出力生成が遅く、その分コストも高くなります。平均的には大型モデルのほうが高性能ですが、特定の用途では同等に機能する小型モデルを見つけられる場合もあります。
 <br/>
 
-We will discuss this a lot more in a later section related to AI model selection.
+AI モデル選定に関しては、後ほど詳しく取り上げます。
 
 :::
 
-Now, it may seem somewhat intuitive that a model can take a series of numbers describing features of a house, and predict its value (regression) or the probabilities of it belonging to a particular class.
+住宅の特徴を表す数値列を入力として、価格を予測（回帰）したり、特定のクラスに属する確率を算出したりできることは、ある程度直感的かもしれません。
 
-But how does this concept lead to generative AI models such as `gpt` models, or embedding models? It’s actually more similar than you might think.
+しかし、この考え方がどのように `gpt` のような生成 AI モデルや埋め込みモデルへとつながるのでしょうか。実は、思っているよりも似ています。
 
-Let’s take a look at this in the next section.
-
-## Questions and feedback
+次のセクションでこれを詳しく見ていきましょう。
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

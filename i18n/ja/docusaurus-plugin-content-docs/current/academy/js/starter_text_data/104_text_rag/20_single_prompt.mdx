@@ -1,6 +1,6 @@
 ---
-title: "'Single prompt' generation"
-description: "Use single prompts with text RAG in Weaviate for direct question answering."
+title: "'シングルプロンプト' 生成"
+description: "Weaviate で text RAG を使用し、シングルプロンプトで直接的な質問応答を行います。"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/104_rag.ts';
 
-A 'single prompt' generation will perform RAG queries on each retrieved object. This is useful when you want to transform each object separately, with the same prompt.
+「シングルプロンプト」生成では、取得された各オブジェクトに対して RAG クエリを実行します。同じプロンプトで各オブジェクトを個別に変換したい場合に便利です。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" whose vector best matches the query vector (for "dystopian future"). Then, instructs the large language model to translate the title of each movie into French.
+この例では、「dystopian future」に対するクエリ ベクトルと最も一致する「Movie」のエントリーを検索します。続いて、大規模言語モデルに各映画のタイトルをフランス語へ翻訳するよう指示します。
 
-Each of the results are then printed out to the console.
+その後、各結果がコンソールに出力されます。
 
 <FilteredTextBlock
   text={TSCode}
@@ -23,12 +23,12 @@ Each of the results are then printed out to the console.
   language="ts"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-You must pass on one or more properties to the `singlePrompt` parameter through braces, as we've done here with `"... {title} ..."`. This will instruct Weaviate to pass on the `title` property from each retrieved object to the large language model.
+`"... {title} ..."` のように中かっこを使って、`singlePrompt` パラメーターに 1 つ以上のプロパティを渡す必要があります。これにより、Weaviate は取得した各オブジェクトの `title` プロパティを大規模言語モデルへ渡します。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例: 結果</summary>
 
 ```text
 In Time
@@ -45,12 +45,12 @@ Les enfants des hommes
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
 
-Each response object is similar to that from a regular search query, with an additional `generated` attribute. This attribute will contain the generated output for each object.
+各レスポンスオブジェクトは通常の検索クエリとほぼ同じですが、追加で `generated` 属性が含まれます。この属性には、各オブジェクトに対して生成された出力が格納されます。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

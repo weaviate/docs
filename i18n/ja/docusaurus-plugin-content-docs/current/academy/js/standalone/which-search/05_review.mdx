@@ -1,5 +1,5 @@
 ---
-title: Review of search types
+title: 検索タイプの確認
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,13 +7,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!./_snippets/05_review.ts';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-Weaviate offers three primary search types - namely **vector**, **keyword**, and **hybrid** searches. Let's briefly recap what they are, and how they work.
+Weaviate は主に 3 種類の検索タイプ、つまり ベクトル 検索、キーワード 検索、ハイブリッド 検索を提供しています。ここでは、それぞれが何であるか、どのように機能するかを簡単に振り返ります。
 
-### <i class="fa-solid fa-code"></i> Code examples
+### <i class="fa-solid fa-code"></i> コード例
 
-These code examples are runnable, with the [`v3` Weaviate Typescript client](../../../../weaviate/client-libraries/typescript/index.mdx). Connect to the pre-configured demo instance of Weaviate with the following code, and try the examples below.
+以下のコード例は、[`v3` Weaviate Typescript クライアント](../../../../weaviate/client-libraries/typescript/index.mdx)で実行できます。次のコードで事前設定済みのデモインスタンスに接続し、例を試してみてください。
 
 <Tabs groupId="languages">
 
@@ -28,15 +28,15 @@ These code examples are runnable, with the [`v3` Weaviate Typescript client](../
 
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vector search
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索
 
-A vector search finds objects with the most similar vectors to the query vector.
+ベクトル検索は、クエリ ベクトル に最も近い ベクトル を持つオブジェクトを見つけます。
 
-Because each vector is a numerical representation of the underlying object, a vector similarity can be thought of as a similarity in meaning. Therefore a vector search is also called "semantic search".
+各 ベクトル は基になるオブジェクトを数値で表現しているため、ベクトル同士の類似度は意味の類似度と捉えられます。そのため、ベクトル検索は「セマンティック検索」とも呼ばれます。
 
-In Weaviate, you can search for objects with similar vectors in any of the following ways:
+Weaviate では、次のいずれかの方法で類似した ベクトル を持つオブジェクトを検索できます:
 
-With a source medium (e.g. text or image):
+ソースメディア (例: テキストや画像) を使用する場合:
 
 <Tabs groupId="languages">
 
@@ -51,7 +51,7 @@ With a source medium (e.g. text or image):
 
 </Tabs>
 
-With a vector:
+ベクトル を直接指定する場合:
 
 <Tabs groupId="languages">
 
@@ -66,7 +66,7 @@ With a vector:
 
 </Tabs>
 
-With an existing Weaviate object:
+既存の Weaviate オブジェクトを使用する場合:
 
 <Tabs groupId="languages">
 
@@ -81,11 +81,11 @@ With an existing Weaviate object:
 
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Keyword search
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
 
-A keyword search finds objects whose keywords (i.e. tokens) are the most relevant to the keywords (i.e. tokens) of the query. The relevance is determined by the [BM25F algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).
+キーワード検索は、クエリのキーワード (トークン) に最も関連性の高いキーワード (トークン) を含むオブジェクトを見つけます。関連性は [BM25F アルゴリズム](https://en.wikipedia.org/wiki/Okapi_BM25) によって判断されます。
 
-Intuitively, the BM25F algorithm determines "relevance" by considering how often a keyword appears in each field of the object, relative to how commonly the keyword appears in the entire dataset.
+直感的には、BM25F アルゴリズムは、キーワードがオブジェクト内の各フィールドにどれだけ頻繁に出現するかを、キーワードがデータセット全体でどれだけ一般的かと比較して「関連性」を決定します。
 
 <Tabs groupId="languages">
 
@@ -100,9 +100,9 @@ Intuitively, the BM25F algorithm determines "relevance" by considering how often
 
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Hybrid search
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
 
-A hybrid search combines the results of a vector search and a keyword search. This is done by performing both searches, and them combining the two search results with a "fusion" algorithm.
+ハイブリッド検索は、ベクトル検索とキーワード検索の結果を組み合わせます。両方の検索を実行し、その 2 つの検索結果を「融合 (fusion)」アルゴリズムで結合します。
 
 <Tabs groupId="languages">
 

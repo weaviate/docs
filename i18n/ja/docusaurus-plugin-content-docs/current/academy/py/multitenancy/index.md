@@ -1,6 +1,6 @@
 ---
-title: "280 Multi-tenancy (MT)"
-description: "Implement multitenancy in Weaviate for isolated data environments in Python applications."
+title: "280 マルチテナンシー (MT)"
+description: "Python アプリケーションにおいて、分離されたデータ環境のために Weaviate でマルチテナンシーを実装します。"
 sidebar_position: 280
 ---
 
@@ -8,22 +8,22 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 import CourseUnits from '/src/components/Academy/courseUnits.jsx';
 import { courseData } from '/src/components/Academy/courseData.js'
 
-## <i class="fa-solid fa-chalkboard-user"></i> Course overview
+## <i class="fa-solid fa-chalkboard-user"></i> コース概要
 
-:::info Pre-requisites
-This course is self-contained. However, we recommend that you go through one of the 101-level courses, such as that for working with [text](../starter_text_data/index.md), [your own vectors](../starter_custom_vectors/index.md), or [multimodal data](../starter_multimodal_data/index.md).
+:::info 前提条件
+このコースは自己完結型です。ただし、[テキスト](../starter_text_data/index.md)、[独自の ベクトル](../starter_custom_vectors/index.md)、または[マルチモーダル データ](../starter_multimodal_data/index.md)を扱う 101 レベルのコースのいずれかを先に受講することをおすすめします。
 :::
 
-Multi-tenancy allows you to create a Weaviate collection containing a high number of lightweight "tenants".
+マルチテナンシーを使用すると、多数の軽量な「テナント」を含む Weaviate コレクションを作成できます。
 
-Tenants are designed to house isolated, identical data structures. This is suitable for use cases such as software-as-a-service (SaaS) type applications, where each end user's data can be backed by a tenant. Tenants can be managed independently, and their data can be offloaded to cold storage to reduce memory and disk usage.
+テナントは、分離された同一のデータ構造を保持するよう設計されています。これは、各エンドユーザーのデータをテナント単位で管理するソフトウェア・アズ・ア・サービス (SaaS) タイプのアプリケーションなどのユースケースに適しています。テナントは個別に管理でき、メモリやディスク使用量を削減するためにコールドストレージへオフロードすることも可能です。
 
-This course introduces you to multi-tenancy. It teaches you how to enable and configure a multi-tenant collection in Weaviate, as well as how to work with tenants and tenant data.
+このコースでは、マルチテナンシーの概要を紹介し、Weaviate でマルチテナント コレクションを有効化・設定する方法、そしてテナントおよびテナント データを操作する方法を学びます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目的
 
 <LearningGoals courseName="multi-tenancy"/>
 
-## <i class="fa-solid fa-book-open-reader"></i> Units
+## <i class="fa-solid fa-book-open-reader"></i> ユニット
 
 <CourseUnits courseData={courseData} courseName="multi-tenancy" />

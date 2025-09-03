@@ -1,6 +1,6 @@
 ---
-title: Import data
-description: "Import data into Weaviate text collections to streamline data handling."
+title: データのインポート
+description: "Weaviate のテキストコレクションへデータをインポートして、データ処理を効率化します。"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,9 +8,9 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/102_collection.ts';
 
-## <i class="fa-solid fa-code"></i> Code
+## <i class="fa-solid fa-code"></i> コード
 
-This example imports the movie data into our collection.
+この例では、映画データをコレクションにインポートします。
 
 <FilteredTextBlock
   text={TSCode}
@@ -19,22 +19,22 @@ This example imports the movie data into our collection.
   language="ts"
 />
 
-The code:
-- Loads the source data & gets the collection
-- Loops through the data and adds objects to the batcher
-- Prints out any import errors
+コードの概要:
+- ソースデータを読み込み、コレクションを取得
+- データをループ処理してバッチャーにオブジェクトを追加
+- インポートエラーを出力
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-### <i class="fa-solid fa-chalkboard"></i> Preparation
+### <i class="fa-solid fa-chalkboard"></i> 準備
 
-We use the requests library to load the data from the source, in this case a JSON file. 
+requests ライブラリを使用して、今回の場合は JSON ファイルからデータを読み込みます。
 
-Then, we create a collection object (with `client.collections.get`) so we can interact with the collection.
+その後 `client.collections.get` でコレクションオブジェクトを作成し、コレクションとやり取りできるようにします。
 
-### <i class="fa-solid fa-chalkboard"></i> Iterating over data
+### <i class="fa-solid fa-chalkboard"></i> データの反復処理
 
-The `for` loop is used in conjunction with `Object.keys()` to iterate through the elements in our JSON file. While iterating we increment the counter variable that lets us bulk insert objects in batches.
+`for` ループと `Object.keys()` を組み合わせて、JSON 内の要素を反復処理します。反復中はカウンター変数を増やし、オブジェクトをバッチ単位で一括挿入できるようにします。
 
 <FilteredTextBlock
   text={TSCode}
@@ -44,11 +44,11 @@ The `for` loop is used in conjunction with `Object.keys()` to iterate through th
 />
 
 
-### <i class="fa-solid fa-chalkboard"></i> Add data to the Object
+### <i class="fa-solid fa-chalkboard"></i> オブジェクトへのデータ追加
 
-#### Convert data types and build the Object
+#### データ型の変換とオブジェクト構築
 
-The data is converted from a string to the correct data types for Weaviate. For example, the `release_date` is converted to a `Date` object, and the `genre_ids` are converted to a list of integers.
+データを文字列から Weaviate に適した型へ変換します。たとえば `release_date` は `Date` オブジェクトに、`genre_ids` は整数のリストに変換します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -57,11 +57,11 @@ The data is converted from a string to the correct data types for Weaviate. For 
   language="ts"
 />
 
-After converting data to the correct format, we build the object by its properties preparing it to be inserted into Weaviate. 
+正しい形式に変換した後、プロパティをまとめてオブジェクトを構築し、Weaviate への挿入に備えます。 
 
-#### Bulk insert data 
+#### データのバルク挿入
 
-Then we create on object that includes the uuid generated with `generateUuid5` from Weaviate and the object containing properties we previously define, we push this object to `itemsToInsert` for them to be bulk inserted with `insertMany()` once the batch is ready..
+次に、Weaviate の `generateUuid5` で生成した uuid と、先ほど定義したプロパティを含むオブジェクトを作成します。このオブジェクトを `itemsToInsert` にプッシュし、バッチが準備できたら `insertMany()` でまとめて挿入します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -70,9 +70,9 @@ Then we create on object that includes the uuid generated with `generateUuid5` f
   language="ts"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Error handling
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
 
-If you have any errors in your bulk insertion, you want to know something went wrong. That way you can decide how to handle them, such as by raising an exception. In this example, we simply print out that there was an error with the import.
+バルク挿入でエラーが発生した場合、その原因を把握する必要があります。対処方法としては例外を発生させるなどがありますが、この例では単にインポート時のエラーを出力しています。
 
 <FilteredTextBlock
   text={TSCode}
@@ -81,13 +81,13 @@ If you have any errors in your bulk insertion, you want to know something went w
   language="ts"
 />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Where do the vectors come from?
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル生成元
 
-When the batcher sends the queue to Weaviate, the objects are added to the collection. In our case, the movie collection.
+バッチャーがキューを Weaviate に送信すると、オブジェクトがコレクション（今回は映画コレクション）に追加されます。
 
-Recall that the collection has a vectorizer module, and we do not specify vectors here. So Weaviate uses the specified vectorizer to generate vector embeddings from the data.
+このコレクションにはベクトライザーモジュールが設定されており、ここではベクトルを明示的に指定していません。そのため、Weaviate は指定されたベクトライザーを使ってデータからベクトル埋め込みを生成します。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

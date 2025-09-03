@@ -1,6 +1,6 @@
 ---
-title: Keyword & Hybrid search
-description: Hybrid Keyword Searches in Multimodal Collections
+title: キーワード検索 & ハイブリッド検索
+description: マルチモーダルコレクションでのハイブリッドキーワード検索
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/103_searches.py';
 
-You can also perform keyword (BM25) searches to find items based on their keyword similarity, or hybrid searches that combine BM25 and semantic/vector searches.
+キーワード（ BM25 ）検索を使用してキーワード類似度に基づいてアイテムを探したり、 BM25 とセマンティック／ ベクトル検索を組み合わせたハイブリッド検索を実行したりできます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Keyword search
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "MovieMM" with the highest keyword search scores for the term "history", and prints out the title and release year of the top 5 matches.
+この例では、"MovieMM" 内で "history" という語に対して最も高いキーワード検索スコアを持つエントリーを検索し、上位 5 件のタイトルと公開年を出力します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -23,16 +23,16 @@ This example finds entries in "MovieMM" with the highest keyword search scores f
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-The results are based on a keyword search score using what's called the [BM25f](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm.
+結果は、[BM25f](https://en.wikipedia.org/wiki/Okapi_BM25) アルゴリズムを用いたキーワード検索スコアに基づいています。
 
-The `limit` parameter here sets the maximum number of results to return.
+`limit` パラメーターは、返される結果数の上限を設定します。
 
-The `return_metadata` parameter takes an instance of the `MetadataQuery` class to set metadata to return in the search results. The current query returns the `score`, which is the BM25 score of the result.
+`return_metadata` パラメーターには、検索結果で返すメタデータを設定するために `MetadataQuery` クラスのインスタンスを渡します。現在のクエリでは、結果の BM25 スコアである `score` を返します。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例: 結果</summary>
 
 ```text
 American History X 1998
@@ -54,11 +54,11 @@ BM25 score: 1.529
 </details>
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Hybrid search
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "MovieMM" with the highest hybrid search scores for the term "history", and prints out the title and release year of the top 5 matches.
+この例では、"MovieMM" 内で "history" という語に対して最も高いハイブリッド検索スコアを持つエントリーを検索し、上位 5 件のタイトルと公開年を出力します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -67,16 +67,16 @@ This example finds entries in "MovieMM" with the highest hybrid search scores fo
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-The results are based on a hybrid search score. A hybrid search blends results of BM25 and semantic/vector searches.
+結果はハイブリッド検索スコアに基づいています。ハイブリッド検索は、 BM25 とセマンティック／ ベクトル検索の結果をブレンドします。
 
-The `limit` parameter here sets the maximum number of results to return.
+`limit` パラメーターは、返される結果数の上限を設定します。
 
-The `return_metadata` parameter takes an instance of the `MetadataQuery` class to set metadata to return in the search results. The current query returns the `score`, which is the hybrid score of the result.
+`return_metadata` パラメーターには、検索結果で返すメタデータを設定するために `MetadataQuery` クラスのインスタンスを渡します。現在のクエリでは、結果のハイブリッドスコアである `score` を返します。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例: 結果</summary>
 
 ```text
 Legends of the Fall 1994
@@ -98,7 +98,7 @@ Hybrid score: 0.012
 </details>
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

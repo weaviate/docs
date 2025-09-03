@@ -1,87 +1,87 @@
 ---
-title: Data structure in Weaviate
-description: Establish data structure in Weaviate for efficient organization and search.
+title: Weaviate におけるデータ構造
+description: データを効率的に整理・検索するための Weaviate のデータ構造を確立します。
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/9AmMDDGWC74' controls='true' />
 <br/>
 
-You've seen some of the powerful queries that Weaviate enables. But how does Weaviate actually store data such that it can supports these queries?
+ここまでで、 Weaviate が実現する強力なクエリの一部をご覧いただきました。では、 Weaviate は実際にどのようにデータを保存し、これらのクエリをサポートしているのでしょうか？
 
-In this section, we'll take a look at some of the key components that allow Weaviate to perform these queries at speed. In particular, we'll take a look at indexes, which are the backbone of Weaviate's data structure, and the schema, which acts as a blueprint for your data.
+このセクションでは、 Weaviate が高速にクエリを実行できるようにする主要コンポーネントを見ていきます。特に、 Weaviate のデータ構造の中核であるインデックスと、データの設計図となるスキーマについて説明します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Indexes
+## <i class="fa-solid fa-square-chevron-right"></i> インデックス
 
-An index is a data structure that allows for efficient retrieval of data. In Weaviate, there are two main indexes: the inverted index and the vector index.
+インデックスとは、データを効率的に検索できるようにするデータ構造です。 Weaviate には、転置インデックスとベクトルインデックスという 2 つの主要なインデックスがあります。
 
-The **inverted index** is the kind of index that you may be familiar with. You can think of it as a reference table that for example allows you to quickly look up a term and find objects that contain that term.
+**転置インデックス** は、すでに馴染みのあるタイプのインデックスかもしれません。例えば、ある用語をすばやく検索し、その用語を含むオブジェクトを見つける参照テーブルのようなものだと考えてください。
 
-The **vector index** allows for efficient retrieval of vectors based on similarity. This is the index that allows Weaviate to perform vector searches fast. Let's dig in a little more.
+**ベクトルインデックス** は、類似度に基づいてベクトルを効率的に検索できるインデックスです。これにより、 Weaviate はベクトル検索を高速に実行できます。もう少し詳しく見ていきましょう。
 
-### <i class="fa-solid fa-chalkboard"></i> Inverted index
+### <i class="fa-solid fa-chalkboard"></i> 転置インデックス
 
-An inverted index deconstructs text into a set of constituent terms and stores them in a data structure, such as a hash table. Take, for example, a data object containing the text "Conference (Chicago, IL)".
+転置インデックスは、テキストを構成要素となる用語に分解し、ハッシュテーブルのようなデータ構造に保存します。たとえば、「Conference (Chicago, IL)」というテキストを含むデータオブジェクトを考えてみましょう。
 
-The user might want to search for this object based on any of the contained terms such as "conference", "Chicago", or "IL". The inverted index allows Weaviate to quickly retrieve the ID of the object containing the term.
+ユーザーは「conference」「Chicago」「IL」など、含まれる任意の用語でこのオブジェクトを検索したいかもしれません。転置インデックスを使用すると、 Weaviate はその用語を含むオブジェクトの ID をすばやく取得できます。
 
-This is done by mapping the object ID to "tokens", where a token is a term that has been extracted from the text. By default, Weaviate uses a `word` tokenization, where only alpha-numeric characters are kept, converted into lowercase, and then split into tokens based on whitespace.
+これは、オブジェクト ID を「トークン」にマッピングすることで実現します。トークンとは、テキストから抽出された用語のことです。デフォルトでは、 Weaviate は `word` トークナイゼーションを使用し、英数字のみを保持して小文字に変換し、空白で区切ってトークンに分割します。
 
-So an input text `Conference (Chicago, IL)` is indexed by three tokens: `conference`, `chicago`, `il`.
+したがって、入力テキスト `Conference (Chicago, IL)` は 3 つのトークン `conference`、`chicago`、`il` でインデックス化されます。
 
-We will cover more about different available tokenization methods later on.
+利用可能なトークナイゼーション方法については後ほど詳しく説明します。
 
-### <i class="fa-solid fa-chalkboard"></i> Vector index
+### <i class="fa-solid fa-chalkboard"></i> ベクトルインデックス
 
-Each object in Weaviate can be associated with a vector. These vectors are what enables similarity searches that you have seen before. As we mentioned, however, brute-force similarity searches are computationally expensive, as well as growing linearly with the size of the dataset.
+Weaviate の各オブジェクトにはベクトルを関連付けることができます。これらのベクトルが、前述の類似度検索を可能にします。しかし前述のとおり、総当たりによる類似度検索は計算コストが高く、データセットのサイズに線形に比例して増加します。
 
-To tackle this problem Weaviate uses vector indexes that utilize an Approximate Nearest Neighbor (ANN) algorithm. The ANN algorithm enables each vector index to organize a set of vectors, so that similar ones to a query can be retrieved at lightning-fast speeds. Weaviate currently uses an HNSW-based ANN index.
+この問題を解決するために、 Weaviate は Approximate Nearest Neighbor (ANN) アルゴリズムを利用したベクトルインデックスを使用します。 ANN アルゴリズムにより、各ベクトルインデックスはベクトルの集合を組織化し、クエリに類似したベクトルを超高速で取得できます。 Weaviate では現在、 HNSW ベースの ANN インデックスを採用しています。
 
 import HNSWLayersImg from '/docs/weaviate/concepts/img/hnsw-layers.svg';
 
 <HNSWLayersImg/>
 
-Each set of vectors are said to reside in a "vector space", indicating that it is a multi-dimensional "space" in which vectors are placed.
+各ベクトルの集合は「ベクトル空間」に存在すると言われます。これは、複数次元の「空間」にベクトルが配置されていることを示しています。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Classes
+## <i class="fa-solid fa-square-chevron-right"></i> クラス
 
-### <i class="fa-solid fa-chalkboard"></i> What is a `class`?
+### <i class="fa-solid fa-chalkboard"></i> `class` とは？
 
-A class in Weaviate is a collection of objects of the same type. Each object in Weaviate must belong to a class, and one class only.
+Weaviate におけるクラスは、同じタイプのオブジェクトの集合です。 Weaviate の各オブジェクトは必ず 1 つのクラスに属し、複数のクラスに属することはできません。
 
-Imagine that you are storing a set of quiz items from the game show *Jeopardy!* in Weaviate. A good way to structure it would be to have an object represent a question including all associated attributes, such as the answer, what round it was from, how many points it was worth, when it aired on TV, and so on.
+たとえば、クイズ番組 *Jeopardy!* の問題を Weaviate に保存するとします。各オブジェクトが 1 問を表し、解答、ラウンド、ポイント数、放送日などの属性を持たせると良い構造になります。
 
-So, a good way to represent this data would be through a class called `JeopardyQuestion`, which would contain a set of objects, each object representing one such question.
+このデータを表現するには、`JeopardyQuestion` というクラスを作成し、そのクラス内に各問題をオブジェクトとして格納するのが適切でしょう。
 
-:::note Class names are singular by convention
-This is as they refer to individual objects, e.g. a `JeopardyQuestion` object.
+:::note クラス名は慣例的に単数形
+これはクラスが個々のオブジェクトを指すためです。例: `JeopardyQuestion` オブジェクト。
 :::
 
-### <i class="fa-solid fa-chalkboard"></i> What is in a class?
+### <i class="fa-solid fa-chalkboard"></i> クラスには何が含まれるか？
 
-As we mentioned, each Jeopardy! question would contain multiple related, but distinct, attributes such as the question, answer, round, points, and so on. These are reflected in each `class` object in Weaviate as a set of `properties`, such as a `question` property, an `answer` property, and so on.
+先ほど述べたように、各 Jeopardy! の問題には、問題文、解答、ラウンド、ポイント数など、複数の関連するが異なる属性があります。これらは Weaviate の `class` オブジェクト内で `properties` として表現されます。たとえば、`question` プロパティ、`answer` プロパティなどです。
 
-### <i class="fa-solid fa-chalkboard"></i> How many vectors per object?
+### <i class="fa-solid fa-chalkboard"></i> オブジェクトあたりのベクトル数
 
-Each object is represented by one vector, and each class has one vector index. This means that all objects in the class will be associated with the same vector index.
+各オブジェクトは 1 つのベクトルで表され、各クラスには 1 つのベクトルインデックスがあります。つまり、そのクラス内のすべてのオブジェクトは同じベクトルインデックスに関連付けられます。
 
-In other words, all objects in the class will be stored in what is called the same vector space. This is important to keep in mind when designing your data schema in Weaviate. A vector search can only be performed within a single vector space, for reasons that a vector of different lengths, or even those of the same length but with different meanings, cannot be compared.
+言い換えると、クラス内のすべてのオブジェクトは同じベクトル空間に保存されます。これは Weaviate でスキーマを設計する際に重要なポイントです。ベクトル検索は単一のベクトル空間内でしか実行できません。ベクトルの長さが異なる場合や、同じ長さでも意味が異なる場合は比較できないためです。
 
-Going back to our [color analogy](../101_hello_weaviate/15_overview_vectors.mdx#-how-do-numbers-represent-meaning) that you saw earlier - you wouldn't be able to compare an RGB value to an CMYK value, right? The same applies to vector embeddings that represent text.
+以前の [色の例え](../101_hello_weaviate/15_overview_vectors.mdx#-how-do-numbers-represent-meaning) を思い出してください。 RGB 値と CMYK 値を比較することはできませんよね？テキストを表すベクトル埋め込みについても同じことが言えます。
 
-So in Weaviate, a vector search can only search one class at a time. As a result, it is important to design your schema such that objects that you want to search together are in the same class.
+したがって、 Weaviate ではベクトル検索は 1 度に 1 つのクラスのみ対象にできます。つまり、一緒に検索したいオブジェクトは同じクラスに入れるようスキーマを設計する必要があります。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Schema
+## <i class="fa-solid fa-square-chevron-right"></i> スキーマ
 
-A `schema` in Weaviate is the blueprint that defines its data structure. It does so for each `class` of objects, which are collections of objects of the same type.
+Weaviate における `schema` は、データ構造を定義する設計図です。これは、同じタイプのオブジェクトの集合である各 `class` について定義されます。
 
-Here is an example schema structure:
+以下にスキーマ構造の例を示します。
 
 <details>
-  <summary>Example schema</summary>
+  <summary>スキーマ例</summary>
 
 ```json
 {
@@ -180,25 +180,25 @@ Here is an example schema structure:
 
 </details>
 
-This is a lot of information, and can be quite intimidating. Let's break it down.
+情報量が多く、少し圧倒されるかもしれません。順を追って見ていきましょう。
 
-First of all, you see that the first level key in the object is `classes`, which contains a list of classes. In this case, there is only one class, `Article`.
+まず、オブジェクトの最上位キーは `classes` で、クラスのリストが含まれています。この例では `Article` という 1 つのクラスだけがあります。
 
-The schema specifies for each class:
-- The metadata such as its name (`class`),
-- Its data `properties`,
-- The `vectorizer`,
-- Module configurations (`moduleConfig`),
-- The index configurations (for inverted `invertedIndexConfig` and vector `vectorIndexConfig` indexes),
-- and more.
+スキーマは各クラスについて次の内容を指定します。
+- 名前 (`class`) などのメタデータ
+- データ `properties`
+- `vectorizer`
+- モジュール設定 (`moduleConfig`)
+- インデックス設定（転置 `invertedIndexConfig` とベクトル `vectorIndexConfig`）
+- など
 
-:::info Auto-schema
-Any missing information required for schema definition will be automatically inferred by Weaviate based on default values and the imported data.
+:::info 自動スキーマ
+スキーマ定義に必要な情報が不足している場合、 Weaviate はデフォルト値とインポートされたデータに基づいて自動的に補完します。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
 
 <Quiz questions={invertedIndex} />
 
@@ -208,16 +208,15 @@ Any missing information required for schema definition will be automatically inf
 
 <Quiz questions={schemaRole} />
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
 
-- Weaviate stores data using two main indexes: the inverted index and the vector index.
-- A class in Weaviate represents a collection of objects of the same type, and each object in Weaviate must belong to a single class.
-- A schema is the blueprint that defines Weaviate's data structure.
-- Vector searches can only be performed within a single vector space.
-    - So, any objects you want to search together should be in the same class.
-- Any missing information required for schema definition will be automatically inferred by Weaviate based on default values and the imported data.
-
-## Questions and feedback
+- Weaviate はデータを転置インデックスとベクトルインデックスの 2 つで管理します。
+- Weaviate のクラスは同じタイプのオブジェクトの集合を表し、各オブジェクトは必ず 1 つのクラスに属します。
+- スキーマは Weaviate のデータ構造を定義する設計図です。
+- ベクトル検索は単一のベクトル空間内でのみ実行できます。
+    - そのため、一緒に検索したいオブジェクトは同じクラスに格納する必要があります。
+- スキーマ定義に必要な情報が不足している場合、 Weaviate がデフォルト値とインポートデータを基に自動補完します。
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
@@ -226,85 +225,85 @@ import DocsFeedback from '/_includes/docs-feedback.mdx';
 import Quiz from '/src/components/Academy/quiz.js'
 export const invertedIndex = [
 {
-questionText: 'What is the function of an inverted index in Weaviate?',
+questionText: 'Weaviate における 転置インデックス の機能は何ですか？',
 answerOptions: [
 {
-answerText: 'It allows for efficient retrieval of vectors based on similarity.',
+answerText: 'ベクトル を類似度に基づいて効率的に検索できます。',
 isCorrect: false,
-feedback: 'That is the function of the vector index.',
+feedback: 'それは ベクトル インデックス の機能です。',
 },
 {
-answerText: 'It deconstructs text into a set of constituent terms and stores them for fast retrieval.',
+answerText: 'テキスト を構成語に分解して保存し、迅速に検索できるようにします。',
 isCorrect: true,
-feedback: 'This allows objects containing those terms to be retrieved quickly.',
+feedback: 'これにより、その語を含むオブジェクトを素早く取得できます。',
 },
 {
-answerText: 'It acts as a blueprint for your data.',
+answerText: 'データの設計図として機能します。',
 isCorrect: false,
-feedback: 'That is the function of the schema.',
+feedback: 'それは スキーマ の機能です。',
 },
 ]
 }];
 export const vectorIndex = [
 {
-questionText: 'What does the vector index in Weaviate enable?',
+questionText: 'Weaviate の ベクトル インデックス は何を可能にしますか？',
 answerOptions: [
 {
-answerText: 'It enables efficient retrieval of data based on a reference table.',
+answerText: '参照テーブルに基づいてデータを効率的に取得できます。',
 isCorrect: false,
-feedback: 'That is the function of the inverted index, not the vector index.',
+feedback: 'それは 転置インデックス の機能であり、 ベクトル インデックス の機能ではありません。',
 },
 {
-answerText: 'It enables similarity searches by associating each object with a vector.',
+answerText: '各オブジェクトに ベクトル を関連付けることで類似検索を可能にします。',
 isCorrect: true,
-feedback: 'Correct! The vector index uses an Approximate Nearest Neighbor (ANN) algorithm to allow fast similarity searches.',
+feedback: '正解です！ ベクトル インデックス は Approximate Nearest Neighbor (ANN) アルゴリズムを使用し、高速な類似検索を実現します。',
 },
 {
-answerText: 'It defines the data structure of Weaviate.',
+answerText: 'Weaviate のデータ構造を定義します。',
 isCorrect: false,
-feedback: 'That is the function of the schema, not the vector index.',
+feedback: 'それは スキーマ の機能であり、 ベクトル インデックス の機能ではありません。',
 },
 ]
 }];
 export const classDefinition = [
 {
-questionText: 'What is a class in Weaviate?',
+questionText: 'Weaviate における クラス とは何ですか？',
 answerOptions: [
 {
-answerText: 'It is a type of index used for efficient data retrieval.',
+answerText: '効率的なデータ取得に用いられるインデックスの一種です。',
 isCorrect: false,
-feedback: 'A class is not a type of index. It is a collection of objects of the same type in Weaviate.',
+feedback: 'クラス はインデックスの種類ではありません。 Weaviate においては同じタイプのオブジェクトの集合です。',
 },
 {
-answerText: 'It is a collection of objects of the same type.',
+answerText: '同じタイプのオブジェクトの集合です。',
 isCorrect: true,
-feedback: 'Correct! A class in Weaviate is a collection of objects of the same type.',
+feedback: '正解です！ Weaviate の クラス は同じタイプのオブジェクトの集合です。',
 },
 {
-answerText: 'It is a specific object within a collection.',
+answerText: 'コレクション内の特定のオブジェクトです。',
 isCorrect: false,
-feedback: 'A class is not a specific object, but rather a collection of objects of the same type.',
+feedback: 'クラス は特定のオブジェクトではなく、同じタイプのオブジェクトの集合です。',
 },
 ]
 }];
 export const schemaRole = [
 {
-questionText: 'What is the function of the schema in Weaviate?',
+questionText: 'Weaviate における スキーマ の機能は何ですか？',
 answerOptions: [
 {
-answerText: 'It allows for efficient retrieval of vectors based on similarity.',
+answerText: 'ベクトル を類似度に基づいて効率的に取得できます。',
 isCorrect: false,
-feedback: 'That is the function of the vector index, not the schema.',
+feedback: 'それは ベクトル インデックス の機能であり、 スキーマ の機能ではありません。',
 },
 {
-answerText: 'It deconstructs text into a set of constituent terms and stores them in a data structure.',
+answerText: 'テキスト を構成語に分解してデータ構造に保存します。',
 isCorrect: false,
-feedback: 'That is the function of the inverted index, not the schema.',
+feedback: 'それは 転置インデックス の機能であり、 スキーマ の機能ではありません。',
 },
 {
-answerText: 'It acts as a blueprint that defines the data structure of Weaviate.',
+answerText: 'Weaviate のデータ構造を定義する設計図として機能します。',
 isCorrect: true,
-feedback: 'The schema defines the data structure for each class of objects in Weaviate.',
+feedback: 'スキーマ は Weaviate における各 クラス のデータ構造を定義します。',
 },
 ]
 },

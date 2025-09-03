@@ -1,6 +1,6 @@
 ---
-title: "RAG: Overview"
-description: "Set up text RAG in Weaviate for reliable question answering."
+title: "RAG: 概要"
+description: "Weaviate でテキスト RAG をセットアップし、信頼性の高い質問応答を実現します。"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/102_collection.ts';
 
-### <i class="fa-solid fa-chalkboard"></i> Motivation
+### <i class="fa-solid fa-chalkboard"></i> 動機
 
-Retrieval augmented generation (RAG) is a way to combine the best of both worlds: the retrieval capabilities of semantic search and the generation capabilities of AI models such as large language models. This allows you to retrieve objects from a Weaviate instance and then generate outputs based on the retrieved objects.
+検索拡張生成 ( RAG ) は、セマンティック検索の検索機能と、大規模言語モデルなどの AI モデルの生成機能という両方の長所を組み合わせる手法です。これにより、Weaviate インスタンスからオブジェクトを取得し、そのオブジェクトに基づいて出力を生成できます。
 
-### <i class="fa-solid fa-chalkboard"></i> Setup
+### <i class="fa-solid fa-chalkboard"></i> セットアップ
 
-When we created a collection, we specified the `generative` parameter as shown here.
+コレクションを作成するときに、次のように `generative` パラメーターを指定しました。
 
 <FilteredTextBlock
   text={TSCode}
@@ -23,17 +23,17 @@ When we created a collection, we specified the `generative` parameter as shown h
   language="ts"
 />
 
-This selects a generative module that will be used to generate outputs based on the retrieved objects. In this case, we're using the `openai` module, and the `GPT` family of large language models.
+これにより、取得したオブジェクトを基に出力を生成するための生成モジュールが選択されます。この例では `openai` モジュールと、`GPT` 系列の大規模言語モデルを使用しています。
 
-As we did before with the vectorizer module, you will require an API key from the provider of the generative module. In this case, you will need an API key from OpenAI.
+ベクトライザー モジュールの場合と同様に、生成モジュールのプロバイダーから発行された API キーが必要です。この例では、OpenAI からの API キーが必要です。
 
-### <i class="fa-solid fa-code"></i> RAG queries
+### <i class="fa-solid fa-code"></i> RAG クエリ
 
-RAG queries are also called 'generative' queries in Weaviate. You can access these functions through the `generate` submodule of the collection object.
+RAG クエリは、Weaviate では「generative クエリ」とも呼ばれます。これらの機能には、コレクション オブジェクトの `generate` サブモジュールからアクセスできます。
 
-Each generative query works in addition to the regular search query, and will perform a RAG query on each retrieved object.
+各 generative クエリは通常の検索クエリに加えて実行され、取得された各オブジェクトに対して RAG クエリを実行します。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

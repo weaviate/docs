@@ -1,44 +1,43 @@
 ---
-title: Filters
-description: Apply filters in Weaviate to refine search results with precision.
+title: フィルター
+description: Weaviate でフィルターを適用して検索結果を精密に絞り込みます。
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/2ouOpwdbMQg' controls='true'/>
 <br/>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Available operators
+## <i class="fa-solid fa-square-chevron-right"></i> 利用可能な演算子
 
-So far, you've seen different query functions such as `Get`, and `Aggregate`, and search operators such as `nearVector`, `nearObject` and `nearText`.
+これまでに、`Get` や `Aggregate` といったクエリ関数、`nearVector`、`nearObject`、`nearText` といった検索オペレーターを見てきました。  
+では、フィルターについて見ていきましょう。
 
-Now, let's take a look at filters.
+フィルターとは、結果に対して追加の条件を指定する方法です。Weaviate には複数のフィルターが用意されています。
 
-A filter is a way to specify additional criteria to be applied to the results. There are a number of available filters in Weaviate.
+### <i class="fa-solid fa-chalkboard"></i> 利用可能なフィルター
 
-### <i class="fa-solid fa-chalkboard"></i> Available filters
+利用可能なフィルターは多数ありますが、今はすべてを扱う必要はありません。ここでは、よく使われるフィルターをいくつか紹介します。
 
-There exist many available filters, but we do not need to cover them all at this moment. For now, let's explore a few of the most commonly used filters:
+- `where`: ブール条件を適用してデータをフィルターします。  
+- `limit`: 取得するオブジェクトの最大数を制限します。  
+- `offset`: 検索結果のページネーションに使用します。  
 
-- `where`: Apply a Boolean condition to filter the available data.
-- `limit`: Restrict the maximum objects to be retrieved.
-- `offset`: For pagination of search results.
+## <i class="fa-solid fa-square-chevron-right"></i> `where` でのデータフィルター
 
-## <i class="fa-solid fa-square-chevron-right"></i> Filter data with `where`
+`where` フィルターは、 SQL の `WHERE` 句に相当します。 SQL の `WHERE` 句と同様に、`where` フィルターを使ってデータにブール条件を適用できます。
 
-The `where` filter is analogous to the `WHERE` clause in a SQL query. As in the SQL clause, the `where` filter can be used to apply a boolean conditional to the data.
+### <i class="fa-solid fa-code"></i> 単一オペランドの例
 
-### <i class="fa-solid fa-code"></i> Single operand example
-
-We ran an example query like this earlier:
+以前に次のようなサンプルクエリを実行しました。
 
 import GetWithAdditional from './_snippets/academy.queries.get.with.additional.mdx';
 
 <GetWithAdditional/>
 
-Which returned these answers:
+その結果、次のような回答が返ってきました。
 
 ```json
 {
@@ -67,18 +66,18 @@ Which returned these answers:
 }
 ```
 
-So let's extend our query to now include a `where` argument that uses a `Like` operator.
+ここで、`Like` オペレーターを使った `where` 引数を追加してクエリを拡張してみましょう。
 
 import FilterWhereLike from './_snippets/academy.queries.filter.where.like.mdx';
 
 <FilterWhereLike/>
 
-Can you guess how you would expect the earlier response to change, if at all?
+これにより、先ほどのレスポンスがどのように変化するか予想できますか。
 
-Here is the actual response:
+実際のレスポンスはこちらです。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -110,24 +109,24 @@ Here is the actual response:
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
 
-Observe that the results have changed. The previous results have been removed as they do not contain the text `rocket` in the `question` property.
+結果が変化していることがわかります。先ほどの結果は、`question` プロパティに `rocket` という文字列が含まれていないため除外されました。
 
-This approach of combining a vector search with a filter is a powerful way to find objects that are similar to a given input, but also meet additional criteria as you see. And while filtering may remove some objects which might otherwise be "closer" to the query vector than the remaining ones, it provides a powerful strategy to find the most relevant objects by removing false positive.
+このように ベクトル 検索とフィルターを組み合わせる方法は、入力に類似しているだけでなく、追加の条件も満たすオブジェクトを見つける強力な手段です。フィルターによって、クエリ ベクトル に対して「より近い」オブジェクトが除外される場合もありますが、誤検出を排除して本当に関連性の高いオブジェクトを得る有効な戦略となります。
 
 </details>
 
-We can apply the query to filter the data in any number of ways. For example, consider this query:
+クエリを使えばデータをさまざまな方法でフィルターできます。例として次のクエリを見てください。
 
 import FilterWhereGreater from './_snippets/academy.queries.filter.where.greater.mdx';
 
 <FilterWhereGreater/>
 
-How do you expect that this query will be different to the earlier queries?
+このクエリは先ほどのクエリとどのように異なる結果を返すと予想しますか。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -161,34 +160,33 @@ How do you expect that this query will be different to the earlier queries?
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
 
-This query has been modified to only return `JeopardyQuestion` objects with a `points` value greater than 200.
-
-Accordingly, the returned data set is very different.
+このクエリは、`points` 値が 200 より大きい `JeopardyQuestion` オブジェクトのみを返すように変更されています。  
+そのため、返されるデータセットは大きく異なります。
 
 </details>
 
 :::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try filtering for `JeopardyQuestion` objects with:
-- a `points` value equal to 200
-- a `points` value greater than or equal to 600
+`JeopardyQuestion` オブジェクトを以下の条件でフィルタリングしてみてください:
+- `points` 値が 200 と等しい
+- `points` 値が 600 以上
 
-You can find the list of available operators on [this page](/weaviate/api/graphql/filters#filter-structure).
+利用できる演算子の一覧は [こちらのページ](/weaviate/api/graphql/filters#filter-structure) にあります。
 :::
 
-### <i class="fa-solid fa-code"></i> Multiple operands example
+### <i class="fa-solid fa-code"></i> 複数オペランドの例
 
-The query syntax can extend to beyond a single operand to take advantage of multiple conditions:
+クエリ構文は、単一のオペランドを超えて複数の条件を扱うこともできます。
 
 import FilterMultipleOperands from './_snippets/academy.queries.filter.multiple.operands.mdx';
 
 <FilterMultipleOperands/>
 
-Take a look at the `where` argument (i.e. `.with_where`). What limitations do you expect in the results?
+`where` 引数（つまり `.with_where`）に注目してください。結果にはどのような制限がかかると予想されますか。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -222,35 +220,35 @@ Take a look at the `where` argument (i.e. `.with_where`). What limitations do yo
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
 
-This query has been modified to only return `JeopardyQuestion` objects with a `points` value great than than 400, AND include the text `rocket` in the `question` field.
+このクエリは、`points` 値が 400 より大きく、かつ `question` フィールドに `rocket` が含まれている `JeopardyQuestion` オブジェクトのみを返すように変更されています。
 
 </details>
 
-You can apply these filters to an `Aggregate` query also. Try it yourself.
+これらのフィルターは `Aggregate` クエリにも適用できます。ぜひ試してみてください。
 
 :::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try these:
-- adding a `where` filter to an `Aggregation` query, following the above pattern.
+次を試してみましょう:
+- 上記のパターンに従って、`Aggregation` クエリに `where` フィルターを追加する。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Result pagination with `offset`
+## <i class="fa-solid fa-square-chevron-right"></i> `offset` を使った結果のページネーション
 
-When you query for data, you can use the `offset` operator to skip a number of results. This is useful for pagination, where you want to show a certain number of results per page.
+データをクエリするときは、`offset` 演算子を使用して指定した件数の結果をスキップできます。これは 1 ページあたりに表示する件数を制御したいページネーションに便利です。
 
-The `offset` operator works in conjunction with the existing `limit` operator to shows results from the `offset+1` to `offset+1+limit`.
+`offset` 演算子は既存の `limit` 演算子と組み合わせて使用し、`offset+1` から `offset+1+limit` までの結果を取得します。
 
-For example, to list the first ten results, set `limit`: 10. Then, to "display the second page of 10", set `offset`: 10, `limit`:10 and so on.
+たとえば最初の 10 件を取得するには `limit`: 10 を指定します。その後「2 ページ目の 10 件」を表示するには `offset`: 10、`limit`: 10 と指定します。以降も同様です。
 
-The syntax, using `offset` is as follows:
+`offset` を使用する構文は次のとおりです:
 
 import FilterPaginationNeartext from './_snippets/academy.queries.filter.pagination.nearText.mdx';
 
 <FilterPaginationNeartext/>
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -274,11 +272,11 @@ import FilterPaginationNeartext from './_snippets/academy.queries.filter.paginat
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
 
-This query retrieves the next 2 results (`limit`: 2) after the first 2 results (`offset`: 2).
+このクエリは、最初の 2 件 (`offset`: 2) の後の次の 2 件 (`limit`: 2) を取得します。
 
-We can confirm this by comparing the results of two queries with different result limits. The query below retrieves the top 4 results. The last two results from that query are the same as the result in the query that uses limit with pagination.
+結果制限が異なる 2 つのクエリを比較することでこれを確認できます。以下のクエリは上位 4 件を取得します。そのクエリの最後の 2 件は、ページネーション付きで `limit` を使ったクエリの結果と同じです。
 
 ```graphql
 {
@@ -298,23 +296,23 @@ import FilterPaginationRelated from './_snippets/academy.queries.filter.paginati
 </details>
 
 :::tip
-So, the `n` th page would have `offset`: `n*m`, `limit`: `m`, where `m` is the number of results per page.
+したがって、`n` ページ目では `offset`: `n*m`、`limit`: `m` と指定します。ここで `m` は 1 ページあたりの結果数です。
 :::
 
-The `offset` operator is available with all vector search functions including `Get` and `Aggregate`.
+`offset` 演算子は、`Get` や `Aggregate` を含むすべての ベクトル 検索関数で利用できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
 
 <Quiz questions={whereUsage} />
 
 <Quiz questions={offsetExample} />
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- Filters are used to apply additional criteria to the results. Some commonly used filters include `where`, `limit` and `offset`.
-- The `where` filter allows you to apply a boolean condition to the data being queried. It can be used with various operators like `Like`, `Greater`, `Equal`, etc.
-- You can use multiple conditions within a `where` filter to further refine your query results.
-- The `offset` operator can be used in conjunction with `limit` to skip results and build pagination.
+- フィルターは結果に追加の条件を適用するために使用します。よく使われるフィルターには `where`、`limit`、`offset` などがあります。  
+- `where` フィルターは、クエリ対象データにブール条件を適用できます。`Like`、`Greater`、`Equal` などさまざまな演算子と組み合わせて使用できます。  
+- `where` フィルター内で複数の条件を組み合わせて、クエリ結果をさらに絞り込むことができます。  
+- `offset` 演算子は `limit` と組み合わせることで、結果をスキップしてページネーションを構築できます。  
 
 import Quiz from '/src/components/Academy/quiz.js'
 export const whereUsage = [{
@@ -358,7 +356,7 @@ export const offsetExample = [{
   ]
 }];
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

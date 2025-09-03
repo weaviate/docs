@@ -1,6 +1,6 @@
 ---
-title: Import data
-description: Importing Data to Custom Vectors Object Collection
+title: データのインポート
+description: カスタム ベクトル オブジェクト コレクションへのデータ インポート
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,9 +8,9 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/102_collection.py';
 
-## <i class="fa-solid fa-code"></i> Code
+## <i class="fa-solid fa-code"></i> コード
 
-This example imports the movie data into our collection.
+この例では、映画データをコレクションへインポートします。
 
 <FilteredTextBlock
   text={PyCode}
@@ -19,23 +19,23 @@ This example imports the movie data into our collection.
   language="py"
 />
 
-The code:
-- Loads the source data & gets the collection
-- Enters a context manager with a batcher (`batch`) object
-- Loops through the data and adds objects and corresponding vectors to the batcher
-- Prints out any import errors
+コードの概要:
+- ソース データを読み込み、コレクションを取得
+- バッチャー (`batch`) オブジェクトを使ったコンテキスト マネージャーに入る
+- データをループし、オブジェクトと対応するベクトルをバッチャーへ追加
+- インポート エラーを出力
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-### <i class="fa-solid fa-chalkboard"></i> Preparation
+### <i class="fa-solid fa-chalkboard"></i> 準備
 
-We use the requests library to load the data from the source, in this case a JSON file. The data is then converted to a Pandas DataFrame for easier manipulation.
+requests ライブラリを使用して、今回の例では JSON ファイルからデータを読み込みます。その後、操作しやすいように Pandas DataFrame へ変換します。
 
-Then, we create a collection object (with `client.collections.get`) so we can interact with the collection.
+次に、`client.collections.get` でコレクション オブジェクトを作成し、コレクションと対話できるようにします。
 
-### <i class="fa-solid fa-chalkboard"></i> Batch context manager
+### <i class="fa-solid fa-chalkboard"></i> バッチ コンテキスト マネージャー
 
-The `batch` object is a context manager that allows you to add objects to the batcher. This is useful when you have a large amount of data to import, as it abstracts away the complexity of managing the batch size and when to send the batch.
+`batch` オブジェクトはコンテキスト マネージャーで、オブジェクトをバッチャーへ追加できます。大量のデータをインポートする際、バッチ サイズの管理や送信タイミングの複雑さを抽象化してくれるため便利です。
 
 <FilteredTextBlock
   text={PyCode}
@@ -44,13 +44,13 @@ The `batch` object is a context manager that allows you to add objects to the ba
   language="py"
 />
 
-This example uses the `.fixed_size()` method to create a batcher which sets the number of objects per batch. There are also other batcher types, like `.rate_limit()` for specifying the number of objects per minute and `.dynamic()` to create a dynamic batcher, which automatically determines and updates the batch size during the import process.
+この例では `.fixed_size()` メソッドを使用して、バッチあたりのオブジェクト数を設定しています。他にも、1 分あたりのオブジェクト数を指定する `.rate_limit()` や、インポート中に自動でバッチ サイズを決定・更新する `.dynamic()` などのバッチャー タイプがあります。
 
-### <i class="fa-solid fa-chalkboard"></i> Add data to the batcher
+### <i class="fa-solid fa-chalkboard"></i> データをバッチャーへ追加
 
-#### Convert data types
+#### データ型の変換
 
-The data is converted from a string to the correct data types for Weaviate. For example, the `release_date` is converted to a datetime object, and the `genre_ids` are converted to a list of integers.
+Weaviate 用の正しいデータ型へ変換します。たとえば、`release_date` は datetime オブジェクトに、`genre_ids` は整数のリストに変換します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -59,11 +59,11 @@ The data is converted from a string to the correct data types for Weaviate. For 
   language="py"
 />
 
-#### Add objects to the batcher
+#### オブジェクトをバッチャーへ追加
 
-Then we loop through the data and add each object to the batcher. The `batch.add_object` method is used to add the object to the batcher, and the batcher will send the batch according to the specified batcher type.
+次にデータをループし、各オブジェクトをバッチャーへ追加します。`batch.add_object` メソッドでオブジェクトを追加すると、指定したバッチャー タイプに従ってバッチが送信されます。
 
-Note here that we provide the vector data as well.
+ここではベクトル データも併せて渡している点に注意してください。
 
 <FilteredTextBlock
   text={PyCode}
@@ -72,11 +72,11 @@ Note here that we provide the vector data as well.
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Error handling
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
 
-Because a batch includes multiple objects, it's possible that some objects will fail to import. The batcher saves these errors.
+1 つのバッチには複数のオブジェクトが含まれるため、インポートに失敗するオブジェクトが発生する可能性があります。バッチャーはこれらのエラーを保存します。
 
-You can print out the errors to see what went wrong, and then decide how to handle them, such as by raising an exception. In this example, we simply print out the errors.
+エラーを出力して問題を確認し、例外を投げるなどの対応を行うことができます。この例では単にエラーを出力しています。
 
 <FilteredTextBlock
   text={PyCode}
@@ -85,9 +85,9 @@ You can print out the errors to see what went wrong, and then decide how to hand
   language="py"
 />
 
-Note that the list of errors is cleared when a new context manager is entered, so you must handle the errors before initializing a new batcher.
+新しいコンテキスト マネージャーに入るとエラー リストはクリアされるため、新しいバッチャーを初期化する前にエラーを処理する必要があります。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

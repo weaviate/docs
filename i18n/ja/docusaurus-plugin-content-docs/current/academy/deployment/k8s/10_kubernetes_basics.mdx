@@ -1,38 +1,38 @@
 ---
-title: Create a Kubernetes cluster
+title: Kubernetes クラスターの作成
 ---
 
-**Kubernetes** is an open-source *container orchestration* platform. It means that you can use Kubernetes to deploy, scale, and manage [containerized](https://www.docker.com/resources/what-container/) applications.
+ **Kubernetes** はオープンソースの *コンテナー オーケストレーション* プラットフォームです。つまり、 Kubernetes を使用すると、 [コンテナ化](https://www.docker.com/resources/what-container/) されたアプリケーションをデプロイ、スケール、および管理できます。
 
-In production, Kubernetes is used to manage a cluster of nodes, such as those located on cloud providers like AWS, Google Cloud, or Azure, or on your own on-premises infrastructure.
+本番環境では、 Kubernetes は AWS、 Google Cloud、 Azure などのクラウド プロバイダー上やオンプレミスのインフラストラクチャ上にあるノード クラスターを管理するために使用されます。
 
-Here, you learn how to do this using **Minikube**, a handy tool that allows you to run a Kubernetes cluster on your local machine for development and testing purposes.
+ここでは、 **Minikube** という便利なツールを使って、開発およびテスト目的でローカル マシン上に Kubernetes クラスターを実行する方法を学びます。
 
-:::info What if I have a production Kubernetes cluster?
-If you are looking to deploy Weaviate on a production Kubernetes cluster, the steps are similar. You will just need to replace Minikube with your production Kubernetes cluster.
+:::info 本番環境の Kubernetes クラスターをお持ちの場合
+本番環境の Kubernetes クラスターに Weaviate をデプロイしたい場合も手順はほぼ同じです。 Minikube を本番環境の Kubernetes クラスターに置き換えるだけです。
 
-As there are many variations in Kubernetes deployments, we recommend you follow the deployment instructions provided by your cloud provider or Kubernetes distribution for this purpose.
+Kubernetes デプロイメントには多くのバリエーションがあるため、ご利用のクラウド プロバイダーや Kubernetes ディストリビューションが提供するデプロイ手順に従うことをおすすめします。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Prerequisites
+## <i class="fa-solid fa-square-chevron-right"></i> 前提条件
 
-For this tutorial, you will need the following tools:
+このチュートリアルでは、次のツールが必要です。
 
-- **Minikube**: a tool that runs a Kubernetes cluster on your local machine. It is used to test Kubernetes deployments locally.
-- **kubectl**: the Kubernetes command-line tool. It is used to interact with the Kubernetes cluster.
-- **Docker**: a platform that allows you to develop, ship, and run applications in containers. We install Docker as the Minikube [*driver*](https://minikube.sigs.k8s.io/docs/drivers/) to virtualize the Kubernetes cluster on your local machine. Your Minikube may use a different driver, but Docker is the most common one.
-- **Helm**: a package manager for Kubernetes. It is used to install and manage applications on Kubernetes.
+- ** Minikube ** : ローカル マシン上で Kubernetes クラスターを実行するツール。ローカルで Kubernetes デプロイメントをテストするために使用します。  
+- ** kubectl ** : Kubernetes のコマンドライン ツール。 Kubernetes クラスターとの対話に使用します。  
+- ** Docker ** : アプリケーションをコンテナーで開発、配布、実行できるプラットフォーム。 Minikube の [*driver*](https://minikube.sigs.k8s.io/docs/drivers/) として Docker をインストールし、ローカル マシン上で Kubernetes クラスターを仮想化します。 Minikube は別のドライバーを使用してもかまいませんが、 Docker が最も一般的です。  
+- ** Helm ** : Kubernetes 用のパッケージ マネージャー。 Kubernetes 上でアプリケーションをインストールおよび管理するために使用します。  
 
-### <i class="fa-solid fa-code"></i> Installation
+### <i class="fa-solid fa-code"></i> インストール
 
-If you don't have any of these tools installed, you can follow the installation instructions for each, by following the links below:
+これらのツールがインストールされていない場合は、以下のリンク先の手順に従ってインストールしてください。
 
-- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-- [Docker](https://docs.docker.com/get-docker/)
-- [helm](https://helm.sh/docs/intro/install/)
+- [ Minikube ](https://minikube.sigs.k8s.io/docs/start/)
+- [ kubectl ](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [ Docker ](https://docs.docker.com/get-docker/)
+- [ Helm ](https://helm.sh/docs/intro/install/)
 
-Once you've done so, confirm installation by running the following commands:
+インストール後、次のコマンドを実行してインストールを確認します。
 
 ```bash
 minikube version
@@ -41,7 +41,7 @@ docker --version
 helm version
 ```
 
-You should see an output like:
+次のような出力が表示されます。
 
 ```bash
 minikube version: v1.32.0
@@ -52,19 +52,19 @@ Docker version 24.0.7, build afdd53b
 version.BuildInfo{Version:"v3.12.2", GitCommit:"1e210a2c8cc5117d1055bfaa5d40f51bbc2e345e", GitTreeState:"clean", GoVersion:"go1.20.6"}
 ```
 
-If you see similar output, you are ready to proceed.
+同様の出力が得られれば、準備完了です。
 
-Note that the versions may differ from the ones shown above. Please make sure you have the latest versions installed.
+表示されるバージョンは上記と異なる場合があります。最新バージョンがインストールされていることを確認してください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Run Minikube
+## <i class="fa-solid fa-square-chevron-right"></i> Minikube の実行
 
-You are now ready to start Minikube. Run the following command:
+準備ができたら Minikube を起動します。以下のコマンドを実行してください。
 
 ```bash
 minikube start
 ```
 
-Then, you might see an output like this:
+すると、次のような出力が表示される場合があります。
 
 ```bash
 😄  minikube v1.32.0 on Darwin 14.4.1 (arm64)
@@ -87,17 +87,17 @@ Then, you might see an output like this:
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
-Great! You have started a Kubernetes cluster using Minikube. Note the last comment that says `kubectl is now configured to use "minikube" cluster and "default" namespace by default`. So, you can now use `kubectl` to interact with the Kubernetes cluster.
+素晴らしいです! Minikube を使って Kubernetes クラスターを起動できました。最後のコメントに `kubectl is now configured to use "minikube" cluster and "default" namespace by default` と表示されている点に注目してください。これで `kubectl` を使用して Kubernetes クラスターと対話できます。
 
-### <i class="fa-solid fa-code"></i> Verify the cluster
+### <i class="fa-solid fa-code"></i> クラスターの確認
 
-If you run the following command:
+次のコマンドを実行すると、
 
 ```bash
 kubectl get pods -A
 ```
 
-This will show you the pods running in the cluster. You should see something like this:
+クラスター内で稼働している Pod が表示されます。例としては以下のようになります。
 
 ```bash
 NAMESPACE     NAME                               READY   STATUS    RESTARTS   AGE
@@ -110,12 +110,12 @@ kube-system   kube-scheduler-minikube            1/1     Running   0          40
 kube-system   storage-provisioner                1/1     Running   0          39s
 ```
 
-If your output is similar to the one above, then congratulations! You have successfully spun up a Kubernetes cluster on your local machine using Minikube.
+上記と似た出力が得られれば、おめでとうございます! Minikube を使用してローカル マシン上に Kubernetes クラスターを立ち上げることに成功しました。
 
-Next, you will learn how to deploy Weaviate to the Kubernetes cluster using Helm.
+次は、 Helm を利用して Weaviate を Kubernetes クラスターにデプロイする方法を学びます。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

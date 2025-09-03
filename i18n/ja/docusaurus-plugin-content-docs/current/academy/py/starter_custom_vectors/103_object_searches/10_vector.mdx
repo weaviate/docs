@@ -1,5 +1,5 @@
 ---
-title: Vector search
+title: ベクトル検索
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,11 +7,11 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/103_10_vector.py';
 
-In this scenario, we've added data objects and our own vectors. Accordingly, any similarity searches will also require a vector input. This can be done with a `near vector` query.
+このシナリオでは、データオブジェクトと独自の ベクトル を追加しています。そのため、類似度検索には ベクトル の入力も必要になります。これは `near vector` クエリで実行できます。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" based on their similarity to the input vector and prints out the title and release year of the top 5 matches.
+この例では、入力 ベクトル との類似度に基づいて "Movie" からエントリーを検索し、上位 5 件のタイトルと公開年を表示します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -20,16 +20,16 @@ This example finds entries in "Movie" based on their similarity to the input vec
   language="py"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-The results are based on similarity of the vector embeddings between the query and the database object text. In this case, the embeddings are input manually in the query.
+結果は、クエリとデータベースオブジェクトのテキスト間の ベクトル 埋め込みの類似度に基づいています。この例では、埋め込みはクエリ内で手動入力しています。
 
-The `limit` parameter here sets the maximum number of results to return.
+`limit` パラメーターは、返す結果の最大件数を設定します。
 
-The `return_metadata` parameter takes an instance of the `MetadataQuery` class to set metadata to return in the search results. The current query returns the vector distance to the query.
+`return_metadata` パラメーターには `MetadataQuery` クラスのインスタンスを渡し、検索結果に含めるメタデータを指定します。現在のクエリでは、クエリとの ベクトル 距離を返します。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例: 実行結果</summary>
 
 ```text
 In Time 2011
@@ -50,17 +50,17 @@ Distance to query: 0.193
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
 
-The returned object is an instance of a custom class. Its `objects` attribute is a list of search results, each object being an instance of another custom class.
+返されるオブジェクトはカスタムクラスのインスタンスです。その `objects` 属性は検索結果のリストで、各要素は別のカスタムクラスのインスタンスです。
 
-Each returned object will:
-- Include all properties and its UUID by default except those with blob data types.
-- Not include any other information (e.g. references, metadata, vectors.) by default.
+各オブジェクトは以下を満たします。
+- Blob データ型を除き、すべてのプロパティと UUID をデフォルトで含みます。
+- 参照、メタデータ、ベクトル など、それ以外の情報はデフォルトでは含みません。
 
-### <i class="fa-solid fa-code"></i> Where did the query vector come from?
+### <i class="fa-solid fa-code"></i> クエリ ベクトルの取得方法
 
-The query vector in this example is obtained similarly to how it was in the [data ingestion](../102_object_collections/25_generate_vectors.mdx). The only difference is that the vector is not stored in the database, but is used directly in the query.
+この例のクエリ ベクトル は、[データ取り込み](../102_object_collections/25_generate_vectors.mdx) で取得した方法と同様に得られます。唯一の違いは、ベクトル をデータベースに保存せず、クエリで直接使用する点です。
 
 <FilteredTextBlock
   text={PyCode}
@@ -69,7 +69,7 @@ The query vector in this example is obtained similarly to how it was in the [dat
   language="py"
 />
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

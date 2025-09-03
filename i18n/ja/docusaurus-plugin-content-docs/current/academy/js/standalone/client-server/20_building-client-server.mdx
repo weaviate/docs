@@ -1,5 +1,5 @@
 ---
-title: Using Backend Web frameworks
+title: バックエンド Web フレームワークの利用
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,37 +11,36 @@ import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/
 
 
 
-This approach involves having two separate tools. One to build your server application; ideally a backend framework and another to build your client application. For this example, we will be using [Express.js](https://expressjs.com/en/starter/hello-world.html) to build a backend server, and [Thunder Client](https://www.thunderclient.com/) to act as a client and make API calls to our backend server.
+このアプローチでは、ツールを 2 つに分けます。1 つはサーバーアプリケーションを構築するためのバックエンドフレームワーク、もう 1 つはクライアントアプリケーションを構築するためのツールです。ここではバックエンドサーバーを構築するために  Express.js を、クライアントとして  Thunder Client を使用してバックエンドサーバーへ API コールを行います。
 
 <img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
 
 
-## <i class="fa-solid fa-chalkboard"></i> Building a server
+## <i class="fa-solid fa-chalkboard"></i> サーバーの構築
 
-The server will have a single route that accepts a `searchTerm` as a query parameter. 
+このサーバーには、`searchTerm` をクエリパラメーターとして受け取る 1 つのルートを用意します。 
 
-### 1. Initialize a Node.js application
+### 1. Node.js アプリケーションの初期化
 
-We will use Express to build our server, in a new directory, run the following command to initialize a new project with Node.js
+新しいディレクトリで次のコマンドを実行し、 Node.js プロジェクトを初期化して  Express を使ったサーバーを構築します。
 
 ```bash 
 npm init
 ```
-### 2. Install project dependencies
+### 2. プロジェクト依存関係のインストール
 
-With our project initialized, install `dotenv` to manage environment variables, `express` to build our server and the `weaviate-client` to manage communication with our Weaviate database. 
+プロジェクトを初期化したら、環境変数を管理するための `dotenv`、サーバーを構築するための `express`、そして  Weaviate データベースとの通信を行う `weaviate-client` をインストールします。 
 
 ```bash
 npm install express dotenv weaviate-client
 ```
 
 
-### 3. Setup your Weaviate database
+### 3. Weaviate データベースのセットアップ
 
-We'll start by creating a free sandbox account on [Weaviate Cloud](https://console.weaviate.cloud/). Follow [this guide](/cloud/manage-clusters/connect) if you have trouble setting up a sandbox project. 
+まず [Weaviate Cloud](https://console.weaviate.cloud/) で無料のサンドボックスアカウントを作成します。サンドボックスプロジェクトのセットアップで問題がある場合は、[こちらのガイド](/cloud/manage-clusters/connect) を参照してください。 
 
-
-You will need your Weaviate cluster URL and API key. If you don't already have one, create a new Cohere [API key](https://dashboard.cohere.com/api-keys), we use Cohere as our [embedding model](../using-ml-models/10_embedding.mdx). When done, add all three to your `.env` file.
+Weaviate クラスターの URL と API キーが必要です。まだお持ちでない場合は、Cohere の [API キー](https://dashboard.cohere.com/api-keys) を新規作成してください。Cohere を私たちの埋め込みモデルとして使用します。準備ができたら、これら 3 つを `.env` ファイルに追加します。
 
 
  <TabItem value="js" label=".env">
@@ -53,13 +52,13 @@ You will need your Weaviate cluster URL and API key. If you don't already have o
     />
   </TabItem>
 
-#### 3.5 Add data to Weaviate
+#### 3.5 Weaviate へのデータ追加
 
-Follow our recipe on [loading data](https://github.com/weaviate/recipes-ts/blob/main/similarity-search/cohere/load.ts) into Weaviate to import data to your Weaviate database. 
+[データのロード](https://github.com/weaviate/recipes-ts/blob/main/similarity-search/cohere/load.ts) レシピに従って、 Weaviate データベースへデータをインポートしてください。 
 
-### 4. Connecting to Weaviate 
+### 4. Weaviate への接続 
 
-In `config/weaviate.js`, paste the following code. 
+`config/weaviate.js` に次のコードを貼り付けます。 
 
  <TabItem value="js" label="weaviate.js">
     <FilteredTextBlock
@@ -70,11 +69,11 @@ In `config/weaviate.js`, paste the following code.
     />
   </TabItem>
 
-The code above helps us create a connection to our Weaviate instance hosted on Weaviate Cloud.
+上記のコードにより、 Weaviate Cloud 上にホストされている  Weaviate インスタンスへの接続が作成されます。
 
-### 5. Create a Search route
+### 5. Search ルートの作成
 
-In your project root, create a file called `app.js` and paste the following code in it. 
+プロジェクトルートに `app.js` ファイルを作成し、次のコードを貼り付けます。 
 
  <TabItem value="js" label="app.js">
     <FilteredTextBlock
@@ -85,29 +84,29 @@ In your project root, create a file called `app.js` and paste the following code
     />
   </TabItem>
 
-With this we can run searches on the `/search` route. We use `nearText()` to run our semantic search. 
+これで `/search` ルートで検索を実行できます。`nearText()` を使用してセマンティック検索を行います。 
 
-#### 6. Run your server 
-In your terminal run the following command to start your server.
+#### 6. サーバーの実行 
+ターミナルで次のコマンドを実行してサーバーを起動します。
 
 ```bash
 node app.js
 ```
 
-Your server should be running on `localhost:3005`. 
+サーバーは `localhost:3005` で稼働しているはずです。 
 
 
 
-## <i class="fa-solid fa-chalkboard"></i> Building a client Application
+## <i class="fa-solid fa-chalkboard"></i> クライアントアプリケーションの構築
 
-With our server built, we can now make a call from a client application. We'll create a basic client application with HTML and JavaScript.
+サーバーが完成したので、クライアントアプリケーションから呼び出しを行えます。ここでは  HTML と JavaScript で基本的なクライアントアプリケーションを作成します。
 
-Alternatively, in [Thunder Client](https://www.thunderclient.com/), you can make a call to `http://localhost:3005/search?searchTerm=countries in asia` to query your server.
+または [Thunder Client](https://www.thunderclient.com/) で `http://localhost:3005/search?searchTerm=countries in asia` にリクエストを送ってサーバーをクエリすることもできます。
 
 
-### 1. Create a client application
+### 1. クライアントアプリケーションの作成
 
-In your root folder, create a file called `index.html` and paste the following code in it.
+ルートフォルダーに `index.html` ファイルを作成し、次のコードを貼り付けます。
 
 <TabItem value="html" label="index.html">
     <FilteredTextBlock
@@ -119,15 +118,13 @@ In your root folder, create a file called `index.html` and paste the following c
   </TabItem>
 
 
-### 2. Run your client application 
+### 2. クライアントアプリケーションの実行 
 
-In your root folder, run the following in your terminal
+ルートフォルダーでターミナルから次のコマンドを実行します。
 
 ```bash
 npx http-server
 ```
 
 
-This client application makes a call to the express server you built, displaying results. 
-
-
+このクライアントアプリケーションは、先ほど構築した  Express サーバーにリクエストを送り、結果を表示します。

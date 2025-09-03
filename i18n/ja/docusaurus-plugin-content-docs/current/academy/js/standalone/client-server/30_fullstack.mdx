@@ -1,39 +1,40 @@
 ---
-title: Using Fullstack Web frameworks
+title: フルスタック Web フレームワークの利用
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/_img/fullstack.jpg';
-import TSCode from '!!raw-loader!./_snippets/20_backend.js';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/_img/fullstack.jpg';  
+import TSCode from '!!raw-loader!./_snippets/20_backend.js';  
 
-This approach involves having a single tool to build both your server application and client application. In modern web development terms, such a tool is called a fullstack web framework. For this example, we will be using [Next.js](https://nextjs.org/)
+このアプローチでは、サーバーアプリケーションとクライアントアプリケーションの両方を 1 つのツールで構築します。最新の Web 開発用語では、このようなツールをフルスタック Web フレームワークと呼びます。本ガイドでは [Next.js](https://nextjs.org/) を使用します。
 
 <img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
 
-## <i class="fa-solid fa-chalkboard"></i> Building with Next.js
+## <i class="fa-solid fa-chalkboard"></i> Next.js での構築
 
-### 1. Create a Next.js application
+### 1. Next.js アプリケーションの作成
 
-To create a new application with Next.js, run the following command in your terminal. 
+Next.js で新しいアプリケーションを作成するには、ターミナルで次のコマンドを実行します。
 
 ```bash
 create-next-app <project-name> –ts –app
-```
-### 2. Install project dependencies
+```  
 
-With our project initialized, install the `weaviate-client` to manage communication with our Weaviate database. 
+### 2. プロジェクト依存関係のインストール
+
+プロジェクトを初期化したら、`weaviate-client` をインストールして Weaviate データベースとの通信を管理します。
 
 ```bash
 npm install weaviate-client 
-```
+```  
 
-### 3. Setup your Weaviate database
+### 3. Weaviate データベースのセットアップ
 
-We'll start by creating a free sandbox account on [Weaviate Cloud](https://console.weaviate.cloud/). Follow [this guide](/cloud/manage-clusters/connect) if you have trouble setting up a sandbox project. 
+まず [Weaviate Cloud](https://console.weaviate.cloud/) で無料のサンドボックスアカウントを作成します。サンドボックスプロジェクトの設定に問題がある場合は、[こちらのガイド](/cloud/manage-clusters/connect) を参照してください。
 
-You will need your Weaviate cluster URL and API key. If you don't already have one, create a new Cohere [API key](https://dashboard.cohere.com/api-keys), we use Cohere as our [embedding model](../using-ml-models/10_embedding.mdx). When done, add all three to your `.env` file.
+Weaviate クラスターの URL と API キーが必要です。まだ持っていない場合は Cohere の [API キー](https://dashboard.cohere.com/api-keys) を新しく作成してください。Embedding モデルとして Cohere を使用します（[詳細](../using-ml-models/10_embedding.mdx)）。完了したら、3 つすべてを `.env` ファイルに追加します。
 
  <TabItem value="js" label=".env">
     <FilteredTextBlock
@@ -44,14 +45,13 @@ You will need your Weaviate cluster URL and API key. If you don't already have o
     />
   </TabItem>
 
-#### 3.5 Add data to Weaviate
+#### 3.5 Weaviate へのデータ追加
 
-Follow our recipe on [loading data](https://github.com/weaviate/recipes-ts/blob/main/similarity-search/cohere/load.ts) into Weaviate to import data to your Weaviate database. 
+[データ読み込みレシピ](https://github.com/weaviate/recipes-ts/blob/main/similarity-search/cohere/load.ts) に従い、Weaviate にデータをインポートします。
 
-### 4. Initialize Weaviate 
+### 4. Weaviate の初期化
 
-Create a file in `utils/weaviate.ts` and paste the following code in it. The code helps us create a connection to our Weaviate instance hosted on Weaviate Cloud.
-
+`utils/weaviate.ts` にファイルを作成し、次のコードを貼り付けます。このコードは Weaviate Cloud 上でホストされている Weaviate インスタンスへの接続を作成します。
 
 ```ts
 import weaviate from "weaviate-client";
@@ -63,12 +63,11 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as
     }
   },
 );
-```
+```  
 
-### 4. Create a Search Server Action 
+### 4. Search Server Action の作成
 
-Next, in `./utils/action.ts`, paste the following code. With this we can run semantic searches with `nearText()` by calling the function `vectorSearch()` in other parts of our application. 
-
+次に `./utils/action.ts` に以下のコードを貼り付けます。これにより、`nearText()` を使ったセマンティック検索を `vectorSearch()` 関数としてアプリケーションの他の場所から呼び出せます。
 
 ```ts
 "use server";
@@ -86,10 +85,11 @@ export async function vectorSearch(searchTerm: string) {
 
   return response
   }
-```
+```  
 
-### 5. Fetch data from your server in your client application. 
-In the `./app` folder, paste the following code in `page.tsx`. We run a search on our client and display the results on the webpage. 
+### 5. クライアントアプリケーションでサーバーからデータを取得する
+
+`./app` フォルダーの `page.tsx` に次のコードを貼り付けます。クライアント側で検索を実行し、結果を Web ページに表示します。
 
 ```tsx
 
@@ -111,25 +111,20 @@ export default async function Home() {
 
 }
       
-```
-#### 6. Run your Fullstack App 
+```  
 
-In your terminal, run the following command to start your application.
+#### 6. フルスタックアプリの実行
 
+ターミナルで次のコマンドを実行してアプリケーションを起動します。
 
 ```bash
 npm run dev
-```
+```  
 
-Your application should be running on `localhost:3000`. 
+アプリケーションは `localhost:3000` で動作しているはずです。
 
-## <i class="fa-solid fa-chalkboard"></i> Other frameworks
+## <i class="fa-solid fa-chalkboard"></i> その他のフレームワーク
 
+本ガイドでは Next.js のみを扱いましたが、[Nuxt](https://nuxt.com/)、[Solid](https://www.solidjs.com/)、[Angular](https://angular.dev/) など複数のフルスタックフレームワークで Weaviate を利用できます。
 
-Although only detailing Next.js in guide, you can build with Weaviate using a number of fullstack frameworks including but not limited to [Nuxt](https://nuxt.com/), [Solid](https://www.solidjs.com/) and [Angular](https://angular.dev/)
-
-We have a list of [starter](https://github.com/topics/weaviate-starter) applications you can play around with as well. 
-
-
-
-
+試せる [スターター](https://github.com/topics/weaviate-starter) アプリケーションも用意しています。

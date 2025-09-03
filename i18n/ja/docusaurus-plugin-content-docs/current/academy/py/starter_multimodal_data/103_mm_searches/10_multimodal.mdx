@@ -1,27 +1,27 @@
 ---
-title: Multimodal search
-description: Multimodal Search Methodology
+title: マルチモーダル検索
+description: マルチモーダル検索手法
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!../_snippets/103_searches.py';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyCode from '!!raw-loader!../_snippets/103_searches.py';  
 
-With Weaviate, you can perform semantic searches to find similar items based on their meaning. This is done by comparing the vector embeddings of the items in the database.
+ Weaviate を使用すると、意味に基づいて類似アイテムを見つけるセマンティック検索を実行できます。これは、データベース内のアイテムのベクトル埋め込みを比較することで実現します。  
 
-As we are using a multimodal model, we can search for objects based on their similarity to any of the supported modalities. Meaning that we can search for movies based on their similarity to a text or an image.
+マルチモーダルモデルを使用しているため、サポートされている任意のモダリティとの類似度に基づいてオブジェクトを検索できます。つまり、テキストまたは画像との類似度を基準に映画を検索できます。  
 
-## <i class="fa-solid fa-square-chevron-right"></i> Image query
+## <i class="fa-solid fa-square-chevron-right"></i> 画像クエリ
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "MovieMM" based on their similarity to [this image of the International Space Station](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg), and prints out the title and release year of the top 5 matches.
+この例では、「MovieMM」のエントリを [国際宇宙ステーションのこの画像](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg) との類似度に基づいて検索し、上位 5 件の一致のタイトルと公開年を出力します。
 
 <details>
-  <summary>Query image</summary>
+  <summary>クエリ画像</summary>
 
-![International Space Station](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg)
+![国際宇宙ステーション](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg)
 
 </details>
 
@@ -32,25 +32,25 @@ This example finds entries in "MovieMM" based on their similarity to [this image
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-The results are based on similarity of the vector embeddings between the query and the database object. In this case, the vectorizer module generates an embedding of the input image.
+結果は、クエリとデータベースオブジェクトのベクトル埋め込み同士の類似度に基づきます。この場合、ベクトライザー モジュールが入力画像の埋め込みを生成します。  
 
-The `limit` parameter here sets the maximum number of results to return.
+`limit` パラメーターは返される結果の最大数を指定します。  
 
-The `return_metadata` parameter takes an instance of the `MetadataQuery` class to set metadata to return in the search results. The current query returns the vector distance to the query.
+`return_metadata` パラメーターには `MetadataQuery` クラスのインスタンスを渡し、検索結果に含めるメタデータを指定します。現在のクエリでは、クエリとのベクトル距離を返しています。  
 
-Note that the results are very similar to the tone of the query image, as the top results are all space-themed movies.
+上位の結果はすべて宇宙をテーマにした映画であることから分かるように、出力はクエリ画像のトーンに非常によく似ています。  
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
-Posters for the top 5 matches:
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/157336_poster.jpg" alt="Interstellar" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/49047_poster.jpg" alt="Gravity" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/329865_poster.jpg" alt="Arrival" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/95_poster.jpg" alt="Armageddon" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/929_poster.jpg" alt="Godzilla" width="200" />
+上位 5 件のポスター:  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/157336_poster.jpg" alt="Interstellar" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/49047_poster.jpg" alt="Gravity" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/329865_poster.jpg" alt="Arrival" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/95_poster.jpg" alt="Armageddon" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/929_poster.jpg" alt="Godzilla" width="200" />  
 
 Weaviate output:
 
@@ -73,22 +73,22 @@ Distance to query: 0.441
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
 
-The returned object is an instance of a custom class. Its `objects` attribute is a list of search results, each object being an instance of another custom class.
+返されるオブジェクトはカスタムクラスのインスタンスです。`objects` 属性は検索結果のリストで、それぞれが別のカスタムクラスのインスタンスになります。
 
-Each returned object will:
-- Include all properties and its UUID by default except those with blob data types.
-    - Since the `poster` property is a blob, it is not included by default.
-    - To include the `poster` property, you must specify it and the other properties to fetch in the `return_properties` parameter.
-- Not include any other information (e.g. references, metadata, vectors.) by default.
+各オブジェクトには、以下が適用されます:  
+- 既定では、すべてのプロパティとその UUID が含まれますが、 blob データ型のプロパティは除外されます。  
+    - `poster` プロパティは blob なので、既定では含まれません。  
+    - `poster` プロパティを含める場合は、`return_properties` パラメーターで取得したい他のプロパティとともに指定してください。  
+- 参照、メタデータ、ベクトルなど、その他の情報は既定では含まれません。  
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Text search
+## <i class="fa-solid fa-square-chevron-right"></i> テキスト検索
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "MovieMM" based on their similarity to the query "red", and prints out the title and release year of the top 5 matches.
+この例では、「MovieMM」のエントリをクエリ「red」との類似度に基づいて検索し、上位 5 件の一致のタイトルと公開年を出力します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -97,23 +97,23 @@ This example finds entries in "MovieMM" based on their similarity to the query "
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-The results are based on similarity of the vector embeddings between the query and the database object. In this case, the vectorizer module generates an embedding of the input text.
+結果は、クエリとデータベースオブジェクトのベクトル埋め込み同士の類似度に基づきます。この場合、ベクトライザー モジュールが入力テキストの埋め込みを生成します。  
 
-The remaining parameters are the same as in the previous example.
+その他のパラメーターは前の例と同じです。  
 
-Note that the results actually include movies with red color themes in its poster. This is because the CLIP vectorizer encodes the color information of the image in the vectors.
+実際の結果には、ポスターに赤い配色が含まれる映画が表示されます。これは、 CLIP ベクトライザーが画像の色情報をベクトルにエンコードしているためです。  
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
-Posters for the top 5 matches:
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/383498_poster.jpg" alt="Deadpool 2" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/338762_poster.jpg" alt="Bloodshot" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/293660_poster.jpg" alt="Deadpool" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/1271_poster.jpg" alt="300" width="200" />
-<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/1669_poster.jpg" alt="The Hunt for Red October" width="200" />
+上位 5 件のポスター:  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/383498_poster.jpg" alt="Deadpool 2" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/338762_poster.jpg" alt="Bloodshot" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/293660_poster.jpg" alt="Deadpool" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/1271_poster.jpg" alt="300" width="200" />  
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/1669_poster.jpg" alt="The Hunt for Red October" width="200" />  
 
 Weaviate output:
 
@@ -136,13 +136,13 @@ Distance to query: 0.683
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
 
-The returned object is in the same format as in the previous example.
+返されるオブジェクトの形式は前の例と同じです。  
 
 
-## Questions and feedback
+## ご質問とフィードバック
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/_includes/docs-feedback.mdx';  
 
 <DocsFeedback/>

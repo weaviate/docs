@@ -25,8 +25,8 @@ result = client.query.get("WikiArticle", ["title", "wiki_summary"]).do()
 </TabItem>
 {/* <TabItem value="js" label="JS/TS Client v2">
 
-```js
 import weaviate from 'weaviate-ts-client';
+```js
 
 const client = weaviate.client({
   scheme: 'https',
@@ -44,10 +44,10 @@ console.log(JSON.stringify(response, null, 2));
 </TabItem>
 <TabItem value="go" label="Go">
 
+import (
 ```go
 package main
 
-import (
   "context"
   "fmt"
 
@@ -80,14 +80,14 @@ func main() {
 </TabItem>
 <TabItem value="java" label="Java">
 
-```java
-package technology.semi.weaviate;
-
 import technology.semi.weaviate.client.Config;
 import technology.semi.weaviate.client.WeaviateClient;
 import technology.semi.weaviate.client.base.Result;
 import technology.semi.weaviate.client.v1.graphql.model.GraphQLResponse;
 import technology.semi.weaviate.client.v1.graphql.query.fields.Field;
+```java
+package technology.semi.weaviate;
+
 
 public class App {
   public static void main(String[] args) {

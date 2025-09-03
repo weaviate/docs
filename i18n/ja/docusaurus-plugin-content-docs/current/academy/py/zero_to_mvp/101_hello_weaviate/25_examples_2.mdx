@@ -1,38 +1,38 @@
 ---
-title: Examples 2 - More than search
-description: Hello Weaviate - Examples Part 2
+title: 例 2 - 検索を超えて
+description: Hello Weaviate - 例 パート 2
 sidebar_position: 25
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Beyond vector searches
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索のその先
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/ezMZKEFteUA' controls='true' />
 <br/>
 
-You can do a lot more with Weaviate than simply retrieve static information.
+Weaviate を使用すると、静的な情報を取得するだけでなく、さらに多くのことができます。
 
-Let's take a look at a couple of examples where we do more than simply retrieve objects from the database.
+データベースからオブジェクトを取得するだけではない、いくつかの例を見てみましょう。
 
-We will extract information from this Wikipedia entry.
+次の Wikipedia の記事から情報を抽出します。
 
 <details>
   <summary>"The Sydney Opera House" Wikipedia summary</summary>
 
-The Sydney Opera House is a multi-venue performing arts centre in Sydney. Located on the foreshore of Sydney Harbour, it is widely regarded as one of the world's most famous and distinctive buildings and a masterpiece of 20th-century architecture. Designed by Danish architect Jørn Utzon, but completed by an Australian architectural team headed by Peter Hall, the building was formally opened by Queen Elizabeth II on 20 October 1973 after a gestation beginning with Utzon's 1957 selection as winner of an international design competition. The Government of New South Wales, led by the premier, Joseph Cahill, authorised work to begin in 1958 with Utzon directing construction. The government's decision to build Utzon's design is often overshadowed by circumstances that followed, including cost and scheduling overruns as well as the architect's ultimate resignation. The building and its surrounds occupy the whole of Bennelong Point on Sydney Harbour, between Sydney Cove and Farm Cove, adjacent to the Sydney central business district and the Royal Botanic Gardens, and near to the Sydney Harbour Bridge.
+シドニー・オペラハウスは、シドニーにある複数の会場を備えた舞台芸術センターです。シドニー湾の海岸に位置し、世界で最も有名で特徴的な建物のひとつであり、20 世紀建築の傑作と広く見なされています。デンマーク人建築家ヨーン・ウツソンが設計し、その後ピーター・ホール率いるオーストラリアの建築チームが完成させました。建物は 1973 年 10 月 20 日、エリザベス 2 世女王によって正式に開館しました。ウツソンが 1957 年に国際設計コンペで選出されてから着想が始まり、ジョセフ・ケーヒル首相率いるニューサウスウェールズ州政府が 1958 年に着工を許可し、ウツソンが建設を指揮しました。ウツソンの設計を採用するという政府の決定は、その後のコスト超過やスケジュール遅延、最終的なウツソンの辞任などの事情によってしばしば影が薄れています。建物とその周辺は、シドニー湾のベネロング・ポイント全体を占め、シドニー・コーブとファーム・コーブの間、シドニー CBD と王立植物園に隣接し、シドニー・ハーバーブリッジにも近接しています。
 
-The building comprises multiple performance venues, which together host well over 1,500 performances annually, attended by more than 1.2 million people. Performances are presented by numerous performing artists, including three resident companies: Opera Australia, the Sydney Theatre Company and the Sydney Symphony Orchestra. As one of the most popular visitor attractions in Australia, the site is visited by more than eight million people annually, and approximately 350,000 visitors take a guided tour of the building each year. The building is managed by the Sydney Opera House Trust, an agency of the New South Wales State Government.
+建物には複数の公演会場があり、年間 1,500 を超える公演が開催され、120 万人以上が来場します。Opera Australia、Sydney Theatre Company、Sydney Symphony Orchestra の 3 つの常駐団体を含む数多くのアーティストが公演を行います。オーストラリアで最も人気のある観光地のひとつとして、年間 800 万人以上が訪れ、約 35 万人がガイドツアーに参加しています。建物はニューサウスウェールズ州政府の機関である Sydney Opera House Trust によって管理されています。
 
-On 28 June 2007, the Sydney Opera House became a UNESCO World Heritage Site, having been listed on the (now defunct) Register of the National Estate since 1980, the National Trust of Australia register since 1983, the City of Sydney Heritage Inventory since 2000, the New South Wales State Heritage Register since 2003, and the Australian National Heritage List since 2005. The Opera House was also a finalist in the New7Wonders of the World campaign list.
+2007 年 6 月 28 日、シドニー・オペラハウスは UNESCO 世界遺産に登録されました。それ以前には 1980 年から国民遺産登録簿（現在は廃止）、1983 年から National Trust of Australia 登録、2000 年から City of Sydney Heritage Inventory、2003 年から New South Wales State Heritage Register、2005 年から Australian National Heritage List に登録されていました。また、New7Wonders of the World キャンペーンのファイナリストにも選ばれました。
 
 </details>
 
-Weaviate creates [data objects](/weaviate/concepts/data) when it processes the Wikipedia entry. The data objects are stored in classes. A class is roughly analogous to a table in a relational database. An object is similar to an entry in that table.
+Weaviate は Wikipedia のエントリーを処理するときに [data objects](/weaviate/concepts/data) を生成します。データオブジェクトはクラスに保存されます。クラスはリレーショナルデータベースのテーブルに大まかに相当し、オブジェクトはそのテーブルのレコードに似ています。
 
-### <i class="fa-solid fa-chalkboard"></i> Question-answering demo
+### <i class="fa-solid fa-chalkboard"></i> 質問応答デモ
 
-Weaviate can extract knowledge from the text.
+Weaviate はテキストから知識を抽出できます。
 
 ```graphql
 {
@@ -59,20 +59,20 @@ Weaviate can extract knowledge from the text.
 }
 ```
 
-Given this query, Weaviate doesn't just identify the most relevant data object. Weaviate also answers the question based on the textual information in the Wikipedia article.
+このクエリに対して、Weaviate は最も関連性の高いデータオブジェクトを特定するだけでなく、Wikipedia 記事のテキスト情報に基づいて質問に回答します。
 
 <details>
-  <summary>See response</summary>
+  <summary>レスポンスを表示</summary>
 
 :::note Weaviate says:
-Construction for the Sydney Opera House started in 1958.
+シドニー・オペラハウスの建設は 1958 年に始まりました。
 :::
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Generative search
+### <i class="fa-solid fa-chalkboard"></i> 生成検索
 
-Weaviate can do even more with these entries. You can ask Weaviate to grab an object from its data store and use that object to generate new text. For example, Weaviate can use the object that contains the entry for the Sydney Opera House to derive new text.
+Weaviate はこれらのエントリーを使ってさらに多くのことができます。データストアからオブジェクトを取得し、そのオブジェクトを用いて新しいテキストを生成させることが可能です。たとえば、シドニー・オペラハウスのエントリーを含むオブジェクトを使って新しいテキストを作成できます。
 
 ```graphql
 {
@@ -103,10 +103,10 @@ Weaviate can do even more with these entries. You can ask Weaviate to grab an ob
 }
 ```
 
-The sample code generates a Tweet based on the Wikipedia entry!
+このサンプルコードは Wikipedia のエントリーを基にツイートを生成します！
 
 <details>
-  <summary>See response</summary>
+  <summary>レスポンスを表示</summary>
 
 :::note Weaviate says:
 Explore the world-famous Sydney Opera House and its incredible architecture! From the iconic design to the amazing performances, there's something for everyone to enjoy. #SydneyOperaHouse #Explore #Architecture #Performances #Experience
@@ -114,15 +114,15 @@ Explore the world-famous Sydney Opera House and its incredible architecture! Fro
 
 </details>
 
-This process is an example of `generative search`. In a generative search, Weaviate retrieves information, and then leverages a large language model (LLM) to re-shape it. This is a powerful feature that can transform how you deal with information.
+このプロセスは `generative search` の例です。生成検索では、Weaviate が情報を取得し、その後 LLM ( 大規模言語モデル ) を活用して情報を再構成します。これは情報活用の方法を大きく変える強力な機能です。
 
-You can vary the prompt to generate different results.
+プロンプトを変えることで、異なる結果を生成できます。
 
-### <i class="fa-solid fa-chalkboard"></i> What next?
+### <i class="fa-solid fa-chalkboard"></i> 次のステップ
 
-Tools like Q&A and generative search really start to bring your information to life. In the next sections, you will set up Weaviate and run your own queries.
+Q&A や生成検索のようなツールは、データに命を吹き込みます。次のセクションでは、ご自身で Weaviate をセットアップし、クエリを実行してみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
 
 <!-- ### <i class="fa-solid fa-pen-to-square"></i> Review exercise
 
@@ -133,13 +133,13 @@ Input box for user to put answer in and get back a similarity score & our defini
 ??
 ::: -->
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- Weaviate can extract knowledge from text using question-answering capabilities, identifying the most relevant object and the actual answer based on the provided text.
-- Generative search allows you to retrieve information and reshape or repurpose the content, such as generating a tweet based on a Wikipedia entry.
-- These advanced capabilities of Weaviate transform how you interact with and utilize information in your data.
+- Weaviate は質問応答機能を用いてテキストから知識を抽出し、最も関連性の高いオブジェクトと提供されたテキストに基づく実際の答えを特定できます。  
+- 生成検索を使用すると、情報を取得し、たとえば Wikipedia のエントリーを基にツイートを生成するなど、コンテンツを再構成・再利用できます。  
+- Weaviate のこれら高度な機能により、データとの対話方法や情報の活用方法が大きく変わります。  
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,6 +1,6 @@
 ---
-title: How to define a schema
-description: Design your Weaviate schema for structured and optimized search capabilities.
+title: スキーマの定義方法
+description: 構造化され最適化された検索機能のために Weaviate スキーマを設計します
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,40 +8,40 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PythonCodeExample from '!!raw-loader!./_snippets/20_schema.py';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/WIK6_hGuer0' controls='true' />
 <br/>
 
-A `schema` in Weaviate is the blueprint that defines its data structure for each `class` of objects. A class is a collection of objects of the same type.
+Weaviate における `schema` は、各 `class` のデータ構造を定義する設計図です。`class` とは、同じタイプのオブジェクトを集めたコレクションです。
 
-In this section, you will learn how to define a schema and gain insight into some key considerations while doing so.
+このセクションでは、スキーマの定義方法と、その際に考慮すべき主なポイントについて学びます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> How to define a schema
+## <i class="fa-solid fa-square-chevron-right"></i> スキーマの定義方法
 
-As you learned earlier, a schema definition includes a great deal of information. Let's cover a few of those properties in this section, starting with:
-- The metadata such as its name (`class`),
-- Its data `properties`,
-- The `vectorizer`, and
-- Module configurations (`moduleConfig`).
+すでに学んだとおり、スキーマ定義には多くの情報が含まれます。このセクションでは、次のプロパティを中心に説明します。  
+- 名前（`class`）などのメタデータ  
+- データ `properties`  
+- `vectorizer`  
+- モジュール設定（`moduleConfig`）
 
-### <i class="fa-solid fa-code"></i> Metadata definition
+### <i class="fa-solid fa-code"></i> メタデータ定義
 
-You can define for each class and property a name and description.
+各 class と property には、名前と説明を設定できます。
 
-For classes, these are called:
-- `class` (required), and
-- `description` (optional).
+クラスの場合は次のとおりです。  
+- `class`（必須）  
+- `description`（任意）
 
-For properties, these are called:
-- `name` (required), and
-- `description` (optional).
+プロパティの場合は次のとおりです。  
+- `name`（必須）  
+- `description`（任意）
 
-In defining a class, the only required parameter is `class`, as the rest can be inferred by Weaviate. However, it is recommended to include a description for each class and property, as this will help you and others understand the data structure.
+クラスを定義する際に必須なのは `class` のみで、残りは Weaviate が推測できます。ただし、データ構造を自分や他の利用者が理解しやすくするために、各クラスおよびプロパティに説明を付けることを推奨します。
 
-To define a class, you can use this syntax.
+クラスは次の構文で定義できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -54,20 +54,20 @@ To define a class, you can use this syntax.
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Properties with data types
+### <i class="fa-solid fa-code"></i> データ型を持つプロパティ
 
-Each `class` definition will include one or more properties, which must have a data type. If you do not specify a data type, Weaviate will automatically assign one based on your data. But for more predictable results, we recommend that you manually specify them in the schema if possible.
+各 `class` には 1 つ以上のプロパティが含まれ、それぞれにデータ型を指定する必要があります。データ型を指定しない場合、 Weaviate がデータに基づいて自動的に割り当てますが、予測可能な結果を得るためには可能な限りスキーマで明示的に指定することを推奨します。
 
-Currently, Weaviate data type support includes the following types:
+現在、 Weaviate がサポートしているデータ型は次のとおりです。
 
 import DataTypes from '/_includes/datatypes.mdx';
 
 <details>
-  <summary>Available data types in Weaviate</summary>
+  <summary>Weaviate で利用可能なデータ型</summary>
   <DataTypes />
 </details>
 
-Note that most data types can include one such instance, or an array of instances, such as `text` or `text[]`.
+ほとんどのデータ型は `text` や `text[]` のように、単一または配列のどちらでも指定できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -80,10 +80,10 @@ Note that most data types can include one such instance, or an array of instance
 </TabItem>
 </Tabs>
 
-:::tip Did you get an error?
-If you ran the first class creation command shown, and this command, Weaviate will throw an error as the class `Article` already exists. For the purposes of this section, delete the class by running the following command.<p><br/></p>
+:::tip エラーが発生しましたか？
+最初に示したクラス作成コマンドを実行済みの状態でこのコマンドを実行すると、`Article` クラスがすでに存在するため、 Weaviate はエラーを返します。このセクションを進めるには、次のコマンドでクラスを削除してください。<p><br/></p>
 
-**Deleting a class should not be done lightly, as deleting a class will delete all of its objects.**
+**クラスを削除するとそのクラス内のすべてのオブジェクトも削除されるため、クラスの削除は慎重に行ってください。**
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -98,13 +98,13 @@ If you ran the first class creation command shown, and this command, Weaviate wi
 
 :::
 
-### <i class="fa-solid fa-code"></i> Setting the vectorizer
+### <i class="fa-solid fa-code"></i> ベクトライザーの設定
 
-The `vectorizer` parameter for the class specifies the Weaviate module that will be used to generate vector embeddings for the class.
+`vectorizer` パラメータは、そのクラスのベクトル埋め込みを生成するために使用する Weaviate モジュールを指定します。
 
-For text objects, you would typically select one of the `text2vec` modules - such as `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or `text2vec-palm`.
+テキストオブジェクトの場合は通常、`text2vec-cohere`、`text2vec-huggingface`、`text2vec-openai`、`text2vec-palm` のような `text2vec` モジュールのいずれかを選択します。
 
-Modules are enabled at the instance level through its configuration. You can see the list of available modules for your particular instance by running the following command.
+モジュールはインスタンスの設定で有効化します。以下のコマンドを実行すると、現在のインスタンスで利用可能なモジュールの一覧を確認できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -119,16 +119,16 @@ Modules are enabled at the instance level through its configuration. You can see
 </TabItem>
 </Tabs>
 
-:::info What is a `module`, exactly?
-By now, you've probably seen mentions of Weaviate `modules` here and there. Modules are optional Weaviate components used to enhance and customize its capabilities.<p><br/></p>
+:::info `module` とは？
+ここまでで Weaviate の `modules` という言葉を何度か目にしたかと思います。モジュールとは、 Weaviate の機能を拡張・カスタマイズするための任意コンポーネントです。<p><br/></p>
 
-Weaviate Academy units will generally assume WCD usage, which is pre-configured with a set of modules. We will cover how to enable modules for local instances in another unit, or you can see our [Docker installation page](/deploy/installation-guides/docker-installation.md).
+Weaviate Academy のユニットでは、モジュールがあらかじめ構成された WCD の利用を前提としています。ローカルインスタンスでのモジュール有効化方法は別のユニットで扱いますが、[Docker インストールガイド](/deploy/installation-guides/docker-installation.md) も参照できます。
 :::
 
-WCD instances come pre-configured with a number of modules. For example, the response below shows that the `text2vec-openai` module is available, so we can use it in our schema.
+WCD インスタンスには複数のモジュールがプリセットされています。たとえば、以下のレスポンスから `text2vec-openai` モジュールが利用可能であることがわかるため、スキーマで使用できます。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -171,15 +171,15 @@ WCD instances come pre-configured with a number of modules. For example, the res
 </TabItem>
 </Tabs>
 
-:::info Vectorizers and user-provided vectors
-Note that you can set the vectorizer to `None`, if you would prefer to only deal with your own vectors by providing them at import time.<p><br/></p>
+:::info ベクトライザーとユーザー提供ベクトル
+インポート時に独自のベクトルだけを扱いたい場合は、`vectorizer` を `None` に設定できます。<p><br/></p>
 
-In some cases, you can use a vectorizer while uploading them at import time. In this case, you will need to ensure that the vectorizer (e.g. `text2vec-cohere`) is using the same model as the one you used to generate the vectors, so that the vectors are compatible.
+場合によっては、アップロード時にベクトルを渡しつつベクトライザーを使用することも可能です。この場合、互換性を保つために、使用するベクトライザー（例: `text2vec-cohere`）がベクトル生成に用いたモデルと同じであることを確認してください。
 :::
 
-### <i class="fa-solid fa-code"></i> Class-level module configurations
+### <i class="fa-solid fa-code"></i> クラス レベル moduleConfig 設定
 
-You can set the `moduleConfig` parameter at the class-level to set class-wide settings for module behavior. For example, the vectorizer could be configured to set the model used (`model`), or whether to vectorize the class name (`vectorizeClassName`).
+クラス レベルで `moduleConfig` パラメーターを設定すると、モジュールの動作に関するクラス全体の設定を行えます。たとえば、ベクトライザーでは使用するモデル（`model`）やクラス名をベクトル化するかどうか（`vectorizeClassName`）を指定できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -194,11 +194,11 @@ You can set the `moduleConfig` parameter at the class-level to set class-wide se
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Property-level module configurations
+### <i class="fa-solid fa-code"></i> プロパティ レベル moduleConfig 設定
 
-You can also set the `moduleConfig` parameter at the property level to set module behavior for each property. For example, you could set whether to vectorize the property name (`vectorizePropertyName`), or whether to skip the property from vectorization altogether (`skip`).
+プロパティ レベルでも `moduleConfig` パラメーターを設定し、各プロパティごとのモジュール動作を制御できます。たとえば、プロパティ名をベクトル化するか（`vectorizePropertyName`）や、そのプロパティをまったくベクトル化しないか（`skip`）などを指定できます。
 
-In the following example, the `skip` parameter is set to `True` for the `url` property, so that the URL text will be skipped when producing a vector embedding for the object.
+次の例では、`url` プロパティに対して `skip` パラメーターを `True` に設定しており、オブジェクトのベクトル埋め込みを生成する際に URL テキストをスキップします。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -213,36 +213,36 @@ In the following example, the `skip` parameter is set to `True` for the `url` pr
 </TabItem>
 </Tabs>
 
-:::note But wait, what about the other options?
-There are other settings that we haven't covered yet - such as the index settings, or cluster settings such as those relating to replication. We'll cover these in other units later on.
+:::note 他のオプションは？
+まだ触れていない設定もあります。たとえばインデックス設定や、レプリケーションに関連するクラスター設定などです。これらについては後のユニットで説明します。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Why so many options?
+## <i class="fa-solid fa-square-chevron-right"></i> オプションが多い理由
 
-This might all seem very complex, especially if you are new to Weaviate or databases. But these options will directly impact how your data is stored and how it will react to various queries.
+Weaviate やデータベースを初めて触る場合、これらのオプションは複雑に感じるかもしれません。しかし、これらの設定はデータの保存方法や、さまざまなクエリに対する応答に直接影響します。
 
-We'll ingest some data in the next section, and then you'll see how these options impact the results of your queries.
+次のセクションでは実際にデータを取り込み、これらのオプションがクエリ結果にどのように影響するかを確認します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習 エクササイズ
 
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Do you have a dataset that you are interested in adding to Weaviate?
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+Weaviate に追加したいデータセットはありますか？
 
-Try to construct a schema for that dataset based on what you've learned here.
+ここで学んだ内容を基に、そのデータセットのスキーマを作成してみましょう。
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- A schema in Weaviate serves as a blueprint defining the data structure for each class of objects.
-- A class represents a collection of objects of the same type.
-- Schema definition includes metadata, data properties, the vectorizer, and module configurations.
-- Data properties in a class need to be assigned a specific data type, such as `text` or `number`.
-- The vectorizer parameter determines which Weaviate module will be used to generate vector embeddings for a class.
-- Module configurations at the class and property levels allow customization of module behavior across the entire class or per property, respectively.
+- Weaviate のスキーマは、各クラスのオブジェクトのデータ構造を定義する設計図として機能します。
+- クラスは同じタイプのオブジェクトの集合を表します。
+- スキーマ定義にはメタデータ、データプロパティ、ベクトライザー、モジュール設定が含まれます。
+- クラス内のデータプロパティには、`text` や `number` などの特定のデータ型を割り当てる必要があります。
+- vectorizer パラメーターは、クラスのベクトル埋め込みを生成する際にどの Weaviate モジュールを使用するかを決定します。
+- クラス レベルとプロパティ レベルのモジュール設定により、モジュールの動作をクラス全体または各プロパティごとにカスタマイズできます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

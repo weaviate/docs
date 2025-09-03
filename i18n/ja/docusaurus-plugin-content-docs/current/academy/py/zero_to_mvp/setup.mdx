@@ -1,6 +1,6 @@
 ---
-title: P3_101A Weaviate Academy Preparation
-description: Set up Weaviate from scratch and start building your first project.
+title: P3_101A Weaviate Academy 事前準備
+description: Weaviate をゼロからセットアップし、最初のプロジェクトを構築しましょう。
 sidebar_position: 101.5
 ---
 
@@ -13,63 +13,63 @@ import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/dep
 
 <ZeroToMvpDeprecationNote/>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-Follow this short guide to make sure that you are set up to use Weaviate with the Python client.
+この短いガイドに従って、Python クライアントで Weaviate を使用するための環境を整えましょう。
 
 <!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
 
-## <i class="fa-solid fa-square-chevron-right"></i> Python & Python client
+## <i class="fa-solid fa-square-chevron-right"></i> Python と Python クライアント
 
-If you have not yet set up Python and the Weaviate Python client, follow the instructions below.
+まだ Python と Weaviate Python クライアントをセットアップしていない場合は、以下の手順に従ってください。
 
-### <i class="fa-solid fa-code"></i> Install Python
+### <i class="fa-solid fa-code"></i> Python のインストール
 
-You can install Python 3 in a variety of ways. One easy way is to use an appropriate installer for your system as per instructions on [Python.org](https://www.python.org/downloads/).
+Python 3 はさまざまな方法でインストールできます。簡単な方法の一つは、[Python.org](https://www.python.org/downloads/) の手順に従ってお使いのシステム向けインストーラーを利用することです。
 
-### <i class="fa-solid fa-code"></i> Install the Weaviate client
+### <i class="fa-solid fa-code"></i> Weaviate クライアントのインストール
 
-:::tip Virtual environments
-It is best practice to use virtual environments to isolate projects.
+:::tip 仮想環境
+プロジェクトを分離するために仮想環境を使用することがベストプラクティスです。
 
-If you're not familiar with virtual environments, we highly recommend reading up on them - this tutorial on [FreeCodeCamp](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/) is a good resource, as is this article on [RealPython](https://realpython.com/python-virtual-environments-a-primer/), which goes a little more in-depth.
+仮想環境に馴染みがない場合は、ぜひ学習してください。概要をつかむには [FreeCodeCamp](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/) のチュートリアル、より詳しく学ぶには [RealPython](https://realpython.com/python-virtual-environments-a-primer/) の記事がおすすめです。
 :::
 
-You will also need the following libraries:
+次のライブラリも必要です。
 
 ```
 weaviate-client
 ```
 
-Activate your virtual environment, and install the Weaviate client with:
+仮想環境をアクティベートし、以下のコマンドで Weaviate クライアントをインストールします。
 
 ```shell
 pip install weaviate-client
 ```
 
-### <i class="fa-solid fa-code"></i> Running your Python code
+### <i class="fa-solid fa-code"></i> Python コードの実行
 
-We recommend running Python code in a Jupyter notebook. You can install the library by running
+Python コードは Jupyter Notebook で実行することを推奨します。ライブラリは次のコマンドでインストールできます。
 
 ```shell
 pip install notebook
 ```
 
-Then running the shown code in a Jupyter notebook. Of course, you can also run it in any way that you prefer.
+その後、表示されているコードを Jupyter Notebook で実行してください。もちろん、お好みの方法で実行しても構いません。
 
-:::tip New to Jupyter?
-To learn how to use Jupyter notebooks, [try this tutorial](https://realpython.com/jupyter-notebook-introduction/).
+:::tip Jupyter が初めてですか？
+Jupyter Notebook の使い方を学ぶには、[こちらのチュートリアル](https://realpython.com/jupyter-notebook-introduction/) をご覧ください。
 :::
 
 ## <i class="fa-solid fa-square-chevron-right"></i> Weaviate
 
-### <i class="fa-solid fa-code"></i> Instance access
+### <i class="fa-solid fa-code"></i> インスタンスへのアクセス
 
-We will be accessing a pre-built instance of Weaviate throughout the course, located at `https://edu-demo.weaviate.network`.
+本コースでは、`https://edu-demo.weaviate.network` に用意された Weaviate インスタンスを使用します。
 
-You can connect to the pre-built instance with a read-only Weaviate API key.
+読み取り専用の Weaviate API キーでこのインスタンスに接続できます。
 
-Confirm that you can run the following code in your Python environment.
+以下のコードを Python 環境で実行できることを確認してください。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -78,15 +78,15 @@ Confirm that you can run the following code in your Python environment.
   language="py"
 />
 
-If everything works, the code returns `True`.
+すべてが正しく設定されていれば、`True` が返されます。
 
-### <i class="fa-solid fa-code"></i> Inference API Key
+### <i class="fa-solid fa-code"></i> 推論 API キー
 
-We will be using OpenAI's API, so you will need an API key.
+OpenAI の API を利用するため、API キーが必要です。
 
-If you haven't yet, create an OpenAI account, and create a [free API key here](https://platform.openai.com/api-keys).
+まだお持ちでない場合は OpenAI アカウントを作成し、[こちら](https://platform.openai.com/api-keys) から無料の API キーを作成してください。
 
-Then, instantiate the client as shown below, replacing `YOUR-OPENAI-API-KEY` with your own API key for OpenAI.
+続いて、下記のようにクライアントをインスタンス化します。`YOUR-OPENAI-API-KEY` をご自身の OpenAI API キーに置き換えてください。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -95,11 +95,11 @@ Then, instantiate the client as shown below, replacing `YOUR-OPENAI-API-KEY` wit
   language="py"
 />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Code examples
+## <i class="fa-solid fa-square-chevron-right"></i> コード例
 
-### <i class="fa-solid fa-code"></i> Client instantiation
+### <i class="fa-solid fa-code"></i> クライアントのインスタンス化
 
-For brevity, many code examples in the Weaviate Academy will not show the instantiation of the client. So, where you see examples such as:
+簡潔さのため、Weaviate Academy の多くのコード例ではクライアントのインスタンス化を省略しています。そのため、次のような例が表示された場合:
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -108,7 +108,7 @@ For brevity, many code examples in the Weaviate Academy will not show the instan
   language="py"
 />
 
-You will need to instantiate the client as shown in the previous section. So, the above code would become:
+前セクションで示した方法でクライアントをインスタンス化する必要があります。つまり、上記のコードは次のようになります。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -119,11 +119,11 @@ You will need to instantiate the client as shown in the previous section. So, th
 
 ### <i class="fa-solid fa-code"></i> GraphQL
 
-Weaviate Academy units are written to be used with a client library such as Python. So, you will not need to run GraphQL or REST queries directly.
+Weaviate Academy のユニットは Python などのクライアントライブラリで使用することを前提としています。そのため、GraphQL や REST クエリを直接実行する必要はありません。
 
-But note that we also show raw GraphQL/REST queries as well as the Python code where relevant to help you learn the underlying query structures.
+ただし、基礎となるクエリ構造を学べるよう、必要に応じて生の GraphQL/REST クエリと対応する Python コードの両方を示します。
 
-So please be aware that when we show a query such as this:
+したがって、次のようなクエリを示す場合:
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -132,7 +132,7 @@ So please be aware that when we show a query such as this:
   language="py"
 />
 
-This is what happens under the hood:
+実際には裏側で以下が実行されています。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -141,7 +141,7 @@ This is what happens under the hood:
   language="graphql"
 />
 
-We will show them in separate tabs going forward where applicable, like so:
+今後は、必要に応じて次のようにタブで分けて表示します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -159,12 +159,12 @@ This tab will show GraphQL code.
 
 </TabItem>
 </Tabs>
+### <i class="fa-solid fa-code"></i> 生の GraphQL クエリ
 
-### <i class="fa-solid fa-code"></i> Raw GraphQL queries
+Weaviate Python クライアントは、生の GraphQL クエリを実行できます。  
+さらに、[Weaviate Query app](/cloud/tools/query-tool) も利用できます。
 
-The Weaviate Python client can run raw GraphQL queries. You can also use the [Weaviate Query app](/cloud/tools/query-tool).
-
-In Python, you can run a GraphQL query directly with:
+Python では、次のようにして GraphQL クエリを直接実行できます。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -177,15 +177,15 @@ In Python, you can run a GraphQL query directly with:
 
 <!-- TODO - show specific steps to do this when WCD launches -->
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- You have installed the Weaviate client library in your preferred environment.
-- You have an OpenAI inference key.
-- You have some way of running Python code.
-- You know how to instantiate the Weaviate Python client, and run the shown example code.
-- The Academy units will show Python code, but also raw GraphQL or REST snippets where applicable.
+- ご利用の環境に Weaviate クライアント ライブラリをインストール済みです。  
+- OpenAI 推論キーをお持ちです。  
+- Python コードを実行できる環境があること。  
+- Weaviate Python クライアントをインスタンス化し、例のコードを実行する方法を理解しています。  
+- Academy の各ユニットでは Python コードに加えて、必要に応じて生の GraphQL や REST スニペットも示します。  
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

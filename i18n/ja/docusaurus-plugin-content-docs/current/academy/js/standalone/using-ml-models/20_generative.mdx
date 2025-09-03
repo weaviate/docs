@@ -1,5 +1,5 @@
 ---
-title: Using Generative Models in Weaviate 
+title: Weaviate における生成モデルの利用
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,32 +11,30 @@ import Unimodal from '/docs/academy/js/standalone/using-ml-models/_img/unimodal-
 import Multimodal from '/docs/academy/js/standalone/using-ml-models/_img/multimodal-gen.jpg';
 
 
-## <i class="fa-solid fa-chalkboard"></i> What are Generative Models
+## <i class="fa-solid fa-chalkboard"></i> 生成モデルの概要
 
-Generative models are machine learning models that when prompted, can generate original data guided by instructions in the prompt i.e. text, images, and other forms.  This original data is derived from data it was trained on but does not mimic it like for like.  
+生成モデルとは、プロンプトを受け取ると、その指示に従ってテキスト・画像などのオリジナル データを生成できる機械学習モデルです。生成されるデータは学習時のデータに由来しますが、単純にそのまま模倣するわけではありません。  
 
 <img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
 
-Generative Models encompass so many types of models, we will specifically focus on large language models (LLMs).
+生成モデルにはさまざまなタイプがありますが、ここでは特に大規模言語モデル (LLM) に焦点を当てます。
 
-## <i class="fa-solid fa-chalkboard"></i> When to use Generative Models
+## <i class="fa-solid fa-chalkboard"></i> 生成モデルを使うタイミング
 
-Generative models are stars in the limelight of retrieval augmented generation (RAG) and agentic workflows. They are great for... 
+生成モデルは、検索拡張生成 (RAG) や エージェント 指向のワークフローで脚光を浴びています。主な用途は以下のとおりです。
 
-- **Translation:** Models can perform zero-shot translate text from one language to another with extremely high accuracy.
-- **Code Generation:** Models can take high-level instructions and turn them into functional custom code.
-- **Image Generation:** Models can consistently generate high quality images from text instructions in a prompt.
-
-
-## <i class="fa-solid fa-chalkboard"></i> Applications of Generative Models
+- **翻訳:** モデルはゼロショットで高精度に異なる言語へ翻訳できます。  
+- **コード生成:** 高レベルな instructions を受け取り、機能するカスタム コードへ変換できます。  
+- **画像生成:** プロンプトに含まれるテキスト指示から、高品質な画像を安定して生成できます。  
 
 
-Large Language Models (LLMs), like [Claude](https://www.anthropic.com/claude) family by Anthropic or [Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference) by Google are specialized types of generative models focused on text data.  These models, like most machine learning models are typically limited to one or more modalities. 
+## <i class="fa-solid fa-chalkboard"></i> 生成モデルの応用
 
-We use modality to describe the type of input or output that a machine learning model can process or interact with to run. Typically, generative modals fall into two buckets, uni-modal or multimodal. 
+Anthropic の [Claude](https://www.anthropic.com/claude) ファミリーや Google の [Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference) などの LLM は、テキスト データに特化した生成モデルです。ほとんどの機械学習モデルと同様に、これらのモデルも 1 種類以上のモダリティに限定されます。  
 
+モダリティとは、モデルが処理・入出力できるデータの種類を指します。生成モデルは一般的に以下の 2 つに分類されます。
 
-- **Uni-modal Generation:** In the context on LLMs, uni-modal generation defines a models ability to generate content and receive instructions in a single modality, this modality is usually text.
+- **ユニモーダル生成:** LLM の文脈で言えば、入力も出力も 1 つのモダリティ (通常はテキスト) に限定される生成能力です。  
 
 <img src={Unimodal} alt="Image alt" width="90%" style={{ 
       marginRight: 0,
@@ -44,9 +42,7 @@ We use modality to describe the type of input or output that a machine learning 
       display: 'block'
     }}/>
 
-
-
-- **Multimodal Generation:** In the context on LLMs, multimodal generation defines a models ability to generate and receive instructions in multiple modalities. This can range from text input to generation or even image input to audio generation. 
+- **マルチモーダル生成:** LLM の文脈で言えば、複数のモダリティで入力・出力を扱える生成能力です。テキスト入力から画像生成、あるいは画像入力から音声生成など、さまざまな組み合わせが可能です。  
 
 <img src={Multimodal} alt="Image alt" width="90%" style={{ 
       marginRight: 0,
@@ -55,14 +51,13 @@ We use modality to describe the type of input or output that a machine learning 
     }}/>
 
 
-### <i class="fa-solid fa-chalkboard"></i> Using Generative Models in Weaviate
+### <i class="fa-solid fa-chalkboard"></i> Weaviate での生成モデル利用
 
-Weaviate is configured to support many generative models and generative model providers. You can even plug in your own generative model too depending on where in the Weaviate workflow you need generative capabilities. 
+Weaviate は多くの生成モデルおよびプロバイダーをサポートしており、必要に応じて独自モデルを組み込むこともできます。  
 
+Weaviate では、生成モデルが RAG (生成検索) を支えています。ここでは Weaviate で生成モデルを使用する流れを順に見ていきます。まずは [Weaviate Cloud](https://console.weaviate.cloud/) で無料のサンドボックス アカウントを作成しましょう。セットアップがうまくいかない場合は、[こちらのガイド](/cloud/manage-clusters/connect) を参照してください。
 
-In Weaviate, generative models power RAG (generative search). Lets walk through what its like to use generative models in Weaviate. We'll start by creating a free sandbox account on [Weaviate Cloud](https://console.weaviate.cloud/). Follow [this guide](/cloud/manage-clusters/connect) if you have trouble setting up a sandbox project.
-
-## Step 1: Connect to a Weaviate instance
+## ステップ 1: Weaviate インスタンスへの接続
 
  <TabItem value="js" label="app.js">
     <FilteredTextBlock
@@ -73,9 +68,9 @@ In Weaviate, generative models power RAG (generative search). Lets walk through 
     />
   </TabItem>
 
-Initialize your connection with Weaviate and add relevant environment variables necessary to access third party generative models.
+まず Weaviate への接続を初期化し、サードパーティの生成モデルへアクセスするために必要な環境変数を設定します。
 
-## Step 2: Define a Collection and Generative Model 
+## ステップ 2: コレクションと生成モデルの定義
 
  <TabItem value="js" label="app.js">
     <FilteredTextBlock
@@ -86,9 +81,9 @@ Initialize your connection with Weaviate and add relevant environment variables 
     />
   </TabItem>
 
-When creating a collection in Weaviate, we define what generative model we want to use. In this example we use a text generation model by Cohere to generate new data. This is **command-r** by default.  
+コレクションを作成するときに、使用する生成モデルを指定します。この例では、Cohere のテキスト生成モデルを利用して新しいデータを生成します。デフォルトでは **command-r** です。  
 
-## Step 3: Importing data 
+## ステップ 3: データのインポート
 
  <TabItem value="js" label="app.js">
     <FilteredTextBlock
@@ -99,9 +94,9 @@ When creating a collection in Weaviate, we define what generative model we want 
     />
   </TabItem>
 
-Once our collection is created, we import data. It is at import time where we interact with our embedding model. The Weaviate vectorizer sends objects to the embedding model we define during collection creation. At the end of this, we have both our data objects and their corresponding vector representations stored in our Vector Database. Now we can run semantic search queries and with a generative model defined, RAG!
+コレクションの作成後、データをインポートします。インポート時にベクトライザーが動作し、コレクション作成時に指定した埋め込みモデルにオブジェクトを送信します。その結果、データ オブジェクトと対応するベクトル表現が ベクトル データベース に保存され、セマンティック検索や RAG が可能になります。
 
-## Step 4: Making a Single Task Generative Search
+## ステップ 4: シングルタスク生成検索の実行
 
  <TabItem value="js" label="app.js">
     <FilteredTextBlock
@@ -112,10 +107,9 @@ Once our collection is created, we import data. It is at import time where we in
     />
   </TabItem>
 
-Here we use a `singlePrompt` to make `n` requests to the language model where `n` is the number of responses we get from our semantic search. We use `limit` to strictly define the number of responses we get. We can place responses from each response into our prompt with this format `{ answer }` i.e we want the answer property from our search response to be translated to French. 
+ここでは `singlePrompt` を使用し、セマンティック検索で取得した件数 `n` 分だけ言語モデルへリクエストします。`limit` を設定することで取得件数を厳密に制御できます。各検索結果から取得した値は `{ answer }` の形式でプロンプトに埋め込めます。たとえば、検索結果の `answer` プロパティをフランス語に翻訳したい場合などに便利です。
 
-## Step 5: Making a grouped Generative Search
-
+## ステップ 5: グループ化生成検索の実行
 
  <TabItem value="js" label="app.js">
     <FilteredTextBlock
@@ -126,23 +120,19 @@ Here we use a `singlePrompt` to make `n` requests to the language model where `n
     />
   </TabItem>
 
-Here we use the `groupedTask` prompt format to group all the response from our search and send them alongside our prompt as context for what ever we are requesting. You can see with `groupedProperties` we only pass the answer property from all the results we get as context to the large language model, giving us control of what information will inform the models output.
+ここでは `groupedTask` プロンプト形式を使用し、検索結果をまとめて言語モデルへコンテキストとして渡します。`groupedProperties` で `answer` プロパティのみを指定しているため、モデルの出力に影響を与える情報を細かく制御できます。
+## <i class="fa-solid fa-chalkboard"></i> 追加学習
+### プロンプト エンジニアリング & アウトプット 制御
+プロンプト エンジニアリングとは、AI モデルに与える入力、すなわち「プロンプト」を洗練し、望ましい、またはより効果的な出力を得るための技術です。これには..
+
+- **明確な指示:** 具体的かつ明示的に依頼することで、AI がニーズを正確に理解しやすくなります。「これを分析して」ではなく、「主要なテーマと裏付けとなる証拠を詳細に分析してください」のように依頼しましょう。
 
 
+### コンテキスト ウィンドウ
+コンテキスト ウィンドウとは、AI モデルが一度に「見て」処理できる情報量を表します。会話ごとにおけるモデルの作業メモリのようなものです。 
 
-## <i class="fa-solid fa-chalkboard"></i> Bonus Learning
-### Prompt engineering & Output control
-Prompt engineering is the science of refining inputs or "prompts" to AI models to achieve desired or more effective outputs. It involves..
+- **トークン制限:** コンテキスト ウィンドウはトークン数（英語でおおよそ 3/4 語に相当）で測定されます。モデルによって数千から数十万トークンまで上限が異なります。
 
-- **Clear Instructions:** Being specific and explicit in your requests helps the AI understand exactly what you need. Instead of "analyze this," try "provide a detailed analysis of the key themes and supporting evidence."
+コンテキスト ウィンドウの管理とプロンプト エンジニアリングの双方は、RAG 実装を洗練し始めるための優れた方法です。
 
-
-### Context windows
-The context window represents how much information an AI model can "see" and process at once. Think of it as the model's working memory for each conversation. 
-
-- **Token Limits:** Context windows are measured in tokens (roughly 3/4 of a word in English). Different models have different limits - from a few thousand to hundreds of thousands of tokens.
-
-Both managing context windows and prompt engineering are a great way to begin refining your RAG implementation.
-
-Generative models vary when it comes to performance and ability. [Browse our integrations page](/weaviate/model-providers) to have a better idea of what options you can use in Weaviate. 
-
+生成モデルの性能と能力には大きな幅があります。Weaviate で利用できるオプションを把握するには、[統合ページを閲覧する](/weaviate/model-providers) をご覧ください。

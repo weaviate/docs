@@ -1,5 +1,5 @@
 ---
-title: Create a collection
+title: コレクションの作成
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,11 +7,11 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/102_collection.py';
 
-To use named vectors, your collection be configured with named vector definitions.
+名前付き ベクトル を使用するには、コレクションに名前付き ベクトル 定義を設定する必要があります。
 
-## <i class="fa-solid fa-code"></i> Code
+## <i class="fa-solid fa-code"></i> コード
 
-This example creates a collection for the movie data, including multiple named vector definitions:
+次の例では、複数の名前付き ベクトル 定義を含む映画データ用のコレクションを作成します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -20,17 +20,17 @@ This example creates a collection for the movie data, including multiple named v
   language="py"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コード解説
 
-The key difference here is the use of `NamedVectors` class to define vectorizer configurations. Let's review the code in further detail:
+ここでの主な違いは、`NamedVectors` クラスを使用してベクトライザー設定を定義している点です。コードを詳しく見ていきましょう。
 
 :::tip Revision
-This code builds on the [multimodal](../../starter_multimodal_data/102_mm_collections/20_create_collection.mdx) example. Review that example for further explanations.
+このコードは [multimodal](../../starter_multimodal_data/102_mm_collections/20_create_collection.mdx) の例を基にしています。詳細についてはその例を参照してください。
 :::
 
-### <i class="fa-solid fa-chalkboard"></i> Named vector configuration
+### <i class="fa-solid fa-chalkboard"></i> 名前付き ベクトル 設定
 
-This definition allows each object to be represented by three vectors, named `title`, `overview` and `poster_title`.
+この定義により、各オブジェクトは `title`、`overview`、`poster_title` の 3 つの ベクトル で表現されます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -41,23 +41,23 @@ This definition allows each object to be represented by three vectors, named `ti
 
 #### `title`
 
-This vector representation is generated from the `title` property (`source_properties`). The `text2vec-openai` module is used for vectorization.
+この ベクトル 表現は `title` プロパティ（`source_properties`）から生成されます。`text2vec-openai` モジュールを使用してベクトル化します。
 
-You could use this to search for movies by similarities to their titles.
+これを利用して、タイトルの類似性で映画を検索できます。
 
 #### `overview`
 
-This vector representation is based on the `overview` property. As such, you could use this to search for movies by similarities to their plot or key ideas.
+この ベクトル 表現は `overview` プロパティに基づいています。そのため、ストーリーや主要なアイデアの類似性で映画を検索できます。
 
 #### `poster_title`
 
-This vector representation is generated from a combination of the `title` and `poster` properties. The `multi2vec-clip` module is used for vectorization.
+この ベクトル 表現は `title` と `poster` のプロパティを組み合わせて生成されます。`multi2vec-clip` モジュールを使用してベクトル化します。
 
-Note that the majority of the vector weight is given to the `poster` property (90%), and the rest to the `title` property (10%). This means that the vector representation will be more influenced by the poster than the title.
+ベクトル の重みの大部分（90%）が `poster` プロパティに、残り（10%）が `title` プロパティに割り当てられている点に注意してください。つまり、この ベクトル 表現はタイトルよりポスターの影響を強く受けます。
 
-As this uses a multimodal vectorizer, you could use this to search for movies using any image, or text, by their similarity to the title or poster.
+マルチモーダル ベクトライザー を使用しているため、任意の画像やテキストで、タイトルやポスターとの類似性を基に映画を検索できます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

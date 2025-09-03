@@ -1,144 +1,122 @@
 ---
-title: Vector search, explained
+title: ベクトル検索の概要
 sidebar_position: 20
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> About vector search
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索について
 
 :::warning TODO
-Intro video here
+導入動画はこちら
 :::
 
-### How does vector search work?
+### ベクトル検索はどのように機能しますか？
 
 ![](../../tmp_images/person_holding_a_magnifying_glass_in_front_of_a_big_pile_of_numbers_1.jpg)
 
-Earlier on, we mentioned that a vector can be used to represent the meaning of a word. In an earlier section, we also mentioned that a vector search is a fantastic way of carrying out similarity-based searches.
+先ほど、ベクトルは単語の意味を表現できると述べました。また別のセクションでは、ベクトル検索が類似度ベースの検索を行う優れた方法であることも触れました。
 
-You can probably see how these two ideas converge. A vector search relies on these numerical representation of meaning to carry out similarity-based searches. The closer two vectors are to each other, the more similar the words they represent.
+これら 2 つのアイデアがどのように交差するか、もうお分かりでしょう。ベクトル検索は、意味の数値表現を利用して類似度ベースの検索を行います。2 つのベクトルが互いに近いほど、それらが表す単語の意味も似ています。
 
-A vector search therefore works by providing a vector-based query object to a vector index. The vector index then returns a list of results that are most similar to the query object.
+そのため、ベクトル検索ではベクトルベースのクエリオブジェクトをベクトルインデックスに渡し、インデックスはクエリオブジェクトに最も似た結果のリストを返します。
 
-It may be that a vector index takes as input an object such as a text passage or an image which it converts to a vector. Or it may receive a vector as the query object directly.
+ベクトルインデックスは、テキストや画像などのオブジェクトを入力として受け取り、それをベクトルに変換する場合もあれば、クエリオブジェクトとして直接ベクトルを受け取る場合もあります。
 
-### How is vector similarity measured?
+### ベクトル類似度はどのように測定されますか？
 
 ![](../../tmp_images/scale_of_justice_with_words_on_either_side_0.jpg)
 
-Broadly speaking, vector similarity measures how close the two sets of numbers that make up each vector are to each other. Depending on your relationship with linear algebra, this may sound like a very abstract concept.
+大まかに言うと、ベクトル類似度は各ベクトルを構成する数値の 2 組がどれだけ近いかを測定します。線形代数に詳しくない場合は、やや抽象的に聞こえるかもしれません。
 
-But the intuition is this: the closer the two vectors are to each other, the more similar the words they represent.
+しかし直感的には、2 つのベクトルが近いほど、それらが表す単語の意味も似ているということです。
 
-In practice, there are many different ways to measure vector similarity. The most common methods include:
-- Cosine similarity
-- Euclidean distance
-- Dot product
-- Manhattan distance
+実際には、ベクトル類似度を測定する方法は数多くあります。代表的な手法には次のようなものがあります。  
+- コサイン類似度  
+- ユークリッド距離  
+- ドット積  
+- マンハッタン距離  
 
-The choice of similarity measure will depend on the use case and the model. In Weaviate, the default metric unless specified is `cosine similarity`. We will cover these choices in more detail in another section.
+どの類似度指標を使うかはユースケースやモデルによって異なります。Weaviate では、特に指定がない限りデフォルトの指標は `cosine similarity` です。これらの選択肢については別のセクションで詳しく扱います。
 
-## <i class="fa-solid fa-square-chevron-right"></i> What are semantic, and lexical searches?
+## <i class="fa-solid fa-square-chevron-right"></i> セマンティック検索とレキシカル検索
 
 :::warning TODO
-Intro video here
+導入動画はこちら
 :::
 
-### What is a semantic search?
+### セマンティック検索とは？
 
 ![](../../tmp_images/confused_people_looking_at_two_similar_piles_of_documents__1.jpg)
 
-"Semantic" refers to something being "related to meaning". It is often used in the field of linguistics (study of languages) to contrast to "syntactic", which refers to structure or grammar. Thus "semantic search" refers to a search that is based on meaning.
+「セマンティック」とは「意味に関連する」という意味です。言語学では「構文的 (syntactic)」—構造や文法に関する—と対比して使われます。したがって「セマンティック検索」とは、意味に基づいて行う検索を指します。
 
-Vector search is currently the dominant way of performing semantic searches. Because vectors can efficiently and accurate capture meanings of words, sentences and entire documents, they are a great way of carrying out semantic searches.
+現在、セマンティック検索を行う主流の方法がベクトル検索です。ベクトルは単語、文、さらには文書全体の意味を効率的かつ高精度で捉えられるため、セマンティック検索に最適です。
 
-We note that "semantic" search also can refer to searches that look for similarities in concepts that are represented by other media such as images, audio or video. As you will see later on, semantic searches refer to comparing particular aspects of these media types, such as the depicted concepts, objects, or tone.
+「セマンティック検索」は、画像・音声・動画など他のメディアで表現される概念の類似度を探す検索を指す場合もあります。後ほど詳しく説明しますが、これらのメディアタイプでは、描写されている概念・オブジェクト・トーンといった特定の側面を比較します。
 
-Accordingly, we will use the terms "semantic search" and "vector search" interchangeably in this course unless otherwise specified.
+本コースでは特に断りがない限り、「セマンティック検索」と「ベクトル検索」を同義で用います。
 
-### What is a lexical search?
+### レキシカル検索とは？
 
 ![](../../tmp_images/person_holding_a_magnifying_glass_in_front_of_a_big_pile_of_words_1.jpg)
 
-Traditional search systems use "lexical" searches, based on a "vocabulary" of the search system or database at hand.
+従来の検索システムは「レキシカル (lexical)」検索、つまりシステムやデータベースの「語彙」に基づく検索を採用してきました。
 
-A lexical search relies on matching exact strings or substrings and using various operators to manipulate sets of information that either meets or does not meet certain criteria.
+レキシカル検索は、文字列や部分文字列を正確にマッチさせ、各種演算子を用いて条件を満たす／満たさない情報セットを操作します。
 
-For example, looking through a database of recipes to retrieve all objects containing the ingredient "chili" is a lexical search. You might typically combine multiple conditions. The following query looks for entries with "chili" that where added after the year 2010.
+例えば、レシピデータベースから材料に「chili」を含むオブジェクトを取得するのはレキシカル検索です。通常は複数の条件を組み合わせます。次のクエリは「chili」を含み、かつ 2010 年以降に追加されたエントリを検索します。
 
 ```sql
 SELECT * FROM recipe_table WHERE (ingredients LIKE '%chili%') AND (entry_year > 2010)
 ```
 
-While this enquiry will return an exact answer, it suffers from being  inflexible.
+この問い合わせは正確な答えを返しますが、柔軟性に欠けるという欠点があります。
 
-For one, it would not retrieve recipes where another string is used (e.g. `ghost pepper`) that is synonymous (has the same meaning) with chili. It would also not handle typos well, for example if the entry was mislabelled as `chilli`, or if the entry was mistyped as such.
+たとえば、同義語である `ghost pepper` が使われているレシピは取得できません。また、エントリが `chilli` と誤綴りされていた場合など、タイプミスにも弱いです。
 
-On the other hand, semantic searches manage these issues with a little more nuance.
+一方、セマンティック検索はこれらの問題をよりきめ細かく扱えます。
 
 :::note Jargon ("lexical", "semantic", "syntactic")
-We try to avoid jargon unless necessary. But where we do use them, we will include explanations for those who have not encountered them.
+専門用語は可能な限り避けていますが、必要な場合は説明を添えます。
 
-Because vector search as we use them has some roots in *natural language processing*, terms like *lexical* and *semantic* are commonly used. These are terms that come from linguistics which are used commonly in vector search context. The term *vector* comes from the world of mathematics, as you will see later on. 🤓
+ベクトル検索は *natural language processing* の分野に起源を持つため、*lexical* や *semantic* といった言語学由来の用語がよく使われます。*vector* は数学の世界から来た言葉です。🤓
 :::
 
-### Vector search vs lexical searches
+### ベクトル検索とレキシカル検索の比較
 
 ![](../../tmp_images/person_holding_a_magnifying_glass_in_front_of_a_big_pile_of_numbers_1.jpg)
 ![](../../tmp_images/person_holding_a_magnifying_glass_in_front_of_a_big_pile_of_words_1.jpg)
 
-When facing a query of a recipes database with the word `chili` for ingredients, a vector database returns entities that include that exact word in the recipe data.
+レシピデータベースに対して材料 `chili` で検索した場合、レキシカル検索はデータ内にその単語が正確に含まれるエンティティのみを返します。
 
-This means that a search for `chili` would include in its results entities with semantically related terms such as `ghost pepper`, `jalapeno`, `habanero` or `carolina reaper`, all of which would be ignored by a lexical search.
+一方、ベクトル検索では `ghost pepper`、`jalapeno`、`habanero`、`carolina reaper` など、意味的に関連する用語を含むエンティティも結果に含めます。これらはレキシカル検索では無視されます。
 
-A modern vector search can also take the context into account, such as the context of a word as a part of its parent sentence. So a vector search will differentiate between whether the recipe calls for these ingredients, or whether the recipe asks the cook to "*not* use any chili".
+さらに、最新のベクトル検索は単語が文中で持つコンテキストも考慮します。例えば、レシピがこれらの材料を「使用する」場合と「使用しない」よう指示している場合とを区別できます。
 
-Also importantly, a vector database can determine the degree of similarity between items, such as between a query and each result. Accordingly, the results can be ranked by a meaningful metric that describes the degree of similarity, thereby improving the chance of finding more relevant results faster.
+加えて、ベクトルデータベースはクエリと各結果との類似度を数値化できます。そのため、類似度という意味のある指標で結果をランキングでき、より関連性の高い結果を早く見つけやすくなります。
 
 <Quiz questions={lexicalSearch} />
 
 <Quiz questions={vectorSearchMethod} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
 :::warning TODO
-Video here
+動画はこちら
 :::
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
 
-Can you describe, in your own sentence, XXX?
+あなた自身の言葉で、XXX を説明してみてください。
 
 :::warning TODO
-Input box for user to put answer in and get back a similarity score & our definition?
+ユーザーが回答を入力し、類似度スコアと公式の定義を受け取れる入力ボックス？
 ??
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
 
 :::info
-Add summary
+要約を追加
 :::
 
 import Quiz from '/src/components/Academy/quiz.js'
-const lexicalSearch = [
-  {
-    questionText: 'What type of search is based on word or token matches?',
-    answerOptions: [
-      { answerText: 'Lexical search.', isCorrect: true, feedback: 'They are called this because they are "lexical" or vocabulary-based searches.'},
-      { answerText: 'Vector search.', isCorrect: false, feedback: 'Vector search uses similarity in vectors.'},
-      { answerText: 'Semantic search.', isCorrect: false, feedback: 'Semantic search looks for similarity in meaning.'},
-      { answerText: 'None of the above.', isCorrect: false, feedback: 'The truth is out there.'},
-    ],
-  },
-];
-const vectorSearchMethod = [
-  {
-    questionText: 'How does vector search return relevant results?',
-    answerOptions: [
-      { answerText: 'It looks for objects with the highest vector similarity.', isCorrect: true, feedback: 'Because vectors capture meaning, objects with the highest similarity are the most relevant results.'},
-      { answerText: 'It looks for objects with the smallest vectors.', isCorrect: false, feedback: 'The magnitude of the vector is largely not relevant.'},
-      { answerText: 'It looks for objects with the largest vectors.', isCorrect: false, feedback: 'The magnitude of the vector is largely not relevant.'},
-      { answerText: 'It looks for objects with the highest character overlap.', isCorrect: false, feedback: 'This is not quite right. It is not about character overlap, but rather about meaning.'},
-    ],
-  },
-];

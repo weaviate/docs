@@ -1,82 +1,82 @@
 ---
-title: Vectors - An overview
-description: Vector Overview in Weaviate
+title: ベクトル – 概要
+description: Weaviate における ベクトル の概要
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> What is a vector?
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/iFUeV3aYynI' controls='true' />
 <br/>
 
-We've covered that Weaviate is a vector database, and that a vector search is similarity-based. But, what is a vector?
+すでに学んだように、Weaviate は ベクトル データベースであり、ベクトル 検索は類似度ベースです。では、ベクトル とは何でしょうか。
 
-A vector in this context is just a series of numbers like `[1, 0]` or `[0.513, 0.155, 0.983, ..., 0.001, 0.932]`. Vectors like these are used to capture meaning.
+ここでのベクトル は、`[1, 0]` や `[0.513, 0.155, 0.983, ..., 0.001, 0.932]` のように数字を並べたものにすぎません。こうしたベクトル は「意味」を表現するために使われます。
 
-This might seem like an odd concept. But in fact, you may have already used vectors to capture meaning without realizing it. If you have tried photo editing, or used MS Paint you might have encountered the RGB color system.
+これは少し奇妙に感じるかもしれません。しかし実は、知らないうちに意味を捉えるためにベクトル を使ったことがあるかもしれません。たとえば写真編集や MS Paint で使われる RGB カラー システムがそうです。
 
-### <i class="fa-solid fa-chalkboard"></i> How do numbers represent meaning?
+### <i class="fa-solid fa-chalkboard"></i> 数値での意味表現
 
-The RGB system uses groups of three numbers to represent colors. For example:
+RGB システムでは、3 つの数字の組み合わせで色を表します。例:
 
-- (255, 0, 0) = red
-- (80, 200, 120) = emerald
+- (255, 0, 0) = 赤
+- (80, 200, 120) = エメラルド
 
-In these examples, each number can be thought of as a dial for how red, green or blue a color is.
+ここで各数字は、赤・緑・青それぞれの強さを示すダイヤルのようなものと考えられます。
 
-Now, imagine having hundreds, or even thousands, of these dials. That’s how vectors are used to represent meaning. Modern machine learning models such as GPT-x, or those used with Weaviate, use vectors to represent some "essence", or "meaning" of objects. This can be done for any object type, such as text, code, images, videos and more.
+では、こうしたダイヤルが何百、何千とあると想像してください。これが、ベクトル が意味を表現する方法です。GPT-x や Weaviate と組み合わせて使う最新の機械学習モデルは、テキスト・コード・画像・動画などあらゆるオブジェクトの「本質」や「意味」をベクトル で表現します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vector embeddings in Weaviate
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate における ベクトル 埋め込み
 
 <!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
 
-The vector representation of an object's meaning is called a "vector embedding".
+オブジェクトの意味をベクトル で表したものを「ベクトル 埋め込み」と呼びます。
 
-Weaviate enables vector searches by indexing and storing data objects and their corresponding vector embeddings. The vector embeddings come from machine learning models.
+Weaviate はデータオブジェクトとそれに対応するベクトル 埋め込みをインデックス化し保存することで、ベクトル 検索を可能にします。これらのベクトル 埋め込みは機械学習モデルから得られます。
 
-In plain terms, Weaviate processes and organizes your data in such a way that objects can be retrieved based on their similarity to a query. To perform these tasks at speed, Weaviate does two things that traditional databases do not. Weaviate:
+要するに、Weaviate はデータを処理・整理し、クエリに似たオブジェクトを取り出せるようにします。これを高速に行うため、従来型データベースにはない 2 つのことを行います。Weaviate は次を行います。
 
-- Quantifies similarity
-- Indexes vector data
+- 類似度を定量化する
+- ベクトル データをインデックスする
 
-These operations enable Weaviate to do what it does.
+これらの処理によって、Weaviate は高いパフォーマンスを実現しています。
 
-### <i class="fa-solid fa-chalkboard"></i> Quantifying similarity
+### <i class="fa-solid fa-chalkboard"></i> 類似度の定量化
 
-As we've mentioned, vector searches are similarity-based, but what does that actually mean? How do we determine that two pieces of data are "similar"? What does it mean for two pieces of text, two images, or two objects in general, to be similar?
+すでに述べたように、ベクトル 検索は類似度ベースですが、実際にはどう判定するのでしょうか。2 つのデータが「似ている」とはどういうことでしょうか。テキストや画像、一般的なオブジェクトどうしの類似性をどう測るのでしょうか。
 
-This is a relatively simple idea that is actually incredibly interesting and intricate once we start to dive into the details.
+これは一見シンプルですが、掘り下げると非常に奥深いテーマです。
 
-But for now, you should know that machine learning (ML) models are the key to this whole process. The ML models that power vector searches share similarities with those that generate text responses from prompts. Instead of generating new text, these (vectorizer) models capture the "meaning" of text or other media. We will cover this in more detail later on.
+ここでは概念だけを押さえましょう。機械学習 (ML) モデルがこのプロセスの鍵です。ベクトル 検索を支える ML モデルは、プロンプトからテキストを生成するモデルと共通点があります。新しいテキストを生成する代わりに、これらの ベクトライザー モデルはテキストや他のメディアの「意味」を捉えます。詳細は後ほど扱います。
 
-### <i class="fa-solid fa-chalkboard"></i> Indexing (vector) data
+### <i class="fa-solid fa-chalkboard"></i> ベクトル データのインデックス化
 
-Vector searches can be very intensive computationally.
+ベクトル 検索は計算負荷が非常に高くなりがちです。
 
-To overcome this problem, Weaviate uses a combination of indexes including an approximate nearest neighbor (ANN) index and an inverted index. The ANN index lets Weaviate perform extremely fast vector searches. The inverted index lets Weaviate filter data using Boolean criteria.
+この問題を解決するため、Weaviate は approximate nearest neighbor (ANN) インデックスと 転置インデックス を組み合わせて使用します。ANN インデックスにより Weaviate は非常に高速なベクトル 検索を実現し、転置インデックスによりブール条件でのフィルタリングが可能になります。
 
-We will get into this in more detail later - but for now, it's enough to know that Weaviate can perform fast vector searches as well as filtering.
+詳細は後ほど説明しますが、ここでは Weaviate が高速なベクトル 検索とフィルタリングを両立させていることを覚えておいてください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-In this section, you learned about what vectors are and how Weaviate utilizes them at a very high level. You have also been introduced to two of Weaviate's key capabilities that help it to enable vector search at speed.
+このセクションでは、ベクトル が何か、そして Weaviate がそれらをどのように活用するかを大まかに学びました。また、Weaviate が高速なベクトル 検索を実現する 2 つの主要機能についても紹介しました。
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
 
 :::tip Self-reflection
-Can you describe, in your own words, what vectors are?
+ベクトル とは何かを、自分の言葉で説明できますか？
 :::
 
 <Quiz questions={howWeaviateWorks} />
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 要点
 
-- A vector is a series of numbers that capture the meaning or essence of objects.
-- Machine learning models help quantify similarity between different objects, which is essential for vector searches.
-- Weaviate uses a combination of approximate nearest neighbor (ANN) index and an inverted index to perform fast vector searches with filtering.
+- ベクトル は、オブジェクトの意味や本質を捉える一連の数字です。
+- 機械学習モデルは、異なるオブジェクト間の類似度を定量化するうえで不可欠です。
+- Weaviate は approximate nearest neighbor (ANN) インデックスと 転置インデックス を組み合わせることで、高速なベクトル 検索とフィルタリングを実現します。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

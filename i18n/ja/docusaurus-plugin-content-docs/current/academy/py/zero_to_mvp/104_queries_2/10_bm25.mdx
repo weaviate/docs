@@ -1,6 +1,6 @@
 ---
-title: BM25 (Keyword) searches
-description: Discover how to implement BM25 queries in Weaviate to optimize search results effectively.
+title: BM25（キーワード）検索
+description: Weaviate で BM25 クエリを実装し、検索結果を効果的に最適化する方法をご紹介します。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -12,26 +12,26 @@ import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
 [//]: # (<img src={imageUrl} alt="Image alt" width="75%"/>)
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-A BM25 search is one implementation of what is commonly called a 'keyword' search. Broadly speaking, it works by matching the search terms between the query and the data objects in the index.
+BM25 検索は、一般的に「キーワード検索」と呼ばれるものの実装の 1 つです。大まかに言えば、クエリとインデックス内のデータオブジェクトの間で検索語を照合して動作します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> About `bm25` queries
+## <i class="fa-solid fa-square-chevron-right"></i> `bm25` クエリについて
 
-### <i class="fa-solid fa-chalkboard"></i> How it works
+### <i class="fa-solid fa-chalkboard"></i> 動作の仕組み
 
-When a user submits a BM25 query, Weaviate will look for objects that contain the search terms in the text properties of the objects. Then, it will rank the results based on how many times the search terms appear in the text properties of the objects.
+ユーザーが BM25 クエリを送信すると、Weaviate はオブジェクトのテキストプロパティ内に検索語を含むオブジェクトを探します。その後、検索語がプロパティ内に出現する回数に基づいて結果をランキングします。
 
-In this way, a BM25 query is different to keyword-based filtering, which simply includes or excludes objects based on the provided set of conditions.
+このように、BM25 クエリは単に条件に基づいてオブジェクトを含めたり除外したりするキーワードベースのフィルタリングとは異なります。
 
-### <i class="fa-solid fa-code"></i> `bm25` query syntax
+### <i class="fa-solid fa-code"></i> `bm25` クエリの構文
 
-A BM25 query is shown below. Each BM25 query:
+以下に BM25 クエリの例を示します。各 BM25 クエリは次のとおりです。
 
-- **Must** include a query string, which can be any length,
-- **Can optionally** include a list of `properties` to search,
-- **Can optionally** include weights for each searched property, and
-- **Can optionally** request a `score` for each result.
+-  **必須** クエリ文字列を含める（長さは任意）  
+-  **任意** `properties` のリストを指定できる  
+-  **任意** 各 `properties` に対して重みを設定できる  
+-  **任意** 各結果に `score` を返すようリクエストできる  
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -44,10 +44,10 @@ A BM25 query is shown below. Each BM25 query:
 </TabItem>
 </Tabs>
 
-The above query will return the top 3 objects based on its BM25F score, based on the query string `"food"`. The query will search the `question` and `answer` properties of the objects, from which `question` property will be boosted by a factor of 3.
+上記のクエリは、クエリ文字列 `"food"` に対する BM25F スコアに基づき、上位 3 件のオブジェクトを返します。`question` と `answer` プロパティを検索し、そのうち `question` プロパティは 3 倍にブーストされます。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -58,27 +58,27 @@ The above query will return the top 3 objects based on its BM25F score, based on
 
 </details>
 
-:::tip Exercise
-Try varying the boost factor, and the query string. What happens to the results?
+:::tip 演習
+ブースト係数やクエリ文字列を変更してみましょう。結果はどのように変化しますか？
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Tokenization and `bm25` searches
+## <i class="fa-solid fa-square-chevron-right"></i> トークン化と `bm25` 検索
 
-### <i class="fa-solid fa-chalkboard"></i> Why tokenization matters
+### <i class="fa-solid fa-chalkboard"></i> トークン化が重要な理由
 
-In an earlier unit, we briefly discussed [the inverted index](../103_schema_and_imports/10_data_structure.mdx#-inverted-index), and that it stores a "tokenized" index of data.
+以前のユニットで [ 転置インデックス ](../103_schema_and_imports/10_data_structure.mdx#-inverted-index) について簡単に説明し、それがトークン化されたデータのインデックスを保持していることに触れました。
 
-When a BM25 query is submitted, Weaviate will search each property according to its tokenization property. For example, if a property is tokenized with the `word` tokenization option, it will tokenize the query string into its constituent, lowercase, words, and search for each word in the index. On the other hand, if a property uses a `field` tokenization, Weaviate will look for the entire query string in the index.
+BM25 クエリが送信されると、Weaviate は各プロパティをそのトークン化設定に従って検索します。たとえば、あるプロパティが `word` トークン化オプションを使用している場合、クエリ文字列は小文字化された単語に分割され、各単語がインデックス内で検索されます。一方、プロパティが `field` トークン化を使用している場合、Weaviate はクエリ文字列全体をインデックス内で検索します。
 
-:::tip This applies to the inverted index only
-This is different to any tokenization in the context of, for example, language models or vectorization models. Tokenization in the context of the current section only applies to the inverted index.
+:::tip これは転置インデックスにのみ適用されます
+ここで説明しているトークン化は、言語モデルやベクトライザーなどにおけるトークン化とは異なります。本節で扱うトークン化は転置インデックスにのみ適用されます。
 :::
 
-More concretely, let's take a look at some examples.
+具体的な例を見てみましょう。
 
-### <i class="fa-solid fa-code"></i> `word` tokenization
+### <i class="fa-solid fa-code"></i> `word` トークン化
 
-In this example, we search through the `question` property with the query string `Jeopardy`. The `question` property is tokenized with the `word` tokenization option.
+この例では、クエリ文字列 `Jeopardy` を使用して `question` プロパティを検索します。`question` プロパティは `word` トークン化オプションでトークン化されています。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -91,25 +91,25 @@ In this example, we search through the `question` property with the query string
 </TabItem>
 </Tabs>
 
-The `word` tokenization keeps alpha-numeric characters in lowercase, and splits them by whitespace. Accordingly, the search results include those where the `question` property contains the string `Jeopardy!`, which is the title of the TV show.
+`word` トークン化では、英数字は小文字化され、空白で分割されます。そのため、検索結果には `question` プロパティに TV 番組名 `Jeopardy!` を含むものが返されます。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
   startMarker="# Expected BM25WithWordTokenization results"
-  endMarker="# END Expected BM25WithWordTokenization results"
+  endMarker="# END BM25WithWordTokenization results"
   language="py"
 />
 
 </details>
 
-Now, let's take a look at the same query, but with the `field` tokenization option.
+続いて、同じクエリを `field` トークン化オプションで実行してみましょう。
 
-### <i class="fa-solid fa-code"></i> `field` tokenization
+### <i class="fa-solid fa-code"></i> `field` トークン化
 
-In this example, the query string remains the same (`Jeopardy`), however we are now searching the `round` property, which is tokenized with the `field` tokenization option.
+この例では、クエリ文字列は同じ (`Jeopardy`) ですが、今回は `field` トークン化オプションが設定された `round` プロパティを検索します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -122,49 +122,48 @@ In this example, the query string remains the same (`Jeopardy`), however we are 
 </TabItem>
 </Tabs>
 
-The `field` tokenization trims whitespace characters and then keeps the entire string as is. Accordingly, the search does not return any results, even though we know that `round` values include those such as `Jeopardy!` and `Double Jeopardy!`.
+`field` トークン化では、空白をトリミングした後、文字列全体をそのまま保持します。そのため、`round` の値に `Jeopardy!` や `Double Jeopardy!` が含まれていることが分かっていても、検索結果は返されません。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
   startMarker="# Expected BM25WithFieldTokenization results"
-  endMarker="# END Expected BM25WithFieldTokenization results"
+  endMarker="# END BM25WithFieldTokenization results"
   language="py"
 />
 
 </details>
 
-:::tip Exercise
-Try changing the query to `Jeopardy!`. What happens to the results?
+:::tip 演習
+クエリを `Jeopardy!` に変更してみましょう。結果はどのように変化しますか？
 :::
+### <i class="fa-solid fa-chalkboard"></i> 経験則
 
-### <i class="fa-solid fa-chalkboard"></i> Rules of thumb
+[トークナイズの全オプション一覧](/weaviate/config-refs/collections.mdx#tokenization) は `word`、`whitespace`、`lowercase`、`field` です。各オプションを選ぶ際の経験則として、部分一致を取得したい長いテキストには `word` を、完全一致のみを取得したい短いテキストには `field` を使用します。その他のオプションはその中間で、たとえば大文字小文字を区別したい場合は `whitespace`、特殊文字を保持したい場合は `lowercase` のように、特定の状況で役立ちます。
 
-The [full list of tokenization options](/weaviate/config-refs/collections.mdx#tokenization) are `word`, `whitespace`, `lowercase` and `field`. A rule of thumb on when to use each option is to use `word` for long text where you want to retrieve partial matches, and `field` for short text where you only want to retrieve exact matches. The others are somewhere in between, and may be useful in specific situations, where for example you want case to matter (`whitespace`) or special characters to be respected (`lowercase`).
+## <i class="fa-solid fa-square-chevron-right"></i> BM25F スコアリング
 
-## <i class="fa-solid fa-square-chevron-right"></i> BM25F scoring
+結果のスコア付けとランキングに使用される正確なアルゴリズムは BM25F アルゴリズムと呼ばれます。詳細はこのコースの範囲を超えますが、要点として BM25F アルゴリズムは BM25 アルゴリズムの派生形で、`F` は「field」を意味します。検索対象のフィールドに基づいて結果をスコアリングし、ランキングします。
 
-The exact algorithm used for scoring and ranking the results is called the BM25F algorithm. The details are beyond the scope of this course, but the gist is that the BM25F algorithm is a variant of the BM25 algorithm, where the `F` stands for "field". It is used to score and rank results based on the fields that are searched.
+アルゴリズムの詳細に踏み込みたい場合は、[この Wikipedia ページ](https://en.wikipedia.org/wiki/Okapi_BM25#Modifications) をご覧ください。
 
-If you would like to delve into the details of the exact algorithm, you can review [this Wikipedia page](https://en.wikipedia.org/wiki/Okapi_BM25#Modifications).
-
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
 <Quiz questions={Bm25Question} />
 
 <Quiz questions={wordTokenizationQuestion} />
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- BM25 search matches search terms between the query and data objects in the index and ranks results based on the frequency of those terms.
-- A BM25 query must include a query string, and can optionally include a list of properties to search, weights for each searched property, and a request for a score for each result.
-- BM25 queries are impacted by the tokenization of the properties being searched; for instance, `word` tokenization splits the query string into lowercase words and `field` tokenization searches for the entire query string.
-- Consider your search use case for picking tokenization options. For example, use `word` for long text with partial matches, and `field` for short text with exact matches.
-- BM25F scoring, where 'F' stands for 'field', is used to score and rank the search results based on the fields that are searched.
+- BM25 検索はクエリとインデックス内のデータオブジェクト間で検索語をマッチさせ、それらの語の出現頻度に基づいて結果をランキングします。  
+- BM25 クエリには必ずクエリ文字列が必要で、加えて検索するプロパティの一覧、各プロパティの重み、各結果に対するスコアを要求することを任意で指定できます。  
+- BM25 クエリは検索対象プロパティのトークナイズ方法の影響を受けます。たとえば `word` トークナイズではクエリ文字列を小文字の単語に分割し、`field` トークナイズではクエリ文字列全体を検索します。  
+- 検索のユースケースを考慮してトークナイズオプションを選択してください。例えば部分一致を含む長文検索には `word`、完全一致のみの短文検索には `field` を使用します。  
+- 「F」は「field」を表す BM25F スコアリングは、検索対象のフィールドに基づいて検索結果をスコアリングし、順位付けします。  
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

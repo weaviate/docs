@@ -1,5 +1,5 @@
 ---
-title: Selecting the right search type
+title: 適切な検索タイプの選択
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,53 +8,55 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import TSCode from '!!raw-loader!./_snippets/20_selection.ts';
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-Selecting the right search type is key for effective search tasks. Let's explore how to select the right search type for your needs.
-
-
-## <i class="fa-solid fa-square-chevron-right"></i> Rules of thumb
+適切な検索タイプを選択することは、効果的な検索タスクの鍵です。ここでは、ニーズに合った検索タイプを選ぶ方法を説明します。
 
 
-### <i class="fa-solid fa-chalkboard"></i> When to use vector search
+## <i class="fa-solid fa-square-chevron-right"></i> 経験則
 
-Vector search is the most robust and versatile search type. As such, it is well-suited for situations where the the meaning, or the vector representation, is of the highest importance.
 
-In cross-modal, object-based or multi-lingual searches, vector search may be the only viable option.
+### <i class="fa-solid fa-chalkboard"></i> ベクトル検索の使用タイミング
 
-Start with vector search for:
+ベクトル検索は、最も堅牢で汎用性の高い検索タイプです。そのため、意味やベクトル表現が最重要となる場面に適しています。
 
-- **Non-text, or cross-modal searches**: Essential for searching across different types of media, like finding images using text descriptions or vice versa.
-- **Object-based searches**: For finding similar objects to an extracted text chunk, image, or video, vector search is likely the only viable solution.
-- **Multi-lingual contexts**: The go-to choice for handling searches in multiple languages, where traditional keyword-based search may fall short.
-- **Complex query understanding**: Vector search excels in interpreting and responding to complex queries that require understanding context or nuances in language.
+クロスモーダル、オブジェクトベース、または多言語検索では、ベクトル検索が唯一の現実的な選択肢となる場合があります。
 
-### <i class="fa-solid fa-chalkboard"></i> When to use keyword search
+まずはベクトル検索を検討してください:
 
-Keyword search is useful when there is an expectation or requirement to match the exact search terms. This can be the case for specific domains such as legal, medical or technical areas where the exact terminology is important.
+-  **非テキストまたはクロスモーダル検索** : 画像をテキスト説明で探す、またはその逆など、異なるメディア間で検索する際に不可欠です。  
+-  **オブジェクトベース検索** : 抽出したテキストチャンク・画像・動画と類似するオブジェクトを探す場合、ベクトル検索がほぼ唯一の解決策です。  
+-  **多言語コンテキスト** : 従来のキーワード検索では不足することがある多言語検索に最適です。  
+-  **複雑なクエリ理解** : 文脈やニュアンスの理解が求められる複雑なクエリに強みを発揮します。  
 
-Keyword search is also useful when the user is unlikely to make mistakes in inputs and is inputting a predictable set of terms, such as through a sanitized form or a drop-down menu.
 
-In summary, start with keyword search for:
+### <i class="fa-solid fa-chalkboard"></i> キーワード検索の使用タイミング
 
-**Exact term matching**: Ideal in domains like legal, medical, or technical fields where specific terminology is crucial.
-**Predictable user inputs**: Works well when users are expected to input a defined set of terms, like through forms or drop-down menus.
-**Simple and direct queries**: Effective for straightforward search needs where the complexity of natural language processing is not required.
-**Fast and specific results**: Suitable for quick retrieval of information based on specific keywords or phrases.
+キーワード検索は、検索語を正確に一致させる必要がある、またはそう期待される場合に有用です。法務・医療・技術など、専門用語が重要な領域では特に有効です。
 
-### <i class="fa-solid fa-chalkboard"></i> When to use hybrid search
+また、ユーザーが入力ミスをしにくく、フォームやドロップダウンメニューで決められた語を入力するような予測可能な状況でも効果的です。
 
-Hybrid search is a great choice for "messy" situations.
+まとめると、キーワード検索を選ぶ場面は次のとおりです:
 
-Because hybrid search combines results sets from both vector and keyword searches, it is able to provide a good balance between the robustness of vector search and the exactitude of keyword search.
+-  **正確な用語一致** : 法務・医療・技術分野など、専門用語が重要な領域に最適です。  
+-  **予測可能なユーザー入力** : フォームやドロップダウンメニューなど、定義済みの語を入力するケースに向いています。  
+-  **シンプルかつ直接的なクエリ** : 自然言語処理の複雑さが不要な、単純な検索ニーズに適しています。  
+-  **高速かつ特定の結果** : 特定のキーワードやフレーズに基づく情報を迅速に取得したい場合に適しています。  
 
-As a result, hybrid search is a generally good choice for most search needs that do not fall into the specific use cases of vector or keyword search.
 
-In summary, consider hybrid search for:
+### <i class="fa-solid fa-chalkboard"></i> ハイブリッド検索の使用タイミング
 
-- **Broad topic ranges**: Effective in scenarios where the target corpus covers a wide array of subjects, requiring a versatile search approach.
-- **Versatile search scenarios**: Useful for real-life scenarios that often require a combination of results from both vector and keyword searches.
-- **Unpredictable user inputs**: Ideal for many real-life scenarios where the user has free reign over the query. Some user queries may be aimed at direct matches while others' queries may be more about the overall meaning.
+ハイブリッド検索は「複雑な」状況に最適です。
+
+ベクトル検索とキーワード検索の結果セットを組み合わせることで、ベクトル検索の堅牢性とキーワード検索の正確性をバランス良く提供します。
+
+そのため、ベクトル検索やキーワード検索の特定用途に当てはまらない、大多数の検索ニーズに対して一般的に優れた選択肢となります。
+
+まとめると、ハイブリッド検索を検討すべき場面は次のとおりです:
+
+-  **幅広いトピック範囲** : コーパスが多岐にわたる場合に有効で、柔軟な検索アプローチを提供します。  
+-  **多様な検索シナリオ** : ベクトル検索とキーワード検索の両結果が求められる現実的なシナリオに役立ちます。  
+-  **予測しづらいユーザー入力** : ユーザーが自由にクエリを入力する多くの実際場面で理想的です。直接一致を狙うクエリもあれば、意味全体を重視するクエリもあります。  
 
 
 <!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review

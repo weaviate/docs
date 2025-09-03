@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "概要"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,82 +7,77 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_snippets/100_config.py';
 
-In Weaviate, multi-tenancy allows a collection to efficiently serve isolated groups of data. Each "tenant" in a multi-tenant collection can only access its own data, while sharing the same data structure and settings.
+Weaviate におけるマルチテナンシーは、コレクションが分離されたデータグループを効率的に提供できるようにする機能です。マルチテナント コレクション内の各「テナント」は、自身のデータのみにアクセスでき、同じデータ構造と設定を共有します。
 
-![multi-tenancy](./img/multi-tenancy-dark.png#gh-dark-mode-only)
-![multi-tenancy](./img/multi-tenancy-light.png#gh-light-mode-only)
+![マルチテナンシー](./img/multi-tenancy-dark.png#gh-dark-mode-only)
+![マルチテナンシー](./img/multi-tenancy-light.png#gh-light-mode-only)
 
-This allows Weaviate to efficiently serve a large number of tenants with minimal overhead. And as you will see later, you can manage individual tenants to balance performance and resource usage.
+これにより、Weaviate は最小限のオーバーヘッドで多数のテナントを効率的に処理できます。後ほど説明するように、個々のテナントを管理してパフォーマンスとリソース使用量のバランスを取ることも可能です。
 
 <details>
-  <summary>"Multi-tenancy" in other contexts</summary>
+  <summary>他の文脈における「マルチテナンシー」</summary>
 
-In general, the term "multi-tenancy" refers to a software architecture where a single instance of the software serves multiple "tenants". In that context, each tenant may be a group of users who share common access.
+一般に「マルチテナンシー」とは、単一のソフトウェア インスタンスが複数の「テナント」を提供するソフトウェア アーキテクチャを指します。この場合、各テナントは共通アクセス権を持つユーザーグループであることが多いです。
 
-This is similar to the concept of multi-tenancy in Weaviate, where each tenant is a group of data that is isolated from other tenants.
+これは Weaviate におけるマルチテナンシーの概念と似ており、各テナントは他のテナントから分離されたデータグループとして扱われます。
 
 </details>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Why use multi-tenancy?
+## <i class="fa-solid fa-square-chevron-right"></i> マルチテナンシー使用の理由
 
-A typical multi-tenancy use-case is in a software-as-a-service (SaaS) application. In many SaaS applications, each end user or account will have private data that should be not be accessible to anyone else.
+典型的なユースケースとして、SaaS (software-as-a-service) アプリケーションがあります。多くの SaaS アプリケーションでは、各エンドユーザーやアカウントが持つプライベート データは他者からアクセスできない必要があります。
 
-### <i class="fa-solid fa-chalkboard"></i> Example case study
+### <i class="fa-solid fa-chalkboard"></i> ケーススタディの例
 
-In this course, we'll learn about multi-tenancy by putting ourselves in the shoes of a developer building an application called `MyPrivateJournal`.
+このコースでは、`MyPrivateJournal` というアプリを開発する立場になり、マルチテナンシーについて学んでいきます。
 
-`MyPrivateJournal` is a SaaS (software-as-a-service) application where users like *Steve*, *Alice* and so on can write and store their journal entries. Each user's entries should be private and not accessible to anyone else.
+`MyPrivateJournal` は SaaS アプリケーションで、*Steve*、*Alice* などのユーザーが日記を作成・保存できます。各ユーザーの日記はプライベートで、他者が閲覧できてはいけません。
 
-Using single-tenant collections, you might implement this with:
+単一テナント コレクションでこれを実装すると、次のいずれかになります。
 
-1. **A monolithic collection**: To store the entire dataset, with an end user identifier property
-1. **Per end-user collections**: Where each end user's data would be in a separate collection
+1. **モノリシック コレクション**: すべてのデータセットをエンドユーザー識別子プロパティ付きで 1 つのコレクションに保存  
+1. **ユーザーごとのコレクション**: 各エンドユーザーのデータを個別のコレクションに保存  
 
-While these may work to some extent, both of these options have significant limitations.
+しかし、どちらにも大きな制限があります。
 
-- Using a monolithic collection:
-    - A developer mistake could easily expose Steve's entries to Alice, which would be a significant privacy breach.
-    - As `MyPrivateJournal` grows, Steve's query would become slower as it must look through the entire collection.
-    - When Steve asks `MyPrivateJournal` to delete his data, the process would be complex and error-prone.
-- Using end-user-specific collections:
-    - `MyPrivteJournal` may need to spend more on hardware to support the high number of collections.
-    - Changes to configurations (e.g. adding a new property) would need to be run separately for each collection.
+- モノリシック コレクションの場合:  
+    - 開発者のミスで *Steve* の日記が *Alice* に漏れるなど、重大なプライバシー侵害が起こり得ます。  
+    - `MyPrivateJournal` が成長すると、*Steve* のクエリはコレクション全体を検索するため遅くなります。  
+    - *Steve* が `MyPrivateJournal` にデータ削除を依頼した場合、処理が複雑でエラーが起きやすくなります。  
+- ユーザーごとのコレクションの場合:  
+    - `MyPrivateJournal` は大量のコレクションを支えるため、より多くのハードウェアコストがかかります。  
+    - 設定変更 (例: 新しいプロパティの追加) を行う際、各コレクションごとに個別対応が必要です。  
 
-Multi-tenancy in Weaviate solves these problems by providing a way to isolate each user's data while sharing the same configuration.
+Weaviate のマルチテナンシーは、同一設定を共有しながらユーザーデータを分離することで、これらの問題を解決します。
 
-### <i class="fa-solid fa-chalkboard"></i> Benefits of multi-tenancy
+### <i class="fa-solid fa-chalkboard"></i> マルチテナンシーの利点
 
-In multi-tenant collection, each "tenant" is isolated from each other, while sharing the same set of configurations. This arrangement helps make multi-tenancy far more resource-efficient than using many individual collections.
+マルチテナント コレクションでは、各「テナント」が相互に分離されつつ、同じ設定を共有します。この構成により、多数の単一テナント コレクションを作るよりもはるかにリソース効率が高くなります。
 
-A Weaviate node can host more tenants than single-tenant collections.
+1 つの Weaviate ノードは、単一テナント コレクションよりも多くのテナントをホストできます。また、設定が 1 つで済むため開発者の負担も軽減され、テナント間のデータ漏えいリスクがなく、各テナントやデータの管理が容易になります。
 
-It also makes developers' job easier, as there is only one set of collection configurations. The data isolation between tenants eliminates risks of accidental data leakage and makes it easier to manage individual tenants and tenant data.
+#### `MyPrivateJournal` とマルチテナンシー
 
-#### `MyPrivateJournal` and multi-tenancy
+`MyPrivateJournal` はマルチテナンシーを利用し、各ユーザーの日記を個別のテナントに保存できます。これにより *Steve* と *Alice* のデータが互いに分離され、管理も安全になります。
 
-So, the `MyPrivateJournal` app can use multi-tenancy and store each user's journal entries in a separate tenant. This way, Steve's entries are isolated from Alice's, and vice versa. This isolation makes it easier to manage each user's data and reduces the risk of data leakage.
+さらに、`MyPrivateJournal` はアクティブでないユーザーのデータをコールド ストレージへ移動し、Weaviate ノードのホット (メモリ) およびウォーム (ディスク) リソース使用量を低減できます。
 
-As you will see later, `MyPrivateJournal` can also offload inactive users' data to cold storage, reducing the hot (memory) and warm (disk) resource usage of the Weaviate node.
+## <i class="fa-solid fa-square-chevron-right"></i> テナントとコレクションの比較
 
-## <i class="fa-solid fa-square-chevron-right"></i> Tenants vs collections
+マルチテナント コレクションには、任意の数のテナントを作成できます。
 
-Each multi-tenant collection can have any number of tenants.
-
-A tenant is very similar to a single-tenant collection. For example:
-
-| Aspect | Tenant | Single-tenant collection |
+| 対象 | テナント | 単一テナント コレクション |
 | ----- | ----- | ----- |
-| Objects | Belong to a tenant | Belong to a collection |
-| Vector indexes | Belong to a tenant | Belong to a collection |
-| Inverted indexes | Belong to a tenant | Belong to a collection |
-| Deletion | Deleting a tenant deletes all tenant data | Deleting a collection deletes all collection data |
-| Query | Can search one tenant at a time | Can search one collection at a time |
+| オブジェクト | テナントに属する | コレクションに属する |
+| ベクトルインデックス | テナントに属する | コレクションに属する |
+| 転置インデックス | テナントに属する | コレクションに属する |
+| 削除 | テナントを削除するとそのテナントのデータが削除される | コレクションを削除するとそのコレクションのデータが削除される |
+| クエリ | 1 度に 1 つのテナントを検索できる | 1 度に 1 つのコレクションを検索できる |
 
-But as you will have guessed, there are also differences. We'll cover these in the next sections, as we follow `MyPrivateJournal` implementing multi-tenancy in Weaviate.
+もちろん、違いもあります。次のセクションでは、`MyPrivateJournal` が Weaviate でマルチテナンシーを実装する流れに沿って、これらの違いを確認していきます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

@@ -1,21 +1,21 @@
 ---
-title: A little more about GraphQL
+title: GraphQL の詳細
 sidebar_position: 99
 ---
 
 import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
-## <i class="fa-solid fa-square-chevron-right"></i> About GraphQL
+## <i class="fa-solid fa-square-chevron-right"></i> GraphQL 概要
 
 <img src={imageUrl} alt="Image alt" width="75%"/>
 
-Here, we'll pause a little bit to talk about why we use GraphQL, and what to keep in mind when using GraphQL with Weaviate.
+ここでは、なぜ Weaviate で GraphQL を使用するのか、そして GraphQL を使用する際に留意すべき点について少し立ち止まって説明します。
 
-### <i class="fa-solid fa-chalkboard"></i> Query structure
+### <i class="fa-solid fa-chalkboard"></i> クエリ構造
 
-One of the key benefits of GraphQL is that it allows the user to specify the exact data that they want to retrieve. This means that the user can request only the data that they need, reducing over-fetching or under-fetching of data.
+GraphQL の大きな利点の 1 つは、取得したいデータをユーザーが正確に指定できる点です。つまり、必要なデータだけをリクエストできるため、データの過剰取得や不足取得を抑えられます。
 
-Let's review the fundamental syntax of GraphQL in Weaviate.
+それでは、Weaviate における GraphQL の基本構文を確認しましょう。
 
 ```graphql
 {
@@ -27,27 +27,27 @@ Let's review the fundamental syntax of GraphQL in Weaviate.
 }
 ```
 
-You can see that a Weaviate GraphQL query contains multiple components. If you were to query a database of Wikipedia articles objects, the fields in the above query might be as follows:
+Weaviate の GraphQL クエリには複数のコンポーネントが含まれていることが分かります。Wikipedia 記事オブジェクトのデータベースを問い合わせる場合、上記クエリの各フィールドは次のようになります。
 
-* `<Function>`: The function that you want to use, such as `Get`, `Aggregate`, or `Explore`.
-* `<Class>`: The class that you want to retrieve data from, such as `WikiArticle`.
-* `<properties>`: The properties that you want to retrieve, such as `title`, `wiki_summary`.
+* `<Function>`: 使用したい関数。例: `Get`、`Aggregate`、`Explore`
+* `<Class>`: データを取得したいクラス。例: `WikiArticle`
+* `<properties>`: 取得したいプロパティ。例: `title`、`wiki_summary`
 
-Each field can also accept arguments, such as `limit` to limit the number of objects to be returned, or `where` to apply a filter.
+各フィールドには `limit` で返却オブジェクト数を制限したり、`where` でフィルターを適用したりといった引数も渡せます。
 
-The data flow with a GraphQL query can be conceptualized like this:
+GraphQL クエリにおけるデータフローは、次の図のように概念化できます。
 
 ![](https://kinsta.com/wp-content/uploads/2022/09/graphql.png)
 
-This specificity may seem challenging at first. However, it is a powerful feature that allows you to build highly customized queries, and to retrieve only the data that you need.
+最初はこの詳細さが難しく感じるかもしれません。しかしこれは強力な機能であり、きわめてカスタマイズ性の高いクエリを構築し、必要なデータだけを取得できます。
 
-It is also highly efficient, as what may have taken multiple requests in a REST API can be done in a single GraphQL query.
+さらに、REST API では複数回のリクエストが必要だった処理を、GraphQL では 1 回のクエリで実現できるため、非常に効率的です。
 
-### <i class="fa-solid fa-chalkboard"></i> Query syntax
+### <i class="fa-solid fa-chalkboard"></i> クエリ構文
 
-For the most part GraphQL is very flexible in terms of formatting, such that [whitespaces](https://spec.graphql.org/October2021/#sec-White-Space) and [commas](https://spec.graphql.org/October2021/#sec-Insignificant-Commas) are typically insignificant. For instance, the queries below are interpreted identically:
+ほとんどの場合、GraphQL はフォーマットに関して非常に柔軟で、[空白](https://spec.graphql.org/October2021/#sec-White-Space) や [カンマ](https://spec.graphql.org/October2021/#sec-Insignificant-Commas) は通常無視されます。例えば、次のクエリはすべて同じ意味になります。
 
-This query:
+このクエリ:
 
 ```graphql
 {
@@ -60,19 +60,19 @@ This query:
 }
 ```
 
-Is the same as:
+次のクエリと同じです:
 
 ```graphql
 {Get{JeopardyQuestion(limit:1){question answer}}}
 ```
 
-Or even (notice the comma):
+さらに次のようにも書けます（カンマに注目してください）:
 
 ```graphql
 {Get{JeopardyQuestion(limit:1){question,answer}}}
 ```
 
-However, importantly, names in GraphQL [are case-sensitive](https://spec.graphql.org/October2021/#sec-Names), so `Get` and `JeopardyQuestion` are different from `get` and `jeopardyquestion`.
+ただし重要な点として、GraphQL の名前は [大文字小文字を区別します](https://spec.graphql.org/October2021/#sec-Names)。そのため `Get` や `JeopardyQuestion` は、`get` や `jeopardyquestion` とは別物になります。
 
 <Quiz questions={graphQLSyntax} />
 
@@ -114,46 +114,46 @@ We'll take a closer look at the arguments in greater detail in later sections.
 
 <Quiz questions={varName} /> -->
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
 <img src={imageUrl} alt="Image alt" width="75%"/>
 
-Each section should have a quick recap/review video of about a minute.
+各セクションには 1 分程度の短いリキャップ／復習ビデオを用意する予定です。
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
 
-**Aspirational section.** Would like to have the user provide a freeform input, and get back a similarity score and our definition.
+**構想中のセクションです。** ユーザーが自由形式の入力を行い、類似度スコアと当社の定義を返すようにしたいと考えています。
 
 :::info TODO
-Can you describe, in your own sentence, XXX?
+あなた自身の文章で XXX を説明できますか？
 
-Input box -> vectorizer -> compare to model answer.
+Input box -> ベクトライザー -> model answer と比較
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
 :::info
-Add summary
+要約を追加
 :::
 
 import Quiz from '/src/components/Academy/quiz.js'
 const graphQLSyntax = [{
-  questionText: 'Which of the following is true about GraphQL?',
+  questionText: 'GraphQL について正しいものはどれですか？',
   answerOptions: [
     {
-      answerText: 'It is not case-sensitive.',
+      answerText: '大文字小文字を区別しない。',
       isCorrect: false,
-      feedback: 'GraphQL is case sensitive.',
+      feedback: 'GraphQL は大文字小文字を区別します。',
     },
     {
-      answerText: 'Whitespaces are typically ignored.',
+      answerText: '空白は通常無視される。',
       isCorrect: true,
-      feedback: 'This is also the case with commas.',
+      feedback: 'これはカンマについても同様です。',
     },
     {
-      answerText: 'GraphQL always returns the same fields in the response.',
+      answerText: 'GraphQL は常に同じフィールドをレスポンスに含める。',
       isCorrect: false,
-      feedback: 'As you have seen in our Get queries previously, you must specify the fields to be returned in GraphQL.',
+      feedback: '以前の Get クエリで確認したとおり、GraphQL では返却フィールドを指定する必要があります。',
     },
   ]
 }];

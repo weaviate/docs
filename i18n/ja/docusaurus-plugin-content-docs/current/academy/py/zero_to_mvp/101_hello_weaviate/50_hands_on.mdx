@@ -1,46 +1,46 @@
 ---
-title: Getting hands-on
+title: ハンズオン
 ---
 
-### <i class="fa-solid fa-chalkboard"></i>  Preparation
+### <i class="fa-solid fa-chalkboard"></i>  準備
 
-:::note Obtain a free trial OpenAI API key
-This section includes queries using the OpenAI inference endpoint. If you don't already have an OpenAI account, we recommend creating one. At the time of writing, OpenAI provides trial credits which should be sufficient for these exercises.
+:::note 無料トライアルの OpenAI API キーを取得
+このセクションでは、 OpenAI 推論エンドポイントを使用したクエリを含みます。まだ OpenAI アカウントをお持ちでない場合は、作成することをおすすめします。執筆時点では、 OpenAI が提供するトライアルクレジットで本演習に十分対応できます。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i>  Overview
+## <i class="fa-solid fa-square-chevron-right"></i>  概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/8aHIAM3665c' controls='true'/>
 <br/>
 
-Now that you've set up your own Weaviate instance and installed a client, let's get hands-on with Weaviate.
+ご自身のWeaviateインスタンスをセットアップしクライアントをインストールできたので、実際に Weaviate を操作してみましょう。
 
-### <i class="fa-solid fa-code"></i>  Client instantiation
+### <i class="fa-solid fa-code"></i>  クライアントの生成
 
-Create a `client` object for persistent access to your Weaviate instance. You can set the following parameters:
+Weaviate インスタンスへ継続的にアクセスするための `client` オブジェクトを作成します。設定できるパラメーターは次のとおりです。
 
-- **Host URL (required)**
+- **Host URL (必須)**  
 
-  This is the location of your Weaviate instance. The URL resembles
+  これはご自身のWeaviateインスタンスの場所を示します。 URL は次のようになります  
 
   ```
   https://your-sandbox-uo2vgb1z.weaviate.network
   ```
 
-- **Authentication details (optional)**
+- **認証情報 (任意)**  
 
-  If authentication is enabled, you MUST provide your authentication information here. Otherwise the Weaviate instance will not provide access.
+  認証が有効な場合、ここで認証情報を必ず指定してください。指定しないと Weaviate インスタンスへアクセスできません。  
 
   ```
   AbCdEfGhIjKlMnOpAXB6gbBIaxHDuuwWj5OD
   ```
-- **Additional headers (optional)**
+- **追加ヘッダー (任意)**  
 
-  You can provide additional headers. These headers provide API keys for inference services such as Cohere, Hugging Face or OpenAI.
+  追加ヘッダーを指定して、 Cohere、 Hugging Face、 OpenAI などの推論サービス用 API キーを渡すことができます。  
 
-A fully configured client resembles this sample code, edited to match your Weaviate instance.
+以下は、ご自身のWeaviateインスタンスに合わせて編集した、完全に設定されたクライアントのサンプルコードです。
 
 <!-- TODO - add client code examples -->
 
@@ -48,16 +48,16 @@ import ClientInstantiationCode from './_snippets/academy.hello.client.instantiat
 
 <ClientInstantiationCode/>
 
-### <i class="fa-solid fa-code"></i>  Try it out!
+### <i class="fa-solid fa-code"></i>  試してみましょう!
 
-Now, connect to your Weaviate instance.
+次に、 Weaviate インスタンスへ接続します。
 
-1. Copy the client code below to a file called `connection_example.py`.
-1. Edit the file to use your Weaviate URL
-1. Edit the API key to use the key for your sandbox.
+1. 以下のクライアントコードを `connection_example.py` というファイルにコピーします。  
+1. ファイルを編集して、ご自身の Weaviate URL を設定します。  
+1. サンドボックス用の API キーに置き換えます。  
 
-   You can find the API keys for your sandbox by clicking the "Details" button and looking for "API keys" in the Authentication tab. The key resembles this one.
-1. Run the file.
+   サンドボックスの API キーは「Details」ボタンをクリックし、 Authentication タブの「API keys」で確認できます。キーは次のような形式です。  
+1. ファイルを実行します。  
 
    ```
    python3 connection_example.py
@@ -65,169 +65,168 @@ Now, connect to your Weaviate instance.
 
 import ClientCheckConnection from './_snippets/academy.hello.check.connection.mdx';
 
-   <ClientCheckConnection/>
+<ClientCheckConnection/>
 
-Congratulations! You've made your first request to a Weaviate API! The `meta` REST endpoint returns configuration details for your instance.
+おめでとうございます! Weaviate API への最初のリクエストが完了しました。 `meta` REST エンドポイントは、インスタンスの構成情報を返します。
 
-The Weaviate API allows you to do quite a bit. We will try out some examples in the next sections. For more details, see the [API documentation](/weaviate/api/index.mdx).
+Weaviate API では多くの操作が可能です。次のセクションでいくつか例を試してみましょう。詳細は [API ドキュメント](/weaviate/api/index.mdx) をご覧ください。
 
-## <i class="fa-solid fa-square-chevron-right"></i>  Weaviate API and the client
+## <i class="fa-solid fa-square-chevron-right"></i>  Weaviate API とクライアント
 
-### <i class="fa-solid fa-chalkboard"></i>  Available APIs
+### <i class="fa-solid fa-chalkboard"></i>  利用可能な API
 
-Weaviate uses two API types - REST APIs and GraphQL APIs. They work together to provide a rich set of functionality.
+Weaviate では 2 種類の API ― REST API と GraphQL API ― を使用しており、両者が連携して豊富な機能を提供します。
 
-:::tip REST APIs vs GraphQL APIs
-The **REST API** provides:
-- CRUD (Create, Read, Update and Delete) operations
-- Metadata about the database
+:::tip REST API と GraphQL API の違い
+ **REST API** では次の操作が可能です:
+- CRUD (Create, Read, Update, Delete) 操作  
+- データベースのメタデータ取得  
 
-The **GraphQL API** provides:
-- Data searches
-- Data object retrieval
-- Information aggregation
-- Vector space exploration
+ **GraphQL API** では次の操作が可能です:
+- データ検索  
+- データオブジェクト取得  
+- 情報集約  
+- ベクトル空間の探索  
 :::
 
-You will learn about these capabilities over the course of these units.
+これらの機能については、このユニットを通じて学習します。
 
 <details>
-  <summary>What is REST?</summary>
+  <summary>REST とは？</summary>
 
-REST is an acronym for **RE**presentational **S**tate **T**ransfer.
+REST は **RE**presentational **S**tate **T**ransfer の頭字語です。
 
-A REST API provides multiple endpoints, each with its own URL, that can be used to interact with the application.
+REST API では複数のエンドポイントが用意されており、それぞれ固有の URL でアプリケーションとやり取りできます。
 
-The endpoints are organized into a hierarchy, with each endpoint representing a resource. The client can then request information about these resources by sending a request to the server.
+エンドポイントは階層構造で整理され、各エンドポイントがリソースを表します。クライアントはサーバーへリクエストを送信することで、これらリソースに関する情報を取得します。
 
 </details>
 
 <details>
-  <summary>What is GraphQL?</summary>
+  <summary>GraphQL とは？</summary>
 
-GraphQL is a query language for APIs.
+GraphQL は API 用のクエリ言語です。
 
-First released by Facebook in 2015, it is now maintained by the GraphQL Foundation.
+2015 年に Facebook から初めて公開され、現在は GraphQL Foundation がメンテナンスしています。
 
-GraphQL is a specification for a query language that can be used to request information from a server. GraphQL is a **strongly typed** language, which means that the client must specify the type of data that it wants to receive.
+GraphQL はサーバーから情報を取得するためのクエリ言語仕様で、 **強い型付け** が特徴です。そのため、クライアントは受け取りたいデータ型を明示的に指定する必要があります。
 
 </details>
 
-### <i class="fa-solid fa-code"></i>  Access the REST API
+### <i class="fa-solid fa-code"></i>  REST API へアクセスする
 
-You can access the REST API and the GraphQL API with the Weaviate client libraries, or with other tools as long as the tool formats the request properly.
+REST API と GraphQL API には Weaviate クライアントライブラリ、または適切にリクエストを整形できる他ツールからアクセスできます。
 
-In these examples, the code shown in each set of tabs is functionally the same. Both REST calls request meta information. Both GraphQL calls ask for the same data.
+以下の例では、各タブに表示されるコードは機能的に同一です。 REST の呼び出しは双方ともメタ情報を取得し、 GraphQL の呼び出しも同じデータを要求します。
 
-#### <i class="fa-solid fa-code-simple"></i> Example 1: REST vs client requests
+#### <i class="fa-solid fa-code-simple"></i> 例 1: REST とクライアントのリクエスト比較
 
 import ClientRESTObjectGet from './_snippets/academy.clients.rest.object.get.mdx';
 
 <ClientRESTObjectGet />
-
-#### <i class="fa-solid fa-code-simple"></i> Example 2: GraphQL vs client requests
+#### <i class="fa-solid fa-code-simple"></i> 例 2:  GraphQL  とクライアントリクエストの比較
 
 import ClientGraphqlGet from './_snippets/academy.clients.graphql.get.mdx';
 
 <ClientGraphqlGet />
 
-Now, let's try out more substantive queries.
+では、もう少し本格的なクエリを試してみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i>  Running queries
+## <i class="fa-solid fa-square-chevron-right"></i> クエリの実行
 
 <!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
 
-### <i class="fa-solid fa-code"></i>  Connect to our demo instance
+### <i class="fa-solid fa-code"></i> デモインスタンスへの接続
 
-Now let's try to connect to a Weaviate demo instance and run some queries on the sample data. The instance has these details:
+ここでは  Weaviate  のデモインスタンスに接続し、サンプルデータに対してクエリを実行してみます。インスタンスの詳細は次のとおりです。
 
 :::info Demo instance details
 - `url`: `https://edu-demo.weaviate.network`
 - `Weaviate API key`: `readonly-demo`
 :::
 
-Use these instance details and see if you can:
-- Instantiate a Weaviate client
-- Check that the connection by fetching the metadata as we did above.
+以下のインスタンス情報を使用し、次のことを試してください:
+-  Weaviate  クライアントをインスタンス化する  
+- 上述のようにメタデータを取得して接続を確認する  
 
-Bonus points if you can do it without looking at the snippet below:
+下のスニペットを見ずにできればボーナスポイントです:
 
 import ClientCheckConnectionEdudemo from './_snippets/academy.hello.check.connection.edudemo.mdx';
 
 <details>
-  <summary>Connect to the demo instance</summary>
+  <summary>デモインスタンスへ接続する</summary>
 
 <ClientCheckConnectionEdudemo/>
 
 </details>
 
-### <i class="fa-solid fa-code"></i>  Vector searches
+### <i class="fa-solid fa-code"></i> ベクトル検索
 
-The next query searches the `WikiCity` objects for the cities that are closest to the specified text, which in this case is simply, "Major European city".
+次のクエリでは `WikiCity` オブジェクトを検索し、「Major European city」というテキストにもっとも近い都市を探します。
 
-To run this query, update the connection file you just created.
+このクエリを実行するには、先ほど作成した接続ファイルを更新してください。
 
-- Comment out any lines that request meta information
-- Add the OpenAI authorization key you created earlier
-- Add the following code snippet
+- メタ情報を取得する行をコメントアウトする  
+- 先ほど作成した OpenAI 認証キーを追加する  
+- 以下のコードスニペットを追加する  
 
 import QueryVectorSearch from './_snippets/academy.hello.query.vector.search.mdx';
 
 <QueryVectorSearch/>
 
 :::tip Exercise
-Try varying the query concept from "Major European city" to another - what do you see? Is it in line with what you expected?
+クエリコンセプトを "Major European city" から別のものに変えてみてください。結果は期待どおりでしょうか？
 :::
 
-### <i class="fa-solid fa-code"></i>  Question answering
+### <i class="fa-solid fa-code"></i> 質問応答
 
-This example searches the `WikiCity` objects to answer the question, "When was the London Olympics?" Update your code from the last example, and try it out yourself.
+この例では `WikiCity` オブジェクトを検索して、「When was the London Olympics?」に答えます。前回のコードを更新し、自分でも試してみてください。
 
 import QueryQuestionAnswering from './_snippets/academy.hello.query.question.answering.mdx';
 
 <QueryQuestionAnswering/>
 
 :::tip Exercise
-Try varying the question from, "When was the London Olympics?" to another, city-related, question. What do you see?
+質問を "When was the London Olympics?" から別の都市に関連する質問へ変えてみてください。どのような結果になりますか？
 
-Try to see what types of questions work better than others. Do you notice any patterns?
+どのような質問がよりうまく機能するか観察してみましょう。何かパターンに気づきますか？
 :::
 
-### <i class="fa-solid fa-code"></i>  Generative search
+### <i class="fa-solid fa-code"></i> 生成検索
 
-This example also searches the `WikiCity` objects, but this one uses the Weaviate `generative-openai` module to transform the results. In this case, the module produces tweets about cities in Southeast Asia.
+この例も `WikiCity` オブジェクトを検索しますが、  Weaviate  の `generative-openai` モジュールを使用して結果を変換します。ここでは、東南アジアの都市についてのツイートを生成します。
 
-Update your demo code once again, and try it out:
+デモコードを再度更新し、試してみてください:
 
 import QueryGenerativeSearch from './_snippets/academy.hello.query.generative.search.mdx';
 
 <QueryGenerativeSearch/>
 
 :::tip Exercise
-Try varying the prompt from:
+プロンプトを次のように変えてみてください:
 
 ```
 "Write a tweet with a potentially surprising fact from {wiki_summary}"
 ```
 
-What happens if you remove \{wiki_summary}?
+\{wiki_summary} を外すとどうなりますか？
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i>  Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-pen-to-square"></i>  Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習用演習
 
 <Quiz questions={apiRecap} />
 
 <Quiz questions={clientLimits} />
 
-### <i class="fa-solid fa-lightbulb-on"></i>  Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- Weaviate uses two API types, REST and GraphQL. REST is used for CRUD operations and metadata, while GraphQL is used for data searches, retrieving data objects, and exploring vector spaces.
-- Client libraries are used to access both REST and GraphQL APIs, providing a convenient way to interact with Weaviate instances.
-- You have connected to a demo Weaviate instance to run vector searches, question-answering queries, and generative searches.
+-  Weaviate  では  REST  と  GraphQL  の 2 種類の  API  を使用します。 REST  は CRUD 操作とメタデータ取得に使用され、 GraphQL  はデータ検索、データオブジェクトの取得、ベクトル空間の探索に使用されます。  
+- クライアントライブラリは  REST / GraphQL  の両  API  へアクセスでき、  Weaviate  インスタンスとのやり取りを簡便にします。  
+- デモの  Weaviate  インスタンスに接続し、ベクトル検索、質問応答クエリ、生成検索を実行しました。  
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

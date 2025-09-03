@@ -1,5 +1,5 @@
 ---
-title: Preparation
+title: 準備
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,31 +7,31 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PythonCodeExample from '!!raw-loader!./_snippets/05_create_instance.py';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Create Weaviate Instance
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate インスタンスの作成
 
-For this unit, you will require your own instance of Weaviate.
+このユニットでは、独自の Weaviate インスタンスが必要です。
 
-If you do not have one, we recommend setting one up on the [Weaviate Cloud (WCD)](https://console.weaviate.cloud/). **A free sandbox instance should be just fine.**
+まだお持ちでない場合は、[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) にセットアップすることをおすすめします。**無料の Sandbox インスタンスで十分です。**
 
-Follow the "Get Started with WCD" [section on this page](../101_hello_weaviate/40_set_up.mdx#--get-started-with-wcd) and come back.
+[このページ](../101_hello_weaviate/40_set_up.mdx#--get-started-with-wcd) の「Get Started with WCD」セクションに従って設定し、戻ってきてください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Access your Weaviate Instance
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate インスタンスへのアクセス
 
-Now, let's make sure that you can access your Weaviate instance by following the example below.
+以下の例に従って、Weaviate インスタンスにアクセスできることを確認しましょう。
 
-:::tip What is your Weaviate instance address?
-Make sure you know what your Weaviate instance address is - it should look like:
+:::tip Weaviate インスタンスのアドレスは？
+Weaviate インスタンスのアドレスを把握しておきましょう。次のような形式です：
 ```
 https://your-instance-name.weaviate.network
 ```
-You can find it in your WCD dashboard.
+WCD ダッシュボードで確認できます。
 :::
 
-The code to access depends on whether you have authentication turned on, or off. If you are not sure, go to your WCD dashboard and check what it says about "Authentication".
+アクセス方法は、認証が有効か無効かによって異なります。わからない場合は WCD ダッシュボードで「Authentication」の表示を確認してください。
 
-### <i class="fa-solid fa-code"></i> With API key authentication (Recommended)
+### <i class="fa-solid fa-code"></i> API キー認証あり (推奨)
 
-If authentication is on, you can instantiate your client as shown below.
+認証が有効な場合は、以下のようにクライアントを初期化します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -44,9 +44,9 @@ If authentication is on, you can instantiate your client as shown below.
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Without Authentication
+### <i class="fa-solid fa-code"></i> 認証なし
 
-If authentication is switched off in your instance, you do not need the authentication parameter.
+インスタンスで認証が無効になっている場合、認証パラメーターは不要です。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -59,9 +59,9 @@ If authentication is switched off in your instance, you do not need the authenti
 </TabItem>
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Confirm access
+## <i class="fa-solid fa-square-chevron-right"></i> アクセスの確認
 
-Once your client is instantiated, you can confirm that you can write to your Weaviate instance by running the following code:
+クライアントを初期化したら、次のコードを実行して Weaviate インスタンスへ書き込みが可能か確認します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -74,11 +74,11 @@ Once your client is instantiated, you can confirm that you can write to your Wea
 </TabItem>
 </Tabs>
 
-You should see a long alphanumeric string printed on your screen, like `"59340403-4bcd-479f-ae9c-de5da039ac0e"`.
+画面に `"59340403-4bcd-479f-ae9c-de5da039ac0e"` のような長い英数字の文字列が表示されれば成功です。
 
-If you do, you can access your Weaviate instance and have write access! Which means you are ready to move on.
+表示されたら、Weaviate インスタンスへアクセスでき、書き込み権限があることが確認できました。これで次に進む準備が整いました。
 
-Let's do one more thing before we move on, though, which is to clean up the test data that we've just created.
+ただし、先に進む前にもうひとつだけ、先ほど作成したテストデータをクリーンアップしておきましょう。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -91,17 +91,17 @@ Let's do one more thing before we move on, though, which is to clean up the test
 </TabItem>
 </Tabs>
 
-We'll see you in the next section.
+次のセクションでお会いしましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-- You need to create a Weaviate instance (e.g. on WCD) for this unit.
-- Access your Weaviate instance with API key authentication or without authentication as appropriate.
-- Confirm access to your Weaviate instance by running the provided code snippet.
+- このユニットでは、WCD などで Weaviate インスタンスを作成する必要があります。  
+- Weaviate インスタンスへは、設定に応じて API キー認証あり、または認証なしでアクセスします。  
+- 提供されたコードスニペットを実行し、Weaviate インスタンスへアクセスできることを確認します。  
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

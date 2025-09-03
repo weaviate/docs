@@ -1,5 +1,5 @@
 ---
-title: Binary quantization
+title: バイナリ量子化
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,33 +8,33 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!./_snippets/200_bq.py';
 
 
-[Binary quantization](/weaviate/concepts/vector-quantization#binary-quantization) (BQ), is a technique used to compress vectors. In Weaviate, it can be used to reduce the size of the in-memory [HNSW index](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) or the disk-based [flat index](/weaviate/concepts/indexing/vector-index.md#flat-index).
+[バイナリ量子化](/weaviate/concepts/vector-quantization#binary-quantization) (BQ) は、ベクトルを圧縮するための手法です。Weaviate では、メモリ上の [HNSW インデックス](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) やディスクベースの [flat インデックス](/weaviate/concepts/indexing/vector-index.md#flat-index) のサイズを削減するために利用できます。
 
-For HNSW, BQ can decrease its memory footprint and thus improve performance and reduce resource requirements as well as costs. For the flat index, BQ can reduce the size of the index on disk, which can improve performance.
+HNSW では、BQ によりメモリフットプリントを縮小できるため、パフォーマンス向上とリソース要件およびコスト削減が期待できます。flat インデックスの場合、ディスク上のインデックスサイズを小さくできるため、パフォーマンスが向上する可能性があります。
 
-## <i class="fa-solid fa-chalkboard"></i> What is binary quantization?
+## <i class="fa-solid fa-chalkboard"></i> バイナリ量子化とは
 
-Binary quantization compresses vectors by reducing each dimension to a single bit, either 0 or 1.
+バイナリ量子化は、各次元を 1 ビット（0 または 1）に縮小することでベクトルを圧縮します。
 
-In other words, a n-dimensional vector composed of n floating point numbers is compressed to a n-dimensional vector composed of n bits.
+言い換えると、 n 個の浮動小数点数で構成される n 次元ベクトルを、 n 個のビットで構成される n 次元ベクトルへと圧縮します。
 
-This will reduce the size of the vector by a factor of 32 (from 32 bits per float to 1 bit per dimension).
+これにより、1 次元あたり 32 ビットから 1 ビットへと 32 倍のサイズ削減が可能になります。
 
-### <i class="fa-solid fa-chalkboard"></i> Model suitability
+### <i class="fa-solid fa-chalkboard"></i> モデルの適合性
 
-BQ is a relatively simple algorithm, but can perform well in the right circumstances. It is particularly suitable for high-dimensional vectors, where even with BQ, the vector can retain a high degree of information.
+BQ は比較的シンプルなアルゴリズムですが、条件が合えば高い性能を発揮します。特に高次元ベクトルに適しており、BQ を適用しても多くの情報を保持できます。
 
-We suggest using BQ for vectors that have been designed for, or been shown to perform well with, binary quantization. Anecdotally, we have seen encouraging recall with Cohere's V3 models (e.g. `embed-multilingual-v3.0` or `embed-english-v3.0`), and OpenAI's `ada-002` and larger `text-embedding-3` models work well with BQ enabled.
+BQ を使用する際は、バイナリ量子化向けに設計されている、またはパフォーマンスが確認されているベクトルを推奨します。経験的には、Cohere の V3 モデル（例: `embed-multilingual-v3.0` や `embed-english-v3.0`）や、OpenAI の `ada-002`、さらに大規模な `text-embedding-3` モデルで良好なリコールを確認しています。
 
-### <i class="fa-solid fa-chalkboard"></i> Lossiness
+### <i class="fa-solid fa-chalkboard"></i> 損失性
 
-BQ is a lossy compression technique, as the original floating point numbers are quantized a bit.
+BQ は損失のある圧縮手法であり、元の浮動小数点数を量子化します。
 
-Weaviate compensates for this by overfetching vectors from the index, and then rescoring the vectors in the uncompressed space. In practice, we find that this compensates quite well for the lossiness of BQ.
+Weaviate では、インデックスからベクトルをオーバーフェッチし、非圧縮空間で再スコアリングすることでこの損失を補います。実際には、これにより BQ の損失を十分に補正できることを確認しています。
 
-## <i class="fa-solid fa-code"></i> Configure BQ
+## <i class="fa-solid fa-code"></i> BQ を設定する
 
-This example creates a collection with binary quantization (BQ) enabled, using default settings.
+以下の例では、デフォルト設定でバイナリ量子化 (BQ) を有効にしたコレクションを作成します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -43,15 +43,15 @@ This example creates a collection with binary quantization (BQ) enabled, using d
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Explain the code
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-This will create a collection with BQ enabled, using the default settings.
+このコードにより、デフォルト設定で BQ を有効にしたコレクションが作成されます。
 
-With BQ, the compression begins immediately, as there is no need to wait for a training set to be reached.
+BQ ではトレーニングセットを用意する必要がないため、圧縮は即座に開始されます。
 
-## <i class="fa-solid fa-code"></i> Customize BQ
+## <i class="fa-solid fa-code"></i> BQ をカスタマイズする
 
-Some BQ parameters are configurable. An important one is `rescore_limit`, which is the minimum number of vectors to be fetched from the index before the rescore phase is triggered.
+BQ にはいくつか設定可能なパラメーターがあります。重要なものとして `rescore_limit` があり、リスコアリングフェーズを開始する前にインデックスから取得するベクトルの最小数を指定します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -60,9 +60,8 @@ Some BQ parameters are configurable. An important one is `rescore_limit`, which 
   language="py"
 />
 
-## Questions and feedback
+## ご質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

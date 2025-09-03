@@ -1,41 +1,41 @@
 ---
-title: Aggregate{} the result set
-description: Explore aggregate queries in Weaviate to summarize data insights.
+title: Aggregate{} による結果セットの集計
+description: Weaviate で aggregate クエリを用いてデータ インサイトを要約します。
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/wi3DG6XJkmA' controls='true' />
 <br/>
 
-Now that you have seen how to retrieve individual objects with `Get`, let's take a look at how to compile information with `Aggregate`.
+`Get` で個別オブジェクトを取得する方法を確認したので、次は `Aggregate` を使って情報をまとめる方法を見ていきましょう。
 
-`Aggregate` is a powerful function that allows you to combine information from multiple objects into a single result to get a quick overview of the results.
+`Aggregate` は複数オブジェクトから情報をまとめて単一の結果にする強力な機能で、結果の概要を素早く把握できます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> About `Aggregate` queries
+## <i class="fa-solid fa-square-chevron-right"></i> `Aggregate` クエリについて
 
-### <i class="fa-solid fa-chalkboard"></i> `Aggregate` function syntax
+### <i class="fa-solid fa-chalkboard"></i> `Aggregate` 関数の構文
 
-While the overall structure of `Aggregate` queries is similar to `Get` queries, there are some important differences as the queries relate to sets of results.
+`Aggregate` クエリの全体構造は `Get` クエリに似ていますが、結果セット全体に対するクエリであるため重要な違いがあります。
 
-The basic syntax for `Aggregate` queries is as follows:
+`Aggregate` クエリの基本構文は次のとおりです。
 
 import AggregateSyntax from './_snippets/academy.queries.aggregate.syntax.mdx';
 
 <AggregateSyntax/>
 
-Unlike a `Get` query, available properties in `Aggregate` differ according to data types of the property being queried.
+`Get` クエリとは異なり、`Aggregate` で使用できるプロパティは、クエリ対象プロパティのデータ型によって異なります。
 
-These reflect the possible operations that can be performed on different data types. For example, the available properties for a `String` property are different from those for an `Integer` property or a cross-reference.
+これはデータ型ごとに実行可能な操作が異なるためです。たとえば、`String` プロパティで利用できるプロパティは、`Integer` プロパティやクロスリファレンスの場合とは異なります。
 
-Let's try out some `Aggregate` queries.
+それでは実際に `Aggregate` クエリを試してみましょう。
 
-As a reminder, our objects include the following schema:
+参考までに、オブジェクトには次のスキーマがあります。
 
 <details>
-  <summary>See relevant schema</summary>
+  <summary>関連スキーマを表示</summary>
 
 import ShortSchema from './_snippets/academy.queries.schema.short.mdx';
 
@@ -43,24 +43,24 @@ import ShortSchema from './_snippets/academy.queries.schema.short.mdx';
 
 </details>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Standalone `Aggregate` queries
+## <i class="fa-solid fa-square-chevron-right"></i> 単独の `Aggregate` クエリ
 
-### <i class="fa-solid fa-code"></i> Example 1
+### <i class="fa-solid fa-code"></i> 例 1
 
-Take a look at this query:
+次のクエリを見てください。
 
 import AggregateStandalone from './_snippets/academy.queries.aggregate.standalone.mdx';
 
 <AggregateStandalone/>
 
-What kind of results do you expect to come back?
+どのような結果が返ってくると予想しますか？
 
-Now, try it out yourself.
+では実際に試してみましょう。
 
-Your query should return something like this:
+クエリを実行すると、次のような結果が返ってくるはずです。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
 
 ```json
 {
@@ -80,44 +80,43 @@ Your query should return something like this:
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object from Weaviate
+### <i class="fa-solid fa-chalkboard"></i> Weaviate からのレスポンス オブジェクト
 
-This response includes an object to represent the `meta` information requested from `JeopardyQuestion` class. The `meta` object contains a `count` property, which is the total number of objects in the class.
+このレスポンスには、`JeopardyQuestion` クラスから要求された `meta` 情報を表すオブジェクトが含まれています。`meta` オブジェクトには `count` プロパティがあり、クラス内のオブジェクト総数を示します。
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
 
-This query aggregates the objects in the `JeopardyQuestion` class to obtain the total count. Since there are no restrictions, it returns the total number of objects which is 10,000.
+このクエリは `JeopardyQuestion` クラスのオブジェクトを集計し、総数を取得します。絞り込みがないため、オブジェクトの総数 10,000 が返されます。
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> `meta` property
+### <i class="fa-solid fa-chalkboard"></i> `meta` プロパティ
 
-In the above `Aggregate` query we requested a `meta` property, for the count of the objects. Note that this is not an available property of the object class itself. This is a key difference between `Aggregate` and `Get` queries.
+上記の `Aggregate` クエリでは、オブジェクト数を取得するために `meta` プロパティを指定しました。これはオブジェクト クラス自体の利用可能プロパティではない点に注意してください。ここが `Aggregate` と `Get` クエリの大きな違いです。
 
-A `Get` query retrieves a set of individual results, so we can select properties (e.g. `id`, or one of the properties unique to the data, such as `answer`) that apply to each of those individual results.
+`Get` クエリは個々の結果セットを取得するため、各結果に適用されるプロパティ（例: `id` やデータ固有の `answer` など）を選択できます。
 
-An `Aggregate` query, on the other hand, returns an aggregation of the results. Accordingly, we must specify a sub-property that applies to the entire set of results.
+一方 `Aggregate` クエリは結果の集計を返すため、結果セット全体に適用されるサブプロパティを指定する必要があります。
 
-The `meta` property is one such property. It is available for all data types, and can be used with the `count` sub-property to return the number of retrieved objects.
+`meta` プロパティはその一例です。すべてのデータ型で利用でき、`count` サブプロパティと組み合わせて取得オブジェクト数を返せます。
 
+### <i class="fa-solid fa-code"></i> 例 2
 
-### <i class="fa-solid fa-code"></i> Example 2
-
-Take a look at this query:
+次のクエリを見てください。
 
 import AggregateStandalone2 from './_snippets/academy.queries.aggregate.standalone.2.mdx';
 
 <AggregateStandalone2/>
 
-What fields do you expect back in the results?
+結果にはどのフィールドが返ってくると予想しますか？
 
-Now, try it out yourself.
+では実際に試してみましょう。
 
-Your query should return something like this:
+クエリを実行すると、次のような結果が返ってくるはずです。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
 
 ```json
 {
@@ -159,36 +158,36 @@ Your query should return something like this:
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
 
-This response includes an object to represent aggregations from the `answer` property requested from `JeopardyQuestion` class. Because the property contains textual information, we can aggregate `topOccurrences` information, such as the `value` property, which is the token, as well as the number of times it `occurs`.
+このレスポンスには、`JeopardyQuestion` クラスの `answer` プロパティに対する集計結果が含まれています。テキスト情報を含むプロパティのため、`value`（トークン）や `occurs`（出現回数）といった `topOccurrences` 情報を集計できます。
 
 </details>
 
-:::tip Available properties
-The list of available properties can be found on [this page](/weaviate/api/graphql/aggregate.md) in our documentation.
+:::tip 利用可能なプロパティ
+利用可能なプロパティの一覧は、ドキュメントの [こちらのページ](/weaviate/api/graphql/aggregate.md) でご確認いただけます。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> `Aggregate` with a search operator
+## <i class="fa-solid fa-square-chevron-right"></i> 検索オペレーターを用いた `Aggregate`
 
-As we did with `Get` queries, we can also use search operators such as `nearText` in an `Aggregate` query. Take a look:
+`Get` クエリと同様に、`Aggregate` クエリでも `nearText` などの検索オペレーターを使用できます。以下をご覧ください。
 
-### <i class="fa-solid fa-code"></i> Example (with `nearText`)
+### <i class="fa-solid fa-code"></i> 例（`nearText` 使用）
 
-For example, let's say that now instead of individual questions, we would like to know something more holistic about the answers. Like how many questions might be related to this query:
+たとえば、個々の質問ではなく回答全体を俯瞰したいとします。たとえば、このクエリに関連する質問が何件あるのか知りたい場合です。
 
 import AggregateWithNearText from './_snippets/academy.queries.aggregate.with.neartext.mdx';
 
 <AggregateWithNearText/>
 
-Before looking at the response, or running the query, think about the following:
-- How many results do you expect to be returned?
-- Can you guess how an increase in the `distance` parameter would change the number of results returned?
+レスポンスを確認したりクエリを実行したりする前に、次の点を考えてみてください。
+- 何件の結果が返されると予想しますか？
+- `distance` パラメーターを大きくすると、結果数がどのように変化するか予想できますか？
 
-Now, try it out yourself. The query should return something like this:
+さて、実際に試してみましょう。このクエリは次のような結果を返すはずです:
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -209,42 +208,42 @@ Now, try it out yourself. The query should return something like this:
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリを解説</summary>
 
-This query aggregates the results that were restricted using the `distance` argument. This argument is a threshold that restricts the returned results to those that are relevant to the input. Without it, the search results would potentially include the entire class.
+このクエリは、`distance` 引数によって制限された結果を集計しています。この引数はしきい値となり、入力に関連する結果だけを返します。これがなければ、検索結果にはクラス全体が含まれる可能性があります。
 
-This is called "limiting the search space".
+これを「検索空間を制限する」と呼びます。
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Limit search space
+### <i class="fa-solid fa-chalkboard"></i> 検索空間の制限
 
-In order to produce meaningful aggregations with a vector search, you must limit the search space.
+ベクトル 検索で意味のある集計を行うには、検索空間を制限する必要があります。
 
-This is different from aggregations in, say, a relational database. In a relational database, grouping or aggregating data can be done using `groupby` with functions such as SUM, AVG, MIN, MAX, etc. This allows you to find a result set and then aggregate the results.
+これは、リレーショナル データベースでの集計とは異なります。リレーショナル データベースでは、`groupby` と SUM、AVG、MIN、MAX などの関数を組み合わせてデータをグループ化または集計できます。この方法では、まず結果セットを取得し、その後で結果を集計します。
 
-However, a vector search does not inherently exclude any results. This is because a vector search retrieves results based on *degrees* of similarity.
+しかし、ベクトル 検索は本質的に結果を除外しません。ベクトル 検索は類似度の度合いに基づいて結果を取得するためです。
 
-**Accordingly, the search space must be limited** so that only relevant results are included in the aggregation. This can be done by setting an explicit `limit` or a threshold (`distance` or `certainty`) in the query.
+したがって、関連する結果だけが集計に含まれるように検索空間を制限しなければなりません。そのためには、クエリで明示的な `limit` を設定するか、`distance` または `certainty` といったしきい値を指定します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> `Aggregate` with `groupBy`
+## <i class="fa-solid fa-square-chevron-right"></i> `groupBy` を用いた `Aggregate`
 
-So far, we have seen how to use `Aggregate` queries to compile information relating one set of results. This can be extended with the `groupBy` argument to compile information from multiple, subsets of results.
+これまで、`Aggregate` クエリを使って 1 つの結果セットに関する情報を集約する方法を見てきました。`groupBy` 引数を追加すると、複数のサブセットから情報をまとめることができます。
 
-### <i class="fa-solid fa-code"></i> Example
+### <i class="fa-solid fa-code"></i> 例
 
-For example, let's say we want to know how many questions there are for each available `value` property. We can do this by adding the `groupBy` argument to the query:
+たとえば、各 `value` プロパティにつき質問が何件あるかを知りたいとします。その場合は、クエリに `groupBy` 引数を追加します:
 
 import AggregateGroupby from './_snippets/academy.queries.aggregate.groupby.mdx';
 
 <AggregateGroupby/>
 
-What do you expect to see here? How will the results differ, now that we've added the `groupBy` argument? Do you notice what else has changed to the query?
+ここではどのような結果になると予想しますか？`groupBy` 引数を追加したことで結果はどのように変わるでしょうか？さらにクエリの他の変更点に気付きましたか？
 
-Now, try it out yourself. The query should return something like this:
+では実際に試してみましょう。クエリは次のような結果を返すはずです:
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -293,40 +292,40 @@ Now, try it out yourself. The query should return something like this:
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリを解説</summary>
 
-This query supplies an additional `groupedBy` argument, as a result of which the counts are of each `round`. The query also requests `groupedBy` a property so that each count is identifiable by the `value` of each `round` group.
+このクエリでは追加で `groupedBy` 引数を指定しており、その結果、`round` ごとの件数が取得されます。また、`groupedBy` プロパティを要求しているため、各件数は `round` グループごとの `value` で識別できます。
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> `groupBy` + `groupedBy`
+### <i class="fa-solid fa-chalkboard"></i> `groupBy` と `groupedBy`
 
-Results identified by an `Aggregate` query can be further grouped by using a `groupBy` argument. This argument takes a list of properties as an argument, and will group the results by the values of those properties.
+`Aggregate` クエリで取得した結果は、さらに `groupBy` 引数を使ってグループ化できます。この引数にはプロパティのリストを渡し、そのプロパティの値で結果をグループ化します。
 
-This is a particularly useful query pattern for identifying characteristics for subsets of results of a vector search.
+これは、ベクトル 検索の結果サブセットの特徴を把握する際に特に有用なクエリ パターンです。
 
-When the `groupBy` argument is used, additional property `groupedBy` is made available. This property and its sub-properties can be used to identify the group that the result belongs to.
+`groupBy` 引数を使用すると、追加で `groupedBy` プロパティが返されます。このプロパティとそのサブプロパティにより、各結果が属するグループを判別できます。
 
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out the above query again, with these changes.
-- Instead of `round` try grouping by the `points` property.
-- Instead of `distance`, try adding an `.with_object_limit(9)` in the method chain. Are the results the same?
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+上記のクエリを再度試し、次の変更を加えてみましょう。
+- `round` の代わりに `points` プロパティでグループ化してみてください。
+- `distance` の代わりに、メソッドチェーンに `.with_object_limit(9)` を追加してみてください。結果は同じでしょうか？
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
 
-Try out the above `nearText` query again, with these changes.
-- Change the distance to another value - say, to 0.1, 0.19, 0.21 or 0.25 - how do the results change? Are they in line with your expectations?
+上記の `nearText` クエリを次の変更を加えて再度試してみてください。
+- `distance` を 0.1、0.19、0.21、0.25 など別の値に変更してみましょう。結果はどのように変わりますか？予想どおりでしょうか？
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
 
-- The `Aggregate` function is used to compile information from multiple objects, providing an overview.
-- Search operators, like `nearText`, can be used in `Aggregate` queries.
-    - To produce meaningful aggregations, the search space must be limited by setting an explicit limit or a threshold (distance or certainty) in the query.
-- The `groupBy` argument can be used to compile information from multiple subsets of results, refining the aggregation.
-- When using the groupBy argument, the additional property groupedBy is made available, helping to identify the group that the result belongs to.
+- `Aggregate` 関数は複数のオブジェクトから情報をまとめ、概要を提供します。
+- `nearText` などの検索オペレーターは `Aggregate` クエリでも使用できます。
+    - 意味のある集計を得るには、クエリで明示的な `limit` またはしきい値（`distance` や `certainty`）を設定して検索空間を制限する必要があります。
+- `groupBy` 引数を使用すると、結果の複数サブセットから情報をまとめて集計をより細かくできます。
+- `groupBy` 引数を使用すると追加の `groupedBy` プロパティが利用でき、各結果が属するグループを識別できます。
 
 import Quiz from '/src/components/Academy/quiz.js'
 export const varName = [{
@@ -350,8 +349,9 @@ export const varName = [{
   ]
 }];
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

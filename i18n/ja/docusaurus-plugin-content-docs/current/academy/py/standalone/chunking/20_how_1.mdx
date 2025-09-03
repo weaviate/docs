@@ -1,6 +1,6 @@
 ---
-title: Chunking techniques - 1
-description: Explore step one in implementing chunking techniques with Weaviate.
+title: チャンク化手法 - 1
+description: Weaviate でチャンク化手法を実装するステップ 1 を解説します。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -18,25 +18,25 @@ import PreviewUnit from '../../../_snippets/preview.mdx'
 
 <PreviewUnit />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-Now that you've learned about what chunking is, and why it is important, you are ready to start looking at practical chunking techniques. Here, we start by looking at **fixed-size** chunking techniques, including some example implementations.
+チャンク化とは何か、そしてそれがなぜ重要なのかを学んだので、ここからは実践的なチャンク化手法を見ていきます。まずは **固定サイズ** のチャンク化手法と、その実装例を紹介します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Fixed-size chunking
+## <i class="fa-solid fa-square-chevron-right"></i> 固定サイズのチャンク化
 
-As the name suggests, fixed-size chunking refers to the process of splitting texts into chunks of a fixed size, or at least based on size. Using fixed size chunking, you might split an article into a set of chunks of 100 words each, or a set of 200 characters each.
+名前が示すとおり、固定サイズのチャンク化とは、テキストを一定のサイズ（またはサイズを基準に）で分割する方法です。たとえば、記事を 100 語ごとのチャンクに分割したり、200 文字ごとに分割したりします。
 
-This may be the most common chunking technique due to its simplicity and effectiveness.
+そのシンプルさと効果の高さから、最も一般的なチャンク化手法と言えるでしょう。
 
-### <i class="fa-solid fa-chalkboard"></i> Implementations
+### <i class="fa-solid fa-chalkboard"></i> 実装
 
-Fixed-size chunking is implemented by splitting texts into chunks of a fixed number of units. The units may be composed of words, characters, or even *tokens*, and the number of units per chunk is fixed (to a maximum), with an optional overlap.
+固定サイズのチャンク化は、テキストを一定数の単位ごとに分割して実装します。ここでの単位は語、文字、あるいは *トークン* である場合もあり、チャンクあたりの単位数は（上限として）固定され、必要に応じて重複（オーバーラップ）を設けます。
 
-:::tip What is a token?
-A "token" in this context is a unit of text that will be processed by a model by being substituted with a number. In modern tranformer models, a token is commonly a "subword" unit composed of a few characters.
+:::tip トークンとは？
+ここでの「トークン」とは、モデルが数値に置き換えて処理するテキストの単位です。最新のトランスフォーマーモデルでは、トークンは数文字から成る「サブワード」であることが一般的です。
 :::
 
-One pseudocode implementation of fixed-size chunking is:
+固定サイズのチャンク化を行う擬似コードの一例を示します。
 
 ```python
 # Given a text of length L
@@ -45,7 +45,7 @@ One pseudocode implementation of fixed-size chunking is:
 # This should typically result in a list of chunks of length L // N + 1
 ```
 
-And implementing in Python, it may look like:
+Python で実装すると、次のようになります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -58,7 +58,7 @@ And implementing in Python, it may look like:
 </TabItem>
 </Tabs>
 
-Which can be modified to include an overlap (in this case, at the beginning of each chunk):
+さらに、オーバーラップ（ここでは各チャンクの先頭側）を含めるように変更した例です。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -71,19 +71,19 @@ Which can be modified to include an overlap (in this case, at the beginning of e
 </TabItem>
 </Tabs>
 
-This is far from the only way to implement fixed-size chunking, but it is one possible, relatively simple, implementation.
+これは固定サイズのチャンク化を実装する唯一の方法ではありませんが、比較的シンプルな実装例の一つです。
 
-:::note Exercise
-Consider how *you* might implement fixed-size chunking. What would your pseudocode (or code) look like?
+:::note 演習
+あなたなら固定サイズのチャンク化をどのように実装しますか？ 擬似コード（あるいはコード）を書いてみてください。
 :::
 
-### <i class="fa-solid fa-code"></i> Examples
+### <i class="fa-solid fa-code"></i> 例
 
-We are ready to look at some concrete examples of fixed-size chunking. Let's take a look at three examples, with a chunk size of 5 words, 25 words and 100 words, respectively.
+具体的な固定サイズチャンク化の例を 3 つ見てみましょう。チャンクサイズはそれぞれ 5 語、25 語、100 語です。
 
-We'll use an excerpt from the [Pro Git book](https://git-scm.com/book/en/v2)*. More specifically, we'll use text of the [What is Git?](https://github.com/progit/progit2/blob/main/book/01-introduction/sections/what-is-git.asc) chapter.
+題材として [Pro Git book](https://git-scm.com/book/en/v2) から抜粋し、特に [What is Git?](https://github.com/progit/progit2/blob/main/book/01-introduction/sections/what-is-git.asc) 章のテキストを使用します。
 
-Here is one example using our chunking function from above:
+先ほどのチャンク化関数を使った例は次のとおりです。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -96,14 +96,14 @@ Here is one example using our chunking function from above:
 </TabItem>
 </Tabs>
 
-This will result in outputs like these. Take a look at the first few chunks at each size - what do you notice?
+これにより次のような出力が得られます。各サイズの最初の数チャンクを見て、何に気づくでしょうか？
 
-:::note Exercise
-Consider which of these chunk sizes would be most appropriate for search. Why do you think so? What are the tradeoffs?
+:::note 演習
+検索用途に最も適切なチャンクサイズはどれだと思いますか？ その理由とトレードオフを考えてみてください。
 :::
 
 <Tabs groupId="languages">
-<TabItem value="5" label="By 5 words">
+<TabItem value="5" label="5 語ごと">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}
   startMarker="# START Chunking by 5 words - outputs"
@@ -111,7 +111,7 @@ Consider which of these chunk sizes would be most appropriate for search. Why do
   language="text"
 />
 </TabItem>
-<TabItem value="25" label="By 25 words">
+<TabItem value="25" label="25 語ごと">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}
   startMarker="# START Chunking by 25 words - outputs"
@@ -119,7 +119,7 @@ Consider which of these chunk sizes would be most appropriate for search. Why do
   language="text"
 />
 </TabItem>
-<TabItem value="100" label="By 100 words">
+<TabItem value="100" label="100 語ごと">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}
   startMarker="# START Chunking by 100 words - outputs"
@@ -129,26 +129,25 @@ Consider which of these chunk sizes would be most appropriate for search. Why do
 </TabItem>
 </Tabs>
 
+これらの具体例を見ると、先に説明した考え方が理解しやすくなるはずです。
 
-Hopefully, these concrete examples start to illustrate some of the ideas that we discussed above.
+まず、小さなチャンクは非常に細かく、検索に有用な情報を含むには不十分に見えます。一方、大きなチャンクは典型的な段落と同程度の長さになり、より多くの情報を保持できるようになります。
 
-Immediately, it strikes me that the smaller chunks are very granular, to the point where they may not contain enough information to be useful for search. On the other hand, the larger chunks begin to retain more information as they get to lengths that are similar to a typical paragraph.
+さらにチャンクが長くなると、そのベクトル埋め込みはより一般的なものになり、やがて情報検索には使いにくくなるポイントに達します。
 
-Now imagine these chunks becoming even longer. As chunks become longer, the corresponding vector embeddings would start to become more general. This would eventually reach a point where they cease to be useful in terms of searching for information.
-
-:::note What about character or sub-word tokenization?
-At these sizes, you typically will not need to employ character-based or sub-word token-based chunking, as splitting words at these boundaries in a group of words will not typically be meaningful.
+:::note 文字やサブワードのトークン分割は？
+この程度のサイズであれば、語を分割する文字ベースやサブワードトークンベースのチャンク化は通常必要ありません。語を途中で分割しても意味がないためです。
 :::
 
-:::tip Where to start?
-For search with fixed-size chunks, if you don't have any other factors, try a size of around 100-200 words, and a 20% overlap.
+:::tip どこから始める？
+固定サイズチャンクで検索を行う場合、他に指標がなければ 100〜200 語程度、オーバーラップを 20% 程度から試してみてください。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Notes
+## <i class="fa-solid fa-square-chevron-right"></i> 補足
 
-:::info Pro Git by Scott Chacon and Ben Straub - Book License
+:::info Pro Git by Scott Chacon and Ben Straub - 書籍ライセンス
 
-<small>*Available through the <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Non Commercial-Share Alike 3.0 license</a>.</small>
+<small>*この書籍は <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Non Commercial-Share Alike 3.0 ライセンス</a> の下で利用できます。*</small>
 
 :::
 
@@ -170,7 +169,7 @@ Try out ...
 Add summary
 ::: -->
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

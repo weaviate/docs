@@ -1,15 +1,15 @@
 ---
-title: "Briefly: Model training"
-description: A very brief introduction to how AI models are trained
+title: "概要：モデルの学習"
+description: AI モデルがどのように学習されるかの超簡潔な紹介
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
-In this section, let's very briefly discuss how AI models are trained. This is a critical part of understanding how AI models work, and how they can be used. We will not go into the details of training, but rather provide a high-level overview to help you understand the process.
+このセクションでは、AI モデルがどのように学習されるかを非常に簡潔に説明します。これは AI モデルの仕組みや活用方法を理解するうえで重要なポイントです。詳細な学習手順には踏み込みませんが、全体像をつかむためのハイレベルな概要を提供します。
 
-## <i class="fa-solid fa-chalkboard-user"></i> What is model training?
+## <i class="fa-solid fa-chalkboard-user"></i> モデルの学習とは
 
-So far, we’ve learned that AI models, or more specifically, deep learning models, work by applying a massive number of transformations to an input to produce an output. These transformations are primarily applied through `weights`, `biases` and `activation functions`, as shown below in an example calculation for a node.
+これまでに、AI モデル、より具体的には deep learning モデルは、入力に対して多数の変換を適用して出力を生成することを学びました。これらの変換は主に `weights`、`biases`、`activation functions` を通じて実行され、以下のノード計算例に示されています。
 
 import NNNodeCalcsLight from './_img/nn_explained_20_node_calculation.png';
 import NNNodeCalcsDark from './_img/nn_explained_20_node_calculation_dark.png';
@@ -23,39 +23,39 @@ import NNNodeCalcsDark from './_img/nn_explained_20_node_calculation_dark.png';
   width="450"
 />
 
-We also learned that the `weights` and `biases` are collectively called `parameters` of a deep learning model. As the name indicates, `parameters` define the behavior of a deep learning model (in contrast to the architecture of a deep learning model).
+また、`weights` と `biases` をまとめて deep learning モデルの `parameters` と呼ぶことも学びました。名前のとおり、`parameters` は deep learning モデルの挙動を決定するものです（アーキテクチャとは対照的です）。
 
 :::info
 
-*Parameter*: n. an arbitrary constant whose value characterizes a member of a system
+*Parameter*: n. システムの要素を特徴付ける任意の定数
 
-<small>Source: Merriam-Webster Dictionary</small>
+<small>出典: Merriam-Webster Dictionary</small>
 
 :::
 
-Two deep learning models, even with the same architecture, can have different parameters to perform a different job.
+同じアーキテクチャであっても、parameters が異なれば別の仕事をこなすモデルになります。
 
-Given that these models commonly have millions, or billions, of parameters, it is basically impossible to hard-code these parameters to achieve the desired goal. Instead, these parameters are “trained” numerically, which is what leads them to be called “deep *learning*” models.
+これらの models には一般に数百万、あるいは数十億もの parameters が含まれるため、目的の動作を実現するように手動で値を設定するのは事実上不可能です。その代わり、parameters は数値的に “学習” させることで調整されます。これが「deep *learning*」モデルと呼ばれる理由です。
 
-## <i class="fa-solid fa-chalkboard-user"></i> How are models trained?
+## <i class="fa-solid fa-chalkboard-user"></i> モデルはどのように学習されるか
 
-The training at a high level is just like any other machine learning model. To a layperson, it is similar to “goal seek” in Microsoft Excel, or even more basic, [the “hot and cold” game](https://en.wikipedia.org/wiki/Hunt_the_thimble).
+高いレベルで見ると、学習の流れは他の機械学習モデルと同じです。一般の方には、Microsoft Excel の「ゴール シーク」や、もっと基本的には [“Hot and Cold” ゲーム](https://en.wikipedia.org/wiki/Hunt_the_thimble)に似ているといえます。
 
-In deep learning, each training “iteration” is used to compare the model’s output to the “ideal” output (this is called a “loss function”). Then, a lot of fancy math is used to update the parameters such that the model gets a little bit better at its job.
+deep learning では、各学習 “iteration” でモデルの出力を “理想的な” 出力と比較します（これを “loss function” と呼びます）。そして複雑な数学を駆使して parameters を更新し、モデルが少しずつ上手にタスクをこなせるようにします。
 
 :::note Why gloss over the “fancy math”?
 
-We used the term “fancy math” to whimsically indicate that there is a lot of complex mathematics as well as computation involved. This is, of course, an extremely interesting and important area of AI.
+ここで “fancy math” という表現を使ったのは、複雑な数学と計算が関わっていることを軽く示すためです。もちろんこれは AI における非常に興味深く重要な分野です。  
 <br/>
 
-The key here is to use “gradient descent”, to update parameters over time using numerical differentiation of the loss function. This technique calculates the direction in which parameters should change to reduce the model's error, and then makes small adjustments in that direction.
+ここで鍵になるのは “gradient descent” で、loss function を数値的に微分し、その勾配を利用して parameters を少しずつ更新していきます。  
 <br/>
 
-But it is slightly outside the scope of our discussion here, and perhaps not as critical for those looking to simply use models. If you are interested in learning about model training in detail, there’s a lot of great resources out there.
+ただし本ドキュメントの範囲外であり、モデルを単に利用したい方にとっては必須ではないため、詳細な説明は割愛します。もし詳しく学びたい場合は優れた資料が多数あります。  
 <br/>
 
-Here are a couple of our favorites:
-- [Video: Let’s reproduce GPT-2 by Andrej Karpathy](https://www.youtube.com/watch?v=l8pRSuU81PU)
+いくつかのお気に入りリソースを紹介します:  
+- [動画: Let’s reproduce GPT-2 by Andrej Karpathy](https://www.youtube.com/watch?v=l8pRSuU81PU)  
 - [Fine-tune large language models: Hugging Face](https://huggingface.co/learn/nlp-course/en/chapter11/1)
 
 :::
@@ -73,21 +73,21 @@ import NNBackpropagationDark from './_img/nn_explained_55_backprop_dark.png';
   width="450"
 />
 
-You will see that this process works backwards, propagating the learnings from the model output back to the parameters. That’s why this is called “back propagation”, or “backprop”.
+このプロセスは出力側から入力側へと学習結果を伝搬させていくため “back propagation”（バックプロパゲーション、略して backprop）と呼ばれます。
 
-In a model training process, this type of update would be one “iteration”. Many, many, such iterations are carried out throughout the lifecycle of model training. It is the combination of the large size of these models, and the number of iterations required for training that makes it so expensive, and time-consuming, to train these models.
+モデル学習プロセスにおいて、このような更新が 1 回の “iteration” です。学習期間中に非常に多くの iteration を繰り返します。モデルの巨大さと、必要な iteration 数の多さが、学習にかかるコストと時間を大きくしている要因です。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Models: Build vs. buy
+## <i class="fa-solid fa-chalkboard-user"></i> モデル：構築か購入か
 
-Training a large language model from scratch can take months and cost millions of dollars in computing resources. Modern GPUs are uniquely suited for this application, which is why they have been in high demand in the recent past.
+大型言語モデルをゼロから学習させるには数か月、そしてコンピューティング資源に数百万ドルかかることもあります。現代の GPU はこの用途に最適化されているため、近年特に高い需要があります。
 
-Modern AI models are trained in multiple stages, called “pre-training” and “fine-tuning”. A simplified explanation is that pre-training gives a model its general capabilities, while fine-tuning adapts it for specific domain or application capabilities.
+現代の AI モデルは複数の段階で学習され、“pre-training” と “fine-tuning” と呼ばれます。簡単に言えば、pre-training でモデルの一般能力を獲得し、fine-tuning で特定のドメインやアプリケーション向けに適応させます。
 
-In a majority of cases, users will be selecting models off-the-shelf, although fine-tuning a model can be a good solution for the right use case, as long as it is done with the sufficient expertise and goal in mind. We will discuss this more in our later section on model evaluation and selection.
+ほとんどの場合、ユーザーは既製のモデルを選択しますが、適切な専門知識と目的があれば fine-tuning が有効なケースもあります。これについては後の「モデルの評価と選択」のセクションで詳しく扱います。
 
-Next, let’s start to get into how these models can actually be used. We will look at how to access such models, such as through commercial inference providers or by performing local inference. And we’ll review their pros and cons, as well as begin to interpret details of various models by reading model cards.
+次に、これらのモデルを実際にどう利用するかを見ていきましょう。商用の推論プロバイダを通じてアクセスする方法やローカルで推論を行う方法、そのメリット・デメリットを確認し、モデルカードを読み解きながら各モデルの詳細を理解していきます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

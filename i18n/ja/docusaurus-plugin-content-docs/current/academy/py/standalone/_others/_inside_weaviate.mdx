@@ -1,68 +1,68 @@
 ---
-title: A peek inside Weaviate
+title: Weaviate の内部を覗く
 sidebar_position: 50
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Introduction
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 :::warning TODO
 Intro video here
 :::
 
-So far, you have been introduced to the concepts of semantic and vector search, as well as have gained hands-on experience with Weaviate.
+これまでに、セマンティック検索と ベクトル 検索の概念について紹介し、さらに Weaviate を実際に操作していただきました。
 
-Now, it's time to dive deeper into the inner workings of Weaviate. In this section, we will explore the following topics in high-level detail:
+ここでは Weaviate の内部動作をより深く理解するため、以下のトピックをハイレベルで解説します。
 
-- How Weaviate performs vector searches
-- The storage of data in Weaviate
-- The source of vectors used by Weaviate
+- Weaviate が ベクトル 検索をどのように行うか  
+- Weaviate におけるデータの保存方法  
+- Weaviate が使用する ベクトル の由来  
 
-This information will help you understand the mechanisms behind the powerful search capabilities of Weaviate, enabling you to make the most of this tool in your development projects.
+これらの情報は、Weaviate の強力な検索機能の仕組みを理解し、開発プロジェクトで最大限に活用するための助けとなります。
 
 
-#### ML models and vectorization
+#### ML モデルとベクトル化
 
-A machine learning model is what will turn data, like a piece of text, an image, an audio clip, and more into a vector. This type of models are often also referred to as "vectorizers". And measures of similarity will depend on the particular machine learning model used.
+機械学習モデルは、テキスト・画像・音声クリップなどのデータを ベクトル へ変換します。この種のモデルはしばしば「ベクトライザー」とも呼ばれ、類似度の測定方法は使用する機械学習モデルによって異なります。
 
-As a result, it is paramount that the right model for the job is chosen. Or, at least, that a wrong model is not chosen. So throughout our courses, you will see many different models and learn about model selection both as rules of thumb and detailed discussions.
+そのため、目的に合った適切なモデルを選択する、少なくとも不適切なモデルを選ばないことが極めて重要です。コース全体で多様なモデルを取り上げ、経験則から詳細な議論まで、モデル選択について学習します。
 
-Weaviate does not itself vectorize data, but it is built to be compatible with a huge number of vectorization models and services. Our courses will also cover different ways to configure Weaviate to vectorize your data in the way that suits your goals and needs.
+Weaviate 自体はデータをベクトル化しませんが、非常に多くのベクトル化モデルやサービスと互換性があります。本コースでは、目的や要件に合った方法でデータをベクトル化するための Weaviate の設定方法も扱います。
 
-### Fast data retrieval
+### 高速なデータ検索
 
 ![](../../tmp_images/orgainized_filing_cabinets_with_many_folders_1.jpg)
 
-To retrieve data quickly and efficiently, Weaviate uses a vector index in addition to an object index. The vector index allows for fast information retrieval, while still maintaining high recall performance. However, as the size of the dataset increases, the memory requirements and retrieval times must be balanced.
+データを迅速かつ効率的に取得するため、Weaviate はオブジェクトインデックスに加えて ベクトル インデックスを使用します。 ベクトル インデックスは高速な情報検索を実現しつつ、高いリコール性能も維持します。ただし、データセットの規模が大きくなるにつれて、メモリ要件と検索時間のバランスを取る必要があります。
 
-Weaviate uses an "approximate nearest neighbor" (ANN) algorithm for its indexing, which enables it to scale at a sublinear complexity. This means that the search time increases at a slower rate than the size of the dataset, making Weaviate highly scalable.
+Weaviate はインデックス作成に「近似最近傍（ANN）」アルゴリズムを採用しており、準線形以下の計算量でスケールします。つまり、検索時間の増加速度はデータセットサイズの増加速度よりも遅く、Weaviate は高いスケーラビリティを実現します。
 
-Throughout the course, you'll learn about indexing in Weaviate and the HNSW index, which is Weaviate's primary vector index type.
+コースを通じて、Weaviate のインデックスや主要な ベクトル インデックスタイプである HNSW インデックスについて学びます。
 
-### Going to production
+### 本番環境への移行
 
 ![](../../tmp_images/a_machine_with_a_conveyer_belt_producing_boxes_of_documents.jpg)
 
-Vector databases often need to scale horizontally and vertically. The scale of vector databases can expand into billions of data objects, thus requiring indexing and retrieval of billions of vectors to be retrievable by many concurrent users.
+ベクトル データベースはしばしば水平・垂直の両方にスケールする必要があります。その規模は数十億のデータオブジェクトへ拡大することもあり、数十億の ベクトル を多くの同時ユーザーが検索できるよう、インデックスと検索が求められます。
 
-We appreciate that this presents additional and very different challenges to the data science aspect of vector search. To help you navigate these challenges, we'll cover all the key aspects of taking Weaviate to production in dedicated units of the course.
+これは ベクトル 検索のデータサイエンス的課題とは異なる追加のチャレンジを伴うことを理解しています。そのため、本コースでは Weaviate を本番環境で運用する際の主要事項を専用ユニットで解説します。
 
-All things related to taking Weaviate to production, such as authentication and authorization, backups, monitoring, replication and more will be covered in these units.
+認証・認可、バックアップ、モニタリング、レプリケーションなど、Weaviate の本番運用に関わるあらゆる内容を取り上げます。
 
 <Quiz questions={vectorizationAndML} />
 
 <Quiz questions={weaviateIndexing} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Data structure
+## <i class="fa-solid fa-square-chevron-right"></i> データ構造
 
 :::warning TODO
 Intro video here
 :::
 
-### Objects
+### オブジェクト
 
 ![](../../tmp_images/a_beautiful_document_page_with_a_long_number_on_top_and_lots_of_text_underneath_1.jpg)
 
-Each object in Weaviate is stored as a JSON document within its document store, with a unique [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) serving as the key. An object can be structured like this:
+Weaviate では、各オブジェクトがドキュメントストア内の JSON ドキュメントとして保存され、キーには一意の [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) が使用されます。オブジェクトの構造例は以下のとおりです。
 
 :::note TODO
 Replace object with one from actual edu database
@@ -81,30 +81,30 @@ Replace object with one from actual edu database
 }
 ```
 
-In Weaviate, objects can be linked to one another using cross-references, similar to foreign keys in relational databases. The overall structure of data in Weaviate is defined by the `schema`.
+Weaviate では、リレーショナルデータベースの外部キーに似たクロスリファレンスを使用して、オブジェクト同士をリンクできます。データ全体の構造は `schema` によって定義されます。
 
-### Schema
+### スキーマ
 
 ![](../../tmp_images/a_complex_architectural_blueprint_laid_out_on_the_table_0.jpg)
 
-A `schema` in Weaviate is the blueprint that defines its data structure. Here is an example schema structure:
+Weaviate における `schema` は、データ構造を定義する設計図です。次にスキーマ構造の例を示します。
 
 <details>
   <summary>Example schema</summary>
   TODO: Add actual example schema
 </details>
 
-The schema specifies for each class the metadata such as its name and description as well as the same for properties of each class. Additionally, it defines any cross-references between classes and settings for indexes including the object index and the vector index.
+スキーマは各クラスについて、その名前や説明などのメタデータ、各クラスのプロパティの名前や説明を指定します。さらに、クラス間のクロスリファレンスや、オブジェクトインデックスと ベクトル インデックスを含むインデックス設定も定義します。
 
-It's important to note that the schema holds information about the vectorization process, including which vectorization model to use, which properties to include or exclude, and whether to include property headings or not.
+また、スキーマはベクトル化プロセスに関する情報、使用するベクトル化モデル、含める／除外するプロパティ、プロパティ見出しを含めるかどうかなどを保持します。
 
 :::info Auto-schema
-Any missing information required for schema definition will be automatically inferred by Weaviate based on default values and the imported data.
+スキーマ定義に必要で不足している情報は、Weaviate がデフォルト値とインポートデータに基づき自動推論します。
 :::
 
-#### Data types
+#### データ型
 
-Each `class` definition will include one or more properties, which must have a data type. Currently, Weaviate data type support includes the following types:
+各 `class` 定義には 1 つ以上のプロパティが含まれ、それぞれにデータ型を指定します。現在、Weaviate がサポートするデータ型は以下のとおりです。
 
 import DataTypes from '/_includes/datatypes.mdx';
 
@@ -113,98 +113,97 @@ import DataTypes from '/_includes/datatypes.mdx';
   <DataTypes />
 </details>
 
-Note that most data types can include one such instance, or a list of instances, such as `string` or `string[]`.
+ほとんどのデータ型では、`string` または `string[]` のように単一値またはリスト値を指定できます。
 
-We will look at schema definition including data types in more detail in another unit.
+スキーマ定義とデータ型については、別のユニットで詳しく取り上げます。
 
 <Quiz questions={autoSchema} />
 
-### Data indexing
+### データインデックス
 
 ![](../../tmp_images/robot_arm_picking_up_a_box_from_many_many_orgainized_boxes_with_labels_0.jpg)
 
-To enable efficient search, Weaviate uses a number of indexes to store and retrieve data.
+効率的な検索を実現するため、Weaviate は複数のインデックスを用いてデータを保存・取得します。
 
-#### Object index
+#### オブジェクトインデックス
 
-The object index allows for filtering based on specific properties. From version 1.18 onwards, Weaviate has added a Roaring Bitmap-based index to its object index, in addition to its existing inverted index. This significantly enhances retrieval speed, particularly for large datasets or result sets.
+オブジェクトインデックスは、特定のプロパティに基づくフィルタリングを可能にします。 バージョン 1.18 以降、Weaviate は既存の 転置インデックス に加え、Roaring Bitmap ベースのインデックスをオブジェクトインデックスに追加しました。これにより、大規模データセットや結果セットにおいても取得速度が大幅に向上します。
+#### ベクトル インデックス
 
-#### Vector index
+Weaviate 内のオブジェクトには ベクトル を関連付けることができ、それらは ベクトル インデックスに収集・保存されます。 ベクトル インデックスは ベクトル 類似度に基づく検索を可能にし、 ANN （ Approximate Nearest Neighbor ）アルゴリズムを用いて構築されます。
 
-Objects in Weaviate can be associated with vectors, which are collected and stored in the vector index. The vector index enables searches based on vector similarity and is built using an ANN (Approximate Nearest Neighbor) algorithm.
-
-A traditional k-nearest neighbor (kNN) similarity search can be slow and inefficient for larger datasets. In contrast, ANN-based indexes allow Weaviate to perform vector searches quickly while maintaining high recall. Weaviate currently uses an HNSW-based ANN index.
+従来の k -nearest neighbor （ kNN ）類似検索は、大規模なデータセットでは遅く非効率になる可能性があります。これに対し、 ANN ベースのインデックスを用いることで Weaviate は高い再現率を維持しつつ高速に ベクトル 検索を実行できます。現在 Weaviate では HNSW ベースの ANN インデックスを採用しています。
 
 <Quiz questions={dataStorageComponents} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> A closer look at the vector search process
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル 検索プロセスの詳細
 
 :::warning TODO
 Intro video here
 :::
 
-### Order of search sub-processes
+### 検索サブプロセスの順序
 
 ![](../../tmp_images/manufacturing_line_with_multiple_factory_robots_for_different_tasks_0.jpg)
 
-In Weaviate, vector search can be combined with an algebraic filter for more precise results. For example, you could search for quiz questions similar to a specific vector, but only within the "World History" category.
+Weaviate では、 ベクトル 検索を代数フィルターと組み合わせてより精度の高い結果を得ることができます。たとえば、特定の ベクトル に類似したクイズ問題を "World History" カテゴリの中だけで検索するといったことが可能です。
 
-The various components of Weaviate come together to make this type of search possible.
+このような検索を実現するために、Weaviate のさまざまなコンポーネントが連携します。
 
-When a vector search query is sent to Weaviate, it uses the object index to create an "allow list" of object IDs. This allow list is then used in conjunction with the vector search, so that the result set is the combination of the vector search results and the allow list.
+ベクトル 検索クエリが Weaviate に送られると、まずオブジェクト インデックスを使用してオブジェクト ID の「許可リスト（ allow list ）」を作成します。この許可リストは ベクトル 検索と組み合わせて使用され、結果セットは ベクトル 検索結果と許可リストの積集合となります。
 
-The resulting set of object IDs is then used to retrieve the desired properties from the object store, which are then returned to the user.
+こうして得られたオブジェクト ID の集合を用いてオブジェクト ストアから必要なプロパティを取得し、最終的なレスポンスとしてユーザーに返します。
 
-:::info Pre-filtering
-This method of pre-filtering occurs before the vector search, maximizing the chance of Weaviate returning the desired results even when the filter is restrictive.
+:::info 事前フィルタリング
+この事前フィルタリングは ベクトル 検索の前段で実行されるため、フィルターが厳しい場合でも Weaviate が期待どおりの結果を返す可能性を最大化できます。
 
-This type of filtering is called pre-filtering, as the filtering occurs prior to the vector search. This maximizes the chance of Weaviate returning the requested number of results even when the filter is restrictive.
+フィルタリングが ベクトル 検索よりも前に行われるため、この方式を事前フィルタリングと呼びます。これにより、フィルターが厳しくても要求された件数の結果を返せる可能性が高まります。
 :::
 
 <Quiz questions={objectIndex} />
 
-### Sources of vectors
+### ベクトル の生成元
 
 ![](../../tmp_images/a_machine_with_a_conveyer_belt_producing_many_long_numbers_0.jpg)
 
-Weaviate provides multiple ways for users to associate vector representations with objects. In general, users can either use Weaviate's vectorizer modules to obtain vector representations during the import process or supply their own vector representations.
+Weaviate は、オブジェクトに ベクトル 表現を関連付けるための複数の方法を提供しています。一般的には、インポート時に Weaviate の ベクトライザー モジュールを利用して ベクトル 表現を取得するか、ユーザーが独自に生成した ベクトル を提供するかのいずれかです。
 
-#### Using vectorizer modules
+#### ベクトライザー モジュールを使用する
 
-If you want to obtain vectors at the time of import, you can use a Weaviate vectorizer module. These modules can be categorized into two groups: those (`text2vec-openai`, `text2vec-cohere`, `text2vec-huggingface`) that call external inference APIs, and those that run locally as a microservice to perform vectorization (e.g. `text2vec-transformers`).
+インポート時に ベクトル を取得したい場合は、Weaviate の ベクトライザー モジュールを使用できます。これらのモジュールは大きく 2 つに分類されます。外部推論 API を呼び出すもの（ `text2vec-openai` 、 `text2vec-cohere` 、 `text2vec-huggingface` ）と、ローカルでマイクロサービスとして動作しベクトル化を行うもの（例： `text2vec-transformers` ）です。
 
-Weaviate's set of vectorizer modules is versatile and extensible. It includes modules for vectorizing text or images, a module that can vectorize both text and images into a single vector space (`multi2vec-clip`), and one that generates vectors based on other vectors (`ref2vec-centroid`).
+Weaviate の ベクトライザー モジュールは柔軟かつ拡張可能です。テキストや画像を ベクトル 化するモジュールに加え、テキストと画像の両方を同一 ベクトル 空間にベクトル化できるモジュール（ `multi2vec-clip` ）や、別の ベクトル をもとに新たな ベクトル を生成するモジュール（ `ref2vec-centroid` ）などが含まれています。
 
-Custom modules can also be created to extend the capabilities of Weaviate as needed.
+必要に応じてカスタム モジュールを作成し、Weaviate の機能を拡張することもできます。
 
-#### Uploading vectors
+#### ベクトル をアップロードする
 
-Another option for adding vectors to Weaviate is to manually upload them. This is sometimes referred to as the "Bring Your Own Vector" option in our documentation, and may be a good choice for users who prefer to generate vectors outside of Weaviate or who have already vectorized their data.
+別の方法として、 ベクトル を手動でアップロードすることもできます。ドキュメントでは「 Bring Your Own Vector 」オプションと呼ばれることもあり、Weaviate の外部で ベクトル を生成したい場合や、すでに ベクトル 化済みのデータをお持ちの場合に適した方法です。
 
-:::note Upload vectors and use a vectorizer
-It is possible to both upload your own vectors and specify a vectorizer for Weaviate. For example, if you are importing a large dataset and have vectorized the data using a vectorizer that is also available through Weaviate, this may be a useful approach. This will allow you to use Weaviate to vectorize any updates to the dataset, as well as to vectorize queries as necessary.
+:::note ベクトル をアップロードしてベクトライザーも使用する
+独自の ベクトル をアップロードすると同時に、Weaviate に ベクトライザー を指定することも可能です。たとえば、大規模なデータセットをインポートする際に、Weaviate が提供する ベクトライザー と同じものを使って事前にデータを ベクトル 化している場合などに有用です。これにより、データセットの更新分やクエリについては Weaviate 側で ベクトル 化を行えます。
 :::
 
-We will explore these options in more detail in another unit.
+これらのオプションについては、別のユニットで詳しく解説します。
 
 <Quiz questions={vectorizeObject} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> まとめ
 
 :::warning TODO
 Video here
 :::
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 練習問題
 
-Can you describe, in your own sentence, XXX?
+あなた自身の言葉で、 XXX を説明できますか？
 
 :::warning TODO
 Input box for user to put answer in and get back a similarity score & our definition?
 ??
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
 
 :::info
 Add summary

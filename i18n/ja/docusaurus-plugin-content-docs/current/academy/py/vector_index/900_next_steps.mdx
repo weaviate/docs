@@ -1,36 +1,36 @@
 ---
-title: Wrap-up / Next steps
+title: まとめ / 次のステップ
 ---
 
-Congratulations! You have completed this course on vector indexes. We hope you found it helpful and informative.
+おめでとうございます！これで ベクトル インデックスに関する本コースを修了しました。お役に立ち、有益だったことを願っています。
 
-## Index selection
+## インデックス選択
 
-When choosing an index type, use the following as a guide:
+インデックス タイプを選択する際は、次を目安にしてください。
 
-- **Flat index**: Use for small collections with a known size.
-- **HNSW index**: Use for large collections with a known size.
-- **Dynamic index**: Use for collections with an unknown size or collections that may grow over time.
+- **Flat index** : サイズが既知の小規模コレクション向け。  
+- **HNSW index** : サイズが既知の大規模コレクション向け。  
+- **Dynamic index** : サイズが不明、または時間とともに増加する可能性があるコレクション向け。
 
-Also, in a multi-tenant environment, the "dynamic" index may be a good default choice, as it will allow some tenants to remain in the `flat` index while others are automatically converted to `hnsw` when they grow.
+また、マルチテナント環境では、`dynamic` インデックスをデフォルトにすると便利です。これにより、一部のテナントは `flat` インデックスのままにし、成長したテナントは自動で `hnsw` に変換できます。
 
-## Further resources
+## さらなるリソース
 
-These resources will help you continue your learning journey:
+学習を継続する際に役立つリソースはこちらです。
 
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
-- [References: Vector index parameters](/weaviate/config-refs/indexing/vector-index.mdx)
-- [How-to manage collections](../../../weaviate/manage-collections/index.mdx)
-- [Weaviate Academy: Compression](../compression/index.md)
-- [Weaviate Academy: Named vectors](../named_vectors/index.md)
+- [概念: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
+- [リファレンス: ベクトル インデックスのパラメーター](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コレクションの管理方法](../../../weaviate/manage-collections/index.mdx)
+- [Weaviate Academy: 圧縮](../compression/index.md)
+- [Weaviate Academy: 名前付き ベクトル](../named_vectors/index.md)
 
 import CTASocials from '../_snippets/cta_socials.mdx';
 
 <CTASocials />
 
-See you soon! 👋
+またお会いしましょう！ 👋
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

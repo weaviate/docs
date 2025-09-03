@@ -1,6 +1,6 @@
 ---
-title: "Option 2: A local Docker instance"
-description: "Set up Weaviate with Docker for a quick and customizable local deployment."
+title: "オプション 2: ローカル Docker インスタンス"
+description: "素早くカスタマイズ可能なローカル環境として Docker で Weaviate をセットアップします。"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,17 +8,17 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../../_snippets/101_connect.mts';
 
-:::note Have you already created a Weaviate instance?
-If you have [created a cloud instance](./10_create_wcs.mdx) of Weaviate, you can skip this page and continue with [Communicate with Weaviate](../30_communicate.mdx).
+:::note すでに Weaviate インスタンスを作成しましたか？
+Weaviate の [クラウドインスタンスを作成済み](./10_create_wcs.mdx) の場合は、このページをスキップして [Weaviate との通信](../30_communicate.mdx) に進んでください。
 :::
 
-Here, you will create a Weaviate instance using Docker.
+ここでは、Docker を使用して Weaviate インスタンスを作成します。
 
-### <i class="fa-solid fa-chalkboard"></i> Download and run the docker-compose file
+### <i class="fa-solid fa-chalkboard"></i> docker-compose ファイルのダウンロードと実行
 
-Install Docker on your machine. We recommend following the [official Docker installation guide](https://docs.docker.com/get-docker/).
+お使いのマシンに Docker をインストールしてください。インストールには [公式 Docker インストールガイド](https://docs.docker.com/get-docker/) を参照することをお勧めします。
 
-Create a new directory and navigate to it in your terminal. Then, create a new file called `docker-compose.yml` and add the following content:
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。そして `docker-compose.yml` というファイルを作成し、次の内容を追加します：
 
 ```yaml
 ---
@@ -50,21 +50,21 @@ services:
 ...
 ```
 
-### <i class="fa-solid fa-chalkboard"></i> Create a Weaviate instance
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
 
-Run the following command to start Weaviate:
+次のコマンドを実行して Weaviate を起動します：
 
 ```bash
 docker compose up -d
 ```
 
-### <i class="fa-solid fa-chalkboard"></i> Your Weaviate instance details
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
 
-Once the instance is created, you can access it at `http://localhost:8080`.
+インスタンスが作成されると、`http://localhost:8080` でアクセスできます。
 
-### <i class="fa-solid fa-code"></i> Connect to your Weaviate instance
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへの接続
 
-To connect to the Weaviate instance, use the `connectToLocal()` function.
+Weaviate インスタンスに接続するには、`connectToLocal()` 関数を使用します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -73,11 +73,11 @@ To connect to the Weaviate instance, use the `connectToLocal()` function.
   language="ts"
 />
 
-#### Provide inference API keys
+#### 推論 API キーの指定
 
-Some Weaviate modules can use inference APIs for vectorizing data or large language model integration. You can provide the API keys for these services to Weaviate at instantiation.
+一部の Weaviate モジュールは、データのベクトル化や大規模言語モデルとの統合に推論 API を利用できます。これらのサービスの API キーは、Weaviate のインスタンス化時に渡すことができます。
 
-This course uses VoyageAI, so you can provide the VoyageAI API key to Weaviate through `headers: {"X-VoyageAI-Api-Key": <YOUR_KEY>}` as shown below:
+このコースでは VoyageAI を使用します。以下のように `headers: {"X-VoyageAI-Api-Key": <YOUR_KEY>}` を設定して VoyageAI の API キーを Weaviate に渡してください：
 
 <FilteredTextBlock
   text={TSCode}
@@ -86,7 +86,7 @@ This course uses VoyageAI, so you can provide the VoyageAI API key to Weaviate t
   language="ts"
 />
 
-## Questions and feedback
+## 質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

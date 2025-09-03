@@ -1,130 +1,129 @@
 ---
-title: Navigating the landscape
-description: How to navigate the vast, complex world of AI models
+title: ランドスケープの把握
+description: 広大で複雑な AI モデルの世界をナビゲートする方法
 ---
 
-## <i class="fa-solid fa-chalkboard-user"></i> Access mode selection
+## <i class="fa-solid fa-chalkboard-user"></i> アクセスモードの選択
 
-When it comes to deploying AI models in your applications, choosing between commercial inference providers and local inference is a good step to narrow down your range of choices.
+アプリケーションに AI モデルを導入する際、商用の推論サービスプロバイダーを利用するかローカル推論を行うかを選ぶことで、選択肢を絞り込むことができます。
 
-Each approach has distinct advantages and trade-offs that should be considered based on your specific use case.
+それぞれのアプローチには、ユースケースに応じて考慮すべき明確な利点とトレードオフがあります。
 
-### <i class="fa-solid fa-chalkboard"></i> Inference service providers
+### <i class="fa-solid fa-chalkboard"></i> 推論サービスプロバイダー
 
-Examples: AWS, Cohere, Google, Microsoft Azure, OpenAI, etc.
+例: AWS、Cohere、Google、Microsoft Azure、OpenAI など
 
-**Advantages:**
+**利点:**
 
-- No infrastructure management or hardware investment required
-- Access to proprietary, provider-specific models
-    - Regular model updates & improvements
-- Automatic scaling to handle varying workloads
+- インフラ管理やハードウェア投資が不要
+- プロバイダー独自の専有モデルへアクセス可能  
+  - 定期的なモデル更新と改善
+- ワークロードの変動に応じた自動スケーリング
 
-**Disadvantages:**
+**欠点:**
 
-- Generally higher costs than local or self-managed inference
-- Data privacy considerations (data leaves your environment)
-- Dependency on third-party service availability
-    - What happens if the provider ceases to operate
-- Limited customization options
+- ローカルまたはセルフマネージド推論よりコストが高い傾向
+- データが環境外に出るためプライバシー面の考慮が必要
+- サードパーティサービスの稼働状況に依存  
+  - プロバイダーがサービスを停止した場合のリスク
+- カスタマイズの自由度が限定的
 
-### <i class="fa-solid fa-chalkboard"></i> Local Inference
+### <i class="fa-solid fa-chalkboard"></i> ローカル推論
 
-Example: Hugging Face Transformers / Accelerate, llama.cpp, Ollama, PyTorch Serve, TensorFlow Serving
+例: Hugging Face Transformers / Accelerate、llama.cpp、Ollama、PyTorch Serve、TensorFlow Serving
 
-**Advantages:**
+**利点:**
 
-- Control data transmissions
-- No internet dependency for inference operations
-- Ability to deploy custom trained models
+- データ送受信を自分で管理可能
+- 推論にインターネット接続が不要
+- 独自に学習させたカスタムモデルのデプロイが可能
 
-**Disadvantages:**
+**欠点:**
 
-- Higher upfront costs for hardware procurement
-- Unlikely to be able to access the latest, most powerful models
-- Responsibility for model updates and maintenance
-- Potential performance constraints based on available hardware
+- ハードウェア調達の初期費用が高い
+- 最新で最強力なモデルにアクセスしにくい
+- モデルの更新・保守を自分で担う必要
+- 使用可能なハードウェアによる性能制約の可能性
 
-### <i class="fa-solid fa-chalkboard"></i> Decision Factors
+### <i class="fa-solid fa-chalkboard"></i> 判断基準
 
-Consider the following questions when making your selection:
+選択の際は、次の質問を検討してください。
 
-1. **Data sensitivity**: Does your application process confidential or regulated data? If your data cannot leave your premises, this may limit your options to particular inference providers, or local models.
-2. **Inference volume**: How many requests do you expect to process daily/monthly? For many, the up-front costs for local models may be prohibitive.
-3. **Latency requirements**: How time-sensitive are your model responses? If this is high, it may preclude many small-scale users from using local models.
-4. **Budget constraints**: Is your priority upfront savings or long-term cost optimization?
-5. **Technical resources**: Do you have the expertise to manage local model deployment, and potentially training?
+1. **データの機密性**: 機密情報や規制対象のデータを扱いますか？ データを外部に出せない場合、利用可能な推論プロバイダーやローカルモデルが限定されます。
+2. **推論量**: 1 日 / 1 か月あたりどの程度のリクエストを処理しますか？ 多くの場合、ローカルモデルの初期コストが負担となる可能性があります。
+3. **レイテンシ要件**: モデル応答の時間制約はどの程度厳しいですか？ 厳しい場合、小規模ユーザーがローカルモデルを使うことは難しいかもしれません。
+4. **予算制約**: 優先するのは初期費用の削減ですか、それとも長期的なコスト最適化ですか？
+5. **技術リソース**: ローカルモデルのデプロイや学習を管理する能力がありますか？
 
-Note that there isn’t a one-size-fits-all solution.
+万能な解決策は存在しません。
 
-However, it may be that for getting started, using a commercial inference provider may be an easier, lower-friction choice.
+しかし、まずは商用の推論サービスプロバイダーを利用すると、導入時のハードルが低くなる場合があります。
 
-## <i class="fa-solid fa-chalkboard-user"></i> How to read model cards
+## <i class="fa-solid fa-chalkboard-user"></i> モデルカードの読み方
 
-Model “cards” are to AI models what product labels or specification sheets are to regular products.
+モデル「カード」は、一般製品における製品ラベルや仕様書と同じように、 AI モデルについての情報を提供するものです。
 
-Model cards are supplied by the model provider to help you understand what the model is and how to best use it.
+モデルカードは、モデルプロバイダーがモデルの概要と最適な利用方法を理解してもらうために提供します。
 
-**Examples of model cards**
+**モデルカードの例**
 
-Model cards come in a variety of formats. See, for example, the following cards for embedding models:
+モデルカードには複数の形式があります。以下は埋め込みモデルのカード例です。
 
 - [https://huggingface.co/Cohere/Cohere-embed-english-v3.0](https://huggingface.co/Cohere/Cohere-embed-english-v3.0)
 - [https://docs.cohere.com/v2/docs/cohere-embed](https://docs.cohere.com/v2/docs/cohere-embed)
 - [https://huggingface.co/Snowflake/snowflake-arctic-embed-l-v2.0](https://huggingface.co/Snowflake/snowflake-arctic-embed-l-v2.0)
 
-And some cards for generative AI models:
+生成 AI モデルのカード例は次のとおりです。
 
 - [https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct)
 - [https://ollama.com/library/llama3.3:70b](https://ollama.com/library/llama3.3:70b)
 - [https://ai.google.dev/gemma/docs/core/model_card_3](https://ai.google.dev/gemma/docs/core/model_card_3)
 - [https://build.nvidia.com/microsoft/phi-4-multimodal-instruct/modelcard](https://build.nvidia.com/microsoft/phi-4-multimodal-instruct/modelcard)
 
-Even from this small selection, you can see that these cards vary according to the hosting site and the model provider. This volume of information can be overwhelming, especially at first.
+この少数の例だけでも、カードはホスティングサイトやモデルプロバイダーによって内容が大きく異なることが分かります。特に初めての場合、この情報量は圧倒されるかもしれません。
 
 import ModelCards from './_img/model_cards.png';
 
 <img src={ModelCards} alt="Model Cards" />
 
-We will get into these in more detail in later courses. But here are some key parameters to look out for.
+詳細は後続のコースで扱いますが、ここでは注目すべき主要パラメーターを紹介します。
 
-1. **Basic model information**
-    - Model name and version
-    - Model type (generative, embedding, etc.)
-    - Model size (parameter count) and architecture
-    - Training data overview
-    - Costs, if accessed through an API, or hardware requirements
-2. **Technical specifications**
-    - Dimensionality (for embedding models)
-    - Context length (for generative models)
-    - Supported languages or modalities
-3. **Performance metrics**
-    - Benchmark results
-    - Known strengths and limitations
-    - Downstream performance
-4. **Usage information**
-    - Intended use cases
-    - Implementation guidelines or code snippets
-5. **Legal and ethical considerations**
-    - License type and usage restrictions
-    - Potential biases or fairness considerations
+1. **基本情報**  
+   - モデル名とバージョン  
+   - モデルタイプ（生成、埋め込み など）  
+   - モデルサイズ（パラメータ数）とアーキテクチャ  
+   - 学習データの概要  
+   - API 経由でアクセスする場合のコスト、またはハードウェア要件  
+2. **技術仕様**  
+   - 埋め込みモデルの場合の次元数  
+   - 生成モデルの場合のコンテキスト長  
+   - 対応言語やモダリティ  
+3. **性能指標**  
+   - ベンチマーク結果  
+   - 既知の強みと制限  
+   - 下流タスクでの性能  
+4. **使用情報**  
+   - 想定ユースケース  
+   - 実装ガイドラインやコードスニペット  
+5. **法的・倫理的考慮事項**  
+   - ライセンス形態と使用制限  
+   - バイアスや公平性に関する潜在的課題  
 
-Just reviewing these parameters will take you a long way towards identifying models that will suit your needs.
+これらの項目を確認するだけでも、自分のニーズに合ったモデルを見極めるのに大いに役立ちます。
 
-In the absence of other information, a good starting point would be to filter for:
+他の情報がない場合は、まず次の観点でフィルタリングすると良いでしょう。
 
-- The right model type
-- Suitable modality, language and context length or dimensionality
-- Ability to access model (inference provider / local inference)
-- License suitability
+- 適切なモデルタイプ
+- モダリティ、言語、コンテキスト長または次元数の適合性
+- モデルへのアクセス方法（推論サービスプロバイダー / ローカル推論）
+- ライセンスが要件を満たしているか
 
-Then, select candidate models from a reputable model provider, or based on their benchmark performance.
+そのうえで、信頼できるモデルプロバイダーのモデルやベンチマーク性能を基に候補を選定します。
 
-Ultimately you may wish to evaluate the model’s, and your application’s, performance yourself.
+最終的には、モデルおよびアプリケーションの性能を自分で評価したい場合もあるでしょう。
 
-But following these simple heuristics will get you a long way towards selecting a good baseline model or a set of baseline models.
-
-## Questions and feedback
+しかし、これらのシンプルなヒューリスティクスを活用することで、優れたベースラインモデル、または複数のベースラインモデルを選ぶまでの道のりが大きく短縮されます。
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

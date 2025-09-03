@@ -1,5 +1,5 @@
 ---
-title: Question and Answering (QnA)
+title: 質問応答 (QnA)
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,29 +11,29 @@ import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
 [//]: # (<img src={imageUrl} alt="Image alt" width="75%"/>)
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-A question and answering (QnA) module does exactly what its name suggests. It will answer a question from you, based on the data present in the search results.
+質問応答 ( QnA ) モジュールは、その名前が示すとおりの働きをします。検索結果に含まれるデータを基に、あなたの質問に回答します。
 
-This is a more specific type of data transformation than one performed by a generative module. A QnA module looks to extract an answer to the question from the search data.
+これは生成モジュールが行うデータ変換よりもさらに特化した処理です。 QnA モジュールは、検索データから質問への答えを抽出しようとします。
 
-To this end, a QnA module may not provide an answer at all.
+そのため、場合によっては QnA モジュールが回答を返さないこともあります。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Configuration
+## <i class="fa-solid fa-square-chevron-right"></i> 設定
 
-### <i class="fa-solid fa-code"></i> Enable modules
+### <i class="fa-solid fa-code"></i> モジュールを有効化する
 
-To use QnA functionality, a `qna-xxx` module must be enabled in the Weaviate instance.
+QnA 機能を使用するには、 Weaviate インスタンスで `qna-xxx` モジュールを有効にする必要があります。
 
-If you are using WCD, a `qna` module is enabled by default ([see the documentation](/cloud)). Otherwise, you must configure your Weaviate instance to make sure that a `qna-xxx` module is enabled.
+WCD を使用している場合、`qna` モジュールはデフォルトで有効になっています（[ドキュメント](/cloud) を参照）。それ以外の場合は、`qna-xxx` モジュールが有効になるように Weaviate インスタンスを設定してください。
 
-This is outside the scope of this unit, but you can refer to the [module configuration](/weaviate/modules/reader-generator-modules/index.md) for information on how to configure each module.
+設定方法は本ユニットの範囲外ですが、各モジュールの設定方法については [モジュール設定](/weaviate/modules/reader-generator-modules/index.md) を参照してください。
 
-### <i class="fa-solid fa-code"></i> Configure classes
+### <i class="fa-solid fa-code"></i> クラスを設定する
 
-If only one qna module is enabled for the Weaviate instance, Weaviate will automatically use that module for all qna tasks.
+Weaviate インスタンスで 1 つだけ qna モジュールが有効になっている場合、すべての QnA タスクで自動的にそのモジュールが使用されます。
 
-On the other hand, if multiple qna modules are configured, you must define for each class which qna model to use, such as shown below.
+一方、複数の qna モジュールが構成されている場合は、下記のようにクラスごとに使用する qna モデルを指定しなければなりません。
 
 ```json
 {
@@ -50,27 +50,28 @@ On the other hand, if multiple qna modules are configured, you must define for e
 }
 ```
 
-Use of QnA functionality also requires that the target class be configured with a vectorizer (`text2vec`) module.
+QnA 機能を使用するには、対象クラスに ベクトライザー (`text2vec`) モジュールが設定されていることも必要です。
 
-## <i class="fa-solid fa-square-chevron-right"></i> About QnA queries
+## <i class="fa-solid fa-square-chevron-right"></i> QnA クエリについて
 
-### <i class="fa-solid fa-chalkboard"></i> How it works
+### <i class="fa-solid fa-chalkboard"></i> 仕組み
 
-Similarly to generative modules, a QnA search involves two steps, which are to:
-1. Perform a search; and then
-1. Attempt to extract an answer using the search results and the question.
+生成モジュールと同様に、 QnA 検索は次の 2 段階で行われます。  
+1. 検索を実行する  
+1. 検索結果と質問を用いて回答を抽出する
 
-Depending on whether a suitable answer was found, the `answer` sub-property under `_additional` properties may contain the answer. Some models will also return the position of the answer in the text.
+適切な回答が見つかったかどうかに応じて、`_additional` プロパティ配下の `answer` サブプロパティに回答が格納されます。モデルによっては、テキスト内での回答の位置も返します。
 
-If an answer is not found, the `answer` sub-property will indicate so.
+回答が見つからなかった場合は、その旨が `answer` サブプロパティに示されます。
 
-### <i class="fa-solid fa-code"></i> QnA syntax
+### <i class="fa-solid fa-code"></i> QnA 構文
 
-In a generative search, the same question text is used to both:
-- Perform the search, and
-- Extract the answer.
+生成検索では、同じ質問文が  
+- 検索の実行  
+- 回答の抽出  
+の両方に使用されます。
 
-So, in the example below, the query `"How many championships does Lewis Hamilton have?"` is used to find the nearest object, from which Weaviate attempts to extract an answer to the question.
+したがって、下記の例では `"How many championships does Lewis Hamilton have?"` というクエリを用いて最も近いオブジェクトを検索し、そこから Weaviate が質問への回答を抽出しようとします。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -83,10 +84,10 @@ So, in the example below, the query `"How many championships does Lewis Hamilton
 </TabItem>
 </Tabs>
 
-In this query, the article includes an answer, and you can see that it has been extracted by the model.
+このクエリでは、記事に回答が含まれており、モデルによって正しく抽出されていることが確認できます。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -97,9 +98,9 @@ In this query, the article includes an answer, and you can see that it has been 
 
 </details>
 
-### <i class="fa-solid fa-code"></i> How to specify properties
+### <i class="fa-solid fa-code"></i> プロパティの指定方法
 
-You can specify the object properties in which the QnA module is to search through for the answer. Similarly to the case of a generative query, this may be useful if you want to reduce the length of the input, or be very specific about where the information should come from.
+QnA モジュールが回答を探す際に対象とするオブジェクトのプロパティを指定できます。生成クエリの場合と同様、入力の長さを短縮したい場合や、情報源を明確に限定したい場合に便利です。
 
 :::note `nearText` search unaffected
 Specifying properties to search only affects the answer extraction part of the query, as the underlying object vectors do not change.
@@ -116,36 +117,35 @@ Specifying properties to search only affects the answer extraction part of the q
 </TabItem>
 </Tabs>
 
-And in this query, Weaviate is not able to answer the question as the required information is not available in the `title` field.
+このクエリでは、必要な情報が `title` フィールドに存在しないため、 Weaviate は質問に答えることができません。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
   startMarker="# Expected AskQueryWithProperties results"
-  endMarker="# END Expected AskQueryWithProperties results"
+  endMarker="# END AskQueryWithProperties results"
   language="py"
 />
 
 </details>
 
-### <i class="fa-solid fa-code"></i> Object limits
+### <i class="fa-solid fa-code"></i> オブジェクト数の制限
 
-As this is also a two-step search, you can specify the number of objects for Weaviate to initially retrieve before attempting to extract the answer.
+これも 2 段階検索であるため、回答抽出を行う前に Weaviate が最初に取得するオブジェクト数を指定できます。
 
-By setting the number of objects, you may increase the chance of retrieving the object that contains the answer to the specific question.
+オブジェクト数を増やすことで、質問の答えを含むオブジェクトを取得できる可能性を高められます。
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+- Question and Answer (QnA) 検索は、別の 2 ステップ検索であり、配信前に取得したデータから特定の質問への回答を抽出しようとします。  
+- QnA 検索を実行するには、Weaviate インスタンスで `qna-xxx` モジュールを有効にする必要があります。`qna-openai` モジュールは WCD ではデフォルトで有効になっています。  
+- QnA モジュールは、取得した各オブジェクト内から回答を探し、追加プロパティとして返します。  
+- QnA モジュールが回答を特定できない場合は、その旨をレスポンスで示します。  
 
-- Question and Answer (QnA) search is another two-step search, which attempts to extract an answer to a specific question from the retrieved data before delivery.
-- To perform a QnA search, a `qna-xxx` module must be enabled in the Weaviate instance. The `qna-openai` module is enabled by default in WCD.
-- The QnA module will look for an answer in each retrieved object, returning the answer as an additional property.
-- If the QnA module does not identify an answer, it will indicate so in the response.
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

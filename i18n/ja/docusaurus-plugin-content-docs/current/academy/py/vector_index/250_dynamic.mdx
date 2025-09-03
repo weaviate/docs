@@ -1,49 +1,49 @@
 ---
-title: Dynamic index in depth
+title: 動的インデックスの詳細
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!./_snippets/100_config.py';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyCode from '!!raw-loader!./_snippets/100_config.py';  
 
-The "dynamic" index is a "best of both worlds" approach that combines the benefits of the `hnsw` and `flat` indexes.
+「 dynamic 」インデックスは、`hnsw` インデックスと `flat` インデックスの利点を組み合わせた “両方の長所取り” のアプローチです。
 
 import DynamicAsyncRequirements from '/_includes/dynamic-index-async-req.mdx';
 
 <DynamicAsyncRequirements/>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Key ideas
+## <i class="fa-solid fa-square-chevron-right"></i> 主要な概念
 
-Simply put, the `dynamic` index is a `flat` index that is automatically converted to an `hnsw` index when the number of vectors in the collection exceeds a predetermined threshold (10,000 by default).
+簡単に言うと、`dynamic` インデックスは `flat` インデックスを基盤とし、コレクション内の ベクトル 数が既定のしきい値（デフォルトでは 10,000）を超えると自動的に `hnsw` インデックスへ変換されます。
 
-The motivation for this is that the `flat` index is very efficient for small collections, but its search time increases linearly with the number of vectors in the collection. The `hnsw` index, on the other hand, is more efficient for large collections, but includes a memory overhead with little benefit for small collections.
+その背景には、`flat` インデックスは小規模コレクションに対して非常に効率的ですが、検索時間がコレクション内の ベクトル 数に比例して増加するという性質があります。一方、`hnsw` インデックスは大規模コレクションでより効率的ですが、小規模コレクションではメモリのオーバーヘッドが大きく利点が少ないという問題があります。
 
-The `dynamic` index is a good choice if you do not know how big the size of each collection will be, or if you expect some tenants to grow much larger than others.
+コレクションごとのサイズが事前に分からない場合や、テナントによってサイズが大きく異なることが予想される場合には、`dynamic` インデックスが最適な選択肢となります。
 
-In a multi-tenancy configuration, this will mean that all tenants will start with the `flat` index, but will automatically switch to the `hnsw` index when the number of vectors in the collection exceeds the threshold.
+マルチテナンシー構成では、すべてのテナントが最初は `flat` インデックスから開始し、コレクション内の ベクトル 数がしきい値を超えると自動的に `hnsw` インデックスへ切り替わります。
 
-Currently, this is a one-way conversion, meaning that once the index is converted to `hnsw`, it will not be converted back to `flat` if it subsequently falls below the threshold.
+現時点では片方向の変換のみ対応しており、一度 `hnsw` に変換されると、後にしきい値を下回っても `flat` へは戻りません。
 
-### <i class="fa-solid fa-chalkboard"></i> Distance metric
+### <i class="fa-solid fa-chalkboard"></i> 距離メトリック
 
-![Vector Distance Calculations](./img/vector_distance.png)
+![ベクトル距離計算](./img/vector_distance.png)
 
-The distance metric used in the index determines how the distance between vectors is calculated. In an HNSW index, it impacts where each vector is placed in the graph.
+インデックスで使用する距離メトリックは、 ベクトル 間の距離をどのように計算するかを決定します。HNSW インデックスでは、これが各 ベクトル をグラフ内のどこに配置するかにも影響します。
 
-You must choose a metric that suits the vectors in your collection. To find this, consult the documentation of the model that generated your vectors.
+お使いの ベクトル に適したメトリックを選択してください。選定の際は、 ベクトル を生成したモデルのドキュメントを参照すると良いでしょう。
 
-Weaviate's default metric is cosine, but you can also use any number of [other available metrics](/weaviate/config-refs/distances.md).
+Weaviate のデフォルトメトリックは cosine ですが、[他にも利用可能なメトリック](/weaviate/config-refs/distances.md) を使用できます。
 
-If you are unsure, the cosine distance is a good, robust, default choice that is used by a majority of models.
+迷った場合は、多くのモデルで採用されている堅牢なデフォルトである cosine 距離をお勧めします。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Configure dynamic index in Weaviate
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate で dynamic インデックスを設定する
 
-Each of these parameters can be provided when creating a collection in Weaviate. Note that the `vector_cache_max_objects` is only used if quantization is enabled with vector caching enabled within it.
+以下の各パラメーターは、コレクション作成時に指定できます。なお、`vector_cache_max_objects` は量子化を有効にし、かつ ベクトル キャッシュを有効にした場合にのみ使用されます。
 
-### <i class="fa-solid fa-code"></i> Basic configuration
+### <i class="fa-solid fa-code"></i> 基本設定
 
-Set a collection to use the dynamic index as shown below.
+以下のようにコレクションを dynamic インデックスに設定します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -52,11 +52,11 @@ Set a collection to use the dynamic index as shown below.
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Custom configuration
+### <i class="fa-solid fa-code"></i> カスタム設定
 
-You can set the threshold at which the `flat` index will be converted to `hnsw`.
+`flat` インデックスが `hnsw` へ変換されるしきい値を設定できます。
 
-Additionally, you can specify any of the `flat` and `hnsw` index parameters that will be used depending on the state of the index.
+さらに、インデックスの状態に応じて適用される `flat` および `hnsw` インデックスの各種パラメーターも指定可能です。
 
 <FilteredTextBlock
   text={PyCode}
@@ -65,16 +65,15 @@ Additionally, you can specify any of the `flat` and `hnsw` index parameters that
   language="py"
 />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Further resources
+## <i class="fa-solid fa-square-chevron-right"></i> 参考資料
 
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
-- [References: Vector index parameters](/weaviate/config-refs/indexing/vector-index.mdx)
-- [How-to manage collections](../../../weaviate/manage-collections/index.mdx)
-- [Weaviate Academy: Compression](../compression/index.md)
+- [Concepts: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
+- [References: ベクトル インデックスのパラメーター](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コレクションの管理方法](../../../weaviate/manage-collections/index.mdx)
+- [Weaviate Academy: 圧縮](../compression/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

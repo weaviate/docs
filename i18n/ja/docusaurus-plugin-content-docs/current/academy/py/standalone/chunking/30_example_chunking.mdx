@@ -1,6 +1,6 @@
 ---
-title: Example part 1 - Chunking
-description: View practical examples of chunking applied in Weaviate.
+title: 例 パート 1 - チャンク化
+description: Weaviate におけるチャンク化の実例を確認します。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,22 +16,22 @@ import PreviewUnit from '../../../_snippets/preview.mdx'
 
 <PreviewUnit />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-In the preceding sections, you've learned [about chunking](./10_introduction.mdx), and how to do it, using [fixed size chunks](./20_how_1.mdx) or [variable size chunks](./25_how_2.mdx).
+前のセクションでは、[チャンク化について](./10_introduction.mdx) と、その方法として [固定長チャンク](./20_how_1.mdx) および [可変長チャンク](./25_how_2.mdx) を学びました。
 
-In this section and next, we'll show you holistic examples of chunking in action. We'll ingest multiple sections of a book using different chunking methods before comparing how search performs.
+本セクションと次のセクションでは、チャンク化が実際にどのように機能するかを包括的に示します。異なるチャンク化手法を用いて書籍の複数セクションを取り込み、検索性能を比較します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Chunking real data
+## <i class="fa-solid fa-square-chevron-right"></i> 実データのチャンク化
 
-You've already seen examples of chunking with a section of the [Pro Git book](https://git-scm.com/book/en/v2)*. In this section, we'll use multiple entire chapters of the book, in total containing 14 sections.
+すでに [Pro Git book](https://git-scm.com/book/en/v2) * の一部を使ったチャンク化の例をご覧いただきました。本セクションでは、本書の複数章、合計 14 セクションを使用します。
 
-### <i class="fa-solid fa-chalkboard"></i> Source data
+### <i class="fa-solid fa-chalkboard"></i> ソースデータ
 
-Here, we retrieve the source data from the Pro Git book, using the `requests` library. We will save each section as a separate object, containing some metadata (chapter title and filename) as well as the text.
+ここでは `requests` ライブラリを使って Pro Git book からソースデータを取得します。各セクションを個別のオブジェクトとして保存し、章タイトルやファイル名などのメタデータとテキストを含めます。
 
-:::tip This could be any data
-The details here aren't important, as the source could be anything, such as a database, PDFs, or even videos. The important thing is to obtain a set of texts for us to try various chunking strategies.
+:::tip このデータは何でも構いません
+ここでの詳細は重要ではありません。ソースはデータベース、PDF、あるいは動画など何でもかまいません。重要なのは、さまざまなチャンク化戦略を試すためのテキスト集合を取得することです。
 :::
 
 <Tabs groupId="languages">
@@ -45,10 +45,10 @@ The details here aren't important, as the source could be anything, such as a da
 </TabItem>
 </Tabs>
 
-This process yields 14 text objects - one for each section. Each one contains a chapter title, filename, and the text of the section.
+この処理により 14 個のテキストオブジェクトが得られます（各セクションにつき 1 つ）。それぞれに章タイトル、ファイル名、そしてセクションのテキストが含まれます。
 
 <details>
-  <summary>Take a look at some sample sections</summary>
+  <summary>サンプルセクションを確認する</summary>
 
 ```
 {
@@ -60,22 +60,22 @@ This process yields 14 text objects - one for each section. Each one contains a 
 
 </details>
 
-### <i class="fa-solid fa-code"></i> Chunking
+### <i class="fa-solid fa-code"></i> チャンク化
 
-Now, let's apply the following chunking methods on each section:
+次のチャンク化手法を各セクションに適用します。
 
-- Fixed-length chunks (and 20% overlap)
-    - With 25 words per chunk, and
-    - With 100 words per chunk
-- Variable-length chunks, using paragraph markers, and
-- Mixed-strategy chunks, using paragraph markers and a minimum chunk length of 25 words.
+- 固定長チャンク（重複 20 %）
+    - 1 チャンクあたり 25 単語
+    - 1 チャンクあたり 100 単語
+- 段落マーカーを使った可変長チャンク
+- 段落マーカーを使用し、最小チャンク長を 25 単語にした混合戦略チャンク
 
-We'll also add metadata to the chunk, such as the filename and the chapter name, as well as the chunk number.
+さらに、ファイル名・章名・チャンク番号などのメタデータもチャンクに追加します。
 
-One implementation is shown below:
+実装例を以下に示します。
 
 <details>
-  <summary>Helper functions</summary>
+  <summary>ヘルパー関数</summary>
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -101,10 +101,10 @@ One implementation is shown below:
 </TabItem>
 </Tabs>
 
-We now have four sets of chunks, according to the four chunking methods we used. Take a look:
+これで、4 つのチャンク化手法に応じた 4 つのチャンクセットが得られました。ご覧ください。
 
 <Tabs groupId="languages">
-<TabItem value="fixed_size_25" label="25 word chunks">
+<TabItem value="fixed_size_25" label="25 単語チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START fixed_size_25 chunks"
@@ -112,7 +112,7 @@ We now have four sets of chunks, according to the four chunking methods we used.
   language="text"
 />
 </TabItem>
-<TabItem value="fixed_size_100" label="100 word chunks">
+<TabItem value="fixed_size_100" label="100 単語チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START fixed_size_100 chunks"
@@ -120,7 +120,7 @@ We now have four sets of chunks, according to the four chunking methods we used.
   language="text"
 />
 </TabItem>
-<TabItem value="para_chunks" label="Paragraph chunks">
+<TabItem value="para_chunks" label="段落チャンク">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START para_chunks chunks"
@@ -128,7 +128,7 @@ We now have four sets of chunks, according to the four chunking methods we used.
   language="text"
 />
 </TabItem>
-<TabItem value="para_chunks_min_25" label="Paragraph chunks with minimum length">
+<TabItem value="para_chunks_min_25" label="段落チャンク（最小長あり）">
 <FilteredTextBlock
   text={CodePracticalExample}
   startMarker="# START para_chunks_min_25 chunks"
@@ -138,9 +138,9 @@ We now have four sets of chunks, according to the four chunking methods we used.
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Import
+### <i class="fa-solid fa-code"></i> インポート
 
-We can now import the chunks into Weaviate. To allow for easy comparisons, we'll import each set of chunks into the same collection, while adding a `chunking_method` property to each chunk for easy filtering.
+これで、チャンクを Weaviate にインポートできるようになりました。比較を容易にするために、すべてのチャンクセットを同じコレクションに追加し、フィルタリングしやすいよう各チャンクに `chunking_method` プロパティを付与します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -153,9 +153,9 @@ We can now import the chunks into Weaviate. To allow for easy comparisons, we'll
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Inspection
+### <i class="fa-solid fa-code"></i> インスペクション
 
-Before we move on, let's check that the chunks were imported correctly. We'll retrieve the total count of objects, as well as object counts according to each chunking strategy.
+先へ進む前に、チャンクが正しくインポートされたか確認しましょう。オブジェクトの総数と、各チャンク手法ごとのオブジェクト数を取得します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -168,7 +168,7 @@ Before we move on, let's check that the chunks were imported correctly. We'll re
 </TabItem>
 </Tabs>
 
-This should produce an output like this:
+これにより、次のような出力が得られるはずです:
 
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -177,60 +177,20 @@ This should produce an output like this:
   language="text"
 />
 
-These counts match the number of chunks we created, so we can be confident that the import was successful.
+これらの数は作成したチャンク数と一致しているため、インポートが成功したと確信できます。
 
-In the next section, we'll try out some searches on these chunks.
+次のセクションでは、これらのチャンクに対して検索を試してみます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Notes
+## <i class="fa-solid fa-square-chevron-right"></i> メモ
 
 :::info Pro Git by Scott Chacon and Ben Straub - Book License
 
-<small>*Available through the <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Non Commercial-Share Alike 3.0 license</a>.</small>
+<small>*<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Non Commercial-Share Alike 3.0 ライセンス</a> の下で提供されています。</small>
 
 :::
 
-<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
-
-<Quiz questions={varName} />
-
-Any quiz questions
-
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
-
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out ...
-:::
-
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
-
-:::info
-Add summary
-::: -->
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-
-<!-- import Quiz from '/src/components/Academy/quiz.js'
-const varName = [{
-  questionText: 'questionText',
-  answerOptions: [
-    {
-      answerText: 'answerOne',
-      isCorrect: false,
-      feedback: 'feedbackOne',
-    },
-    {
-      answerText: 'answerTwo',
-      isCorrect: false,
-      feedback: 'feedbackTwo',
-    },
-    {
-      answerText: 'answerThree',
-      isCorrect: false,
-      feedback: 'feedbackThree',
-    },
-  ]
-}]; -->

@@ -1,20 +1,20 @@
 ---
-title: Review of search types
-description: A review of search strategies in Weaviate to refine your data queries.
+title: 検索タイプのレビュー
+description: データ クエリを洗練するための Weaviate における検索戦略のレビュー。
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!./_snippets/05_review.py';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyCode from '!!raw-loader!./_snippets/05_review.py';  
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-Weaviate offers three primary search types - namely **vector**, **keyword**, and **hybrid** searches. Let's briefly recap what they are, and how they work.
+Weaviate は主に 3 つの検索タイプ、つまり ** ベクトル **、** キーワード **、そして ** ハイブリッド ** 検索を提供します。ここでは、それぞれの概要と動作を簡単に振り返ります。
 
-### <i class="fa-solid fa-code"></i> Code examples
+### <i class="fa-solid fa-code"></i> コード例
 
-These code examples are runnable, with the [`v4` Weaviate Python client](/weaviate/client-libraries/python/index.mdx). Connect to the pre-configured demo instance of Weaviate with the following code, and try the examples below.
+これらのコード例は、[`v4` Weaviate Python client](/weaviate/client-libraries/python/index.mdx) を用いて実行できます。以下のコードで事前構成済みのデモ インスタンスへ接続し、続く例を試してみてください。
 
 <Tabs groupId="languages">
 
@@ -29,15 +29,15 @@ These code examples are runnable, with the [`v4` Weaviate Python client](/weavia
 
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vector search
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索
 
-A vector search finds objects with the most similar vectors to the query vector.
+ベクトル検索では、クエリ ベクトル に最も類似した ベクトル を持つオブジェクトを見つけます。
 
-Because each vector is a numerical representation of the underlying object, a vector similarity can be thought of as a similarity in meaning. Therefore a vector search is also called "semantic search".
+各 ベクトル は基になるオブジェクトを数値で表現しているため、ベクトル類似度は「意味的な類似度」と捉えられます。そのため、ベクトル検索は「セマンティック検索」とも呼ばれます。
 
-In Weaviate, you can search for objects with similar vectors in any of the following ways:
+Weaviate では、次のいずれかの方法で類似 ベクトル を持つオブジェクトを検索できます。
 
-With a source medium (e.g. text or image):
+ソース メディア（例: テキストや画像）を指定:
 
 <Tabs groupId="languages">
 
@@ -52,7 +52,7 @@ With a source medium (e.g. text or image):
 
 </Tabs>
 
-With a vector:
+ベクトル を直接指定:
 
 <Tabs groupId="languages">
 
@@ -67,7 +67,7 @@ With a vector:
 
 </Tabs>
 
-With an existing Weaviate object:
+既存の Weaviate オブジェクトを指定:
 
 <Tabs groupId="languages">
 
@@ -82,11 +82,11 @@ With an existing Weaviate object:
 
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Keyword search
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
 
-A keyword search finds objects whose keywords (i.e. tokens) are the most relevant to the keywords (i.e. tokens) of the query. The relevance is determined by the [BM25F algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).
+キーワード検索では、クエリのキーワード（トークン）と最も関連性の高いキーワードを持つオブジェクトを見つけます。関連性は BM25F アルゴリズムにより決定されます。
 
-Intuitively, the BM25F algorithm determines "relevance" by considering how often a keyword appears in each field of the object, relative to how commonly the keyword appears in the entire dataset.
+直感的には、BM25F アルゴリズムは、特定のキーワードがデータセット全体でどれだけ一般的かと比較しながら、各オブジェクトのフィールドごとにそのキーワードが出現する頻度を考慮して「関連性」を算出します。
 
 <Tabs groupId="languages">
 
@@ -101,9 +101,9 @@ Intuitively, the BM25F algorithm determines "relevance" by considering how often
 
 </Tabs>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Hybrid search
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
 
-A hybrid search combines the results of a vector search and a keyword search. This is done by performing both searches, and them combining the two search results with a "fusion" algorithm.
+ハイブリッド検索は、ベクトル検索とキーワード検索の結果を組み合わせます。両方の検索を実行した後、「fusion」アルゴリズムで 2 つの検索結果を結合します。
 
 <Tabs groupId="languages">
 

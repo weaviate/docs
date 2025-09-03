@@ -1,28 +1,28 @@
 ---
-title: Available tokenization options
+title: 利用可能なトークナイゼーションオプション
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Weaviate offers a variety of tokenization options to choose from. These options allow you to configure how keyword searches and filters are performed in Weaviate for each property.
+Weaviate では、さまざまなトークナイゼーションオプションを選択できます。これらのオプションにより、各プロパティでのキーワード検索やフィルターの方法を設定できます。
 
-The main options are:
+主なオプションは次のとおりです。
 
-- `word`: alphanumeric, lowercased tokens
-- `lowercase`: lowercased tokens
-- `whitespace`: whitespace-separated, case-sensitive tokens
-- `field`: the entire value of the property is treated as a single token
+- `word`: 英数字のみ・小文字化されたトークン
+- `lowercase`: 小文字化されたトークン
+- `whitespace`: 空白区切り・大文字小文字を区別するトークン
+- `field`: プロパティの値全体を 1 つのトークンとして扱う
 
-Let's explore each of these options in more detail, including how they work and when you might want to use them.
+それぞれのオプションについて、動作と利用シーンを詳しく見ていきましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Tokenization methods
+## <i class="fa-solid fa-square-chevron-right"></i> トークナイゼーション手法
 
 ### <i class="fa-solid fa-chalkboard"></i> `word`
 
-The `word` tokenization method splits the text by any non-alphanumeric characters, and then lowercases each token.
+`word` トークナイゼーションは、英数字以外の文字でテキストを分割し、その後すべてのトークンを小文字化します。
 
-Here are some examples of how the `word` tokenization method works:
+`word` トークナイゼーションの例は次のとおりです。
 
 | Text | Tokens |
 | ---- | ------ |
@@ -31,19 +31,19 @@ Here are some examples of how the `word` tokenization method works:
 | `"variable_name"` | `["variable", "name"]` |
 | `"Email: john.doe@example.com"` | `["email", "john", "doe", "example", "com"]` |
 
-#### When to use `word` tokenization
+#### `word` トークナイゼーションを使う場合
 
-The `word` tokenization is the default tokenization method in Weaviate.
+`word` トークナイゼーションは Weaviate のデフォルト手法です。
 
-Generally, if you are searching or filtering "typical" text data, `word` tokenization is a good starting point.
+一般的なテキストデータを検索またはフィルターする場合、まずは `word` を検討するとよいでしょう。
 
-But if symbols (such as `&`, `@` or `_`) are important to your data and search, or distinguishing between different cases is important, you may want to consider using a different tokenization method such as `lowercase` or `whitespace`.
+ただし、`&`、`@`、`_` などの記号が重要であったり、大文字小文字の区別が必要な場合には、`lowercase` や `whitespace` など別の手法を検討してください。
 
 ### <i class="fa-solid fa-chalkboard"></i> `lowercase`
 
-The `lowercase` tokenization method splits the text by whitespace, and then lowercases each token.
+`lowercase` トークナイゼーションは、空白でテキストを分割し、その後すべてのトークンを小文字化します。
 
-Here are some examples of how the `lowercase` tokenization method works:
+`lowercase` トークナイゼーションの例は次のとおりです。
 
 | Text | Tokens |
 | ---- | ------ |
@@ -52,28 +52,28 @@ Here are some examples of how the `lowercase` tokenization method works:
 | `"variable_name"` | `["variable_name"]` |
 | `"Email: john.doe@example.com"` | `["email:", "john.doe@example.com"]` |
 
-#### When to use `lowercase` tokenization
+#### `lowercase` トークナイゼーションを使う場合
 
-The `lowercase` tokenization can be thought of as `word`, but including symbols. A key use case for `lowercase` is when symbols such as `&`, `@` or `_` are significant for your data.
+`lowercase` は `word` に記号を含めたイメージです。`&`、`@`、`_` などの記号が意味を持つデータを扱う場合に適しています。
 
-This might include cases where your database contains code snippets, email addresses, or any other symbolic notations with meaning.
+たとえば、データベースにコードスニペット、メールアドレス、その他の記号を含む表記があるケースなどです。
 
-As an example, consider filtering for objects containing `"database_address"`:
+例として、`"database_address"` を含むオブジェクトをフィルターする場合を考えます。
 
-| Text | Tokenization | Matched by `"database_address"` |
-| ---- | ------------ | ------- |
+| Text | Tokenization | `"database_address"` でマッチ |
+| ---- | ------------ | --------------------- |
 | `"database_address"` | `word` | ✅ |
 | `"database_address"` | `lowercase` | ✅ |
 | `"database_company_address"` | `word` | ✅ |
 | `"database_company_address"` | `lowercase` | ❌ |
 
-Note how the filtering behavior changes. A careful choice of tokenization method can ensure that the search results meet your and the users' expectations.
+フィルタリング動作がどのように変わるかに注目してください。適切なトークナイゼーションを選択することで、検索結果が自身やユーザーの期待に沿うように調整できます。
 
 ### <i class="fa-solid fa-chalkboard"></i> `whitespace`
 
-The `whitespace` tokenization method splits the text by whitespace.
+`whitespace` トークナイゼーションは、空白でテキストを分割します。
 
-Here are some examples of how the `whitespace` tokenization method works:
+`whitespace` トークナイゼーションの例は次のとおりです。
 
 | Text | Tokens |
 | ---- | ------ |
@@ -82,21 +82,21 @@ Here are some examples of how the `whitespace` tokenization method works:
 | `"variable_name"` | `["variable_name"]` |
 | `"Email: john.doe@example.com"` | `["Email:", "john.doe@example.com"]` |
 
-#### When to use `whitespace` tokenization
+#### `whitespace` トークナイゼーションを使う場合
 
-The `whitespace` tokenization method adds case-sensitivity to `lowercase`. This is useful when your data distinguishes between cases, such as for names of entities or acronyms.
+`whitespace` は `lowercase` に大文字小文字の区別を加えたものです。固有名詞や略語など、大小文字の違いが重要なデータに適しています。
 
-A risk of using `whitespace` tokenization is that it can be too strict. For example, a search for `"superman"` will not match `"Superman"`, as the tokens are case-sensitive.
+一方で、`whitespace` は厳格すぎる場合があります。たとえば `"superman"` という検索語では `"Superman"` にマッチしません。
 
-But this could be managed on a case-by-case basis. It would be possible to construct queries that are case-insensitive, such as by having the query create two versions of the search term: one in lowercase and one in uppercase.
+ただし、クエリ側で小文字と大文字の 2 つのバージョンを生成するなど、ケースバイケースで対処は可能です。
 
-On the other hand, it will not be possible to construct case-sensitive queries using `word` or `lowercase` tokenization.
+逆に、`word` や `lowercase` では大文字小文字を区別した検索は不可能です。
 
 ### <i class="fa-solid fa-chalkboard"></i> `field`
 
-The `field` tokenization method simply treats the entire value of the property as a single token.
+`field` トークナイゼーションは、プロパティの値全体を 1 つのトークンとして扱います。
 
-Here are some examples of how the `field` tokenization method works:
+`field` トークナイゼーションの例は次のとおりです。
 
 | Text | Tokens |
 | ---- | ------ |
@@ -105,39 +105,37 @@ Here are some examples of how the `field` tokenization method works:
 | `"variable_name"` | `["variable_name"]` |
 | `"Email: john.doe@example.com"` | `["Email: john.doe@example.com"]` |
 
-#### When to use `field` tokenization
+#### `field` トークナイゼーションを使う場合
 
-The `field` tokenization is useful when exact matches of strings in the exact order are important. Typically, this is useful for properties that contain unique identifiers, such as email addresses, URLs, or other unique strings.
+`field` は、文字列を正確に同じ順序で一致させる必要がある場合に有用です。一般的には、メールアドレス、URL、その他一意な文字列など、ユニーク ID を含むプロパティに適しています。
 
-Generally, `field` tokenization should be used judiciously due to its strictness.
+非常に厳格なため、慎重に利用してください。
 
-For keyword searches, `field` tokenization has limited use. A keyword search for `"computer mouse"` will not match `"mouse for a computer"`, nor will it match `"computer mouse pad"` or even `"a computer mouse"`.
+キーワード検索において `field` の用途は限定的です。たとえば `"computer mouse"` という検索では `"mouse for a computer"`、 `"computer mouse pad"`、 `"a computer mouse"` などにはマッチしません。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Stop words
+## <i class="fa-solid fa-square-chevron-right"></i> ストップワード
 
-Weaviate supports [stop words](https://en.wikipedia.org/wiki/Stop_word). Stop words are common words which are often filtered out from search queries because they occur frequently and do not carry much meaning.
+Weaviate は [ストップワード](https://en.wikipedia.org/wiki/Stop_word) をサポートしています。ストップワードとは、出現頻度が高く意味を持たないため、検索クエリから除外されることが多い一般的な単語です。
 
-By default, Weaviate uses a [list of English stop words](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go). You can [configure your own list of stop words](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords) in the schema definition.
+デフォルトでは、Weaviate は [英語のストップワードリスト](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go) を使用します。スキーマ定義で [独自のストップワードリストを設定](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords) することも可能です。
 
-This means that after tokenization, any stop words in the text behave as if they were not present. For example, a filter for `"a computer mouse"` will behave identically to a filter for `"computer mouse"`.
+トークナイゼーション後、ストップワードは存在しないものとして扱われます。たとえば `"a computer mouse"` をフィルターしても `"computer mouse"` と同じ結果になります。
+## <i class="fa-solid fa-square-chevron-right"></i> 言語固有のトークン化
 
-## <i class="fa-solid fa-square-chevron-right"></i> Language-specific tokenization
+上記のトークン化方式は、英語のように単語間をスペースで区切る言語ではうまく機能します。
 
-The above tokenization methods work well for English, or other languages that use spaces to separate words.
+しかし、すべての言語がスペースを自然な意味境界として利用するとは限りません。日本語、中国語、韓国語のように単語がスペースで区切られない言語では、別のトークン化方式を使用する必要があります。
 
-However, not all languages rely on spaces to define natural semantic boundaries. For languages like Japanese, Chinese or Korean, where words are not separated by spaces, you may need to use a different tokenization method.
+Weaviate では、この目的のために `gse` と `trigram`（`v1.24` から）および `kagome_kr`（`v1.25.7` から）のトークン化方式を提供しています。
 
-Weaviate provides `gse` and `trigram` (from `v1.24`) and `kagome_kr` (from `v1.25.7`) tokenization methods for this reason.
+`gse` は、中国語テキスト分割で広く使われている「Jieba」アルゴリズムを実装しています。`trigram` はテキストを可能なかぎりすべてのトライグラムに分割する方式で、日本語のような言語に有用です。
 
-`gse` implements the "Jieba" algorithm, which is a popular Chinese text segmentation algorithm. `trigram` splits text into all possible trigrams, which can be useful for languages like Japanese.
+`kagome_ja` は、[`Kagome` トークナイザー](https://github.com/ikawaha/kagome?tab=readme-ov-file) と日本語 [MeCab IPA 辞書](https://github.com/ikawaha/kagome-dict/) を用いて、日本語プロパティテキストを分割します。
 
-`kagome_ja` uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Japanese [MeCab IPA](https://github.com/ikawaha/kagome-dict/) dictionary to split Japanese property text.
+`kagome_kr` は、[`Kagome` トークナイザー](https://github.com/ikawaha/kagome?tab=readme-ov-file) と韓国語 MeCab（[mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)）辞書を用いて、韓国語プロパティテキストを分割します。
 
-`kagome_kr` uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Korean MeCab ([mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)) dictionary to split Korean property text.
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

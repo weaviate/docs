@@ -1,5 +1,5 @@
 ---
-title: Create a local Docker instance
+title: ローカル Docker インスタンスの作成
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,17 +7,17 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/101_connect.py';
 
-:::note Can I use a cloud instance?
-Generating multimodal vectors is currently only possible with local models, and as a result this course uses a local, Docker instance of Weaviate. If you are generating vectors outside of Weaviate, you can use a cloud instance. See the [Work with: your own vectors](../../starter_custom_vectors/index.md) course for more information.
+:::note クラウドインスタンスは使えますか？
+マルチモーダル ベクトルの生成は現在ローカルモデルのみで可能です。そのため、本コースではローカルの Docker インスタンスの Weaviate を使用します。Weaviate の外部でベクトルを生成する場合は、クラウドインスタンスを利用できます。詳細は [Work with: your own vectors](../../starter_custom_vectors/index.md) コースをご覧ください。
 :::
 
-Here, you will create a Weaviate instance and a multi-modal vectorizer container using Docker.
+ここでは、Docker を使用して Weaviate インスタンスとマルチモーダル ベクトライザーコンテナを作成します。
 
-### <i class="fa-solid fa-chalkboard"></i> Download and run the docker-compose file
+### <i class="fa-solid fa-chalkboard"></i> docker-compose ファイルのダウンロードと実行
 
-Install Docker on your machine. We recommend following the [official Docker installation guide](https://docs.docker.com/get-docker/).
+お使いのマシンに Docker をインストールします。[公式 Docker インストールガイド](https://docs.docker.com/get-docker/) に従うことを推奨します。
 
-Create a new directory and navigate to it in your terminal. Then, create a new file called `docker-compose.yml` and add the following content:
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。その後、`docker-compose.yml` という新しいファイルを作成し、次の内容を追加します。
 
 ```yaml
 ---
@@ -55,21 +55,21 @@ volumes:
 
 ```
 
-### <i class="fa-solid fa-chalkboard"></i> Create a Weaviate instance
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
 
-Run the following command to start Weaviate:
+次のコマンドを実行して Weaviate を起動します。
 
 ```bash
 docker compose up
 ```
 
-### <i class="fa-solid fa-chalkboard"></i> Your Weaviate instance details
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
 
-Once the instance is created, you can access it at `http://localhost:8080`.
+インスタンスが作成されたら、`http://localhost:8080` でアクセスできます。
 
-### <i class="fa-solid fa-code"></i> Connect to your Weaviate instance
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへの接続
 
-To connect to the Weaviate instance, use the `connect_to_local` function.
+Weaviate インスタンスに接続するには、`connect_to_local` 関数を使用します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -78,11 +78,11 @@ To connect to the Weaviate instance, use the `connect_to_local` function.
   language="py"
 />
 
-#### Provide inference API keys
+#### 推論 API キーの提供
 
-Some Weaviate modules can use inference APIs for vectorizing data or large language model integration. You can provide the API keys for these services to Weaviate at instantiation.
+一部の Weaviate モジュールは、データのベクトル化や大規模言語モデル統合のために推論 API を使用できます。これらのサービスの API キーは、インスタンス作成時に Weaviate へ渡すことができます。
 
-This course uses OpenAI (for retrieval augmented generation), so you can provide the OpenAI API key to Weaviate through `headers={"X-OpenAI-Api-Key": <YOUR_KEY>}` as shown below:
+本コースでは OpenAI（検索拡張生成に使用）を利用するため、以下のように `headers={"X-OpenAI-Api-Key": <YOUR_KEY>}` を指定して OpenAI API キーを Weaviate に渡してください。
 
 <FilteredTextBlock
   text={PyCode}
@@ -91,7 +91,7 @@ This course uses OpenAI (for retrieval augmented generation), so you can provide
   language="py"
 />
 
-## Questions and feedback
+## 質問やフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

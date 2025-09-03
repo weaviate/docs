@@ -1,36 +1,36 @@
 ---
-title: Chunking techniques - 2
-description: Master advanced methods for chunking large data with Weaviate.
+title: チャンク化テクニック - 2
+description: Weaviate で大量データをチャンク化する高度な手法をマスターします。
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import CodeFixedSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.1.fixed.size.py';
-import CodeVariableSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.2.variable.size.py';
-import CodeMixedStrategyChunking from '!!raw-loader!./_snippets/20_chunking_methods.3.mixed.strategy.py';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import CodeFixedSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.1.fixed.size.py';  
+import CodeVariableSizeChunking from '!!raw-loader!./_snippets/20_chunking_methods.2.variable.size.py';  
+import CodeMixedStrategyChunking from '!!raw-loader!./_snippets/20_chunking_methods.3.mixed.strategy.py';  
 
 <!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
 <img src={imageUrl} alt="Image alt" width="75%"/> -->
 
-import PreviewUnit from '../../../_snippets/preview.mdx'
+import PreviewUnit from '../../../_snippets/preview.mdx'  
 
 <PreviewUnit />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-We continue our discussion of chunking techniques by taking you through **variable-size** chunking techniques, including some example implementations.
+前回に続き、ここでは **可変サイズ** チャンク化テクニックを取り上げ、いくつかの実装例をご紹介します。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Variable-size chunking
+## <i class="fa-solid fa-square-chevron-right"></i> 可変サイズ チャンク化
 
-Now let's look at variable-size chunking. Unlike fixed-size chunking, the chunk size here is an *outcome*, rather than an *input parameter*.
+次に可変サイズ チャンク化を見ていきましょう。固定サイズ チャンク化とは異なり、ここでのチャンクサイズは *入力パラメーター* ではなく *結果* として決まります。
 
-In variable-size chunking, some marker is used to split the text. The marker may be syntactic, such as a sentence or paragraph marker, or even structural such as a markdown header.
+可変サイズ チャンク化では、テキストを分割するためのマーカーを利用します。マーカーは文や段落といった構文上のもの、あるいは Markdown ヘッダーのような構造上のものなど、さまざまです。
 
-### <i class="fa-solid fa-chalkboard"></i> Implementations
+### <i class="fa-solid fa-chalkboard"></i> 実装
 
-A pseudocode implementation of variable-size chunking could look like this:
+可変サイズ チャンク化の擬似コード実装は次のようになります。
 
 ```python
 # Given a text of length L
@@ -38,7 +38,7 @@ A pseudocode implementation of variable-size chunking could look like this:
 # Split the text into chunks at each marker
 ```
 
-Which could be implemented in Python as below:
+これを Python で実装すると、以下のようになります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -51,9 +51,9 @@ Which could be implemented in Python as below:
 </TabItem>
 </Tabs>
 
-Or, we could use special markers - such as Markdown headers - to split the text.
+あるいは、Markdown ヘッダーのような特別なマーカーを使ってテキストを分割することもできます。
 
-(Since the *Pro Git* book is written in [Asciidoc](https://asciidoc.org/), we'll use Asciidoc headers instead - they all start with new lines followed by `==`.)
+（*Pro Git* 書籍は [Asciidoc](https://asciidoc.org/) で書かれているため、ここでは Asciidoc ヘッダーを使用します。すべて新しい行の先頭に `==` が付いています。）
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -66,11 +66,11 @@ Or, we could use special markers - such as Markdown headers - to split the text.
 </TabItem>
 </Tabs>
 
-Again, let's now apply these to concrete examples.
+それでは、具体的な例に当てはめてみましょう。
 
-### <i class="fa-solid fa-code"></i> Examples
+### <i class="fa-solid fa-code"></i> 例
 
-We can apply these splitters to the same text as before.
+先ほどと同じテキストにこれらのスプリッターを適用します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -83,7 +83,7 @@ We can apply these splitters to the same text as before.
 </TabItem>
 </Tabs>
 
-And the outputs look like this. Now, what do you observe?
+出力は次のとおりです。何か気づく点はありますか？
 
 <Tabs groupId="languages">
 <TabItem value="para" label="By paragraph">
@@ -104,22 +104,21 @@ And the outputs look like this. Now, what do you observe?
 </TabItem>
 </Tabs>
 
-One thing that might stand out immediately is that both of our very simple marker-based chunker ends up extracting the heading as one chunk, which may not be desirable.
+おそらく真っ先に目に付くのは、非常に単純なマーカー ベースのチャンク化では見出しが 1 つのチャンクとして抽出されてしまう点です。これは望ましくない場合があります。
 
-In reality, you may employ a mixed strategy where very short chunks like this may be appended to the next chunk, assuming that it is likely to be something like a title, or a section heading.
+実際には、例えばこのような非常に短いチャンクは次のチャンクに結合するなどの混合戦略を採用することが多いでしょう。見出しやタイトルと思われるテキストを隣接する本文とまとめるイメージです。
 
-Let's take a look at such a strategy.
+それでは、そのような戦略を見てみましょう。
 
+## <i class="fa-solid fa-square-chevron-right"></i> 混合戦略
 
-## <i class="fa-solid fa-square-chevron-right"></i> Mixed strategy
+固定サイズ チャンク化と可変サイズ チャンク化を組み合わせて、両方の長所を活かすことができます。たとえば、段落マーカーで可変サイズ チャンク化を行ったうえで、固定サイズのフィルターを適用する方法です。
 
-You could use a mix of fixed-size chunking and variable-size chunking to get the best of both worlds. For example, you could use a variable-size chunker to split the chunks at paragraph markers, but apply a fixed-size filter.
+具体的には、サイズが小さすぎるチャンクは次のチャンクと結合し、サイズが大きすぎるチャンクは中央や内部の別のマーカーで分割する、などの処理を行います。
 
-More specifically, any chunks that are too small could be merged with the next chunk, and/or any chunks that are too large could be split at the middle, or at another marker within the chunk.
+### <i class="fa-solid fa-code"></i> 例
 
-### <i class="fa-solid fa-code"></i> Examples
-
-One implementation may look as follows:
+実装例は次のようになります。
 
 ```python
 # Given a text of length L
@@ -129,7 +128,7 @@ One implementation may look as follows:
 # If any of the chunks are too large, split them - e.g. at the middle or using another marker within the chunk
 ```
 
-Which could be implemented in Python like this:
+これを Python で実装すると、以下のようになります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -142,7 +141,7 @@ Which could be implemented in Python like this:
 </TabItem>
 </Tabs>
 
-Producing these chunks.
+このコードにより生成されたチャンクは次のとおりです。
 
 <FilteredTextBlock
   text={CodeMixedStrategyChunking}
@@ -151,29 +150,28 @@ Producing these chunks.
   language="text"
 />
 
-This strategy will not produce chunks that are too small, while still basing them based on a syntactic marker, respecting the boundary of a heading.
+この戦略では、チャンクが小さくなりすぎることを防ぎつつ、見出しという構文上の境界も尊重できます。
 
-Since we've seen chunking strategies in action on a single text, let's now look at how they may work on a larger set of texts. We'll also take a look at what retrieval results may look like, using different chunking strategies.
+単一のテキストに対するチャンク化戦略を確認したところで、次は複数のテキストに対してどのように機能するかを見てみましょう。また、異なるチャンク化戦略を用いた場合の検索結果がどのようになるかも確認します。
 
 <!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
 
 <Quiz questions={varName} />
 
-Any quiz questions
+Any quiz questions -->
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
-
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out ...
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+試してみてください ...
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 主要ポイント
 
 :::info
-Add summary
-::: -->
+概要を追加
+:::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

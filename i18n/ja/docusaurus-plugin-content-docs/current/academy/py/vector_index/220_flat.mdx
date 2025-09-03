@@ -1,5 +1,5 @@
 ---
-title: Flat index in depth
+title: フラット インデックスの詳細
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,51 +7,51 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_snippets/100_config.py';
 
-The "flat" index is a simple and efficient vector index type that is best suited for small collections of vectors.
+「flat」インデックスは、シンプルで効率的な ベクトル インデックスの一種で、小規模な ベクトル コレクションに最適です。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Key ideas
+## <i class="fa-solid fa-square-chevron-right"></i> 主なポイント
 
-The flat index is a very simple vector index that mimics a "map" data type. It simply stores the location of each vector, such that a search can be done by comparing the query vector to each vector in the collection. As you might expect, this leads to very low resource requirements, at the cost of search speed as the number of vectors increases.
+flat インデックスは「マップ」データ型を模倣した、非常にシンプルな ベクトル インデックスです。各 ベクトル の位置のみを保持し、検索時にはクエリ ベクトル とコレクション内の各 ベクトル を比較します。予想どおり、必要リソースは非常に少なくて済みますが、 ベクトル 数が増えるにつれて検索速度が低下します。
 
-Where this index type shines is in large use cases where there are a high number of small collections, such as one for each end-user in a multi-tenant environment. A basic example may be a notes application, where each end user has their own collection of notes.
+このインデックスが力を発揮するのは、多数の小規模コレクションが存在する大規模ユースケースです。たとえばマルチテナント環境で各エンドユーザーごとに 1 つのコレクションを持つ場合です。典型例としてはメモアプリがあり、各エンドユーザーが自分専用のメモコレクションを持つ、といったケースです。
 
-In such an environment, each end user will be treated as a "tenant", in a multi-tenant collection, and each tenant will have their own vector index. This is a perfect use case for the flat index.
+このような環境では、各エンドユーザーがマルチテナント コレクション内の「テナント」として扱われ、それぞれが独立した ベクトル インデックスを持ちます。flat インデックスはまさにこのユースケースに最適です。
 
-### <i class="fa-solid fa-chalkboard"></i> Trade-offs
+### <i class="fa-solid fa-chalkboard"></i> トレードオフ
 
-The key compromise with the flat index is that it is not scalable. As the number of vectors in the collection increases, the search time will increase linearly, as each vector must be compared to the query vector.
+flat インデックスの最大の妥協点はスケーラビリティがないことです。コレクション内の ベクトル 数が増えると、それに比例して検索時間も線形に増加します。これは各 ベクトル をクエリ ベクトル と比較する必要があるためです。
 
-### <i class="fa-solid fa-chalkboard"></i> Resource requirements
+### <i class="fa-solid fa-chalkboard"></i> リソース要件
 
-The flat index has very low memory requirements, as it only needs to store the location to the vector, and not the vector itself.
+flat インデックスは、 ベクトル 自体ではなくその位置のみを保存するため、必要なメモリは非常に少なくて済みます。
 
-This can be very beneficial as the overall database grows, especially if the growth is primarily in the number of indexes (tenants), rather than the number of vectors in each index.
+特にデータベース全体が成長しても、その成長が各インデックス（テナント）の数によるもので、各インデックス内の ベクトル 数が少ない場合には大きなメリットがあります。
 
-### <i class="fa-solid fa-chalkboard"></i> Distance metric
+### <i class="fa-solid fa-chalkboard"></i> 距離メトリック
 
 ![Vector Distance Calculations](./img/vector_distance.png)
 
-The distance metric used in the index determines how the distance between vectors is calculated.
+インデックスで使用する距離メトリックは、 ベクトル 間の距離をどのように計算するかを決定します。
 
-You must choose a metric that suits the vectors in your collection. To find this, consult the documentation of the model that generated your vectors.
+コレクション内の ベクトル に合ったメトリックを選択する必要があります。適切なメトリックを知るには、 ベクトル を生成したモデルのドキュメントを参照してください。
 
-Weaviate's default metric is cosine, but you can also use any number of [other available metrics](/weaviate/config-refs/distances.md).
+Weaviate のデフォルトメトリックは cosine ですが、[他にもさまざまなメトリック](/weaviate/config-refs/distances.md) を利用できます。
 
-If you are unsure, the cosine distance is a good, robust, default choice that is used by a majority of models.
+迷った場合は、多くのモデルで採用されている cosine 距離が堅牢なデフォルト選択肢となります。
 
-### <i class="fa-solid fa-chalkboard"></i> Quantization
+### <i class="fa-solid fa-chalkboard"></i> 量子化
 
-Enabling quantization with the flat reduces the search time by using compressed vectors. Note that the full vector is still stored, which is used to rescore the vectors after they are fetched during initial search.
+flat インデックスで量子化を有効にすると、圧縮済み ベクトル を用いて検索時間を短縮できます。なお、完全な ベクトル も保存されており、初回検索後の再スコアリングに使用されます。
 
-This can improve the search speed to mitigate the linear increase in search time as the number of vectors increases. However, the scalability of the flat index is still limited.
+これにより、 ベクトル 数が増えるにつれて線形に増加する検索時間をある程度緩和できます。ただし、flat インデックスのスケーラビリティの限界自体は変わりません。
 
-Learn more about quantization [with this Weaviate Academy course](../compression/index.md).
+量子化について詳しくは [Weaviate Academy のコース](../compression/index.md) をご覧ください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Configure flat index in Weaviate
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate でフラット インデックスを設定する
 
-Each of these parameters can be provided when creating a collection in Weaviate. Note that the `vector_cache_max_objects` is only used if quantization is enabled with vector caching enabled within it.
+これらの各パラメータは、Weaviate でコレクションを作成する際に指定できます。`vector_cache_max_objects` は、量子化を有効にし、その内部で ベクトル キャッシュを有効にした場合にのみ使用されます。
 
-### <i class="fa-solid fa-code"></i> Code example
+### <i class="fa-solid fa-code"></i> コード例
 
 <FilteredTextBlock
   text={PyCode}
@@ -60,16 +60,15 @@ Each of these parameters can be provided when creating a collection in Weaviate.
   language="py"
 />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Further resources
+## <i class="fa-solid fa-square-chevron-right"></i> さらに詳しく
 
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
-- [References: Vector index parameters](/weaviate/config-refs/indexing/vector-index.mdx)
-- [How-to manage collections](../../../weaviate/manage-collections/index.mdx)
-- [Weaviate Academy: Compression](../compression/index.md)
+- [コンセプト: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
+- [リファレンス: ベクトル インデックスのパラメータ](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コレクションの管理方法](../../../weaviate/manage-collections/index.mdx)
+- [Weaviate Academy: 圧縮](../compression/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

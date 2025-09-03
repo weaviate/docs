@@ -1,94 +1,94 @@
 ---
-title: Identify needs & compile candidates
-description: Get started with embedding model selection by identifying your needs and compiling a list of candidate models.
+title: 要件の特定と候補モデルの収集
+description: ニーズを特定し、候補モデルのリストを作成して、埋め込みモデル選定を始めましょう。
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
-## <i class="fa-solid fa-chalkboard-user"></i> Identify needs
+## <i class="fa-solid fa-chalkboard-user"></i> ニーズの特定
 
-A systematic approach to model selection starts with clearly identifying requirements. Organizing these requirements into categories can help ensure you consider all relevant factors when evaluating embedding models.
+体系的なモデル選定を行うには、まず要件を明確にすることが重要です。要件をカテゴリーごとに整理すると、埋め込みモデルを評価する際に関連する要素を漏れなく検討できます。
 
-Here are some of our key considerations:
+以下に主な検討ポイントを示します。
 
 <img
     src={require('./_img/identify_needs_overview.png').default}
     alt="Identify your needs"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Data Characteristics
+### <i class="fa-solid fa-chalkboard"></i> データの特性
 
-| Factor | Key Questions | Why It Matters |
+| 要素 | 主な質問 | 重要な理由 |
 | --- | --- | --- |
-| **Modality** | Are you dealing with text, images, audio, or multimodal data? | Models are built for specific modality/modalities.  |
-| **Language** | Which languages must be supported? | Models are trained & optimized for specific language(s), leading to trade-offs in performance. |
-| **Domain** | Is your data general or domain-specific (legal, medical, technical)? | Domain-specific models (e.g. [medical](https://huggingface.co/blog/abhinand/medembed-finetuned-embedding-models-for-medical-ir)) understand specialized vocabulary and concepts.  |
-| **Length** | What's the typical length of your documents and queries? | Input token context windows vary between models, from as small as `256` tokens to `8192` tokens for example. However, longer context windows typically require exponentially higher compute and latency. |
-| **Asymmetry** | Will your queries differ significantly from your documents? | Some models are built for asymmetric query to document comparisons. So queries like `laptop won't turn on` can easily identify documents like `Troubleshooting Power Issues: If your device fails to boot...`. |
+| **モダリティ** | テキスト、画像、音声、それともマルチモーダル？ | モデルは特定のモダリティ向けに構築されています。 |
+| **言語** | どの言語をサポートする必要がありますか？ | モデルは特定の言語向けに学習・最適化されており、性能にトレードオフが生じます。 |
+| **ドメイン** | データは一般的か、それともドメイン特化（法律、医療、技術など）ですか？ | ドメイン特化モデル（例： [医療](https://huggingface.co/blog/abhinand/medembed-finetuned-embedding-models-for-medical-ir)）は専門用語や概念を理解できます。 |
+| **長さ** | ドキュメントやクエリの平均的な長さは？ | 入力トークンのコンテキストウィンドウはモデルごとに異なり、 256 トークンから 8192 トークンまでさまざまです。ただし、長いコンテキストウィンドウは計算量と待ち時間が指数的に増加します。 |
+| **非対称性** | クエリとドキュメントに大きな違いがありますか？ | 一部のモデルは非対称なクエリ‐ドキュメント比較向けに設計されています。たとえば `laptop won't turn on` というクエリで `Troubleshooting Power Issues: If your device fails to boot...` のようなドキュメントを容易に特定できます。 |
 
-### <i class="fa-solid fa-chalkboard"></i> Performance Needs
+### <i class="fa-solid fa-chalkboard"></i> パフォーマンス要件
 
-| Factor | Key Questions | Why It Matters |
+| 要素 | 主な質問 | 重要な理由 |
 | --- | --- | --- |
-| **Accuracy** (recall) | How critical is it that all the top results are retrieved? | Higher accuracy requirements may justify more expensive or resource-intensive models.  |
-| **Latency** | How quickly must queries be processed? | Larger models with better performance often have slower inference times. For inference services, faster services will cost more. |
-| **Throughput** | What query volume do you anticipate? Will there be traffic spikes? | Larger models with better performance often have lower processing capacity. For inference services, increased throughput will increase costs. |
-| **Volume** | How many documents will you process? | Larger embedding dimensions increase memory requirements for your vector store. This will impact resource requirements and affect costs at scale. |
-| **Task type** | Is retrieval the only use case? Or will it also involve others (e.g. clustering or classification) ? | Models have strengths and weaknesses; a model excellent at retrieval might not excel at clustering. This will drive your evaluation & selection criteria. |
+| **精度**（リコール） | 上位結果をすべて取得することはどれほど重要ですか？ | 高い精度を求める場合、より高価またはリソース集約的なモデルを選択する価値があります。 |
+| **レイテンシ** | クエリはどれくらい速く処理する必要がありますか？ | 大規模モデルは性能が高い一方で推論が遅くなることがあります。推論サービスでは、高速化はコスト増につながります。 |
+| **スループット** | 想定クエリ量やトラフィックスパイクは？ | 大規模モデルは処理能力が低い傾向があります。推論サービスではスループット増加がコスト増加を招きます。 |
+| **ボリューム** | 処理するドキュメント数は？ | 埋め込み次元が大きいほどベクトルストアのメモリ要件が増え、大規模運用時のリソースとコストに影響します。 |
+| **タスクタイプ** | 検索のみか、それともクラスタリングや分類も行いますか？ | モデルには得意不得意があります。検索に優れたモデルがクラスタリングでも優秀とは限りません。評価・選定基準に影響します。 |
 
-### <i class="fa-solid fa-chalkboard"></i> Operational Factors
+### <i class="fa-solid fa-chalkboard"></i> 運用上の要素
 
-| Factor | Key Questions | Why It Matters |
+| 要素 | 主な質問 | 重要な理由 |
 | --- | --- | --- |
-| **Hardware limitations** | What computational resources are available for hosting & inference? | Hardware availability (costs, GPU/TPU availability) will significantly affect your range of choices. |
-| **API rate limits** | If using a hosted model, what are the provider's limits? | Rate limits can bottleneck applications, or limit potential growth. |
-| **Deployment & maintenance** | What technical expertise and resources are required? | Is self-hosting a model an option, or should you look at API-based hosted options? |
+| **ハードウェア制限** | ホスティング・推論に利用可能な計算資源は？ | ハードウェアの入手性（コスト、GPU/TPU の有無）が選択肢に大きく影響します。 |
+| **API レート制限** | ホステッドモデルの場合、プロバイダーの制限は？ | レート制限はアプリケーションのボトルネックや成長の妨げになります。 |
+| **デプロイと保守** | 必要な技術的専門知識とリソースは？ | 自前ホスティングが可能か、API ベースのホステッドオプションを検討すべきかを判断します。 |
 
-### <i class="fa-solid fa-chalkboard"></i> Business Requirements
+### <i class="fa-solid fa-chalkboard"></i> ビジネス要件
 
-| Factor | Key Questions | Why It Matters |
+| 要素 | 主な質問 | 重要な理由 |
 | --- | --- | --- |
-| **Hosting options** | Do you need self-hosting capabilities, or is a cloud API acceptable? | Self-hosting ➡️ more control at higher operational complexity; APIs ➡️ lower friction at higher dependencies. |
-| **Licensing** | What are the licensing restrictions for commercial applications? | Some model licenses or restrictions may prohibit certain use cases. |
-| **Long-term support** | What guarantees exist for the model's continued availability? | If a model or business is abandoned, downstream applications may need significant reworking. |
-| **Budget** | What are your cost limits and expenditure preferences? | Embedding costs can add up over time, but self-hosting can incur high upfront costs. |
-| **Privacy & Compliance** | Are there data privacy requirements or industry regulations to consider? | Some industries require specific models. And privacy requirements may impose hosting requirements. |
+| **ホスティングオプション** | 自前ホスティングが必要か、クラウド API でもよいか？ | 自前ホスティング ➡️ 操作性は高いが運用が複雑、API ➡️ 導入は簡単だが依存度が高い。 |
+| **ライセンス** | 商用利用時のライセンス制限は？ | 一部のモデルは特定のユースケースを禁止しています。 |
+| **長期サポート** | モデルの継続利用に関する保証は？ | モデルや企業が廃止された場合、アプリケーションの大幅な改修が必要になることがあります。 |
+| **予算** | コスト上限や支出方針は？ | 埋め込みコストは継続的に発生しますが、自前ホスティングは初期費用が高額です。 |
+| **プライバシーとコンプライアンス** | データプライバシー要件や業界規制は？ | 特定業界では専用モデルが必須となり、プライバシー要件がホスティング手段を制限する場合があります。 |
 
-Documenting these requirements creates a clear profile of your ideal embedding model, which will guide your selection process and help you make informed trade-offs.
+これらの要件を文書化すると、理想的な埋め込みモデルの明確なプロファイルが作成され、選定プロセスで情報に基づくトレードオフを行いやすくなります。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Compile candidate models
+## <i class="fa-solid fa-chalkboard-user"></i> 候補モデルの収集
 
-After identifying your needs, create a list of potential embedding models to evaluate. This process helps focus your detailed evaluation on the most promising candidates.
+ニーズを特定したら、評価対象となる埋め込みモデルのリストを作成します。この作業により、詳細評価を有望な候補に絞り込めます。
 
-There are hundreds of embedding models available today, with new ones being released regularly. For this many models, even a simple screening process would be too time-consuming.
+現在、埋め込みモデルは数百種類あり、日々新しいモデルが発表されています。これだけ多くのモデルを単純なスクリーニングでさえ評価するのは時間がかかりすぎます。
 
-As a result, we suggest identifying an initial list of models with a simple set of heuristics, such as these:
+そのため、次のような簡単なヒューリスティックを使って、まず初期リストを絞り込むことをお勧めします。
 
-### <i class="fa-solid fa-chalkboard"></i> Account for model modality
+### <i class="fa-solid fa-chalkboard"></i> モダリティで絞り込む
 
-This is a critical, first-step filter. A model can only support the modality/modalities that it is designed and trained for.
+これは最初に行うべき重要なフィルターです。モデルは設計・学習されたモダリティのみをサポートします。
 
-Some models (e.g. Cohere `embed-english-v3.0`) are multimodal, while others (e.g. Snowflake’s `snowflake-arctic-embed-l-v2.0`) are unimodal.
+たとえば Cohere の `embed-english-v3.0` はマルチモーダルですが、Snowflake の `snowflake-arctic-embed-l-v2.0` は単一モダリティです。
 
-No matter how good a model is, a text-only model such as `snowflake-arctic-embed-l-v2.0` will not be able to perform image retrieval. Similarly, a `ColQwen` model cannot be used for plain text retrieval.
+どれほど優れたモデルでも、 `snowflake-arctic-embed-l-v2.0` のようなテキスト専用モデルでは画像検索はできません。同様に `ColQwen` モデルはプレーンテキスト検索には使えません。
 
-### <i class="fa-solid fa-chalkboard"></i> Favor models already available
+### <i class="fa-solid fa-chalkboard"></i> すでに利用可能なモデルを優先する
 
-If your organization already uses embedding models for other applications, these are great starting points. They are likely to have been screened, evaluated and approved for use, and accounts/billing already configured. For local models, this would mean that the infrastructure is already available.
+組織内で他のアプリケーションに埋め込みモデルを既に使用している場合、それらは優れた出発点になります。既に審査・評価・承認され、アカウントや請求も設定済みである可能性が高いからです。ローカルモデルの場合、インフラも整っているはずです。
 
-This also extends to models available through your other service providers.
+これは他のサービスプロバイダー経由で利用できるモデルにも当てはまります。
 
-You may be already using generative AI models through providers such as Cohere, Mistral or OpenAI. Or, perhaps your hyperscaler partners such as AWS, Microsoft Azure or Google Cloud provide embedding models.
+たとえば Cohere、Mistral、OpenAI などのプロバイダーを通じて生成 AI モデルを既に使用している場合があります。また AWS、Microsoft Azure、Google Cloud などのハイパースケーラーが埋め込みモデルを提供していることもあります。
 
-In many cases, these providers will also provide access to embedding models, which would be easier to adopt than those from a new organization.
+多くの場合、これらのプロバイダーから埋め込みモデルにもアクセスできるため、新しい組織のモデルより採用しやすいでしょう。
 
-### <i class="fa-solid fa-chalkboard"></i> Try well-known models
+### <i class="fa-solid fa-chalkboard"></i> 有名モデルを試す
 
-Generally, well-known or popular models are popular for a reason.
+一般に、よく知られたモデルが人気なのには理由があります。
 
-Industry leaders in AI such as Alibaba, Cohere, Google, NVIDIA and OpenAI all produce embedding models for different modalities, languages and sizes. Here are a few samples of their available model families:
+Alibaba、Cohere、Google、NVIDIA、OpenAI などの AI 業界のリーダー企業は、さまざまなモダリティ、言語、サイズの埋め込みモデルを提供しています。以下は各社の代表的なモデルファミリーです。
 
-| Provider | Model families |
+| プロバイダー | モデルファミリー |
 | --- | --- |
 | Alibaba | `gte`, `Qwen` |
 | Cohere | `embed-english`, `embed-multilingual` |
@@ -96,43 +96,42 @@ Industry leaders in AI such as Alibaba, Cohere, Google, NVIDIA and OpenAI all pr
 | NVIDIA | `NV-embed` |
 | OpenAI | `text-embedding`, `ada` |
 
-There are also other families of models that you can consider.
+他にも検討できるファミリーがあります。
 
-For example, the `ColPali` family of models for image embeddings and `CLIP` / `SigLIP` family of models for multimodal (image and text) are well-known in their respective domains. Then, `nomic`, `snowflake-arctic`, `MiniLM` and `bge` models are some examples of well-known language retrieval models.
+たとえば、画像埋め込み用の `ColPali` ファミリー、マルチモーダル（画像とテキスト）向けの `CLIP` / `SigLIP` ファミリーが有名です。また `nomic`, `snowflake-arctic`, `MiniLM`, `bge` は言語検索モデルの代表例です。
 
-These popular models tend to be well-documented, discussed and widely supported.
+これらの人気モデルはドキュメントや情報交換が豊富で、サポートも広く提供されています。
 
-As a result, they tend to be easier than the more obscure models to use, evaluate, troubleshoot and use.
+そのため、あまり知られていないモデルよりも導入・評価・トラブルシュートが容易です。
 
-### <i class="fa-solid fa-chalkboard"></i> Benchmark leaders
+### <i class="fa-solid fa-chalkboard"></i> ベンチマーク上位モデル
 
-Models that perform well on standard benchmarks may be worth considering. Resources like [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) can help identify high-performing models.
+標準ベンチマークで優れた性能を示すモデルも検討する価値があります。 [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) などのリソースで高性能モデルを確認できます。
 
-As an example, the screenshot below shows models on MTEB at a size of fewer than 1 billion parameters, sorted by their `retrieval` performance.
+以下のスクリーンショットは、 1 billion 未満のパラメータで `retrieval` 性能順に並べた MTEB の例です。
 
 <img
     src={require('./_img/mteb_by_retrieval.png').default}
     alt="MTEB example - sorted by retrieval performance"
 />
 
-It shows some models that we’ve already discussed - such as the `showflake-arctic`,  Alibaba’s `gte`, or BAAI’s `bge` models.
+ここには既に紹介した `snowflake-arctic`、Alibaba の `gte`、BAAI の `bge` などのモデルが含まれています。
 
-But additionally, you can see already a number of high-performing models that we hadn’t discussed. Microsoft research's `intfloat/multilingual-e5-large-instruct` or JinaAI’s `jinaai/jina-embeddings-v3` model are both easily discoverable here.
+加えて、Microsoft Research の `intfloat/multilingual-e5-large-instruct` や JinaAI の `jinaai/jina-embeddings-v3` など、まだ紹介していない高性能モデルも簡単に見つかります。
 
-Note that as of 2025, the MTEB contains different benchmarks to assess different capabilities, such as the linguistic or modality needs.
+2025 年時点で、MTEB には言語やモダリティの要件を評価する複数のベンチマークが含まれています。
 
-When viewing benchmarks, make sure to view the right set of benchmarks, and the appropriate columns. In the example below, note that the page shows results for MIEB (image retrieval), with results sorted by *Any to Any Retrieval*.
+ベンチマークを見る際は、適切なベンチマークセットと列を確認してください。以下の例では、画像検索用の MIEB で *Any to Any Retrieval* 列を基準にソートしています。
 
 <img
     src={require('./_img/mieb_by_any_to_any.png').default}
     alt="MIEB example - sorted by any to any retrieval"
 />
 
-The MTEB is filterable and sortable by various metrics. So, you can arrange it to suit your preferences and add models to your list as you see fit.
+MTEB はさまざまな指標でフィルタリングやソートができます。好みに合わせて並べ替え、リストにモデルを追加してください。
 
-You should be able to compile a manageable list of models relatively quickly using these techniques. This list can then be manually reviewed for detailed screening.
-
-## Questions and feedback
+これらの手法を用いれば、短時間で扱いやすいモデルリストを作成できるはずです。このリストを手動で精査し、詳細なスクリーニングへと進みましょう。
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

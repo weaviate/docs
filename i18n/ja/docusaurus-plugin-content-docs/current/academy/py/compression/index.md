@@ -1,27 +1,27 @@
 ---
-title: "250 Vector compression"
-description: "Discover compression techniques in Weaviate for optimal data storage and retrieval in Python."
+title: "250 ベクトル圧縮"
+description: "Weaviate でのデータの最適な保存と取得のための圧縮手法を Python で学びます。"
 sidebar_position: 250
 ---
 
-import LearningGoals from '/src/components/Academy/learningGoals.jsx';
-import CourseUnits from '/src/components/Academy/courseUnits.jsx';
-import { courseData } from '/src/components/Academy/courseData.js'
+import LearningGoals from '/src/components/Academy/learningGoals.jsx';  
+import CourseUnits from '/src/components/Academy/courseUnits.jsx';  
+import { courseData } from '/src/components/Academy/courseData.js'  
 
-## <i class="fa-solid fa-chalkboard-user"></i> Course overview
+## <i class="fa-solid fa-chalkboard-user"></i> コース概要
 
-:::info Pre-requisites
-This course is self-contained. However, we recommend that you go through one of the 101-level courses, such as that for working with [text](../starter_text_data/index.md), [your own vectors](../starter_custom_vectors/index.md), or [multimodal data](../starter_multimodal_data/index.md).
+:::info 前提条件
+本コースは自己完結型です。ただし、[テキスト](../starter_text_data/index.md)、[独自 ベクトル](../starter_custom_vectors/index.md)、または [マルチモーダル データ](../starter_multimodal_data/index.md) を扱う 101 レベルのいずれかのコースを先に受講されることを推奨します。
 :::
 
-As you work with more and more data, the sheer volume of it begins to impose further and further constraints on your ability to work with it. This is especially true the closer you get to production environments, where the cost of storage and the time it takes to process data can become significant.
+より多くのデータを扱うにつれて、その膨大な量が作業に大きな制約を与えるようになります。特に本番環境に近づくほど、ストレージ コストやデータ処理にかかる時間が大きな負担となりがちです。  
 
-This course will introduce you to data compression in Weaviate, and how it can be used to reduce your resource requirements and in turn improve performance or reduce costs.
+本コースでは Weaviate におけるデータ圧縮を紹介し、リソース要件を削減してパフォーマンスを向上させたりコストを削減したりする方法を学びます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 <LearningGoals courseName="compression"/>
 
-## <i class="fa-solid fa-book-open-reader"></i> Units
+## <i class="fa-solid fa-book-open-reader"></i> ユニット
 
 <CourseUnits courseData={courseData} courseName="compression" />

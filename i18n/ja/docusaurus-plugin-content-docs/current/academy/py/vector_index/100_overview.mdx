@@ -1,5 +1,5 @@
 ---
-title: "Vector index: Overview"
+title: "ベクトルインデックス：概要"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!./_snippets/100_config.py';
 
-A database index is a data structure that organizes data to make searches more efficient. Think of it as a table of contents in a book, or an index in a library, that helps you find the information you need quickly.
+データベースインデックスとは、検索を効率化するためにデータを整理するデータ構造です。本の目次や図書館の索引のように、必要な情報を素早く見つけられるようにします。
 
 <div class="academy-img-md">
   <img
@@ -16,27 +16,27 @@ A database index is a data structure that organizes data to make searches more e
   />
 </div>
 
-A [vector index](/weaviate/concepts/indexing/vector-index.md) is a specialized type of index that is designed to store and search vectors.
+[ベクトルインデックス](/weaviate/concepts/indexing/vector-index.md) は、ベクトルを保存し検索するために特化したインデックスです。
 
-The choice and configuration of your vector index can significantly impact the performance of your imports as well as searches, and the resource requirements of your Weaviate instance.
+ベクトルインデックスの選択と設定は、インポートや検索のパフォーマンス、そして Weaviate インスタンスのリソース要件に大きく影響します。
 
-For this reason, the vector index a critical component in Weaviate.
+そのため、ベクトルインデックスは Weaviate における重要なコンポーネントです。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Why use a vector index?
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルインデックスの利点
 
-Databases can quickly grow very large, to the point where time to search for a specific item can become unacceptably long, or the resources required to search become too high.
+データベースは急速に巨大化するため、特定の項目を検索する時間が許容できないほど長くなったり、検索に必要なリソースが過剰になったりすることがあります。
 
-A vector index is designed to improve users' experience of searching for items in a large database.
+ベクトルインデックスは、大規模データベースでの検索体験を向上させるために設計されています。
 
-It usually makes a trade-off to balance three key factors: search speed, accuracy, and resource requirements.
+通常、検索速度・精度・リソース要件という 3 つの要素をバランスするためにトレードオフを行います。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vector index types
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルインデックスの種類
 
-Many different types of vector indexes exist. A majority of them are designed to speed up searches by reducing the number of vectors that need to be compared. However, they do this in different ways, and each has its own strengths and weaknesses.
+ベクトルインデックスには多くの種類があります。大半は比較すべきベクトル数を減らすことで検索を高速化しますが、その手法はさまざまで、それぞれに長所と短所があります。
 
-### <i class="fa-solid fa-chalkboard"></i> Graph indexes
+### <i class="fa-solid fa-chalkboard"></i> グラフインデックス
 
-Graph indexes form a network of vectors, such that similar vectors are connected to each other. This allows for fast "traversal" of the graph to find similar vectors to a query vector.
+グラフインデックスはベクトル間にネットワークを形成し、類似したベクトル同士を接続します。これにより、クエリベクトルに近いベクトルをグラフ上で高速に「トラバース」して見つけられます。
 
 import HNSWDiagram from './_snippets/hnsw_diagram.png';
 
@@ -44,15 +44,15 @@ import HNSWDiagram from './_snippets/hnsw_diagram.png';
   <img src={HNSWDiagram} alt="Outline of HNSW graph, showing nodes connected in multiple layers"/>
 </div>
 
-HNSW, or "Hierarchical Navigable Small World", is the most common graph index type. It creates a set of "layers" of vectors, to enable fast traversal of the graph.
+HNSW（Hierarchical Navigable Small World）は、最も一般的なグラフインデックスタイプです。複数の「レイヤー」にベクトルを配置し、グラフを高速に横断できるようにします。
 
-They are very scalable, allow incremental updates, and efficient for high-dimensional vectors.
+HNSW はスケーラビリティに優れ、インクリメンタル更新が可能で、高次元ベクトルにも効率的です。
 
-This is the default index type in Weaviate.
+これは Weaviate のデフォルトインデックスタイプです。
 
-### <i class="fa-solid fa-chalkboard"></i> Tree-based indexes
+### <i class="fa-solid fa-chalkboard"></i> ツリーインデックス
 
-Tree-based indexes divide the vectors into a tree structure.
+ツリーインデックスはベクトルをツリー構造に分割します。
 
 <div class="academy-img-sm">
   <img
@@ -61,35 +61,34 @@ Tree-based indexes divide the vectors into a tree structure.
   />
 </div>
 
-ANNOY, or "Approximate Nearest Neighbors Oh Yeah", is a well-known tree-based index. It divides the vectors into a binary tree structure.
+ANNOY（Approximate Nearest Neighbors Oh Yeah）は代表的なツリーインデックスで、ベクトルを二分木に分割します。
 
-They can be memory-efficient, and are good for low-dimensional vectors.
+メモリ効率が高く、低次元ベクトルに適しています。
 
-Given its nature as a tree, it may be costly to update the index over time. This would depend on whether the tree needs to be rebuilt, or if it can be updated incrementally.
+ツリーの特性上、時間とともにインデックスを更新するコストが高くなる場合があります。これはツリーを再構築する必要があるか、インクリメンタルに更新できるかによります。
 
-ANNOY itself does not support incremental updates.
+ANNOY 自体はインクリメンタル更新をサポートしていません。
 
-### <i class="fa-solid fa-chalkboard"></i> Cluster-based indexes
+### <i class="fa-solid fa-chalkboard"></i> クラスタインデックス
 
-Cluster-based indexes group vectors based on their similarity. As a result, the search space is reduced to only the cluster(s) that is most likely to contain the nearest neighbors.
+クラスタインデックスはベクトルを類似度に基づいてグループ化します。その結果、検索空間は最も近傍が存在する可能性が高いクラスタのみに絞られます。
 
-Their search accuracy (recall and precision) may generally be lower than graph-based indexes, but they can be more memory-efficient.
+検索精度（リコール・適合率）はグラフインデックスより低い傾向がありますが、メモリ効率に優れています。
 
-### <i class="fa-solid fa-chalkboard"></i> Flat index
+### <i class="fa-solid fa-chalkboard"></i> フラットインデックス
 
-A flat index is the simplest type of index. It stores all vectors in a single list, and searches through all of them to find the nearest neighbors.
+フラットインデックスは最も単純なインデックスで、すべてのベクトルを 1 つのリストに保存し、全件を走査して最近傍を探します。
 
-This is extremely memory-efficient, but does not scale well at all, as the search time grows linearly with the number of vectors.
+メモリ効率は非常に高いものの、検索時間はベクトル数に比例して線形に増加するため、スケールは困難です。
 
-### <i class="fa-solid fa-chalkboard"></i> Available vector indexes in Weaviate
+### <i class="fa-solid fa-chalkboard"></i> Weaviate で利用可能なベクトルインデックス
 
-Weaviate supports multiple types of vector indexes - namely, `hnsw`, `flat`, and `dynamic`.
+Weaviate は `hnsw`、`flat`、`dynamic` の複数のベクトルインデックスタイプをサポートしています。
 
-We will discuss these in more detail in the following sections.
+詳細は次のセクションで説明します。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

@@ -1,5 +1,5 @@
 ---
-title: What is the client-server application
+title: クライアントサーバーアプリケーションとは
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,29 +9,28 @@ import WeaviateTypescriptImgUrl from '/docs/academy/js/standalone/client-server/
 
 
 
-### <i class="fa-solid fa-chalkboard"></i> What is a client-server application
+### <i class="fa-solid fa-chalkboard"></i> クライアントサーバーアプリケーションとは
 
-A client-server application is one that runs on a client device while accessing information from a remote server.
+クライアントサーバーアプリケーションとは、クライアントデバイス上で動作しながらリモートサーバーから情報を取得するアプリケーションです。  
 
-In the context of building applications with Weaviate, this means having a server as an intermediary to handle all interactions with your database as opposed to interacting with your database directly from your client application.
+Weaviate を用いたアプリケーション構築では、クライアントアプリケーションから直接データベースへアクセスするのではなく、すべてのやり取りを仲介するサーバーを設けます。
 
 <img src={WeaviateTypescriptImgUrl} alt="Image alt" width="100%"/>
 
-This section aims to guide you through how to do that as you build applications with the Weaviate Typescript v3 client: [weaviate-client](https://www.npmjs.com/package/weaviate-client).
+本セクションでは、Weaviate Typescript v3 クライアントである [weaviate-client](https://www.npmjs.com/package/weaviate-client) を使用してアプリケーションを構築する方法を解説します。
 
 
 
-### <i class="fa-solid fa-chalkboard"></i> Using the weaviate-client in a client-server application 
+### <i class="fa-solid fa-chalkboard"></i> クライアントサーバーアプリケーションでの weaviate-client の使用
 
-The v3 client uses gRPC to connect to your Weaviate instance. The client supports Node.js, server-based development. It does not support browser-based web client development.
+v3 クライアントは gRPC を使用してお客様の Weaviate インスタンスに接続します。クライアントは Node.js を用いたサーバーサイド開発をサポートしており、ブラウザベースの Web クライアント開発には対応していません。
 
-Install the client by following [these instructions](../../../../weaviate/client-libraries/typescript/index.mdx#installation). A big benefit of using the new v3 client is the introduction of the gRPC protocol. A faster, more reliable platform to handle interactions with the database at scale. Unfortunately, gRPC does not support browser-based client development.
+クライアントのインストール手順は [こちら](../../../../weaviate/client-libraries/typescript/index.mdx#installation) をご覧ください。新しい v3 クライアントを使用する大きな利点は、gRPC プロトコルの導入です。gRPC は大規模なデータベース操作を高速かつ信頼性高く処理できます。ただし、gRPC はブラウザベースのクライアント開発をサポートしていません。
 
-Besides the requirements of running the [weaviate-client](../../../../weaviate/client-libraries/typescript/index.mdx), the client-server architecture is reliably more secure than interactions directly from the client.
+[weaviate-client](../../../../weaviate/client-libraries/typescript/index.mdx) を実行するための要件に加え、クライアントサーバーアーキテクチャはクライアントから直接やり取りする場合よりも安全性が高いというメリットがあります。
 
-Having a client-server approach means you can optimize your use of Weaviate by implementing load balancing, user and session management, middleware and various other optimizations. 
+クライアントサーバー方式を採用することで、ロードバランシング、ユーザーおよびセッション管理、ミドルウェアの導入など、さまざまな最適化を行いながら Weaviate を活用できます。 
 
-In the next sections we'll look at how to build client-server applications with..
-- [Using backend web frameworks](./20_building-client-server.mdx)
-- [Using fullstack web frameworks](./30_fullstack.mdx)
-
+次のセクションでは、クライアントサーバーアプリケーションの構築方法を紹介します。
+- [バックエンド Web フレームワークの使用](./20_building-client-server.mdx)
+- [フルスタック Web フレームワークの使用](./30_fullstack.mdx)

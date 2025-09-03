@@ -1,19 +1,19 @@
 ---
-title: Overview
-description: Why embedding model selection matters
+title: 概要
+description: 埋め込みモデル選択の重要性
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
-## <i class="fa-solid fa-chalkboard-user"></i> Why embedding model selection matters
+## <i class="fa-solid fa-chalkboard-user"></i> 埋め込みモデル選択の重要性
 
-Embedding models are AI models that capture “meanings” of objects.  This [earlier module on AI models](../010_ai_models_deep_dive/index.mdx) showed that embedding models can do this by turning text, images, audio and more into a sequence of numbers.
+Embedding モデルとは、オブジェクトの「意味」を捉える AI モデルです。 この [以前の AI モデルに関するモジュール](../010_ai_models_deep_dive/index.mdx) では、Embedding モデルがテキスト・画像・音声などを数値の列へ変換することで意味を表現できることを紹介しました。
 
-import NNEmbeddingModels from '../010_ai_models_deep_dive/_img/nn_explained_50_embedding_models.png';
-import NNEmbeddingModelsDark from '../010_ai_models_deep_dive/_img/nn_explained_50_embedding_models_dark.png';
+import NNEmbeddingModels from '../010_ai_models_deep_dive/_img/nn_explained_50_embedding_models.png';  
+import NNEmbeddingModelsDark from '../010_ai_models_deep_dive/_img/nn_explained_50_embedding_models_dark.png';  
 
 <ThemedImage
-  alt="Neural Network Basic Diagram"
+  alt="ニューラルネットワークの基本図"
   sources={{
     light: NNEmbeddingModels,
     dark: NNEmbeddingModelsDark,
@@ -21,86 +21,86 @@ import NNEmbeddingModelsDark from '../010_ai_models_deep_dive/_img/nn_explained_
   width="400"
 />
 
-As you might imagine, this is not a trivial task. And there have been huge advancements in the field over the last decade or so. As an illustrative example, let’s take a look at the difference between the performance of two models at either end of that time scale.
+ご想像のとおり、これは容易なタスクではありません。そして過去 10 年ほどで劇的な進歩がありました。 例として、その期間の両端に位置する 2 つのモデル性能の違いを見てみましょう。
 
-### <i class="fa-solid fa-chalkboard"></i> An example evaluation
+### <i class="fa-solid fa-chalkboard"></i> 評価例
 
-Here is a screenshot from an [example demo application](https://github.com/databyjp/emb_eval_toybox) carrying out embedding evaluation.
+こちらは [サンプルデモアプリ](https://github.com/databyjp/emb_eval_toybox) のスクリーンショットで、Embedding 評価を行っています。
 
-In this example, we look for documents that best match the query `“How do I make chocolate chip cookies from scratch”`, out of a candidate document set of 20 documents.
+この例では、`“How do I make chocolate chip cookies from scratch”` というクエリに最も一致するドキュメントを、20 件の候補ドキュメントから検索します。
 
-Each of the 20 documents in the set has a `“score”` attribute here, where a more relevant object is indicated with a higher score.
+20 件の各ドキュメントには `“score”` 属性があり、値が高いほど関連性が高いことを示しています。
 
 <img
     src={require('./_img/candidate_documents.png').default}
-    alt="Candidate Documents"
+    alt="候補ドキュメント"
 />
 
-Now, let’s see what happens when we try to retrieve the best matching objects using two different embedding models. We will use the following two models:
+では、2 つの異なる Embedding モデルを用いて最適なオブジェクトを取得するとどうなるでしょうか。以下の 2 つのモデルを使用します。
 
-- `FastText (fasttext-en-vectors)` (from 2015; [model card](https://huggingface.co/facebook/fasttext-en-vectors))
-- `snowflake-arctic-embed-l-v2.0` (from 2024; [model card](https://huggingface.co/Snowflake/snowflake-arctic-embed-l-v2.0))
+- `FastText (fasttext-en-vectors)`（ 2015 年；[モデルカード](https://huggingface.co/facebook/fasttext-en-vectors)）
+- `snowflake-arctic-embed-l-v2.0`（ 2024 年；[モデルカード](https://huggingface.co/Snowflake/snowflake-arctic-embed-l-v2.0)）
 
-Here is a summary of results from a search, using the `FastText` model from 2015:
+まず、 2015 年の `FastText` モデルで検索した結果の概要です。
 
 <img
     src={require('./_img/embedding_eval_example_1_fasttext.png').default}
-    alt="Search results from FastText"
+    alt="FastText の検索結果"
 />
 
-The top result identified by the FastText is quite relevant, as it discusses how to correct some potential issues with cookie making. However, it’s less relevant than the idea result, which is a step-by-step recipe.
+FastText が特定した最上位の結果は、クッキー作りの問題点を修正する方法を扱っており、ある程度関連しています。しかし理想的なのは手順を示すレシピですので、完全には一致していません。
 
-The other two, however, are not relevant to the query. While they are recipes, they are not for baking cookies.
+残り 2 件はクエリと無関係です。レシピではありますがクッキー用ではありません。
 
-It would be fair to say that there’s quite a bit of room for improvement.
+改善の余地が大きいと言えるでしょう。
 
-Here are the results from the `snowflake-arctic-embed-l-v2.0` model, from 2025:
+続いて、 2025 年の `snowflake-arctic-embed-l-v2.0` モデルでの結果です。
 
 <img
     src={require('./_img/embedding_eval_example_2_arctic2.png').default}
-    alt="Search results from Snowflake Arctic"
+    alt="Snowflake Arctic の検索結果"
 />
 
-We see that the `arctic` embeddings correctly identified the ideal top-ranked result. In fact, the top two expected results are included in the top three results for the `arctic` embeddings. Even the other result is relevant to chocolate chip cookies - although perhaps slightly off topic.
+`arctic` の Embedding は理想的な最上位結果を正しく特定しました。実際、期待された上位 2 件が 3 位以内に入っています。残り 1 件もチョコチップクッキーに関連しており、多少トピックがずれている程度です。
 
-### <i class="fa-solid fa-chalkboard"></i> Evaluation criteria
+### <i class="fa-solid fa-chalkboard"></i> 評価基準
 
-We could even compare these models using a standard metric, such as `nDCG@k`.
+これらのモデルを `nDCG@k` などの標準指標で比較することもできます。
 
-For this scenarios, the two models scored:
+今回のシナリオでは、 2 つのモデルのスコアは以下のとおりです。
 
-| Model | nDCG@10 |
+| モデル | nDCG@10 |
 | --- | --- |
 | `FastText` | 0.595 |
 | `snowflake-arctic-embed-l-v2.0` | 0.908 |
 
 <details>
-  <summary>What is nDCG@k?</summary>
+  <summary>nDCG@k とは？</summary>
 
-`nDCG` is a metric used to evaluate the returned results in information retrieval. It rewards the model for returning the most relevant results at the top of the list. The `@k` indicates that only the top `k` results are considered.
+`nDCG` は情報検索で返された結果を評価する指標です。最も関連性の高い結果をリストの上位に配置するほど高く評価されます。`@k` は上位 `k` 件のみを対象とすることを示します。
 
-[Read more](https://weaviate.io/blog/retrieval-evaluation-metrics#normalized-discounted-cumulative-gain-ndcg)
+[詳しくはこちら](https://weaviate.io/blog/retrieval-evaluation-metrics#normalized-discounted-cumulative-gain-ndcg)
 
 </details>
 
-The size of embeddings produced is another key factor.
+生成される Embedding のサイズも重要な要素です。
 
-Embeddings can vary greatly in size, from around 300 dimensions to thousands. Imagine a service provider that hosts an AI bot that answers questions about legal cases. A vector database with 1 million documents*, one embedding model (`nv-embed-v2`) could require as much memory as 3.3 TB of memory, while another (`embed-english-light-v3.0` ) might only require 300 GB of memory. (The following chart takes some popular models, and compares how each one would affect memory requirements.)
+Embedding の次元数はおよそ 300 から数千まで大きく異なります。たとえば、法律事例に関する質問に回答する AI ボットを提供するサービス事業者を考えてみましょう。 100 万件のドキュメントを持つベクトルデータベースでは、`nv-embed-v2` というモデルを使うと 3.3 TB ものメモリが必要になる可能性がありますが、`embed-english-light-v3.0` なら 300 GB で済むかもしれません。 （下図は人気モデルをいくつか取り上げ、それぞれがメモリ要件にどのように影響するかを比較したものです。）
 
 <img
     src={require('./_img/memory-reqs-1m-docs.png').default}
-    alt="Estimated memory requirements for 1 million documents"
+    alt="100 万ドキュメントの推定メモリ要件"
 />
 
-These simple examples illustrate some of the impact of embedding model selection. The choice of embedding models can make a huge difference in the quality of your search, your resource requirements, and many more factors.
+これらの簡単な例からも、Embedding モデル選択が検索品質やリソース要件などに大きな影響を与えることが分かります。
 
-There have been huge advancements in the landscape of embedding models over the last 10 to 15 years. In fact, innovations in embedding models continue to occur today. You might have heard of some of these names: word2vec, FastText, GloVe, BERT, CLIP, OpenAI ada, Cohere multi-lingual, Snowflake Arctic, ColBERT, and ColPali.
+過去 10〜15 年で Embedding モデルの世界は大きく進歩しました。実際、革新は現在も続いています。word2vec、FastText、GloVe、BERT、CLIP、OpenAI ada、Cohere multi-lingual、Snowflake Arctic、ColBERT、ColPali といった名前を聞いたことがあるかもしれません。
 
-Each model (or architecture) brings with it some improvements. It may be in model architecture, training data, training methodology, modality, or efficiency, for instance.
+各モデル（またはアーキテクチャ）は、モデル構造・学習データ・学習手法・モダリティ・効率性など、何らかの面で改良をもたらします。
 
-So in the next few sections, let’s begin to explore a workflow for embedding model selection.
+それでは次のセクションから、Embedding モデル選定のワークフローを探っていきましょう。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

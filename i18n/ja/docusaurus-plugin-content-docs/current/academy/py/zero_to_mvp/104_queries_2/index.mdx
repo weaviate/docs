@@ -1,6 +1,6 @@
 ---
-title: P3_104 Queries 2 (Python)
-description: Continue exploring Weaviate queries with advanced techniques and custom filters.
+title: P3_104 クエリ 2 (Python)
+description: 高度な手法とカスタムフィルターで Weaviate のクエリをさらに探究する。
 sidebar_position: 104
 ---
 
@@ -8,7 +8,7 @@ import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/dep
 
 <ZeroToMvpDeprecationNote/>
 
-## <i class="fa-solid fa-chalkboard-user"></i> Unit overview
+## <i class="fa-solid fa-chalkboard-user"></i> ユニット概要
 
 import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
@@ -16,25 +16,25 @@ import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
 <!-- Provide context for this course, in addition to the concrete learning goals and outcomes. Why would someone want to do this unit? -->
 
-In this unit, you will learn about even more types of queries that you can run with Weaviate.
+このユニットでは、Weaviate で実行できるさらに多くのクエリの種類について学びます。
 
-We will start by looking how to use keyword searches with the BM25F ranking algorithm, as well as hybrid searches that combines keyword searches with vector searches.
+まず、BM25F ランキングアルゴリズムを用いたキーワード検索の方法と、キーワード検索と ベクトル 検索を組み合わせたハイブリッド検索を見ていきます。
 
-Then, we will look at generative searches and question and answer (QnA) searches. These searches allow you to not only retrieve data objects, but to transform the results before returning them to you.
+次に、生成検索と質問応答 (QnA) 検索を取り上げます。これらの検索では、データオブジェクトを取得するだけでなく、返す前に結果を変換することができます。
 
-By the end of this unit, you will have a suite of query types to choose from, so that you can retrieve the right information in the form that you want.
+このユニットを終える頃には、目的に応じて選択できる複数のクエリタイプを習得し、望む形式で適切な情報を取得できるようになります。
 
-Let's get started.
+それでは始めましょう。
 
-### <i class="fa-solid fa-clipboard-list-check"></i> Prerequisites
+### <i class="fa-solid fa-clipboard-list-check"></i> 前提条件
 
-- (**Required**) A Python (3) environment with `weaviate-client` installed.
-- (**Required**) Complete [101A Weaviate Academy Preparation](../setup.mdx)
-- (*Recommended*) Complete [Hello, Weaviate](../101_hello_weaviate/index.mdx)
-- (*Recommended*) Complete [Queries 1](../102_queries_1/index.mdx)
-- (*Recommended*) Complete [Schema and Imports](../103_schema_and_imports/index.mdx)
+- (**Required**) `weaviate-client` がインストールされた Python (3) 環境。
+- (**Required**) [101A Weaviate Academy 準備](../setup.mdx) を完了してください。
+- (*Recommended*) [Hello, Weaviate](../101_hello_weaviate/index.mdx) を完了してください。
+- (*Recommended*) [クエリ 1](../102_queries_1/index.mdx) を完了してください。
+- (*Recommended*) [スキーマとインポート](../103_schema_and_imports/index.mdx) を完了してください。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
 
@@ -44,7 +44,7 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 
 <LearningGoals unitName="queries_2"/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

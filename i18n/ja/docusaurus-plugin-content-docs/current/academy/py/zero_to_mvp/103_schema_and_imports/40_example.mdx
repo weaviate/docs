@@ -1,6 +1,6 @@
 ---
-title: Populate your Weaviate instance!
-description: View examples of schema creation in Weaviate for effective data setup.
+title: Weaviate インスタンスをデータで満たしましょう！
+description: 効率的なデータ設定のための Weaviate スキーマ作成例をご覧ください。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,50 +8,50 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PythonCodeExample from '!!raw-loader!./_snippets/40_import_example_1.py';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/ukhCSeuVJGY' controls='true' />
 <br/>
 
-It's time to put what we've learned into action! In this section, we will:
+ここまで学んだことを実践するときです！このセクションでは次を行います。
 
-- Download a small dataset,
-- Build a schema corresponding to the dataset, and
-- Import it to your WCD instance.
+- 小さなデータセットをダウンロード
+- データセットに対応するスキーマを構築
+- それをあなたの WCD インスタンスへインポート
 
-### <i class="fa-solid fa-chalkboard"></i> Dataset used
+### <i class="fa-solid fa-chalkboard"></i> 使用データセット
 
-We are going to use data from a popular quiz game show called *Jeopardy!*.
+今回は人気クイズ番組 *Jeopardy!* のデータを使用します。
 
-The original dataset can be found [here on Kaggle](https://www.kaggle.com/datasets/tunguz/200000-jeopardy-questions), but we'll use a [small subset from it, just containing 100 rows](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_100.json).
+元のデータセットは [Kaggle 上](https://www.kaggle.com/datasets/tunguz/200000-jeopardy-questions) にありますが、ここでは [100 行だけの小さなサブセット](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_100.json) を利用します。
 
-Here's a preview of a few rows of data.
+以下はデータの数行をプレビューしたものです。
 
-|    | Air Date   | Round            |   Value | Category         | Question                                                                                                             | Answer                                     |
-|---:|:-----------|:-----------------|--------:|:-----------------|:---------------------------------------------------------------------------------------------------------------------|:-------------------------------------------|
-|  0 | 2006-11-08 | Double Jeopardy! |     800 | AMERICAN HISTORY | Abraham Lincoln died across the street from this theatre on April 15, 1865                                           | Ford's Theatre (the Ford Theatre accepted) |
-|  1 | 2005-11-18 | Jeopardy!        |     200 | RHYME TIME       | Any pigment on the wall so faded you can barely see it                                                               | faint paint                                |
-|  2 | 1987-06-23 | Double Jeopardy! |     600 | AMERICAN HISTORY | After the original 13, this was the 1st state admitted to the union                                                  | Vermont                                    |
+|    | 放送日        | ラウンド            |   金額 | カテゴリ           | 問題文                                                                                                            | 解答                                      |
+|---:|:--------------|:--------------------|-------:|:-------------------|:------------------------------------------------------------------------------------------------------------------|:------------------------------------------|
+|  0 | 2006-11-08    | Double Jeopardy!    |     800 | AMERICAN HISTORY   | Abraham Lincoln died across the street from this theatre on April 15, 1865                                        | Ford's Theatre (the Ford Theatre accepted)|
+|  1 | 2005-11-18    | Jeopardy!           |     200 | RHYME TIME         | Any pigment on the wall so faded you can barely see it                                                            | faint paint                               |
+|  2 | 1987-06-23    | Double Jeopardy!    |     600 | AMERICAN HISTORY   | After the original 13, this was the 1st state admitted to the union                                               | Vermont                                   |
 
-For now, let's keep it simple by populating Weaviate with just the `Round`, `Value`, `Question` and `Answer` columns.
+今回はシンプルに、`Round`、`Value`、`Question`、`Answer` 列のみを Weaviate に投入します。
 
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Can you remember what the next steps should be?
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+次のステップは何だったか思い出せますか？
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Build a schema
+## <i class="fa-solid fa-square-chevron-right"></i> スキーマの構築
 
-The next step is to build a schema, making some decisions about how to represent our data in Weaviate.
+次のステップはスキーマを作成し、データを Weaviate にどう表現するかを決定することです。
 
-### <i class="fa-solid fa-code"></i> Add class names & properties
+### <i class="fa-solid fa-code"></i> クラス名とプロパティの追加
 
-First of all, we'll need a name. The name refers to each row or item (*note: singular*), so I called it `JeopardyQuestion`. Then, I need to define properties and types.
+まずは名前が必要です。名前は各行（単数形）を表すので、`JeopardyQuestion` としました。次にプロパティと型を定義します。
 
-You saw above that we'll be populating Weaviate with `Round`, `Value`, `Question` and `Answer` columns. We need names for Weaviate `properties` - these names are sensible, but we follow the GraphQL convention of capitalizing classes and leaving properties as lowercases, so the names will be `round`, `value`, `question` and `answer`.
+先ほど述べたように、`Round`、`Value`、`Question`、`Answer` 列を Weaviate に投入します。Weaviate の `properties` 用の名前が必要ですが、GraphQL の慣例に従いクラスは大文字で、プロパティは小文字にするので、名前は `round`、`value`、`question`、`answer` になります。
 
-Then, we should select datatypes. All of `round`, `question` and `answer` are text, so we can simply choose `text` as our datatype. `value` is a number, but I know that values in *Jeopardy!* represent dollar amounts, meaning that they are always integers. So we'll use `int`.
+次にデータ型を選択します。`round`、`question`、`answer` はすべてテキストなので `text` を選びます。`value` は数値ですが、*Jeopardy!* の金額は常に整数なので `int` を使用します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -64,9 +64,9 @@ Then, we should select datatypes. All of `round`, `question` and `answer` are te
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Set & configure the vectorizer
+### <i class="fa-solid fa-code"></i> ベクトライザーの設定と構成
 
-For this example, we will obtain our object vectors using an inference service. So to do that, we must set the `vectorizer` for the class. We'll use `text2vec-openai` in this case, and we can configure the module also at the class-level.
+この例では、推論サービスを使用してオブジェクトベクトルを取得します。そのため、クラスの `vectorizer` を設定する必要があります。今回は `text2vec-openai` を使用し、モジュールの設定もクラスレベルで行います。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -79,9 +79,9 @@ For this example, we will obtain our object vectors using an inference service. 
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-chalkboard"></i> Skipping a property from vectorization
+### <i class="fa-solid fa-chalkboard"></i> プロパティをベクトル化から除外
 
-You might have noticed the property-level module configuration here:
+ここでプロパティレベルのモジュール設定に気付いたかもしれません。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -94,47 +94,46 @@ You might have noticed the property-level module configuration here:
 </TabItem>
 </Tabs>
 
-This configuration will exclude the `round` property from the vectorized text. You might be asking - why might we choose to do this?
+この設定により `round` プロパティはベクトル化対象から除外されます。では、なぜそうするのでしょうか？
 
-Well, the answer is that whether the question belonged to "Jeopardy!", or "Double Jeopardy!" rounds simply do not add much to impact its meaning. You know by now that the vectorizer creates a vector representation of the object. In case of a text object, Weaviate first combines the text data according to an internal set of rules and your configuration.
+その理由は、問題が "Jeopardy!" ラウンドか "Double Jeopardy!" ラウンドかは、意味に大きな影響を与えないからです。ベクトライザーはオブジェクトのベクトル表現を作成します。テキストオブジェクトの場合、Weaviate は内部規則と設定に従ってテキストを結合し、その結合テキストをベクトル化します。
 
-It is the combined text that is vectorized. So, the difference between vectorizing the `round` property and skipping it would be something like this:
+したがって `round` プロパティをベクトル化する場合と除外する場合では、例えば次のような違いになります。
 
 ```json
 // If the property is vectorized
 answer {answer_text} question {question_text} category {category_text}
 ```
 
-Against:
+対して:
 
 ```json
 // If the property is skipped
 answer {answer_text} question {question_text}
 ```
 
-More specifically, something like the difference between:
+より具体的には、次のような違いです。
 
 ```json
 // If the property is vectorized
 answer faint paint question any pigment on the wall so faded you can barely see it category double jeopardy!
 ```
 
-Against:
+対して:
 
 ```json
 // If the property is skipped
 answer faint paint question any pigment on the wall so faded you can barely see it
 ```
 
-The additional information is not particularly significant in capturing the meaning of the quiz item, which is mainly in the question and answer, as well as perhaps the category (not yet used).
+追加情報はクイズ項目の意味を捉える上でそれほど重要ではありません。主要な情報は問題文と解答、場合によってはカテゴリにあるからです（カテゴリはまだ使用していません）。
 
-:::tip Skipping vectorization has no impact on filtering
-Importantly, excluding the `round` column from vectorization will have no impact on our ability to filter the results based on the `round` value. So if you wanted to only search a set of `Double Jeopardy!` questions, you still can.
+:::tip ベクトル化をスキップしてもフィルタリングには影響なし
+重要な点として、`round` 列をベクトル化から除外しても、`round` の値で結果をフィルタリングする能力には影響しません。たとえば `Double Jeopardy!` の問題だけを検索したい場合でも可能です。
 :::
+### <i class="fa-solid fa-code"></i> クラスの作成
 
-### <i class="fa-solid fa-code"></i> Create the class
-
-We can now add the class to the schema.
+これでスキーマにクラスを追加できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -147,7 +146,7 @@ We can now add the class to the schema.
 </TabItem>
 </Tabs>
 
-Now, you can check that the class has been created successfully by retrieving its schema:
+次に、そのクラスのスキーマを取得して、正常に作成されたかどうかを確認できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -161,7 +160,7 @@ Now, you can check that the class has been created successfully by retrieving it
 </Tabs>
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the full schema response</summary>
+  <summary><i class="fa-solid fa-radar"></i> スキーマレスポンス全文を表示</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -172,19 +171,19 @@ Now, you can check that the class has been created successfully by retrieving it
 
 </details>
 
-:::note The retrieved schema is even longer!
-Although we've defined a lot of details here, the retrieved schema is still longer. The additional details relate to the vector index, the inverted index, sharding and tokenization. We'll cover many of those as we go.
+:::note 取得したスキーマはさらに長い！
+ここで多くの詳細を定義しましたが、取得したスキーマはさらに長くなっています。追加されているのは、 ベクトル インデックス、 転置インデックス、シャーディング、トークン化に関する情報です。これらの多くについては後ほど説明します。
 :::
 
-If you see a schema that is close to the example response - awesome! You're ready to import the data.
+例のレスポンスに近いスキーマが表示されたら、素晴らしいです。データのインポート準備が整いました。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Import data
+## <i class="fa-solid fa-square-chevron-right"></i> データのインポート
 
-Here, we'll show you how to import the requisite data, including how to configure and use a batch.
+ここでは、必要なデータをインポートする方法と、バッチを設定して使用する方法を説明します。
 
-### <i class="fa-solid fa-code"></i> Load data
+### <i class="fa-solid fa-code"></i> データの読み込み
 
-We've made the data available online - so, fetch and load it like so:
+データはオンラインで公開されていますので、次のように取得して読み込んでください。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -193,11 +192,11 @@ We've made the data available online - so, fetch and load it like so:
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Configure batch and import data
+### <i class="fa-solid fa-code"></i> バッチ設定とデータのインポート
 
-And let's set up a batch import process. As mentioned earlier, the batch import process in Weaviate can send data in bulk and in parallel.
+続いて、バッチインポートプロセスを設定しましょう。前述のとおり、 Weaviate のバッチインポートプロセスではデータを一括かつ並列で送信できます。
 
-In Python, we recommend that you use a context manager like:
+Python では、次のようなコンテキストマネージャーを使用することをおすすめします。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -206,9 +205,9 @@ In Python, we recommend that you use a context manager like:
   language="py"
 />
 
-Note the use of parameters `batch_size` and `num_workers`. They specify the number of objects sent per batch, as well as how many processes are used for parallelization.
+ここで `batch_size` と `num_workers` パラメーターを使用している点に注目してください。`batch_size` は 1 バッチあたりに送信するオブジェクト数を、`num_workers` は並列化に使用するプロセス数を指定します。
 
-Then, the next step is to build data objects & add them to the batch process. We build objects (as Python dictionaries) by passing data from  corresponding columns to the right Weaviate property, and the client will take care of when to send them.
+次のステップはデータオブジェクトを作成し、それらをバッチプロセスに追加することです。対応する列のデータを適切な Weaviate プロパティに渡して、Python の辞書としてオブジェクトを構築し、送信タイミングはクライアントが処理します。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -217,7 +216,7 @@ Then, the next step is to build data objects & add them to the batch process. We
   language="py"
 />
 
-Then, let's check that we've got the right number of objects imported:
+最後に、正しい数のオブジェクトがインポートされているか確認しましょう。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -226,24 +225,24 @@ Then, let's check that we've got the right number of objects imported:
   language="py"
 />
 
-If this assertion returns `True`, you've successfully populated your Weaviate instance!
+`True` が返れば、 Weaviate インスタンスへのデータ投入に成功しています。
 
-### <i class="fa-solid fa-chalkboard"></i> What happens if this runs again?
+### <i class="fa-solid fa-chalkboard"></i> 再実行時の挙動
 
-Before we go on, I have a question. What do you think will happen if you run the above import script again?
+先へ進む前に質問です。上記のインポートスクリプトをもう一度実行するとどうなると思いますか？
 
 <details>
-  <summary><i class="fa-solid fa-face-thinking"></i> The answer is... </summary>
+  <summary><i class="fa-solid fa-face-thinking"></i> 答えは… </summary>
 
-That you will end up with duplicate items!<p><br/></p>
+重複したアイテムが作成されてしまいます！<p><br/></p>
 
-Weaviate does not check if you are uploading items with the same properties as ones that exist already. And since the import script did not provide an ID, Weaviate will simply assign a new, random ID, and create new objects.
+Weaviate は、既に存在するものと同じプロパティを持つアイテムをアップロードしているかどうかをチェックしません。また、インポートスクリプトでは ID を指定していないため、 Weaviate は新しいランダムな ID を割り当て、新しいオブジェクトを作成します。
 
 </details>
 
-### <i class="fa-solid fa-code"></i> Specify object UUID
+### <i class="fa-solid fa-code"></i> オブジェクト UUID の指定
 
-You could specify an object UUID at import time to serve as the object identifier. The Weaviate Python client, for example, provides a function to create a deterministic UUID based on an object. So, it could be added to our import script as shown below:
+インポート時にオブジェクトの識別子として UUID を指定することもできます。たとえば、 Weaviate の Python クライアントには、オブジェクトに基づいて決定論的な UUID を生成する関数があります。次のように、これをインポートスクリプトに追加できます。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -252,19 +251,19 @@ You could specify an object UUID at import time to serve as the object identifie
   language="py"
 />
 
-What this will do is to create objects whose UUID is based on the object properties. Accordingly, if the object properties remain the same, so will the UUID.
+これにより、 UUID がオブジェクトのプロパティに基づいて生成されるオブジェクトが作成されます。したがって、オブジェクトのプロパティが同じであれば、 UUID も同じになります。
 
-Running the above script multiple times will *not* cause the number of objects to increase.
+そのため、上記のスクリプトを複数回実行してもオブジェクト数は増えません。
 
-:::tip What is your desired behavior?
-Because the UUID is based on the object properties, it will still create new objects in case some property has changed. So, when you design your import process, consider what properties might change, and how you would want Weaviate to behave in these scenarios.<p><br/></p>
+:::tip 望ましい挙動は？
+UUID がオブジェクトのプロパティに基づいているため、いずれかのプロパティが変更された場合には新しいオブジェクトが作成されます。そのため、インポートプロセスを設計する際には、どのプロパティが変更される可能性があるか、またその場合に Weaviate にどう動作してほしいかを検討してください。<p><br/></p>
 
-Then you could, for instance, design your UUID to be created based on a subset of unique properties, to have the objects be overwritten, or alternatively have the UUID be created from the entire set of properties to only prevent duplicates.
+たとえば、ユニークなプロパティのサブセットを基に UUID を生成してオブジェクトを上書きさせたり、すべてのプロパティを基に UUID を生成して重複のみを防いだりといった設計が考えられます。
 :::
 
-### <i class="fa-solid fa-code"></i> Full import script
+### <i class="fa-solid fa-code"></i> 完全なインポートスクリプト
 
-Putting it all together, we get the following import script:
+すべてを組み合わせると、次のインポートスクリプトになります。
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -273,16 +272,16 @@ Putting it all together, we get the following import script:
   language="py"
 />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
 
-We have:
-- Downloaded a small dataset of Jeopardy! questions and answers.
-- Built a schema and imported our data.
-- Verified the successful import by checking the object count in Weaviate.
+次のことを行いました。
+-  `Jeopardy!` の問題と回答の小さなデータセットをダウンロードしました。
+- スキーマを構築し、データをインポートしました。
+-  `Weaviate` 内のオブジェクト数を確認して、インポートが成功したことを検証しました。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

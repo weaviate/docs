@@ -1,6 +1,6 @@
 ---
-title: Strengths of each search type
-description: Discover the strengths of each Weaviate search approach for specific use cases.
+title: 各検索タイプの強み
+description: 特定のユースケース向けに Weaviate の各検索手法の強みを確認します。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,21 +9,21 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!./_snippets/10_strengths.py';
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-These different search types are offered because they each have different characteristics, and therefore different strengths.
+これらの異なる検索タイプは、それぞれ特性が異なるため強みも異なります。
 
-Let's explore the relative strengths of each search type.
+ここでは各検索タイプの相対的な強みを見ていきます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Strengths of vector search
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索の強み
 
-### <i class="fa-solid fa-chalkboard"></i> Robustness
+### <i class="fa-solid fa-chalkboard"></i> 頑健性
 
-A vector is a numerical representation of the underlying object's meaning. As a result, a vector search is robust to any changes that don't affect the meaning of the object.
+ベクトルは、対象オブジェクトの意味を数値で表現したものです。そのため、意味を変えない変更に対してベクトル検索は頑健です。
 
-More concretely, a vector of "cat", for example, will be similar to a vector of "kitten", "feline", and "pet", even though their spellings are very different.
+具体的な例として、「 cat 」のベクトルは、綴りが大きく異なる「 kitten 」「 feline 」「 pet 」などのベクトルとも近くなります。
 
-See this in action below, where we search for "cat" and "kitten" using vector search.
+以下では、「 cat 」と「 kitten 」をベクトル検索した結果を確認します。
 
 <Tabs groupId="languages">
 
@@ -38,9 +38,9 @@ See this in action below, where we search for "cat" and "kitten" using vector se
 
 </Tabs>
 
-You see that the results for "cat" and "kitten" are very similar.
+ご覧のとおり、「 cat 」と「 kitten 」の検索結果は非常に似ています。
 
-In other words, the vectors for "cat" and "kitten" are similar in meaning, because the model can "understand" meaning.
+つまり、モデルが意味を「理解」できるため、「 cat 」と「 kitten 」のベクトルは意味的に近いのです。
 
 <FilteredTextBlock
   text={PyCode}
@@ -49,7 +49,7 @@ In other words, the vectors for "cat" and "kitten" are similar in meaning, becau
   language="json"
 />
 
-Similarly, a vector of "cat" is similar to the vector of "cat" with a spelling mistake, such as "caat", or "catt".
+同様に、「 cat 」のベクトルは、綴りを誤った「 caat 」や「 catt 」のベクトルとも近くなります。
 
 <Tabs groupId="languages">
 
@@ -64,7 +64,7 @@ Similarly, a vector of "cat" is similar to the vector of "cat" with a spelling m
 
 </Tabs>
 
-Here, the results are basically identical.
+ここでは結果はほぼ同一になります。
 
 <FilteredTextBlock
   text={PyCode}
@@ -73,27 +73,27 @@ Here, the results are basically identical.
   language="json"
 />
 
-This robustness is a key strength of vector search, as it means that the searcher does not need to know the exact words used in the dataset. This is particularly useful when the concepts being searched for are not well-defined, or when the searcher is not familiar with the dataset.
+この頑健性こそがベクトル検索の大きな強みです。検索者はデータセットで使用されている正確な単語を知る必要がありません。特に、検索対象の概念が明確に定義されていない場合や、検索者がデータセットに詳しくない場合に有用です。
 
-### <i class="fa-solid fa-chalkboard"></i> Versatility
+### <i class="fa-solid fa-chalkboard"></i> 多様性
 
-A vector search is also versatile. It can be used to search multiple data modalities (e.g. text, images, audio, etc.), and across multiple languages.
+ベクトル検索は多用途でもあります。テキスト・画像・音声など複数のデータモダリティ、および複数言語を対象に検索できます。
 
-This is because the vector is a numerical representation of the underlying object's meaning, and therefore the same vector can be used to represent the same meaning, regardless of the data modality or language.
+ベクトルは対象オブジェクトの意味を数値で表現しているため、モダリティや言語が異なっても同じ意味であれば同じベクトルで表現できます。
 
-In fact, some models are capable of search across multiple data modalities, or multiple languages (or both!). This is made possible by using a model that can convert the data into comparable vectors, regardless of the data modality or language.
+実際、複数モダリティや複数言語（あるいはその両方）をまたいで検索できるモデルも存在します。これは、モダリティや言語に依存せず、すべてのデータを比較可能なベクトルに変換できるモデルを使用することで実現しています。
 
-![Vectorization across multiple modalities](./_img/multimodal_example.png)
+![複数モダリティにわたるベクトル化](./_img/multimodal_example.png)
 
-## <i class="fa-solid fa-square-chevron-right"></i> Strengths of keyword search
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索の強み
 
-### <i class="fa-solid fa-chalkboard"></i> Exactitude
+### <i class="fa-solid fa-chalkboard"></i> 精確性
 
-Keyword search is ideal for situations where locating precise matches are required. This is particularly useful in scenarios where there exist exact terms to search for, such as academic research, searches through domain-specific data or technical troubleshooting.
+キーワード検索は、正確な一致を見つける必要がある場面に最適です。学術研究、ドメイン固有データの検索、技術的なトラブルシューティングなど、検索すべき正確な用語が存在するシナリオで特に有用です。
 
-The ability to return results that precisely match the search terms ensures that users receive the most relevant information for their specific queries.
+検索語に完全一致する結果を返せることで、ユーザーは自分のクエリに最も関連する情報を受け取れます。
 
-More concretely, take a look at the example below, where we search for "imaging".
+具体的には、次の例では「 imaging 」で検索します。
 
 <Tabs groupId="languages">
 
@@ -108,7 +108,7 @@ More concretely, take a look at the example below, where we search for "imaging"
 
 </Tabs>
 
-And when we inspect the results:
+結果を確認します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -117,18 +117,16 @@ And when we inspect the results:
   language="json"
 />
 
-A search for "imaging" using a keyword search returns the one result that contains that specific word.
+キーワード検索で「 imaging 」を検索すると、その単語を含む 1 件のみが返されます。
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索の強み
 
+ハイブリッド検索の大きな強みは、そのレジリエンスです。これについて詳しく見ていきましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Strengths of hybrid search
+### <i class="fa-solid fa-chalkboard"></i> レジリエンス
 
-A key strength of hybrid search is its resiliency. Let's explore this in more detail.
+ハイブリッド検索は、 ベクトル 検索とキーワード検索の双方で上位にランク付けされた結果を組み合わせるため、レジリエンスがあります。これにより、それぞれの検索方式の弱点を補うことができます。
 
-### <i class="fa-solid fa-chalkboard"></i> Resiliency
-
-A hybrid search is resilient as it combines top results from both vector and keyword search. This helps to mitigate either search's shortcomings.
-
-Take a look at the hybrid search example below.
+以下のハイブリッド検索の例をご覧ください。
 
 <Tabs groupId="languages">
 
@@ -143,7 +141,7 @@ Take a look at the hybrid search example below.
 
 </Tabs>
 
-We can inspect the results here:
+ここで結果を確認できます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -152,9 +150,9 @@ We can inspect the results here:
   language="json"
 />
 
-You can see that as well as the keyword search result above (for "imaging"), we get a semantically relevant result (for "X-rays").
+上記のキーワード検索結果（ " imaging " ）に加えて、意味的に関連する結果（ " X-rays " ）も取得できていることがわかります。
 
-Because hybrid search combines the results of both vector and keyword search, it will find objects that score well on at least one of the search types. This approach has the effect of complementing each search type.
+ハイブリッド検索は、 ベクトル 検索とキーワード検索の両方の結果を組み合わせるため、少なくともどちらか一方で高いスコアを得たオブジェクトを見つけ出します。このアプローチにより、各検索方式を相互に補完する効果が得られます。
 
 
 <!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review

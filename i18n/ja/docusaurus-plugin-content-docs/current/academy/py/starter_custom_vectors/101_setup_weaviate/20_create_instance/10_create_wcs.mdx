@@ -1,6 +1,6 @@
 ---
-title: "Option 1: A Weaviate Cloud (WCD) instance"
-description: Creating Weaviate Cloud Instance for Custom Vectors
+title: "オプション 1: Weaviate Cloud (WCD) インスタンス"
+description: "カスタム ベクトル用の Weaviate Cloud インスタンスの作成"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,33 +8,33 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../../_snippets/101_connect.py';
 
-Here, you will create a Weaviate Cloud (WCD) instance. WCD is a fully managed Weaviate instance that runs in the cloud. It's a great way to get started with Weaviate, as it requires no installation or maintenance.
+ここでは、Weaviate Cloud ( WCD ) インスタンスを作成します。WCD はクラウド上で稼働する完全マネージド型の Weaviate インスタンスです。インストールやメンテナンスが不要なため、Weaviate を始めるのに最適な方法です。
 
-### <i class="fa-solid fa-chalkboard"></i> Log in to the WCD Console
+### <i class="fa-solid fa-chalkboard"></i> WCD コンソールにログインする
 
-Go to the [WCD Console](https://console.weaviate.cloud/) and log in with your credentials. If you don't have an account yet, you can sign up by clicking on the <kbd>Register here</kbd> link from the login screen.
+[WCD コンソール](https://console.weaviate.cloud/) にアクセスし、認証情報でログインします。まだアカウントをお持ちでない場合は、ログイン画面の <kbd>Register here</kbd> リンクから登録できます。
 
-### <i class="fa-solid fa-chalkboard"></i> Create a Weaviate instance
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスを作成する
 
-From the console, go to the Dashboard and click on the <kbd>Create cluster</kbd> button. From the following screen:
+コンソールで Dashboard に移動し、<kbd>Create cluster</kbd> ボタンをクリックします。次の画面で以下を設定してください。
 
-- Select the "Free sandbox" tab
-- Provide a cluster name
-- Set "Enable authentication" to "Yes"
+- 「Free sandbox」タブを選択
+- クラスター名を入力
+- 「Enable authentication」を「Yes」に設定
 
-Click on the <kbd>Create</kbd> button to create your Weaviate instance. The process will take a few minutes.
+<kbd>Create</kbd> ボタンをクリックすると、Weaviate インスタンスが作成されます。完了まで数分かかります。
 
-### <i class="fa-solid fa-chalkboard"></i> Retrieve your Weaviate instance details
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細を取得する
 
-Once the instance is created, you will be able see its details by clicking on the <kbd>Details</kbd> button. Find the cluster URL and the API key.
+インスタンスが作成されると、<kbd>Details</kbd> ボタンをクリックして詳細を確認できます。クラスター URL と API キーを確認してください。
 
-You will need these details to connect to your Weaviate instance.
+これらの情報は Weaviate インスタンスへ接続する際に必要です。
 
-### <i class="fa-solid fa-code"></i> Connect to your WCD instance
+### <i class="fa-solid fa-code"></i> WCD インスタンスへ接続する
 
-To connect to the Weaviate Cloud (WCD) instance, you need to use the cluster URL and the API key. You can find these details in the WCD Console.
+Weaviate Cloud ( WCD ) インスタンスへ接続するには、クラスター URL と API キーが必要です。これらは WCD コンソールで確認できます。
 
-Use the `connect_to_weaviate_cloud` function to connect to your WCD instance.
+`connect_to_weaviate_cloud` 関数を使用して WCD インスタンスへ接続します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -43,11 +43,11 @@ Use the `connect_to_weaviate_cloud` function to connect to your WCD instance.
   language="py"
 />
 
-#### Provide inference API keys
+#### 推論 API キーを提供する
 
-Some Weaviate modules can use inference APIs for vectorizing data or large language model integration. You can provide the API keys for these services to Weaviate at instantiation.
+いくつかの Weaviate モジュールは、データのベクトル化や大規模言語モデル統合のために推論 API を使用できます。これらのサービスの API キーは、インスタンス生成時に Weaviate へ渡せます。
 
-This course uses Cohere, so you can provide the Cohere API key to Weaviate through `headers={"X-Cohere-Api-Key": <YOUR_KEY>}` as shown below:
+このコースでは Cohere を使用するため、`headers={"X-Cohere-Api-Key": <YOUR_KEY>}` のように Cohere API キーを Weaviate に渡します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -56,11 +56,11 @@ This course uses Cohere, so you can provide the Cohere API key to Weaviate throu
   language="py"
 />
 
-:::note What next?
-If you have completed this, you can skip the next page [Option 2: A local Weaviate instance](./20_create_docker.mdx) and continue with [Communicate with Weaviate](../30_communicate.mdx).
+:::note 次のステップ
+これを完了した場合、次のページ [オプション 2: ローカル Weaviate インスタンス](./20_create_docker.mdx) をスキップし、[Weaviate との通信](../30_communicate.mdx) に進んでください。
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

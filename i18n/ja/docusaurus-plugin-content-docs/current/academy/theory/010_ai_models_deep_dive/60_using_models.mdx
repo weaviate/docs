@@ -1,20 +1,20 @@
 ---
-title: Using AI models
-description: Examples of using AI models for inference
+title: AI モデルの利用
+description: 推論のために AI モデルを使用する例
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
-Up until this point of the module, we have been largely discussing theoretical aspects of AI models. Hopefully, this has helped you to develop, or solidify, a foundational understanding of these models.
+このモジュールのここまでの内容では、主に AI モデルの理論的な側面について説明してきました。これによって、これらのモデルに関する基礎的な理解を深め、あるいは確立できたことと思います。
 
-But we have not forgotten that AI models are more than just impressive scientific advancements. They are tools for us to use so that we can be more productive. Let’s now take that understanding and start to translate it to practical usage.
+しかし、 AI モデルは単なる素晴らしい科学的成果以上のものです。私たちがより生産的になるためのツールでもあります。では、その理解を踏まえて、実践的な利用へと移っていきましょう。
 
-In this section, we begin to show examples of AI model usage. Once a model is built, the step of using, or running, a model to produce outputs is also called “performing inference”.
+このセクションでは、 AI モデルの利用例を紹介します。モデルが構築された後、そのモデルを実行して出力を生成するステップは「推論を行う」とも呼ばれます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Inference: The basics
+## <i class="fa-solid fa-chalkboard-user"></i> 推論の基本
 
-import NNInference from './_img/nn_explained_80_inference.png';
-import NNInferenceDark from './_img/nn_explained_80_inference_dark.png';
+import NNInference from './_img/nn_explained_80_inference.png';  
+import NNInferenceDark from './_img/nn_explained_80_inference_dark.png';  
 
 <ThemedImage
   alt="Neural Network Node Calculations"
@@ -25,57 +25,59 @@ import NNInferenceDark from './_img/nn_explained_80_inference_dark.png';
   width="450"
 />
 
-The available model inference options can be quite extensive, from the inference modality to the model provider and model itself. As a result, the permutations of possible decisions can easily be overwhelming.
+推論の方法には、推論モダリティからモデルプロバイダー、そしてモデルそのものまで、非常に多くの選択肢があります。そのため、組み合わせによっては意思決定が容易に圧倒されてしまうこともあります。
 
-So, this section is designed to give you an organized overview of popular choices.
+そこで、このセクションでは一般的な選択肢を整理して概観します。
 
-First we will cover different ways or modes of using these models - whether to use an inference provider, or perform local inference. Then, within each mode, we will show some examples of performing inference through popular providers or software libraries.
+まずは、これらのモデルを利用するさまざまな方法、すなわち推論プロバイダーを利用するかローカルで推論を行うかというモードについて説明します。そして各モード内で、代表的なプロバイダーやソフトウェアライブラリを使った推論例を示します。
 
-This should remove some of the intimidation and mystique from the range of options, and set the ground work for our later discussions on model evaluation and selection.
+これにより、多岐にわたる選択肢への敷居の高さや神秘性を取り除き、後のモデルの評価および選定に関する議論の基礎を築けるはずです。
 
-:::note this section does not use Weaviate.
+:::note このセクションでは Weaviate を使用しません
 
-You may already know that Weaviate integrates with model providers to make inference easier. In this section, however, we will access the model ourselves. This will help you to understand what is going on under-the-hood when Weaviate performs inference on your behalf later on.
+あなたはすでに、 Weaviate がモデルプロバイダーと連携して推論を簡単に行えるようにしていることをご存じかもしれません。しかし、このセクションではモデルへ直接アクセスします。これにより、後で Weaviate があなたに代わって推論を実行するときに、その裏側で何が起こっているのかを理解しやすくなります。
 
 :::
 
-## <i class="fa-solid fa-chalkboard-user"></i> Inference via service providers
+## <i class="fa-solid fa-chalkboard-user"></i> サービスプロバイダー経由の推論
 
-The lowest-friction method for accessing modern AI models is to use a web API provided by an inference service provider.
+最新の AI モデルへ最も手軽にアクセスする方法は、推論サービスプロバイダーが提供する Web API を利用することです。
 
-Thanks to the explosion of popularity for certain types of AI models, there are numerous inference providers (and APIs) available that almost anyone can sign up and use.
+特定の種類の AI モデルの人気が急増したおかげで、誰でも登録して使える推論プロバイダー（および API）が数多く存在します。
 
-Popular inference providers include Anthropic, AWS, Cohere, Google, Microsoft, OpenAI, and many, many more.
+代表的な推論プロバイダーとしては、 Anthropic、 AWS、 Cohere、 Google、 Microsoft、 OpenAI などが挙げられます。
 
-Not all models are available at all inference providers. Some inference providers also develop their own, proprietary models, while others specialize in simply providing an inference service.
+すべてのモデルがすべての推論プロバイダーで利用できるわけではありません。独自の専用モデルを開発しているプロバイダーもあれば、純粋に推論サービスの提供に特化しているプロバイダーもあります。
 
-Let’s take a look at examples of performing inference through Cohere.
+Cohere を介して推論を実行する例を見てみましょう。
 
-:::info Will this cost me anything?
+:::info 費用はかかりますか？
 
-At the time of writing, Cohere offered API access that were free of charge, with caveats / limitations. Please review the provider’s latest terms and conditions for details. We note that if you do use paid services, the volume of inference performed for these sections are very small, and costs will be relatively small (under US$1).
+執筆時点では、 Cohere はいくつかの注意事項や制限付きで無償の API アクセスを提供していました。詳細については最新の利用規約を必ずご確認ください。有料サービスを利用する場合でも、ここで行う推論の量は非常に少なく、費用は 1 米ドル未満とごくわずかです。
 
-### <i class="fa-solid fa-chalkboard"></i> Preparation
+:::
 
-For this section, we will use Cohere. [Cohere](https://cohere.com/) develops a range of generative, embedding and re-ranker models. Cohere’s models are available through other inference services, as well as Cohere itself. Here, we will use the Cohere API directly.
+### <i class="fa-solid fa-chalkboard"></i> 準備
+
+このセクションでは Cohere を使用します。 [Cohere](https://cohere.com/) は、生成、埋め込み、再ランカーの各種モデルを開発しています。 Cohere のモデルは他の推論サービスでも、また Cohere 自身でも利用できます。ここでは Cohere API を直接利用します。
 
 :::info
-At the time of writing, Cohere offered a trial key which is available free of charge.
+執筆時点では、 Cohere は無償で利用できるトライアルキーを提供していました。
 :::
 
-To use the Cohere API, [sign up for an account](https://cohere.com/), and then navigate to their dashboard. There, you should be able to navigate to a section for `API keys`, where you can manage your API keys.
+Cohere API を利用するには、[アカウントに登録](https://cohere.com/) した後、ダッシュボードに移動します。そこで `API keys` というセクションに進むと、 API キーを管理できます。
 
-Create a trial key, which should be sufficient for this usage. Set the API key as an environment variable, with the name `COHERE_API_KEY`.
+本チュートリアルにはトライアルキーで十分ですので作成してください。そして、この API キーを `COHERE_API_KEY` という名前の環境変数に設定します。
 
-Install the Cohere SDK with your preferred environment with your preferred package manager. For example:
+お好みのパッケージマネージャーで Cohere SDK をインストールします。例：
 
 ```bash
 pip install cohere
 ```
 
-### <i class="fa-solid fa-code"></i> Embedding model usage
+### <i class="fa-solid fa-code"></i> 埋め込みモデルの利用
 
-The following snippet will convert a series of text snippets (`source_texts`) into embeddings:
+次のスニペットは、一連のテキスト片（ `source_texts` ）を埋め込みに変換します。
 
 ```python
 import cohere
@@ -104,9 +106,9 @@ for e in response.embeddings.float_:
     source_embeddings.append(e)     # Save the embedding for later use
 ```
 
-Note that for saving source texts to search though later on, we specify the input type `search_document` here.
+後で検索できるようにソーステキストを保存するため、ここでは入力タイプとして `search_document` を指定している点に注意してください。
 
-This should output something like this (note the exact numbers may vary):
+これにより、次のような出力が得られます（数値は多少異なる場合があります）:
 
 ```
 384
@@ -117,9 +119,9 @@ This should output something like this (note the exact numbers may vary):
 [-0.076660156, 0.04244995, -0.07366943, 0.0019054413, -0.007736206]
 ```
 
-Printing for each vector its length (dimensionality) and the first few dimensions.
+各ベクトルについて、その長さ（次元数）と先頭の数次元を表示しています。
 
-Then, to find the piece of text that best matches a query (let’s say: `intergalactic voyage`), we would first embed the query text:
+次に、クエリ（例： `intergalactic voyage` ）に最も一致するテキストを見つけるには、まずクエリテキストを埋め込みに変換します：
 
 ```python
 # Get the query embedding:
@@ -138,16 +140,16 @@ print(len(query_embedding))
 print(query_embedding[:5])
 ```
 
-This should produce:
+これにより、次のような出力が得られます：
 
 ```
 384
 [-0.007019043, -0.097839355, 0.023117065, 0.0049324036, 0.047027588]
 ```
 
-Indicating that our query vector is the same dimensionality as the document vector, and that each dimension has a similar format.
+ここで、クエリ ベクトルがドキュメント ベクトルと同じ次元数であり、各次元が同様の形式であることが確認できます。
 
-To perform a vector search:
+ベクトル検索を行うには：
 
 ```python
 # Find the most similar source text to the query:
@@ -166,20 +168,20 @@ print(f"The most similar text to '{query_text}' is:")
 print(most_similar_text)
 ```
 
-This should produce the output:
+次のような出力が得られます：
 
 ```
 The most similar text to 'Intergalactic voyage' is:
 Space, the final frontier.
 ```
 
-Hopefully, you will agree that this makes good intuitive sense. If you are curious, try varying the source texts, and/or the query texts.
+直感的にも納得できる結果になっていると思います。興味があれば、ソーステキストやクエリテキストを変えて試してみてください。
 
-The embedding model does its best to capture meaning, but it isn’t perfect. A particular embedding model will work better with particular domains or languages.
+埋め込みモデルは意味をできる限り捉えようとしますが、完全ではありません。特定の埋め込みモデルは、特定のドメインや言語でより良く機能します。
 
-### <i class="fa-solid fa-code"></i> Generative model usage
+### <i class="fa-solid fa-code"></i> 生成モデルの利用
 
-Now, let’s use one of Cohere’s large language models. We will ask it to explain how a large language model works:
+次に、 Cohere の大規模言語モデルのひとつを使ってみましょう。大規模言語モデルがどのように機能するかを説明するよう依頼します：
 
 ```python
 import cohere
@@ -204,15 +206,15 @@ print(response.message.content[0].text)
 
 ```
 
-The response may look something like this (note the exact output may vary):
+レスポンスは次のようになるかもしれません（出力は多少異なる場合があります）:
 
 ```
 Language models are artificial intelligence systems that generate and understand human language by analyzing vast amounts of text data and learning patterns, structures, and context to create responses or translations. These models use machine learning algorithms to create statistical representations of language, enabling them to produce human-like text output.
 ```
 
-If you’ve seen a web interface such as Claude AI or ChatGPT, you would be familiar with multi-turn conversations.
+Claude AI や ChatGPT のような Web インターフェースを見たことがあれば、マルチターンの会話に馴染みがあるでしょう。
 
-In an API, you can achieve the same result by simply providing the preceding conversations to the LLM:
+API では、前の会話履歴を LLM に渡すだけで同じ結果を得ることができます：
 
 ```python
 import cohere
@@ -259,7 +261,7 @@ response = co.chat(
 print(response.message.content[0].text)
 ```
 
-The response may look like this:
+レスポンスは次のようになります：
 
 ```
 Language models, oh
@@ -267,71 +269,70 @@ Patterns and words, they dance
 New text, probabilities.
 ```
 
-Notice that because the entire message history was included, the language model correctly responded, using the message history as context.
+メッセージ履歴全体を含めたことで、言語モデルが履歴を文脈として正しく応答している点に注目してください。
 
-This is quite similar to what happens in applications such as Claude AI or ChatGPT. As you type in your answers, the entire message history is being used to perform model inference.
+これは Claude AI や ChatGPT といったアプリケーションで起こっていることとほぼ同じです。あなたが入力するたびに、メッセージ履歴全体がモデル推論に利用されています。
 
-You’ve now seen how model inference works using Cohere’s web-based APIs. In this pattern, the models are hosted online and run remotely. Next, we’ll take a look at an example where we run these models locally.
+ここまでで、 Cohere の Web ベース API を使ったモデル推論の仕組みを確認しました。この方式ではモデルはオンラインでホストされ、リモートで実行されます。次は、これらのモデルをローカルで実行する例を見ていきましょう。
+## <i class="fa-solid fa-chalkboard-user"></i> ローカル推論
 
-## <i class="fa-solid fa-chalkboard-user"></i> Local inference
+多くの場合、AI モデルの推論をローカル（オンプレミス）モデルで実行することが望ましい、あるいは必須となることがあります。
 
-In many cases, it may be desirable or even required to perform AI model inference using a local (or on-premise) model.
+これにはさまざまな理由があります。例えば、データをローカルに保持したい（コンプライアンスやセキュリティのためなど）、独自に学習させた専用モデルを使用したい、あるいは商用の推論 API よりもローカル推論のほうが経済的に有利といったケースです。
 
-This may be brought on by a variety of reasons. You may wish (or need) to keep the data local (e.g. compliance or security), or have a custom-trained proprietary model. Or, the economics may be preferable for local inference over commercial inference APIs.
+推論プロバイダーが提供する選択肢と比べるとローカル推論の選択肢は少ないかもしれませんが、それでも十分に幅広いオプションが存在します。公開されているモデルは多数あり、プロセスを容易にするソフトウェア ライブラリも豊富です。一般的なディープラーニング ライブラリである PyTorch や TensorFlow に加え、Hugging Face Transformers、Ollama、ONNX Runtime などのライブラリを利用するとローカル推論がより簡単になります。特に Ollama と ONNX Runtime を使えば、GPU / TPU などのハードウェア アクセラレーションがなくても実用的な速度で動作します。
 
-While there are arguably fewer options for local inference than those offered by inference providers, the range of choices is still quite wide. There are huge number of publicly available models as well as software libraries to make the process easier. As well as general deep learning libraries such as PyTorch or TensorFlow, libraries such as Hugging Face Transformers, Ollama and ONNX Runtime make it easier to perform local inference. In the case of Ollama and ONNX Runtime, at reasonable speeds without any hardware (GPU / TPU) acceleration.
-
-Let’s take a look at examples of performing inference through Ollama.
+それでは、Ollama を用いて推論を実行する例を見ていきましょう。
 
 :::info Model licenses
 
-Just like any other product, AI models often come with a particular license that details what you can and cannot do.
+他の製品と同様に、AI モデルには使用条件を定めたライセンスが付いていることが一般的です。
 
-When it comes to publicly available models, keep in mind that not all of them allow commercial usage. Consult each model’s license to evaluate for yourself whether it is suitable for your use case.
+公開モデルであっても、商用利用が許可されていないものもあります。用途に適しているかどうかを判断するため、必ず各モデルのライセンスを確認してください。
 
 :::
 
-### <i class="fa-solid fa-chalkboard"></i> Preparation
+### <i class="fa-solid fa-chalkboard"></i> 準備
 
-For this section, we will use Ollama.
-[Ollama](https://ollama.com/) is a an open-source framework for running and deploying AI models locally. It provides an easy way to download, set up, and interact with a variety of open-source models like Llama, Mistral, and Snowflake embedding models. Ollama offers both a command-line interface and a REST API, as well as programming language-specific SDKs.
+このセクションでは Ollama を使用します。  
+[Ollama](https://ollama.com/) は、AI モデルをローカルで実行・デプロイするためのオープンソース フレームワークです。Llama、Mistral、Snowflake の埋め込みモデルなど、さまざまなオープンソース モデルを簡単にダウンロード、セットアップ、対話できます。Ollama にはコマンドライン インターフェースと REST API、さらに複数のプログラミング言語向け SDK が用意されています。
 
 :::info System requirements
 
-We will be performing local inference in this section. Even though we will use relatively small models, these AI models require somewhat significant system resources. We recommend using a modern computer, with at least 16 GB of RAM.
+このセクションではローカル推論を実行します。ここで使用するモデルは比較的小規模ですが、それでも AI モデルにはある程度のシステム リソースが必要です。少なくとも 16 GB の RAM を搭載した最新のコンピューターを推奨します。
 
-A GPU is not required.
+GPU は必須ではありません。
 
 :::
 
-To use Ollama, go to the site and follow the download and installation instructions.
+Ollama を使用するには、公式サイトにアクセスしてダウンロードとインストール手順に従ってください。
 
-Then, pull the required models. We will use the 1 billion parameter Gemma3 generative model, and the 110 million parameter Snowflake Arctic embedding model.
+続いて必要なモデルをプルします。ここでは 10 億パラメータの Gemma3 生成モデルと、1 億 1,000 万パラメータの Snowflake Arctic 埋め込みモデルを使用します。
 
-Once you have Ollama installed, pull the models with:
+Ollama をインストールしたら、次のコマンドでモデルをプルします。
 
 ```bash
 ollama pull gemma3:1b
 ollama pull snowflake-arctic-embed:110m
 ```
 
-Now, check that the models are loaded by running:
+次に、モデルがロードされているかを確認するために以下を実行します。
 
 ```bash
 ollama list
 ```
 
-The resulting output should include the `gemma3:1b` and `snowflake-arctic-embed:110m` models.
+出力結果に `gemma3:1b` と `snowflake-arctic-embed:110m` が含まれていれば成功です。
 
-Install the Ollama Python library with your preferred environment with your preferred package manager. For example:
+お好みの環境で、任意のパッケージ マネージャーを使って Ollama の Python ライブラリをインストールします。例:
 
 ```bash
 pip install ollama
 ```
 
-### <i class="fa-solid fa-code"></i> Embedding model usage
+### <i class="fa-solid fa-code"></i> 埋め込みモデルの使用
 
-The following snippet will convert a series of text snippets (`source_texts`) into embeddings:
+次のスニペットは、一連のテキスト (`source_texts`) を埋め込みに変換します。
 
 ```python
 import ollama
@@ -351,7 +352,7 @@ for e in response.embeddings:
     source_embeddings.append(e)     # Save the embedding for later use
 ```
 
-This should output something like this (note the exact numbers may vary):
+出力は次のようになります（数値は環境によって異なります）。
 
 ```
 768
@@ -362,9 +363,9 @@ This should output something like this (note the exact numbers may vary):
 [-0.04942698, 0.05466185, -0.007884168, -0.00252788, -0.0025294009]
 ```
 
-Printing for each vector its length (dimensionality) and the first few dimensions. (Note the number of dimensions here are different to the Cohere example, as the two models vary in their *dimensionality*.)
+各ベクトルについて、その長さ（次元数）と先頭数次元を表示しています。（ここでの次元数は Cohere の例とは異なります。モデルごとに *次元数* が異なるためです。）
 
-Let’s follow the same steps. First, we find the piece of text that best matches a query (let’s say: `intergalactic voyage`), we would first embed the query text:
+同じステップを踏んでみましょう。まずクエリ（ここでは `intergalactic voyage`）に最もよく合致するテキストを見つけるため、クエリ テキストを埋め込みます。
 
 ```python
 # Get the query embedding:
@@ -378,16 +379,16 @@ print(len(query_embedding))
 print(query_embedding[:5])
 ```
 
-Producing a result such as:
+結果例:
 
 ```
 768
 [-0.043455746, 0.05260946, 0.025877617, -0.017234074, 0.027434561]
 ```
 
-Again, here our query vector is the same dimensionality as the document vector, and that each dimension has a similar format.
+ここでも、クエリ ベクトルとドキュメント ベクトルは同じ次元数で、各次元の形式も同様です。
 
-To perform a vector search:
+ベクトル検索を実行するには以下のようにします。
 
 ```python
 # Find the most similar source text to the query:
@@ -406,18 +407,18 @@ print(f"The most similar text to '{query_text}' is:")
 print(most_similar_text)
 ```
 
-Note the snippet to compare embeddings is identical to that used in the Cohere example. This should produce the output:
+埋め込みを比較するスニペットは Cohere の例とまったく同じです。実行結果は次のようになります。
 
 ```
 The most similar text to 'Intergalactic voyage' is:
 Space, the final frontier.
 ```
 
-Happily for us, the Snowflake model also identified the same space-related passage as the closest one out of the candidates.
+Snowflake モデルでも、候補の中で宇宙関連の文章が最も近いと判定されました。
 
-### <i class="fa-solid fa-code"></i> Generative model usage
+### <i class="fa-solid fa-code"></i> 生成モデルの使用
 
-Now, let’s move to try using a large language model with Ollama, using the `gemma3:1b` model. We will once again ask to explain how a large language model works:
+次に、`gemma3:1b` モデルを使って Ollama で大規模言語モデルを試してみましょう。再び「大規模言語モデルはどのように機能するか」を説明させます。
 
 ```python
 from ollama import chat
@@ -435,13 +436,13 @@ response: ChatResponse = chat(model='gemma3:1b', messages=messages)
 print(response.message.content)
 ```
 
-The response may look something like this (note the exact output may vary):
+応答は次のようになる場合があります（出力は環境により異なります）。
 
 ```
 Language models, like me, are trained on massive amounts of text data to predict the next word in a sequence, essentially learning patterns and relationships within language to generate text that seems coherent and relevant.
 ```
 
-As before, we can perform a multi-turn conversation:
+前回と同様に、マルチターンの会話を行うことも可能です。
 
 ```python
 from ollama import chat
@@ -479,7 +480,7 @@ response: ChatResponse = chat(model='gemma3:1b', messages=messages)
 print(response.message.content)
 ```
 
-The response (for me) looked like this:
+私の場合の応答は次のようでした。
 
 ```
 Words flow, patterns bloom,
@@ -487,13 +488,13 @@ Digital mind learns to speak,
 Meaning takes new form.
 ```
 
-Although the specific response and syntax were different, the general workflow and principles were the same between using an inference provider and a local model.
+具体的な応答内容やシンタックスは異なるものの、推論プロバイダーとローカルモデルの間でワークフローと基本原則は同じでした。
 
-So the question is - how do you go about making these choices?
+では、どのようにしてこれらの選択を行えばよいのでしょうか？
 
-As alluded to earlier, this is an important, but huge topic, which we will tackle later. But we will tackle some of the factors in the next section to get you started. We’ll look at how to broadly choose between an inference provider and a local model, as well as how to read model cards.
+先に触れたように、これは重要かつ広範なテーマであり、後ほど詳しく扱います。次のセクションでは、その第一歩として推論プロバイダーとローカルモデルのどちらを選ぶか、そしてモデルカードを読む際のポイントを取り上げます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

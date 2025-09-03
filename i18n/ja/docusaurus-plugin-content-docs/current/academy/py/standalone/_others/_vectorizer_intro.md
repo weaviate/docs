@@ -1,39 +1,38 @@
 ---
-title: Introduction to vectorizers
+title: ベクトライザーの概要
 sidebar_position: 40
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> Background (Why this module?)
+## <i class="fa-solid fa-square-chevron-right"></i> 背景（モジュールの目的）
 
-This unit aims to provide you with tools to help you make good vectorizer selections.
+このユニットでは、適切なベクトライザーを選択するためのツールを提供します。
 
-In the earlier unit on vector search essentials [INSERT LINK HERE], you learned that vector databases can store each object with an associated vector.
-But choosing a vectorizer model can be a daunting task for anyone, including for data scientists. Here are some reasons why:
+ベクトル検索の基本 [INSERT LINK HERE] では、ベクトルデータベースが各オブジェクトを関連するベクトルとともに保存できることを学びました。しかし、ベクトライザーモデルの選択は、データサイエンティストを含む誰にとっても難しい作業になり得ます。その理由は以下のとおりです。
 
-### Too many models
+### モデルの多さ
 
-One problem is that there are just so many models available.
+問題の一つは、利用可能なモデルが非常に多いことです。
 
-To give you an idea, the Hugging Face Hub contains over 60,000 models (as of January 2023)!
+参考までに、Hugging Face Hub には 60,000 以上のモデルが登録されています（2023 年 1 月時点）。
 
 ![placeholder image for confusion](https://images.unsplash.com/photo-1499334758287-dc8133b315e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80)
 
-### Variable performance
+### 性能のばらつき
 
-Another problem is that there is no "best" model for everything.
+もう一つの問題は、「万能」なモデルが存在しないことです。
 
-Each model can only vectorize certain types of asset(s) such as text, image or audio, and even within the same asset type, it is common for a model to perform better at certain tasks than others.
+各モデルはテキスト・画像・音声など特定のアセットをベクトル化できますが、同じアセットタイプ内でも得意とするタスクが異なるのが一般的です。
 
-### Rate of progress
+### 進歩の速度
 
-Lastly, new models are being developed and released every day. Such is the rate of development in language models that what was state-of-the-art a year ago, or even a month ago, may be considered "old news" in some circles.
+さらに、新しいモデルが毎日のように開発・公開されています。言語モデルの世界では、1 年前や 1 か月前に最先端だったものが、すでに「旧聞」扱いされることも珍しくありません。
 
-All of this can be a recipe for decision paralysis.
+これらが重なることで、意思決定が難しくなります。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Don't panic!
+## <i class="fa-solid fa-square-chevron-right"></i> 心配無用
 
-The good news, however, is that you do not need to select the "perfect model" for your application to work well.
+朗報として、アプリケーションをうまく機能させるために「完璧なモデル」を選ぶ必要はありません。
 
-Vectorizer models have progressed to a point where many models perform admirably well in a variety of tasks.
+ベクトライザーモデルは進化を遂げており、多くのモデルがさまざまなタスクで優れた性能を発揮します。
 
-In the next section, we'll learn about commonly used types of vectorizer models available
+次のセクションでは、一般的に使用されるベクトライザーモデルの種類について学びます。

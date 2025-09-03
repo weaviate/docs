@@ -1,6 +1,6 @@
 ---
-title: Create a collection
-description: Creating an Object Collection in Custom Vectors
+title: コレクションの作成
+description: カスタム ベクトルでのオブジェクト コレクションの作成
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/102_collection.py';
 
-Weaviate stores data in "collections". A collection is a set of objects that share the same data structure. In our movie database, we might have a collection of movies, a collection of actors, and a collection of reviews.
+ Weaviate はデータを「コレクション」に保存します。コレクションとは、同じデータ構造を共有するオブジェクトの集合です。映画データベースでは、映画のコレクション、俳優のコレクション、レビューのコレクションを持つことができます。
 
-Here we will create a collection of movies.
+ここでは映画のコレクションを作成します。
 
-## <i class="fa-solid fa-code"></i> Code
+## <i class="fa-solid fa-code"></i> コード
 
-This example creates a collection for the movie data:
+この例では、映画データ用のコレクションを作成します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -23,23 +23,23 @@ This example creates a collection for the movie data:
   language="py"
 />
 
-Each collection definition must have a name. Then, you can define additional parameters like we've done in this example.
+各コレクション定義には名前が必要です。そのうえで、この例のように追加パラメーターを定義できます。
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-### <i class="fa-solid fa-chalkboard"></i> Properties
+### <i class="fa-solid fa-chalkboard"></i> プロパティ
 
-Properties are the object attributes that you want to store in the collection. Each property has a name and a data type.
+プロパティは、コレクションに保存したいオブジェクト属性です。各プロパティには名前とデータ型があります。
 
-In our movie database, we have properties like `title`, `release_date` and `genre_ids`, with data types like `TEXT` (string), `DATE` (date), or `INT` (integer). It's also possible to have arrays of integers, like we have with `genre_ids`.
+映画データベースでは、`title`、`release_date`、`genre_ids` などのプロパティがあり、データ型として `TEXT` (文字列)、`DATE` (日付)、`INT` (整数) などを使用します。`genre_ids` のように整数の配列を持つことも可能です。
 
-#### Auto-schema
+#### 自動スキーマ
 
-Weaviate can automatically [infer the schema](/weaviate/config-refs/collections.mdx#auto-schema) from the data. However, it's a good practice to define the properties explicitly, for better control and to avoid surprises.
+ Weaviate はデータから自動的に[スキーマを推論する](/weaviate/config-refs/collections.mdx#auto-schema)ことができます。ただし、より細かく制御し予期しない動作を防ぐために、プロパティを明示的に定義することを推奨します。
 
-### <i class="fa-solid fa-chalkboard"></i> Vectorizer configuration
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザー設定
 
-In this code example, we specify the vectorizer as `none`, as we will specify our own vectors.
+このコード例では、独自のベクトルを指定するため、ベクトライザーを `none` としています。
 
 <FilteredTextBlock
   text={PyCode}
@@ -48,11 +48,11 @@ In this code example, we specify the vectorizer as `none`, as we will specify ou
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Generative configuration
+### <i class="fa-solid fa-chalkboard"></i> 生成設定
 
-If you wish to use your collection with a generative model (e.g. a large language model), you must specify the generative module.
+コレクションを生成モデル (たとえば大規模言語モデル) と一緒に使用する場合は、生成モジュールを指定する必要があります。
 
-In this code example, we specify the `cohere` module (`generative-cohere` is the full name) with default options.
+このコード例では、デフォルトオプションで `cohere` モジュール (正式名称は `generative-cohere`) を指定しています。
 
 <FilteredTextBlock
   text={PyCode}
@@ -65,11 +65,11 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-### <i class="fa-solid fa-code"></i> Python classes
+### <i class="fa-solid fa-code"></i> Python クラス
 
-The code example makes use of classes such as `Property`, `DataType` and `Configure`. They are defined in the `weaviate.classes.config` submodule and are used to define the collection.
+コード例では `Property`、`DataType`、`Configure` などのクラスを使用しています。これらは `weaviate.classes.config` サブモジュールで定義されており、コレクションを定義するために利用されます。
 
-For convenience, we import the submodule as `wc` and use classes from it.
+利便性のため、サブモジュールを `wc` としてインポートし、そのクラスを使用しています。
 
 <FilteredTextBlock
   text={PyCode}
@@ -78,7 +78,7 @@ For convenience, we import the submodule as `wc` and use classes from it.
   language="py"
 />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,33 +1,31 @@
 ---
-title: Using Machine Learning Models in Weaviate
+title: Weaviate における機械学習モデルの利用
 sidebar_position: 10
 ---
 
-# Using Machine Learning Models in Weaviate
+# Weaviate における機械学習モデルの利用
 
-## <i class="fa-solid fa-chalkboard-user"></i> Overview
+## <i class="fa-solid fa-chalkboard-user"></i> 概要
 
-Weaviate leverages two fundamental types of machine learning models to power AI-native applications:
+Weaviate は、AI ネイティブアプリケーションを支えるために 2 種類の基本的な機械学習モデルを活用します。
 
-1. **Embedding Models** - Transform data into high-dimensional vector representations
-2. **Generative Models** - Create new content based on input prompts and context
+1. **Embedding Models** - データを高次元の ベクトル 表現へ変換します  
+2. **Generative Models** - 入力プロンプトとコンテキストに基づき新しいコンテンツを生成します  
 
-This guide will help you understand how these models can be set up in Weaviate, briefly covering the functioning of these models on a high level as well. 
+本ガイドでは、これらのモデルを Weaviate で設定・利用する方法と、その高レベルでの動作を簡潔にご紹介します。  
 
-We will look at how to use the search enabled by the two types of embedding models supported in Weaviate; **Text embeddings** and **Multimodal embeddings**. 
+Weaviate がサポートする 2 種類の埋め込みモデル、**テキスト埋め込み** と **マルチモーダル埋め込み** によって実現される検索の使い方を見ていきます。  
 
-This guide will also explore practical applications ranging from semantic search to agentic RAG applications.
+また、セマンティック検索からエージェント型 RAG アプリケーションまで、実践的なユースケースも取り上げます。
 
+### <i class="fa-solid fa-clipboard-list-check"></i> 前提条件
 
+- `weaviate-client` がインストールされた Node.js 環境  
+- Weaviate の検索機能に関する基本的な理解  
+- 中級レベルの JavaScript プログラミングスキル  
+- [クイックスタート](/weaviate/quickstart) を完了していること  
 
-### <i class="fa-solid fa-clipboard-list-check"></i> Prerequisites
-
-- A Node.js environment with `weaviate-client` installed
-- Basic understanding of Weaviate's search functionality
-- Intermediate JavaScript programming skills
-- You must have completed the [quickstart](/weaviate/quickstart)
-
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
 
@@ -37,7 +35,7 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 
 <LearningGoals unitName="using_ml_models"/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

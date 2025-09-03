@@ -1,5 +1,5 @@
 ---
-title: Use cases
+title: ユースケース
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,23 +7,23 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/104_usecase.py';
 
-RAG, or retrieval augmented generation, is a powerful feature that combines the strengths of both vector search and language generation. Named vectors can be used in RAG queries to improve workflow and results.
+ RAG （ Retrieval augmented generation ）は、 ベクトル 検索と自然言語生成の強みを組み合わせた強力な機能です。 名前付き ベクトル を RAG クエリで使用すると、ワークフローと結果をさらに向上させることができます。
 
-In this section, we'll explore a few examples of how named vectors allow different users to search and generate results based on their specific needs, using the same collection.
+このセクションでは、同じコレクションを使用しながら、 名前付き ベクトル によって異なるユーザーが自身のニーズに合わせて検索と生成を行ういくつかの例を見ていきます。
 
-## <i class="fa-solid fa-chalkboard"></i> Design agency: evaluating a poster design
+## <i class="fa-solid fa-chalkboard"></i> デザインエージェンシー：ポスターデザインの評価
 
-Imagine a design agency (*Aesthetico*) that is contracted to work on the poster design for a new movie.
+新作映画のポスターデザインを委託されたデザインエージェンシー（ *Aesthetico* ）を想像してください。
 
-Aesthetico's designers have arrived at [this film poster design](https://upload.wikimedia.org/wikipedia/commons/7/78/1927_Boris_Bilinski_%281900-1948%29_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg). They would now like to see how their poster compares with other movie posters in existence, and what types of movies those posters are for.
+Aesthetico のデザイナーは [この映画ポスター](https://upload.wikimedia.org/wikipedia/commons/7/78/1927_Boris_Bilinski_%281900-1948%29_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg) を作成しました。彼らは、自分たちのポスターが既存の他の映画ポスターとどのように比較されるのか、またそれらのポスターがどのジャンルの映画に使われているのかを知りたいと考えています。
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/1927_Boris_Bilinski_%281900-1948%29_Plakat_f%C3%BCr_den_Film_Metropolis%2C_Staatliche_Museen_zu_Berlin.jpg" alt="Metropolis poster" width="75%"/>
 
-Luckily for them, the `MovieNVDemo` collection has `poster_title` named vectors which is primarily based on the poster design. So Aesthetico's designers can search against the `poster_title` named vector and find movies that are similar to their poster design. And, they can then perform RAG to summarize the movies that are found.
+幸運なことに、`MovieNVDemo` コレクションにはポスターデザインに基づく `poster_title` 名前付き ベクトル が用意されています。そのため Aesthetico のデザイナーは `poster_title` 名前付き ベクトル に対して検索を行い、自分たちのポスターに似た映画を探し出せます。そのうえで RAG を実行し、見つかった映画の概要を要約できます。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This query will find similar movies to the input image, and then provide insights using RAG.
+次のクエリは、入力画像に似た映画を見つけ、その結果に対して RAG を使って洞察を提供します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -32,16 +32,16 @@ This query will find similar movies to the input image, and then provide insight
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Output
+### <i class="fa-solid fa-chalkboard"></i> 出力
 
-This is an example output of the RAG query:
+以下は RAG クエリの例示的な出力です。
 
-> These movies can be categorized as action, science fiction, thriller, and drama. The audience for these movies would likely be fans of action-packed films with elements of suspense, mystery, and fantastical creatures or scenarios. These movies may appeal to a wide range of viewers, including fans of superhero movies, science fiction enthusiasts, and those who enjoy intense and thrilling storylines.
+> これらの映画はアクション、 サイエンスフィクション、 スリラー、 ドラマに分類できます。観客は、サスペンス、ミステリー、そして幻想的な生物やシナリオが盛り込まれたアクション満載の作品を好む層が中心でしょう。これらの映画は、スーパーヒーロー映画のファン、 サイエンスフィクション 愛好家、緊張感あふれるストーリーラインを楽しむ視聴者など、幅広い層に訴求する可能性があります。
 
-The designers at Aesthetico could use this to understand the types of movies that are similar to their poster design, and further inform their own design choices.
+Aesthetico のデザイナーはこの情報を活用し、自身のポスターデザインに似た映画のタイプを理解してデザインの方向性をさらに洗練できます。
 
 <details>
-  <summary>Search results</summary>
+  <summary>検索結果</summary>
 
 Predator 2<br/>
 Inception<br/>
@@ -56,23 +56,23 @@ Godzilla<br/>
 
 </details>
 
-## <i class="fa-solid fa-square-chevron-right"></i> Film writers: evaluating ideas
+## <i class="fa-solid fa-square-chevron-right"></i> 映画脚本家：アイデアの評価
 
-Now, in another project, a set of writers at *ScriptManiacs* are working on a movie script for a science fiction film. They are working a few ideas for the movie title, and they want to see what kinds of imagery and themes are associated with each title.
+別のプロジェクトでは、*ScriptManiacs* の脚本家チームが サイエンスフィクション 映画の脚本に取り組んでいます。彼らはいくつかの映画タイトル案を検討しており、それぞれのタイトルにどのようなイメージやテーマが結び付くかを知りたいと考えています。
 
-They could also use the same collection to do what they want to do. In fact, they could run multiple queries against the same collection, each with a different `target_vector` parameter.
+同じコレクションを使って、彼らの目的も達成できます。実際には、同一のコレクションに対して、`target_vector` パラメーターを変えながら複数回クエリを実行できます。
 
-The ScriptManiacs writers can:
-- Search against the `title` named vector to find movies with *similar titles*;
-- Search against the `overview` named vector to find movies whose *plots are similar* to their title idea; and
+ScriptManiacs の脚本家は次のような検索が可能です。  
+- `title` 名前付き ベクトル で検索し、*似たタイトル* の映画を見つける  
+- `overview` 名前付き ベクトル で検索し、*プロットが似ている* 映画を見つける  
 
-Let's see how they could do it for a title - "Chrono Tides: The Anomaly Rift".
+では、タイトル案「Chrono Tides: The Anomaly Rift」を例に見てみましょう。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "MovieNVDemo" based on their similarity to "Chrono Tides: The Anomaly Rift", then instructs the large language model to find commonalities between them.
+次の例では、「Chrono Tides: The Anomaly Rift」との類似度に基づいて "MovieNVDemo" のエントリを検索し、さらに大規模言語モデルに共通点を抽出させています。
 
-Note the `for tgt_vector` loop, which allows the writers to run the same query against different named vectors.
+`for tgt_vector` ループに注目してください。これにより、同じクエリを異なる 名前付き ベクトル に対して実行できます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -81,24 +81,24 @@ Note the `for tgt_vector` loop, which allows the writers to run the same query a
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Output
+### <i class="fa-solid fa-chalkboard"></i> 出力
 
-The two queries produced quite different outputs to each other. When we search for titles most similar to "Chrono Tides: The Anomaly Rift", the results skew towards action/adventure films, while searching for an overview most similar to "Chrono Tides: The Anomaly Rift" include science fiction and adventure films.
+２つのクエリはまったく異なる出力を示しました。タイトル「Chrono Tides: The Anomaly Rift」に最も近いタイトルを検索すると、結果はアクション／アドベンチャー映画に偏りました。一方、そのタイトルと最も類似した概要を持つ映画を検索すると、 サイエンスフィクション とアドベンチャー映画が含まれました。
 
-Given the different results, the writers at ScriptManiacs could use this to understand the different themes and genres that are associated with their title idea, and further inform their own writing choices.
+このようにして ScriptManiacs の脚本家は、タイトル案に関連する多様なテーマやジャンルを理解し、執筆に活かすことができます。
 
-For example, if "Chrono Tides: The Anomaly Rift" is intended to be a science fiction film with an action/adventure skew, the title may be a good one. On the other hand, if the writers are looking for a more dramatic or romantic theme, they may need to reconsider the title.
+たとえば、「Chrono Tides: The Anomaly Rift」をアクション／アドベンチャー寄りの サイエンスフィクション として制作するのであれば、このタイトルは適していると言えるでしょう。一方、よりドラマチックまたはロマンチックなテーマを求めるのであれば、タイトルを再考する必要があるかもしれません。
 
-The results of the overview search include multiple science-fiction and adventure films, indicating that the writes are on the right path of naming a science fiction movie as such.
+概要検索の結果には複数の サイエンスフィクション とアドベンチャー映画が含まれており、脚本家たちが サイエンスフィクション 作品の命名として正しい方向に進んでいることを示しています。
 
-#### Similar titles
+#### 類似タイトル
 
-According to our RAG query, movies with similar titles to "Chrono Tides: The Anomaly Rift" have the following commonalities:
+RAG クエリによると、「Chrono Tides: The Anomaly Rift」と類似タイトルを持つ映画には次の共通点があります。
 
-> These movies are **action/adventure films** that are likely aimed at a wide audience, including fans of fantasy, adventure, and romance genres. The Pirates of the Caribbean and Lara Croft movies are targeted towards fans of swashbuckling adventures and treasure hunting, while The Croods appeals to families and fans of animated films. The Twilight Saga targets fans of supernatural romance, and Meg 2: The Trench is aimed at fans of underwater thrillers and action movies. Overall, these movies cater to audiences who enjoy high-stakes adventures, fantastical elements, and dramatic storylines.
+> これらの映画は **アクション／アドベンチャー作品** で、ファンタジー、アドベンチャー、ロマンスを好む幅広い観客を対象としています。『Pirates of the Caribbean』や『Lara Croft』シリーズは海賊の冒険や財宝探索を、『The Croods』は家族向けアニメーションを、『The Twilight Saga』は超自然的ロマンスを、『Meg 2: The Trench』は水中スリラーとアクションを提供しています。総じて、これらの映画は高い緊張感、幻想的要素、ドラマチックなストーリーラインを楽しむ観客に訴求します。
 
 <details>
-  <summary>Search results</summary>
+  <summary>検索結果</summary>
 
 Pirates of the Caribbean: On Stranger Tides<br/>
 Lara Croft: Tomb Raider<br/>
@@ -108,14 +108,14 @@ Meg 2: The Trench<br/>
 
 </details>
 
-#### Similar overviews
+#### 類似概要
 
-While movies with overviews that are most similar to the search "Chrono Tides: The Anomaly Rift" have the following commonalities:
+「Chrono Tides: The Anomaly Rift」と最も類似した概要を持つ映画には次の共通点があります。
 
-> These movies can be categorized as **science fiction and adventure films**. They are aimed at audiences who enjoy stories about space exploration, ancient civilizations, dinosaurs, natural disasters, and mythical adventures. The target audience may include fans of action-packed and visually stunning movies with elements of fantasy and suspense.
+> これらの映画は ** サイエンスフィクション およびアドベンチャー作品** に分類できます。宇宙探査、古代文明、恐竜、自然災害、神話的冒険をテーマとしており、アクションとビジュアルの豊かな映画を好む観客に向けられています。ファンタジー要素とサスペンスを兼ね備えた作品を楽しむ層に最適です。
 
 <details>
-  <summary>Search results</summary>
+  <summary>検索結果</summary>
 
 Stargate<br/>
 Interstellar<br/>
@@ -124,8 +124,7 @@ Jurassic Park III<br/>
 Moana<br/>
 
 </details>
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,6 +1,6 @@
 ---
-title: "101M Work with: Multimodal data"
-description: Learn to handle multimodal data in Weaviate for diverse data integrations.
+title: "101M マルチモーダル データの取り扱い"
+description: Weaviate で多様なデータ統合のためにマルチモーダル データを扱う方法を学びます。
 sidebar_position: 102
 ---
 
@@ -8,17 +8,16 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 import CourseUnits from '/src/components/Academy/courseUnits.jsx';
 import { courseData } from '/src/components/Academy/courseData.js'
 
-## <i class="fa-solid fa-chalkboard-user"></i> Course overview
+## <i class="fa-solid fa-chalkboard-user"></i> コース概要
 
-In this project-based course, you will learn how to work with multimodal data using Weaviate and a movie dataset.
+このプロジェクトベースのコースでは、 Weaviate と映画データセットを用いてマルチモーダル データを扱う方法を学びます。
 
-You will get hands-on experience on how to store and index text and image data to be searchable together by meaning, using Weaviate's vectorization capabilities. You will learn how to search through that data using multimodal search methods, as well as filters. You will also learn how to use Weaviate's retrieval augmented generation (RAG) capabilities to generate outputs based on the retrieved objects.
+Weaviate のベクトライザー機能を使用し、テキストと画像データを意味で一緒に検索できるように保存・インデックスする手順を実践的に体験します。さらに、マルチモーダル検索手法やフィルターを使ってそのデータを検索する方法も学びます。また、 Weaviate の検索拡張生成 ( RAG ) 機能を利用し、取得したオブジェクトを基に出力を生成する方法についても学習します。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 <LearningGoals courseName="starter_multimodal_typescript"/>
 
-## <i class="fa-solid fa-book-open-reader"></i> Units
+## <i class="fa-solid fa-book-open-reader"></i> ユニット
 
 <CourseUnits courseData={courseData} courseName="starter_multimodal_typescript" />
-

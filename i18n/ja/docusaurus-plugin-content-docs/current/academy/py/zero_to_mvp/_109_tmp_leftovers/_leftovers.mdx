@@ -1,25 +1,25 @@
 ## 102
 
 ---
-title: Introduction to Queries
+title: クエリの概要
 sidebar_position: 10
 ---
 
 import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Running Weaviate queries
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate クエリの実行
 
 <img src={imageUrl} alt="Image alt" width="75%"/>
 
-In this unit, we will focus on various strategies to query Weaviate to retrieve information.
+このユニットでは、情報を取得するために Weaviate でクエリを実行するさまざまな方法に焦点を当てます。
 
-### <i class="fa-solid fa-code"></i> With the Python client
+### <i class="fa-solid fa-code"></i> Python クライアントを使用する
 
-Although Weaviate uses GraphQL under the hood for queries, you will not need to directly enter GraphQL in this unit. Instead, we will be using the Python client to perform and learn about queries.
+Weaviate は内部的にはクエリに GraphQL を使用しますが、このユニットで直接 GraphQL を入力する必要はありません。代わりに、Python クライアントを使ってクエリを実行し、その仕組みを学びます。
 
-But note that we also show raw GraphQL queries as well as the Python code in this unit to help learn the underlying query structures.
+ただし、基礎となるクエリ構造を理解しやすくするため、このユニットでは Python コードとともに生の GraphQL クエリも示します。
 
-So please be aware that when we show a query such as this:
+したがって、次のようなクエリを示したときには、
 
 ```python
 response = client.query.get(
@@ -32,7 +32,7 @@ response = client.query.get(
 print(json.dumps(response, indent=2))
 ```
 
-This is what happens under the hood:
+内部的にはこのように動作しています。
 
 ```graphql
 {
@@ -50,7 +50,7 @@ This is what happens under the hood:
 }
 ```
 
-We will show them in separate tabs going forward where applicable, like so:
+今後は、該当する場合は次のようにタブで分けて表示します。
 
 <!-- Delete these imports if already imported in the file -->
 import Tabs from '@theme/Tabs';
@@ -73,11 +73,11 @@ This tab will show GraphQL code.
 </TabItem>
 </Tabs>
 
-### <i class="fa-solid fa-code"></i> Raw GraphQL queries
+### <i class="fa-solid fa-code"></i> 生の GraphQL クエリ
 
-The Weaviate Python client can run raw GraphQL queries. You can also use the [Weaviate Query app](/cloud/tools/query-tool).
+Weaviate の Python クライアントは、生の GraphQL クエリを実行できます。また、[Weaviate Query app](/cloud/tools/query-tool) を使用することも可能です。
 
-In Python, you can run a GraphQL query directly with:
+Python では、次のようにして GraphQL クエリを直接実行できます。
 
 ```python
 query = '''
@@ -100,13 +100,13 @@ response = client.query.raw(query)
 print(json.dumps(response, indent=2))
 ```
 
-Or, the Weaviate Console provides a graphical interface that you can connect to your Weaviate instance and run queries.
+あるいは、Weaviate Console というグラフィカルインターフェースを使用して Weaviate インスタンスに接続し、クエリを実行することもできます。
 
 <!-- TODO - show specific steps to do this when WCD launches -->
 
-### <i class="fa-solid fa-chalkboard"></i> GraphQL syntax
+### <i class="fa-solid fa-chalkboard"></i> GraphQL 構文
 
-You will see terms such as `Function`, `Class`, `properties` and `Argument` in this units. They come from Weaviate's GraphQL syntax, which takes this form:
+このユニットでは `Function`、`Class`、`properties`、`Argument` などの用語が登場します。これらは Weaviate の GraphQL 構文に由来し、次の形式を取ります。
 
 ```graphql
 {
@@ -118,31 +118,31 @@ You will see terms such as `Function`, `Class`, `properties` and `Argument` in t
 }
 ```
 
-Where:
-- `<Function>` is the action,
-- `<Class>` is the target data collection,
-- `<Arguments>` specifies any options, and
-- `<properties>` describes the data to be retrieved.
+ここで  
+- `<Function>` はアクション、  
+- `<Class>` は対象データコレクション、  
+- `<Arguments>` はオプションを指定し、  
+- `<properties>` は取得するデータを表します。
 
-So keep these terms in mind.
+これらの用語を覚えておいてください。
 
 <Quiz questions={queryMethods} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Query functions
+## <i class="fa-solid fa-square-chevron-right"></i> クエリ関数
 
 <img src={imageUrl} alt="Image alt" width="75%"/>
 
-The primary query functions in Weaviate are `Get`, `Aggregate` or `Explore`.
+Weaviate の主なクエリ関数は `Get`、`Aggregate`、`Explore` です。
 
-These three functions are used to `Get` objects, `Aggregate` information and `Explore` vector spaces.
+これら 3 つの関数は、それぞれオブジェクトを `Get` し、情報を `Aggregate` し、ベクトル空間を `Explore` します。
 
-Let's review each one briefly, before we learn about them in detail in the following sections.
+以下では詳細を学ぶ前に、それぞれを簡単に確認しましょう。
 
-### <i class="fa-solid fa-chalkboard"></i> `Get` objects
+### <i class="fa-solid fa-chalkboard"></i> `Get` オブジェクト
 
-The `Get` function is used in Weaviate to retrieve data objects. For many use cases, `Get` will be the most common type of query function used in Weaviate.
+`Get` 関数は Weaviate でデータオブジェクトを取得するために使用します。多くのユースケースでは、`Get` が最も一般的に利用されるクエリ関数となります。
 
-Take a look at the following:
+次をご覧ください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -172,9 +172,9 @@ print(json.dumps(response, indent=2))
 </TabItem>
 </Tabs>
 
-This is a `Get` query to `JeopardyQuestion` class, with a limit of maximum `1` returned object, with the object's `["question", "answer"]` properties.
+これは `JeopardyQuestion` クラスに対する `Get` クエリで、最大 `1` 件のオブジェクトを返し、そのオブジェクトの `["question", "answer"]` プロパティを取得します。
 
-It should produce a response like the following:
+結果は次のようなレスポンスになります。
 
 ```json
 {
@@ -191,16 +191,16 @@ It should produce a response like the following:
 }
 ```
 
-You can see that the response includes a data object from the `JeopardyQuestion` class, and values of its `question` and `answer` properties.
+レスポンスには `JeopardyQuestion` クラスから取得したデータオブジェクトと、その `question` および `answer` プロパティの値が含まれていることが確認できます。
 
 
 =================
 
-Notice the presence of the `groupBy` argument.
+`groupBy` 引数があることに注目してください。
 
-`groupBy` is an optional argument that can be used to group results of the query. The `Aggregate` function can also return metadata about the results, such as the number of results in each group.
+`groupBy` はクエリ結果をグループ化するための任意引数です。`Aggregate` 関数は、各グループの結果数などのメタデータも返すことができます。
 
-import Tabs from '@theme/Tabs';
+import Tabs from '@theme/Tabs';  
 import TabItem from '@theme/TabItem';
 
 <Tabs groupId="languages">
@@ -242,12 +242,11 @@ response = client.query.aggregate(
 
 </TabItem>
 </Tabs>
+### <i class="fa-solid fa-chalkboard"></i> `Aggregate` 情報
 
-### <i class="fa-solid fa-chalkboard"></i> `Aggregate` information
+`Get` がオブジェクトを返すのに対し、 `Aggregate` は結果セットの要約統計量、つまり集計値を返します。
 
-Whereas `Get` returns objects, `Aggregate` returns summary statistics or aggregates from the result set.
-
-As such you can use `Aggregate` to obtain summary values such as counts, sums, means and so on from groups of objects. Take a look at the following:
+このため、 `Aggregate` を使用すると、オブジェクトのグループから件数、合計、平均などの要約値を取得できます。次の例をご覧ください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -292,9 +291,9 @@ print(json.dumps(response, indent=2))
 </TabItem>
 </Tabs>
 
-The previous query will grab 10 closest objects to the query text in `JeopardyQuestion` class, and return the maximum, minimum and mean `value` as well as the count.
+先ほどのクエリは、 `JeopardyQuestion` クラスからクエリテキストに最も近い 10 件 のオブジェクトを取得し、 `value` の最大値・最小値・平均値と件数を返します。
 
-It should produce a response like the following:
+結果は次のようになります。
 
 ```json
 {
@@ -317,46 +316,46 @@ It should produce a response like the following:
 }
 ```
 
-Notice that even though the query related to a maximum of 10 objects, the result was *one* set of aggregated values.
+最大で 10 件 のオブジェクトを対象にしたクエリであっても、返されるのは 1 つの集計結果セットである点に注目してください。
 
-### <i class="fa-solid fa-chalkboard"></i> `Explore` vector spaces
+### <i class="fa-solid fa-chalkboard"></i> `Explore` ベクトル空間
 
-`Explore` allows you to navigate the entire vector space of objects stored in Weaviate.
+`Explore` を使うと、 Weaviate に保存されているオブジェクトの ベクトル 空間全体を探索できます。
 
-This means that you can use `Explore` to find objects that are similar to a given object or vector, regardless of the class of the object. As such, `Explore` is very useful when you may not be sure of what class to search for.
+つまり、 `Explore` を使用すれば、対象のクラスに関係なく、指定したオブジェクトまたは ベクトル に類似するオブジェクトを検索できます。したがって、検索すべきクラスがはっきりしていない場合に `Explore` は非常に便利です。
 
-In relation to our dataset, a query using the `Explore` function would return a set of objects from both the `JeopardyQuestion` and `Category` classes.
+本データセットに当てはめると、 `Explore` 関数によるクエリは `JeopardyQuestion` クラスと `Category` クラスの両方からオブジェクトを返します。
 
-We will explore the `Explore` function in more detail in a separate, following unit.
+`Explore` 関数については、後続のユニットでさらに詳しく学習します。
 
 <Quiz questions={functionExplanations} />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
 
 <img src={imageUrl} alt="Image alt" width="75%"/>
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> レビュー演習
 
-Can you describe, in your own sentence, XXX?
+あなた自身の言葉で XXX を説明できますか？
 
 :::warning TODO
-Input box for user to put answer in and get back a similarity score & our definition?
+ユーザーが回答を入力し、類似度スコアと私たちの定義を受け取る入力ボックス？
 ??
 :::
 
 
 
-## <i class="fa-solid fa-square-chevron-right"></i> Sub-properties for `Aggregate`
+## <i class="fa-solid fa-square-chevron-right"></i> `Aggregate` のサブプロパティ
 
-As we have seen, the `meta` property is available for all data types, and can be used with the `count` sub-property to return the number of retrieved objects.
+これまでに見たように、すべてのデータ型で `meta` プロパティが使用でき、 `count` サブプロパティと組み合わせて取得したオブジェクト数を返せます。
 
-In addition to this, there are a number of other sub-properties that can be used with `Aggregate` queries. Their availability, however, depend on the data type that is being queried.
+これに加えて、 `Aggregate` クエリで使用できるサブプロパティはいくつもあります。ただし、それらが利用できるかどうかは、集計対象のデータ型によって異なります。
 
-Let's take a look at some of these sub-properties, based on the `Question` class.
+`Question` クラスを例に、これらのサブプロパティの一部を見てみましょう。
 
-### <i class="fa-solid fa-code"></i> Example
+### <i class="fa-solid fa-code"></i> 例
 
-Try the following query:
+次のクエリを試してみてください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -403,12 +402,12 @@ print(json.dumps(response, indent=2))
 </TabItem>
 </Tabs>
 
-Take a note of the requested properties in the GraphQL query, and consider what types of values they might return. How might these properties change according to the nature of the source data?
+GraphQL クエリで要求しているプロパティに注目し、それぞれがどのような値を返すのか考えてみましょう。ソースデータの性質によって、これらのプロパティはどのように変化するでしょうか。
 
-Now, try it out yourself. The query should return something like this:
+では実際に実行してみましょう。クエリは次のような結果を返すはずです。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -446,23 +445,23 @@ Now, try it out yourself. The query should return something like this:
 </details>
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
 
-The sub-properties under `round` in the query requests additional aggregations here, resulting in the top occurring answers being returned as well as their counts.
+このクエリでは、 `round` の下にサブプロパティを指定して追加の集計を行い、最も頻出する回答とその件数を取得しています。
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Available sub-properties
+### <i class="fa-solid fa-chalkboard"></i> 利用可能なサブプロパティ
 
-Sub-properties allow further granular aggregations of data from Weaviate. These properties that can be queried will vary according to the data type that is being aggregated.
+サブプロパティを使用すると、 Weaviate のデータをより細かく集計できます。クエリで指定できるサブプロパティは、集計対象のデータ型によって異なります。
 
-Along with the `string` data type, `text` properties may be queried to retrieve one or more of:
+`string` データ型と同様に、 `text` プロパティでは次のいずれか、または複数を取得できます。
 
 - count
 - type
 - topOccurrences
 
-However, `int` data types, for example, can be aggregated to retrieve:
+一方、たとえば `int` データ型の場合は、次の情報を集計できます。
 
 - count
 - type
@@ -474,13 +473,13 @@ However, `int` data types, for example, can be aggregated to retrieve:
 - sum
 
 :::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out the above query again, with these changes.
-- Can you aggregate the results based on the data from the `answer` property?
-- Try modifying the query to group the results by `round`, and then aggregate top occurrences from `answer`.
+上記のクエリを次のように変更して再度試してみてください。
+- `answer` プロパティのデータを基に集計できますか？
+- 結果を `round` でグループ化し、 `answer` から topOccurrences を集計してみましょう。
 :::
 
 :::info
-Add summary
+サマリーを追加
 :::
 
 import Quiz from '/src/components/Academy/quiz.js'

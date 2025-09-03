@@ -1,51 +1,49 @@
 ---
-title: What is the WANT stack
+title: WANT スタックとは
 sidebar_position: 10
 ---
 
-## <i class="fa-solid fa-square-chevron-right"></i> What is the WANT
+## <i class="fa-solid fa-square-chevron-right"></i> WANT とは
 
-### <i class="fa-solid fa-chalkboard"></i> What is WANT 
+### <i class="fa-solid fa-chalkboard"></i> WANT とは 
 
-Weaviate, AI, Next.js and Typescript.
+ Weaviate、 AI、 Next.js、 TypeScript。
 
-The want stack is collection of technologies that simplify the process of build AI Native Applications.
+ WANT スタックは、 AI ネイティブアプリケーションを構築するプロセスを簡素化するテクノロジーの集合体です。
 
 
 #### Weaviate
 
-Weaviate is a vector database, it gives you these benefits 
-- vector search
-- dynamic generative model selection (you don't get stuck)
+ Weaviate は ベクトル データベースで、次の利点を提供します  
+- ベクトル検索  
+- 動的な生成モデルの選択（行き詰まらない）
 
 #### AI 
 
-- this ties heavily into everything else, AI is at the center of AI native, leveraging the flexibility of weaviate and teh vastness of its integrations, you can bring AI to your application from embeddings, to generative models to rerankers or recommenders. Without any tie in. The goal is to give you the most flexibility without the burden on choosing
+ AI は WANT の中心にあり、 Weaviate の柔軟性と膨大な統合機能を活用して、埋め込みから生成モデル、リランカーやレコメンダーまでアプリケーションに AI を組み込めます。特定の技術に縛られることなく、最大限の柔軟性を提供することが目的です。
 
-#### Next.js (or Nuxt.js)
+#### Next.js （または Nuxt.js）
 
-This brings modern web development, 
+ 最新の Web 開発フレームワークを提供します。
 
+#### TypeScript
 
-#### Typescript
-
-Typescript.. add content
-
+ TypeScript … コンテンツを追加してください。
 
 
-### <i class="fa-solid fa-chalkboard"></i> Building WANT applications
 
-- Resources
-- Starter templates
-- Learning 
+### <i class="fa-solid fa-chalkboard"></i> WANT アプリケーションの構築
 
+- リソース  
+- スターターテンプレート  
+- 学習  
 
 [Embed Youtube Course]
 
-A vector search is also versatile. It can be used to search multiple data modalities (e.g. text, images, audio, etc.), and across multiple languages.
+ベクトル検索は多用途で、複数のデータモダリティ（例: テキスト、画像、音声など）や複数言語を横断した検索にも利用できます。
 
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
 
@@ -55,7 +53,7 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 
 <LearningGoals unitName="which_search"/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

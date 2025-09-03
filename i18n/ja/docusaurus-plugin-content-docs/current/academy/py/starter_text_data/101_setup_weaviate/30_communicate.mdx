@@ -1,6 +1,6 @@
 ---
-title: Communicate with Weaviate
-description: Communication Setup for Text Data in Weaviate
+title: Weaviate との通信
+description: Weaviate におけるテキストデータの通信設定
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,11 +8,11 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/101_connect.py';
 
-Here, we'll perform basic operations to communicate with Weaviate using the Python client library.
+ここでは、Python クライアントライブラリを使用して Weaviate と通信する基本操作を行います。
 
-### <i class="fa-solid fa-code"></i> Check Weaviate status
+### <i class="fa-solid fa-code"></i> Weaviate のステータス確認
 
-You can check whether the Weaviate instance is up using the `is_live` function.
+Weaviateインスタンスが起動しているかどうかは `is_live` 関数で確認できます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -21,9 +21,9 @@ You can check whether the Weaviate instance is up using the `is_live` function.
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Retrieve server meta information
+### <i class="fa-solid fa-code"></i> サーバーメタ情報の取得
 
-You can retrieve meta information about the Weaviate instance using the `meta` function.
+Weaviateインスタンスのメタ情報は `meta` 関数で取得できます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -32,10 +32,10 @@ You can retrieve meta information about the Weaviate instance using the `meta` f
   language="py"
 />
 
-This will print the server meta information to the console. The output will look similar to the following:
+これにより、サーバーのメタ情報がコンソールに出力されます。出力例は次のとおりです。
 
 <details>
-  <summary>Example <code>get_meta</code> output</summary>
+  <summary>例 <code>get_meta</code> 出力</summary>
 
 <FilteredTextBlock
   text={PyCode}
@@ -45,11 +45,11 @@ This will print the server meta information to the console. The output will look
 />
 </details>
 
-### <i class="fa-solid fa-code"></i> Close the connection
+### <i class="fa-solid fa-code"></i> 接続の終了
 
-After you have finished using the Weaviate client, you should close the connection. This frees up resources and ensures that the connection is properly closed.
+Weaviateクライアントの使用が終わったら、接続を終了するようにしてください。これによりリソースが解放され、接続が適切にクローズされます。
 
-We suggest using a `try`-`finally` block as a best practice. For brevity, we will not include the `try`-`finally` blocks in the remaining code snippets.
+ベストプラクティスとしては `try`-`finally` ブロックを使用することを推奨します。簡潔にするため、以降のコードスニペットでは `try`-`finally` ブロックは省略します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -58,7 +58,7 @@ We suggest using a `try`-`finally` block as a best practice. For brevity, we wil
   language="py"
 />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,6 +1,6 @@
 ---
-title: Filters
-description: Filters for Text Searches
+title: フィルター
+description: テキスト検索のフィルター
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,11 +8,11 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/103_searches.py';
 
-Filters can be used to precisely refine search results. You can filter by properties as well as metadata, and you can combine multiple filters with `and` or `or` conditions to further narrow down the results.
+フィルターを使用すると、検索結果をより正確に絞り込むことができます。プロパティだけでなくメタデータでもフィルターでき、複数のフィルターを `and` や `or` 条件で組み合わせることで、さらに結果を絞り込めます。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" based on their similarity to the query "dystopian future", only from those released after 2020. It prints out the title and release year of the top 5 matches.
+この例では、クエリ "dystopian future" との類似度に基づいて "Movie" 内のエントリーを検索し、かつ 2020 年以降に公開されたものだけを対象としています。上位 5 件について、タイトルと公開年を出力します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -21,12 +21,12 @@ This example finds entries in "Movie" based on their similarity to the query "dy
   language="py"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-This query is identical to [that shown earlier](./10_semantic.mdx) for semantic search, but with the addition of a filter. The `filters` parameter here takes an instance of the `Filter` class to set the filter conditions. The current query filters the results to only include those with a release year after 2010.
+このクエリは、[前章](./10_semantic.mdx) で示した セマンティック検索 の例と同じですが、フィルターが追加されています。ここでは `filters` パラメーターに `Filter` クラスのインスタンスを渡し、フィルター条件を設定しています。現在のクエリでは、公開年が 2010 年より後の結果のみを返すようにフィルターしています。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例: 結果</summary>
 
 ```text
 Dune 2021
@@ -48,7 +48,7 @@ Distance to query: 0.216
 </details>
 
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

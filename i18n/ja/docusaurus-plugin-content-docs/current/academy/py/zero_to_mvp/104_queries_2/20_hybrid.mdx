@@ -1,6 +1,6 @@
 ---
-title: Hybrid searches
-description: Combine vector and keyword search strategies for precision with hybrid queries in Weaviate.
+title: ハイブリッド検索
+description: Weaviate でハイブリッドクエリを使用して、 vector とキーワード検索戦略を組み合わせ高精度を実現します。
 ---
 
 import Tabs from '@theme/Tabs';
@@ -15,41 +15,41 @@ import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
 [//]: # (<img src={imageUrl} alt="Image alt" width="75%"/>)
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-A hybrid search combines `bm25` searches that you just learned about with a vector search, producing rankings from a combination of the two results.
+ハイブリッド検索は、先ほど学習した `bm25` 検索と vector 検索を組み合わせ、両方の結果を統合したランキングを生成します。  
 
-This can produce helpful results when a vector search or a keyword search alone is not producing desired results. For example, it may be useful when a vector search alone is producing too many irrelevant results, and you want particular keywords to weight the results a certain way.
+vector 検索またはキーワード検索だけでは期待どおりの結果が得られない場合に、ハイブリッド検索が役立ちます。たとえば、 vector 検索だけでは無関係な結果が多すぎる場合に、特定のキーワードで重み付けをして結果を調整したい場合などです。
 
-## <i class="fa-solid fa-square-chevron-right"></i> About `hybrid` queries
+## <i class="fa-solid fa-square-chevron-right"></i> `hybrid` クエリ
 
-### <i class="fa-solid fa-chalkboard"></i> How it works
+### <i class="fa-solid fa-chalkboard"></i> 仕組み
 
-A hybrid search works by combining the results of a `bm25` search with the results of a vector search. More specifically, it uses a combination of each result's BM25F search ranking and its vector search ranking among the set of results.
+ハイブリッド検索は、 `bm25` 検索結果と vector 検索結果を結合して動作します。具体的には、各結果の BM25F 検索ランキングと vector 検索ランキングを組み合わせて評価します。  
 
-The sum of the inverse of the BM25F ranking and the vector search ranking is used to produce a final score for each result, with any weighting (`alpha`) applied if applicable. The final score is then used to rank the results.
+各結果について、 BM25F ランキングの逆数と vector 検索ランキングを合計し、必要に応じて `alpha` の重み付けを適用して最終スコアを算出します。最終スコアによって結果が並べ替えられます。
 
-This has the effect of rewarding results that score high in at least one of the searches. For example, take the following five results:
+この手法により、どちらか一方の検索で高評価を得た結果が優遇されます。例として、次の 5 件の結果を考えてみましょう。
 
-- Result 1: BM25F ranking = 5, vector search ranking = 1 -> Total score: 1.2
-- Result 2: BM25F ranking = 4, vector search ranking = 2 -> Total score: 0.75
-- Result 3: BM25F ranking = 3, vector search ranking = 3 -> Total score: 0.67
-- Result 4: BM25F ranking = 2, vector search ranking = 4 -> Total score: 0.75
-- Result 5: BM25F ranking = 1, vector search ranking = 5 -> Total score: 1.2
+- Result 1: BM25F ranking = 5, vector search ranking = 1 -> 合計スコア: 1.2
+- Result 2: BM25F ranking = 4, vector search ranking = 2 -> 合計スコア: 0.75
+- Result 3: BM25F ranking = 3, vector search ranking = 3 -> 合計スコア: 0.67
+- Result 4: BM25F ranking = 2, vector search ranking = 4 -> 合計スコア: 0.75
+- Result 5: BM25F ranking = 1, vector search ranking = 5 -> 合計スコア: 1.2
 
-In this example, results 1 and 5 end up being the top results, because they scored high in at least one of the searches. On the other hand, result 3, which was middle-of-the-pack in both searches, ends up being the lowest-ranked result.
+この例では、いずれか一方で高評価だった 1 と 5 が上位に来ています。一方、両方で中程度だった 3 は最下位になっています。
 
-So, hybrid search will bring to the top results that score high in at least one of the searches, while middling results will end up in the lower end of the re-ranking.
+つまり、ハイブリッド検索では片方の検索で高評価を得た結果が上位に来やすく、平均的な結果は下位に配置されます。
 
-### <i class="fa-solid fa-code"></i> `hybrid` query syntax
+### <i class="fa-solid fa-code"></i> `hybrid` クエリ構文
 
-A hybrid query is shown below. Each hybrid query:
+ハイブリッドクエリは次のように記述します。各ハイブリッドクエリは次の要件を持ちます。
 
-- **Must** include a query string, which can be any length,
-- **Can optionally** include a list of `properties` to search,
-- **Can optionally** include an `alpha` value,
-- **Can optionally** include a `vector` to search for,
-- **Can optionally** request a `score` and an `explainScore` value for each result.
+- **必須**: 任意長の query 文字列  
+- **任意**: 検索対象の `properties`  
+- **任意**: `alpha` 値  
+- **任意**: 検索対象の `vector`  
+- **任意**: 各結果の `score` および `explainScore` の取得
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -62,10 +62,10 @@ A hybrid query is shown below. Each hybrid query:
 </TabItem>
 </Tabs>
 
-The above query will return the top 3 objects based on its BM25F score and `nearText` similarity, based on the query string `"food"`. The query will search the `question` and `answer` properties of the objects for the BM25F score (while the object vectors remain unaffected by the `properties` selection).
+上記のクエリは、クエリ文字列 `"food"` に基づき、 BM25F スコアと `nearText` 類似度で上位 3 件のオブジェクトを返します。 BM25F スコアの計算では `question` と `answer` プロパティを検索します（オブジェクトのベクトルは `properties` の指定による影響を受けません）。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -76,11 +76,11 @@ The above query will return the top 3 objects based on its BM25F score and `near
 
 </details>
 
-## <i class="fa-solid fa-square-chevron-right"></i> `hybrid` search parameters
+## <i class="fa-solid fa-square-chevron-right"></i> `hybrid` 検索パラメーター
 
-A `hybrid` search includes multiple parameters, some of which you may be familiar with from the earlier `bm25` search discussions.
+`hybrid` 検索には複数のパラメーターがあり、その一部は `bm25` 検索で既に登場しました。  
 
-The `query` parameter and `properties` parameter are the same as in a `bm25` search, with the exception that currently, the boost parameter is not supported in a `hybrid` search. Some of the parameters, however, are unique to a `hybrid` search.
+`query` と `properties` は `bm25` 検索と同じですが、現在ハイブリッド検索では boost パラメーターはサポートされていません。一方、ハイブリッド検索固有のパラメーターも存在します。
 
 [//]: # (### <i class="fa-solid fa-code"></i> `vector`)
 
@@ -99,27 +99,26 @@ The `query` parameter and `properties` parameter are the same as in a `bm25` sea
 
 ### <i class="fa-solid fa-code"></i> `alpha`
 
-The optional `alpha` parameter determines the weighting of the BM25 search ranking and the vector search ranking. If you do not include an `alpha` parameter, the `hybrid` search will use a default value of `0.5`, which weights each equally.
+任意の `alpha` パラメーターは、 BM25 検索ランキングと vector 検索ランキングの重み付けを決定します。指定しない場合は既定値 0.5 が使用され、両者が同等に重み付けされます。  
 
-Otherwise, an `alpha` value of 1 is the same as a pure vector search, whereas an `alpha` value of 0 is the same as a pure BM25 search.
+`alpha` を 1 にすると純粋な vector 検索と同じになり、0 にすると純粋な BM25 検索と同じになります。
 
-:::tip Exercise
-Try varying the `alpha` parameter above. What happens to the results?
+:::tip 演習
+上のクエリで `alpha` を変化させてみましょう。結果はどう変わりますか？
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
 <Quiz questions={hybridRankingQuestion} />
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
 
-- A hybrid search combines `bm25` search with vector search, producing rankings from a combination of the two results.
-- Hybrid search is helpful when a vector search or a keyword search alone is not producing desired results.
-- Hybrid search orders its search results by summing the inverse of the vector and `bm25` rankings.
-
-## Questions and feedback
+- ハイブリッド検索は `bm25` 検索と vector 検索を組み合わせ、両者の結果からランキングを生成します。  
+- vector 検索またはキーワード検索だけでは求める結果が得られない場合に有効です。  
+- ハイブリッド検索では、 vector と `bm25` のランキングの逆数を合計して検索結果を並べ替えます。
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,6 +1,6 @@
 ---
-title: "101T Work with: Text data"
-description: Get started with text data in Weaviate for robust search and analytics.
+title: "101T テキストデータの取り扱い"
+description: "Weaviate でテキストデータを扱い、強力な検索と分析を始めましょう。"
 sidebar_position: 100
 ---
 
@@ -8,16 +8,16 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 import CourseUnits from '/src/components/Academy/courseUnits.jsx';
 import { courseData } from '/src/components/Academy/courseData.js'
 
-## <i class="fa-solid fa-chalkboard-user"></i> Course overview
+## <i class="fa-solid fa-chalkboard-user"></i> コース概要
 
-In this project-based course, you will learn how to work with any text data using Weaviate and a movie dataset.
+このプロジェクトベースのコースでは、映画データセットを使いながら、あらゆるテキストデータを Weaviate で扱う方法を学びます。
 
-You will get hands-on experience on how to store and index text data by meaning, using Weaviate's vectorization capabilities. You will learn how to search through that data using semantic, keyword and hybrid searches, as well as filters. You will also learn how to use Weaviate's retrieval augmented generation (RAG) capabilities to generate outputs based on the retrieved objects.
+Weaviate のベクトライザー機能を用いて、テキストデータを意味ベースで保存・インデックスし、セマンティック検索、キーワード検索、ハイブリッド検索、さらにフィルターを使ってデータを検索する方法を実践的に体験できます。また、取得したオブジェクトを基に出力を生成する Weaviate の検索拡張生成 ( RAG ) 機能の使い方も学びます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 <LearningGoals courseName="starter_text_data"/>
 
-## <i class="fa-solid fa-book-open-reader"></i> Units
+## <i class="fa-solid fa-book-open-reader"></i> ユニット
 
 <CourseUnits courseData={courseData} courseName="starter_text_data" />

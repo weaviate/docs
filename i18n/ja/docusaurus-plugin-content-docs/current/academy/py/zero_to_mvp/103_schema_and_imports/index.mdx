@@ -1,6 +1,6 @@
 ---
-title: P3_103 Schema and Imports (Python)
-description: Define schema and import data into Weaviate to set up your dataset structure.
+title: P3_103 スキーマとインポート（Python）
+description: スキーマを定義し、データを Weaviate にインポートしてデータセットの構造を設定します。
 sidebar_position: 103
 ---
 
@@ -8,7 +8,7 @@ import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/dep
 
 <ZeroToMvpDeprecationNote/>
 
-## <i class="fa-solid fa-chalkboard-user"></i> Unit overview
+## <i class="fa-solid fa-chalkboard-user"></i> ユニット概要
 
 import ReactPlayer from 'react-player/lazy'
 
@@ -17,22 +17,22 @@ import ReactPlayer from 'react-player/lazy'
 
 <!-- Provide context for this course, in addition to the concrete learning goals and outcomes. Why would someone want to do this unit? -->
 
-The previous units introduced you to the fundamentals of Weaviate, its capabilities, and how to execute basic queries on existing data. Now that you're familiar with the various query types, it's time to explore how to populate your own Weaviate instance with data.
+前回のユニットでは、 Weaviate の基本概念や機能、既存データに対する基本的なクエリの実行方法を学びました。さまざまなクエリタイプに慣れた今度は、独自の Weaviate インスタンスにデータを投入する方法を学んでいきます。  
 
-In this unit, we'll examine how to use Weaviate to effectively structure your data so that you can retrieve the right information the way you want. We'll delve into defining a schema for your data and importing data into Weaviate.
+このユニットでは、 Weaviate を用いてデータを効果的に構造化し、望む形で適切な情報を取得できるようにする方法を見ていきます。具体的には、データ用のスキーマを定義し、 Weaviate にデータをインポートする手順を掘り下げます。  
 
-By the end of this unit, Weaviate's overall data architecture will start to become clearer in your mind. This will start to empower you to build a vector database that really suits your needs and goals.
+ユニットを終える頃には、 Weaviate の全体的なデータアーキテクチャがより明確になるでしょう。これにより、自分のニーズと目的に合ったベクトル データベースを構築できる力が身につき始めます。  
 
-Let's get started.
+それでは始めましょう。
 
-### <i class="fa-solid fa-clipboard-list-check"></i> Prerequisites
+### <i class="fa-solid fa-clipboard-list-check"></i> 事前準備
 
-- (**Required**) A Python (3) environment with `weaviate-client` installed.
-- (**Required**) Complete [101A Weaviate Academy Preparation](../setup.mdx)
-- (*Recommended*) Complete [Hello, Weaviate](../101_hello_weaviate/index.mdx)
-- (*Recommended*) Complete [Queries 1](../102_queries_1/index.mdx)
+- (**必須**) `weaviate-client` がインストールされた Python（3）環境  
+- (**必須**) [101A Weaviate Academy Preparation](../setup.mdx) の完了  
+- (*推奨*) [Hello, Weaviate](../101_hello_weaviate/index.mdx) の完了  
+- (*推奨*) [Queries 1](../102_queries_1/index.mdx) の完了  
 
-## <i class="fa-solid fa-chalkboard-user"></i> Learning objectives
+## <i class="fa-solid fa-chalkboard-user"></i> 学習目標
 
 import LearningGoalsExp from '/src/components/Academy/learningGoalsExp.mdx';
 
@@ -42,7 +42,7 @@ import LearningGoals from '/src/components/Academy/learningGoals.jsx';
 
 <LearningGoals unitName="schema_and_import"/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

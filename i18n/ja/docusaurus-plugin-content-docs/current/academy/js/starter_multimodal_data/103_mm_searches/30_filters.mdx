@@ -1,6 +1,6 @@
 ---
-title: Filters
-description: Filters for Multimodal Searches
+title: フィルター
+description: マルチモーダル検索のフィルター
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,11 +8,11 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/103_searches.mts';
 
-Filters can be used to precisely refine search results. You can filter by properties as well as metadata, and you can combine multiple filters with `and` or `or` conditions to further narrow down the results.
+フィルターを使用すると、検索結果をより正確に絞り込むことができます。プロパティだけでなくメタデータでもフィルターでき、`and` や `or` 条件を組み合わせてさらに結果を狭めることも可能です。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" based on their similarity to the query "dystopian future", only from those released after 2010. It prints out the title and release year of the top 5 matches.
+この例では、クエリ「dystopian future」に類似するエントリーを "Movie" クラスから検索し、そのうち 2010 年以降に公開されたものに限定しています。上位 5 件のタイトルと公開年を出力します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -21,12 +21,12 @@ This example finds entries in "Movie" based on their similarity to the query "dy
   language="ts"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-This query is identical to [that shown earlier](./10_multimodal.mdx) for search, but with the addition of a filter. The `filters` parameter makes use of the `filter` namespace to set the filter conditions. The current query filters the results to only include those with a release year after 2010.
+このクエリは検索の [前述の例](./10_multimodal.mdx) と同じですが、フィルターが追加されています。`filters` パラメーターでは `filter` 名前空間を利用して条件を設定しています。現在のクエリでは、公開年が 2010 年より後のエントリーのみを結果に含めるようフィルターしています。
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
 ```text
 Dune 2021
@@ -48,7 +48,7 @@ Distance to query: 0.216
 </details>
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

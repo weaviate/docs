@@ -1,5 +1,5 @@
 ---
-title: Get{} objects
+title: Get{} オブジェクト
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,11 +7,11 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PythonCodeExample from '!!raw-loader!./_snippets/10_get.py';
 
-:::info Make sure you complete Weaviate Academy Preparation
-Make sure to complete the [Weaviate Academy Preparation](../setup.mdx) mini-unit before starting this unit to make sure that you can run the client library and connect to the demo Weaviate instance without issues.
+:::info Weaviate Academy 準備を完了してください
+このユニットを始める前に、必ず [Weaviate Academy Preparation](../setup.mdx) ミニユニットを完了し、クライアントライブラリを実行してデモ  Weaviate  インスタンスに問題なく接続できることを確認してください。  
 <p><br/></p>
 
-Below, you will see code snippets that do not include client instantiation details. Before running these snippets, make sure to instantiate the client as shown below.
+以下のコードスニペットにはクライアントのインスタンス化部分が含まれていません。実行前に、下記の例のようにクライアントをインスタンス化してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -25,40 +25,40 @@ Below, you will see code snippets that do not include client instantiation detai
 </Tabs>
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
 import ReactPlayer from 'react-player/lazy'
 
 <ReactPlayer className="react-player" url='https://youtu.be/q2UuBIJVLEM' controls='true'/>
 <br/>
 
-## <i class="fa-solid fa-square-chevron-right"></i> About `Get` queries
+## <i class="fa-solid fa-square-chevron-right"></i> `Get` クエリについて
 
-In many use cases, retrieving objects from a Weaviate instance may be the most common operation.
+多くのユースケースにおいて、  Weaviate  インスタンスからオブジェクトを取得することは最も一般的な操作となります。
 
-For example, a user may want to retrieve a list of passages most closely related to the input query, or they may wish to retrieve a list of images which are most similar to another image. It is even possible to retrieve a set of images that best match a given passage.
+例えば、入力クエリに最も関連する複数の文章を取得したり、ある画像に最も類似した画像を取得したりできます。さらに、特定の文章に最も合致する画像セットを取得することも可能です。
 
-In Weaviate, such operations to retrieve objects are performed using the `Get` function.
+ Weaviate  では、このようなオブジェクト取得操作を `Get` 関数で実行します。
 
-### <i class="fa-solid fa-chalkboard"></i> `Get` function syntax
+### <i class="fa-solid fa-chalkboard"></i> `Get` 関数の構文
 
-A basic `Get` function looks as follows:
+基本的な `Get` 関数は次のようになります。
 
 import GetSyntax from './_snippets/academy.queries.get.syntax.mdx';
 
 <GetSyntax/>
 
-- The `Class` field specifies the name of the class of objects to be retrieved.
-- The `arguments` argument specifies the search criteria to be used to retrieve the objects.
-- The `properties` argument specifies the properties of the objects to be retrieved, including any `_additional` properties.
+- `Class` フィールドは取得対象オブジェクトのクラス名を指定します。  
+- `arguments` 引数はオブジェクトを検索する際の条件を指定します。  
+- `properties` 引数は取得したいオブジェクトのプロパティを指定し、`_additional` プロパティも含めることができます。  
 
-Now let's try out some concrete `Get` queries.
+それでは、具体的な `Get` クエリを試してみましょう。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Standalone `Get` queries
+## <i class="fa-solid fa-square-chevron-right"></i> スタandalone `Get` クエリ
 
-A basic, standalone, `Get` query might look as follows:
+基本的なスタンドアロンの `Get` クエリは次のようになります。
 
-### <i class="fa-solid fa-code"></i> Example
+### <i class="fa-solid fa-code"></i> 例
 
 import GetStandalone from './_snippets/academy.queries.get.standalone.mdx';
 
@@ -83,12 +83,12 @@ import GetStandalone from './_snippets/academy.queries.get.standalone.mdx';
 </TabItem>
 </Tabs>
 
-What results do you expect? See if you can correspond each field to the syntax.
+どのような結果が返ってくると思いますか？ 各フィールドを構文と対応させてみてください。
 
-Now, try it out yourself. The query should return something like this:
+では実際に実行してみましょう。クエリは次のような結果を返します。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
 
 ```json
 {
@@ -111,35 +111,35 @@ Now, try it out yourself. The query should return something like this:
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object from Weaviate
+### <i class="fa-solid fa-chalkboard"></i> Weaviate からのレスポンスオブジェクト
 
-As you see above, the response object from Weaviate is in JSON format, where the results are obtained via the `data` field. It is then arranged in a corresponding manner to reflect the query as well as the queried object.
+上記のとおり、  Weaviate  からのレスポンスは JSON 形式で、結果は `data` フィールドから取得できます。レスポンスはクエリ内容および対象オブジェクトを反映する形で整理されています。
 
-In the above example, the `Get` field reflects the query function, and the `JeopardyQuestion` field reflects the queried object class, containing returned objects. Each object contains `answer` and `question` fields, reflecting the requested properties.
+この例では、`Get` フィールドがクエリ関数を、`JeopardyQuestion` フィールドが取得対象クラスを表し、その配下に返却されたオブジェクトが格納されています。各オブジェクトは、要求した `answer` と `question` のプロパティを持ちます。
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリを解説</summary>
 
-In this case, Weaviate will return two objects due to the `.with_limit(2)` argument. Without this limit, Weaviate would return a maximum number according to its configuration.
+このクエリでは `.with_limit(2)` 引数により 2 件のオブジェクトが返されます。これを指定しない場合、  Weaviate  は設定に応じた最大件数を返します。
 
-:::tip Is this query useful?
-As this does not apply any user-specific criteria to the search, the specific results will likely not be very useful.
+:::tip このクエリは便利？
+ユーザー固有の検索条件を適用していないため、得られる具体的な結果はそれほど有用でない可能性があります。
 
-However, this may be a viable method for "sanity" checks, such as checking that you can connect to a Weaviate instance, or that at least some objects have been imported successfully.
+しかし、  Weaviate  インスタンスへ接続できるか、データが正しく取り込まれているかなどの「サニティチェック」としては有効です。
 :::
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> `Class` and `properties`
+### <i class="fa-solid fa-chalkboard"></i> `Class` と `properties`
 
-In the above example, we specify a `Class` of `JeopardyQuestion` and `properties` of `questions` and `answer`.
+上の例では `Class` に `JeopardyQuestion`、`properties` に `question` と `answer` を指定しました。
 
-That is possible because those follow the structure of our data in Weaviate. To see the available data classes and properties, you can take a look at the Weaviate schema, as shown below:
+これは、  Weaviate  内のデータ構造に合わせているため可能です。利用可能なデータクラスとプロパティを確認するには、以下のようにスキーマを確認できます。
 
 <details>
-  <summary>How do I see the schema?</summary>
+  <summary>スキーマを見るには？</summary>
 
-You can fetch the schema like this - try it out!
+次のようにしてスキーマを取得できます。試してみてください！
 
 ```python
 client.schema.get()
@@ -151,48 +151,48 @@ import ShortSchema from './_snippets/academy.queries.schema.short.mdx';
 
 <ShortSchema/>
 
-The `Class` and `properties` fields must correspond to collections of objects that have been defined in the Weaviate schema.
+`Class` と `properties` は、  Weaviate  スキーマで定義されたオブジェクトコレクションに対応している必要があります。
 
-The `Class` must be the name of a data object collection, and the `properties` a list of properties to be retrieved.
+`Class` にはデータオブジェクトコレクションの名前を、`properties` には取得したいプロパティのリストを指定します。
 
-The schema contains the `JeopardyQuestion` class, with properties: `question`, `answer` and `points`.
+スキーマには `JeopardyQuestion` クラスがあり、`question`、`answer`、`points` のプロパティを持っています。
 
-So, a query retrieving objects from the `Question` class could specify any of its properties such as `question`, `answer`, and `points`.
+したがって、`JeopardyQuestion` クラスのオブジェクトを取得するクエリでは、`question`、`answer`、`points` のいずれのプロパティも指定できます。
 
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out the above query again, with these changes.
-- Can you get the `points` property as well?
-- What happens if you don't specify any properties?
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+上記のクエリを再度実行し、次の変更を試してください。  
+- `points` プロパティも取得できますか？  
+- プロパティを指定しないとどうなりますか？  
 :::
 
-:::info Can I search multiple classes at once?
-No. You can only search one class at a time.
+:::info 複数のクラスを同時に検索できますか？
+いいえ、1 度に検索できるのは 1 クラスのみです。  
 <p><br/></p>
 
-This is because each class constitutes a single `vector space`. If you want to search multiple collections of objects, you will have to perform multiple searches, or consider putting them into one class and using a filter to distinguish between them as required.
+各クラスは 1 つの `vector space` を構成しているためです。複数のオブジェクトコレクションを検索したい場合は、複数回検索するか、1 つのクラスにまとめてフィルターで区別する方法をご検討ください。  
 <p><br/></p>
 
-We will consider this topic in more detail in a later unit, including what it means for each class to constitute a distinct `vector space`, and how to think about building a schema in Weaviate.
+このトピックについては、各クラスが独立した `vector space` を構成する意味や、  Weaviate  でスキーマ設計を考える際のポイントを後のユニットで詳しく扱います。
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> `Get` with `additional` properties
+## <i class="fa-solid fa-square-chevron-right"></i> `Get` と `additional` プロパティ
 
-You can retrieve additional properties that are not defined in the schema. These properties may be inherent to the object, or relate to the query performed.
+スキーマで定義されていない追加プロパティを取得できます。これらのプロパティはオブジェクトに固有であったり、実行したクエリに関連している場合があります。
 
-### <i class="fa-solid fa-code"></i> Example
+### <i class="fa-solid fa-code"></i> 例
 
-In this example, we've built on the previous example to add the `.with_additional` method.
+この例では、前の例を基に `.with_additional` メソッドを追加しています。
 
 import GetWithAdditional from './_snippets/academy.queries.get.with.additional.mdx';
 
 <GetWithAdditional/>
 
-Again, consider what the response might look like. What would have changed in the response?
+再度、レスポンスがどのようになるかを考えてみましょう。レスポンスのどこが変わるでしょうか。
 
-Now, try it out yourself. The query should return something like this:
+では実際に試してみてください。クエリは次のような結果を返すはずです。
 
 <details>
-  <summary><i class="fa-solid fa-radar"></i> See the JSON response</summary>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
 
 ```json
 {
@@ -223,51 +223,51 @@ Now, try it out yourself. The query should return something like this:
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object from Weaviate
+### <i class="fa-solid fa-chalkboard"></i> Weaviate からのレスポンスオブジェクト
 
-In this response, you see that the `_additional` field has been added to the response object, with `distance` and `id` nested under it.
+このレスポンスでは、`_additional` フィールドが追加され、その下に `distance` と `id` が入っていることがわかります。
 
 <details>
-  <summary><i class="fa-solid fa-lightbulb"></i> Explain this query</summary>
+  <summary><i class="fa-solid fa-lightbulb"></i> クエリの解説</summary>
 
-Here, the `distance` and `id` properties contain the object's distance to the query and its unique ID respectively.
+ここで `distance` と `id` プロパティには、それぞれクエリとの距離とオブジェクトの一意な ID が格納されています。
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> `_additonal` properties
+### <i class="fa-solid fa-chalkboard"></i> `_additional` プロパティ
 
-As the name suggests, `_additional` properties are separate to those explicitly created as class properties.
+名前が示すとおり、`_additional` プロパティはクラスプロパティとして明示的に作成されたものとは別物です。
 
-The above query included the `distance` property in the `_additional` field. This represents the degree of similarity (or, in this case, the *dissimilarity*) between the input vector and the vector of the object.
+上記のクエリでは `_additional` フィールドに `distance` プロパティを含めました。これは入力ベクトルとオブジェクトのベクトルとの類似度（この場合は *非類似度*）を表します。
 
-:::info Vectors available through `_additional`
+:::info `_additional` で取得できるベクトル
 
-The object vector can also be retrieved through an `_additional` field, by specifying `vector` in its sub-field.
+オブジェクトのベクトルも、サブフィールドに `vector` を指定することで `_additional` フィールドから取得できます。
 
-Note that the returned vector in many cases will be a very long list of numbers.
+返されるベクトルは多くの場合、非常に長い数値のリストになる点に注意してください。
 
 :::
 
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out the above query again, with these changes.
-- Can you get the `vector` property as well?
-- Earlier, providing an empty list as the main properties under the `.get()` method will have caused an error. What happens if you try it again, now that you are requesting additional properties?
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+上記のクエリを以下の変更を加えて再度試してみましょう。  
+- `vector` プロパティも取得できますか？  
+- 以前は `.get()` メソッドでメインプロパティに空のリストを渡すとエラーになりました。追加プロパティをリクエストした状態で再度実行するとどうなりますか？
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習演習
 
-See in-line exercises.
+本文中のインライン演習をご覧ください。
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 主要ポイント
 
-- The 'Get' function can be used to retrieve objects in Weaviate.
-- The 'Get' function syntax requires specifying the class, properties, and any additional arguments related to the search criteria.
-- Weaviate responses are in JSON format.
-- Class and properties fields must correspond to the objects and properties defined in the Weaviate schema.
-- 'Get' queries can retrieve additional properties not defined in the schema, which can be inherent to the object or related to the query performed.
-- '_additional' properties can include distance, id, and vector information, providing more context and information about the retrieved objects.
+- `'Get'` 関数を使用して Weaviate からオブジェクトを取得できます。
+- `'Get'` 関数の構文では、クラス、プロパティ、および検索条件に関連する追加引数を指定する必要があります。
+- Weaviate のレスポンスは JSON 形式です。
+- クラスとプロパティのフィールドは、Weaviate スキーマで定義したオブジェクトとプロパティに対応している必要があります。
+- `'Get'` クエリでは、スキーマで定義されていない追加プロパティを取得できます。これらはオブジェクトに固有であったり、実行したクエリに関連する場合があります。
+- `_additional` プロパティには `distance`、`id`、`vector` などが含まれ、取得したオブジェクトに関するさらなる文脈と情報を提供します。
 
 import Quiz from '/src/components/Academy/quiz.js'
 export const nearText = [{
@@ -291,7 +291,7 @@ export const nearText = [{
   ]
 }];
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,16 +1,16 @@
 ---
-title: Import data
-description: Importing Data into Multimodal Data Collections
+title: データのインポート
+description: マルチモーダルデータコレクションへのデータインポート
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!../_snippets/102_collection.py';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyCode from '!!raw-loader!../_snippets/102_collection.py';  
 
-## <i class="fa-solid fa-code"></i> Code
+## <i class="fa-solid fa-code"></i> コード
 
-This example imports the movie data into our collection.
+この例では、映画データをコレクションにインポートします。
 
 <FilteredTextBlock
   text={PyCode}
@@ -19,27 +19,27 @@ This example imports the movie data into our collection.
   language="py"
 />
 
-The code:
-- Loads the source text and image data
-- Gets the collection
-- Enters a context manager with a batcher (`batch`) object
-- Loops through the data and:
-    - Finds corresponding image to the text
-    - Converts the image to base64
-    - Adds objects to the batcher
-- Prints out any import errors
+コードの内容:
+- ソースのテキストと画像データを読み込みます  
+- コレクションを取得します  
+- バッチャー（ `batch` ）オブジェクトを用いたコンテキストマネージャーに入ります  
+- データをループ処理し、次を行います:  
+    - テキストに対応する画像を探します  
+    - 画像を base64 に変換します  
+    - オブジェクトをバッチャーに追加します  
+- インポートエラーを出力します  
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
 
-### <i class="fa-solid fa-chalkboard"></i> Preparation
+### <i class="fa-solid fa-chalkboard"></i> 準備
 
-We use the requests library to load the data from the source, in this case a JSON file containing text data and a Zip file containing posters. The text data is then converted to a Pandas DataFrame for easier manipulation and the images are extracted from the Zip file.
+まず、requests ライブラリを使用してソースからデータを読み込みます。ここではテキストデータを含む JSON ファイルとポスター画像を含む Zip ファイルです。テキストデータは Pandas DataFrame に変換して操作しやすくし、画像は Zip ファイルから展開します。
 
-Then, we create a collection object (with `client.collections.get`) so we can interact with the collection.
+次に、コレクションと対話できるように `client.collections.get` を使用してコレクションオブジェクトを作成します。
 
-### <i class="fa-solid fa-chalkboard"></i> Batch context manager
+### <i class="fa-solid fa-chalkboard"></i> バッチコンテキストマネージャー
 
-The `batch` object is a context manager that allows you to add objects to the batcher. This is useful when you have a large amount of data to import, as it abstracts away the complexity of managing the batch size and when to send the batch.
+`batch` オブジェクトはコンテキストマネージャーであり、オブジェクトをバッチャーへ追加できます。大量のデータをインポートする際に、バッチサイズの管理や送信タイミングの複雑さを抽象化できるため便利です。
 
 <FilteredTextBlock
   text={PyCode}
@@ -48,13 +48,13 @@ The `batch` object is a context manager that allows you to add objects to the ba
   language="py"
 />
 
-This example uses the `.fixed_size()` method to create a batcher which sets the number of objects per batch. There are also other batcher types, like `.rate_limit()` for specifying the number of objects per minute and `.dynamic()` to create a dynamic batcher, which automatically determines and updates the batch size during the import process.
+この例では `.fixed_size()` メソッドを使用してバッチあたりのオブジェクト数を設定するバッチャーを作成しています。その他にも、分毎のオブジェクト数を指定する `.rate_limit()` や、インポート中に自動でバッチサイズを調整する `.dynamic()` などのバッチャータイプがあります。
 
-### <i class="fa-solid fa-chalkboard"></i> Add data to the batcher
+### <i class="fa-solid fa-chalkboard"></i> バッチャーへのデータ追加
 
-#### Convert data types
+#### データ型の変換
 
-The data is converted from a string to the correct data types for Weaviate. For example, the `release_date` is converted to a datetime object, and the `genre_ids` are converted to a list of integers.
+データは文字列から Weaviate に適した型へ変換されます。たとえば `release_date` は datetime オブジェクトに、`genre_ids` は整数のリストに変換します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -63,7 +63,7 @@ The data is converted from a string to the correct data types for Weaviate. For 
   language="py"
 />
 
-To save the image data as a `BLOB` (binary large object) data type, we convert the image to base64.
+画像データを `BLOB` データ型として保存するため、画像を base64 に変換します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -72,9 +72,9 @@ To save the image data as a `BLOB` (binary large object) data type, we convert t
   language="py"
 />
 
-#### Add objects to the batcher
+#### オブジェクトをバッチャーに追加
 
-Then we loop through the data and add each object to the batcher. The `batch.add_object` method is used to add the object to the batcher, and the batcher will send the batch according to the specified batcher type.
+次にデータをループ処理し、各オブジェクトをバッチャーへ追加します。`batch.add_object` メソッドでオブジェクトを追加すると、バッチャーは指定されたタイプに従ってバッチを送信します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -83,11 +83,11 @@ Then we loop through the data and add each object to the batcher. The `batch.add
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Error handling
+### <i class="fa-solid fa-chalkboard"></i> エラー処理
 
-Because a batch includes multiple objects, it's possible that some objects will fail to import. The batcher saves these errors.
+バッチには複数のオブジェクトが含まれるため、一部のオブジェクトがインポートに失敗する可能性があります。バッチャーはこれらのエラーを保持します。
 
-You can print out the errors to see what went wrong, and then decide how to handle them, such as by raising an exception. In this example, we simply print out the errors.
+エラーを出力することで原因を確認し、例外を発生させるなどの処理を行えます。この例では、単にエラーを出力しています。
 
 <FilteredTextBlock
   text={PyCode}
@@ -96,16 +96,16 @@ You can print out the errors to see what went wrong, and then decide how to hand
   language="py"
 />
 
-Note that the list of errors is cleared when a new context manager is entered, so you must handle the errors before initializing a new batcher.
+新しいコンテキストマネージャーに入るとエラーリストはクリアされるため、新しいバッチャーを初期化する前にエラー処理を行う必要があります。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Where do the vectors come from?
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルの生成元
 
-When the batcher sends the queue to Weaviate, the objects are added to the collection. In our case, the movie collection.
+バッチャーがキューを Weaviate に送信すると、オブジェクトはコレクション（ここでは映画コレクション）に追加されます。
 
-Recall that the collection has a vectorizer module, and we do not specify vectors here. So Weaviate uses the specified vectorizer to generate vector embeddings from the data.
+コレクションにはベクトライザーモジュールが設定されており、ここではベクトルを指定していません。そのため、Weaviate は指定されたベクトライザーを使用してデータからベクトル埋め込みを生成します。
 
-## Questions and feedback
+## 質問とフィードバック
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/_includes/docs-feedback.mdx';  
 
 <DocsFeedback/>

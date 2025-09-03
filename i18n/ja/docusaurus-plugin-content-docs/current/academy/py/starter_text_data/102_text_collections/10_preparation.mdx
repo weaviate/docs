@@ -1,26 +1,26 @@
 ---
-title: Preparation
-description: Preparing Text Collections for Use
+title: 準備
+description: テキストコレクションの準備
 ---
 
-In this section you are going to populate your Weaviate instance with a movie dataset, using the OpenAI API to embed the text data.
+このセクションでは、映画データセットを使用して Weaviate インスタンスにデータを投入し、OpenAI API を用いてテキストデータを埋め込みます。
 
-### <i class="fa-solid fa-chalkboard"></i> Weaviate instance
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンス
 
-Make sure to have your Weaviate instance set up. You should have [created an instance](../101_setup_weaviate/20_create_instance/index.mdx) and be able to connect to it.
+Weaviate インスタンスをセットアップしておいてください。すでに [インスタンスを作成](../101_setup_weaviate/20_create_instance/index.mdx) し、接続できる状態である必要があります。
 
-### <i class="fa-solid fa-chalkboard"></i> OpenAI key
+### <i class="fa-solid fa-chalkboard"></i> OpenAI キー
 
-You will need an OpenAI API key to follow along. If you don't have one, go to the [OpenAI website](https://openai.com/) and sign up for an account and create an API key.
+本ガイドを進めるには OpenAI API キーが必要です。まだお持ちでない場合は、[OpenAI のウェブサイト](https://openai.com/) でアカウントを作成し、API キーを取得してください。
 
 <!-- TODO: Add notes for users looking to use another vectorizer -->
 
-### <i class="fa-solid fa-code"></i> Source data
+### <i class="fa-solid fa-code"></i> ソースデータ
 
-We are going to use a movie dataset sourced from [TMDB](https://www.themoviedb.org/). The dataset can be found in this [GitHub repository](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024.json), and it contains bibliographic information on ~700 movies released between 1990 and 2024.
+[TMDB](https://www.themoviedb.org/) から取得した映画データセットを使用します。データセットはこの [GitHub リポジトリ](https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024.json) にあり、1990 年から 2024 年までに公開された約 700 本の映画の書誌情報が含まれています。
 
 <details>
-  <summary>See sample data</summary>
+  <summary>サンプルデータを表示</summary>
 
 |    | backdrop_path                    | genre_ids       |   id | original_language   | original_title              | overview                                                                                                                                                                                                                                                                                                                                                                                                                        |   popularity | poster_path                      | release_date   | title                       | video   |   vote_average |   vote_count |
 |---:|:---------------------------------|:----------------|-----:|:--------------------|:----------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------:|:---------------------------------|:---------------|:----------------------------|:--------|---------------:|-------------:|
@@ -32,9 +32,9 @@ We are going to use a movie dataset sourced from [TMDB](https://www.themoviedb.o
 
 </details>
 
-Next, you will create a corresponding object collection and import the data.
+次に、対応するオブジェクトコレクションを作成し、データをインポートします。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,5 +1,5 @@
 ---
-title: Tokenization and searches
+title: トークン化と検索
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,31 +7,30 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PySearches from '!!raw-loader!./_snippets/400_searches.py';
 
-You saw how [tokenization affects filters](./300_filters.mdx). They impact keyword searches in a similar, but not identical, way. In this section, we'll see how different tokenization methods impact search results.
+前のセクションでは、[トークン化がフィルターに与える影響](./300_filters.mdx)をご覧いただきました。トークン化はキーワード検索にも似たように、しかし同一ではない形で影響します。このセクションでは、異なるトークン化方式が検索結果にどのような影響を及ぼすかを見ていきます。
 
-:::info What about hybrid searches?
-A hybrid search combines results from a keyword search and a vector search. Accordingly, tokenization impacts the keyword search part of a hybrid search, while the vector search part is not impacted by tokenization.
+:::info ハイブリッド検索の場合は？
+ハイブリッド検索は、キーワード検索と ベクトル 検索の結果を組み合わせます。そのため、トークン化はハイブリッド検索のキーワード検索部分にのみ影響し、 ベクトル 検索部分には影響しません。
 
-We will not separately discuss hybrid searches in this course. However, the impact on keyword searches discussed here will apply to the keyword search part of a hybrid search.
+本コースではハイブリッド検索を個別には扱いませんが、ここで説明するキーワード検索への影響は、ハイブリッド検索のキーワード検索部分にも当てはまります。  
 :::
 
-## <i class="fa-solid fa-square-chevron-right"></i> Impact on keyword searches
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索への影響
 
-### <i class="fa-solid fa-chalkboard"></i> How tokenization impacts keyword searches
+### <i class="fa-solid fa-chalkboard"></i> キーワード検索におけるトークン化の影響
 
-We will use a similar method as in the previous section, with a difference being that we will now perform a keyword search instead of a filter.
+前のセクションと同様の方法を使いますが、今回はフィルターではなくキーワード検索を実行します。
 
-A keyword search ranks results using the [BM25f algorithm](https://en.wikipedia.org/wiki/Okapi_BM25). As a result, the impact of tokenization on keyword searches is twofold.
+キーワード検索は [BM25f アルゴリズム](https://en.wikipedia.org/wiki/Okapi_BM25)で結果を順位付けします。そのため、トークン化がキーワード検索に与える影響は二重です。
 
-Firstly, tokenization will determine whether a result is included in the search results at all. If none of the tokens in the search query match any tokens in the object, the object will not be included in the search results.
+1. まず、トークン化は結果が検索結果に含まれるかどうかを決定します。検索クエリ内のトークンがオブジェクト内のトークンとまったく一致しない場合、そのオブジェクトは検索結果に含まれません。  
+2. 次に、トークン化は検索結果の順位に影響します。BM25f アルゴリズムは一致するトークンの数を考慮するため、どのトークンが一致対象となるかを決めるトークン化方式がランキングに影響します。
 
-Secondly, tokenization will impact the ranking of the search results. The BM25f algorithm takes into account the number of matching tokens, and the tokenization method will determine which tokens are considered matching.
+### <i class="fa-solid fa-code"></i> 検索セットアップ
 
-### <i class="fa-solid fa-code"></i> Search setup
+各キーワードクエリは以下のようになります。
 
-Each keyword query will look something like this.
-
-We'll set up a reusable function to perform keyword searches, and display the top results along with their scores.
+再利用可能な関数を作成し、キーワード検索を実行してスコア付きの上位結果を表示します。
 
 <FilteredTextBlock
   text={PySearches}
@@ -40,15 +39,15 @@ We'll set up a reusable function to perform keyword searches, and display the to
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Examples
+### <i class="fa-solid fa-code"></i> 例
 
-#### "**Clark:** "vs "**clark**" - messy text
+#### 「**Clark:**」 vs 「**clark**」 - 不揃いなテキスト
 
-Keyword searches are similarly impacted by tokenization as filters. However, there are subtle differences.
+キーワード検索もフィルターと同様にトークン化の影響を受けますが、微妙な違いがあります。
 
-Take a look at this example, where we search for various combinations of substrings from the TV show title `"Lois & Clark: The New Adventures of Superman"`.
+ここでは、TV 番組タイトル「Lois & Clark: The New Adventures of Superman」からさまざまな部分文字列を検索した例を示します。
 
-The table shows whether the query matched the title, and the score:
+以下の表は、クエリがタイトルに一致したかどうかと、そのスコアを示しています。
 
 |               | `word` | `lowercase` | `whitespace` | `field` |
 |---------------|--------|-------------|--------------|---------|
@@ -78,21 +77,21 @@ The table shows whether the query matched the title, and the score:
 
 </details>
 
-Here, the same results are returned as in the filter example. However, note differences in the scores.
+ここではフィルターの例と同じオブジェクトが返されていますが、スコアに違いがある点に注目してください。
 
-For example, a search for `"lois clark"` returns a higher score than a search for `"clark"`. This is because the BM25f algorithm considers the number of matching tokens. So, it would be beneficial to include as many matching tokens as possible in the search query.
+たとえば、`"lois clark"` の検索は `"clark"` の検索よりも高いスコアを返します。これは BM25f アルゴリズムが一致トークンの数を考慮するためであり、検索クエリにできるだけ多くの一致トークンを含めると有利になるためです。
 
-Another difference is that a keyword search will return objects that match any of the tokens in the query. This is different from a filter, which is sensitive to the filtering operator. Depending on the desired result, you could use an `"Equal"` operator, `"ContainsAny"`, or `"ContainsAll"`, for example.
+もう一つの違いは、キーワード検索ではクエリ内のトークンのいずれかが一致すればオブジェクトが返されることです。フィルターの場合は演算子によって挙動が変わり、たとえば `"Equal"`、`"ContainsAny"`、`"ContainsAll"` などを使い分ける必要があります。
 
-The next section will demonstrate this, as well as how stop words are treated.
+次のセクションではこれを示し、ストップワードがどのように扱われるかも説明します。
 
-#### "**A mouse**" vs "**mouse**" - stop words
+#### 「**A mouse**」 vs 「**mouse**」 - ストップワード
 
-Here, we search for variants of the phrase "computer mouse", where some queries include additional words.
+ここでは、「computer mouse」というフレーズの変形を検索し、一部のクエリに追加の単語を含めています。
 
-Now, take a look at the results.
+では、結果を見てみましょう。
 
-**Matches for `"computer mouse"`**
+**`"computer mouse"` に対するマッチ**
 
 |                              | `word`    | `lowercase` | `whitespace` | `field` |
 |------------------------------|-----------|-------------|--------------|---------|
@@ -101,7 +100,7 @@ Now, take a look at the results.
 | `"a computer mouse"`         | 0.764     | 0.764       | 0.849        | ❌      |
 | `"computer mouse pad" `      | 0.764     | 0.764       | 0.849        | ❌      |
 
-**Matches for `"a computer mouse"`**
+**`"a computer mouse"` に対するマッチ**
 
 |                              | `word`    | `lowercase` | `whitespace` | `field` |
 |------------------------------|-----------|-------------|--------------|---------|
@@ -129,21 +128,20 @@ Now, take a look at the results.
 
 </details>
 
-The results here are similar to the filter example, but more nuanced and quite interesting!
+結果はフィルターの例と似ていますが、より微妙で興味深い違いがあります。
 
-Under `word` tokenization, the search for `computer mouse` produces identical results to the search for `a computer mouse`. This is because the stop word `a` is not considered in the search.
+`word` トークン化では、`computer mouse` の検索結果は `a computer mouse` の検索結果と同一になります。これはストップワード `a` が検索では考慮されないためです。
 
-But note that the scores are different for returned objects where the only differences are stopwords, such as `"computer mouse"` and `"a computer mouse"`. This is because the BM25f algorithm does [index stopwords](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords), and they do impact the score.
+しかし、`"computer mouse"` と `"a computer mouse"` のようにストップワードだけが異なるオブジェクトでもスコアが異なる点に注目してください。これは BM25f アルゴリズムが[ストップワードをインデックスする](../../../weaviate/config-refs/indexing/inverted-index.mdx#stopwords)ためで、スコアには影響があります。
 
-As a user, you should keep this in mind, and you can configure the stop words in the collection definition to suit your desired behavior.
+ユーザーとしてはこの点を念頭に置き、コレクション定義でストップワードを設定して希望の挙動に合わせることが可能です。
 
-Another interesting note is that the `lowercase` and `whitespace` tokenization methods do not remove stop words in the query.
+また、`lowercase` と `whitespace` のトークン化方式では、クエリ内のストップワードは削除されません。
 
-This behavior allows users who want to include stop words in their search queries to do so.
+この挙動により、ストップワードを明示的に検索クエリに含めたいユーザーも対応可能です。
+#### 「**variable_name**」と「**variable name**」 − 記号
 
-#### "**variable_name**" vs "**variable name**" - symbols
-
-The table below shows keyword search results using the string `"variable_name"` and the resulting scores.
+以下のテーブルは、文字列 `variable_name` を使用した keyword 検索の結果と、それに対応するスコアを示しています。
 
 |                              | `word`    | `lowercase` | `whitespace` | `field` |
 |------------------------------|-----------|-------------|--------------|---------|
@@ -173,22 +171,21 @@ The table below shows keyword search results using the string `"variable_name"` 
 
 </details>
 
-These results are once again similar to the filter example. If your data contains symbols that are important to your search, you should consider using a tokenization method that preserves symbols, such as `lowercase` or `whitespace`.
+これらの結果は、フィルターの例と同様です。検索で重要となる記号がデータに含まれている場合は、`lowercase` や `whitespace` など、記号を保持する tokenization 方法の使用を検討してください。
 
-### <i class="fa-solid fa-chalkboard"></i> Discussions
+### <i class="fa-solid fa-chalkboard"></i> 議論
 
-That's it for keyword searches and tokenization. Similarly to filters, the choice of tokenization method is a big part of your overall search strategy.
+keyword 検索と tokenization については以上です。フィルターの場合と同様に、どの tokenization 方法を選択するかは、検索戦略全体の大きな要素となります。
 
-Our generally advice for tokenization in keyword searching is similar to [our advice for filtering](./300_filters.mdx#-discussions). Start with `word`, and consider others such as `lowercase` or `whitespace` if symbols, or cases encode important information in your data.
+keyword 検索における tokenization の一般的なアドバイスは、[フィルターの場合](./300_filters.mdx#-discussions)と似ています。まずは `word` を使用し、データ内で記号や大文字・小文字が重要な情報を持つ場合は `lowercase` や `whitespace` などを検討してください。
 
-Using `field` tokenization may be too strict for keyword searches, as it will not match any
-objects that do not contain the exact string in the exact order.
+`field` tokenization は非常に厳格で、完全に一致する文字列が同じ順序で存在しないオブジェクトはヒットしないため、keyword 検索には適さない場合があります。
 
-Lastly, keep in mind that keyword searches produce ranked results. Therefore, tokenization will not only affect the results set but also their ranking within the set.
+また、keyword 検索は順位付きの結果を返します。そのため、tokenization は結果の集合だけでなく、その集合内での順位にも影響します。
 
-With these considerations in mind, you can configure your tokenization strategy to best suit your data and your users' needs.
+これらの点を踏まえ、データとユーザーのニーズに最適な tokenization 戦略を設定してください。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

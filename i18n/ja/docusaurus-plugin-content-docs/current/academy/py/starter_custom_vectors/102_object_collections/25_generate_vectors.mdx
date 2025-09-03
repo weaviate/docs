@@ -1,5 +1,5 @@
 ---
-title: (Bonus) Generate vectors
+title: （ボーナス） ベクトルを生成する
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,13 +7,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!../_snippets/102_collection.py';
 
-Since we are using custom vectors, we need to generate them ourselves.
+カスタム ベクトル を使用しているため、自分で生成する必要があります。
 
-This step is optional, as the next section shows you how to download and use the pre-generated vectors. But if you are interested in how to generate vectors, read on.
+この手順は任意です。次のセクションでは、あらかじめ生成された ベクトル をダウンロードして使用する方法を説明します。ベクトル の生成方法に興味がある場合は、引き続きお読みください。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example creates embeddings for the movie dataset:
+次の例では、映画データセットの埋め込みを生成します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -22,17 +22,17 @@ This example creates embeddings for the movie dataset:
   language="py"
 />
 
-This will generate a vector for each movie in the dataset, which we can use when adding the movies to Weaviate.
+これにより、データセット内の各映画に対して ベクトル が生成され、映画を Weaviate に追加するときに利用できます。
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-### <i class="fa-solid fa-chalkboard"></i> Model
+### <i class="fa-solid fa-chalkboard"></i> モデル
 
-We use the `embed-multilingual-v3.0` Cohere model to generate the vector embeddings. You could also use the `transformers` library, if you would like to perform the generation locally.
+ベクトル 埋め込みの生成には `embed-multilingual-v3.0` Cohere モデルを使用します。ローカルで生成したい場合は `transformers` ライブラリを使用することも可能です。
 
-### <i class="fa-solid fa-code"></i> Source text
+### <i class="fa-solid fa-code"></i> ソース テキスト
 
-We combine the movie title and overview to create a source string for the model. This is the text that the model will "translate" into a vector.
+映画のタイトルと概要を結合して、モデル用のソース文字列を作成します。モデルはこのテキストを「翻訳」して ベクトル に変換します。
 
 <FilteredTextBlock
   text={PyCode}
@@ -41,9 +41,9 @@ We combine the movie title and overview to create a source string for the model.
   language="py"
 />
 
-### <i class="fa-solid fa-code"></i> Get embeddings in batches
+### <i class="fa-solid fa-code"></i> バッチで埋め込みを取得する
 
-We use a buffer to store the concatenated strings, and then get the embeddings in batches. This is a good practice to limit the number of requests to the model, and to avoid timeouts.
+連結した文字列をバッファに保存し、バッチで埋め込みを取得します。これにより、モデルへのリクエスト回数を抑え、タイムアウトを防げます。
 
 <FilteredTextBlock
   text={PyCode}
@@ -52,9 +52,9 @@ We use a buffer to store the concatenated strings, and then get the embeddings i
   language="py"
 />
 
-### <i class="fa-solid fa-chalkboard"></i> Export the embeddings
+### <i class="fa-solid fa-chalkboard"></i> 埋め込みをエクスポートする
 
-The embeddings are then saved to a file so that we can use when adding the movies to Weaviate.
+生成した埋め込みをファイルに保存し、映画を Weaviate に追加する際に利用できるようにします。
 
 <FilteredTextBlock
   text={PyCode}
@@ -63,7 +63,7 @@ The embeddings are then saved to a file so that we can use when adding the movie
   language="py"
 />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

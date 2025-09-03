@@ -1,5 +1,5 @@
 ---
-title: 106 Data Import
+title: 106 データインポート
 sidebar_position: 106
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: A brief introduction to chunking
-description: Understand the fundamentals of chunking in Weaviate's Python SDK.
+title: チャンク化の簡潔な紹介
+description: Weaviate の Python SDK におけるチャンク化の基本を理解します。
 ---
 
 <!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
@@ -11,77 +11,80 @@ import PreviewUnit from '../../../_snippets/preview.mdx'
 
 <PreviewUnit />
 
-## <i class="fa-solid fa-square-chevron-right"></i> What is chunking?
+## <i class="fa-solid fa-square-chevron-right"></i> チャンク化とは
 
-Chunking is the pre-processing step of splitting texts into smaller pieces of texts, i.e. "chunks".
+チャンク化とは、テキストをより小さな断片 ― すなわち「チャンク」 ― に分割する前処理ステップです。
 
-You know by now that a vector database stores objects by corresponding vectors to capture their meaning. But just *how much* text does each vector capture the meaning of? Chunking defines this. Each chunk is the unit of information that is vectorized and stored in the database.
+ベクトル データベースは、オブジェクトを意味を捉えたベクトルと共に格納することをご存じでしょう。しかし、各ベクトルが *どれだけ* のテキストの意味を捉えるのでしょうか？ それを定義するのがチャンク化です。各チャンクこそがベクトル化され、データベースに保存される情報単位となります。
 
-Consider a case where the source text comprises a set of books. A chunking method could conceivably split the text into a set of chapters, paragraphs, sentences, or even words, into chunks.
+例えば、ソース テキストが複数冊の書籍で構成されている場合を考えてみましょう。チャンク化手法によっては、書籍を章・段落・文、さらには単語レベルまで分割することも可能です。
 
-While this is a simple concept, it can have a significant impact on the performance of vector databases, and outputs of language models.
+単純な概念ですが、ベクトル データベースの性能や言語モデルの出力に大きな影響を及ぼします。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Why chunk data?
+## <i class="fa-solid fa-square-chevron-right"></i> データをチャンク化する理由
 
-### <i class="fa-solid fa-chalkboard"></i> For information retrieval
+### <i class="fa-solid fa-chalkboard"></i> 情報検索のため
 
-Let's go back to the above example, building a vector database from a set of books.
+先ほどの例 ― 書籍セットからベクトル データベースを構築する ― に戻りましょう。
 
-At one extreme, you could catalog each book as one vector. This would build a database that's similar to a library catalog.
+極端なケースとして、各書籍を 1 つのベクトルとして登録する方法があります。これは図書館の蔵書目録のようなデータベースを構築することになります。
 
-It would be good for finding books that are most similar to the query string. But because each vector captures a book, it is unlikely to be so useful for more granular tasks - like finding specific information within a book.
+この方法はクエリに最も近い書籍を見つけるには有用ですが、ベクトルが書籍全体を対象としているため、書籍内の特定情報を探すといったより細粒度のタスクには適していません。
 
-At the other extreme, you could catalog each sentence as a vector. This would build a database that's similar to a thesaurus - albeit, at a sentence level. This would be good for finding specific concepts or information conveyed by the writer. But it might not work so well for finding broader information, such as the idea conveyed by a book, or even a chapter.
+逆に、各文を 1 つのベクトルとして登録する方法もあります。これは文レベルのシソーラスのようなデータベースを構築するイメージです。筆者が伝えたい特定の概念や情報を見つけるには適していますが、本や章といったより広い情報を探すには不向きかもしれません。
 
-Whether to choose one or the other approach, or a third approach in-between, depends on your use case. And we'll talk more about some rules of thumb and key considerations later on.
+どちらを選ぶか、あるいはその中間の方法を選ぶかはユースケース次第です。指針や考慮点については後ほど詳しく説明します。
 
-But the key point for now is that chunking defines the unit of information that is stored in the database, and therefore each unit of information to be retrieved.
+ここでの重要ポイントは、チャンク化がデータベースに保存される情報単位、すなわち検索・取得される情報単位を定義するということです。
 
-As we will see later on, this has implications not only search, but also retrieval augmented generation (RAG) use case downstream.
+後述するように、これは検索だけでなく下流の検索拡張生成 (RAG) ユースケースにも影響します。
 
-### <i class="fa-solid fa-chalkboard"></i> To meet model requirements
+### <i class="fa-solid fa-chalkboard"></i> モデル要件への適合
 
-Another reason to chunk data is to help meet the requirements of the language model used.
+チャンク化のもう一つの理由は、使用する言語モデルの要件を満たすためです。
 
-These models typically have a finite "window" of text input lengths, and source texts often exceed this length. Remember that the Lord of the Rings, for example, is over 500,000 words long!
+これらのモデルには入力テキスト長に関する有限の「ウィンドウ」があり、ソース テキストがその長さを超えることがよくあります。例えば『ロード・オブ・ザ・リング』は 500,000 語を超えます！
 
-A typical "context window" of these models are in the order of thousands of "tokens" (words, parts of words, punctuation, etc.). This means that the text input to the model must be split into chunks of this size or smaller.
+一般的なモデルの「コンテキスト ウィンドウ」は数千トークン（単語、語の一部、句読点など）程度です。そのため、モデルに入力するテキストはこのサイズ以下のチャンクに分割する必要があります。
 
-### <i class="fa-solid fa-chalkboard"></i> For optimal retrieval augmented generation (RAG)
+### <i class="fa-solid fa-chalkboard"></i> 最適な検索拡張生成 (RAG) のため
 
-Chunking is also important for optimizing retrieval augmented generation, or RAG. (If you need a refresher on what RAG is, you can review [this module](../../zero_to_mvp/104_queries_2/30_generative.mdx).)
+チャンク化は検索拡張生成 (RAG) を最適化するためにも重要です。（RAG について復習が必要な場合は、[こちらのモジュール](../../zero_to_mvp/104_queries_2/30_generative.mdx) をご覧ください。）
 
-In short, RAG allows you to ground large language models (LLMs) by providing retrieved data from a database along with a prompt. This in turn can prevent the model from generating factually incorrect information due to outdated or missing data.
+要するに、RAG ではデータベースから取得したデータをプロンプトと一緒に大規模言語モデル (LLM) に渡すことで、モデルを現実の情報に基づかせることができます。これにより、古い情報や欠落した情報による事実誤りを防ぐことができます。
 
-So why does chunking affect RAG? This is because LLMs currently have a finite maximum input size, called the context window. As a result, the chunk size defines how many chunks can be included in the context window. This in turn defines how many different places the LLM can retrieve information from, and how much information is in each object.
+それでは、なぜチャンク化が RAG に影響するのでしょうか？ LLM には入力サイズの上限 ― コンテキスト ウィンドウ ― があるため、チャンク サイズはコンテキスト ウィンドウに含められるチャンク数を決定します。これはつまり、LLM が参照できる情報源の数と、各オブジェクトに含まれる情報量を決めることになります。
 
-Let's consider what happens when you use a chunk size that is too small or too large.
+チャンク サイズが小さすぎる場合、大きすぎる場合に何が起きるかを考えてみましょう。
 
-#### (Too) Small chunks
+#### 小さすぎるチャンク
 
-Using short chunks, you can add information from more chunks to the LLM. However, it may lead to insufficient contextual information being passed on in each result to the LLM.
+短いチャンクを使うと、多くのチャンクから情報を LLM に渡すことができます。しかし、各結果に含まれる文脈情報が不足する可能性があります。
 
-Imagine passing the following as a chunk to the LLM: `In the dense areas, most of the concentration is via medium- and high-rise buildings.`. This tells a lot about the nature of this area, but without further context it's not useful to the LLM. Where is this sentence about? Why are we talking about the density anyway? As a human reader, it's not clear at all to us, and it would be the same for the LLM, which would have to guess at these answers.
+次の文をチャンクとして LLM に渡す場合を想像してみてください：  
+`In the dense areas, most of the concentration is via medium- and high-rise buildings.`  
+この文からその地域の性質について多くを語っていますが、さらなる文脈がないと LLM にとっては有用ではありません。この文はどこについて語っているのでしょうか？ なぜ密度について話しているのでしょうか？ 人間にも分かりづらいですし、LLM も同様に推測せざるを得ません。
 
-Contrast that with instead passing: `Wikipedia: London: Architecture: In the dense areas, most of the concentration is via medium- and high-rise buildings. London's skyscrapers, such as 30 St Mary Axe (dubbed "The Gherkin"), Tower 42, the Broadgate Tower and One Canada Square, are mostly in the two financial districts, the City of London and Canary Wharf.` as a chunk.
+対照的に、以下のように渡したらどうでしょうか：  
+`Wikipedia: London: Architecture: In the dense areas, most of the concentration is via medium- and high-rise buildings. London's skyscrapers, such as 30 St Mary Axe (dubbed "The Gherkin"), Tower 42, the Broadgate Tower and One Canada Square, are mostly in the two financial districts, the City of London and Canary Wharf.`
 
-This includes more contextual information to the LLM, such as the source, article title, section title, and additional sentences. It is far clearer to us, and would be to the LLM as well.
+ソース、記事タイトル、セクションタイトル、追加の文など、より多くの文脈情報が含まれているため、私たちにも LLM にとってもはるかに明確です。
 
-#### (Too) Large chunks
+#### 大きすぎるチャンク
 
-Of course, on the other hand, using larger chunks would mean fewer chunks would fit into the context window of the LLM, or incur additional costs. And it may increase the amount of irrelevant information in the data.
+一方で、チャンクが大きすぎると、LLM のコンテキスト ウィンドウに収まるチャンク数が少なくなったり、コストが増加したりします。また、不要な情報が増える可能性もあります。
 
-Taking this to the logical conclusion, imagine you could only pass one contiguous passage of text to the LLM. It would be like being asked to write an essay based only on one section of a book.
+極端な例として、一続きのテキストしか LLM に渡せないとしたらどうでしょうか。それは、書籍の 1 つのセクションだけを使ってエッセイを書けと言われるようなものです。
 
-Either extremes are not ideal, and the trick is to find a balance that works for you.
+どちらの極端も理想的ではなく、バランスを見つけることが重要です。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Chunk size selection
+## <i class="fa-solid fa-square-chevron-right"></i> チャンクサイズの選定
 
-As you can start to see, there are multiple factors at play to help you choose the right chunk size.
+ご覧のように、適切なチャンク サイズを選ぶには複数の要因が絡み合います。
 
-Unfortunately, there isn't a chunk size or chunking technique that works for everybody. The trick here is to find a size that works for *you* - one that isn't too small or too large, and also chunked with a method that suits you.
+残念ながら、誰にとっても万能なチャンク サイズやチャンク化手法は存在しません。ポイントは、*あなた* に合った ― 小さすぎず大きすぎず、かつ手法も適切な ― サイズを見つけることです。
 
-In the next unit, we'll begin to review these ideas, starting with some common chunking techniques.
+次のユニットでは、一般的なチャンク化手法からレビューを始め、これらのアイデアを掘り下げていきます。
 
 <!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
 
@@ -101,7 +104,7 @@ Try out ...
 Add summary
 ::: -->
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

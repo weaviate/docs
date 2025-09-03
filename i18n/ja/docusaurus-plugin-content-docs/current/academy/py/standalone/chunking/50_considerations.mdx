@@ -1,6 +1,6 @@
 ---
-title: Considerations & suggestions
-description: Learn key considerations for chunking large datasets effectively.
+title: 考慮事項と提案
+description: 大規模データセットを効果的にチャンク化する際の主な考慮事項を学びます。
 ---
 
 <!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
@@ -11,65 +11,65 @@ import PreviewUnit from '../../../_snippets/preview.mdx'
 
 <PreviewUnit />
 
-## <i class="fa-solid fa-square-chevron-right"></i> Overview
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
 
-We have covered a lot of ground on chunking in this unit already.
+このユニットでは、チャンク化について多くを学習してきました。
 
-You saw what chunking is and learned about different chunking methods, and dived into example implementations so that you can see their impact.
+チャンク化とは何かを確認し、さまざまなチャンク化手法を学び、その影響を理解できるように実装例も掘り下げました。
 
-In this section, we will take a step back out from the detailed, micro view to the high level, macro view, while using all that we've learned in context. More specifically, we will take a look at some considerations of what to think about when chunking data, and what it means for your Weaviate implementation.
+このセクションでは、これまでの詳細なミクロ視点から一歩引き、学んだ内容を文脈に当てはめながらマクロ視点で考えていきます。具体的には、データをチャンク化する際に検討すべきポイントと、それが Weaviate 実装にどのように影響するかを見ていきます。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Considerations
+## <i class="fa-solid fa-square-chevron-right"></i> 考慮事項
 
-As you have seen, there are many different ways to chunk data. But which one is right for you?
+ご覧いただいたとおり、データをチャンク化する方法は多数あります。では、どれが最適なのでしょうか。
 
-The answer is, as always, "it depends". But here are some things to consider when choosing a chunking method:
+答えはいつものように「ケース・バイ・ケース」です。ただし、チャンク化手法を選ぶ際に考慮すべき事項を以下に示します。
 
-#### Text per search result
+#### 検索結果あたりのテキスト量
 
-How much text should each "hit" in your search results contain? Is it a sentence, or a paragraph, or something else?
+検索結果の各「ヒット」にどれだけのテキストを含めるべきでしょうか。1 文なのか 1 段落なのか、それとも別の単位なのか。
 
-A natural fit would be to chunk the data into the same size as the desired search result.
+自然な考え方としては、取得したい検索結果と同じサイズでデータをチャンク化することです。
 
-#### Input query length
+#### 入力クエリの長さ
 
-Consider what a typical input query might look like. Will it be short search strings, or longer texts, such as those extracted from a document?
+一般的な入力クエリがどのようなものかを検討してください。短い検索文字列でしょうか。それとも文書から抽出したような長いテキストでしょうか。
 
-Keep in mind that the vector of the query will be compared to the vector of the chunks. So, it may be helpful to have shorter chunks for shorter queries, and longer chunks for longer queries.
+クエリの ベクトル はチャンクの ベクトル と比較されることを念頭に置いてください。したがって、短いクエリには短いチャンク、長いクエリには長いチャンクが役立つ場合があります。
 
-In cases where shorter chunks are used but further context would be beneficial, you could structure your app so that you return the chunk that contains the search term, and the surrounding chunks.
+短いチャンクを使用していて追加のコンテキストが必要な場合は、検索語を含むチャンクとその前後のチャンクをまとめて返すようにアプリを設計すると良いでしょう。
 
-#### Database size
+#### データベースサイズ
 
-The larger the chunks, the fewer chunks there will be, and the smaller the database will be. This may be important if you are working with a large dataset.
+チャンクが大きいほどチャンク数は減り、データベース自体は小さくなります。大規模データセットを扱う場合は重要な観点です。
 
-#### Model requirements
+#### モデルの制約
 
-You will need to ensure that the chunk size is within the model's maximum allowed size (context window). This goes for generating embeddings, as well as for RAG.
+チャンクサイズがモデルの最大許容サイズ（コンテキストウィンドウ）以内に収まるようにする必要があります。これは埋め込みの生成にも RAG にも当てはまります。
 
-#### RAG workflows
+#### RAG ワークフロー
 
-As discussed earlier, shorter chunks will make it easier to include many chunks from a variety of sources, but may not provide enough context. Longer chunks will provide more context, but may not be able to include as many chunks.
+前述のとおり、短いチャンクは多様なソースから多数のチャンクを取り込むのに適しますが、コンテキストが不足する可能性があります。長いチャンクはより多くのコンテキストを提供できますが、取り込めるチャンク数が限られるかもしれません。
 
-### <i class="fa-solid fa-chalkboard"></i> Rule of thumb
+### <i class="fa-solid fa-chalkboard"></i> 経験則
 
-Having said all that, it may be helpful to have a rule of thumb to start with. We suggest starting with a chunk size of 100-150 words and going from there.
+とはいえ、出発点としての経験則があると便利です。まずは 100〜150 語程度のチャンクサイズから始めることをお勧めします。
 
-Then, you can modify the chunk size based on the considerations above, and your observations on your app's performance.
+その後、上記の考慮事項やアプリのパフォーマンス観察結果に基づき、チャンクサイズを調整してください。
 
-## <i class="fa-solid fa-square-chevron-right"></i> Data modelling
+## <i class="fa-solid fa-square-chevron-right"></i> データモデリング
 
-By definition, chunking your source data will mean creating multiple objects out of one source.
+定義上、ソースデータをチャンク化すると 1 つのソースから複数のオブジェクトが生成されます。
 
-Accordingly, you should consider how to model your data to capture the relationships between the chunks and the source data, as well as between chunks. This may help you to efficiently retrieve what you need, such as the metadata relating to the source, or surrounding chunks.
+したがって、チャンクとソースデータ間、さらにはチャンク同士の関係をどのようにモデル化するかを検討する必要があります。これにより、ソースに関するメタデータや周辺チャンクなど、必要な情報を効率的に取得できるようになります。
 
-### <i class="fa-solid fa-code"></i> Collection definition examples
+### <i class="fa-solid fa-code"></i> コレクション定義の例
 
-Consider a Weaviate database designed to store data from a library of reference books.
+参考書ライブラリのデータを保存するよう設計された Weaviate データベースを考えてみましょう。
 
-Storing each book as a vector may still be too large, so you may want to chunk the books into paragraphs. Having done so, you may want to create a `Book` collection, and a `Paragraph` collection, with the `Paragraph` collection having the cross-reference property `fromBook`. This will allow you to retrieve the book metadata from the `Book` collection, and the surrounding paragraphs from the `Paragraph` collection.
+各書籍を 1 つの ベクトル として保存すると依然としてサイズが大き過ぎるかもしれません。そのため、書籍を段落単位にチャンク化したうえで `Book` コレクションと `Paragraph` コレクションを作成し、`Paragraph` コレクションにクロスリファレンスプロパティ `fromBook` を持たせる方法が考えられます。これにより、書籍のメタデータは `Book` コレクションから、周辺の段落は `Paragraph` コレクションから取得できます。
 
-So, for example, you may build a `Book` collection like this:
+たとえば、次のように `Book` コレクションを構築できます。
 
 ```json
 {
@@ -94,7 +94,7 @@ So, for example, you may build a `Book` collection like this:
 }
 ```
 
-And add a `Paragraph` collection like this, that references the `Book` collection:
+そして `Book` コレクションを参照する `Paragraph` コレクションを次のように追加します。
 
 ```json
 {
@@ -120,29 +120,11 @@ And add a `Paragraph` collection like this, that references the `Book` collectio
 }
 ```
 
-Note that in this configuration, the `Book` collection is not vectorized, but the `Paragraph` collection is. This will allow the `Book` collection to be used for storage and retrieval of metadata, while the `Paragraph` collection is used for search.
+この構成では、`Book` コレクションはベクトル化されておらず、`Paragraph` コレクションのみがベクトル化されている点に注意してください。これにより、`Book` コレクションはメタデータの保存・取得に、`Paragraph` コレクションは検索にそれぞれ活用できます。
 
-This is just one example of how you could model your data. You may want to experiment with different configurations to see what works best for your use case.
+これはデータをモデル化する方法の一例に過ぎません。ユースケースに最適な構成を見つけるために、さまざまな設定を試してみてください。
 
-<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
-
-<Quiz questions={varName} />
-
-Any quiz questions
-
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
-
-:::note <i class="fa-solid fa-square-terminal"></i> Exercise
-Try out ...
-:::
-
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
-
-:::info
-Add summary
-::: -->
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,6 +1,6 @@
 ---
-title: "'Single prompt' generation"
-description: Single Prompt for Multimodal RAG
+title: "「シングルプロンプト」生成"
+description: "マルチモーダル RAG のシングルプロンプト"
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/104_rag.mts';
 
-A 'single prompt' generation wil perform RAG queries on each retrieved object. This is useful when you want to transform each object separately, with the same prompt.
+「シングルプロンプト」生成では、取得した各オブジェクトに対して RAG クエリを実行します。これは、同じプロンプトを用いて各オブジェクトを個別に変換したい場合に便利です。
 
-### <i class="fa-solid fa-code"></i> Code
+### <i class="fa-solid fa-code"></i> コード
 
-This example finds entries in "Movie" based on their similarity to [this image of the International Space Station](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg). Then, instructs the large language model to translate the title of each movie into French.
+この例では、[国際宇宙ステーションの画像](https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/International_Space_Station_after_undocking_of_STS-132.jpg/440px-International_Space_Station_after_undocking_of_STS-132.jpg)との類似度に基づいて「 Movie 」内のエントリーを検索します。その後、大規模言語モデルに各映画のタイトルをフランス語へ翻訳するよう指示します。
 
-Each of the results are then printed out to the console.
+結果はそれぞれコンソールに出力されます。
 
 <FilteredTextBlock
   text={TSCode}
@@ -23,12 +23,12 @@ Each of the results are then printed out to the console.
   language="ts"
 />
 
-## <i class="fa-solid fa-chalkboard"></i> Explain the code
+## <i class="fa-solid fa-chalkboard"></i> コードの解説
 
-You must pass on one or more properties to the `singlePrompt` parameter through braces, as we've done here with `"... {title} ..."`. This will instruct Weaviate to pass on the `title` property from each retrieved object to the large language model.
+`singlePrompt` パラメーターには、中括弧を用いて 1 つ以上のプロパティを渡す必要があります。ここでは `"... {title} ..."` として `title` プロパティを各取得オブジェクトから大規模言語モデルへ渡すように指定しています。
 
 <details>
-  <summary>Example results</summary>
+  <summary>例の結果</summary>
 
 ```text
 Interstellar
@@ -45,12 +45,12 @@ Godzilla
 
 </details>
 
-### <i class="fa-solid fa-chalkboard"></i> Response object
+### <i class="fa-solid fa-chalkboard"></i> レスポンスオブジェクト
 
-Each response object is similar to that from a regular search query, with an additional `generated` attribute. This attribute will contain the generated output for each object.
+各レスポンスオブジェクトは通常の検索クエリの結果と似ていますが、追加で `generated` 属性が含まれます。この属性には、各オブジェクトに対して生成された出力が格納されます。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,35 +1,35 @@
 ---
-title: Effective vector search
+title: 効果的な ベクトル 検索
 sidebar_position: 40
 ---
 
 import imageUrl from '../../tmp_images/academy_placeholder.jpg';
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vector search theory
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル 検索 の 理論
 
-<img src={imageUrl} alt="Image alt" width="75%"/>
+<img src={imageUrl} alt="画像の alt" width="75%"/>
 
-### <i class="fa-solid fa-chalkboard"></i> Distance metrics
+### <i class="fa-solid fa-chalkboard"></i> 距離 指標
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vectorizer overview
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトライザー の 概要
 
-<img src={imageUrl} alt="Image alt" width="75%"/>
+<img src={imageUrl} alt="画像の alt" width="75%"/>
 
-### <i class="fa-solid fa-chalkboard"></i> Rules of thumb
+### <i class="fa-solid fa-chalkboard"></i> 経験則
 
-### <i class="fa-solid fa-code"></i> Setting vectorizers
+### <i class="fa-solid fa-code"></i> ベクトライザー の 設定
 
-## <i class="fa-solid fa-square-chevron-right"></i> Additional search methods
+## <i class="fa-solid fa-square-chevron-right"></i> 追加 の 検索 手法
 
-### Search operators
+### 検索 オペレーター
 
-Just as you need to provide search terms to perform a lexical search, Weaviate requires a source vector to perform a vector search.
+語彙 検索 を 行う とき に 検索 語 を 指定 する の と 同様 に、 Weaviate で ベクトル 検索 を 実行 する には、検索 元 と なる ベクトル を 提供 する 必要 が あります。  
 
-These can be provided as arguments in GraphQL, using `nearVector`, `nearObject`, or `nearText` for example.
+これら は 例 として `nearVector`、`nearObject`、`nearText` を 使用 し、 GraphQL の 引数 として 渡す こと が できます。  
 
-These are provided to Weaviate as arguments to the class (e.g. `Get`) in the GraphQL query.
+これら は GraphQL クエリ 内 で クラス（例: `Get`）への 引数 として Weaviate に 提供 され ます。  
 
-For example, the following query adds a `nearVector` operator to look for similar objects in the `Question` class:
+例えば、次 の クエリ は `Question` クラス で 類似 オブジェクト を 検索 する ため に `nearVector` オペレーター を 追加 して います。
 
 ```graphql
 {
@@ -47,7 +47,7 @@ For example, the following query adds a `nearVector` operator to look for simila
 print(json.dumps(response, indent=2))
 ```
 
-When a vector for "unusual animals" is used as a the input, the query returns:
+「unusual animals」 の ベクトル を 入力 と した 場合、クエリ は 次 の よう に 返却 します。
 
 ```json
 {
@@ -64,37 +64,37 @@ When a vector for "unusual animals" is used as a the input, the query returns:
 }
 ```
 
-Search operators can also be used with the `Aggregate` and `Explore` functions. They are key inputs that specify the way in which the vector space is searched. We will review these in more detail in a following section of this unit.
+検索 オペレーター は `Aggregate` や `Explore` 関数 と 共 に も 使用 できます。これら は ベクトル 空間 を どの よう に 探索 する か を 指定 する 重要 な 入力 です。詳細 は この ユニット の 後半 で 取り上げ ます。
 
-<img src={imageUrl} alt="Image alt" width="75%"/>
+<img src={imageUrl} alt="画像の alt" width="75%"/>
 
 ### <i class="fa-solid fa-code"></i> `NearObject`
 
 ### <i class="fa-solid fa-code"></i> `NearVector`
 
-## <i class="fa-solid fa-square-chevron-right"></i> Vector search theory
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル 検索 の 理論
 
-<img src={imageUrl} alt="Image alt" width="75%"/>
+<img src={imageUrl} alt="画像の alt" width="75%"/>
 
-### <i class="fa-solid fa-chalkboard"></i> Distance metrics
+### <i class="fa-solid fa-chalkboard"></i> 距離 指標
 
-## <i class="fa-solid fa-square-chevron-right"></i> Review
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
 
-<img src={imageUrl} alt="Image alt" width="75%"/>
+<img src={imageUrl} alt="画像の alt" width="75%"/>
 
-### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+### <i class="fa-solid fa-pen-to-square"></i> 復習 エクササイズ
 
-Can you describe, in your own sentence, XXX?
+あなた 自身 の 言葉 で XXX を 説明 できます か？
 
 :::warning TODO
 Input box for user to put answer in and get back a similarity score & our definition?
 ??
 :::
 
-### <i class="fa-solid fa-lightbulb-on"></i> Key takeaways
+### <i class="fa-solid fa-lightbulb-on"></i> 重要 な ポイント
 
 :::info
-Add summary
+概要 を 追加
 :::
 
 import Quiz from '/src/components/Academy/quiz.js'

@@ -1,10 +1,10 @@
-# Leftover information
+# その他の情報
 
-### `Get` with cross-references
+### クロスリファレンス付き `Get`
 
-And before we wrap up this section, let's take a look at how to perform a `Get` query with cross-references. While we have not yet covered cross-references in detail in this unit, for now it is sufficient to know that they are a way to connect objects to each other.
+このセクションを締めくくる前に、クロスリファレンスを利用した `Get` クエリの実行方法を見てみましょう。本ユニットではまだクロスリファレンスを詳しく扱っていませんが、ここではオブジェクト同士を接続する手段であることだけ理解していれば十分です。
 
-In the example below, we will perform a `Get` query on the `Question` class, but this time we will include the `hasCategory` property in the query. This property is a cross-reference to the `Category` class, and will be used to return the category of each question.
+以下の例では、`Question` クラスに対して `Get` クエリを実行しますが、今回は `hasCategory` プロパティもクエリに含めます。このプロパティは `Category` クラスへのクロスリファレンスであり、各質問のカテゴリを返すために使用されます。
 
 ```graphql
 {
@@ -34,7 +34,7 @@ In the example below, we will perform a `Get` query on the `Question` class, but
 }
 ```
 
-This produces a result like the following:
+これにより、次のような結果が得られます。
 
 <details>
   <summary>Query results</summary>
@@ -68,10 +68,10 @@ This produces a result like the following:
 
 </details>
 
-Where the `hasCategory` property is now an array of objects, containing objects of type `Category` that the Question is related to and their requested properties. The `title` property of the `Category` class is returned as well, and the `_additional` field contains the `id` of the category. 
+ここでは、`hasCategory` プロパティがオブジェクトの配列となっており、`Question` が関連付けられている `Category` 型のオブジェクトと、その要求したプロパティが格納されています。また、`Category` クラスの `title` プロパティも返され、`_additional` フィールドにはカテゴリの `id` が含まれます。 
 
-Cross-references provide you with a great deal of flexibility and power in your data model, and are a great way to connect objects to each other. We will cover them in more detail in our unit on schemas.
+クロスリファレンスを使用すると、データモデルに高い柔軟性と強力な表現力を持たせることができ、オブジェクト同士を接続する優れた方法となります。スキーマに関するユニットで、これらについてさらに詳しく説明します。
 
 :::info `...` pattern
-You may have noticed the `... on Category` pattern in the above query. This syntax is called a "fragment" in GraphQL terms. Populated this way, the fragment specifies that the `hasCategory` property is of type `Category`, and that the results should be returned as such.
+上記のクエリで `... on Category` というパターンにお気付きかもしれません。この構文は GraphQL の用語で「フラグメント」と呼ばれます。このように記述することで、フラグメントは `hasCategory` プロパティが `Category` 型であることを示し、その形式で結果を返すよう指定しています。
 :::

@@ -1,17 +1,17 @@
 ---
-title: Communicate with Weaviate
-description: Communication Setup for Multimodal Data
+title: Weaviate と通信する
+description: マルチモーダルデータ用の通信設定
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import TSCode from '!!raw-loader!../_snippets/101_connect.mts';
 
-Here, we'll perform basic operations to communicate with Weaviate using the TypeScript client library.
+ここでは、 TypeScript クライアントライブラリを使用して Weaviate と通信する基本的な操作を行います。
 
-### <i class="fa-solid fa-code"></i> Check Weaviate status
+### <i class="fa-solid fa-code"></i> Weaviate のステータス確認
 
-You can check whether the Weaviate instance is up using the `isLive` function.
+`isLive` 関数を使用して、 Weaviate インスタンスが稼働しているかを確認できます。
 
 <FilteredTextBlock
   text={TSCode}
@@ -20,9 +20,9 @@ You can check whether the Weaviate instance is up using the `isLive` function.
   language="ts"
 />
 
-### <i class="fa-solid fa-code"></i> Retrieve server meta information
+### <i class="fa-solid fa-code"></i> サーバーメタ情報の取得
 
-You can retrieve meta information about the Weaviate instance using the `getMeta` function.
+`getMeta` 関数を使用して、 Weaviate インスタンスのメタ情報を取得できます。
 
 <FilteredTextBlock
   text={TSCode}
@@ -31,10 +31,10 @@ You can retrieve meta information about the Weaviate instance using the `getMeta
   language="ts"
 />
 
-This will print the server meta information to the console. The output will look similar to the following:
+これにより、サーバーのメタ情報がコンソールに出力されます。出力例は次のとおりです:
 
 <details>
-  <summary>Example <code>getMeta()</code> output</summary>
+  <summary> `getMeta()` の出力例</summary>
 
 <FilteredTextBlock
   text={TSCode}
@@ -44,11 +44,11 @@ This will print the server meta information to the console. The output will look
 />
 </details>
 
-### <i class="fa-solid fa-code"></i> Close the connection
+### <i class="fa-solid fa-code"></i> 接続の終了
 
-After you have finished using the Weaviate client, you should close the connection. This frees up resources and ensures that the connection is properly closed.
+Weaviate クライアントの使用が終わったら、接続を終了する必要があります。これによりリソースが解放され、接続が正しくクローズされます。
 
-We suggest using a `try`-`finally` block as a best practice. For brevity, we will not include the `try`-`finally` blocks in the remaining code snippets.
+ベストプラクティスとして、 `try`-`finally` ブロックの使用を推奨します。簡潔にするため、以降のコードスニペットでは `try`-`finally` ブロックを省略します。
 
 <FilteredTextBlock
   text={TSCode}
@@ -57,7 +57,7 @@ We suggest using a `try`-`finally` block as a best practice. For brevity, we wil
   language="ts"
 />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

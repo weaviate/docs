@@ -1,35 +1,35 @@
 ---
-title: Embedding models
-description: A look inside embedding models
+title: 埋め込みモデル
+description: 埋め込みモデルの内部を探る
 ---
 
 import ThemedImage from '@theme/ThemedImage';
 
 :::info Embedding models and Weaviate
 
-Embeddings are critical to vector databases such as Weaviate, as they enable vector/semantic search. Vector databases such as Weaviate allow users to store and search through millions, or even billions, of these embeddings with ease.
+埋め込みはベクトル データベースであるWeaviateにとって不可欠で、ベクトル／セマンティック検索を実現します。Weaviateのようなベクトル データベースを使えば、これらの埋め込みを数百万、あるいは数十億件でも簡単に保存・検索できます。
 
 :::
 
-If generative models are the celebrities of the AI world, embedding models may be its plumbing; they’re not glamorous, but critical parts of the infrastructure.
+生成モデルが AI 世界のスターだとすれば、埋め込みモデルは配管のような存在です。華やかさはありませんが、インフラを支える重要な部品です。
 
-Let's take a look at what embedding models are, and why they are so important.
+埋め込みモデルとは何か、そしてなぜそれほど重要なのかを見ていきましょう。
 
-## <i class="fa-solid fa-chalkboard-user"></i> How embedding models work
+## <i class="fa-solid fa-chalkboard-user"></i> 埋め込みモデルの仕組み
 
-An embedding model seeks to capture a “meaning” of the input provided to it. The output embedding can then be used later for tasks such as classification, clustering, or most commonly, information retrieval.
+埋め込みモデルは、与えられた入力の「意味」を捉えることを目指します。生成された埋め込みは、その後、分類・クラスタリング、あるいは最も一般的には情報検索などのタスクに利用できます。
 
-Commonly used embedding models include Cohere’s `embed-multilingual-v3.0`, OpenAI’s `text-embedding-3-large` and Snowflake’s `snowflake-arctic-embed-l-v2.0`.
+よく使われる埋め込みモデルには、Cohere の `embed-multilingual-v3.0`、OpenAI の `text-embedding-3-large`、Snowflake の `snowflake-arctic-embed-l-v2.0` などがあります。
 
-These names tend to be more generic and descriptive. Combined with their less glamorous status, these models may not be as well-known.
+これらの名前は総じて汎用的で説明的です。派手さもないため、あまり知られていないかもしれません。
 
-But they are no less interesting than generative models, and often share many similarities with them. For example, both of them take a text input and convert it to a numerical format with a tokenizer. One key difference is that where a generative model outputs a token at a time, an embedding model outputs a fixed length (or shape) of numbers.
+しかし、生成モデルに劣らず興味深い存在であり、多くの共通点もあります。たとえば、どちらもテキスト入力をトークナイザーで数値形式へ変換します。大きな違いは、生成モデルがトークンを 1 つずつ出力するのに対し、埋め込みモデルは固定長（あるいは固定形状）の数列を一度に出力する点です。
 
-import NNEmbeddingModels from './_img/nn_explained_50_embedding_models.png';
-import NNEmbeddingModelsDark from './_img/nn_explained_50_embedding_models_dark.png';
+import NNEmbeddingModels from './_img/nn_explained_50_embedding_models.png';  
+import NNEmbeddingModelsDark from './_img/nn_explained_50_embedding_models_dark.png';  
 
 <ThemedImage
-  alt="Neural Network Basic Diagram"
+  alt="ニューラルネットワークの基本図"
   sources={{
     light: NNEmbeddingModels,
     dark: NNEmbeddingModelsDark,
@@ -37,31 +37,31 @@ import NNEmbeddingModelsDark from './_img/nn_explained_50_embedding_models_dark.
   width="400"
 />
 
-The concept of numerically representing a meaning may be foreign at first. Let's take a step back and look at a simpler example.
+意味を数値で表現するという概念は、最初はピンとこないかもしれません。ここで一歩戻り、よりシンプルな例を見てみましょう。
 
-### <i class="fa-solid fa-chalkboard-user"></i> An analogy - color encoding
+### <i class="fa-solid fa-chalkboard-user"></i> 類推：色のエンコーディング
 
-An analog for this approach can be found in how we represent colors as numbers - whether it be the RGB, CMYK or HSL system.
+このアプローチの類推として、 RGB や CMYK、 HSL など、色を数値で表現する方法が挙げられます。
 
-Each system can represent any color as a series of numbers. Take the official web color definition of “red” as an example. In RGB it is `[255, 0, 0]`, in CMYK it is `[0, 100, 100, 0]`, and in HSL it is `[0, 100%, 50%]`.
+いずれの方式でも、任意の色を数値の列として表現できます。たとえばウェブ公式の「red」を例に取ると、 RGB では `[255, 0, 0]`、 CMYK では `[0, 100, 100, 0]`、 HSL では `[0, 100%, 50%]` となります。
 
-In other words, each system is a standardized method of representing a color as a set of numbers.
+つまり、それぞれの方式は、色を数列として表現するための標準化された方法です。
 
-Embedding models work similarly. For example, the phrase “You’re a wizard, Harry.”, may be represented as:
+埋め込みモデルも同様に機能します。たとえば、「You’re a wizard, Harry.」というフレーズは次のように表現されるかもしれません。
 
 `[0.021, -0.103, 0.036, 0.088, -0.022, ..., 0.056]`
 
-Where the actual sequence length may be quite large, such as 256, 1024, or 1536 values typically.
+実際のシーケンス長は、 256、 1024、 1536 など、かなり大きいことが一般的です。
 
-To be clear, modern embedding models are far more complex than algorithms that convert colors to RGB values. However, the principle is the same - each system consistently converts its inputs into a sequence of numbers.
+もちろん、最新の埋め込みモデルは、色を RGB 値に変換するアルゴリズムよりはるかに複雑です。しかし原理は同じで、どの方式も入力を一貫して数列に変換します。
 
-How is this useful? As it turns out, for a variety of tasks.
+では、これがどのように役立つのでしょうか。実はさまざまなタスクで利用できます。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Why use embedding models?
+## <i class="fa-solid fa-chalkboard-user"></i> 埋め込みモデルを使う理由
 
-Earlier, we likened embedding models to numerical systems like RGB that can encode color. The key benefit of embedding models is similar to that of color encoding systems; they enable meaningful comparisons of the source object.
+先ほど、埋め込みモデルを色を数値化する RGB のような体系になぞらえました。埋め込みモデルの最大の利点も同様で、元の対象同士を意味のある形で比較できる点にあります。
 
-Going back to RGB colors, “crimson” is `[220, 20, 60]`. You can see that it is quite similar to red’s RGB value of `[255, 0, 0]`, and very different to, say, the RGB value of “aqua”, which is `[0, 255, 255]`.
+ RGB に戻ると、「crimson」は `[220, 20, 60]` です。これが red の `[255, 0, 0]` とかなり近く、一方で「aqua」の `[0, 255, 255]` とは大きく異なることが分かります。
 
 |  | R | G | B |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ Going back to RGB colors, “crimson” is `[220, 20, 60]`. You can see that it 
 | Crimson | 220 | 20 | 60 |
 | Aqua | 0 | 255 | 255 |
 
-In fact, we can quantify the similarity to a single number. We can use a commonly used metric called a “cosine” similarity. Here is an example implementation using Python:
+実際には、類似度を 1 つの数値として定量化できます。そこでよく使用される指標が「コサイン類似度」です。 Python での実装例を示します。
 
 ```python
 import numpy as np
@@ -79,7 +79,7 @@ def cosine_similarity(a: list, b: list) -> float:
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 ```
 
-We can put the results of our comparison into a table, into what is called a similarity matrix. Here, each table cell value is the similarity between its corresponding row and the column.
+比較結果を表にまとめると、これを類似度行列と呼びます。ここでは各セルが、対応する行と列の類似度を表しています。
 
 |  | Red | Crimson | Aqua |
 | --- | --- | --- | --- |
@@ -87,13 +87,13 @@ We can put the results of our comparison into a table, into what is called a sim
 | Crimson | 0.961 | 1 | 0.247 |
 | Aqua | 0 | 0.247 | 1 |
 
-The key takeaway from this demonstration is that the system allows us to compare how similar each color is. Conversely, we now have a way in which we can identify the most similar color to a given color in a bag of colors.
+このデモからの重要なポイントは、この方式を使えば色同士の類似度を比較できるということです。言い換えれば、ある色に最も似ている色を多数の候補の中から特定できるようになります。
 
-## <i class="fa-solid fa-chalkboard-user"></i> Applications of embedding models
+## <i class="fa-solid fa-chalkboard-user"></i> 埋め込みモデルの応用
 
-Going back to our embedding models, the value of embedding models is that it allows us to identify the object with the most similar meaning to a given object, in a set of objects.
+埋め込みモデルの話に戻ると、その価値は、与えられたオブジェクトに対して最も意味が近いオブジェクトを集合の中から見つけ出せる点にあります。
 
-Take these three pieces of text:
+次の 3 つのテキストを見てみましょう。
 
 ```
 1. "You're not wizened, Harry."
@@ -101,35 +101,34 @@ Take these three pieces of text:
 3. "Ron is not a great driver."
 ```
 
-Which one might be most similar to `"You're a wizard, Harry."`?
+これらのうち、`"You're a wizard, Harry."` に最も近いのはどれでしょうか。
 
-Most of us would probably answer 2. But why? And how would you get a program to answer in the same way? Note that 2 only includes one overlapping word with the query.
+おそらく多くの人が 2 と答えるでしょう。しかしその理由は？ そしてプログラムにも同じ答えを出させるには？ 2 にはクエリと重複する語が 1 つしか含まれていない点に注目してください。
 
-That’s the task that embeddings enable. Using embeddings and cosine similarity, we see that:
+これこそ埋め込みが可能にするタスクです。埋め込みとコサイン類似度を使うと、次のような結果になります。
 
-|  | Rank | Cosine distance |
+|  | 順位 | コサイン距離 |
 | --- | --- | --- |
 | Harry can wield magic. | 1 | 0.238 |
 | You're not wizened, Harry. | 2 | 0.274 |
 | Ron is not a great driver. | 3 | 0.803 |
 
-This concept of similarity is used in semantic search. In modern AI systems, semantic search is a critical component of retrieval augmented generation (RAG), helping to complement generative systems by providing it with accurate, up-to-date context to work with.
+この類似度の概念は、セマンティック検索で利用されます。最新の AI システムでは、セマンティック検索は 検索拡張生成 ( RAG ) の重要な構成要素となっており、生成システムに正確で最新のコンテキストを提供して補完します。
 
-Applications of embeddings go even further. Embeddings are used in other AI systems such as recommenders, clustering and classification and so on.
+埋め込みの応用範囲はさらに広がっています。レコメンダー、クラスタリング、分類など、他の AI システムでも広く利用されています。
 
 :::tip Advanced topics
 
-In this section, we largely talked about aspects related to text embedding models, where a text input is used to generate a vector embedding.
+本節では、テキスト入力からベクトル 埋め込みを生成するテキスト埋め込みモデルに関する話題が中心でした。  
 <br/>
 
-Just like generative models, the world of embedding models is very big and interesting. Multi-modal embedding models can take various input types and produce compatible embeddings in the same space. And modern embeddings may come in different formats, using techniques such as multi-vector embeddings (e.g. ColBERT) or adaptive-length embeddings.
+生成モデルと同様、埋め込みモデルの世界も非常に大きく興味深いものです。マルチモーダル埋め込みモデルは複数の入力タイプを受け取り、同じ空間で互換性のある埋め込みを生成できます。また、近年の埋め込みには、多ベクトル 埋め込み（例: ColBERT）や可変長埋め込みなど、さまざまな形式があります。  
 <br/>
 
-We may touch on them later on, when we get to further in-depth discussions about specific modalities or model selection.
+これらについては、特定のモダリティやモデル選定をより深く掘り下げる際に、改めて取り上げる予定です。
 
 :::
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
