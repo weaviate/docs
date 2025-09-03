@@ -9,7 +9,7 @@ const client: WeaviateClient = await weaviate.connectToLocal()
 
 // Cleanup
 const aliases = await client.alias.listAll()
-const collections = ["Articles", "ArticlesV2", "Products_v1", "Products_v2", "MyArticles"]
+const collections = ["Articles", "ArticlesV2", "Products_v1", "Products_v2"]
 
 if (aliases) {
     for (const item of aliases) {
@@ -38,11 +38,11 @@ await client.collections.create({
 console.log('Created collection "Articles"')
 // Create an alias pointing to the collection
 await client.alias.create({
-    alias: "ArticlesProd",
+    alias: "ArticlesAlias",
     collection: "Articles"
 })
 
-console.log('Created alias "ArticlesProd"')
+console.log('Created alias "ArticlesAlias"')
 // END CreateAlias
 
 // START ListAllAliases
@@ -70,7 +70,7 @@ if (collectionAliases) {
 
 // START GetAlias
 // Get information about a specific alias
-const aliasInfo = await client.alias.get("ArticlesProd")
+const aliasInfo = await client.alias.get("ArticlesAlias")
 
 if (aliasInfo) {
     console.log(`Alias: ${aliasInfo.alias}`);
@@ -92,7 +92,7 @@ await client.collections.create({
 
 // Update the alias to point to the new collection
 await client.alias.update({
-    alias: "ArticlesProd",
+    alias: "ArticlesAlias",
     newTargetCollection: "ArticlesV2"
 })
 
@@ -116,18 +116,18 @@ await client.collections.create({
 
 // START DeleteAlias
 // Delete an alias (the underlying collection remains)
-await client.alias.delete("ArticlesProd")
+await client.alias.delete("ArticlesAlias")
 // END DeleteAlias
 
 // START UseAlias
 // Create an alias for easier access
 await client.alias.create({
-    alias: "MyArticles",
+    alias: "ArticlesAlias",
     collection: "Articles"
 })
 
 // Use the alias just like a collection name
-const articles = client.collections.use("MyArticles")
+const articles = client.collections.use("ArticlesAlias")
 
 // Insert data using the alias
 await articles.data.insert({
@@ -161,7 +161,7 @@ await products_v1.data.insertMany([
 // START Step2CreateAlias
 // Create alias pointing to current collection
 await client.alias.create({
-    alias: "Products",
+    alias: "ProductsAlias",
     collection: "Products_v1"
 })
 
@@ -169,7 +169,7 @@ await client.alias.create({
 
 // START MigrationUseAlias
 // Your application always uses the alias name "Products"
-const prods = client.collections.use("Products");
+const prods = client.collections.use("ProductsAlias");
 
 // Insert data through the alias
 await prods.data.insert({ name: "Product C", price: 300 });
@@ -211,12 +211,12 @@ for (const obj of oldData) {
 // START Step5UpdateAlias
 // Switch alias to new collection (instant switch!)
 await client.alias.update({
-    alias: "Products",
+    alias: "ProductsAlias",
     newTargetCollection: "Products_v2"
 })
 
-// All queries using "Products" alias now use the new collection
-const products = client.collections.use("Products")
+// All queries using "ProductsAlias" alias now use the new collection
+const products = client.collections.use("ProductsAlias")
 const result = await products.query.fetchObjects({ limit: 1 })
 console.log(result.objects[0].properties)  // Will include the new "category" field
 // END Step5UpdateAlias

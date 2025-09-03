@@ -7,9 +7,8 @@ client = weaviate.connect_to_local()
 # END ConnectToWeaviate
 
 # Cleanup
-client.alias.delete(alias_name="ArticlesProd")
-client.alias.delete(alias_name="MyArticles")
-client.alias.delete(alias_name="Products")
+print("deleted:", client.alias.delete(alias_name="ArticlesAlias"))
+client.alias.delete(alias_name="ProductsAlias")
 client.collections.delete("Articles")
 client.collections.delete("ArticlesV2")
 client.collections.delete("Products_v1")
@@ -27,7 +26,7 @@ client.collections.create(
 )
 
 # Create an alias pointing to the collection
-client.alias.create(alias_name="ArticlesProd", target_collection="Articles")
+client.alias.create(alias_name="ArticlesAlias", target_collection="Articles")
 # END CreateAlias
 
 # START ListAllAliases
@@ -48,7 +47,7 @@ for alias_name, alias_info in collection_aliases.items():
 
 # START GetAlias
 # Get information about a specific alias
-alias_info = client.alias.get(alias_name="ArticlesProd")
+alias_info = client.alias.get(alias_name="ArticlesAlias")
 
 if alias_info:
     print(f"Alias: {alias_info.alias}")
@@ -71,7 +70,7 @@ client.collections.create(
 
 # Update the alias to point to the new collection
 success = client.alias.update(
-    alias_name="ArticlesProd", new_target_collection="ArticlesV2"
+    alias_name="ArticlesAlias", new_target_collection="ArticlesV2"
 )
 
 if success:
@@ -92,16 +91,13 @@ client.collections.create(
     ],
 )
 # END UseAlias
-# Delete alias if it exists from a previous run
-client.alias.delete(alias_name="MyArticles")
-
 # START DeleteAlias
 # Delete an alias (the underlying collection remains)
-client.alias.delete(alias_name="ArticlesProd")
+client.alias.delete(alias_name="ArticlesAlias")
 # END DeleteAlias
 # START UseAlias
 # Use the alias just like a collection name
-articles = client.collections.use("MyArticles")
+articles = client.collections.use("ArticlesAlias")
 
 # Insert data using the alias
 articles.data.insert(
@@ -132,12 +128,12 @@ products_v1.data.insert_many(
 
 # START Step2CreateAlias
 # Create alias pointing to current collection
-client.alias.create(alias_name="Products", target_collection="Products_v1")
+client.alias.create(alias_name="ProductsAlias", target_collection="Products_v1")
 # END Step2CreateAlias
 
 # START MigrationUseAlias
 # Your application always uses the alias name "Products"
-products = client.collections.use("Products")
+products = client.collections.use("ProductsAlias")
 
 # Insert data through the alias
 products.data.insert({"name": "Product C", "price": 300})
@@ -179,10 +175,10 @@ for obj in old_data:
 
 # START Step5UpdateAlias
 # Switch alias to new collection (instant switch!)
-client.alias.update(alias_name="Products", new_target_collection="Products_v2")
+client.alias.update(alias_name="ProductsAlias", new_target_collection="Products_v2")
 
 # All queries using "Products" alias now use the new collection
-products = client.collections.use("Products")
+products = client.collections.use("ProductsAlias")
 result = products.query.fetch_objects(limit=1)
 print(result.objects[0].properties)  # Will include the new "category" field
 # END Step5UpdateAlias
@@ -194,9 +190,8 @@ client.collections.delete("Products_v1")
 
 
 # Cleanup
-client.alias.delete(alias_name="MyArticles")
-client.alias.delete(alias_name="Products")
-client.alias.delete(alias_name="ArticlesProd")
+client.alias.delete(alias_name="ProductsAlias")
+client.alias.delete(alias_name="ArticlesAlias")
 client.collections.delete("Articles")
 client.collections.delete("ArticlesV2")
 client.collections.delete("Products_v1")

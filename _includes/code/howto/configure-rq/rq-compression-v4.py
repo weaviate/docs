@@ -41,6 +41,28 @@ client.collections.create(
 )
 # END EnableRQ
 
+# ==============================
+# =====  EnableRQ 1-BIT ========
+# ==============================
+
+client.collections.delete("MyCollection")
+
+# START 1BitEnableRQ
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    name="MyCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.rq(bits=1)
+        # highlight-end
+    ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+)
+# END 1BitEnableRQ
+
 # =========================
 # =====  Uncompressed =====
 # =========================
@@ -77,7 +99,7 @@ client.collections.create(
     vector_config=Configure.Vectors.text2vec_openai(
         # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.rq(
-            bits=8,  # Optional: Number of bits, only 8 is supported for now
+            bits=8,  # Optional: Number of bits
             rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
         ),
         # highlight-end
@@ -92,6 +114,19 @@ client.collections.create(
 # =====  UPDATE SCHEMA =====
 # ==============================
 
+client.collections.delete("MyCollection")
+client.collections.create(
+    name="MyCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.none(),
+        # highlight-end
+    ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+)
+
 # START UpdateSchema
 from weaviate.classes.config import Reconfigure
 
@@ -100,13 +135,42 @@ collection.config.update(
     vector_config=Reconfigure.Vectors.update(
         name="default",
         vector_index_config=Reconfigure.VectorIndex.hnsw(
-            quantizer=Reconfigure.VectorIndex.Quantizer.rq(
-                rescore_limit=20,  # Optional: Number of candidates to fetch before rescoring
-            ),
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(),
         ),
     )
 )
 # END UpdateSchema
+
+# ================================
+# =====  UPDATE SCHEMA 1-BIT =====
+# ================================
+
+client.collections.delete("MyCollection")
+client.collections.create(
+    name="MyCollection",
+    vector_config=Configure.Vectors.text2vec_openai(
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.none(),
+        # highlight-end
+    ),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+)
+
+# START 1BitUpdateSchema
+from weaviate.classes.config import Reconfigure
+
+collection = client.collections.use("MyCollection")
+collection.config.update(
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.rq(bits=1),
+        ),
+    )
+)
+# END 1BitUpdateSchema
 
 from weaviate.collections.classes.config import _RQConfig
 
