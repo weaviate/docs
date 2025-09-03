@@ -1,0 +1,334 @@
+---
+title: Replica movement
+image: og/docs/configuration.jpg
+---
+
+:::info Added in `v1.32`
+:::
+
+Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/docs/weaviate/api/rest.md) or through the client library API described below.
+
+When a replica movement is initiated, it changes the replication factor of that shard *only*, not the entire collection. A collection has a particular replication factor, but a shard (a subset of a collection), can have its own replication factor which can be different. If a replica COPY operation is made, this can be incremented.
+
+## Check shard state
+
+Before initiating any movement, you might want to inspect the current distribution of replicas. You can retrieve the sharding state of an entire collection, or its specific shard.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.replica.movement.py';
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckShardingState"
+      endMarker="# END CheckShardingState"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Shards in 'MyReplicatedDocCollection': ['0QK7V2bbAHQ2', 'arxzWNklLIU7', 'w5OcBGbNvRt4']
+Nodes for shard '0QK7V2bbAHQ2': ['node3', 'node1']
+Nodes for shard 'arxzWNklLIU7': ['node1', 'node2']
+Nodes for shard 'w5OcBGbNvRt4': ['node2', 'node3']
+```
+
+</details>
+
+## Initiate a replica movement
+
+Copy or move a shard replica by specifying the the source node, destination node, collection name, shard ID and operation type (`MOVE` or `COPY`).
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START ReplicateShard"
+endMarker="# END ReplicateShard"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Replication initiated, ID: 32536c0e-09e1-4ea1-a2c5-e85af10a9d58
+```
+
+</details>
+
+## Check the status of a replication operation
+
+Shard replication operations are asynchronous. An operation status can be queried, with an option to view the full operation history.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START CheckOperationStatus"
+endMarker="# END CheckOperationStatus"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Status for f771aae1-f3c4-4fac-bae6-90597e8c70bd: ReplicateOperationStatus(state=<ReplicateOperationState.FINALIZING: 'FINALIZING'>, errors=[])
+History for f771aae1-f3c4-4fac-bae6-90597e8c70bd: [ReplicateOperationStatus(state=<ReplicateOperationState.REGISTERED: 'REGISTERED'>, errors=[]), ReplicateOperationStatus(state=<ReplicateOperationState.HYDRATING: 'HYDRATING'>, errors=[])]
+```
+
+</details>
+
+:::note
+The movement operation can have one of the following states:
+
+- `REGISTERED`
+- `HYDRATING`
+- `FINALIZING`
+- `DEHYDRATING`
+- `READY`
+- `CANCELLED`
+
+To learn more about the replication states, check out [Concepts: Replication architecture](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement).
+
+:::
+
+## List replication operations
+
+List all ongoing and completed operations. This can be filtered by node, collection and shard.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START ListReplicationOperations"
+endMarker="# END ListReplicationOperations"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>Code output</summary>
+
+```
+Total replication operations: 1
+Filtered operations for collection 'MyReplicatedDocCollection' on 'node3': 1
+```
+
+</details>
+
+## Cancel a replication operation
+
+The operation will be stopped if possible. If successfully cancelled, its state will change to `CANCELLED`.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START CancelOperation"
+endMarker="# END CancelOperation"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+## Delete a replication operation
+
+Remove a replication operation from the logs. If the operation is active, it will be cancelled first.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START DeleteOperationRecord"
+endMarker="# END DeleteOperationRecord"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+## Delete all replication operations
+
+Remove all replication operations from the logs. If any operations are active, they will be cancelled first.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={PyCode}
+startMarker="# START DeleteAllOperationRecords"
+endMarker="# END DeleteAllOperationRecords"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// JS/TS support coming soon
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+</TabItem>
+</Tabs>
+
+## Further resources
+
+- [RESTful API: Replication endpoints](/docs/weaviate/api/rest.md)
+- [Concepts: Replication architecture](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />

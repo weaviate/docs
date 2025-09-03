@@ -1,90 +1,115 @@
 ---
 title: Inverted indexes
 sidebar_position: 2
+description: "Inverted index architecture for efficient keyword search and filtering with performance improvements."
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
 
+Inverted indexes in Weaviate map values (like words or numbers) to the objects that contain them, enabling fast keyword search and filtering operations.
+
+## How Weaviate creates inverted indexes
+
+Understanding Weaviate's indexing architecture is crucial for optimizing performance and resource usage. Weaviate creates **individual inverted indexes for each property and each index type**. This means:
+
+- Each property in your collection gets its own dedicated inverted index(es)
+- Meta properties (like creation timestamps) also get their own separate inverted indexes
+- A single property can have multiple inverted indexes if it supports multiple index types
+- All aggregations and combinations across properties happen at query time, not at index time
+
+**Example**: A `title` property with both `indexFilterable: true` and `indexSearchable: true` will result in two separate inverted indexes - one optimized for search operations and another for filtering operations.
+
+This architecture provides flexibility and performance optimization but also means that enabling multiple index types increases storage requirements and indexing overhead.
+
+For `text` properties specifically, the indexing process follows these steps:
+
+1. **Tokenization**: The text is first tokenized according to the [tokenization method](../../config-refs/collections.mdx#tokenization) configured for that property.
+3. **Index entry creation**: Each processed token gets an entry in the inverted index, pointing to the object containing it.
+
+This process ensures that your text searches and filters can quickly locate relevant objects based on the tokens they contain.
+
 <details>
-  <summary>2024 年 10 月に追加されたパフォーマンス改善</summary>
+  <summary>Performance improvements added in Oct 2024</summary>
 
-Weaviate のバージョン `v1.24.26`、`v1.25.20`、`v1.26.6`、`v1.27.0` では、BM25F スコアリング アルゴリズムに対するパフォーマンス改善とバグ修正を行いました。  
-<br/>
+In Weaviate versions `v1.24.26`, `v1.25.20`, `v1.26.6` and `v1.27.0`, we introduced performance improvements and bugfixes for the BM25F scoring algorithm:
 
-- BM25 セグメント マージ アルゴリズムを高速化しました。  
-- WAND アルゴリズムを改良し、スコア計算から消費し尽くした語（ term ）を除外し、必要な場合のみ完全ソートを実行します。  
-- BM25F の複数プロパティ検索で、すべてのセグメントに対してクエリ語のスコアを合算しないバグを修正しました。  
-- 複数セグメントに対する BM25 スコア計算を並列で実行するようにしました。  
+- The BM25 segment merging algorithm was made faster
+- Improved WAND algorithm to remove exhausted terms from score computation and only do a full sort when necessary
+- Solved a bug in BM25F multi-prop search that could lead to not summing all the query term score for all segments
+- The BM25 scores are now calculated concurrently for multiple segments
 
-常に最新の Weaviate へアップグレードし、このような改善の恩恵を受けることを推奨します。
+As always, we recommend upgrading to the latest version of Weaviate to benefit from improvements such as these.
 
 </details>
 
-### BlockMax WAND アルゴリズム
+## BlockMax WAND algorithm
 
-:::info `v1.30` で追加
+:::info Added in `v1.30`
 :::
 
-BlockMax WAND アルゴリズムは、BM25 およびハイブリッド検索を高速化するための WAND アルゴリズムの派生版です。転置インデックスをブロックに整理し、クエリに関連しないブロックをスキップできるようにすることで、スコアリングが必要なドキュメント数を大幅に削減し、検索性能を向上させます。
+The BlockMax WAND algorithm is a variant of the WAND algorithm that is used to speed up BM25 and hybrid searches. It organizes the inverted index in blocks to enable skipping over blocks that are not relevant to the query. This can significantly reduce the number of documents that need to be scored, improving search performance.
 
-BM25（またはハイブリッド）検索が遅い場合で、`v1.30` より前の Weaviate を使用している場合は、BlockMax WAND アルゴリズムを採用した新しいバージョンへ移行して性能が向上するかをお試しください。既存データを以前のバージョンから移行する必要がある場合は、[v1.30 への移行ガイド](/deploy/migration/weaviate-1-30.md)を参照してください。
+If you are experiencing slow BM25 (or hybrid) searches and use a Weaviate version prior to `v1.30`, try migrating to a newer version that uses the BlockMax WAND algorithm to see if it improves performance. If you need to migrate existing data from a previous version of Weaviate, follow the [v1.30 migration guide](/deploy/migration/weaviate-1-30.md).
 
-:::note BlockMax WAND によるスコアの変更
+:::note Scoring changes with BlockMax WAND
 
-BlockMax WAND アルゴリズムの特性上、BM25 およびハイブリッド検索のスコアは、デフォルトの WAND アルゴリズムとはわずかに異なる場合があります。さらに、単一プロパティ検索と複数プロパティ検索では、IDF とプロパティ長の正規化計算が異なるため、BlockMax WAND のスコアも異なる場合があります。これは期待される挙動でありバグではありません。
+Due to the nature of the BlockMax WAND algorithm, the scoring of BM25 and hybrid searches may differ slightly from the default WAND algorithm. Additionally BlockMax WAND scores on single and multiple property search may be different due to different IDF and property length normalization calculations. This is expected behavior and is not a bug.
 
 :::
 
-### 転置インデックスの設定
+## Configure inverted indexes
 
-Weaviate には 3 種類の転置インデックスがあります。
+There are three inverted index types in Weaviate:
 
-- `indexSearchable` – BM25 またはハイブリッド検索用の検索可能インデックス  
-- `indexFilterable` – 高速な [フィルタリング](../filtering.md) 用の一致ベース インデックス  
-- `indexRangeFilters` – 数値範囲での [フィルタリング](../filtering.md) 用の範囲ベース インデックス  
+- `indexSearchable` - a searchable index for BM25 or hybrid search
+- `indexFilterable` - a match-based index for fast [filtering](../filtering.md) by matching criteria
+- `indexRangeFilters` - a range-based index for [filtering](../filtering.md) by numerical ranges
 
-各転置インデックスは、プロパティ単位で `true`（オン）または `false`（オフ）に設定できます。`indexSearchable` と `indexFilterable` はデフォルトでオン、`indexRangeFilters` はデフォルトでオフです。
+Each inverted index can be set to `true` (on) or `false` (off) on a property level. The `indexSearchable` and `indexFilterable` indexes are on by default, while the `indexRangeFilters` index is off by default.
 
-フィルタリング専用インデックスは [フィルタリング](../filtering.md) のみが可能ですが、検索可能インデックスは検索とフィルタリングの両方に使用できます（ただしフィルタリング性能はフィルタリング専用インデックスほど高速ではありません）。
+The filterable indexes are only capable of [filtering](../filtering.md), while the searchable index can be used for both searching and filtering (though not as fast as the filterable index).
 
-したがって `"indexFilterable": false` かつ `"indexSearchable": true`（または未設定）の場合、1 つのインデックスのみを更新すればよいため取り込みが高速になりディスク使用量も減りますが、フィルタリング性能は低下します。
+So, setting `"indexFilterable": false` and `"indexSearchable": true` (or not setting it at all) will have the trade-off of worse filtering performance but faster imports (due to only needing to update one index) and lower disk usage.
 
-プロパティ単位で転置インデックスを有効・無効にする方法は、[関連ハウツー](../../manage-collections/vector-config.mdx#property-level-settings)をご覧ください。
+See the [related how-to section](../../manage-collections/vector-config.mdx#property-level-settings) to learn how to enable or disable inverted indexes on a property level.
 
-インデックスをオフにするかを判断する目安は次のとおりです。_そのプロパティを基に検索やフィルタリングを一切行わないのであれば、オフにできます。_
+A rule of thumb to follow when determining whether to switch off indexing is: _if you will never perform queries based on this property, you can turn it off._
 
-#### 転置インデックス種別の概要
+#### Inverted index types summary
 
 import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.mdx';
 
 <InvertedIndexTypesSummary/>
 
-- 高速なフィルタリングのために、`indexFilterable` と `indexRangeFilters` のいずれか、または両方を有効にします。  
-    - どちらか一方のみ有効な場合、そのインデックスがフィルタリングに使用されます。  
-    - 両方を有効にした場合、比較演算子を伴う操作では `indexRangeFilters` が、等価・非等価演算では `indexFilterable` が使用されます。  
+- Enable one or both of `indexFilterable` and `indexRangeFilters` to index a property for faster filtering.
+    - If only one is enabled, the respective index is used for filtering.
+    - If both are enabled, `indexRangeFilters` is used for operations involving comparison operators, and `indexFilterable` is used for equality and inequality operations.
 
-次の表は、対象プロパティでいずれか、または両方のインデックスが `true` のとき、どのフィルタが比較を行うかを示しています。
+This chart shows which filter makes the comparison when one or both index type is `true` for an applicable property.
 
-| 演算子 | `indexRangeFilters` のみ | `indexFilterable` のみ | 両方有効 |
+| Operator | `indexRangeFilters` only | `indexFilterable` only | Both enabled |
 | :- | :- | :- | :- |
-| 等しい | `indexRangeFilters` | `indexFilterable` | `indexFilterable` |
-| 等しくない | `indexRangeFilters` | `indexFilterable` | `indexFilterable` |
-| より大きい | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
-| 以上 | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
-| より小さい | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
-| 以下 | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
+| Equal | `indexRangeFilters` | `indexFilterable` | `indexFilterable` |
+| Not equal | `indexRangeFilters` | `indexFilterable` | `indexFilterable` |
+| Greater than | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
+| Greater than equal | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
+| Less than | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
+| Less than equal | `indexRangeFilters` | `indexFilterable` | `indexRangeFilters` |
 
-#### タイムスタンプ用の転置インデックス
+#### Inverted index for timestamps
 
-[タイムスタンプを基に検索](/weaviate/config-refs/schema/index.md#indextimestamps)するための転置インデックスも有効にできます。
+You can also enable an inverted index to search [based on timestamps](/weaviate/config-refs/indexing/inverted-index.mdx#indextimestamps).
 
-タイムスタンプは現在 `indexFilterable` インデックスで索引化されています。
+Timestamps are currently indexed using the `indexFilterable` index.
 
-## インデックスなしのコレクション
+## Collections without indexes
 
-インデックスを一切設定しないことも可能です。
+If you don't want to set an index at all, this is possible too. To create a collection without any indexes, skip indexing on the collection and on the properties.
 
-インデックスなしのコレクションを作成するには、コレクションとプロパティの両方でインデックス設定を省略します。
+<details>
+  <summary>Example collection configuration without inverted indexes -  JSON object</summary>
+
+An example of a complete collection object without inverted indexes:
 
 ```js
 {
@@ -140,15 +165,19 @@ import InvertedIndexTypesSummary from '/_includes/inverted-index-types-summary.m
 }
 ```
 
-## 参考リソース
+</details>
 
-:::info 関連ページ
-- [Concepts: Vector Indexing](./vector-index.md)
-- [Configuration: Vector index](../../config-refs/schema/vector-index.md)
+## Further resources
+
+:::info Related pages
+
+- [Configuration: Inverted index](../../config-refs/indexing/inverted-index.mdx)
+- [How-to: Configure collections](../../manage-collections/vector-config.mdx#property-level-settings)
+
 :::
 
-## 質問とフィードバック
+## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

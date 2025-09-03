@@ -1,129 +1,131 @@
 ---
-title: クラスターアーキテクチャ
+title: Cluster Architecture
 sidebar_position: 3
+description: "Node behavior and cluster coordination mechanisms in Weaviate's distributed replication system."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
 
 
-このページでは、Weaviate のレプリケーション設計におけるノードやクラスターがどのように動作するかを説明します。
+This page describes how the nodes or clusters in Weaviate's replication design behave.
 
-Weaviate では、メタデータのレプリケーションとデータのレプリケーションが分離されています。メタデータには [Raft](https://raft.github.io/) コンセンサスアルゴリズムが、データにはリーダーレス設計による最終的な整合性モデルが採用されています。
+In Weaviate, metadata replication and data replication are separate. For the metadata, Weaviate uses the [Raft](https://raft.github.io/) consensus algorithm. For data replication, Weaviate uses a leaderless design with eventual consistency.
 
-## ノードディスカバリー
+## Node Discovery
 
-既定では、クラスター内の Weaviate ノードは [Hashicorp の Memberlist](https://github.com/hashicorp/memberlist) を介したゴシップライクなプロトコルでノード状態や障害シナリオを共有します。
+By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
 
-特にクラスター運用時、Weaviate は Kubernetes での実行に最適化されています。[Weaviate Helm チャート](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) では `StatefulSet` とヘッドレス `Service` を利用し、ノードディスカバリーを自動設定します。
+Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
 
 <details>
-  <summary>ノードディスカバリーの FQDN</summary>
+  <summary>FQDN for node discovery</summary>
 
-:::caution `v1.25.15` で追加、`v1.30` で削除
+:::caution Added in `v1.25.15` and removed in `v1.30`
 
-これは実験的機能です。使用にはご注意ください。
+This was an experimental feature. Use with caution.
 
 :::
 
-IP アドレスベースのノードディスカバリーが最適でない場合があります。その際は、`RAFT_ENABLE_FQDN_RESOLVER` と `RAFT_FQDN_RESOLVER_TLD` の [環境変数](/deploy/configuration/env-vars/index.md#multi-node-instances) を設定し、[完全修飾ドメイン名 (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) ベースのノードディスカバリーを有効にできます。
+There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](/deploy/configuration/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
 
-この機能が有効な場合、Weaviate は FQDN リゾルバーを使用して、メタデータ（例: Raft）通信時にノード名からノード IP アドレスを解決します。
+If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
 
-:::info FQDN: メタデータ変更のみ
-この機能は Raft を用いたメタデータ変更時のみに使用され、データの読み書き操作には影響しません。
+:::info FQDN: For metadata changes only
+This feature is only used for metadata changes which use Raft as the consensus mechanism. It does not affect data read/write operations.
 :::
 
-#### FQDN ディスカバリーを使用するシナリオ例
+#### Examples of when to use FQDN for node discovery
 
-IP アドレスが異なるクラスター間で再利用されると、一方のクラスターのノードが誤って別クラスターのノードを発見してしまう可能性があります。FQDN を利用すると、このような状況を解消できます。
+The use of FQDN can resolve a situation where if IP addresses are re-used across different clusters, the nodes in one cluster could mistakenly discover nodes in another cluster.
 
-また、サービス（Kubernetes など）を利用し、サービスの IP が実際のノード IP と異なり、プロキシ経由でノードへ接続する場合にも有用です。
+It can also be useful when using services (for example, Kubernetes) where the IP of the services is different from the actual node IP, but it proxies the connection to the node.
 
-#### FQDN ノードディスカバリー用環境変数
+#### Environment variables for FQDN node discovery
 
-`RAFT_ENABLE_FQDN_RESOLVER` は Boolean フラグで、このフラグを `true` にすると FQDN リゾルバーが有効になります。`false` の場合、Weaviate は Memberlist ルックアップでノード名を IP アドレスへ解決します。デフォルト値は `false` です。
+`RAFT_ENABLE_FQDN_RESOLVER` is a Boolean flag. This flag enables the FQDN resolver. If set to `true`, Weaviate uses the FQDN resolver to resolve the node name to the node IP address. If set to `false`, Weaviate uses the memberlist lookup to resolve the node name to the node IP address. The default value is `false`.
 
-`RAFT_FQDN_RESOLVER_TLD` は文字列で、ノード ID を IP アドレスに解決する際 `[node-id].[tld]` 形式で `[tld]`（トップレベルドメイン）が付加されます。
+`RAFT_FQDN_RESOLVER_TLD` is a string that is appended in the format `[node-id].[tld]` when resolving a node-id to an IP address, where `[tld]` is the top-level domain.
 
-この機能を使用するには、`RAFT_ENABLE_FQDN_RESOLVER` を `true` に設定してください。
+To use this feature, set `RAFT_ENABLE_FQDN_RESOLVER` to `true`.
 
 </details>
 
-## メタデータレプリケーション: Raft
+## Metadata replication: Raft
 
-:::info `v1.25` で追加
+:::info Added in `v1.25`
 :::
 
-Weaviate はメタデータのレプリケーションに [Raft コンセンサスアルゴリズム](https://raft.github.io/) を使用しており、Hashicorp の [raft ライブラリ](https://pkg.go.dev/github.com/hashicorp/raft) で実装されています。ここでのメタデータとは、コレクション定義やシャード／テナントの状態などです。
+Weaviate uses the [Raft consensus algorithm](https://raft.github.io/) for metadata replication, implemented with Hashicorp's [raft library](https://pkg.go.dev/github.com/hashicorp/raft). Metadata in this context includes collection definition and shard/tenant states.
 
-Raft はメタデータの変更がクラスター全体で一貫することを保証します。メタデータの変更はリーダーノードに転送され、リーダーは自身のログに変更を適用した後、フォロワーノードへレプリケートします。多数ノードが変更を承認すると、リーダーはログへのコミットを行い、その後フォロワーへ通知し各フォロワーが変更を適用します。
+Raft ensures that metadata changes are consistent across the cluster. A metadata change is forwarded to the leader node, which applies the change to its log before replicating it to the follower nodes. Once a majority of nodes have acknowledged the change, the leader commits the change to the log. The leader then notifies the followers, which apply the change to their logs.
 
-これにより、少数ノードの障害が発生してもメタデータ変更はクラスター全体で整合性を保ちます。
+This architecture ensures that metadata changes are consistent across the cluster, even in the event of (a minority of) node failures.
 
-その結果、Weaviate クラスターにはメタデータ変更を担当するリーダーノードが存在します。リーダーは Raft によって選出され、メタデータ変更を調整します。
+As a result, a Weaviate cluster will include a leader node that is responsible for metadata changes. The leader node is elected by the Raft algorithm and is responsible for coordinating metadata changes.
 
-## データレプリケーション: リーダーレス
+## Data replication: Leaderless
 
-Weaviate はデータレプリケーションにリーダーレスアーキテクチャを採用しています。つまり、中央のリーダーやプライマリノードは存在せず、すべてのノードがクライアントからの書き込み・読み取りを受け付けます。これにより可用性が向上し、単一障害点がなくなります。リーダーレス方式は [Dynamo スタイル](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) とも呼ばれ、[Apache Cassandra](https://cassandra.apache.org) などの OSS でも採用されています。
+Weaviate uses a leaderless architecture for data replication. This means there is no central leader or primary node that will replicate to follower nodes. Instead, all nodes can accept writes and reads from the client, which can offer better availability. There is no single point of failure. A leaderless replication approach, also known as [Dynamo-style](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) data replication (after Amazon's implementation), has been adopted by other open-source projects like [Apache Cassandra](https://cassandra.apache.org).
 
-Weaviate ではコーディネーションパターンを用いて、クライアントの読み書き要求を適切なノードへ中継します。リーダーベースのデータベースと異なり、コーディネーターノードは操作順序を強制しません。
+In Weaviate, a coordination pattern is used to relay a client's read and write requests to the correct nodes. Unlike in a leader-based database, a coordinator node does not enforce any ordering of the operations.
 
-以下の図は Weaviate におけるリーダーレスレプリケーション設計を示しています。1 つのコーディネーターノードがクライアントからのトラフィックを適切なレプリカへ導きます。このノード自体に特別な役割はなく、ロードバランサーからリクエストを受け取ったために選ばれただけです。同じデータへの次のリクエストは別のノードがコーディネートする場合もあります。
+The following illustration shows a leaderless replication design in Weaviate. There is one coordination node, which leads traffic from the client to the correct replicas. There is nothing special about this node; it was chosen to be the coordinator because this node received the request from the load balancer. A future request for the same data may be coordinated by a different node.
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-main-quorum.png" alt="Replication Architecture" width="75%"/></p>
 
-リーダーレス設計の主な利点はフォールトトレランスの向上です。単一リーダー方式ではすべての書き込みがリーダーで処理されるため、リーダーがダウンすると書き込みが不可能になります。一方リーダーレスでは全ノードが書き込みを受け付けるため、マスターノード障害のリスクがありません。
+The main advantage of a leaderless replication design is improved fault tolerance. Without a leader that handles all requests, a leaderless design offers better availability. In a single-leader design, all writes need to be processed by this leader. If this node cannot be reached or goes down, no writes can be processed. With a leaderless design, all nodes can receive write operations, so there is no risk of one master node failing.
 
-高可用性の裏返しとして、リーダーレスデータベースは整合性が低下しやすい傾向があります。リーダーノードが存在しないため、ノード間でデータが一時的に古い（スタイル）状態になる場合があります。リーダーレスデータベースは最終的整合性を志向します。Weaviate の整合性は [チューニング可能](./consistency.md) ですが、その分可用性が犠牲になります。
+On the flipside of high availability, a leaderless database tends to be less consistent. Because there is no leader node, data on different nodes may temporarily be out of date. Leaderless databases tend to be eventually consistent. Consistency in Weaviate is [tunable](./consistency.md), but this occurs at the expense of availability.
 
 
-## レプリケーションファクター
+## Replication Factor
 
 import RaftRFChangeWarning from '/_includes/1-25-replication-factor.mdx';
 
 <RaftRFChangeWarning/>
 
-Weaviate ではデータレプリケーションはコレクション単位で有効化・制御されます。そのため、コレクションごとに異なるレプリケーションファクターを設定できます。
+In Weaviate, data replication is enabled and controlled per collection. This means you can have different replication factors for different collections.
 
-レプリケーションファクター（RF または n）は、分散環境に保存されるデータコピー数を決定します。レプリケーションファクターが 1 の場合、各データエントリは 1 つしか存在せず、つまりレプリケーションがありません。レプリケーションファクターが 2 の場合、各データエントリが 2 つのノード（レプリカ）に保存されます。もちろん、レプリケーションファクターはノード数を超えられません。クラスター内のいずれのノードもコーディネーターノードとなり、クエリを正しいターゲットノードへ導けます。
+The replication factor (RF or n) determines how many copies of data are stored in the distributed setup. A replication factor of 1 means that there is only 1 copy of each data entry in the database setup, in other words there is no replication. A replication factor of 2 means that there are two copies of each data entry, which are present on two different nodes (replicas). Naturally, the replication factor cannot be higher than the number of nodes. Any node in the cluster can act as a coordinating node to lead queries to the correct target node(s).
 
-パフォーマンスと耐障害性のバランスから、レプリケーションファクター 3 が一般的に使用されます。奇数ノード数が望ましいのは、コンフリクト解消が容易になるためです。3 ノード構成では、2 ノードでクォーラムに達するため、1 ノードの障害に耐えられます。一方 2 ノード構成では、全ノードが稼働していなければ合意形成できません。4 ノード構成ではクォーラムに 3 ノードが必要です。したがって、3 ノード構成は 2 ノードや 4 ノード構成より費用対効果の高い耐障害性を提供します。
+A replication factor of 3 is commonly used, since this provides a right balance between performance and fault tolerance. An odd number of nodes is generally preferred, as it makes it easier to resolve conflicts. In a 3-node setup, a quorum can be reached with 2 nodes. Therefore the fault tolerance is 1 node. In a 2-node setup, on the other hand, no node failures can be tolerated while still reaching consensus across nodes. In a 4-node setup, respectively, 3 nodes would be required to reach a consensus. Thus, a 3-node setup has a better fault-tolerance to cost ratio than either a 2-node or 4-node setup.
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-factor.png" alt="Replication Factor" width="75%"/></p>
 
-## 書き込み操作
+## Write operations
 
-書き込み時、クライアントのリクエストはクラスター内の任意のノードへ送信されます。最初にリクエストを受け取ったノードがコーディネーターノードに割り当てられます。コーディネーターノードはリクエストを所定数のレプリカノードへ送信し、クライアントへ結果を返します。つまりクラスター内のどのノードもコーディネーターノードになれます。クライアントが直接通信するのはこのコーディネーターノードのみです。結果を返す前に、コーディネーターノードは設定に応じた数の書き込み ACK を他ノードから受け取るまで待ちます。Weaviate が待機する ACK の数は [整合性設定](./consistency.md) により決まります。
+On a write operation, the client's request will be sent to any node in the cluster. The first node which receives the request is assigned as the coordinator. The coordinator node sends the request to a number of predefined replicas and returns the result to the client. So, any node in the cluster can be a coordinator node. A client will only have direct contact with this coordinator node. Before sending the result back to the client, the coordinator node waits for a number of write acknowledgments from different nodes depending on the configuration. How many acknowledgments Weaviate waits for, depends on the [consistency configuration](./consistency.md).
 
-**手順**  
-1. クライアントがデータを任意のノードへ送信し、そのノードがコーディネーターノードとなる  
-2. コーディネーターノードがデータをクラスター内の複数レプリカノードへ送信  
-3. コーディネーターノードがクラスター内の x ノードから ACK を待機する。v1.18 以降、x は [設定可能](./consistency.md) で既定は `ALL`  
-4. x 個の ACK を受信すると書き込み成功  
+**Steps**
+1. The client sends data to any node, which will be assigned as the coordinator node
+2. The coordinator node sends the data to more than one replica node in the cluster
+3. The coordinator node waits for acknowledgment from a specified proportion (let's call it `x`) of cluster nodes. Starting with v1.18, `x` is [configurable](./consistency.md), and defaults to `ALL` nodes.
+4. When `x` ACKs are received by the coordinator node, the write is successful.
 
-例として、クラスターサイズが 3 でレプリケーションファクターが 3 の場合、すべてのノードがデータを保持します。クライアントが新規データを送信すると、3 ノードすべてにレプリケートされます。
+As an example, consider a cluster size of 3 with replication factor of 3. So, all nodes in the distributed setup contain a copy of the data. When the client sends new data, this will be replicated to all three nodes.
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-size3.png" alt="Replication Factor 3 with cluster size 3" width="75%"/></p>
 
-クラスターサイズが 8、レプリケーションファクターが 3 の場合、書き込みは 8 ノードすべてではなく、そのデータのレプリカを保持する 3 ノードにのみ送信されます。コーディネーターノードがどのノードへ書き込むかを決定します。どのノードがどのコレクション（つまりシャード）を保持するかは Weaviate の設定で決まり、各ノード（および各コーディネーターノード）が認識しています。レプリケーション先は決定論的なため、すべてのノードがどのシャードにどのデータが配置されるかを把握しています。
+With a cluster size of 8 and a replication factor of 3, a write operation will not be sent to all 8 nodes, but only to those three containing the replicas. The coordinating node will determine which nodes the data will be written to. Which nodes store which collections (and therefore shards) is determined by the setup of Weaviate, which is known by each node and thus each coordinator node. Where something is replicated is deterministic, so all nodes know on which shard which data will land.
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-rf3-size8.png" alt="Replication Factor 3 with cluster size 8" width="75%"/></p>
 
-## 読み取り操作
+## Read operations
 
-読み取り操作もコーディネーターノードにより調整され、クエリをデータを保持する正しいノードへ送信します。1 つ以上のノードが古い（スタイル）データを保持している可能性があるため、読み取りクライアントは受け取ったデータから最新のものを選択してユーザーへ返します。
+Read operations are also coordinated by a coordinator node, which directs a query to the correct nodes that contain the data. Since one or more nodes may contain old (stale) data, the read client will determine which of the received data is the most recent before sending it to the user.
 
-**手順**  
-1. クライアントが Weaviate へクエリを送信し、最初に受け取ったノードがコーディネーターノードとなる  
-2. コーディネーターノードがクエリをクラスター内の複数レプリカノードへ送信  
-3. コーディネーターノードが x ノードからのレスポンスを待機する。*x は [設定可能](./consistency.md) で `ALL`、`QUORUM`、`ONE`（v1.18 以降、Get-Object-By-ID 型リクエストは v1.17 から調整可能）*  
-4. コーディネーターノードがメタデータ（例: タイムスタンプ、ID、バージョン番号）を用いてデータの衝突を解決  
-5. コーディネーターノードが最新データをクライアントへ返却  
+**Steps**
+1. The client sends a query to Weaviate, any node in the cluster that receives the request first will act as the coordinator node
+2. The coordinator node sends the query to more than one replica node in the cluster
+3. The coordinator waits for a response from x nodes. *x is [configurable](./consistency.md) (`ALL`, `QUORUM` or `ONE`, available from v1.18, Get-Object-By-ID type requests have tunable consistency from v1.17).*
+4. The coordinator node resolves conflicting data using some metadata (e.g. timestamp, id, version number)
+5. The coordinator returns the latest data to the client
 
-クラスターサイズが 3、レプリケーションファクターも 3 の場合、すべてのノードがクエリに応答できます。整合性レベルに応じて、問い合わせるノード数が決まります。
+If the cluster size is 3 and the replication factor is also 3, then all nodes can serve the query. The consistency level determines how many nodes will be queried.
 
-クラスターサイズが 10、レプリケーションファクターが 3 の場合、そのデータ（コレクション）を保持する 3 ノードがクエリに応答し、コーディネーターノードが調整します。クライアントは x（整合性レベル） ノードから応答があるまで待機します。
-## 質問およびフィードバック
+If the cluster size is 10 and the replication factor is 3, the 3 nodes which contain that data (collection) can serve queries, coordinated by the coordinator node. The client waits until x (the consistency level) nodes have responded.
+
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

@@ -1,7 +1,7 @@
 ---
 title: Modules
-description: Explore modular add-ons to expand Weaviate's functionality and versatility.
 sidebar_position: 15
+description: "Modular architecture overview for extending Weaviate functionality with specialized add-on components."
 image: og/docs/concepts.jpg
 # tags: ['modules']
 ---
@@ -11,60 +11,60 @@ image: og/docs/concepts.jpg
   - `Vectorization modules (Dense Retriever modules)` is from `Modules/Index`
 ::: -->
 
- Weaviate にはモジュール化された構造があります。ベクトル化やバックアップなどの機能は、オプションのモジュールによって処理されます。
+Weaviate has a modularized structure. Functionality such as vectorization or backups is handled by *optional* modules.
 
-モジュールが何も付いていない  Weaviate のコアは、純粋な ベクトル ネイティブ データベースです。  
-[![ Weaviate モジュールの紹介](../../../../../../docs/weaviate/concepts/img/weaviate-module-diagram.svg " Weaviate モジュール図")](../../../../../../docs/weaviate/concepts/img/weaviate-module-diagram.svg)
+The core of Weaviate, without any modules attached, is a pure vector-native database.
+[![Weaviate modules introduction](./img/weaviate-module-diagram.svg "Weaviate Module Diagram")](./img/weaviate-module-diagram.svg)
 
- Weaviate では、データはオブジェクトとその ベクトル の組み合わせとして保存され、これらの ベクトル は提供されている [ベクトル インデックス アルゴリズム](../concepts/indexing/vector-index.md) によって検索できます。ベクトライザー モジュールが一つも接続されていない場合、 Weaviate はオブジェクトをどのように ベクトル 化するか、つまりオブジェクトから ベクトル を計算する方法を認識しません。
+Data is stored in Weaviate as the combination of an object and its vector, and these vectors are searchable by the provided [vector index algorithm](../concepts/indexing/vector-index.md). Without any vectorizer modules attached, Weaviate does not know how to *vectorize* an object, i.e. *how* to calculate the vectors given an object.
 
-保存・検索したいデータの種類（テキスト、画像など）やユースケース（検索、質問応答など）、言語、分類、 ML モデル、学習データセットなどに応じて、最適なベクトライザー モジュールを選択して接続できます。または、独自に用意した ベクトル を  Weaviate に持ち込むことも可能です。
+Depending on the type of data you want to store and search (text, images, etc.), and depending on the use case (like search, question answering, etc., depending on language, classification, ML model, training set, etc.), you can choose and attach a vectorizer module that best fits your use case. Or, you can "bring your own" vectors to Weaviate.
 
-このページでは、モジュールとは何か、そして Weaviate においてどのような役割を果たすのかを説明します。
+This page explains what modules are, and what purpose they serve in Weaviate.
 
 
-## 利用可能なモジュールの種類
+## Available module types
 
-以下の図は、最新の  Weaviate バージョン (||site.weaviate_version||) で利用できるモジュールを示しています。モジュールは次のカテゴリに分類されます。
+This graphic displays the available modules for the latest Weaviate version (||site.weaviate_version||) . Modules are grouped into these categories:
 
-- ベクトライザー モジュール
-- ベクトライザーおよび追加機能モジュール
-- その他のモジュール
+- Vectorization modules
+- Vectorization and additional functionality modules
+- Other modules
 
-![ Weaviate モジュール エコシステム](../../../../../../docs/weaviate/concepts/img/weaviate-modules.png " Weaviate モジュール エコシステム")
+![Weaviate module ecosystem](./img/weaviate-modules.png "Weaviate module ecosystem")
 
-### ベクトライザー & ランカー モジュール
+### Vectorizer & Ranker modules
 
-`text2vec-*`、`multi2vec-*`、`img2vec-*` などのベクトライザー モジュールは、データを ベクトル に変換します。`rerank-*` などのランカー モジュールは、結果をランク付けします。
+Vectorizer modules, like the `text2vec-*`, `multi2vec-*` or `img2vec-*` modules, transform data into vectors. Ranker modules, like the `rerank-*` modules, rank the results.
 
-### リーダー & ジェネレーター モジュール
+### Reader & Generator modules
 
-リーダーまたはジェネレーター モジュールは、ベクトライザー モジュールの上に重ねて使用できます。これらのモジュールは取得された関連ドキュメントの集合に対して、質問応答や生成タスクなどの追加処理を行います。例としては、ドキュメントから直接回答を抽出する [`qna-transformers`](../modules/qna-transformers.md) モジュールがあります。ジェネレーター モジュールは、言語生成を用いてドキュメントから回答を生成します。
+Reader or Generator modules can be used on top of a Vectorizer module. These modules take the set of relevant documents that are retrieved, and performs another operation, such as question answering, or a generative task. An example Reader module is [`qna-transformers`](../modules/qna-transformers.md) module, which extracts an answer directly from a document. A Generator module would, on the other hand, use *language generation* to generate an answer from the given document.
 
-### その他のモジュール
+### Other modules
 
-`gcs-backup` や `text-spellcheck` などが含まれます。
+These include those such as `gcs-backup` or `text-spellcheck`.
 
-## 依存関係
+## Dependencies
 
-モジュールによっては、他のモジュールが存在している必要があります。たとえば、[`qna-transformers`](../modules/qna-transformers.md) モジュールを使用するには、テキスト ベクトル化モジュールが *ちょうど 1 つ* 必要です。
+Modules can be dependent on other modules to be present. For example, to use the [`qna-transformers`](../modules/qna-transformers.md) module, *exactly one* text vectorization module is required.
 
-## モジュールなしの Weaviate
+## Weaviate without modules
 
- Weaviate は、モジュールを一切使用せずに純粋な ベクトル ネイティブ データベース兼検索エンジンとして利用することもできます。その場合、データエントリーごとに ベクトル を入力する必要があります。また、検索も ベクトル を使って行います。
+Weaviate can also be used without any modules, as pure vector native database and search engine. If you choose not to include any modules, you will need to enter a vector for each data entry. You can then search through the objects by a vector as well.
 
-## カスタム モジュール
+## Custom modules
 
-誰でも  Weaviate で使用できるカスタム モジュールを作成できます。独自モジュールの作成と利用方法については [こちら](../modules/custom-modules.md) をご覧ください。
+It is possible for anyone to create a custom module for use with Weaviate. Click [here](../modules/custom-modules.md) to see how you can create and use your own modules.
 
-## 関連リソース
+## Further resources
 
-:::info 関連ページ
-- [設定：モジュール](../configuration/modules.md)
-- [リファレンス：モジュール](../modules/index.md)
+:::info Related pages
+- [Configuration: Modules](../configuration/modules.md)
+- [References: Modules](../modules/index.md)
 :::
 
-## 質問とフィードバック
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

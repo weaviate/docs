@@ -1,0 +1,44 @@
+---
+
+sidebar_label: "Overview"
+sidebar_position: 0 
+
+---
+
+# Production Environments
+
+Deploying Weaviate in a production environment requires careful planning to ensure stability, security, and performance. 
+Currently, the only supported method of deploying Weaviate in a production environment is through Kubernetes. 
+Unlike development or testing environments, a production instance must be resilient, scalable, and optimized for real-world workloads.
+
+## Key Aspects of a Production Environments
+
+- **Scalability and Performance**
+    - Production workloads demand high availability and low latency.
+    - Auto-scaling strategies and resource monitoring must be in place. 
+- **Data Resilience and Backups**
+    - Data must be safeguarded against corruption and loss. 
+    - Disaster recover strategies and automated backups must be implemented. 
+- **Security and Compliance**
+    - Data at rest and in transit should be encrypted. 
+    - liance best practices must be followed.  
+- **Monitoring and Observability**
+    - Logs and metrics must be collected for troubleshooting and optimization. 
+    - Monitoring tools should be used to track performance. 
+    - Alerting mechanisms must be set up to detect any anaomolies or failures. 
+- **Networking and Access Control**
+    - Privileges should be limited using RBAC (role-based access control). 
+    - Load balancing should be configured. 
+
+### Weaviate Production Environments
+Weaviate has different options for deploying in a production environment using: 
+
+- **Serverless Cloud**: A Serverless Cloud instance is a robust cluster designed for production use.
+- **Enterprise Cloud**: Enterprise Cloud is a fully-managed deployment of dedicated resources within a secure, highly available environment.
+- **Bring Your Own Cloud (BYOC)**: Using your own cloud environment, you are able to have a fully managed deployed.
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

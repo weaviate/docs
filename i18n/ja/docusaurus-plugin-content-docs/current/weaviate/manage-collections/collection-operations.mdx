@@ -1,0 +1,709 @@
+---
+title: Basic collection operations
+sidebar_label: Collection operations (CRUD)
+sidebar_position: 1
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+Every object in Weaviate belongs to exactly one collection. Use the examples on this page to manage your collections.
+
+:::note Terminology
+Newer Weaviate documentation discuses "collections." Older Weaviate documentation refers to "classes" instead. Expect to see both terms throughout the documentation.
+:::
+
+import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
+
+<VectorConfigSyntax />
+
+## Create a collection
+
+To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/collections.mdx#auto-schema) creates them.
+
+import InitialCaps from "/_includes/schemas/initial-capitalization.md";
+
+<InitialCaps />
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START BasicCreateCollection"
+      endMarker="# END BasicCreateCollection"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START BasicCreateCollection"
+    endMarker="# END BasicCreateCollection"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START BasicCreateCollection"
+    endMarker="// END BasicCreateCollection"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BasicCreateCollection"
+      endMarker="// END BasicCreateCollection"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Production ready collections
+
+- **Manually define you data schema**: 
+  Avoid using the [`auto-schema`](../config-refs/collections.mdx#auto-schema) feature, instead, manually [define the properties for your collection](#create-a-collection-and-define-properties). 
+- **Avoid creating too many collections**: 
+  Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants. For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
+:::
+
+<!--
+import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
+
+<CollectionsCountLimit />
+-->
+
+## Create a collection and define properties
+
+Properties are the data fields in your collection. Each property has a name and a data type.
+
+<details>
+  <summary>
+    Additional information
+  </summary>
+
+Use properties to configure additional parameters such as data type, index characteristics, or tokenization.
+
+For details, see:
+
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/schema">
+    API References: REST: Schema
+  </SkipLink>
+- [Available data types](../config-refs/datatypes.md)
+
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateCollectionWithProperties"
+      endMarker="# END CreateCollectionWithProperties"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START CreateCollectionWithProperties"
+    endMarker="# END CreateCollectionWithProperties"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithProperties"
+    endMarker="// END CreateCollectionWithProperties"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+## Create a collection with a vectorizer
+
+Specify a `vectorizer` for a collection that will generate vector embeddings when creating objects and executing vector search queries.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START Vectorizer"
+      endMarker="# END Vectorizer"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START Vectorizer"
+    endMarker="# END Vectorizer"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START Vectorizer"
+    endMarker="// END Vectorizer"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START CreateCollectionWithVectorizer"
+    endMarker="// END CreateCollectionWithVectorizer"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+:::info Vectorizer configuration
+
+Find out more about the vectorizer and vector index configuration in [Manage collections: Vectorizer and vector index](./vector-config.mdx).
+
+:::
+
+## Disable auto-schema
+
+By default, Weaviate creates missing collections and missing properties. When you configure collections manually, you have more precise control of the collection settings.
+
+To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
+
+## Read a single collection definition
+
+Retrieve a collection definition from the schema.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadOneCollection"
+      endMarker="# END ReadOneCollection"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# START ReadOneCollection"
+      endMarker="# END ReadOneCollection"
+      language="pyv3"
+    />
+  </TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ReadOneCollection"
+    endMarker="// END ReadOneCollection"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ReadOneCollection"
+    endMarker="// END ReadOneCollection"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ReadOneCollection"
+    endMarker="// END ReadOneCollection"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ReadOneCollection"
+      endMarker="// END ReadOneCollection"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>Sample configuration: Text objects</summary>
+
+This configuration for text objects defines the following:
+
+- The collection name (`Article`)
+- The vectorizer module (`text2vec-cohere`) and model (`embed-multilingual-v2.0`)
+- A set of properties (`title`, `body`) with `text` data types.
+
+```json
+{
+  "class": "Article",
+  "vectorizer": "text2vec-cohere",
+  "moduleConfig": {
+    "text2vec-cohere": {
+      "model": "embed-multilingual-v2.0"
+    }
+  },
+  "properties": [
+    {
+      "name": "title",
+      "dataType": ["text"]
+    },
+    {
+      "name": "body",
+      "dataType": ["text"]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>Sample configuration: Nested objects</summary>
+
+:::info Added in `v1.22`
+:::
+
+This configuration for nested objects defines the following:
+
+- The collection name (`Person`)
+- The vectorizer module (`text2vec-huggingface`)
+- A set of properties (`last_name`, `address`)
+
+  - `last_name` has `text` data type
+  - `address` has `object` data type
+
+- The `address` property has two nested properties (`street` and `city`)
+
+```json
+{
+  "class": "Person",
+  "vectorizer": "text2vec-huggingface",
+  "properties": [
+    {
+      "dataType": ["text"],
+      "name": "last_name"
+    },
+    {
+      "dataType": ["object"],
+      "name": "address",
+      "nestedProperties": [
+        { "dataType": ["text"], "name": "street" },
+        { "dataType": ["text"], "name": "city" }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>Sample configuration: Generative search</summary>
+
+This configuration for [retrieval augmented generation](../search/generative.md) defines the following:
+
+- The collection name (`Article`)
+- The default vectorizer module (`text2vec-openai`)
+- The generative module (`generative-openai`)
+- A set of properties (`title`, `chunk`, `chunk_no` and `url`)
+- The tokenization option for the `url` property
+- The vectorization option (`skip` vectorization) for the `url` property
+
+```json
+{
+  "class": "Article",
+  "vectorizer": "text2vec-openai",
+  "vectorIndexConfig": {
+    "distance": "cosine"
+  },
+  "moduleConfig": {
+    "generative-openai": {}
+  },
+  "properties": [
+    {
+      "name": "title",
+      "dataType": ["text"]
+    },
+    {
+      "name": "chunk",
+      "dataType": ["text"]
+    },
+    {
+      "name": "chunk_no",
+      "dataType": ["int"]
+    },
+    {
+      "name": "url",
+      "dataType": ["text"],
+      "tokenization": "field",
+      "moduleConfig": {
+        "text2vec-openai": {
+          "skip": true
+        }
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>Sample configuration: Images</summary>
+
+This configuration for image search defines the following:
+
+- The collection name (`Image`)
+- The vectorizer module (`img2vec-neural`)
+
+  - The `image` property configures collection to store image data.
+
+- The vector index distance metric (`cosine`)
+- A set of properties (`image`), with the `image` property set as `blob`.
+
+For image searches, see [Image search](../search/image.md).
+
+```json
+{
+  "class": "Image",
+  "vectorizer": "img2vec-neural",
+  "vectorIndexConfig": {
+    "distance": "cosine"
+  },
+  "moduleConfig": {
+    "img2vec-neural": {
+      "imageFields": ["image"]
+    }
+  },
+  "properties": [
+    {
+      "name": "image",
+      "dataType": ["blob"]
+    }
+  ]
+}
+```
+
+</details>
+
+## Read all collection definitions
+
+Fetch the database schema to retrieve all of the collection definitions.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ReadAllCollections"
+      endMarker="# END ReadAllCollections"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START ReadAllCollections"
+    endMarker="# END ReadAllCollections"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ReadAllCollections"
+    endMarker="// END ReadAllCollections"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ReadAllCollections"
+    endMarker="// END ReadAllCollections"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START ReadAllCollections"
+    endMarker="// END ReadAllCollections"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ReadAllCollections"
+      endMarker="// END ReadAllCollections"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Update a collection definition
+
+import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
+
+<RaftRFChangeWarning />
+
+You can update a collection definition to change the [mutable collection settings](../config-refs/collections.mdx#mutability).
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateCollection"
+      endMarker="# END UpdateCollection"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START UpdateCollection"
+    endMarker="# END UpdateCollection"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START UpdateCollection"
+    endMarker="// END UpdateCollection"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START UpdateCollection"
+      endMarker="// END UpdateCollection"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Delete a collection
+
+import CautionSchemaDeleteClass from "/_includes/schema-delete-class.mdx";
+
+<CautionSchemaDeleteClass />
+
+## Add a property
+
+<details>
+  <summary>
+    Indexing limitations after data import
+  </summary>
+
+There are no index limitations when you add collection properties before you import data.
+
+If you add a new property after you import data, there is an impact on indexing.<br/><br/>
+
+Property indexes are built at import time. If you add a new property after importing some data, pre-existing objects index aren't automatically updated to add the new property. This means pre-existing objects aren't added to the new property index. Queries may return unexpected results because the index only includes new objects.<br/><br/>
+
+To create an index that includes all of the objects in a collection, do one of the following:
+
+- New collections: Add all of the collection's properties before importing objects.
+- Existing collections: Export the existing data from the collection. Re-create it with the new property. Import the data into the updated collection.
+
+We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
+
+</details>
+
+import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.add.mdx";
+
+<CodeSchemaAddProperties />
+
+## Set inverted index parameters
+
+Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetInvertedIndexParams"
+    endMarker="# END SetInvertedIndexParams"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Further resources
+
+- [Manage collections: Vectorizer and vector index](./vector-config.mdx)
+- [References: Collection definition](/weaviate/config-refs/collections.mdx)
+- [Concepts: Data structure](../concepts/data.md)
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
+    API References: REST: Schema
+  </SkipLink>
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

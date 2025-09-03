@@ -1,0 +1,203 @@
+---
+title: Notes and best practices
+sidebar_position: 2
+description: "TypeScript client optimization guidelines and recommended implementation patterns for web development."
+image: og/docs/client-libraries.jpg
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PythonCode from "!!raw-loader!/_includes/code/client-libraries/python_v4.py";
+import BatchVectorCode from "!!raw-loader!/_includes/code/howto/manage-data.import.py";
+
+## Instantiate a client
+
+The v3 client provides helper functions to connect your application to your Weaviate instance.
+
+[Embedded Weaviate](/deploy/installation-guides/embedded) is not supported in the v3 client. The v2 client supports embedded Weaviate.
+
+### Connect to Weaviate
+
+<Tabs groupId="platforms">
+<TabItem value="wcd" label="WCD">
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToWeaviateCloud("WEAVIATE_INSTANCE_URL", {
+  // Replace WEAVIATE_INSTANCE_URL with your instance URL
+  authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"),
+  headers: {
+    "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY || "", // Replace with your inference API key
+  },
+});
+
+console.log(client);
+```
+
+</TabItem>
+<TabItem value="local" label="Local">
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToLocal();
+
+console.log(client);
+```
+
+</TabItem>
+<TabItem value="custom" label="Custom">
+
+```ts
+import weaviate from "weaviate-client";
+
+const client = await weaviate.connectToCustom({
+  httpHost: "localhost",
+  httpPort: 8080,
+  grpcHost: "localhost",
+  grpcPort: 50051,
+  grpcSecure: true,
+  httpSecure: true,
+  authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"),
+  headers: {
+    "X-Cohere-Api-Key": process.env.COHERE_API_KEY || "", // Replace with your inference API key
+  },
+});
+
+console.log(client);
+```
+
+</TabItem>
+</Tabs>
+
+### Close client method
+
+import TSClientClose from "/_includes/clients/ts-client-close.mdx";
+
+<TSClientClose />
+
+### Authentication
+
+import ClientAuthApiKey from "/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx";
+
+<ClientAuthApiKey />
+
+```ts
+import weaviate, { WeaviateClient } from "weaviate-client";
+
+// Instantiate the client with the auth config
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
+  "WEAVIATE_INSTANCE_URL", // Replace WEAVIATE_INSTANCE_URL with your instance URL
+  {
+    authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"), // Add your WCD API KEY here
+  }
+);
+
+console.log(client);
+```
+
+To include custom headers, such as API keys for third party services, add the custom headers to the `headers` section when you initialize the client:
+
+```ts
+import weaviate, { WeaviateClient } from "weaviate-client";
+
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
+  "WEAVIATE_INSTANCE_URL", // Replace WEAVIATE_INSTANCE_URL with your instance URL
+  {
+    authCredentials: new weaviate.ApiKey("WEAVIATE_INSTANCE_API_KEY"), // Add your WCD API KEY here
+    headers: {
+      someHeaderName: "header-value",
+    },
+  }
+);
+```
+
+The client sends the headers every it makes a request to the Weaviate instance.
+
+### Initial connection checks
+
+When establishing a connection to the Weaviate server, the client performs a series of checks. These includes checks for the server version, and to make sure that the REST and gRPC ports are available.
+
+You can set `skipInitChecks` to `true` to skip these checks.
+
+```js
+import weaviate from 'weaviate-client';
+Add commentMore actions
+const client = await weaviate.connectToLocal({
+  skipInitChecks: true,
+})
+```
+
+In most cases, you should use the default `false` setting for `skipInitChecks`. However, setting `skipInitChecks: true` may be a useful temporary measure if you have connection issues.
+
+For additional connection configuration, see [Timeout values](#timeout-values).
+
+## Generics
+
+TypeScript users can define custom Generics. Generics make it easier to manipulate objects and their properties. Compile time type checks help to ensure that operations like `insert()` and `create()` are safe and error free.
+
+```js
+import weaviate from "weaviate-client";
+
+type Article = {
+  title: string,
+  body: string,
+  wordcount: number,
+};
+
+const collection = client.collections.get < Article > "Article";
+await collection.data.insert({
+  // compiler error since 'body' field is missing in '.insert'
+  title: "TS is awesome!",
+  wordcount: 9001,
+});
+```
+
+## Iterator Method
+
+The cursor API has a new iterator method. To repeat an action over an entire collection, use `iterator()`.
+
+```js
+const articles = client.collections.get("Article");
+
+for await (const article of articles.iterator()) {
+  // do something with article.
+  console.log(article); // we print each object in the collection
+}
+```
+
+## Type Safety
+
+The v3 client enables strong typing with custom TypeScript types and user-defined generics.
+
+You can find the type definitions in the folder that stores your Weaviate client package. The package is stored in a folder under the `node/` directory. Custom type definitions are stored in sub-folder for each bundle.
+
+For example, the `index.d.ts` file stores type definitions for the `cjs` bundle:
+
+```bash
+node/cjs/index.d.ts
+```
+
+The v3 client also adds internal features that make JavaScript development more type-safe.
+
+### Timeout values
+
+You can set timeout values, in seconds, for the client. Use the `timeout` property to configure the timeout values for initialization checks as well as query and insert operations.
+
+```js 
+import weaviate from 'weaviate-client';
+
+const client = await weaviate.connectToLocal({
+  timeout: {
+      query: 20,
+      insert: 120,
+      init: 10,
+  }
+})
+```
+:::tip Timeouts on `generate` queries
+
+If you see errors while using the `generate` submodule, try increasing the query timeout values (`query: 60`). <br/><br/>The `generate` submodule uses a large language model to generate text. The submodule is dependent on the speed of the language model and any API that serves the language model. <br/><br/>Increase the timeout values to allow the client to wait longer for the language model to respond.
+:::

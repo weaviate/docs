@@ -1,103 +1,118 @@
-What is ベクトル インデックス作成? それは ベクトル データベースの重要なコンポーネントであり、[類似度検索の検索プロセスを **大幅に高速化** する](https://weaviate.io/blog/vector-search-explained) 一方で検索精度の低下は最小限に抑えられます（[HNSW インデックス](#hierarchical-navigable-small-world-hnsw-index)）。また、[フラット インデックス](#flat-index) は多数のデータサブセットを小さなメモリフットプリントで効率的に保存できます。[ダイナミック インデックス](#dynamic-index) は、フラット インデックスとして開始し、しきい値を超えると動的に HNSW インデックスへ切り替えることも可能です。
+---
+title: Vector Indexing
+sidebar_position: 1
+description: "Dynamic vector indexing with HNSW and flat indexes for speed-optimized similarity search operations."
+image: og/docs/concepts.jpg
+slug: /weaviate/concepts/vector-index
+# tags: ['vector index plugins']
+---
 
-Weaviate の ベクトル ファースト ストレージ システムは、ベクトル インデックスを用いたすべてのストレージ操作を処理します。ベクトル ファースト方式でデータを保存することで、セマンティック検索やコンテキスト検索が可能になるだけでなく、十分な水平スケーリングやインデックスのシャードがあれば、パフォーマンスを低下させることなく *非常に* 大きなデータ量を保存できます。
+What is vector indexing? It's a key component of vector databases that helps to [significantly **increase the speed** of the search process of similarity search](https://weaviate.io/blog/vector-search-explained) with only a minimal tradeoff in search accuracy ([HNSW index](#hierarchical-navigable-small-world-hnsw-index)), or efficiently store many subsets of data in a small memory footprint ([flat index](#flat-index)). The [dynamic index](#dynamic-index) can even start off as a flat index and then dynamically switch to the HNSW index as it scales past a threshold.
 
-Weaviate は以下の ベクトル インデックス タイプをサポートしています:
-* [フラット インデックス](#flat-index)：小規模データセット向けに設計されたシンプルで軽量なインデックス。
-* [HNSW インデックス](#hierarchical-navigable-small-world-hnsw-index)：構築には時間がかかりますが、対数的な時間計算量でクエリを処理でき、大規模データセットに適しています。
-* [ダイナミック インデックス](#dynamic-index)：オブジェクト数が増加すると自動的にフラット インデックスから HNSW インデックスへ切り替えます。
+Weaviate's vector-first storage system takes care of all storage operations with a vector index. Storing data in a vector-first manner not only allows for semantic or context-based search, but also makes it possible to store *very* large amounts of data without decreasing performance (assuming scaled well horizontally or having sufficient shards for the indexes).
+
+Weaviate supports these vector index types:
+* [flat index](#flat-index): a simple, lightweight index that is designed for small datasets.
+* [HNSW index](#hierarchical-navigable-small-world-hnsw-index): a more complex index that is slower to build, but it scales well to large datasets as queries have a logarithmic time complexity.
+* [dynamic index](#dynamic-index): allows you to automatically switch from a flat index to an HNSW index as object count scales
 
 :::caution Experimental feature
-`v1.25` 以降で利用可能です。これは実験的機能のため、慎重にご利用ください。
+Available starting in `v1.25`. This is an experimental feature. Use with caution.
 :::
 
-本ページでは ベクトル インデックスとは何か、そして Weaviate ベクトル データベースでどのような役割を果たすかを説明します。
+This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
 :::info What is a vector index?
-ベクトル データベースにおいて、ベクトル インデックスは ベクトル 埋め込みを整理し、効率的な類似度検索を可能にするデータ構造です。適切なインデックス作成はパフォーマンスに不可欠であり、シンプルなフラット インデックスから HNSW のような高度なアプローチまで、インデックス タイプごとに用途が異なります。
+In vector databases, a vector index is a data structure that organizes vector embeddings to enable efficient similarity search. Indexing vector databases properly is crucial for performance, and different index types serve different purposes - from the simple flat index to more sophisticated approaches like HNSW.
 :::
 
-## ベクトル インデックス化の必要性
+## Why do you need vector indexing?
 
-[ベクトル 埋め込み](https://weaviate.io/blog/vector-embeddings-explained) は意味を表現する優れた方法です。ベクトル のインデックス方法を理解することは、ベクトル データベースを効果的に扱ううえで重要です。ベクトル 埋め込みは、テキスト、画像、動画などさまざまなデータタイプから意味を捉える要素の配列です。要素数は次元と呼ばれます。高次元 ベクトル はより多くの情報を捉えますが、扱いが難しくなります。
+[Vector embeddings](https://weaviate.io/blog/vector-embeddings-explained) are a great way to represent meaning. Understanding how to index a vector is crucial for working with vector databases effectively. Vectors embeddings are arrays of elements that can capture meaning from different data types, such as texts, images, videos, and other content. The number of elements are called dimensions. High dimension vectors capture more information, but they are harder to work with.
 
-ベクトル データベースは高次元 ベクトル の扱いを容易にします。検索を考えてみましょう。ベクトル データベースはデータオブジェクト間のセマンティック類似度を効率的に計測します。[類似度検索](../../search/similarity.md) を実行すると、Weaviate はクエリをベクトル化し、クエリ ベクトル に近い ベクトル を持つオブジェクトをデータベースから見つけ出します。
+Vector databases make it easier to work with high dimensional vectors. Consider search; Vector databases efficiently measure semantic similarity between data objects. When you run a [similarity search](../../search/similarity.md), a vector database like Weaviate uses a vectorized version of the query to find objects in the database that have vectors similar to the query vector.
 
-ベクトル は多次元空間の座標のようなものです。非常にシンプルな ベクトル では、*単語* を 2 次元空間で表現できます。
+Vectors are like coordinates in a multi-dimensional space. A very simple vector might represent objects, *words* in this case, in a 2-dimensional space.
 
-下図では、`Apple` と `Banana` が互いに近く、`Newspaper` と `Magazine` も近い位置にありますが、前者と後者のペアは同じ空間内で離れています。
+In the graph below, the words `Apple` and `Banana` are shown close to each other. `Newspaper` and `Magazine` are also close to each other, but they are far away from `Apple` and `Banana` in the same vector space.
 
-各ペア内では ベクトル 埋め込みが似ているため距離が小さく、ペア間では ベクトル の違いが大きいため距離が大きくなります。直感的に、果物同士は似ていますが、果物と読み物は似ていません。
+Within each pair, the distance between words is small because the objects have similar vector embeddings. The distance between the pairs is larger because the difference between the vectors is larger. Intuitively, fruits are similar to each other, but fruits are not similar to reading material.
 
-この表現の詳細については ([GloVe](https://github.com/stanfordnlp/GloVe)) および [ベクトル 埋め込み](https://weaviate.io/blog/vector-embeddings-explained#what-exactly-are-vector-embeddings) を参照してください。
+For more details of this representation, see: ([GloVe](https://github.com/stanfordnlp/GloVe)) and [vector embeddings](https://weaviate.io/blog/vector-embeddings-explained#what-exactly-are-vector-embeddings).
 
-![2D Vector embedding visualization](../../../../../../../docs/weaviate/concepts/img/vectors-2d.png "2D Vectors visualization")
+![2D Vector embedding visualization](../img/vectors-2d.png "2D Vectors visualization")
 
-別の例えとして、スーパーマーケットでの商品の配置を考えてみましょう。`Apples` は `Bananas` 近くに置かれていることが期待されます。両方とも果物だからです。しかし `Magazine` を探すときは、`Apples` や `Bananas` から離れ、例えば `Newspapers` のある通路に向かいます。これは使用するモジュールによって ベクトル の数値が計算される方法次第で、Weaviate における概念のセマンティクスも同様に保存できます。単語やテキストだけでなく、画像、動画、DNA 配列なども ベクトル 化してインデックスできます。どのモデルを使うかの詳細は [こちら](/weaviate/modules/index.md) をお読みください。
+Another way to think of this is how products are placed in a supermarket. You'd expect to find `Apples` close to `Bananas`, because they are both fruit. But when you are searching for a `Magazine`, you would move away from the `Apples` and `Bananas`, more towards the aisle with, for example, `Newspapers`. This is how the semantics of concepts can be stored in Weaviate as well, depending on the module you're using to calculate the numbers in the vectors. Not only words or text can be indexed as vectors, but also images, video, DNA sequences, etc. Read more about which model to use [here](/weaviate/modules/index.md).
 
-![Supermarket map visualization as analogy for vector indexing](../../../../../../../docs/weaviate/concepts/img/supermarket.svg "Supermarket map visualization")
+![Supermarket map visualization as analogy for vector indexing](../img/supermarket.svg "Supermarket map visualization")
 
 :::tip
-弊社ブログ記事 [Vector search explained](https://weaviate.io/blog/vector-search-explained) もぜひご覧ください。
+You might be also interested in our blog post [Vector search explained](https://weaviate.io/blog/vector-search-explained).
 :::
 
-それでは、Weaviate がサポートするさまざまな手法で ベクトル をインデックス化する方法を見ていきましょう。最初に紹介するのは HNSW インデックスです。
+Let's explore how to index a vector using different approaches supported by Weaviate. The first method is the HNSW index.
 
-## 階層型 Navigable Small World (HNSW) インデックス
+## Hierarchical Navigable Small World (HNSW) index
 
-**階層型 Navigable Small World (HNSW)** アルゴリズムは多層グラフ上で動作します。これはインデックス タイプでもあり、HNSW アルゴリズムを用いて作成された ベクトル インデックス を指します。HNSW インデックス は非常に高速なクエリを実現しますが、新しい ベクトル を追加してインデックスを再構築する際にはリソースを多く消費する可能性があります。
+**Hierarchical Navigable Small World (HNSW)** is an algorithm that works on multi-layered graphs. It is also an index type, and refers to vector indexes that are created using the HNSW algorithm. HNSW indexes enable very fast queries, but rebuilding the index when you add new vectors can be resource intensive.
 
-Weaviate の `hnsw` インデックスは、Hierarchical Navigable Small World（[HNSW](https://arxiv.org/abs/1603.09320)）アルゴリズムの [カスタム実装](../../more-resources/faq.md#q-does-weaviate-use-hnswlib) であり、完全な [CRUD 対応](https://db-engines.com/en/blog_post/87) を提供します。
+Weaviate's `hnsw` index is a [custom implementation](../../more-resources/faq.md#q-does-weaviate-use-hnswlib) of the Hierarchical Navigable Small World ([HNSW](https://arxiv.org/abs/1603.09320)) algorithm that offers full [CRUD-support](https://db-engines.com/en/blog_post/87).
 
-構築時、HNSW アルゴリズムは複数のレイヤーを作成します。クエリ時には、これらのレイヤーを利用して近似最近傍（ANN）リストを迅速かつ効率的に構築します。
+At build time, the HNSW algorithm creates a series of layers. At query time, the HNSW algorithm uses the layers to build a list of approximate nearest neighbors (ANN) quickly and efficiently.
 
-以下は HNSW を用いた ベクトル 検索の概念図です。
+Consider this diagram of a vector index using HNSW.
 
-![HNSW layers](../../../../../../../docs/weaviate/concepts/img/hnsw-layers.svg "HNSW layers")
+![HNSW explained](../img/hnsw_1_explained.png "HNSW explained")
 
-1 つのオブジェクトは複数のレイヤーに存在する場合がありますが、すべてのオブジェクトは最下層（図のレイヤー 0）に必ず存在します。レイヤー 0 ではデータオブジェクト同士が密に接続されています。上位レイヤーに進むほどオブジェクト数と接続数は減少します。上位レイヤーのデータオブジェクトは下位レイヤーと対応していますが、各レイヤーは直下のレイヤーより指数関数的に少ないオブジェクトを持ちます。HNSW アルゴリズムはこれらのレイヤー構造を活用して大量データを効率的に処理します。
+An individual object can exist in more than one layer, but every object in the database is represented in the lowest layer (layer zero in the picture). The layer zero data objects are very well connected to each other. Each layer above the lowest layer has fewer data object, and fewer connections. The data objects in the higher layers correspond to the objects in the lower layers, but each higher layer has exponentially fewer objects than the layer below. The HNSW algorithm takes advantage of the layers to efficiently process large amounts of data.
 
-検索クエリが来ると、HNSW は最上位レイヤーで最も近いデータポイントを見つけます。次に 1 つ下のレイヤーに降り、そのレイヤーで上位レイヤーのデータポイントに最も近いポイントを探します。これが最近傍です。このプロセスをレイヤーごとに繰り返し、最下層に到達すると検索クエリに最も近いデータオブジェクトを返します。
+![HNSW search](../img/hnsw_2_search.png "HNSW search")
 
-上位レイヤーには比較的少ないデータオブジェクトしかないため、HNSW は検索対象を大幅に削減できます。一方、レイヤーが 1 つしかないデータストアでは、アルゴリズムは無関係なオブジェクトも含め多くを検索する必要があります。
+When a search query comes in, the HNSW algorithm finds the closest matching data points in the highest layer. Then, HNSW goes one layer deeper, and finds the closest data points in that layer to the ones in the higher layer. These are the nearest neighbors. The algorithm searches the lower layer to create a new list of nearest neighbors. Then, HNSW uses the new list and repeats the process on the next layer down. When it gets to the deepest layer, the HNSW algorithm returns the data objects closest to the search query.
 
-HNSW は非常に高速かつメモリ効率の高い類似度検索手法です。メモリキャッシュには最上位レイヤーのみを保持し、最下層のすべてのオブジェクトを保持しません。上位から下位へ検索が移る際、HNSW はクエリに最も近いデータオブジェクトのみを追加します。そのため、他の検索アルゴリズムと比べて使用メモリは小さくなります。
+Since there are relatively few data objects on the higher layers, HNSW has to search fewer objects. This means HNSW 'jumps' over large amounts of data that it doesn't need to search. When a data store has only one layer, the search algorithm can't skip unrelated objects. It has to search significantly more data objects even though they are unlikely to match.
 
-図を再度ご覧ください。青い検索 ベクトル が最上位レイヤーで部分的な結果に接続し、レイヤー 1 のオブジェクトがレイヤー 0 の結果集合へ導きます。HNSW は 3 回のホップ（点線）で検索を進め、クエリと無関係なオブジェクトを飛び越えています。
+HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
-もしデータのアップロード速度を超高速なクエリや高いスケーラビリティよりも重視する場合は、他の ベクトル インデックス タイプ（例: [Spotify の Annoy](https://github.com/spotify/annoy)）の方が適しているかもしれません。
+Have another look at the diagram; it demonstrates how the HNSW algorithm searches. The search vector in the top layer connects to a partial result in layer one. The objects in layer one lead HNSW to the result set in layer zero. This allows HNSW to skip objects that are unrelated to the search query.
 
-### 検索品質と速度のトレードオフ管理
+Inserting a vector into an HNSW index works in a similar way. The HNSW algorithm finds the closest data objects in the highest layer, and then moves down to the next layer. It continues until it finds the best place to insert the new vector. The HNSW algorithm then connects the new vector to the existing vectors in that layer.
 
-HNSW のパラメータを調整することで、検索品質と速度のバランスを取ることができます。
+![HNSW insertion](../img/hnsw_3_insertion.png "HNSW insertion")
 
-`ef` パラメータは、このトレードオフを左右する重要な設定です。
+### Managing search quality vs speed tradeoffs
 
-`ef` は検索中に HNSW アルゴリズムが使用する動的リストのサイズを決定します。`ef` を大きくすると探索範囲が広がり精度が向上しますが、クエリ速度が低下する可能性があります。
+HNSW parameters can be adjusted to adjust search quality against speed.
 
-逆に `ef` を小さくすると検索は高速になりますが、精度が犠牲になることがあります。このバランスは、速度優先か精度優先かによって重要度が変わります。例えば即時応答が求められるアプリケーションでは、多少の精度低下と引き換えに小さな `ef` が好まれるかもしれません。一方、分析や研究のように高精度が最優先の場面では、大きな `ef` が適しています。
+![HNSW parameters](../img/hnsw_4_parameters.png "HNSW parameters")
 
-`ef` は明示的にも動的にも設定できます。動的 `ef` は、クエリパターンが変動する環境で特に有効です。動的設定では、Weaviate がリアルタイムのクエリ要件に基づき速度と再現率の最適バランスを図ります。
+The `ef` parameter is a critical setting for balancing the trade-off between search speed and quality.
 
-動的 `ef` を有効化するには `ef`: -1 を設定します。Weaviate はクエリのレスポンス上限に応じて ANN リストのサイズを調整します。この計算では `dynamicEfMin`、`dynamicEfMax`、`dynamicEfFactor` の値も考慮されます。
+The `ef` parameter dictates the size of the dynamic list used by the HNSW algorithm during the search process. A higher `ef` value results in a more extensive search, enhancing accuracy but potentially slowing down the query.
+
+In contrast, a lower `ef` makes the search faster but might compromise on accuracy. This balance is crucial in scenarios where either speed or accuracy is a priority. For instance, in applications where rapid responses are critical, a lower `ef` might be preferable, even at the expense of some accuracy. Conversely, in analytical or research contexts where precision is paramount, a higher `ef` would be more suitable, despite the increased query time.
+
+`ef` can be configured explicitly or dynamically. This feature is particularly beneficial in environments with varying query patterns. When `ef` is configured dynamically, Weaviate optimizes the balance between speed and recall based on real-time query requirements.
+
+To enable dynamic `ef`, set `ef`: -1. Weaviate adjusts the size of the ANN list based on the query response limit. The calculation also takes into account the values of `dynamicEfMin`, `dynamicEfMax`, and `dynamicEfFactor`.
 
 ### Dynamic ef
 
-`ef` パラメータはクエリ時の ANN リストのサイズを制御します。特定のサイズを指定するか、Weaviate に動的調整させるかを選べます。動的 `ef` を選択した場合、Weaviate は ANN リストのサイズを制御するいくつかのオプションを提供します。
+The `ef` parameter controls the size of the ANN list at query time. You can configure a specific list size or else let Weaviate configure the list dynamically. If you choose dynamic `ef`, Weaviate provides several options to control the size of the ANN list.
 
-リストの長さはクエリで設定したレスポンス制限（limit）を基準に決定されます。Weaviate はこの limit をアンカーとして、`dynamicEf` パラメータでリストサイズを調整します。
+The length of the list is determined by the query response limit that you set in your query. Weaviate uses the query limit as an anchor and modifies the size of ANN list according to the values you set for the `dynamicEf` parameters.
 
-- `dynamicEfMin` はリスト長の下限を設定します。
-- `dynamicEfMax` はリスト長の上限を設定します。
-- `dynamicEfFactor` はリスト長をスケーリングする係数を設定します。
+- `dynamicEfMin` sets a lower bound on the list length.
+- `dynamicEfMax` sets an upper bound on the list length.
+- `dynamicEfFactor` sets a range for the list.
 
-検索の再現率を高く保つため、クエリ limit が小さくても実際の動的 `ef` 値は `dynamicEfMin` を下回りません。
+To keep search recall high, the actual dynamic `ef` value stays above `dynamicEfMin` even if the query limit is small enough to suggest a lower value.
 
-大きな結果セットを取得する際の速度を維持するため、動的 `ef` 値は `dynamicEfMax` を上限とします。クエリ limit がその上限を超えても、`dynamicEfMax` を超えることはありません。クエリ limit が `dynamicEfMax` より大きい場合、この上限は効果を持たず、動的 `ef` 値はクエリ limit と等しくなります。
+To keep search speed reasonable even when retrieving large result sets, the dynamic `ef` value is limited to `dynamicEfMax`. Weaviate doesn't exceed `dynamicEfMax` even if the query limit is large enough to suggest a higher value. If the query limit is higher than `dynamicEfMax`, `dynamicEfMax` does not have any effect. In this case, dynamic `ef` value is equal to the query limit.
 
-ANN リストの長さを決めるため、Weaviate はクエリ limit に `dynamicEfFactor` を掛けます。その後 `dynamicEfMin` と `dynamicEfMax` により範囲が調整されます。
+To determine the length of the ANN list, Weaviate multiples the query limit by `dynamicEfFactor`. The list range is modified by `dynamicEfMin` and `dynamicEfMax`.
 
-以下の GraphQL クエリでは limit を 4 に設定しています。
+Consider this GraphQL query that sets a limit of 4.
 
 ```graphql
 {
@@ -110,7 +125,7 @@ ANN リストの長さを決めるため、Weaviate はクエリ limit に `dyna
 }
 ```
 
-このコレクションに次のような動的 `ef` 設定があるとします。
+Imagine the collection has dynamic `ef` configured.
 
 ```json
   "vectorIndexConfig": {
@@ -121,137 +136,139 @@ ANN リストの長さを決めるため、Weaviate はクエリ limit に `dyna
   }
 ```
 
-検索リストは次の特徴を持ちます。
+The resulting search list has these characteristics.
 
-- 潜在的な長さは 40 オブジェクト（("dynamicEfFactor": 10) × (limit: 4)）。
-- 最小長は 5 オブジェクト ("dynamicEfMin": 5)。
-- 最大長は 25 オブジェクト ("dynamicEfMax": 25)。
-- 実際のサイズは 5〜25 オブジェクトの範囲。
+- A potential length of 40 objects ( ("dynamicEfFactor": 10) * (limit: 4) ).
+- A minimum length of 5 objects ("dynamicEfMin": 5).
+- A maximum length of 25 objects ("dynamicEfMax": 25).
+- An actual size of 5 to 25 objects.
 
-ローカル環境で Weaviate を実行するために [`docker-compose.yml`](/deploy/installation-guides/docker-installation.md) を使用する場合、`QUERY_DEFAULTS_LIMIT` 環境変数が適切なデフォルトクエリ limit を設定します。メモリエラーを防ぐため、`QUERY_DEFAULTS_LIMIT` は `QUERY_MAXIMUM_RESULTS` よりかなり低い値になっています。
+If you use the [`docker-compose.yml` file from Weaviate](/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
-デフォルト limit を変更するには、Weaviate インスタンスを構成する際に `QUERY_DEFAULTS_LIMIT` の値を編集してください。
-### 削除
+To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you configure your Weaviate instance.
 
-クリーンアップは非同期プロセスであり、削除や更新の後に HNSW グラフを再構築します。クリーンアップ前はオブジェクトに削除フラグが付くだけで、依然として HNSW グラフに接続されています。クリーンアップ中にエッジが再割り当てされ、オブジェクトは完全に削除されます。
+### Deletions
 
-### 非同期インデックス作成
+Cleanup is an async process runs that rebuilds the HNSW graph after deletes and updates. Prior to cleanup, objects are marked as deleted, but they are still connected to the HNSW graph. During cleanup, the edges are reassigned and the objects are deleted for good.
+
+### Asynchronous indexing
 
 :::caution Experimental
-`v1.22` から利用可能です。これは実験的機能です。ご利用の際はご注意ください。
+Available starting in `v1.22`. This is an experimental feature. Use with caution.
 :::
 
-この機能は ベクトル インデックス、特に HNSW インデックスのみに関連します。
+This feature relates to the vector index, specifically only to the HNSW index.
 
-非同期インデックス作成は、次の方法で opt-in して有効化できます。  
-- オープンソース版のユーザー: `ASYNC_INDEXING` 環境変数を `true` に設定します。  
-- Weaviate Cloud のユーザー: Weaviate Cloud Console で `Enable async indexing` スイッチをオンにします。  
+Asynchronous indexing can be enabled by opting in as follows:
+- Open-source users can do this by setting the `ASYNC_INDEXING` environment variable to `true`.
+- Weaviate Cloud users can do this by toggling the `Enable async indexing` switch in the Weaviate Cloud Console.
 
-同期インデックス作成では、ベクトル インデックスはオブジェクトストアと同時に更新されます。特にインデックスのサイズが大きくなると、HNSW インデックスの更新は高コストとなり、インデックス作成がシステムのボトルネックになってリクエスト完了までの時間を遅延させる可能性があります。
+With synchronous indexing, the vector index is updated in lockstep with the object store. Updating an HNSW index can be an expensive operation, especially as the size of the index grows. As a result, the indexing operation can be the bottleneck in the system, slowing down the time for user requests to be completed.
 
-非同期インデックス作成を有効にすると、すべてのベクトル インデックス操作はキューを経由します。これはバッチインポートだけでなく、単一オブジェクトのインポート、削除、更新にも適用されます。
+When asynchronous indexing is enabled, all vector indexing operations go through a queue. This applies to not only batch imports, but also to single object imports, deletions, and updates.
 
-そのため、オブジェクトストアは素早く更新されてユーザーリクエストを完了でき、ベクトル インデックスはバックグラウンドで更新されます。非同期インデックス作成は、大量データのインポート時に特に有用です。
+This means that the object store can be updated quickly to finish performing user requests while the vector index updates in the background. Asynchronous indexing is especially useful for importing large amounts of data.
 
-これにより、オブジェクト作成から HNSW インデックスによるベクトル検索が可能になるまでに短い遅延が発生します。ノードごとのキュー内オブジェクト数は［こちら］(/deploy/configuration/nodes.md)で監視できます。
+This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/deploy/configuration/nodes.md).
 
 :::info Changes in `v1.28`
-Weaviate `v1.22` 〜 `v1.27` では、非同期インデックス作成はバッチインポート操作のみに影響し、インメモリキューを使用していました。  
+In Weaviate `v1.22` to `v1.27`, the async indexing feature only affected batch import operations, using an in-memory queue.
 <br/>
 
-`v1.28` からは、単一オブジェクトのインポート、削除、更新にも拡張されました。さらにインメモリキューは永続的なオンディスクキューに置き換えられています。これによりインデックス操作の堅牢性が向上し、ロック競合とメモリ使用量の削減によってパフォーマンスが改善されます。  
+Starting in `v1.28`, the async indexing feature has been expanded to include single object imports, deletions, and updates. Additionally, the in-memory queue has been replaced with a persistent, on-disk queue. This change allows for more robust handling of indexing operations, and improves performance though reduction of lock contention and memory usage.
 <br/>
 
-オンディスクキューの使用によりディスク使用量がわずかに増加する場合がありますが、総ディスク使用量のごく一部にとどまる想定です。
+The use of an on-disk queue may result in a slight increase in disk usage, however this is expected to be a small percentage of the total disk usage.
 :::
 
-## フラットインデックス
+## Flat index
 
 :::info Added in `v1.23`
 :::
 
-フラットインデックスは、データベースにおけるベクトル インデックス実装の基本的手法の一つです。その名の通りシンプルで軽量なインデックスで、構築が速くメモリフットプリントも非常に小さくなります。各エンドユーザー（テナント）が独立したデータセットを持つ SaaS 製品や、分離されたレコードセットを扱うデータベースなどのユースケースに適しています。
+The **flat index** is one of the fundamental ways to implement vector indexing in databases. As the name suggests, it's a simple, lightweight index that is fast to build and has a very small memory footprint. This index type is a good choice for use cases where each end user (i.e. tenant) has their own, isolated, dataset, such as in a SaaS product for example, or a database of isolated record sets.
 
-フラットインデックスはディスクに裏付けられた単一レイヤーのデータオブジェクトで構成されるため、メモリフットプリントが非常に小さくなります。マルチテナンシーなど小規模なコレクションに最適です。
+As the name suggests, the flat index is a single layer of disk-backed data objects and thus a very small memory footprint. The flat index is a good choice for small collections, such as for multi-tenancy use cases.
 
-一方で、フラットインデックスはデータオブジェクト数に対して線形時間計算量を持つため、大規模コレクションにはスケールしにくいという欠点があります。対照的に `hnsw` インデックスは対数時間計算量です。
+A drawback of the flat index is that it does not scale well to large collections as it has a linear time complexity as a function of the number of data objects, unlike the `hnsw` index which has a logarithmic time complexity.
 
-## ダイナミックインデックス
+## Dynamic index
 
 :::caution Experimental feature
-`v1.25` から利用可能です。これは実験的機能です。ご利用の際はご注意ください。
+Available starting in `v1.25`. This is an experimental feature. Use with caution.
 :::
 
 import DynamicAsyncRequirements from '/_includes/dynamic-index-async-req.mdx';
 
 <DynamicAsyncRequirements/>
 
-フラットインデックスはオブジェクト数が少ないユースケースにおいて、メモリオーバーヘッドが低くレイテンシも良好です。オブジェクト数が増えるにつれ、検索を高速化する HNSW インデックスの方が有効になります。ダイナミックインデックスの目的は、スケール時にメモリフットプリントを増やす代わりにクエリ時のレイテンシを短縮することです。
+The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale.
 
-ダイナミックインデックスを設定すると、フラットインデックスから HNSW インデックスへ自動的に切り替えられます。切り替えはオブジェクト数が指定の閾値（デフォルトは 10,000）を超えた際に行われます。この機能は非同期インデックス作成が有効になっている場合のみ動作します。インポート中に閾値に達すると、すべてのデータが非同期キューにたまり、バックグラウンドで HNSW インデックスが構築され、準備が整うとフラットから HNSW へのスワップが完了します。
+By configuring a dynamic index, you can automatically switch from flat to HNSW indexes. This switch occurs when the object count exceeds a prespecified threshold (by default 10,000). This functionality only works with async indexing enabled. When the threshold is hit while importing, all the data piles up in the async queue, the HNSW index is constructed in the background and when ready the swap from flat to HNSW is completed.
 
-現在、この機能はフラットから HNSW への一方向アップグレードのみをサポートしており、削除によってオブジェクト数が閾値を下回ってもフラットインデックスへ戻ることはできません。
+Currently, this is only a one-way upgrade from a flat to an HNSW index, it does not support changing back to a flat index even if the object count goes below the threshold due to deletion.
 
-これはマルチテナント環境で特に有用です。各テナントごとに HNSW インデックスを構築するとオーバーヘッドが大きくなりますが、ダイナミックインデックスを使用すると、個々のテナントが成長したときのみフラットから HNSW へ切り替わり、小規模テナントのインデックスはフラットのままにできます。
+This is particularly useful in a multi-tenant setup where building an HNSW index per tenant would introduce extra overhead. With a dynamic index, as individual tenants grow their index will switch from flat to HNSW, while smaller tenants' indexes remain flat.
 
-## ベクトルキャッシュの考慮事項
+## Vector cache considerations
 
-検索とインポートのパフォーマンスを最適化するには、以前にインポートした ベクトル をメモリ上に保持しておく必要があります。ディスクからのベクトル読み出しはメモリ読み出しに比べ桁違いに遅いため、ディスクキャッシュの使用は最小限に抑えるべきです。ただし Weaviate ではメモリ上のベクトル数を制限できます。新しいコレクション作成時、この上限は既定で 1 兆（`1e12`）オブジェクトに設定されています。
+For optimal search and import performance, previously imported vectors need to be in memory. A disk lookup for a vector is orders of magnitudes slower than memory lookup, so the disk cache should be used sparingly. However, Weaviate can limit the number of vectors in memory. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created.
 
-インポート時には、`vectorCacheMaxObjects` をすべてのベクトルがメモリに収まる十分に高い値に設定してください。各インポートでは複数回の検索が行われるため、キャッシュに全ベクトルを保持できない場合インポート性能が大幅に低下します。
+During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drops drastically when there isn't enough memory to hold all of the vectors in the cache.
 
-インポート後、主にクエリがメインのワークロードになったら、データセット全体より小さいキャッシュ上限を試してみてください。
+After import, when your workload is mostly querying, experiment with vector cache limits that are less than your total dataset size.
 
-現在キャッシュにないベクトルは、空きがあればキャッシュに追加されます。キャッシュが満杯になると、Weaviate はキャッシュを丸ごと破棄します。その後はすべてのベクトルが初回はディスクから読み込まれ、以降は再びキャッシュにヒットするまで同じ動作を繰り返します。データセットが大きく、多くのユーザーが特定の ベクトル サブセットのみを検索する場合、キャッシュは非常に有効です。この場合、大多数のユーザーはキャッシュからサービスを受け、不規則なクエリのみディスク読み込みが発生します。
+Vectors that aren't currently in cache are added to the cache if there is still room. If the cache fills, Weaviate drops the whole cache. All future vectors have to be read from disk for the first time. Then, subsequent queries run against the cache until it fills again and the procedure repeats. Note that the cache can be a very valuable tool if you have a large dataset, and a large percentage of users only query a specific subset of vectors. In this case you might be able to serve the largest user group from cache while requiring disk lookups for "irregular" queries.
 
-## ベクトルインデックス FAQ
+## Vector indexing FAQ
 
-### ベクトルインデックスを 直積量子化 と併用できますか？
+### Can I use vector indexing with vector quantization?
 
-はい、詳しくは［直積量子化（圧縮）］(../vector-quantization.md) をご覧ください。
+Yes, you can read more about it in [vector quantization (compression)](../vector-quantization.md).
 
-### どの ベクトル インデックスを選べばよいですか？
+### Which vector index is right for me?
 
-簡単な目安として、SaaS 製品のように各エンドユーザー（テナント）が独立したデータセットを持つユースケースでは `flat` インデックスが適しています。大規模コレクションの場合は `hnsw` インデックスの方が適している可能性があります。
+A simple heuristic is that for use cases such as SaaS products where each end user (i.e. tenant) has their own, isolated, dataset, the `flat` index is a good choice. For use cases with large collections, the `hnsw` index may be a better choice.
 
-ベクトル インデックス種別パラメーターは、データオブジェクトの ベクトル を「どのようにインデックス化するか」だけを指定します。インデックスはデータ検索と類似検索に使用されます。
+Note that the vector index type parameter only specifies how the vectors of data objects are *indexed*. The index is used for data retrieval and similarity search.
 
-`vectorizer` パラメーターは、データ ベクトル を「どのように生成するか」（ベクトルに含まれる数値）を決定します。`vectorizer` には `text2vec-contextionary` などの［モジュール］(/weaviate/modules/index.md) を指定し、Weaviate によって ベクトル が生成されます。独自の ベクトル をインポートする場合は `vectorizer` を `none` に設定できます。
+The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
 
-コレクション設定について詳しくは［こちらのハウツーページ］(../../manage-collections/vector-config.mdx) を参照してください。
+To learn more about configuring the collection, see [this how-to page](../../manage-collections/vector-config.mdx).
 
-### ベクトル インデックスで使用できる距離メトリクスは？
+### Which distance metrics can I use with vector indexing?
 
-コサイン類似度など［距離メトリクス一覧］(/weaviate/config-refs/distances.md) にあるすべてを、任意のベクトル インデックス種別で利用できます。
+All of [the distance metrics](/weaviate/config-refs/distances.md), such as cosine similarity, can be used with any vector index type.
 
-### Weaviate で ベクトル インデックス種別を設定する方法
+### How to configure the vector index type in Weaviate?
 
-インデックス種別は、［コレクション定義］(../../manage-collections/vector-config.mdx#set-vector-index-type) の設定でコレクションごとに指定できます。利用可能な［ベクトル インデックス設定］(../../config-refs/schema/vector-index.md) を参照してください。
+The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/indexing/vector-index.mdx).
 
-### インデックス作成をスキップするタイミング
+### When to skip indexing
 
-コレクションをベクトル化する必要がない場合もあります。たとえば、他の 2 つのコレクション間の参照だけで構成されている場合や、ほとんどが重複要素の場合です。
+There are situations where it doesn't make sense to vectorize a collection. For example, if the collection consists solely of references between two other collections, or if the collection contains mostly duplicate elements.
 
-重複 ベクトル を HNSW にインポートするのは非常にコストがかかります。インポートアルゴリズムは早い段階で候補 ベクトル の距離が最も遠い候補より大きいかを確認しますが、重複 ベクトル が多数ある場合この早期終了条件が満たされず、インポートやクエリごとに全探索が行われます。
+Importing duplicate vectors into HNSW is very expensive. The import algorithm checks early on if a candidate vector's distance is greater than the worst candidate's distance. When there are lots of duplicate vectors, this early exit condition is never met so each import or query results in an exhaustive search.
 
-コレクションのインデックス作成を避けるには、`"skip"` を `"true"` に設定します。デフォルトではコレクションはインデックス化されます。
+To avoid indexing a collection, set `"skip"` to `"true"`. By default, collections are indexed.
 
-### どのような ANN アルゴリズムがありますか？
+### What ANN algorithms exist?
 
-さまざまな ANN アルゴリズムが存在します。概要は<a href="http://ann-benchmarks.com/" data-proofer-ignore>こちらの Web サイト</a>で確認できます。
+There are different ANN algorithms, you can find a nice overview of them on <a href="http://ann-benchmarks.com/" data-proofer-ignore>this website</a>.
 
-### Weaviate の ANN パフォーマンスに関する指標的ベンチマークはありますか？
+### Are there indicative benchmarks for Weaviate's ANN performance?
 
-［ANN ベンチマークページ］(/weaviate/benchmarks/ann.md) では、多種多様な ベクトル 検索ユースケースと相対ベンチマークを掲載しています。ご自身のデータセットに近いものを探し、最適な設定を学ぶのに最適です。
+The [ANN benchmark page](/weaviate/benchmarks/ann.md) contains a wide variety of vector search use cases and relative benchmarks. This page is ideal for finding a dataset similar to yours and learning what the most optimal settings are.
 
-## 参考資料
+## Further resources
 
 :::info Related pages
-- [概念: 直積量子化（圧縮）](../vector-quantization.md)
-- [設定: ベクトル インデックス](../../config-refs/schema/vector-index.md)
-- [設定: スキーマ（セマンティックインデックスの設定）](../../config-refs/schema/index.md#configure-semantic-indexing)
+- [Concepts: Vector quantization (compression)](../vector-quantization.md)
+- [Configuration: Vector index](../../config-refs/indexing/vector-index.mdx)
+- [Configuration: Schema (Configure semantic indexing)](../../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 :::
-## ご質問とフィードバック
+
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

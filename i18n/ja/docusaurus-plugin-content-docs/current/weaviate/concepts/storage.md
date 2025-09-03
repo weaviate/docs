@@ -1,123 +1,125 @@
 ---
 title: Storage
 sidebar_position: 18
+description: "Persistent, fault-tolerant storage architecture for objects, vectors, and inverted index management."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'storage']
 ---
 
-Weaviate は永続性とフォールトトレラント性を備えたデータベースです。ここでは、オブジェクトと ベクトル が Weaviate 内でどのように保存され、インポート時にどのように 転置インデックス が作成されるかを概観します。
+Weaviate is a persistent and fault-tolerant database. This page gives you an overview of how objects and vectors are stored within Weaviate and how an inverted index is created at import time.
 
-このページで取り上げるコンポーネントは、Weaviate が次のような独自機能を提供するうえで役立っています。
+The components mentioned on this page aid Weaviate in creating some of its unique features:
 
-* 各書き込み操作は直ちに永続化され、アプリケーションやシステムのクラッシュにも耐性があります。  
-* ベクトル 検索クエリでは、Weaviate は参照 (ID など) だけでなくオブジェクト全体 (他のデータベースでは「ドキュメント」と呼ばれることもあります) を返します。  
-* 構造化検索と ベクトル 検索を組み合わせる場合、フィルターは ベクトル 検索の前に適用されます。そのため、後段でフィルターする場合と異なり、常に指定した件数の結果を受け取れます。  
-* オブジェクトとその ベクトル は、読み取り中でも自由に更新・削除できます。  
+* Each write operation is immediately persisted and also tolerant to application and system crashes.
+* On a vector search query, Weaviate returns the entire object (in other databases sometimes called a "document"), not just a reference, such as an ID.
+* When combining structured search with vector search, filters are applied prior to performing the vector search. This means that you will always receive the specified number of elements as opposed to post-filtering when the final result count is unpredictable.
+* Objects and their vectors can be updated or deleted at will; even while reading from the database.
 
-## 論理ストレージ単位: インデックス、シャード、ストア
+## Logical Storage Units: Indexes, Shards, Stores
 
-ユーザー定義スキーマ内の各クラスは、内部的にインデックスを生成します。インデックスは 1 つ以上のシャードで構成されるラッパー型です。インデックス内のシャードは自己完結したストレージ単位であり、複数のシャードを使用すると、負荷を複数サーバーノードへ自動的に分散できます。
+Each class in Weaviate's user-defined schema leads to the creation of an index internally. An index is a wrapper type that is comprised of one or many shards. Shards within an index are self-contained storage units. Multiple shards can be used to distribute the load among multiple server nodes automatically.
 
-### シャードの構成要素
+### Components of a Shard
 
-各シャードには 3 つの主要コンポーネントがあります。
+Each shard houses three main components:
 
-* オブジェクトストア (本質的にはキー・バリュー・ストア)  
-* [転置インデックス](https://en.wikipedia.org/wiki/Inverted_index)  
-* ベクトル インデックスストア (プラガブルで、現在は [HNSW のカスタム実装](/weaviate/config-refs/schema/vector-index#hnsw-indexes))  
+* An object store, essentially a key-value store
+* An [inverted index](https://en.wikipedia.org/wiki/Inverted_index)
+* A vector index store (plugable, currently a [custom implementation of HNSW](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index))
 
-#### オブジェクトストアと転置インデックスストア
+#### Object and Inverted Index Store
 
-バージョン `v1.5.0` 以降、オブジェクトストアと転置インデックスストアは [LSM-Tree アプローチ](https://en.wikipedia.org/wiki/Log-structured_merge-tree) を採用しています。これにより、データはメモリ速度で取り込まれ、設定したしきい値に達すると Weaviate は (ソート済みの) メムテーブル全体をディスクセグメントへ書き込みます。読み取り要求が来ると、Weaviate はまずメムテーブルで該当オブジェクトの最新バージョンを確認し、存在しなければ最新セグメントから順に過去のセグメントを確認します。不要なセグメントを調べるのを避けるために [Bloom フィルター](https://en.wikipedia.org/wiki/Bloom_filter) を使用します。
+Since version `v1.5.0`, the object and inverted store are implemented using an [LSM-Tree approach](https://en.wikipedia.org/wiki/Log-structured_merge-tree). This means that data can be ingested at the speed of memory and after meeting a configured threshold, Weaviate will write the entire (sorted) memtable into a disk segment. When a read request comes in, Weaviate will first check the Memtable for the latest update for a specific object. If it is not present in the memtable, Weaviate will then check all previously written segments starting with the newest. To avoid checking segments which don't contain the desired objects, [Bloom filters](https://en.wikipedia.org/wiki/Bloom_filter) are used.
 
-Weaviate は定期的に古い小さなセグメントをマージして大きなセグメントを作成します。セグメントは既にソートされているため、この処理は比較的低コストで、バックグラウンドで継続的に実行されます。セグメントが少なく大きいほど検索が効率化されます。転置インデックスではデータが置き換えられることはまれで、大抵は追加されます。マージを行うことで、過去のすべてのセグメントを調べて結果を集約する代わりに、1 つ (またはいくつか) の大きなセグメントを参照して関連オブジェクトポインタを即座に取得できます。また、削除や更新によって古くなったオブジェクトの旧バージョンもセグメント単位で削除されます。
+Weaviate periodically merges smaller, older segments to make larger segments. Since the segments are already sorted, this is a relatively cheap operation. It happens constantly in the background. Fewer, larger segments make lookups more efficient. In the inverted index data is rarely replaced, but it is often appended. Merging means that, instead of checking all past segments and aggregating potential results, Weaviate can check a single segment (or a few large segments) and immediately find all the relevant object pointers. In addition, segments are used to remove earlier versions of an object that are out-dated because of a delete or a more recent update.
 
-考慮事項
+Considerations
 
-オブジェクトストレージと転置インデックスストレージは LSM アルゴリズムを実装しており、セグメンテーションを使用します。一方、ベクトル インデックスは異なるストレージアルゴリズムを採用し、セグメンテーションを使用しません。
+Object storage and inverted index storage implement the LSM algorithm; they use segmentation. The vector index uses a different storage algorithm. The vector index does not use segmentation.
 
-`v1.5.0` より前の Weaviate バージョンは B+Tree ストレージ機構を使用していました。LSM 方式は高速で、計算量は一定時間 (constant time) となり、書き込み性能が向上しています。
+Weaviate versions before `v1.5.0` use a B+Tree storage mechanism. The LSM method is faster, it works in constant time, and it improves write performance.
 
-Weaviate の LSM ストアの詳細は、[Go パッケージリポジトリ](https://pkg.go.dev/github.com/weaviate/weaviate/adapters/repos/db/lsmkv) の LSM ライブラリドキュメントをご覧ください。
+To learn more about Weaviate's LSM store, see the LSM library documentation in the [Go package repository](https://pkg.go.dev/github.com/weaviate/weaviate/adapters/repos/db/lsmkv)
 
-#### HNSW ベクトルインデックスストレージ
+#### HNSW Vector Index Storage
 
-各シャードには、オブジェクトストアおよび転置インデックスストアに対応する ベクトル インデックスが含まれます。ベクトル ストアは他のストアから独立しており、セグメンテーションを管理する必要がありません。
+Each shard contains a vector index that corresponds to the object and inverted index stores. The vector store and the other stores are independent. The vector store does not have to manage segmentation.
 
-ベクトル インデックスをオブジェクトストレージと同一シャード内にまとめることで、各シャードが自己完結した単位となり、それぞれが所有データへのリクエストを独立して処理できます。また、ベクトル インデックスをストア内部ではなく横に配置することで、セグメント化された ベクトル インデックスの欠点を回避しています。
+By grouping a vector index with the object storage within a shard, Weaviate can make sure that each shard is a fully self-contained unit which can independently serve requests for the data it owns. By placing the vector index next to the object store (instead of within), Weaviate can avoid the downsides of a segmented vector index.
 
-さらに、Write-Ahead-Logging と HNSW スナップショットを組み合わせることで、永続化と起動時の読み込みが最適化されています。詳細は [永続性とクラッシュ復旧](#persistence-and-crash-recovery) セクションをご覧ください。
+Furthermore, its persistence and loading at startup are optimized through a combination of Write-Ahead-Logging and HNSW snapshots, detailed in the [Persistence and Crash Recovery](#persistence-and-crash-recovery) section.
 
-### シャード構成要素の最適化
+### Shard Components Optimizations
 
-Weaviate のストレージ機構は、構造化データ/オブジェクトデータに対してセグメンテーションを使用します。セグメントはマージが低コストであり、未マージのセグメントも Bloom フィルターのおかげで効率的に探索できるため、取り込み速度が高く時間経過による劣化がありません。
+Weaviate's storage mechanisms use segmentation for structured/object data. Segments are cheap to merge and even unmerged segments can be navigated efficiently thanks to Bloom filters. In turn, ingestion speed is high and does not degrade over time.
 
-Weaviate はシャード内で ベクトル インデックスを可能な限り大きく保ちます。HNSW インデックスは効率的にマージできないため、小さなインデックスを多数順次検索するより、単一の大きなインデックスを検索するほうが効率的です。
+Weaviate keeps the vector index as large as possible within a shard. HNSW indexes cannot be merged efficiently. Querying a single large index is more efficient than sequentially querying many small indexes.
 
-CPU を効率的に利用するには、コレクションに複数のシャードを作成してください。最速のインポートを行うには、単一ノード上でも複数のシャードを作成することを推奨します。
+To use multiple CPUs efficiently, create multiple shards for your collection. For the fastest imports, create multiple shards even on a single node.
 
-### 遅延シャード読み込み
+### Lazy shard loading
 
 :::info Added in `v1.23`
 :::
 
-Weaviate 起動時には、デプロイ内のすべてのシャードからデータを読み込みます。この処理には時間がかかる場合があります。`v1.23` 以前では、すべてのシャードが読み込まれるまでクエリを実行できませんでした。各テナントがシャードであるため、マルチテナント環境では再起動後の可用性が低下することがあります。
+When Weaviate starts, it loads data from all of the shards in your deployment. This process can take a long time. Prior to v1.23, you have to wait until all of the shards are loaded before you can query your data. Since every tenant is a shard, multi-tenant deployments can have reduced availability after a restart.
 
-遅延シャード読み込みを使うと、より早くデータを扱い始められます。再起動後、シャードはバックグラウンドで読み込まれます。クエリ対象のシャードが既に読み込まれていれば、より早く結果を取得できます。まだ読み込まれていない場合、Weaviate はそのシャードの読み込みを優先し、準備が整い次第レスポンスを返します。
+Lazy shard loading allows you to start working with your data sooner. After a restart, shards load in the background. If the shard you want to query is already loaded, you can get your results sooner. If the shard is not loaded yet, Weaviate prioritizes loading that shard and returns a response when it is ready.
 
-遅延シャード読み込みを有効にするには、システム構成ファイルで `DISABLE_LAZY_LOAD_SHARDS` 環境変数を `false` に設定してください。
+To enable lazy shard loading, set the `DISABLE_LAZY_LOAD_SHARDS` environment variable to `false` in your system configuration file.
 
-:::caution 単一テナントコレクションでは遅延シャード読み込みを無効化してください
-単一テナントのコレクションでは、遅延読み込みによりインポート操作が遅くなったり部分的に失敗したりする可能性があります。このようなシナリオでは遅延シャード読み込みを無効にすることを推奨します。
+:::caution Disable lazy shard loading for single-tenant collections
+For single-tenant collections, lazy loading can cause import operations to slow down or partially fail. In these scenarios, we recommend disabling lazy shard loading.
 :::
 
-## 永続性とクラッシュ復旧
+## Persistence and Crash Recovery
 
 ### Write-Ahead-Log
 
-オブジェクトストアと転置インデックスストアに使用される LSM ストア、および HNSW ベクトル インデックスストアは、取り込み処理のどこかでメモリを使用します。クラッシュ時のデータ損失を防ぐため、各操作は **[Write-Ahead-Log (WAL)](https://martinfowler.com/articles/patterns-of-distributed-systems/wal.html)** (コミットログとも呼ばれます) にも書き込まれます。WAL は追記専用ファイルで、書き込みが非常に高速なため取り込みのボトルネックになりにくい方式です。
+Both the LSM stores used for object and inverted storage, as well as the HNSW vector index store make use of memory at some point of the ingestion journey. To prevent data loss on a crash, each operation is additionally written into a **[Write-Ahead-Log (WAL)](https://martinfowler.com/articles/patterns-of-distributed-systems/wal.html)** (also known as a *commit log*). WALs are append-only files that are very efficient to write to and that are rarely a bottleneck for ingestion.
 
-Weaviate が取り込みリクエストに対して成功ステータスを返す時点で、WAL エントリは必ず生成されています。たとえばディスク容量が不足して WAL エントリを生成できない場合、Weaviate は挿入や更新リクエストにエラーで応答します。
+By the time Weaviate has responded with a successful status to your ingestion request, a WAL entry will have been created. If a WAL entry could not be created - for example because the disks are full - Weaviate will respond with an error to the insert or update request.
 
-LSM ストアは正常終了時にセグメントのフラッシュを試みます。フラッシュが成功した場合のみ、WAL は「完了」とマークされます。予期しないクラッシュが発生し、Weaviate が「未完了」の WAL を検出した場合にはリカバリを行います。このリカバリ処理では、WAL を基に新しいセグメントをフラッシュして完了マークを付けます。その結果、将来の再起動時にはこの WAL からのリカバリが不要になります。
+The LSM stores will try to flush a segment on an orderly shutdown. Only if the operation is successful, will the WAL be marked as "complete". This means that if an unexpected crash happens and Weaviate encounters an "incomplete" WAL, it will recover from it. As part of the recovery process, Weaviate will flush a new segment based on the WAL and mark it as complete. As a result, future restarts will no longer have to recover from this WAL.
 
-HNSW ベクトル インデックスにとっても WAL は災害復旧および最新変更の永続化に不可欠です。HNSW インデックスの構築コストは、新規オブジェクトの配置場所と近傍リンクの計算にあります。WAL にはそれら計算結果のみが記録されます。
+For the HNSW vector index, the Write-Ahead-Log (WAL) is a critical component for disaster recovery and persisting the most recent changes. The cost in building up an HNSW index is in figuring out where to place a new object and how to link it with its neighbors. The WAL contains only the result of those calculations.
 
-インデックス全体の状態は、これら WAL エントリをリプレイすることで再構築できます。
+The entire HNSW index state can be reconstructed by replaying these WAL entries.
 
-数千万〜数億件規模の非常に大きなインデックスでは、この処理に時間がかかる場合があります。大規模インデックスで起動時間を短縮したい場合は **[HNSW スナップショット](../configuration/hnsw-snapshots.md)** 機能をご利用ください。
+For very large indexes of tens or hundreds of millions of objects, this can be time-consuming. If you have a large index and you want to speed up the startup time, you can use the **[HNSW snapshots](../configuration/hnsw-snapshots.md)** feature.
 
-### HNSW スナップショット
+### HNSW snapshots
 
 :::info Added in `v1.31`
 :::
 
-非常に大きな HNSW ベクトル インデックスでは、HNSW スナップショットにより起動時間を大幅に短縮できます。
+For very large HNSW vector indexes, HNSW snapshots can significantly reduce the startup time.
 
-スナップショットは HNSW インデックスのある時点での状態を表します。起動時に有効なスナップショットが存在する場合、まずスナップショットがメモリへロードされます。これにより、スナップショット取得後の変更分だけを WAL からリプレイすればよいので、処理すべき WAL エントリ数が減り、起動時間が大幅に短縮されます。
+A snapshot represents a point-in-time state of the HNSW index. When Weaviate starts, if a valid snapshot exists, it will be loaded into memory first. This significantly reduces startup time, as the number of WAL entries that need to be processed, as only the changes made after the snapshot was taken need to be replayed from the WAL.
 
-何らかの理由でスナップショットをロードできない場合は安全に削除され、Weaviate は従来どおりコミットログ全体を最初から読み込む方式にフォールバックします。
+If a snapshot cannot be loaded for any reason, it is safely removed, and Weaviate falls back to the traditional method of loading the full commit log from the beginning, ensuring resilience.
 
-スナップショットは起動時および時間経過やコミットログの変化量に応じて定期的に作成できます。
+Snapshots can be created at startup and periodically based on time passed or changes in the commit log.
 
-起動時にコミットログに変更がある場合、Weaviate は新しいスナップショットの作成を試みます。変更がなければ既存のスナップショットが読み込まれます。
+Weaviate will try to create a new snapshot during startup if there are changes in the commit log since the last snapshot. If there are no changes, then the existing snapshot will be loaded.
 
-設定した時間間隔が経過し、十分な新規コミットが存在する場合にもスナップショットが作成されます。これはコミットログの結合・圧縮を行うバックグラウンドプロセスによって処理されるため、その間に使用されるコミットログは不変であり安定性が保たれます。
+A snapshot will also be created if the corresponding conditions are met, meaning the specified time interval has passed and a sufficient number of new commits exist. This is handled by the same background process that manages commit log combining and condensing, ensuring stability as the commit logs used for snapshot creation are not mutable during this process.
 
-各新規 HNSW スナップショットは、前回のスナップショットとその後の新しい (デルタ) コミットログを基に作成されます。
+Each new HNSW snapshot is based on the previous snapshot and newer (delta) commit logs.
 
-最新のスナップショットがあっても、その後に少なくとも 1 つのコミットログファイルをロードする必要がある点に注意してください。
+It's important to note that even with a fresh snapshot, the server typically still has to load at least one subsequent commit log file.
 
-WAL は依然としてすべての変更を即座に永続化し、受理済み書き込みが確実に耐久性を持つようにしています。時間が経つと、最後のスナップショット以降の操作に関して冗長な情報が WAL に蓄積されます。バックグラウンドプロセスが継続的に新しい WAL ファイルを圧縮し、冗長情報を除去します。これにスナップショット作成を組み合わせることで、ディスク使用量を抑え、起動時間を高速に保ちます。
+The WAL is still used to persist every change immediately, guaranteeing that any acknowledged write is durable. Over time, the append-only WAL will contain redundant information for operations occurring after the last snapshot. A background process continuously compacts these newer WAL files, removing redundant information. This, combined with snapshotting, keeps the disk footprint manageable and startup times fast.
 
-この機能の設定方法については **[HNSW スナップショットの設定](../configuration/hnsw-snapshots.md)** をご覧ください。
+See **[the HNSW snapshots configuration](../configuration/hnsw-snapshots.md)** for more details on how to configure this feature.
 
-`v1.31` 現在、HNSW スナップショットはデフォルトで無効になっています。
+As of `v1.31`, HNSW snapshots are disabled by default.
 
-## まとめ
+## Conclusions
 
-このページでは Weaviate のストレージ機構について紹介しました。すべての書き込みが即時に永続化される仕組みと、データセットをスケールさせるために Weaviate が採用しているパターンを説明しました。構造化データに対してはセグメンテーションを用いて書き込み時間を一定に保ち、HNSW ベクトル インデックスに対してはセグメンテーションを避けて検索時間を効率化しています。
-## 質問とフィードバック
+This page introduced you to the storage mechanisms of Weaviate. It outlined how all writes are persisted immediately and outlined the patterns used within Weaviate to make datasets scale well. For structured data, Weaviate makes use of segmentation to keep the write times constant. For the HNSW vector index, Weaviate avoids segmentation to keep query times efficient.
+
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

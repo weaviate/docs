@@ -1,190 +1,190 @@
 ---
 title: Compression (Vector Quantization)
 sidebar_position: 19
+description: "Vector compression techniques reducing memory footprint and costs while improving search speed performance."
 image: og/docs/concepts.jpg
 # tags: ['vector compression', 'quantization']
 ---
 
-**ベクトル量子化** は、[ ベクトルインデックス ](./indexing/vector-index.md) のメモリ使用量を削減するためにベクトル埋め込みを圧縮し、その結果、デプロイコストを削減し、ベクトル類似度検索プロセスの速度を向上させます。
+**Vector quantization** reduces the memory footprint of the [vector index](./indexing/vector-index.md) by compressing the vector embeddings, and thus reduces deployment costs and improves the speed of the vector similarity search process.
 
-Weaviate では現在、4 種類のベクトル量子化手法を提供しています。
+Weaviate currently offers four vector quantization techniques:
 
-- [ バイナリ量子化 (BQ) ](#binary-quantization)
-- [ 直積量子化 (PQ) ](#product-quantization)
-- [ スカラー量子化 (SQ) ](#scalar-quantization)
-- [ 回転量子化 (RQ) ](#rotational-quantization)
+- [Binary quantization (BQ)](#binary-quantization)
+- [Product quantization (PQ)](#product-quantization)
+- [Scalar quantization (SQ)](#scalar-quantization)
+- [Rotational quantization (RQ)](#rotational-quantization)
 
-## 量子化とは
+## What is quantization?
 
-一般に、量子化手法は数値をより低い精度の数値で表現することでメモリ使用量を削減します。たとえば、数値を最も近い整数に丸めることなどです。ニューラルネットワークでは、量子化により 32-bit 浮動小数点数 (4 バイト) で保存されている重みや活性化値を、8-bit 整数 (1 バイト) などの低精度数値に変換します。
+In general, quantization techniques reduce the memory footprint by representing numbers with lower precision numbers, like rounding a number to the nearest integer. In neural networks, quantization reduces the values of the weights or activations of the model stored as a 32-bit floating-point number (4 bytes) to a lower precision number, such as an 8-bit integer (1 byte).
 
-### ベクトル量子化とは
+### What is vector quantization?
 
-ベクトル量子化は、ベクトル埋め込みのメモリ使用量を削減する手法です。ベクトル埋め込みは通常 32-bit 浮動小数点数で表現されています。ベクトル量子化手法では、これらを 8-bit 整数やバイナリ数などのより小さな数値で表現し、必要に応じて次元数も削減します。
+Vector quantization is a technique that reduces the memory footprint of vector embeddings. Vector embeddings have been typically represented as 32-bit floating-point numbers. Vector quantization techniques reduce the size of the vector embeddings by representing them as smaller numbers, such as 8-bit integers or binary numbers. Some quantization techniques also reduce the number of dimensions in the vector embeddings.
 
-## 直積量子化
+## Product quantization
 
-[ 直積量子化 ](https://ieeexplore.ieee.org/document/5432202) は複数段階の量子化手法で、Weaviate では `hnsw` インデックスで使用できます。
+[Product quantization](https://ieeexplore.ieee.org/document/5432202) is a multi-step quantization technique that is available for use with `hnsw` indexes in Weaivate.
 
-PQ は各ベクトル埋め込みのサイズを 2 段階で削減します。まずベクトルの次元を小さい数の「セグメント」に分割し、その後、各セグメントを元のビット数 (通常は 32-bit フロート) からより少ないビット数に量子化します。
+PQ reduces the size of each vector embedding in two steps. First, it reduces the number of vector dimensions to a smaller number of "segments", and then each segment is quantized to a smaller number of bits from the original number of bits (typically a 32-bit float).
 
 import PQTradeoffs from '/_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
-PQ では、元のベクトル埋め込みを「セグメント」または「サブスペース」と呼ばれる小さなベクトルの積として表現します。次に、各セグメントを独立に量子化して圧縮ベクトル埋め込みを生成します。
+In PQ, the original vector embedding is represented as a product of smaller vectors that are called 'segments' or 'subspaces.' Then, each segment is quantized independently to create a compressed vector embedding.
 
-![PQ illustrated](../../../../../../docs/weaviate/concepts/img/pq-illustrated.png "PQ illustrated")
+![PQ illustrated](./img/pq-illustrated.png "PQ illustrated")
 
-セグメント作成後、各セグメントの `centroids` を計算するためのトレーニングステップがあります。デフォルトでは、Weaviate は各セグメントを 256 個のセントロイドにクラスタリングします。これらのセントロイドはコードブックを構成し、後続の圧縮ステップで使用されます。
+After the segments are created, there is a training step to calculate `centroids` for each segment. By default, Weaviate clusters each segment into 256 centroids. The centroids make up a codebook that Weaviate uses in later steps to compress the vector embeddings.
 
-コードブックが準備できると、Weaviate は各ベクトルセグメントを最も近いセントロイドの id で表します。これによりメモリ消費量が大幅に削減されます。たとえば、各ベクトル埋め込みが 768 個の 4 バイト要素を持つコレクションを考えます。PQ 圧縮前は各ベクトルに `768 x 4 = 3072` バイト必要ですが、PQ 圧縮後は `128 x 1 = 128` バイトしか必要ありません。元の表現は PQ 圧縮版の約 24 倍のサイズです (コードブック分のわずかなオーバーヘッドは含まず)。
+Once the codebook is ready, Weaviate uses the id of the closest centroid to compress each vector segment. The new vector embedding reduces memory consumption significantly. Imagine a collection where each vector embedding has 768 four byte elements. Before PQ compression, each vector embeddingrequires `768 x 4 = 3072` bytes of storage. After PQ compression, each vector requires `128 x 1 = 128` bytes of storage. The original representation is almost 24 times as large as the PQ compressed version. (It is not exactly 24x because there is a small amount of overhead for the codebook.)
 
-PQ を有効化する方法については、[ PQ 圧縮を有効にする ](/weaviate/configuration/compression/pq-compression#enable-pq-compression) をご覧ください。
+To enable PQ compression, see [Enable PQ compression](/weaviate/configuration/compression/pq-compression#enable-pq-compression)
 
-### セグメント
+### Segments
 
-PQ の `segments` はメモリ使用量とリコールのトレードオフを制御します。`segments` が大きいほどメモリ使用量とリコールが高くなります。なお、セグメント数は元のベクトル次元を割り切れる必要があります。
+The PQ `segments` controls the tradeoff between memory and recall. A larger `segments` parameter means higher memory usage and recall. An important thing to note is that the segments must divide evenly the original vector dimension.
 
-以下は一般的なベクトライザーモジュールにおけるセグメント値の一覧です。
+Below is a list segment values for common vectorizer modules:
 
-| Module      | Model                                   | Dimensions | Segments                    |
-|-------------|-----------------------------------------|------------|-----------------------------|
-| openai      | text-embedding-ada-002                  | 1536       | 512, 384, 256, 192, 96      |
-| cohere      | multilingual-22-12                      | 768        | 384, 256, 192, 96           |
-| huggingface | sentence-transformers/all-MiniLM-L12-v2 | 384        | 192, 128, 96                |
+| Module      | Model                                   | Dimensions | Segments               |
+|-------------|-----------------------------------------|------------|------------------------|
+| openai      | text-embedding-ada-002                  | 1536       | 512, 384, 256, 192, 96 |
+| cohere      | multilingual-22-12                      | 768        | 384, 256, 192, 96      |
+| huggingface | sentence-transformers/all-MiniLM-L12-v2 | 384        | 192, 128, 96           |
 
-### PQ 圧縮プロセス
+### PQ compression process
 
-PQ にはコードブックを生成するためのトレーニング段階があります。コードブック作成にはシェードあたり 10,000 ～ 100,000 レコードの使用を推奨します。トレーニングステップは手動または自動でトリガーできます。詳細は [ 設定: 直積量子化 ](../configuration/compression/pq-compression.md) を参照してください。
+PQ has a training stage where it creates a codebook. We recommend using 10,000 to 100,000 records per shard to create the codebook. The training step can be triggered manually or automatically. See [Configuration: Product quantization](../configuration/compression/pq-compression.md) for more details.
 
-トレーニングが開始されると、バックグラウンドジョブがインデックスを圧縮インデックスへと変換します。変換中はインデックスは読み取り専用です。変換が完了するとシャード状態は `READY` に戻ります。
+When the training step is triggered, a background job converts the index to the compressed index. While the conversion is running, the index is read-only. Shard status returns to `READY` when the conversion finishes.
 
-Weaviate はトレーニングに `trainingLimit` 個 (シェードあたり) までのオブジェクトを使用します。それ以上のオブジェクトがあっても使用しません。
+Weaviate uses a maximum of `trainingLimit` objects (per shard) for training, even if there are more objects available.
 
-PQ 変換が完了した後は、通常どおりクエリおよび書き込みを行えます。量子化の影響で距離がわずかに異なる場合があります。
+After the PQ conversion completes, query and write to the index as normal. Distances may be slightly different due to the effects of quantization.
 
 :::info Which objects are used for training?
-- (`v1.27` 以降) コレクション内のオブジェクト数がトレーニングリミットを超える場合、Weaviate はコレクションからランダムにオブジェクトを選択してコードブックを学習します。  
-    - (`v1.26` 以前) Weaviate はコレクションの最初の `trainingLimit` 個のオブジェクトを使用してコードブックを学習します。
-- コレクション内のオブジェクト数がトレーニングリミット未満の場合、Weaviate はコレクション内のすべてのオブジェクトを使用します。
+- (`v1.27` and later) If the collection has more objects than the training limit, Weaviate randomly selects objects from the collection to train the codebook.
+    - (`v1.26` and earlier) Weaviate uses the first `trainingLimit` objects in the collection to train the codebook.
+- If the collection has fewer objects than the training limit, Weaviate uses all objects in the collection to train the codebook.
 :::
 
-### エンコーダー
+### Encoders
 
-前述の設定では `encoder` オブジェクトを指定してコードブックのセントロイド生成方法を設定できます。Weaviate の PQ では 2 種類のエンコーダーをサポートしています。デフォルトは `kmeans` で、従来のセントロイド生成方法に対応します。
+In the configuration above you can see that you can set the `encoder` object to specify how the codebook centroids are generated. Weaviate's PQ supports using two different encoders. The default is `kmeans` which maps to the traditional approach used for creating centroid.
 
-これに加え、`tile` エンコーダーも利用できます。このエンコーダーは現在実験的ですが、SIFT や GIST などのデータセットでインポート時間が短縮され、リコールも向上するケースがあります。`tile` エンコーダーには、セントロイド生成時に使用する分布を制御する `distribution` パラメーターがあります。`type` を `tile` または `kmeans` に設定してエンコーダーを選択してください。設定の詳細は [ 設定: ベクトルインデックス ](../config-refs/schema/vector-index.md) をご覧ください。
+Alternatively, there is also the `tile` encoder. This encoder is currently experimental but does have faster import times and better recall on datasets like SIFT and GIST. The `tile` encoder has an additional `distribution` parameter that controls what distribution to use when generating centroids. You can configure the encoder by setting `type` to `tile` or `kmeans` the encoder creates the codebook for product quantization. For configuration details, see [Configuration: Vector index](../config-refs/indexing/vector-index.mdx).
 
-### 距離計算
+### Distance calculation
 
-直積量子化では、クエリベクトルに対して非対称に距離を計算し、距離計算時にクエリベクトルの情報をすべて保持することを目標としています。
+With product quantization, distances are then calculated asymmetrically with a query vector with the goal being to keep all the original information in the query vector when calculating distances.
 
 :::tip
-[ Weaviate での直積量子化設定方法 ](../configuration/compression/pq-compression.md) を学びましょう。  
-<br/>  
-ブログ記事「[ How to Reduce Memory Requirements by up to 90%+ using Product Quantization ](https://weaviate.io/blog/pq-rescoring)」もぜひご覧ください。
+Learn more about [how to configure product quantization in Weaviate](../configuration/compression/pq-compression.md).<br/><br/>
+You might be also interested in our blog post [How to Reduce Memory Requirements by up to 90%+ using Product Quantization](https://weaviate.io/blog/pq-rescoring).
 :::
 
-## バイナリ量子化
+## Binary quantization
 
-**バイナリ量子化 (BQ)** は、各ベクトル埋め込みをバイナリ表現に変換する量子化手法です。バイナリ表現は元のベクトル埋め込みより大幅に小さくなります。通常、各ベクトル次元は 32 ビットを必要としますが、バイナリ表現は 1 ビットしか必要とせず、ストレージ要求を 32 倍削減します。これにより、読み込むデータ量が減り、距離計算も単純になるため、ベクトル検索が高速化されます。
+**Binary quantization (BQ)** is a quantization technique that converts each vector embedding to a binary representation. The binary representation is much smaller than the original vector embedding. Usually each vector dimension requires 32 bits, but the binary representation only requires 1 bit, representing a 32x reduction in storage requirements. This works to speed up vector search by reducing the amount of data that needs to be read from disk, and simplifying the distance calculation.
 
-ただし、BQ はロスのある手法です。バイナリ表現は本質的に多くの情報を省略するため、距離計算の精度は元のベクトル埋め込みより低下します。
+The tradeoff is that BQ is lossy. The binary representation by nature omits a significant amount of information, and as a result the distance calculation is not as accurate as the original vector embedding.
 
-ベクトライザーによって BQ との相性は異なります。経験的に、Cohere の V3 モデル (例: `embed-multilingual-v3.0` や `embed-english-v3.0`) や OpenAI の `ada-002` モデルでは、BQ を有効にしても良好なリコールが得られることを確認しています。ご自身のデータと好みのベクトライザーで BQ をテストし、用途に適しているか確認することをお勧めします。
+Some vectorizers work better with BQ than others. Anecdotally, we have seen encouraging recall with Cohere's V3 models (e.g. `embed-multilingual-v3.0` or `embed-english-v3.0`), and OpenAI's `ada-002` model with BQ enabled. We advise you to test BQ with your own data and preferred vectorizer to determine if it is suitable for your use case.
 
-BQ を有効にした場合、ベクトルキャッシュを利用してクエリ性能を向上させることができます。ベクトルキャッシュは、量子化済みベクトル埋め込みのディスク読み込み回数を減らしてクエリを高速化します。ただし、各ベクトルが `n_dimensions` ビットを消費するため、メモリ使用量とのバランスを取る必要があります。
+Note that when BQ is enabled, a vector cache can be used to improve query performance. The vector cache is used to speed up queries by reducing the number of disk reads for the quantized vector embeddings. Note that it must be balanced with memory usage considerations, with each vector taking up `n_dimensions` bits.
 
-## スカラー量子化
+## Scalar quantization
 
-**スカラー量子化 (SQ)** では、ベクトル埋め込みの各次元を通常 32-bit フロートで表現しているところを、8-bit 整数に変換します。これによりサイズが 4 倍圧縮されます。
+**Scalar quantization (SQ)** The dimensions in a vector embedding are usually represented as 32 bit floats. SQ transforms the float representation to an 8 bit integer. This is a 4x reduction in size.
 
-SQ は BQ と同様にロスのある圧縮手法ですが、表現範囲がはるかに広いです。SQ アルゴリズムはデータを解析し、次元値を 256 個のバケット (8 ビット) に分配します。
+SQ compression, like BQ, is a lossy compression technique. However, SQ has a much greater range. The SQ algorithm analyzes your data and distributes the dimension values into 256 buckets (8 bits).
 
-SQ で圧縮したベクトルは、BQ 圧縮ベクトルより高精度であり、非圧縮ベクトルより大幅に小さくなります。
+SQ compressed vectors are more accurate than BQ compressed vectors. They are also significantly smaller than uncompressed vectors.
 
-バケット境界は、トレーニングセット内の最小値と最大値を求め、その範囲を 256 個のバケットに等間隔で分割して決定します。8-bit 整数はバケット番号を表します。
+The bucket boundaries are derived by determining the minimum and maximum values in a training set, and uniformly distributing the values between the minimum and maximum into 256 buckets. The 8 bit integer is then used to represent the bucket number.
 
-トレーニングセットのサイズは設定可能で、デフォルトはシェードあたり 100,000 オブジェクトです。
+The size of the training set is configurable. The default is 100,000 objects per shard.
 
-SQ を有効にすると、Weaviate は圧縮結果を多めに取得してリコールを向上させます。圧縮結果を取得した後、対応する元の非圧縮ベクトルをクエリと比較します。この 2 回目の検索は検索対象ベクトルが少ないため非常に高速です。
+When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. After Weaviate retrieves the compressed results, it compares the original, uncompressed vectors that correspond to the compressed result against the query. The second search is very fast because it only searches a small number of vectors rather than the whole database.
 
-## 回転量子化
+## Rotational quantization
 
 :::caution Technical preview
 
-回転量子化 (RQ) は **`v1.32`** で **テクニカルプレビュー** として追加されました。  
-<br/>  
-この機能は現在開発中であり、将来のリリースで変更される可能性があります (破壊的変更を含む)。  
-**現時点では本番環境での使用を推奨しません。**
+Rotational quantization (RQ) was added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
 
 :::
 
-**回転量子化 (RQ)** はトレーニング不要の 8-bit 量子化手法で、4 倍の圧縮率を実現しつつ、ほとんどのデータセットで 98～99% のリコールを維持します。SQ と異なり、RQ にはトレーニングフェーズがなく、インデックス作成時にすぐ有効化できます。RQ は以下の 2 ステップで動作します。
+**Rotational quantization (RQ)** is an untrained 8-bit quantization technique that provides 4x compression while maintaining 98-99% recall on most datasets. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ works in two steps:
 
-1. **高速疑似ランダム回転**: 入力ベクトルに Walsh Hadamard Transform ベースの高速回転を適用します。1536 次元ベクトルの場合、約 7～10 マイクロ秒で完了します。出力次元は 64 の倍数に切り上げられます。  
-2. **スカラー量子化**: 回転後の各要素を 8-bit 整数に量子化します。各ベクトルの最小値と最大値が量子化区間を定義します。
+1. **Fast pseudorandom rotation**: The input vector is transformed using a fast rotation based on the Walsh Hadamard Transform. This rotation takes approximately 7-10 microseconds for a 1536-dimensional vector. The output dimension is rounded up to the nearest multiple of 64.
 
-回転ステップには複数の利点があります。量子化区間を縮小して誤差を減らし、値をより均一に分布させることで距離情報を全次元に均等に分散し、距離推定の起点を改善します。
+2. **Scalar quantization**: Each entry of the rotated vector is quantized to an 8-bit integer. The minimum and maximum values of each individual rotated vector define the quantization interval.
 
-なお、RQ では次元数を 64 の倍数へ切り上げるため、低次元データ (64 や 128 次元未満) では最適な圧縮率が得られない場合があります。
+The rotation step provides multiple benefits. It tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly. It also distributes the distance information more evenly across all dimensions, providing a better starting point for distance estimation.
 
-RQ は extended RaBitQ に着想を得ていますが、性能上の理由から実装は大きく異なります。真のランダム回転ではなく高速疑似ランダム回転を使用し、RaBitQ のエンコーディングアルゴリズムではなくスカラー量子化を採用しています。これはエントリあたりのビット数が増えると後者が極端に遅くなるためです。
+It's worth noting that RQ rounds up dimensions to multiples of 64 which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression. 
+
+While inspired by extended RaBitQ, this implementation differs significantly for performance reasons. It Uses fast pseudorandom rotations instead of truly random rotations and it employs scalar quantization instead of RaBitQ's encoding algorithm, which becomes prohibitively slow with more bits per entry.
 
 :::tip
-Weaviate での [ 回転量子化の設定方法 ](../configuration/compression/rq-compression.md) について詳しく学びましょう。
+Learn more about how to [configure rotational quantization](../configuration/compression/rq-compression.md) in Weaviate.
 :::
 
-## オーバーフェッチ / 再スコアリング
+## Over-fetching / re-scoring
 
-Weaviate は SQ、RQ、BQ を使用する際に結果をオーバーフェッチし、再スコアリングを行います。これは、圧縮された ベクトル 上での距離計算が、元の埋め込み ベクトル 上での計算ほど正確ではないためです。
+Weaviate over-fetches results and then re-scores them when you use SQ, RQ, or BQ. This is because the distance calculation on the compressed vectors is not as accurate as the same calculation on the original vector embedding.
 
-クエリを実行すると、Weaviate はクエリの limit と、設定可能な `rescoreLimit` パラメーターを比較します。
+When you run a query, Weaviate compares the query limit against a configurable `rescoreLimit` parameter.
 
-クエリは、より大きい方の制限に到達するまで圧縮オブジェクトを取得します。その後、Weaviate は対応する非圧縮 ベクトル 埋め込みを取得し、その ベクトル を用いて距離スコアを再計算します。
+The query retrieves compressed objects until the object count reaches whichever limit is greater. Then, Weaviate fetches the original, uncompressed vector embeddings that correspond to the compressed vectors. The uncompressed vectors are used to recalculate the query distance scores.
 
-例えば、limit を 10 に、rescore limit を 200 に設定してクエリを実行した場合、Weaviate は 200 件のオブジェクトを取得します。再スコアリング後、上位 10 件のオブジェクトが返されます。このプロセスにより、圧縮による検索品質（リコール）の低下を補正できます。
+For example, if a query is made with a limit of 10, and a rescore limit of 200, Weaviate fetches 200 objects. After rescoring, the query returns top 10 objects. This process offsets the loss in search quality (recall) that is caused by compression.
 
 :::note RQ optimization
-RQ ではネイティブリコールが 98–99% と高いため、再スコアリングを無効化（`rescoreLimit` を 0 に設定）しても検索品質への影響を最小限に抑えつつ、最大のクエリ性能を得られる場合が多いです。
+With RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to 0) for maximum query performance with minimal impact on search quality.
 :::
 
-## ベクトル索引によるベクトル圧縮
+## Vector compression with vector indexing
 
-### HNSW インデックスの場合
+### With an HNSW index
 
-[HNSW インデックス](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) は [PQ](#product-quantization)、[SQ](#scalar-quantization)、[RQ](#rotational-quantization)、[BQ](#binary-quantization) を使用して構成できます。HNSW はメモリ内で動作するため、圧縮によりメモリ使用量を削減したり、同じメモリ容量でより多くのデータを格納したりできます。
+An [HNSW index](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) can be configured using [PQ](#product-quantization), [SQ](#scalar-quantization), [RQ](#rotational-quantization), or [BQ](#binary-quantization). Since HNSW is in memory, compression can reduce your memory footprint or allow you to store more data in the same amount of memory.
 
 :::tip
-ブログ記事「[HNSW+PQ - Exploring ANN algorithms Part 2.1](https://weaviate.io/blog/ann-algorithms-hnsw-pq)」もぜひご覧ください。
+You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithms Part 2.1](https://weaviate.io/blog/ann-algorithms-hnsw-pq).
 :::
 
-### フラットインデックスの場合
+### With a flat index
 
-[BQ](#binary-quantization) は [フラットインデックス](./indexing/inverted-index.md) を使用できます。フラットインデックス検索はディスクから読み取るため、圧縮により読み込むデータ量が減り、検索が高速化します。
+[BQ](#binary-quantization) can use a [flat index](./indexing/inverted-index.md). A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
 
-## 再スコアリング
+## Rescoring
 
-量子化（quantization）では情報精度を下げるため、必然的に情報損失が発生します。これを軽減するために、Weaviate は圧縮 ベクトル とともに保存されている非圧縮 ベクトル を用いた再スコアリングを行います。再スコアリングでは、初回検索で取得した候補の元の ベクトル 間距離を再計算し、ユーザーに最も正確な結果を提供します。
+Quantization inherently involves some loss information due to the reduction in information precision. To mitigate this, Weaviate uses a technique called rescoring, using the uncompressed vectors that are also stored alongside compressed vectors. Rescoring recalculates the distance between the original vectors of the returned candidates from the initial search. This ensures that the most accurate results are returned to the user.
 
-場合によっては、オーバーフェッチを伴い、初回検索で上位候補が漏れないよう追加の候補を取得することもあります。
+In some cases, rescoring also includes over-fetching, whereby additional candidates are fetched to ensure that the top candidates are not omitted in the initial search.
 
-## 参考リソース
+## Further resources
 
 :::info Related pages
-- [概念：インデックス](./indexing/index.md)
-- [概念：ベクトルインデックス](./indexing/vector-index.md)
-- [設定リファレンス：ベクトルインデックス](../config-refs/schema/vector-index.md)
-- [設定リファレンス：スキーマ（セマンティックインデックスの設定）](../config-refs/schema/index.md#configure-semantic-indexing)
-- [設定方法：バイナリ量子化（圧縮）](../configuration/compression/bq-compression.md)
-- [設定方法：直積量子化（圧縮）](../configuration/compression/pq-compression.md)
-- [設定方法：スカラー量子化（圧縮）](../configuration/compression/sq-compression.md)
-- [設定方法：回転量子化（圧縮）](../configuration/compression/rq-compression.md)
-- [Weaviate Academy：250 Vector Compression](../../academy/py/compression/index.md)
+- [Concepts: Indexing](./indexing/index.md)
+- [Concepts: Vector Indexing](./indexing/vector-index.md)
+- [Configuration: Vector index](../config-refs/indexing/vector-index.mdx)
+- [Configuration: Schema (Configure semantic indexing)](../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
+- [How to configure: Binary quantization (compression)](../configuration/compression/bq-compression.md)
+- [How to configure: Product quantization (compression)](../configuration/compression/pq-compression.md)
+- [How to configure: Scalar quantization (compression)](../configuration/compression/sq-compression.md)
+- [How to configure: Rotational quantization (compression)](../configuration/compression/rq-compression.md)
+- [Weaviate Academy: 250 Vector Compression](../../academy/py/compression/index.md)
 :::
 
-## 質問とフィードバック
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

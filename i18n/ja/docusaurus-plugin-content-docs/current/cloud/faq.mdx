@@ -1,0 +1,123 @@
+---
+title: FAQs
+sidebar_position: 7
+description: "Frequently asked questions and answers about Weaviate Cloud (WCD) features, pricing, and troubleshooting."
+image: og/wcd/faq.jpg
+---
+
+Frequently asked questions (FAQs) about [Weaviate Cloud (WCD)](https://console.weaviate.cloud/).
+
+## Features
+
+#### Q: How is Weaviate Cloud different from other deployment options?
+
+<details>
+<summary> Answer </summary>
+
+Using Weaviate Cloud gives you access to a 14-day free sandbox for testing. You also get access to advanced features like [Weaviate Embeddings](docs/cloud/embeddings/index.md) and [Weaviate Agents](docs/agents/index.md), which are not available in all deployment methods.
+
+</details>
+
+## Account management
+
+#### Q: Can I reset or change my account password? {#reset-password}
+
+<details>
+<summary> Answer </summary>
+
+Yes. Go to the [Weaviate Cloud login page](https://console.weaviate.cloud/) and click the "Log in" button. Then, click **"Forgot Password"** and enter your email. You’ll receive a reset email at that address.
+
+</details>
+
+#### Q: Where is my verification email?
+
+<details>
+<summary> Answer </summary>
+
+If you don’t see the verification email in your inbox, check your spam folder. Still nothing? You can trigger another email by [resetting your password](./faq.mdx#reset-password).
+
+</details>
+
+## Instance management
+
+#### Q: Are Weaviate Cloud clusters backed up?
+
+<details>
+<summary> Answer </summary>
+
+Yes. Weaviate Cloud performs daily automated backups. It also backs up your data before applying a version update to your cluster.
+
+</details>
+
+#### Q: Can Weaviate Cloud clusters be updated to newer versions?
+
+<details>
+<summary> Answer </summary>
+
+Yes. In the Cloud Console, go to your cluster and click **"Details."** If a newer version is available, you’ll see an **"Update!"** button. Only update during a safe maintenance window.
+
+</details>
+
+#### Q: Are cluster resources scaled automatically?
+
+<details>
+<summary> Answer </summary>
+
+Not currently. Weaviate Cloud monitors your cluster and flags when resizing may be required, but automatic scaling is not enabled by default.
+
+</details>
+
+#### Q: Can I request more cluster resources?
+
+<details>
+<summary> Answer </summary>
+
+Possibly. Contact [support@weaviate.io](mailto:support@weaviate.io) to discuss custom provisioning or increased resource needs for your cluster.
+
+</details>
+
+#### Q: How many clusters can I have at once?
+
+<details>
+<summary> Answer </summary>
+
+By default, each organization can have up to **six (6)** serverless clusters and **two (2)** sandbox clusters. If you need more, [contact support](mailto:support@weaviate.io).
+
+</details>
+
+## Infrastructure
+
+#### Q: What infrastructure does Weaviate Cloud run on?
+
+<details>
+<summary> Answer </summary>
+
+Weaviate Cloud currently runs on **Google Cloud Platform (GCP)**. Support for **AWS** and **Azure** is on the roadmap.
+
+</details>
+
+## Weaviate Cloud Console
+
+#### Q: Does the Weaviate Cloud Console collect data from users?
+
+<details>
+<summary> Answer </summary>
+
+The console does **not** collect data from your Weaviate instance. It does collect **operational metrics** to help manage and maintain the infrastructure.
+
+</details>
+
+#### Q: Can the Weaviate Cloud Console connect to non-Weaviate Cloud instances?
+
+<details>
+<summary> Answer </summary>
+
+Yes. The GraphQL query tool in the Weaviate Cloud Console can connect to **external Weaviate instances** as long as they are publicly accessible.
+
+</details>
+
+## Support
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />

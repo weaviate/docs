@@ -1,0 +1,462 @@
+---
+title: Notes and best practices
+sidebar_position: 2
+description: "Python client best practices, optimization tips, and recommended implementation patterns for Weaviate."
+image: og/docs/client-libraries.jpg
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
+import BatchVectorCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
+
+## Instantiate a client
+
+There are multiple ways to connect to your Weaviate instance. To instantiate a client, use one of these styles:
+
+- [Connection helper functions](#connection-helper-functions)
+- [Explicit instantiation](#explicit-instantiation)
+
+### Connection helper functions
+
+- `weaviate.connect_to_weaviate_cloud()`
+    - Previously `connect_to_wcs()`
+- `weaviate.connect_to_local()`
+- `weaviate.connect_to_embedded()`
+- `weaviate.connect_to_custom()`
+
+<Tabs groupId="languages">
+<TabItem value="wcd" label="WCD">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# WCDInstantiation"
+  endMarker="# END WCDInstantiation"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="local" label="Local">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# LocalInstantiationBasic"
+    endMarker="# END LocalInstantiationBasic"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="embedded" label="Embedded">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# EmbeddedInstantiationBasic"
+  endMarker="# END EmbeddedInstantiationBasic"
+  language="py"
+/>
+
+</TabItem>
+<TabItem value="custom" label="Custom">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# CustomInstantiationBasic"
+  endMarker="# END CustomInstantiationBasic"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+The `v4` client helper functions provide some optional parameters to customize your client.
+
+- [Specify external API keys](#external-api-keys)
+- [Specify connection timeout values](#timeout-values)
+- [Specify authentication details](#authentication)
+
+#### External API keys
+
+To add API keys for services such as Cohere or OpenAI, use the `headers` parameter.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# LocalInstantiationWithHeaders"
+  endMarker="# END LocalInstantiationWithHeaders"
+  language="py"
+/>
+
+#### Timeout values
+
+You can set timeout values, in seconds, for the client. Use the `Timeout` class to configure the timeout values for initialization checks as well as query and insert operations.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# LocalWithTimeout"
+  endMarker="# END LocalWithTimeout"
+  language="py"
+/>
+
+:::tip Timeouts on `generate` queries
+
+If you see errors while using the `generate` submodule, try increasing the query timeout values (`Timeout(query=60)`). <br/><br/>The `generate` submodule uses a large language model to generate text. The submodule is dependent on the speed of the language model and any API that serves the language model. <br/><br/>Increase the timeout values to allow the client to wait longer for the language model to respond.
+:::
+
+#### Authentication
+
+Some of the `connect` helper functions take authentication credentials. For example, `connect_to_weaviate_cloud` accepts a WCD API key or OIDC authentication credentials.
+
+<Tabs groupId="languages">
+<TabItem value="api_key" label="API Key">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# WCDInstantiation"
+    endMarker="# END WCDInstantiation"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="oidc" label="OIDC Credentials">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# WCDwOIDCInstantiation"
+  endMarker="# END WCDwOIDCInstantiation"
+  language="py"
+/>
+
+:::warning 
+
+Connecting to Weaviate Cloud (WCD) using OIDC is deprecated and will be removed in the near future. Please use API key authentication instead.
+
+:::
+
+</TabItem>
+</Tabs>
+
+For OIDC authentication with the Client Credentials flow, use the `AuthClientCredentials` class.
+
+For OIDC authentication with the Refresh Token flow, use the `AuthBearerToken` class.
+
+If the helper functions do not provide the customization you need, use the [`WeaviateClient`](#explicit-instantiation) class to instantiate the client.
+
+### Explicit instantiation
+
+If you need to pass custom parameters, use the `weaviate.WeaviateClient` class to instantiate a client. This is the most flexible way to instantiate the client object.
+
+When you instantiate a connection directly, you have to call the `.connect()` method to connect to the server.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# DirectInstantiationFull"
+  endMarker="# END DirectInstantiationFull"
+  language="py"
+/>
+
+### Using Custom SSL Certificates
+
+The Python client doesn't directly support passing SSL certificates. If you need to work with self-signed certificates (e.g. for enterprise environments), you have two options:
+
+#### Option 1: Add the certificate to the underlying libraries
+
+You can add the custom SSL certificates to the underlying libraries such as `certifi` that the Weaviate client library uses.
+
+#### Option 2: Set the environment variables
+
+Alternatively, you can set the environment variables `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` and `SSL_CERT_FILE` to the path of the certificate file. At instantiation, also set `additional_config=AdditionalConfig(trust_env=True)`. Otherwise, the client library will not use the environment variables.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START CustomSSLExample"
+  endMarker="# END CustomSSLExample"
+  language="py"
+/>
+
+## Initial connection checks
+
+When establishing a connection to the Weaviate server, the client performs a series of checks. These includes checks for the server version, and to make sure that the REST and gRPC ports are available.
+
+You can set `skip_init_checks` to `True` to skip these checks.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# LocalInstantiationSkipChecks"
+  endMarker="# END LocalInstantiationSkipChecks"
+  language="py"
+/>
+
+In most cases, you should use the default `False` setting for `skip_init_checks`. However, setting `skip_init_checks=True` may be a useful temporary measure if you have connection issues.
+
+For additional connection configuration, see [Timeout values](#timeout-values).
+
+
+## Batch imports
+
+The `v4` client offers two ways to perform batch imports. From the client object directly, or from the collection object.
+
+We recommend using the collection object to perform batch imports of single collections or tenants. If you are importing objects across many collections, such as in a multi-tenancy configuration, using `client.batch` may be more convenient.
+
+### Batch sizing
+
+There are three methods to configure the batching behavior. They are `dynamic`, `fixed_size` and `rate_limit`.
+
+| Method | Description | When to use |
+| :-- | :-- | :-- |
+| `dynamic` | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import, depending on the server load. | Recommended starting point. |
+| `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user. | When you want to specify fixed parameters. |
+| `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute). | When you want to avoid hitting third-party vectorization API rate limits. |
+
+#### Usage
+
+We recommend using a context manager as shown below.
+
+These methods return a new context manager for each batch. Attributes that are returned from one batch, such as `failed_objects` or `failed_references`, are not included in any subsequent calls.
+
+<Tabs groupId="languages">
+<TabItem value="dynamic" label="Dynamic">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# START BatchDynamic"
+    endMarker="# END BatchDynamic"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="fixedSize" label="Fixed Size">
+
+  <FilteredTextBlock
+    text={PythonCode}
+    startMarker="# START BatchFixedSize"
+    endMarker="# END BatchFixedSize"
+    language="py"
+  />
+
+</TabItem>
+<TabItem value="rateLimit" label="Rate limited">
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START BatchRateLimit"
+  endMarker="# END BatchRateLimit"
+  language="py"
+/>
+
+</TabItem>
+</Tabs>
+
+If the background thread that is responsible for sending the batches raises an exception during batch processing, the error is raised to the main thread.
+
+### Error handling
+
+During a batch import, any failed objects or references will be stored for retrieval. Additionally, a running count of failed objects and references is maintained.
+
+The counter can be accessed through `batch.number_errors` within the context manager.
+
+A list of failed objects can be obtained through `batch.failed_objects` and a list of failed references can be obtained through `batch.failed_references`.
+
+Note that these lists are reset when a batching process is initialized. So make sure to retrieve them before starting a new batch import block.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START BatchErrorHandling"
+  endMarker="# END BatchErrorHandling"
+  language="py"
+/>
+
+### Batch vectorization
+
+:::info Added in `v1.25`.
+:::
+
+import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
+
+<BatchVectorizationOverview />
+
+The client automatically handles vectorization if you set the vectorizer when you create the collection.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Create a client">
+    <FilteredTextBlock
+      text={BatchVectorCode}
+      startMarker="# START BatchVectorClient"
+      endMarker="# END BatchVectorClient"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+To modify the vectorization settings, update the client object. This example adds multiple vectorizers:
+
+- **Cohere**. Set the service API key. Set the request rate.
+- **OpenAI**. Set the service API key. Set the base URL.
+- **VoyageAI**. Set the service API key.
+
+ <Tabs groupId="languages">
+  <TabItem value="py" label="Modify the client">
+    <FilteredTextBlock
+      text={BatchVectorCode}
+      startMarker="# START BatchVectorizationClientModify"
+      endMarker="# END BatchVectorizationClientModify"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+## Helper classes
+
+The client library provides numerous additional Python classes to provide IDE assistance and typing help. You can import them individually, like so:
+
+```
+from weaviate.classes.config import Property, ConfigFactory
+from weaviate.classes.data import DataObject
+from weaviate.classes.query import Filter
+```
+
+But it may be convenient to import the whole set of classes like this. You will see both usage styles in our documentation.
+
+```
+import weaviate.classes as wvc
+```
+
+For discoverability, the classes are arranged into submodules.
+
+<details>
+  <summary>See the list of submodules</summary>
+
+| Module                       | Description                        |
+| ---------------------------- | ---------------------------------- |
+| `weaviate.classes.config`    | Collection creation / modification |
+| `weaviate.classes.data`      | CUD operations                     |
+| `weaviate.classes.query`     | query/search operations            |
+| `weaviate.classes.aggregate` | aggregate operations               |
+| `weaviate.classes.generic`   | generics                           |
+| `weaviate.classes.init`      | initialization                     |
+| `weaviate.classes.tenants`   | tenants                            |
+| `weaviate.classes.batch`     | batch operations                   |
+
+</details>
+
+## Connection termination
+
+You must ensure your client connections are closed. You can use `client.close()`, or use a context manager to close client connections for you.
+
+### `client.close()` with `try` / `finally`
+
+This will close the client connection when the `try` block is complete (or if an exception is raised).
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# TryFinallyExample"
+  endMarker="# END TryFinallyExample"
+  language="py"
+/>
+
+### Context manager
+
+This will close the client connection when you leave the `with` block.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# ClientContextManagerExample"
+  endMarker="# END ClientContextManagerExample"
+  language="py"
+/>
+
+## Exception handling
+
+The client library raises exceptions for various error conditions. These include, for example:
+
+- `weaviate.exceptions.WeaviateConnectionError` for failed connections.
+- `weaviate.exceptions.WeaviateQueryError` for failed queries.
+- `weaviate.exceptions.WeaviateBatchError` for failed batch operations.
+- `weaviate.exceptions.WeaviateClosedClientError` for operations on a closed client.
+
+Each of these exceptions inherit from `weaviate.exceptions.WeaviateBaseError`, and can be caught using this base class, as shown below.
+
+<FilteredTextBlock
+    text={PythonCode}
+    startMarker="# START BrokenQueryExample"
+    endMarker="# END BrokenQueryExample"
+    language="py"
+/>
+
+You can review [this module](https://github.com/weaviate/weaviate-python-client/blob/main/weaviate/exceptions.py) which defines the exceptions that can be raised by the client library.
+
+The client library doc strings also provide information on the exceptions that can be raised by each method. You can view these by using the `help` function in Python, by using the `?` operator in Jupyter notebooks, or by using an IDE, such as hover-over tooltips in VSCode.
+
+## Thread-safety
+
+While the Python client is fundamentally designed to be thread-safe, it's important to note that due to its dependency on the `requests` library, complete thread safety isn't guaranteed.
+
+This is an area that we are looking to improve in the future.
+
+:::warning Thread safety
+The batching algorithm in our client is not thread-safe. Keep this in mind to help ensure smoother, more predictable operations when using our Python client in multi-threaded environments.
+:::
+
+If you are performing batching in a multi-threaded scenario, ensure that only one of the threads is performing the batching workflow at any given time. No two threads can use the same `client.batch` object at one time.
+
+## Response object structure
+
+Each query response object typically include multiple attributes. Consider this query.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultDisplayExample"
+  endMarker="# END ResultDisplayExample"
+  language="py"
+/>
+
+Each response includes attributes such as `objects` and `generated`. Then, each object in `objects` include multiple attributes such as `uuid`, `vector`, `properties`, `references`, `metadata` and `generated`.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultDisplayOutput"
+  endMarker="# END ResultDisplayOutput"
+  language="bash"
+/>
+
+To limit the response payload, you can specify which properties and metadata to return.
+
+<!-- Additionally, to view the response object in a more readable format, you can use the `json.dumps()` function as shown below
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultJSONDisplayExample"
+  endMarker="# END ResultJSONDisplayExample"
+  language="bash"
+/>
+
+This is the formatted output.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START ResultJSONDisplayResults"
+  endMarker="# END ResultJSONDisplayResults"
+  language="bash"
+/> -->
+
+## Input argument validation
+
+The client library performs input argument validation by default to make sure that the input types match the expected types.
+
+You can disable this validation to improve performance. You can do this by setting the `skip_argument_validation` parameter to `True` when you instantiate a collection object, with `collections.get`, or with `collections.create` for example.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START SkipValidationExample"
+  endMarker="# END SkipValidationExample"
+  language="bash"
+/>
+
+This may be useful in cases where you are using the client library in a production environment, where you can be confident that the input arguments are typed correctly.
+
+## Tab completion in Jupyter notebooks
+
+If you use a browser to run the Python client with a Jupyter notebook, press `Tab` for code completion while you edit. If you use VSCode to run your Jupyter notebook, press `control` + `space` for code completion.
+
+## Raw GraphQL queries
+
+To provide raw GraphQL queries, you can use the `client.graphql_raw_query` method (previously `client.query.raw` in the `v3` client). This method takes a string as input.

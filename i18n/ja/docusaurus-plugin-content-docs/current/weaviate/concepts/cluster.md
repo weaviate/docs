@@ -1,126 +1,171 @@
 ---
 title: Horizontal Scaling
 sidebar_position: 30
+description: "Multi-node cluster architecture and horizontal scaling strategies for high-availability Weaviate deployments."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'horizontal scaling', 'cluster', 'replication', 'sharding']
 ---
 
-Weaviate は、複数ノードのクラスタ上で実行することで水平スケールが可能です。このセクションでは、Weaviate をスケールするさまざまな方法、スケール時に考慮すべき要素、および水平スケールに関連する Weaviate のアーキテクチャについて説明します。
+Weaviate can be scaled horizontally by being run on a set of multiple nodes in a cluster. This section lays out various ways in which Weaviate can be scaled, as well as factors to consider while scaling, and Weaviate's architecture in relation to horizontal scaling.
 
-## Weaviate をスケールする動機
-一般的に、水平スケールには少なくとも 3 つの明確な動機があり、それぞれ異なるセットアップにつながります。
+## Basic concepts
 
-### 動機 1: 最大データセットサイズ
-[HNSW グラフのメモリフットプリント](./resources.md#the-role-of-memory) により、データセットを複数のサーバー（「ノード」）に分散したい場合があります。このセットアップでは、1 つのクラスインデックスが複数のシャードで構成され、シャードがサーバー間に分散されます。
+### Shards
 
-Weaviate は、インポート時とクエリ時に必要なオーケストレーションを完全に自動で実行します。必要な調整は、希望するシャード数を指定することだけです。複数シャードを使用する際のトレードオフについては、[シャーディングとレプリケーション](#シャーディングとレプリケーション) を参照してください。
+A collection in Weaviate comprises of one or more "shards", which are the basic units of data storage and retrieval. A shard will contain its own vector index, inverted indexes, and object store. Each shard can be hosted on a different node, allowing for distributed data storage and processing.
 
-**解決策: クラスタ内の複数ノードにシャーディング**
+![Shards explained](./img/shards_explained.png)
+
+The number of unique shards in a single-tenant collection can only be set at collection creation time. In most cases, letting Weaviate manage the number of shards is sufficient. But in some cases, you may want to manually configure the number of shards for performance or data distribution reasons.
+
+In a multi-tenant collection, each tenant consists of one shard. This means that the number of unique shards in a multi-tenant collection is equal to the number of tenants.
+
+![Shards in collections](./img/shards_in_collections.png)
+
+### Replicas
+
+Depending on the setup, each shard can have one or more "replicas", to be hosted on different nodes. This is referred to as a "high availability" setup, where the same data is available on multiple nodes. This allows for better read throughput and fault tolerance.
+
+You can set the desired number of replicas, also called a replication factor, in Weaviate. This can be set a global cluster-level default using the [`REPLICATION_MINIMUM_FACTOR` environment variable](/docs/deploy/configuration/env-vars/index.md). It can also be set [per collection](/docs/weaviate/manage-collections/multi-node-setup.mdx#replication-settings), which will override the global default.
+
+## Motivation to scale Weaviate
+Generally there are (at least) three distinct motivations to scale out horizontally which all will lead to different setups.
+
+### Motivation 1: Maximum Dataset Size
+Due to the [memory footprint of an HNSW graph](./resources.md#the-role-of-memory) it may be desirable to spread a dataset across multiple servers ("nodes"). In such a setup, a single collection may be split into shards and shards are spread across nodes.
+
+Weaviate does the required orchestration at import and query time fully automatically.
+
+See [Sharding vs Replication](#sharding-vs-replication) below for trade-offs involved when running multiple shards.
+
+**Solution: Sharding across multiple nodes in a cluster**
 
 :::note
-クラスタ全体でのシャーディング機能は Weaviate `v1.8.0` で追加されました。
+The ability to shard across a cluster was added in Weaviate `v1.8.0`.
 :::
 
-### 動機 2: 高いクエリスループット
-単一の Weaviate ノードで処理できる以上のクエリを受け取る場合、追加の Weaviate ノードを導入してユーザーのクエリに応答できるようにすることが望ましいです。
+### Motivation 2: Higher Query Throughput
+When you receive more queries than a single Weaviate node can handle, it is desirable to add more Weaviate nodes which can help in responding to your users' queries.
 
-複数ノードにシャーディングする代わりに、同じデータを複数ノードにレプリケートできます。このプロセスも完全に自動化されており、必要なのは希望するレプリケーションファクターを指定することだけです。シャーディングとレプリケーションを組み合わせることも可能です。
+Instead of sharding across multiple nodes, you can replicate (the same data) across multiple nodes. This process also happens fully automatically and you only need to specify the desired replication factor. Sharding and replication can also be combined.
 
-**解決策: クラスタ内の複数ノードにクラスをレプリケート**
+**Solution: Replicate your classes across multiple nodes in a cluster**
 
-### 動機 3: 高可用性
-Weaviate でクリティカルな負荷を処理する場合、ノードが完全に故障してもクエリを提供し続けたいことがあります。故障はソフトウェアや OS レベルのクラッシュ、あるいはハードウェア障害が原因となり得ます。予期しないクラッシュ以外にも、ゼロダウンタイムアップデートやその他メンテナンス作業を許容できる構成が望ましいです。
+### Motivation 3: High Availability
 
-高可用性を実現するには、クラスを複数ノード間でレプリケートする必要があります。
+When serving critical loads with Weaviate, it may be desirable to be able to keep serving queries even if a node fails completely. Such a failure could be either due to a software or OS-level crash or even a hardware issue. Other than unexpected crashes, a highly available setup can also tolerate zero-downtime updates and other maintenance tasks.
 
-**解決策: クラスタ内の複数ノードにクラスをレプリケート**
+To run a highly available setup, classes must be replicated among multiple nodes.
 
-## シャーディングとレプリケーション
-前述の動機により、クラスを複数ノードにシャーディングする場合とレプリケートする場合、またはその両方を行う場合があります。このセクションでは、シャーディングおよび／またはレプリケーション構成の影響を説明します。
+**Solution: Replicate your classes across multiple nodes in a cluster**
+
+## Sharding vs Replication
+
+The motivation sections above outline when it is desirable to shard your classes across multiple nodes and when it is desirable to replicate your classes - or both. This section highlights the implications of a sharded and/or replicated setup.
 
 :::note
-以下のシナリオでは、シャーディング数またはレプリケーションファクターを増やす際にクラスタサイズも同様に調整されることを前提としています。クラスタ内のノード数よりシャード数やレプリケーションファクターが少ない場合、以下の利点は適用されなくなります。*
+All of the scenarios below assume that - as sharding or replication is increased - the cluster size is adapted accordingly. If the number of shards or the replication factor is lower than the number of nodes in the cluster, the advantages no longer apply.*
 :::
 
-### シャーディング数を増やす利点
-* より大きなデータセットを扱える
-* インポートを高速化
+### Advantages when increasing sharding
+* Run larger datasets
+* Speed up imports.
 
-複数の CPU を効率的に使用するには、コレクションに複数のシャードを作成します。最速のインポートを行うには、単一ノードでも複数シャードを作成してください。
+To use multiple CPUs efficiently, create multiple shards for your collection. For the fastest imports, create multiple shards even on a single node.
 
-### シャーディング数を増やす欠点
-* シャード化ノードを追加してもクエリスループットは向上しない
+### Disadvantages when increasing sharding
+* Query throughput does not improve when adding more sharded nodes
 
-### レプリケーション数を増やす利点
-* システムが高可用になる
-* レプリケーションを増やすとクエリスループットがほぼ線形に向上
+### Advantages when increasing replication
+* System becomes highly available
+* Increased replication leads to near-linearly increased query throughput
 
-### レプリケーション数を増やす欠点
-* レプリケートしたノードを追加してもインポート速度は向上しない
+### Disadvantages when increasing replication
+* Import speed does not improve when adding more replicated nodes
 
-## シャーディングキー（パーティショニングキー）
-`v1.8.0` 以降、シャーディングキーは常にオブジェクトの UUID です。シャーディングアルゴリズムは 64 ビット Murmur-3 ハッシュです。将来的には他のプロパティやアルゴリズムが追加される可能性があります。
+### Sharding Keys ("Partitioning Keys")
+Weaviate uses specific characteristics of an object to decide which shard it belongs to. As of `v1.8.0`, a sharding key is always the object's UUID. The sharding algorithm is a 64bit Murmur-3 hash. Other properties and other algorithms for sharding may be added in the future.
 
-## リシャーディング
-Weaviate は仮想シャードシステムを使用してオブジェクトをシャードに割り当てます。これによりリシャーディング時のデータ移動が最小限に抑えられます。ただし、HNSW インデックスの存在からリシャーディングは依然として高コストであり、使用は稀にすべきです。リシャーディングのコストは、移動対象データ量に関して初回インポートと概ね同等です。
+Note that in a multi-tenant collection, each tenant consists of one shard.
 
-例 — 次のシナリオを想定します。クラスが 4 シャードで構成され、全データのインポートに 60 分かかるとします。シャード数を 5 に変更すると、各シャードは約 20% のデータを新しいシャードに移動します。これはデータセットの 20% のインポートに相当するため、所要時間は約 12 分と見積もられます。
+## Shard replica movement
 
-## ノードディスカバリー
-デフォルトでは、クラスタ内の Weaviate ノードは [Hashicorp の Memberlist](https://github.com/hashicorp/memberlist) を使用したゴシップライクなプロトコルでノード状態や障害シナリオを通信します。
+:::info Added in `v1.32`
+:::
 
-Weaviate は、とくにクラスタとして実行する場合、Kubernetes 上での運用に最適化されています。[Weaviate Helm チャート](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) は `StatefulSet` とヘッドレス `Service` を利用し、ノードディスカバリーを自動設定します。必要なのは希望するノード数を指定するだけです。
+A shard replica can be moved or copied from one node to another. This is useful when you want to balance the load across nodes or when you want to change the replication factor of a part of a collection.
+
+[See this page](/docs/deploy/configuration/replica-movement.mdx) for more details on how to move shard replicas.
+
+### Use cases for moving shard replicas
+
+1. **Load Balancing**: If certain nodes are experiencing higher loads than others, moving shard replicas can help distribute the load more evenly across the cluster.
+
+2. **Scaling**: If you need to scale your cluster (e.g., adding more nodes to handle increased load), shard replicas can be moved to the new nodes to ensure that the data is evenly distributed across the cluster.
+
+3. **Node Maintenance or Replacement**: If a node requires maintenance (e.g., hardware upgrades) or replacement, shard replicas can be moved to temporary or replacement nodes to ensure continuous availability during the maintenance window.
+
+## Node Discovery
+
+By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
+
+Weaviate - especially when running as a cluster - is optimized to run on Kubernetes. The [Weaviate Helm chart](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery. All you have to do is specify the desired node count.
 
 <details>
-  <summary>ノードディスカバリーのための FQDN</summary>
+  <summary>FQDN for node discovery</summary>
 
-:::caution `v1.25.15` で追加され `v1.30` で削除
-これは実験的機能でした。利用の際はご注意ください。
+:::caution Added in `v1.25.15` and removed in `v1.30`
+
+This was an experimental feature. Use with caution.
+
 :::
 
-IP アドレスベースのノードディスカバリーが最適でない場合があります。そのようなケースでは、`RAFT_ENABLE_FQDN_RESOLVER` と `RAFT_FQDN_RESOLVER_TLD` [環境変数](/deploy/configuration/env-vars/index.md#multi-node-instances) を設定して、完全修飾ドメイン名（FQDN）ベースのノードディスカバリーを有効にできます。
+There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](/deploy/configuration/env-vars/index.md#multi-node-instances) to enable fully qualified domain name (FQDN) based node discovery.
 
-この機能を有効にすると、Weaviate は FQDN リゾルバーを使用してノード名をノード IP アドレスに解決し、メタデータ（例: Raft）通信を行います。
+If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
 
-:::info FQDN: メタデータ変更のみに使用
-この機能は [Raft をコンセンサスメカニズムとして使用する](./replication-architecture/cluster-architecture.md#metadata-replication-raft) メタデータ変更にのみ適用されます。データの読み書きには影響しません。
+:::info FQDN: For metadata changes only
+This feature is only used for metadata changes which [use Raft as the consensus mechanism](./replication-architecture/cluster-architecture.md#metadata-replication-raft). It does not affect data read/write operations.
 :::
 
-#### FQDN をノードディスカバリーに使用する例
-IP アドレスが異なるクラスタ間で再利用される場合、一方のクラスタのノードが他方のクラスタのノードを誤って検出してしまうことがあります。FQDN を使うことでこの問題を回避できます。
+#### Examples of when to use FQDN for node discovery
 
-また、サービス（例: Kubernetes）でサービスの IP が実際のノード IP と異なりプロキシされる場合にも有用です。
+The use of FQDN can resolve a situation where if IP addresses are re-used across different clusters, the nodes in one cluster could mistakenly discover nodes in another cluster.
 
-#### FQDN ノードディスカバリー用の環境変数
-`RAFT_ENABLE_FQDN_RESOLVER` は Boolean フラグで、FQDN リゾルバーを有効にします。`true` にすると、Weaviate は FQDN リゾルバーを使用してノード名を IP アドレスに解決します。`false` の場合、Memberlist ルックアップを使用します。デフォルトは `false` です。
+It can also be useful when using services (for example, Kubernetes) where the IP of the services is different from the actual node IP, but it proxies the connection to the node.
 
-`RAFT_FQDN_RESOLVER_TLD` は文字列で、ノード ID を IP アドレスに解決する際に `[node-id].[tld]` 形式で `[tld]` を付加します。
+#### Environment variables for FQDN node discovery
 
-この機能を利用するには、`RAFT_ENABLE_FQDN_RESOLVER` を `true` に設定してください。
+`RAFT_ENABLE_FQDN_RESOLVER` is a Boolean flag. This flag enables the FQDN resolver. If set to `true`, Weaviate uses the FQDN resolver to resolve the node name to the node IP address. If set to `false`, Weaviate uses the memberlist lookup to resolve the node name to the node IP address. The default value is `false`.
+
+`RAFT_FQDN_RESOLVER_TLD` is a string that is appended in the format `[node-id].[tld]` when resolving a node-id to an IP address, where `[tld]` is the top-level domain.
+
+To use this feature, set `RAFT_ENABLE_FQDN_RESOLVER` to `true`.
 
 </details>
 
-## シャードおよびレプリケーションシャードのノードアフィニティ
-Weaviate は、最も空きディスク容量が多いノードを選択しようとします。
+## Node affinity of shards and/or replication shards
 
-これは新しいクラスを作成する場合にのみ適用され、既存クラスにデータを追加する場合には適用されません。
+Weaviate tries to select the node with the most available disk space.
+
+This only applies when creating a new class, rather than when adding more data to an existing single class.
 
 <details>
-  <summary>Pre-<code>v1.18.1</code> の挙動</summary>
+  <summary>Pre-<code>v1.18.1</code> behavior</summary>
 
-`v1.8.0` 〜 `v1.18.0` では、特定のシャードまたはレプリケーションシャードのノードアフィニティを指定できませんでした。
+In versions `v1.8.0`-`v1.18.0`, users could not specify the node-affinity of a specific shard or replication shard.
 
-シャードは「稼働中」ノードに対して、ランダムに選ばれたノードからラウンドロビン方式で割り当てられていました。
+Shards were assigned to 'live' nodes in a round-robin fashion starting with a random node.
 
 </details>
 
-## 一貫性と現在の制限
+## Consistency and current limitations
 
-* `v1.25.0` 以降、Weaviate は選出されたリーダーによって調整されるログベースのアルゴリズムである Raft コンセンサスアルゴリズムを採用しました。これにより、スキーマの同時変更がサポートされるという追加のメリットがあります。<br/>Kubernetes をご利用の場合は、アップグレード前に [`1.25 移行ガイド`](/deploy/migration/weaviate-1-25.md) をご覧ください。アップグレードするには、既存の StatefulSet を削除する必要があります。
-* `v1.8.0` 以降、クラスタ全体にスキーマ変更をブロードキャストするプロセスでは 2 フェーズトランザクション形式が使用されていますが、現時点ではトランザクションの存続期間中に発生するノード障害には対応できません。
-* `v1.8.0` 以降、クラスタの動的スケーリングはまだ完全にはサポートされていません。既存のクラスタに新しいノードを追加することは可能ですが、シャードの所有権には影響しません。データが存在する場合、既存ノードを削除することはまだできません。ノードを削除する前にシャードが他のノードへ移動されないためです。
+* Starting with `v1.25.0`, Weaviate adopts the [Raft consensus algorithm](https://raft.github.io/) which is a log-based algorithm coordinated by an elected leader. This brings an additional benefit in that concurrent schema changes are now supported.<br/>If you are a Kubernetes user, see the [`1.25 migration guide`](/deploy/migration/weaviate-1-25.md) before you upgrade. To upgrade, you have to delete your existing StatefulSet.
+* As of `v1.8.0`, the process of broadcasting schema changes across the cluster uses a form of two-phase transaction that as of now cannot tolerate node failures during the lifetime of the transaction.
+* As of `v1.8.0`, dynamically scaling a cluster is not fully supported yet. New nodes can be added to an existing cluster, however it does not affect the ownership of shards. Existing nodes can not yet be removed if data is present, as shards are not yet being moved to other nodes prior to a removal of a node.
 
-## 質問とフィードバック
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

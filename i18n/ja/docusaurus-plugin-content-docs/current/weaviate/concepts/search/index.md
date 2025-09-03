@@ -1,18 +1,26 @@
-Weaviate は、柔軟で高速かつスケーラブルな検索を実現し、数十億規模のデータセットでもユーザーが目的のデータをすばやく見つけられるようにします。
+---
+title: Search
+sidebar_position: 5
+description: "Overview of search capabilities designed for billion-scale datasets and real-time queries."
+image: og/docs/concepts.jpg
+# tags: ['concepts', 'search']
+---
 
-Weaviate を使用すると、ニーズに合わせてさまざまな検索タイプを実行でき、検索設定を調整してパフォーマンスと精度を最適化できます。
+Weaviate performs flexible, fast and scalable searches to help users to find the right data quickly even with billion-scale datasets.
 
-以下のセクションでは、 [検索プロセスとその種類](#search-process) を含む Weaviate における検索の概念的な概要を説明します。
+With Weaviate, you can perform variety of search types to suit your needs, and configure search settings to optimize performance and accuracy.
 
-## 検索プロセス
+The following sections provide a conceptual overview of search in Weaviate, including [an overview of the search process and types](#search-process).
 
-次の表と図は、 Weaviate における検索プロセスを示しています。コアとなる検索プロセスの周囲には、検索結果を改善・操作するための複数のステップがあります。
+## Search process
 
-| ステップ | 説明 | 任意 |
+The following table and figure illustrate the search process in Weaviate. Around the core search process, there are several steps that can be taken to improve and manipulate the search results.
+
+| Step | Description | Optional |
 |------|-------------|----------|
-| 1. [Retrieval](#retrieval-filter) | <strong>[Filter](#retrieval-filter):</strong> 条件に基づいて結果セットを絞り込み<br/><strong>[Search](#retrieval-search):</strong> [keyword](#keyword-search)・[vector](#vector-search)・[hybrid](#hybrid-search) のいずれかの検索タイプで最も関連性の高いエントリを取得<br/> | 必須 |
-| 2. [Rerank](#rerank) | 別の（より複雑な）モデルで結果を再順位付け | 任意 |
-| 3. [検索拡張生成](#retrieval-augmented-generation-rag) | 取得したデータとプロンプトを生成系 AI モデルへ送信します。 retrieval augmented generation (RAG) とも呼ばれます。 | 任意 |
+| 1. [Retrieval](#retrieval-filter) | <strong>[Filter](#retrieval-filter):</strong> Narrow result sets based on criteria<br/><strong>[Search](#retrieval-search):</strong> Find the most relevant entries, using one of [keyword](#keyword-search), [vector](#vector-search) or [hybrid](#hybrid-search) search types<br/> | Required |
+| 2. [Rerank](#rerank) | Reorder results using a different (e.g. more complex) model | Optional |
+| 3. [Retrieval augmented generation](#retrieval-augmented-generation-rag) | Send retrieved data and a prompt to a generative AI model. Also called retrieval augmented generation, or RAG. | Optional |
 
 <center>
 
@@ -67,34 +75,36 @@ flowchart LR
 
 </center>
 
-各ステップの概要を簡単に示します。
+Here is a brief overview of each step:
 
-### Retrieval: フィルタ
+### Retrieval: Filter
 
-:::info 一文で言うと
-<i class="fa-solid fa-filter"></i> フィルタは、特定の条件に基づいてオブジェクト数を減らします。
+:::info In one sentence
+<i class="fa-solid fa-filter"></i> A filter reduces the number of objects based on specific criteria.
 :::
 
-フィルタは、以下のような条件に基づいてオブジェクト数を減らします。
+Filters reduce the number of objects based on specific criteria. This can include:
 
-- テキスト一致
-- 数値のしきい値
-- 日付範囲
-- カテゴリ値
-- 地理的位置
+- Text matches
+- Numerical thresholds
+- Date ranges
+- Categorical values
+- Geographical locations
 
-フィルタリングを活用することで、結果セットを正確に絞り込み、検索の関連性を大幅に向上させることができます。
+Effective filtering can significantly improve search relevance. This is due to filters' ability to precisely reduce the result set based on exact criteria.
 
-:::info フィルタは検索とどのように連携するのですか？
-Weaviate では [プレフィルタリング](../filtering.md) が適用され、フィルタは検索より前に実行されます。<br/>
+:::info How do filters interact with searches?
+Weaivate applies [pre-filtering](../filtering.md), where filters are performed before searches.
+<br/>
 
-これにより、検索結果がフィルタ条件と必ず重なり、適切なオブジェクトのみが取得されます。
+This ensures that search results overlap with the filter criteria to make sure that the right objects are retrieved.
 :::
 
 <details>
-  <summary>フィルタ: 例</summary>
+  <summary>Filter: Example</summary>
 
-`animal_objs` のようなデータセットでは、特定の色でフィルタリングして条件に合致するオブジェクトのみを取得できます。<br/>
+In a dataset such as `animal_objs` below, you could filter by a specific color to retrieve only objects that match this criterion.
+<br/>
 
 ```json
 [
@@ -107,45 +117,49 @@ Weaviate では [プレフィルタリング](../filtering.md) が適用され�
 ]
 ```
 
-`"description"` に `"black"` を指定してフィルタリングすると、黒色を示すオブジェクトのみが返されます。
+A filter for `"black"` in the `"description"` would return only the objects with a black color.
 
 - `{'description': 'black bear'}`
 - `{'description': 'small domestic black cat'}`
 <br/>
 
-Weaviate では、他の順位付けが適用されていない場合、これらの結果の順序はオブジェクトの UUID に基づきます。したがって、フィルタは条件に合致するかどうかだけを判断するため、実質的に順序はランダムになります。
+In Weaviate, the order of these results are based on the UUIDs of the objects, if no other ranking is applied. As a result, the order of these objects would be essentially random, as the filter only passes or blocks objects based on the criteria.
 </details>
 
-### Retrieval: 検索
+### Retrieval: Search
 
-:::info 一文で言うと
-<i class="fa-solid fa-magnifying-glass"></i> 検索は、クエリとの関連性に基づいてオブジェクトを並べたリストを生成します。
+:::info In one sentence
+<i class="fa-solid fa-magnifying-glass"></i> A search produces an ordered list of objects based on relevance to a query.
 :::
 
-検索は、クエリに最も近い、または関連性の高いデータオブジェクトを見つけるプロセスです。 Weaviate は主要な 3 種類の検索をサポートしています: [keyword search](#keyword-search)、[vector search](#vector-search)、[hybrid search](#hybrid-search)。
+Search is about finding the closest, or most relevant data objects. Weaviate supports three primary search types: [keyword search](#keyword-search), [vector search](#vector-search), and [hybrid search](#hybrid-search).
 
-| 検索タイプ | 説明 |
+Here's a summary of these search types:
+
+| Search Type | Description |
 |-------------|-------------|
-| Keyword Search | 「トークン」の頻度に基づく従来型のテキスト検索 |
-| Vector Search | ベクトル埋め込みによる類似度検索 |
-| Hybrid Search | ベクトル検索とキーワード検索を組み合わせた検索 |
+| Keyword Search | Traditional text-based search using "token" frequency. |
+| Vector Search | Similarity-based search using vector embeddings. |
+| Hybrid Search | Combines vector and keyword search results. |
 
-:::tip Search と Filter の違い
-フィルタは条件に合致するかどうかを判断するだけで、結果の順位付けは行いません。<br/>
+:::tip Search vs Filter
+A filter simply passes or blocks objects based on criteria. Therefore, there is no ranking of results.
+<br/>
 
-検索では、結果がクエリへの関連性に基づいて **順位付け** されます。
+Unlike filters, Search results will be **ranked** based on their relevance to the query.
 :::
 
-これらの検索タイプを詳しく見ていきましょう。
+Let's review these search types in more detail.
 
 #### Keyword Search
 
-Keyword Search は、キーワード一致の「スコア」に基づいて結果を順位付けします。このスコアは、クエリ内のトークンが各データオブジェクトにどの程度出現するかを評価し、 BM25 アルゴリズムで統合して算出します。
+Keyword search ranks results based on keyword match "scores". These scores are based on how often tokens in the query appear in each data object. These metrics are combined using the BM25 algorithm to produce a score.
 
 <details>
-  <summary>Keyword Search: 例</summary>
+  <summary>Keyword Search: Example</summary>
 
-`animal_objs` のようなデータセットでは、特定の色をキーワード検索して、その重要度を確認できます。<br/>
+In a dataset such as `animal_objs` below, you could perform keyword searches by a specific color to retrieve how significant they are.
+<br/>
 
 ```json
 [
@@ -158,41 +172,41 @@ Keyword Search は、キーワード一致の「スコア」に基づいて結�
 ]
 ```
 
-`"black"` をキーワード検索すると、黒色を持つオブジェクトのみが返され、 BM25 アルゴリズムで順位付けされます。
+A keyword search for `"black"` would return only the objects with a black color, as before. But here, the results are ranked based on the BM25 algorithm.
 1. `{'description': 'black bear'}`
 1. `{'description': 'small domestic black cat'}`
 <br/>
 
-`{"description": "black bear"}` は、テキスト中で「black」が占める割合が高いため、 `{"description": "small domestic black cat"}` より高いスコアになります。
+Here `{"description": "black bear"}` has a higher score than `{"description": "small domestic black cat"}` because the term "black" is a larger proportion of the text.
 </details>
 
 <details>
-  <summary>Keyword Search を使うべきケース</summary>
+  <summary>When to use keyword search</summary>
 
-Keyword Search は、特定の単語の出現がテキストの関連性を強く示す場合に有効です。
+Keyword search is great where occurrences of certain words strongly indicate the text's relevance.
 
-例えば:
-- 医学・法律文献で特定の用語を含む文書を探す。
-- 正確な用語が重要な技術ドキュメントや API リファレンスを検索する。
-- EC データベースで特定の製品名や SKU を見つける。
-- プログラミングの文脈でコードスニペットやエラーメッセージを探す。
+For example:
+- Find medical, or legal literature containing specific terms.
+- Search for technical documentation or API references where exact terminology is crucial.
+- Locating specific product names or SKUs in an e-commerce database.
+- Finding code snippets or error messages in a programming context.
 
 </details>
 
-:::info さらに詳しく
-Keyword Search の詳細については、[keyword search](./keyword-search.md) ページをご覧ください。
+:::info Read more
+See the [keyword search](./keyword-search.md) page for more details on how keyword search works in Weaviate.
 :::
 
-#### ベクトル検索
+#### Vector Search
 
-ベクトル埋め込みを用いた類似度ベースの検索です。この方法では、あらかじめ定義された [距離メトリック](../../config-refs/distances.md) に基づき、クエリのベクトル埋め込みと保存されたオブジェクトのベクトル埋め込みを比較し、最も近いものを見つけます。
+Similarity-based search using vector embeddings. This method compares vector embeddings of the query against those of the stored objects to find the closest matches, based on a predefined [distance metric](../../config-refs/distances.md).
 
- Weaviate では、ベクトル検索を複数の方法で実行できます。 [テキスト入力](../../search/similarity.md#search-with-text)、[ベクトル入力](../../search/similarity.md#search-with-a-vector)、あるいは[既存のオブジェクト](../../search/similarity.md#search-with-an-existing-object)を基に類似オブジェクトを検索可能です。さらに、[画像を使った検索](../../search/image.md)など他のモダリティでも類似オブジェクトを検索できます。
+In Weaviate, you can perform vector searches in multiple ways. You can search for similar objects based on [a text input](../../search/similarity.md#search-with-text), [a vector input](../../search/similarity.md#search-with-a-vector), or [an exist object](../../search/similarity.md#search-with-an-existing-object). You can even search for similar objects with other modalities such as [with images](../../search/image.md).
 
 <details>
-  <summary>ベクトル検索：例</summary>
+  <summary>Vector Search: Example</summary>
 
-以下のような `animal_objs` データセットでは、意味的に類似した単語を使ってベクトル検索を行い、それらがどれほど関連性が高いかを取得できます。  
+In a dataset such as `animal_objs` below, you could perform vector searches with words that are semantically similar to retrieve how significant they are.
 <br/>
 
 ```json
@@ -206,43 +220,43 @@ Keyword Search の詳細については、[keyword search](./keyword-search.md) 
 ]
 ```
 
-ここで `"black"` を検索するとキーワード検索と同様に動作します。しかし、ベクトル検索では `"very dark"`、`"noir"`、`"ebony"` のようなクエリでも類似した結果が得られます。  
+A search for `"black"` here would work similarly to the keyword search. But, a vector search would also produce similar results for queries such as `"very dark"`, `"noir"`, or `"ebony"`.
 <br/>
 
-これは、ベクトル検索が使用された単語の一致ではなく、テキストから抽出された意味に基づいているためです。ベクトル埋め込みはテキストの意味を捉えているため、より柔軟な検索が可能になります。  
+This is because vector search is based on the extracted meaning of the text, rather than the exact words used. The vector embeddings capture the semantic meaning of the text, allowing for more flexible search queries.
 <br/>
 
-結果として、上位 3 件の結果は次のとおりです:  
-1. `{'description': 'black bear'}`  
-1. `{'description': 'small domestic black cat'}`  
+As a result, the top 3 results are:
+1. `{'description': 'black bear'}`
+1. `{'description': 'small domestic black cat'}`
 1. `{'description': 'orange cheetah'}`
 
 </details>
 
 <details>
-  <summary>ベクトル検索を使用するタイミング</summary>
+  <summary>When to use vector search</summary>
 
-ベクトル検索は、人間的な「類似度」の概念が結果品質の良い指標となる場面に最適です。
+Vector search is best suited where a human-like concept of "similarity" can be a good measure of result quality.
 
-例えば:  
-- セマンティックテキスト検索: 異なる単語を使っていても意味が近い文書を見つける。  
-- マルチリンガル検索: 異なる言語間で関連するコンテンツを探す。  
-- 画像類似検索: 大規模なデータベースから視覚的に類似した画像を探す。
+For example:
+- Semantic text search: Locating documents with similar meanings, even if they use different words.
+- Multi-lingual search: Finding relevant content across different languages.
+- Image similarity search: Finding visually similar images in a large database.
 
 </details>
 
 :::info Read more
-Weaviate におけるベクトル検索の詳細は、[ベクトル検索](./vector-search.md) ページをご覧ください。
+See the [vector search](./vector-search.md) page for more details on how vector search works in Weaviate.
 :::
 
-#### ハイブリッド検索
+#### Hybrid Search
 
-ベクトル検索とキーワード検索を組み合わせ、両者の強みを活かします。2 つの検索を実行し、ハイブリッド融合手法や alpha 値など選択したパラメータを用いて結果を統合します。
+Combines vector and keyword search to leverage the strengths of both approaches. Both searches are carried out and the results are combined using the selected parameters, such as the hybrid fusion method and the alpha value.
 
 <details>
-  <summary>ハイブリッド検索：例</summary>
+  <summary>Hybrid Search: Example</summary>
 
-以下の `animal_objs` データセットでは、ハイブリッド検索を行うことで両方の利点を活かし、関連オブジェクトを堅牢に見つけられます。  
+In a dataset such as `animal_objs` below, you could perform hybrid searches to robustly find relevant objects, taking a best-of-both-worlds approach.
 <br/>
 
 ```json
@@ -256,82 +270,82 @@ Weaviate におけるベクトル検索の詳細は、[ベクトル検索](./vec
 ]
 ```
 
-`"black canine"` というハイブリッド検索では、キーワード検索により説明文に `"black"` を含むオブジェクトが高く評価されるため、`{"description": "small domestic black cat"}` と `{"description": "black bear"}` が上位に表示されます。  
+A hybrid search for `"black canine"` would match well the objects with `"black"` in the description due to its match with the keyword search. So it would surface `{"description": "small domestic black cat"}` and `{"description": "black bear"}` towards the top.
 <br/>
 
-しかしベクトル検索が `"dog"` とクエリとの高い類似度を検出するため、`{"description": "brown dog"}` のように説明文に `"dog"` を含むオブジェクトもブーストされます。  
+But it would also boost objects with `"dog"` in the description, such as `{"description": "brown dog"}`. This is because the vector search would find a high similarity between the query and the word `"dog"`, even though the word `"dog"` is not in the query.
 <br/>
 
-結果として、上位 3 件の結果は次のとおりです:  
-1. `{"description": "black bear"}`  
-1. `{"description": "small domestic black cat"}`  
+As a result, the top 3 results are:
+1. `{"description": "black bear"}`
+1. `{"description": "small domestic black cat"}`
 1. `{"description": "brown dog"}`
 
 </details>
 
 <details>
-  <summary>ハイブリッド検索を使用するタイミング</summary>
+  <summary>When to use hybrid search</summary>
 
-ハイブリッド検索は堅牢な検索タイプであり、出発点として最適です。いずれか一方の検索で優れている結果をブーストする傾向があります。
+Hybrid search is great as a starting point, as it is a robust search type. It tends to boost results that perform well in at least one of the two searches.
 
-例えば:  
-- 学術論文検索: キーワードの関連性とクエリとのセマンティック類似度の両方に基づいて論文を見つける。  
-- 求人マッチング: スキルのキーワード一致と職務記述のセマンティック理解を組み合わせて適切な候補者を特定する。  
-- レシピ検索: 具体的な材料（キーワード）と料理全体の類似度（ベクトル）の両方を考慮してレシピを探す。  
-- カスタマーサポート: 正確な用語一致と概念的な類似度の両面からサポートチケットやドキュメントを見つける。
+For example:
+- Academic paper search: Finding research papers based on both keyword relevance and semantic similarity to the query.
+- Job matching: Identifying suitable candidates by combining keyword matching of skills with semantic understanding of job descriptions.
+- Recipe search: Locating recipes that match specific ingredients (keywords) while also considering overall dish similarity (vector).
+- Customer support: Finding relevant support tickets or documentation using both exact term matching and conceptual similarity.
 
 </details>
 
 :::info Read more
-Weaviate におけるハイブリッド検索の詳細は、[ハイブリッド検索](./hybrid-search.md) ページをご覧ください。
+See the [hybrid search](./hybrid-search.md) page for more details on how hybrid search works in Weaviate.
 :::
 
-### 取得：順序なし
+### Retrieval: Unordered
 
-ランキング機構を使用せずにクエリを作成することもできます。
+Queries can be formulated without any ranking mechanisms.
 
-たとえば、クエリがフィルターだけで構成されている場合や、[cursor API](../../manage-objects/read-all-objects.mdx) を使用してデータセット全体を反復処理したい場合などです。
+For example, a query may simply consist of a filter, or you may wish to iterate through the entire dataset, using the [cursor API](../../manage-objects/read-all-objects.mdx).
 
-このように順序なしの取得要求を行った場合、 Weaviate は UUID の順序でオブジェクトを返します。そのため、実質的にはランダムに並んだオブジェクト一覧になります。
+In such cases of unordered retrieval requests, Weaviate will retrieve objects in order of their UUIDs. This retrieval method will result in an essentially randomly-ordered object list.
 
-### リランキング
+### Rerank
 
 :::info In one sentence
-<i class="fa-solid fa-sort"></i> リランカーは、より複雑なモデルまたは異なる基準を用いて初期取得結果を再順位付けします。
+<i class="fa-solid fa-sort"></i> A reranker reorders initial retrieval results with a more complex model or different criteria.
 :::
 
-リランキングは、初期結果を並べ替えることで検索の関連性を向上させます。
+Reranking improves search relevance by reordering initial results.
 
-コレクションが [リランカー統合](../../model-providers/index.md) を設定している場合、 Weaviate は設定されたリランカー・モデルを使用して初期検索結果を再順位付けします。
+If a collection is [configured with a reranker integration](../../model-providers/index.md), Weaviate will use the configured reranker model to reorder the initial search results.
 
-これにより、より計算コストの高いモデルを少量の結果に対してのみ適用し、全体的な検索品質を向上できます。典型的には、[Cohere Rerank](../../model-providers/cohere/reranker.md) や [Hugging Face Reranker](../../model-providers/transformers/reranker.md) のようなクロスエンコーダーモデルが用いられ、テキストをより詳細に理解できます。
+This allows you to use a more computationally expensive model on a smaller subset of results, improving the overall search quality. Typically, reranking models such as [Cohere Rerank](../../model-providers/cohere/reranker.md) or [Hugging Face Reranker](../../model-providers/transformers/reranker.md) models are cross-encoder models that can provide a more nuanced understanding of the text.
 
-また、リランカーは取得に用いたものとは異なる入力クエリを提供できるため、より複雑な検索戦略を実現できます。
+A reranker can also be used to provide a different input query to that used for retrieval, allowing for more complex search strategies.
 
 <details>
-  <summary>リランキングを使用するタイミング</summary>
+  <summary>When to use reranking</summary>
 
-リランキングは、小さな結果集合に対してより複雑なモデルを適用し、検索結果の品質を高めたい場合に有用です。オブジェクト集合が非常に微妙または特定業界に特化している場合などに必要になることがあります。
+Reranking is useful when you want to improve the quality of search results by applying a more complex model to a smaller subset of results. This may be necessary when the object set is very subtle or specific, such as in particular industries or use cases.
 
-例えば、法律・医療・科学文献の検索では、テキストをより詳細に理解する必要があります。リランキングは最も関連性の高い結果を表面化するのに役立ちます。
+For example, searches in legal, medical, or scientific literature may require a more nuanced understanding of the text. Reranking can help to ensure that the most relevant results are surfaced.
 </details>
 
-### 検索拡張生成 (RAG)
+### Retrieval augmented generation (RAG)
 
 :::info In one sentence
-<i class="fa-solid fa-robot"></i> 検索拡張生成は、検索と生成 AI モデルを組み合わせ、検索結果を基に新しいコンテンツを生成します。
+<i class="fa-solid fa-robot"></i> Retrieval Augmented Generation combines search with a generative AI model to produce new content based on the search results.
 :::
 
-検索拡張生成 (RAG) は、生成検索 (generative search) とも呼ばれ、検索と生成 AI モデルを組み合わせて検索結果を基に新しいコンテンツを生成する強力な手法です。
+Retrieval augmented generation (RAG), also called generative search, combines search with a generative AI model to produce new content based on the search results. It is a powerful technique that can leverage the generative capabilities of AI models and the search capabilities of Weaviate.
 
- Weaviate は、[AWS](../../model-providers/aws/generative.md)、[Cohere](../../model-providers/cohere/generative.md)、[Google](../../model-providers/google/generative.md)、[OpenAI](../../model-providers/openai/generative.md)、[Ollama](../../model-providers/ollama/generative.md) など多くの人気ジェネレーティブモデルプロバイダーと統合できます。
+Weaviate integrates with many popular [generative model providers](../../model-providers/index.md) such as [AWS](../../model-providers/aws/generative.md), [Cohere](../../model-providers/cohere/generative.md), [Google](../../model-providers/google/generative.md), [OpenAI](../../model-providers/openai/generative.md) and [Ollama](../../model-providers/ollama/generative.md).
 
-その結果、 Weaviate では RAG を[簡単に設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)でき、[単一の統合クエリとして簡単に実行](../../search/generative.md#grouped-task-search)できます。
+As a result, Weaviate makes RAG easy to [set up](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration), and easy to [execute as an integrated, single query](../../search/generative.md#grouped-task-search).
 
 <details>
-  <summary>RAG：例</summary>
+  <summary>RAG: Example</summary>
 
-以下の `animal_objs` データセットでは、検索拡張生成を他の検索方法と組み合わせて関連オブジェクトを取得し、その結果を変換できます。  
+In a dataset such as `animal_objs` below, you could combine retrieval augmented generation with any other search method to find relevant objects and then transform it.
 <br/>
 
 ```json
@@ -345,10 +359,10 @@ Weaviate におけるハイブリッド検索の詳細は、[ハイブリッド�
 ]
 ```
 
-たとえば、`"black"` というキーワード検索と、RAG リクエスト `"What do these animal descriptions have in common?"` を実行するとします。  
+Take an example of a keyword search for `"black"`, and a RAG request `"What do these animal descriptions have in common?"`.
 <br/>
 
-検索結果は `{"description": "black bear"}` と `{"description": "small domestic black cat"}` になります。その後、ジェネレーティブモデルがクエリを基に出力を生成します。一例として、次のような回答が得られました:  
+The search results consist of `{"description": "black bear"}` and `{"description": "small domestic black cat"}` as you saw before. Then, the generative model would produce an output based on our query. In one example, it produced:
 <br/>
 
 ```text
@@ -359,25 +373,53 @@ Weaviate におけるハイブリッド検索の詳細は、[ハイブリッド�
 ```
 </details>
 
-## 検索スコアと評価指標
+## Search scores and metrics
 
-Weaviate では、クエリに対する検索結果をランキングするためにさまざまな指標を使用します。  
-Weaviate で利用される主な指標は次のとおりです。
+Weaviate uses a variety of metrics to rank search results of a given query. The following metrics are used in Weaviate:
 
-- ベクトル距離: クエリとオブジェクト間のベクトル距離指標。  
-- BM25F スコア: BM25F アルゴリズムで計算されるキーワード検索スコア。  
-- ハイブリッドスコア: ベクトル検索とキーワード検索を組み合わせたスコア。
+- Vector distance: A vector distance measure between the query and the object.
+- BM25F score: A keyword search score calculated using the BM25F algorithm.
+- Hybrid score: A combined score from vector and keyword searches.
 
-## さらなるリソース
+## Named vectors
 
-詳細については、以下のページをご参照ください。  
-- [コンセプト: ベクトル検索](./vector-search.md)  
-- [コンセプト: キーワード検索](./keyword-search.md)  
-- [コンセプト: ハイブリッド検索](./hybrid-search.md).
+### Query a specific named vector
 
-これらの検索タイプの使用方法を示すコードスニペットは、[How-to: 検索](../../search/index.mdx) ページをご覧ください。
+To do a vector search on a collection with named vectors, specify the vector space to search.
 
-## 質問とフィードバック
+Use named vectors with [vector similarity searches](/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/weaviate/search/hybrid#named-vectors).
+
+Named vector collections support hybrid search, but only for one vector at a time.
+
+[Keyword search](/weaviate/search/bm25) syntax does not change if a collection has named vectors.
+
+### Query multiple named vectors
+
+:::info Added in `v1.26`
+:::
+
+Where multiple named vectors are defined in a collection, you can query them in a single search. This is useful for comparing the similarity of an object to multiple named vectors.
+
+This is called a "multi-target vector search".
+
+In a multi-target vector search, you can specify:
+
+- The target vectors to search
+- The query(ies) to compare to the target vectors
+- The weights to apply to each distance (raw, or normalized) for each target vector
+
+Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
+
+## Further resources
+
+For more details, see the respective pages for:
+- [Concepts: Vector search](./vector-search.md)
+- [Concepts: Keyword search](./keyword-search.md)
+- [Concepts: Hybrid search](./hybrid-search.md).
+
+For code snippets on how to use these search types, see the [How-to: search](../../search/index.mdx) page.
+
+## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
