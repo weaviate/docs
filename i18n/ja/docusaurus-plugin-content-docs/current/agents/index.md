@@ -1,66 +1,66 @@
 ---
-title: Introduction
+title: 概要
 sidebar_position: 10
-description: "Overview of Weaviate AI Agents documentation for personalization, querying, and data transformation agents."
+description: Weaviate AI エージェントのパーソナライゼーション、クエリ、およびデータ変換エージェントに関するドキュメントの概要。
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started']
 ---
 
-# Weaviate Agents - Introduction
+# Weaviate Agents - 概要
 
 :::caution Technical Preview
 
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents are in technical preview.")
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents are in technical preview.")
+![Weaviate Agents はテクニカルプレビューです。](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents はテクニカルプレビューです。")
+![Weaviate Agents はテクニカルプレビューです。](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents はテクニカルプレビューです。")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらから登録してください](https://events.weaviate.io/weaviate-agents) Weaviate Agents の通知を受け取るか、[このページ](https://weaviateagents.featurebase.app/)で最新情報を確認しフィードバックをお寄せください。
 
 :::
 
-Weaviate Agents are pre-built agentic services designed for specific tasks. They are available out-of-the-box for Weaviate Cloud users to interact with their data in Weaviate Cloud to simplify data engineering and AI development workflows.
+Weaviate Agents は、特定のタスク向けに設計されたあらかじめ構築されたエージェント サービスです。Weaviate Cloud ユーザーは、Weaviate Cloud 内のデータと対話してデータ エンジニアリングおよび AI 開発ワークフローを簡素化できます。
 
-:::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+:::info 更新履歴とフィードバック
+Weaviate Agents の公式更新履歴は[こちら](https://weaviateagents.featurebase.app/changelog)でご覧いただけます。機能リクエスト、不具合報告、質問などのフィードバックは[こちら](https://weaviateagents.featurebase.app/)からお送りください。送信後はステータスを確認したり、他のフィードバックに投票したりできます。
 :::
 
-## How Weaviate Agents work
+## Weaviate Agents の仕組み
 
-Weaviate Agents have been pre-trained on Weaviate’s APIs, making them experts in performing Weaviate-specific data tasks.
+Weaviate Agents は Weaviate の API を事前学習しており、Weaviate 固有のデータタスクを実行するエキスパートです。
 
-All you need to do is provide inputs, and the particular Agent will perform the required task using your data.
+入力を提供するだけで、各エージェントがデータを使って必要なタスクを実行します。
 
-:::info Weaviate Agents is not an agent framework
-Weaviate Agents is not a framework for building agents. It is a set of pre-built agentic services for Weaviate.
+:::info Weaviate Agents はエージェントフレームワークではありません
+Weaviate Agents はエージェントを構築するためのフレームワークではなく、Weaviate 向けに事前構築されたエージェント サービスのセットです。
 :::
 
-## Query Agent
+## Query エージェント
 
-The [Query Agent](./query/index.md) provides an answer to your natural language questions, by querying your stored data.
+[Query エージェント](./query/index.md) は、自然言語の質問に対し、保存されているデータをクエリして回答を提供します。
 
-[![Click to read more about the Query Agent](./_includes/query_agent_usage_light.png#gh-light-mode-only "Click to read more about the Query Agent")](./query/index.md)
-[![Click to read more about the Query Agent](./_includes/query_agent_usage_dark.png#gh-dark-mode-only "Click to read more about the Query Agent")](./query/index.md)
+[![Query エージェントの詳細はこちら](./_includes/query_agent_usage_light.png#gh-light-mode-only "Query エージェントの詳細はこちら")](./query/index.md)
+[![Query エージェントの詳細はこちら](./_includes/query_agent_usage_dark.png#gh-dark-mode-only "Query エージェントの詳細はこちら")](./query/index.md)
 
-[Read more about the Query Agent](./query/index.md)
+[Query エージェントについて詳しく読む](./query/index.md)
 
-## Transformation Agent
+## Transformation エージェント
 
-The [Transformation Agent](./transformation/index.md) enhances your data by manipulating it based on your instructions.
+[Transformation エージェント](./transformation/index.md) は、instructions に基づいてデータを操作し、データを強化します。
 
-[![Click to read more about the Transformation Agent](./_includes/transformation_agent_overview_light.png#gh-light-mode-only "Click to read more about the Transformation Agent")](./transformation/index.md)
-[![Click to read more about the Transformation Agent](./_includes/transformation_agent_overview_dark.png#gh-dark-mode-only "Click to read more about the Transformation Agent")](./transformation/index.md)
+[![Transformation エージェントの詳細はこちら](./_includes/transformation_agent_overview_light.png#gh-light-mode-only "Transformation エージェントの詳細はこちら")](./transformation/index.md)
+[![Transformation エージェントの詳細はこちら](./_includes/transformation_agent_overview_dark.png#gh-dark-mode-only "Transformation エージェントの詳細はこちら")](./transformation/index.md)
 
-[Read more about the Transformation Agent](./transformation/index.md)
+[Transformation エージェントについて詳しく読む](./transformation/index.md)
 
-## Personalization Agent
+## Personalization エージェント
 
-The [Personalization Agent](./personalization/index.md) customizes outputs based on persona-specific information, which can even be learned over time.
+[Personalization エージェント](./personalization/index.md) は、特定のペルソナ情報に基づいて出力をカスタマイズし、時間とともに学習することもできます。
 
-[![Click to read more about the Personalization Agent](./_includes/personalization_agent_overview_light.png#gh-light-mode-only "Click to read more about the Personalization Agent")](./personalization/index.md)
-[![Click to read more about the Personalization Agent](./_includes/personalization_agent_overview_dark.png#gh-dark-mode-only "Click to read more about the Personalization Agent")](./personalization/index.md)
+[![Personalization エージェントの詳細はこちら](./_includes/personalization_agent_overview_light.png#gh-light-mode-only "Personalization エージェントの詳細はこちら")](./personalization/index.md)
+[![Personalization エージェントの詳細はこちら](./_includes/personalization_agent_overview_dark.png#gh-dark-mode-only "Personalization エージェントの詳細はこちら")](./personalization/index.md)
 
-[Read more about the Personalization Agent](./personalization/index.md)
+[Personalization エージェントについて詳しく読む](./personalization/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

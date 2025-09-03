@@ -1,7 +1,7 @@
 ---
-title: Personalization Agent
+title: パーソナライゼーション エージェント
 sidebar_position: 10
-description: "Overview of the AI agent that provides personalized recommendations based on user profiles and interaction history."
+description: ユーザープロファイルとインタラクション履歴に基づき、パーソナライズされたレコメンデーションを提供する AI エージェントの概要。
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'personalization agent']
 ---
@@ -11,122 +11,121 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent.py';
 
-# Weaviate Personalization Agent
+# Weaviate パーソナライゼーション エージェント
 
 :::caution Technical Preview
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+![この Weaviate エージェントはテクニカルプレビューです。](../_includes/agents_tech_preview_light.png#gh-light-mode-only "この Weaviate エージェントはテクニカルプレビューです。")
+![この Weaviate エージェントはテクニカルプレビューです。](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "この Weaviate エージェントはテクニカルプレビューです。")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらから登録してください](https://events.weaviate.io/weaviate-agents) Weaviate エージェントの通知を受け取るには、または[このページ](https://weaviateagents.featurebase.app/)で最新情報を確認し、フィードバックをお寄せください。
 
 :::
 
-The Weaviate Personalization Agent is an agentic service designed to return personalized recommendations tailored to each user. The Personalization Agent uses data from the associated Weaviate Cloud instance to provide these recommendations.
+Weaviate パーソナライゼーション エージェントは、各ユーザーに合わせたレコメンデーションを返すために設計されたエージェントサービスです。パーソナライゼーション エージェントは、関連する Weaviate Cloud インスタンスのデータを利用してレコメンデーションを提供します。
 
-:::tip Nomenclature: User vs Developer
-The Personalization Agent is all about providing personalized recommendations tailored to a particular person. In this context, that person will be referred to as the `user`. The developer is the person who is using the Personalization Agent to provide these recommendations.
+:::tip 用語: ユーザーと開発者
+パーソナライゼーション エージェントは、特定の人に合わせたパーソナライズレコメンデーションを提供します。この文脈では、その人を `user` と呼びます。`user` に対してレコメンデーションを提供するためにパーソナライゼーション エージェントを使用する人が開発者です。
 :::
 
-The developer would simply provide a user profile, and the Personalization Agent takes care of all intervening steps to provide a set of personalized recommendations from Weaviate. The resulting workflow for the developer looks as follows:
+開発者はユーザープロファイルを渡すだけで、パーソナライゼーション エージェントが途中の手順をすべて処理し、Weaviate から一連のパーソナライズレコメンデーションを返します。開発者視点でのワークフローは以下のとおりです。
 
 ![Weaviate Personalization Agent from a developer perspective](../_includes/personalization_agent_overview_light.png#gh-light-mode-only "Weaviate Personalization Agent from a developer perspective")
 ![Weaviate Personalization Agent from a developer perspective](../_includes/personalization_agent_overview_dark.png#gh-dark-mode-only "Weaviate Personalization Agent from a developer perspective")
 
-:::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+:::info 変更履歴とフィードバック
+Weaviate エージェントの公式変更履歴は[こちら](https://weaviateagents.featurebase.app/changelog)にあります。機能要望・バグ報告・質問などのフィードバックは[こちら](https://weaviateagents.featurebase.app/)からお寄せください。フィードバックの状況を確認したり、他の提案に投票したりできます。
 :::
 
-## Architecture
+## アーキテクチャ
 
-The Personalization Agent is provided as a service on Weaviate Cloud.
+パーソナライゼーション エージェントは Weaviate Cloud 上のサービスとして提供されます。
 
-When a user-specific recommendations request is made, the Personalization Agent analyses the user profile and any other known context to autonomously carry out the searches itself. The context may include data about the previous user interactions, information about the user themselves, and any other relevant information.
+ユーザー固有のレコメンデーション要求が行われると、パーソナライゼーション エージェントはユーザープロファイルおよび既知のコンテキストを解析し、自律的に検索を実行します。コンテキストには、以前のユーザーインタラクション、ユーザー自身に関する情報、その他関連情報が含まれます。
 
-The Personalization Agent uses the contextual information to not only retrieve the most relevant recommendations, but also to rank them for the user.
+パーソナライゼーション エージェントはコンテキスト情報を活用して、最も関連性の高いレコメンデーションを取得するだけでなく、ユーザー向けにランキングも行います。
 
-## Personalization Agent: visualized workflow
+## パーソナライゼーション エージェント: ワークフローの可視化
 
 ![Weaviate Personalization Agent at a high level](../_includes/personalization_agent_architecture_light.png#gh-light-mode-only "Weaviate Personalization Agent at a high level")
 ![Weaviate Personalization Agent at a high level](../_includes/personalization_agent_architecture_dark.png#gh-dark-mode-only "Weaviate Personalization Agent at a high level")
 
-The Personalization Agent works as follows at a high level:
+パーソナライゼーション エージェントは、高レベルでは以下のように動作します。
 
-- Create a Weaviate-managed user collection, which will store each user's profiles & previous interactions for each user.
-- When a request for personalized recommendations is made, the Personalization Agent fetches the user data, and analyze it to determine patterns and preferences.
-- Perform initial searches in Weaviate based on the analysis to retrieve the most relevant recommendations.
-- Use appropriate generative models to determine any additional search strategies, and to re-rank fetched data as required.
-- Perform additional searches in Weaviate as needed to retrieve the final set of recommendations.
-- Combine and rank the recommendations based on the user's profile and preferences.
+- Weaviate が管理するユーザーコレクションを作成し、各ユーザーのプロファイルと過去のインタラクションを保存します。
+- パーソナライゼーション レコメンデーションが要求されると、エージェントはユーザーデータを取得し、パターンや好みを解析します。
+- 解析結果に基づき、Weaviate で初期検索を実行して最も関連性の高いレコメンデーションを取得します。
+- 適切な生成モデルを使用して追加の検索戦略を決定し、必要に応じて取得データを再ランキングします。
+- 最終的なレコメンデーションを取得するために、必要に応じて Weaviate で追加検索を行います。
+- レコメンデーションをユーザープロファイルと好みに基づいて統合・ランキングします。
 
-Then, the Personalization Agent returns the user-specific recommendations in the response. The response will also include intermediate outputs, such as the underlying search results from Weaviate.
+その後、パーソナライゼーション エージェントはユーザー固有のレコメンデーションをレスポンスとして返します。レスポンスには、Weaviate から得た基礎的な検索結果など、中間生成物も含まれます。
 
-Let's dive into a little more detail about the Personalization Agent.
+パーソナライゼーション エージェントについて、もう少し詳しく見ていきましょう。
 
-### User profiles
+### ユーザープロファイル
 
-The Personalization Agent uses user profiles to provide personalized recommendations. This information is stored in a collection in your Weaviate instance under a specific name. The user profile may include the user's preferences and previous interactions, such as their likes and dislikes.
+パーソナライゼーション エージェントはユーザープロファイルを利用してパーソナライズレコメンデーションを提供します。この情報は特定の名前で、あなたの Weaviate インスタンス内のコレクションに保存されます。ユーザープロファイルには、ユーザーの好みや過去のインタラクション（例: 好き・嫌いなど）が含まれる場合があります。
 
 ![Weaviate Personalization Agent - User Data Collection](../_includes/personalization_agent_users_light.png#gh-light-mode-only "Weaviate Personalization Agent - User Data Collection")
 ![Weaviate Personalization Agent - User Data Collection](../_includes/personalization_agent_users_dark.png#gh-dark-mode-only "Weaviate Personalization Agent - User Data Collection")
 
-As shown here, the user data collection can be updated over time. It can be updated with information about new users, or with new information about existing users.
+ここに示すように、ユーザーデータコレクションは時間とともに更新できます。新しいユーザーの情報を追加したり、既存ユーザーの新しい情報で更新したりできます。
 
-This will help the Personalization Agent continue to learn and provide the most relevant, up-to-date recommendations to each user.
+これにより、パーソナライゼーション エージェントは学習を続け、各ユーザーに対して最も関連性が高く最新のレコメンデーションを提供し続けることができます。
 
-### Recommendations
+### レコメンデーション
 
-There are two major components to the Personalization Agent's recommendations, the searches it performs to retrieve the recommendations, and the ranking of the recommendations.
+パーソナライゼーション エージェントのレコメンデーションには大きく２つの要素があります。検索によるレコメンデーション取得と、レコメンデーションのランキングです。
 
-#### Searches
+#### 検索
 
-The Personalization Agent performs searches in Weaviate to retrieve the most relevant recommendations for the user from the specified collections.
+パーソナライゼーション エージェントは Weaviate で検索を実行し、指定されたコレクションからユーザーに最も関連性の高いレコメンデーションを取得します。
 
 ![Weaviate Personalization Agent - Searches](../_includes/personalization_agent_search_light.png#gh-light-mode-only "Weaviate Personalization Agent - Searches")
 ![Weaviate Personalization Agent - Searches](../_includes/personalization_agent_search_dark.png#gh-dark-mode-only "Weaviate Personalization Agent - Searches")
 
-The diagram depicts that the search process may be based on a number of factors:
+図が示すとおり、検索プロセスは複数の要素に基づく可能性があります。
 
-- The user's profile and preferences, fetched from the user data collection.
-- The user's previous interactions, fetched from the user data collection.
-- The recommendation context, such as the type of recommendations requested or any other relevant information.
-- Additional search strategies, as determined by the Personalization Agent.
+- ユーザープロファイルと好み（ユーザーデータコレクションから取得）
+- ユーザーの過去インタラクション（ユーザーデータコレクションから取得）
+- レコメンデーションのコンテキスト（要求されたレコメンデーションの種類など）
+- パーソナライゼーション エージェントが決定した追加検索戦略
 
-The Personalization Agent may perform multiple searches in Weaviate to retrieve the most relevant recommendations, before combining and ranking them.
+パーソナライゼーション エージェントは、関連性の高いレコメンデーションを取得するために Weaviate で複数回の検索を行い、それらを統合・ランキングします。
 
-#### (Re-)Ranking
+#### （再）ランキング
 
-The Personalization Agent uses multiple factors to rank the recommendations it retrieves from Weaviate, so that the final result set is tailored to the user's preferences.
+パーソナライゼーション エージェントは Weaviate から取得したレコメンデーションを、複数の要素を用いてランキングし、最終的な結果セットをユーザーの好みに合わせます。
 
 ![Weaviate Personalization Agent - (re)rank](../_includes/personalization_agent_rank_light.png#gh-light-mode-only "Weaviate Personalization Agent - (re)rank")
 ![Weaviate Personalization Agent - (re)rank](../_includes/personalization_agent_rank_dark.png#gh-dark-mode-only "Weaviate Personalization Agent - (re)rank")
 
-The rankings may be based on a number of factors:
+ランキングは以下の要素に基づく場合があります。
 
-- The user's profile and preferences, fetched from the user data collection.
-- The user's previous interactions, fetched from the user data collection.
-- The recommendation context, such as the type of recommendations requested or any other relevant information.
-- Additional ranking strategies, as determined by the Personalization Agent.
+- ユーザープロファイルと好み（ユーザーデータコレクションから取得）
+- ユーザーの過去インタラクション（ユーザーデータコレクションから取得）
+- レコメンデーションのコンテキスト（要求されたレコメンデーションの種類など）
+- パーソナライゼーション エージェントが決定した追加ランキング戦略
 
-This process ranks the combined result set as a whole, before serving them back in the response.
+このプロセスにより統合された結果セット全体がランキングされ、レスポンスとして返されます。
 
-## Basic Usage
+## 基本的な使い方
 
-Here is an overview of how to use the this Weaviate Agent. For more detailed information, refer to the [Usage](./usage.md) page.
+ここでは、本 Weaviate エージェントの利用方法を概観します。詳細は[使用方法](./usage.md)ページをご覧ください。
 
-### Prerequisites
+### 前提条件
 
-This Agent is available exclusively for use with a Weaviate Cloud instance, and a supported version of the Weaviate client library.
+このエージェントは Weaviate Cloud インスタンスと、対応するバージョンの Weaviate クライアントライブラリでのみ利用可能です。
+### 利用例
 
-### Example Usage
+Personalization エージェントを使用するには、次の入力でインスタンス化します:
 
-To use the Personalization Agent, instantiate it with the following inputs:
+- Weaviate クライアントのインスタンス（例: Python の `WeaviateClient` オブジェクト）で、Weaviate Cloud インスタンスへ接続済みのもの。
+- パーソナライズされたアイテムを取得する対象コレクションの名前。
+- パーソナライズの基準となるユーザー属性のリスト。
 
-- An instance of the Weaviate client (e.g. the `WeaviateClient` object in Python), connected to a Weaviate Cloud instance.
-- Name of the target collection to get personalized items from.
-- A list of user properties to base the personalization on.
-
-Note that the Personalization Agent persists. This means that if you have previously created a Personalization Agent, you can connect to it again without having to create a new one.
+Personalization エージェントは永続化される点にご注意ください。すでに Personalization エージェントを作成済みの場合、新規作成せずに再接続できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -139,7 +138,7 @@ Note that the Personalization Agent persists. This means that if you have previo
     </TabItem>
 </Tabs>
 
-Then, add a persona, which will be used to personalize the recommendations.
+次に、推奨結果をパーソナイズするためのペルソナを追加します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -152,7 +151,7 @@ Then, add a persona, which will be used to personalize the recommendations.
     </TabItem>
 </Tabs>
 
-Then you can add a set of interactions to that persona.
+そのペルソナに対して一連のインタラクションを追加できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -165,7 +164,7 @@ Then you can add a set of interactions to that persona.
     </TabItem>
 </Tabs>
 
-Once user data is added, the Personalization Agent can be used to get personalized recommendations from the Weaviate collection.
+ユーザーデータを追加すると、Personalization エージェントを使用して Weaviate コレクションからパーソナライズされた推奨を取得できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -179,13 +178,12 @@ Once user data is added, the Personalization Agent can be used to get personaliz
 
 </Tabs>
 
-### Further Documentation
+### 追加ドキュメント
 
-For more detailed information on how to use this Agent, refer to the [Usage](./usage.md) page.
+このエージェントの詳細な使用方法については、[使用方法](./usage.md) ページを参照してください。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

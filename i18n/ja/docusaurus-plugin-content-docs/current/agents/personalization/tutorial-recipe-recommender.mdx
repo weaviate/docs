@@ -1,7 +1,7 @@
 ---
-title: Build a recipe recommender with the Personalization Agent
+title: Personalization Agent で作るレシピレコメンダー
 sidebar_label: 'Tutorial: Recipe recommender'
-description: "Tutorial for creating a recipe recommendation system using the Personalization Agent."
+description: "Personalization Agent を使用してレシピ推薦システムを作成するチュートリアル。"
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['personalization', 'recommendation']
@@ -17,24 +17,24 @@ import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent_tu
 ![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only 'This Weaviate Agent is in technical preview.')
 ![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only 'This Weaviate Agent is in technical preview.')
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらから登録](https://events.weaviate.io/weaviate-agents)して Weaviate Agents の最新情報を受け取るか、[このページ](https://weaviateagents.featurebase.app/)で最新のアップデートとフィードバックを確認してください。
 
 :::
 
 :::info Data Storage Note
-The Weaviate Personalization Agent stores user persona profiles and interaction data within your Weaviate instance alongside your main data collection. Be mindful of data privacy regulations when implementing this agent.
+Weaviate Personalization Agent は、ユーザーパ ーソナプロファイルとインタラクションデータをメインのデータコレクションと同じくお客様の Weaviate インスタンス内に保存します。エージェントを実装する際は、データプライバシー規制にご注意ください。
 :::
 
-In this tutorial, we will be building a simple food recommender service using the **[Weaviate Personalization Agent](./index.md)**. This agent will learn about user preferences based on their defined profile (persona) and past interactions (e.g., recipe reviews) to provide personalized recommendations from a collection of recipes.
+このチュートリアルでは、**[Weaviate Personalization Agent](./index.md)** を使用してシンプルなフードレコメンダーサービスを構築します。このエージェントは、ユーザーが定義したプロフィール（パーソナ）と過去のインタラクション（例: レシピのレビュー）を学習し、レシピコレクションからパーソナライズされた推薦を行います。
 
-We've prepared a public dataset that you can use to explore the Personalization Agent:
-It is available on HuggingFace:
+Personalization Agent を試すための公開データセットを用意しています。  
+HuggingFace で入手可能です:
 
-- [**Recipes:**](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes) A dataset that lists recipe names, short descriptions, and cuisine types.
+- [**レシピ:**](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes) レシピ名、短い説明、料理の種類を含むデータセット。
 
-## Introduction: What are Personalization Agents?
+## 導入: Personalization Agent とは
 
-The Weaviate Personalization Agent is a pre-built agentic service designed to retrieve objects from a Weaviate collection in a way that is tailored to individual users. It achieves this by considering a user's defined persona (profile) and their history of interactions with items in the collection.
+Weaviate Personalization Agent は、Weaviate コレクションからユーザーごとに最適化されたオブジェクトを取得するための、あらかじめ構築されたエージェントサービスです。ユーザーが定義したパーソナ（プロフィール）と、コレクション内アイテムとのインタラクション履歴を考慮して動作します。
 
 import WeaviateAgentsPersonalizationFoodFlowchart from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_flowchart.png';
 
@@ -50,37 +50,37 @@ import WeaviateAgentsPersonalizationFoodFlowchart from '/docs/agents/_includes/p
 </div>
 <br />
 
-The Personalization Agent:
+Personalization Agent の処理フロー:
 
-1.  **Receives a request** for recommendations for a specific user (persona).
-2.  **Retrieves the user's persona profile** (e.g., likes, dislikes, favorite cuisines) and **interaction history** (e.g., liked/disliked recipes with associated weights).
-3.  **Queries the reference collection** (e.g., "Recipes") to find candidate items.
-4.  **(Optionally) Uses an appropriate generative model** (e.g., large language model) to re-rank the candidate items based on the persona, interactions, and potentially a specific instruction, providing a rationale for the ranking.
-5.  **Returns a personalized, ranked list** of objects to the user.
+1.  **リクエストを受信** — 特定ユーザー（パーソナ）への推薦要求を受け取ります。  
+2.  **ユーザーのパーソナプロファイル**（例: 好み、苦手、好きな料理）と **インタラクション履歴**（例: 好き／嫌いなレシピと重み付け）を取得します。  
+3.  **参照コレクションを検索**（例: 「Recipes」）し、候補アイテムを取得します。  
+4.  **（オプション）生成モデルを使用** — 大規模言語モデルなど適切な生成モデルで、パーソナ・インタラクション・指示に基づき候補を再ランク付けし、その理由を生成します。  
+5.  **パーソナライズされた順位付きリスト** をユーザーへ返します。
 
 <hr />
 
-## Prerequisites
+## 前提条件
 
-To use the Weaviate Agents and Weaviate Embedding service, you need to have a **[Weaviate Cloud](https://console.weaviate.cloud)** account.
+Weaviate Agents と Weaviate Embedding サービスを使用するには、**[Weaviate Cloud](https://console.weaviate.cloud)** アカウントが必要です。
 
-## Step 1: Set up Weaviate
+## ステップ 1: Weaviate のセットアップ
 
-Now, let's get started by setting up a Weaviate Cloud instance that we will use for this tutorial and connecting it to the Python client.
+ここから、チュートリアルで使用する Weaviate Cloud インスタンスを作成し、Python クライアントから接続します。
 
-### 1.1 Create a Weaviate Cloud cluster
+### 1.1 Weaviate Cloud クラスターの作成
 
-1. Create a [free Sandbox cluster](/cloud/manage-clusters/create#sandbox-clusters) in Weaviate Cloud.
-1. Take note of the `REST Endpoint` and `Admin` API key to connect to your cluster. (for more info, check out the [quickstart](/cloud/manage-clusters/connect.mdx)
+1. Weaviate Cloud で[無料の Sandbox クラスター](/cloud/manage-clusters/create#sandbox-clusters)を作成します。  
+1. クラスターに接続するための `REST Endpoint` と `Admin` API キーを控えておきます。（詳しくは [クイックスタート](/cloud/manage-clusters/connect.mdx) を参照）
 
 :::tip
-In this tutorial, we are using the [Weaviate Embeddings](../../weaviate/model-providers/weaviate/index.md) service as the vectorizer, so you do not have to provide any extra keys for external embedding providers. Weaviate Embeddings uses the `Snowflake/snowflake-arctic-embed-l-v2.0` as the default embedding model.<br/><br/>
-If you want to use another vectorizer, check out the list of supported [model providers](../../weaviate/model-providers/index.md).
+このチュートリアルでは、ベクトライザーとして [Weaviate Embeddings](../../weaviate/model-providers/weaviate/index.md) サービスを使用するため、外部の埋め込みプロバイダー用の追加キーは不要です。Weaviate Embeddings では既定で `Snowflake/snowflake-arctic-embed-l-v2.0` モデルが使用されます。<br/><br/>
+別のベクトライザーを使用したい場合は、サポートされている [モデルプロバイダー](../../weaviate/model-providers/index.md) の一覧をご覧ください。
 :::
 
-### 1.2 Install the Python libraries
+### 1.2 Python ライブラリのインストール
 
-In order to install the Weaviate Python client together with the `agents` component, run:
+Weaviate Python クライアントと `agents` コンポーネントをインストールするには、次のコマンドを実行します。
 
 <Tabs groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -92,7 +92,7 @@ pip install "weaviate-client[agents]"
 </TabItem>
 </Tabs>
 
-You will also need `datasets`, a lightweight library providing access to the publicly hosted datasets on HuggingFace.
+HuggingFace 上の公開データセットにアクセスできる軽量ライブラリ `datasets` も必要です。
 
 <Tabs groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -108,9 +108,9 @@ import ForcePipInstall from '../_includes/_force_pip_install.mdx';
 
 <ForcePipInstall />
 
-### 1.3 Connect to your instance
+### 1.3 インスタンスへの接続
 
-Now, you can finally connect to your Weaviate Cloud instance with the parameters from the first step:
+先ほど取得したパラメータを使って、Weaviate Cloud インスタンスへ接続します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -123,15 +123,14 @@ Now, you can finally connect to your Weaviate Cloud instance with the parameters
   </TabItem>
 </Tabs>
 
-After running this snippet, you should see the message `True` printed out, which means that you have successfully connected to your instance.
+このスニペットを実行し、`True` と表示されればインスタンスへの接続に成功しています。
+## 手順 2: コレクションの準備
 
-## Step 2: Prepare the collection
+以下のコードブロックでは、デモ用レシピ データセットを Hugging Face から取得し、 Weaviate Sandbox クラスター内の新しいコレクションに書き込みます。データをインポートする前に、コレクションを **定義** し、スキーマを設定してベクトライザーを選択する必要があります。
 
-In the following code blocks, we will pull our demo recipe dataset from Hugging Face and write it to a new collection in our Weaviate Sandbox cluster. Before importing the data, we need to **define the collection**, setting up its schema and choosing the vectorizer.
+### 2.1 コレクションの定義
 
-### 2.1 Define the collection
-
-Below you can see what the objects in the `Recipes` dataset look like.
+以下は、`Recipes` データセット内のオブジェクトの構造です。
 
 import WeaviateAgentsPersonalizationFoodDataset from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_dataset.png';
 
@@ -140,14 +139,14 @@ import WeaviateAgentsPersonalizationFoodDataset from '/docs/agents/_includes/per
     <div class="card__image">
       <img
         src={WeaviateAgentsPersonalizationFoodDataset}
-        alt="The Recipes dataset structure"
+        alt="Recipes データセットの構造"
       />
     </div>
   </div>
 </div>
 <br />
 
-For the collection `Recipes`, we will manually define the properties and include descriptions. While using [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) is an option, providing explicit descriptions helps the Personalization Agent (especially the underlying LLM, when used for re-ranking) understand the context of your data better.
+`Recipes` コレクションでは、プロパティを手動で定義し、説明を追加します。[`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) を利用することもできますが、明示的な説明を付けることで Personalization エージェント (特に再ランキングに使用される基盤 LLM) がデータの文脈をよりよく理解できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -160,9 +159,9 @@ For the collection `Recipes`, we will manually define the properties and include
   </TabItem>
 </Tabs>
 
-### 2.2 Populate the database
+### 2.2 データベースの投入
 
-Now, we can import the recipe data ([Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes)) into our Weaviate Cloud instance:
+次に、レシピ データ ([Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes)) を Weaviate Cloud インスタンスにインポートします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -175,7 +174,7 @@ Now, we can import the recipe data ([Recipes](https://huggingface.co/datasets/we
   </TabItem>
 </Tabs>
 
-By calling `len()` on our collections, we can check that the import has successfully concluded and see what the size of our collections is:
+`len()` をコレクションに対して呼び出すことで、インポートが正常に完了したかを確認し、コレクションのサイズを確認できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -192,13 +191,13 @@ By calling `len()` on our collections, we can check that the import has successf
 Size of the Recipes dataset: 5117
 ```
 
-## Step 3: Set up the Personalization Agent
+## 手順 3: パーソナライゼーション エージェントのセットアップ
 
-Now, let's create the `PersonalizationAgent` instance linked to our "Recipes" collection.
+それでは、`PersonalizationAgent` インスタンスを作成し、"Recipes" コレクションに紐付けます。
 
-When creating a new `PersonalizationAgent` for the first time, we define `user_properties`. These are the fields that will make up each user's persona profile. For our food recommender, properties like favorite cuisines, general food likes, and dislikes are relevant.
+新しく `PersonalizationAgent` を作成する際には、まず `user_properties` を定義します。これは、各ユーザーのペルソナ プロフィールを構成するフィールドです。今回のフード レコメンダーでは、好みの料理、一般的な好き嫌いなどのプロパティが該当します。
 
-If an agent for this collection already exists (e.g., from a previous run), we can simply connect to it using `PersonalizationAgent.connect()`. The code below handles both cases.
+このコレクション用のエージェントが既に存在する場合 (例: 以前の実行で作成済み)、`PersonalizationAgent.connect()` を使用して接続するだけで構いません。以下のコードは両方のケースに対応しています。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -211,17 +210,17 @@ If an agent for this collection already exists (e.g., from a previous run), we c
   </TabItem>
 </Tabs>
 
-You should see a message indicating whether a new agent was created or an existing one was connected.
+新しいエージェントが作成されたか、既存のエージェントに接続されたかを示すメッセージが表示されます。
 
-## Step 4: Use the Personalization Agent
+## 手順 4: パーソナライゼーション エージェントの使用
 
-With the agent set up, we can now add user data and retrieve recommendations.
+エージェントの準備ができたので、ユーザー データを追加し、レコメンデーションを取得できます。
 
-### 4.1 Add a new persona
+### 4.1 新しいペルソナの追加
 
-A "persona" represents a user profile. We use the `agent.add_persona()` method, providing a unique `persona_id` (a UUID is recommended) and the `properties` we defined during agent creation.
+「ペルソナ」はユーザー プロフィールを表します。`agent.add_persona()` メソッドを使用し、一意の `persona_id` (UUID を推奨) と、エージェント作成時に定義した `properties` を渡します。
 
-Feel free to modify the example below to represent your own food preferences\!
+以下の例はご自身の食の好みに合わせて自由に変更してください\!
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -234,11 +233,11 @@ Feel free to modify the example below to represent your own food preferences\!
   </TabItem>
 </Tabs>
 
-### 4.2 Add interactions
+### 4.2 インタラクションの追加
 
-"Interactions" represent how a user has engaged with items in the collection. For our recommender, these could be explicit reviews, ratings, or implicit signals like viewing a recipe page.
+「インタラクション」は、ユーザーがコレクション内のアイテムとどのように関わったかを表します。今回のレコメンダーでは、明示的なレビューや評価、レシピ ページを閲覧したといった暗黙的なシグナルなどが該当します。
 
-Each `PersonaInteraction` links a `persona_id` to an `item_id` (the UUID of an object in the "Recipes" collection) and includes a `weight` from -1.0 (strong dislike) to 1.0 (strong like).
+`PersonaInteraction` では、`persona_id` と `item_id` (「Recipes」コレクション内オブジェクトの UUID) を関連付け、さらに -1.0 (強い嫌い) から 1.0 (強い好み) の範囲で `weight` を指定します。
 
 import WeaviateAgentsPersonalizationFoodUser from '/docs/agents/_includes/personalization_agent_tutorial_food_recommender_user.png';
 
@@ -254,7 +253,7 @@ import WeaviateAgentsPersonalizationFoodUser from '/docs/agents/_includes/person
 </div>
 <br />
 
-First, we fetch the UUIDs of some specific recipes the user has interacted with. Then, we define the interactions with appropriate weights. Finally, we add them to the agent using `agent.add_interactions()`.
+まず、ユーザーがインタラクトした特定のレシピの UUID を取得します。次に、適切な `weight` を設定してインタラクションを定義します。最後に、`agent.add_interactions()` を使用してエージェントに追加します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -267,13 +266,12 @@ First, we fetch the UUIDs of some specific recipes the user has interacted with.
   </TabItem>
 </Tabs>
 
-This block prepares the interaction data and sends it to the agent.
+このブロックはインタラクション データを準備し、エージェントに送信します。
+### 4.3 レコメンデーションの取得
 
-### 4.3 Get recommendations
+ここからは核心機能です。`agent.get_objects()` を使用してパーソナライズされたレコメンデーションを取得します。取得したい対象の `persona_id` を指定します。
 
-Now for the core functionality: retrieving personalized recommendations using `agent.get_objects()`. We provide the `persona_id` for whom we want recommendations.
-
-We can set `use_agent_ranking=True` to enable the LLM-based re-ranking. This leverages the persona profile and interaction history to provide a more nuanced ranking and also generates a `ranking_rationale` explaining _why_ certain items were recommended.
+`use_agent_ranking=True` を設定すると、LLM ベースのリランキングが有効になります。これにより、ペルソナのプロファイルとインタラクション履歴を活用して、よりきめ細かなランキングを提供し、さらにアイテムが推奨された _なぜ_ を説明する `ranking_rationale` も生成されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -286,10 +284,10 @@ We can set `use_agent_ranking=True` to enable the LLM-based re-ranking. This lev
   </TabItem>
 </Tabs>
 
-The output will first show the `ranking_rationale` generated by the agent's LLM, followed by the list of recommended recipes, including their title, description, and cuisine labels.
+出力にはまず、エージェントの LLM が生成した `ranking_rationale` が表示され、その後にタイトル、説明、料理のラベルを含む推奨レシピの一覧が続きます。
 
 <details>
-  <summary>Example response (will vary based on persona/interactions and LLM):</summary>
+  <summary>例のレスポンス (persona / interactions と LLM によって変わります):</summary>
 
 ```
 Getting recommendations for persona e7239e3f-97f5-41b3-939a-5fbf3e0c7f16...
@@ -342,28 +340,28 @@ UUID: 8d6a94b7-c9ae-4d1c-b29a-885717b9a55a
 
 </details>
 
-## Summary
+## 概要
 
-This guide demonstrated how to build a personalized food recommendation service using Weaviate's Personalization Agent. We covered:
+本ガイドでは、 Weaviate の Personalization Agent を使用して、パーソナライズされたフードレコメンデーションサービスを構築する方法を示しました。以下を取り上げました:
 
-- Setting up a Weaviate Cloud instance with the Python client.
-- Defining a "Recipes" collection with descriptive properties.
-- Importing data into the collection.
-- Creating a Personalization Agent linked to the collection and defining user profile properties (`user_properties`).
-- Adding user profiles (`personas`) with specific preferences.
-- Recording user interactions with items, using weighted scores.
-- Retrieving personalized recommendations using `get_objects`, leveraging LLM-based re-ranking (`use_agent_ranking=True`) to get tailored results and explanations (`ranking_rationale`).
+- Python クライアントを使用して Weaviate Cloud インスタンスをセットアップする方法。  
+- 説明的プロパティを持つ「Recipes」コレクションを定義すること。  
+- コレクションにデータをインポートすること。  
+- コレクションにリンクした Personalization Agent を作成し、ユーザー プロファイルのプロパティ (`user_properties`) を定義すること。  
+- 特定の好みを持つユーザー プロファイル (`personas`) を追加すること。  
+- 重み付きスコアを使用してアイテムとのユーザー インタラクションを記録すること。  
+- `get_objects` を使用してパーソナライズされたレコメンデーションを取得し、LLM ベースのリランキング (`use_agent_ranking=True`) を利用してカスタマイズされた結果と説明 (`ranking_rationale`) を得ること。  
 
-The Personalization Agent allows you to easily add sophisticated, personalized retrieval capabilities to your applications built on Weaviate.
+Personalization Agent を使用すると、 Weaviate 上で構築したアプリケーションに高度でパーソナライズされた取得機能を簡単に追加できます。
 
-## Further resources
+## 追加リソース
 
 - [Weaviate Agents - Personalization Agent](./index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 :::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+Weaviate Agents の公式変更履歴は [こちら](https://weaviateagents.featurebase.app/changelog) でご覧いただけます。機能リクエスト、バグ報告、質問などのフィードバックがありましたら、[こちら](https://weaviateagents.featurebase.app/) からお送りください。フィードバックの状況を確認したり、他のフィードバックに投票したりできます。
 :::
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';

@@ -1,7 +1,7 @@
 ---
-title: Usage
+title: 使用方法
 sidebar_position: 30
-description: "Technical documentation and usage examples for implementing the Query Agent."
+description: "Query Agent を実装するための技術ドキュメントと使用例。"
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'query agent']
 ---
@@ -12,43 +12,43 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
 
-# Weaviate Query Agent: Usage
+# Weaviate Query Agent：使用方法
 
 :::caution Technical Preview
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+![この Weaviate エージェントは技術プレビュー版です。](../_includes/agents_tech_preview_light.png#gh-light-mode-only "この Weaviate エージェントは技術プレビュー版です。")
+![この Weaviate エージェントは技術プレビュー版です。](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "この Weaviate エージェントは技術プレビュー版です。")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちら](https://events.weaviate.io/weaviate-agents)から Weaviate エージェントに関する通知に登録するか、[このページ](https://weaviateagents.featurebase.app/)で最新情報の確認とフィードバックをお願いします。
 
 :::
 
-The Weaviate Query Agent is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
+Weaviate Query Agent は、Weaviate Cloud に保存されたデータを基に自然言語クエリへ回答するために設計された、あらかじめ構築されたエージェントサービスです。
 
-The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
+ユーザーは自然言語でプロンプト／質問を入力するだけで、Query Agent が間の処理をすべて行い、回答を提供します。
 
-![Weaviate Query Agent from a user perspective](../_includes/query_agent_usage_light.png#gh-light-mode-only "Weaviate Query Agent from a user perspective")
-![Weaviate Query Agent from a user perspective](../_includes/query_agent_usage_dark.png#gh-dark-mode-only "Weaviate Query Agent from a user perspective")
+![Weaviate Query Agent をユーザー視点で示した図](../_includes/query_agent_usage_light.png#gh-light-mode-only "Weaviate Query Agent をユーザー視点で示した図")
+![Weaviate Query Agent をユーザー視点で示した図](../_includes/query_agent_usage_dark.png#gh-dark-mode-only "Weaviate Query Agent をユーザー視点で示した図")
 
-This page describes how to use the Query Agent to answer natural language queries, using your data stored in Weaviate Cloud.
+このページでは、Weaviate Cloud に保存されたデータを用いて、Query Agent で自然言語クエリに回答する方法を説明します。
 
-## Prerequisites
+## 前提条件
 
-### Weaviate instance
+### Weaviate インスタンス
 
-This Agent is available exclusively for use with a Weaviate Cloud instance. Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+このエージェントは Weaviate Cloud インスタンスでのみご利用いただけます。Weaviate Cloud インスタンスのセットアップ方法については、[Weaviate Cloud ドキュメント](/cloud/index.mdx)をご覧ください。
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
+[Weaviate Cloud](https://console.weaviate.cloud/) の無料 Sandbox インスタンスで、この Weaviate エージェントをお試しいただけます。
 
-### Client library
+### クライアントライブラリ
 
 :::note Supported languages
-At this time, this Agent is available only for Python and JavaScript. Support for other languages will be added in the future.
+現時点では、このエージェントは Python と JavaScript のみ対応しています。他の言語は今後サポート予定です。
 :::
 
-For Python, you can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package. For  JavaScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
+Python では、Weaviate エージェントを利用するために `agents` というオプション付きで Weaviate クライアントライブラリをインストールできます。これにより `weaviate-client` パッケージと共に `weaviate-agents` パッケージがインストールされます。JavaScript では、`weaviate-client` パッケージと併せて `weaviate-agents` パッケージをインストールしてください。
 
-Install the client library using the following command:
+次のコマンドでクライアントライブラリをインストールします。
 
 <Tabs groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -57,15 +57,15 @@ Install the client library using the following command:
 pip install -U weaviate-client[agents]
 ```
 
-#### Troubleshooting: Force `pip` to install the latest version
+#### トラブルシューティング：`pip` で最新バージョンを強制インストールする
 
-For existing installations, even `pip install -U "weaviate-client[agents]"` may not upgrade `weaviate-agents` to the [latest version](https://pypi.org/project/weaviate-agents/). If this occurs, additionally try to explicitly upgrade the `weaviate-agents` package:
+既存のインストールがある場合、`pip install -U "weaviate-client[agents]"` を実行しても `weaviate-agents` が[最新バージョン](https://pypi.org/project/weaviate-agents/)にアップグレードされないことがあります。その際は、`weaviate-agents` パッケージを明示的にアップグレードしてください。
 
 ```shell
 pip install -U weaviate-agents
 ```
 
-Or install a [specific version](https://github.com/weaviate/weaviate-agents-python-client/tags):
+または[特定のバージョン](https://github.com/weaviate/weaviate-agents-python-client/tags)をインストールします。
 
 ```shell
 pip install -U weaviate-agents==||site.weaviate_agents_version||
@@ -82,13 +82,13 @@ npm install weaviate-agents@latest
 
 </Tabs>
 
-## Instantiate the Query Agent
+## Query Agent のインスタンス化
 
-### Basic instantiation
+### 基本的なインスタンス化
 
-Provide:
-- Target Weaviate Cloud instance details (e.g. the `WeaviateClient` object).
-- A default list of the collections to be queried
+以下を指定します。
+- 対象 Weaviate Cloud インスタンスの詳細（例：`WeaviateClient` オブジェクト）
+- クエリ対象となるデフォルトのコレクション一覧
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -110,12 +110,12 @@ Provide:
 
 </Tabs>
 
-### Configure collections
+### コレクションの設定
 
-The list of collections to be queried are further configurable with:
-- Tenant names (required for a multi-tenant collection)
-- Target vector(s) of the collection to query (optional)
-- List of property names for the agent to use (optional)
+クエリ対象のコレクション一覧は、次の項目でさらに設定できます。
+- テナント名（マルチテナントコレクションの場合は必須）
+- クエリに使用するコレクションのベクトル（任意）
+- エージェントが使用するプロパティ名のリスト（任意）
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -137,33 +137,32 @@ The list of collections to be queried are further configurable with:
 
 </Tabs>
 
-:::info What does the Query Agent have access to?
+:::info Query Agent がアクセスできる範囲
 
-The Query Agent derives its access credentials from the Weaviate client object passed to it. This can be further restricted by the collection names provided to the Query Agent.
+Query Agent は、渡された Weaviate クライアントオブジェクトから認証情報を取得します。このアクセス範囲は、Query Agent に指定したコレクション名でさらに制限できます。
 
-For example, if the associated Weaviate credentials' user has access to only a subset of collections, the Query Agent will only be able to access those collections.
+例えば、関連付けられた Weaviate の認証情報が一部のコレクションにしかアクセス権限を持たない場合、Query Agent もそのコレクションにのみアクセスできます。
 
 :::
+### 追加オプション
 
-### Additional options
+ Query Agent は、次のような追加オプションを指定してインスタンス化できます。
 
-The Query Agent can be instantiated with additional options, such as:
+- `system_prompt`: Weaviate チームが提供するデフォルトのシステムプロンプトを置き換えるカスタムシステムプロンプト（JavaScript では `systemPrompt`）。
+- `timeout`: 1 件のクエリに対して Query Agent が費やす最大時間（秒）。サーバー側のデフォルトは 60 です。
 
-- `system_prompt`: A custom system prompt to replace the default system prompt provided by the Weaviate team (`systemPrompt` for JavaScript).
-- `timeout`: The maximum time the Query Agent will spend on a single query, in seconds (server-side default: 60).
+### 非同期 Python クライアント
 
-### Async Python client
+非同期 Python クライアントでの使用例については、[非同期 Python クライアントのセクション](#usage---async-python-client)を参照してください。
 
-For usage example with the async Python client, see the [Async Python client section](#usage---async-python-client).
+## クエリの実行
 
-## Perform queries
+ Query Agent に自然言語のクエリを渡してください。 Query Agent はクエリを処理し、 Weaviate で必要な検索を実行して、回答を返します。
 
-Provide a natural language query to the Query Agent. The Query Agent will process the query, perform the necessary searches in Weaviate, and return the answer.
+これは同期操作です。回答が得られ次第、 Query Agent はただちにユーザーへ返します。
 
-This is a synchronous operation. The Query Agent will return the answer to the user as soon as it is available.
-
-:::tip Consider your query carefully
-The Query Agent will formulate its strategy based on your query. So, aim to be unambiguous, complete, yet concise in your query as much as possible.
+:::tip クエリを慎重に検討しましょう
+ Query Agent は、あなたのクエリを基に戦略を立てます。そのため、可能な限りあいまいさがなく、十分でありつつ簡潔なクエリを心がけましょう。
 :::
 
 <Tabs groupId="languages">
@@ -186,13 +185,13 @@ The Query Agent will formulate its strategy based on your query. So, aim to be u
 
 </Tabs>
 
-### Configure collections at runtime
+### 実行時にコレクションを設定
 
-The list of collections to be queried can be overridden at query time, as a list of names, or with further configurations:
+クエリ時に、クエリ対象のコレクション一覧を名前だけ、または詳細設定付きで上書きできます。
 
-#### Specify collection names only
+#### コレクション名のみを指定
 
-This example overrides the configured Query Agent collections for this query only.
+この例では、今回のクエリに限り Query Agent に設定されているコレクションを上書きします。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -214,12 +213,12 @@ This example overrides the configured Query Agent collections for this query onl
 
 </Tabs>
 
-#### Configure collections in detail
+#### コレクションを詳細に設定
 
-This example overrides the configured Query Agent collections for this query only, specifying additional options where relevant, such as:
-- Target vector
-- Properties to view
-- Target tenant
+この例では、今回のクエリに限り Query Agent に設定されているコレクションを上書きし、必要に応じて追加オプションも指定しています。例えば次のような項目です。
+- 対象ベクトル
+- 表示するプロパティ
+- 対象テナント
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -241,9 +240,9 @@ This example overrides the configured Query Agent collections for this query onl
 
 </Tabs>
 
-### Follow-up queries
+### フォローアップクエリ
 
-The Query Agent can even handle follow-up queries, using the previous response as additional context.
+ Query Agent は、前回のレスポンスを追加コンテキストとして利用し、フォローアップクエリにも対応できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -264,17 +263,16 @@ The Query Agent can even handle follow-up queries, using the previous response a
     </TabItem>
 
 </Tabs>
+## ストリーム応答
 
-## Stream responses
+Query Agent では応答をストリーム配信することもでき、生成中の回答をリアルタイムで受け取れます。
 
-The Query Agent can also stream responses, allowing you to receive the answer as it is being generated.
+ストリーミング応答は、次のオプションパラメーターで要求できます。
 
-A streaming response can be requested with the following optional parameters:
+- `include_progress` : `True` にすると、 Query Agent はクエリを処理する過程で進捗情報をストリーム配信します。
+- `include_final_state` : `True` にすると、回答が生成され次第、 Query Agent が最終的な回答をストリーム配信し、全体が生成完了するまで待たずに返します。
 
-- `include_progress`: If set to `True`, the Query Agent will stream a progress update as it processes the query.
-- `include_final_state`: If set to `True`, the Query Agent will stream the final answer as it is generated, rather than waiting for the entire answer to be generated before returning it.
-
-If both `include_progress` and `include_final_state` are set to `False`, the Query Agent will only include the answer tokens as they are generated, without any progress updates or final state.
+`include_progress` と `include_final_state` の両方を `False` にすると、 Query Agent は進捗更新や最終状態を含めず、生成された回答トークンのみを配信します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -295,15 +293,15 @@ If both `include_progress` and `include_final_state` are set to `False`, the Que
     </TabItem>
 </Tabs>
 
-## Inspect responses
+## 応答の検査
 
-The response from the Query Agent will contain the final answer, as well as additional supporting information.
+Query Agent からの応答には、最終的な回答に加えて追加の補足情報が含まれます。
 
-The supporting information may include searches or aggregations carried out, what information may have been missing, and how many LLM tokens were used by the Agent.
+補足情報には、実行された検索や集約、欠けていた可能性のある情報、エージェントが使用した LLM トークン数などが含まれる場合があります。
 
-### Helper function
+### 補助関数
 
-Try the provided helper functions (e.g. `.display()` method) to display the response in a readable format.
+提供されている補助関数 (例: `.display()` メソッド) を使用すると、応答を読みやすい形式で表示できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -325,7 +323,7 @@ Try the provided helper functions (e.g. `.display()` method) to display the resp
 
 </Tabs>
 
-This will print the response and a summary of the supporting information found by the Query Agent.
+これにより、応答と Query Agent が取得した補足情報の概要が表示されます。
 
 <details>
   <summary>Example output</summary>
@@ -410,14 +408,14 @@ Total Time Taken: 15.80s
 
 </details>
 
-### Inspection example
+### 検査例
 
-This example outputs:
+この例では、次の内容が出力されます。
 
-- The original user query
-- The answer provided by the Query Agent
-- Searches & aggregations (if any) conducted by the Query Agent
-- Any missing information
+- 元のユーザークエリ
+- Query Agent が提供した回答
+- Query Agent が実行した検索と集約 (存在する場合)
+- 不足している情報
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -439,11 +437,11 @@ This example outputs:
 
 </Tabs>
 
-## Usage - Async Python client
+## Async Python クライアントの利用
 
-If you are using the async Python Weaviate client, the instantiation pattern remains similar. The difference is use of the `AsyncQueryAgent` class instead of the `QueryAgent` class.
+非同期 Python Weaviate クライアントを使用する場合も、インスタンス化のパターンはほぼ同じです。相違点は `QueryAgent` クラスの代わりに `AsyncQueryAgent` クラスを使用することです。
 
-The resulting async pattern works as shown below:
+結果として、非同期パターンは以下のように動作します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -456,9 +454,9 @@ The resulting async pattern works as shown below:
     </TabItem>
 </Tabs>
 
-### Streaming
+### ストリーミング
 
-The async Query Agent can also stream responses, allowing you to receive the answer as it is being generated.
+非同期 Query Agent も応答のストリーム配信に対応しており、生成中の回答を受け取ることができます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -470,40 +468,39 @@ The async Query Agent can also stream responses, allowing you to receive the ans
         />
     </TabItem>
 </Tabs>
-
-## Limitations & Troubleshooting
+## 制限事項とトラブルシューティング
 
 :::caution Technical Preview
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+![この Weaviate エージェントはテクニカルプレビューです。](../_includes/agents_tech_preview_light.png#gh-light-mode-only "この Weaviate エージェントはテクニカルプレビューです。")
+![この Weaviate エージェントはテクニカルプレビューです。](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "この Weaviate エージェントはテクニカルプレビューです。")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらから登録](https://events.weaviate.io/weaviate-agents)して Weaviate Agents に関する通知を受け取るか、最新情報とフィードバックの送信については[このページ](https://weaviateagents.featurebase.app/)をご覧ください。
 
 :::
 
-### Usage limits
+### 利用制限
 
 import UsageLimits from "/_includes/agents/query-agent-usage-limits.mdx";
 
 <UsageLimits />
 
-### Custom collection descriptions
+### カスタムコレクションの説明
 
 import CollectionDescriptions from "/_includes/agents/query-agent-collection-descriptions.mdx";
 
 <CollectionDescriptions />
 
-### Execution times
+### 実行時間
 
 import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
 
 <ExecutionTimes />
 
-## Questions and feedback
+## 質問とフィードバック
 
 :::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+Weaviate Agents の公式変更履歴は[こちら](https://weaviateagents.featurebase.app/changelog)でご覧いただけます。機能の要望、バグ報告、質問などがありましたら、[こちら](https://weaviateagents.featurebase.app/)からご提出ください。送信したフィードバックのステータスを確認したり、他のフィードバックへ投票したりできます。
 :::
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';

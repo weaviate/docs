@@ -1,7 +1,7 @@
 ---
-title: Transformation Agent
+title: 変換エージェント
 sidebar_position: 30
-description: "Overview of the AI agent that enhances, enriches and transforms existing data in Weaviate collections."
+description: "Weaviate のコレクションにある既存データを強化・拡充・変換する AI エージェントの概要。"
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'transformation agent']
 ---
@@ -11,83 +11,83 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/agents/_includes/transformation_agent.py';
 
-# Weaviate Transformation Agent
+# Weaviate 変換エージェント
 
 :::caution Technical Preview
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+![この Weaviate エージェントはテクニカルプレビュー版です。](../_includes/agents_tech_preview_light.png#gh-light-mode-only "この Weaviate エージェントはテクニカルプレビュー版です。")  
+![この Weaviate エージェントはテクニカルプレビュー版です。](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "この Weaviate エージェントはテクニカルプレビュー版です。")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらからサインアップ](https://events.weaviate.io/weaviate-agents)して Weaviate エージェントの通知を受け取るか、[このページ](https://weaviateagents.featurebase.app/)で最新情報の確認やフィードバックの送信を行ってください。
 
 :::
 
-:::warning Do not use in production
-The Weaviate Transformation Agent is designed to modify data in Weaviate in place. **While the Agent is in technical preview, do not use it in a production environment.** The Agent may not work as expected, and the data in your Weaviate instance may be affected in unexpected ways.
+:::warning 本番環境では使用しないでください
+Weaviate 変換エージェントは、Weaviate 内のデータをその場で変更するよう設計されています。**テクニカルプレビュー期間中は、本番環境で使用しないでください。** エージェントが期待どおりに動作しない可能性があり、Weaviate インスタンス内のデータが予期せぬ形で変更される場合があります。
 :::
 
-The Weaviate Transformation Agent is an agentic service designed to augment and transform data using generative models. Use the Transformation Agent to append new properties and/or update existing properties of data on existing objects in Weaviate.
+Weaviate 変換エージェント (Transformation Agent) は、生成モデルを用いてデータを拡張・変換するエージェント型サービスです。既存のオブジェクトに対して新しいプロパティを追加したり、既存プロパティを更新したりできます。
 
-![Weaviate Transformation Agent example - append](../_includes/transformation_agent_append_example_light.png#gh-light-mode-only "Weaviate Transformation Agent example - append")
-![Weaviate Transformation Agent example - append](../_includes/transformation_agent_append_example_dark.png#gh-dark-mode-only "Weaviate Transformation Agent example - append")
+![Weaviate 変換エージェントの例 - 追加](../_includes/transformation_agent_append_example_light.png#gh-light-mode-only "Weaviate 変換エージェントの例 - 追加")  
+![Weaviate 変換エージェントの例 - 追加](../_includes/transformation_agent_append_example_dark.png#gh-dark-mode-only "Weaviate 変換エージェントの例 - 追加")
 
-This can help you to improve the quality of your objects in your Weaviate collections, ready for further use in your applications.
+これにより、アプリケーションでのさらなる活用に向けて、Weaviate コレクション内オブジェクトの品質を向上させられます。
 
-## Architecture
+## アーキテクチャ
 
-The Transformation Agent is provided as a service on Weaviate Cloud. It updates existing Weaviate objects by either appending new properties or updating existing properties.
+変換エージェントは Weaviate Cloud 上のサービスとして提供され、既存の Weaviate オブジェクトに対して新しいプロパティの追加や既存プロパティの更新を行います。
 
-![Weaviate Transformation Agent overview](../_includes/transformation_agent_overview_light.png#gh-light-mode-only "Weaviate Transformation Agent overview")
-![Weaviate Transformation Agent overview](../_includes/transformation_agent_overview_dark.png#gh-dark-mode-only "Weaviate Transformation Agent overview")
+![Weaviate 変換エージェントの概要](../_includes/transformation_agent_overview_light.png#gh-light-mode-only "Weaviate 変換エージェントの概要")  
+![Weaviate 変換エージェントの概要](../_includes/transformation_agent_overview_dark.png#gh-dark-mode-only "Weaviate 変換エージェントの概要")
 
-Provide a set of instructions to the Transformation Agent, such as the collection to update and existing properties to review and the instructions. The Transformation Agent will then perform the specified operations on the specified objects in Weaviate.
+変換エージェントには、更新対象のコレクション名や確認対象の既存プロパティ、そして instructions などの指示を渡してください。エージェントは指定されたオブジェクトに対し、指示どおりの操作を実行します。
 
-:::note Total object count unaffected
-This would not change the number of objects in Weaviate, but would update the properties of the specified objects.
+:::note オブジェクト総数は変わりません
+オブジェクト数自体は増減せず、指定オブジェクトのプロパティのみが更新されます。
 :::
 
-## Transformation Agent: visualized workflow
+## 変換エージェント：ワークフローの可視化
 
-To transform existing objects, the Transformation Agent follows the workflows shown below.
+既存オブジェクトを変換する際、変換エージェントは以下の手順で動作します。
 
-- The Transformation Agent retrieves the existing objects from Weaviate, based on the specified criteria (steps 1-2).
-- The Transformation Agent works with a generative model to create the property value, based on the instructions provided and the context of the specified existing properties (steps 3-4).
-- Update the transformed objects in Weaviate. Weaviate vectorizes the data as needed using the specified vectorizer integration. (Steps 5-7)
-- Receive the job status from Weaviate, which is returned to the user (Step 8).
+- 変換エージェントが指定条件に基づき Weaviate から既存オブジェクトを取得します（ステップ 1–2）。
+- 取得した既存プロパティのコンテキストと instructions を基に、生成モデルで新しいプロパティ値を生成します（ステップ 3–4）。
+- 変換後のオブジェクトを Weaviate に更新します。必要に応じ、指定した ベクトライザー でベクトル化が行われます（ステップ 5–7）。
+- Weaviate からジョブステータスが返され、最終的にユーザーへ返却されます（ステップ 8）。
 
-### Update properties on existing objects
+### 既存オブジェクトのプロパティを更新
 
-When updating properties on existing objects, the Transformation Agent replaces the existing property values with the new values. The workflow for this operation is shown below.
+既存プロパティを更新する場合、変換エージェントは既存値を新しい値で置き換えます。ワークフローは以下のとおりです。
 
-![Weaviate Transformation Agent: Update properties on existing objects](../_includes/transformation_agent_existing_update_light.png#gh-light-mode-only "Weaviate Transformation Agent: Update properties on existing objects")
-![Weaviate Transformation Agent: Update properties on existing objects](../_includes/transformation_agent_existing_update_dark.png#gh-dark-mode-only "Weaviate Transformation Agent: Update properties on existing objects")
+![Weaviate 変換エージェント: 既存オブジェクトのプロパティを更新](../_includes/transformation_agent_existing_update_light.png#gh-light-mode-only "Weaviate 変換エージェント: 既存オブジェクトのプロパティを更新")  
+![Weaviate 変換エージェント: 既存オブジェクトのプロパティを更新](../_includes/transformation_agent_existing_update_dark.png#gh-dark-mode-only "Weaviate 変換エージェント: 既存オブジェクトのプロパティを更新")
 
-### Append new properties to existing objects
+### 既存オブジェクトに新しいプロパティを追加
 
-When appending properties to existing objects, the Transformation Agent adds the new values to the objects as new properties. The workflow for this operation is shown below.
+プロパティを追加する場合、変換エージェントは新しい値を新規プロパティとしてオブジェクトに追加します。ワークフローは以下のとおりです。
 
-![Weaviate Transformation Agent: Append news properties to existing objects](../_includes/transformation_agent_existing_append_light.png#gh-light-mode-only "Weaviate Transformation Agent: Append news properties to existing objects")
-![Weaviate Transformation Agent: Append news properties to existing objects](../_includes/transformation_agent_existing_append_dark.png#gh-dark-mode-only "Weaviate Transformation Agent: Append news properties to existing objects")
+![Weaviate 変換エージェント: 既存オブジェクトに新しいプロパティを追加](../_includes/transformation_agent_existing_append_light.png#gh-light-mode-only "Weaviate 変換エージェント: 既存オブジェクトに新しいプロパティを追加")  
+![Weaviate 変換エージェント: 既存オブジェクトに新しいプロパティを追加](../_includes/transformation_agent_existing_append_dark.png#gh-dark-mode-only "Weaviate 変換エージェント: 既存オブジェクトに新しいプロパティを追加")
 
-## Basic Usage
+## 基本的な使い方
 
-Here is an overview of how to use the this Weaviate Agent. For more detailed information, refer to the [Usage](./usage.md) page.
+ここでは Weaviate 変換エージェントの基本的な利用方法を概説します。詳細は [Usage](./usage.md) ページをご覧ください。
 
-### Prerequisites
+### 前提条件
 
-This Agent is available exclusively for use with a Weaviate Cloud instance, and a supported version of the Weaviate client library.
+本エージェントは Weaviate Cloud インスタンスと、対応するバージョンの Weaviate クライアントライブラリでのみ利用できます。
 
-### Example Usage
+### 使用例
 
-To use the Transformation Agent, instantiate it with the following inputs:
+変換エージェントを使用するには、次の入力でインスタンス化します。
 
-- An instance of the Weaviate client (e.g. the `WeaviateClient` object in Python), connected to a Weaviate Cloud instance.
-- Name of the target collection to be transformed.
-- A list of the transformation operations to be performed.
+- Weaviate Cloud インスタンスに接続した Weaviate クライアント（例：Python の `WeaviateClient` オブジェクト）
+- 変換対象コレクションの名前
+- 実行する変換操作のリスト
 
-And then start the operations.
+その後、操作を開始します。
 
-Transformation operations are asynchronous. Each operation will return a workflow ID to the user. The user can then use this ID to check its status.
+変換操作は非同期で実行されます。各操作はワークフロー ID を返すので、ユーザーはその ID を用いてステータスを確認できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -101,16 +101,16 @@ Transformation operations are asynchronous. Each operation will return a workflo
 
 </Tabs>
 
-The transformed attributes will become available on each object as the transformation progresses.
+変換された属性は処理が進むにつれて各オブジェクトに反映されます。
 
-### Further Documentation
+### さらに詳しいドキュメント
 
-For more detailed information on how to use this Agent, refer to the [Usage](./usage.md) page.
+本エージェントの詳細な使用方法については、[Usage](./usage.md) ページを参照してください。
 
-## Questions and feedback
+## 質問とフィードバック
 
 :::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+Weaviate エージェントの公式変更履歴は[こちら](https://weaviateagents.featurebase.app/changelog)で確認できます。機能要望・バグ報告・質問などのフィードバックは、[こちら](https://weaviateagents.featurebase.app/)から送信してください。フィードバックのステータス確認や他の提案への投票も可能です。
 :::
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';

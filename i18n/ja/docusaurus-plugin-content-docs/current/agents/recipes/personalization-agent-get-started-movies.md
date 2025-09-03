@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/personalization-agent-get-started-movies.ipynb
 toc: True
-title: "Build a Weaviate Personalization Agent - Movie Recommender"
+title: "Weaviate パーソナライゼーション エージェントを構築する - 映画レコメンダー"
 featured: True
 integration: False
 agent: True
@@ -12,29 +12,29 @@ tags: ['Personalization Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-In this recipe, we will use the new Weaviate `PersonalizationAgent` to fetch personalized objects from a Weaviate collection, in a user personalized way. This new agentic way of retrieving objects is based on a users persona profile and past interactions with your collection.
+このレシピでは、新しい Weaviate `PersonalizationAgent` を使用して、Weaviate コレクションからユーザーにパーソナライズされた方法でオブジェクトを取得します。このエージェントベースの取得方法は、ユーザーのペルソナ プロファイルとコレクションとの過去のインタラクションに基づいています。
 
-> 📚 You can learn more about how to use the `PersonalizationAgent`, in our ["Introducing the Weaviate Personalization Agent"](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents) blog and [documentation](https://docs.weaviate.io/agents/personalization).
+> 📚 `PersonalizationAgent` の詳しい使い方は、弊社ブログ「[Introducing the Weaviate Personalization Agent](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents)」と[ドキュメント](https://docs.weaviate.io/agents/personalization)をご覧ください。
 
-To help you get started, we're providing a few demo datasets, available on Hugging Face datasets 🤗:
+すぐに試せるように、いくつかのデモ データセットを Hugging Face datasets 🤗 で提供しています。
 
-- [Movies](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-movies): A dataset that lists movies, their ratings, original language etc.
-- [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes): A dataset that lists the name, short description and cuisine of a dish.
+- [Movies](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-movies): 映画、評価、オリジナル言語などを一覧化したデータセット  
+- [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes): 料理名、短い説明、料理の種類を一覧化したデータセット
 
-For this example, we will be using the movies dataset to create a movie recommender service
+この例では、Movies データセットを使用して映画レコメンダー サービスを作成します。
 
 ```python
 !pip install weaviate-client[agents] datasets
 ```
 
-## Setting Up Weaviate & Importing Data
+## Weaviate のセットアップとデータのインポート
 
-To use the Weaviate Personalization Agent, first, create a [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) account👇
-1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents)
-2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
-3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
+Weaviate パーソナライゼーション エージェントを使用するには、まず [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) アカウントを作成してください👇  
+1. [Serverless Weaviate Cloud アカウント](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents)を作成し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents) をセットアップします。  
+2. 「Embedding」を開いて有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして利用されます。  
+3. クラスターに接続するために `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておきます。  
 
-> Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
+> Info: 外部の埋め込みプロバイダー用の追加キーを用意する必要がないため、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) のご利用を推奨します。
 
 ```python
 import os
@@ -54,9 +54,9 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 ```
 
-### Create a New Collection
+### 新しいコレクションの作成
 
-Next, we create a new collection in Weaviate called "Movies". For the agentic services in Weaviate, it's a good idea to include descriptions of the properties in your collection. These descriptions can then be used by the agent.
+次に、Weaviate に "Movies" という新しいコレクションを作成します。Weaviate のエージェント サービスでは、コレクションのプロパティに説明を付けておくと便利です。これらの説明がエージェントで利用されます。
 
 ```python
 from weaviate.classes.config import Configure, DataType, Property
@@ -119,10 +119,10 @@ client.collections.create(
 )
 ```
 
-Python output:
+Python 出力:  
 ```text
 <weaviate.collections.collection.sync.Collection at 0x7f62f442b250>
-```
+```  
 ```python
 from datasets import load_dataset
 
@@ -135,13 +135,13 @@ with movies_collection.batch.dynamic() as batch:
         batch.add_object(properties=item["properties"])
 ```
 
-## Create a Personalization Agent
+## パーソナライゼーション エージェントの作成
 
-Below, we create a `PersonalizationAgent` for the `"Movies"` collection. If an agent for this collection already exists, we can simply connect to it.
+以下では、`"Movies"` コレクション用に `PersonalizationAgent` を作成します。すでにこのコレクション用のエージェントが存在する場合は、接続するだけで問題ありません。
 
-When creating a new `PeresonalizationAgent`, we can also optioanlly define `user_properties`.
+新しい `PersonalizationAgent` を作成する際、任意で `user_properties` を定義できます。
 
-User properties can be anything that may be useful iformation about users that will be added to the agent. In this case, since we are creating a Movie recommender service, we may ask each persona to be added with ther `age`, `favorite_genres` and `languages`.
+ユーザー プロパティは、エージェントに追加するユーザーに関する有用な情報であれば何でもかまいません。この映画レコメンダー サービスでは、各ペルソナに `age`、`favorite_genres`、`languages` を追加することにします。
 
 ```python
 from weaviate.agents.personalization import PersonalizationAgent
@@ -164,9 +164,9 @@ else:
 
 ```
 
-### Adding New Personas
+### 新しいペルソナを追加する
 
-We can add new users with `add_persona`, listing the requested user properties when adding them. Try changing the code block below to represent yourself if you like 👇
+`add_persona` を使って新しいユーザーを追加できます。追加時に必要なユーザー プロパティを列挙してください。下のコード ブロックを変更して、ご自身を表すようにしてみてもかまいません👇
 
 ```python
 from uuid import uuid4
@@ -185,18 +185,18 @@ agent.add_persona(
 )
 ```
 
-### Adding Interactions
+### インタラクションの追加
 
-Once we have at least one persona for our agent, we can start adding interactions for that persona. For example, in this movie recommender service, it makes sense to add a personas movie reviews.
+少なくとも 1 つのペルソナができたら、そのペルソナのインタラクションを追加できます。映画レコメンダー サービスの場合、ペルソナの映画レビューを追加するのが自然でしょう。
 
-Each interaction can have a weight between -1.0 (negative) and 1.0 positive. So, we can add some reviews for a number or films below.
+各インタラクションには  -1.0 （ネガティブ）から  1.0 （ポジティブ）の重みを付けられます。以下では、複数の映画に対するレビューを追加してみます。
 
-It's a good idea to think about what kind of end application may be forwarding these interactions and have a rule around what each weight might represent. For example:
-- 1.0: favorite movie  
-- 0.8: user liked the movie
-- 0.5: user viewed and did not review the movie
-- -0.5: user disliked the movie
-- -1.0: user absolutely hated the movie 👎
+最終的なアプリケーションがどのようにインタラクションを渡してくるかを想定し、各重みが何を表すかのルールを決めておくと良いでしょう。例:  
+-  1.0: お気に入りの映画  
+-  0.8: 映画が気に入った  
+-  0.5: 視聴したがレビューはしていない  
+- -0.5: 映画が好きではなかった  
+- -1.0: 映画が大嫌い 👎  
 
 ```python
 from uuid import UUID
@@ -252,13 +252,13 @@ interactions = [
 agent.add_interactions(interactions=interactions)
 ```
 
-## Get Recommendations and Rationale
+## レコメンデーションと根拠の取得
 
-Now that we have a persona and some interactions for that persona, we can start getting recommended objects from the agent with `get_objects`. We have two options here: we can set `use_agent_ranking` or not.
+ペルソナとそのインタラクションがそろったので、`get_objects` でレコメンド オブジェクトを取得できます。ここでは `use_agent_ranking` を設定するかどうかを選べます。
 
-When we do not use agent ranking, the returned objects are ranked by classic ML clustering, whereas when we do use it, it will go through an additional re-ranking with an LLM and an optioanl `instruction`.
+`use_agent_ranking` を使用しない場合、返されるオブジェクトは従来の ML クラスタリングでランク付けされます。使用すると、LLM による追加の再ランク付けが行われ、必要に応じて `instruction` を渡せます。
 
-When we use agent ranking, we can also see the rationale behind the ranking in `ranking_rationale` as we've done below 👇
+`use_agent_ranking` を有効にすると、下記のように `ranking_rationale` でランク付けの根拠も確認できます👇
 
 ```python
 response = agent.get_objects(persona_id, limit=25, use_agent_ranking=True)
@@ -273,7 +273,7 @@ for i, obj in enumerate(response.objects):
     print(obj.properties['poster_url'])
 ```
 
-Python output:
+Python 出力:  
 ```text
 We've placed a spotlight on fantasy and adventure titles given your love for these genres. Movies like 'The Chronicles of Narnia' and 'Jumanji' have been prioritized as they align with your past favorites and preferences. Holiday-themed family films were also considered due to their family-friendly and adventurous nature.
 *****0*****
@@ -427,11 +427,12 @@ Hodja is a dreamer. He wants to experience the world, but his father insists he 
 vote_average: 6.2
 https://image.tmdb.org/t/p/original/1WRK69soLEfVFRW1WwE0vWGz1mq.jpg
 ```
-### Get Recommendations with an Instruction
 
-Optionally, you can also provide the agent with an instruction too. This allows the agent LLM to have more context as to what kind of recommendations it could make.
+### インストラクション付きでレコメンデーションを取得する
 
-It may also make sense to set a higher limit for the initial ranking, and then filter down to a smaller group after the agent ranking as we've done below 👇
+オプションとして、エージェントにインストラクションを渡すこともできます。これにより、どのようなレコメンデーションを行うべきか LLM に追加のコンテキストを与えられます。
+
+また、最初のランク付けの `limit` を大きくし、その後のエージェント ランク付けで少数に絞り込むのも有効です。以下ではその方法を示しています👇
 
 ```python
 response = agent.get_objects(persona_id,
@@ -452,7 +453,7 @@ for i, obj in enumerate(response.objects[:20]):
     print(obj.properties['poster_url'])
 ```
 
-Python output:
+Python 出力:  
 ```text
 We've highlighted a mix of movies from the user's favorite genres — RomCom, Adventure, Sci-Fi, and Fantasy — ensuring a diverse selection. We've also included some lesser-known gems to provide variety while avoiding multiple entries from the same cinematic universe.
 *****0*****

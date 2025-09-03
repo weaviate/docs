@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/transformation-agent-get-started.ipynb
 toc: True
-title: "Build A Weaviate Transformation Agent"
+title: "Weaviate 変換エージェントの構築"
 featured: True
 integration: False
 agent: True
@@ -12,28 +12,28 @@ tags: ['Transformation Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-In this recipe, we will use a Weaviate [`TransformationAgent`](https://docs.weaviate.io/agents/transformation) to enhance our data in Weaviate. We will build an agent that has access to a collection containing a bunch or research papers, their abstracts and titles. We will then use the agent to create additional properties for eaach of our objects in the collection.
+このレシピでは、Weaviate の `TransformationAgent` を使って、Weaviate 内のデータを強化します。研究論文、要約、タイトルを含むコレクションにアクセスできるエージェントを作成し、そのコレクション内の各オブジェクトに追加プロパティを作成します。
 
-> ⚠️ The Weaviate Transformation Agent is designed to modify data in Weaviate in place. **While the Agent is in technical preview, do not use it in a production environment.** The Agent may not work as expected, and the data in your Weaviate instance may be affected in unexpected ways.
+> ⚠️ Weaviate Transformation Agent は、Weaviate 内のデータをインプレースで変更するよう設計されています。**本エージェントはテクニカルプレビューのため、本番環境では使用しないでください。** 期待どおりに動作しない可能性があり、Weaviate インスタンス内のデータが予期しない形で影響を受ける場合があります。
 
-The `TransformationAgent` is able to access a Weaviate collection of your chosing, and perform operations on the objects within it. However, each operation for the agent can be defined in natural language. The agent will then use an LLM to complete the instructions in the operation.
+`TransformationAgent` は、指定した Weaviate コレクションにアクセスし、その中のオブジェクトに対して操作を実行できます。各操作は自然言語で定義でき、エージェントは LLM を用いてその instructions を実行します。
 
-> 📚 You can learn more about the new `TransformationAgent`, you can read our accompanyin ["Introducing the Weaviate Transformation Agent"](https://weaviate.io/blog/transformation-agent) blog
+> 📚 新しい `TransformationAgent` について詳しくは、ブログ記事「[Introducing the Weaviate Transformation Agent](https://weaviate.io/blog/transformation-agent)」をご覧ください。
 
-To get started, we've prepared an open datasets, available on Hugging Face. The first step will be walking through how to populate your Weaviate Cloud collections.
+始めるにあたり、Hugging Face に公開データセットを用意しています。まずは Weaviate Cloud コレクションへのデータ投入手順を見ていきます。
 
-- [**ArxivPapers:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) A dataset that lists titles and abstracts of research papers.
+- **ArxivPapers:** 研究論文のタイトルと要約を掲載したデータセット
 
-If you'd like to try out building more agents with different datasets, check out the list of demo datasets we have available on [Hugging Face Weaviate agents dataset](https://huggingface.co/datasets/weaviate/agents)
+他のデータセットでもエージェントを試したい場合は、[Hugging Face Weaviate agents dataset](https://huggingface.co/datasets/weaviate/agents) のデモデータセット一覧をご覧ください。
 
-## Setting Up Weaviate & Importing Data
+## Weaviate の設定とデータのインポート
 
-To use the Weaviate Transformation Agent, first, create a [Weaviate Cloud](https://weaviate.io/deployment/serverless) account👇
-1. [Create Serverless Weaviate Cloud account](https://weaviate.io/deployment/serverless) and setup a free [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters)
-2. Go to 'Embedding' and enable it, by default, this will make it so that we use `Snowflake/snowflake-arctic-embed-l-v2.0` as the embedding model
-3. Take note of the `WEAVIATE_URL` and `WEAVIATE_API_KEY` to connect to your cluster below
+Weaviate Transformation Agent を利用するには、まず [Weaviate Cloud](https://weaviate.io/deployment/serverless) アカウントを作成しましょう👇  
+1. [Serverless Weaviate Cloud アカウントを作成](https://weaviate.io/deployment/serverless)し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters) をセットアップします。  
+2. 「Embedding」タブで Embedding を有効にします。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして使用されます。  
+3. クラスター接続用に `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておきます。
 
-> Info: We recommend using [Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) so you do not have to provide any extra keys for external embedding providers.
+> Info: 追加のキーを用意せずに済むよう、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) の利用を推奨します。
 
 ```python
 !pip install "weaviate-client[agents]" datasets
@@ -160,11 +160,11 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 ```
 
-### Prepare the Collections
+### コレクションの準備
 
-In the following code block, we are pulling our demo "papers" datasets from Hugging Face and writing them to a new collection in our Weaviate Serverless cluster.
+次のコードブロックでは、Hugging Face からデモデータセット「papers」を取得し、Serverless クラスター内の新しいコレクションに書き込みます。
 
-**Important:** Please enable 'Embeddings' in the Weavaite Cloud console. This way, you can use the `text2vec_weaviate` vectorizer, which will create vectors for each object using `Snowflake/snowflake-arctic-embed-l-v2.0` by default.
+**重要:** Weaviate Cloud コンソールで「Embeddings」を有効にしてください。これにより `text2vec_weaviate` ベクトライザーを使用でき、デフォルトで `Snowflake/snowflake-arctic-embed-l-v2.0` によりベクトルが生成されます。
 
 ```python
 from weaviate.classes.config import Configure
@@ -196,36 +196,36 @@ with papers_collection.batch.dynamic() as batch:
         batch.add_object(properties=item["properties"])
 ```
 
-### Inspect the Collection in Explorer
+### Explorer でコレクションを確認
 
-The `TransformationAgent` will modify the collection as we go along. This is a good time to take a look at the contents of your "ArxivPapers" collection. You can inspect the data in the Explorer tool in the Weaviate Cloud Console. If all goes well, you should be seeing 2 properties listed for each object:
-- `title`: the title of the paper.
-- `abstract`: the abstract of the paper.
+`TransformationAgent` は進行に伴いコレクションを変更します。ここで「ArxivPapers」コレクションの内容を Explorer で確認してみましょう。各オブジェクトには次の２つのプロパティが表示されるはずです。  
+- `title`: 論文タイトル  
+- `abstract`: 論文要約  
 
-As well as the `vectors` for each object.
+さらに各オブジェクトの `vectors` も確認できます。
 
-## Define Transformation Operations
+## 変換操作の定義
 
-The star of the show for the `TransformationAgent` are the operations.
+`TransformationAgent` の中心となるのが operations です。
 
-We can now define transformation operations which we want to perform on our collection. An operation can be:
+コレクションに対して行いたい変換操作を定義できます。操作には次のようなものがあります。
 
-- Appending a new property
-- Updating an existing property
+- 新しいプロパティの追加
+- 既存プロパティの更新
 
-Currently, the `TransformationAgent` supports operations that update existing objects in Weaviate.
+現在、`TransformationAgent` は Weaviate 内の既存オブジェクトを更新する操作をサポートしています。
 
-### Append New Properties
+### 新しいプロパティの追加
 
-To append a new property, we define an operation with:
-- **`instrcution`**: This is where you can describe, in natural language, what you want this new property to be.
-- **`property_name`**: The name you want the property to have
-- **`data_type`**: The specific datatype the property should be. E.g.: `DataType.TEXT`, `DataType.TEXT_ARRAY`, `DataType.BOOL`, `DataType.INT` etc.
-- **`view_properties`**: Sometimes, you may want to create properties that are based on information provided in other properties, this is where you can list out which properties the instruction should view.
+新しいプロパティを追加するには、以下を含む operation を定義します。  
+- **`instrcution`**: 自然言語で新しいプロパティの内容を説明します。  
+- **`property_name`**: 追加するプロパティ名  
+- **`data_type`**: 例 `DataType.TEXT`, `DataType.TEXT_ARRAY`, `DataType.BOOL`, `DataType.INT` など  
+- **`view_properties`**: 他プロパティを参照して生成する場合に、参照すべきプロパティを列挙します。  
 
-#### Create a List of Topics
+#### トピックのリストを作成
 
-First, let's append a new property called "topics", which should be a `TEXT_ARRAY`. Based on the "abstract" and "title", let's ask for the LLM to extract a list of topic tags. We can be specific here. Let's ask for no more than 5
+まず `TEXT_ARRAY` 型の新プロパティ「topics」を追加します。"abstract" と "title" を基に、トピックタグを 5 個以内で抽出するよう LLM に依頼します。
 
 ```python
 from weaviate.agents.classes import Operations
@@ -242,9 +242,9 @@ add_topics = Operations.append_property(
 
 ```
 
-#### Add a French Translation
+#### フランス語訳を追加
 
-Next, let's add a new "french_abstract" property which is simply a translation of the "abstract"
+次に「french_abstract」という新プロパティを追加し、"abstract" をフランス語に翻訳します。
 
 ```python
 add_french_abstract = Operations.append_property(
@@ -255,9 +255,9 @@ add_french_abstract = Operations.append_property(
 )
 ```
 
-#### Update the Title
+#### タイトルを更新
 
-This time, we are updating the `title` property to include the French translation of itself in parantheses.
+今回は `title` プロパティを更新し、フランス語訳を括弧付きで追記します。
 
 ```python
 update_title = Operations.update_property(
@@ -267,9 +267,9 @@ update_title = Operations.update_property(
 )
 ```
 
-#### Determine If It's a Survey Paper
+#### サーベイ論文かどうかを判定
 
-Finally, let's ask for a `BOOL` property which indicates whether the paper is a survey or not. I.e., we'll ask the LLM to determine if the paper presents  novel techniques, or whether it's a survey of existing ones.
+最後に `BOOL` 型プロパティを追加し、論文がサーベイ（既存研究の総説）か否かを判定させます。
 
 ```python
 is_survey_paper = Operations.append_property(
@@ -281,15 +281,15 @@ is_survey_paper = Operations.append_property(
 )
 ```
 
-## Create & Run the Transformation Agent
+## Transformation Agent の作成と実行
 
-Once we have all of our operations defined, we can initialize a `TransformationAgent`.
+すべての operation を定義したら、`TransformationAgent` を初期化できます。
 
-When initializing the agent, we have to decide which `collection` it may have accesss to modify. In this case, we want it to have access to the "ArxivPapers" collection we previously created.
+初期化時には、どの `collection` に対して変更を許可するかを指定します。ここでは先ほど作成した「ArxivPapers」コレクションを指定します。
 
-Next, we need to provide a list of `operations` which the agent should run. Here, we provide all the operations we defined above.
+次に、エージェントが実行すべき `operations` のリストを渡します。ここでは上で定義した全 operation を渡します。
 
-> Note: We are working on resolving a known issue which can result in data consistency issues when multiple operations act on the same object at once.
+> Note: 同一オブジェクトに対して複数の operation を同時に実行すると、データ整合性の問題が発生する既知の課題があり、現在対応中です。
 
 ```python
 from weaviate.agents.transformation import TransformationAgent
@@ -305,24 +305,23 @@ agent = TransformationAgent(
     ],
 )
 ```
+### 変換の実行
 
-### Running the Transformations
-
-By calling `update_all()`, we get the agent to spin up individual workflows for each operation. Each operation will then run on each object in our collectoion.
+`update_all()` を呼び出すことで、エージェントは各操作ごとに個別のワークフローを立ち上げます。各操作はコレクション内の各オブジェクトに対して実行されます。
 
 ```python
 response = agent.update_all()
 ```
 
-### Inspect the Operation Workflows
+### 操作ワークフローの確認
 
-To inspect the status of our operations, we can take a look at the `workflow_id` in the returned `TransformationResponse`, and get their status with `agent.get_status(workflow_id)`. These operations are asynchronous.
+操作の状態を確認するには、返された `TransformationResponse` 内の `workflow_id` を参照し、 `agent.get_status(workflow_id)` でその状態を取得できます。これらの操作は非同期です。
 
 ```python
 response
 ```
 
-Python output:
+Python 出力:
 ```text
 [TransformationResponse(operation_name='topics', workflow_id='TransformationWorkflow-1766a450c35039c2a44e1fa33dc49dd4'),
  TransformationResponse(operation_name='french_abstract', workflow_id='TransformationWorkflow-67e90d88830347a5581d3ee1aa10b867'),
@@ -333,7 +332,7 @@ Python output:
 agent.get_status(workflow_id=response.workflow_id)
 ```
 
-Python output:
+Python 出力:
 ```text
 {'workflow_id': 'TransformationWorkflow-1766a450c35039c2a44e1fa33dc49dd4',
  'status': {'batch_count': 1,

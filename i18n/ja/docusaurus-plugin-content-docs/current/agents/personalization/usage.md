@@ -1,7 +1,7 @@
 ---
-title: Usage
+title: 利用方法
 sidebar_position: 30
-description: "Technical documentation and usage examples for implementing the Personalization Agent."
+description: " Personalization Agent を実装するための技術ドキュメントと使用例。"
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'personalization agent']
 ---
@@ -11,54 +11,53 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/agents/_includes/personalization_agent.py';
 
-# Weaviate Personalization Agent: Usage
+# Weaviate Personalization Agent：利用方法
 
 :::caution Technical Preview
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+![この Weaviate Agent はテクニカルプレビュー版です。](../_includes/agents_tech_preview_light.png#gh-light-mode-only "この Weaviate Agent はテクニカルプレビュー版です。")
+![この Weaviate Agent はテクニカルプレビュー版です。](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "この Weaviate Agent はテクニカルプレビュー版です。")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらから登録してください](https://events.weaviate.io/weaviate-agents) して Weaviate Agents の通知を受け取るか、[このページ](https://weaviateagents.featurebase.app/) で最新情報の確認とフィードバックを行ってください。
 
 :::
 
+Weaviate Personalization Agent は、各ユーザーに合わせたパーソナライズドレコメンドを返すための エージェント型サービスです。 Personalization Agent は関連する Weaviate Cloud インスタンスのデータを使用してレコメンドを提供します。
 
-The Weaviate Personalization Agent is an agentic service designed to return personalized recommendations tailored to each user. The Personalization Agent uses data from the associated Weaviate Cloud instance to provide these recommendations.
-
-:::tip Nomenclature: User vs Developer
-The Personalization Agent is all about providing personalized recommendations tailored to a particular person. In this context, that person will be referred to as the `user`. The developer is the person who is using the Personalization Agent to provide these recommendations.
+:::tip 用語：ユーザーと開発者
+Personalization Agent は特定の人物に合わせたパーソナライズドレコメンドを提供することが目的です。ここではその人物を `user` と呼びます。`developer` は、これらのレコメンドを提供するために Personalization Agent を利用する人です。
 :::
 
-The developer would simply provide a user profile, and the Personalization Agent takes care of all intervening steps to provide a set of personalized recommendations from Weaviate. The resulting workflow for the developer looks as follows:
+開発者はユーザープロファイルを渡すだけで、 Personalization Agent が途中のすべての処理を行い、 Weaviate からのパーソナライズドレコメンドを返します。開発者視点のワークフローは次のようになります。
 
 ![Weaviate Personalization Agent from a developer perspective](../_includes/personalization_agent_overview_light.png#gh-light-mode-only "Weaviate Personalization Agent from a developer perspective")
 ![Weaviate Personalization Agent from a developer perspective](../_includes/personalization_agent_overview_dark.png#gh-dark-mode-only "Weaviate Personalization Agent from a developer perspective")
 
-This page describes how to use the Weaviate Personalization Agent to obtain personalized recommendations from your data stored in Weaviate.
+このページでは、 Weaviate に保存されたデータからパーソナライズドレコメンドを取得するための Weaviate Personalization Agent の使い方を説明します。
 
 :::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+Weaviate Agents の公式変更履歴は [こちらで確認できます](https://weaviateagents.featurebase.app/changelog)。機能要望、バグ報告、質問などのフィードバックは [こちら](https://weaviateagents.featurebase.app/) から送信してください。フィードバックの状況を確認したり、他のフィードバックに投票したりできます。
 :::
 
-## Prerequisites
+## 前提条件
 
-### Weaviate instance
+### Weaviate インスタンス
 
-This Agent is available exclusively for use with a Weaviate Cloud instance.
+この Agent は Weaviate Cloud インスタンスでのみ利用可能です。
 
-Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+Weaviate Cloud インスタンスのセットアップ方法については [Weaviate Cloud のドキュメント](/cloud/index.mdx) を参照してください。
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
+[Weaviate Cloud](https://console.weaviate.cloud/) で無料の Sandbox インスタンスを使って、この Weaviate Agent をお試しいただけます。
 
-### Client library
+### クライアントライブラリ
 
-:::note Supported languages
-At this time, this Agent is available only for Python. Support for other languages will be added in the future.
+:::note 対応言語
+現時点では、この Agent は Python のみ対応しています。他の言語は今後追加予定です。
 :::
 
-You can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package.
+Weaviate Agents を利用するには、オプション `agents` 付きで Weaviate クライアントライブラリをインストールします。これにより `weaviate-client` パッケージと合わせて `weaviate-agents` パッケージがインストールされます。
 
-Install the client library using the following command:
+次のコマンドでクライアントライブラリをインストールしてください。
 
 <Tabs groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -67,15 +66,15 @@ Install the client library using the following command:
 pip install -U weaviate-client[agents]
 ```
 
-#### Troubleshooting: Force `pip` to install the latest version
+#### トラブルシューティング：`pip` で最新バージョンを強制インストールする
 
-For existing installations, even `pip install -U "weaviate-client[agents]"` may not upgrade `weaviate-agents` to the [latest version](https://pypi.org/project/weaviate-agents/). If this occurs, additionally try to explicitly upgrade the `weaviate-agents` package:
+既にインストール済みの場合でも、`pip install -U "weaviate-client[agents]"` だけでは `weaviate-agents` が [最新バージョン](https://pypi.org/project/weaviate-agents/) に更新されないことがあります。その場合は `weaviate-agents` パッケージを明示的にアップグレードしてください。
 
 ```shell
 pip install -U weaviate-agents
 ```
 
-Or install a [specific version](https://github.com/weaviate/weaviate-agents-python-client/tags):
+または [特定のバージョン](https://github.com/weaviate/weaviate-agents-python-client/tags) をインストールします。
 
 ```shell
 pip install -U weaviate-agents==||site.weaviate_agents_version||
@@ -85,28 +84,28 @@ pip install -U weaviate-agents==||site.weaviate_agents_version||
 
 </Tabs>
 
-## Usage
+## 使い方
 
-To use the Personalization Agent, follow the below high-level steps:
+Personalization Agent を使用するには、次のハイレベルな手順に従います。
 
-- Create or connect to a personalization agent
-- Create or select a user persona
-- Add interactions for the given persona
-- Obtain personalized recommendations
+- パーソナライズエージェントを作成または接続する
+- ユーザーペルソナを作成または選択する
+- そのペルソナに対するインタラクションを追加する
+- パーソナライズドレコメンドを取得する
 
-Optionally, the personalization agent can:
-- Perform reranking of the results
-- With a further option of custom instructions for the reranking
+オプションで、 Personalization Agent は以下を行えます。
+- 結果のリランキング
+- さらにリランキング用のカスタム instructions を指定
 
-Example usage is shown below.
+以下に使用例を示します。
 
-### Prerequisites
+### 前提条件
 
-The Personalization Agent is tightly integrated with Weaviate Cloud. As a result, the Personalization Agent is available exclusively for use with a Weaviate Cloud instance, and a supported version of the client library.
+Personalization Agent は Weaviate Cloud と密接に統合されています。そのため、 Personalization Agent は Weaviate Cloud インスタンスと対応クライアントライブラリでのみ利用可能です。
 
-### Connect to Weaviate
+### Weaviate への接続
 
-You must connect to the Weaviate Cloud instance to use the Personalization Agent. Connect to the Weaviate Cloud instance using the Weaviate client library.
+Personalization Agent を使用するには、 Weaviate Cloud インスタンスへ接続する必要があります。 Weaviate クライアントライブラリを使用して接続します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -119,9 +118,9 @@ You must connect to the Weaviate Cloud instance to use the Personalization Agent
     </TabItem>
 </Tabs>
 
-### Create or connect to a personalization agent
+### パーソナライズエージェントの作成または接続
 
-Personalization Agents are stateful, with user persona data persisting in Weaviate. As a result, you can create a new Personalization Agent or connect to an existing one.
+Personalization Agent はステートフルで、ユーザーペルソナのデータが Weaviate に保持されます。そのため、新しい Personalization Agent を作成することも、既存の Agent に接続することもできます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -133,16 +132,15 @@ Personalization Agents are stateful, with user persona data persisting in Weavia
         />
     </TabItem>
 </Tabs>
+### ユーザー パーソナの作成
 
-### Create a user persona
+Personalization Agent は、特定ユーザー向けにパーソナライズされたレコメンデーションを提供するよう設計されています。
 
-The Personalization Agent is designed to provide personalized recommendations for a specific user.
+これを実現するには、ユーザーの属性とインタラクションをまとめた `Persona` を作成します。
 
-You can do this through a `Persona`, which is a collection of user properties and interactions.
+各パーソナには、ユーザー ID、ユーザー プロパティの集合、およびインタラクションの集合が含まれます。
 
-Each persona will include a user ID, a set of user properties, and a set of interactions.
-
-To create a persona, specify a user ID and the set of user properties to be used for personalization.
+パーソナを作成するには、ユーザー ID と、パーソナライズに使用するユーザー プロパティを指定します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -156,13 +154,13 @@ To create a persona, specify a user ID and the set of user properties to be used
 
 </Tabs>
 
-### Manage a user persona
+### ユーザー パーソナの管理
 
-You can delete or update an existing user persona, as well as to check if a user persona exists.
+既存のユーザー パーソナを削除・更新したり、存在を確認できます。
 
-#### Delete a user persona
+#### ユーザー パーソナの削除
 
-To delete a user persona, specify the user ID of the persona to be deleted.
+ユーザー パーソナを削除するには、削除対象のユーザー ID を指定します。
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
@@ -174,9 +172,9 @@ To delete a user persona, specify the user ID of the persona to be deleted.
     </TabItem>
 </Tabs>
 
-#### Update a user persona
+#### ユーザー パーソナの更新
 
-To update a user persona, specify the user ID of the persona to be updated and the new set of user properties.
+ユーザー パーソナを更新するには、更新対象のユーザー ID と新しいユーザー プロパティのセットを指定します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -189,9 +187,9 @@ To update a user persona, specify the user ID of the persona to be updated and t
     </TabItem>
 </Tabs>
 
-#### Check if a user persona exists
+#### ユーザー パーソナの存在確認
 
-To check if a user persona exists, specify the user ID of the persona to be checked.
+ユーザー パーソナが存在するか確認するには、確認したいユーザー ID を指定します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -204,9 +202,9 @@ To check if a user persona exists, specify the user ID of the persona to be chec
     </TabItem>
 </Tabs>
 
-#### Get a user persona
+#### ユーザー パーソナの取得
 
-To get a user persona, specify the user ID of the persona to be retrieved.
+ユーザー パーソナを取得するには、取得したいユーザー ID を指定します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -219,19 +217,19 @@ To get a user persona, specify the user ID of the persona to be retrieved.
     </TabItem>
 </Tabs>
 
-### Add interactions
+### インタラクションの追加
 
-Interactions form the basis of the personalization process. They are the data points that the Personalization Agent uses to learn about the user and provide personalized recommendations.
+インタラクションはパーソナライズ処理の基礎データです。Personalization Agent はこれらのデータを用いてユーザーを学習し、パーソナライズされたレコメンデーションを提供します。
 
-To add interactions, select the user persona and provide the interaction details.
+インタラクションを追加するには、ユーザー パーソナを選択し、インタラクションの詳細を指定します。
 
-The available parameters are:
+利用可能なパラメーターは次のとおりです。
 
-- `persona_id`: ID of the user persona
-- `item_id`: ID of the item being interacted with
-- `weight`: weight of the interaction (e.g. 1 for strongest like, -1 for strongest dislike)
-- `replace_previous_interaction`: whether to replace the previous interaction with the same item ID
-- `created_at`: timestamp of the interaction (affects how much weight the interaction has)
+- `persona_id`: ユーザー パーソナの ID
+- `item_id`: インタラクション対象アイテムの ID
+- `weight`: インタラクションの重み (例: 最も好む場合は 1、最も嫌う場合は -1)
+- `replace_previous_interaction`: 同じ `item_id` の既存インタラクションを置き換えるかどうか
+- `created_at`: インタラクションのタイムスタンプ (重みに影響)
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -245,11 +243,11 @@ The available parameters are:
 
 </Tabs>
 
-### Get personalized objects
+### パーソナライズ済みオブジェクトの取得
 
-Once a user persona has been created, you can get personalized objects.
+ユーザー パーソナを作成したら、パーソナライズ済みオブジェクトを取得できます。
 
-As a minimum, simply provide the user ID to the Personalization Agent. The Personalization Agent will process the user ID, perform the necessary searches in Weaviate, and return the personalized recommendations.
+最低限、ユーザー ID を Personalization Agent に渡すだけで、Agent がユーザー ID を処理し、Weaviate で必要な検索を実行し、パーソナライズされたレコメンデーションを返します。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -261,31 +259,30 @@ As a minimum, simply provide the user ID to the Personalization Agent. The Perso
         />
     </TabItem>
 </Tabs>
+#### オブジェクト取得：利用可能なランキング戦略
 
-#### Get objects: Available ranking strategies
+`get_objects` を使用する際、ランキング戦略を選択できます。
 
-When using `get_objects`, you can select a ranking strategy.
+Personalization Agent は、 ベクトル検索 と LLM ベースのランキングを組み合わせて、パーソナライズされたレコメンデーションを提供できます。 ベクトル検索 はユーザー ペルソナのインタラクションセットの分析に基づいています。オプションで LLM を使用して結果を再ランキングできます。
 
-The Personalization Agent can use a combination of vector search and LLM-based ranking to provide personalized recommendations. The vector search is based on our analysis of the set of interactions for the user persona. The LLM can optionally be used to rerank the results.
+次の 3 つのモードで利用できます。
 
-You can use it in one of three modes:
+- **エージェントベースの再ランキング**: Personalization Agent はまず ベクトル検索 を実行してアイテムを取得し、その後ユーザー ペルソナに基づいて LLM で再ランキングします。これがデフォルトモードです。  
+- **カスタム instructions 付きエージェントベースの再ランキング**: カスタム instructions を指定した場合、Personalization Agent はその instructions を用いて結果を再ランキングします。これにより、特定のニーズに合わせてランキングプロセスをカスタマイズできます。  
+- **ベクトル検索のみ**: エージェントランキングを使用せずに結果を取得する場合、結果は ベクトル検索 のみを基に返されます。  
 
-- **Agent-based reranking**: The Personalization Agent will first perform a vector search to retrieve a set of items, and then rerank them using an LLM, based on the user persona. This is the default mode.
-- **Agent-based reranking with custom instructions**: If a custom instruction is provided, the Personalization Agent will use this instruction to rerank the results. This allows you to customize the ranking process based on your specific needs.
-- **Vector search only**: If you retrieve results without using the agent ranking, the results will be based solely on the vector search.
+#### オブジェクト取得：パラメーター
 
-#### Get objects: Parameters
+パーソナライズされたオブジェクト取得で利用可能なパラメーターは次のとおりです。
 
-The available parameters for getting personalized objects are:
-
-- `limit`: maximum number of items to return
-- `recent_interactions_count`: number of recent interactions to consider for personalization
-- `exclude_interacted_items`: whether to exclude items that the user has already interacted with
-- `decay_rate`: decay rate for older interactions (1.0 = heavily discount older interactions; 0.0 = no discount)
-- `exclude_items`: list of item IDs to exclude from the recommendations
-- `use_agent_ranking`: whether to use the agent to rerank the results
-- `instruction`: custom instructions for the reranking
-- `explain_results`: whether to include explanations for the results
+- `limit`: 返却する最大アイテム数  
+- `recent_interactions_count`: パーソナライズに考慮する直近インタラクション数  
+- `exclude_interacted_items`: すでにユーザーがインタラクションしたアイテムを除外するかどうか  
+- `decay_rate`: 古いインタラクションに対する減衰率 (1.0 = 古いインタラクションを大きく割引、0.0 = 割引なし)  
+- `exclude_items`: レコメンデーションから除外するアイテム ID のリスト  
+- `use_agent_ranking`: エージェントで再ランキングを行うかどうか  
+- `instruction`: 再ランキング用のカスタム instructions  
+- `explain_results`: 結果に説明を含めるかどうか  
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -298,16 +295,16 @@ The available parameters for getting personalized objects are:
     </TabItem>
 </Tabs>
 
-#### Get objects: Inspect results
+#### オブジェクト取得：結果の確認
 
-The response from the Personalization Agent will include the personalized recommendations.
+Personalization Agent のレスポンスには、パーソナライズされたレコメンデーションが含まれます。
 
-In addition to the response objects, the response may include the following information (depending on the options selected):
+オプションに応じて、レスポンスには次の情報も含まれる場合があります。
 
-- Rationale for the recommendations
-- For each object:
-    - Original rank of the item
-    - Personalized rank of the item
+- レコメンデーションの根拠  
+- 各オブジェクトについて  
+    - アイテムの元の順位  
+    - パーソナライズ後の順位  
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -320,13 +317,13 @@ In addition to the response objects, the response may include the following info
     </TabItem>
 </Tabs>
 
-### Personalized Weaviate queries
+### パーソナライズされた Weaviate クエリ
 
-The Personalization Agent can also be used to perform personalized Weaviate queries.
+Personalization Agent は、パーソナライズされた Weaviate クエリの実行にも利用できます。
 
-In contrast to the [`get_objects` method](#get-personalized-objects), a personalized query includes an additional Weaviate query.
+[`get_objects` メソッド](#get-personalized-objects) とは異なり、パーソナライズされたクエリには追加の Weaviate クエリが含まれます。
 
-Weaviate's `near_text`, `bm25` and `hybrid` queries can be combined with the Personalization Agent to provide personalized results.
+Weaviate の `near_text`、`bm25`、`hybrid` クエリは、Personalization Agent と組み合わせてパーソナライズされた結果を提供できます。
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -339,19 +336,19 @@ Weaviate's `near_text`, `bm25` and `hybrid` queries can be combined with the Per
     </TabItem>
 </Tabs>
 
-Use a personalized Weaviate query when you want to use the Personalization Agent to rerank the results of a Weaviate query.
+Weaviate クエリの結果を Personalization Agent で再ランキングしたい場合に、パーソナライズされた Weaviate クエリを使用してください。
 
-The Personalization Agent will first perform the Weaviate query to retrieve a set of items, and then rerank them using an LLM, based on the user persona.
+Personalization Agent はまず Weaviate クエリを実行してアイテムを取得し、その後ユーザーペルソナに基づいて LLM で再ランキングします。
 
-#### Personalized Weaviate query: Parameters
+#### パーソナライズされた Weaviate クエリ：パラメーター
 
-The available parameters for personalizing a Weaviate query can be specified upstream of the query method (`near_text`, `bm25`, `hybrid`).
+パーソナライズされた Weaviate クエリのパラメーターは、クエリメソッド (`near_text`、`bm25`、`hybrid`) の手前で指定します。
 
-- `persona_id`: ID of the user persona
-- `strength`: strength of the personalization (0.0 = no personalization, 1.0 = complete personalization, disregard query results)
-- `overfetch_factor`: number of objects to fetch before personalization
-- `recent_interactions_count`: number of recent interactions to consider for personalization
-- `decay_rate`: decay rate for older interactions (1.0 = heavily discount older interactions; 0.0 = no discount)
+- `persona_id`: ユーザーペルソナの ID  
+- `strength`: パーソナライズの強度 (0.0 = パーソナライズなし、1.0 = 完全にパーソナライズしクエリ結果を無視)  
+- `overfetch_factor`: パーソナライズ前に取得するオブジェクト数  
+- `recent_interactions_count`: パーソナライズに考慮する直近インタラクション数  
+- `decay_rate`: 古いインタラクションに対する減衰率 (1.0 = 古いインタラクションを大きく割引、0.0 = 割引なし)  
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -364,36 +361,34 @@ The available parameters for personalizing a Weaviate query can be specified ups
     </TabItem>
 </Tabs>
 
-## Limitations & Troubleshooting
+## 制限事項とトラブルシューティング
 
 :::caution Technical Preview
 
 ![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
 ![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
 
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+[こちらから登録](https://events.weaviate.io/weaviate-agents) して Weaviate エージェントの通知を受け取るか、[このページ](https://weaviateagents.featurebase.app/) で最新情報を確認しフィードバックをお寄せください。
 
 :::
 
-### Usage limits
+### 使用制限
 
-At this stage, there is a limit of 100 Personalization Agent queries per day per Weaviate Cloud [organization](/cloud/platform/users-and-organizations.mdx#organizations) where the agent-based reranking is used.
+現在、エージェントベースの再ランキングを使用する場合、1 つの Weaviate Cloud の [組織](/cloud/platform/users-and-organizations.mdx#organizations) あたり 1 日 100 件の Personalization Agent クエリ制限があります。
 
-There are no limits on the number of queries per day for the vector search only (i.e. without the agent-based reranking).
+ベクトル検索のみ（エージェントベースの再ランキングを行わない場合）のクエリ数には制限はありません。
 
-This limit may change in future versions of the Personalization Agent.
+この制限は Personalization Agent の将来のバージョンで変更される可能性があります。
+### 既知の問題
 
-### Known issues
+現在、 Weaviate クエリと personalization agent クエリを組み合わせた機能は named vectors ではご利用いただけません。これは既知の問題であり、近日中に解決される予定です。
 
-The combined Weaviate query and personalization agent query is not available for named vectors at this time. This is a known issue and will be addressed shortly.
-
-## Questions and feedback
+## 質問とフィードバック
 
 :::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
+Weaviate Agents の公式変更履歴は [こちら](https://weaviateagents.featurebase.app/changelog) からご覧いただけます。フィーチャーリクエスト、バグ報告、質問などのフィードバックがありましたら、[こちら](https://weaviateagents.featurebase.app/) からご送信ください。送信後は、ご自身のフィードバックのステータスを確認したり、他のユーザーのフィードバックに投票したりできます。
 :::
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-
