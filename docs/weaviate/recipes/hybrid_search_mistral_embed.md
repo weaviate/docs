@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/hybrid-search/hybrid_search_mistral.ipynb
 toc: True
 title: "Hybrid Search with Mistral"
 featured: False
@@ -8,9 +7,9 @@ integration: False
 agent: False
 tags: ['Hybrid Search', 'Mistral']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/hybrid-search/hybrid_search_mistral.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/mistral/hybrid_search_mistral_embed.ipynb)
+
+# Hybrid Search with Mistral
 
 This recipe will show you how to run hybrid search with embeddings from Mistral.
 
@@ -18,9 +17,9 @@ This recipe will show you how to run hybrid search with embeddings from Mistral.
 
 1. Weaviate cluster
     1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
-    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
-    3. [Local deployment]((https://docs.weaviate.io/deploy/installation-guides/docker-installation#starter-docker-compose-file)
-    4. [Other options](https://docs.weaviate.io/deploy/installation-guides)
+    2. [Embedded Weaviate](https://weaviate.io/developers/weaviate/installation/embedded)
+    3. [Local deployment](https://weaviate.io/developers/weaviate/installation/docker-compose#starter-docker-compose-file)
+    4. [Other options](https://weaviate.io/developers/weaviate/installation)
 
 2. Mistral API key. Grab one [here](https://docs.mistral.ai/api/).
 
@@ -100,14 +99,14 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vector_config=wc.Configure.Vectors.text2vec_mistral( # specify the vectorizer and model
+    vectorizer_config=wc.Configure.Vectorizer.text2vec_mistral( # specify the vectorizer and model
         model="mistral-embed",
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT),
+        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
         wc.Property(name="Answer", data_type=wc.DataType.TEXT),
-        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
+        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True), 
     ]
 )
 
@@ -122,7 +121,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.use("JeopardyQuestion")
+jeopardy = client.collections.get("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)
@@ -138,13 +137,13 @@ else:
 
 ## Hybrid Search
 
-The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search.
+The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search. 
 
 Alpha is an optional parameter. The default is set to `0.75`.
 
 ### Hybrid Search only
 
-The below query is finding Jeopardy questions about animals and is limiting the output to only two results. Notice `alpha` is set to `0.80`, which means it is weighing the vector search results more than bm25. If you were to set `alpha = 0.25`, you would get different results.
+The below query is finding Jeopardy questions about animals and is limiting the output to only two results. Notice `alpha` is set to `0.80`, which means it is weighing the vector search results more than bm25. If you were to set `alpha = 0.25`, you would get different results. 
 
 ```python
 response = jeopardy.query.hybrid(
