@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb
 toc: True
 title: "Similarity Search with Cohere"
 featured: False
@@ -8,9 +7,7 @@ integration: False
 agent: False
 tags: ['Similarity Search', 'Cohere']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/cohere/similarity_search_embed_multilingual_v2.0.ipynb)
 
 ## Dependencies
 
@@ -58,14 +55,14 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vector_config=wc.Configure.Vectors.text2vec_cohere( # specify the vectorizer and model type you"re using
+    vectorizer_config=wc.Configure.Vectorizer.text2vec_cohere( # specify the vectorizer and model type you"re using
         model="embed-multilingual-v2.0",                       # defaults to embed-multilingual-v2.0 if not set
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT),
+        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
         wc.Property(name="Answer", data_type=wc.DataType.TEXT),
-        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
+        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True), 
     ]
 )
 
@@ -81,7 +78,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.use("JeopardyQuestion")
+jeopardy = client.collections.get("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)
@@ -99,11 +96,11 @@ else:
 
 Similarity search options for text objects in **Weaviate**:
 
-1. [near_text](https://docs.weaviate.io/weaviate/search/similarity#an-input-medium)
+1. [near_text](https://weaviate.io/developers/weaviate/search/similarity#an-input-medium)
 
-2. [near_object](https://docs.weaviate.io/weaviate/search/similarity#an-object)
+2. [near_object](https://weaviate.io/developers/weaviate/search/similarity#an-object)
 
-3. [near_vector](https://docs.weaviate.io/weaviate/search/similarity#a-vector)
+3. [near_vector](https://weaviate.io/developers/weaviate/search/similarity#a-vector)
 
 ### nearText Example
 
@@ -112,7 +109,7 @@ Find a `JeopardyQuestion` about "animals in movies". Limit it to only 4 response
 ```python
 # note, you can reuse the collection object from the previous cell.
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.use("JeopardyQuestion")
+jeopardy = client.collections.get("JeopardyQuestion")
 
 response = jeopardy.query.near_text(
     query="african beasts",
