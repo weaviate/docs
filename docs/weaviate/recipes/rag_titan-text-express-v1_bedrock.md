@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/generative-search/generative_search_aws_bedrock.ipynb
 toc: True
 title: "Generative search (RAG) with AWS Bedrock"
 featured: False
@@ -8,9 +7,7 @@ integration: False
 agent: False
 tags: ['Generative Search', 'RAG', 'AWS']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/generative-search/generative_search_aws_bedrock.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-features/model-providers/aws/rag_titan-text-express-v1_bedrock.ipynb)
 
 ## Dependencies
 
@@ -60,7 +57,7 @@ if (client.collections.exists("JeopardyQuestion")):
 client.collections.create(
     name="JeopardyQuestion",
 
-    vector_config=wc.Configure.Vectors.text2vec_aws(
+    vectorizer_config=wc.Configure.Vectorizer.text2vec_aws(
         service="bedrock",   #this is crucial
         model="cohere.embed-english-v3", # select the model, make sure it is enabled for your account
         # model="amazon.titan-embed-text-v1", # select the model, make sure it is enabled for your account
@@ -75,9 +72,9 @@ client.collections.create(
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT),
+        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
         wc.Property(name="Answer", data_type=wc.DataType.TEXT),
-        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
+        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True), 
     ]
 )
 
@@ -93,7 +90,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.use("JeopardyQuestion")
+jeopardy = client.collections.get("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)
@@ -111,14 +108,14 @@ else:
 
 ### Single Result
 
-Single Result makes a generation for each individual search result.
+Single Result makes a generation for each individual search result. 
 
-In the below example, I want to create a Facebook ad from the Jeopardy question about Elephants.
+In the below example, I want to create a Facebook ad from the Jeopardy question about Elephants. 
 
 ```python
 generatePrompt = "Turn the following Jeogrady question into a Facebook Ad: {question}"
 
-jeopardy = client.collections.use("JeopardyQuestion")
+jeopardy = client.collections.get("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Elephants",
     limit=2,
@@ -134,14 +131,14 @@ for item in response.objects:
 
 ### Grouped Result
 
-Grouped Result generates a single response from all the search results.
+Grouped Result generates a single response from all the search results. 
 
-The below example is creating a Facebook ad from the 2 retrieved Jeoprady questions about animals.
+The below example is creating a Facebook ad from the 2 retrieved Jeoprady questions about animals. 
 
 ```python
 generateTask = "Explain why these Jeopardy questions are under the Animals category."
 
-jeopardy = client.collections.use("JeopardyQuestion")
+jeopardy = client.collections.get("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Animals",
     limit=3,
