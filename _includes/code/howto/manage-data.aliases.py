@@ -159,7 +159,8 @@ client.collections.create(
 )
 # END Step3NewCollection
 
-# Step 4: Migrate data to new collection
+# START Step4MigrateData
+# Migrate data to new collection
 products_v2 = client.collections.use("Products_v2")
 old_data = products_v1.query.fetch_objects().objects
 

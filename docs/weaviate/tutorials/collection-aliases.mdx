@@ -230,7 +230,7 @@ The key point is that your application code doesn't need to know whether it's ac
 
 ### Step 5: Create the new collection with updated schema
 
-Now let's create a new version of the collection with an additional field (e.g., adding a "category" property).
+Now let's create a new version of the collection with an additional field (e.g., adding a `category` property).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -308,7 +308,7 @@ Copy data from the old collection to the new one, adding default values for new 
 
 ### Step 7: Update the alias (instant switch)
 
-This is the magic moment - update the alias to point to the new collection. This switch is instantaneous, and all queries using the "Products" alias now access the new collection.
+This is the magic moment - update the alias to point to the new collection. This switch is instantaneous, and all queries using the `ProductsAlias` alias now access the new collection.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
