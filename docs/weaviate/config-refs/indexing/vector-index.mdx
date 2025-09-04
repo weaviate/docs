@@ -200,6 +200,15 @@ import BQParameters from "/_includes/configuration/bq-compression-parameters.mdx
 
 <BQParameters />
 
+## Default quantization for new collections {#default-quantization}
+
+:::info Added in `v1.33`
+:::
+
+Starting with Weaviate v1.33, **[8-bit Rotational Quantization (RQ)](../../configuration/compression/rq-compression.md) is enabled by default for all new collections**. This automatic optimization provides up to 4x memory compression and faster query performance while maintaining high recall accuracy. Existing collections (for example restored from backups) are not affected and retain their original configuration.
+
+Set the [`DEFAULT_QUANTIZATION` environment variable](/docs/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) before starting Weaviate to change the default quantization technique or to disable it.
+
 ## Configure semantic indexing
 
 Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
