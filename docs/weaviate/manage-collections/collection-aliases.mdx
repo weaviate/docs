@@ -14,15 +14,14 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
 
-:::caution Technical preview
-
-Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
+:::info Added in `v1.32`
 :::
 
-Collection aliases allow you to create alternative names for your collections. This is useful for changing collection definitions without downtime, A/B testing, or providing more convenient names for collections. An alias acts as a reference to a collection - when you query using an alias name, Weaviate automatically routes the request to the target collection.
+Collection aliases allow you to create alternative names for your collections. This is useful for migrating between collections without downtime, A/B testing, or providing more convenient names for collections. An alias acts as a reference to a collection - when you query and manage objects using an alias name, Weaviate automatically routes the request to the target collection.
+
+import CollectionAliasUsage from "/_includes/collection-alias-usage.mdx";
+
+<CollectionAliasUsage />
 
 ## Create an alias
 
@@ -67,8 +66,9 @@ To create an alias, specify the alias name and the target collection it should p
 
 - An alias name must be unique and cannot match any existing collection or alias name
 - Multiple aliases can point to the same collection
-- Aliases can be used instead of collection names in most operations (except when deleting collections)
-  :::
+- Aliases can only be used instead of collection names in object-related operations (managing objects and querying)
+
+:::
 
 ## List all aliases
 
@@ -235,7 +235,8 @@ Updating an alias is particularly useful for migrations:
 3. Update the alias to point to the new collection
 4. Continue to use the alias - all queries to it are now directed to the new collection
 
-For a code example on how to perform migrations, visit the [Starter guide: Managing collections](../starter-guides/managing-collections/index.mdx#collection-aliases)
+For a code example on how to perform migrations, visit the [Tutorial: Migrating collections with aliases](../tutorials/collection-aliases.mdx)
+
 :::
 
 ## Delete an alias
@@ -285,7 +286,7 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
 
 ## Using aliases in operations
 
-Once created, aliases can be used instead of collection names in most operations (except when deleting collections):
+Once created, aliases can be used instead of collection names in all object-related operations, like data import and querying. 
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
