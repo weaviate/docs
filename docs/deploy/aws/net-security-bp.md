@@ -109,7 +109,7 @@ Data transfer for backups and application data can be secured, this is what is n
 
 - Eliminates NAT gateway costs for S3 traffic.
 - Improved data transfer performance through AWS.
-- Network-level protection preventing data exfiltration through the internet.
+- Network-level protection prevents data exfiltration through the internet.
 - Integration with AWS Config for compliance monitoring.
 
 ## Scaling and performance
@@ -223,7 +223,7 @@ Istio also has a zero-trust model which has these features:
 #### Calico or Cilium implementation
 
 - Advanced network policy features with pod-level segmentation.
-- eBPF-based enforecement for optimal performance.
+- eBPF-based enforcement for optimal performance.
 - Application-aware policies supporting HTTP/gRPC.
 
 #### Policy framework

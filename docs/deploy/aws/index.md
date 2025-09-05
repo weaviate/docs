@@ -1,5 +1,6 @@
 ---
 title: Deploying Weaviate on AWS
+sidebar_title:
 sidebar_position: 0
 ---
 
@@ -14,13 +15,13 @@ This section provides comprehensive guidance for deploying and running Weaviate 
 - **How-to Guides:** Task-focused instructions for specific AWS configurations and integrations.
 - **Reference Documentation:** AWS-specific configuration options, best practices, and troubleshooting guides.
 
-## AWS deployment methods
+## Deployment methods
 
 Weaviate has multiple pathways to deploy on AWS, each suited to different use cases and operational needs:
 
 ### Marketplace offerings
 
-#### AWS marketplace - serverless cloud
+#### [AWS marketplace - serverless cloud](../installation-guides/aws-marketplace.md)
 
 Deploy Weaviate Serverless Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration. 
 
@@ -30,14 +31,12 @@ This SaaS solution is specifically built for AWS customers who need:
 - Regulatory requirements with specific regional deployments
 - Quick setup without infrastructure management
 
-[Deploy via AWS Makretplace](../installation-guides/aws-marketplace.md)
-
 
 :::tip
 If you're interested in learning more about Weaviate Serverless Cloud, [our sales team would love to help!](https://weaviate.io/pricing#contact)
 :::
 
-#### AWS marketplace - Kubernetes cluster
+#### [AWS marketplace - Kubernetes cluster](../installation-guides/eks-marketplace.md)
 
 Deploys Weaviate on Amazon EKS through the AWS Marketplace using AWS CloudFormation templates. This sets up an EKS cluster with a single node group, load balancer controller, and EBS CSI driver via a CloudFormation template.
 
@@ -50,7 +49,7 @@ Deploys Weaviate on Amazon EKS through the AWS Marketplace using AWS CloudFormat
 
 **Best for**: Production environments, teams wanting managed Kubernetes without setup complexity, enterprise-grade deployments.
 
-#### AWS marketplace - EC2 instance
+#### [AWS marketplace - EC2 instance](../installation-guides/ecs-marketplace.md)
 
 Deploys a fully operational Weaviate instance on a single EC2 instance using Docker through the AWS Marketplace. This option also uses CloudFormation templates and is perfect for developers who want to prototype and test Weaviate quickly.
 
@@ -63,7 +62,7 @@ Deploys a fully operational Weaviate instance on a single EC2 instance using Doc
 
 ### Self-managed options
 
-#### Self-managed EKS
+#### [Self-managed EKS](../installation-guides/eks.md)
 
 Create and manage your own EKS cluster using the `eksctl` command-line tool, providing full control over cluster configuration, scaling, and management.
 
@@ -74,7 +73,7 @@ Create and manage your own EKS cluster using the `eksctl` command-line tool, pro
 - Choice of instance types and storage classes
 - Integration with AWS EBS CSI driver for persistent storage
 
-Best for: Organizations with Kubernetes expertise, custom infrastructure requirements, maximum flexibility and control
+**Best for:** Organizations with Kubernetes expertise, custom infrastructure requirements, maximum flexibility and control
 
 ### Deployment comparison
 
@@ -87,7 +86,6 @@ Each deployment option offers different levels of management and control:
 - **Marketplace EKS:** Managed Kubernetes control plane with pre-configured infrastructure via CloudFormation.
 - **Marketplace EC2:** Single-instance Docker deployment with monthly billing, ideal for development.
 - **Self-Managed EKS:** Complete control over EKS cluster configuration and management.
-
 
 
 ## Questions and feedback
