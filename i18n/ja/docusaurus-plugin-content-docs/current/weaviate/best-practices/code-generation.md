@@ -1,38 +1,38 @@
 ---
-title: AI-based Weaviate code generation
+title: AI ベースの Weaviate コード生成
 sidebar_position: 50
-description: "Tips and techniques for using generative AI models to write better Weaviate-related code."
+description: "生成 AI モデルを使って Weaviate 関連のコードをより良く書くためのヒントと手法。"
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---
 
-# AI-based Weaviate code generation (vibe-coding)
+# AI ベースの Weaviate コード生成（vibe-coding）
 
-Generative AI models are becoming more capable at writing code. This practice is often referred to as "vibe-coding" or "AI-assisted coding". While this can speed up development, it is also subject to some pitfalls, such as hallucinations due to out-of-date, or missing information in the training data.
+生成 AI モデルはコードの自動生成能力を急速に高めています。このプラクティスは一般に「vibe-coding」や「AI 支援コーディング」と呼ばれます。開発を加速できる一方で、古い情報や不足した学習データに起因するハルシネーションなどの落とし穴も存在します。
 
-Here are some tips for writing Weaviate client library code with generative AI models and tooling, based on our anecdotal experience.
+ここでは、私たちの経験を基に、生成 AI モデルやツールを用いて Weaviate クライアントライブラリのコードを書く際のヒントを紹介します。
 
 ![Weaviate vibe-coding guide](./_img/weaviate_vibe_coding_guide.png "Weaviate vibe-coding guide")
 
-## Specific recommendations
+## 具体的な推奨事項
 
-### High-performing models
+### 高性能なモデル
 
-As of April 2025, we've seen these models perform well for code generation. (Assessed by the correctness of generated [Python v4 client library](/weaviate/client-libraries/python/index.mdx) code.)
+2025 年 4 月時点で、以下のモデルがコード生成において高い性能を示しました（[Python v4 クライアントライブラリ](/weaviate/client-libraries/python/index.mdx)のコード生成の正確性で評価）。
 
 - Anthropic `claude-3-7-sonnet-20250219`
 - Google `gemini-2.5-pro-exp-03-25`
 - OpenAI `gpt-4.5-preview-2025-02-27` /
 
-If you are using the Python client library, we recommend that you try out one of the above models to see if it performs well for your use case.
+Python クライアントライブラリを使用している場合は、上記モデルのいずれかを試し、ご自身のユースケースでの性能を確認してみてください。
 
-Although none of these models performed perfectly at zero-shot code generation tasks (i.e. with only a description of the task), they were able to generate correct code most of the time when provided with in-context examples.
+これらのモデルはいずれもゼロショット（タスクの説明のみ）では完全ではありませんでしたが、インコンテキスト例を与えると大半の場合で正しいコードを生成できました。
 
-### In-context code examples
+### インコンテキストのコード例
 
-We found that performances of the above LLMs improved significantly when provided with in-context examples. We suggest that you can get better results by providing in-context examples relevant to the task you are trying to accomplish.
+上記の LLM は、インコンテキスト例を提供すると性能が大幅に向上しました。達成したいタスクに関連するインコンテキスト例を提示することで、より良い結果が得られます。
 
-As a starting point, we have curated a set of code examples below. Try copy and pasting this block of code into your prompt.
+まずは、下記に用意したコード例をプロンプトにコピー＆ペーストしてみてください。
 
 import CodeExamples from '!!raw-loader!/_includes/code/python/best-practices.python.ai.py';
 import CodeBlock from '@theme/CodeBlock';
@@ -44,67 +44,68 @@ import CodeBlock from '@theme/CodeBlock';
 </div>
 <br/>
 
-If the above code examples are not sufficient, you can try the following:
+上記のコード例だけでは不十分な場合、次の方法を試してください。
 
-- Collect code examples from relevant sections of the Weaviate Documentation.
-- Use the `Ask AI` feature in the Weaviate Documentation to find examples of how to perform specific tasks. Then, use the provided code in your prompt.
+- Weaviate ドキュメントの該当セクションからコード例を収集する。
+- Weaviate ドキュメントの `Ask AI` 機能を使い、特定タスクの実装例を検索し、そのコードをプロンプトに含める。
 
 :::tip Small models
-Generally, smaller models don't perform as well at zero-shot code generation tasks. But we have found Anthropic's `claude-3-5-haiku-20241022` and OpenAI's `gpt-4.1` / `gpt-4.1-mini` models to be quite good at generating code when provided with in-context examples.
+一般に、小規模モデルはゼロショットのコード生成が得意ではありません。しかし、Anthropic の `claude-3-5-haiku-20241022` や OpenAI の `gpt-4.1` / `gpt-4.1-mini` は、インコンテキスト例を与えるとかなり優れたコードを生成できました。
 :::
 
-## General tips
+## 一般的なヒント
 
-Along with the specific recommendations above, we also have the following general tips:
+上記の具体的な推奨に加え、次の一般的なヒントも参考にしてください。
 
-### Use the latest models
+### 最新モデルの活用
 
-You may already have a preferred model provider. Try out the latest models to see if they perform better for your use case.
+すでにお気に入りのモデルプロバイダーがある場合でも、最新モデルを試してみると性能が向上する可能性があります。
 
-Later models will be trained on more recent data, and are likely to be better at zero-shot code generation tasks. This is particularly important where the code base has been significantly updated, such as with the Weaviate Python client, which was rewritten in 2024.
+新しいモデルはより新しいデータで学習されており、ゼロショットのコード生成に強くなっていることが多いです。特に、2024 年に全面改修された Weaviate Python クライアントのようにコードベースが大きく変わった場合は重要です。
 
-### Look for better instruction-following models
+### 指示追従性の高いモデルを探す
 
-Some models are better at following instructions provided as in-context examples.
+モデルによっては、インコンテキストで与えた instructions をより忠実に守ります。
 
-These models are more likely to respect up-to-date examples provided as in-context instructions.
+こうしたモデルは、最新のインコンテキスト例を尊重してコードを生成してくれる可能性が高いです。
 
-### Review the generated code for signs of hallucination
+### 生成コードをハルシネーションの兆候がないか確認する
 
-It is important to review the generated code for signs of hallucination.
+生成されたコードにハルシネーションが含まれていないか必ず確認してください。
 
-For the Weaviate Python client, a telltale sign of hallucination, or out-of-date code is the use of `weaviate.Client` class for connecting to Weaviate. This was used in the older, v3 version of the client library and is not present in the v4 version.
+Weaviate Python クライアントの場合、`weaviate.Client` クラスで接続しようとしているコードは古い v3 クライアントの書き方で、v4 には存在しません。これはハルシネーションや古い情報の典型的なサインです。
 
-The latest version of the Weaviate Python client uses `weaviate.connect_to_xyz()` helper functions to connect to Weaviate, using the `WeaviateClient` class.
+最新バージョンでは、接続には `weaviate.connect_to_xyz()` 系のヘルパー関数と `WeaviateClient` クラスを使用します。
 
-### Index further documentation
+### 追加ドキュメントをインデックス化する
 
-Some AI-powered code generation tools such as Cursor allow you to index further documentation. This can be a great way to get more context for the code generation task. Then, you could prompt the IDE to generate code based on the indexed documentation.
+Cursor のような AI コーディングツールには、追加のドキュメントをインデックス化できるものがあります。これにより、コード生成に必要な文脈を増やし、IDE に対して「インデックス済みドキュメントを基にコードを生成して」と促すことができます。
 
-Review the documentation of your specific IDE to see if it has this feature, and how to use it.
+利用中の IDE にこの機能があるか、また使い方を確認してみてください。
 
-### Consider using Weaviate Agents
+### Weaviate エージェントの利用を検討する
 
-[Weaviate Agents](/agents) are pre-built agentic services designed for specific tasks, such as [querying](/agents/query), [transforming data](/agents/transformation/), and [personalizing content](/agents/personalization).
+[Weaviate エージェント](/agents) は、[クエリ](/agents/query)・[データ変換](/agents/transformation/)・[コンテンツのパーソナライズ](/agents/personalization) など、特定タスク用に設計された事前構築済みのエージェントサービスです。
 
-Weaviate agents are available for Weaviate Cloud users to enable interacting with the Weaviate Cloud instance using natural language. For some use cases, this may be a better approach than using AI-powered code generation tools.
+Weaviate Cloud ユーザーは自然言語でインスタンスと対話できるため、一部のユースケースでは AI コード生成ツールより適している場合があります。
 
-## Help us improve this page
+## このページ改善へのご協力
 
-The above recommendations are based on our experience using generative AI models for code generation.
+上記の推奨事項は、生成 AI モデルでコード生成を行った私たちの経験に基づいています。
 
-In order to collect data for this page in a systematic way, we ran a series of evaluations through [this repository](https://github.com/weaviate-tutorials/weaviate-vibe-eval).
+このページの内容を体系的に収集するため、[こちらのリポジトリ](https://github.com/weaviate-tutorials/weaviate-vibe-eval)で一連の評価を実施しました。
 
-The test were carried out by generating code for the Weaviate Python client v4 using various LLMs, and assessing whether the code was able to run successfully. Each task was carried out multiple times, once as a zero-shot task, and at least once with in-context examples.
+各テストでは、Weaviate Python クライアント v4 のコードをさまざまな LLM で生成し、生成コードが正常に実行できるかを評価しました。各タスクはゼロショットと、インコンテキスト例ありで少なくとも 1 回ずつ実施しています。
 
-A sampling of the results are collected [in this directory](https://github.com/weaviate-tutorials/weaviate-vibe-eval/tree/main/example_results).
+結果の一部は [このディレクトリ](https://github.com/weaviate-tutorials/weaviate-vibe-eval/tree/main/example_results) にまとめています。
 
-Please note that this was a small-scale evaluations for providing guidelines only. If you are interested in running your own evaluations, please check out the repository.
+小規模な評価であり、あくまでガイドライン提供が目的です。独自に評価を行いたい方はリポジトリをご覧ください。
 
-If you have any questions or feedback, please let us know by opening an issue on [GitHub](https://github.com/weaviate-tutorials/weaviate-vibe-eval/issues).
+質問やフィードバックは、[GitHub](https://github.com/weaviate-tutorials/weaviate-vibe-eval/issues) で issue を開いてお知らせください。
 
-## Questions and feedback
+## 質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
