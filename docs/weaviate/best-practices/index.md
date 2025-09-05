@@ -99,8 +99,8 @@ As the size of your dataset grows, the accompanying vector indexes can lead to h
 
 If you have a large number of vectors, consider using vector quantization to reduce the memory footprint of the vector index. This will reduce the required memory, and allow you to scale more effectively at lower costs.
 
-![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
-![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
+![Overview of quantization schemes](@site/_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
+![Overview of quantization schemes](@site/_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
 
 For HNSW indexes, we suggest enabling product quantization (PQ) as a starting point. It provides a good set of default trade-offs between memory usage and query performance, as well as tunable parameters to optimize for your specific use case.
 
