@@ -33,7 +33,7 @@ This SaaS solution is specifically built for AWS customers who need:
 [Deploy via AWS Makretplace](../installation-guides/aws-marketplace.md)
 
 
-::::::tip
+:::tip
 If you're interested in learning more about Weaviate Serverless Cloud, [our sales team would love to help!](https://weaviate.io/pricing#contact)
 :::
 
