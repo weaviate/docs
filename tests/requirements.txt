@@ -100,4 +100,4 @@ weaviate-client==4.16.9
 git+https://github.com/g-despot/wv_demo_uploader.git@migrate-newsarticles
 websockets==12.0
 wrapt==1.16.0
-weaviate-agents==0.12.0
+weaviate-agents==0.13.0
