@@ -284,7 +284,7 @@ import base64
 import requests
 from weaviate.classes.generate import GenerativeConfig, GenerativeParameters
 
-src_img_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/500px-Koala_climbing_tree.jpg"
+src_img_path = "https://images.unsplash.com/photo-1459262838948-3e2de6c1ec80?w=500&h=500&fit=crop"
 base64_image = base64.b64encode(requests.get(src_img_path).content).decode('utf-8')
 
 prompt = GenerativeParameters.grouped_task(
