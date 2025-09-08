@@ -54,7 +54,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # SinglePromptGeneration
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.generate.near_vector(
@@ -83,7 +83,7 @@ client.connect()
 
 # GroupedTaskGeneration
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.generate.near_vector(
@@ -99,7 +99,7 @@ response = movies.generate.near_vector(
 for o in response.objects:
     print(o.properties["title"])  # Print the title
 # highlight-start
-print(response.generated)  # Print the generated text (the commonalities between them)
+print(response.generative.text)  # Print the generated text (the commonalities between them)
 # highlight-end
 
 client.close()

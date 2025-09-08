@@ -28,7 +28,7 @@ client = weaviate.connect_to_local(
 #     client.data_object.replace(object_data["properties"], class_name, uuid)
 
 def del_props(client: WeaviateClient, uuid_to_update: str, collection_name: str, prop_names: List[str]) -> None:
-    collection = client.collections.get(collection_name)
+    collection = client.collections.use(collection_name)
 
     # fetch the object to update
     object_data = collection.query.fetch_object_by_id(uuid_to_update, include_vector=True)
@@ -88,8 +88,8 @@ client.collections.create(
 dataset = weaviate_datasets.JeopardyQuestions1k()  # instantiate dataset
 dataset.upload_objects(client)  # batch-upload objects
 
-questions = client.collections.get("JeopardyQuestion")
-categories = client.collections.get("JeopardyCategory")
+questions = client.collections.use("JeopardyQuestion")
+categories = client.collections.use("JeopardyCategory")
 
 question_obj_id = questions.query.fetch_objects(limit=1).objects[0].uuid
 category_obj_id = categories.query.fetch_objects(limit=1).objects[0].uuid
@@ -103,7 +103,7 @@ category_obj_id_alt = categories.query.fetch_objects(limit=2).objects[1].uuid
 # Prep data
 from weaviate.util import generate_uuid5
 
-categories = client.collections.get("JeopardyCategory")
+categories = client.collections.use("JeopardyCategory")
 category_properties = {"title": "Weaviate"}
 category_uuid = generate_uuid5(category_properties)
 categories.data.insert(
@@ -118,7 +118,7 @@ properties = {
 obj_uuid = generate_uuid5(properties)
 
 # START ObjectWithCrossRef
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 questions.data.insert(
     properties=properties,  # A dictionary with the properties of the object
@@ -148,7 +148,7 @@ assert category_uuid == str(xref_ids[0])
 # =================================
 
 # START OneWay
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 questions.data.reference_add(
     from_uuid=question_obj_id,
@@ -217,7 +217,7 @@ dataset.upload_objects(client)  # batch-upload objects
 from weaviate.classes.config import ReferenceProperty
 
 # Add the reference to JeopardyQuestion, after it was created
-category = client.collections.get("JeopardyCategory")
+category = client.collections.use("JeopardyCategory")
 # category.config.add_reference(
 category.config.add_reference(
     # highlight-start
@@ -235,7 +235,7 @@ del_props(client=client, uuid_to_update=question_obj_id, collection_name="Jeopar
 
 # TwoWay Python
 # For the "San Francisco" JeopardyQuestion object, add a cross-reference to the "U.S. CITIES" JeopardyCategory object
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 # highlight-start
 questions.data.reference_add(
     from_uuid=question_obj_id,
@@ -245,7 +245,7 @@ questions.data.reference_add(
 # highlight-end
 
 # For the "U.S. CITIES" JeopardyCategory object, add a cross-reference to "San Francisco"
-categories = client.collections.get("JeopardyCategory")
+categories = client.collections.use("JeopardyCategory")
 # highlight-start
 categories.data.reference_add(
     from_uuid=category_obj_id,
@@ -278,7 +278,7 @@ del_props(client=client, uuid_to_update=question_obj_id, collection_name="Jeopar
 # Multiple Python
 from weaviate.classes.data import DataReference
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 # highlight-start
 refs_list = []
@@ -317,7 +317,7 @@ question_obj_id = questions.query.fetch_objects(limit=1).objects[0].uuid
 # ReadCrossRef
 from weaviate.classes.query import QueryReference
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 # Include the cross-references in a query response
 # highlight-start
@@ -355,7 +355,7 @@ assert "title" in obj.references["hasCategory"].objects[0].properties.keys()
 
 # Delete Python
 # From the "San Francisco" JeopardyQuestion object, delete the "MUSEUMS" category cross-reference
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 # highlight-start
 questions.data.reference_delete(
 # highlight-end
@@ -384,7 +384,7 @@ assert category_obj_id not in xref_ids
 
 # Update Python
 # In the "San Francisco" JeopardyQuestion object, set the "hasCategory" cross-reference only to "MUSEUMS"
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 # highlight-start
 questions.data.reference_replace(
 # highlight-end

@@ -161,9 +161,9 @@ async function populateWeaviate(client: WeaviateClient, overwriteExisting: boole
         }
     }
 
-    const ecommerceCollection = client.collections.get('ECommerce');
-    const weatherCollection = client.collections.get('Weather');
-    const financialCollection = client.collections.get('FinancialContracts');
+    const ecommerceCollection = client.collections.use('ECommerce');
+    const weatherCollection = client.collections.use('Weather');
+    const financialCollection = client.collections.use('FinancialContracts');
 
     try {
         // Load datasets from Hugging Face

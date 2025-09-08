@@ -64,7 +64,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # MetadataBM25Search
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.bm25(
@@ -90,7 +90,7 @@ client.connect()
 
 # MetadataHybridSearch
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.hybrid(
@@ -122,7 +122,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # FilteredSemanticSearch
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.near_vector(

@@ -78,7 +78,7 @@ try:
             "category": d["Category"],
         })
 
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
     questions.data.insert_many(question_objs)
 
     # END EndToEndExample    # Test import
@@ -89,7 +89,7 @@ try:
     assert obj_count.total_count == 10
 
     # NearTextExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.query.near_text(
         query="biology",
@@ -104,7 +104,7 @@ try:
     assert response.objects[0].properties["answer"] == "the nose or snout"
 
     # NearTextWhereExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.query.near_text(
         query="biology",
@@ -121,7 +121,7 @@ try:
 
 
     # GenerativeSearchExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.generate.near_text(
         query="biology",
@@ -137,7 +137,7 @@ try:
     assert len(response.objects[0].generated) > 0
 
     # GenerativeSearchGroupedTaskExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.generate.near_text(
         query="biology",
@@ -145,12 +145,12 @@ try:
         grouped_task="Write a tweet with emojis about these facts."
     )
 
-    print(response.generated)  # Inspect the generated text
+    print(response.generative.text)  # Inspect the generated text
     # END GenerativeSearchGroupedTaskExample
 
     # ===== Test query responses =====
     assert len(response.objects) == 2
-    assert len(response.generated) > 0
+    assert len(response.generative.text) > 0
 
     # Cleanup
 
@@ -178,7 +178,7 @@ try:
             vector=d["vector"]
         ))
 
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
     questions.data.insert_many(question_objs)    # This uses batching under the hood
     # ===== END import with custom vectors =====
 

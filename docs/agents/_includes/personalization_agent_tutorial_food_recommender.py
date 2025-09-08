@@ -67,7 +67,7 @@ dataset = load_dataset(
     split="train",
     streaming=True,
 )
-recipes_collection = client.collections.get("Recipes")
+recipes_collection = client.collections.use("Recipes")
 
 with recipes_collection.batch.fixed_size(batch_size=200) as batch:
     for item in dataset:

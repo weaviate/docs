@@ -18,6 +18,7 @@ from pathlib import Path
         "./_includes/code/howto/manage-data.cross-refs.py",
         "./_includes/code/howto/manage-data.multi-tenancy.py",
         "./_includes/code/howto/manage-data.migrate.data.v4.py",
+        "./_includes/code/config-refs/reference.collections.py",
     ],
 )
 def test_on_blank_instance_pyv4(empty_weaviates, script_loc):

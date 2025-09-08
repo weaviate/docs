@@ -29,7 +29,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 async def read_root():
-    collection = async_client.collections.get("Movie")
+    collection = async_client.collections.use("Movie")
     obj_count = await collection.aggregate.over_all(total_count=True)
     return {"object_count": obj_count.total_count}
 
@@ -39,7 +39,7 @@ async def search(query: str) -> dict:
     if not await async_client.is_ready():
         raise HTTPException(status_code=503, detail="Weaviate is not ready")
 
-    collection = async_client.collections.get("Movie")
+    collection = async_client.collections.use("Movie")
     print(query)
     response: GenerativeSearchReturnType = await collection.generate.hybrid(
         query=query,

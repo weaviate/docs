@@ -102,7 +102,7 @@ client.collections.create(
 movies_dataset = load_dataset("Pablinho/movies-dataset", split="train", streaming=True)
 
 # Get the Movies collection
-movies_collection = client.collections.get("Movie")
+movies_collection = client.collections.use("Movie")
 
 def load_movie_row(item: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -274,7 +274,7 @@ movie_titles = [
     "Godzilla: Planet of the Monsters",
 ]
 
-movies_collection = client.collections.get("Movie")
+movies_collection = client.collections.use("Movie")
 
 movie_dict = {
     movie.properties["title"]: movie
