@@ -128,6 +128,7 @@ try:
 finally:
     client.close()
 
+"""No longer possible to connect via OIDC to Weaviate Cloud
 # WCDwOIDCInstantiation
 import weaviate
 
@@ -144,6 +145,7 @@ try:
     assert client.is_ready()
 finally:
     client.close()
+"""
 
 # CustomInstantiationBasic
 import weaviate
@@ -1352,6 +1354,16 @@ finally:
 
 # END AsyncInsertionExample
 
+# Wait for collection to be populated - async indexing is on
+client = weaviate.connect_to_local()
+
+import time; 
+
+collection = client.collections.use(name="Movie")
+while len(collection) != 5: time.sleep(0.1)
+
+client.close()
+
 # START AsyncSearchExample
 import weaviate
 from weaviate.collections.classes.internal import GenerativeSearchReturnType
@@ -1368,12 +1380,12 @@ async_client = weaviate.use_async_with_local(
 )
 
 
-async def async_query(async_client) -> GenerativeSearchReturnType:
+async def async_query(async_client: WeaviateAsyncClient) -> GenerativeSearchReturnType:
     async with async_client:
-        # Note `collections.get()` is not an async method
-        collection = async_client.collections.use(name="Movie")
+        # Note `collections.use()` is not an async method
+        movies = async_client.collections.use(name="Movie")
 
-        response = await collection.generate.hybrid(
+        response = await movies.generate.hybrid(
             "romantic comedy set in Europe",
             target_vector="overview_vector",
             grouped_task="Write an ad, selling a bundle of these movies together",
@@ -1387,7 +1399,6 @@ try:
     response = loop.run_until_complete(async_query(async_client))
 finally:
     loop.close()
-
 
 print(response.generative.text)
 for o in response.objects:
