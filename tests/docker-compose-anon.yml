@@ -23,6 +23,7 @@ services:
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       CLUSTER_HOSTNAME: 'node1'
       OLLAMA_API_ENDPOINT: 'http://ollama:11434'
+
   ollama:
     image: ollama/ollama:0.9.6
     volumes:
