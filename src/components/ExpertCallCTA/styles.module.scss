@@ -29,20 +29,29 @@
   background-color: var(--site-primary);
   border-color: var(--site-primary);
   color: white;
-
   transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
 
 .askAiButton {
-  background-color: rgb(155, 155, 155);
-  border-color: rgb(155, 155, 155);
-  color: white;
-
-  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+  background-color: transparent;
+  border-color: var(--ifm-color-emphasis-600);
+  color: var(--ifm-color-emphasis-800);
+  
+  /* Smooth transition for hover effects */
+  transition: all 0.2s ease-in-out;
 }
 
-.ctaButton:hover,
+/* Main button hover effect */
+.ctaButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(95%);
+  color: white;
+}
+
+/* ✨ New hover effect for the outline button */
 .askAiButton:hover {
-  transform: translateY(-2px); /* Lifts the button slightly */
-  filter: brightness(95%); /* Darkens the button slightly */
+  /* Fill the background on hover */
+  background-color: var(--ifm-hover-overlay);
+  transform: translateY(-2px);
+  color: var(--ifm-color-emphasis-800);
 }
