@@ -8,3 +8,18 @@
     max-width: 75% !important;
   }
 }
+
+.tocStickyContainer {
+  /* Sticky positioning */
+  top: var(--ifm-navbar-height);
+  position: sticky;
+
+  /* ---- START: Use Grid instead of Flexbox ---- */
+  /* Use Grid to create a strict two-row layout */
+  display: grid;
+  grid-template-rows: 1fr auto;
+  /* ---- END: Use Grid instead of Flexbox ---- */
+
+  /* Scrolling behavior */
+  max-height: calc(100vh - var(--ifm-navbar-height));
+}

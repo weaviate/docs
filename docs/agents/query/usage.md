@@ -3,6 +3,7 @@ title: Usage
 sidebar_position: 30
 description: "Technical documentation and usage examples for implementing the Query Agent."
 image: og/docs/agents.jpg
+show_expert_call_cta: true 
 # tags: ['agents', 'getting started', 'query agent']
 ---
 
