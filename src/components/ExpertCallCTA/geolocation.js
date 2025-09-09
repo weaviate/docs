@@ -4,7 +4,7 @@
  */
 export const getUserCountryCode = async () => {
   try {
-    const response = await fetch("http://ip-api.com/json/?fields=countryCode");
+    const response = await fetch('https://ip-api.com/json/?fields=countryCode');
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

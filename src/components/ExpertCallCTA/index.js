@@ -11,7 +11,6 @@ export default function ExpertCallCTA() {
     // customized for your specific needs.
     const excludedCountries = [
       "RU", // Russia
-      "CN", // China
       "VN", // Vietnam
       "IN", // India
       "IR", // Iran
