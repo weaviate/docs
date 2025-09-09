@@ -2,6 +2,7 @@
 title: Multi-vector encodings
 sidebar_position: 30
 image: og/docs/configuration.jpg
+show_expert_call_cta: true
 # tags: ['configuration', 'compression']
 ---
 

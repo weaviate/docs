@@ -2,6 +2,7 @@
 title: Weaviate Embeddings
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_wes.jpg
+show_expert_call_cta: true
 # tags: ['model providers', 'weaviate', 'weaviate embeddings']
 ---
 

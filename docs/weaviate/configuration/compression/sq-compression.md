@@ -2,6 +2,7 @@
 title: Scalar Quantization (SQ)
 sidebar_position: 27
 image: og/docs/configuration.jpg
+show_expert_call_cta: true
 # tags: ['configuration', 'compression', 'sq']
 ---
 
