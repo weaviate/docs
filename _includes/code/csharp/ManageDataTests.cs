@@ -251,18 +251,16 @@ public class ManageDataTests : IAsyncLifetime
         );
         // END WithGeoCoordinates
 
-        // TEST - Confirm insert & delete object
-        // var response = await publications.Query.List(
-        //     where: Filter.Property("headquartersGeoLocation")
-        //         .WithinGeoRange(
-        //             new GeoCoordinate(52.39f, 4.84f),
-        //             1000 // In meters
-        //         )
-        // );
+        var response = await publications.Query.List(
+            filter: Filter.Property("headquartersGeoLocation")
+                .WithinGeoRange(
+                    new GeoCoordinateConstraint(52.39f, 4.84f, 1000)
+                )
+        );
 
-        // Assert.Single(response.Objects);
-        // var objUuid = response.Objects.First().ID;
-        // await publications.Data.Delete(objUuid);
+        Assert.Single(response.Objects);
+        var objUuid = response.Objects.First().ID;
+        await publications.Data.Delete((Guid)objUuid);
     }
 
     [Fact]
