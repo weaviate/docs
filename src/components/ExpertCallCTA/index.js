@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { getUserCountryCode } from "./geolocation";
 import styles from "./styles.module.scss";
+
+// This function now calls your internal Netlify function
+const getCountryFromNetlify = async () => {
+  try {
+    const response = await fetch("/.netlify/functions/geolocation");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data.country;
+  } catch (error) {
+    console.error("Failed to fetch from Netlify function:", error);
+    return null;
+  }
+};
 
 export default function ExpertCallCTA() {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,9 +30,8 @@ export default function ExpertCallCTA() {
       "IR", // Iran
       "PK", // Pakistan
     ];
-
     const checkVisibility = async () => {
-      const userCountry = await getUserCountryCode();
+      const userCountry = await getCountryFromNetlify();
 
       // If the location lookup fails for any reason, default to showing the component.
       // This ensures that users with privacy tools aren't blocked.
@@ -41,7 +54,6 @@ export default function ExpertCallCTA() {
     return null;
   }
 
-  // If visible, render the component.
   return (
     <div className={styles.container}>
       <p className={styles.text}>
