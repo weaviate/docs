@@ -46,8 +46,7 @@ export default function ExpertCallCTA() {
   return (
     <div className={styles.container}>
       <p className={styles.text}>
-        Need help configuring Weaviate for production? Book a call with one of
-        our expert engineers.
+        Ready for production? Book a call with a Weaviate expert to get help.
       </p>
 
       <div className={styles.buttonContainer}>

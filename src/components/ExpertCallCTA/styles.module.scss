@@ -10,13 +10,14 @@
 .buttonContainer {
   display: flex;
   flex-wrap: wrap; /* Allows buttons to stack on small screens */
-  gap: 0.75rem;   /* Defines the space between the buttons */
+  gap: 0.75rem; /* Defines the space between the buttons */
 }
 
 .text {
   margin-bottom: 0.8rem;
   font-size: 0.9rem !important;
   line-height: 1.4;
+  color: var(--ifm-toc-link-color);
 }
 
 .ctaButton {
