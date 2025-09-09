@@ -2,15 +2,18 @@
   background-color: var(--ifm-background-surface-color);
   padding: 1rem;
   border-radius: var(--ifm-card-border-radius);
-  margin-top: 1.5rem; /* Adds space between the TOC and this component */
+  margin-top: 1.5rem;
   text-align: left;
   border: 1px solid var(--ifm-color-emphasis-300);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .buttonContainer {
   display: flex;
-  flex-wrap: wrap; /* Allows buttons to stack on small screens */
-  gap: 0.75rem; /* Defines the space between the buttons */
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .text {
@@ -24,10 +27,20 @@
   background-color: var(--site-primary);
   border-color: var(--site-primary);
   color: white;
+
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
 
 .askAiButton {
   background-color: rgb(155, 155, 155);
   border-color: rgb(155, 155, 155);
   color: white;
+
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+}
+
+.ctaButton:hover,
+.askAiButton:hover {
+  transform: translateY(-2px); /* Lifts the button slightly */
+  filter: brightness(95%); /* Darkens the button slightly */
 }
