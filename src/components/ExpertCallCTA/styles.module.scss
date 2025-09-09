@@ -1,0 +1,14 @@
+.container {
+  background-color: var(--ifm-background-surface-color);
+  padding: 1rem;
+  border-radius: var(--ifm-card-border-radius);
+  margin-top: 1.5rem; /* Adds space between the TOC and this component */
+  text-align: left;
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.text {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
