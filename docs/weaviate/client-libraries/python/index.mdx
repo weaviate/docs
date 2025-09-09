@@ -294,7 +294,7 @@ import weaviate.classes as wvc
 
 client = weaviate.connect_to_local()
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     filters=wvc.query.Filter.by_property("round").equal("Double Jeopardy!") &
             wvc.query.Filter.by_creation_time().greater_or_equal(datetime.datetime(2005, 1, 1)) |

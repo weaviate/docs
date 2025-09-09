@@ -150,7 +150,7 @@ def split_into_sentences(text):
 def read_and_chunk_index_files(main_folder_path):
     """Read index.md files from subfolders, split into sentences, and chunk every 5 sentences."""
     blog_chunks = []
-    
+
     for file_path in os.listdir("./data"):
         index_file_path = os.path.join("./data", file_path)
         with open(index_file_path, 'r', encoding='utf-8') as file:
@@ -179,7 +179,7 @@ Python output:
 ```python
 # Insert the objects (chunks) into the Weaviate cluster
 
-blogs = client.collections.get("BlogChunks")
+blogs = client.collections.use("BlogChunks")
 
 for blog_chunk in blog_chunks:
     random_uuid = get_valid_uuid(uuid4())
@@ -192,11 +192,11 @@ for blog_chunk in blog_chunks:
 
 ```
 
-## Query Time 
+## Query Time
 
 ## Hybrid Search Query
 
-Hybrid search combines BM25 and vector search and weighs the two algorithms depending on the `alpha` parameter. 
+Hybrid search combines BM25 and vector search and weighs the two algorithms depending on the `alpha` parameter.
 
 `alpha`= 0 --> pure BM25
 
@@ -205,9 +205,9 @@ Hybrid search combines BM25 and vector search and weighs the two algorithms depe
 `alpha`= 1 --> pure vector search
 
 ```python
-import json 
+import json
 
-blogs = client.collections.get("BlogChunks")
+blogs = client.collections.use("BlogChunks")
 
 response = blogs.query.hybrid(
     query="What is Ref2Vec",
@@ -240,7 +240,7 @@ Here is what happens in the below:
 The first line in the output is the generated text, and the `content` pieces below it, are what was retrieved from Weaviate and passed to NVIDIA.
 
 ```python
-blogs = client.collections.get("BlogChunks")
+blogs = client.collections.use("BlogChunks")
 
 response = blogs.generate.near_text(
     query="What is Ref2Vec?",

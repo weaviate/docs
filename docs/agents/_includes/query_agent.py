@@ -112,9 +112,9 @@ def populate_weaviate(client, overwrite_existing=False):
         streaming=True,
     )
 
-    ecommerce_collection = client.collections.get("ECommerce")
-    weather_collection = client.collections.get("Weather")
-    financial_collection = client.collections.get("FinancialContracts")
+    ecommerce_collection = client.collections.use("ECommerce")
+    weather_collection = client.collections.use("Weather")
+    financial_collection = client.collections.use("FinancialContracts")
 
     with ecommerce_collection.batch.fixed_size(batch_size=200) as batch:
         for item in ecommerce_dataset:

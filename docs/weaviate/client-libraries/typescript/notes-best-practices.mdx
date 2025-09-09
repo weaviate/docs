@@ -160,7 +160,7 @@ await collection.data.insert({
 The cursor API has a new iterator method. To repeat an action over an entire collection, use `iterator()`.
 
 ```js
-const articles = client.collections.get("Article");
+const articles = client.collections.use("Article");
 
 for await (const article of articles.iterator()) {
   // do something with article.
@@ -186,7 +186,7 @@ The v3 client also adds internal features that make JavaScript development more 
 
 You can set timeout values, in seconds, for the client. Use the `timeout` property to configure the timeout values for initialization checks as well as query and insert operations.
 
-```js 
+```js
 import weaviate from 'weaviate-client';
 
 const client = await weaviate.connectToLocal({

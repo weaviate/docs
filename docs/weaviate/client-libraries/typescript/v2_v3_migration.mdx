@@ -104,7 +104,7 @@ Your application code creates an object that represents a collection. This objec
 This example returns objects from the `JeopardyQuestion` collection.
 
 ```js
-const myCollection = client.collections.get('JeopardyQuestion');
+const myCollection = client.collections.use('JeopardyQuestion');
 
 const result = await myCollection.query.fetchObjects()
 
@@ -173,7 +173,7 @@ The v3 client doesn't use the builder pattern. The v3 client uses specific metho
 
 ### Batch Inserts
 
-The `insertMany()` method replaces `objectBatcher()` to make batch insertions easier. 
+The `insertMany()` method replaces `objectBatcher()` to make batch insertions easier.
 
 For inserts of over 5000 objects, use `insertMany()` as part of a batch process.
 

@@ -37,7 +37,7 @@ data_uuid = client.data_object.create(
 <TabItem value="js" label="JS/TS Client v3">
 
 ```js
-const publication = client.collections.get('Publication')
+const publication = client.collections.use('Publication')
 
 uuid = await publication.data.insert({
   properties: {

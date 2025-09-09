@@ -38,7 +38,7 @@ client.collections.create(
 
 
 # Confirm creation
-c = client.collections.get(collection_name)
+c = client.collections.use(collection_name)
 coll_config = c.config.get()
 assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == BQConfig
 
@@ -64,7 +64,7 @@ client.collections.create(
 )
 # END BQCustomConfig
 
-c = client.collections.get(collection_name)
+c = client.collections.use(collection_name)
 coll_config = c.config.get()
 assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == BQConfig
 # assert coll_config.vector_index_config.quantizer.rescore_limit == 150  # appears to be a bug

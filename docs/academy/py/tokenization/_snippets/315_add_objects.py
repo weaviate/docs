@@ -13,7 +13,7 @@ client = weaviate.connect_to_local()
 # END AddObjects
 
 # AddObjects # StringsToAdd
-collection = client.collections.get("TokenizationDemo")
+collection = client.collections.use("TokenizationDemo")
 
 # END AddObjects # END StringsToAdd
 # AddObjects

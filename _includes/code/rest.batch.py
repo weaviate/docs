@@ -12,8 +12,8 @@ try:
     client.collections.create("Author")
     client.collections.create("Publication")
 
-    authors = client.collections.get("Author")
-    publications = client.collections.get("Publication")
+    authors = client.collections.use("Author")
+    publications = client.collections.use("Publication")
 
     first_target_uuid = "36ddd591-2dee-4e7e-a3cc-eb86d30a4303"
     second_target_uuid = "36ddd591-2dee-4e7e-a3cc-eb86d30a4304"
@@ -66,7 +66,7 @@ try:
 
 
     # START BatchDeleteObjects
-    authors = client.collections.get("Author")
+    authors = client.collections.use("Author")
     # authors = authors.with_tenant("tenantA")  # Optional; specify the tenant in multi-tenancy collections
     # authors = authors.with_consistency_level(wvc.config.ConsistencyLevel.QUORUM)  # Optional; specify the consistency level
 

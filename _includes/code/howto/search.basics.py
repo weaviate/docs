@@ -25,7 +25,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ==============================
 
 # BasicGetPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.fetch_objects()
 # highlight-end
@@ -46,7 +46,7 @@ assert "question" in response.objects[0].properties.keys()
 # ====================================
 
 # GetWithLimitPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     limit=1
@@ -69,7 +69,7 @@ assert len(response.objects) == 1
 # ==========================================
 
 # GetWithLimitOffsetPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     limit=1,
@@ -93,7 +93,7 @@ assert len(response.objects) == 1
 # ==========================================
 
 # GetPropertiesPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     limit=1,
@@ -117,7 +117,7 @@ for prop_name in ["question", "answer", "points"]:
 # ======================================
 
 # GetObjectVectorPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     include_vector=True,
@@ -140,7 +140,7 @@ assert len(response.objects[0].vector["default"]) >= 100
 # ==================================
 
 # GetObjectIdPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # Object IDs are included by default with the `v4` client! :)
     limit=1
@@ -166,7 +166,7 @@ assert type(response.objects[0].uuid) == _WeaviateUUIDInt
 # GetWithCrossRefsPython
 from weaviate.classes.query import QueryReference
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     return_references=[
@@ -199,7 +199,7 @@ assert len(response.objects[0].references["hasCategory"].objects) > 0
 # GetWithMetadataPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     limit=1,
     # highlight-start
@@ -224,7 +224,7 @@ assert response.objects[0].metadata.creation_time is not None
 
 # MultiTenancy
 # Connect to the collection
-mt_collection = client.collections.get("WineReviewMT")
+mt_collection = client.collections.use("WineReviewMT")
 
 # Get the specific tenant's version of the collection
 # highlight-start

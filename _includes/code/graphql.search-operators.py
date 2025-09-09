@@ -42,12 +42,12 @@ try:
   # GraphQLnearVector
   # ========================================
 
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
   rand_obj = collection.query.fetch_objects(limit=1, include_vector=True)
   query_vector = rand_obj.objects[0].vector["default"]
 
   # START GraphQLnearVector
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.near_vector(
       near_vector=query_vector,
@@ -67,13 +67,13 @@ try:
   # GraphQLnearObject
   # ========================================
 
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
   rand_obj = collection.query.fetch_objects(limit=1, include_vector=True)
   query_vector = rand_obj.objects[0].vector["default"]
   object_id = rand_obj.objects[0].uuid
 
   # START GraphQLnearObject
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.near_object(
       near_object=object_id,
@@ -94,7 +94,7 @@ try:
   # ========================================
 
   # START GraphQLnearText2
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.near_text(
       query="travelling in Asia",
@@ -167,7 +167,7 @@ try:
   # ========================================
 
   # START GraphQLHybridSearch
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.hybrid(
       query="Fisherman that catches salmon",
@@ -190,13 +190,13 @@ try:
   # GraphQLHybridWithVector
   # ========================================
 
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
   rand_obj = collection.query.fetch_objects(limit=1, include_vector=True)
   query_vector = rand_obj.objects[0].vector["default"]
 
 
   # START GraphQLHybridWithVector
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.hybrid(
       query="Fisherman that catches salmon",
@@ -221,7 +221,7 @@ try:
   # ========================================
 
   # START GraphQLHybridWithFilter
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.hybrid(
       query="How to catch an Alaskan Pollock",
@@ -243,7 +243,7 @@ try:
   # ========================================
 
   # START GraphQLHybridWithPropertiesSpecified
-  collection = client.collections.get("JeopardyQuestion")
+  collection = client.collections.use("JeopardyQuestion")
 
   response = collection.query.hybrid(
       query="Venus",
@@ -267,7 +267,7 @@ try:
   # ========================================
 
   # START GraphQLBM25Basic
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.bm25(
       query="fox",
@@ -290,7 +290,7 @@ try:
   # ========================================
 
   # START GraphQLBM25WithFilter
-  collection = client.collections.get("Article")
+  collection = client.collections.use("Article")
 
   response = collection.query.bm25(
       query="how to fish",

@@ -157,7 +157,7 @@ description: 'Boosting Weaviate using SIMD-AVX512, Loop Unrolling and Compiler O
 ## Batch Import Blogs into Weaviate
 
 ```python
-blogs_collection = weaviate_client.collections.get("WeaviateBlogChunks")
+blogs_collection = weaviate_client.collections.use("WeaviateBlogChunks")
 
 import time
 
@@ -286,7 +286,7 @@ Python output:
 ### Inspect Synthetic Queries produced from the Blog Content
 
 ```python
-blogs_collection = weaviate_client.collections.get("WeaviateBlogChunks")
+blogs_collection = weaviate_client.collections.use("WeaviateBlogChunks")
 ```
 
 ```python
@@ -324,7 +324,7 @@ description: "Learn about the Query Agent, our new agentic search service that r
 
 We’re incredibly excited to announce that we’ve released a brand new service for our [Serverless Weaviate Cloud](https://weaviate.io/deployment/serverless) users (including free Sandbox users) to preview, currently in Alpha: the _**Weaviate Query Agent!**_ Ready to use now, this new feature provides a simple interface for users to ask complex multi-stage questions about your data in Weaviate, using powerful foundation LLMs. In this blog, learn more about what the Weaviate Query Agent is, and discover how you can build your own!
 
-Let’s get started. :::note 
+Let’s get started. :::note
 This blog comes with an accompanying [recipe](https://github.com/weaviate/recipes/tree/main/weaviate-services/agents/query-agent-get-started.ipynb) for those of you who’d like to get started. :::
 
 ## What is the Weaviate Query Agent
@@ -337,7 +337,7 @@ How can I integrate the Weaviate Query Agent with my existing application to acc
 Example #2
 Blog Content:
 
-:::note 
+:::note
 To learn more about what AI Agents are, read our blog [”Agents Simplified: What we mean in the context of AI”](https://weaviate.io/blog/ai-agents). :::
 
 **With the Query Agent, we aim to provide an agent that is inherently capable of handling complex queries over multiple Weaviate collections.** The agent understands the structure of all of your collections, so knows when to run searches, aggregations or even both at the same time for you. Often, AI agents are described as LLMs that have access to various tools (adding more to its capabilities), which are also able to make a plan, and reason about the response. Our Query Agent is an AI agent that is provided access to multiple Weaviate collections within a cluster. Depending on the user’s query, it will be able to decide which collection or collections to perform searches on.

@@ -126,11 +126,9 @@ Some of the `connect` helper functions take authentication credentials. For exam
   language="py"
 />
 
-:::warning 
+import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
 
-Connecting to Weaviate Cloud (WCD) using OIDC is deprecated and will be removed in the near future. Please use API key authentication instead.
-
-:::
+<WCDOIDCWarning/>
 
 </TabItem>
 </Tabs>
@@ -190,6 +188,13 @@ In most cases, you should use the default `False` setting for `skip_init_checks`
 
 For additional connection configuration, see [Timeout values](#timeout-values).
 
+## `client.collections.use()` vs `client.collections.get()`
+
+The idiomatic way to create a collection object is `client.collections.use(<COLLECTION_NAME>)`. While identical to `client.collections.get()`, `use()` is more clearly indicative of the fact that it does not perform any network requests.
+
+We made this change as `client.collections.get()` may be misinterpreted as fetching the collection schema from the server, which it does not.
+
+In the future, `client.collections.get()` may be deprecated.
 
 ## Batch imports
 

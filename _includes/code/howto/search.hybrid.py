@@ -32,7 +32,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ==============================
 
 # NamedVectorHybridPython
-reviews = client.collections.get("WineReviewNV")
+reviews = client.collections.use("WineReviewNV")
 # highlight-start
 response = reviews.query.hybrid(
     query="A French Riesling",
@@ -55,7 +55,7 @@ assert response.objects[0].collection == "WineReviewNV"
 # ==============================
 
 # HybridBasicPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.hybrid(query="food", limit=3)
 # highlight-end
@@ -76,7 +76,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # HybridWithScorePython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     alpha=0.5,
@@ -105,7 +105,7 @@ assert response.objects[0].metadata.explain_score is not None
 # ===================================
 
 # START limit Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -131,7 +131,7 @@ assert len(response.objects) == 3
 # START autocut Python
 from weaviate.classes.query import HybridFusion
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -154,7 +154,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # ===================================
 
 # HybridWithAlphaPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -181,7 +181,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 from weaviate.classes.query import HybridFusion
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -208,7 +208,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 from weaviate.classes.query import BM25Operator
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     # highlight-start
     query="Australian mammal cute",
@@ -235,7 +235,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 from weaviate.classes.query import BM25Operator
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     # highlight-start
     query="Australian mammal cute",
@@ -258,7 +258,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # ==================================================
 
 # HybridWithPropertiesPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -282,7 +282,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # ====================================================
 
 # HybridWithPropertyWeightingPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -308,7 +308,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # HybridWithVectorPython
 query_vector = [-0.02] * 1536  # Some vector that is compatible with object vectors
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -337,7 +337,7 @@ from weaviate.classes.query import Filter
 
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
@@ -362,7 +362,7 @@ assert response.objects[0].properties["round"] == "Double Jeopardy!"
 # START VectorParametersPython
 from weaviate.classes.query import HybridVector, Move, HybridFusion
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="California",
     # highlight-start
@@ -387,7 +387,7 @@ assert len(response.objects) > 0
 # START VectorSimilarityPython
 from weaviate.classes.query import HybridVector, Move, HybridFusion
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="California",
     # highlight-start
@@ -416,7 +416,7 @@ group_by = GroupBy(
 )
 
 # Query
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     alpha=0.75,
     query="California",

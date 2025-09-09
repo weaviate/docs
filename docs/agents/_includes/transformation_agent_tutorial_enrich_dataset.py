@@ -44,7 +44,7 @@ dataset = load_dataset(
     "weaviate/agents", "transformation-agent-papers", split="train", streaming=True
 )
 
-papers_collection = client.collections.get("ArxivPapers")
+papers_collection = client.collections.use("ArxivPapers")
 
 with papers_collection.batch.fixed_size(batch_size=200) as batch:
     for item in dataset:

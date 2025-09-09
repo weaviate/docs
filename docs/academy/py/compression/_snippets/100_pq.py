@@ -37,7 +37,7 @@ client.collections.create(
 # END PQBasicConfig
 
 # Confirm creation
-c = client.collections.get(collection_name)
+c = client.collections.use(collection_name)
 coll_config = c.config.get()
 assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == PQConfig
 
@@ -67,7 +67,7 @@ client.collections.create(
 )
 # END PQCustomConfig
 
-c = client.collections.get(collection_name)
+c = client.collections.use(collection_name)
 coll_config = c.config.get()
 assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == PQConfig
 assert coll_config.vector_config["default"].vector_index_config.quantizer.segments == 512
