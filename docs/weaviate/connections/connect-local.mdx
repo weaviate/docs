@@ -20,6 +20,7 @@ import TsCodeV2 from '!!raw-loader!/_includes/code/connections/connect-ts-v2.ts'
 import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
 
 Follow these steps to connect to a locally hosted Weaviate instance.
 
@@ -80,6 +81,14 @@ To connect to a local instance without authentication, follow these examples.
      startMarker="// START LocalNoAuth"
      endMarker="// END LocalNoAuth"
      language="java"
+   />
+</TabItem>
+<TabItem value="csharp" label="C#">
+   <FilteredTextBlock
+     text={CSharpCode}
+     startMarker="// START LocalNoAuth"
+     endMarker="// END LocalNoAuth"
+     language="csharp"
    />
 </TabItem>
 <TabItem value="shell" label="cURL">
@@ -145,6 +154,14 @@ To change the default URL or port number, follow these examples.
      language="java"
    />
 </TabItem>
+<TabItem value="csharp" label="C#">
+   <FilteredTextBlock
+     text={CSharpCode}
+     startMarker="// START CustomURL"
+     endMarker="// END CustomURL"
+     language="csharp"
+   />
+</TabItem>
 <TabItem value="shell" label="cURL">
    <FilteredTextBlock
      text={ShellCode}
@@ -207,6 +224,14 @@ To authenticate with a Weaviate API key, follow these examples.
      startMarker="// START LocalAuth"
      endMarker="// END LocalAuth"
      language="java"
+   />
+</TabItem>
+<TabItem value="csharp" label="C#">
+   <FilteredTextBlock
+     text={CSharpCode}
+     startMarker="// START LocalAuth"
+     endMarker="// END LocalAuth"
+     language="csharp"
    />
 </TabItem>
 <TabItem value="shell" label="cURL">
