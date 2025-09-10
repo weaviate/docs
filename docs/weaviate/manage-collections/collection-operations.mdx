@@ -10,7 +10,6 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
-import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
@@ -45,14 +44,6 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START BasicCreateCollection"
-    endMarker="# END BasicCreateCollection"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -136,14 +127,6 @@ For details, see:
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START CreateCollectionWithProperties"
-    endMarker="# END CreateCollectionWithProperties"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -197,14 +180,6 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START Vectorizer"
-    endMarker="# END Vectorizer"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -290,14 +265,6 @@ Retrieve a collection definition from the schema.
       startMarker="# START ReadOneCollection"
       endMarker="# END ReadOneCollection"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadOneCollection"
-      endMarker="# END ReadOneCollection"
-      language="pyv3"
     />
   </TabItem>
 
@@ -514,14 +481,6 @@ Fetch the database schema to retrieve all of the collection definitions.
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START ReadAllCollections"
-    endMarker="# END ReadAllCollections"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -578,14 +537,6 @@ You can update a collection definition to change the [mutable collection setting
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START UpdateCollection"
-    endMarker="# END UpdateCollection"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -670,14 +621,6 @@ Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#i
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetInvertedIndexParams"
-    endMarker="# END SetInvertedIndexParams"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock

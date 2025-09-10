@@ -12,43 +12,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
       language="py"
     />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client(
-    url="http://localhost:8080",
-    additional_headers={
-        "X-HuggingFace-Api-Key": "YOUR-HUGGINGFACE-API-KEY"
-    }
-)
-
-nearText = {
-  "concepts": ["fashion"],
-  "distance": 0.6, # prior to v1.14 use "certainty" instead of "distance"
-  "moveAwayFrom": {
-    "concepts": ["finance"],
-    "force": 0.45
-  },
-  "moveTo": {
-    "concepts": ["haute couture"],
-    "force": 0.85
-  }
-}
-
-result = (
-  client.query
-  .get("Publication", "name")
-  .with_additional(["certainty OR distance"]) # note that certainty is only supported if distance==cosine
-  .with_near_text(nearText)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

@@ -12,39 +12,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
       language="py"
     />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client  = weaviate.Client(
-  url = "https://WEAVIATE_INSTANCE_URL/",  # Replace WEAVIATE_INSTANCE_URL with your instance URL
-  additional_headers={
-      "X-OpenAI-Api-Key": "YOUR-OPENAI-API-KEY"
-  }
-)
-
-# highlight-start
-# instruction for the generative module
-generatePrompt = "Describe the following as a Facebook Ad: {summary}"
-# highlight-end
-
-result = (
-  client.query
-  .get("Article", ["title", "summary"])
-  # highlight-start
-  .with_generate(single_prompt=generatePrompt)
-  # highlight-end
-  .with_near_text({
-    "concepts": ["Italian food"]
-  })
-  .with_limit(5)
-).do()
-
-print(result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```js

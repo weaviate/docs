@@ -269,13 +269,6 @@
 			"# without the empty line the code won't render",
 			"```",
 			"</TabItem>",
-			"<TabItem value=\"py3\" label=\"Python Client v3\">",
-			"",
-			"```python",
-			"# Python v3 example goes here",
-			"```",
-			"",
-			"</TabItem>",
 			"</Tabs>",
 		],
 		"description": "Adds the tabs section for code examples"

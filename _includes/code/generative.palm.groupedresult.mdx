@@ -12,40 +12,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
       language="py"
     />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client  = weaviate.Client(
-  url = "https://WEAVIATE_INSTANCE_URL/",  # Replace WEAVIATE_INSTANCE_URL with your instance URL
-  additional_headers={
-      "X-Goog-Vertex-Api-Key": "YOUR-VERTEX-API-KEY",
-      "X-Goog-Studio-Api-Key": "YOUR-AI-STUDIO-API-KEY",
-  }
-)
-
-# highlight-start
-# instruction for the generative module
-generateTask = "Explain why these magazines or newspapers are about finance"
-# highlight-end
-
-result = (
-  client.query
-  .get("Publication", ["name"])
-  # highlight-start
-  .with_generate(grouped_task=generateTask)
-  # highlight-end
-  .with_near_text({
-    "concepts": ["magazine or newspaper about finance"]
-  })
-  .with_limit(5)
-).do()
-
-print(result)
-```
-
-</TabItem>
 <TabItem value="js" label="JS/TS Client v2">
 
 ```ts

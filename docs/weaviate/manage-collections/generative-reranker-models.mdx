@@ -9,7 +9,6 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
-import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
@@ -40,14 +39,6 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetReranker"
-    endMarker="# END SetReranker"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -95,14 +86,6 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START UpdateReranker"
-    endMarker="# END UpdateReranker"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -151,14 +134,6 @@ Specify a `generative` model integration for a collection (for RAG).
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetGenerative"
-    endMarker="# END SetGenerative"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
@@ -215,14 +190,6 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START UpdateGenerative"
-    endMarker="# END UpdateGenerative"
-    language="pyv3"
-  />
-</TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">
   <FilteredTextBlock
