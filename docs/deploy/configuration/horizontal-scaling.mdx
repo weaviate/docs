@@ -8,7 +8,6 @@ import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go';
 
@@ -266,7 +265,7 @@ You've made the decision to shard your data, now let's get it configured:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ShardingSettings"
@@ -275,14 +274,6 @@ You've made the decision to shard your data, now let's get it configured:
     />
   </TabItem>
 
-    <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="tsv2"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -320,7 +311,7 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AllReplicationSettings"
@@ -329,14 +320,6 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="tsv2"
-    />
-  </TabItem>
   <TabItem value="curl" label="cURL">
 
 ```bash

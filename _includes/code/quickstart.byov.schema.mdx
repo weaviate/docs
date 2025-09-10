@@ -5,7 +5,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
 import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
-import ByovAllTsCodeLegacy from '!!raw-loader!/_includes/code/quickstart.byov.all.legacy.ts';
 import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
 
 <Tabs groupId="languages">
@@ -17,21 +16,13 @@ import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={ByovAllTsCode}
        startMarker="// Collection definition"
        endMarker="// Import data"
        language="ts"
      />
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={ByovAllTsCodeLegacy}
-      startMarker="// Class definition"
-      endMarker="// Import data"
-      language="tsv2"
-    />
   </TabItem>
   <TabItem value="curl" label="Curl">
     <FilteredTextBlock

@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.py';
 import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.autopq.ts';
 import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
-import TSCodeLegacy from '!!raw-loader!/\_includes/code/howto/configure.pq-compression-v2.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
@@ -65,7 +64,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeAutoPQ}
        startMarker="// START CollectionWithAutoPQ"
@@ -74,14 +73,6 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START CollectionWithAutoPQ"
-       endMarker="// END CollectionWithAutoPQ"
-       language="tsv2"
-     />
-  </TabItem>
 
 </Tabs>
 
@@ -130,7 +121,7 @@ Follow these steps to manually enable PQ.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START InitClassDef"
@@ -139,14 +130,6 @@ Follow these steps to manually enable PQ.
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START InitClassDef"
-       endMarker="// END InitClassDef"
-       language="tsv2"
-     />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -196,7 +179,7 @@ To enable PQ, update your collection definition as shown below. For additional c
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START UpdateSchema"
@@ -205,14 +188,6 @@ To enable PQ, update your collection definition as shown below. For additional c
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START UpdateSchema"
-       endMarker="// END UpdateSchema"
-       language="tsv2"
-     />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -292,7 +267,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeManualPQ}
       startMarker="// START ViewConfig"
@@ -301,14 +276,6 @@ To review the current `pq` configuration, you can retrieve it as shown below.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START GetSchema"
-      endMarker="// END GetSchema"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.ts';
 import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
-import TSCodeLegacy from '!!raw-loader!/\_includes/code/howto/configure.bq-compression-v2.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
@@ -45,7 +44,7 @@ BQ can be enabled at collection creation time through the collection definition:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START EnableBQ"
@@ -54,14 +53,6 @@ BQ can be enabled at collection creation time through the collection definition:
       />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-      <FilteredTextBlock
-        text={TSCodeLegacy}
-        startMarker="// START EnableBQ"
-        endMarker="// END EnableBQ"
-        language="tsv2"
-      />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -138,7 +129,7 @@ For example:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
       <FilteredTextBlock
         text={TSCodeBQOptions}
         startMarker="// START BQWithOptions"
@@ -147,14 +138,6 @@ For example:
       />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-      <FilteredTextBlock
-        text={TSCodeLegacy}
-        startMarker="// START BQWithOptions"
-        endMarker="// END BQWithOptions"
-        language="tsv2"
-      />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

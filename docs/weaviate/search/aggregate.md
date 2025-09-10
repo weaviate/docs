@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.aggregate.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.aggregate-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.aggregate-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
 
 
@@ -52,7 +51,7 @@ Return the number  of objects matched by the query.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// MetaCount TS"
@@ -61,14 +60,6 @@ Return the number  of objects matched by the query.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// MetaCount TS"
-      endMarker="// END MetaCount TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -117,7 +108,7 @@ This example counts occurrence frequencies in the `question` property:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// TextProp TS"
@@ -126,14 +117,6 @@ This example counts occurrence frequencies in the `question` property:
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// TextProp TS"
-      endMarker="// END TextProp TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -182,7 +165,7 @@ This  example sums the `points` property.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// IntProp TS"
@@ -191,14 +174,6 @@ This  example sums the `points` property.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// IntProp TS"
-      endMarker="// END IntProp TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -249,7 +224,7 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// groupBy TS"
@@ -258,14 +233,6 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// groupBy TS"
-      endMarker="// END groupBy TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -322,7 +289,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// nearTextWithLimit TS"
@@ -331,14 +298,6 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// nearTextWithLimit TS"
-      endMarker="// END nearTextWithLimit TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -392,7 +351,7 @@ Use `distance` to specify how similar the objects should be.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// nearTextWithDistance TS"
@@ -401,14 +360,6 @@ Use `distance` to specify how similar the objects should be.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// nearTextWithDistance TS"
-      endMarker="// END nearTextWithDistance TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -457,7 +408,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// HybridExample"
@@ -466,14 +417,6 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// nearTextWithLimit TS"
-      endMarker="// END nearTextWithLimit TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -522,7 +465,7 @@ For more specific results, use a `filter` to narrow your search.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// whereFilter TS"
@@ -531,14 +474,6 @@ For more specific results, use a `filter` to narrow your search.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// whereFilter TS"
-      endMarker="// END whereFilter TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

@@ -11,7 +11,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
@@ -45,7 +44,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START BasicCreateCollection"
@@ -54,14 +53,6 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START BasicCreateCollection"
-    endMarker="// END BasicCreateCollection"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -128,7 +119,7 @@ For details, see:
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START CreateCollectionWithProperties"
@@ -137,14 +128,6 @@ For details, see:
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START CreateCollectionWithProperties"
-    endMarker="// END CreateCollectionWithProperties"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -181,7 +164,7 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START Vectorizer"
@@ -190,14 +173,6 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START Vectorizer"
-    endMarker="// END Vectorizer"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -244,7 +219,7 @@ Get a boolean indicating whether a given collection exists.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CheckIfExists"
@@ -268,7 +243,7 @@ Retrieve a collection definition from the schema.
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START ReadOneCollection"
@@ -277,14 +252,6 @@ Retrieve a collection definition from the schema.
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ReadOneCollection"
-    endMarker="// END ReadOneCollection"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -482,7 +449,7 @@ Fetch the database schema to retrieve all of the collection definitions.
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START ReadAllCollections"
@@ -491,14 +458,6 @@ Fetch the database schema to retrieve all of the collection definitions.
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ReadAllCollections"
-    endMarker="// END ReadAllCollections"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -538,7 +497,7 @@ You can update a collection definition to change the [mutable collection setting
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START UpdateCollection"
@@ -547,14 +506,6 @@ You can update a collection definition to change the [mutable collection setting
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START UpdateCollection"
-    endMarker="// END UpdateCollection"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -622,7 +573,7 @@ Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#i
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetInvertedIndexParams"
@@ -631,14 +582,6 @@ Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#i
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock

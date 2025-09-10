@@ -173,14 +173,6 @@ Sample client code:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={AutocutTSCode}
-      startMarker="// START Autocut"
-      endMarker="// END Autocut"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
@@ -325,14 +317,6 @@ The sort function takes either an object, or an array of objects, that describe 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START Sorting"
-      endMarker="// END Sorting"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -418,14 +402,6 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START MultiplePropSorting"
-      endMarker="// END MultiplePropSorting"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -486,14 +462,6 @@ To sort with metadata, add an underscore to the property name.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START AdditionalPropSorting"
-      endMarker="// END AdditionalPropSorting"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

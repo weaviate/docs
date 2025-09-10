@@ -13,7 +13,7 @@ import PyCode from '!!raw-loader!/_includes/code/tutorials/connect.py';
      language="py"
    />
 </TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```ts
 import weaviate from 'weaviate-client';
@@ -30,22 +30,6 @@ const client = await weaviate.connectToWeaviateCloud(
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-```ts
-import weaviate, { AuthUserPasswordCredentials } from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: "https",
-  host: "WEAVIATE_INSTANCE_URL",  // Replace with your Weaviate endpoint
-  authClientSecret: new AuthUserPasswordCredentials({
-    username: wcdUsername,  // Replace with your Weaviate Cloud username
-    password: wcdPassword,  // Replace with your Weaviate Cloud password
-  })
-});
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go
