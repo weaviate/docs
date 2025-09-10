@@ -11,7 +11,6 @@ const getCountryFromNetlify = async () => {
     const data = await response.json();
     return data.country;
   } catch (error) {
-    console.error("Failed to fetch from Netlify function:", error);
     return null;
   }
 };

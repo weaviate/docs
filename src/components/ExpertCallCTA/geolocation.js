@@ -11,7 +11,6 @@ export const getUserCountryCode = async () => {
     const data = await response.json();
     return data.countryCode;
   } catch (error) {
-    console.error("Failed to fetch user location:", error);
     return null; // Return null on error so we can handle it gracefully
   }
 };
