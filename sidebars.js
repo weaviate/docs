@@ -578,6 +578,12 @@ const sidebars = {
           id: "weaviate/config-refs/distances",
           className: "sidebar-item",
         },
+        {
+          type: "link",
+          label: "Environment variables (Deployment)",
+          href: "../deploy/configuration/env-vars",
+          className: "sidebar-item",
+        },
       ],
     },
     {
