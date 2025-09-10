@@ -34,45 +34,6 @@ client.schema.create_class(class_obj)
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const classObj = {
-  class: 'Publication',
-  description: 'A publication with an online source',
-  properties: [
-    {
-      dataType: [
-        'string',
-      ],
-      description: 'Name of the publication',
-      name: 'name',
-    },
-    {
-      dataType: [
-        'geoCoordinates',
-      ],
-      description: 'Geo location of the HQ',
-      name: 'headquartersGeoLocation',
-    },
-  ],
-};
-
-const response = await client.schema
-  .classCreator()
-  .withClass(classObj)
-  .do();
-console.log(response);
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

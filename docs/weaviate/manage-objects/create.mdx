@@ -10,7 +10,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.create.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.create-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go';
 
@@ -36,7 +35,7 @@ This example creates an object in the `JeopardyQuestion` collection.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObject START"
@@ -45,14 +44,6 @@ This example creates an object in the `JeopardyQuestion` collection.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObject START"
-      endMarker="// CreateObject END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -103,7 +94,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithVector START"
@@ -112,14 +103,6 @@ When you create an object, you can provide a vector. (For specifying multiple, n
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectWithVector START"
-      endMarker="// CreateObjectWithVector END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -158,7 +141,7 @@ When you create an object, you can specify named vectors (if [configured in your
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectNamedVectors START"
@@ -167,14 +150,6 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectNamedVectors START"
-      endMarker="// CreateObjectNamedVectors END"
-      language="tsv2"
-    />
-  </TabItem>
 </Tabs>
 
 ## Create an object with a specified ID
@@ -196,7 +171,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithId START"
@@ -205,14 +180,6 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectWithId START"
-      endMarker="// CreateObjectWithId END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -252,7 +219,7 @@ Object IDs are not randomly generated. The same value always generates the same 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithDeterministicId START"
@@ -261,14 +228,6 @@ Object IDs are not randomly generated. The same value always generates the same 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectWithDeterministicId START"
-      endMarker="// CreateObjectWithDeterministicId END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
 
@@ -307,7 +266,6 @@ import CrossReferencePerformanceNote from '/_includes/cross-reference-performanc
 
 import XrefPyCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
 import XrefTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
-import XrefTSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2';
 
 You can create an object with cross-references to other objects.
 
@@ -322,7 +280,7 @@ You can create an object with cross-references to other objects.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={XrefTSCode}
       startMarker="// START ObjectWithCrossRef"
@@ -331,14 +289,6 @@ You can create an object with cross-references to other objects.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={XrefTSCodeLegacy}
-      startMarker="// START ObjectWithCrossRef"
-      endMarker="// END ObjectWithCrossRef"
-      language="tsv2"
-    />
-  </TabItem>
 </Tabs>
 
 :::tip Additional information
@@ -372,7 +322,7 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// ValidateObject START"
@@ -381,14 +331,6 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// ValidateObject START"
-      endMarker="// ValidateObject END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock

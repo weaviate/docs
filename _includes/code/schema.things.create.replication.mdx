@@ -2,7 +2,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 
@@ -17,7 +16,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReplicationSettings"
@@ -26,14 +25,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ReplicationSettings"
-      endMarker="// END ReplicationSettings"
-      language="tsv2"
-    />
-  </TabItem>
 
 <TabItem value="go" label="Go">
 

@@ -14,25 +14,6 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.simple.v3.py';
     language="py"
   />
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate URL
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('JeopardyQuestion')
-  .withFields('question answer points')
-  .do();
-console.log(response);
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

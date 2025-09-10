@@ -10,7 +10,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.image.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.image.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.image-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-image_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/ImageSearchTest.java';
 
@@ -50,7 +49,7 @@ If your query image is stored in a file, you can use the client library to searc
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
   <FilteredTextBlock
     text={TSCode}
@@ -61,17 +60,6 @@ If your query image is stored in a file, you can use the client library to searc
 
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-
-  > Not available yet. Vote for the [feature request](https://github.com/weaviate/typescript-client/issues/65). DIY code below.
-
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ImageFileSearch"
-    endMarker="// END ImageFileSearch"
-    language="ts"
-  />
-  </TabItem>
 
 
   <TabItem value="go" label="Go">
@@ -122,7 +110,7 @@ You can search by a base64 representation of an image:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START search with base64"
@@ -131,14 +119,6 @@ You can search by a base64 representation of an image:
     />
   </TabItem>
 
-   <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START search with base64"
-      endMarker="// END search with base64"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

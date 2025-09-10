@@ -19,25 +19,6 @@ client = weaviate.Client(
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',
-  // highlight-start
-  // Replace with your API key
-  headers: {
-    'X-OpenAI-Api-Key': 'YOUR-OPENAI-API-KEY',
-    'X-Azure-Api-Key': 'YOUR-AZURE-API-KEY',
-  },
-  // highlight-end
-});
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

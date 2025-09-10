@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.generative.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.generative-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.generative.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.generative-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-generative_test.go';
 
 Retrieval Augmented Generation (RAG) combines information retrieval with generative AI models.
@@ -37,7 +36,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DynamicRag"
@@ -103,7 +102,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// NamedVectorNearText"
@@ -112,14 +111,6 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// NamedVectorNearText"
-      endMarker="// END NamedVectorNearText"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
@@ -167,7 +158,7 @@ The properties you use in the prompt do not have to be among the properties you 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SingleGenerativePropertiesTS"
@@ -176,14 +167,6 @@ The properties you use in the prompt do not have to be among the properties you 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// SingleGenerativeProperties TS"
-      endMarker="// END SingleGenerativeProperties TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -233,7 +216,7 @@ You can use *generative parameters* to specify additional options when performin
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SingleGenerativeParametersTS"
@@ -303,7 +286,7 @@ Grouped task search returns one response that includes all of the query results.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerativeTS"
@@ -312,14 +295,6 @@ Grouped task search returns one response that includes all of the query results.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// GroupedGenerative TS"
-      endMarker="// END GroupedGenerative TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -364,7 +339,7 @@ Define object `properties` to use in the prompt. This limits the information in 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerativeProperties"
@@ -373,14 +348,6 @@ Define object `properties` to use in the prompt. This limits the information in 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// GroupedGenerativeProperties"
-      endMarker="// END GroupedGenerativeProperties"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -426,7 +393,7 @@ You can use *generative parameters* to specify additional options when performin
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerativeParametersTS"
@@ -480,7 +447,7 @@ The following fields are available for generative search with images:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START WorkingWithImages"

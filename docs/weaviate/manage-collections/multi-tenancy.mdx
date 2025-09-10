@@ -9,7 +9,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
-import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
@@ -48,20 +47,12 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableMultiTenancy"
       endMarker="// END EnableMultiTenancy"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START EnableMultiTenancy"
-      endMarker="// END EnableMultiTenancy"
-      language="tsv2"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -99,7 +90,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableAutoMT"
@@ -138,7 +129,7 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START UpdateAutoMT"
@@ -187,7 +178,7 @@ Tenant status is available from Weaviate `1.21` onwards.
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START AddTenantsToClass"
@@ -196,14 +187,6 @@ Tenant status is available from Weaviate `1.21` onwards.
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START AddTenantsToClass"
-    endMarker="// END AddTenantsToClass"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -240,7 +223,7 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START ListTenants"
@@ -249,14 +232,6 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ListTenants"
-    endMarker="// END ListTenants"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -293,7 +268,7 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START GetTenantsByName"
@@ -320,7 +295,7 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START GetOneTenant"
@@ -349,7 +324,7 @@ Deleting a tenant deletes all associated objects.
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START RemoveTenants"
@@ -358,14 +333,6 @@ Deleting a tenant deletes all associated objects.
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START RemoveTenants"
-    endMarker="// END RemoveTenants"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -400,7 +367,7 @@ Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ChangeTenantState"
@@ -430,7 +397,7 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START CreateMtObject"
@@ -439,14 +406,6 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START CreateMtObject"
-    endMarker="// END CreateMtObject"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -481,7 +440,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START Search"
@@ -490,14 +449,6 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START Search"
-    endMarker="// END Search"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -541,7 +492,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START AddCrossRef"
@@ -550,14 +501,6 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START AddCrossRef"
-    endMarker="// END AddCrossRef"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock

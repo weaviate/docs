@@ -3,7 +3,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import EndToEndPyCode from '!!raw-loader!/_includes/code/quickstart/endtoend.py';
 import EndToEndTSCode from '!!raw-loader!/_includes/code/quickstart/endtoend.ts';
-import EndToEndTSCodeLegacy from '!!raw-loader!/_includes/code/quickstart/endtoend-v2.ts';
 import GoImportObjects from '!!raw-loader!/_includes/code/quickstart/go-add-objects.go';
 
 <Tabs groupId="languages">
@@ -15,20 +14,12 @@ import GoImportObjects from '!!raw-loader!/_includes/code/quickstart/go-add-obje
   language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={EndToEndTSCode}
   startMarker="// Import data function"
   endMarker="// END Import data function"
   language="ts"
-/>
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={EndToEndTSCodeLegacy}
-  startMarker="// Import data function"
-  endMarker="// END Import data function"
-  language="tsv2"
 />
 </TabItem>
 <TabItem value="go" label="Go">

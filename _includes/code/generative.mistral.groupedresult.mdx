@@ -66,39 +66,6 @@ print(result)
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```ts
-import weaviate, { ApiKey } from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'edu-demo.weaviate.network',
-  apiKey: new ApiKey('learn-weaviate'),
-  headers: { 'X-Mistral-Api-Key': process.env['MISTRAL_API_KEY'] },
-});
-
-// highlight-start
-// instruction for the generative module
-const generateTask = 'Please answer the question: What is ref2vec? based on the following search results. IMPORTANT! Please make sure your answer is supported by the information in the search results and provide references to the provided content when possible.';
-// highlight-end
-
-const response = await client.graphql
-  .get()
-  .withClassName('PodClip')
-  .withFields('speaker content')
-  .withNearText({
-    concepts: ['What is ref2vec?'],
-  })
-  .withGenerate({
-    groupedTask: generateTask,
-  })
-  .withLimit(5)
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

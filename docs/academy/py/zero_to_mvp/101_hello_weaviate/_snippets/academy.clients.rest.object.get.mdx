@@ -20,25 +20,6 @@ print(client.get_meta())
 ```
 
 </TabItem>
-{/* <TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace WEAVIATE_INSTANCE_URL with your instance URL
-});
-
-const response = await client.data
-  .getterById()
-  .withClassName('WikiArticle')
-  .withId('36ddd591-2dee-4e7e-a3cc-eb86d30a4303')
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go
@@ -102,5 +83,5 @@ public class App {
 }
 ```
 
-</TabItem> */}
+</TabItem>
 </Tabs>

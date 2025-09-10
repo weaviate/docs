@@ -14,41 +14,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="START QueryWithReplication"
     endMarker="END QueryWithReplication"
     language="ts"
   />
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.data
-  .getterById()
-  .withClassName('MyClass')
-  .withId('36ddd591-2dee-4e7e-a3cc-eb86d30a4303')
-  .withConsistencyLevel('ONE')  // default QUORUM
-  .do();
-console.log(JSON.stringify(response, null, 2));
-
-// The parameter passed to `withConsistencyLevel` can be one of:
-// * 'ALL',
-// * 'QUORUM' (default), or
-// * 'ONE'.
-//
-// It determines how many replicas must acknowledge a request
-// before it is considered successful.
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

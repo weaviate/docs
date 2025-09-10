@@ -13,29 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title summary')
-  .withHybrid({
-    query: 'How to catch Alaskan Pollock',
-    alpha: 0.5,
-  })
-  // highlight-start
-  .withWhere({
-    operator: 'LessThan',
-    path: ['wordCount'],
-    valueInt: 1000,
-  })
-  // highlight-end
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

@@ -11,7 +11,6 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
@@ -44,7 +43,7 @@ Collection level settings override default values and general configuration para
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START Vectorizer"
@@ -53,14 +52,6 @@ Collection level settings override default values and general configuration para
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START Vectorizer"
-    endMarker="// END Vectorizer"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -101,7 +92,7 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START ModuleSettings"
@@ -110,14 +101,6 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -159,7 +142,7 @@ As such, each named vector configuration can include its own vectorizer and vect
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START BasicNamedVectors"
@@ -168,14 +151,6 @@ As such, each named vector configuration can include its own vectorizer and vect
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START BasicNamedVectors"
-    endMarker="// END BasicNamedVectors"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -213,7 +188,7 @@ Named vectors can be added to existing collection definitions with named vectors
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 <FilteredTextBlock
       text={TSCode}
       startMarker="// START AddNamedVectors"
@@ -257,7 +232,7 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       language="py"
     />
   </TabItem>
-    <TabItem value="js" label="JS/TS Client v3">
+    <TabItem value="js" label="JS/TS">
   <FilteredTextBlock
         text={TSCode}
         startMarker="// START MultiValueVectorCollection"
@@ -294,7 +269,7 @@ The vector index type can be set for each collection at creation time, between `
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetVectorIndexType"
@@ -303,14 +278,6 @@ The vector index type can be set for each collection at creation time, between `
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetVectorIndexType"
-    endMarker="// END SetVectorIndexType"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -357,7 +324,7 @@ Was added in `v1.27`
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetVectorIndexParams"
@@ -366,14 +333,6 @@ Was added in `v1.27`
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetVectorIndexParams"
-    endMarker="// END SetVectorIndexParams"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -420,7 +379,7 @@ Configure individual properties in a collection. Each property can have it's own
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START PropModuleSettings"
@@ -429,14 +388,6 @@ Configure individual properties in a collection. Each property can have it's own
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START PropModuleSettings"
-    endMarker="// END PropModuleSettings"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock
@@ -472,7 +423,7 @@ If you choose to bring your own vectors, you should specify the `distance metric
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START DistanceMetric"
@@ -481,14 +432,6 @@ If you choose to bring your own vectors, you should specify the `distance metric
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START DistanceMetric"
-    endMarker="// END DistanceMetric"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock

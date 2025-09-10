@@ -58,7 +58,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TextTypeTs}
       startMarker="// START ConfigureDataType"
@@ -79,7 +79,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TextTypeTs}
       startMarker="// START AddObject"
@@ -109,7 +109,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={NumericalTypeTs}
       startMarker="// START ConfigureDataType"
@@ -130,7 +130,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={NumericalTypeTs}
       startMarker="// START AddObject"
@@ -174,7 +174,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={DateTypeTs}
       startMarker="// START ConfigureDataType"
@@ -195,7 +195,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={DateTypeTs}
       startMarker="// START AddObject"
@@ -232,7 +232,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={UUIDTypeTs}
       startMarker="// START ConfigureDataType"
@@ -253,7 +253,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={UUIDTypeTs}
       startMarker="// START AddObject"
@@ -298,7 +298,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={GeoTypeTs}
       startMarker="// START ConfigureDataType"
@@ -319,7 +319,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={GeoTypeTs}
       startMarker="// START AddObject"
@@ -374,7 +374,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={PhoneTypeTs}
       startMarker="// START ConfigureDataType"
@@ -395,7 +395,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={PhoneTypeTs}
       startMarker="// START AddObject"
@@ -468,7 +468,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={BlobTypeTs}
       startMarker="// START ConfigureDataType"
@@ -489,7 +489,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={BlobTypeTs}
       startMarker="// START AddObject"
@@ -530,7 +530,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={ObjectTypeTs}
       startMarker="// START ConfigureDataType"
@@ -551,7 +551,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={ObjectTypeTs}
       startMarker="// START AddObject"

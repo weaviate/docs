@@ -13,42 +13,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
     />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate, { ApiKey } from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace WEAVIATE_INSTANCE_URL with your instance URL
-  apiKey: new ApiKey('YOUR-API-KEY'),
-  headers: {
-    'X-AWS-Access-Key': 'YOUR_ACCESS_KEY',
-    'X-AWS-Secret-Key': 'YOUR_SECRET_KEY'
-  },
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Publication')
-  .withFields('name _additional{certainty distance}') // note that certainty is only supported if distance==cosine
-  .withNearText({
-    concepts: ['fashion'],
-    distance: 0.6,  // prior to v1.14 use certainty instead of distance
-    moveAwayFrom: {
-      concepts: ['finance'],
-      force: 0.45,
-    },
-    moveTo: {
-      concepts: ['haute couture'],
-      force: 0.85,
-    },
-  })
-  .do();
-console.log(response);
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

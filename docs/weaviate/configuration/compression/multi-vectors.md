@@ -31,7 +31,7 @@ Compression techniques become especially crucial for multi-vector systems to man
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MultiValueVectorMuvera"

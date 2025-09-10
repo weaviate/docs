@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.hybrid.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.hybrid-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.hybrid.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.hybrid-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
 import GQLCode from '!!raw-loader!/_includes/code/howto/search.hybrid.gql.py';
 
@@ -34,7 +33,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridBasic"
@@ -43,14 +42,6 @@ Combine the results of a vector search and a keyword search. The search uses a s
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridBasic"
-  endMarker="// END searchHybridBasic"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -101,20 +92,12 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// NamedVectorHybrid"
       endMarker="// END NamedVectorHybrid"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// NamedVectorHybrid"
-      endMarker="// END NamedVectorHybrid"
-      language="tsv2"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -156,7 +139,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithScore"
@@ -165,14 +148,6 @@ To see the object rankings, set the `explain score` field in your query. The sea
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithScore"
-  endMarker="// END searchHybridWithScore"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -225,7 +200,7 @@ Hybrid search results can favor the keyword component or the vector component. T
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithAlpha"
@@ -234,14 +209,6 @@ Hybrid search results can favor the keyword component or the vector component. T
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithAlpha"
-  endMarker="// END searchHybridWithAlpha"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -294,7 +261,7 @@ The output is like this:
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithFusionType"
@@ -303,14 +270,6 @@ The output is like this:
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithFusionType"
-  endMarker="// END searchHybridWithFusionType"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -425,7 +384,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithProperties"
@@ -434,14 +393,6 @@ The keyword search portion of hybrid search can be directed to only search a sub
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithProperties"
-  endMarker="// END searchHybridWithProperties"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -491,7 +442,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithPropertyWeighting"
@@ -500,14 +451,6 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithPropertyWeighting"
-  endMarker="// END searchHybridWithPropertyWeighting"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -557,7 +500,7 @@ The vector component of hybrid search can use a query string or a query vector. 
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithVector"
@@ -566,14 +509,6 @@ The vector component of hybrid search can use a query string or a query vector. 
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithVector"
-  endMarker="// END searchHybridWithVector"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -625,7 +560,7 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// VectorSimilarity"
@@ -666,9 +601,9 @@ The only available search threshold is `max vector distance`, which will set the
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START VectorSimilarityThreshold"
@@ -696,7 +631,7 @@ Define criteria to group search results.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridGroupBy"
@@ -735,7 +670,7 @@ Optionally, use `offset` to paginate the results.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START limit"
@@ -744,14 +679,6 @@ Optionally, use `offset` to paginate the results.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START limit"
-      endMarker="// END limit"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -787,7 +714,7 @@ To limit results to groups with similar distances from the query, use the [`auto
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START autocut"
@@ -796,14 +723,6 @@ To limit results to groups with similar distances from the query, use the [`auto
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START autocut"
-      endMarker="// END autocut"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -853,7 +772,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithFilter"
@@ -862,14 +781,6 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// searchHybridWithFilter"
-  endMarker="// END searchHybridWithFilter"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
     <FilteredTextBlock

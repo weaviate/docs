@@ -27,7 +27,7 @@ client.is_ready()
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```ts
 import weaviate, { WeaviateClient } from 'weaviate-client'
@@ -46,20 +46,6 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-```ts
-import weaviate, { WeaviateClient, ObjectsBatcher, ApiKey } from 'weaviate-ts-client';
-import fetch from 'node-fetch';
-
-const client: WeaviateClient = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate endpoint
-  apiKey: new ApiKey('YOUR-WEAVIATE-API-KEY'),  // Replace with your Weaviate instance API key
-});
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

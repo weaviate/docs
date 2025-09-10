@@ -12,7 +12,7 @@ import PyClientCode from '!!raw-loader!/_includes/code/wcs.client.is_ready.py';
     language="py"
   />
 </TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
 import weaviate, { WeaviateClient } from 'weaviate-client';
@@ -23,24 +23,6 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 });
 
 const response = await client.isReady();
-console.log(response);
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-import weaviate, { WeaviateClient, ObjectsBatcher, ApiKey } from 'weaviate-ts-client';
-
-const client: WeaviateClient = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate endpoint
-  apiKey: new ApiKey('YOUR-WEAVIATE-API-KEY'),  // Replace with your Weaviate instance API key
-});
-
-const response = await client.misc
-  .readyChecker()
-  .do();
 console.log(response);
 ```
 
