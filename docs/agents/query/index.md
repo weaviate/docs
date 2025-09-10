@@ -8,8 +8,8 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
+import PyCode from '!!raw-loader!/docs/agents/\_includes/query_agent.py';
+import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
 
 # Weaviate Query Agent: Overview
 
@@ -54,7 +54,15 @@ Note that the term `Query Agent` refers to the entire system. The Query Agent ma
 ![Weaviate Query Agent comprises multiple agents](../_includes/query_agent_info_light.png#gh-light-mode-only "Weaviate Query Agent comprises multiple agents")
 ![Weaviate Query Agent comprises multiple agents](../_includes/query_agent_info_dark.png#gh-dark-mode-only "Weaviate Query Agent comprises multiple agents")
 
-## Basic Usage
+## Operating modes
+
+The Query Agent offers two modes:
+
+**Ask mode**: Examines your collections to determine effective query strategies and generates precise answers grounded in your data.
+
+**Search mode**: Similar to ask mode but without answer generation, it optimizes for retrieval quality, eliminating the need for complex queries.
+
+## Basic usage
 
 Here is an overview of how to use the this Weaviate Agent. For more detailed information, refer to the [Usage](./usage.md) page.
 
@@ -62,7 +70,7 @@ Here is an overview of how to use the this Weaviate Agent. For more detailed inf
 
 This Agent is available exclusively for use with a Weaviate Cloud instance, and a supported version of the Weaviate client library.
 
-### Example Usage
+### Example usage
 
 Pass an instance of the Weaviate client to the Query Agent, and the Query Agent will extract the necessary information from the client to perform the query.
 
@@ -88,22 +96,33 @@ Pass an instance of the Weaviate client to the Query Agent, and the Query Agent 
 
 Then, provide a natural language query input. The Query Agent will process the query, perform the necessary searches in Weaviate, and return the answer.
 
+#### Ask mode (with answer generation)
+
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START BasicQuery"
-            endMarker="# END BasicQuery"
+            startMarker="# START BasicAskQuery"
+            endMarker="# END BasicAskQuery"
             language="py"
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
+</Tabs>
+
+#### Search mode (retrieval only)
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START BasicQuery"
-            endMarker="// END BasicQuery"
-            language="ts"
+            text={PyCode}
+            startMarker="# START BasicSearchQuery"
+            endMarker="# END BasicSearchQuery"
+            language="py"
         />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
     </TabItem>
 
 </Tabs>
@@ -120,17 +139,11 @@ The Query Agent can even handle follow-up queries, using the previous response a
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START FollowUpQuery"
-            endMarker="// END FollowUpQuery"
-            language="ts"
-        />
     </TabItem>
 
 </Tabs>
 
-### Further Documentation
+## Further resources
 
 For more detailed information on how to use this Agent, refer to the [Usage](./usage.md) page.
 
@@ -140,7 +153,6 @@ For more detailed information on how to use this Agent, refer to the [Usage](./u
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

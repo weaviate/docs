@@ -9,8 +9,8 @@ image: og/docs/agents.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
-import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
+import PyCode from '!!raw-loader!/docs/agents/\_includes/query_agent.py';
+import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
 
 # Weaviate Query Agent: Usage
 
@@ -37,7 +37,7 @@ You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud]
 At this time, this Agent is available only for Python and JavaScript. Support for other languages will be added in the future.
 :::
 
-For Python, you can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package. For  JavaScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
+For Python, you can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package. For JavaScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
 
 Install the client library using the following command:
 
@@ -78,6 +78,7 @@ npm install weaviate-agents@latest
 ### Basic instantiation
 
 Provide:
+
 - Target Weaviate Cloud instance details (e.g. the `WeaviateClient` object).
 - A default list of the collections to be queried
 
@@ -104,6 +105,7 @@ Provide:
 ### Configure collections
 
 The list of collections to be queried are further configurable with:
+
 - Tenant names (required for a multi-tenant collection)
 - Target vector(s) of the collection to query (optional)
 - List of property names for the agent to use (optional)
@@ -147,7 +149,14 @@ The Query Agent can be instantiated with additional options, such as:
 
 For usage example with the async Python client, see the [Async Python client section](#usage---async-python-client).
 
-## Perform queries
+## Operating modes
+
+The Query Agent offers two modes for querying collections:
+
+- [**Ask mode**](#ask-mode)
+- [**Search mode**](#search-mode)
+
+### Ask mode
 
 Provide a natural language query to the Query Agent. The Query Agent will process the query, perform the necessary searches in Weaviate, and return the answer.
 
@@ -161,8 +170,26 @@ The Query Agent will formulate its strategy based on your query. So, aim to be u
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START BasicQuery"
-            endMarker="# END BasicQuery"
+            startMarker="# START BasicAskQuery"
+            endMarker="# END BasicAskQuery"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
+
+</Tabs>
+
+### Search mode
+
+Search Mode is similar to Ask Mode but without answer generation. It optimizes for retrieval quality, eliminating the need for complex querying.
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START BasicSearchQuery"
+            endMarker="# END BasicSearchQuery"
             language="py"
         />
     </TabItem>
@@ -173,6 +200,24 @@ The Query Agent will formulate its strategy based on your query. So, aim to be u
             endMarker="// END BasicQuery"
             language="ts"
         />
+    </TabItem>
+
+</Tabs>
+
+#### Search mode with pagination
+
+Search Mode supports pagination to handle large result sets efficiently:
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SearchPagination"
+            endMarker="# END SearchPagination"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
     </TabItem>
 
 </Tabs>
@@ -189,18 +234,12 @@ This example overrides the configured Query Agent collections for this query onl
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START QueryAgentRunBasicCollectionSelection"
-            endMarker="# END QueryAgentRunBasicCollectionSelection"
+            startMarker="# START QueryAgentAskBasicCollectionSelection"
+            endMarker="# END QueryAgentAskBasicCollectionSelection"
             language="py"
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START QueryAgentRunBasicCollectionSelection"
-            endMarker="// END QueryAgentRunBasicCollectionSelection"
-            language="ts"
-        />
     </TabItem>
 
 </Tabs>
@@ -208,6 +247,7 @@ This example overrides the configured Query Agent collections for this query onl
 #### Configure collections in detail
 
 This example overrides the configured Query Agent collections for this query only, specifying additional options where relevant, such as:
+
 - Target vector
 - Properties to view
 - Target tenant
@@ -216,42 +256,30 @@ This example overrides the configured Query Agent collections for this query onl
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START QueryAgentRunCollectionConfig"
-            endMarker="# END QueryAgentRunCollectionConfig"
+            startMarker="# START QueryAgentAskCollectionConfig"
+            endMarker="# END QueryAgentAskCollectionConfig"
             language="py"
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START QueryAgentRunCollectionConfig"
-            endMarker="// END QueryAgentRunCollectionConfig"
-            language="ts"
-        />
     </TabItem>
 
 </Tabs>
 
-### Follow-up queries
+### Conversational queries
 
-The Query Agent can even handle follow-up queries, using the previous response as additional context.
+The Query Agent supports multi-turn conversations by passing a list of `ChatMessage` objects:
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START FollowUpQuery"
-            endMarker="# END FollowUpQuery"
+            startMarker="# START ConversationalQuery"
+            endMarker="# END ConversationalQuery"
             language="py"
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START FollowUpQuery"
-            endMarker="// END FollowUpQuery"
-            language="ts"
-        />
     </TabItem>
 
 </Tabs>
@@ -300,18 +328,12 @@ Try the provided helper functions (e.g. `.display()` method) to display the resp
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
-            startMarker="# START BasicQuery"
-            endMarker="# END BasicQuery"
+            startMarker="# START BasicAskQuery"
+            endMarker="# END BasicAskQuery"
             language="py"
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
-        <FilteredTextBlock
-            text={TSCode}
-            startMarker="// START BasicQuery"
-            endMarker="// END BasicQuery"
-            language="ts"
-        />
     </TabItem>
 
 </Tabs>
@@ -464,30 +486,21 @@ The async Query Agent can also stream responses, allowing you to receive the ans
 
 ## Limitations & Troubleshooting
 
-:::caution Technical Preview
-
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
-
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
-
-:::
-
 ### Usage limits
 
-import UsageLimits from "/_includes/agents/query-agent-usage-limits.mdx";
+import UsageLimits from "/\_includes/agents/query-agent-usage-limits.mdx";
 
 <UsageLimits />
 
 ### Custom collection descriptions
 
-import CollectionDescriptions from "/_includes/agents/query-agent-collection-descriptions.mdx";
+import CollectionDescriptions from "/\_includes/agents/query-agent-collection-descriptions.mdx";
 
 <CollectionDescriptions />
 
 ### Execution times
 
-import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
+import ExecutionTimes from "/\_includes/agents/query-agent-execution-times.mdx";
 
 <ExecutionTimes />
 
@@ -497,6 +510,6 @@ import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

@@ -180,8 +180,14 @@ qa = QueryAgent(
     collections=[
         QueryAgentCollectionConfig(
             name="ECommerce",  # The name of the collection to query
-            target_vector=["name_description_brand_vector"],  # Target vector name(s) for collections with named vectors
-            view_properties=["description"],  # Optional list of property names the agent can view
+            target_vector=[
+                "name_description_brand_vector"
+            ],  # Target vector name(s) for collections with named vectors
+            view_properties=[
+                "name",
+                "description",
+                "price"
+            ],  # Optional list of property names the agent can view
             # Optional tenant name for collections with multi-tenancy enabled
             # tenant="tenantA"
         ),
@@ -191,26 +197,33 @@ qa = QueryAgent(
 )
 # END QueryAgentCollectionConfiguration
 
-# START QueryAgentRunBasicCollectionSelection
-response = qa.run(
+# START QueryAgentAskBasicCollectionSelection
+response = qa.ask(
     "What kinds of contracts are listed? What's the most common type of contract?",
     collections=["FinancialContracts"],
 )
 
 response.display()
-# END QueryAgentRunBasicCollectionSelection
+# END QueryAgentAskBasicCollectionSelection
 
-# START QueryAgentRunCollectionConfig
-from weaviate_agents.classes import QueryAgentCollectionConfig
+# START QueryAgentAskCollectionConfig
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
-response = qa.run(
+response = qa.ask(
     "I like vintage clothes and nice shoes. Recommend some of each below $60.",
     collections=[
         # Use QueryAgentCollectionConfig class to provide further collection configuration
         QueryAgentCollectionConfig(
             name="ECommerce",  # The name of the collection to query
-            target_vector=["name_description_brand_vector"], # Optional target vector name(s) for collections with named vectors
-            view_properties=["name", "description", "category", "brand"], # Optional list of property names the agent can view
+            target_vector=[
+                "name_description_brand_vector"
+            ],  # Optional target vector name(s) for collections with named vectors
+            view_properties=[
+                "name",
+                "description",
+                "category",
+                "brand",
+            ],  # Optional list of property names the agent can view
         ),
         QueryAgentCollectionConfig(
             name="FinancialContracts",  # The name of the collection to query
@@ -221,49 +234,125 @@ response = qa.run(
 )
 
 response.display()
-# END QueryAgentRunCollectionConfig
+# END QueryAgentAskCollectionConfig
 
-# START BasicQuery
-# Perform a query
-response = qa.run(
+# START BasicAskQuery
+# Perform a query using Ask Mode (with answer generation)
+response = qa.ask(
     "I like vintage clothes and nice shoes. Recommend some of each below $60."
 )
 
 # Print the response
 response.display()
-# END BasicQuery
+# END BasicAskQuery
 
-# START FollowUpQuery
-# Perform a follow-up query to 'I like vintage clothes and nice shoes. Recommend some of each below $60.'
-following_response = qa.run(
-    "I like the vintage clothes options, can you do the same again but above $200?",
-    context=response,
+# START BasicSearchQuery
+# Perform a search using Search Mode (retrieval only, no answer generation)
+search_response = qa.search("Find me some vintage shoes under $70", limit=10)
+
+# Access the search results
+for obj in search_response.search_results.objects:
+    print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
+# END BasicSearchQuery
+
+# START SearchPagination
+# Search with pagination
+response_page_1 = qa.search(
+    "Find summer shoes and accessories between $50 and $100 that have the tag 'sale'",
+    limit=3,
 )
 
+# Get the next page of results
+response_page_2 = response_page_1.next(limit=3, offset=3)
+
+# Continue paginating
+response_page_3 = response_page_2.next(limit=3, offset=3)
+
+# Access results from each page
+for page_num, page_response in enumerate(
+    [response_page_1, response_page_2, response_page_3], 1
+):
+    print(f"Page {page_num}:")
+    for obj in page_response.search_results.objects:
+        # Safely access properties in case they don't exist
+        name = obj.properties.get("name", "Unknown Product")
+        price = obj.properties.get("price", "Unknown Price")
+        print(f"  {name} - ${price}")
+    print()
+# END SearchPagination
+
+# START FollowUpQuery
+# Perform a follow-up query and include the answer from the previous query
+from weaviate.agents.classes import ChatMessage
+
+conversation = [
+    ChatMessage(role="assistant", content=response.final_answer),
+    ChatMessage(role="user", content="I like the vintage clothes options, can you do the same again but above $200?"),
+]
+
+following_response = qa.ask(conversation)
+
 # Print the response
-response.display()
+following_response.display()
 # END FollowUpQuery
+
+# START ConversationalQuery
+from weaviate.agents.classes import ChatMessage
+
+# Create a conversation with multiple turns
+conversation = [
+    ChatMessage(role="user", content="Hi!"),
+    ChatMessage(role="assistant", content="Hello! How can I assist you today?"),
+    ChatMessage(
+        role="user",
+        content="I have some questions about the weather data. You can assume the temperature is in Fahrenheit and the wind speed is in mph.",
+    ),
+    ChatMessage(
+        role="assistant",
+        content="I can help with that. What specific information are you looking for?",
+    ),
+]
+
+# Add the user's query
+conversation.append(
+    ChatMessage(
+        role="user",
+        content="What's the average wind speed, the max wind speed, and the min wind speed",
+    )
+)
+
+# Get the response
+response = qa.ask(conversation)
+print(response.final_answer)
+
+# Continue the conversation
+conversation.append(ChatMessage(role="assistant", content=response.final_answer))
+conversation.append(ChatMessage(role="user", content="and for the temperature?"))
+
+response = qa.ask(conversation)
+print(response.final_answer)
+# END ConversationalQuery
 
 query = "What are the top 5 products sold in the last 30 days?"
 
 # START StreamResponse
 from weaviate.agents.classes import ProgressMessage, StreamedTokens
 
-for output in qa.stream(
+for output in qa.ask_stream(
     query,
     # Setting this to false will skip ProgressMessages, and only stream
     # the StreamedTokens / the final QueryAgentResponse
-    include_progress=True,      # Default is True
-    include_final_state=True    # Default is True
+    include_progress=True,  # Default is True
+    include_final_state=True,  # Default is True
 ):
     if isinstance(output, ProgressMessage):
         # The message is a human-readable string, structured info available in output.details
         print(output.message)
     elif isinstance(output, StreamedTokens):
         # The delta is a string containing the next chunk of the final answer
-        print(output.delta, end='', flush=True)
+        print(output.delta, end="", flush=True)
     else:
-        # This is the final response, as returned by QueryAgent.run()
+        # This is the final response, as returned by QueryAgent.ask()
         output.display()
 # END StreamResponse
 
@@ -311,17 +400,20 @@ async_client = weaviate.use_async_with_weaviate_cloud(
     headers=headers,
 )
 
+
 async def query_vintage_clothes(async_query_agent: AsyncQueryAgent):
-    response = await async_query_agent.run(
+    response = await async_query_agent.ask(
         "I like vintage clothes and nice shoes. Recommend some of each below $60."
     )
     return ("Vintage Clothes", response)
 
+
 async def query_financial_data(async_query_agent: AsyncQueryAgent):
-    response = await async_query_agent.run(
+    response = await async_query_agent.ask(
         "What kinds of contracts are listed? What's the most common type of contract?",
     )
     return ("Financial Contracts", response)
+
 
 async def run_concurrent_queries():
     try:
@@ -332,8 +424,15 @@ async def run_concurrent_queries():
             collections=[
                 QueryAgentCollectionConfig(
                     name="ECommerce",  # The name of the collection to query
-                    target_vector=["name_description_brand_vector"], # Optional target vector name(s) for collections with named vectors
-                    view_properties=["name", "description", "category", "brand"], # Optional list of property names the agent can view
+                    target_vector=[
+                        "name_description_brand_vector"
+                    ],  # Optional target vector name(s) for collections with named vectors
+                    view_properties=[
+                        "name",
+                        "description",
+                        "category",
+                        "brand",
+                    ],  # Optional list of property names the agent can view
                 ),
                 QueryAgentCollectionConfig(
                     name="FinancialContracts",  # The name of the collection to query
@@ -345,8 +444,7 @@ async def run_concurrent_queries():
 
         # Wait for both to complete
         vintage_response, financial_response = await asyncio.gather(
-            query_vintage_clothes(async_qa),
-            query_financial_data(async_qa)
+            query_vintage_clothes(async_qa), query_financial_data(async_qa)
         )
 
         # Display results
@@ -359,27 +457,29 @@ async def run_concurrent_queries():
     finally:
         await async_client.close()
 
+
 asyncio.run(run_concurrent_queries())
 # END UsageAsyncQueryAgent
 
 
 # START StreamAsyncResponse
 async def stream_query(async_query_agent: AsyncQueryAgent):
-    async for output in async_query_agent.stream(
+    async for output in async_query_agent.ask_stream(
         "What are the top 5 products sold in the last 30 days?",
         # Setting this to false will skip ProgressMessages, and only stream
         # the StreamedTokens / the final QueryAgentResponse
-        include_progress=True  # Default is True
+        include_progress=True,  # Default is True
     ):
         if isinstance(output, ProgressMessage):
             # The message is a human-readable string, structured info available in output.details
             print(output.message)
         elif isinstance(output, StreamedTokens):
             # The delta is a string containing the next chunk of the final answer
-            print(output.delta, end='', flush=True)
+            print(output.delta, end="", flush=True)
         else:
-            # This is the final response, as returned by QueryAgent.run()
+            # This is the final response, as returned by QueryAgent.ask()
             output.display()
+
 
 async def run_streaming_query():
     try:
@@ -389,20 +489,28 @@ async def run_streaming_query():
             collections=[
                 QueryAgentCollectionConfig(
                     name="ECommerce",  # The name of the collection to query
-                    target_vector=["name_description_brand_vector"], # Optional target vector name(s) for collections with named vectors
-                    view_properties=["name", "description", "category", "brand"], # Optional list of property names the agent can view
+                    target_vector=[
+                        "name_description_brand_vector"
+                    ],  # Optional target vector name(s) for collections with named vectors
+                    view_properties=[
+                        "name",
+                        "description",
+                        "category",
+                        "brand",
+                    ],  # Optional list of property names the agent can view
                 ),
                 QueryAgentCollectionConfig(
                     name="FinancialContracts",  # The name of the collection to query
                     # Optional tenant name for collections with multi-tenancy enabled
                     # tenant="tenantA"
                 ),
-            ]
+            ],
         )
         await stream_query(async_qa)
 
     finally:
         await async_client.close()
+
 
 asyncio.run(run_streaming_query())
 # END StreamAsyncResponse
