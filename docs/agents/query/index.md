@@ -1,6 +1,5 @@
 ---
 title: Query Agent
-sidebar_position: 10
 description: "Overview of the AI agent that handles complex queries across multiple Weaviate collections with natural language understanding."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'query agent']
@@ -13,15 +12,6 @@ import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
 
 # Weaviate Query Agent: Overview
-
-:::caution Technical Preview
-
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
-
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
-
-:::
 
 The Weaviate Query Agent is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
 
