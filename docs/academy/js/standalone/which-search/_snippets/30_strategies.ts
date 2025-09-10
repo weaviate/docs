@@ -2,8 +2,8 @@ import weaviate, { CollectionConfig, CollectionConfigCreate, WeaviateClient, Wea
 
 let client: WeaviateClient
 
-client = await weaviate.connectToWeaviateCloud(process.env.WCD_URL as string,{
-    authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY as string),
+client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string,{
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
     headers: {
       'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
     }
@@ -19,7 +19,7 @@ let products: CollectionConfigCreate
 // START skipVectorizationExample
 products = await client.collections.create({
   name: "Product",
-  vectorizers: weaviate.configure.vectorizer.text2VecOpenAI({
+  vectorizers: weaviate.configure.vectors.text2VecOpenAI({
     // highlight-start
     vectorizeCollectionName: true
     // highlight-end
@@ -82,7 +82,7 @@ client.collections.delete("SomeCollection")
 type NonGenericReturn = WeaviateReturn<undefined>
 let response: NonGenericReturn
 
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 // END selectAndBoostExample // END adjustAlpha // END changeFusionType
 

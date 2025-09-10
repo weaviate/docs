@@ -9,13 +9,13 @@ from weaviate.classes.init import Auth
 import os
 
 # Best practice: store your credentials in environment variables
-wcd_url = os.environ["WCD_DEMO_URL"]
-wcd_api_key = os.environ["WCD_DEMO_RO_KEY"]
+weaviate_url = os.environ["WEAVIATE_URL"]
+weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api_key = os.environ["OPENAI_APIKEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=wcd_url,
-    auth_credentials=Auth.api_key(wcd_api_key),
+    cluster_url=weaviate_url,
+    auth_credentials=Auth.api_key(weaviate_api_key),
     headers={
         "X-OpenAI-Api-Key": openai_api_key,
     }
@@ -32,7 +32,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ============================
 
 # BM25BasicPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.bm25(
 # highlight-end
@@ -51,6 +51,62 @@ assert "food" in str(response.objects[0].properties).lower()
 # End test
 
 
+# ============================
+# ===== BM25 w/ OR with min =====
+# ============================
+
+# START BM25OperatorOrWithMin
+# highlight-start
+from weaviate.classes.query import BM25Operator
+# highlight-end
+
+jeopardy = client.collections.use("JeopardyQuestion")
+response = jeopardy.query.bm25(
+    # highlight-start
+    query="Australian mammal cute",
+    operator=BM25Operator.or_(minimum_match=1),
+    # highlight-end
+    limit=3,
+)
+
+for o in response.objects:
+    print(o.properties)
+# END BM25OperatorOrWithMin
+
+
+# Tests
+assert response.objects[0].collection == "JeopardyQuestion"
+# End test
+
+
+# ============================
+# ===== BM25 w/ AND =====
+# ============================
+
+# START BM25OperatorAnd
+# highlight-start
+from weaviate.classes.query import BM25Operator
+# highlight-end
+
+jeopardy = client.collections.use("JeopardyQuestion")
+response = jeopardy.query.bm25(
+    # highlight-start
+    query="Australian mammal cute",
+    operator=BM25Operator.and_(),  # Each result must include all tokens (e.g. "australian", "mammal", "cute")
+    # highlight-end
+    limit=3,
+)
+
+for o in response.objects:
+    print(o.properties)
+# END BM25OperatorAnd
+
+
+# Tests
+assert response.objects[0].collection == "JeopardyQuestion"
+# End test
+
+
 # ================================================
 # ===== BM25 Query with score / explainScore =====
 # ================================================
@@ -58,7 +114,7 @@ assert "food" in str(response.objects[0].properties).lower()
 # BM25WithScorePython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="food",
     return_metadata=MetadataQuery(score=True),
@@ -84,7 +140,7 @@ assert response.objects[0].metadata.score is not None
 # =================================
 
 # START limit Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="safety",
     # highlight-start
@@ -109,7 +165,7 @@ assert len(response.objects) == 3
 # ===================================
 
 # START autocut Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="safety",
     # highlight-start
@@ -134,7 +190,7 @@ assert "safety" in str(response.objects[0].properties).lower()
 # BM25WithPropertiesPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="safety",
     # highlight-start
@@ -161,7 +217,7 @@ assert "safety" in response.objects[0].properties["question"].lower()
 
 
 # BM25WithBoostedPropertiesPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="food",
     # highlight-start
@@ -185,7 +241,7 @@ assert "food" in str(response.objects[0].properties).lower()
 # ==================================
 
 # START MultipleKeywords Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
     query="food wine", # search for food or wine
@@ -214,7 +270,7 @@ assert (
 # BM25WithFilterPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="food",
     # highlight-start
@@ -241,7 +297,7 @@ assert response.objects[0].properties["round"] == "Double Jeopardy!"
 # START BM25GroupByPy4
 from weaviate.classes.query import GroupBy
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # Grouping parameters
 group_by = GroupBy(

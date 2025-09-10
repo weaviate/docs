@@ -9,9 +9,9 @@ import assert from 'assert';
 import weaviate from 'weaviate-client';
 
 const client = await weaviate.connectToWeaviateCloud(
-  process.env.WCD_URL,
+  process.env.WEAVIATE_URL,
  {
-   authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY),
+   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
    headers: {
      'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
    }
@@ -19,7 +19,7 @@ const client = await weaviate.connectToWeaviateCloud(
 )
 
 // START Basic // START Score // START Properties // START Boost // START Filter // START autocut // START limit
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 // END Basic // END Score // END Properties // END Boost // END Filter // END autocut // END limit
 
 

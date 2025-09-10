@@ -2,7 +2,8 @@
 title: Choose a model
 sidebar_label: Choose a model
 sidebar_position: 2
-image: og/wcs/user_guides.jpg
+description: "List of pre-trained embedding models optimized for enterprise retrieval tasks in multiple languages."
+image: og/wcd/user_guides.jpg
 ---
 
 On this page, you can find a list of pre-trained models designed specifically for enterprise retrieval tasks in English and other languages. Additional models and features will be added in the future, so please check back regularly for updates.
@@ -43,10 +44,10 @@ import WeaviateEmbeddingsVectorizerParameters from '/_includes/weaviate-embeddin
 
 ## Additional resources
 
-- [Weaviate Embeddings: Overview](/docs/cloud/embeddings)
-- [Weaviate Embeddings: Quickstart](/docs/cloud/embeddings/quickstart)
-- [Weaviate Embeddings: Administration](/docs/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md)
+- [Weaviate Embeddings: Overview](/cloud/embeddings)
+- [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
+- [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
+- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 
 ## Support & feedback
 

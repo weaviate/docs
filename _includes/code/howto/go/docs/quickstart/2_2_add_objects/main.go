@@ -1,7 +1,7 @@
 // Import
 // Set these environment variables
-// WCD_HOSTNAME			your Weaviate instance hostname
-// WCD_API_KEY  		your Weaviate instance API key
+// WEAVIATE_HOSTNAME			your Weaviate instance hostname
+// WEAVIATE_API_KEY  		your Weaviate instance API key
 
 package main
 
@@ -12,16 +12,16 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/weaviate/weaviate-go-client/v4/weaviate"
-	"github.com/weaviate/weaviate-go-client/v4/weaviate/auth"
+	"github.com/weaviate/weaviate-go-client/v5/weaviate"
+	"github.com/weaviate/weaviate-go-client/v5/weaviate/auth"
 	"github.com/weaviate/weaviate/entities/models"
 )
 
 func main() {
 	cfg := weaviate.Config{
-		Host:       os.Getenv("WCD_HOSTNAME"),
+		Host:       os.Getenv("WEAVIATE_HOSTNAME"),
 		Scheme:     "https",
-		AuthConfig: auth.ApiKey{Value: os.Getenv("WCD_API_KEY")},
+		AuthConfig: auth.ApiKey{Value: os.Getenv("WEAVIATE_API_KEY")},
 	}
 
 	client, err := weaviate.NewClient(cfg)

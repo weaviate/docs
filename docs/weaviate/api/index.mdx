@@ -1,0 +1,43 @@
+---
+title: APIs
+description: "API documentation covering REST, GraphQL, and gRPC interfaces for Weaviate database operations."
+image: og/docs/api.jpg
+# tags: ['schema']
+---
+
+Weaviate provides multiple Application Programming Interfaces (APIs) to interact with the database, manage instances, and perform searches. Weaviate exposes three main APIs:
+
+- **[RESTful API](./rest.md)**: Enables almost complete management of a Weaviate instance.
+
+  - Includes operations for managing collections (creating, reading, updating, deleting collections and their definitions), performing basic CRUD (Create, Read, Update, Delete) operations on individual data objects, checking node status, backups, and managing cluster health.
+
+- **[Search API - GraphQL](./graphql/index.md)**: Designed specifically for data querying and exploration.
+
+  - Enables complex search operations, including semantic (vector) search (`nearText`, `nearVector`, etc.), keyword search (`bm25`), hybrid search, filtering, retrieving specific data properties, aggregations, and exploring connections between data objects (cross-references).
+
+- **[Search API - gRPC](./grpc.md)**: A high-performance alternative for GraphQL when it comes to demanding data operations.
+
+  - gRPC is progressively being implemented for various Weaviate operations, particularly focusing on search/query functionalities and batch data imports. It leverages Protocol Buffers for faster serialization, lower latency, and efficient data streaming compared to traditional REST/JSON communication.
+
+## Client libraries and API usage
+
+Weaviate offers official client libraries for these programming languages:
+
+- **[Python](../client-libraries/python/index.mdx)**
+- **[TypeScript/JavaScript](../client-libraries/typescript/index.mdx)**
+- **[Go](../client-libraries/go.md)**
+- **[Java](../client-libraries/java.md)**
+
+:::tip **TIP:** Using the official client libraries for interacting with Weaviate
+
+The client libraries abstract away the complexities of making direct REST, GraphQL, or gRPC calls. You interact with Weaviate using idiomatic methods and objects in your preferred language.
+
+Modern versions of the client libraries (e.g., Python v4+, TypeScript v3+) are designed to **automatically utilize the more performant gRPC interface** for search and query operations whenever possible and supported by the Weaviate instance you are connected to. They handle the negotiation and use the optimal protocol under the hood, typically requiring only the standard connection details (like the REST endpoint URL and authentication keys) for setup.
+
+:::
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

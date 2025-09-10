@@ -1,11 +1,9 @@
 ---
-title: Locally hosted
-sidebar_position: 0
+title: 'Quickstart: Locally hosted'
+sidebar_label: Locally hosted
 image: og/docs/quickstart-tutorial.jpg
 hide_table_of_contents: true
 ---
-
-# Quickstart: locally hosted
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -132,7 +130,7 @@ docker-compose up -d
 
 ### 1.2 Install a client library
 
-We recommend using a [client library](../client-libraries/index.md) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.md), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+We recommend using a [client library](../client-libraries/index.mdx) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
 
 import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
 
@@ -184,7 +182,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Prefer a different model provider?</h4>
       </div>
       <div class="card__body">
-        See <a href="#can-i-use-different-integrations">this section</a> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
+        See <Link to="#can-i-use-different-integrations">this section</Link> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
       </div>
     </div>
   </div>
@@ -194,7 +192,7 @@ Weaviate is very flexible. If you prefer a different model provider integration,
         <h4>Want to specify object vectors?</h4>
       </div>
       <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <a href="/docs/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</a>.
+        If you prefer to add vectors yourself along with the object data, see <Link to="/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
       </div>
     </div>
   </div>
@@ -211,7 +209,7 @@ The following example:
 - Adds objects to the target collection (`Question`) using a batch process.
 
 :::tip Batch imports
-([Batch imports](../manage-data/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-data/import.mdx) guide for more information.
+([Batch imports](../manage-objects/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](../manage-objects/import.mdx) guide for more information.
 :::
 
 import ImportObjects from '/_includes/code/quickstart/local.quickstart.import_objects.mdx'
@@ -296,7 +294,7 @@ flowchart LR
 :::info Where did the vectors come from?
 Weaviate used the locally hosted Ollama model to generate a vector embedding for each object during import. During the query, Weaviate similarly converted the query (`biology`) into a vector.
 
-As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/docs/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
+As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
 :::
 
 :::tip More search types available
@@ -410,7 +408,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <Link to="/docs/weaviate/search">how to perform searches</Link>, such as <Link to="/docs/weaviate/search/bm25">keyword</Link>, <Link to="/docs/weaviate/search/similarity">similarity</Link>, <Link to="/docs/weaviate/search/hybrid">hybrid</Link>, <Link to="/docs/weaviate/search/image">image</Link>, <Link to="/docs/weaviate/search/filters">filtered</Link> and <Link to="/docs/weaviate/search/rerank">reranked</Link> searches.
+            See <Link to="/weaviate/search">how to perform searches</Link>, such as <Link to="/weaviate/search/bm25">keyword</Link>, <Link to="/weaviate/search/similarity">similarity</Link>, <Link to="/weaviate/search/hybrid">hybrid</Link>, <Link to="/weaviate/search/image">image</Link>, <Link to="/weaviate/search/filters">filtered</Link> and <Link to="/weaviate/search/rerank">reranked</Link> searches.
           </p>
         </div>
       </div>
@@ -422,7 +420,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            See <Link to="/docs/weaviate/manage-data">how to manage data</Link>, such as <Link to="/docs/weaviate/manage-data/collections">manage collections</Link>, <Link to="/docs/weaviate/manage-data/create">create objects</Link>, <Link to="/docs/weaviate/manage-data/import">batch import data</Link> and <Link to="/docs/weaviate/manage-data/multi-tenancy">use multi-tenancy</Link>.
+            See how to manage data, such as <Link to="/weaviate/manage-collections">manage collections</Link>, <Link to="/weaviate/manage-objects/create">create objects</Link>, <Link to="/weaviate/manage-objects/import">batch import data</Link> and <Link to="/weaviate/manage-collections/multi-tenancy">use multi-tenancy</Link>.
           </p>
         </div>
       </div>
@@ -434,7 +432,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <Link to="/docs/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/docs/academy">Weaviate Academy</Link> unit on <Link to="/docs/academy/py/standalone/chunking">chunking</Link>.
+            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/academy">Weaviate Academy</Link> unit on <Link to="/academy/py/standalone/chunking">chunking</Link>.
           </p>
         </div>
       </div>
@@ -498,7 +496,7 @@ import CautionSchemaDeleteClass from '/_includes/schema-delete-class.mdx'
 <details>
   <summary>See answer</summary>
 
-If you are not sure whether the collection has been created, check the <SkipLink href="/docs/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
+If you are not sure whether the collection has been created, check the <SkipLink href="/weaviate/api/rest#tag/schema">`schema`</SkipLink> endpoint.
 
 Replace WEAVIATE_INSTANCE_URL with your instance's REST Endpoint URL.:
 
@@ -533,7 +531,7 @@ Weaviate uses a combination of RESTful and GraphQL APIs. In Weaviate, RESTful AP
 <details>
   <summary>See answer</summary>
 
-To confirm successful data import, check the <SkipLink href="/docs/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
+To confirm successful data import, check the <SkipLink href="/weaviate/api/rest#tag/objects">`objects`</SkipLink> endpoint to verify that all objects are imported.
 
 Replace WEAVIATE_INSTANCE_URL with your instance REST Endpoint URL:
 

@@ -32,7 +32,7 @@ This module is not available on Weaviate Cloud.
 To use `img2vec-neural`, you must enable it in your Docker Compose file (e.g. `docker-compose.yml`).
 
 :::tip Use the configuration tool
-While you can do so manually, we recommend using the [Weaviate configuration tool](/docs/weaviate/installation/docker-compose.md#configurator) to generate the `Docker Compose` file.
+While you can do so manually, we recommend using the [Weaviate configuration tool](/deploy/installation-guides/docker-installation.md#configurator) to generate the `Docker Compose` file.
 :::
 
 #### Parameters
@@ -95,7 +95,7 @@ docker run -itp "8000:8080" semitechnologies/img2vec-neural:resnet50-61dcbf8
 
 ## Class configuration
 
-You can configure how the module will behave in each class through the [Weaviate schema](/docs/weaviate/manage-data/collections.mdx).
+You can configure how the module will behave in each class through the [collection configuration](../manage-collections/vector-config.mdx).
 
 ### Vectorization settings
 

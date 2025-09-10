@@ -291,7 +291,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 :::info Added in `v1.24`
 :::
 
-To search a collection that has [named vectors](../config-refs/schema/multi-vector.md), use the `target vector` field to specify which named vector to search.
+To search a collection that has [named vectors](../config-refs/collections.mdx#named-vectors), use the `target vector` field to specify which named vector to search.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -724,10 +724,10 @@ The output is like this:
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
-- For image search, see [Image search](/docs/weaviate/search/image).
-- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md).
-- For search using the GraphQL API, see [GraphQL API](/docs/weaviate/api/graphql).
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
+- For image search, see [Image search](/weaviate/search/image).
+- For tutorials, see [Queries](/weaviate/tutorials/query.md).
+- For search using the GraphQL API, see [GraphQL API](/weaviate/api).
 
 ## Questions and feedback
 

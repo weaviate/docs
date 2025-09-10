@@ -41,7 +41,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](../../config-refs/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -110,7 +110,7 @@ You can specify one of the [available models](#available-models) for the reranke
 
 The [default model](#available-models) is used if no model is specified.
 
-## Runtime parameters
+## Header parameters
 
 You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
 
@@ -187,8 +187,8 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### References
 

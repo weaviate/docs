@@ -1,7 +1,8 @@
 ---
 title: Cluster status
 sidebar_position: 3
-# image: og/wcs/user_guides.jpg
+description: "Monitor and check the operational status of your Weaviate Cloud clusters through multiple methods."
+image: og/wcd/user_guides.jpg
 ---
 
 [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) exposes two ways of checking the cluster status:
@@ -64,7 +65,6 @@ The following fields are part of the `Information` section:
 
 Serverless clusters also have an `Advanced configuration` section to configure or check the status of these additional settings:
 
-- `Enable RBAC`
 - `Enable auto schema generation`
 - `Enable async indexing`
 - `Enable async replication`
@@ -72,7 +72,7 @@ Serverless clusters also have an `Advanced configuration` section to configure o
 
 ## API Endpoint {#api-endpoint}
 
-To get cluster details programmatically, use the [`nodes`](/docs/weaviate/config-refs/nodes.md) REST endpoint.
+To get cluster details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
 
 import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
 

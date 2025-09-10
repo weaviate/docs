@@ -7,18 +7,15 @@ import assert from 'assert';
 // ================================
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
-const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
-  process.env.WCD_URL,
- {
-   authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY),
+const client: WeaviateClient = await weaviate.connectToLocal({
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
  } 
 )
 
 // START DeleteObject // START DryRun // START DeleteBatch // START DeleteByIDBatch // START DeleteContain
-const myCollection = client.collections.get('EphemeralObject')
+const myCollection = client.collections.use('EphemeralObject')
 
 // END DeleteObject // END DryRun // END DeleteBatch // END DeleteByIDBatch // END DeleteContain
 

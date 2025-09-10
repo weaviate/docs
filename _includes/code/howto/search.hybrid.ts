@@ -9,9 +9,9 @@ import assert from 'assert';
 import weaviate from 'weaviate-client';
 
 const client = await weaviate.connectToWeaviateCloud(
-  process.env.WCD_URL as string,
+  process.env.WEAVIATE_URL as string,
   {
-    authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY as string),
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
     headers: {
       'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
     }
@@ -19,7 +19,7 @@ const client = await weaviate.connectToWeaviateCloud(
 )
 
 // searchHybridBasic  // searchHybridWithScore  // searchHybridWithAlpha  // searchHybridWithFusionType  // searchHybridWithProperties  // searchHybridWithVector // VectorSimilarity // searchHybridWithFilter  // START limit  // START autocut // searchHybridWithPropertyWeighting
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 // END searchHybridBasic  // END searchHybridWithScore  // END searchHybridWithAlpha  // END searchHybridWithFusionType  // END searchHybridWithProperties  // END searchHybridWithVector  // END searchHybridWithFilter // END VectorSimilarity // END limit  // END autocut // END searchHybridWithPropertyWeighting
 
 
@@ -29,7 +29,7 @@ const jeopardy = client.collections.get('JeopardyQuestion');
 // ===============================================
 {
   // NamedVectorHybrid
-  const myNVCollection = client.collections.get('WineReviewNV');
+  const myNVCollection = client.collections.use('WineReviewNV');
 
   const result = await myNVCollection.query.hybrid('a sweet German white wine', {
     // highlight-start
@@ -332,7 +332,7 @@ const jeopardy = client.collections.get('JeopardyQuestion');
 // =========================================
 
 // START VectorSimilarityThreshold
-const jeopardy = client.collections.get("JeopardyQuestion")
+const jeopardy = client.collections.use("JeopardyQuestion")
 
 const response = await jeopardy.query.hybrid("California", {
   alpha: 0.75,
@@ -361,7 +361,7 @@ const groupByProperties = {
   // highlight-end
 }
 
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 
 const response = await jeopardy.query.hybrid('California', {
   alpha: 0.75,

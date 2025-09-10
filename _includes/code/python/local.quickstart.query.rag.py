@@ -1,9 +1,11 @@
+import time
+time.sleep(5) # Allow Weaviate data import to finish TODO[g-despot]: Implement a better solution to wait for data import to finish
 # RAG
 import weaviate
 
 client = weaviate.connect_to_local()
 
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 
 # highlight-start
 response = questions.generate.near_text(
@@ -13,7 +15,7 @@ response = questions.generate.near_text(
 )
 # highlight-end
 
-print(response.generated)  # Inspect the generated text
+print(response.generative.text)  # Inspect the generated text
 
 client.close()  # Free up resources
 # END RAG

@@ -4,7 +4,7 @@ import json
 
 client = weaviate.connect_to_local()
 
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 
 # highlight-start
 response = questions.query.near_text(

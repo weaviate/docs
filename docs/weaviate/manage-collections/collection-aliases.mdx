@@ -1,0 +1,337 @@
+---
+title: Collection aliases
+sidebar_label: Collection aliases
+sidebar_position: 2
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
+
+:::caution Technical preview
+
+Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+Collection aliases allow you to create alternative names for your collections. This is useful for changing collection definitions without downtime, A/B testing, or providing more convenient names for collections. An alias acts as a reference to a collection - when you query using an alias name, Weaviate automatically routes the request to the target collection.
+
+## Create an alias
+
+To create an alias, specify the alias name and the target collection it should point to.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateAlias"
+      endMarker="# END CreateAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// CreateAlias START"
+      endMarker="// CreateAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+:::note
+
+- An alias name must be unique and cannot match any existing collection or alias name
+- Multiple aliases can point to the same collection
+- Aliases can be used instead of collection names in most operations (except when deleting collections)
+  :::
+
+## List all aliases
+
+Retrieve all aliases in your Weaviate instance.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ListAllAliases"
+      endMarker="# END ListAllAliases"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ListAllAliases START"
+      endMarker="// ListAllAliases END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## List aliases for a specific collection
+
+Get all aliases that point to a specific collection.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ListCollectionAliases"
+      endMarker="# END ListCollectionAliases"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ListCollectionAliases START"
+      endMarker="// ListCollectionAliases END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## Get alias details
+
+Retrieve information about a specific alias.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START GetAlias"
+      endMarker="# END GetAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// GetAlias START"
+      endMarker="// GetAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## Update an alias
+
+Change the target collection that an alias points to. This operation is atomic and provides instant switching between collections.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UpdateAlias"
+      endMarker="# END UpdateAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UpdateAlias START"
+      endMarker="// UpdateAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+:::tip Use case: Zero-downtime migration
+
+Updating an alias is particularly useful for migrations:
+
+1. Create a new collection with updated collection definition
+2. Import data into the new collection
+3. Update the alias to point to the new collection
+4. Continue to use the alias - all queries to it are now directed to the new collection
+
+For a code example on how to perform migrations, visit the [Starter guide: Managing collections](../starter-guides/managing-collections/index.mdx#collection-aliases)
+:::
+
+## Delete an alias
+
+Remove an alias. This only deletes the alias pointer, not the underlying collection.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START DeleteAlias"
+      endMarker="# END DeleteAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// DeleteAlias START"
+      endMarker="// DeleteAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+:::note
+
+- Deleting a collection does not automatically delete aliases pointing to it
+
+:::
+
+## Using aliases in operations
+
+Once created, aliases can be used instead of collection names in most operations (except when deleting collections):
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START UseAlias"
+      endMarker="# END UseAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UseAlias START"
+      endMarker="// UseAlias END"
+      language="go"
+    />
+  </TabItem>
+</Tabs>
+
+## Further resources
+
+- [Manage collections: Basic operations](./collection-operations.mdx)
+- [References: Collection definition](/weaviate/config-refs/collections.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/aliases">
+    API References: REST: Aliases
+  </SkipLink>
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

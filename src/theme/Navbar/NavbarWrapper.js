@@ -5,7 +5,7 @@ import buttonStyles from "./styles/button.module.scss";
 import modalStyles from "./styles/modal.module.scss";
 import DefaultNavbar from "./components/DefaultNavbar";
 import SecondaryNavbar from "./components/SecondaryNavbar";
-import OptionModal from "./components/OptionModal";
+import NavigationModal from "./components/NavigationModal";
 import useNavbarState from "./hooks/useNavbarState";
 import useStickyNavbar from "./hooks/useStickyNavbar";
 import useKeyboardShortcut from "./hooks/useKeyboardShortcut";
@@ -48,9 +48,19 @@ export default function NavbarWrapper(props) {
   useKeyboardShortcut("u", () => setModalOpen((prev) => !prev));
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+    const selectedItem = secondaryNavOptions[option];
+
     setModalOpen(false);
-    history.push(secondaryNavOptions[option].link);
+
+    if (selectedItem.href) {
+      // For EXTERNAL links, just open the link.
+      // Do NOT change the selection state.
+      window.open(selectedItem.href, "_blank");
+    } else if (selectedItem.link) {
+      // For INTERNAL links, update the state and navigate.
+      setSelectedOption(option);
+      history.push(selectedItem.link);
+    }
   };
 
   return (
@@ -72,7 +82,7 @@ export default function NavbarWrapper(props) {
         />
       )}
 
-      <OptionModal
+      <NavigationModal
         isModalOpen={isModalOpen}
         setModalOpen={setModalOpen}
         styles={modalStyles}
@@ -80,6 +90,8 @@ export default function NavbarWrapper(props) {
         secondaryNavOptions={secondaryNavOptions}
         handleOptionSelect={handleOptionSelect}
         isApple={isApple}
+        activeLink={activeLink} // Pass activeLink from hook
+        selectedOption={selectedOption} // Pass selectedOption from hook
       />
     </>
   );

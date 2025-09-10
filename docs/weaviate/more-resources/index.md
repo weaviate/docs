@@ -17,7 +17,7 @@ These pages can help with common questions:
 - [Example datasets](./example-datasets.md)
 - [Example use cases](./example-use-cases.md)
 - [Index types and performance](./performance.md)
-- [Migration Guide](./migration/index.md)
+- [Migration Guide](/deploy/migration/index.md)
 
 ## (Even) more resources
 

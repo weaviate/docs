@@ -16,7 +16,7 @@ const CustomScriptLoader = () => {
 
     const getScriptForPath = (pathname) => {
       const scriptsMap = {
-        '/developers/':
+        '/docs/':
           'https://static.scarf.sh/a.png?x-pxid=2758e82f-6546-4356-a8bd-5b5c16368efb',
         '/pricing':
           'https://static.scarf.sh/a.png?x-pxid=5c79460c-47af-4477-a1d9-3624dcce35d3',

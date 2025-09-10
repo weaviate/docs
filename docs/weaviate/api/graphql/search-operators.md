@@ -1,7 +1,7 @@
 ---
 title: Search operators
-description: Leverage search operators in Weaviate's GraphQL API for targeted data retrieval.
 sidebar_position: 20
+description: "GraphQL search operators guide for advanced query construction and precise data targeting techniques."
 image: og/docs/api.jpg
 # tags: ['graphql', 'search operators']
 ---
@@ -54,7 +54,7 @@ All vector search operators can be used with a `certainty` or `distance` thresho
 | Variable | Required | Type | Description |
 | --- | --- | --- | --- |
 | `vector` | yes | `[float]` | This variable takes a vector embedding in the form of an array of floats. The array should have the same length as the vectors in this collection. |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/docs/weaviate/config-refs/distances.md). |
+| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
 | `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
 
 #### Example
@@ -77,7 +77,7 @@ import GraphQLFiltersNearVector from '/_includes/code/graphql.filters.nearVector
 | --------- | -------- | ---- | ----------- |
 | `id` | yes | `UUID` | Data object identifier in the uuid format. |
 | `beacon` | no | `url` | Data object identifier in the beacon URL format. E.g., `weaviate://<hostname>/<kind>/id`. |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/docs/weaviate/config-refs/distances.md). |
+| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
 | `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
 
 #### Example
@@ -144,7 +144,7 @@ This operator is enabled if a compatible vectorizer module is configured for the
 | Variable | Required | Type | Description |
 | --- | --- | --- | --- |
 | `concepts` | yes | `[string]` | An array of strings that can be natural language queries, or single words. If multiple strings are used, a centroid is calculated and used. Learn more about how the concepts are parsed [here](#concept-parsing). |
-| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/docs/weaviate/config-refs/distances.md). |
+| `distance` | no | `float` | The maximum allowed distance to the provided search input. Cannot be used together with the `certainty` variable. The interpretation of the value of the distance field depends on the [distance metric used](/weaviate/config-refs/distances.md). |
 | `certainty` | no | `float` | Normalized Distance between the result item and the search vector. Normalized to be between 0 (perfect opposite) and 1 (identical vectors). Can't be used together with the `distance` variable. |
 | `autocorrect` | no | `boolean` | Autocorrect input text values. Requires the [`text-spellcheck` module](../../modules/spellcheck.md) to be present & enabled.  |
 | `moveTo` | no | `object{}` | Move your search term closer to another vector described by keywords |
@@ -263,6 +263,7 @@ This operator allows you to combine [BM25](#bm25) and vector search to get a "be
 | `vector`     | no       | `[float]`  | optional to supply your own vector                                          |
 | `properties` | no       | `[string]` | list of properties to limit the BM25 search to, default all text properties |
 | `fusionType` | no       | `string` | the type of hybrid fusion algorithm (available from `v1.20.0`)              |
+| `bm25SearchOperator` | no | `object` | set how many of the (bm25) query tokens must be present in the target object for it to be considered a match. (available from `v1.31.0`) |
 
 * Notes:
     * `alpha` can be any number from 0 to 1, defaulting to 0.75.
@@ -316,7 +317,7 @@ This example uses a small search result set to compare the ranked fusion and rel
 
 The ranking algorithms use these scores to derive the hybrid ranking.
 
-#### Ranked Fusion
+#### Ranked fusion
 
 The score depends on the rank of the result. The score is equal to `1/(RANK + 60)`:
 
@@ -337,7 +338,7 @@ The score depends on the rank of the result. The score is equal to `1/(RANK + 60
 
 As you can see, the results of each rank is identical, regardless of the input score.
 
-#### Relative Score Fusion
+#### Relative score fusion
 
 Here, we normalize the scores – the largest score is set to 1 and the lowest to 0, and all entries in-between are scaled according to their **relative distance** to the **maximum** and **minimum values**.
 
@@ -442,6 +443,16 @@ When `relativeScoreFusion` is used as the `fusionType` with a small search `limi
 
 To mitigate this effect, Weaviate automatically performs a search with a higher limit (100) and then trims the results down to the requested limit.
 
+### BM25 search operator
+
+:::info Added in `v1.31`
+:::
+
+Use `bm25SearchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match in the keyword (bm25) search portion of the hybrid search. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
+
+The available options are `And`, or `Or`. If `Or` is set, an additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must match for the object to be considered a match.
+
+If not yet, the keyword search will behave as if `Or` was set with `minimumOrTokensMatch` equal to 1.
 
 ## BM25
 
@@ -451,7 +462,7 @@ The search is case-insensitive, and case matching does not confer a score advant
 
 ### Schema configuration
 
-The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/schema/index.md#bm25) for more details.
+The [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) are configurable and optional. See the [schema reference](../../config-refs/indexing/inverted-index.mdx#bm25) for more details.
 
 ### Variables
 The `bm25` operator supports the following variables:
@@ -460,6 +471,7 @@ The `bm25` operator supports the following variables:
 | --------- | -------- | ----------- |
 | `query`   | yes      | The keyword search query. |
 | `properties` | no    | Array of properties (fields) to search in, defaulting to all properties in the collection. |
+| `searchOperator` | no | set how many of the query tokens must be present in the target object for it to be considered a match. (available from `v1.31.0`) |
 
 :::info Boosting properties
 Specific properties can be boosted by a factor specified as a number after the caret sign, for example `properties: ["title^3", "summary"]`.
@@ -537,10 +549,20 @@ import GraphQLFiltersBM25FilterExample from '/_includes/code/graphql.filters.bm2
 
 </details>
 
+### Search operator
+
+:::info Added in `v1.31`
+:::
+
+Use `searchOperator` to set how many of the query tokens must be present in the target object for it to be considered a match. This is useful when you want to ensure that only objects with a certain number of relevant keywords are returned.
+
+The available options are `And`, or `Or`. If `Or` is set, an additional parameter `minimumOrTokensMatch` must be specified, which defines how many of the query tokens must match for the object to be considered a match.
+
+If not yet, the keyword search will behave as if `Or` was set with `minimumOrTokensMatch` equal to 1.
 
 ## ask
 
-Enabled by the module: [Question Answering](/docs/weaviate/modules/qna-transformers.md).
+Enabled by the module: [Question Answering](/weaviate/modules/qna-transformers.md).
 
 This operator allows you to return answers to questions by running the results through a Q&A model.
 

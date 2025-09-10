@@ -265,7 +265,7 @@ The output is like this:
 
 </details>
 
-To paginate through the entire database, use a [cursor](../manage-data/read-all-objects.mdx) instead of offset and limit.
+To paginate through the entire database, use a [cursor](../manage-objects/read-all-objects.mdx) instead of offset and limit.
 
 
 ## Specify object `properties`
@@ -351,7 +351,7 @@ The output is like this:
 
 ## Retrieve the object `vector`
 
-You can retrieve the object vector. (Also applicable where [named vectors](../config-refs/schema/multi-vector.md) are used.)
+You can retrieve the object vector. (Also applicable where [named vectors](../config-refs/collections.mdx#named-vectors) are used.)
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -722,9 +722,9 @@ import QueryReplication from '/_includes/code/replication.get.object.by.id.mdx';
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections)
+- [Connect to Weaviate](/weaviate/connections)
 - [API References: GraphQL: Get](../api/graphql/get.md)
-- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md)
+- For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md)
 
 ## Questions and feedback

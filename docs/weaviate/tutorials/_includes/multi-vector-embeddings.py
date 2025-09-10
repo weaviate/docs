@@ -58,10 +58,10 @@ client.collections.delete(collection_name)
 # START ColBERTCollectionConfig
 client.collections.create(
     collection_name,
-    vectorizer_config=[
+    vector_config=[
         # highlight-start
         # ColBERT vectorizer
-        Configure.NamedVectors.text2colbert_jinaai(
+        Configure.MultiVectors.text2vec_jinaai(
             name="multi_vector",
             source_properties=["text"],
             model="jina-colbert-v2"
@@ -84,7 +84,7 @@ documents = [
     {"id": "doc3", "text": "For people building AI driven products, Weaviate is a good database for their tech stack."},
 ]
 
-collection = client.collections.get(collection_name)
+collection = client.collections.use(collection_name)
 
 with collection.batch.fixed_size(batch_size=10) as batch:
     for doc in documents:
@@ -160,15 +160,11 @@ client.collections.delete(collection_name)
 # START UserEmbeddingCollectionConfig
 client.collections.create(
     collection_name,
-    vectorizer_config=[
+    vector_config=[
         # highlight-start
         # User-provided embeddings
-        Configure.NamedVectors.none(
+        Configure.MultiVectors.self_provided(
             name="multi_vector",
-            vector_index_config=Configure.VectorIndex.hnsw(
-                # Enable multi-vector index with default settings
-                multi_vector=Configure.VectorIndex.MultiVector.multi_vector()
-            )
         ),
         # highlight-end
     ],
@@ -188,7 +184,7 @@ documents = [
     {"id": "doc3", "text": "For people building AI driven products, Weaviate is a good database for their tech stack."},
 ]
 
-collection = client.collections.get(collection_name)
+collection = client.collections.use(collection_name)
 
 with collection.batch.fixed_size(batch_size=10) as batch:
     for doc in documents:
@@ -196,7 +192,7 @@ with collection.batch.fixed_size(batch_size=10) as batch:
         batch.add_object(
             properties={"text": doc["text"], "docid": doc["id"]},
             uuid=generate_uuid5(doc["id"]),
-            vector=get_colbert_embedding(doc["text"]),  # Provide the embedding manually
+            vector={"multi_vector": get_colbert_embedding(doc["text"])},  # Provide the embedding manually
         )
 
 # Check for errors in batch imports

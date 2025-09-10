@@ -4,9 +4,9 @@ import assert from 'assert';
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
-  process.env.WCD_URL,
+  process.env.WEAVIATE_URL,
  {
-   authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY),
+   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
    headers: {
      'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
    }
@@ -14,7 +14,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 )
 
 // BasicGetJS // GetWithLimitJS // GetWithLimitOffsetJS // GetPropertiesJS // GetObjectVectorJS // GetObjectIdJS // GetWithCrossRefsJS // GetWithMetadataJS 
-const myCollection = client.collections.get('JeopardyQuestion');
+const myCollection = client.collections.use('JeopardyQuestion');
 // END BasicGetJS // END GetWithLimitJS // END GetWithLimitOffsetJS // END GetPropertiesJS // END GetObjectVectorJS // END GetObjectIdJS // END GetWithCrossRefsJS // END GetWithMetadataJS
 
 
@@ -237,7 +237,7 @@ for (let object of result.objects) {
 // <!-- NEEDS TESTS -->
 
 // MultiTenancy
-const myMTCollection = client.collections.get('WineReviewMT');
+const myMTCollection = client.collections.use('WineReviewMT');
 // highlight-start
 const collectionTenantA = myMTCollection.withTenant('tenantA');
 // highlight-end

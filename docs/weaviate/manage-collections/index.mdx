@@ -1,0 +1,163 @@
+---
+title: Manage collections
+sidebar_position: 0
+image: og/docs/howto.jpg
+hide_table_of_contents: true
+---
+
+Use the following guides for detailed instructions and concepts related to specific Weaviate features. Learn how to perform basic collection operations, configure vectorizers, integrate models, implement multi-tenancy or multi-node setups, migrate data, and manage cross-references.
+
+import CardsSection from "/src/components/CardsSection";
+
+export const specificGuidesData = [
+  {
+    title: "Basic collection operations (CRUD)",
+    description: "Learn how to create, read, update, and delete collections.",
+    link: "/weaviate/manage-collections/collection-operations",
+    icon: "fas fa-database", // Icon representing data management
+  },
+  {
+    title: "Vectorizer and vector settings",
+    description:
+      "Configure a vectorizer (embedding model), vector indexing parameters, and related settings.",
+    link: "/weaviate/manage-collections/vector-config",
+    icon: "fas fa-project-diagram", // Icon representing vector relationships/structure
+  },
+  {
+    title: "Model provider integrations",
+    description:
+      "Integrate Weaviate with various model providers like OpenAI, Hugging Face, Cohere, etc.",
+    link: "/weaviate/manage-collections/generative-reranker-models",
+    icon: "fas fa-plug", // Icon representing integrations/plugins
+  },
+  {
+    title: "Multi-tenancy",
+    description:
+      "Isolate data for different tenants within a single Weaviate instance.",
+    link: "/weaviate/manage-collections/multi-tenancy",
+    icon: "fas fa-users", // Icon representing multiple users/tenants
+  },
+  {
+    title: "Multi-node setup",
+    description:
+      "Set up and configure Weaviate for high availability and scalability across multiple nodes.",
+    link: "/weaviate/manage-collections/multi-node-setup",
+    icon: "fas fa-network-wired", // Icon representing clustering/networking
+  },
+  {
+    title: "Migrate collections",
+    description:
+      "Learn strategies and steps for migrating your data schemas and objects.",
+    link: "/weaviate/manage-collections/migrate",
+    icon: "fas fa-exchange-alt", // Icon representing migration/transfer
+  },
+  {
+    title: "Cross-references",
+    description: "Define, manage, and query relationships between objects.",
+    link: "/weaviate/manage-collections/cross-references",
+    icon: "fas fa-link", // Icon representing links/relationships
+  },
+];
+
+<br />
+<CardsSection items={specificGuidesData} />
+<br />
+
+## How collections work
+
+A Weaviate collection is defined by several core components and settings that enable data storage and vector search.  
+Key elements include:
+
+import CollectionsSimplified from "/docs/weaviate/manage-collections/img/weaviate-collections-simplified.png";
+import Link from "@docusaurus/Link";
+
+export const textColumnContent = (
+  <ul>
+    <li>
+      <b>Objects</b>:
+      <ul>
+        <li>
+          The fundamental units stored within a collection. Each object contains
+          data properties and includes vector embeddings representing its
+          meaning. (See the{" "}
+          <Link to="/weaviate/manage-objects">
+            'How-to: Manage objects' guide
+          </Link>{" "}
+          for more details on manipulating objects).
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>AI Model Integrations</b>:
+      <ul>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/vector-config">
+              Vectorizers (Embedding Models)
+            </Link>
+          </b>
+          : Generate vector embeddings from object properties to enable semantic
+          search.
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/generative-reranker-models">
+              Generative models
+            </Link>
+          </b>
+          : Used to perform RAG (Retrieval-Augmented Generation), combining retrieved
+          data with generative AI capabilities.
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/generative-reranker-models">
+              Reranker models
+            </Link>
+          </b>
+          : Refine search relevance by re-ordering the initial results from a search
+          query.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>Configuration Settings</b>:{" "}
+      {/* Changed heading from "Other settings" */}
+      <ul>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/collection-operations#set-inverted-index-parameters">
+              Inverted index
+            </Link>
+          </b>
+          : Optimizes keyword searches by indexing textual object properties for
+          faster lookups.
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/multi-tenancy">
+              Multi-tenancy
+            </Link>
+          </b>
+          : Enables securely storing data for multiple distinct tenants (users or
+          groups) within the same collection instance.
+        </li>
+      </ul>
+    </li>
+  </ul>
+);
+
+<DocsImage
+  image={CollectionsSimplified}
+  alt="Collections in Weaviate"
+  layout="right"
+  contentColumns={6}
+  imageColumns={6}
+>
+  {textColumnContent}
+</DocsImage>
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

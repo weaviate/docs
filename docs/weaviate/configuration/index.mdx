@@ -1,0 +1,194 @@
+---
+title: How to configure Weaviate
+sidebar_position: 0
+image: og/docs/configuration.jpg
+hide_table_of_contents: true
+# tags: ['configuration']
+---
+
+Configure and manage key operational aspects of your Weaviate instance with these guides:
+
+import CardsSection from "/src/components/CardsSection";
+
+export const configOpsData = [
+  {
+    title: "Compression/Quantization (PQ/BQ/RQ/SQ)",
+    description:
+      "Reduce memory usage with Product, Binary, Rotational or Scalar Quantization techniques.",
+    link: "/weaviate/configuration/compression",
+    icon: "fas fa-compress-alt",
+  },
+  {
+    title: "Modules",
+    description:
+      "Explore Weaviate's ecosystem of vectorizer, generative (RAG), and other modules.",
+    link: "/weaviate/configuration/modules",
+    icon: "fas fa-puzzle-piece",
+  },
+  {
+    title: "Authentication and authorization",
+    description:
+      "Set up methods to authenticate and to verify user identities before granting access.",
+    link: "/weaviate/configuration/authz-authn",
+    icon: "fas fa-key",
+  },
+  {
+    title: "RBAC",
+    description:
+      "Learn about Role-Based Access Control concepts, predefined/custom roles, and permissions.",
+    link: "/weaviate/configuration/rbac",
+    icon: "fas fa-user-shield",
+  },
+];
+
+<br />
+<CardsSection items={configOpsData} />
+<br />
+
+## Deployment guides
+
+### Configuration
+
+export const configurationData = [
+  {
+    title: "Backups",
+    description:
+      "Configure backup and restore processes for your Weaviate instance.",
+    link: "/deploy/configuration/backups",
+    icon: "fas fa-save",
+  },
+  {
+    title: "Environment variables",
+    description:
+      "Configure your environment variables for connection strings, ports, and security credentials.",
+    link: "/deploy/configuration/env-vars",
+    icon: "fas fa-cog",
+  },
+  {
+    title: "Horizontal scaling",
+    description: "Scale your deployment for high availability.",
+    link: "/deploy/configuration/horizontal-scaling",
+    icon: "fas fa-arrow-up-right-dots",
+  },
+  {
+    title: "Persistence",
+    description: "Enable backups and configure retention policies.",
+    link: "/deploy/configuration/persistence",
+    icon: "fas fa-floppy-disk",
+  },
+  {
+    title: "Tenant offloading",
+    description:
+      "Manage resource usage by offloading inactive tenants in multi-tenant setups.",
+    link: "/deploy/configuration/tenant-offloading",
+    icon: "fas fa-pause-circle",
+  },
+];
+
+<br />
+<CardsSection items={configurationData} />
+<br />
+
+### Authorization and Authentication
+
+export const authData = [
+  {
+    title: "Authentication",
+    description: "Configure access management of your deployment.",
+    link: "/deploy/configuration/authentication",
+    icon: "fas fa-shield-halved",
+  },
+  {
+    title: "Authorization",
+    description: "Define and manage user roles and permissions.",
+    link: "/deploy/configuration/authorization",
+    icon: "fas fa-user-shield",
+  },
+  {
+    title: "Configuring RBAC",
+    description:
+      "Set up Role-Based Access Control for fine-grained permissions.",
+    link: "/deploy/configuration/configuring-rbac",
+    icon: "fas fa-users-cog",
+  },
+  {
+    title: "OIDC Configuration",
+    description:
+      "Configure OpenID Connect for secure authentication with Weaviate.",
+    link: "/deploy/configuration/oidc",
+    icon: "fas fa-lock",
+  },
+];
+
+<br />
+<CardsSection items={authData} />
+<br />
+
+### Replication
+
+export const replicationData = [
+  {
+    title: "Replication",
+    description:
+      "Set up data replication across nodes for high availability and fault tolerance.",
+    link: "/deploy/configuration/replication",
+    icon: "fas fa-copy",
+  },
+  {
+    title: "Asynchronous Replication",
+    description:
+      "Ensure eventual consistency across nodes in a distributed cluster.",
+    link: "/deploy/configuration/async-rep",
+    icon: "fas fa-clone",
+  },
+];
+
+<br />
+<CardsSection items={replicationData} />
+<br />
+
+### Cluster Information
+
+export const clusterInfoData = [
+  {
+    title: "Cluster metadata",
+    description: "Access and manage metadata about your Weaviate cluster.",
+    link: "/deploy/configuration/meta",
+    icon: "fas fa-info-circle",
+  },
+  {
+    title: "Monitoring, metrics, and logging",
+    description: "Monitor the status and health of your Weaviate instance.",
+    link: "/deploy/configuration/monitoring",
+    icon: "fas fa-chart-bar",
+  },
+  {
+    title: "Cluster node data",
+    description: "View and manage data about individual nodes in your cluster.",
+    link: "/deploy/configuration/nodes",
+    icon: "fas fa-server",
+  },
+  {
+    title: "Status",
+    description: "Monitor the status and health of your Weaviate instance.",
+    link: "/deploy/configuration/status",
+    icon: "fas fa-heartbeat",
+  },
+  {
+    title: "Telemetry",
+    description:
+      "Understand how Weaviate telemetry works and how to configure it.",
+    link: "/deploy/configuration/telemetry",
+    icon: "fas fa-chart-line",
+  },
+];
+
+<br />
+<CardsSection items={clusterInfoData} />
+<br />
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

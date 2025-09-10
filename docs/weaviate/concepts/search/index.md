@@ -1,6 +1,7 @@
 ---
 title: Search
 sidebar_position: 5
+description: "Overview of search capabilities designed for billion-scale datasets and real-time queries."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search']
 ---
@@ -303,7 +304,7 @@ See the [hybrid search](./hybrid-search.md) page for more details on how hybrid 
 
 Queries can be formulated without any ranking mechanisms.
 
-For example, a query may simply consist of a filter, or you may wish to iterate through the entire dataset, using the [cursor API](../../manage-data/read-all-objects.mdx).
+For example, a query may simply consist of a filter, or you may wish to iterate through the entire dataset, using the [cursor API](../../manage-objects/read-all-objects.mdx).
 
 In such cases of unordered retrieval requests, Weaviate will retrieve objects in order of their UUIDs. This retrieval method will result in an essentially randomly-ordered object list.
 
@@ -339,7 +340,7 @@ Retrieval augmented generation (RAG), also called generative search, combines se
 
 Weaviate integrates with many popular [generative model providers](../../model-providers/index.md) such as [AWS](../../model-providers/aws/generative.md), [Cohere](../../model-providers/cohere/generative.md), [Google](../../model-providers/google/generative.md), [OpenAI](../../model-providers/openai/generative.md) and [Ollama](../../model-providers/ollama/generative.md).
 
-As a result, Weaviate makes RAG easy to [set up](../../manage-data/collections.mdx#specify-a-generative-model-integration), and easy to [execute as an integrated, single query](../../search/generative.md#grouped-task-search).
+As a result, Weaviate makes RAG easy to [set up](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration), and easy to [execute as an integrated, single query](../../search/generative.md#grouped-task-search).
 
 <details>
   <summary>RAG: Example</summary>
@@ -380,6 +381,35 @@ Weaviate uses a variety of metrics to rank search results of a given query. The 
 - BM25F score: A keyword search score calculated using the BM25F algorithm.
 - Hybrid score: A combined score from vector and keyword searches.
 
+## Named vectors
+
+### Query a specific named vector
+
+To do a vector search on a collection with named vectors, specify the vector space to search.
+
+Use named vectors with [vector similarity searches](/weaviate/search/similarity#named-vectors) (`near_text`, `near_object`, `near_vector`, `near_image`) and [hybrid search](/weaviate/search/hybrid#named-vectors).
+
+Named vector collections support hybrid search, but only for one vector at a time.
+
+[Keyword search](/weaviate/search/bm25) syntax does not change if a collection has named vectors.
+
+### Query multiple named vectors
+
+:::info Added in `v1.26`
+:::
+
+Where multiple named vectors are defined in a collection, you can query them in a single search. This is useful for comparing the similarity of an object to multiple named vectors.
+
+This is called a "multi-target vector search".
+
+In a multi-target vector search, you can specify:
+
+- The target vectors to search
+- The query(ies) to compare to the target vectors
+- The weights to apply to each distance (raw, or normalized) for each target vector
+
+Read more in [How-to: Multi-target vector search](../../search/multi-vector.md).
+
 ## Further resources
 
 For more details, see the respective pages for:
@@ -387,7 +417,7 @@ For more details, see the respective pages for:
 - [Concepts: Keyword search](./keyword-search.md)
 - [Concepts: Hybrid search](./hybrid-search.md).
 
-For code snippets on how to use these search types, see the [How-to: search](../search/index.md) page.
+For code snippets on how to use these search types, see the [How-to: search](../../search/index.mdx) page.
 
 ## Questions and feedback
 

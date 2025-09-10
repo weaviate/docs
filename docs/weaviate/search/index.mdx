@@ -1,0 +1,87 @@
+---
+title: Search
+sidebar_position: 0
+image: og/docs/howto.jpg
+hide_table_of_contents: true
+# tags: ['how to', 'perform a search']
+---
+
+Use these **search** how-to guides to find the data you want.
+
+import CardsSection from "/src/components/CardsSection";
+
+export const searchTopicsData = [
+  {
+    title: "Query basics",
+    description:
+      "Learn fundamental search syntax and how to retrieve specific object properties.",
+    link: "/weaviate/search/basics",
+    icon: "fas fa-book-reader",
+  },
+  {
+    title: "Vector similarity search",
+    description:
+      "Find objects based on vector embedding similarity using `nearVector`, `nearObject`, etc.",
+    link: "/weaviate/search/similarity",
+    icon: "fas fa-wave-square",
+  },
+  {
+    title: "Image search",
+    description:
+      "Perform vector similarity searches using images as the query input.",
+    link: "/weaviate/search/image",
+    icon: "fas fa-image",
+  },
+  {
+    title: "Keyword search (BM25F)",
+    description:
+      "Execute keyword searches ranked relevance using the BM25F algorithm.",
+    link: "/weaviate/search/bm25",
+    icon: "fas fa-font",
+  },
+  {
+    title: "Hybrid search",
+    description:
+      "Combine keyword (BM25F) and vector similarity search results with fusion algorithms.",
+    link: "/weaviate/search/hybrid",
+    icon: "fas fa-layer-group",
+  },
+  {
+    title: "Retrieval Augmented Generation (RAG)",
+    description:
+      "Use search results to provide context and augment prompts for Large Language Models.",
+    link: "/weaviate/search/generative",
+    icon: "fas fa-robot",
+  },
+  {
+    title: "Reranking",
+    description:
+      "Refine and re-order search results using integrated reranker modules.",
+    link: "/weaviate/search/rerank",
+    icon: "fas fa-sort-amount-down",
+  },
+  {
+    title: "Aggregation",
+    description:
+      "Perform aggregate operations like count, mean, sum, etc., on search result sets.",
+    link: "/weaviate/search/aggregate",
+    icon: "fas fa-calculator",
+  },
+  {
+    title: "Filters",
+    description:
+      "Apply conditional filters, such as `where` clauses, to narrow down search results.",
+    link: "/weaviate/search/filters",
+    icon: "fas fa-filter",
+  },
+];
+
+<br />
+<CardsSection items={searchTopicsData} />
+<br />
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

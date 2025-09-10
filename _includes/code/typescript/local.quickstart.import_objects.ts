@@ -15,7 +15,7 @@ async function getJsonData() {
 // Note: The TS client does not have a `batch` method yet
 // We use `insertMany` instead, which sends all of the data in one request
 async function importQuestions() {
-  const questions = client.collections.get('Question');
+  const questions = client.collections.use('Question');
   const data = await getJsonData();
   const result = await questions.data.insertMany(data);
   console.log('Insertion response: ', result);

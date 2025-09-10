@@ -18,7 +18,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
 <TabItem value="js" label="JS/TS Client v3">
 
 ```js
-const publication = client.collections.get('Publication')
+const publication = client.collections.use('Publication')
 
 uuid = await publication.data.insert({
   properties: {
@@ -63,7 +63,7 @@ import (
   "context"
   "fmt"
 
-  "github.com/weaviate/weaviate-go-client/v4/weaviate"
+  "github.com/weaviate/weaviate-go-client/v5/weaviate"
 )
 
 func main() {

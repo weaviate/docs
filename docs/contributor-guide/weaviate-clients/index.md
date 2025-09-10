@@ -1,30 +1,28 @@
 ---
 title: Weaviate Clients
-sidebar_position: 0
 image: og/contributor-guide/weaviate-clients.jpg
 # tags: ['contributor-guide', 'clients']
 ---
 
-# Contributor guidelines
-
 There are currently four clients developed for Weaviate's APIs:
-* [Python](/docs/weaviate/client-libraries/python/index.md)
-* [Go](/docs/weaviate/client-libraries/go.md)
-* [TypeScript/JavaScript](/docs/weaviate/client-libraries/typescript/index.mdx)
-* [Java](/docs/weaviate/client-libraries/java.md)
+
+- **[Python](/weaviate/client-libraries/python/index.mdx)**
+- **[TypeScript/JavaScript](../../weaviate/client-libraries/typescript/index.mdx)**
+- **[Java](/weaviate/client-libraries/java.md)**
+- **[Go](/weaviate/client-libraries/go.md)**
 
 These clients, and all future clients are and will be developed according to the following guidelines:
 
-1. Every client *must* reflect all features of the [RESTful API one-to-one](/docs/weaviate/api/rest).
-2. Every client *must* reflect all functions of [GraphQL API](/docs/weaviate/api/graphql/index.md) (1-1 where possible).
-3. Clients *can* have client-specific, extra or unique features:
+1. Every client _must_ reflect all features of the [RESTful API one-to-one](/weaviate/api/rest).
+2. Every client _must_ reflect all functions of [GraphQL API](/weaviate/api/index.mdx) (1-1 where possible).
+3. Clients _can_ have client-specific, extra or unique features:
    1. These features on top of the 1-1 RESTful and GraphQL functionalities must be defined through a user story, which will also be reflected in the documentation.
    2. These features can be solved in a client's native way (follow the current design of the client for consistency)
    3. Preferably the functionalities are consistent across clients.
 4. Keep the design (nomenclature and builder structures) as consistent as possible, with the nomenclature of the RESTful and GraphQL API functions as base, then adopting names from similar functions in a client in another language.
 5. To be considered complete, clients must, at a minimum, include journey tests. Please refer to the 'Testing' section below for more details."
 
-# Design philosophy and API patterns
+## Design philosophy and API patterns
 
 As a rule of thumb it is more important that a client feels native to
 developers used to a specific language than it is to have all clients exactly
@@ -43,7 +41,7 @@ suited for a builder pattern.
 Casing in object, property and method names should follow best-practicies for
 the respective language.
 
-# Testing
+## Testing
 
 Test coverage is very important for clients to make it possible to easily test
 the client against various Weaviate versions. As a client is an integration
@@ -67,22 +65,22 @@ tests of the JavaScript client
 or Go client
 ([Example](https://github.com/weaviate/weaviate-go-client/tree/master/test)).
 
-# How to get started
+## How to get started
 
 We recommend that you first identify which existing client uses a language most
 similar to the one you've picked. For example, criteria could include:
 
-* Is the language dynamically or statically typed?
-* Is the language compiled or interpreted?
-* How are optional arguments typically handled?
-* How verbose are patterns in the language?
+- Is the language dynamically or statically typed?
+- Is the language compiled or interpreted?
+- How are optional arguments typically handled?
+- How verbose are patterns in the language?
 
 Then you can take a look at an existing client which matches your language the
 closest and get inspried.
 
 For example, if you plan to implement a client in C#, it might make sense to look at the
-[Java](/docs/weaviate/client-libraries/java.md) and
-[Go](/docs/weaviate/client-libraries/go.md) clients.
+[Java](/weaviate/client-libraries/java.md) and
+[Go](/weaviate/client-libraries/go.md) clients.
 
 Then we recommend to start porting one of the existing test suites and start
 implementing the client methods until all tests are passed. If you use the same
@@ -93,3 +91,9 @@ correctly.
 Eventually, as you have ported all tests and implemented all features to make
 them pass, you have the guarantee that your client is feature-complete and
 won't break on future updates.
+
+## Questions and feedback
+
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

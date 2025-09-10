@@ -1,9 +1,12 @@
 ---
 title: Keyword Search (BM25)
 sidebar_position: 40
+description: "Exact token-based matching using BM25 algorithm for precise keyword and phrase searching."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'keyword search', 'bm25', 'keyword']
 ---
+
+import ThemedImage from '@theme/ThemedImage';
 
 Keyword search is an exact matching-based search using "tokens", or strings of characters.
 
@@ -44,7 +47,7 @@ Tokenization for keyword searches refers to how each source text is split up int
 
 The default tokenization method is `word`.
 
-Other tokenization methods such as `whitespace`, `lowercase`, and `field` are available, as well as specialized ones such as `GSE` or `kagome_kr` for other languages ([more details](../../config-refs/schema/index.md#tokenization)).
+Other tokenization methods such as `whitespace`, `lowercase`, and `field` are available, as well as specialized ones such as `GSE` or `kagome_kr` for other languages ([more details](../../config-refs/collections.mdx#tokenization)).
 
 Set the tokenization option [in the inverted index configuration](../../search/bm25.md#set-tokenization) for a collection.
 
@@ -60,9 +63,9 @@ Stopwords are words that are filtered out before processing text.
 
 Weaviate uses configurable stopwords in calculating the BM25 score. Any tokens that are contained in the stopword list will be ignored from the BM25 score calculation.
 
-See the [reference page](../../config-refs/schema/index.md#stopwords-stopword-lists) for more details.
+See the [reference page](../../config-refs/indexing/inverted-index.mdx#stopwords) for more details.
 
-### BM25 Parameters
+### BM25 parameters
 
 BM25 is a scoring function used to rank documents based on the query terms appearing in them. It has two main parameters that control its behavior:
 
@@ -119,9 +122,37 @@ flowchart LR
     linkStyle default stroke:#718096,stroke-width:3px,fill:none,background-color:white
 ```
 
-Set custom `k1` and `b` values [for a collection](../../manage-data/collections.mdx#set-inverted-index-parameters).
+Set custom `k1` and `b` values [for a collection](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <!-- Set custom `k1` and `b` values [for a collection](../../manage-data/collections.mdx#set-inverted-index-parameters), or override values for each property. -->
+
+### Keyword search operators
+
+:::info Added in `v1.31`
+:::
+
+Search operators define the minimum number of query [tokens](../../search/bm25.md#set-tokenization) that must be present in the object to be returned.
+
+Conceptually, it works as though a filter is applied to the results of the BM25 score calculation. The available operators are:
+- `and`: All tokens must be present in the object
+- `or`: At least one token must be present in the object, with the minimum number of tokens being configurable (`minimumOrTokensMatch`)
+
+As an example, a BM25 query of `computer networking guide` with the `and` operator would only return objects that contain all of the tokens `computer`, `networking`, and `guide`. In contrast, the same query with the `or` operator would return objects that contain at least one of those tokens. If the `or` operator is used with a `minimumOrTokensMatch` of `2`, then at least two of the tokens must be present in the object.
+
+If not specified, the default operator is `or`, with a `minimumOrTokensMatch` of `1`. This means that at least one token must be present in the object for it to be returned.
+
+import BM25OperatorsLight from '../img/bm25_operators_light.png';
+import BM25OperatorsDark from '../img/bm25_operators_dark.png';
+
+<ThemedImage
+  alt="BM25 operators"
+  sources={{
+    light: BM25OperatorsLight,
+    dark: BM25OperatorsDark,
+  }}
+/>
+
+See the [how-to page](../../search/bm25.md#search-operators) for details on usage.
 
 ### Selected properties
 
@@ -129,7 +160,7 @@ A BM25 query can optionally specify which object properties are to be included i
 
 By default, all `text` properties are included in a BM25 calculation. There are two ways to vary this:
 
-- In the collection configuration, [set `indexSearchable` for a property to `false`](../../manage-data/collections.mdx#property-level-settings). This property will then be ignored in all BM25 searches.
+- In the collection configuration, [set `indexSearchable` for a property to `false`](../../manage-collections/vector-config.mdx#property-level-settings). This property will then be ignored in all BM25 searches.
 - [Specify which properties to search at query time](../../search/bm25.md#search-on-selected-properties-only). This will only apply for that particular query.
 
 ### Property Boosting
@@ -172,7 +203,7 @@ Here are some key considerations when using keyword search:
 
 ### Further resources
 
-- [How-to: Search](../../search/index.md)
+- [How-to: Search](../../search/index.mdx)
 - [How-to: Keyword search](../../search/bm25.md)
 
 ## Questions and feedback

@@ -17,7 +17,7 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with [Google AI Studio](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate's integration with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
 
 [Configure a Weaviate collection](#configure-collection) to use a generative AI model with Google. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your Google API key.
 
@@ -25,8 +25,8 @@ More specifically, Weaviate will perform a search, retrieve the most relevant ob
 
 ![RAG integration illustration](../_includes/integration_google_rag.png)
 
-:::info AI Studio availability
-At the time of writing (November 2023), AI Studio is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
+:::info Gemini API availability
+At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
 :::
 
 ## Requirements
@@ -49,7 +49,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](../../config-refs/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -58,9 +58,9 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 
 You must provide valid API credentials to Weaviate for the appropriate integration.
 
-#### AI Studio
+#### Gemini API
 
-Go to [Google AI Studio](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
+Go to [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
 
 #### Vertex AI
 
@@ -90,7 +90,7 @@ import GCPTokenExpiryNotes from '/_includes/gcp.token.expiry.notes.mdx';
 
 Provide the API key to Weaviate at runtime, as shown in the examples below.
 
-Note the separate headers that are available for [AI Studio](#ai-studio) and [Vertex AI](#vertex-ai) users.
+Note the separate headers that are available for [Gemini API](#gemini-api) and [Vertex AI](#vertex-ai) users.
 
 import ApiKeyNote from '../_includes/google-api-key-note.md';
 
@@ -124,9 +124,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-generative-model-integration) as follows to use a Google generative AI model as follows:
+[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use a Google generative AI model as follows:
 
-Note that the required parameters differ between Vertex AI and AI Studio.
+Note that the required parameters differ between Vertex AI and Gemini API.
 
 You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
 
@@ -155,7 +155,7 @@ Vertex AI users must provide the Google Cloud project ID in the collection confi
 
 </Tabs>
 
-### AI Studio
+### Gemini API
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -201,6 +201,29 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
+</Tabs>
+
+## Select a model at runtime
+
+Aside from setting the default model provider when creating the collection, you can also override it at query time.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python API v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START RuntimeModelSelectionGoogle"
+      endMarker="# END RuntimeModelSelectionGoogle"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START RuntimeModelSelectionGoogle"
+      endMarker="// END RuntimeModelSelectionGoogle"
+      language="ts"
+    />
+  </TabItem>
 </Tabs>
 
 ## Retrieval augmented generation
@@ -269,6 +292,30 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
+### RAG with images
+
+You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
+
+<Tabs groupId="languages">
+
+ <TabItem value="py" label="Python API v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START WorkingWithImagesGoogle"
+      endMarker="# END WorkingWithImagesGoogle"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS API v3">
+    <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START WorkingWithImagesGoogle"
+        endMarker="// END WorkingWithImagesGoogle"
+        language="ts"
+      />
+  </TabItem>
+</Tabs>
+
 ## References
 
 ### Available models
@@ -286,7 +333,7 @@ Vertex AI:
 - `gemini-1.0-pro-001` (from Weaviate `v1.25.1`)
 - `gemini-1.0-pro` (from Weaviate `v1.25.1`)
 
-AI Studio:
+Gemini API:
 - `chat-bison-001` (default)
 - `gemini-pro`
 <!-- - `gemini-pro-vision` (from Weaviate `v1.24.2`) -->
@@ -302,13 +349,13 @@ AI Studio:
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### References
 
 - [Google Vertex AI](https://cloud.google.com/vertex-ai)
-- [Google AI Studio](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
+- [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
 
 ## Questions and feedback
 

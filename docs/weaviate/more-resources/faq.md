@@ -42,7 +42,7 @@ image: og/docs/more-resources.jpg
 <details>
   <summary>Answer</summary>
 
-> You can find this in the [architecture section](/docs/weaviate/concepts/resources.md#an-example-calculation) of the docs.
+> You can find this in the [architecture section](/weaviate/concepts/resources.md#an-example-calculation) of the docs.
 
 </details>
 
@@ -55,7 +55,7 @@ image: og/docs/more-resources.jpg
 
 </details>
 
-#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate Database lost?
+#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate database lost?
 
 <details>
   <summary>Answer</summary>
@@ -73,7 +73,7 @@ image: og/docs/more-resources.jpg
   <summary>Answer</summary>
 
 > Role-based access control (RBAC) can be enabled when configuring Weaviate via the `AUTHORIZATION_RBAC_ENABLED` environment variable.
-> For more info visit the [RBAC: Configuration](/docs/weaviate/configuration/rbac/configuration) guide.
+> For more info visit the [RBAC: Configuration](/deploy/configuration/configuring-rbac.md) guide.
 
 </details>
 
@@ -122,7 +122,7 @@ image: og/docs/more-resources.jpg
 <details>
   <summary>Answer</summary>
 
-> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/schema/index.md#tokenization) on the differences.
+> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/collections.mdx#tokenization) on the differences.
 
 </details>
 
@@ -179,7 +179,7 @@ Yes. Each collection itself acts like namespaces. Additionally, you can use the 
 <details>
   <summary>Answer</summary>
 
-> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/docs/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary)
+> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary)
 
 </details>
 
@@ -248,7 +248,7 @@ import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 <details>
   <summary>Answer</summary>
 
-Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#benchmark-results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
+Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/weaviate/benchmarks/ann.md#benchmark-results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
 
 Generally if you need a higher recall than the default parameters provide you with, you can use stronger parameters. This can either be done at build time (`efConstruction`, `maxConnections`) or at query time (`ef`). Roughly speaking, a higher `ef` value at query time means a more thorough search. It will have a slightly higher latency, but also lead to a slightly better recall.
 
@@ -263,7 +263,7 @@ Example: Using the default parameters `ef=-1`, `dynamicEfMin=100`, `dynamicEfMax
 If you need a higher search quality for a given limit you can consider the following options:
 
 1. Instead of using a dynamic `ef` value, use a fixed one that provides the desired recall.
-1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/docs/weaviate/benchmarks/ann.md#benchmark-results) present a combination of many different parameter combination for various datasets.
+1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/weaviate/benchmarks/ann.md#benchmark-results) present a combination of many different parameter combination for various datasets.
 
 </details>
 
@@ -285,7 +285,7 @@ If you need a higher search quality for a given limit you can consider the follo
 
 > Yes, Weaviate supports cursor-based iteration as well as pagination through a result set.
 >
-> To iterate through all objects, you can use the [`after` operator](../manage-data/read-all-objects.mdx).
+> To iterate through all objects, you can use the [`after` operator](../manage-objects/read-all-objects.mdx).
 >
 > For pagination through a result set, you can use the `offset` and `limit` operators for GraphQL API calls. Take a look at [this page](../api/graphql/filters.md) which describes how to use these operators, including tips on performance and limitations.
 
@@ -297,9 +297,9 @@ If you need a higher search quality for a given limit you can consider the follo
   <summary>Answer</summary>
 
 > Here are top 3 best practices for updating data:
-> 1. Use the [batch API](../manage-data/import.mdx)
+> 1. Use the [batch API](../manage-objects/import.mdx)
 > 2. Start with a small-ish batch size e.g. 100 per batch. Adjust up if it is very fast, adjust down if you run into timeouts
-> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-data/import.mdx#import-with-references) to set links between collections in arbitrary directions.
+> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-objects/import.mdx#import-with-references) to set links between collections in arbitrary directions.
 
 </details>
 
@@ -310,7 +310,7 @@ If you need a higher search quality for a given limit you can consider the follo
 <details>
   <summary>Answer</summary>
 
-> [Yes!](/docs/weaviate/modules/custom-modules.md)
+> [Yes!](/weaviate/modules/custom-modules.md)
 
 </details>
 
@@ -319,7 +319,7 @@ If you need a higher search quality for a given limit you can consider the follo
 <details>
   <summary>Answer</summary>
 
-> Not at the moment. You can currently use the [available contextionaries](/docs/weaviate/modules/text2vec-contextionary.md) in a variety of languages and use the transfer learning feature to add custom concepts if needed.
+> Not at the moment. You can currently use the [available contextionaries](/weaviate/modules/text2vec-contextionary.md) in a variety of languages and use the transfer learning feature to add custom concepts if needed.
 
 </details>
 
@@ -342,9 +342,9 @@ If you need a higher search quality for a given limit you can consider the follo
 > More information:
 >
 > - [Weaviate, an ANN Database with CRUD support – DB-Engines.com](https://db-engines.com/en/blog_post/87) ⬅️ best resource on the topic
-> - [Weaviate's HNSW implementation in the docs](/docs/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
+> - [Weaviate's HNSW implementation in the docs](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
 >
-> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/docs/weaviate/concepts/indexing/vector-index.md)_
+> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/weaviate/concepts/indexing/vector-index.md)_
 
 </details>
 
@@ -415,7 +415,7 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/schema/vector-index.md#asynchronous-indexing), which separates data ingestion from vectorization.
+> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/indexing/vector-index.mdx#asynchronous-indexing), which separates data ingestion from vectorization.
 
 </details>
 
@@ -473,9 +473,62 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](../config-refs/env-vars.md).
+You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](/deploy/configuration/env-vars/index.md).
 
 Read more on SIGQUIT [here](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) and this [StackOverflow answer](https://stackoverflow.com/questions/19094099/how-to-dump-goroutine-stacktraces/35290196#35290196).
+
+</details>
+
+#### Q: 'invalid properties' error when creating a collection (Python client versions 4.16.0 to 4.16.3)
+
+<details>
+  <summary>Answer</summary>
+
+In Weaviate Python client versions `4.16.0` to `4.16.3`, the following pattern when creating a collection with a text2vec_xxx vectorizer will result in an error:
+
+```python
+client.collections.create(
+    "CollectionName",
+    vector_config=Configure.Vectorizer.text2vec_cohere(),  # also applies to other vectorizers
+)
+```
+
+The error message will look like this:
+
+```text
+UnexpectedStatusCodeError: Collection may not have been created properly.! Unexpected status code: 422, with response body: {'error': [{'message': "module 'text2vec-cohere': invalid properties: didn't find a single property which is of type string or text and is not excluded from indexing....
+```
+
+This is a known issue, which will occur when setting a vectorizer definition without defining any `TEXT` or `TEXT_ARRAY` properties in the collection, in order to rely on AutoSchema to create the data schema for you.
+
+**This issue is addressed in Weaviate Python client patch release `4.16.4`. So, we recommend updating to the version `4.16.4` of the Weaviate Python client, or later.**
+
+If you are unable to change your Weaviate Python client version from the affected ones, you can work around this issue in one of two ways:
+
+1. By explicitly defining at least one `TEXT` or `TEXT_ARRAY` property in the collection schema, like this:
+
+```python
+client.collections.create(
+    "CollectionName",
+    properties=[
+        Property(name="<property_name>", data_type=DataType.TEXT),
+    ],
+    vector_config=Configure.Vectorizer.text2vec_cohere(),
+    # Additional configuration not shown
+)
+```
+
+2. By setting `vectorize_collection_name` to `True` in the vectorizer definition, like this:
+
+```python
+client.collections.create(
+    "CollectionName",
+    vector_config=Configure.Vectorizer.text2vec_cohere(
+        vectorize_collection_name=True
+    ),
+    # Additional configuration not shown
+)
+```
 
 </details>
 
@@ -557,7 +610,16 @@ docker compose up
 
 </details>
 
-## More questions?
+#### Q: Can I run Weaviate on Windows?
+
+<details>
+  <summary>Answer</summary>
+
+Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/),
+
+Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](/docs/deploy/installation-guides/embedded.md) should be avoided.
+
+</details>
 
 ## Questions and feedback
 

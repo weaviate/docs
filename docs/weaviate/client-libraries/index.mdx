@@ -1,0 +1,65 @@
+---
+title: Client Libraries / SDKs
+sidebar_position: 0
+description: "Overview of Weaviate client libraries and SDKs for seamless integration across programming languages."
+image: og/docs/client-libraries.jpg
+# hide_table_of_contents: true
+# tags: ['client libraries', 'cli']
+---
+
+You can interact with Weaviate by using the GraphQL, gRPC or RESTful API directly, or with one of the available client libraries. Currently, Weaviate supports:
+
+import CardsSection from "/src/components/CardsSection";
+
+export const clientLibrariesData = [
+  {
+    title: "Python Client",
+    description:
+      "Install and use the official Python client (v4) to interact with Weaviate.",
+    link: "/weaviate/client-libraries/python/",
+    icon: "fab fa-python",
+  },
+  {
+    title: "TypeScript / JavaScript Client",
+    description:
+      "Use the official client (v3) with Node.js.",
+    link: "/weaviate/client-libraries/typescript/",
+    icon: "fab fa-js",
+  },
+  {
+    title: "Go Client",
+    description:
+      "Install and use the official Go client library to integrate Weaviate into Go applications.",
+    link: "/weaviate/client-libraries/go",
+    icon: "fab fa-golang",
+  },
+  {
+    title: "Java Client",
+    description:
+      "Install and use the official Java client library for interacting with Weaviate.",
+    link: "/weaviate/client-libraries/java",
+    icon: "fab fa-java",
+  },
+];
+
+<br />
+<CardsSection items={clientLibrariesData} />
+<br />
+
+import ClientCapabilitiesOverview from "/_includes/client.capabilities.mdx";
+
+<ClientCapabilitiesOverview />
+
+### Community clients
+
+There also exist [community clients](./community.md) that were prepared by our wonderful community members. These clients are not maintained by the core Weaviate team, but by the community members themselves. To contribute to these clients, contact the maintainers directly.
+
+:::note Don't see your preferred language?
+If you want to contribute a client, or to request a particular client, let us know in [the forum](https://forum.weaviate.io/)
+:::
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

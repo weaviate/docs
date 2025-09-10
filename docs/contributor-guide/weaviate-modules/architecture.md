@@ -1,17 +1,14 @@
 ---
 title: Architecture
-sidebar_position: 2
 image: og/contributor-guide/weaviate-modules.jpg
 # tags: ['contributor-guide', 'weaviate module system']
 ---
-
-## Architecture (Code Level)
 
 This page describes the code-level architecture. The high-level architecture
 depends on the respective module. For example, `media2vec` modules typically
 use a microservice pattern to offload model inference into a separate
 container, [see this example for the `text2vec-transformers` high-level
-architecture](./overview.md#high-level-architecture).
+architecture](./index.md#high-level-architecture).
 
 ## What is a module (from a Golang perspective?)
 
@@ -92,9 +89,9 @@ To use a custom ML model with Weaviate, you have two options:
 
 ![Weaviate module APIs overview](/img/contributor-guide/weaviate-modules/weaviate-module-apis.svg "Weaviate module APIs overview")
 
-Let's take a more detailed example of how you configure Weaviate to use a specific module: if we look at the [`text2vec-transformers`](/docs/weaviate/model-providers/transformers/embeddings) module, it sets `ENABLE_MODULES=text2vec-transformers` in the `Docker Compose` file, which instructs Weaviate to load the respective Go code (part 1). It also, includes another service in `docker-compose.yml`, which contains the actual model for inference (part 2).
+Let's take a more detailed example of how you configure Weaviate to use a specific module: if we look at the [`text2vec-transformers`](/weaviate/model-providers/transformers/embeddings) module, it sets `ENABLE_MODULES=text2vec-transformers` in the `Docker Compose` file, which instructs Weaviate to load the respective Go code (part 1). It also, includes another service in `docker-compose.yml`, which contains the actual model for inference (part 2).
 
-Let's look at how a specific (GraphQL) function is implemented in the [`text2vec-transformers`](/docs/weaviate/model-providers/transformers/embeddings) module:
+Let's look at how a specific (GraphQL) function is implemented in the [`text2vec-transformers`](/weaviate/model-providers/transformers/embeddings) module:
 
 1. **Module code for Weaviate, written in Go:**
    * Tells the Weaviate GraphQL API that the module provides a specific `nearText` method.
@@ -114,3 +111,9 @@ Take a look at some of the existing modules to get a feel for how they work:
 
 - [`text2vec-contextionary`](https://github.com/weaviate/weaviate/tree/master/modules/text2vec-contextionary)
 - [`text2vec-transformers`](https://github.com/weaviate/weaviate/tree/master/modules/text2vec-transformers)
+
+## Questions and feedback
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

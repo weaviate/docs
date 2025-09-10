@@ -105,7 +105,7 @@ await client.collections.create({
 const categoryObjectId = '...'
 const questionObjectId = '...'
 // START OneWay
-const jeopardy = client.collections.get('JeopardyCategory')
+const jeopardy = client.collections.use('JeopardyCategory')
 
 // highlight-start
 await jeopardy.data.referenceAdd({
@@ -141,7 +141,7 @@ await jeopardy.data.referenceAdd({
 {
 const categoryId = '...'
 // START ObjectWithCrossRef
-const category = client.collections.get('JeopardyCategory')
+const category = client.collections.use('JeopardyCategory')
 
 const dataObject = {'name': 'Science'}
 
@@ -206,7 +206,7 @@ const jeopardyQuestionCollection = client.collections.create({
 {
 // START Collections TwoWay Category2
 // Add the "hasQuestion" cross-reference property to the JeopardyCategory collection
-const category = client.collections.get('JeopardyCategory')
+const category = client.collections.use('JeopardyCategory')
 
 // highlight-start
 await category.config.addReference({
@@ -222,7 +222,7 @@ let questionObjectId = ''
 let catogoryObjectId = ''
 // TwoWay TS
 // For the "San Francisco" JeopardyQuestion object, add a cross-reference to the "U.S. CITIES" JeopardyCategory object
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 // highlight-start
 await questions.data.referenceAdd({
@@ -233,7 +233,7 @@ await questions.data.referenceAdd({
 // highlight-end
 
 // For the "U.S. CITIES" JeopardyCategory object, add a cross-reference to "San Francisco"
-const category = client.collections.get("JeopardyCategory")
+const category = client.collections.use("JeopardyCategory")
 
 // highlight-start
 await category.data.referenceAdd({
@@ -266,7 +266,7 @@ let questionObjectId = '' // question id 1
 let catogoryObjectId1 = '' // category id 1
 let catogoryObjectId2 = '' // category id 2
 // Multiple TS
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 // highlight-start
 await questions.data.referenceAddMany(
@@ -296,7 +296,7 @@ await questions.data.referenceAddMany(
 // =============================
 
 // ReadCrossRef
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 const response = await questions.query.fetchObjects({ // Or `hybrid`, `nearText`, etc.
   limit: 2,
@@ -325,7 +325,7 @@ let questionObjectId = ''
 let catogoryObjectId = ''
 // Delete TS
 // From the "San Francisco" JeopardyQuestion object, delete the "MUSEUMS" category cross-reference
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 // highlight-start
 await questions.data.referenceDelete({
@@ -355,7 +355,7 @@ let questionObjectId = ''
 let catogoryObjectId = ''
 // Update TS
 // In the "San Francisco" JeopardyQuestion object, set the "hasCategory" cross-reference only to "MUSEUMS"
-const questions = client.collections.get("JeopardyQuestion")
+const questions = client.collections.use("JeopardyQuestion")
 
 // highlight-start
 await questions.data.referenceReplace({

@@ -3,52 +3,52 @@ const secondaryNavbarItems = {
     title: "Weaviate Database",
     icon: "fa fa-database",
     description: "Develop AI applications using Weaviate's APIs and tools",
-    link: "/docs/weaviate",
+    link: "/weaviate",
     links: [
       {
         label: "Get Started",
-        link: "/docs/weaviate",
+        link: "/weaviate",
         sidebar: "getStartedSidebar",
       },
       {
-        label: "How-to & Guides",
-        link: "/docs/weaviate/guides",
+        label: "How-to manuals & Guides",
+        link: "/weaviate/guides",
         sidebar: "guidesSidebar",
       },
       {
         label: "Model Integrations",
-        link: "/docs/weaviate/model-providers",
+        link: "/weaviate/model-providers",
         sidebar: "modelProvidersSidebar",
       },
       {
-        label: "References",
-        link: "/docs/weaviate/api",
+        label: "Reference & APIs",
+        link: "/weaviate/config-refs",
         sidebar: "referenceSidebar",
       },
       {
         label: "Concepts",
-        link: "/docs/weaviate/concepts",
+        link: "/weaviate/concepts",
         sidebar: "conceptsSidebar",
       },
       {
-        label: "Releases",
-        link: "/docs/weaviate/release-notes",
-        sidebar: "releasesSidebar",
+        label: "Recipes",
+        link: "/weaviate/recipes",
+        sidebar: "weaviateRecipesSidebar",
       },
       {
         label: "Other",
-        link: "/docs/weaviate/benchmarks",
+        link: "/weaviate/release-notes",
         sidebar: "othersSidebar",
         /*
         dropdown: [
           {
             label: "Benchmarks",
-            link: "/docs/weaviate/benchmarks",
+            link: "/weaviate/benchmarks",
             sidebar: "othersSidebar",
           },
           {
             label: "FAQ",
-            link: "/docs/weaviate/more-resources/faq",
+            link: "/weaviate/more-resources/faq",
             sidebar: "othersSidebarFAQ",
           },
         ],
@@ -56,42 +56,55 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  /*
+
   deploy: {
     title: "Deploy",
     icon: "fa fa-database",
     description: "Deploy, configure, and maintain Weaviate Database",
-    link: "/docs/deploy",
+    link: "/deploy",
     links: [
-      { label: "Get Started", link: "/docs/deploy", sidebar: "deploySidebar" },
-      { label: "AWS", link: "/docs/deploy/aws", sidebar: "deployAwsSidebar" },
-    ],
+      { label: "Get Started", link: "/deploy", sidebar: "deploySidebar" },
+      { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar"},
+      /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
+      { label: "Production Guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
+      { label: "Tutorials", link: "/deploy/tutorials/rbac", sidebar: "deployTutorialSidebar"},
+      /*{ label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },*/
+      /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
+      /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
+      { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
+      { label: "Migration", link: "/deploy/migration", sidebar: "deployMigrationSidebar"},
+    ]
   },
-  */
+
   agents: {
     title: "Weaviate Agents",
     icon: "fa fa-robot",
     description: "Build and deploy intelligent agents with Weaviate",
-    link: "/docs/agents",
+    link: "/agents",
     links: [
-      { label: "Get Started", link: "/docs/agents", sidebar: "agentsSidebar" },
+      { label: "Documentation", link: "/agents", sidebar: "agentsSidebar" },
+      {
+        label: "Recipes",
+        link: "/agents/recipes",
+        sidebar: "agentsRecipesSidebar",
+      },
     ],
   },
   cloud: {
     title: "Weaviate Cloud",
     icon: "fa fa-cloud",
     description: "Manage and scale Weaviate in the cloud",
-    link: "/docs/cloud",
+    link: "/cloud",
     links: [
-      { label: "Get Started", link: "/docs/cloud", sidebar: "cloudSidebar" },
+      { label: "Get Started", link: "/cloud", sidebar: "cloudSidebar" },
       {
         label: "Weaviate Embeddings",
-        link: "/docs/cloud/embeddings",
+        link: "/cloud/embeddings",
         sidebar: "cloudWeaviateEmbeddings",
       },
       {
         label: "Account management",
-        link: "/docs/cloud/platform/billing",
+        link: "/cloud/platform/billing",
         sidebar: "cloudAccountManagementSidebar",
       },
     ],
@@ -102,11 +115,11 @@ const secondaryNavbarItems = {
     isSmall: true,
     description:
       "Learn about vector search and Weaviate through structured courses",
-    link: "/docs/academy",
+    link: "/academy",
     links: [
       {
         label: "Get Started",
-        link: "/docs/academy",
+        link: "/academy",
         sidebar: "academySidebar",
       },
     ],
@@ -114,13 +127,19 @@ const secondaryNavbarItems = {
   integrations: {
     title: "Integrations",
     icon: "fa fa-puzzle-piece",
+    isSmall: true,
     description: "For hyperscalers, data platforms, LLM frameworks, etc.",
-    link: "/docs/integrations",
+    link: "/integrations",
     links: [
       {
-        label: "Get Started",
-        link: "/docs/integrations",
+        label: "Documentation",
+        link: "/integrations",
         sidebar: "integrationsSidebar",
+      },
+      {
+        label: "Recipes",
+        link: "/integrations/recipes",
+        sidebar: "integrationsRecipesSidebar",
       },
     ],
   },
@@ -129,34 +148,22 @@ const secondaryNavbarItems = {
     icon: "fa fa-edit",
     isSmall: true,
     description: "Learn how to contribute to Weaviate's open-source projects",
-    link: "/docs/contributor-guide",
+    link: "/contributor-guide",
     links: [
       {
-        label: "Get Started",
-        link: "/docs/contributor-guide",
+        label: "Documentation",
+        link: "/contributor-guide",
         sidebar: "contributorSidebar",
       },
-      {
-        label: "Weaviate Database",
-        link: "/docs/contributor-guide/weaviate-core",
-        sidebar: "contributorCoreSidebar",
-      },
-      {
-        label: "Weaviate Modules",
-        link: "/docs/contributor-guide/weaviate-modules",
-        sidebar: "contributorModulesSidebar",
-      },
-      {
-        label: "Weaviate Clients",
-        link: "/docs/contributor-guide/weaviate-clients",
-        sidebar: "contributorClientsSidebar",
-      },
-      {
-        label: "Contextionary",
-        link: "/docs/contributor-guide/contextionary",
-        sidebar: "contributorContextionarySidebar",
-      },
     ],
+  },
+  events: {
+    title: "Events & Workshops",
+    icon: "fa fa-calendar-days",
+    isSmall: true,
+    description: "",
+    href: "https://weaviate.io/community/events",
+    links: [],
   },
 };
 

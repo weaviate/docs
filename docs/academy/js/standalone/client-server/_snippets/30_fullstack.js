@@ -5,8 +5,8 @@ import 'dotenv/config';
 
 export const connectToDB = async () => {
   try {
-    const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_HOST_URL,{
-          authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_READ_KEY),
+    const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL,{
+          authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
           headers: {
            'X-Cohere-Api-Key': process.env.COHERE_API_KEY || '',
          }
@@ -25,9 +25,8 @@ export const connectToDB = async () => {
 // .env
 `
 COHERE_API_KEY=
-WEAVIATE_HOST_URL=
-WEAVIATE_ADMIN_KEY=
-WEAVIATE_READ_KEY=
+WEAVIATE_URL=
+WEAVIATE_API_KEY=
 `
 // END .env
 
@@ -46,13 +45,13 @@ const client = await connectToDB();
 app.get('/', async function(req, res, next) {
     var searchTerm = req.query.searchTerm;
 
-    const wikipedia = client.collections.get("Wikipedia")
+    const wikipedia = client.collections.use("Wikipedia")
 
     try {
         const response = await wikipedia.query.nearText(searchTerm, {
             limit: 5
         })
-    
+
         res.send(response.objects)
       } catch (error) {
         console.error(`Error: ${error.message}`);
@@ -63,6 +62,6 @@ app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
 
-  
+
 
 // END app.js

@@ -1,0 +1,39 @@
+/* src/components/RecipesCards/styles.module.css */
+
+.tagContainer {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* Space between buttons */
+  align-items: center;
+}
+
+.tagLabel {
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.tagButton {
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px; /* Rounded corners */
+  border: 1px solid var(--site-primary-dark); /* Use Docusaurus theme variable */
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.9em;
+}
+
+.tagButton:hover {
+  background-color: var(--docs-cards-hover-bg);
+}
+
+.tagSelected {
+  background-color: var(--site-primary-dark);
+  color: var(
+    --ifm-color-primary-contrast-foreground
+  ); /* White text on primary background */
+}
+
+.tagSelected:hover {
+  background-color: var(--site-primary);
+}

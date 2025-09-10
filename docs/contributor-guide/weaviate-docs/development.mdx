@@ -1,0 +1,349 @@
+---
+title: Setup and editing
+description: Complete guide for editing and building Weaviate documentation
+image: og/contributor-guide/getting-started.jpg
+# tags: ['contributor-guide']
+---
+
+This guide covers the essential workflows and components for editing Weaviate's documentation. Whether you're adding new content, updating existing pages, or working with interactive components, this reference will help you work effectively with our Docusaurus-based documentation system.
+
+Following these guidelines ensures consistency across the documentation and maintains the quality of the user experience.
+
+## Building the documentation locally
+
+**Start development server** for live editing with hot reload:
+
+```bash
+yarn start
+```
+
+This launches a local development server, typically at `http://localhost:3000`, where you can see your changes instantly as you edit files.
+
+**Build the documentation** for production:
+
+```bash
+yarn build
+```
+
+This creates an optimized production build in the `build/` directory and validates all links, references, and configurations. Always run this before submitting pull requests to catch any issues.
+
+**Serve the built documentation** locally:
+
+```bash
+yarn serve
+```
+
+This serves the production build locally, useful for testing the built version before deployment. The site will be available at `http://localhost:3000`.
+
+### Build Validation
+
+The build process performs several important validations:
+
+- **Link checking**: Verifies all internal links point to existing pages
+- **Reference validation**: Ensures all imports and components are valid
+- **Markdown processing**: Converts MDX to HTML and catches syntax errors
+- **Plugin execution**: Runs plugins like llms.txt generation
+
+Always fix any build errors before submitting changes, as broken builds will prevent deployment.
+
+## Linking within the docs
+
+### Relative link paths
+
+**Use relative paths** when linking within the same documentation section:
+
+```markdown
+<!-- Within /weaviate section -->
+
+[Quickstart guide](./quickstart/index.md)
+
+<!-- Within /agents section -->
+
+[Weaviate Agents](../index.md)
+```
+
+### Absolute link paths
+
+**Use absolute paths** for cross-section linking:
+
+```markdown
+<!-- Linking from /weaviate to /agents -->
+
+[Weaviate Agents](/agents/index.md)
+
+<!-- Linking from /agents to /weaviate -->
+
+[Weaviate Database](/weaviate/index.md)
+```
+
+### Absolute URLs
+
+**Use absolute URLs** for reusable components:
+
+```markdown
+<!-- Linking from _includes/ to /agents -->
+
+[Weaviate Agents](/agents/qeuery)
+```
+
+This convention ensures links work correctly regardless of where the component is imported.
+
+### `Link` component
+
+For internal links in JSX/MDX content, use Docusaurus's `Link` component instead of HTML `<a>` tags to enable link checking:
+
+```jsx
+import Link from '@docusaurus/Link';
+
+// Good - enables link validation
+<Link to="/weaviate/quickstart">Get started with Weaviate</Link>
+
+// Avoid - bypasses link checking
+<a href="/weaviate/quickstart">Get started with Weaviate</a>
+```
+
+The `Link` component performs validation during build time and will report broken internal links as build errors.
+
+### `SkipLink` for component
+
+When linking to scalar OpenAPI reference documentation that may not be available during build, use SkipLink to skip validation:
+
+```jsx
+import SkipLink from "/src/components/SkipValidationLink";
+
+<SkipLink href="/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>
+```
+
+This prevents build failures while still providing the correct link to users. Use this sparingly and only for external references that are known to be valid but unavailable during build.
+
+## Code snippets
+
+### `FilteredTextBlock` component
+
+`FilteredTextBlock` allows you to include specific sections of code files, keeping examples up-to-date with tested code. Use Tabs to provide code examples in multiple languages.
+
+```jsx
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CreateAlias"
+      endMarker="# END CreateAlias"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="js"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="go"
+    />
+  </TabItem>
+</Tabs>;
+```
+
+### Marker conventions
+
+Use consistent marker patterns in your source code files:
+
+- **Python**:
+  - `# START SectionName`
+  - `# END SectionName`
+- **JavaScript/TypeScript**:
+  - `// START SectionName`
+  - `// END SectionName`
+- **Java**:
+  - `// START SectionName`
+  - `// END SectionName`
+- **Go**:
+  - `// START SectionName`
+  - `// END SectionName`
+
+### Code output
+
+Try to be consistent with the code output in different languages. Instead of language specific objects and terms, try to use primitive values for output. 
+
+## Sidebar configuration
+
+Most pages need to be manually added to the sidebar configuration to appear in navigation:
+
+```javascript
+// In sidebars.js
+{
+  type: "doc",
+  id: "weaviate/index",
+  label: "Introduction",
+},
+{
+  type: "category",
+  label: "Quickstart",
+  link: {
+    type: "doc",
+    id: "weaviate/quickstart/index",
+  },
+  items: ["weaviate/quickstart/local"],
+},
+{
+  type: "link",
+  label: "Installation",
+  href: "https://docs.weaviate.io/deploy",
+},
+```
+
+### Autogenerated sidebars
+
+Some sections use autogenerated sidebars that automatically include all files in a directory:
+
+```javascript
+conceptsSidebar: [
+  {
+    type: "autogenerated",
+    dirName: "weaviate/concepts",
+  },
+],
+```
+
+Files in autogenerated sections appear automatically but can be ordered using the `sidebar_position` field in frontmatter.
+
+:::tip
+
+Whenever possible try to use autogenerated sidebars. 
+
+:::
+
+## `CardsSection` Component
+
+CardsSection creates interactive card layouts for navigation and feature highlighting:
+
+```jsx
+import CardsSection from "/src/components/CardsSection";
+
+export const welcomeCardsData = [
+  {
+    id: "new",
+    title: "New to Weaviate?",
+    description: (
+      <>
+        Start with the{" "}
+        <span className={styles.highlight}>Quickstart tutorial</span> – an
+        end-to-end demo that takes 15–30 minutes.
+      </>
+    ),
+    link: "/weaviate/quickstart",
+    icon: "fas fa-star", // Font Awesome CSS class
+  },
+  {
+    id: "concepts",
+    title: "Core Concepts",
+    description:
+      "Learn about vector databases, embeddings, and how Weaviate works.",
+    link: "/weaviate/concepts",
+    icon: "fas fa-brain",
+  },
+];
+
+<CardsSection items={welcomeCardsData} className={styles.smallCards} />;
+```
+
+Each card object supports:
+
+- **id**: Unique identifier for the card
+- **title**: Card heading text
+- **description**: Card content (can include JSX)
+- **link**: Destination URL (internal or external)
+- **icon**: Font Awesome CSS class for the icon
+
+### Styling options
+
+Apply custom CSS classes for different card layouts:
+
+- Default large cards
+- `className={styles.smallCards}` - Compact card layout
+- Custom CSS classes defined in your component's CSS module
+
+## `APITable` component
+
+APITable wraps standard markdown tables to make each row clickable and linkable:
+
+```mdx
+import APITable from "@site/src/components/APITable";
+
+;
+```
+
+import APITable from "@site/src/components/APITable";
+
+```mdx-code-block
+<APITable>
+```
+
+| Parameter    | Type    | Description               |
+| ------------ | ------- | ------------------------- |
+| `collection` | string  | Name of the collection    |
+| `limit`      | integer | Maximum number of results |
+| `offset`     | integer | Number of results to skip |
+
+```mdx-code-block
+</APITable>
+```
+
+Check out the source code of this page for an example of how to use the `APITable` component.
+
+## Images
+
+For simple images, use Markdown syntax:
+
+```markdown
+![Simple image](./_includes/image.png)
+```
+
+### `ThemedImage` component
+
+For images requiring separate light and dark mode variant or CSS adjustments (e.g. width), use the Docusaurus `ThemedImage` component:
+
+```jsx
+import ThemedImage from "@theme/ThemedImage";
+import MyImageLight from "./_img/my_image_light.png";
+import MyImageDark from "./_img/my_image_dark.png";
+
+<ThemedImage
+  alt="My image alt text"
+  sources={{
+    light: MyImageLight,
+    dark: MyImageDark,
+  }}
+  width="300"
+/>;
+```
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+```

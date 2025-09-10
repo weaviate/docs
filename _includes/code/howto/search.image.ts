@@ -43,11 +43,11 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 
 const client = await weaviate.connectToWeaviateCloud(
-  'WCD-URL',
+  'WEAVIATE_URL',
   {
-    authCredentials: new weaviate.ApiKey('WEAVIATE-API-KEY'),
+    authCredentials: new weaviate.ApiKey('WEAVIATE_API_KEY'),
     headers: {
-      'X-OpenAI-Api-Key': 'OPENAI-API-KEY',  // Replace with your inference API key
+      'X-OpenAI-Api-Key': 'OPENAI_API_KEY',  // Replace with your inference API key
     }
   }
 )
@@ -62,7 +62,7 @@ const content = await response.buffer();
   // START search with base64
   import { toBase64FromMedia } from 'weaviate-client';
 
-  const myCollection = client.collections.get('Dog');
+  const myCollection = client.collections.use('Dog');
   const filePath = './images/search-image.jpg'
   // highlight-start
   const base64String = await toBase64FromMedia(file.path)
@@ -87,7 +87,7 @@ const content = await response.buffer();
 {
   // START search with Blob
   // Perform query
-  const myCollection = client.collections.get('Dog');
+  const myCollection = client.collections.use('Dog');
 
   // highlight-start
   const url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Welchcorgipembroke.JPG/640px-Welchcorgipembroke.JPG'
@@ -116,7 +116,7 @@ const content = await response.buffer();
 fs.writeFileSync('image.jpg', content);
 {
   // START ImageFileSearch
-  const myCollection = client.collections.get('Dog');
+  const myCollection = client.collections.use('Dog');
 
   // Query based on the image content
   const result = await myCollection.query.nearImage('./images/search-image.jpg', {

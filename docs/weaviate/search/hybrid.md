@@ -13,6 +13,7 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.hybrid-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.hybrid.ts';
 import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.hybrid-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
+import GQLCode from '!!raw-loader!/_includes/code/howto/search.hybrid.gql.py';
 
 `Hybrid` search combines the results of a vector search and a keyword (BM25F) search by fusing the two result sets.
 
@@ -89,7 +90,7 @@ The output is like this:
 :::info Added in `v1.24`
 :::
 
-A hybrid search on a collection that has [named vectors](../config-refs/schema/multi-vector.md) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
+A hybrid search on a collection that has [named vectors](../config-refs/collections.mdx#named-vectors) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -353,6 +354,59 @@ For a discussion of fusion methods, see [this blog post](https://weaviate.io/blo
 
 </details>
 
+## Keyword search operators
+
+:::info Added in `v1.31`
+:::
+
+Keyword (BM25) search operators define the minimum number of query [tokens](#tokenization) that must be present in the object to be returned. The options are `and`, or `or` (default).
+
+### `or`
+
+With the `or` operator, the search returns objects that contain at least `minimumOrTokensMatch` of the tokens in the search string.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START HybridWithBM25OperatorOrWithMin"
+      endMarker="# END HybridWithBM25OperatorOrWithMin"
+      language="python"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={GQLCode}
+      startMarker="# START HybridWithBM25OperatorOrWithMin"
+      endMarker="# END HybridWithBM25OperatorOrWithMin"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
+### `and`
+
+With the `and` operator, the search returns objects that contain all tokens in the search string.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START HybridWithBM25OperatorAnd"
+      endMarker="# END HybridWithBM25OperatorAnd"
+      language="python"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={GQLCode}
+      startMarker="# START HybridWithBM25OperatorAnd"
+      endMarker="# END HybridWithBM25OperatorAnd"
+      language="python"
+    />
+  </TabItem>
+</Tabs>
+
 ## Specify keyword search properties
 
 :::info Added in `v1.19.0`
@@ -557,9 +611,10 @@ The output is like this:
 ## Vector search parameters
 
 :::info Added in `v1.25`
+Note that the hybrid threshold (`max_vector_distance`) was introduced later in `v1.26.3`.
 :::
 
-You can specify [vector similarity search](/docs/weaviate/search/similarity) parameters similar to [near text](/docs/weaviate/search/similarity.md#search-with-text) or [near vector](/docs/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
+You can specify [vector similarity search](/weaviate/search/similarity) parameters similar to [near text](/weaviate/search/similarity.md#search-with-text) or [near vector](/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -857,11 +912,11 @@ import TokenizationNote from '/_includes/tokenization.mdx'
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
 - [Weaviate Academy: Tokenization](../../academy/py/tokenization/index.md)
 - About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
-- For tutorials, see [Queries](/docs/weaviate/tutorials/query.md)
+- For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).
 
 ## Questions and feedback

@@ -9,6 +9,7 @@ client = weaviate.connect_to_embedded(
     headers={
         "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")  # Replace with your API key
     },
+    environment_variables={"LOG_LEVEL": "error"}  # Reduce amount of logs
 )
 
 # Add your client code here.

@@ -21,7 +21,7 @@
 
 [data-theme='dark'] {
   .detailedOptionsCard {
-    background-color: var(--site-background);
+    background-color: var(--docs-cards-bg);
   }
 
   .detailedOptionsCard a {
@@ -29,7 +29,7 @@
   }
 
   .detailedOptionsCard:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--docs-cards-hover-bg);
   }
 }
 

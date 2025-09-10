@@ -1,7 +1,7 @@
 ---
 title: Modules
-description: Modules in Weaviate
 sidebar_position: 15
+description: "Modular architecture overview for extending Weaviate functionality with specialized add-on components."
 image: og/docs/concepts.jpg
 # tags: ['modules']
 ---

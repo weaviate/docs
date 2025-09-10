@@ -33,7 +33,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "ArxivPapers",
     description="A dataset that lists research paper titles and abstracts",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
 )
 # END DefineCollections
 
@@ -44,12 +44,11 @@ dataset = load_dataset(
     "weaviate/agents", "transformation-agent-papers", split="train", streaming=True
 )
 
-papers_collection = client.collections.get("ArxivPapers")
+papers_collection = client.collections.use("ArxivPapers")
 
-with papers_collection.batch.dynamic() as batch:
-    for i, item in enumerate(dataset):
-        if i < 200:
-            batch.add_object(properties=item["properties"])
+with papers_collection.batch.fixed_size(batch_size=200) as batch:
+    for item in dataset:
+        batch.add_object(properties=item["properties"])
 
 failed_objects = papers_collection.batch.failed_objects
 if failed_objects:
@@ -106,7 +105,7 @@ add_is_survey_paper = Operations.append_property(
 update_title = Operations.update_property(
     property_name="title",
     view_properties=["abstract"],
-    instruction="""Make the title start with the label MACHINE_LEARNING if the abstract mentions machine learning techniques.""",
+    instruction="""Insert the label MACHINE_LEARNING before the original title if the abstract mentions machine learning techniques.""",
 )
 # END UpdateProperty
 
@@ -134,8 +133,7 @@ print(response)
 time.sleep(5)
 
 # START GetStatus
-for operation in response:
-    print(agent.get_status(workflow_id=operation.workflow_id))
+print(agent.get_status(workflow_id=response.workflow_id))
 # END GetStatus
 
 client.close()  # Free up resources

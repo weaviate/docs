@@ -40,7 +40,7 @@ A collection can have multiple rerankers. If multiple `reranker` modules are ena
 :::info Added in `v1.24`
 :::
 
-Any vector-based search on collections with [named vectors](../config-refs/schema/multi-vector.md) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
+Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -224,9 +224,9 @@ The response should look like this:
 
 ## Related pages
 
-- [Connect to Weaviate](/docs/weaviate/connections/index.mdx)
+- [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: GraphQL - Additional properties](../api/graphql/additional-properties.md#rerank)
-- [API References: GraphQL - Sorting](/docs/weaviate/api/graphql/additional-operators#sorting-api)
+- [API References: GraphQL - Sorting](/weaviate/api/graphql/additional-operators#sorting-api)
 - [Concepts: Reranking](../concepts/reranking.md)
 - [Model providers integrations](../model-providers/index.md)
 

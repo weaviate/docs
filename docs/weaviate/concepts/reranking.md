@@ -1,6 +1,7 @@
 ---
 title: Reranking
 sidebar_position: 28
+description: "Search result reordering techniques using alternative models to improve search relevance and accuracy."
 image: og/docs/concepts.jpg
 # tags: ['basics']
 ---
@@ -10,6 +11,12 @@ Reranking seeks to improve search relevance by reordering the result set returne
 Reranking computes a relevance score between the query and each data object, and returns the list of objects sorted from the most to the least relevant. Computing this score for all `(query, data_object)` pairs would typically be prohibitively slow, which is why reranking is used as a second stage after retrieving the relevant objects first.
 
 As the reranker works on a smaller subset of data after retrieval, different, potentially more computationally expensive approaches can be used to improve search relevance.
+
+:::info
+
+Learn how to [set up a reranker for your collection](../manage-collections/generative-reranker-models.mdx#specify-a-reranker-model-integration) and [apply reranking to your search results](../search/rerank.md).
+
+:::
 
 ## Reranking in Weaviate
 
@@ -65,4 +72,3 @@ You can specify which `property` of the `JeopardyQuestion` class you want to pas
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-

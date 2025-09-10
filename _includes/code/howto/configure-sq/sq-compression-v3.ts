@@ -17,7 +17,7 @@ await client.collections.delete(collectionName);
 // START EnableSQ
 const collection = await client.collections.create({
   name: 'MyCollection',
-  vectorizers: weaviate.configure.vectorizer.none({
+  vectorizers: weaviate.configure.vectors.selfProvided({
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw({
       quantizer: weaviate.configure.vectorIndex.quantizer.sq(),
     })
@@ -27,7 +27,7 @@ const collection = await client.collections.create({
 
 let collectionConfig = await collection.config.get();
 
-assert.equal(collectionConfig.vectorizer.default.indexConfig.quantizer.type, "SQ")
+assert.equal(collectionConfig.vectorizers.default.indexConfig.quantizer.type, "SQ")
 
 // Clean-up
 await client.collections.delete(collectionName);
@@ -46,7 +46,7 @@ await client.collections.delete(collectionName);
 // START SQWithOptions
 const collection = await client.collections.create({
   name: 'MyCollection',
-  vectorizers: weaviate.configure.vectorizer.none({
+  vectorizers: weaviate.configure.vectors.selfProvided({
     vectorIndexConfig: weaviate.configure.vectorIndex.hnsw({
       quantizer: weaviate.configure.vectorIndex.quantizer.sq({
         cache: true,     // Enable caching
@@ -60,7 +60,7 @@ const collection = await client.collections.create({
 
 let collectionConfig = await collection.config.get();
 
-assert.equal(collectionConfig.vectorizer.default.indexConfig.quantizer.type, "SQ")
+assert.equal(collectionConfig.vectorizers.default.indexConfig.quantizer.type, "SQ")
 
 // Clean-up
 await client.collections.delete(collectionName);

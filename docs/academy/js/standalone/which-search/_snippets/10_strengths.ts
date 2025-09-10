@@ -5,8 +5,8 @@ type NonGenericReturn = WeaviateReturn<undefined>
 let response: NonGenericReturn
 // # END-ANY
 
-client = await weaviate.connectToWeaviateCloud(process.env.WCD_URL as string,{
-      authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY as string),
+client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string,{
+      authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
       headers: {
         'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
       }
@@ -15,7 +15,7 @@ client = await weaviate.connectToWeaviateCloud(process.env.WCD_URL as string,{
 
 // START robustnessExampleWords
 for (const query of ["cat", "kitten"]) {
-  const question = client.collections.get("JeopardyQuestion")
+  const question = client.collections.use("JeopardyQuestion")
 
   response = await question.query.nearText(query,{
     limit: 1,
@@ -54,7 +54,7 @@ Distance: 0.150
 
 // START robustnessExampleSpelling
 for (const query of ["cat", "catt", "caat"]) {
-  const question = client.collections.get("JeopardyQuestion")
+  const question = client.collections.use("JeopardyQuestion")
 
   response = await question.query.nearText(query,{
     limit: 1,
@@ -101,7 +101,7 @@ Distance: 0.184
 `
 
 // START bm25Example // START hybridExample
-const question = client.collections.get("JeopardyQuestion")
+const question = client.collections.use("JeopardyQuestion")
 // END bm25Example // END hybridExample
 
 // START bm25Example

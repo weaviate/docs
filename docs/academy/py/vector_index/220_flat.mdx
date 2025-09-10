@@ -29,13 +29,13 @@ This can be very beneficial as the overall database grows, especially if the gro
 
 ### <i class="fa-solid fa-chalkboard"></i> Distance metric
 
-![Vector Distance Calculations](../../../../blog/2024-03-26-intel/img/vector_distance.png)
+![Vector Distance Calculations](./img/vector_distance.png)
 
 The distance metric used in the index determines how the distance between vectors is calculated.
 
 You must choose a metric that suits the vectors in your collection. To find this, consult the documentation of the model that generated your vectors.
 
-Weaviate's default metric is cosine, but you can also use any number of [other available metrics](/docs/weaviate/config-refs/distances.md).
+Weaviate's default metric is cosine, but you can also use any number of [other available metrics](/weaviate/config-refs/distances.md).
 
 If you are unsure, the cosine distance is a good, robust, default choice that is used by a majority of models.
 
@@ -62,9 +62,9 @@ Each of these parameters can be provided when creating a collection in Weaviate.
 
 ## <i class="fa-solid fa-square-chevron-right"></i> Further resources
 
-- [Concepts: Vector index](/docs/weaviate/concepts/indexing/vector-index.md)
-- [References: Vector index parameters](/docs/weaviate/config-refs/schema/vector-index.md)
-- [How-to manage collections](/docs/weaviate/manage-data/collections.mdx)
+- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [References: Vector index parameters](/weaviate/config-refs/indexing/vector-index.mdx)
+- [How-to manage collections](../../../weaviate/manage-collections/index.mdx)
 - [Weaviate Academy: Compression](../compression/index.md)
 
 ## Questions and feedback

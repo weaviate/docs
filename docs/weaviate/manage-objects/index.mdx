@@ -1,0 +1,64 @@
+---
+title: Manage objects
+sidebar_position: 0
+image: og/docs/howto.jpg
+hide_table_of_contents: true
+# tags: ['how to', 'manage data', 'crud']
+---
+
+Learn the fundamental CRUD (Create, Read, Update, Delete) operations for Weaviate objects. The following guides provide detailed steps for creating single objects, batch importing, reading specific objects, retrieving all objects, updating existing objects, and deleting objects within your collections.
+
+import CardsSection from "/src/components/CardsSection";
+
+export const objectCrudData = [
+  {
+    title: "Create objects",
+    description: "Add individual data objects to a Weaviate collection.",
+    link: "/weaviate/manage-objects/create",
+    icon: "fas fa-plus-circle",
+  },
+  {
+    title: "Batch import",
+    description:
+      "Efficiently add multiple data objects to a collection in batches.",
+    link: "/weaviate/manage-objects/import",
+    icon: "fas fa-file-import",
+  },
+  {
+    title: "Read objects",
+    description:
+      "Retrieve specific data objects from a collection by their ID or vector.",
+    link: "/weaviate/manage-objects/read",
+    icon: "fas fa-eye",
+  },
+  {
+    title: "Read all objects",
+    description:
+      "Fetch multiple or all objects from a collection, often with pagination.",
+    link: "/weaviate/manage-objects/read-all-objects", 
+    icon: "fas fa-list",
+  },
+  {
+    title: "Update objects",
+    description:
+      "Modify existing data objects within a collection (full or partial updates).",
+    link: "/weaviate/manage-objects/update",
+    icon: "fas fa-edit",
+  },
+  {
+    title: "Delete objects",
+    description: "Remove specific data objects from a collection.",
+    link: "/weaviate/manage-objects/delete",
+    icon: "fas fa-trash-alt",
+  },
+];
+
+<br />
+<CardsSection items={objectCrudData} />
+<br />
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

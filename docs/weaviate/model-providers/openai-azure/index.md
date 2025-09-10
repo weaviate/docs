@@ -41,7 +41,7 @@ In turn, they simplify the process of building AI-driven applications to speed u
 
 ## Get started
 
-You must provide a valid Azure OpenAI API key to Weaviate for these integrations. Go to [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) to sign up and obtain an API key.
+You must provide a valid Azure OpenAI API key to Weaviate for these integrations. Go to [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-foundry/models/openai/) to sign up and obtain an API key.
 
 Then, go to the relevant integration page to learn how to configure Weaviate with the Azure OpenAI models and start using them in your applications.
 

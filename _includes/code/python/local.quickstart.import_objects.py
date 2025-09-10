@@ -10,16 +10,18 @@ resp = requests.get(
 data = json.loads(resp.text)
 
 # highlight-start
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 
-with questions.batch.dynamic() as batch:
+with questions.batch.fixed_size(batch_size=200) as batch:
     for d in data:
-        batch.add_object({
-            "answer": d["Answer"],
-            "question": d["Question"],
-            "category": d["Category"],
-        })
-# highlight-end
+        batch.add_object(
+            {
+                "answer": d["Answer"],
+                "question": d["Question"],
+                "category": d["Category"],
+            }
+        )
+        # highlight-end
         if batch.number_errors > 10:
             print("Batch import stopped due to excessive errors.")
             break
@@ -31,3 +33,4 @@ if failed_objects:
 
 client.close()  # Free up resources
 # END Import
+

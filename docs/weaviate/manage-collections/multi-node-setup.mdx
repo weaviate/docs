@@ -1,0 +1,215 @@
+---
+title: Multi-node setup
+sidebar_position: 5
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
+import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+## Replication settings
+
+import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
+
+<RaftRFChangeWarning />
+
+Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START AllReplicationSettings"
+      endMarker="# END AllReplicationSettings"
+      language="py"
+      docRefs={[
+        "weaviate.collections.classes.html#weaviate.collections.classes.config.Configure"
+      ]}
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START AllReplicationSettings"
+    endMarker="# END AllReplicationSettings"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START AllReplicationSettings"
+    endMarker="// END AllReplicationSettings"
+    language="gonew"
+  />
+</TabItem>
+
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl \
+-X POST \
+-H "Content-Type: application/json" \
+-d '{
+    "class": "Article",
+    "properties": [
+        {
+            "dataType": [
+                "string"
+            ],
+            "description": "Title of the article",
+            "name": "title"
+        }
+    ],
+    "replicationConfig": {
+      "factor": 3,
+      "asyncEnabled": true,
+      "deletionStrategy": "TimeBasedResolution"
+    }
+}' \
+http://localhost:8080/v1/schema
+```
+
+</TabItem>
+</Tabs>
+
+<details>
+  <summary>
+     Additional information
+  </summary>
+
+To use replication factors greater than one, use a [multi-node deployment](/deploy/installation-guides/docker-installation.md#multi-node-configuration).
+
+For details on the configuration parameters, see the following:
+
+- [Replication](/weaviate/config-refs/collections.mdx#replication)
+
+</details>
+
+## Sharding settings
+
+Configure sharding per collection.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ShardingSettings"
+      endMarker="# END ShardingSettings"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START ShardingSettings"
+    endMarker="# END ShardingSettings"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaReplicationCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="java"
+  />
+</TabItem>
+
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// START ShardingSettings"
+    endMarker="// END ShardingSettings"
+    language="gonew"
+  />
+</TabItem>
+
+</Tabs>
+
+<details>
+  <summary>
+     Additional information
+  </summary>
+
+For details on the configuration parameters, see the following:
+
+- [Sharding](/weaviate/config-refs/collections.mdx#sharding)
+
+</details>
+
+## Inspect shards (for a collection)
+
+An index itself can be comprised of multiple shards.
+
+import CodeSchemaShardsGet from "/_includes/code/howto/manage-data.shards.inspect.mdx";
+
+<CodeSchemaShardsGet />
+
+## Update shard status
+
+You can manually update a shard to change it's status. For example, update the shard status from `READONLY` to `READY` after you make other changes.
+
+import CodeSchemaShardsUpdate from "/_includes/code/howto/manage-data.shards.update.mdx";
+
+<CodeSchemaShardsUpdate />
+
+## Further resources
+
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
+- [Concepts: Data structure](../concepts/data.md)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

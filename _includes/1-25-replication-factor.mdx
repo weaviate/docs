@@ -1,5 +1,5 @@
-:::warning Replication factor change in `v1.25`
-In Weaviate `v1.25`, a [replication factor](/docs/weaviate/concepts/replication-architecture/cluster-architecture#replication-factor) cannot be changed once it is set.
+:::warning Replication factor change
+The replication factor of a collection cannot be updated by updating the collection's definition. 
 
-This is due to the [schema consensus algorithm](/docs/weaviate/concepts/replication-architecture/consistency) change in `v1.25`. This will be improved in future versions.
+From `v1.32` by using [replica movement](/deploy/configuration/replica-movement), the [replication factor](/weaviate/config-refs/collections#replication) of a shard can be changed.
 :::

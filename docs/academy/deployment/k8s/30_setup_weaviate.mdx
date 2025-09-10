@@ -40,7 +40,7 @@ helm show values weaviate/weaviate > values.yaml
 
 This command fetches the default values for the Weaviate Helm chart and saves them to a file named `values.yaml`. You can now edit this file to customize the deployment configuration.
 
-There are many settings you can configure here. It may be beneficial to explore them in the `values.yaml` file, and review the relevant settings through the in-line comments, or in the [official Weaviate documentation](/docs/weaviate) if you are curious.
+There are many settings you can configure here. It may be beneficial to explore them in the `values.yaml` file, and review the relevant settings through the in-line comments, or in the [official Weaviate documentation](/weaviate/index.mdx) if you are curious.
 
 For now, let's configure a couple of important settings, before deploying Weaviate.
 
@@ -139,7 +139,7 @@ Congratulations! You have successfully deployed Weaviate on your local Kubernete
 
 To upgrade to `1.25` or higher from a pre-`1.25` version, you must delete the deployed `StatefulSet`, update the helm chart to version `17.0.0` or higher, and re-deploy Weaviate.
 
-See the [1.25 migration guide for Kubernetes](/docs/weaviate/more-resources/migration/weaviate-1-25) for more details.
+See the [1.25 migration guide for Kubernetes](/deploy/migration/weaviate-1-25.md) for more details.
 :::
 
 ## Questions and feedback

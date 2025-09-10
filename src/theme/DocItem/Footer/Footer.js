@@ -117,13 +117,16 @@ function Footer() {
               <h5>Documentation</h5>
               <ul>
                 <li>
-                  <Link to="/docs/weaviate">Weaviate Database</Link>
+                  <Link to="/weaviate">Weaviate Database</Link>
                 </li>
                 <li>
-                  <Link to="/docs/cloud">Weaviate Cloud</Link>
+                  <Link to="/deploy">Deployment documentation</Link>
                 </li>
                 <li>
-                  <Link to="/docs/agents">Weaviate Agents</Link>
+                  <Link to="/cloud">Weaviate Cloud</Link>
+                </li>
+                <li>
+                  <Link to="/agents">Weaviate Agents</Link>
                 </li>
               </ul>
             </div>

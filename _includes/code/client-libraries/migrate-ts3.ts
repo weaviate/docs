@@ -12,7 +12,7 @@ async function main() {
 // CompleteScript // CreateClient  
   // connect to your Weaviate instance on WCD
   const weaviateURL = process.env.WEAVIATE_URL as string
-  const weaviateKey = process.env.WEAVIATE_ADMIN_KEY as string
+  const weaviateKey = process.env.WEAVIATE_API_KEY as string
   const openaiKey = process.env.OPENAI_API_KEY as string
   
   const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL, {
@@ -27,7 +27,7 @@ async function main() {
   // create a new collection
   await client.collections.create({
     name: collectionName,
-    vectorizers: weaviate.configure.vectorizer.text2VecOpenAI(),
+    vectorizers: weaviate.configure.vectors.text2VecOpenAI(),
   })
 // END CompleteScript // END CreateCollection
 
@@ -37,7 +37,7 @@ async function main() {
 
 // CompleteScript  // BatchInsert
   // define a collection to interact with 
-  const myCollection = client.collections.get(collectionName)
+  const myCollection = client.collections.use(collectionName)
 
   // bulk insert data to your collection
   await myCollection.data.insertMany(await response.json())

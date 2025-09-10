@@ -28,7 +28,7 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "MyCollection",
-    vectorizer_config=Configure.Vectorizer.none()
+    vector_config=Configure.Vectors.self_provided()
 )
 
 # ==============================
@@ -40,10 +40,10 @@ data_rows = [
     {"title": f"Object {i+1}"} for i in range(5)
 ]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.dynamic() as batch:
+with collection.batch.fixed_size(batch_size=200) as batch:
     for data_row in data_rows:
         batch.add_object(
             properties=data_row,
@@ -93,7 +93,7 @@ data = [
     ),
 ]
 
-collection = client.collections.get("MyCollection")  # Replace with your collection name
+collection = client.collections.use("MyCollection")  # Replace with your collection name
 collection.data.insert_many(data)
 # END InsertManytWithIDExample
 
@@ -133,7 +133,7 @@ data = [
     ),
 ]
 
-collection = client.collections.get("MyCollection")  # Replace with your collection name
+collection = client.collections.use("MyCollection")  # Replace with your collection name
 collection.data.insert_many(data)
 # END InsertManyWithVectorExample
 
@@ -165,10 +165,10 @@ from weaviate.util import generate_uuid5  # Generate a deterministic ID
 # START BatchImportWithIDExample
 data_rows = [{"title": f"Object {i+1}"} for i in range(5)]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.dynamic() as batch:
+with collection.batch.fixed_size(batch_size=200) as batch:
     for data_row in data_rows:
         obj_uuid = generate_uuid5(data_row)
         batch.add_object(
@@ -201,10 +201,10 @@ client.collections.delete(collection.name)
 data_rows = [{"title": f"Object {i+1}"} for i in range(5)]
 vectors = [[0.1] * 1536 for i in range(5)]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.dynamic() as batch:
+with collection.batch.fixed_size(batch_size=200) as batch:
     for i, data_row in enumerate(data_rows):
         batch.add_object(
             properties=data_row,
@@ -242,12 +242,12 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title",
             source_properties=["title"]
         ),
-        Configure.NamedVectors.text2vec_openai(
+        Configure.Vectors.text2vec_openai(
             name="body",
             source_properties=["body"]
         ),
@@ -263,10 +263,10 @@ data_rows = [{
 title_vectors = [[0.12] * 1536 for _ in range(5)]
 body_vectors = [[0.34] * 1536 for _ in range(5)]
 
-collection = client.collections.get("MyCollection")
+collection = client.collections.use("MyCollection")
 
 # highlight-start
-with collection.batch.dynamic() as batch:
+with collection.batch.fixed_size(batch_size=200) as batch:
     for i, data_row in enumerate(data_rows):
         batch.add_object(
             properties=data_row,
@@ -328,7 +328,7 @@ publications.data.insert(
 target_uuid = publications.query.fetch_objects(limit=1).objects[0].uuid
 
 # BatchImportWithRefExample
-collection = client.collections.get("Author")
+collection = client.collections.use("Author")
 
 with collection.batch.fixed_size(batch_size=100) as batch:
     batch.add_reference(
@@ -408,7 +408,7 @@ print(f"Finished importing {counter} articles.")
 # END JSON streaming
 
 # Tests
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.over_all(total_count=True)
 assert response.total_count == 1000
 
@@ -482,7 +482,7 @@ print(f"Finished importing {counter} articles.")
 # END CSV streaming
 
 # Tests
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.over_all(total_count=True)
 assert response.total_count == 1000
 
@@ -509,9 +509,9 @@ collection = client.collections.create(
             Property(name="raw", data_type=DataType.TEXT),
             Property(name="sha", data_type=DataType.TEXT),
         ],
-        vectorizer_config=[
-            Configure.NamedVectors.text2vec_cohere(name="cohereFirst"),
-            Configure.NamedVectors.text2vec_cohere(name="cohereSecond"),
+        vector_config=[
+            Configure.Vectors.text2vec_cohere(name="cohereFirst"),
+            Configure.Vectors.text2vec_cohere(name="cohereSecond"),
         ]
     )
 # END BatchVectorClient
@@ -545,7 +545,7 @@ integrations = [
 client.integrations.configure(integrations)
 # END BatchVectorizationClientModify
 
-collection = client.collections.get("NewCollection")
+collection = client.collections.use("NewCollection")
 
 collection.data.insert_many(
     {"title": f"Some title {i}", "summary": f"Summary {i}", "body": f"Body {i}"} for i in range(5)

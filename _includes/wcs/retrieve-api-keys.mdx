@@ -1,32 +1,52 @@
-import Link from "@docusaurus/Link";
+When connecting to a Weaviate Cloud cluster, you need an API key and the REST endpoint URL for authentication.
+To retrieve your connection details, follow these steps:
 
-To retrieve your API keys, follow these steps:
+import Link from '@docusaurus/Link';
+import Register from '/docs/cloud/img/weaviate-cloud-api-keys.png';
 
-import Register from "/docs/cloud/img/weaviate-cloud-api-keys.png";
-
-export const imageContent = (
+<div class="row">
   <ol>
-    <li>
-      Open the{" "}
-      <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>{" "}
-      and{" "}
-      <Link to="/docs/cloud/manage-clusters/status#select-your-cluster">
-        select your cluster
-      </Link>
-      .
+    <li className="inline-content">
+      Open the <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link> and <Link to="/cloud/manage-clusters/status#select-your-cluster"> ssselect your cluster</Link>.
     </li>
     <li>
-      On the <code>Cluster details</code> page, find the <code>API keys</code>{" "}
-      section.
+      On the <code>Cluster details</code> page, find the <code>Admin</code> API
+      key and <code>REST Endpoint</code> URL.
     </li>
-    <li>Copy the needed key and store it in a safe location.</li>
+    <li>Copy the needed key and URL and store them in a safe location.</li>
   </ol>
-);
+</div>
 
-<DocsImage
-  image={Register}
-  caption="Find your API key in Weaviate Cloud"
-  layout="right"
->
-  {imageContent}
-</DocsImage>
+import WCDClusterURL from '/docs/weaviate/quickstart/img/cluster_url.png';
+import WCDClusterAdminKey from '/docs/weaviate/quickstart/img/cluster_admin_key.png';
+
+<div class="row">
+  <div class="col col--6">
+    <div class="card-demo">
+      <div class="card">
+        <div class="card__image">
+          <img src={WCDClusterURL} alt="Get the (REST) endpoint URL" />
+        </div>
+        <div class="card__body">
+          Grab the <code>REST Endpoint</code> URL.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col--6">
+    <div class="card-demo">
+      <div class="card">
+        <div class="card__image">
+          <img src={WCDClusterAdminKey} alt="Get the admin API key" />
+        </div>
+        <div class="card__body">
+          Grab the <code>Admin</code> API key.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+:::note REST Endpoint vs gRPC Endpoint
+When using an official Weaviate [client library](/weaviate/client-libraries), you need to authenticate using the `REST Endpoint`. The client will infer the gRPC endpoint automatically and use the more performant gRPC protocol when available.

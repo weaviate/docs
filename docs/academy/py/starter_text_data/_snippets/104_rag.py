@@ -9,9 +9,9 @@ from weaviate.classes.init import Auth
 headers = {"X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")}
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
     headers=headers,
 )
@@ -26,7 +26,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # SinglePromptGeneration
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.generate.near_text(
@@ -55,7 +55,7 @@ client.connect()
 
 # GroupedTaskGeneration
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.generate.near_text(
@@ -71,7 +71,7 @@ response = movies.generate.near_text(
 for o in response.objects:
     print(o.properties["title"])  # Print the title
 # highlight-start
-print(response.generated)  # Print the generated text (the commonalities between them)
+print(response.generative.text)  # Print the generated text (the commonalities between them)
 # highlight-end
 
 client.close()

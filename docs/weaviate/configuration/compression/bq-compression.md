@@ -8,15 +8,15 @@ image: og/docs/configuration.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/configure.bq-compression.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/configure.bq-compression.ts';
-import TSCodeBQOptions from '!!raw-loader!/_includes/code/howto/configure.bq-compression.options.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure.bq-compression-v2.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/configure.bq-compression.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
+import PyCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.py';
+import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.ts';
+import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
+import TSCodeLegacy from '!!raw-loader!/\_includes/code/howto/configure.bq-compression-v2.ts';
+import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
+import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
 :::info Added in `v1.23`
-BQ is available for the [`flat` index](/docs/weaviate/concepts/indexing/vector-index.md#flat-index) type from `v1.23` onwards and for the [`hnsw` index](/docs/weaviate/config-refs/schema/vector-index#hnsw-indexes)  type from `v1.24`.
+BQ is available for the [`flat` index](/weaviate/concepts/indexing/vector-index.md#flat-index) type from `v1.23` onwards and for the [`hnsw` index](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) type from `v1.24`.
 :::
 
 Binary quantization (BQ) is a vector compression technique that can reduce the size of a vector.
@@ -26,16 +26,13 @@ To use BQ, enable it as shown below and add data to the collection.
 <details>
   <summary>Additional information</summary>
 
-- How to [set the index type](/docs/weaviate/manage-data/collections.mdx#set-vector-index-type)
+- How to [set the index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
 
 </details>
 
+## Enable compression for new collection
 
-## Simple BQ configuration
-
-Each collection can be configured to use BQ compression. BQ must be enabled at collection creation time, before data is added to it.
-
-This can be done by setting the `vector_index_config` of the collection to enable BQ compression.
+BQ can be enabled at collection creation time through the collection definition:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -85,18 +82,48 @@ This can be done by setting the `vector_index_config` of the collection to enabl
   </TabItem>
 </Tabs>
 
+## Enable compression for existing collection
 
-## BQ with custom settings
+:::info Added in `v1.31`
+The ability to enable BQ compression after collection creation was added in Weaviate `v1.31`.
+:::
+
+BQ can also be enabled for an existing collection by updating the collection definition:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START UpdateSchema"
+        endMarker="# END UpdateSchema"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START UpdateSchema"
+        endMarker="// END UpdateSchema"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
+## BQ parameters
 
 The following parameters are available for BQ compression, under `vectorIndexConfig`:
 
-| Parameter | Type | Default | Details |
-| :-- | :-- | :-- | :-- |
-| `bq` : `enabled` | boolean | `false` | Enable BQ. Weaviate uses binary quantization (BQ) compression when `true`.  <br/><br/> The Python client v4 does not use the `enabled` parameter. To enable BQ with the v4 client, set a `quantizer` in the collection definition. |
-| `bq` : `rescoreLimit` | integer | -1 | The minimum number of candidates to fetch before rescoring. |
-| `bq` : `cache` | boolean | `false` | Whether to use the vector cache. |
-| `vectorCacheMaxObjects` | integer | `1e12` | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](/docs/weaviate/concepts/indexing/vector-index.md#vector-cache-considerations). |
+import BQParameters from '/\_includes/configuration/bq-compression-parameters.mdx' ;
 
+<BQParameters />
 
 For example:
 
@@ -148,20 +175,29 @@ For example:
   </TabItem>
 </Tabs>
 
-## Multiple vector embeddings (named vectors)
+## Additional considerations
 
-import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
+### Multiple vector embeddings (named vectors)
+
+import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
+
+<NamedVectorCompress />
+
+### Multi-vector embeddings (ColBERT, ColPali, etc.)
+
+import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
 <MultiVectorCompress />
 
-## Related pages
-- [Configuration: Vector index](/docs/weaviate/config-refs/schema/vector-index.md)
-- [Concepts: Vector index](/docs/weaviate/concepts/indexing/vector-index.md)
+## Further resources
+
+- [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
 - [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Tutorial: Schema](/docs/weaviate/starter-guides/managing-collections/index.mdx)
+- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

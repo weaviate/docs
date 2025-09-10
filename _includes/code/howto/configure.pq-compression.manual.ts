@@ -11,7 +11,7 @@ await client.collections.delete(collectionName);
 // START InitClassDef
 const collection = await client.collections.create({
   name: 'Question',
-  vectorizer: weaviate.configure.vectorizer.text2VecOpenAI({
+  vectorizer: weaviate.configure.vectors.text2VecOpenAI({
     sourceProperties: ["title"],
   })
 })
@@ -26,11 +26,11 @@ assert.equal(collectionConfig.vectorizer.default.indexConfig.quantizer, undefine
 
 {
 // START UpdateSchema  // START ViewConfig
-const collection = client.collections.get(collectionName);
+const collection = client.collections.use(collectionName);
 // START UpdateSchema  // END ViewConfig
 
 await collection.config.update({
-  vectorizers: weaviate.reconfigure.vectorizer.update({
+  vectorizers: weaviate.reconfigure.vectors.update({
     vectorIndexConfig: weaviate.reconfigure.vectorIndex.hnsw({
       quantizer: weaviate.reconfigure.vectorIndex.quantizer.pq({
         trainingLimit: 50000

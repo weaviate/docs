@@ -2,7 +2,7 @@
 import weaviate from "weaviate-client";
 // END BatchImportData // END CreateMovieCollection // END SubmoduleImport
 // CreateMovieCollection // SubmoduleImport
-import { WeaviateClient, configure, vectorizer } from "weaviate-client";
+import { WeaviateClient, configure, vectors } from "weaviate-client";
 // END CreateMovieCollection  // END SubmoduleImport
 
 
@@ -17,8 +17,8 @@ let client: WeaviateClient;
 
 // END CreateMovieCollection
 
-client = await weaviate.connectToWeaviateCloud(process.env.WCD_URL as string,{
-    authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY as string),
+client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string,{
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
   } 
 )
 // CreateMovieCollection
@@ -33,9 +33,9 @@ const requestHeaders = {'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,
 
 
 client = await weaviate.connectToWeaviateCloud(
-  process.env.WCD_URL as string,
+  process.env.WEAVIATE_URL as string,
   {
-    authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY as string),
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
     headers: requestHeaders
   } 
 )
@@ -58,7 +58,7 @@ await client.collections.create({
         { name: "tmdb_id", dataType: configure.dataType.INT},
     ],
     // Define the vectorizer module
-    vectorizers: vectorizer.text2VecOpenAI(),
+    vectorizers: vectors.text2VecOpenAI(),
     // Define the generative module
     generative: configure.generative.openAI(),
     // END generativeDefinition  // CreateMovieCollection
@@ -68,7 +68,7 @@ client.close()
 // END CreateMovieCollection
 
 const weaviateURL = process.env.WEAVIATE_URL as string
-const weaviateKey = process.env.WEAVIATE_ADMIN_KEY as string
+const weaviateKey = process.env.WEAVIATE_API_KEY as string
 const openaiKey = process.env.OPENAI_API_KEY as string
 
 client = await weaviate.connectToWeaviateCloud(weaviateURL,{
@@ -93,7 +93,7 @@ const response = await fetch(dataUrl)
 const data = await response.json()
 
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Set a counter and initialize Weaviate Object
 let itemsToInsert: Object[] = []

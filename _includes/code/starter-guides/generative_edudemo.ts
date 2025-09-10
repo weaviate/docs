@@ -25,7 +25,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 
 
 // DataRetrieval
-const myCollection = client.collections.get('GitBookChunk');
+const myCollection = client.collections.use('GitBookChunk');
 
 const dataRetrievalResult = await myCollection.query.nearText(['states in git'], {
   returnProperties: ['chunk', 'chapter_title', 'chunk_index'],
@@ -39,7 +39,7 @@ assert(dataRetrievalResult.objects.length == 2, "Wrong number of objects returne
 
 // TransformResultSets
 const groupedTaskResponse = await myCollection.generate.nearText("history of git",{
-  singlePrompt: `translate a summary of {chunk} into french`
+  singlePrompt: `Summarize the key information here in bullet points`
 },
 {
   returnProperties: ['chunk', 'chapter_title', 'chunk_index'],
@@ -53,7 +53,7 @@ assert(typeof groupedTaskResponse.generated === 'string', 'The generated object 
 
 
 // TransformIndividualObjects
-const myWineCollection = client.collections.get('WineReview');
+const myWineCollection = client.collections.use('WineReview');
 
 const singlePromptresult = await myWineCollection.generate.nearText("fruity white wine",{
   singlePrompt: `Translate this review into French, using emojis:

@@ -1,7 +1,9 @@
 ---
 title: Consistency
 sidebar_position: 4
+description: "Replication factor configuration and data consistency models across Weaviate cluster replicas."
 image: og/docs/concepts.jpg
+# tags: ['architecture']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
@@ -59,7 +61,7 @@ A clean (without fails) execution has two phases:
 
 Some queries require the collection definition. Prior to the introduction of this feature, every such query led to the local (requesting) node to fetch the collection definition from the leader node. This meant that the definition was strongly consistent, but it could lead to additional traffic and load.
 
-Where available, the `COLLECTION_RETRIEVAL_STRATEGY` [environment variable](../../config-refs/env-vars.md#multi-node-instances) can be set to `LeaderOnly`, `LocalOnly`, or `LeaderOnMismatch`.
+Where available, the `COLLECTION_RETRIEVAL_STRATEGY` [environment variable](/deploy/configuration/env-vars/index.md#multi-node-instances) can be set to `LeaderOnly`, `LocalOnly`, or `LeaderOnMismatch`.
 
 - `LeaderOnly` (default): Always requests the definition from the leader node. This is the most consistent behavior but can lead to higher intra-cluster traffic.
 - `LocalOnly`: Always use the local definition; leading to eventually consistent behavior while reducing intra-cluster traffic.
@@ -116,13 +118,14 @@ The main reason for introducing configurable write consistency in v1.18 is becau
 Read operations are GET requests to data objects in Weaviate. Like write, read consistency is tunable, to `ONE`, `QUORUM` (default) or `ALL`.
 
 :::note
-Prior to `v1.18`, read consistency was tunable only for [requests that obtained an object by id](../../manage-data/read.mdx#get-an-object-by-id), and all other read requests had a consistency of `ALL`.
+Prior to `v1.18`, read consistency was tunable only for [requests that obtained an object by id](../../manage-objects/read.mdx#get-an-object-by-id), and all other read requests had a consistency of `ALL`.
 :::
 
 The following consistency levels are applicable to most read operations:
 
 - Starting with `v1.18`, consistency levels are applicable to REST endpoint operations.
 - Starting with `v1.19`, consistency levels are applicable to GraphQL `Get` requests.
+- All gRPC based read and write operations support tunable consistency levels.
 
 * **ONE** - a read response must be returned by at least one replica. This is the fastest (most available), but least consistent option.
 * **QUORUM** - a response must be returned by `QUORUM` amount of replica nodes. `QUORUM` is calculated as _n / 2 + 1_, where _n_ is the number of replicas (replication factor). For example, using a replication factor of 6, the quorum is 4, which means the cluster can tolerate 2 replicas down.
@@ -150,6 +153,22 @@ Depending on the desired tradeoff between consistency and speed, below are three
 * `QUORUM` / `QUORUM` => balanced write and read latency
 * `ONE` / `ALL` => fast write and slow read (optimized for write)
 * `ALL` / `ONE` => slow write and fast read (optimized for read)
+
+### Tunable consistency and queries
+
+Note that tunable consistency levels for read operations do not affect consistency of the list of objects returned by a query. In other words, the list of object UUIDs returned by a query depends only on the coordinator node's (and any other required shards') local index, and is independent of the read consistency level.
+
+This is due to the fact that each query is performed by the coordinator node and any other shards required to answer the query. Even if the read consistency level is set to `ALL`, it does not mean that multiple replicas will be queried and the results merged together.
+
+Where the read consistency level is applied is in retrieving the identified objects from the replicas. For example, if the read consistency level is set to `ALL`, the coordinator node will wait for all replicas to return the identified objects. And if the read consistency level is set to `ONE`, the coordinator node may simply return the objects from itself.
+
+In other words, the read consistency level only affects which versions of the objects are retrieved, but it does not lead to a more (or less) consistent query result.
+
+:::note When might this occur?
+
+By default, Weaviate writes to all nodes on an insert/update/delete. So, most of the time this won't matter as all shards will have identical local indexes to each other. This is a rare care which may only occur if there is a problem, such as a node being down, or there is a network problem.
+
+:::
 
 ### Tenant states and data objects
 
@@ -184,7 +203,7 @@ Repair-on-read works well with one or two isolated repairs. Async replication is
 
 Async replication supplements the repair-on-read mechanism. If a node becomes inconsistent between sync checks, the repair-on-read mechanism catches the problem at read time.
 
-To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-data/collections.mdx#replication-settings). Visit the [How-to: Replication](/docs/weaviate/configuration/replication#async-replication-settings) page to learn more about the available async replication settings.
+To activate async replication, set `asyncEnabled` to true in the [`replicationConfig` section of your collection definition](../../manage-collections/multi-node-setup.mdx#replication-settings). Visit the [How-to: Replication](/deploy/configuration/replication.md#async-replication-settings) page to learn more about the available async replication settings.
 
 #### Memory and performance considerations for async replication
 
@@ -259,11 +278,13 @@ The default hash tree height of `16` is chosen to balance memory consumption wit
 
 When an object is present on some replicas but not others, this can be because a creation has not yet been propagated to all replicas, or because a deletion has not yet been propagated to all replicas. It is important to distinguish between these two cases.
 
-Deletion resolution works alongside async replication and repair-on-read to ensure consistent handling of deleted objects across the cluster. For each collection, you can set one of the following deletion resolution strategies:
+Deletion resolution works alongside async replication and repair-on-read to ensure consistent handling of deleted objects across the cluster. For each collection, [you can set one of the following](../../manage-collections/multi-node-setup.mdx#replication-settings) deletion resolution strategies:
 
 - `NoAutomatedResolution`
 - `DeleteOnConflict`
 - `TimeBasedResolution`
+
+Deletion resolution strategies are mutable. [Read more about how to update collection definitions](../../manage-collections/collection-operations.mdx#update-a-collection-definition).
 
 #### `NoAutomatedResolution`
 
@@ -314,9 +335,53 @@ The read repair process also depends on the read and write consistency levels us
 
 Repairs only happen on read, so they do not create a lot of background overhead. While nodes are in an inconsistent state, read operations with consistency level of `ONE` may return stale data.
 
+## Replica movement
+
+:::info Added in `v1.32`
+:::
+
+A shard represents a part of the collection in a single-tenant collection, or a whole tenant in a multi-tenant collection. Weaviate allows users to manually move or copy individual shard replicas from a source node to a destination node in a Weaviate cluster. This capability addresses operational scenarios such as cluster rebalancing after scaling, node decommissioning, optimizing data locality for improved performance, or increasing data availability.
+
+Replica movement operates as a state machine with stages that ensure data integrity throughout the process. The feature works for both single-tenant collections and multi-tenant collections. 
+
+Unlike the static replication factor configured at collection creation, replica movement allows the replication factor to be adjusted for specific shards as replicas are moved or copied across the cluster. When a copy operation is performed, the newly created replica increases the replication factor for that specific shard. While a collection may have a default replication factor, individual shards within that collection can have a higher replication factor. However, shards can't have a replication factor lower then the one set on the collection level. 
+
+:::info
+
+The [`REPLICATION_ENGINE_MAX_WORKERS` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICATION_ENGINE_MAX_WORKERS) can be used to adjust the number of workers that process replica movements in parallel. 
+
+:::
+
+### Movement states
+
+Each replica movement operation progresses through a workflow designed to maintain data consistency and availability. The workflow comprises of the following states:
+
+- **REGISTERED**: The movement operation has been initiated and logged by the Raft leader. The request has been received and the operation is queued for processing.
+
+- **HYDRATING**: A new replica is being created on the destination node. Data segments are transferred from an existing replica (usually the source replica, or another available peer) to establish the new replica.
+
+- **FINALIZING**: The bulk data transfer is complete, and the new replica is catching up on any writes that occurred during the transfer. This ensures the replica is fully synchronized with the latest data. You can use the [`REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT` environment variable](/docs/deploy/configuration/env-vars/index.md#REPLICA_MOVEMENT_MINIMUM_ASYNC_WAIT) to adjust the wait time which ensures that any in progress writes have been completed and replicated to the target node.
+
+- **DEHYDRATING**: For move operations, after the new replica is ready, the original replica on the source node is being removed. 
+
+- **READY**: The operation has completed successfully. The new replica is fully synchronized and ready to serve traffic. For move operations, the source replica has been removed.
+
+- **CANCELLED**: The operation has been cancelled before completion. This can happen either through manual intervention or if the operation encounters an unrecoverable error.
+
+Replica movement supports two distinct operation modes:
+
+- **Move**: Move a replica from one node to another, maintaining the same replication factor
+- **Copy**: Copy a replica from one node to another and increase the shard replication factor by one for that specific shard
+
+:::note Replication factor and quorum
+
+When a shard replica is copied, the increased replication factor may become an even number. This can make achieving a quorum more difficult, as it now requires `(n/2 + 1)` nodes instead of `(n/2 + 0.5)` nodes. For example, going from `RF=3` to `RF=4` increases the required nodes for quorum from 2 to 3 (67% to 75% of replicas).
+
+:::
+
 ## Related pages
 - [API References | GraphQL | Get | Consistency Levels](../../api/graphql/get.md#consistency-levels)
-- <SkipLink href="/docs/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/objects">API References | REST | Objects</SkipLink>
 
 ## Questions and feedback
 

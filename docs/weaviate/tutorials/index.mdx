@@ -1,0 +1,52 @@
+---
+title: Tutorials
+description: Explore Weaviate tutorials for practical guidance on data management and queries.
+sidebar_position: 0
+image: og/docs/tutorials.jpg
+hide_table_of_contents: true
+# tags: ['how to', 'schema']
+---
+
+import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
+
+<BasicPrereqs />
+
+Tutorials aim to empower you to use Weaviate based on _your_ particular needs.
+Here, you can learn how to:
+
+import CardsSection from "/src/components/CardsSection";
+
+export const advancedFeaturesData = [
+  {
+    title: "Load Data into Weaviate with Spark",
+    description:
+      "Use the Spark Connector to efficiently import large datasets from Apache Spark into Weaviate with batch processing and vectorization options.",
+    link: "/weaviate/tutorials/spark-connector",
+    icon: "fas fa-fire",
+  },
+  {
+    title: "Use Multi-Vector Embeddings (ColBERT, etc.)",
+    description:
+      "Implement advanced multi-vector representations for improved search relevance using models like ColBERT.",
+    link: "/weaviate/tutorials/multi-vector-embeddings",
+    icon: "fas fa-puzzle-piece",
+  },
+  {
+    title: "Manage Relationships with Cross-References",
+    description:
+      "Define, create, and query links between objects to model complex data relationships effectively.",
+    link: "/weaviate/tutorials/cross-references",
+    icon: "fas fa-link",
+  },
+  {
+    title: "Set up Role-Based Access Control (RBAC)",
+    description:
+      "Configure roles, permissions, and user assignments for secure access control in Weaviate.",
+    link: "/deploy/tutorials/rbac",
+    icon: "fas fa-user-shield",
+  },
+];
+
+<br />
+<CardsSection items={advancedFeaturesData} />
+<br />

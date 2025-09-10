@@ -64,7 +64,7 @@ const schemaDefinition = {
     }
   ],
     // highlight-start
-  vectorizers: weaviate.configure.vectorizer.text2VecOpenAI(),
+  vectorizers: weaviate.configure.vectors.text2VecOpenAI(),
   generative: weaviate.configure.generative.openAI()
     // highlight-end
 }
@@ -87,7 +87,7 @@ assert(tempResponse == true, "The 'GitBookChunk' class does not exist")
 
 
 // ImportData
-const gitCollection = client.collections.get('GitBookChunkTest');
+const gitCollection = client.collections.use('GitBookChunkTest');
 
 async function importData(chunkData: Array<string>) {
   const list:Array<any> = [];

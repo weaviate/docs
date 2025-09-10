@@ -10,13 +10,13 @@ import UpdateInProgressNote from '/_includes/update-in-progress.mdx';
 
 <UpdateInProgressNote />
 
-In this section, we will explore different queries that you can perform with Weaviate. Here, we will expand on the `nearText` queries that you may have seen in the [Quickstart tutorial](../quickstart/index.md) to show you different query types, filters and metrics that can be used.
+In this section, we will explore different queries that you can perform with Weaviate. Here, we will expand on the `nearText` queries that you may have seen in the [Quickstart tutorial](docs/weaviate/quickstart/index.md) to show you different query types, filters and metrics that can be used.
 
 By the end of this section, you will have performed vector and scalar searches separately as well as in combination to retrieve individual objects and aggregations.
 
 ## Prerequisites
 
-We recommend you complete the [Quickstart tutorial](../quickstart/index.md) first.
+We recommend you complete the [Quickstart tutorial](docs/weaviate/quickstart/index.md) first.
 
 Before you start this tutorial, you should follow the steps in the Quickstart to have:
 
@@ -56,7 +56,7 @@ import CodeAutoschemaNeartext from '/_includes/code/quickstart/neartext.mdx'
 
 <CodeAutoschemaNeartext />
 
-This might also look familiar, as it was used in the [Quickstart tutorial](../quickstart/index.md). But let's break it down a little.
+This might also look familiar, as it was used in the [Quickstart tutorial](docs/weaviate/quickstart/index.md). But let's break it down a little.
 
 Here, we are using a `nearText` operator. What we are doing is to provide Weaviate with a query `concept` of `biology`. Weaviate then converts this into a vector through the inference API (OpenAI in this particular example) and uses that vector as the basis for a vector search.
 
@@ -279,13 +279,13 @@ As you can see, the `Aggregate` function can return handy aggregated, or metadat
 - [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
 - [Tutorial: Import in detail](./import.md)
 - [Tutorial: Introduction to modules](./modules.md)
-- [Tutorial: Introduction to Weaviate Console](/docs/cloud/tools/query-tool.mdx)
+- [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
 
 ## Notes
 
 ### How is certainty calculated?
 
-`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](/docs/weaviate/config-refs/distances#distance-vs-certainty).
+`certainty` in Weaviate is a measure of distance from the vector to the data objects. You can also calculate the cosine similarity based on the certainty as described [here](/weaviate/config-refs/distances#distance-vs-certainty).
 
 
 ## Questions and feedback

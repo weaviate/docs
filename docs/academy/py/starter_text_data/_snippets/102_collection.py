@@ -12,9 +12,9 @@ import os
 from weaviate.classes.init import Auth
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
 )
 
@@ -42,7 +42,7 @@ client.collections.create(
         wc.Property(name="tmdb_id", data_type=wc.DataType.INT),
     ],
     # Define the vectorizer module
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
+    vector_config=wc.Configure.Vectors.text2vec_openai(),
     # Define the generative module
     generative_config=wc.Configure.Generative.openai()
     # END generativeDefinition  # CreateMovieCollection
@@ -69,9 +69,9 @@ from weaviate.classes.init import Auth
 headers = {"X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")}
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
     headers=headers,
 )
@@ -89,10 +89,10 @@ resp = requests.get(data_url)
 df = pd.DataFrame(resp.json())
 
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Enter context manager
-with movies.batch.dynamic() as batch:
+with movies.batch.fixed_size(batch_size=200) as batch:
     # Loop through the data
     for i, movie in tqdm(df.iterrows()):
         # Convert data types

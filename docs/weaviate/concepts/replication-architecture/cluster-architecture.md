@@ -1,6 +1,7 @@
 ---
 title: Cluster Architecture
 sidebar_position: 3
+description: "Node behavior and cluster coordination mechanisms in Weaviate's distributed replication system."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
@@ -14,14 +15,18 @@ In Weaviate, metadata replication and data replication are separate. For the met
 
 By default, Weaviate nodes in a cluster use a gossip-like protocol through [Hashicorp's Memberlist](https://github.com/hashicorp/memberlist) to communicate node state and failure scenarios.
 
-Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](/docs/weaviate/installation/kubernetes.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
+Weaviate is optimized to run on Kubernetes, especially when operating as a cluster. The [Weaviate Helm chart](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) makes use of a `StatefulSet` and a headless `Service` that automatically configures node discovery.
 
-### FQDN for node discovery
+<details>
+  <summary>FQDN for node discovery</summary>
 
-:::info Added in `v1.25.15`
+:::caution Added in `v1.25.15` and removed in `v1.30`
+
+This was an experimental feature. Use with caution.
+
 :::
 
-There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](../../config-refs/env-vars.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
+There can be a situation where IP-address based node discovery is not optimal. In such cases, you can set `RAFT_ENABLE_FQDN_RESOLVER` and `RAFT_FQDN_RESOLVER_TLD` [environment variables](/deploy/configuration/env-vars/index.md#multi-node-instances) to enable [fully qualified domain name (FQDN)](https://en.wikipedia.org/wiki/Fully_qualified_domain_name) based node discovery.
 
 If this feature is enabled, Weaviate uses the FQDN resolver to resolve the node name to the node IP address for metadata (e.g., Raft) communication.
 
@@ -43,6 +48,8 @@ It can also be useful when using services (for example, Kubernetes) where the IP
 
 To use this feature, set `RAFT_ENABLE_FQDN_RESOLVER` to `true`.
 
+</details>
+
 ## Metadata replication: Raft
 
 :::info Added in `v1.25`
@@ -60,7 +67,7 @@ As a result, a Weaviate cluster will include a leader node that is responsible f
 
 Weaviate uses a leaderless architecture for data replication. This means there is no central leader or primary node that will replicate to follower nodes. Instead, all nodes can accept writes and reads from the client, which can offer better availability. There is no single point of failure. A leaderless replication approach, also known as [Dynamo-style](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) data replication (after Amazon's implementation), has been adopted by other open-source projects like [Apache Cassandra](https://cassandra.apache.org).
 
-In Weaviate, a coordination pattern is used to relay a client’s read and write requests to the correct nodes. Unlike in a leader-based database, a coordinator node does not enforce any ordering of the operations.
+In Weaviate, a coordination pattern is used to relay a client's read and write requests to the correct nodes. Unlike in a leader-based database, a coordinator node does not enforce any ordering of the operations.
 
 The following illustration shows a leaderless replication design in Weaviate. There is one coordination node, which leads traffic from the client to the correct replicas. There is nothing special about this node; it was chosen to be the coordinator because this node received the request from the load balancer. A future request for the same data may be coordinated by a different node.
 
@@ -85,10 +92,9 @@ A replication factor of 3 is commonly used, since this provides a right balance 
 
 <p align="center"><img src="/img/docs/replication-architecture/replication-factor.png" alt="Replication Factor" width="75%"/></p>
 
-
 ## Write operations
 
-On a write operation, the client’s request will be sent to any node in the cluster. The first node which receives the request is assigned as the coordinator. The coordinator node sends the request to a number of predefined replicas and returns the result to the client. So, any node in the cluster can be a coordinator node. A client will only have direct contact with this coordinator node. Before sending the result back to the client, the coordinator node waits for a number of write acknowledgments from different nodes depending on the configuration. How many acknowledgments Weaviate waits for, depends on the [consistency configuration](./consistency.md).
+On a write operation, the client's request will be sent to any node in the cluster. The first node which receives the request is assigned as the coordinator. The coordinator node sends the request to a number of predefined replicas and returns the result to the client. So, any node in the cluster can be a coordinator node. A client will only have direct contact with this coordinator node. Before sending the result back to the client, the coordinator node waits for a number of write acknowledgments from different nodes depending on the configuration. How many acknowledgments Weaviate waits for, depends on the [consistency configuration](./consistency.md).
 
 **Steps**
 1. The client sends data to any node, which will be assigned as the coordinator node

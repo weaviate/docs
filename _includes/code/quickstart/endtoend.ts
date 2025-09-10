@@ -21,7 +21,7 @@ const client: WeaviateClient = weaviate.client({
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
-const weaviateKey = process.env.WEAVIATE_ADMIN_KEY as string
+const weaviateKey = process.env.WEAVIATE_API_KEY as string
 const openaiKey = process.env.OPENAI_API_KEY as string
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL, {
@@ -39,12 +39,12 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 
 // EndToEndExample  // CustomVectorExample
 // START CreateCollection
-import { vectorizer, generative } from 'weaviate-client' 
+import { vectors, generative } from 'weaviate-client' 
 
 async function createCollection() {
   const questions = await client.collections.create({
     name: 'Question',
-    vectorizers: vectorizer.text2VecOpenAI(),
+    vectorizers: vectors.text2VecOpenAI(),
     generative: generative.openAI(),
   })
   console.log(`Collection ${questions.name} created!`);
@@ -59,7 +59,7 @@ async function getJsonData() {
 
 async function importQuestions() {
   // Get the questions directly from the URL
-  const questions = client.collections.get('Question');
+  const questions = client.collections.use('Question');
   const data = await getJsonData();
   const result = await questions.data.insertMany(data)
   console.log('We just bulk inserted',result);
@@ -70,7 +70,7 @@ async function importQuestions() {
 
 // NearTextExample
 async function nearTextQuery() {  
-  const questions = client.collections.get('Question');
+  const questions = client.collections.use('Question');
 
   const result = await questions.query.nearText('biology', {
     limit:2
@@ -86,10 +86,10 @@ async function nearTextQuery() {
 
 // NearTextWhereExample
 async function nearTextWhereQuery() {  
-  const questions = client.collections.get('Question');
+  const questions = client.collections.use('Question');
 
   const result = await questions.query.nearText('biology', {
-    filters: client.collections.get('Question').filter.byProperty('category').equal('ANIMALS'),
+    filters: client.collections.use('Question').filter.byProperty('category').equal('ANIMALS'),
     limit:2
   });
 
@@ -103,7 +103,7 @@ async function nearTextWhereQuery() {
 
 // GenerativeSearchExample
 async function generativeSearchQuery() {
-  const questions = client.collections.get('Question');
+  const questions = client.collections.use('Question');
 
   const result = await questions.generate.nearText('biology',
     { singlePrompt: `Explain {answer} as you might to a five-year-old.` },
@@ -121,7 +121,7 @@ async function generativeSearchQuery() {
 
 // GenerativeSearchGroupedTaskExample
 async function generativeSearchGroupedQuery() {
-  const questions = client.collections.get('Question');
+  const questions = client.collections.use('Question');
 
   const result = await questions.generate.nearText('biology',
     { groupedTask: `Write a tweet with emojis about these facts.` },
@@ -136,7 +136,7 @@ async function generativeSearchGroupedQuery() {
 
 // Define test functions
 async function getNumObjects() {
-  const questions = client.collections.get('Question');    
+  const questions = client.collections.use('Question');    
   const objectCount =  await questions.aggregate.overAll()
   console.log(JSON.stringify(objectCount.totalCount));
   return objectCount.totalCount

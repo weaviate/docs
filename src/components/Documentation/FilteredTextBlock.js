@@ -27,7 +27,7 @@ const DOC_SYSTEMS = {
     },
     go: {
         baseUrl:
-            'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v4/weaviate',
+            'https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v5/weaviate',
         constructUrl: (baseUrl, ref) => `${baseUrl}#${ref}`,
         icon: '/img/site/logo-go.svg',
     },
@@ -136,6 +136,9 @@ const FilteredTextBlock = ({
         case 'pyv3':
             language2 = 'py';
             break;
+        case 'tsv2':
+            language2 = 'ts';
+            break;
         case 'gonew':
         case 'goraw':
             language2 = 'go';
@@ -227,7 +230,7 @@ const FilteredTextBlock = ({
                 )}
                 {language === 'pyv3' && (
                     <a
-                        href="https://weaviate-docs.netlify.app/docs/weaviate/client-libraries/python/python_v3"
+                        href="https://docs.weaviate.io/weaviate/client-libraries/python/python_v3"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="badge badge--warning"

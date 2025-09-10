@@ -1,7 +1,8 @@
 ---
 title: Billing
 sidebar_position: 3
-# image: og/wcs/user_guides.jpg
+description: "Billing information for Weaviate Cloud services, including free Sandbox clusters and paid Serverless plans."
+image: og/wcd/user_guides.jpg
 ---
 
 Sandbox clusters are free. You do not need a billing account to create a Sandbox cluster.
@@ -9,6 +10,12 @@ Sandbox clusters are free. You do not need a billing account to create a Sandbox
 Serverless clusters are charged for resource usage. The monthly charge is determined by your usage and your support plan. You have to have a billing account to create a serverless cluster.
 
 To estimate costs for different combinations of usage levels and support plans, see the [pricing calculator](https://weaviate.io/services/serverless).
+
+:::note
+
+If you have signed up for Weaviate Cloud through an external cloud provider like [AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) or [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA), the billing will be managed through that cloud provider's marketplace. 
+
+:::
 
 ## Create an account
 
@@ -52,11 +59,15 @@ The values are added together and normalized to get a base price. The base price
 
 If the cluster has **high availability**, the pricing rate is multiplied by three.
 
+:::tip
+
 Significant cost savings can be achieved when **compression** is enabled.
+
+:::
 
 ## Support & feedback levels
 
-Weaviate offers three levels of support, [Standard](/docs/cloud/platform/support-levels#standard-support), [Professional](/docs/cloud/platform/support-levels#professional-support), and [Business Critical](/docs/cloud/platform/support-levels#business-critical-support). Each support plan has a billing rate for usage and a minimum cost per month.
+Weaviate offers three levels of support, [Standard](/cloud/platform/support-levels#standard-support), [Professional](/cloud/platform/support-levels#professional-support), and [Business Critical](/cloud/platform/support-levels#business-critical-support). Each support plan has a billing rate for usage and a minimum cost per month.
 
 - If the usage cost is less than the monthly minimum charge for the support plan, Weaviate bills the monthly minimum.
 - If the usage cost exceeds the monthly minimum, Weaviate bills the minimum amount plus any additional charges.
@@ -67,7 +78,7 @@ If you have a high availability (HA) cluster, Weaviate Cloud multiples the minim
 
 ## Billing cycles
 
-Billing runs on 30-day cycles. Charges are calculated for active clusters every 30 days; the billing periods are not aligned with calendar months.
+Charges are calculated and invoiced for active clusters on the 1st day of each month.
 
 ## Support & feedback
 

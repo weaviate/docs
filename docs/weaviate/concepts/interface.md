@@ -1,6 +1,7 @@
 ---
 title: Interface
 sidebar_position: 85
+description: "RESTful, GraphQL and gRPC API interfaces with client library support for Weaviate integration."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'interface', 'API design']
 ---
@@ -89,7 +90,7 @@ There are currently three main functions in a GraphQL request: "Get{}", "Explore
 }
 ```
 
-* **Query filters (search arguments) dependent on database setup**. You can add filters on class level to filter objects. Scalar (`where` filters) can be combined with vector (`near<...>`) filters. Depending on your Weaviate setup (which modules you have connected), additional filters may be used. A filter can look like (using the [`qna-transformers` module](/docs/weaviate/modules/qna-transformers.md)):
+* **Query filters (search arguments) dependent on database setup**. You can add filters on class level to filter objects. Scalar (`where` filters) can be combined with vector (`near<...>`) filters. Depending on your Weaviate setup (which modules you have connected), additional filters may be used. A filter can look like (using the [`qna-transformers` module](/weaviate/modules/qna-transformers.md)):
 
 ```graphql
 {
@@ -132,15 +133,13 @@ The [Weaviate Console](https://console.weaviate.cloud) is a dashboard to manage 
 
 ## Weaviate Clients
 
-Weaviate has several client libraries: in [Go](/docs/weaviate/client-libraries/go.md), [Java](/docs/weaviate/client-libraries/java.md), [Python](/docs/weaviate/client-libraries/python/index.md) and [TypeScript/JavaScript](docs/weaviate/client-libraries/typescript/index.mdx). The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. The APIs are intuitive to use, so it is easy to integrate Weaviate into your existing data landscape.
-
-
+Weaviate has several client libraries: in [Go](/weaviate/client-libraries/go.md), [Java](/weaviate/client-libraries/java.md), [Python](/weaviate/client-libraries/python/index.mdx) and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx). The client libraries in all languages support all API functions. Some clients, e.g. the Python client, have additional functionality, such as full schema management and batching operations. This way, Weaviate is easy to use in custom projects. The APIs are intuitive to use, so it is easy to integrate Weaviate into your existing data landscape.
 
 ## Further resources
 :::info Related pages
 - [References: GraphQL API](../api/graphql/index.md)
-- [References: RESTful API](/docs/weaviate/api/rest).
-- [References: Client Libraries](../client-libraries/index.md).
+- [References: RESTful API](/weaviate/api/rest).
+- [References: Client Libraries](../client-libraries/index.mdx).
 :::
 
 

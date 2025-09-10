@@ -4,9 +4,9 @@ import assert from 'assert';
 import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
-  process.env.WCD_URL as string,
+  process.env.WEAVIATE_URL as string,
  {
-   authCredentials: new weaviate.ApiKey(process.env.WCD_API_KEY as string),
+   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
    headers: {
      'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
@@ -14,7 +14,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 )
 
 // MetaCount TS // TextProp TS // IntProp TS // groupBy TS // nearTextWithLimit TS // nearTextWithDistance TS // whereFilter TS
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 // END MetaCount TS // END TextProp TS // END IntProp TS // END groupBy TS // END nearTextWithLimit TS // END nearTextWithDistance TS // END whereFilter TS
 
 
@@ -166,14 +166,14 @@ console.log(result.properties['points']);
 // =========================================
 {
 // HybridExample
-const jeopardy = client.collections.get("JeopardyQuestion")
+const jeopardy = client.collections.use("JeopardyQuestion")
 
 const response = await jeopardy.aggregate.hybrid("animals in space", {
     objectLimit: 10,
     returnMetrics: jeopardy.metrics.aggregate("points").number(["sum"])
 })
 
-console.log("", response.properties['points'].sum)
+console.log(response.properties['points'].sum)
 // END HybridExample
 
   // Test

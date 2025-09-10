@@ -11,14 +11,9 @@ client = weaviate.connect_to_local(
     port=8580,
     grpc_port=50551,
     # START AdminClient
-    auth_credentials=Auth.api_key("user-a-key"),
+    auth_credentials=Auth.api_key("root-user-key"),
 )
 # END AdminClient
-
-# TODO: Remove if not used
-custom_user_client = weaviate.connect_to_local(
-    port=8580, grpc_port=50551, auth_credentials=Auth.api_key("user-b-key")
-)
 
 all_roles = client.roles.list_all()
 for role_name, _ in all_roles.items():
@@ -35,17 +30,38 @@ from weaviate.classes.rbac import Permissions, RoleScope
 permissions = [
     Permissions.roles(
         role="testRole*",  # Applies to all roles starting with "testRole"
+        scope=RoleScope.MATCH,  # Only allow role management with the current user's permission level
+        # scope=RoleScope.ALL   # Allow role management with all permissions
         create=True,  # Allow creating roles
         read=True,  # Allow reading roles
         update=True,  # Allow updating roles
         delete=True,  # Allow deleting roles
-        scope=RoleScope.MATCH,  # Only allow role management with the current user's permission level
-        # scope=RoleScope.ALL   # Allow role management with all permissions
     )
 ]
 
 client.roles.create(role_name="testRole", permissions=permissions)
 # END AddManageRolesPermission
+
+assert "testRole" in client.roles.list_all().keys()
+
+client.roles.delete("testRole")
+
+# START AddManageUsersPermission
+from weaviate.classes.rbac import Permissions
+
+permissions = [
+    Permissions.users(
+        user="testUser*",  # Applies to all users starting with "testUser"
+        create=True,  # Allow creating users
+        read=True,  # Allow reading user info
+        update=True,  # Allow rotating user API key
+        delete=True,  # Allow deleting users
+        assign_and_revoke=True,  # Allow assigning and revoking roles to and from users
+    )
+]
+
+client.roles.create(role_name="testRole", permissions=permissions)
+# END AddManageUsersPermission
 
 assert "testRole" in client.roles.list_all().keys()
 
@@ -78,15 +94,9 @@ client.roles.delete("testRole")
 from weaviate.classes.rbac import Permissions
 
 permissions = [
-    Permissions.collections(
-        collection="TargetCollection*",
-        create_collection=True,
-        read_config=True,
-        update_config=True,
-        delete_collection=True,
-    ),
     Permissions.tenants(
         collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        tenant="TargetTenant*",  # Applies to all tenants starting with "TargetTenant"
         create=True,  # Allow creating new tenants
         read=True,  # Allow reading tenant info/metadata
         update=True,  # Allow updating tenant states
@@ -99,7 +109,7 @@ client.roles.create(role_name="testRole", permissions=permissions)
 permissions = client.roles.get(role_name="testRole")
 assert any(
     permission.collection == "TargetCollection*"
-    for permission in permissions.collections_permissions
+    for permission in permissions.tenants_permissions
 )
 
 client.roles.delete("testRole")
@@ -110,6 +120,7 @@ from weaviate.classes.rbac import Permissions
 permissions = [
     Permissions.data(
         collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        tenant="TargetTenant*",  # Applies to all tenants starting with "TargetTenant"
         create=True,  # Allow data inserts
         read=True,  # Allow query and fetch operations
         update=True,  # Allow data updates
@@ -179,16 +190,67 @@ minimal_permissions = [
     ),
 ]
 
-client.roles.create(role_name="testRole", permissions=verbose_permissions)  # or `minimal_permissions`
+client.roles.create(
+    role_name="testRole", permissions=verbose_permissions
+)  # or `minimal_permissions`
 # END AddNodesPermission
 
 permissions = client.roles.get(role_name="testRole")
-print("ivan ", permissions)
 assert any(
     permission.collection == "TargetCollection*"
     for permission in permissions.nodes_permissions
 )
 
+client.roles.delete("testRole")
+
+# START AddAliasPermission
+from weaviate.classes.rbac import Permissions
+
+permissions = [
+    Permissions.alias(
+        alias="TargetAlias*",  # Applies to all aliases starting with "TargetAlias"
+        collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        create=True,  # Allow alias creation
+        read=True,  # Allow listing aliases
+        update=True,  # Allow updating aliases
+        delete=False,  # Allow deleting aliases
+    ),
+]
+
+client.roles.create(role_name="testRole", permissions=permissions)
+# END AddAliasPermission
+
+permissions = client.roles.get(role_name="testRole")
+assert any(
+    permission.alias == "TargetAlias*"
+    for permission in permissions.alias_permissions
+)
+
+client.roles.delete("testRole")
+
+# START AddReplicationsPermission
+from weaviate.classes.rbac import Permissions
+
+permissions = [
+    Permissions.replicate(
+        collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        shard="TargetShard*",  # Applies to all shards starting with "TargetShard"
+        create=True,  # Allow replica movement operations
+        read=True,  # Allow retrieving replication status
+        update=True,  # Allow cancelling replication operations
+        delete=False,  # Allow deleting replication operations
+    ),
+]
+
+client.roles.create(role_name="testRole", permissions=permissions)
+# END AddReplicationsPermission
+
+permissions = client.roles.get(role_name="testRole")
+assert any(
+    permission.collection == "TargetCollection*" and
+    permission.shard == "TargetShard*"
+    for permission in permissions.replicate_permissions
+)
 
 client.roles.delete("testRole")
 
@@ -205,37 +267,11 @@ client.roles.create(role_name="testRole", permissions=permissions)
 from weaviate.classes.rbac import Permissions
 
 permissions = [
-    Permissions.data(collection="TargetCollection*", read=True, create=True),
-    Permissions.data(collection="TargetCollection*", read=True, create=False),
+    Permissions.data(collection="TargetCollection*", create=True),
 ]
 
 client.roles.add_permissions(permissions=permissions, role_name="testRole")
 # END AddRoles
-
-# START AssignRole
-client.users.assign_roles(user_id="user-b", role_names=["testRole", "viewer"])
-# END AssignRole
-assert "testRole" in client.users.get_assigned_roles("user-b")
-assert "viewer" in client.users.get_assigned_roles("user-b")
-
-# START ListCurrentUserRoles
-print(client.users.get_my_user())
-# END ListCurrentUserRoles
-
-# START ListUserRoles
-user_roles = client.users.get_assigned_roles("user-b")
-
-for role in user_roles:
-    print(role)
-# END ListUserRoles
-assert any(
-    permission.collection == "TargetCollection*"
-    for permission in user_roles["testRole"].collections_permissions
-)
-assert any(
-    permission.collection == "TargetCollection*"
-    for permission in user_roles["testRole"].data_permissions
-)
 
 # START CheckRoleExists
 print(client.roles.exists(role_name="testRole"))  # Returns True or False
@@ -249,13 +285,16 @@ print(test_role.collections_permissions)
 print(test_role.data_permissions)
 # END InspectRole
 
+client.users.db.delete(user_id="custom-user")
+client.users.db.create(user_id="custom-user")
+client.users.db.assign_roles(user_id="custom-user", role_names=["testRole"])
 # START AssignedUsers
-assigned_users = client.roles.get_assigned_user_ids(role_name="testRole")
+assigned_users = client.roles.get_user_assignments(role_name="testRole")
 
 for user in assigned_users:
     print(user)
 # END AssignedUsers
-assert "user-b" in assigned_users
+assert any(u.user_id == "custom-user" for u in assigned_users)
 
 # START ListAllRoles
 all_roles = client.roles.list_all()
@@ -280,14 +319,8 @@ permissions = [
 client.roles.remove_permissions(role_name="testRole", permissions=permissions)
 # END RemovePermissions
 
-# START RevokeRoles
-client.users.revoke_roles(user_id="user-b", role_names="testRole")
-# END RevokeRoles
-assert "testRole" not in client.users.get_assigned_roles("user-b")
-
 # START DeleteRole
 client.roles.delete(role_name="testRole")
 # END DeleteRole
 
 client.close()
-custom_user_client.close()

@@ -1,6 +1,7 @@
 ---
 title: Search (GraphQL | gRPC)
 sidebar_position: 0
+description: "GraphQL and gRPC API documentation for flexible querying and data retrieval in Weaviate."
 image: og/docs/api.jpg
 # tags: ['GraphQL references']
 ---
@@ -10,7 +11,7 @@ image: og/docs/api.jpg
 
 Weaviate offers [GraphQL](https://graphql.org/) and gRPC APIs for queries.
 
-We recommend using a Weaviate [client library](../../client-libraries/index.md), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
+We recommend using a Weaviate [client library](../../client-libraries/index.mdx), which abstracts away the underlying API calls and makes it easier to integrate Weaviate into your application.
 
 However, you can query Weaviate directly using GraphQL with a POST request to the `/graphql` endpoint, or write your own `gRPC` calls based on the [gRPC](../grpc.md) protobuf specification.
 

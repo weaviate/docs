@@ -34,9 +34,9 @@ from weaviate.classes.init import Auth
 headers = {"X-Cohere-Api-Key": os.getenv("COHERE_APIKEY")}
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
     headers=headers,
 )
@@ -54,7 +54,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # SinglePromptGeneration
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.generate.near_vector(
@@ -83,7 +83,7 @@ client.connect()
 
 # GroupedTaskGeneration
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.generate.near_vector(
@@ -99,7 +99,7 @@ response = movies.generate.near_vector(
 for o in response.objects:
     print(o.properties["title"])  # Print the title
 # highlight-start
-print(response.generated)  # Print the generated text (the commonalities between them)
+print(response.generative.text)  # Print the generated text (the commonalities between them)
 # highlight-end
 
 client.close()

@@ -43,7 +43,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](../../config-refs/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -102,7 +102,7 @@ To use a model via [SageMaker](https://aws.amazon.com/sagemaker/), you must have
 
 ## Configure the vectorizer
 
-[Configure a Weaviate index](../../manage-data/collections.mdx#specify-a-vectorizer) as follows to use an AWS embedding model.
+[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an AWS embedding model.
 
 The required parameters for the Bedrock and the SageMaker models are different.
 
@@ -224,7 +224,7 @@ The AWS region setting is required for all AWS integrations.
 
 ## Data import
 
-After configuring the vectorizer, [import data](../../manage-data/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
 
 <Tabs groupId="languages">
 
@@ -353,14 +353,14 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 - `amazon.titan-embed-text-v1`
 - `amazon.titan-embed-text-v2:0`
-- `cohere.embed-english-v3`
-- `cohere.embed-multilingual-v3`
+- `cohere.embed-english-v3` 
+- `cohere.embed-multilingual-v3` 
 
-Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out if the model is available in your region and how request access to a model.
 
 ### SageMaker
 
-Any custom SageMaker URL can be used as an endpoint.
+Any custom SageMaker name (e.g., "TEI-xxx") can be used as an endpoint.
 
 ## Further resources
 
@@ -372,8 +372,8 @@ Any custom SageMaker URL can be used as an endpoint.
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### External resources
 

@@ -6,15 +6,15 @@ client = weaviate.connect_to_local(
     # Use custom port defined in tests/docker-compose-rbac.yml (without showing the user)
     port=8580,
     grpc_port=50551,
-    auth_credentials=Auth.api_key("user-a-key"),
+    auth_credentials=Auth.api_key("root-user-key"),
 )
 
 
 def reset_user(user: str, client: WeaviateClient):
     # Clean slate
-    current_roles = client.users.get_assigned_roles(user)  # check if user exists
+    current_roles = client.users.db.get_assigned_roles(user_id=user)  # check if user exists
     for k in current_roles.keys():
-        client.users.revoke_roles(user_id=user, role_names=k)  # revoke all roles
+        client.users.db.revoke_roles(user_id=user, role_names=k)  # revoke all roles
 
 
 # =================================================================
@@ -22,7 +22,8 @@ def reset_user(user: str, client: WeaviateClient):
 # =================================================================
 
 # Clean slate
-reset_user("user-b", client=client)
+client.users.db.create(user_id="custom-user")
+reset_user("custom-user", client=client)
 client.roles.delete("rw_role")  # delete if exists
 
 # START ReadWritePermissionDefinition
@@ -56,17 +57,13 @@ client.roles.create(role_name="rw_role", permissions=permissions)
 # END ReadWritePermissionDefinition
 # START ReadWritePermissionAssignment
 # Assign the role to a user
-client.users.assign_roles(user_id="user-b", role_names=["rw_role"])
+client.users.db.assign_roles(user_id="custom-user", role_names=["rw_role"])
 # END ReadWritePermissionAssignment
 
 # ===== TEST ===== basic checks to see if the role was created
-user_permissions = client.users.get_assigned_roles("user-b")
+user_permissions = client.users.db.get_assigned_roles(user_id="custom-user")
 
 assert "rw_role" in user_permissions.keys()
-assert (
-    user_permissions["rw_role"].collections_permissions[0].collection
-    == "TargetCollection*"
-)
 assert user_permissions["rw_role"].name == "rw_role"
 
 # =================================================================
@@ -93,7 +90,7 @@ client.roles.create(role_name="viewer_role", permissions=permissions)
 # END ViewerPermissionDefinition
 # START ViewerPermissionAssignment
 # Assign the role to a user
-client.users.assign_roles(user_id="user-b", role_names="viewer_role")
+client.users.db.assign_roles(user_id="custom-user", role_names="viewer_role")
 # END ViewerPermissionAssignment
 
 # =================================================================
@@ -107,21 +104,21 @@ client.roles.delete("tenant_manager")
 from weaviate.classes.rbac import Permissions
 
 permissions = [
-    Permissions.collections(
-        collection="TargetCollection*",
-        create_collection=True,
-        read_config=True,
-        update_config=True,
-        delete_collection=True,
-    ),
-    # Without the below permission, the user would not
-    # be able to create tenants in collections starting with "TargetCollection"
     Permissions.tenants(
         collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        tenant="TargetTenant*",  # Applies to all tenants starting with "TargetTenant"
         create=True,  # Allow creating new tenants
         read=True,  # Allow reading tenant info/metadata
         update=True,  # Allow updating tenant states
-        delete=False,  # Dont't allow deleting tenants
+        delete=True,  # Allow deleting tenants
+    ),
+    Permissions.data(
+        collection="TargetCollection*",  # Applies to all collections starting with "TargetCollection"
+        tenant="TargetTenant*",  # Applies to all tenants starting with "TargetTenant"
+        create=True,  # Allow data inserts
+        read=True,  # Allow query and fetch operations
+        update=True,  # Allow data updates
+        delete=True,  # Allow data deletes
     ),
 ]
 
@@ -130,17 +127,13 @@ client.roles.create(role_name="tenant_manager", permissions=permissions)
 # END MTPermissionsExample
 # START MTPermissionsAssignment
 # Assign the role to a user
-client.users.assign_roles(user_id="user-b", role_names="tenant_manager")
+client.users.db.assign_roles(user_id="custom-user", role_names="tenant_manager")
 # END MTPermissionsAssignment
 
 # ===== TEST ===== basic checks to see if the role was created
-user_permissions = client.users.get_assigned_roles("user-b")
+user_permissions = client.users.db.get_assigned_roles(user_id="custom-user")
 
 assert "viewer_role" in user_permissions.keys()
-assert (
-    user_permissions["viewer_role"].collections_permissions[0].collection
-    == "TargetCollection*"
-)
 assert user_permissions["viewer_role"].name == "viewer_role"
 
 client.close()

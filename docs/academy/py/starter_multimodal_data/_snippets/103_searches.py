@@ -41,7 +41,7 @@ def url_to_base64(url):
 
 
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 src_img_path = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img/International_Space_Station_after_undocking_of_STS-132.jpg?raw=true"
@@ -74,7 +74,7 @@ client.connect()
 
 # MetadataSemanticSearch
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 response = movies.query.near_text(
@@ -103,7 +103,7 @@ client.connect()
 
 # MetadataBM25Search
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 response = movies.query.bm25(
@@ -129,7 +129,7 @@ client.connect()
 
 # MetadataHybridSearch
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 response = movies.query.hybrid(
@@ -155,7 +155,7 @@ client.connect()
 
 # FilteredSemanticSearch
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # Perform query
 response = movies.query.near_text(

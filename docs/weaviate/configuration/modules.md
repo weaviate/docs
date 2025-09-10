@@ -5,7 +5,7 @@ image: og/docs/configuration.jpg
 # tags: ['configuration', 'modules']
 ---
 
-Weaviate's functionality can be customized by using [modules](../concepts/modules.md). This page explains how to enable and configure modules.
+Weaviate's functionality can be customized by using [modules](/weaviate/concepts/modules.md). This page explains how to enable and configure modules.
 
 ## Instance-level configuration
 
@@ -15,10 +15,10 @@ At the instance (i.e. Weaviate cluster) level, you can:
 - Configure the default vectorizer module
 - Configure module-specific variables (e.g. API keys), where applicable
 
-This can be done by setting the appropriate [environment variables](../config-refs/env-vars.md) as shown below.
+This can be done by setting the appropriate [environment variables](/deploy/configuration/env-vars/index.md) as shown below.
 
 :::tip What about WCD?
-Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/docs/cloud/manage-clusters/status#enabled-modules) for details.
+Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/cloud/manage-clusters/status#enabled-modules) for details.
 :::
 
 ### Enable individual modules
@@ -135,11 +135,15 @@ Your choice of the `text2vec` module does not restrict your choice of `generativ
 
 Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
 
-See the [dedicated page on tenant offloading](./tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-data/tenant-states.mdx).
+See the [dedicated page on tenant offloading](/deploy/configuration/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
 
 ## Custom modules
 
 See [here](../modules/custom-modules.md) how you can create and use your own modules.
+
+## Usage modules
+
+The [usage module](../modules/usage-modules.md) collects and uploads usage analytics to GCS or S3. 
 
 ## Related pages
 - [Concepts: Modules](../concepts/modules.md)

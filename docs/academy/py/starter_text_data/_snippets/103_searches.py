@@ -19,9 +19,9 @@ from weaviate.classes.init import Auth
 headers = {"X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")}
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
     headers=headers,
 )
@@ -36,7 +36,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # MetadataSemanticSearch
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.near_text(
@@ -62,7 +62,7 @@ client.connect()
 
 # MetadataBM25Search
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.bm25(
@@ -88,7 +88,7 @@ client.connect()
 
 # MetadataHybridSearch
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.hybrid(
@@ -114,7 +114,7 @@ client.connect()
 
 # FilteredSemanticSearch
 # Get the collection
-movies = client.collections.get("Movie")
+movies = client.collections.use("Movie")
 
 # Perform query
 response = movies.query.near_text(

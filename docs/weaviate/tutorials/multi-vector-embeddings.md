@@ -10,24 +10,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.py';
+import TSCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.ts';
+
 
 In this section, we will explore how to use multi-vector embeddings in Weaviate. Multi-vector embeddings (implemented through models like ColBERT, ColPali, or ColQwen) represent each object or query using multiple vectors instead of a single vector. This approach enables more precise searching through "late interaction" - a technique that matches individual parts of texts rather than comparing them as whole units.
-
-:::caution Multi-vector embeddings technical preview
-Multi-vector support is added in `v1.29` as a **technical preview**.
-<br/>
-
-This means that the feature is still under development and may change in future releases, including potential breaking changes. Currently, quantization is not supported for multi-vector embeddings.
-<br/>
-
-**We do not recommend using this feature in production environments at this time.**
-:::
 
 ## Prerequisites
 
 Before starting this tutorial, ensure you have the following:
 
-- An instance of Weaviate (e.g. on [Weaviate Cloud](https://console.weaviate.cloud), or locally).
+- An instance of Weaviate (e.g. on [Weaviate Cloud](https://console.weaviate.cloud), or locally), version `v1.29` or newer.
 - Your preferred Weaviate client library installed.
 - An API key for Jina AI
     - A free, "toy" key can be obtained from [Jina AI](https://jina.ai/).
@@ -116,7 +108,7 @@ This approach often leads to better search results, as it can capture more nuanc
 
 Multi-vector embeddings are particularly useful for search tasks where word order and exact phrase matching are important. This is due to multi-vector embeddings preserving token-level information and enabling late interaction. However, multi-vector embeddings will typically require more resources than single-vector embeddings.
 
-Although each vector in a multi-vector embedding is smaller than a single-vector embedding, the total size of the multi-vector embedding typically larger, as each embedding contains many vectors. As an example, single-vector embedding of 1536 dimensions is (1536 * 4 bytes) = 6 kB, while a multi-vector embedding of 64 vectors of 96 dimensions is (64 * 96 * 4 bytes) = 25 kB - over 4 times larger.
+Although each vector in a multi-vector embedding is smaller than a single-vector embedding, the total size of the multi-vector embedding typically larger, as each embedding contains many vectors. As an example, single-vector embedding of 1536 dimensions is (1536 \* 4 bytes) = 6 kB, while a multi-vector embedding of 64 vectors of 96 dimensions is (64 \* 96 \* 4 bytes) = 25 kB - over 4 times larger.
 
 Multi-vector embeddings therefore require more memory to store and more compute to search.
 
@@ -130,7 +122,7 @@ In this section, we will use Weaviate's model integration with JinaAI's ColBERT 
 
 ### 1.1. Connect to Weaviate
 
-First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](../connections/index.mdx)).
+First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](docs/weaviate/connections/index.mdx)).
 
 <Tabs groupId="languages">
 
@@ -140,6 +132,14 @@ First, connect to your Weaviate instance using your preferred client library. In
       startMarker="# START ConnectToWeaviate"
       endMarker="# END ConnectToWeaviate"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ConnectToWeaviate"
+      endMarker="// END ConnectToWeaviate"
+      language="js"
     />
   </TabItem>
 
@@ -157,6 +157,14 @@ Here, we define a collection called `"DemoCollection"`. It has a named vector co
       startMarker="# START ColBERTCollectionConfig"
       endMarker="# END ColBERTCollectionConfig"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTCollectionConfig"
+      endMarker="// END ColBERTCollectionConfig"
+      language="js"
     />
   </TabItem>
 
@@ -180,6 +188,14 @@ Recall that we configured the model integration (for `text2colbert-jinaai`) abov
       language="py"
     />
   </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTImport"
+      endMarker="// END ColBERTImport"
+      language="js"
+    />
+  </TabItem>
 
 </Tabs>
 
@@ -195,6 +211,14 @@ Let's retrieve an object and inspect the shape of its embeddings.
       startMarker="# START ColBERTCheckEmbeddings"
       endMarker="# END ColBERTCheckEmbeddings"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTCheckEmbeddings"
+      endMarker="// END ColBERTCheckEmbeddings"
+      language="js"
     />
   </TabItem>
 
@@ -230,6 +254,14 @@ Performing a near text, or semantic, search with a ColBERT embedding model integ
       language="py"
     />
   </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTNearText"
+      endMarker="// END ColBERTNearText"
+      language="js"
+    />
+  </TabItem>
 
 </Tabs>
 
@@ -245,6 +277,14 @@ Similarly to the near text search, a hybrid search with a ColBERT embedding mode
       startMarker="# START ColBERTHybrid"
       endMarker="# END ColBERTHybrid"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTHybrid"
+      endMarker="// END ColBERTHybrid"
+      language="js"
     />
   </TabItem>
 
@@ -269,6 +309,14 @@ Since we use JinaAI's `jina-colbert-v2` model in the integration, we obtain the 
       language="py"
     />
   </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ObtainColBERTEmbedding"
+      endMarker="// END ObtainColBERTEmbedding"
+      language="js"
+    />
+  </TabItem>
 
 </Tabs>
 
@@ -282,6 +330,14 @@ Since we use JinaAI's `jina-colbert-v2` model in the integration, we obtain the 
       startMarker="# START ColBERTVector"
       endMarker="# END ColBERTVector"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTVector"
+      endMarker="// END ColBERTVector"
+      language="js"
     />
   </TabItem>
 
@@ -301,6 +357,14 @@ In all other searches where a vector embedding is to be specifically provided, i
       language="py"
     />
   </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTHybrid"
+      endMarker="// END ColBERTHybrid"
+      language="js"
+    />
+  </TabItem>
 
 </Tabs>
 
@@ -317,7 +381,7 @@ This allows you to use any pre-existing embeddings you may have, while benefitin
 
 ### 2.1. Connect to Weaviate
 
-First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](../connections/index.mdx)).
+First, connect to your Weaviate instance using your preferred client library. In this example, we assume you are connecting to a local Weaviate instance. For other types of instances, replace the connection details as needed ([connection examples](docs/weaviate/connections/index.mdx)).
 
 <Tabs groupId="languages">
 
@@ -327,6 +391,14 @@ First, connect to your Weaviate instance using your preferred client library. In
       startMarker="# START ConnectToWeaviate"
       endMarker="# END ConnectToWeaviate"
       language="py"
+    />
+  </TabItem>
+ <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ConnectToWeaviate"
+      endMarker="// END ConnectToWeaviate"
+      language="js"
     />
   </TabItem>
 
@@ -346,6 +418,14 @@ The collection configuration explicitly enables the `multi-vector` index option.
       startMarker="# START UserEmbeddingCollectionConfig"
       endMarker="# END UserEmbeddingCollectionConfig"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UserEmbeddingCollectionConfig"
+      endMarker="// END UserEmbeddingCollectionConfig"
+      language="js"
     />
   </TabItem>
 
@@ -370,6 +450,14 @@ Note that in this example, each object is sent to Weaviate along with the corres
       language="py"
     />
   </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ObtainColBERTEmbedding"
+      endMarker="// END ObtainColBERTEmbedding"
+      language="js"
+    />
+  </TabItem>
 
 </Tabs>
 
@@ -383,6 +471,14 @@ Note that in this example, each object is sent to Weaviate along with the corres
       startMarker="# START UserEmbeddingImport"
       endMarker="# END UserEmbeddingImport"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UserEmbeddingImport"
+      endMarker="// END UserEmbeddingImport"
+      language="js"
     />
   </TabItem>
 
@@ -413,6 +509,14 @@ This ensures that the query embedding is compatible with the object embeddings.
       language="py"
     />
   </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ObtainColBERTEmbedding"
+      endMarker="// END ObtainColBERTEmbedding"
+      language="js"
+    />
+  </TabItem>
 
 </Tabs>
 
@@ -426,6 +530,14 @@ This ensures that the query embedding is compatible with the object embeddings.
       startMarker="# START ColBERTVector"
       endMarker="# END ColBERTVector"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTVector"
+      endMarker="// END ColBERTVector"
+      language="js"
     />
   </TabItem>
 
@@ -443,6 +555,14 @@ To perform a hybrid search with user-provided embeddings, provide the query vect
       startMarker="# START ColBERTHybrid"
       endMarker="# END ColBERTHybrid"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTHybrid"
+      endMarker="// END ColBERTHybrid"
+      language="js"
     />
   </TabItem>
 

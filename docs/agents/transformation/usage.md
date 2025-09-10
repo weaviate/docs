@@ -1,6 +1,7 @@
 ---
 title: Usage
 sidebar_position: 30
+description: "Technical documentation and usage examples for implementing the Transformation Agent."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'transformation agent']
 ---
@@ -45,7 +46,7 @@ The official changelog for Weaviate Agents can be [found here](https://weaviatea
 
 This Agent is available exclusively for use with a Weaviate Cloud instance.
 
-Refer to the [Weaviate Cloud documentation](/docs/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
+Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
 You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
 
@@ -199,6 +200,20 @@ You can use the workflow ID to monitor the status of each transformation operati
 [Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
 
 :::
+
+### Usage limits
+
+At this stage, there is a limit of 50,000 Transformation Agent operations per day per Weaviate Cloud [organization](/cloud/platform/users-and-organizations.mdx#organizations).
+
+Note that this limit is per individual operations. In other words, running a Transformation Agent with 4 operations on a collection of 2,500 objects would max out the limit for that day.
+
+This limit may change in future versions of the Transformation Agent.
+
+### Model input context length
+
+Due to the limitations of the underlying models, the input context length for a transformation operation is limited. We recommend that the input context length is kept below ~25000 characters.
+
+In other words, the total length of the input context (the properties used as context) and the instructions should be kept below this limit. If the model input context length is exceeded, the transformation operation will fail.
 
 ### Race condition on multiple operations
 

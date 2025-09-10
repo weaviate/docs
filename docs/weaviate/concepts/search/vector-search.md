@@ -1,6 +1,7 @@
 ---
 title: Vector Search
 sidebar_position: 20
+description: "Similarity-based semantic search using vector embeddings for text, images, audio, and multimodal data."
 image: og/docs/concepts.jpg
 # tags: ['concepts', 'search', 'vector search', 'vector']
 ---
@@ -30,7 +31,7 @@ A user can populate Weaviate with objects and their vectors in one of two ways:
 
 Weaviate provides [first-party integrations with popular vectorizer model providers](../../model-providers/index.md) such as [Cohere](../../model-providers/cohere/index.md), [Ollama](../../model-providers/ollama/index.md), [OpenAI](../../model-providers/openai/index.md), and more.
 
-In this workflow, the user can [configure a vectorizer for a collection](../../manage-data/collections.mdx#specify-a-vectorizer) and Weaviate will automatically generate vectors as needed, such as when inserting objects or performing searches.
+In this workflow, the user can [configure a vectorizer for a collection](../../manage-collections/vector-config.mdx#specify-a-vectorizer) and Weaviate will automatically generate vectors as needed, such as when inserting objects or performing searches.
 
 ```mermaid
 %%{init: {
@@ -98,7 +99,7 @@ This integration abstracts the vector generation process from the user, allowing
 
 :::info Vectorizer configuration is immutable
 
-Once it is set, the vectorizer cannot be changed for a collection. This ensures that the vectors are generated consistently and stay compatible. If you need to change the vectorizer, you must create a new collection with the desired vectorizer, and [migrate the data to the new collection](../../manage-data/migrate.mdx).
+Once it is set, the vectorizer cannot be changed for a collection. This ensures that the vectors are generated consistently and stay compatible. If you need to change the vectorizer, you must create a new collection with the desired vectorizer, and [migrate the data to the new collection](../../manage-collections/migrate.mdx).
 
 :::
 
@@ -267,7 +268,7 @@ If you search a vector database containing vectors for colors "Red", "Crimson" a
 As a result, Weaviate provides multiple ways to limit the search results:
 
 - **Limit**: Specify the maximum number of results to return.
-    - If not provided, defaults to system-defined [`QUERY_DEFAULTS_LIMIT`](../../config-refs/env-vars.md#general) of 10.
+    - If not provided, defaults to system-defined [`QUERY_DEFAULTS_LIMIT`](/deploy/configuration/env-vars/index.md#general) of 10.
 - **AutoCut**: Limit results based on discontinuities in result metrics such as vector distance or search score.
 - **Threshold**: Specify a minimum similarity score (e.g. maximum cosine distance) for the results.
 - **Apply filters**: Use [filters](../filtering.md) to exclude results based on other criteria, such as metadata or properties.
@@ -280,7 +281,7 @@ This will cause the search to return up to the specified (`limit`) number of res
 
 ### Further resources
 
-- [How-to: Search](../../search/index.md)
+- [How-to: Search](../../search/index.mdx)
 - [How-to: Vector similarity search](../../search/similarity.md)
 
 ## Questions and feedback

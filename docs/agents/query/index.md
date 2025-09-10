@@ -1,6 +1,7 @@
 ---
 title: Query Agent
 sidebar_position: 10
+description: "Overview of the AI agent that handles complex queries across multiple Weaviate collections with natural language understanding."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'query agent']
 ---
@@ -9,6 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
+import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
 
 # Weaviate Query Agent: Overview
 
@@ -83,6 +85,14 @@ Pass an instance of the Weaviate client to the Query Agent, and the Query Agent 
             language="py"
         />
     </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START InstantiateQueryAgent"
+            endMarker="// END InstantiateQueryAgent"
+            language="ts"
+        />
+    </TabItem>
 
 </Tabs>
 
@@ -97,6 +107,14 @@ Then, provide a natural language query input. The Query Agent will process the q
             language="py"
         />
     </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicQuery"
+            endMarker="// END BasicQuery"
+            language="ts"
+        />
+    </TabItem>
 
 </Tabs>
 
@@ -109,6 +127,14 @@ The Query Agent can even handle follow-up queries, using the previous response a
             startMarker="# START FollowUpQuery"
             endMarker="# END FollowUpQuery"
             language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START FollowUpQuery"
+            endMarker="// END FollowUpQuery"
+            language="ts"
         />
     </TabItem>
 

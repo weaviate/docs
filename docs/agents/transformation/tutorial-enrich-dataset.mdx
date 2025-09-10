@@ -1,16 +1,16 @@
 ---
 title: Enrich your dataset with a Transformation Agent
-sidebar_label: 'Tutorial: Enrich your dataset'
-description: Learn how to create additional properties in your dataset with the Weaviate Transformation Agent.
+sidebar_label: "Tutorial: Enrich your dataset"
+description: "Tutorial showing how to add new and update existing properties in Weaviate collections using the Transformation Agent."
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/transformation_agent_tutorial_enrich_dataset.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/docs/agents/_includes/transformation_agent_tutorial_enrich_dataset.py";
 
 :::caution Technical Preview
 
@@ -35,7 +35,7 @@ We've prepared a public dataset that you can use to explore the Transformation A
 
 The Transformation Agent is able to access a Weaviate collection of your choosing and perform operations on the objects within it. However, each operation for the agent can be defined in natural language. The agent will then use an LLM to complete the instructions in the operation.
 
-import WeaviateAgentsArxivFlowchart from '/docs/agents/_includes/transformation_agent_tutorial_arxiv_flowchart.png';
+import WeaviateAgentsArxivFlowchart from "/docs/agents/_includes/transformation_agent_tutorial_arxiv_flowchart.png";
 
 <div class="row">
   <div class="card">
@@ -68,12 +68,12 @@ Now, let's get started by setting up a Weaviate Cloud instance that we will use 
 
 ### 1.1 Create a Weaviate Cloud cluster
 
-1. Create a [free Sandbox cluster](/docs/cloud/manage-clusters/create#sandbox-clusters) in Weaviate Cloud.
-1. Take note of the `REST Endpoint` and `Admin` API key to connect to your cluster. (for more info, check out the [quickstart](/docs/cloud/quickstart#22-connect-to-your-weaviate-cloud-instance))
+1. Create a [free Sandbox cluster](/cloud/manage-clusters/create#sandbox-clusters) in Weaviate Cloud.
+1. Take note of the `REST Endpoint` and `Admin` API key to connect to your cluster. (for more info, check out the [quickstart](/cloud/manage-clusters/connect.mdx))
 
 :::tip
-In this tutorial, we are using the [Weaviate Embeddings](/docs/weaviate/model-providers/weaviate/embeddings.md) service as the vectorizer, so you do not have to provide any extra keys for external embedding providers. Weaviate Embeddings uses the `Snowflake/snowflake-arctic-embed-l-v2.0` as the default embedding model.<br/><br/>
-If you want to use another vectorizer, check out the list of supported [model providers](/docs/weaviate/model-providers/index.md).
+In this tutorial, we are using the [Weaviate Embeddings](../../weaviate/model-providers/weaviate/index.md) service as the vectorizer, so you do not have to provide any extra keys for external embedding providers. Weaviate Embeddings uses the `Snowflake/snowflake-arctic-embed-l-v2.0` as the default embedding model.<br/><br/>
+If you want to use another vectorizer, check out the list of supported [model providers](../../weaviate/model-providers/index.md).
 :::
 
 ### 1.2 Install the Python libraries
@@ -102,7 +102,7 @@ pip install datasets
 </TabItem>
 </Tabs>
 
-import ForcePipInstall from '../_includes/_force_pip_install.mdx';
+import ForcePipInstall from "../_includes/_force_pip_install.mdx";
 
 <ForcePipInstall />
 
@@ -129,13 +129,13 @@ In the following code blocks, we are pulling our demo datasets from Hugging Face
 
 ### 2.1 Define the Collections
 
-import WeaviateAgentsArxivDataset from '/docs/agents/_includes/transformation_agent_tutorial_arxiv_dataset.png';
+import WeaviateAgentsArxivDataset from "/docs/agents/_includes/transformation_agent_tutorial_arxiv_dataset.png";
 
 <div class="row">
   <div class="col col--3">
     <br />
     <p>
-      In this image, you can see what the objects in the dataset{' '}
+      In this image, you can see what the objects in the dataset{" "}
       <code>ArxivPapers</code> look like.
     </p>
   </div>
@@ -153,7 +153,7 @@ import WeaviateAgentsArxivDataset from '/docs/agents/_includes/transformation_ag
 </div>
 <br />
 
-For the collection `ArxivPapers`, we are going to use the [`auto-schema`](../../weaviate/config-refs/schema/index.md#auto-schema) option, which creates properties automatically based on the imported data.
+For the collection `ArxivPapers`, we are going to use the [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) option, which creates properties automatically based on the imported data.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -329,13 +329,13 @@ By calling `update_all()`, we get the agent to spin up individual workflows for 
   </TabItem>
 </Tabs>
 
-import WeaviateAgentsExplorerTool from '/docs/agents/_includes/transformation_agent_tutorial_explorer_tool.png';
+import WeaviateAgentsExplorerTool from "/docs/agents/_includes/transformation_agent_tutorial_explorer_tool.png";
 
 <div class="row">
   <div class="col col--3">
     <p>
-      Now, you can open the{' '}
-      <a href="https://console.weaviate.cloud/apps/explorer">Explorer tool</a>{' '}
+      Now, you can open the{" "}
+      <a href="https://console.weaviate.cloud/apps/explorer">Explorer tool</a>{" "}
       to check the results of the transformation.
     </p>
   </div>
@@ -382,10 +382,6 @@ The output is:
 
 ```
 {'workflow_id': 'TransformationWorkflow-f408a4a0211940525c0e2d45cf46a6c2', 'status': {'batch_count': 1, 'end_time': None, 'start_time': '2025-03-10 13:17:31', 'state': 'running', 'total_duration': None, 'total_items': 200}}
-{'workflow_id': 'TransformationWorkflow-c4d1574fc363b97986dd2829fbc9733b', 'status': {'batch_count': 1, 'end_time': None, 'start_time': '2025-03-10 13:17:32', 'state': 'running', 'total_duration': None, 'total_items': 200}}
-{'workflow_id': 'TransformationWorkflow-5b6681c4024cb84f1ab057b58e673f2d', 'status': {'batch_count': 1, 'end_time': '2025-03-10 13:17:43', 'start_time': '2025-03-10 13:17:32', 'state': 'completed', 'total_duration': 10.597776, 'total_items': 200}}
-{'workflow_id': 'TransformationWorkflow-513fff6e89944e7becca5c42cc07a9f7', 'status': {'state': 'unknown', 'batch_count': -1, 'total_items': -1, 'total_duration': None, 'start_time': None, 'end_time': None}}
-{'workflow_id': 'TransformationWorkflow-b10fadcfcc212f64acb0b2ddd1daf3a3', 'status': {'batch_count': 1, 'end_time': '2025-03-10 13:17:49', 'start_time': '2025-03-10 13:17:33', 'state': 'completed', 'total_duration': 15.604925, 'total_items': 200}}
 ```
 
 ## Summary
@@ -404,6 +400,6 @@ The Transformation Agent automatically interprets natural language instructions 
 The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
 :::
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

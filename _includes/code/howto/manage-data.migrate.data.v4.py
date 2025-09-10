@@ -61,7 +61,7 @@ def create_collection(client_in: WeaviateClient, collection_name: str, enable_mt
         multi_tenancy_config=wvc.config.Configure.multi_tenancy(enabled=enable_mt),
         # Additional settings not shown
         # END CreateCollectionCollectionToCollection  # END CreateCollectionTenantToCollection  # END CreateCollectionCollectionToTenant  # END CreateCollectionTenantToTenant
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
+        vector_config=wvc.config.Configure.Vectors.text2vec_openai(),
         generative_config=wvc.config.Configure.Generative.openai(),
         properties=[
             wvc.config.Property(
@@ -115,7 +115,9 @@ def migrate_data(collection_src: Collection, collection_tgt: Collection):
         for q in tqdm(collection_src.iterator(include_vector=True)):
             batch.add_object(
                 properties=q.properties,
-                vector=q.vector["default"],
+                vector={
+                    "default": q.vector["default"],
+                },
                 uuid=q.uuid
             )
 
@@ -123,6 +125,50 @@ def migrate_data(collection_src: Collection, collection_tgt: Collection):
 
 
 # END CollectionToCollection  # END TenantToCollection  # END CollectionToTenant  # END TenantToTenant
+
+
+def verify_migration(collection_src, collection_tgt, num_samples=5):
+    """
+    Verify data migration by checking that random objects from source
+    exist in target with matching properties.
+    """
+    # Get all objects from source to sample from
+    src_objects = list(collection_src.iterator(include_vector=False))
+    
+    if len(src_objects) == 0:
+        print("No objects in source collection")
+        return False
+    
+    # Sample random objects (or all if less than num_samples)
+    sample_size = min(num_samples, len(src_objects))
+    import random
+    sampled_objects = random.sample(src_objects, sample_size)
+    
+    print(f"Verifying {sample_size} random objects...")
+    
+    for src_obj in sampled_objects:
+        # Get the corresponding object from target by UUID
+        try:
+            tgt_obj = collection_tgt.query.fetch_object_by_id(src_obj.uuid)
+            
+            if tgt_obj is None:
+                print(f"Object {src_obj.uuid} not found in target collection")
+                return False
+            
+            # Compare properties
+            if src_obj.properties != tgt_obj.properties:
+                print(f"Properties mismatch for object {src_obj.uuid}")
+                print(f"Source: {src_obj.properties}")
+                print(f"Target: {tgt_obj.properties}")
+                return False
+                            
+        except Exception as e:
+            print(f"Error verifying object {src_obj.uuid}: {e}")
+            return False
+    
+    print("All sampled objects verified successfully!")
+    return True
+
 
 # Delete existing collection at target if any
 client_tgt.collections.delete("WineReview")
@@ -160,9 +206,7 @@ migrate_data(reviews_src, reviews_tgt)
 agg_resp = reviews_tgt.aggregate.over_all(total_count=True)
 assert agg_resp.total_count == DATASET_SIZE
 
-coll_list = [reviews_src, reviews_tgt]
-resps = [r.query.near_text("Earthy but very drinkable", limit=1) for r in coll_list]
-assert resps[0].objects[0].uuid == resps[1].objects[0].uuid
+assert verify_migration(reviews_src, reviews_tgt)
 
 # Delete existing collection at target if any
 client_tgt.collections.delete("WineReview")
@@ -202,9 +246,7 @@ migrate_data(reviews_src_tenant_a, reviews_tgt)
 agg_resp = reviews_tgt.aggregate.over_all(total_count=True)
 assert agg_resp.total_count == DATASET_SIZE
 
-coll_list = [reviews_src_tenant_a, reviews_tgt]
-resps = [r.query.near_text("Earthy but very drinkable", limit=1) for r in coll_list]
-assert resps[0].objects[0].uuid == resps[1].objects[0].uuid
+assert verify_migration(reviews_src_tenant_a, reviews_tgt)
 
 
 # Delete existing collection at target if any
@@ -254,9 +296,7 @@ migrate_data(reviews_src, reviews_tgt_tenant_a)
 agg_resp = reviews_tgt_tenant_a.aggregate.over_all(total_count=True)
 assert agg_resp.total_count == DATASET_SIZE
 
-coll_list = [reviews_src, reviews_tgt_tenant_a]
-resps = [r.query.near_text("Earthy but very drinkable", limit=1) for r in coll_list]
-assert resps[0].objects[0].uuid == resps[1].objects[0].uuid
+assert verify_migration(reviews_src, reviews_tgt_tenant_a)
 
 
 # Delete existing collection at target if any
@@ -307,9 +347,7 @@ migrate_data(reviews_src_tenant_a, reviews_tgt_tenant_a)
 agg_resp = reviews_tgt_tenant_a.aggregate.over_all(total_count=True)
 assert agg_resp.total_count == DATASET_SIZE
 
-coll_list = [reviews_src_tenant_a, reviews_tgt_tenant_a]
-resps = [r.query.near_text("Earthy but very drinkable", limit=1) for r in coll_list]
-assert resps[0].objects[0].uuid == resps[1].objects[0].uuid
+assert verify_migration(reviews_src_tenant_a, reviews_tgt_tenant_a)
 
 # START CollectionToCollection  # START TenantToCollection  # START CollectionToTenant  # START TenantToTenant
 

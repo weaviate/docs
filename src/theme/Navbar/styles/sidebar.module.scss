@@ -1,0 +1,30 @@
+.dropdownArrow {
+  margin-left: 8px;
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.dropdownArrowOpen {
+  transform: rotate(180deg);
+}
+
+.sectionTitle {
+  font-weight: bold;
+  color: var(--ifm-color-emphasis-700);
+  display: block;
+}
+
+.emptyMenuText {
+  font-style: italic;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Example of how you could further customize if needed:
+  .mobileMenuItem {
+    // Custom styles for all list items if menu__list-item isn't enough
+  }
+  
+  .mobileMenuLink {
+    // Custom styles for all links if menu__link isn't enough
+  }
+*/

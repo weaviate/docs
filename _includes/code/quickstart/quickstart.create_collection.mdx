@@ -5,10 +5,15 @@ import PyCode from '!!raw-loader!/_includes/code/python/quickstart.create_collec
 import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.create_collection.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/2_1_create_collection/main.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/CreateCollection.java';
-
+import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
+import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
+
+  <VectorsAutoSchemaError />
+
+  <VectorConfigSyntax />
 
   <FilteredTextBlock
     text={PyCode}
@@ -57,12 +62,12 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 
 ```bash
 # Best practice: store your credentials in environment variables
-# export WCD_URL="YOUR_INSTANCE_URL"  # Your Weaviate instance URL
-# export WCD_API_KEY="YOUR_API_KEY"   # Your Weaviate instance API key
+# export WEAVIATE_URL="YOUR_INSTANCE_URL"  # Your Weaviate instance URL
+# export WEAVIATE_API_KEY="YOUR_API_KEY"   # Your Weaviate instance API key
 
 curl -X POST \
 -H "Content-Type: application/json" \
--H "Authorization: Bearer $WCD_API_KEY" \
+-H "Authorization: Bearer $WEAVIATE_API_KEY" \
 -d '{
   "class": "Question",
   "vectorizer": "text2vec-weaviate",
@@ -71,7 +76,7 @@ curl -X POST \
     "generative-cohere": {}
   }
 }' \
-"$WCD_URL/v1/schema"
+"$WEAVIATE_URL/v1/schema"
 ```
 
 </TabItem>

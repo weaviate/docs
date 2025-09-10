@@ -5,7 +5,7 @@ image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
 
-## Philosophy
+## Testing philosophy
 
 ### Test Pyramid
 
@@ -45,8 +45,8 @@ Backing services are always ephemeral and will be created solely for the tests. 
 
 These tests have two functions:
 
-1) Identify regressions automatically before they are merged.
-2) Enable performance tracking over time.
+1. Identify regressions automatically before they are merged.
+2. Enable performance tracking over time.
 
 They are currently very limited but will be extended over time.
 
@@ -58,7 +58,7 @@ Nevertheless, you should aim to always make sure that your contribution does not
 
 ### Cross-repository dependencies
 
-There are various ways to interact with the Weaviate API. You can send HTTP requests directly or you could use a client, such as the [python client](/docs/weaviate/client-libraries/python/index.md) to interact with Weaviate. In the Weaviate Database repository we have chosen not to use any of our own clients. This has the goal to minimize dependencies and allow independent development by different teams.
+There are various ways to interact with the Weaviate API. You can send HTTP requests directly or you could use a client, such as the [python client](/weaviate/client-libraries/python/index.mdx) to interact with Weaviate. In the Weaviate Database repository we have chosen not to use any of our own clients. This has the goal to minimize dependencies and allow independent development by different teams.
 
 As a result all journey tests in Weaviate Database either use the go client (which is auto-generated from swagger) or plain HTTP.
 
@@ -86,11 +86,12 @@ go test ./...
 
 #### Adding new unit tests
 
-* Add unit tests in the same folder as the code they are testing
-* Aim to write "black box" unit tests that test the public ("exported") methods of the class under test without knowing too much about the internals.
-* Do not use any build tags.
+- Add unit tests in the same folder as the code they are testing
+- Aim to write "black box" unit tests that test the public ("exported") methods of the class under test without knowing too much about the internals.
+- Do not use any build tags.
 
 ### Integration tests
+
 As outline in the Philosophy, integration tests require backing services to be run. We have a convenience script available which starts all required services in `Docker Compose` and runs the tests against it:
 
 ```sh
@@ -99,9 +100,9 @@ test/integration/run.sh
 
 #### Adding new integration tests
 
-* Use the `integrationTest` build tag on your test, so it is ignored during unit test runs.
-* Make sure the test prepares for and cleans up after itself, so tests can be run in succession.
-* If your test requires a lot of time to execute, consider marking it as a slow test and making it optional. (see below).
+- Use the `integrationTest` build tag on your test, so it is ignored during unit test runs.
+- Make sure the test prepares for and cleans up after itself, so tests can be run in succession.
+- If your test requires a lot of time to execute, consider marking it as a slow test and making it optional. (see below).
 
 #### Slow integration tests
 
@@ -120,6 +121,7 @@ Note that while slow tests are optional on the integration test runner script, t
 To mark an integration test as "slow" simply use the `integrationTestSlow` build tag, instead of the `integrationTest` tag.
 
 ### Journey tests
+
 As outline in the Philosophy, journey tests require the application to be compiled as well as all backing services to be running. We have a convenience script available which starts all required services in `Docker Compose` and runs the tests against it.
 
 The script is part of the overall pipeline script, but you can configure it to run only the journey tests like so:
@@ -129,6 +131,7 @@ test/run.sh --acceptance-only
 ```
 
 #### Add a new journey test
+
 Journey tests don't use any specific build tags, however, they are all isolated in a specific folder. This folder is ignored during integration or unit test runs.
 
 To add a new test, pick the most appropriate sub-folder (or add a new one) in `test/acceptance`.
@@ -158,6 +161,7 @@ Prefer the use of [stretchr/testify](https://github.com/stretchr/testify) to mak
 If there are cases which cannot be solved using `testify`, write a manual assertion.
 
 ### Catastrophic Failure of tests
+
 Use the `assert` package if a failure of this tests is not catastrophic and use the `require` package if a test should not execute beyond a failure.
 
 A typical scenario for this is checking for an error when we know that the other return value would be nil otherwise. For example:
@@ -172,14 +176,12 @@ If we didn't use `require` on the error, the test would continue executing. Ther
 
 By using `require.Nil` we can abort this test early, if an unexpected error was returned.
 
-## More Resources
+## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

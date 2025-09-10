@@ -1,14 +1,13 @@
 ---
 title: gRPC
-description: Integrate gRPC API with Weaviate for efficient data access.
-sidebar_position: 5
+description: "gRPC API integration guide for high-performance, efficient communication with Weaviate database instances."
 image: og/docs/api.jpg
 # tags: ['schema']
 ---
 
 Starting with Weaviate `v1.19.0`, a gRPC interface has been progressively added to Weaviate. gRPC is a high-performance, open-source universal RPC framework that is contract-based and can be used in any environment. It is based on HTTP/2 and Protocol Buffers, and is therefore very fast and efficient.
 
-As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python (`v4` version)](/docs/weaviate/client-libraries/python) and [TypeScript (`v3` version)](/docs/weaviate/client-libraries/typescript/typescript-v3) client libraries support gRPC, and the other client libraries will follow.
+As of Weaviate `v1.23.7`, the gRPC interface is considered stable. The [Python (`v4` version)](../client-libraries/python/index.mdx) and [TypeScript (`v3` version)](../client-libraries/typescript/index.mdx) client libraries support gRPC, and the other client libraries will follow.
 
 ## Protocol Buffer (Protobuf) definitions
 
@@ -30,7 +29,7 @@ This directory contains the following files:
 As an example, the snippet below maps `50051` as the host port so that it can be accessed from outside the container. The `50051` port is mapped to the `50051` port inside the container for gRPC calls, and the `8080` port is mapped to the `8080` port inside the container for REST calls.
 
 :::info
-We suggest using the default port `50051` for gRPC calls. It can be modified through the `GRPC_PORT` [environment variable](/docs/weaviate/config-refs/env-vars).  
+We suggest using the default port `50051` for gRPC calls. It can be modified through the `GRPC_PORT` [environment variable](/deploy/configuration/env-vars/index.md).  
 Note that [Weaviate Cloud](https://console.weaviate.cloud/) uses port `443` for gRPC.
 :::
 
@@ -49,9 +48,15 @@ services:
 
 ### Client-side
 
-You can use the gRPC interface through the [Python (`v4` version)](/docs/weaviate/client-libraries/python) and [TypeScript (`v3` version)](/docs/weaviate/client-libraries/typescript/typescript-v3) client libraries. Other client libraries will also introduce gRPC support in the near future.
+You can use the gRPC interface through the [Python (`v4` version)](../client-libraries/python/index.mdx) and [TypeScript (`v3` version)](../client-libraries/typescript/index.mdx) client libraries. Other client libraries will also introduce gRPC support in the near future.
 
 Alternatively, you can use other tools, such as the `grpcurl` command-line tool, to interact with the gRPC API. Some options include:
 
 - `grpcurl` command-line tool ([GitHub repo](https://github.com/fullstorydev/grpcurl))
 - Postman ([How to send a gRPC request with Postman](https://learning.postman.com/docs/sending-requests/grpc/grpc-request-interface/))
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

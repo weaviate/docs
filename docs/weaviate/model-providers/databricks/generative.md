@@ -42,7 +42,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](../../config-refs/meta.md) to verify if the module is enabled.
+- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
 - Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
 
 </details>
@@ -83,7 +83,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate collection](../../manage-data/collections.mdx#specify-a-generative-model-integration) to use a Databricks generative AI endpoint as follows:
+[Configure a Weaviate collection](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) to use a Databricks generative AI endpoint as follows:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -134,7 +134,30 @@ Configure the following generative parameters to customize the model behavior.
 
 For further details on model parameters, see the [Databricks documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#chat-task).
 
-## Runtime parameters
+## Select a model at runtime
+
+Aside from setting the default model provider when creating the collection, you can also override it at query time.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python API v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START RuntimeModelSelectionDatabricks"
+      endMarker="# END RuntimeModelSelectionDatabricks"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={TSCode}
+          startMarker="// START RuntimeModelSelectionDatabricks"
+          endMarker="// END RuntimeModelSelectionDatabricks"
+          language="ts"
+        />
+  </TabItem>
+</Tabs>
+
+## Header parameters
 
 You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
 
@@ -223,8 +246,8 @@ In other words, when you have `n` search results, the generative model generates
 
 Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
 
-- The [how-to: manage data](../../manage-data/index.md) guides show how to perform data operations (i.e. create, update, delete).
-- The [how-to: search](../../search/index.md) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
+- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
 
 ### References
 

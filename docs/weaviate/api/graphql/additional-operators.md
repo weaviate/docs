@@ -1,6 +1,7 @@
 ---
 title: Additional operators
 sidebar_position: 40
+description: "Syntax reference for additional operators that extend query functionality (limits, sorting, grouping, etc.)."
 image: og/docs/api.jpg
 # tags: ['graphql', 'additional operators']
 ---

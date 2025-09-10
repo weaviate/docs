@@ -1,6 +1,7 @@
 ---
 title: Replication Architecture
 sidebar_position: 0
+description: "Multi-node data replication design for high availability, reliability, and improved database performance."
 image: og/docs/concepts.jpg
 # tags: ['architecture']
 ---
@@ -8,7 +9,7 @@ image: og/docs/concepts.jpg
 :::info Added in `v1.17`
 :::
 
-Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-data/collections.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
+Weaviate allows data replication across a multi-node cluster by [setting a replication factor](../../manage-collections/multi-node-setup.mdx#replication-settings) > 1. This enables a variety of [benefits](./motivation.md) such as [high availability](./motivation.md#high-availability-redundancy). Database replication improves reliability, scalability, and/or performance.
 
 Weaviate utilizes multiple replication architectures:
 
@@ -147,7 +148,7 @@ Prior to Weaviate `v1.25`, each cluster metadata change was recorded via a distr
 
 This is a synchronous process, which means that the cluster metadata change is only committed when all nodes have acknowledged the change. In this architecture, any node downtime would temporarily prevent metadata operations. Additionally, only one such operation could be processed at a time.
 
-If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](../../more-resources/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
+If you are using Weaviate `v1.24` or earlier, you can [upgrade to `v1.25`](/deploy/migration/weaviate-1-25.md) to benefit from the Raft consensus algorithm for cluster metadata changes.
 
 </details>
 
@@ -163,7 +164,7 @@ Read more about how replication works in Weaviate in [Philosophy](./philosophy.m
 
 ## How do I use replication in Weaviate?
 
-See [how to configure replication](../../configuration/replication.md). You can enable replication in the collection definition. In queries, you can [specify the desired consistency level](../../search/basics.md#replication).
+See [how to configure replication](/deploy/configuration/replication.md). You can enable replication in the collection definition. In queries, you can [specify the desired consistency level](../../search/basics.md#replication).
 
 ## Roadmap
 
@@ -172,7 +173,7 @@ See [how to configure replication](../../configuration/replication.md). You can 
 
 
 ## Related pages
-- [Configuration: Replication](../../configuration/replication.md)
+- [Configuration: Replication](/deploy/configuration/replication.md)
 
 ## Questions and feedback
 

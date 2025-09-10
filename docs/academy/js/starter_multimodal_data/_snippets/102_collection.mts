@@ -24,15 +24,15 @@ let client: WeaviateClient;
 
 // END CreateMovieCollection
 
-const wcdURL = process.env.WCD_URL as string;
-const wcdApikey = process.env.WCD_API_KEY as string;
+const weaviateURL = process.env.WEAVIATE_URL as string;
+const weaviateApikey = process.env.WEAVIATE_API_KEY as string;
 const cohereApiKey = process.env.COHERE_API_KEY as string;
 const voyageApiKey = process.env.VOYAGEAI_API_KEY as string;
 
 
 
-// client = await weaviate.connectToWeaviateCloud(wcdURL, {
-//   authCredentials: new weaviate.ApiKey(wcdApikey),
+// client = await weaviate.connectToWeaviateCloud(weaviateURL, {
+//   authCredentials: new weaviate.ApiKey(weaviateApikey),
 // }
 // )
 // CreateMovieCollection
@@ -43,13 +43,13 @@ const voyageApiKey = process.env.VOYAGEAI_API_KEY as string;
 
 // END CreateMovieCollection
 
-const requestHeaders = {  'X-VoyageAI-Api-Key': voyageApiKey, 
+const requestHeaders = {  'X-VoyageAI-Api-Key': voyageApiKey,
                           'X-Cohere-Api-Key': cohereApiKey
                         }
 
 
-client = await weaviate.connectToWeaviateCloud(wcdURL, {
-  authCredentials: new weaviate.ApiKey(wcdApikey),
+client = await weaviate.connectToWeaviateCloud(weaviateURL, {
+  authCredentials: new weaviate.ApiKey(weaviateApikey),
   headers: requestHeaders
 }
 )
@@ -85,8 +85,8 @@ await client.collections.create({
 client.close()
 // END CreateMovieCollection
 
-const weaviateURL = process.env.WCD_URL as string
-const weaviateKey = process.env.WCD_API_KEY as string
+const weaviateURL = process.env.WEAVIATE_URL as string
+const weaviateKey = process.env.WEAVIATE_API_KEY as string
 const cohereKey = process.env.COHERE_API_KEY as string
 const voyageaiKey = process.env.VOYAGEAI_API_KEY as string
 
@@ -111,7 +111,7 @@ const dataUrl = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datase
 const textResponse = await fetch(dataUrl)
 const data = await textResponse.json()
 
-// Get current file's directory 
+// Get current file's directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const imgDir = join(__dirname, "images");
@@ -139,7 +139,7 @@ const zip = new AdmZip(postersPath);
 zip.extractAllTo(imgDir, true);
 
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Set a counter and initialize Weaviate Object
 let itemsToInsert: Object[] = []
@@ -147,7 +147,7 @@ let counter = 0;
 
 // Iterate through data
 for (const key of Object.keys(data['title'])) {
-  
+
   counter++;
   if (counter % 20 == 0)
     console.log(`Import: ${counter}`)

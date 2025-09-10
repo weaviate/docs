@@ -8,7 +8,7 @@ let response
 
 
 const weaviateURL = process.env.WEAVIATE_URL as string
-const weaviateKey = process.env.WEAVIATE_ADMIN_KEY as string
+const weaviateKey = process.env.WEAVIATE_API_KEY as string
 const openaiKey = process.env.OPENAI_API_KEY as string
 
 // Connect to your Weaviate instance  
@@ -31,7 +31,7 @@ headers: {
 // Get the collection
 // END MetadataSemanticSearch
 // MetadataBM25Search // MetadataSemanticSearch // MetadataHybridSearch // FilteredSemanticSearch
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 // END MetadataBM25Search // END MetadataSemanticSearch // END MetadataHybridSearch // END FilteredSemanticSearch
 // MetadataSemanticSearch
 

@@ -1,7 +1,8 @@
 ---
 title: Quickstart
 sidebar_position: 1
-image: og/wcs/user_guides.jpg
+description: "Getting started guide for importing and querying data using the Weaviate Embeddings service."
+image: og/wcd/user_guides.jpg
 ---
 
 import Tabs from "@theme/Tabs";
@@ -10,7 +11,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyConnect from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.connect.weaviate.py";
 import TSConnect from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.connect.weaviate.ts";
 import GoConnect from "!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect-weaviate-embeddings/main.go";
-import JavaConnect from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddings.java";
+import JavaConnect from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ConnectWeaviateEmbeddingsTest.java";
 import PyCode from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.py";
 import TSCode from "!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
@@ -90,7 +91,7 @@ To use Weaviate Embeddings, you will need:
 
 ### 1.1 Create a new cluster
 
-To create a free **Sandbox** cluster in Weaviate Cloud, follow **[these instructions](/docs/cloud/manage-clusters/create#create-a-cluster)**.
+To create a free **Sandbox** cluster in Weaviate Cloud, follow **[these instructions](/cloud/manage-clusters/create#create-a-cluster)**.
 
 import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
@@ -98,7 +99,7 @@ import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
 ### 1.2 Install a client library
 
-We recommend using a [client library](/docs/weaviate/client-libraries) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](/docs/weaviate/client-libraries/python), [JavaScript/TypeScript](/docs/weaviate/client-libraries/typescript), [Go](/docs/weaviate/client-libraries/go), and [Java](/docs/weaviate/client-libraries/java).
+We recommend using a [client library](/weaviate/client-libraries) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](/weaviate/client-libraries/python), [JavaScript/TypeScript](/weaviate/client-libraries/typescript), [Go](/weaviate/client-libraries/go), and [Java](/weaviate/client-libraries/java).
 
 import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
@@ -147,7 +148,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
 
 ### 2.1 Define a collection
 
-Now we can define a collection that will store our data. When creating a collection, you need to specify one of the [available models](/docs/cloud/embeddings/models) for the vectorizer to use. This model will be used to create vector embeddings from your data.
+Now we can define a collection that will store our data. When creating a collection, you need to specify one of the [available models](/cloud/embeddings/models) for the vectorizer to use. This model will be used to create vector embeddings from your data.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -184,11 +185,11 @@ Now we can define a collection that will store our data. When creating a collect
   </TabItem>
 </Tabs>
 
-For more information about the available model options visit the [Choose a model](/docs/cloud/embeddings/models) page.
+For more information about the available model options visit the [Choose a model](/cloud/embeddings/models) page.
 
 ### 2.2 Import objects
 
-After configuring the vectorizer, [import data](/docs/weaviate/manage-data/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+After configuring the vectorizer, [import data](/weaviate/manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -231,7 +232,7 @@ Once the vectorizer is configured, Weaviate will perform vector search operation
 
 ### Vector (near text) search
 
-When you perform a [vector search](/docs/weaviate/search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+When you perform a [vector search](/weaviate/search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
@@ -279,14 +280,14 @@ export const nextStepsData = [
     title: "Choose a model",
     description:
       "Check out which additional models are available through Weaviate Embeddings.",
-    link: "/docs/cloud/embeddings/models",
+    link: "/cloud/embeddings/models",
     icon: "fa fa-list-alt",
   },
   {
     title: "Explore hybrid search",
     description:
       "Discover how hybrid search combines keyword matching and semantic search.",
-    link: "/docs/weaviate/search/hybrid",
+    link: "/weaviate/search/hybrid",
     icon: "fa fa-search",
   },
 ];

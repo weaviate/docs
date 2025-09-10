@@ -27,8 +27,7 @@ print(json.dumps(data[1], indent=2))
 # ==============================
 
 # START ConnectCode
-import weaviate, os, json
-import weaviate.classes.config as wc
+import weaviate, os
 
 client = weaviate.connect_to_local(
     headers={
@@ -51,32 +50,28 @@ client.collections.delete("Question")
 
 
 # START CollectionWithAutoPQ
-import weaviate.classes.config as wc
+from weaviate.classes.config import Configure
 
 client.collections.create(
     name="Question",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    # highlight-start
-    vector_index_config=wc.Configure.VectorIndex.hnsw(
-        quantizer=wc.Configure.VectorIndex.Quantizer.pq(training_limit=50000)  # Set the threshold to begin training
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
+        # highlight-start
+        quantizer=Configure.VectorIndex.Quantizer.pq(training_limit=50000),  # Set the threshold to begin training
+        # highlight-end
     ),
-    # highlight-end
-    properties=[
-        wc.Property(name="question", data_type=wc.DataType.TEXT),
-        wc.Property(name="answer", data_type=wc.DataType.TEXT),
-    ],
 )
 
 # END CollectionWithAutoPQ
 
 
 # Confirm that the collection has been created with the right settings
-collection = client.collections.get("Question")
+collection = client.collections.use("Question")
 config = collection.config.get()
 
 from weaviate.collections.classes.config import _PQConfig
 
-assert type(config.vector_index_config.quantizer) == _PQConfig
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _PQConfig
 # No import test as it would take a long time
 
 
@@ -87,20 +82,20 @@ assert type(config.vector_index_config.quantizer) == _PQConfig
 client.collections.delete("Question")
 
 # START InitialSchema
+from weaviate.classes.config import Configure
+
 client.collections.create(
     name="Question",
     description="A Jeopardy! question",
-    vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wc.Configure.Generative.openai(),
-    properties=[
-        wc.Property(name="question", data_type=wc.DataType.TEXT),
-        wc.Property(name="answer", data_type=wc.DataType.TEXT),
-    ],
+    vector_config=Configure.Vectors.text2vec_openai(
+        name="default",
+    ),
+    generative_config=Configure.Generative.openai(),
 )
 
 # END InitialSchema
-config = client.collections.get("Question").config.get()
-assert config.vector_index_config.quantizer is None
+config = client.collections.use("Question").config.get()
+assert config.vector_config["default"].vector_index_config.quantizer is None
 
 # ==============================
 # =====  LOAD DATA =====
@@ -121,7 +116,7 @@ def parse_data(data):
     return object_list
 
 
-jeopardy = client.collections.get("Question")
+jeopardy = client.collections.use("Question")
 jeopardy.data.insert_many(parse_data(data))
 # END LoadData
 
@@ -134,29 +129,32 @@ assert response.total_count == 1000
 # ==============================
 
 # START UpdateSchema
-import weaviate.classes.config as wc
+from weaviate.classes.config import Reconfigure
 
-jeopardy = client.collections.get("Question")
+jeopardy = client.collections.use("Question")
 jeopardy.config.update(
-    vector_index_config=wc.Reconfigure.VectorIndex.hnsw(
-        quantizer=wc.Reconfigure.VectorIndex.Quantizer.pq(
-            training_limit=50000  # Default: 100000
+    vector_config=Reconfigure.Vectors.update(
+        name="default",
+        vector_index_config=Reconfigure.VectorIndex.hnsw(
+            quantizer=Reconfigure.VectorIndex.Quantizer.pq(
+                training_limit=50000  # Default: 100000
+            ),
         )
     )
 )
 # END UpdateSchema
 
-config = client.collections.get("Question").config.get()
-assert type(config.vector_index_config.quantizer) == _PQConfig
+config = client.collections.use("Question").config.get()
+assert type(config.vector_config["default"].vector_index_config.quantizer) == _PQConfig
 
 # ==============================
 # =====  GET THE SCHEMA =====
 # ==============================
 
 # START GetSchema
-jeopardy = client.collections.get("Question")
+jeopardy = client.collections.use("Question")
 config = jeopardy.config.get()
-pq_config = config.vector_index_config.quantizer
+pq_config = config.vector_config["default"].vector_index_config.quantizer
 
 # print some of the config properties
 print(f"Encoder: { pq_config.encoder }")

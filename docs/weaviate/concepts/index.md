@@ -1,7 +1,7 @@
 ---
 title: Concepts
-description: Concepts in Weaviate
 sidebar_position: 0
+description: "Foundational concepts and architecture principles behind Weaviate's vector search and AI-native database capabilities."
 image: og/docs/concepts.jpg
 # tags: ['getting started']
 ---
@@ -19,7 +19,7 @@ image: og/docs/concepts.jpg
 The **Concepts** section explains various aspects related to Weaviate and its architecture to help you get the most out of it. You can read these sections in any order.
 
 :::info
-If you are after a practical guide, try the [quickstart tutorial](/docs/weaviate/quickstart/index.md).
+If you are after a practical guide, try the [quickstart tutorial](/weaviate/quickstart/index.md).
 :::
 
 ## Core concepts

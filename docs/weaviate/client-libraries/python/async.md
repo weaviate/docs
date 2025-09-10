@@ -1,6 +1,7 @@
 ---
 title: Async API
 sidebar_position: 40
+description: "Asynchronous Python client documentation for high-performance, non-blocking Weaviate operations."
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---
@@ -15,15 +16,15 @@ import FastAPIExample from '!!raw-loader!/_includes/code/client-libraries/minima
 The async Python client is available in `weaviate-client` versions `4.7.0` and higher.
 :::
 
-The Python client library provides a [synchronous API](./index.md) by default, but an asynchronous API is also available for concurrent applications.
+The Python client library provides a [synchronous API](./index.mdx) by default, but an asynchronous API is also available for concurrent applications.
 
 For asynchronous operations, use the `WeaviateAsyncClient` async client, available in `weaviate-client` `v4.7.0` and up.
 
-The `WeaviateAsyncClient` async client largely supports the same functions and methods as the `WeaviateClient` [synchronous client](./index.md), with the key difference that the async client is designed to be used in an `async` function running in an [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop).
+The `WeaviateAsyncClient` async client largely supports the same functions and methods as the `WeaviateClient` [synchronous client](./index.mdx), with the key difference that the async client is designed to be used in an `async` function running in an [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop).
 
 ## Installation
 
-The async client is already included in the `weaviate-client` package. Follow the installation instructions in the [Python client library documentation](./index.md#installation).
+The async client is already included in the `weaviate-client` package. Follow the installation instructions in the [Python client library documentation](./index.mdx#installation).
 
 ## Instantiation
 
@@ -31,7 +32,8 @@ An async client `WeaviateAsyncClient` object can be instantiated [using a helper
 
 ### Instantiation helper functions
 
-These instantiation helper functions are similar to the [synchronous client helper functions](./index.md#connection-helper-functions), and return an equivalent async client object.
+<!-- TODO[g-despot]: Add link to external Python references once created for "synchronous client helper functions" -->
+These instantiation helper functions are similar to the synchronous client helper functions, and return an equivalent async client object.
 
 - `use_async_with_local`
 - `use_async_with_weaviate_cloud`
@@ -41,7 +43,8 @@ However, the async helper functions do not connect to the server as their synchr
 
 When using the async helper functions, you must call the async `.connect()` method to connect to the server, and call `.close()` before exiting to clean up. (Except when using a [context manager](#context-manager).)
 
-The async helper functions take the same parameters for [external API keys](./index.md#external-api-keys), [connection timeout values](./index.md#timeout-values) and [authentication details](./index.md#authentication).
+<!-- TODO[g-despot]: Add link to external Python references once created for "external API keys", "connection timeout values" and "authentication details" -->
+The async helper functions take the same parameters for external API keys, connection timeout values and authentication details.
 
 <Tabs groupId="languages">
 <TabItem value="wcd" label="WCD">
@@ -125,7 +128,7 @@ Methods that involve sending requests to Weaviate will be async functions. For e
 
 Methods that execute in a local context are likely to be synchronous. For example, each of the following operations is a sync function:
 
-- `async_client.collections.get("<COLLECTION_NAME>")`: Create a Python object to interact with an existing collection (this does not create a collection)
+- `async_client.collections.use("<COLLECTION_NAME>")`: Create a Python object to interact with an existing collection (this does not create a collection)
 - `async_client.is_connected()`: Check the last known connection status to the Weaviate server
 
 ## Context manager
@@ -143,7 +146,7 @@ When using the async client in a context manager, you do not need to call `.conn
 
 ## Async usage examples
 
-The async client object largely provides the same functionality as the [synchronous Python client](./index.md), with some key differences. First, the async client is designed to be used in an `async` function running in an [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop). Accordingly, many of the client methods are `async` functions that return [`Coroutine` objects](https://docs.python.org/3/library/asyncio-task.html#coroutine).
+The async client object largely provides the same functionality as the [synchronous Python client](./index.mdx), with some key differences. First, the async client is designed to be used in an `async` function running in an [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop). Accordingly, many of the client methods are `async` functions that return [`Coroutine` objects](https://docs.python.org/3/library/asyncio-task.html#coroutine).
 
 To execute an async client method, you must `await` it in another `async` function. To execute an `async` function in a Python script, you can use `asyncio.run(my_async_function)` or the event loop directly:
 
@@ -180,7 +183,7 @@ Note the use of a context manager in the async function. The context manager is 
 
 ### Bulk data insertion
 
-For server-side batch operations, we recommend using the synchronous client and its [`batch` operations](./index.md#batch-imports). The batch operations are designed to handle large amounts of data efficiently through concurrent requests already.
+For server-side batch operations, we recommend using the synchronous client and its [`batch` operations](../../manage-objects/import.mdx). The batch operations are designed to handle large amounts of data efficiently through concurrent requests already.
 
 The async client still offers `insert` and `insert_many` methods for data insertion, which can be used in an async context.
 

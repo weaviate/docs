@@ -14,13 +14,13 @@ import os
 # )
 
 # Best practice: store your credentials in environment variables
-wcd_url = os.environ["WCD_DEMO_URL"]
-wcd_api_key = os.environ["WCD_DEMO_RO_KEY"]
+weaviate_url = os.environ["WEAVIATE_URL"]
+weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api_key = os.environ["OPENAI_APIKEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=wcd_url,  # Replace with your Weaviate URL
-    auth_credentials=Auth.api_key(wcd_api_key),
+    cluster_url=weaviate_url,  # Replace with your Weaviate URL
+    auth_credentials=Auth.api_key(weaviate_api_key),
 )
 
 # =======================
@@ -28,7 +28,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # =======================
 
 # ReadObject START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # highlight-start
 data_object = jeopardy.query.fetch_object_by_id("00ff6900-e64f-5d94-90db-c8cfa3fc851b")
@@ -46,7 +46,7 @@ assert data_object.properties["answer"] == "San Francisco"
 # ===================================
 
 # ReadObjectWithVector START
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 data_object = jeopardy.query.fetch_object_by_id(
     "00ff6900-e64f-5d94-90db-c8cfa3fc851b",
@@ -68,7 +68,7 @@ assert len(data_object.vector["default"]) == 1536
 
 
 # ReadObjectNamedVectors START
-reviews = client.collections.get("WineReviewNV")  # Collection with named vectors
+reviews = client.collections.use("WineReviewNV")  # Collection with named vectors
 # ReadObjectNamedVectors END
 
 some_obj = reviews.query.fetch_objects(limit=1)

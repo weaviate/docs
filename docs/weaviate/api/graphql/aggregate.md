@@ -1,6 +1,7 @@
 ---
 title: Aggregate
 sidebar_position: 15
+description: "Aggregation queries documentation for performing calculations and statistical operations on Weaviate data sets."
 image: og/docs/api.jpg
 # tags: ['graphql', 'aggregate', 'aggregate{}', 'meta']
 ---
@@ -232,7 +233,7 @@ import GraphQLAggGroupby from '/_includes/code/graphql.aggregate.groupby.mdx';
 
 Aggregating data makes the `topOccurrences` property available. Note that the counts are not dependent on tokenization. The `topOccurrences` count is based on occurrences of the entire property, or one of the values if the property is an array.
 
-You can optionally specify a `limit` parameter as a minimum count for the top occurrences. For example, `limit: 5` will filter the top occurrences to those with a count of 5 or higher.
+You can optionally specify a `limit` parameter to limit the returned objects. For example, `limit: 5` will return the top 5 most frequent occurrences.
 
 ### Consistency levels
 
@@ -264,7 +265,7 @@ You can do so by specifying the `tenant` parameter in the query as shown below, 
 ```
 
 :::tip See HOW-TO guide
-For more information on using multi-tenancy, see the [Multi-tenancy operations guide](../../manage-data/multi-tenancy.md).
+For more information on using multi-tenancy, see the [Multi-tenancy operations guide](../../manage-collections/multi-tenancy.mdx).
 :::
 
 ## Aggregating a Vector Search / Faceted Vector Search
@@ -277,17 +278,13 @@ You can combine a vector search (e.g. `nearObject`, `nearVector`, `nearText`, `n
 
 ### Limiting the search space
 
-Vector searches compare objects by similarity. Thus they do not exclude any objects.
+Vector searches rank objects by similarity but do not exclude any objects. Thus, for a search operator to impact aggregation, you must limit the search space by setting either `objectLimit` or `certainty` for the query:
 
-As a result, for a search operator to have an impact on an aggregation, you must limit the search space with an `objectLimit` or `certainty`.
+* `objectLimit`, e.g. `objectLimit: 100` tells Weaviate to aggregate the first 100 objects retrieved by the vector search query. This is useful when you know upfront how many results you want to serve, for example, in a recommendation scenario where you want to produce 100 recommendations.
 
-You can achieve such a restriction of the search space in two different ways:
+* `certainty`, e.g. `certainty: 0.7` tells Weaviate to aggregate all vector search results with a certainty score of 0.7 or higher. This list has no fixed length, it depends on how many objects are good matches. This is useful in user-facing search scenarios, such as e-commerce. The user might be interested in all search results semantically similar to "apple iphone" and then generate facets.
 
-* `objectLimit`, e.g. `objectLimit: 100` specifies Weaviate to retrieve the top 100 objects related to a vector search query, then aggregate them. *This is useful when you know up front how many results you want to serve, for example in a recommendation scenario, where you want to produce 100 recommendations.*
-
-* `certainty`, e.g. `certainty: 0.7` specifies Weaviate to retrieve all possible matches that have a certainty of 0.7 or higher. This list has no fixed length, it depends on how many objects were good matches. *This is useful in user-facing search scenarios, such as e-commerce. The user might be interested in all search results semantically similar to "apple iphone" and then generate facets.*
-
-If neither an `objectLimit`, nor a `certainty` is set the query will error.
+The aggregation query will fail if neither `objectLimit` nor `certainty` is set.
 
 ### Examples
 

@@ -7,7 +7,7 @@ image: og/docs/tutorials.jpg
 
 Weaviate can be configured and deployed in many different ways. Important configuration decisions include:
 
-- The [deployment setup](../installation/index.md)
+- The [deployment setup](/deploy/index.mdx)
 - The [model integration](../model-providers/index.md) to enable
 
 This page helps you to find the right combination for your project.
@@ -15,10 +15,10 @@ This page helps you to find the right combination for your project.
 ## Deploy Weaviate
 
 Weaviate can be deployed in the following ways:
-- [Embedded Weaviate](../installation/embedded.md)
-- [Docker-Compose](../installation/docker-compose.md)
-- [Weaviate Cloud (WCD)](../installation/weaviate-cloud-services.md)
-- [Self-managed Kubernetes](../installation/kubernetes.md)
+- [Embedded Weaviate](/deploy/installation-guides/embedded.md)
+- [Docker-Compose](/deploy/installation-guides/docker-installation.md)
+- [Weaviate Cloud (WCD)](/deploy/installation-guides/weaviate-cloud.md)
+- [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
 - [Hybrid SaaS](https://weaviate.io/pricing)
 
 ## Vectorization options
@@ -41,18 +41,18 @@ Here are some recommendations for different use cases.
 
 If you are evaluating Weaviate, we recommend using one of these instance types to get started quickly:
 
-- [Weaviate Cloud (WCD)](/docs/cloud) sandbox
-- [Embedded Weaviate](/docs/weaviate/installation/embedded)
+- [Weaviate Cloud (WCD)](/cloud) sandbox
+- [Embedded Weaviate](/deploy/installation-guides/embedded)
 
 Use an inference-API based text vectorizer with your instance, for example, `text2vec-cohere`, `text2vec-huggingface`, `text2vec-openai`, or  `text2vec-google`.
 
-The [Quickstart guide](/docs/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
+The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based vectorizer to run the examples.
 
 ### Development
 
 For development, we recommend using
 
-- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/docs/weaviate/installation/docker-compose).
+- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/deploy/installation-guides/docker-installation.md).
 - A vectorization strategy that matches your production vectorization strategy.
 
 #### Docker-Compose vs. Weaviate Cloud (WCD)
@@ -81,9 +81,9 @@ Keep in mind two other factors, which are cost, and their footprint.
 
 For production deployments, consider one of these hosting models:
 
-- [Weaviate Cloud (WCD)](/docs/cloud)
-- [Self-managed Kubernetes](/docs/weaviate/installation/kubernetes)
-- [Hybrid SaaS](/docs/cloud)
+- [Weaviate Cloud (WCD)](/cloud)
+- [Self-managed Kubernetes](/deploy/installation-guides/k8s-installation.md)
+- [Hybrid SaaS](/cloud)
 
 All of these options are scalable. Kubernetes and Hybrid SaaS offer the most configuration flexibility.
 

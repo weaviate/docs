@@ -25,21 +25,21 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT)
     ],
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
-    # PQBasicConfig
-    # Other configuration not shown
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(
+    vector_config=Configure.Vectors.text2vec_openai(
+        # PQBasicConfig
+        # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.pq()
+        # highlight-end
     ),
-    # highlight-end
+
+    # Other configuration not shown
 )
 # END PQBasicConfig
 
 # Confirm creation
-c = client.collections.get(collection_name)
+c = client.collections.use(collection_name)
 coll_config = c.config.get()
-assert type(coll_config.vector_index_config.quantizer) == PQConfig
+assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == PQConfig
 
 
 client.collections.delete(collection_name)
@@ -51,11 +51,9 @@ client.collections.create(
     properties=[
         Property(name="title", data_type=DataType.TEXT)
     ],
-    vectorizer_config=Configure.Vectorizer.text2vec_openai(),
-    # PQCustomConfig
-    # Other configuration not shown
-    # highlight-start
-    vector_index_config=Configure.VectorIndex.hnsw(
+    vector_config=Configure.Vectors.text2vec_openai(
+        # PQCustomConfig
+        # highlight-start
         quantizer=Configure.VectorIndex.Quantizer.pq(
             segments=512,
             centroids=256,
@@ -63,16 +61,17 @@ client.collections.create(
             encoder_distribution=PQEncoderDistribution.NORMAL,
             encoder_type=PQEncoderType.TILE,
         )
+        # highlight-end
     ),
-    # highlight-end
+    # Other configuration not shown
 )
 # END PQCustomConfig
 
-c = client.collections.get(collection_name)
+c = client.collections.use(collection_name)
 coll_config = c.config.get()
-assert type(coll_config.vector_index_config.quantizer) == PQConfig
-assert coll_config.vector_index_config.quantizer.segments == 512
-assert coll_config.vector_index_config.quantizer.training_limit == 50000
+assert type(coll_config.vector_config["default"].vector_index_config.quantizer) == PQConfig
+assert coll_config.vector_config["default"].vector_index_config.quantizer.segments == 512
+assert coll_config.vector_config["default"].vector_index_config.quantizer.training_limit == 50000
 
 # START-ANY
 

@@ -23,7 +23,7 @@ Weaviate makes use of indexes to speed up filtering operations.
 
 [Roaring bitmap indexes (`indexFilterable`)](../filtering.md#indexfilterable) were added in `v1.18` to improve the performance of filtering operations. [Range-based indexes (`indexRangeFilters`)](../filtering.md#indexrangefilters) were added in `v1.26` to speed up range-based numerical filtering for `int`, `number`, or `date` properties.
 
-These indexes can be [enabled or disabled](../../manage-data/collections.mdx#set-inverted-index-parameters) for each property.
+These indexes can be [enabled or disabled](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters) for each property.
 
 Enabling these indexes will speed up search, at the cost of slight increase in storage requirements both on disk and memory.
 
@@ -107,7 +107,7 @@ Weaviate offers two fusion methods to combine vector and keyword search results:
    - Assigns scores based on the rank of each object in vector and keyword results.
    - Combines rank-based scores to produce final ordering.
 
-### Alpha Parameter
+### Alpha parameter
 
 The alpha parameter controls the balance between vector and keyword search in hybrid searches:
 

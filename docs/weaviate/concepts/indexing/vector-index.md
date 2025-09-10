@@ -1,6 +1,7 @@
 ---
 title: Vector Indexing
 sidebar_position: 1
+description: "Dynamic vector indexing with HNSW and flat indexes for speed-optimized similarity search operations."
 image: og/docs/concepts.jpg
 slug: /weaviate/concepts/vector-index
 # tags: ['vector index plugins']
@@ -29,7 +30,7 @@ In vector databases, a vector index is a data structure that organizes vector em
 
 [Vector embeddings](https://weaviate.io/blog/vector-embeddings-explained) are a great way to represent meaning. Understanding how to index a vector is crucial for working with vector databases effectively. Vectors embeddings are arrays of elements that can capture meaning from different data types, such as texts, images, videos, and other content. The number of elements are called dimensions. High dimension vectors capture more information, but they are harder to work with.
 
-Vector databases make it easier to work with high dimensional vectors. Consider search; Vector databases efficiently measure semantic similarity between data objects. When you run a [similarity search](https://weaviate-docs.netlify.app/docs/weaviate/search/similarity), a vector database like Weaviate uses a vectorized version of the query to find objects in the database that have vectors similar to the query vector.
+Vector databases make it easier to work with high dimensional vectors. Consider search; Vector databases efficiently measure semantic similarity between data objects. When you run a [similarity search](../../search/similarity.md), a vector database like Weaviate uses a vectorized version of the query to find objects in the database that have vectors similar to the query vector.
 
 Vectors are like coordinates in a multi-dimensional space. A very simple vector might represent objects, *words* in this case, in a 2-dimensional space.
 
@@ -41,7 +42,7 @@ For more details of this representation, see: ([GloVe](https://github.com/stanfo
 
 ![2D Vector embedding visualization](../img/vectors-2d.png "2D Vectors visualization")
 
-Another way to think of this is how products are placed in a supermarket. You'd expect to find `Apples` close to `Bananas`, because they are both fruit. But when you are searching for a `Magazine`, you would move away from the `Apples` and `Bananas`, more towards the aisle with, for example, `Newspapers`. This is how the semantics of concepts can be stored in Weaviate as well, depending on the module you're using to calculate the numbers in the vectors. Not only words or text can be indexed as vectors, but also images, video, DNA sequences, etc. Read more about which model to use [here](/docs/weaviate/modules/index.md).
+Another way to think of this is how products are placed in a supermarket. You'd expect to find `Apples` close to `Bananas`, because they are both fruit. But when you are searching for a `Magazine`, you would move away from the `Apples` and `Bananas`, more towards the aisle with, for example, `Newspapers`. This is how the semantics of concepts can be stored in Weaviate as well, depending on the module you're using to calculate the numbers in the vectors. Not only words or text can be indexed as vectors, but also images, video, DNA sequences, etc. Read more about which model to use [here](/weaviate/modules/index.md).
 
 ![Supermarket map visualization as analogy for vector indexing](../img/supermarket.svg "Supermarket map visualization")
 
@@ -59,11 +60,13 @@ Weaviate's `hnsw` index is a [custom implementation](../../more-resources/faq.md
 
 At build time, the HNSW algorithm creates a series of layers. At query time, the HNSW algorithm uses the layers to build a list of approximate nearest neighbors (ANN) quickly and efficiently.
 
-Consider this diagram of a vector search using HNSW.
+Consider this diagram of a vector index using HNSW.
 
-![HNSW layers](../img/hnsw-layers.svg "HNSW layers")
+![HNSW explained](../img/hnsw_1_explained.png "HNSW explained")
 
 An individual object can exist in more than one layer, but every object in the database is represented in the lowest layer (layer zero in the picture). The layer zero data objects are very well connected to each other. Each layer above the lowest layer has fewer data object, and fewer connections. The data objects in the higher layers correspond to the objects in the lower layers, but each higher layer has exponentially fewer objects than the layer below. The HNSW algorithm takes advantage of the layers to efficiently process large amounts of data.
+
+![HNSW search](../img/hnsw_2_search.png "HNSW search")
 
 When a search query comes in, the HNSW algorithm finds the closest matching data points in the highest layer. Then, HNSW goes one layer deeper, and finds the closest data points in that layer to the ones in the higher layer. These are the nearest neighbors. The algorithm searches the lower layer to create a new list of nearest neighbors. Then, HNSW uses the new list and repeats the process on the next layer down. When it gets to the deepest layer, the HNSW algorithm returns the data objects closest to the search query.
 
@@ -71,13 +74,17 @@ Since there are relatively few data objects on the higher layers, HNSW has to se
 
 HNSW is very fast, memory efficient, approach to similarity search. The memory cache only stores the highest layer instead of storing all of the data objects in the lowest layer. When the search moves from a higher layer to a lower one, HNSW only adds the data objects that are closest to the search query. This means HNSW uses a relatively small amount of memory compared to other search algorithms.
 
-Have another look at the diagram; it demonstrates how the HNSW algorithm searches. The blue search vector in the top layer connects to a partial result in layer one. The objects in layer one lead HNSW to the result set in layer zero. HNSW makes three hops through the layers (the dotted blue lines) and skips objects that are unrelated to the search query.
+Have another look at the diagram; it demonstrates how the HNSW algorithm searches. The search vector in the top layer connects to a partial result in layer one. The objects in layer one lead HNSW to the result set in layer zero. This allows HNSW to skip objects that are unrelated to the search query.
 
-If your use case values fast data upload higher than super fast query time and high scalability, then other vector index types may be a better solution (e.g. [Spotify's Annoy](https://github.com/spotify/annoy)).
+Inserting a vector into an HNSW index works in a similar way. The HNSW algorithm finds the closest data objects in the highest layer, and then moves down to the next layer. It continues until it finds the best place to insert the new vector. The HNSW algorithm then connects the new vector to the existing vectors in that layer.
+
+![HNSW insertion](../img/hnsw_3_insertion.png "HNSW insertion")
 
 ### Managing search quality vs speed tradeoffs
 
 HNSW parameters can be adjusted to adjust search quality against speed.
+
+![HNSW parameters](../img/hnsw_4_parameters.png "HNSW parameters")
 
 The `ef` parameter is a critical setting for balancing the trade-off between search speed and quality.
 
@@ -136,7 +143,7 @@ The resulting search list has these characteristics.
 - A maximum length of 25 objects ("dynamicEfMax": 25).
 - An actual size of 5 to 25 objects.
 
-If you use the [`docker-compose.yml` file from Weaviate](/docs/weaviate/installation/docker-compose) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
+If you use the [`docker-compose.yml` file from Weaviate](/deploy/installation-guides/docker-installation.md) to run your local instance, the `QUERY_DEFAULTS_LIMIT` environment variable sets a reasonable default query limit. To prevent out of memory errors,`QUERY_DEFAULTS_LIMIT` is significantly lower than `QUERY_MAXIMUM_RESULTS`.
 
 To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you configure your Weaviate instance.
 
@@ -162,7 +169,7 @@ When asynchronous indexing is enabled, all vector indexing operations go through
 
 This means that the object store can be updated quickly to finish performing user requests while the vector index updates in the background. Asynchronous indexing is especially useful for importing large amounts of data.
 
-This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](../../config-refs/nodes.md).
+This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/deploy/configuration/nodes.md).
 
 :::info Changes in `v1.28`
 In Weaviate `v1.22` to `v1.27`, the async indexing feature only affected batch import operations, using an in-memory queue.
@@ -225,17 +232,17 @@ A simple heuristic is that for use cases such as SaaS products where each end us
 
 Note that the vector index type parameter only specifies how the vectors of data objects are *indexed*. The index is used for data retrieval and similarity search.
 
-The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/docs/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
+The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
 
-To learn more about configuring the collection, see [this how-to page](../../manage-data/collections.mdx).
+To learn more about configuring the collection, see [this how-to page](../../manage-collections/vector-config.mdx).
 
 ### Which distance metrics can I use with vector indexing?
 
-All of [the distance metrics](/docs/weaviate/config-refs/distances.md), such as cosine similarity, can be used with any vector index type.
+All of [the distance metrics](/weaviate/config-refs/distances.md), such as cosine similarity, can be used with any vector index type.
 
 ### How to configure the vector index type in Weaviate?
 
-The index type can be specified per data collection via the [collection definition](/docs/weaviate/manage-data/collections.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/schema/vector-index.md).
+The index type can be specified per data collection via the [collection definition](../../manage-collections/vector-config.mdx#set-vector-index-type) settings, according to available [vector index settings](../../config-refs/indexing/vector-index.mdx).
 
 ### When to skip indexing
 
@@ -251,14 +258,14 @@ There are different ANN algorithms, you can find a nice overview of them on <a h
 
 ### Are there indicative benchmarks for Weaviate's ANN performance?
 
-The [ANN benchmark page](/docs/weaviate/benchmarks/ann.md) contains a wide variety of vector search use cases and relative benchmarks. This page is ideal for finding a dataset similar to yours and learning what the most optimal settings are.
+The [ANN benchmark page](/weaviate/benchmarks/ann.md) contains a wide variety of vector search use cases and relative benchmarks. This page is ideal for finding a dataset similar to yours and learning what the most optimal settings are.
 
 ## Further resources
 
 :::info Related pages
 - [Concepts: Vector quantization (compression)](../vector-quantization.md)
-- [Configuration: Vector index](../../config-refs/schema/vector-index.md)
-- [Configuration: Schema (Configure semantic indexing)](../../config-refs/schema/index.md#configure-semantic-indexing)
+- [Configuration: Vector index](../../config-refs/indexing/vector-index.mdx)
+- [Configuration: Schema (Configure semantic indexing)](../../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 :::
 
 ## Questions and feedback

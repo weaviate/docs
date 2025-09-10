@@ -9,9 +9,15 @@ These operational integrations make it easier to monitor and evaluate AI Native 
 For example, Vector Databases are typically paired with Large Language Models in Retrieval-Augmented Generation systems. To help monitor these applications in productions, several tools have emerged with user interface and logging services.
 
 Learn about how Weaviate integrates with these solutions:
-* [Arize](/docs/integrations/operations/arize/)
-* [Langtrace](/docs/integrations/operations/langtrace/)
-* [LangWatch](/docs/integrations/operations/langwatch)
-* [Nomic](/docs/integrations/operations/nomic/)
-* [Ragas](/docs/integrations/operations/ragas/)
-* [Weights and Biases](/docs/integrations/operations/wandb/)
+* [AIMon](/integrations/operations/aimon/)
+* [Arize](/integrations/operations/arize/)
+* [Cleanlab](/integrations/operations/cleanlab/)
+* [Comet](/integrations/operations/comet/)
+* [DeepEval](/integrations/operations/deepeval/)
+* [Langtrace](/integrations/operations/langtrace/)
+* [LangWatch](/integrations/operations/langwatch)
+* [Nomic](/integrations/operations/nomic/)
+* [Patronus AI](/integrations/operations/patronus/)
+* [Ragas](/integrations/operations/ragas/)
+* [TruLens](/integrations/operations/trulens/)
+* [Weights and Biases](/integrations/operations/wandb/)

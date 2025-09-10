@@ -7,7 +7,7 @@ import 'dotenv/config'
 
 // START Connect
 const weaviateURL = process.env.WEAVIATE_URL as string
-const weaviateKey = process.env.WEAVIATE_ADMIN_KEY as string
+const weaviateKey = process.env.WEAVIATE_API_KEY as string
 const cohereKey = process.env.COHERE_API_KEY as string
 
 // Connect to your Weaviate instance  
@@ -33,7 +33,7 @@ await client.collections.create({
     { name: 'Answer', dataType: configure.dataType.TEXT}
   ],
   // Define your Cohere vectorizer and generative model  
-  vectorizers: weaviate.configure.vectorizer.text2VecCohere(),
+  vectorizers: weaviate.configure.vectors.text2VecCohere(),
   // highlight-start
   generative: weaviate.configure.generative.cohere()
   // highlight-start
@@ -44,7 +44,7 @@ await client.collections.create({
 
     try {
 // START Importing  
-let jeopardyCollection = client.collections.get('JeopardyQuestion');
+let jeopardyCollection = client.collections.use('JeopardyQuestion');
 
 // Download data to import into the "JeopardyQuestion" collection
 const url = 'https://raw.githubusercontent.com/weaviate/weaviate-examples/main/jeopardy_small_dataset/jeopardy_tiny.json'
@@ -60,7 +60,7 @@ console.log('Data Imported');
       console.error(e);
     }
 
-    const myCollection = client.collections.get('JeopardyQuestion');
+    const myCollection = client.collections.use('JeopardyQuestion');
 // START SingleGenerative  
 const genResult = await myCollection.generate.nearText("african elephant in savanna", {
   singlePrompt: "translate {answer} into french for me",

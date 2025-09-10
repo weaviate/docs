@@ -19,9 +19,9 @@ from weaviate.classes.init import Auth
 headers = {"X-Cohere-Api-Key": os.getenv("COHERE_APIKEY")}
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
     headers=headers,
 )
@@ -64,7 +64,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # MetadataBM25Search
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.bm25(
@@ -90,7 +90,7 @@ client.connect()
 
 # MetadataHybridSearch
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.hybrid(
@@ -122,7 +122,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # FilteredSemanticSearch
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.near_vector(

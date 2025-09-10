@@ -1,6 +1,7 @@
 ---
 title: Filtering
 sidebar_position: 26
+description: "Filtered vector search capabilities combining semantic similarity with structured scalar filtering."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'filtered vector search', 'pre-filtering']
 ---
@@ -52,7 +53,7 @@ The `ACORN` algorithm is especially useful when the filter has low correlation w
 
 Our internal testing indicates that for lowly correlated, restrictive filters, the `ACORN` algorithm can be significantly faster, especially for large datasets. If this has been a bottleneck for your use case, we recommend enabling the `ACORN` algorithm.
 
-As of `v1.27`, the `ACORN` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-data/collections.mdx#set-vector-index-parameters).
+As of `v1.27`, the `ACORN` algorithm can be enabled by setting the `filterStrategy` field for the relevant HNSW vector index [in the collection configuration](../manage-collections/vector-config.mdx#set-vector-index-parameters).
 
 ### Sweeping
 
@@ -60,7 +61,7 @@ The existing and current default filter strategy in Weaviate is referred to as `
 
 The algorithm starts at the root node and traverses the graph, evaluating the distance to the query vector at each node, while keeping the "allow list" of the filter as context. If the filter is not met, the node is skipped and the traversal continues. This process is repeated until the desired number of results is reached.
 
-## `indexFilterable`
+## `indexFilterable` {#indexFilterable}
 
 :::info Added in `1.18`
 :::
@@ -78,11 +79,11 @@ In addition, our team maintains our underlying Roaring Bitmap library to address
 
 A roaring bitmap index for `text` properties is available from `1.19` and up, and it is implemented using two separate (`filterable` & `searchable`) indexes, which replaces the existing single index. You can configure the new `indexFilterable` and `indexSearchable` parameters to determine whether to create the roaring set index and the BM25-suitable Map index, respectively. (Both are enabled by default.)
 
-#### Migration to `indexFilterable`
+#### Migration to `indexFilterable` {#migration-to-indexFilterable}
 
 If you are using Weaviate version `< 1.18.0`, you can take advantage of roaring bitmaps by migrating to `1.18.0` or higher, and going through a one-time process to create the new index. Once your Weaviate instance creates the Roaring Bitmap index, it will operate in the background to speed up your work.
 
-This behavior is set through the <code>REINDEX<wbr />_SET_TO<wbr />_ROARINGSET<wbr />_AT_STARTUP</code> [environment variable](../config-refs/env-vars.md). If you do not wish for reindexing to occur, you can set this to `false` prior to upgrading.
+This behavior is set through the <code>REINDEX<wbr />_SET_TO<wbr />_ROARINGSET<wbr />_AT_STARTUP</code> [environment variable](/deploy/configuration/env-vars/index.md). If you do not wish for reindexing to occur, you can set this to `false` prior to upgrading.
 
 :::info Read more
 To learn more about Weaviate's roaring bitmaps implementation, see the [in-line documentation](https://pkg.go.dev/github.com/weaviate/weaviate/adapters/repos/db/lsmkv/roaringset).
@@ -123,7 +124,7 @@ As a comparison, with pure HNSW - without the cutoff - the same filters would lo
 
 ![Prefiltering with pure HNSW](./img/prefiltering-pure-hnsw-without-cutoff.png "Prefiltering without cutoff, i.e. pure HNSW")
 
-The cutoff value can be configured as [part of the `vectorIndexConfig` settings in the schema](/docs/weaviate/config-refs/schema/vector-index.md#hnsw-indexes) for each collection separately.
+The cutoff value can be configured as [part of the `vectorIndexConfig` settings in the schema](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) for each collection separately.
 
 <!-- TODO - replace figures with updated post-roaring bitmaps figures -->
 

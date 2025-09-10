@@ -26,14 +26,14 @@ my_collection = client.collections.create(
         ),
     ],
     # END ConfigureDataType
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_ollama(
+    vector_config=[
+        Configure.Vectors.text2vec_ollama(
             name="main",
             source_properties=[
                 "title",
                 "genres",
             ],  # Note that "movie_id" is not included
-            api_endpoint="http://host.docker.internal:11434",  # If using Docker, use this to contact your local Ollama instance
+            api_endpoint="http://ollama:11434",  # If using Docker you might need: http://host.docker.internal:11434
             model="snowflake-arctic-embed",  # The model to use, e.g. "nomic-embed-text"
         )
     ],

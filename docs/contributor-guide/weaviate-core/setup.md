@@ -1,6 +1,5 @@
 ---
-title: Weaviate development setup
-sidebar_position: 4
+title: Development setup
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
@@ -31,8 +30,7 @@ To run the server locally with the OpenAI module.
 
 The default configuration is `local-development` which will run the server locally with the `text2vec-contextionary` and `backup-filesystem` modules.
 
-You can also create your own configuration. For instance, you can clone an entry (`local-all-openai-cohere-google` is a good start) and add the required [environment variables](../../weaviate/config-refs/env-vars.md).
-
+You can also create your own configuration. For instance, you can clone an entry (`local-all-openai-cohere-google` is a good start) and add the required [environment variables](/deploy/configuration/env-vars/index.md).
 
 ## Running with Docker
 
@@ -54,7 +52,7 @@ tools/dev/restart_dev_environment.sh --prometheus && tools/dev/run_dev_server.sh
 ```
 
 :::info
-This setup is for contributors to the Weaviate code base. If you are an end-user of Weaviate looking for a Prometheus-enabled example, please see [this documentation page](/docs/weaviate/configuration/monitoring.md) or this [example](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
+This setup is for contributors to the Weaviate code base. If you are an end-user of Weaviate looking for a Prometheus-enabled example, please see [this documentation page](/deploy/configuration/monitoring.md) or this [example](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
 :::
 
 Below are more examples of running Weaviate with Docker.
@@ -75,11 +73,9 @@ The above commands are subject to change as we add more modules and require spec
 
 To make queries from a web interface, use the [WCD console](https://console.weaviate.cloud) to connect to `localhost:8080`.
 
-## More Resources
+## Further resources
 
-import ContributorGuideMoreResources from '/_includes/more-resources-contributor-guide.md';
-
-<ContributorGuideMoreResources />
+- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
 
 ## Questions and feedback
 

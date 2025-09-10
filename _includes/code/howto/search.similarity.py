@@ -9,14 +9,14 @@ from weaviate.classes.init import Auth
 import os
 
 # Best practice: store your credentials in environment variables
-wcd_url = os.environ["WCD_DEMO_URL"]
-wcd_api_key = os.environ["WCD_DEMO_RO_KEY"]
+weaviate_url = os.environ["WEAVIATE_URL"]
+weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api_key = os.environ["OPENAI_APIKEY"]
 cohere_apikey = os.environ["COHERE_APIKEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=wcd_url,
-    auth_credentials=Auth.api_key(wcd_api_key),
+    cluster_url=weaviate_url,
+    auth_credentials=Auth.api_key(weaviate_api_key),
     headers={
         "X-OpenAI-Api-Key": openai_api_key,
         "X-Cohere-Api-Key": cohere_apikey,
@@ -31,7 +31,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # NamedVectorNearTextPython
 from weaviate.classes.query import MetadataQuery
 
-reviews = client.collections.get("WineReviewNV")
+reviews = client.collections.use("WineReviewNV")
 response = reviews.query.near_text(
     query="a sweet German white wine",
     limit=2,
@@ -58,12 +58,12 @@ assert response.objects[0].metadata.distance is not None
 # ===== QUERY WITH nearText =====
 # ===============================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 
 # GetNearTextPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.near_text(
     query="animals in movies",
@@ -89,15 +89,15 @@ assert response.objects[0].metadata.distance is not None
 # ===== QUERY WITH nearObject =====
 # =================================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearobject
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearobject
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 uuid = jeopardy.query.fetch_objects(limit=1).objects[0].uuid
 
 # GetNearObjectPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.near_object(
     near_object=uuid,  # A UUID of an object (e.g. "56b9449e-65db-5df4-887b-0a4773f52aa7")
@@ -123,16 +123,16 @@ assert response.objects[0].metadata.distance is not None
 # ===== QUERY WITH nearVector =====
 # =================================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#nearvector
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearvector
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(limit=1, include_vector=True)
 query_vector = response.objects[0].vector["default"]
 
 # GetNearVectorPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.near_vector(
     near_vector=query_vector, # your query vector goes here
@@ -159,12 +159,12 @@ assert response.objects[0].metadata.distance is not None
 # ==========================================
 
 
-# Query with LimitOffset - https://weaviate.io/docs/weaviate/api/graphql/filters#limit-argument
+# Query with LimitOffset - https://docs.weaviate.io/weaviate/api/graphql/filters#limit-argument
 
 # GetLimitOffsetPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start
@@ -198,12 +198,12 @@ assert no_offset_response.objects[1].properties["question"] == response.objects[
 # ===== QUERY WITH DISTANCE =====
 # ===============================
 
-# http://weaviate.io/docs/weaviate/config-refs/distances
+# http://docs.weaviate.io/weaviate/config-refs/distances
 
 # GetWithDistancePython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start
@@ -230,12 +230,12 @@ for o in response.objects:
 # ===== Query with autocut =====
 # ===============================
 
-# http://weaviate.io/docs/weaviate/api/graphql/additional-operators#autocut
+# http://docs.weaviate.io/weaviate/api/graphql/additional-operators#autocut
 
 # START Autocut Python
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start
@@ -262,11 +262,11 @@ assert response.objects[0].metadata.distance is not None
 # ==============================
 
 
-# https://weaviate.io/docs/weaviate/api/graphql/get#get-groupby
+# https://docs.weaviate.io/weaviate/api/graphql/get#get-groupby
 # GetWithGroupbyPython
 from weaviate.classes.query import MetadataQuery, GroupBy
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 
 group_by = GroupBy(
@@ -314,12 +314,12 @@ for grp, grp_items in response.groups.items():
 # ===== QUERY WITH WHERE =====
 # ============================
 
-# https://weaviate.io/docs/weaviate/api/graphql/search-operators#neartext
+# https://docs.weaviate.io/weaviate/api/graphql/search-operators#neartext
 
 # GetWithWherePython
 from weaviate.classes.query import MetadataQuery, Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start

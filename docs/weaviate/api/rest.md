@@ -1,4 +1,4 @@
 ---
 title: RESTful API
-sidebar_position: 2
+description: "REST API reference for managing Weaviate Database configuration, collections, objects and querying programmatically."
 ---

@@ -11,9 +11,9 @@ import weaviate.classes.config as wc
 from weaviate.classes.init import Auth
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
 )
 
@@ -40,7 +40,7 @@ client.collections.create(
         wc.Property(name="tmdb_id", data_type=wc.DataType.INT),
     ],
     # Define the vectorizer module (none, as we will add our own vectors)
-    vectorizer_config=wc.Configure.Vectorizer.none(),
+    vector_config=wc.Configure.Vectors.self_provided(),
     # Define the generative module
     generative_config=wc.Configure.Generative.cohere()
     # END generativeDefinition  # CreateMovieCollection
@@ -127,9 +127,9 @@ headers = {"X-Cohere-Api-Key": os.getenv("COHERE_APIKEY")}
 from weaviate.classes.init import Auth
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WCD_DEMO_URL"),  # Replace with your WCD URL
+    cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
     auth_credentials=Auth.api_key(
-        os.getenv("WCD_DEMO_ADMIN_KEY")
+        os.getenv("WEAVIATE_API_KEY")
     ),  # Replace with your WCD key
     headers=headers,
 )
@@ -154,10 +154,10 @@ embs_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/m
 emb_df = pd.read_csv(embs_path)
 
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Enter context manager
-with movies.batch.dynamic() as batch:
+with movies.batch.fixed_size(batch_size=200) as batch:
     # Loop through the data
     for i, movie in enumerate(df.itertuples(index=False)):
         # Convert data types

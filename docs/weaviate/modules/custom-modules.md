@@ -11,13 +11,13 @@ image: og/docs/modules/custom-modules.jpg
 
 Besides using one of the out-of-the-box vectorization models, you can also attach your own machine learning model to Weaviate. This way, you can use Weaviate to scale your ML and NLP models, since Weaviate takes care of efficient data storage and retrieval. A custom vectorizer module is, for example, a model that you trained on your own training data, that is able to transform data (e.g. text or image data) to embeddings.
 
-If you have model that already fits with an existing model architecture (e.g. Transformers), you don't have to write any custom code and you can just run this Transformer model with the existing [`text2vec-transformer` module](/docs/weaviate/model-providers/transformers/embeddings.md).
+If you have model that already fits with an existing model architecture (e.g. Transformers), you don't have to write any custom code and you can just run this Transformer model with the existing [`text2vec-transformer` module](/weaviate/model-providers/transformers/embeddings.md).
 
 This page contains information about how you can attach your own ML model to Weaviate. You will need to attach your ML model to Weaviate's Module API as a module. First, there is some information about how (vectorizer/embedding) modules in Weaviate work.
 
 Quick links:
-* To build your own inference container (which uses an existing Weaviate Module API), click [here](/docs/weaviate/modules/custom-modules.md#a-replace-parts-of-an-existing-module).
-* To build a completely new module (to create your own Weaviate Module API to e.g. add fields to GraphQL, etc), click [here](/docs/contributor-guide/weaviate-modules/how-to-build-a-new-module.md).
+* To build your own inference container (which uses an existing Weaviate Module API), click [here](/weaviate/modules/custom-modules.md#a-replace-parts-of-an-existing-module).
+* To build a completely new module (to create your own Weaviate Module API to e.g. add fields to GraphQL, etc), click [here](/contributor-guide/weaviate-modules/how-to-build-a-new-module.md).
 
 ## Video: How to create custom modules in Weaviate?
 
@@ -53,7 +53,7 @@ To use a custom ML model with Weaviate, you have two options: ([further explaine
 
 <!-- ![Weaviate module APIs overview](/img/weaviate-module-apis.svg "Weaviate module APIs overview") -->
 
-Let's take a more detailed example of how you configure Weaviate to use a specific module: if we look at the [`text2vec-transformers`](/docs/weaviate/model-providers/transformers/embeddings.md) module, you set `ENABLE_MODULES=text2vec-transformers` in the Docker Compose file, which instructs Weaviate to load the respective Go code (part 1). Additionally, you include another service in `docker-compose.yml` which contains the actual model for inference (part 2). In more detail, let's look at how a specific (GraphQL) function is implemented in the [`text2vec-transformers`](/docs/weaviate/model-providers/transformers/embeddings.md) module:
+Let's take a more detailed example of how you configure Weaviate to use a specific module: if we look at the [`text2vec-transformers`](/weaviate/model-providers/transformers/embeddings.md) module, you set `ENABLE_MODULES=text2vec-transformers` in the Docker Compose file, which instructs Weaviate to load the respective Go code (part 1). Additionally, you include another service in `docker-compose.yml` which contains the actual model for inference (part 2). In more detail, let's look at how a specific (GraphQL) function is implemented in the [`text2vec-transformers`](/weaviate/model-providers/transformers/embeddings.md) module:
 
 1. **Module code for Weaviate, written in Go:**
    * Tells the Weaviate GraphQL API that the module provides a specific `nearText` method.
@@ -78,10 +78,10 @@ Modules can be "vectorizers" (defines how the numbers in the vectors are chosen 
   - A module name must be url-safe, meaning it must not contain any characters which would require url-encoding.
   - A module name is not case-sensitive. `text2vec-bert` would be the same module as `text2vec-BERT`.
 - Module information is accessible through the `v1/modules/<module-name>/<module-specific-endpoint>` RESTful endpoint.
-- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](/docs/weaviate/api).
-- Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](/docs/weaviate/api/graphql/additional-properties.md).
-- A module can add [filters](/docs/weaviate/api/graphql/filters.md) in GraphQL queries.
-- Which vectorizer and other modules are applied to which data classes is configured in the [schema](/docs/weaviate/manage-data/collections.mdx).
+- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](/weaviate/api).
+- Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](/weaviate/api/graphql/additional-properties.md).
+- A module can add [filters](/weaviate/api/graphql/filters.md) in GraphQL queries.
+- Which vectorizer and other modules are applied to which data classes is configured in the [collection configuration](../manage-collections/vector-config.mdx).
 
 ## How to build and use a custom module
 
@@ -95,7 +95,7 @@ Because you are not touching the Go Weaviate interface code, you don't have the 
 _Note that Weaviate APIs are not guaranteed to be stable. Even on a non-breaking Weaviate release, 'internal' APIS could always change._
 
 To use a new inference model (part 2) with an existing Weaviate interface (part 1), you could reuse all the Go-code from the existing module and simply point it to a different inference container. As an example, here's how to use a custom inference module using the `text2vec-transformers` Go-code:
-1. In a valid `docker-compose.yml` that's configured to use transformers (e.g. for example configure one via the [configuration configurator](/docs/weaviate/installation/docker-compose.md#configurator)), you will find an env var like this: `TRANSFORMERS_INFERENCE_API: 'http://t2v-transformers:8080'`, you can point that to any app you like. You should keep the variable name `TRANSFORMERS_INFERENCE_API`.
+1. In a valid `docker-compose.yml` that's configured to use transformers (e.g. for example configure one via the [configuration configurator](/deploy/installation-guides/docker-installation.md#configurator)), you will find an env var like this: `TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'`, you can point that to any app you like. You should keep the variable name `TRANSFORMERS_INFERENCE_API`.
 2. Build a small HTTP API wrapper around your model, it should at the minimum have the endpoints listed below (which is in this example entirely specific to the `text2vec-transformers` module and fully in its control):
    1. `GET /.well-known/live` -> respond `204` when the app is alive
    2. `GET /.well-known/ready` -> respond `204` when the app is ready to serve traffic
@@ -115,7 +115,7 @@ Response:
 
 Implementing a fully new module with both part 1 and 2 is a lot more flexible, because you can control naming, APIs, behavior, etc. To achieve this, you are essentially contributing to Weaviate. Note that for this option, you need to understand at least parts of Weaviate's architecture, and what a module can and can not control (what is "fixed"). You can fork [Weaviate's repository](https://github.com/weaviate/weaviate) and create a completely new [module](https://github.com/weaviate/weaviate/tree/master/modules) inside it. This new module can also depend on any number of other containers (which you will have to supply), and could use any API for communication with its dependencies (it could also have not any dependencies).
 
-Detailed instructions are described in the [contributor guide](/docs/contributor-guide/weaviate-modules/how-to-build-a-new-module)
+Detailed instructions are described in the [contributor guide](/contributor-guide/weaviate-modules/how-to-build-a-new-module)
 
 If you choose to build a completely new module including a Weaviate Go interface, you can contact us via [the forum](https://forum.weaviate.io) or through an [issue on GitHub](https://github.com/weaviate/weaviate/issues), so we can help you get started.
 

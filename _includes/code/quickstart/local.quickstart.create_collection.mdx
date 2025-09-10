@@ -5,9 +5,12 @@ import PyCode from '!!raw-loader!/_includes/code/python/local.quickstart.create_
 import TSCode from '!!raw-loader!/_includes/code/typescript/local.quickstart.create_collection.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart_local/2_1_create_collection/main.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart_local/CreateCollection.java';
+import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
+
+  <VectorsAutoSchemaError />
 
   <FilteredTextBlock
     text={PyCode}
@@ -63,11 +66,11 @@ curl -X POST \
   "moduleConfig": {
     "text2vec-ollama": {
 				"apiEndpoint": "http://host.docker.internal:11434",
-				"model": "nomic-embed-text",
+				"model": "nomic-embed-text"
     },
     "generative-ollama": {
 				"apiEndpoint": "http://host.docker.internal:11434",
-				"model": "llama3.2",
+				"model": "llama3.2"
     }
   }
 }' \

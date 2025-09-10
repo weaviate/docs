@@ -18,7 +18,7 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 <TabItem value="js" label="JS/TS Client v3">
 
 ```js
-let articles = client.collections.get('Article')
+let articles = client.collections.use('Article')
 
 // highlight-start
 const shards = await articles.config.getShards()
@@ -47,7 +47,7 @@ import (
   "context"
   "fmt"
 
-  "github.com/weaviate/weaviate-go-client/v4/weaviate"
+  "github.com/weaviate/weaviate-go-client/v5/weaviate"
 )
 
 func main() {

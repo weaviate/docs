@@ -27,13 +27,13 @@ import json
 # EndToEndExample  # InstantiationExample  # NearTextExample
 
 # Best practice: store your credentials in environment variables
-wcd_url = os.environ["WCD_DEMO_URL"]
-wcd_api_key = os.environ["WCD_DEMO_RO_KEY"]
+weaviate_url = os.environ["WEAVIATE_URL"]
+weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api_key = os.environ["OPENAI_APIKEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=wcd_url,                                    # Replace with your Weaviate Cloud URL
-    auth_credentials=wvc.init.Auth.api_key(wcd_api_key),    # Replace with your Weaviate Cloud key
+    cluster_url=weaviate_url,                                    # Replace with your Weaviate Cloud URL
+    auth_credentials=wvc.init.Auth.api_key(weaviate_api_key),    # Replace with your Weaviate Cloud key
     headers={"X-OpenAI-Api-Key": openai_api_key}            # Replace with appropriate header key/value pair for the required API
 )
 
@@ -62,7 +62,7 @@ try:
     # ===== define collection =====
     questions = client.collections.create(
         name="Question",
-        vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),  # If set to "none" you must always provide vectors yourself. Could be any other "text2vec-*" also.
+        vector_config=wvc.Configure.Vectors.text2vec_openai(),  # If set to "none" you must always provide vectors yourself. Could be any other "text2vec-*" also.
         generative_config=wvc.config.Configure.Generative.openai()  # Ensure the `generative-openai` module is used for generative queries
     )
 
@@ -78,7 +78,7 @@ try:
             "category": d["Category"],
         })
 
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
     questions.data.insert_many(question_objs)
 
     # END EndToEndExample    # Test import
@@ -89,7 +89,7 @@ try:
     assert obj_count.total_count == 10
 
     # NearTextExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.query.near_text(
         query="biology",
@@ -104,7 +104,7 @@ try:
     assert response.objects[0].properties["answer"] == "the nose or snout"
 
     # NearTextWhereExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.query.near_text(
         query="biology",
@@ -121,7 +121,7 @@ try:
 
 
     # GenerativeSearchExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.generate.near_text(
         query="biology",
@@ -137,7 +137,7 @@ try:
     assert len(response.objects[0].generated) > 0
 
     # GenerativeSearchGroupedTaskExample
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
 
     response = questions.generate.near_text(
         query="biology",
@@ -145,12 +145,12 @@ try:
         grouped_task="Write a tweet with emojis about these facts."
     )
 
-    print(response.generated)  # Inspect the generated text
+    print(response.generative.text)  # Inspect the generated text
     # END GenerativeSearchGroupedTaskExample
 
     # ===== Test query responses =====
     assert len(response.objects) == 2
-    assert len(response.generated) > 0
+    assert len(response.generative.text) > 0
 
     # Cleanup
 
@@ -178,7 +178,7 @@ try:
             vector=d["vector"]
         ))
 
-    questions = client.collections.get("Question")
+    questions = client.collections.use("Question")
     questions.data.insert_many(question_objs)    # This uses batching under the hood
     # ===== END import with custom vectors =====
 
