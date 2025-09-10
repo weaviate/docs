@@ -35,7 +35,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 <InitialCaps />
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicCreateCollection"
@@ -118,7 +118,7 @@ For details, see:
 </details>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionWithProperties"
@@ -171,7 +171,7 @@ For details, see:
 Specify a `vectorizer` for a collection that will generate vector embeddings when creating objects and executing vector search queries.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Vectorizer"
@@ -236,7 +236,7 @@ To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTO
 Get a boolean indicating whether a given collection exists.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CheckIfExists"
@@ -259,7 +259,7 @@ Get a boolean indicating whether a given collection exists.
 Retrieve a collection definition from the schema.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadOneCollection"
@@ -472,7 +472,7 @@ For image searches, see [Image search](../search/image.md).
 Fetch the database schema to retrieve all of the collection definitions.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadAllCollections"
@@ -528,7 +528,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 You can update a collection definition to change the [mutable collection settings](../config-refs/collections.mdx#mutability).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateCollection"
@@ -612,7 +612,7 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetInvertedIndexParams"

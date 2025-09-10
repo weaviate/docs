@@ -366,7 +366,7 @@ Keyword (BM25) search operators define the minimum number of query [tokens](#tok
 With the `or` operator, the search returns objects that contain at least `minimumOrTokensMatch` of the tokens in the search string.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridWithBM25OperatorOrWithMin"
@@ -389,7 +389,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
 With the `and` operator, the search returns objects that contain all tokens in the search string.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridWithBM25OperatorAnd"

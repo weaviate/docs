@@ -23,7 +23,7 @@ Compression techniques become especially crucial for multi-vector systems to man
 <!-- TODO[g-despot]: Add link to blog post: Read more about it in this blog post. -->
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MultiValueVectorMuvera"

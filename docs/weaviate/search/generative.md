@@ -28,7 +28,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
 - provide the settings as a part of the query:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DynamicRag"
@@ -225,7 +225,7 @@ Single prompt result: Which country in ancient history had more kings than any o
 You can use *generative parameters* to specify additional options when performing a single prompt search:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# SingleGenerativeParametersPython"
@@ -418,7 +418,7 @@ Grouped task result: The commonality among these animals is that they are all na
 You can use *generative parameters* to specify additional options when performing grouped tasks:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GroupedGenerativeParametersPython"
@@ -472,7 +472,7 @@ The following fields are available for generative search with images:
 - `image_properties`: Names of the properties in Weaviate that store images for additional context.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START WorkingWithImages"

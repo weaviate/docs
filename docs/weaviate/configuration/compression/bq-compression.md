@@ -91,7 +91,7 @@ The ability to enable BQ compression after collection creation was added in Weav
 BQ can also be enabled for an existing collection by updating the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START UpdateSchema"
