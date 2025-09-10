@@ -258,3 +258,5 @@ __marimo__/
 
 _includes/code/csharp/bin/
 _includes/code/csharp/obj/
+
+.netlify/
