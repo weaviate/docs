@@ -16,6 +16,12 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
+:::caution Deprecated integration
+This integration is deprecated and will be removed in a future release. We recommend using alternative model providers for new projects.
+
+For local AI model integrations, consider using [Ollama](../ollama/index.md) or the [local HuggingFace](../transformers/) model integrations.
+:::
+
 Weaviate's integration with GPT4All's models allows you to access their models' capabilities directly from Weaviate.
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use an GPT4All embedding model, and Weaviate will generate embeddings for various operations using the specified model via the GPT4All inference container. This feature is called the *vectorizer*.
