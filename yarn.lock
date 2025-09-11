@@ -3433,27 +3433,27 @@
     estree-walker "^2.0.2"
     picomatch "^4.0.2"
 
-"@scalar/docusaurus@^0.7.2":
-  version "0.7.3"
-  resolved "https://registry.npmjs.org/@scalar/docusaurus/-/docusaurus-0.7.3.tgz"
-  integrity sha512-b/22AzJojFzy6eqPy4KWEaWrAcmvPS9vYouIuU09nfd654DU6LPkCOIezmp5WVNP+RVi1cJaDblqJSbnbwlwPA==
+"@scalar/docusaurus@^0.7.11":
+  version "0.7.11"
+  resolved "https://registry.yarnpkg.com/@scalar/docusaurus/-/docusaurus-0.7.11.tgz#8115717f4d7348a4de120aba4b44fe0cc5746680"
+  integrity sha512-vMCCAcb12voKbYK+lQ8Mc2qvHj0A0QNRwdaXeAbjLwt0XfwQ1YMmjM9RSFsfONwc+kV7BjL/1cmAkg1g6em9WA==
   dependencies:
-    "@scalar/types" "0.2.3"
+    "@scalar/types" "0.2.11"
 
-"@scalar/openapi-types@0.3.3":
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/@scalar/openapi-types/-/openapi-types-0.3.3.tgz"
-  integrity sha512-mr3OvbCyvuzSDgv9gR9D3pJAsl82BRNBp1P8ldgRgKF4Wiswfa7nQeKibpX0kHSGXLgiyvxWJULUFwgdWMXNNA==
+"@scalar/openapi-types@0.3.7":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@scalar/openapi-types/-/openapi-types-0.3.7.tgz#fab0345100dc74b05c0973337f08751e8b6067a9"
+  integrity sha512-QHSvHBVDze3+dUwAhIGq6l1iOev4jdoqdBK7QpfeN1Q4h+6qpVEw3EEqBiH0AXUSh/iWwObBv4uMgfIx0aNZ5g==
   dependencies:
     zod "3.24.1"
 
-"@scalar/types@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.npmjs.org/@scalar/types/-/types-0.2.3.tgz"
-  integrity sha512-K1/Vp5xaQ8TEGDYwHg88OBuQWJRWrE3ToZ0Z2LJwskcY1Eg+uDiRQXKF4QPngZzu5rrWgRErAq4yte4Y7omqgA==
+"@scalar/types@0.2.11":
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/@scalar/types/-/types-0.2.11.tgz#da976606a3cef3bef942c59bf53df70c6972694c"
+  integrity sha512-SUZzGmoisWsYv33LmmT/ajvSlcl9ZDj9d5RncJ+wB9ZQ2l018xlfpDIH9Kdfo+6KCKQOe3LYLXfH4Lzm891Mag==
   dependencies:
-    "@scalar/openapi-types" "0.3.3"
-    nanoid "^5.1.5"
+    "@scalar/openapi-types" "0.3.7"
+    nanoid "5.1.5"
     zod "3.24.1"
 
 "@sideway/address@^4.1.5":
@@ -11100,6 +11100,11 @@ nan@^2.16.0:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.23.0.tgz#24aa4ddffcc37613a2d2935b97683c1ec96093c6"
   integrity sha512-1UxuyYGdoQHcGg87Lkqm3FzefucTa0NAiOcuRsDmysep3c1LVCRK2krrUDafMWtjSG04htvAmvg96+SDknOmgQ==
 
+nanoid@5.1.5:
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.1.5.tgz#f7597f9d9054eb4da9548cdd53ca70f1790e87de"
+  integrity sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==
+
 nanoid@^3.3.11:
   version "3.3.11"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz"
@@ -11109,11 +11114,6 @@ nanoid@^3.3.7:
   version "3.3.8"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.8.tgz"
   integrity sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==
-
-nanoid@^5.1.5:
-  version "5.1.5"
-  resolved "https://registry.npmjs.org/nanoid/-/nanoid-5.1.5.tgz"
-  integrity sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==
 
 napi-build-utils@^1.0.1:
   version "1.0.2"
