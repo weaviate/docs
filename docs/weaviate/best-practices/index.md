@@ -102,7 +102,13 @@ If you have a large number of vectors, consider using vector quantization to red
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
 
-For HNSW indexes, we suggest enabling product quantization (PQ) as a starting point. It provides a good set of default trade-offs between memory usage and query performance, as well as tunable parameters to optimize for your specific use case.
+For HNSW indexes, we suggest enabling [rotational quantization (RQ)](../configuration/compression/rq-compression.md) as a starting point. It provides significant memory usage benefits and almost no loss in query accuracy. 
+
+:::info Compression by Default
+
+Starting with `v1.33`, Weaviate enables **8-bit RQ quantization by default** when creating new collections to ensure efficient resource utilization and faster performance. This behavior can be changed through the [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) environment variable.
+
+:::
 
 :::tip Further resources
 - [How-to: Configure vector quantization](../configuration/compression/index.md)

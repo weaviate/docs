@@ -17,6 +17,11 @@ client = weaviate.connect_to_weaviate_cloud(
     headers=headers,
 )
 
+# Instantiate the v4 Weaviate client using the local helper.
+# client = weaviate.connect_to_local(
+#     headers=headers,
+# )
+
 client.collections.delete("JeopardyQuestion")
 client.collections.delete("JeopardyCategory")
 

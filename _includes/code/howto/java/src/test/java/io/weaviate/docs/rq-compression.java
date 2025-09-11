@@ -86,6 +86,48 @@ class RqCompressionTest {
   }
 
   @Test
+  public void shouldEnable1BitRQ() {
+    // ==============================
+    // ===== EnableRQ =====
+    // ==============================
+
+    // Delete collection if exists
+    client.schema().classDeleter()
+        .withClassName("MyCollection")
+        .run();
+
+    // START 1BitEnableRQ
+    WeaviateClass myCollection = WeaviateClass.builder()
+        .className("MyCollection")
+        .vectorizer("text2vec-openai")
+        .vectorIndexConfig(VectorIndexConfig.builder()
+            // highlight-start
+            .rq(RQConfig.builder()
+                .enabled(true)
+                .bits(1L)
+                .build())
+            // highlight-end
+            .build())
+        .properties(Arrays.asList(
+            Property.builder()
+                .name("title")
+                .dataType(Arrays.asList(DataType.TEXT))
+                .build()))
+        .build();
+
+    Result<Boolean> createResult = client.schema().classCreator()
+        .withClass(myCollection)
+        .run();
+    // END 1BitEnableRQ
+
+    assertThat(createResult).isNotNull()
+        .withFailMessage(() -> createResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
+  }
+
+  @Test
   public void shouldEnableRQWithOptions() {
     // ==============================
     // ===== EnableRQ with Options =====
@@ -104,7 +146,7 @@ class RqCompressionTest {
             // highlight-start
             .rq(RQConfig.builder()
                 .enabled(true)
-                .bits(8L) // Optional: Number of bits, only 8 is supported for now
+                .bits(8L) // Optional: Number of bits
                 .rescoreLimit(20L) // Optional: Number of candidates to fetch before rescoring
                 .build())
             // highlight-end
@@ -190,7 +232,6 @@ class RqCompressionTest {
         .vectorIndexConfig(VectorIndexConfig.builder()
             .rq(RQConfig.builder()
                 .enabled(true)
-                .rescoreLimit(20L) // Optional: Number of candidates to fetch before rescoring
                 .build())
             .build())
         .build();
@@ -199,6 +240,83 @@ class RqCompressionTest {
         .withClass(updatedCollection)
         .run();
     // END UpdateSchema
+
+    assertThat(updateResult).isNotNull()
+        .withFailMessage(() -> updateResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
+
+    // Verify the RQ configuration was applied
+    Result<WeaviateClass> getResult = client.schema().classGetter()
+        .withClassName("MyCollection")
+        .run();
+
+    assertThat(getResult).isNotNull()
+        .withFailMessage(() -> getResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .extracting(Result::getResult).isNotNull()
+        .extracting(WeaviateClass::getVectorIndexConfig).isNotNull()
+        .extracting(VectorIndexConfig::getRq).isNotNull()
+        .returns(true, RQConfig::getEnabled);
+  }
+
+  @Test
+  public void shouldUpdateSchemaWith1BitRQ() {
+    // ==============================
+    // ===== UpdateSchema =====
+    // ==============================
+
+    // Delete collection if exists
+    client.schema().classDeleter()
+        .withClassName("MyCollection")
+        .run();
+
+    // First create a collection without RQ
+    WeaviateClass initialCollection = WeaviateClass.builder()
+        .className("MyCollection")
+        .description("A collection without RQ")
+        .vectorizer("text2vec-openai")
+        .properties(Arrays.asList(
+            Property.builder()
+                .name("title")
+                .dataType(Arrays.asList(DataType.TEXT))
+                .build()))
+        .build();
+
+    Result<Boolean> createResult = client.schema().classCreator()
+        .withClass(initialCollection)
+        .run();
+
+    assertThat(createResult).isNotNull()
+        .withFailMessage(() -> createResult.getError().toString())
+        .returns(false, Result::hasErrors)
+        .withFailMessage(null)
+        .returns(true, Result::getResult);
+
+    // START 1BitUpdateSchema
+    WeaviateClass updatedCollection = WeaviateClass.builder()
+        .className("MyCollection")
+        .description("Updated collection with RQ compression")
+        .properties(Arrays.asList(
+            Property.builder()
+                .name("title")
+                .dataType(Arrays.asList(DataType.TEXT))
+                .build()))
+        .vectorizer("text2vec-openai")
+        .vectorIndexConfig(VectorIndexConfig.builder()
+            .rq(RQConfig.builder()
+                .enabled(true)
+                .bits(1L)
+                .build())
+            .build())
+        .build();
+
+    Result<Boolean> updateResult = client.schema().classUpdater()
+        .withClass(updatedCollection)
+        .run();
+    // END 1BitUpdateSchema
 
     assertThat(updateResult).isNotNull()
         .withFailMessage(() -> updateResult.getError().toString())

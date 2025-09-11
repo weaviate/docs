@@ -38,7 +38,7 @@ First, we will start by making queries to Weaviate to retrieve **Question** obje
 
 The Weaviate function for retrieving objects is `Get`.
 
-This might be familiar for some of you. If you have completed our [Imports in detail tutorial](./import.md), you may have performed a `Get` query to confirm that the data import was successful. Here is the same code as a reminder:
+This might be familiar for some of you. If you have completed our [Imports in detail tutorial](./import.mdx), you may have performed a `Get` query to confirm that the data import was successful. Here is the same code as a reminder:
 
 import CodeImportGet from '/_includes/code/quickstart.import.get.mdx';
 
@@ -277,7 +277,7 @@ As you can see, the `Aggregate` function can return handy aggregated, or metadat
 ## Suggested reading
 
 - [Tutorial: Schemas in detail](../starter-guides/managing-collections/index.mdx)
-- [Tutorial: Import in detail](./import.md)
+- [Tutorial: Import in detail](./import.mdx)
 - [Tutorial: Introduction to modules](./modules.md)
 - [Tutorial: Introduction to Weaviate Console](/cloud/tools/query-tool.mdx)
 

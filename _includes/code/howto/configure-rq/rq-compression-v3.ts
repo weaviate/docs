@@ -11,7 +11,7 @@ import { configure } from 'weaviate-client';
 
 const client = await weaviate.connectToLocal({
     headers: {
-        "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY as  string, // Replace with your OpenAI API key
+        "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY as string, // Replace with your OpenAI API key
     }
 })
 
@@ -27,7 +27,7 @@ await client.collections.delete("MyCollection")
 
 await client.collections.create({
     name: "MyCollection",
-    vectorizers : configure.vectors.text2VecOpenAI({
+    vectorizers: configure.vectors.text2VecOpenAI({
         // highlight-start
         quantizer: configure.vectorIndex.quantizer.rq()
         // highlight-end
@@ -37,6 +37,29 @@ await client.collections.create({
     ]
 })
 // END EnableRQ
+
+// ==============================
+// =====  EnableRQ 1-BIT ========
+// ==============================
+
+await client.collections.delete("MyCollection")
+
+// START 1BitEnableRQ
+
+await client.collections.create({
+    name: "MyCollection",
+    vectorizers: configure.vectors.text2VecOpenAI({
+        // highlight-start
+        quantizer: configure.vectorIndex.quantizer.rq({
+            bits: 1,
+        })
+        // highlight-end
+    }),
+    properties: [
+        { name: "title", dataType: weaviate.configure.dataType.TEXT }
+    ]
+})
+// END 1BitEnableRQ
 
 // ==============================
 // =====  EnableRQ with Options =====
@@ -51,7 +74,7 @@ await client.collections.create({
     vectorizers: configure.vectors.text2VecOpenAI({
         // highlight-start
         quantizer: configure.vectorIndex.quantizer.rq({
-            bits: 8,  // Number of bits, only 8 is supported for now
+            bits: 8,  // Number of bits
         }),
         // highlight-end
     }),
