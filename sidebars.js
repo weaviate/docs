@@ -791,11 +791,6 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "deploy/installation-guides/spcs-integration",
-          className: "sidebar-item",
-        },
-        {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
