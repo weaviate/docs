@@ -4,7 +4,7 @@ from weaviate.classes.config import Configure, Property, DataType
 def populate_weaviate(client, overwrite_existing=False):
 
     if overwrite_existing:
-        client.collections.delete("Ecommerce")
+        client.collections.delete("ECommerce")
         client.collections.delete("Weather")
         client.collections.delete("FinancialContracts")
 
@@ -18,7 +18,6 @@ def populate_weaviate(client, overwrite_existing=False):
                     source_properties=[
                         "description",
                     ],
-                    vector_index_config=Configure.VectorIndex.hnsw(),
                 ),
                 Configure.Vectors.text2vec_weaviate(
                     name="name_description_brand_vector",
@@ -27,7 +26,6 @@ def populate_weaviate(client, overwrite_existing=False):
                         "description",
                         "brand",
                     ],
-                    vector_index_config=Configure.VectorIndex.hnsw(),
                 ),
             ],
             properties=[
@@ -69,6 +67,7 @@ def populate_weaviate(client, overwrite_existing=False):
                 ),
             ],
         )
+        overwrite_existing = True
 
     if not client.collections.exists("Weather"):
         client.collections.create(
@@ -89,6 +88,7 @@ def populate_weaviate(client, overwrite_existing=False):
                 ),
             ],
         )
+        overwrite_existing = True
 
     if not client.collections.exists("FinancialContracts"):
         client.collections.create(
@@ -96,8 +96,13 @@ def populate_weaviate(client, overwrite_existing=False):
             description="A dataset of financial contracts between individuals and/or companies, as well as information on the type of contract and who has authored them.",
             vector_config=Configure.Vectors.text2vec_weaviate(),
         )
+        overwrite_existing = True
 
     from datasets import load_dataset
+
+    if not overwrite_existing:
+        print("Data already exists in Weaviate, skipping import.")
+        return
 
     ecommerce_dataset = load_dataset(
         "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
@@ -116,18 +121,46 @@ def populate_weaviate(client, overwrite_existing=False):
     weather_collection = client.collections.use("Weather")
     financial_collection = client.collections.use("FinancialContracts")
 
+    print("\nImport `query-agent-ecommerce` dataset into Weaviate")
     with ecommerce_collection.batch.fixed_size(batch_size=200) as batch:
         for item in ecommerce_dataset:
             batch.add_object(properties=item["properties"])
+            if batch.number_errors > 0:
+                print("Batch import stopped due to excessive errors.")
+                break
 
+    failed_objects = ecommerce_collection.batch.failed_objects
+    if failed_objects:
+        print(f"Number of failed imports: {len(failed_objects)}")
+        print(f"First failed object: {failed_objects[0]}")
+
+    print("\nImport `query-agent-weather` dataset into Weaviate")
     with weather_collection.batch.fixed_size(batch_size=200) as batch:
         for item in weather_dataset:
             batch.add_object(properties=item["properties"], vector=item["vector"])
+            if batch.number_errors > 0:
+                print("Batch import stopped due to excessive errors.")
+                break
 
+    failed_objects = weather_collection.batch.failed_objects
+    if failed_objects:
+        print(f"Number of failed imports: {len(failed_objects)}")
+        print(f"First failed object: {failed_objects[0]}")
+
+    print("\nImport `query-agent-financial-contracts` dataset into Weaviate")
     with financial_collection.batch.fixed_size(batch_size=200) as batch:
         for item in financial_dataset:
             batch.add_object(properties=item["properties"], vector=item["vector"])
+            if batch.number_errors > 0:
+                print("Batch import stopped due to excessive errors.")
+                break
 
+    failed_objects = financial_collection.batch.failed_objects
+    if failed_objects:
+        print(f"Number of failed imports: {len(failed_objects)}")
+        print(f"First failed object: {failed_objects[0]}")
+
+    print("\nData import complete!")
     print(f"Size of the ECommerce dataset: {len(ecommerce_collection)}")
     print(f"Size of the Weather dataset: {len(weather_collection)}")
     print(f"Size of the Financial dataset: {len(financial_collection)}")
@@ -161,7 +194,9 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 # END InstantiateQueryAgent
 
-populate_weaviate(client)  # Populate the Weaviate instance with data
+populate_weaviate(
+    client, overwrite_existing=False
+)  # Populate the Weaviate instance with data
 
 # START InstantiateQueryAgent
 
@@ -170,6 +205,24 @@ qa = QueryAgent(
     client=client, collections=["ECommerce", "FinancialContracts", "Weather"]
 )
 # END InstantiateQueryAgent
+
+# START SystemPromptExample
+from weaviate.agents.query import QueryAgent
+
+# Define a custom system prompt to guide the agent's behavior
+system_prompt = """You are a helpful assistant that can answer questions about the products and users in the database.
+When you write your response use standard markdown formatting for lists, tables, and other structures.
+Emphasize key insights and provide actionable recommendations when relevant."""
+
+qa = QueryAgent(
+    client=client,
+    collections=["ECommerce", "FinancialContracts", "Weather"],
+    system_prompt=system_prompt,
+)
+
+response = qa.ask("What are the most expensive items in the store?")
+response.display()
+# END SystemPromptExample
 
 # START QueryAgentCollectionConfiguration
 from weaviate.agents.query import QueryAgent
@@ -186,7 +239,7 @@ qa = QueryAgent(
             view_properties=[
                 "name",
                 "description",
-                "price"
+                "price",
             ],  # Optional list of property names the agent can view
             # Optional tenant name for collections with multi-tenancy enabled
             # tenant="tenantA"
@@ -196,6 +249,54 @@ qa = QueryAgent(
     ],
 )
 # END QueryAgentCollectionConfiguration
+
+# START UserDefinedFilters
+from weaviate.agents.query import QueryAgent
+from weaviate.agents.classes import QueryAgentCollectionConfig
+from weaviate.classes.query import Filter
+
+# Apply persistent filters that will always be combined with agent-generated filters
+qa = QueryAgent(
+    client=client,
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            # This filter ensures only items above $50 are considered
+            additional_filters=Filter.by_property("price").greater_than(50),
+            target_vector=[
+                "name_description_brand_vector"
+            ],  # Required target vector name(s) for collections with named vectors
+        ),
+    ],
+)
+
+# The agent will automatically combine these filters with any it generates
+response = qa.ask("Find me some affordable clothing items")
+response.display()
+
+# You can also apply filters dynamically at runtime
+runtime_config = QueryAgentCollectionConfig(
+    name="ECommerce",
+    additional_filters=Filter.by_property("category").equal("Footwear"),
+)
+
+response = qa.ask("What products are available?", collections=[runtime_config])
+response.display()
+# END UserDefinedFilters
+
+# Reset qa to original configuration for following examples
+qa = QueryAgent(
+    client=client,
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",
+            target_vector=["name_description_brand_vector"],
+            view_properties=["name", "description", "price"],
+        ),
+        QueryAgentCollectionConfig(name="FinancialContracts"),
+        QueryAgentCollectionConfig(name="Weather"),
+    ],
+)
 
 # START QueryAgentAskBasicCollectionSelection
 response = qa.ask(
@@ -217,7 +318,7 @@ response = qa.ask(
             name="ECommerce",  # The name of the collection to query
             target_vector=[
                 "name_description_brand_vector"
-            ],  # Optional target vector name(s) for collections with named vectors
+            ],  # Required target vector name(s) for collections with named vectors
             view_properties=[
                 "name",
                 "description",
@@ -255,6 +356,28 @@ for obj in search_response.search_results.objects:
     print(f"Product: {obj.properties['name']} - ${obj.properties['price']}")
 # END BasicSearchQuery
 
+# START SearchModeResponseStructure
+# SearchModeResponse structure for Python
+search_response = qa.search("winter boots for under $100", limit=5)
+
+# Access different parts of the response
+print(f"Original query: {search_response.original_query}")
+print(f"Total time: {search_response.total_time}")
+
+# Access usage statistics
+print(f"Usage statistics: {search_response.usage}")
+
+# Access the searches performed (if any)
+if search_response.searches:
+    for search in search_response.searches:
+        print(f"Search performed: {search}")
+
+# Access the search results (QueryReturn object)
+for obj in search_response.search_results.objects:
+    print(f"Properties: {obj.properties}")
+    print(f"Metadata: {obj.metadata}")
+# END SearchModeResponseStructure
+
 # START SearchPagination
 # Search with pagination
 response_page_1 = qa.search(
@@ -287,7 +410,10 @@ from weaviate.agents.classes import ChatMessage
 
 conversation = [
     ChatMessage(role="assistant", content=response.final_answer),
-    ChatMessage(role="user", content="I like the vintage clothes options, can you do the same again but above $200?"),
+    ChatMessage(
+        role="user",
+        content="I like the vintage clothes options, can you do the same again but above $200?",
+    ),
 ]
 
 following_response = qa.ask(conversation)

@@ -109,6 +109,7 @@ The list of collections to be queried are further configurable with:
 - Tenant names (required for a multi-tenant collection)
 - Target vector(s) of the collection to query (optional)
 - List of property names for the agent to use (optional)
+- [Additional filters](#user-defined-filters) to always apply on top of agent-generated ones (optional)
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -144,6 +145,42 @@ The Query Agent can be instantiated with additional options, such as:
 
 - `system_prompt`: A custom system prompt to replace the default system prompt provided by the Weaviate team (`systemPrompt` for JavaScript).
 - `timeout`: The maximum time the Query Agent will spend on a single query, in seconds (server-side default: 60).
+
+#### Custom system prompt
+
+You can provide a custom system prompt to guide the Query Agent's behavior:
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SystemPromptExample"
+            endMarker="# END SystemPromptExample"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
+
+</Tabs>
+
+### User-defined filters
+
+You can apply persistent filters that will always be combined with any agent-generated filters using logical `AND` operations.
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START UserDefinedFilters"
+            endMarker="# END UserDefinedFilters"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
+
+</Tabs>
 
 ### Async Python client
 
@@ -204,6 +241,44 @@ The Query Agent will formulate its strategy based on your query. So, aim to be u
 
 </Tabs>
 
+#### Search mode response structure
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START SearchModeResponseStructure"
+            endMarker="# END SearchModeResponseStructure"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
+
+</Tabs>
+
+<details>
+  <summary>Example output</summary>
+
+```
+Original query: winter boots for under $100
+Total time: 4.695224046707153
+Usage statistics: requests=2 request_tokens=143 response_tokens=9 total_tokens=152 details=None
+Search performed: queries=['winter boots'] filters=[[IntegerPropertyFilter(property_name='price', operator=<ComparisonOperator.LESS_THAN: '<'>, value=100.0)]] filter_operators='AND' collection='ECommerce'
+Properties: {'name': 'Bramble Berry Loafers', 'description': 'Embrace your love for the countryside with our soft, hand-stitched loafers, perfect for quiet walks through the garden. Crafted with eco-friendly dyed soft pink leather and adorned with a subtle leaf embossing, these shoes are a testament to the beauty of understated simplicity.', 'price': 75.0}
+Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'certainty': None, 'score': 0.4921875, 'explain_score': None, 'is_consistent': None, 'rerank_score': None}
+Properties: {'name': 'Glitter Bootcut Fantasy', 'description': "Step back into the early 2000s with these dazzling silver bootcut jeans. Embracing the era's optimism, these bottoms offer a comfortable fit with a touch of stretch, perfect for dancing the night away.", 'price': 69.0}
+Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'certainty': None, 'score': 0.47265625, 'explain_score': None, 'is_consistent': None, 'rerank_score': None}
+Properties: {'name': 'Celestial Step Platform Sneakers', 'description': 'Stride into the past with these baby blue platforms, boasting a dreamy sky hue and cushy soles for day-to-night comfort. Perfect for adding a touch of whimsy to any outfit.', 'price': 90.0}
+Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'certainty': None, 'score': 0.48828125, 'explain_score': None, 'is_consistent': None, 'rerank_score': None}
+Properties: {'name': 'Garden Bliss Heels', 'description': 'Embrace the simplicity of countryside elegance with our soft lavender heels, intricately designed with delicate floral embroidery. Perfect for occasions that call for a touch of whimsy and comfort.', 'price': 90.0}
+Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'certainty': None, 'score': 0.45703125, 'explain_score': None, 'is_consistent': None, 'rerank_score': None}
+Properties: {'name': 'Garden Stroll Loafers', 'description': 'Embrace the essence of leisurely countryside walks with our soft, leather loafers. Designed for the natural wanderer, these shoes feature delicate, hand-stitched floral motifs set against a soft, cream background, making every step a blend of comfort and timeless elegance.', 'price': 90.0}
+Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'certainty': None, 'score': 0.451171875, 'explain_score': None, 'is_consistent': None, 'rerank_score': None}
+```
+
+</details>
+
 #### Search mode with pagination
 
 Search mode supports pagination to handle large result sets efficiently:
@@ -221,6 +296,28 @@ Search mode supports pagination to handle large result sets efficiently:
     </TabItem>
 
 </Tabs>
+
+<details>
+  <summary>Example output</summary>
+
+```
+Page 1:
+  Glide Platforms - $90.0
+  Garden Haven Tote - $58.0
+  Sky Shimmer Sneaks - $69.0
+
+Page 2:
+  Garden Haven Tote - $58.0
+  Celestial Step Platform Sneakers - $90.0
+  Eloquent Satchel - $59.0
+
+Page 3:
+  Garden Haven Tote - $58.0
+  Celestial Step Platform Sneakers - $90.0
+  Eloquent Satchel - $59.0
+```
+
+</details>
 
 ### Configure collections at runtime
 
@@ -251,6 +348,7 @@ This example overrides the configured Query Agent collections for this query onl
 - Target vector
 - Properties to view
 - Target tenant
+- Additional filters
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -268,7 +366,14 @@ This example overrides the configured Query Agent collections for this query onl
 
 ### Conversational queries
 
-The Query Agent supports multi-turn conversations by passing a list of `ChatMessage` objects:
+The Query Agent supports multi-turn conversations by passing a list of `ChatMessage` objects.
+
+When building conversations with `ChatMessage` there are two available roles for messages:
+
+- **`user`** - Represents messages from the human user asking questions or providing context
+- **`assistant`** - Represents the Query Agent's responses or any AI assistant responses in the conversation history
+
+The conversation history helps the Query Agent understand context from previous exchanges, enabling more coherent multi-turn dialogues. Always alternate between user and assistant roles to maintain a proper conversation flow.
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
