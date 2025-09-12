@@ -57,7 +57,7 @@ Below is a list of the environment variables that can be changed at runtime and 
 | `AUTOSCHEMA_ENABLED`                | `autoschema_enabled`                |
 | `MAXIMUM_ALLOWED_COLLECTIONS_COUNT` | `maximum_allowed_collections_count` |
 
-For more details about the variables, check out the [Environment variables](https://www.google.com/search?q=./index.md) page.
+For more details about the variables, check out the [Environment variables](./index.md) page.
 
 ## Operation and monitoring
 
