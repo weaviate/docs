@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 
 ```python
 import weaviate, os
@@ -21,19 +21,6 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # Check connection
 client.is_ready()
-```
-
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-import json
-
-client = weaviate.Client(
-    url = "https://WEAVIATE_INSTANCE_URL",  # Replace with your Weaviate endpoint
-    auth_client_secret=weaviate.auth.AuthApiKey(api_key="YOUR-WEAVIATE-API-KEY"),  # Replace with your Weaviate instance API key
-)
 ```
 
 </TabItem>

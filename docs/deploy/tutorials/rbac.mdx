@@ -104,7 +104,7 @@ We will connect to Weaviate with `root-user`, and once we create a new role, we 
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
       startMarker="# START AdminClient"
@@ -141,7 +141,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 This grants read and write permissions for collections starting with `TargetCollection`, and read permissions to nodes and cluster metadata.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadWritePermissionDefinition"
@@ -178,7 +178,7 @@ This grants read and write permissions for collections starting with `TargetColl
 First, let's create the new user `custom-user`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UserPyCode}
       startMarker="# START CreateUser"
@@ -212,7 +212,7 @@ First, let's create the new user `custom-user`:
 Now, you can assign the role `rw_role` to `custom-user`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadWritePermissionAssignment"
@@ -253,7 +253,7 @@ You can achieve this by either using the predefined `root` role during [Weaviate
 or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles#role-management).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
       startMarker="# START AdminClient"
@@ -290,7 +290,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
 This grants viewer permissions for collections starting with `TargetCollection`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ViewerPermissionDefinition"
@@ -327,7 +327,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
 First, let's create the new user `custom-user`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UserPyCode}
       startMarker="# START CreateUser"
@@ -361,7 +361,7 @@ First, let's create the new user `custom-user`:
 Now, you can assign the role `viewer_role` to `custom-user`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ViewerPermissionAssignment"
@@ -402,7 +402,7 @@ You can achieve this by either using the predefined `root` role during [Weaviate
 or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
       startMarker="# START AdminClient"
@@ -441,7 +441,7 @@ This grants permissions to:
 - Create, read, update and delete data for tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MTPermissionsExample"
@@ -478,7 +478,7 @@ This grants permissions to:
 First, let's create the new user `custom-user`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UserPyCode}
       startMarker="# START CreateUser"
@@ -512,7 +512,7 @@ First, let's create the new user `custom-user`:
 Now, you can assign the role `tenant_manager` to `custom-user`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MTPermissionsAssignment"

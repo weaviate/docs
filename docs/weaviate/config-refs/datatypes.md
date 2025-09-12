@@ -50,7 +50,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={TextTypePy}
       startMarker="# START ConfigureDataType"
@@ -71,7 +71,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={TextTypePy}
       startMarker="# START AddObject"
@@ -101,7 +101,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={NumericalTypePy}
       startMarker="# START ConfigureDataType"
@@ -122,7 +122,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={NumericalTypePy}
       startMarker="# START AddObject"
@@ -166,7 +166,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={DateTypePy}
       startMarker="# START ConfigureDataType"
@@ -187,7 +187,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={DateTypePy}
       startMarker="# START AddObject"
@@ -224,7 +224,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UUIDTypePy}
       startMarker="# START ConfigureDataType"
@@ -245,7 +245,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UUIDTypePy}
       startMarker="# START AddObject"
@@ -290,7 +290,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={GeoTypePy}
       startMarker="# START ConfigureDataType"
@@ -311,7 +311,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={GeoTypePy}
       startMarker="# START AddObject"
@@ -366,7 +366,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PhoneTypePy}
       startMarker="# START ConfigureDataType"
@@ -387,7 +387,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PhoneTypePy}
       startMarker="# START AddObject"
@@ -460,7 +460,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={BlobTypePy}
       startMarker="# START ConfigureDataType"
@@ -481,7 +481,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={BlobTypePy}
       startMarker="# START AddObject"
@@ -522,7 +522,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
 #### Property definition
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ObjectTypePy}
       startMarker="# START ConfigureDataType"
@@ -543,7 +543,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
 #### Object insertion
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ObjectTypePy}
       startMarker="# START AddObject"

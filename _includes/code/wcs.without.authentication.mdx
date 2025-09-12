@@ -4,24 +4,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/tutorials/connect.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="# START WithoutAuth"
     endMarker="# END WithoutAuth"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client(
-    url="https://WEAVIATE_INSTANCE_URL",  # Replace with your Weaviate endpoint
-)
-```
-
 </TabItem>
 
 <TabItem value="js" label="JS/TS Client v3">

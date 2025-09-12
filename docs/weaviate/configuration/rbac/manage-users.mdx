@@ -48,7 +48,7 @@ Under the hood, Weaviate differentiates three types of users:
 This example shows how to get a list of all the users (`db_user`, `db_env_user` and `oidc`) in Weaviate.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START ListAllUsers"
@@ -97,7 +97,7 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
 This example creates a user called `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START CreateUser"
@@ -143,7 +143,7 @@ RXF1dU1VcWM1Q3hvVndYT0F1OTBOTDZLZWx0ME5kbWVJRVdPL25EVW12QT1fMXlDUEhUNjhSMlNtazdH
 This example deletes a user called `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START DeleteUser"
@@ -180,7 +180,7 @@ This example deletes a user called `custom-user`.
 This example updates (rotates) the API key for `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START RotateApiKey"
@@ -230,7 +230,7 @@ A custom user can have any number of roles assigned to them (including none). Th
 This example assigns the custom `testRole` role and predefined `viewer` role to `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START AssignRole"
@@ -269,7 +269,7 @@ You can revoke one or more roles from a specific user.
 This example removes the role `testRole` from the user `custom-user`.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START RevokeRoles"
@@ -306,7 +306,7 @@ This example removes the role `testRole` from the user `custom-user`.
 Retrieve the role information for any user.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START ListUserRoles"
@@ -359,7 +359,7 @@ An OIDC user can have any number of roles assigned to them (including none). The
 This example assigns the custom `testRole` role and predefined `viewer` role to `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcUserPyCode}
     startMarker="# START AssignOidcUserRole"
@@ -398,7 +398,7 @@ You can revoke one or more roles from a specific OIDC user.
 This example removes the role `testRole` from the user `custom-user`.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcUserPyCode}
     startMarker="# START RevokeOidcUserRoles"
@@ -435,7 +435,7 @@ This example removes the role `testRole` from the user `custom-user`.
 Retrieve the role information for an OIDC user.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcUserPyCode}
     startMarker="# START ListOidcUserRoles"

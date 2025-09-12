@@ -23,7 +23,7 @@ For a list of filter operators, see the [API reference page](../api/graphql/filt
 Add a `filter` to your query, to limit the result set.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# SingleFilterPython"
@@ -32,14 +32,6 @@ Add a `filter` to your query, to limit the result set.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# SingleFilterPython"
-      endMarker="# END SingleFilterPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -97,7 +89,7 @@ The output is like this:
 To filter with two or more conditions, use `And` or `Or` to define the relationship between the conditions.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
 
   The `v4` Python client API provides  filtering by `any_of`, or `all_of`, as well as using `&` or `|` operators.
   <br/>
@@ -138,14 +130,6 @@ To filter with two or more conditions, use `And` or `Or` to define the relations
 
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# MultipleFiltersAndPython"
-      endMarker="# END MultipleFiltersAndPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
 
@@ -210,7 +194,7 @@ The output is like this:
 You can group and nest filters.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# MultipleFiltersNestedPython"
@@ -219,14 +203,6 @@ You can group and nest filters.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# MultipleFiltersNestedPython"
-      endMarker="# END MultipleFiltersNestedPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -298,7 +274,7 @@ To create a nested filter, follow these steps.
 Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# SingleFilterNearTextPython"
@@ -307,14 +283,6 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# SingleFilterNearTextPython"
-      endMarker="# END SingleFilterNearTextPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -372,7 +340,7 @@ The output is like this:
 The `ContainsAny` operator works on text properties and take an array of values as input. It will match objects where the property **contains any (i.e. one or more)** of the values in the array.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# ContainsAnyFilter"
@@ -381,14 +349,6 @@ The `ContainsAny` operator works on text properties and take an array of values 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ContainsAnyFilter"
-      endMarker="# END ContainsAnyFilter"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -446,7 +406,7 @@ The output is like this:
 The `ContainsAll` operator works on text properties and take an array of values as input. It will match objects where the property **contains all** of the values in the array.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# ContainsAllFilter"
@@ -455,14 +415,6 @@ The `ContainsAll` operator works on text properties and take an array of values 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ContainsAllFilter"
-      endMarker="# END ContainsAllFilter"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -524,7 +476,7 @@ If you want to do a batch delete, see [Delete objects](../manage-objects/delete.
 If the object property is a `text`, or `text`-like data type such as object ID, use `Like` to filter on partial text matches.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# LikeFilterPython"
@@ -533,14 +485,6 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# LikeFilterPython"
-      endMarker="# END LikeFilterPython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -614,7 +558,7 @@ import CrossReferencePerformanceNote from '/_includes/cross-reference-performanc
 To filter on properties from a cross-referenced object, add the collection name to the filter.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CrossReferencePython"
@@ -623,14 +567,6 @@ To filter on properties from a cross-referenced object, add the collection name 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CrossReferencePython"
-      endMarker="# END CrossReferencePython"
-      language="pyv3"
-    />
-  </TabItem>
 
   <TabItem value="js" label="JS/TS Client v3">
     <FilteredTextBlock
@@ -690,20 +626,12 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 <GeoLimitations/>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterbyGeolocation"
       endMarker="# END FilterbyGeolocation"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START FilterbyGeolocation"
-      endMarker="# END FilterbyGeolocation"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -748,7 +676,7 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
 To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) timestamp, or a client library-compatible type such as a Python `datetime` object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByDateDatatype"
@@ -783,20 +711,12 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 ### By object `id`
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterById"
       endMarker="# END FilterById"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START FilterById"
-      endMarker="# END FilterById"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -840,20 +760,12 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 This filter requires the [property timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByTimestamp"
       endMarker="# END FilterByTimestamp"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START FilterByTimestamp"
-      endMarker="# END FilterByTimestamp"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -898,20 +810,12 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
 This filter requires the [property length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByPropertyLength"
       endMarker="# END FilterByPropertyLength"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START FilterByPropertyLength"
-      endMarker="# END FilterByPropertyLength"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
@@ -956,20 +860,12 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
 This filter requires the [property null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FilterByPropertyNullState"
       endMarker="# END FilterByPropertyNullState"
       language="python"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START FilterByPropertyNullState"
-      endMarker="# END FilterByPropertyNullState"
-      language="pyv3"
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
