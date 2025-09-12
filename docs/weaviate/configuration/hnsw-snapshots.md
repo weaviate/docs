@@ -3,6 +3,7 @@ title: HNSW Snapshots
 sidebar_position: 47
 sidebar_label: HNSW Snapshots
 description: Learn about HNSW snapshots in Weaviate for faster startup times and how to manage them.
+show_expert_call_cta: true
 ---
 
 :::info Added in `v1.31`

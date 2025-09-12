@@ -314,10 +314,9 @@
   color: white;
   font-weight: 600; /* Medium weight looks more refined */
   letter-spacing: 0.01em; /* Subtle letter spacing for clarity */
-  border: 2px solid var(--site-primary-dark); /* Border with the original green */
   border-radius: 8px; /* More rounded corners */
   background-color: var(
-    --site-primary-dark
+    --site-primary
   ); /* Original green background on hover */
   cursor: pointer; /* Pointer on hover */
   transition: all 0.2s ease; /* Smooth transition for all properties */

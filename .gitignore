@@ -52,9 +52,6 @@ yarn.lock
 .python-version
 __pycache__
 
-# Local Netlify folder
-.netlify
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -261,3 +258,5 @@ __marimo__/
 
 _includes/code/csharp/bin/
 _includes/code/csharp/obj/
+
+.netlify/

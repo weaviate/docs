@@ -2,6 +2,7 @@
 title: Binary Quantization (BQ)
 sidebar_position: 6
 image: og/docs/configuration.jpg
+show_expert_call_cta: true
 # tags: ['configuration', 'compression', 'bq']
 ---
 

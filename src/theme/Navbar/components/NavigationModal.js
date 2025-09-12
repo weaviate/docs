@@ -121,7 +121,7 @@ export default function NavigationModal({
                       submit: false,
                     });
                   } else {
-                    console.warn("Kapa is not available");
+                    console.warn("Kapa.ai is not available");
                   }
                 }}
               >
