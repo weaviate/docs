@@ -1,5 +1,5 @@
 ---
-title: Google + Weaviate
+title: Google と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_google.jpg
 # tags: ['model providers', 'google']
@@ -7,63 +7,64 @@ image: og/docs/integrations/provider_integrations_google.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Google offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs, allowing users to leverage Google's models directly from the Weaviate Database.
+Google は、自然言語処理および生成のための幅広いモデルを提供しています。Weaviate は [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) と [Google Vertex AI](https://cloud.google.com/vertex-ai) の API とシームレスに統合されており、ユーザーは Google のモデルを Weaviate Database から直接利用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with Google
+## Google との統合
 
-### Embedding models for vector search
+### ベクトル検索向け埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_google_embedding.png)
+![埋め込み統合の図](../_includes/integration_google_embedding.png)
 
-Google's embedding models transform text data into vector embeddings, capturing meaning and context.
+Google の埋め込みモデルは、テキストデータを意味と文脈を捉えたベクトル埋め込みに変換します。
 
-[Weaviate integrates with Google's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Google の埋め込みモデルと統合](./embeddings.md) しており、データのシームレスなベクトライゼーションを実現します。この統合により、追加の前処理やデータ変換を行わずに、セマンティック検索およびハイブリッド検索を実行できます。
 
-[Google embedding integration page](./embeddings.md)
-[Google multimodal embedding integration page](./embeddings-multimodal.md)
+[Google 埋め込み統合ページ](./embeddings.md)  
+[Google マルチモーダル埋め込み統合ページ](./embeddings-multimodal.md)
 
-### Generative AI models for RAG
+### RAG 向け生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_google_rag_single.png)
+![単一プロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_google_rag_single.png)
 
-Google's generative AI models can generate human-like text based on given prompts and contexts.
+Google の生成 AI モデルは、与えられたプロンプトとコンテキストに基づいて人間のようなテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with Google's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md) を利用すると、Weaviate Database から直接検索拡張生成 (RAG) を実行できます。これにより、Weaviate の効率的なストレージと高速な検索機能を Google の生成 AI モデルと組み合わせ、パーソナライズされたコンテキスト対応の応答を生成します。
 
-[Google generative AI integration page](./generative.md)
+[Google 生成 AI 統合ページ](./generative.md)
 
-## Summary
+## 概要
 
-These integrations enable developers to leverage Google's powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内で Google の強力なモデルを直接活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI 駆動アプリケーションの構築が簡素化され、開発プロセスが加速されるため、革新的なソリューションの創出に集中できます。
 
-## Credentials
+## 認証情報
 
-You must provide a valid Googles API credentials to Weaviate for these integrations.
+これらの統合を利用するには、有効な Google API 認証情報を Weaviate に提供する必要があります。
 
 ### Vertex AI
 
-##### Automatic token generation
+##### 自動トークン生成
 
 import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.mdx';
 
 <UseGoogleAuthInstructions/>
 
-## Get started
+## 開始方法
 
-Weaviate integrates with both [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) or [Google Vertex AI](https://cloud.google.com/vertex-ai).
+Weaviate は [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) と [Google Vertex AI](https://cloud.google.com/vertex-ai) の両方と統合しています。
 
-Go to the relevant integration page to learn how to configure Weaviate with the Google models and start using them in your applications.
+各統合ページで、Google モデルを Weaviate に設定し、アプリケーションでの利用を始める方法をご確認ください。
 
-- [Text Embeddings](./embeddings.md)
-- [Multimodal Embeddings](./embeddings-multimodal.md)
-- [Generative AI](./generative.md)
+- [テキスト埋め込み](./embeddings.md)
+- [マルチモーダル埋め込み](./embeddings-multimodal.md)
+- [生成 AI](./generative.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

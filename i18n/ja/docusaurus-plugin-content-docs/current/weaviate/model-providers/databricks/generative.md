@@ -1,60 +1,60 @@
 ---
-title: Generative AI
+title: 生成 AI
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_databricks.jpg
 # tags: ['model providers', 'databricks', 'generative', 'rag']
 ---
 
-:::info Added in `v1.26.3`
+:::info `v1.26.3` で追加
 :::
 
-# Databricks Generative AI with Weaviate
+# Weaviate と Databricks の 生成 AI
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyConnect from '!!raw-loader!../_includes/provider.connect.py';
-import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
-import PyCode from '!!raw-loader!../_includes/provider.generative.py';
-import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyConnect from '!!raw-loader!../_includes/provider.connect.py';  
+import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';  
+import PyCode from '!!raw-loader!../_includes/provider.generative.py';  
+import TSCode from '!!raw-loader!../_includes/provider.generative.ts';  
 
-Weaviate's integration with Databricks' APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Databricks の API の統合により、Databricks のモデル機能に Weaviate から直接アクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with Databricks. Weaviate will perform retrieval augmented generation (RAG) using the specified endpoint and your Databricks token.
+[Weaviate のコレクションを設定](#configure-collection) して、Databricks の生成 AI モデルを利用します。Weaviate は、指定したエンドポイントと Databricks トークンを使って 検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the Databricks generative model to generate outputs.
+具体的には、Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得したうえで、それらを Databricks の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_databricks_rag.png)
+![RAG 連携の図](../_includes/integration_databricks_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate 構成
 
-Your Weaviate instance must be configured with the Databricks generative AI integration (`generative-databricks`) module.
+ご利用の Weaviate インスタンスには、Databricks 生成 AI 連携 (`generative-databricks`) モジュールが設定されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) 利用者向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この連携は Weaviate Cloud (WCD) のサーバーレス インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト利用者向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっているか確認するため、[クラスターメタデータ](/deploy/configuration/meta.md) をチェックしてください。  
+- Weaviate でモジュールを有効化するには、[モジュール構成方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Databricks Personal Access Token (PAT) to Weaviate for this integration. Refer to the [Databricks documentation](https://docs.databricks.com/en/dev-tools/auth/pat.html) for instructions on generating your PAT in your workspace.
+この連携を利用するには、有効な Databricks Personal Access Token (PAT) を Weaviate に渡す必要があります。PAT の生成方法については、[Databricks のドキュメント](https://docs.databricks.com/en/dev-tools/auth/pat.html) を参照してください。
 
-Provide the Dataricks token to Weaviate using one of the following methods:
+次のいずれかの方法で Databricks トークンを Weaviate に提供します。
 
-- Set the `DATABRICKS_TOKEN` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照可能な `DATABRICKS_TOKEN` 環境変数を設定する。  
+- 以下の例のように、実行時に API キーを渡す。
 
 <Tabs groupId="languages">
 
@@ -77,13 +77,13 @@ Provide the Dataricks token to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate collection](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) to use a Databricks generative AI endpoint as follows:
+[Weaviate のコレクションを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) し、次のように Databricks の生成 AI エンドポイントを指定してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -105,11 +105,11 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
   </TabItem>
 </Tabs>
 
-This will configure Weaviate to use the generative AI model served through the endpoint you specify.
+これにより、指定したエンドポイントで提供される生成 AI モデルを Weaviate が使用するように設定されます。
 
-### Generative parameters
+### 生成パラメーター
 
-Configure the following generative parameters to customize the model behavior.
+モデルの動作をカスタマイズするため、以下の生成パラメーターを設定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,11 +132,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [Databricks documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#chat-task).
+モデルパラメーターの詳細については、[Databricks のドキュメント](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#chat-task) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -157,31 +157,31 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Header parameters
+## ヘッダー パラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+API キーのほか、いくつかのオプションパラメーターを追加ヘッダーとして実行時に渡すことができます。利用可能なヘッダーは次のとおりです。
 
-- `X-Databricks-Token`: The Databricks API token.
-- `X-Databricks-Endpoint`: The endpoint to use for the Databricks model.
-- `X-Databricks-User-Agent`: The user agent to use for the Databricks model.
+- `X-Databricks-Token`: Databricks API トークン。
+- `X-Databricks-Endpoint`: Databricks モデルに使用するエンドポイント。
+- `X-Databricks-User-Agent`: Databricks モデルに使用するユーザーエージェント。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に渡された追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーは上記の [API 資格情報の例](#api-credentials) のとおりに指定してください。
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 連携を設定した後、[シングル プロンプト](#single-prompt) または [グループ化タスク](#grouped-task) の方法で RAG 操作を実行します。
 
-### Single prompt
+### シングル プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_databricks_rag_single.png)
+![シングル プロンプト RAG 連携は検索結果ごとに個別の出力を生成します](../_includes/integration_databricks_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果内の各オブジェクトに対してテキストを生成するには、シングル プロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングル プロンプト クエリを作成する際は、Weaviate が言語モデルへ渡すオブジェクトプロパティを中かっこ `{}` で記述してください。たとえばオブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -204,13 +204,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ化タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_databricks_rag_grouped.png)
+![グループ化タスク RAG 連携は検索結果のセットに対して 1 つの出力を生成します](../_includes/integration_databricks_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果のセット全体に対して 1 つのテキストを生成するには、グループ化タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えれば、`n` 件の検索結果があっても、生成モデルはグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -236,25 +236,26 @@ In other words, when you have `n` search results, the generative model generates
 
 <!-- ## References -->
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の連携
 
-- [Databricks embedding models + Weaviate](./embeddings.md).
+- [Databricks 埋め込みモデル + Weaviate](./embeddings.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで連携を設定すると、Weaviate でのデータ管理および検索操作は他のコレクションと同一になります。以下にモデル非依存の例を示します。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) および [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその内部オブジェクトの作成、読み取り、更新、削除）方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索、そして 検索拡張生成 の方法を説明しています。
 
-### References
+### 参考資料
 
-- [Databricks foundation model documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html)
+- [Databricks foundation model ドキュメント](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

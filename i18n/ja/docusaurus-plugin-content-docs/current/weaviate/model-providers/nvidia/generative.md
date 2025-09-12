@@ -1,13 +1,13 @@
 ---
-title: Generative AI
+title: 生成 AI
 sidebar_position: 51
 image: og/docs/integrations/provider_integrations_nvidia.jpg
 # tags: ['model providers', 'nvidia', 'generative', 'rag']
 ---
 
-# NVIDIA Generative AI with Weaviate
+# Weaviate での NVIDIA 生成 AI
 
-:::info Added in `v1.28.5`, `v1.29.0`
+:::info `v1.28.5`、`v1.29.0` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -18,43 +18,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integrations with NVIDIA NIM API allows you to access their models' capabilities directly from Weaviate.
+Weaviate の NVIDIA NIM API 連携を利用すると、Weaviate から直接 NVIDIA のモデル機能にアクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with NVIDIA. Weaviate will perform Retrieval Augmented Generation (RAG) using the specified model using your NVIDIA NIM API Key.
+[Weaviate コレクションを設定](#configure-collection)して NVIDIA の生成 AI モデルを使用すると、Weaviate が 検索拡張生成 (RAG) を行います。指定したモデルとお客様の NVIDIA NIM API キーを用いて処理します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the generative model on NVIDIA to generate outputs.
+具体的には、Weaviate が検索を実行して最も関連性の高いオブジェクトを取得し、それらを NVIDIA の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_nvidia_rag.png)
+![RAG 連携のイメージ](../_includes/integration_nvidia_rag.png)
 
 ## Requirements
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the NVIDIA generative (`generative-nvidia`) module.
+ご利用の Weaviate インスタンスには NVIDIA 生成モジュール (`generative-nvidia`) が有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この連携は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効です。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) をチェックしてください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定ガイド](../../configuration/modules.md) をご覧ください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid API key to Weaviate for this integration. Go to [NVIDIA](https://build.nvidia.com/) to sign up and obtain an API key.
+この連携を利用するには、有効な API キーを Weaviate に提供する必要があります。登録とキー取得は [NVIDIA](https://build.nvidia.com/) で行えます。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡してください。
 
-- Set the `NVIDIA_APIKEY` environment variable that is available to Weaviate.
-- Provide the token at runtime, as shown in the examples below.
+- `NVIDIA_APIKEY` 環境変数を設定し、Weaviate から参照できるようにする。  
+- 以降の例のように、実行時にトークンを渡す。
 
 <Tabs groupId="languages">
 
@@ -78,13 +78,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an NVIDIA generative AI model:
+[NVIDIA の生成 AI モデルを使用するために Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)するには、次のようにします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -107,9 +107,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+以下の設定例のように、Weaviate に使用させる[利用可能なモデル](#available-models)のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,11 +132,13 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models)のいずれかを[指定](#generative-parameters)できます。モデルを指定しない場合は[デフォルトモデル](#available-models)が使用されます。
 
-### Generative parameters
 
-Configure the following generative parameters to customize the model behavior.
+
+### 生成パラメーター
+
+以下の生成パラメーターを設定して、モデルの挙動をカスタマイズします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -159,11 +161,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [NVIDIA API documentation](https://docs.api.nvidia.com/nim/reference/llm-apis).
+モデルパラメーターの詳細については、[NVIDIA API ドキュメント](https://docs.api.nvidia.com/nim/reference/llm-apis) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するほか、クエリ時に上書きすることも可能です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -184,19 +186,19 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 連携を設定した後、単一プロンプト方式またはグループ化タスク方式で RAG 操作を実行します。
 
-### Single prompt
+### 単一プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_nvidia_rag_single.png)
+![単一プロンプトの RAG 連携は検索結果ごとに個別の出力を生成します](../_includes/integration_nvidia_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果内の各オブジェクトに対してテキストを生成するには、単一プロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+次の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+単一プロンプトクエリを作成する際、波かっこ `{}` を使用して、言語モデルに渡したいオブジェクトのプロパティをインターポレートします。たとえばオブジェクトの `title` プロパティを渡したい場合は、クエリに `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -220,13 +222,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ化タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_nvidia_rag_grouped.png)
+![グループ化タスクの RAG 連携は検索結果全体に対して 1 つの出力を生成します](../_includes/integration_nvidia_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 つのテキストを生成するには、グループ化タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+つまり、`n` 件の検索結果がある場合でも、生成モデルはグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -250,33 +252,34 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
-You can use any generative model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
+Weaviate では、[NVIDIA NIM APIs](https://build.nvidia.com/models) 上の任意の生成モデルを利用できます。
 
-The default model is `nvidia/llama-3.1-nemotron-51b-instruct`.
+デフォルトのモデルは `nvidia/llama-3.1-nemotron-51b-instruct` です。
 
-## Further resources
+## 参考リソース
 
-### Other integrations
+### その他のインテグレーション
 
-- [NVIDIA text embedding models + Weaviate](./embeddings.md).
-- [NVIDIA multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
-- [NVIDIA reranker models + Weaviate](./reranker.md).
+- [ NVIDIA テキスト埋め込みモデル + Weaviate ](./embeddings.md).
+- [ NVIDIA マルチモーダル埋め込みモデル + Weaviate ](./embeddings-multimodal.md)
+- [ NVIDIA リランカーモデル + Weaviate ](./reranker.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、 Weaviate におけるデータ管理および検索操作は他のコレクションとまったく同じように動作します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ハウツー: コレクションの管理](../../manage-collections/index.mdx) と [ハウツー: オブジェクトの管理](../../manage-objects/index.mdx) のガイドでは、データ操作（つまりコレクションとその中のオブジェクトの作成・読み取り・更新・削除）の方法を紹介しています。
+- [ハウツー: クエリと検索](../../search/index.mdx) のガイドでは、検索操作（ベクトル、キーワード、ハイブリッド）および 検索拡張生成 を実行する方法を説明しています。
 
-### References
+### リファレンス
 
-- [NVIDIA NIM API Documentation](https://docs.api.nvidia.com/nim/reference/llm-apis)
+- [ NVIDIA NIM API ドキュメント](https://docs.api.nvidia.com/nim/reference/llm-apis)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

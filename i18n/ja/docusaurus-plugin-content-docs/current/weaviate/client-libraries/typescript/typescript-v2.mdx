@@ -1,7 +1,7 @@
 ---
-title: JS/TS client v2
+title: JS/TS クライアント v2
 sidebar_position: 20
-description: "Legacy TypeScript client v2 documentation for maintaining existing applications and compatibility."
+description: "既存のアプリケーションの保守および互換性のためのレガシー TypeScript クライアント v2 のドキュメント."
 image: og/docs/client-libraries.jpg
 # tags: ['TypeScript', 'client library']
 ---
@@ -10,24 +10,24 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 :::note TypeScript client version
-The TypeScript client is version `v||site.typescript_client_version||`. Use the [TypeScript v3 client](./index.mdx) for new projects.
+TypeScript クライアントのバージョンは `v||site.typescript_client_version||` です。新しいプロジェクトでは [TypeScript v3 クライアント](./index.mdx) をご利用ください。
 :::
 
-The TypeScript client can be used for both JavaScript and TypeScript scripts.
+TypeScript クライアントは、 JavaScript および TypeScript のスクリプトの両方で使用できます。
 
-## Installation and setup
+## インストールとセットアップ
 
-To install the TypeScript client library package, use [npm](https://www.npmjs.com/).
+TypeScript クライアントライブラリをインストールするには、 [npm](https://www.npmjs.com/) を使用します。
 
 ```bash
 npm install weaviate-ts-client
 ```
 
-## Usage and type definitions
+## 使い方と型定義
 
-Once installed, you can use the client in your TypeScript and JavaScript scripts, as shown in the following examples.
+インストール後、以下の例のように TypeScript と JavaScript のスクリプトでクライアントを使用できます。
 
-### Usage
+### 使い方
 
 <Tabs groupId="languages">
 <TabItem value="js" label="JavaScript">
@@ -74,21 +74,21 @@ console.log(response);
 </Tabs>
 
 :::tip Troubleshooting imports with TypeScript
-If you are having any issues with the import statement in TypeScript (e.g. if `weaviate` is `undefined`), try adding `"esModuleInterop": true` to your `"compilerOptions"` in `tsconfig.json`.
+TypeScript で import 文に問題がある場合 (例: `weaviate` が `undefined` になるなど)、 `tsconfig.json` の `"compilerOptions"` に `"esModuleInterop": true` を追加してみてください。
 :::
 
-### Type definitions
+### 型定義
 
-The type definitions can be found under the `types` subdirectory of the package in the `*.d.ts` files, for example as shown on the [npm package page](https://www.npmjs.com/package/weaviate-ts-client?activeTab=code).
+型定義はパッケージの `types` サブディレクトリにある `*.d.ts` ファイルに含まれています。例としては [npm パッケージページ](https://www.npmjs.com/package/weaviate-ts-client?activeTab=code) をご参照ください。
 
-## Authentication
+## 認証
 
 import ClientAuthIntro from '/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx'
 
 <ClientAuthIntro clientName="TypeScript"/>
 
 
-### API key authentication
+### API キー認証
 
 import ClientAuthApiKey from '/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx'
 
@@ -125,19 +125,19 @@ const client: WeaviateClient = weaviate.client({
 </TabItem>
 </Tabs>
 
-### OIDC authentication
+### OIDC 認証
 
 import ClientAuthOIDCIntro from '/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx'
 
 <ClientAuthOIDCIntro />
 
 :::info Background refresh processes with TS
-When using OIDC with the TypeScript client, its background token refresh process can block a script from exiting. If this behavior is not desired, you can:
-1. Set the `silentRefresh` parameter as `false` in the OIDC configuration. Or,
-1. Stop the process via `client.oidcAuth?.stopTokenRefresh()`, e.g. when a script is expected to exit, or token refresh is no longer needed.
+TypeScript クライアントで OIDC を使用する場合、バックグラウンドでのトークンリフレッシュ処理がスクリプトの終了をブロックすることがあります。不要な場合は、次のいずれかをお試しください。  
+1. OIDC 設定で `silentRefresh` パラメーターを `false` に設定する。  
+1. スクリプトが終了するタイミングやトークンリフレッシュが不要になったタイミングで `client.oidcAuth?.stopTokenRefresh()` を実行してプロセスを停止する。
 :::
 
-#### <i class="fa-solid fa-key"></i> Resource Owner Password Flow
+#### <i class="fa-solid fa-key"></i> Resource Owner Password フロー
 
 import ClientAuthFlowResourceOwnerPassword from '/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx'
 
@@ -182,7 +182,7 @@ const client: WeaviateClient = weaviate.client({
 </TabItem>
 </Tabs>
 
-#### <i class="fa-solid fa-key"></i> Client Credentials flow
+#### <i class="fa-solid fa-key"></i> Client Credentials フロー
 
 import ClientAuthFlowClientCredentials from '/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx'
 
@@ -225,7 +225,8 @@ const client: WeaviateClient = weaviate.client({
 </TabItem>
 </Tabs>
 
-#### <i class="fa-solid fa-key"></i> Refresh Token flow
+
+#### <i class="fa-solid fa-key"></i> リフレッシュトークンフロー
 
 import ClientAuthBearerToken from '/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx'
 
@@ -270,9 +271,9 @@ const client: WeaviateClient = weaviate.client({
 </TabItem>
 </Tabs>
 
-## Custom headers
+## カスタムヘッダー
 
-You can pass custom headers to the client, which are added at initialization:
+クライアントにはカスタムヘッダーを渡すことができ、初期化時に追加されます。
 
 <Tabs groupId="languages">
 <TabItem value="js" label="JavaScript">
@@ -303,61 +304,59 @@ const client: WeaviateClient = weaviate.client({
 </TabItem>
 </Tabs>
 
-These headers will then be included in every request that the client makes.
+これらのヘッダーは、クライアントが行うすべてのリクエストに含まれます。
 
-## References
+## 参照
 
 :::note JS to TS migration
-Some older code examples are written in JavaScript and have not been updated yet. Newer code examples use TypeScript.
+一部の古いコード例は JavaScript で書かれており、まだ更新されていません。新しいコード例は TypeScript を使用しています。
 :::
 
-Our [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](/weaviate/api) covered by the TypeScript client currently have JavaScript examples in the code blocks.
+TypeScript クライアントで扱われる [RESTful エンドポイント](/weaviate/api/rest) と [GraphQL 機能](/weaviate/api) のコードブロックは、現在 JavaScript の例が掲載されています。
 
-## Design
+## 設計
 
-### Builder pattern
+### ビルダーパターン
 
-The TypeScript client is designed following the [Builder pattern](https://en.wikipedia.org/wiki/Builder_pattern). The pattern is used to build complex query objects. This means that calls (for example to retrieve data with a RESTful GET request, or using a more complex GraphQL query) are built with chained objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. Builder examples can be found in the [RESTful API reference pages](/weaviate/api/rest) and the [GraphQL reference pages](/weaviate/api).
+TypeScript クライアントは [Builder パターン](https://en.wikipedia.org/wiki/Builder_pattern) に従って設計されています。このパターンは複雑なクエリオブジェクトを構築するために使用されます。つまり、（RESTful の GET リクエストでデータを取得したり、より複雑な GraphQL クエリを実行したりする際に）呼び出しをチェーンさせることで複雑さを軽減します。ビルダーオブジェクトには任意のものと、特定の機能を実行するために必須のものがあります。ビルダーの例は [RESTful API リファレンス](/weaviate/api/rest) と [GraphQL リファレンス](/weaviate/api) に掲載されています。
 
-The code snippet at the top of this page shows a simple query corresponding to the RESTful request `GET /v1/schema`. The client is initialized by requiring the package and connecting to a local instance. Then, a query is constructed by getting the `.schema` with `.getter()`. The query will be sent with the `.do()` call. `do()` is required for every function you want to build and execute.
+このページ冒頭のコードスニペットは、RESTful リクエスト `GET /v1/schema` に対応するシンプルなクエリを示しています。パッケージを読み込みローカルインスタンスへ接続してクライアントを初期化します。その後 `.schema` を `.getter()` で取得してクエリを構築します。クエリは `.do()` 呼び出しで送信されます。`do()` は構築して実行したいあらゆる関数で必須です。
 
-### General notes
-- All methods use ES6 Promises to deal with asynchronous code, so you need to use `.then()` after function calls, or have `async`/`await` support.
-- In the case of an error, the Promise rejects with the specific error message. (If using `async`/`await`, a rejected promises acts like a thrown exception).
-- Internally the client uses `isomorphic-fetch` to make the REST calls, so it should work from both the browser and NodeJS applications without any required changes.
+### 一般的な注意事項
+- すべてのメソッドは ES6 Promise を使用して非同期コードを扱います。そのため、関数呼び出し後に `.then()` を使用するか、`async` / `await` をサポートする必要があります。
+- エラーが発生した場合、Promise はそのエラーメッセージで reject されます。（`async` / `await` を使用している場合、reject された Promise は throw された例外と同様に扱われます）
+- クライアント内部では `isomorphic-fetch` を使用して REST 呼び出しを行いますので、ブラウザと NodeJS アプリケーションのどちらでも変更なしで動作します。
 
-## TypeScript for JavaScript users
+## JavaScript ユーザーのための TypeScript
 
-TypeScript is a superset of JavaScript. There are, however, some differences that you should be aware of. This section offers some suggestions for JavaScript users who are new to TypeScript.
+TypeScript は JavaScript のスーパーセットです。しかし、いくつかの違いがあります。このセクションでは、 TypeScript を初めて使用する JavaScript ユーザー向けにヒントを紹介します。
 
-### Run a TypeScript file
+### TypeScript ファイルの実行
 
-To run a TypeScript file, first convert it to JavaScript. The `typescript` package from `npm` includes the `tsc` utility. Use `tsc` to convert (transpile) the TypeScript file.
+TypeScript ファイルを実行するには、まず JavaScript に変換します。`npm` の `typescript` パッケージには `tsc` ユーティリティが含まれています。`tsc` を使用して TypeScript ファイルを変換（トランスパイル）します。
 
-Install the `typescript` package. Add the `-g` flag if you want the package to be available globally.
+`typescript` パッケージをインストールします。グローバルに利用したい場合は `-g` フラグを追加してください。
 
 ```bash
 npm install typescript
 ```
 
-Some packages, like the Weaviate TypeScript client, require extra configuration. The root directory of a TypeScript project has a `tsconfig.json` file. Add the following to your `tsconfig.json`.
+Weaviate TypeScript クライアントのように、追加の設定が必要なパッケージもあります。TypeScript プロジェクトのルートディレクトリには `tsconfig.json` ファイルがあります。以下を `tsconfig.json` に追加してください。
 
-- Compiler options
-
+- コンパイラオプション
   - `"target": "esnext"`
   - `"module": "esnext"`
   - `"moduleResolution": "node"`
-
-- `"include": ["*.ts"]`  (Or specific files)
+- `"include": ["*.ts"]`（または特定のファイル）
 - `"lib": [ "es2018" ]`
 
-Don't specify filenames on the command line when you use `tsconfig.json`. Specify the TypeScript files in `tsconfig.json` instead. `tsc` only reads `tsconfig.json` when you run it by itself.
+`tsconfig.json` を使用する場合、コマンドラインでファイル名を指定しないでください。TypeScript ファイルは `tsconfig.json` に指定します。`tsc` は単体で実行したときのみ `tsconfig.json` を読み込みます。
 
 ```bash
 tsc
 ```
 
-`node` only allows the `import` statement in modules. To allow the `import` statement, add the following to your `package.json` file.
+`node` はモジュール内でのみ `import` 文を許可します。`import` 文を使用できるように、`package.json` に以下を追加してください。
 
 ```json
 {
@@ -365,20 +364,20 @@ tsc
 }
 ```
 
-### Example
+### 例
 
-To run this example, complete these steps.
+この例を実行するには、次の手順を完了してください。
 
-- Install the `typescript` package.
-- Update the `tsconfig.json` and `package.json` files as described above.
-- Copy the sample code.
-- Save the code as `sample.ts` in the same directory as `tsconfig.json` and `package.json`.
-- Convert and run the code.
+- `typescript` パッケージをインストールする。
+- `tsconfig.json` と `package.json` を前述のとおり更新する。
+- サンプルコードをコピーする。
+- コードを `sample.ts` として `tsconfig.json` と `package.json` と同じディレクトリに保存する。
+- コードを変換し、実行する。
 
-Use this code to create `sample.ts`.
+`sample.ts` を作成するために次のコードを使用します。
 
 <details>
-  <summary>Sample TypeScript code</summary>
+  <summary>サンプル TypeScript コード</summary>
 
 ```ts
 import weaviate from 'weaviate-ts-client';
@@ -393,22 +392,22 @@ console.log(client.misc)
 ```
 </details>
 
-Convert `sample.ts`.
+`sample.ts` を変換します。
 
 ```bash
 tsc
 ```
 
-Run the converted file.
+変換されたファイルを実行します。
 
 ```bash
 node sample.js
 ```
 
-The output looks like this.
+出力は次のようになります。
 
 <details>
-  <summary>Sample output</summary>
+  <summary>サンプル出力</summary>
 
 ```json
 {
@@ -418,10 +417,10 @@ The output looks like this.
 ```
 </details>
 
-## Client releases
+## クライアントリリース
 
 <details>
-  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+  <summary> Weaviate と対応するクライアントバージョンの表を表示するにはここをクリック</summary>
 
 import ReleaseHistory from '/_includes/release-history.md';
 
@@ -429,12 +428,13 @@ import ReleaseHistory from '/_includes/release-history.md';
 
 </details>
 
-## Client change logs
+## クライアント変更履歴
 
-The client [change logs](https://github.com/weaviate/typescript-client/releases) for each release are available on GitHub.
+クライアントの変更履歴は各リリースごとに GitHub で確認できます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -7,61 +7,63 @@ image: og/docs/integrations/provider_integrations_cohere.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Cohere offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with Cohere's APIs, allowing users to leverage Cohere's models directly from the Weaviate Database.
+Cohere は、自然言語処理と生成のための幅広いモデルを提供しています。Weaviate は Cohere の API とシームレスに統合され、ユーザーは Weaviate Database から直接 Cohere のモデルを利用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI ドリブンアプリケーションを簡単に構築できるようになります。
 
-## Integrations with Cohere
+## Cohere との統合
 
-### Embedding models for vector search
+### ベクトル検索向け埋め込みモデル
 
 ![Embedding integration illustration](../_includes/integration_cohere_embedding.png)
 
-Cohere's embedding models transform text data into vector embeddings, capturing meaning and context.
+Cohere の埋め込みモデルは、テキストデータを意味と文脈を捉えたベクトル埋め込みに変換します。
 
-[Weaviate integrates with Cohere's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Cohere の埋め込みモデルと統合](./embeddings.md)しており、データをシームレスにベクトル化できます。この統合により、追加の前処理やデータ変換なしにセマンティック検索やハイブリッド検索を実行できます。
 
-[Cohere embedding integration page](./embeddings.md)
-[Cohere multimodal embedding integration page](./embeddings-multimodal.md)
+[Cohere 埋め込み統合ページ](./embeddings.md)  
+[Cohere マルチモーダル埋め込み統合ページ](./embeddings-multimodal.md)
 
-### Generative AI models for RAG
+### RAG 向け生成 AI モデル
 
 ![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_cohere_rag_single.png)
 
-Cohere's generative AI models can generate human-like text based on given prompts and contexts.
+Cohere の生成 AI モデルは、与えられたプロンプトとコンテキストに基づいて人間らしいテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with Cohere's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md)により、Weaviate Database から直接 検索拡張生成 (RAG) を実行できます。これにより、Weaviate の効率的なストレージと高速検索機能が Cohere の生成 AI モデルと組み合わさり、パーソナライズされた文脈対応の応答を生成します。
 
-[Cohere generative AI integration page](./generative.md)
+[Cohere 生成 AI 統合ページ](./generative.md)
 
-### Reranker models
+### Reranker モデル
 
 ![Reranker integration illustration](../_includes/integration_cohere_reranker.png)
 
-Cohere's reranker models are designed to improve the relevance and ranking of search results.
+Cohere の reranker モデルは、検索結果の関連性とランキングを向上させるよう設計されています。
 
-[The Weaviate reranker integration](./reranker.md) allows users to easily refine their search results by leveraging Cohere's reranker models.
+[Weaviate の reranker 統合](./reranker.md)を利用することで、Cohere の reranker モデルを活用し、検索結果を簡単にリファインできます。
 
-[Cohere reranker integration page](./reranker.md)
+[Cohere reranker 統合ページ](./reranker.md)
 
-## Summary
+## 概要
 
-These integrations enable developers to leverage Cohere's powerful models directly within Weaviate.
+これらの統合により、開発者は Cohere の強力なモデルを Weaviate 内で直接活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI ドリブンアプリケーション開発のプロセスが簡素化され、開発スピードが向上し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Cohere API key to Weaviate for these integrations. Go to [Cohere](https://cohere.com/) to sign up and obtain an API key.
+これらの統合を利用するには、Weaviate に有効な Cohere API キーを提供する必要があります。[Cohere](https://cohere.com/) にアクセスしてサインアップし、API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Cohere models and start using them in your applications.
+その後、該当する統合ページで Cohere モデルを Weaviate に設定し、アプリケーションでの利用を開始しましょう。
 
-- [Text Embeddings](./embeddings.md)
-- [Generative AI](./generative.md)
+- [テキスト埋め込み](./embeddings.md)
+- [生成 AI](./generative.md)
 - [Reranker](./reranker.md)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

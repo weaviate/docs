@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb
 toc: True
-title: "How to Use Weaviate Embedding Service"
+title: "Weaviate Embedding Service の使い方"
 featured: True
 integration: False
 agent: False
@@ -12,22 +12,22 @@ tags: ['Weaviate Embeddings', 'Weaviate Cloud']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://console.weaviate.cloud/) database instance. 
+[Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) を使用すると、[Weaviate Cloud](https://console.weaviate.cloud/) データベース インスタンスから直接埋め込みを生成できます。 
 
-*Please note this service is part of Weaviate Cloud and cannot be accessed through open-source. Additionally, this service is currently under technical preview, and you can request access [here](https://events.weaviate.io/embeddings-preview).*
+*本サービスは Weaviate Cloud の一部であり、オープンソース版からは利用できません。また現在はテクニカルプレビュー中です。アクセスを希望される場合は [こちら](https://events.weaviate.io/embeddings-preview) からリクエストしてください。*
 
-This notebook will show you how to:
-1. Define a Weaviate Collection
-1. Run a vector search query 
-1. Run a hybrid search query
-1. Run a hybrid search query with metadata filters
-1. Run a generative search query (RAG)
+このノートブックでは次のことを行います:
+1. Weaviate コレクションを定義
+1. ベクトル検索クエリを実行
+1. ハイブリッド検索クエリを実行
+1. メタデータフィルターを用いたハイブリッド検索クエリを実行
+1. 生成検索 (RAG) クエリを実行
 
-## Requirements
+## 要件
 
-1. Weaviate Cloud (WCD) account: You can register [here](https://console.weaviate.cloud/)
-1. Create a cluster on WCD: A sandbox or serverless cluster is fine. You will need to grab the cluster URL and admin API key
-1. OpenAI key to access `GPT-4o mini`
+1. Weaviate Cloud (WCD) アカウント: [こちら](https://console.weaviate.cloud/) で登録できます  
+1. WCD でクラスターを作成: サンドボックスまたはサーバーレス クラスターで問題ありません。クラスター URL と管理者 API キーを取得してください  
+1. `GPT-4o mini` にアクセスできる OpenAI キー  
 
 ```python
 !pip install --q weaviate-client
@@ -37,7 +37,7 @@ This notebook will show you how to:
 !pip show weaviate-client # you need to have the Python client version 4.9.5 or higher
 ```
 
-## Import Libraries and Keys
+## ライブラリとキーのインポート
 
 ```python
 import weaviate
@@ -57,7 +57,7 @@ WCD_CLUSTER_KEY = os.getenv("WCD_CLUSTER_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ```
 
-## Connect to Weaviate
+## Weaviate への接続
 
 ```python
 client = weaviate.connect_to_weaviate_cloud(
@@ -72,11 +72,11 @@ client = weaviate.connect_to_weaviate_cloud(
 print(client.is_ready())
 ```
 
-Python output:
+Python 出力:
 ```text
 True
 ```
-## Define Collection
+## コレクションの定義
 
 ```python
 # Note: This will delete your data stored in "JeopardyQuestion".and
@@ -108,13 +108,13 @@ client.collections.create(
 print("Successfully created collection: JeopardyQuestion.")
 ```
 
-Python output:
+Python 出力:
 ```text
 Successfully created collection: JeopardyQuestion.
 ```
-## Import Data
+## データのインポート
 
-We will use the small jeopardy dataset as an example. It has 1,000 objects.
+例として小規模な Jeopardy データセットを使用します。1,000 オブジェクトが含まれています。
 
 ```python
 url = 'https://raw.githubusercontent.com/weaviate/weaviate-examples/main/jeopardy_small_dataset/jeopardy_small.csv'
@@ -145,7 +145,7 @@ else:
     print("Insert complete.")
 ```
 
-Python output:
+Python 出力:
 ```text
 Insert complete.
 ```
@@ -158,13 +158,13 @@ response = collection.aggregate.over_all(total_count=True)
 print(response.total_count)
 ```
 
-Python output:
+Python 出力:
 ```text
 1000
 ```
-## Query Time
+## クエリ実行
 
-### Vector Search
+### ベクトル検索
 
 ```python
 collection = client.collections.get("JeopardyQuestion")
@@ -178,7 +178,7 @@ for item in response.objects:
     print("Data:", json.dumps(item.properties, indent=2), "\n")
 ```
 
-Python output:
+Python 出力:
 ```text
 Data: {
   "value": "NaN",
@@ -194,13 +194,13 @@ Data: {
   "category": "MAMMALS"
 } 
 ```
-### Hybrid Search
+### ハイブリッド検索
 
-The goal of this notebook is to show you how to use the embedding service. For more information on hybrid search, check out [this folder](https://github.com/weaviate/recipes/tree/main/weaviate-features/hybrid-search) and/or the [documentation](https://docs.weaviate.io/weaviate/search/hybrid).
+このノートブックの目的はエンベディングサービスの使用方法を示すことです。ハイブリッド検索の詳細は [このフォルダー](https://github.com/weaviate/recipes/tree/main/weaviate-features/hybrid-search) または [ドキュメント](https://docs.weaviate.io/weaviate/search/hybrid) をご覧ください。
 
-The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search. 
+`alpha` パラメーターはスパース検索とデンス検索の重み付けを決定します。`alpha = 0` は純粋なスパース (bm25) 検索、`alpha = 1` は純粋なデンス (ベクトル) 検索となります。 
 
-Alpha is an optional parameter. The default is set to `0.75`.
+`alpha` は任意パラメーターで、既定値は `0.75` です。
 
 ```python
 collection = client.collections.get("JeopardyQuestion")
@@ -215,7 +215,7 @@ for item in response.objects:
     print("Data:", json.dumps(item.properties, indent=2), "\n")
 ```
 
-Python output:
+Python 出力:
 ```text
 Data: {
   "value": "NaN",
@@ -231,9 +231,9 @@ Data: {
   "category": "MAMMALS"
 } 
 ```
-### Fetch Objects with Metadata Filters
+### メタデータフィルターでオブジェクトを取得
 
-Learn more about the different filter operators [here](https://docs.weaviate.io/weaviate/search/filters).
+さまざまなフィルター演算子については [こちら](https://docs.weaviate.io/weaviate/search/filters) をご覧ください。
 
 ```python
 collection = client.collections.get("JeopardyQuestion")
@@ -247,7 +247,7 @@ for item in response.objects:
     print("Data:", json.dumps(item.properties, indent=2), "\n")
 ```
 
-Python output:
+Python 出力:
 ```text
 Data: {
   "value": "$200",
@@ -263,7 +263,7 @@ Data: {
   "category": "BUSINESS & INDUSTRY"
 } 
 ```
-### Generative Search (RAG)
+### 生成検索 (RAG)
 
 ```python
 collection = client.collections.get("JeopardyQuestion")
@@ -278,7 +278,7 @@ response = collection.generate.hybrid(
 print(f"Generated output: {response.generated}") 
 ```
 
-Python output:
+Python 出力:
 ```text
 Generated output: People thought these animals were unicorn-like for a few reasons:
 
@@ -288,3 +288,4 @@ Generated output: People thought these animals were unicorn-like for a few reaso
 
 Overall, the combination of physical characteristics and the cultural context of the time contributed to the perception of these animals as unicorn-like.
 ```
+

@@ -1,5 +1,5 @@
 ---
-title: FriendliAI + Weaviate
+title: FriendliAI と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_friendliai.jpg
 # tags: ['model providers', 'friendliai']
@@ -7,39 +7,40 @@ image: og/docs/integrations/provider_integrations_friendliai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-:::info Added in `v1.26.3`
+:::info `v1.26.3` で追加されました
 :::
 
-FriendliAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with FriendliAI APIs, allowing users to leverage FriendliAI's inference engine within the Weaviate Database.
+ FriendliAI は、自然言語処理および生成のための幅広いモデルを提供しています。 Weaviate は FriendliAI の API とシームレスに統合され、ユーザーは Weaviate Database 内で FriendliAI の推論エンジンを利用できます。
 
-FriendliAI integration empowers developers to build sophisticated AI-driven applications with ease.
+ FriendliAI との統合により、開発者は高度な AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with FriendliAI
+## FriendliAI との統合
 
-### Generative AI models for RAG
+### RAG 向け生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_friendliai_rag_single.png)
+![単一プロンプトの RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_friendliai_rag_single.png)
 
-FriendliAI's generative AI models can generate human-like text based on given prompts and contexts.
+ FriendliAI の生成 AI モデルは、指定されたプロンプトとコンテキストに基づいて人間のようなテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform Retrieval Augmented Generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with FriendliAI's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md) を使用すると、Weaviate Database から直接 Retrieval Augmented Generation (RAG) を実行できます。これにより、 Weaviate の効率的なストレージと高速検索機能に FriendliAI の生成 AI モデルを組み合わせ、パーソナライズされたコンテキスト認識の応答を生成します。
 
-Visit [FriendliAI generative AI integration page](./generative.md) for more information on our integrations with FriendliAI.
+詳しくは、[FriendliAI 生成 AI 統合ページ](./generative.md) をご覧ください。
 
-## Summary
+## まとめ
 
-This integration enables developers to harness the power of FriendliAI's inference engine within Weaviate.
+この統合により、開発者は Weaviate 内で FriendliAI の推論エンジンのパワーを活用できます。
 
-In turn, it simplifies the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、 AI 駆動アプリケーションの構築プロセスが簡素化され、開発を加速し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Friendli token (aka Personal Access Token) to Weaviate for these integrations. Go to [Friendli Suite](https://suite.friendli.ai/) to sign up and obtain a personal access token.
+これらの統合を利用するには、有効な Friendli トークン (Personal Access Token) を Weaviate に提供する必要があります。 [Friendli Suite](https://suite.friendli.ai/) にアクセスしてサインアップし、パーソナルアクセストークンを取得してください。
 
-Then, go to the relevant integrations page to learn how to configure Weaviate with the FriendliAI models and start using them in your applications.
+次に、該当する統合ページで、 FriendliAI モデルを Weaviate に設定する方法を確認し、アプリケーションで使用を開始しましょう。
 
-- [Generative AI](./generative.md)
+- [生成 AI](./generative.md)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

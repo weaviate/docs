@@ -1,12 +1,12 @@
 ---
-title: Text Embeddings
-description: Use Mistral embeddings with Weaviate for high-quality vector search results.
+title: テキスト埋め込み
+description: Weaviate で Mistral の埋め込みを使用し、高品質な ベクトル 検索結果を取得します。
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_mistral.jpg
 # tags: ['model providers', 'mistral', 'embeddings']
 ---
 
-# Mistral Embeddings with Weaviate
+# Weaviate と Mistral の埋め込み
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -18,43 +18,43 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with Mistral's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate が Mistral の API と統合されているため、Weaviate から直接、そのモデルの機能にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an Mistral embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Mistral API key. This feature is called the *vectorizer*.
+[Weaviate の ベクトル インデックスを設定](#configure-the-vectorizer)して Mistral の埋め込みモデルを使用すると、Weaviate は指定したモデルとお持ちの Mistral API キーを利用して、さまざまな操作に必要な埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import)に、Weaviate はテキストオブジェクトの埋め込みを生成し、インデックスに保存します。 [ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_mistral_embedding.png)
+![埋め込み統合のイラスト](../_includes/integration_mistral_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の構成
 
-Your Weaviate instance must be configured with the Mistral vectorizer integration (`text2vec-mistral`) module.
+お使いの Weaviate インスタンスは、Mistral ベクトライザー統合（`text2vec-mistral`）モジュールが設定されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスター メタデータ](/deploy/configuration/meta.md) を確認します。
+- Weaviate でモジュールを有効にするには、[モジュールの設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Mistral API key to Weaviate for this integration. Go to [Mistral](https://mistral.ai/) to sign up and obtain an API key.
+この統合を使用するには、有効な Mistral API キーを Weaviate に提供する必要があります。 [Mistral](https://mistral.ai/) にアクセスしてサインアップし、API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+次のいずれかの方法で、API キーを Weaviate に渡してください。
 
-- Set the `MISTRAL_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照できる `MISTRAL_APIKEY` 環境変数を設定します。  
+- 以下の例のように、実行時に API キーを指定します。
 
 <Tabs groupId="languages">
 
@@ -87,9 +87,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーを設定する
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an Mistral embedding model:
+[Weaviate のインデックスを以下のように設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer)して、Mistral の埋め込みモデルを使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -121,9 +121,10 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples.
+### モデルの選択
+
+以下の設定例のように、ベクトライザーで使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -155,31 +156,31 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-## Header parameters
+## ヘッダー パラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+追加のヘッダーをリクエストに含めることで、実行時に API キーおよびいくつかのオプションパラメーターを指定できます。利用可能なヘッダーは次のとおりです:
 
-- `X-Mistral-Api-Key`: The Mistral API key.
-- `X-Mistral-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Mistral URL.
+- `X-Mistral-Api-Key`: Mistral の API キー。
+- `X-Mistral-Baseurl`: 既定の Mistral URL の代わりに使用するベース URL (例: プロキシ)。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定した追加ヘッダーは、 Weaviate の既存の設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーは上記の [API 資格情報の例](#api-credentials) のとおりに設定してください。
 
-## Data import
+## データのインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx) して Weaviate に取り込みます。 Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -212,21 +213,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデルのベクトルがすでに存在する場合は、それを直接 Weaviate に渡すことができます。これは、同じモデルで既に埋め込みを生成しており、他のシステムからの移行などで Weaviate で再利用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Mistral model.
+ベクトライザーの設定が完了すると、 Weaviate は指定した Mistral モデルを使用して ベクトル検索およびハイブリッド検索を行います。
 
-![Embedding integration at search illustration](../_includes/integration_mistral_embedding_search.png)
+![検索時の埋め込み統合を示すイラスト](../_includes/integration_mistral_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル (near text) 検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、 Weaviate はクエリテキストを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で設定した数 (`n`) だけデータベースから最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -259,15 +260,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、 ベクトル 検索とキーワード (BM25) 検索を実行し、その後で[結果を組み合わせ](../../search/hybrid.md)てデータベースから最も適合するオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、 Weaviate はテキストクエリを指定されたモデルでエンベディングに変換し、データベースからスコアが最も高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、 `limit` で設定された `n` 件のスコアが最も高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -300,31 +301,32 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
-As of September 2024, the only available model is `mistral-embed`.
+2024 年 9 月現在、利用可能なモデルは `mistral-embed` のみです。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他のインテグレーション
 
-- [Mistral generative models + Weaviate](./generative.md).
+- [Mistral 生成モデル + Weaviate](./generative.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、 Weaviate におけるデータ管理と検索操作は他のコレクションとまったく同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) および [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) ガイドでは、データ操作 (作成、読み取り、更新、削除) を行う方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、 ベクトル 、キーワード、ハイブリッド検索に加えて検索拡張生成を実行する方法を示しています。
 
-### External resources
+### 外部リソース
 
 - Mistral [Embeddings documentation](https://docs.mistral.ai/capabilities/embeddings/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

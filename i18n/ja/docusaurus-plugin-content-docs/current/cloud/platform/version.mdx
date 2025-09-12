@@ -1,21 +1,21 @@
 ---
-title: Server version
+title: サーバー バージョン
 sidebar_position: 10
-description: "Information about Weaviate Database server versions running on Weaviate Cloud."
+description: Weaviate Cloud で稼働する Weaviate Database のサーバー バージョンに関する情報。
 image: og/wcd/user_guides.jpg
 ---
 
-[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) hosts clusters that run Weaviate.
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) は、Weaviate を実行するクラスターをホストします。
 
-## New clusters
+## 新規クラスター
 
-When you provision a new cluster, Weaviate Cloud uses the latest available version of Weaviate to set up the new cluster.
+新しいクラスターをプロビジョニングすると、Weaviate Cloud は利用可能な最新の Weaviate バージョンを使用してクラスターをセットアップします。
 
-## Updates
+## アップデート
 
-Weaviate Cloud does not automatically update existing clusters when a new version of Weaviate is released.
+Weaviate Cloud は、新しい Weaviate バージョンがリリースされても既存のクラスターを自動的に更新しません。
 
-The Weaviate Cloud console informs you when a newer version is available. Consider your business needs, and [update your cluster](/cloud/platform/version) when you have a suitable maintenance window.
+Weaviate Cloud コンソールは、より新しいバージョンが利用可能であることを通知します。ビジネス ニーズを考慮し、適切なメンテナンス ウィンドウ中に [クラスターを更新](/cloud/platform/version) してください。
 
 <!-- TODO[g-despot]: Add update notification example -->
 
@@ -23,21 +23,22 @@ import Downtime125Note from '/_includes/wcs/wcs.update-to-125-downtime.mdx';
 
 <Downtime125Note />
 
-## Security updates
+## セキュリティ アップデート
 
-Weaviate Cloud does not automatically update clusters, however if an existing cluster has a security vulnerability, Weaviate Cloud updates the cluster when a fix is released.
+Weaviate Cloud はクラスターを自動更新しませんが、既存のクラスターにセキュリティ脆弱性がある場合、修正がリリースされ次第クラスターを更新します。
 
-For security updates, Weaviate Cloud updates the cluster to the most current production release unless there are known compatibility issues. If there are compatibility issues, the cluster is updated to the most recent compatible version.
+セキュリティ アップデートでは、互換性の問題がない限り、Weaviate Cloud はクラスターを最新の本番リリースに更新します。互換性の問題がある場合は、最新の互換バージョンに更新します。
 
-## Additional considerations
+## 追加の考慮事項
 
-- **Billing**: If your cluster's Weaviate version cannot support the billing requirements for your pricing plan, Weaviate Cloud updates your cluster to the current production version or the most recent compatible version.
-- **Data integrity**: If your cluster's Weaviate version has a known risk of data loss or corruption, Weaviate Cloud updates the cluster when a fix is released.
-- **Downgrade**: You cannot downgrade your cluster to an earlier version of Weaviate.
-- **Enterprise cloud customers**: If you are an enterprise customer and you require a specific version of Weaviate, contact your support representative. In some circumstances, Weaviate Cloud can install a specific Weaviate version.
+- **課金**: ご利用中の Weaviate バージョンがプランの課金要件を満たさない場合、Weaviate Cloud はクラスターを最新の本番バージョン、または最新の互換バージョンに更新します。  
+- **データ整合性**: ご利用中の Weaviate バージョンにデータ損失や破損のリスクがある場合、修正がリリースされ次第クラスターを更新します。  
+- **ダウングレード**: クラスターを以前の Weaviate バージョンにダウングレードすることはできません。  
+- **Enterprise Cloud のお客様**: 特定の Weaviate バージョンが必要な場合は、サポート担当者までご連絡ください。状況によっては、特定の Weaviate バージョンをインストールできます。
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

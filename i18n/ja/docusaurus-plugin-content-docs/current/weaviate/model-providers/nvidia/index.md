@@ -1,5 +1,5 @@
 ---
-title: NVIDIA + Weaviate
+title: NVIDIA と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_nvidia.jpg
 # tags: ['model providers', 'nvidia']
@@ -7,63 +7,64 @@ image: og/docs/integrations/provider_integrations_nvidia.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-NVIDIA NIM microservices offer a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with NVIDIA, allowing users to leverage the inference engine within the Weaviate Database.
+NVIDIA NIM マイクロサービスは、自然言語処理および生成のための幅広いモデルを提供します。Weaviate は NVIDIA とシームレスに統合されており、Weaviate Database 内で推論エンジンを活用できます。  
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with NVIDIA
+## NVIDIA との統合
 
-### Embedding models for vector search
+### ベクトル検索用埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_nvidia_embedding.png)
+![埋め込み統合のイラスト](../_includes/integration_nvidia_embedding.png)
 
-NVIDIA's embedding models transform text data into high-dimensional vector representations, capturing meaning and context.
+NVIDIA の埋め込みモデルは、テキストデータを高次元の ベクトル 表現へ変換し、意味と文脈を捉えます。  
 
-[Weaviate integrates with NVIDIA's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は NVIDIA の埋め込みモデルと統合](./embeddings.md)しており、データのシームレスなベクトル化を実現します。これにより、追加の前処理やデータ変換ステップを行わずに、セマンティック検索やハイブリッド検索を実行できます。
 
-[NVIDIA embedding integration page](./embeddings.md)
-[NVIDIA multimodal embedding integration page](./embeddings-multimodal.md)
+[NVIDIA 埋め込み統合ページ](./embeddings.md)  
+[NVIDIA マルチモーダル埋め込み統合ページ](./embeddings-multimodal.md)
 
-### Generative AI models for RAG
+### RAG 向け生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_nvidia_rag_single.png)
+![シングルプロンプト RAG 統合では検索結果ごとに個別の出力を生成](../_includes/integration_nvidia_rag_single.png)
 
-Generative AI models on NVIDIA can generate human-like text based on given prompts and contexts.
+NVIDIA 上の生成 AI モデルは、与えられたプロンプトとコンテキストに基づき、人間らしいテキストを生成します。  
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform Retrieval Augmented Generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with generative AI models on NVIDIA to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md)により、Weaviate Database から直接 検索拡張生成 (RAG) を実行できます。Weaviate の高効率なストレージと高速検索機能を、NVIDIA の生成 AI モデルと組み合わせて、パーソナライズされた文脈適応型の応答を生成します。
 
-[NVIDIA generative AI integration page](./generative.md)
+[NVIDIA 生成 AI 統合ページ](./generative.md)
 
-### Reranker models
+### リランカー モデル
 
-![Reranker integration illustration](../_includes/integration_nvidia_reranker.png)
+![リランカー統合のイラスト](../_includes/integration_nvidia_reranker.png)
 
-NVIDIA's reranker models are designed to improve the relevance and ranking of search results.
+NVIDIA のリランカーモデルは、検索結果の関連度と順位付けを改善するために設計されています。  
 
-[The Weaviate reranker integration](./reranker.md) allows users to easily refine their search results by leveraging NVIDIA's reranker models.
+[Weaviate のリランカー統合](./reranker.md)を利用すると、NVIDIA のリランカーモデルで検索結果を簡単に洗練できます。
 
-[NVIDIA reranker integration page](./reranker.md)
+[NVIDIA リランカー統合ページ](./reranker.md)
 
-## Summary
+## 概要
 
-This integration enables developers to harness the power of NVIDIA's inference engine within Weaviate.
+この統合により、開発者は Weaviate 内で NVIDIA の推論エンジンのパワーを活用できます。  
 
-In turn, it simplifies the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+結果として、AI 駆動アプリケーションの構築プロセスが簡素化され、開発スピードが向上し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## 開始方法
 
-You must provide a valid NVIDIA API key to Weaviate for this integration. Go to [NVIDIA](https://build.nvidia.com/) to sign up and obtain an API key.
+この統合を利用するには、有効な NVIDIA API キーを Weaviate に提供する必要があります。[NVIDIA](https://build.nvidia.com/) にアクセスしてサインアップし、API キーを取得してください。  
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Cohere models and start using them in your applications.
+次に、該当する統合ページに移動し、Cohere モデルで Weaviate を設定してアプリケーションで使用する方法を学びましょう。
 
-- [Text Embeddings](./embeddings.md)
-- [Multimodal Embeddings](./embeddings-multimodal.md)
-- [Generative AI](./generative.md)
+- [テキスト埋め込み](./embeddings.md)
+- [マルチモーダル埋め込み](./embeddings-multimodal.md)
+- [生成 AI](./generative.md)
 <!-- TODO - Add link back to reranker.md; removed because the link checker still sees it as a broken link -->
 <!-- - [Reranker](./) -->
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

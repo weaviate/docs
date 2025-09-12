@@ -1,11 +1,11 @@
 ---
-title: Deprecation messages
+title: 非推奨メッセージ
 image: og/docs/more-resources.jpg
 # tags: ['Deprecation messages']
 ---
 
 
-The list below contains deprecation messages:
+以下のリストには非推奨メッセージが含まれています:
 <!--
 <ul>
     {% for message in site.data.deprecations.deprecations %}
@@ -75,3 +75,4 @@ The list below contains deprecation messages:
 <hr> -->
 
 {% endfor %}
+

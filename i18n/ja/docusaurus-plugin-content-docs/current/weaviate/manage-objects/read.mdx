@@ -1,5 +1,5 @@
 ---
-title: Read objects
+title: オブジェクトの読み取り
 sidebar_position: 20
 image: og/docs/howto.jpg
 ---
@@ -16,18 +16,18 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_
 import SkipLink from '/src/components/SkipValidationLink'
 
 
-Instead of querying your database, you can use an ID to retrieve individual objects.
+データベースをクエリする代わりに、個々のオブジェクトを取得するには ID を使用できます。
 
 import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
   <RestObjectsCRUDClassnameNote/>
 </details>
 
-## Get an object by id
+## ID でオブジェクトを取得
 
-Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404 error.
+ ID を指定してオブジェクトを取得します。指定した ID が存在しない場合、Weaviate は 404 エラーを返します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -86,9 +86,9 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
 </Tabs>
 
 
-## Retrieve the object's vector
+## オブジェクトの ベクトル を取得
 
-Object vectors can be retrieved by specifying its return.
+オブジェクトの ベクトル は、返却内容として指定することで取得できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -146,9 +146,11 @@ Object vectors can be retrieved by specifying its return.
   </TabItem>
 </Tabs>
 
-## Retrieve named vectors
 
-Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, you can retrieve one or more of them by specifying their names.
+
+## 名前付き ベクトルの取得
+
+名前付き ベクトルを使用している場合、ベクトル名を指定することで 1 つ以上を取得できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -189,23 +191,24 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
 
 </Tabs>
 
-## Check object existence
+## オブジェクトの存在確認
 
-To efficiently check if an object with a given [id](../api/graphql/additional-properties.md#id) exists without retrieving it, make a `HEAD` request to the <SkipLink href="/weaviate/api/rest#tag/objects/head/objects/{className}/{id}">`/v1/objects/` REST endpoint</SkipLink>, or use the following client code:
+特定の `id` を持つオブジェクトが存在するかどうかを取得せずに効率的に確認するには、 `HEAD` リクエストを <SkipLink href="/weaviate/api/rest#tag/objects/head/objects/{className}/{id}">`/v1/objects/` REST エンドポイント</SkipLink> に送信するか、以下のクライアントコードを使用します。
 
 import CheckObjectExistence from '/_includes/code/howto/manage-data.read.check.existence.mdx';
 
 <CheckObjectExistence/>
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [How-to: Search](../search/index.mdx)
-- [How-to: Read all objects](./read-all-objects.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [ハウツー: 検索](../search/index.mdx)
+- [ハウツー: すべてのオブジェクトを読み取る](./read-all-objects.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects">参照: REST - /v1/objects</SkipLink>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -5,44 +5,45 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'weaviate embeddings']
 ---
 
-:::info Access to Weaviate Embeddings
-Weaviate Embeddings is a paid service available through Weaviate Cloud. You can try it out for free by using a Sandbox cluster.
+:::info Weaviate Embeddings へのアクセス
+Weaviate Embeddings は Weaviate Cloud で提供される有料サービスです。Sandbox クラスターを使用して無料でお試しいただけます。
 :::
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-[Weaviate Embeddings](/cloud/embeddings) offers vectorizer models to Weaviate Cloud users, allowing users to leverage Weaviate Embeddings' models directly from a Weaviate Cloud database instance.
+[Weaviate Embeddings](/cloud/embeddings) は Weaviate Cloud ユーザーに ベクトライザー モデルを提供し、Weaviate Cloud のデータベース インスタンスから直接 Weaviate Embeddings のモデルを活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI ドリブン アプリケーションを簡単に構築できます。
 
-## Integrations with Weaviate Embeddings
+## Weaviate Embeddings との統合
 
-### Embedding models for vector search
+### ベクトル検索向け エンベディングモデル
 
-![Embedding integration illustration](../_includes/integration_wes_embedding.png)
+![エンベディング統合の図](../_includes/integration_wes_embedding.png)
 
-Weaviate Embeddings' models transform text data into vector embeddings, capturing meaning and context.
+Weaviate Embeddings のモデルは、テキストデータを意味とコンテキストを捉えた ベクトル エンベディングへ変換します。
 
-[Weaviate Cloud integrates with Weaviate Embeddings' embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate Cloud は Weaviate Embeddings のエンベディングモデル](./embeddings.md) と統合して、データのシームレスなベクトル化を実現します。この統合により、追加の前処理やデータ変換を行わずに、セマンティック検索やハイブリッド検索を実行できます。
 
-[Weaviate Embeddings integration page](./embeddings.md)
+[Weaviate Embeddings の統合ページ](./embeddings.md)
 
-## Summary
+## 概要
 
-These integrations enable developers to leverage Weaviate Embeddings' powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内部で Weaviate Embeddings の強力なモデルを直接利用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI ドリブン アプリケーションの構築プロセスが簡素化され、開発を加速し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Weaviate Cloud API key to Weaviate for these integrations. Go to [Weaviate Cloud](https://console.weaviate.cloud/) to sign up and obtain an API key.
+これらの統合を利用するには、有効な Weaviate Cloud API キーを Weaviate に提供する必要があります。[Weaviate Cloud](https://console.weaviate.cloud/) にアクセスして登録し、API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Weaviate Embeddings models and start using them in your applications.
+次に、該当する統合ページで Weaviate を Weaviate Embeddings モデルと連携する設定方法を確認し、アプリケーションで利用を開始してください。
 
-- [Text Embeddings](./embeddings.md)
+- [テキスト エンベディング](./embeddings.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

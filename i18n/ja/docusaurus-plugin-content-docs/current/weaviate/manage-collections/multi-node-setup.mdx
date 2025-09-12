@@ -1,5 +1,5 @@
 ---
-title: Multi-node setup
+title: マルチノード構成
 sidebar_position: 5
 image: og/docs/howto.jpg
 ---
@@ -15,13 +15,13 @@ import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collect
 import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
-## Replication settings
+## レプリケーション設定
 
 import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
+[非同期レプリケーション](/deploy/configuration/replication.md#async-replication-settings) や [削除解決戦略](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies) などのレプリケーション設定を構成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -103,20 +103,20 @@ http://localhost:8080/v1/schema
 
 <details>
   <summary>
-     Additional information
+     追加情報
   </summary>
 
-To use replication factors greater than one, use a [multi-node deployment](/deploy/installation-guides/docker-installation.md#multi-node-configuration).
+レプリケーションファクターを 1 より大きく設定するには、[マルチノード デプロイメント](/deploy/installation-guides/docker-installation.md#multi-node-configuration) を使用してください。
 
-For details on the configuration parameters, see the following:
+設定パラメーターの詳細については、次を参照してください:
 
 - [Replication](/weaviate/config-refs/collections.mdx#replication)
 
 </details>
 
-## Sharding settings
+## シャーディング設定
 
-Configure sharding per collection.
+コレクションごとにシャーディングを構成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -177,39 +177,42 @@ Configure sharding per collection.
 
 <details>
   <summary>
-     Additional information
+     追加情報
   </summary>
 
-For details on the configuration parameters, see the following:
+設定パラメーターの詳細については、次を参照してください:
 
 - [Sharding](/weaviate/config-refs/collections.mdx#sharding)
 
 </details>
 
-## Inspect shards (for a collection)
 
-An index itself can be comprised of multiple shards.
+
+## シャードの検査（コレクション）
+
+インデックス自体は複数のシャードで構成される場合があります。
 
 import CodeSchemaShardsGet from "/_includes/code/howto/manage-data.shards.inspect.mdx";
 
 <CodeSchemaShardsGet />
 
-## Update shard status
+## シャードステータスの更新
 
-You can manually update a shard to change it's status. For example, update the shard status from `READONLY` to `READY` after you make other changes.
+シャードのステータスは手動で更新できます。たとえば、他の変更を行った後で、シャードステータスを `READONLY` から `READY` に変更します。
 
 import CodeSchemaShardsUpdate from "/_includes/code/howto/manage-data.shards.update.mdx";
 
 <CodeSchemaShardsUpdate />
 
-## Further resources
+## 追加リソース
 
-- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
-- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
-- [Concepts: Data structure](../concepts/data.md)
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API リファレンス: REST: スキーマ</SkipLink>
+- [リファレンス: 構成: スキーマ](/weaviate/config-refs/collections.mdx)
+- [コンセプト: データ構造](../concepts/data.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

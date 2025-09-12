@@ -1,5 +1,5 @@
 ---
-title: Delete objects
+title: オブジェクトの削除
 sidebar_position: 35
 image: og/docs/howto.jpg
 ---
@@ -18,16 +18,16 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.delet
 import SkipLink from '/src/components/SkipValidationLink'
 
 
-Weaviate allows object deletion by id or by a set of criteria.
+Weaviate では、オブジェクトを ID または条件のセットで削除できます。
 
 
 import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-  - To delete objects, you must provide the collection name as well as identifying criteria (e.g. object id or filters).
-  - For [multi-tenancy](../concepts/data.md#multi-tenancy) collections, you will also need to specify the tenant name when deleting objects. See [Manage data: multi-tenancy operations]( ../manage-collections/multi-tenancy.mdx) for details on how.
+  - オブジェクトを削除するには、コレクション名と識別条件（例: オブジェクト ID やフィルター）を指定する必要があります。
+  - [マルチテナンシー](../concepts/data.md#multi-tenancy) コレクションの場合、オブジェクトを削除する際にテナント名も指定する必要があります。方法の詳細については、[データ管理: マルチテナンシー操作]( ../manage-collections/multi-tenancy.mdx) を参照してください。
   <br/>
 
   <RestObjectsCRUDClassnameNote/>
@@ -35,9 +35,9 @@ import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname
 </details>
 
 
-## Delete object by id
+## ID でのオブジェクト削除
 
-To delete by id, specify the collection name and the object id.
+ID で削除するには、コレクション名とオブジェクト ID を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -122,9 +122,10 @@ You can handle errors as follows:
 </Tabs> -->
 
 
-## Delete multiple objects
 
-To delete objects that match a set of criteria, specify the collection and a [`where` filter](../search/similarity.md).
+## 複数オブジェクトの削除
+
+特定の条件に一致するオブジェクトを削除するには、コレクションと [`where` フィルター](../search/similarity.md) を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -183,18 +184,16 @@ To delete objects that match a set of criteria, specify the collection and a [`w
 </Tabs>
 
 <details>
-  <summary>
-    Additional information
-  </summary>
+  <summary>追加情報</summary>
 
-- There is a configurable [maximum limit (QUERY_MAXIMUM_RESULTS)](/deploy/configuration/env-vars/index.md#general) on the number of objects that can be deleted in a single query (default 10,000). To delete more objects than the limit, re-run the query.
+- 1 回のクエリで削除できるオブジェクト数には、設定可能な最大値 ([QUERY_MAXIMUM_RESULTS](/deploy/configuration/env-vars/index.md#general)) があり、デフォルトでは 10,000 件です。上限を超えて削除する場合は、クエリを再実行してください。
 
 </details>
 
 
 ### ContainsAny / ContainsAll
 
-Use `ContainsAny` / `ContainsAll` filters to delete of objects by a set of criteria.
+特定の条件でオブジェクトを削除する際には、`ContainsAny` / `ContainsAll` フィルターを使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -278,25 +277,24 @@ client.batch().objectsBatchDeleter()
 </Tabs>
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-This feature was added in Weaviate `v1.21`.
+この機能は Weaviate `v1.21` で追加されました。
 
 </details>
 
+## id で複数オブジェクトの削除
 
-## Delete multiple objects by id
-
-To delete multiple objects by their id values, use a filter (e.g. `ContainsAny`) with `id` based criteria.
+複数のオブジェクトをその id 値で削除するには、`id` ベースの条件を持つフィルター（例: `ContainsAny`）を使用します。
 
 <details>
-  <summary>Limitations</summary>
+  <summary>制限事項</summary>
 
-There is an upper limit (`QUERY_MAXIMUM_RESULTS`) to how many objects can be deleted using a single query. This protects against unexpected memory surges and very-long-running requests which would be prone to client-side timeouts or network interruptions.
+1 回のクエリで削除できるオブジェクト数には上限（`QUERY_MAXIMUM_RESULTS`）があります。これは、予期しないメモリ急増やクライアント側のタイムアウト、ネットワーク中断が発生しやすい長時間実行リクエストから保護するためです。
 
-Objects are deleted in the same order that they would be fetched, by order of UUID. To delete more objects than the limit, run the same query multiple times until no objects are matched anymore.
+オブジェクトは取得される場合と同じ順序、つまり UUID の順序で削除されます。上限を超える数を削除したい場合は、オブジェクトが一致しなくなるまで同じクエリを複数回実行してください。
 
-The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e.g. in [the environment variables](/deploy/configuration/env-vars/index.md).
+既定の `QUERY_MAXIMUM_RESULTS` 値は 10,000 です。この値は、たとえば [環境変数](/deploy/configuration/env-vars/index.md) で変更可能です。
 
 </details>
 
@@ -381,14 +379,14 @@ client.batch().objectsBatchDeleter()
   </TabItem>
 </Tabs>
 
-## Delete all objects
+## すべてのオブジェクトの削除
 
-Objects must belong to a collection in Weaviate. Accordingly [deleting collections](../manage-collections/collection-operations.mdx#delete-a-collection) will remove all objects within them.
+オブジェクトは Weaviate 内のコレクションに属している必要があります。そのため、[コレクションを削除](../manage-collections/collection-operations.mdx#delete-a-collection)すると、そこに含まれるすべてのオブジェクトも削除されます。
 
-## Optional parameters
+## 追加パラメーター
 
-- You can use `dryRun` to check how many objects would be deleted, without actually performing the deletion.
-- Set `output` to `'verbose'` to see more details (ID and deletion status) for each deletion.
+- `dryRun` を使用すると、実際に削除を行わずに何件のオブジェクトが削除対象になるかを確認できます。
+- `output` に `'verbose'` を設定すると、各削除について詳細（ ID と削除ステータス）を確認できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -448,9 +446,9 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
 
 
 <details>
-  <summary>Example response</summary>
+  <summary>レスポンス例</summary>
 
-It should produce a response like the one below:
+以下のようなレスポンスが返されます:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -462,13 +460,17 @@ It should produce a response like the one below:
 </details>
 
 
-## Related pages
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
 
-## Questions and feedback
+
+## 関連ページ
+
+- [Weaviate に接続する](/weaviate/connections/index.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects">リファレンス: REST - /v1/objects</SkipLink>
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

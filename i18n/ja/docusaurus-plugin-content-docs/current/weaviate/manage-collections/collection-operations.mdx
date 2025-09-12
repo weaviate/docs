@@ -1,5 +1,5 @@
 ---
-title: Basic collection operations
+title: 基本的なコレクション操作
 sidebar_label: Collection operations (CRUD)
 sidebar_position: 1
 image: og/docs/howto.jpg
@@ -17,19 +17,19 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
-Every object in Weaviate belongs to exactly one collection. Use the examples on this page to manage your collections.
+  Weaviate のすべてのオブジェクトは、必ず 1 つのコレクションに属します。 このページの例を参考に、コレクションを管理してください。
 
 :::note Terminology
-Newer Weaviate documentation discuses "collections." Older Weaviate documentation refers to "classes" instead. Expect to see both terms throughout the documentation.
+最新の Weaviate ドキュメントでは「collections」という用語を使用していますが、以前のドキュメントでは「classes」と表記されていました。 ドキュメント全体で両方の用語が登場することがありますのでご注意ください。
 :::
 
 import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
 <VectorConfigSyntax />
 
-## Create a collection
+## コレクションの作成
 
-To create a collection, specify at least the collection name. If you don't specify any properties, [`auto-schema`](../config-refs/collections.mdx#auto-schema) creates them.
+コレクションを作成するには、少なくともコレクション名を指定します。 プロパティを指定しない場合、[`auto-schema`](../config-refs/collections.mdx#auto-schema) が自動でプロパティを生成します。
 
 import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
@@ -91,12 +91,12 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
   </TabItem>
 </Tabs>
 
-:::tip Production ready collections
+:::tip 本番環境向けコレクション
 
-- **Manually define you data schema**: 
-  Avoid using the [`auto-schema`](../config-refs/collections.mdx#auto-schema) feature, instead, manually [define the properties for your collection](#create-a-collection-and-define-properties). 
-- **Avoid creating too many collections**: 
-  Using too many collections can lead to scalability issues like high memory usage and degraded query performance. Instead, consider [using multi-tenancy](/weaviate/manage-collections/multi-tenancy), where a single collection is subdivided into multiple tenants. For more details, see [Starter Guides: Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits).
+- **データスキーマを手動で定義する**:  
+  [`auto-schema`](../config-refs/collections.mdx#auto-schema) 機能の使用は避け、代わりに [コレクションのプロパティを手動で定義](#create-a-collection-and-define-properties) してください。  
+- **コレクションの作成数を増やし過ぎない**:  
+  コレクションが多過ぎると、メモリ使用量の増加やクエリ性能の低下などスケーラビリティの問題を引き起こす可能性があります。 代わりに、1 つのコレクションを複数のテナントに分割する [マルチテナンシー](/weaviate/manage-collections/multi-tenancy) の利用を検討してください。 詳細は [Starter Guides: コレクションのスケーリング制限](/weaviate/starter-guides/managing-collections/collections-scaling-limits) をご覧ください。
 :::
 
 <!--
@@ -105,24 +105,24 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 <CollectionsCountLimit />
 -->
 
-## Create a collection and define properties
+## コレクションを作成し、プロパティを定義する
 
-Properties are the data fields in your collection. Each property has a name and a data type.
+プロパティとはコレクション内のデータフィールドです。 各プロパティには名前とデータ型があります。
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-Use properties to configure additional parameters such as data type, index characteristics, or tokenization.
+プロパティを使用して、データ型・インデックス特性・トークナイゼーションなどの追加パラメーターを設定できます。
 
-For details, see:
+詳細は以下を参照してください。
 
 - [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
     API References: REST: Schema
   </SkipLink>
-- [Available data types](../config-refs/datatypes.md)
+- [利用可能なデータ型](../config-refs/datatypes.md)
 
 </details>
 
@@ -183,9 +183,11 @@ For details, see:
 
 </Tabs>
 
-## Create a collection with a vectorizer
 
-Specify a `vectorizer` for a collection that will generate vector embeddings when creating objects and executing vector search queries.
+
+## ベクトライザーを使用したコレクションの作成
+
+オブジェクトの作成時およびベクトル検索クエリの実行時にベクトル埋め込みを生成するよう、コレクションに `vectorizer` を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -246,19 +248,19 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
 
 :::info Vectorizer configuration
 
-Find out more about the vectorizer and vector index configuration in [Manage collections: Vectorizer and vector index](./vector-config.mdx).
+ベクトライザーおよびベクトルインデックスの設定については、[コレクションの管理: ベクトライザーとベクトルインデックス](./vector-config.mdx) を参照してください。
 
 :::
 
-## Disable auto-schema
+## auto-schema の無効化
 
-By default, Weaviate creates missing collections and missing properties. When you configure collections manually, you have more precise control of the collection settings.
+デフォルトでは、Weaviate は存在しないコレクションやプロパティを自動で作成します。コレクションを手動で設定すると、より詳細にコレクション設定を制御できます。
 
-To disable [`auto-schema`](../config-refs/collections.mdx#auto-schema) set `AUTOSCHEMA_ENABLED: 'false'` in your system configuration file.
+[`auto-schema`](../config-refs/collections.mdx#auto-schema) を無効にするには、システム設定ファイルで `AUTOSCHEMA_ENABLED: 'false'` を設定してください。
 
-## Read a single collection definition
+## 単一コレクション定義の読み取り
 
-Retrieve a collection definition from the schema.
+スキーマからコレクション定義を取得します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -316,13 +318,13 @@ Retrieve a collection definition from the schema.
 </Tabs>
 
 <details>
-  <summary>Sample configuration: Text objects</summary>
+  <summary>サンプル設定: テキストオブジェクト</summary>
 
-This configuration for text objects defines the following:
+このテキストオブジェクト用設定では、以下を定義しています。
 
-- The collection name (`Article`)
-- The vectorizer module (`text2vec-cohere`) and model (`embed-multilingual-v2.0`)
-- A set of properties (`title`, `body`) with `text` data types.
+- コレクション名 (`Article`)
+- ベクトライザーモジュール (`text2vec-cohere`) とモデル (`embed-multilingual-v2.0`)
+- プロパティ (`title`, `body`) のデータ型は `text`
 
 ```json
 {
@@ -349,21 +351,19 @@ This configuration for text objects defines the following:
 </details>
 
 <details>
-  <summary>Sample configuration: Nested objects</summary>
+  <summary>サンプル設定: ネストオブジェクト</summary>
 
 :::info Added in `v1.22`
 :::
 
-This configuration for nested objects defines the following:
+このネストオブジェクト用設定では、以下を定義しています。
 
-- The collection name (`Person`)
-- The vectorizer module (`text2vec-huggingface`)
-- A set of properties (`last_name`, `address`)
-
-  - `last_name` has `text` data type
-  - `address` has `object` data type
-
-- The `address` property has two nested properties (`street` and `city`)
+- コレクション名 (`Person`)
+- ベクトライザーモジュール (`text2vec-huggingface`)
+- プロパティ (`last_name`, `address`)
+  - `last_name` のデータ型は `text`
+  - `address` のデータ型は `object`
+- `address` プロパティには 2 つのネストプロパティ (`street` と `city`) がある
 
 ```json
 {
@@ -389,16 +389,16 @@ This configuration for nested objects defines the following:
 </details>
 
 <details>
-  <summary>Sample configuration: Generative search</summary>
+  <summary>サンプル設定: 生成検索</summary>
 
-This configuration for [retrieval augmented generation](../search/generative.md) defines the following:
+この [検索拡張生成](../search/generative.md) 用設定では、以下を定義しています。
 
-- The collection name (`Article`)
-- The default vectorizer module (`text2vec-openai`)
-- The generative module (`generative-openai`)
-- A set of properties (`title`, `chunk`, `chunk_no` and `url`)
-- The tokenization option for the `url` property
-- The vectorization option (`skip` vectorization) for the `url` property
+- コレクション名 (`Article`)
+- デフォルトベクトライザーモジュール (`text2vec-openai`)
+- 生成モジュール (`generative-openai`)
+- プロパティ (`title`, `chunk`, `chunk_no`, `url`)
+- `url` プロパティのトークナイズオプション
+- `url` プロパティのベクトル化オプション（ベクトル化を `skip`）
 
 ```json
 {
@@ -440,19 +440,17 @@ This configuration for [retrieval augmented generation](../search/generative.md)
 </details>
 
 <details>
-  <summary>Sample configuration: Images</summary>
+  <summary>サンプル設定: 画像</summary>
 
-This configuration for image search defines the following:
+この画像検索用設定では、以下を定義しています。
 
-- The collection name (`Image`)
-- The vectorizer module (`img2vec-neural`)
+- コレクション名 (`Image`)
+- ベクトライザーモジュール (`img2vec-neural`)
+  - `image` プロパティに画像データを保存
+- ベクトルインデックスの距離メトリクス (`cosine`)
+- プロパティ (`image`)。`image` プロパティは `blob` として設定
 
-  - The `image` property configures collection to store image data.
-
-- The vector index distance metric (`cosine`)
-- A set of properties (`image`), with the `image` property set as `blob`.
-
-For image searches, see [Image search](../search/image.md).
+画像検索については [Image search](../search/image.md) を参照してください。
 
 ```json
 {
@@ -477,9 +475,9 @@ For image searches, see [Image search](../search/image.md).
 
 </details>
 
-## Read all collection definitions
+## すべてのコレクション定義の取得
 
-Fetch the database schema to retrieve all of the collection definitions.
+データベーススキーマを取得し、すべてのコレクション定義を取得します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -537,13 +535,13 @@ Fetch the database schema to retrieve all of the collection definitions.
   </TabItem>
 </Tabs>
 
-## Update a collection definition
+## コレクション定義の更新
 
 import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-You can update a collection definition to change the [mutable collection settings](../config-refs/collections.mdx#mutability).
+[可変コレクション設定](../config-refs/collections.mdx#mutability) を変更するために、コレクション定義を更新できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -601,31 +599,33 @@ You can update a collection definition to change the [mutable collection setting
   </TabItem>
 </Tabs>
 
-## Delete a collection
+
+
+## コレクションの削除
 
 import CautionSchemaDeleteClass from "/_includes/schema-delete-class.mdx";
 
 <CautionSchemaDeleteClass />
 
-## Add a property
+## プロパティの追加
 
 <details>
   <summary>
-    Indexing limitations after data import
+    データインポート後のインデックス制限
   </summary>
 
-There are no index limitations when you add collection properties before you import data.
+データをインポートする前にコレクションのプロパティを追加する場合、インデックスに関する制限はありません。
 
-If you add a new property after you import data, there is an impact on indexing.<br/><br/>
+データをインポートした後に新しいプロパティを追加すると、インデックス作成に影響があります。<br/><br/>
 
-Property indexes are built at import time. If you add a new property after importing some data, pre-existing objects index aren't automatically updated to add the new property. This means pre-existing objects aren't added to the new property index. Queries may return unexpected results because the index only includes new objects.<br/><br/>
+プロパティのインデックスはインポート時に作成されます。データをインポートした後に新しいプロパティを追加しても、既存オブジェクトのインデックスは自動的に更新されません。つまり、既存オブジェクトは新しいプロパティのインデックスに追加されません。インデックスには新しいオブジェクトのみが含まれるため、クエリ結果が予期しないものになる可能性があります。<br/><br/>
 
-To create an index that includes all of the objects in a collection, do one of the following:
+コレクション内のすべてのオブジェクトを含むインデックスを作成するには、次のいずれかを行ってください。
 
-- New collections: Add all of the collection's properties before importing objects.
-- Existing collections: Export the existing data from the collection. Re-create it with the new property. Import the data into the updated collection.
+- 新規コレクション: オブジェクトをインポートする前に、そのコレクションのすべてのプロパティを追加します。
+- 既存コレクション: コレクションから既存データをエクスポートし、新しいプロパティを含めて再作成します。その後、データを更新済みのコレクションへインポートします。
 
-We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
+プロパティ追加後にデータを再インデックスできる Re-indexing API を開発中です。将来のリリースで提供予定です。
 
 </details>
 
@@ -633,9 +633,9 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 
 <CodeSchemaAddProperties />
 
-## Set inverted index parameters
+## 転置インデックスパラメーターの設定
 
-Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+各コレクションごとに、さまざまな 転置 インデックス パラメーターを設定できます。パラメーターによってはコレクション レベルで設定するものと、プロパティ レベルで設定するものがあります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -693,17 +693,18 @@ Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#i
   </TabItem>
 </Tabs>
 
-## Further resources
+## 参考資料
 
-- [Manage collections: Vectorizer and vector index](./vector-config.mdx)
-- [References: Collection definition](/weaviate/config-refs/collections.mdx)
-- [Concepts: Data structure](../concepts/data.md)
+- [コレクションの管理: ベクトライザーとベクトル インデックス](./vector-config.mdx)
+- [リファレンス: コレクション定義](/weaviate/config-refs/collections.mdx)
+- [概念: データ構造](../concepts/data.md)
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
-    API References: REST: Schema
+    API リファレンス: REST: スキーマ
   </SkipLink>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

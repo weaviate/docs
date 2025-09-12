@@ -1,25 +1,25 @@
 ---
-title: Billing
+title: 請求
 sidebar_position: 3
-description: "Billing information for Weaviate Cloud services, including free Sandbox clusters and paid Serverless plans."
+description: "無料の Sandbox クラスターと有料の Serverless プランを含む Weaviate Cloud サービスの請求情報です。"
 image: og/wcd/user_guides.jpg
 ---
 
-Sandbox clusters are free. You do not need a billing account to create a Sandbox cluster.
+Sandbox クラスターは無料です。Sandbox クラスターを作成するために請求アカウントは必要ありません。
 
-Serverless clusters are charged for resource usage. The monthly charge is determined by your usage and your support plan. You have to have a billing account to create a serverless cluster.
+Serverless クラスターはリソース使用量に応じて課金されます。月額料金は、使用量とサポートプランによって決まります。Serverless クラスターを作成するには請求アカウントが必要です。
 
-To estimate costs for different combinations of usage levels and support plans, see the [pricing calculator](https://weaviate.io/services/serverless).
+さまざまな使用量レベルとサポートプランの組み合わせによる費用を見積もるには、[料金計算ツール](https://weaviate.io/services/serverless)をご覧ください。
 
 :::note
 
-If you have signed up for Weaviate Cloud through an external cloud provider like [AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) or [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA), the billing will be managed through that cloud provider's marketplace. 
+[AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) や [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA) などの外部クラウドプロバイダー経由で Weaviate Cloud に登録した場合、請求はそのクラウドプロバイダーのマーケットプレイスを通じて行われます。 
 
 :::
 
-## Create an account
+## アカウント作成
 
-Weaviate Cloud (WCD) uses [Stripe](https://stripe.com/) for billing. To create a Stripe account, follow these steps:
+Weaviate Cloud ( WCD ) では請求に [Stripe](https://stripe.com/) を使用しています。Stripe アカウントを作成する手順は以下のとおりです。
 
 import EditOrganization from '/_includes/wcs/weaviate-cloud-edit-organization.mdx'
 
@@ -29,11 +29,10 @@ import BillingSection from '/docs/cloud/img/weaviate-cloud-billing-section.png';
 
 <ol start="4">
   <li>
-    Under the <code>Billing</code> section, click on the{' '}
-    <code>Add payment method</code> button (<span class="callout">3</span>).
+    <code>Billing</code> セクションで <code>Add payment method</code> ボタン (<span class="callout">3</span>) をクリックします。
   </li>
-  <li>Fill in the needed personal information.</li>
-  <li>Create your Stripe account.</li>
+  <li>必要な個人情報を入力します。</li>
+  <li>Stripe アカウントを作成します。</li>
 </ol>
 
 <div class="row">
@@ -42,46 +41,48 @@ import BillingSection from '/docs/cloud/img/weaviate-cloud-billing-section.png';
       <img src={BillingSection} alt="Add payment method to Weaviate Cloud" />
     </div>
     <div class="card__body">
-      <p>Add payment method to Weaviate Cloud.</p>
+      <p>Weaviate Cloud に支払い方法を追加します。</p>
     </div>
   </div>
 </div>
 <br />
 
-## Usage charges
+## 使用料金
 
-Usage charges reflect the number and size of the objects in your collection. Weaviate polls each collection to determine a daily object count.
+使用料金は、コレクション内のオブジェクトの数とサイズを反映したものです。Weaviate は各コレクションをポーリングして、日次でオブジェクト数を取得します。
 
-- If the objects are uncompressed, the billing system multiplies the object count by the number of dimensions to get the `vectorDimensionsSum`.
-- If the objects are compressed, the billing system multiplies the object count by the number of vector segments to get the `vectorSegmentsSum`.
+- オブジェクトが非圧縮の場合、請求システムはオブジェクト数に次元数を掛けて `vectorDimensionsSum` を算出します。
+- オブジェクトが圧縮されている場合、請求システムはオブジェクト数にベクトルセグメント数を掛けて `vectorSegmentsSum` を算出します。
 
-The values are added together and normalized to get a base price. The base price is multiplied by the pricing rate for the cluster's support plan.
+これらの値を合算して正規化し、基本料金を求めます。基本料金にクラスターのサポートプランの料金率を掛けて請求額を算出します。
 
-If the cluster has **high availability**, the pricing rate is multiplied by three.
+クラスターが **高可用性** の場合、料金率は 3 倍になります。
 
 :::tip
 
-Significant cost savings can be achieved when **compression** is enabled.
+**圧縮** を有効にすると大幅なコスト削減が期待できます。
 
 :::
 
-## Support & feedback levels
+## サポート & フィードバック レベル
 
-Weaviate offers three levels of support, [Standard](/cloud/platform/support-levels#standard-support), [Professional](/cloud/platform/support-levels#professional-support), and [Business Critical](/cloud/platform/support-levels#business-critical-support). Each support plan has a billing rate for usage and a minimum cost per month.
+Weaviate では、[Standard](/cloud/platform/support-levels#standard-support)、[Professional](/cloud/platform/support-levels#professional-support)、[Business Critical](/cloud/platform/support-levels#business-critical-support) の 3 つのサポートレベルを提供しています。各サポートプランには使用料金に対する課金率と月額最低料金が設定されています。
 
-- If the usage cost is less than the monthly minimum charge for the support plan, Weaviate bills the monthly minimum.
-- If the usage cost exceeds the monthly minimum, Weaviate bills the minimum amount plus any additional charges.
+- 使用料金がサポートプランの月額最低料金を下回る場合、Weaviate は月額最低料金を請求します。
+- 使用料金が月額最低料金を超えた場合、Weaviate は最低料金に追加料金を加えて請求します。
 
-## High availability
+## 高可用性
 
-If you have a high availability (HA) cluster, Weaviate Cloud multiples the minimum charge and the usage charges by three to account for the additional resources.
+高可用性 ( HA ) クラスターの場合、Weaviate Cloud は最低料金と使用料金を 3 倍にして、追加リソース分を考慮します。
 
-## Billing cycles
+## 請求サイクル
 
-Charges are calculated and invoiced for active clusters on the 1st day of each month.
+アクティブなクラスターの料金は毎月 1 日に計算され、請求書が発行されます。
 
-## Support & feedback
+## サポート & フィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+
+

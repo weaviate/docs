@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/generative-search/generative_search_aws_bedrock.ipynb
 toc: True
-title: "Generative search (RAG) with AWS Bedrock"
+title: "AWS Bedrock を用いた生成検索 ( RAG )"
 featured: False
 integration: False
 agent: False
@@ -12,13 +12,13 @@ tags: ['Generative Search', 'RAG', 'AWS']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-## Dependencies
+## 依存関係
 
 ```python
 !pip install weaviate-client
 ```
 
-## Configuration
+## 設定
 
 ```python
 import weaviate, os
@@ -45,8 +45,8 @@ client = weaviate.connect_to_local(
 client.is_ready()
 ```
 
-## Create a collection
-> Collection stores your data and vector embeddings.
+## コレクションの作成
+> コレクションは、データと ベクトル 埋め込みを保存します。
 
 ```python
 # Note: in practice, you shouldn"t rerun this cell, as it deletes your data
@@ -84,7 +84,7 @@ client.collections.create(
 print("Successfully created collection: JeopardyQuestion.")
 ```
 
-## Import the Data
+## データのインポート
 
 ```python
 import requests, json
@@ -107,13 +107,13 @@ else:
     print("Insert complete.")
 ```
 
-## Generative Search Queries
+## 生成検索クエリ
 
-### Single Result
+### 単一結果
 
-Single Result makes a generation for each individual search result. 
+単一結果では、検索結果ごとに個別に生成を行います。 
 
-In the below example, I want to create a Facebook ad from the Jeopardy question about Elephants. 
+以下の例では、 Elephants に関する Jeopardy の問題から Facebook ad を作成します。 
 
 ```python
 generatePrompt = "Turn the following Jeogrady question into a Facebook Ad: {question}"
@@ -132,11 +132,11 @@ for item in response.objects:
     print("-----^^^^^^-----")
 ```
 
-### Grouped Result
+### グループ化結果
 
-Grouped Result generates a single response from all the search results. 
+グループ化結果では、すべての検索結果をまとめて 1 つの応答を生成します。 
 
-The below example is creating a Facebook ad from the 2 retrieved Jeoprady questions about animals. 
+次の例では、取得した 2 件の動物に関する Jeopardy の問題から Facebook ad を作成します。 
 
 ```python
 generateTask = "Explain why these Jeopardy questions are under the Animals category."
@@ -150,3 +150,4 @@ response = jeopardy.generate.near_text(
 
 print(response.generated)
 ```
+

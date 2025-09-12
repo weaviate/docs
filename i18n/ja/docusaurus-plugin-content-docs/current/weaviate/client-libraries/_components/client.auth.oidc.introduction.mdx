@@ -1,5 +1,6 @@
-To authenticate against Weaviate with OIDC, you must select a flow made available by the identity provider and create the flow-specific authentication configuration.
+Weaviate に対して OIDC を用いて認証するには、アイデンティティプロバイダーが提供するフローを選択し、そのフロー専用の認証設定を作成する必要があります。
 
-This configuration will then be used by the Weaviate client to authenticate. The configuration includes secrets that help the client obtain an `access token` and, if configured, a `refresh token`.
+この設定はその後、 Weaviate クライアントによる認証に使用されます。設定には、クライアントが `access token` を取得し、設定されている場合は `refresh token` を取得するのに役立つシークレットが含まれます。
 
-The `access token` is added to the HTTP header of each request and is utilized for authentication with Weaviate. Typically, this token has a limited lifespan, and the `refresh token` can be employed to obtain a new set of tokens when necessary.
+`access token` は各リクエストの HTTP ヘッダーに追加され、 Weaviate での認証に使用されます。通常、このトークンには有効期限があるため、必要に応じて `refresh token` を使用して新しいトークンを取得できます。
+

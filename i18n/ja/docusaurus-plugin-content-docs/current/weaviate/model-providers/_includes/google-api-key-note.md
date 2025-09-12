@@ -1,9 +1,10 @@
 <details>
-  <summary>API key headers</summary>
+  <summary>API キー ヘッダー</summary>
 
-From `v1.27.7`, `v1.26.12` and `v1.25.27`, `X-Goog-Vertex-Api-Key` and `X-Goog-Studio-Api-Key` headers are supported for Vertex AI users and Gemini API respectively. We recommend these headers for highest compatibility.
+`v1.27.7`、`v1.26.12`、`v1.25.27` 以降では、 Vertex AI ユーザー向けには `X-Goog-Vertex-Api-Key`、 Gemini API 向けには `X-Goog-Studio-Api-Key` ヘッダーがサポートされています。最も高い互換性を得るため、これらのヘッダーの使用を推奨します。
 <br/>
 
-Consider `X-Google-Vertex-Api-Key`, `X-Google-Studio-Api-Key`, `X-Google-Api-Key` and `X-PaLM-Api-Key` deprecated.
+`X-Google-Vertex-Api-Key`、`X-Google-Studio-Api-Key`、`X-Google-Api-Key`、`X-PaLM-Api-Key` は非推奨となります。
 
 </details>
+

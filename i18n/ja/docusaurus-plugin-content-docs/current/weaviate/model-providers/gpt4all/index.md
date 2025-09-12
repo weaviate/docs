@@ -1,5 +1,5 @@
 ---
-title: GPT4All + Weaviate
+title: GPT4All と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_gpt4all.jpg
 # tags: ['model providers', 'gpt4all']
@@ -7,40 +7,39 @@ image: og/docs/integrations/provider_integrations_gpt4all.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-The GPT4All library allows you to easily run a wide range of models on your own device. Weaviate seamlessly integrates with the GPT4All library, allowing users to leverage compatible models directly from the Weaviate Database.
+ GPT4All ライブラリを使用すると、幅広いモデルを自身のデバイス上で簡単に実行できます。 Weaviate は  GPT4All ライブラリとシームレスに統合されており、ユーザーは  Weaviate データベースから互換性のあるモデルを直接活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な  AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with GPT4All
+## GPT4All との統合
 
-Weaviate integrates with compatible GPT4All models by accessing the locally hosted GPT4All API.
+### ベクトル検索のための Embedding モデル
 
-### Embedding models for vector search
+![Embedding 統合の図](../_includes/integration_gpt4all_embedding.png)
 
-![Embedding integration illustration](../_includes/integration_gpt4all_embedding.png)
+ GPT4All の  Embedding モデルは、テキストデータを  ベクトル 埋め込みに変換し、意味とコンテキストを捉えます。
 
-GPT4All's embedding models transform text data into vector embeddings, capturing meaning and context.
+[ Weaviate は GPT4All の Embedding モデルと統合](./embeddings.md) し、データのシームレスなベクトル化を実現します。この統合により、追加の前処理やデータ変換を行うことなく、セマンティック検索およびハイブリッド検索を実行できます。
 
-[Weaviate integrates with GPT4All's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[ GPT4All embedding 統合ページ](./embeddings.md)
 
-[GPT4All embedding integration page](./embeddings.md)
+## 概要
 
-## Summary
+これらの統合により、開発者は  Weaviate 内から強力な  GPT4All モデルを活用できます。
 
-These integrations enable developers to leverage powerful GPT4All models from directly within Weaviate.
+その結果、 AI 駆動アプリケーションの開発プロセスが簡素化され、イノベーティブなソリューションの創出に集中できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+## はじめに
 
-## Get started
+これらの統合を利用するには、ローカルにホストされた  Weaviate インスタンスが必要です。これにより、自身の  GPT4All モデルをホストできます。
 
-A locally hosted Weaviate instance is required for these integrations so that you can host your own GPT4All models.
+該当する統合ページにアクセスし、 Weaviate を  GPT4All モデルとどのように設定し、アプリケーションで使用するかをご確認ください。
 
-Go to the relevant integration page to learn how to configure Weaviate with the GPT4All models and start using them in your applications.
+- [ テキスト Embeddings ](./embeddings.md)
 
-- [Text Embeddings](./embeddings.md)
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

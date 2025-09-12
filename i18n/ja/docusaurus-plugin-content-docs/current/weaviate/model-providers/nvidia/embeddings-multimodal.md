@@ -1,14 +1,14 @@
 ---
-title: Multimodal Embeddings
-description: "Weaviate's integration with NVIDIA's APIs allows you to access their models' capabilities directly from Weaviate."
+title: マルチモーダル埋め込み
+description: "Weaviate と NVIDIA の API を連携することで、Weaviate から直接 NVIDIA モデルの機能にアクセスできます。"
 sidebar_position: 25
 image: og/docs/integrations/provider_integrations_nvidia.jpg
 # tags: ['model providers', 'nvidia', 'embeddings']
 ---
 
-# NVIDIA Multimodal Embeddings with Weaviate
+# Weaviate による NVIDIA マルチモーダル埋め込み
 
-:::info Added in `v1.28.5`, `v1.29.0`
+:::info  `v1.28.5`、`v1.29.0` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -19,43 +19,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with NVIDIA's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と NVIDIA の API の統合により、Weaviate から直接 NVIDIA モデルの機能にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an NVIDIA embedding model, and Weaviate will generate embeddings for various operations using the specified model and your NVIDIA NIM API key. This feature is called the *vectorizer*.
+[Weaviate ベクトルインデックスを設定](#configure-the-vectorizer) して NVIDIA の埋め込みモデルを使用すると、Weaviate は指定したモデルとお客様の NVIDIA NIM API キーを用いて、さまざまな操作のための埋め込みを生成します。この機能は *vectorizer* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates multimodal object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings. [Multimodal search operations](#vector-near-media-search) are also supported.
+[インポート時](#data-import) に、Weaviate はマルチモーダルオブジェクトの埋め込みを生成し、インデックスに保存します。[vector](#vector-near-text-search) 検索および [hybrid](#hybrid-search) 検索では、Weaviate がテキストクエリを埋め込みに変換します。[マルチモーダル検索](#vector-near-media-search) にも対応しています。
 
-![Embedding integration illustration](../_includes/integration_nvidia_embedding.png)
+![埋め込み統合のイメージ図](../_includes/integration_nvidia_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の構成
 
-Your Weaviate instance must be configured with the NVIDIA vectorizer integration (`multi2vec-nvidia`) module.
+お使いの Weaviate インスタンスには、NVIDIA ベクトライザー統合（`multi2vec-nvidia`）モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターのメタデータ](/deploy/configuration/meta.md) をチェックしてください。
+- Weaviate でモジュールを有効にする方法は、[モジュール設定方法](../../configuration/modules.md) ガイドをご覧ください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid NVIDIA NIM API key to Weaviate for this integration. Go to [NVIDIA](https://build.nvidia.com/) to sign up and obtain an API key.
+この統合を利用するには、有効な NVIDIA NIM API キーを Weaviate に提供する必要があります。API キーは [NVIDIA](https://build.nvidia.com/) にサインアップして取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡します。
 
-- Set the `NVIDIA_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate にアクセス可能な環境変数 `NVIDIA_APIKEY` を設定する  
+- 後述の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -79,9 +79,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## Vectorizer の設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an NVIDIA embedding model:
+NVIDIA の埋め込みモデルを使用するように、以下のように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -104,9 +104,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+次の設定例のように、[利用可能なモデル](#available-models) のいずれかを Vectorizer に指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -129,20 +129,20 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[Vectorizer のパラメーター](#vectorizer-parameters) で [利用可能なモデル](#available-models) のいずれかを指定できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザーのパラメーター
 
-The following examples show how to configure NVIDIA-specific options.
+次の例では、 NVIDIA 固有のオプションを設定する方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -162,14 +162,13 @@ The following examples show how to configure NVIDIA-specific options.
       language="ts"
     />
   </TabItem>
-
 </Tabs>
 
-For further details on model parameters, see the [NVIDIA NIM API documentation](https://docs.api.nvidia.com/nim/reference/retrieval-apis).
+モデルのパラメーターの詳細については、[ NVIDIA NIM API ドキュメント](https://docs.api.nvidia.com/nim/reference/retrieval-apis) を参照してください。
 
-## Data import
+## データのインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx) して Weaviate に取り込みます。 Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -190,24 +189,23 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="ts"
     />
   </TabItem>
-
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+すでに互換性のあるモデル ベクトルがある場合は、それを直接 Weaviate に渡すことができます。同じモデルで埋め込みをすでに生成しており、別のシステムからデータを移行する際などに Weaviate で再利用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified NVIDIA model.
+ベクトライザーが設定されると、 Weaviate は指定した NVIDIA モデルを使用して ベクトル 検索とハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_nvidia_embedding_search.png)
+![検索時の埋め込み統合の図](../_includes/integration_nvidia_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、 Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で設定した件数に基づき、データベースから `n` 件の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -228,18 +226,17 @@ The query below returns the `n` most similar objects from the database, set by `
       language="ts"
     />
   </TabItem>
-
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md#change-the-fusion-method) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（ BM25 ）検索を実行し、その結果を[融合](../../search/hybrid.md#change-the-fusion-method)して、データベースから最も一致するオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、 Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースからスコアが最も高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で設定した件数に基づき、データベースから `n` 件の最高スコアのオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -260,16 +257,17 @@ The query below returns the `n` best scoring objects from the database, set by `
       language="ts"
     />
   </TabItem>
-
 </Tabs>
 
-### Vector (near media) search
 
-When you perform a media search such as a [near image search](../../search/similarity.md#search-with-image), Weaviate converts the query into an embedding using the specified model and returns the most similar objects from the database.
 
-To perform a near media search such as near image search, convert the media query into a base64 string and pass it to the search query.
+### ベクトル（near media）検索
 
-The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
+[near image 検索](../../search/similarity.md#search-with-image) などのメディア検索を実行すると、 Weaviate は指定したモデルを使用してクエリを埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
+
+near image 検索などの near media 検索を行うには、メディアクエリを base64 文字列に変換し、それを検索クエリに渡します。
+
+以下のクエリは、 `limit` で設定した数だけ、入力画像に最も類似した `n` 件のオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -293,35 +291,36 @@ The query below returns the `n` most similar objects to the input image from the
 
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
-You can use any multimodal embedding model [on NVIDIA NIM APIs](https://build.nvidia.com/models) with Weaviate.
+Weaviate では、 [NVIDIA NIM APIs](https://build.nvidia.com/models) 上の任意のマルチモーダル埋め込みモデルを使用できます。
 
-The default model is `nvidia/nvclip`.
+デフォルトモデルは `nvidia/nvclip` です。
 
-## Further resources
+## さらなるリソース
 
-### Other integrations
+### その他の統合
 
-- [NVIDIA text embedding models + Weaviate](./embeddings.md).
-- [NVIDIA generative models + Weaviate](./generative.md).
-- [NVIDIA reranker models + Weaviate](./reranker.md).
+- [NVIDIA テキスト埋め込みモデル + Weaviate](./embeddings.md).
+- [NVIDIA 生成モデル + Weaviate](./generative.md).
+- [NVIDIA リランキングモデル + Weaviate](./reranker.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、 Weaviate のデータ管理および検索操作は他のコレクションと同じ方法で機能します。モデルに依存しない例については、以下を参照してください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) と [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) では、データ操作（作成・読み取り・更新・削除）の方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) では、ベクトル、キーワード、ハイブリッド検索、および検索拡張生成の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
 - [NVIDIA NIM API documentation](https://docs.api.nvidia.com/nim/)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

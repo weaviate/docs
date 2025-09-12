@@ -1,5 +1,5 @@
 ---
-title: Generative and reranker models
+title: 生成モデルとリランカー モデル
 sidebar_position: 3
 image: og/docs/howto.jpg
 ---
@@ -17,17 +17,17 @@ import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.class
 
 :::tip Embedding models / Vectorizers
 
-Visit the [Vectorizer and vector config](./vector-config.mdx) guide to find out how to configure an embedding model for your collection or to fine-tune the vector index settings.
+コレクション用に埋め込みモデルを設定したり、ベクトル インデックス設定を微調整したりする方法については、[ベクトライザーとベクトル設定](./vector-config.mdx) ガイドをご覧ください。
 
 :::
 
-## Specify a reranker model integration
+## リランカー モデル インテグレーションの指定
 
-Configure a [`reranker`](../concepts/search/index.md#rerank) model integration for [reranking retrieved results](../search/rerank.md).
+[取得結果をリランキング](../search/rerank.md) するために、[`reranker`](../concepts/search/index.md#rerank) モデル インテグレーションを設定します。
 
-:::info Related pages
+:::info 関連ページ
 
-- [Available reranker model integrations](../model-providers/index.md)
+- [利用可能なリランカー モデル インテグレーション](../model-providers/index.md)
   :::
 
 <Tabs groupId="languages">
@@ -77,13 +77,13 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
   </TabItem>
 </Tabs>
 
-## Update the reranker model integration
+## リランカー モデル インテグレーションの更新
 
-:::info Available from `v1.25.23`, `v1.26.8` and `v1.27.1`
-The `reranker` and `generative` configurations are mutable from `v1.25.23`, `v1.26.8` and `v1.27.1`.
+:::info `v1.25.23` 、 `v1.26.8` 、および `v1.27.1` から利用可能
+`reranker` と `generative` の設定は `v1.25.23` 、 `v1.26.8` 、および `v1.27.1` から変更可能です。
 :::
 
-Update the [`reranker`](../concepts/search/index.md#rerank) model integration for [reranking retrieved results](../search/rerank.md).
+[取得結果をリランキング](../search/rerank.md) するために、[`reranker`](../concepts/search/index.md#rerank) モデル インテグレーションを更新します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -132,14 +132,16 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
   </TabItem>
 </Tabs>
 
-## Specify a generative model integration
 
-Specify a `generative` model integration for a collection (for RAG).
 
-:::info Related pages
+## 生成モデル統合の指定
 
-- [Available generative model integrations](../model-providers/index.md)
-  :::
+コレクションに対して `generative` モデル統合を指定します (RAG 用)。
+
+:::info 関連ページ
+
+- [利用可能な生成モデル統合](../model-providers/index.md)
+:::
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -197,13 +199,13 @@ Specify a `generative` model integration for a collection (for RAG).
   </TabItem>
 </Tabs>
 
-## Update the generative model integration
+## 生成モデル統合の更新
 
-:::info Available from `v1.25.23`, `v1.26.8` and `v1.27.1`
-The `reranker` and `generative` configurations are mutable from `v1.25.23`, `v1.26.8` and `v1.27.1`.
+:::info `v1.25.23`、`v1.26.8`、`v1.27.1` から利用可能
+`reranker` と `generative` の構成は `v1.25.23`、`v1.26.8`、`v1.27.1` から変更可能です。
 :::
 
-Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generation-rag) model integration.
+[`generative`](../concepts/search/index.md#retrieval-augmented-generation-rag) モデル統合を更新します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -256,16 +258,17 @@ import RuntimeGenerative from "/_includes/runtime-generative.mdx";
 
 <RuntimeGenerative />
 
-## Further resources
+## 追加リソース
 
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
-    API References: REST: Schema
+    API リファレンス: REST: スキーマ
   </SkipLink>
-- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
-- [Concepts: Data structure](../concepts/data.md)
+- [リファレンス: 設定: スキーマ](/weaviate/config-refs/collections.mdx)
+- [概念: データ構造](../concepts/data.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

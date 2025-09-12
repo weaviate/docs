@@ -1,37 +1,37 @@
 ---
-title: Create a cluster
+title: クラスターの作成
 sidebar_position: 2
-description: "Step-by-step guide to create and configure new Sandbox or Serverless Weaviate Cloud clusters."
+description: "新しい Sandbox または Serverless Weaviate Cloud クラスターを作成して設定する手順ガイド。"
 image: og/wcd/user_guides.jpg
 ---
 
-[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) provides two instance types.
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) では、2 種類のインスタンスを提供しています。
 
-- **Sandbox clusters**: Sandbox clusters are small, free clusters designed for learning and experimentation. Sandbox clusters are not scalable and expire after 14 days.
-- **Serverless clusters**: Serverless clusters are robust, paid clusters designed for production use.
+- **Sandbox クラスター**: 小規模で無料のクラスターです。学習や実験向けに設計されており、スケーラブルではなく 14 日で期限切れになります。  
+- **Serverless クラスター**: 本番環境向けに設計された堅牢な有料クラスターです。
 
-## Create a cluster
+## クラスターの作成
 
-When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters (<span class="callout">1</span>). There are no clusters when you log in to a new account.
+Weaviate Cloud の Web コンソールにログインすると、`Clusters` パネルにクラスター一覧が表示されます (<span class="callout">1</span>)。新しいアカウントでログインした場合は、まだクラスターはありません。
 
-To create a cluster:
+クラスターを作成する手順は次のとおりです。
 
-import CreateCluster from '/docs/cloud/img/weaviate-cloud-create-new-cluster.png';
-import SandboxCluster from '/docs/cloud/img/weaviate-cloud-sandbox-cluster.png';
-import ServerlessCluster from '/docs/cloud/img/weaviate-cloud-serverless-cluster.png';
+import CreateCluster from '/docs/cloud/img/weaviate-cloud-create-new-cluster.png';  
+import SandboxCluster from '/docs/cloud/img/weaviate-cloud-sandbox-cluster.png';  
+import ServerlessCluster from '/docs/cloud/img/weaviate-cloud-serverless-cluster.png';  
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        Click the plus icon ➕ in the <code>Clusters</code> panel (
-        <span class="callout">2</span>).
+        <code>Clusters</code> パネルの ➕ アイコンをクリックします (
+        <span class="callout">2</span>)。
       </li>
       <li>
-        Click on <code>Create cluster</code>.
+        <code>Create cluster</code> をクリックします。
       </li>
       <li>
-        A new panel will open where you can choose between cluster options.
+        クラスターのオプションを選択できる新しいパネルが開きます。
       </li>
     </ol>
   </div>
@@ -40,43 +40,41 @@ import ServerlessCluster from '/docs/cloud/img/weaviate-cloud-serverless-cluster
       <div class="card__image">
         <img src={CreateCluster} alt="Create a cluster" />
       </div>
-      <div class="card__body">Click on this button to create a cluster.</div>
+      <div class="card__body">このボタンをクリックしてクラスターを作成します。</div>
     </div>
   </div>
 </div>
 
-Weaviate offers the following cluster options:
+Weaviate では、次のクラスターオプションを提供しています。
 
-- **[Sandbox clusters](#sandbox-clusters)**: free short-term cluster for development purposes.
-- **[Serverless clusters](#serverless-clusters)**: permanent production-ready environment.
+- **[Sandbox クラスター](#sandbox-clusters)**: 開発用途向けの無料・短期クラスター  
+- **[Serverless クラスター](#serverless-clusters)**: 永続的で本番使用に適した環境  
 
-### Sandbox clusters
+### Sandbox クラスター
 
-To create a sandbox cluster, follow these steps:
+Sandbox クラスターを作成する手順は次のとおりです。
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        Select the <code>Sandbox</code> tab (<span class="callout">1</span>).
+        <code>Sandbox</code> タブを選択します (<span class="callout">1</span>)。
       </li>
       <li>
-        Choose a name for your cluster (<span class="callout">2</span>).
+        クラスター名を入力します (<span class="callout">2</span>)。
       </li>
       <li>
-        Select a cloud region from the dropdown (<span class="callout">3</span>
-        ).
+        ドロップダウンからクラウドリージョンを選択します (<span class="callout">3</span>)。
       </li>
       <li>
-        Configure the <code>Advanced configuration</code>
-        settings if needed (<span class="callout">4</span>).
+        必要に応じて <code>Advanced configuration</code> を設定します (<span class="callout">4</span>)。
       </li>
       <li>
-        Click the <code>Create</code> button.
+        <code>Create</code> ボタンをクリックします。
       </li>
     </ol>
-    <h4>Advanced configuration for Serverless clusters</h4>
-    <p>The following advanced configuration settings are available:</p>
+    <h4>Serverless クラスターの詳細設定</h4>
+    <p>次の詳細設定が利用できます。</p>
     <ul>
       <li>
         <Link to="/weaviate/config-refs/collections#auto-schema">
@@ -103,46 +101,44 @@ To create a sandbox cluster, follow these steps:
       <div class="card__image">
         <img src={SandboxCluster} alt="Create a sandbox cluster" />
       </div>
-      <div class="card__body">Configure your sandbox cluster settings.</div>
+      <div class="card__body">Sandbox クラスターの設定を行います。</div>
     </div>
   </div>
 </div>
 
-### Serverless clusters
+### Serverless クラスター
 
-Serverless clusters require billing details. Weaviate Cloud prompts you to add billing details if you have not already added them.
+Serverless クラスターには課金情報が必要です。まだ登録していない場合は、Weaviate Cloud から課金情報の追加を求められます。
 
-To create a serverless cluster, follow these steps:
+Serverless クラスターを作成する手順は次のとおりです。
 
-import Link from '@docusaurus/Link';
+import Link from '@docusaurus/Link';  
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        Select the <code>Serverless</code> tab (<span class="callout">1</span>).
+        <code>Serverless</code> タブを選択します (<span class="callout">1</span>)。
       </li>
       <li>
-        Choose a name for your cluster (<span class="callout">2</span>).
+        クラスター名を入力します (<span class="callout">2</span>)。
       </li>
       <li>
-        Select a cloud region from the dropdown (<span class="callout">3</span>
-        ).
+        ドロップダウンからクラウドリージョンを選択します (<span class="callout">3</span>)。
       </li>
       <li>
-        Optionally, enable <code>High Availability</code> to reduce downtime
-        during upgrades or scaling.
+        必要に応じて <code>High Availability</code> を有効にすると、アップグレードやスケーリング時のダウンタイムを削減できます。
       </li>
       <li>
-        Configure the <code>Advanced configuration</code> settings if needed (
-        <span class="callout">4</span>).
+        必要に応じて <code>Advanced configuration</code> を設定します (
+        <span class="callout">4</span>)。
       </li>
       <li>
-        Click the <code>Create</code> button.
+        <code>Create</code> ボタンをクリックします。
       </li>
     </ol>
-    <h4>Advanced configuration for Serverless clusters</h4>
-    <p>The following advanced configuration settings are available:</p>
+    <h4>Serverless クラスターの詳細設定</h4>
+    <p>次の詳細設定が利用できます。</p>
     <ul>
       <li>
         <Link to="/weaviate/config-refs/collections#auto-schema">
@@ -169,50 +165,54 @@ import Link from '@docusaurus/Link';
       <div class="card__image">
         <img src={ServerlessCluster} alt="Create a serverless cluster" />
       </div>
-      <div class="card__body">Configure your serverless cluster settings.</div>
+      <div class="card__body">Serverless クラスターの設定を行います。</div>
     </div>
   </div>
 </div>
 
-## Authentication
 
-Weaviate Cloud clusters use API key authentication. The authentication approach depends on whether [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac) is enabled:
 
-### Authentication with RBAC enabled
+## 認証
 
-New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default. With RBAC enabled, you create API keys with specific roles for granular access control.
+Weaviate Cloud クラスターは API キー認証を使用します。認証方法は、[RBAC (Role-Based Access Control)](/weaviate/configuration/rbac) が有効かどうかによって異なります。
 
-When you develop your client application, use an API key to connect your client to the cluster. For detailed instructions on finding and managing your API keys, including creating new keys and managing roles, check out this guide:
+### RBAC 有効時の認証
 
-- **[Manage clusters: Authentication](/cloud/manage-clusters/authentication.mdx)**
+新しく作成した Weaviate バージョン `v1.30` 以降のクラスターでは、既定で RBAC が有効になっています。RBAC が有効な場合は、細かなアクセス制御のためにロールを指定した API キーを作成します。
 
-### Authentication with RBAC disabled
+クライアント アプリケーションを開発する際は、API キーを使用してクラスターに接続してください。新しいキーの作成やロール管理を含む API キーの確認・管理方法は、次のガイドをご覧ください。
 
-If RBAC is not enabled (before `v1.30`), clusters use the traditional approach with two default API keys:
+- **[クラスター管理: 認証](/cloud/manage-clusters/authentication.mdx)**
 
-- **Admin keys**: Provide read-write access to the database
-- **ReadOnly keys**: Provide read-only access to the database
+### RBAC 無効時の認証
 
-Serverless clusters can create, delete, edit, and rotate API keys, while Sandbox clusters cannot modify the default keys.
+RBAC が有効でない場合（`v1.30` 以前）、クラスターは従来の 2 つの既定 API キー方式を使用します。
 
-## Weaviate Database version
+- **Admin キー**: データベースへの読み書きアクセスを提供  
+- **ReadOnly キー**: データベースへの読み取り専用アクセスを提供  
 
-When you provision a new cluster, Weaviate Cloud uses the latest version of Weaviate to set up the new cluster. There may be a short delay between the release of a new Weaviate version and its availability in Weaviate Cloud.
+Serverless クラスターでは API キーの作成、削除、編集、ローテーションが可能ですが、Sandbox クラスターでは既定キーを変更できません。
 
-Weaviate Cloud does not automatically update existing clusters when a new version of Weaviate is released.
+## Weaviate データベース バージョン
 
-For more details on Weaviate Cloud versioning, see:
+新しいクラスターをプロビジョニングすると、Weaviate Cloud は最新の Weaviate バージョンでクラスターをセットアップします。新しい Weaviate バージョンがリリースされてから Weaviate Cloud で利用可能になるまで、わずかな遅延が生じる場合があります。
 
-- **[Account management: Server version](/cloud/platform/version)**.
+Weaviate Cloud は、新しい Weaviate バージョンがリリースされても既存クラスターを自動更新しません。
 
-## Number of clusters
+Weaviate Cloud のバージョニングの詳細は、以下を参照してください。
+
+- **[アカウント管理: サーバーバージョン](/cloud/platform/version)**
+
+## クラスター数
 
 <!-- TODO[g-despot]: Check if this is true.-->
 
-By default, an organization can have up to six (6) serverless clusters and two (2) sandbox clusters at the same time. To change these limits, [contact support](mailto:support@weaviate.io).
+既定では、1 つの組織が同時に持てるクラスターは、Serverless が最大 6 基、Sandbox が最大 2 基です。これらの制限を変更したい場合は、[サポートにお問い合わせ](mailto:support@weaviate.io)ください。
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+
+

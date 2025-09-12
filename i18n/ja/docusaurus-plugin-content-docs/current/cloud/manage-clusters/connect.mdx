@@ -1,45 +1,45 @@
 ---
-title: Connect to Weaviate Cloud
+title: Weaviate Cloud への接続
 sidebar_label: Connect to a cluster
 sidebar_position: 1
-description: "Multiple connection options and methods for accessing your Weaviate Cloud cluster instances."
+description: "Weaviate Cloud クラスター インスタンスへアクセスする複数の接続オプションと方法を紹介します。"
 image: og/wcd/user_guides.jpg
 ---
 
 import CompareURLs from '/docs/cloud/img/wcs-console-url-check.jpg';
 
-[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) offers multiple options on how to connect to your cluster:
+[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) には、クラスターへ接続するための複数のオプションがあります。
 
-- **[Connect with APIs](#connect-with-an-api)**:
+- **[API で接続](#connect-with-an-api)**:
 
-  - Use [client libraries](/weaviate/client-libraries) to connect to a Weaviate Cloud instance.
-  - Use a tool, such as cURL, to connect to the [REST API](/weaviate/api/rest).
+  - [クライアントライブラリ](/weaviate/client-libraries) を使用して Weaviate Cloud インスタンスへ接続します。  
+  - cURL のようなツールを用いて [REST API](/weaviate/api/rest) に接続します。
 
-- **[Connect through the Weaviate Cloud console](#connect-to-the-weaviate-cloud-console)**:
+- **[Weaviate Cloud コンソール経由で接続](#connect-to-the-weaviate-cloud-console)**:
 
-  - Login to manage your clusters, users, and billing.
-  - Use built-in tools to work with your data.
+  - ログインしてクラスター、ユーザー、請求を管理します。  
+  - 組み込みツールを使用してデータを操作します。
 
-## Connect with an API
+## API で接続
 
-The guide below applies to clusters that have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled. New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default. 
+以下のガイドは、[RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) が有効なクラスターに適用されます。Weaviate バージョン `v1.30` 以降で作成された新規クラスターでは、デフォルトで RBAC が有効です。 
 
 <details>
-    <summary>Connecting with API keys when RBAC is disabled</summary>
+    <summary>RBAC が無効な場合の API キー接続</summary>
 
-The Weaviate client libraries use API keys to authenticate to Weaviate Cloud instances. If RBAC is disabled, two API keys are created by default. Both **Serverless** and **Sandbox** clusters have these two types of keys:
+Weaviate クライアントライブラリは API キーを使って Weaviate Cloud インスタンスへ認証します。RBAC が無効な場合、デフォルトで 2 種類の API キーが作成されます。**Serverless** と **Sandbox** の両クラスターには次のキーがあります。
 
-- `Admin key`: An administrator that enables read-write access to the cluster.
-- `ReadOnly key`: A viewer key that only allows read access to the cluster.
+- `Admin key`: クラスターへの読み書きアクセスを許可する管理者キー  
+- `ReadOnly key`: クラスターへの読み取りのみを許可するビューアーキー  
 
-The Weaviate server authenticates every request.
+Weaviate サーバーはすべてのリクエストを認証します。
 
-- If you use a Weaviate client library, pass the API key when you instantiate the client connection. After the connection is established, you do not have to pass the API key when you make additional requests.
-- If you use a tool like cURL, add your API key to the request header.
+- Weaviate クライアントライブラリを使用する場合、クライアントをインスタンス化するときに API キーを渡します。接続が確立された後は、追加のリクエストで API キーを再度渡す必要はありません。  
+- cURL などのツールを使用する場合、リクエストヘッダーに API キーを追加してください。
 
 </details>
 
-### Retrieve your API key and REST endpoint
+### API キーと REST エンドポイントの取得
 
 import CreateAPIKeys from '/_includes/wcs/create-api-keys.mdx';
 
@@ -49,79 +49,77 @@ import RetrieveRESTEndpoint from '/_includes/wcs/retrieve-rest-endpoint.mdx';
 
 <RetrieveRESTEndpoint />
 
-### Environment variables
+### 環境変数
 
-Do not hard-code your API key and Weaviate URL in your client code. Consider passing them as environment variables or using a similar secure coding technique.
+クライアントコードに API キーや Weaviate URL をハードコードしないでください。環境変数を渡す、あるいは同様の安全なコーディング手法を検討してください。
 
 ```bash
 export WEAVIATE_URL="replaceThisWithYourRESTEndpointURL"
 export WEAVIATE_API_KEY="replaceThisWithYourAPIKey"
 ```
 
-### Connection example
+### 接続例
 
-To connect, use the `REST Endpoint` URL and the `Admin` API key:
+接続には `REST Endpoint` の URL と `Admin` API キーを使用します。
 
 import ConnectIsReady from '/_includes/code/quickstart/quickstart.is_ready.mdx';
 
 <ConnectIsReady />
 
-## Connect to the Weaviate Cloud console
+## Weaviate Cloud コンソールへの接続
 
-The Weaviate Cloud console uses your email address and password for authentication. You create the password when you create your Weaviate Cloud account.
+Weaviate Cloud コンソールは、メールアドレスとパスワードで認証します。パスワードは Weaviate Cloud アカウント作成時に設定します。
 
-To connect to the console, follow these steps:
+コンソールへ接続する手順は次のとおりです。
 
-1. Open the [Weaviate Cloud login page](https://console.weaviate.cloud/) in a browser.
-1. Enter your email address and password to authenticate.
-1. Click `Login`.
+1. ブラウザーで [Weaviate Cloud ログインページ](https://console.weaviate.cloud/) を開きます。  
+1. メールアドレスとパスワードを入力して認証します。  
+1. `Login` をクリックします。
 
-## Connect an instance with the Query Tool
+## Query Tool でインスタンスに接続
 
-The built-in [Query tool](/cloud/tools/query-tool) connects directly to clusters in your Weaviate Cloud organization without any additional authentication.
+組み込みの [Query tool](/cloud/tools/query-tool) は、追加の認証なしで Weaviate Cloud 組織内のクラスターへ直接接続します。
 
 import APIKeyInHeader from '/docs/cloud/img/wcs-auth-header.jpg';
 
 <div class="row">
   <div class="col col--6">
     <p>
-      To connect the Query tool to a Weaviate instance that is not part of your
-      Weaviate Cloud organization, provide an API key for the remote instance.{' '}
+      Query tool から組織外の Weaviate インスタンスへ接続する場合は、
+      リモートインスタンス用の API キーを入力してください。 <br />
       <br />
-      <br />
-      Add the API key to the connection <code>Headers</code> at the bottom of
-      the Query tool tab.
+      API キーは Query tool タブ下部の <code>Headers</code> に追加します。
     </p>
   </div>
   <div class="col col--6">
     <div class="card">
       <div class="card__image">
-        <img src={APIKeyInHeader} alt="Create a cluster" />
+        <img src={APIKeyInHeader} alt="クラスターを作成" />
       </div>
       <div class="card__body">
-        Copy the appropriate API key for your cluster.
+        クラスターに適した API キーをコピーしてください。
       </div>
     </div>
   </div>
 </div>
 
-## Troubleshooting
+## トラブルシューティング
 
-This section has solutions for some common problems. For additional help, [contact support](#support--feedback).
+ここでは一般的な問題に対する解決策を紹介します。さらにサポートが必要な場合は、[サポートへ連絡](#support--feedback) してください。
 
-### Reset your password
+### パスワードをリセットする
 
-To reset your Weaviate Cloud password, follow these steps:
+Weaviate Cloud のパスワードをリセットするには、次の手順に従ってください。
 
-1. Go to the Weaviate Cloud [login page](https://console.weaviate.cloud).
-1. Click on click the login button.
-1. Click `Forgot Password`.
-1. Check your email account for a password reset email from Weaviate Cloud.
-1. Click the link and follow the instructions to reset your password. The link is only valid for five minutes.
+1. Weaviate Cloud の [ログインページ](https://console.weaviate.cloud) にアクセスします。  
+1. ログインボタンをクリックします。  
+1. `Forgot Password` をクリックします。  
+1. Weaviate Cloud から送信されるパスワードリセットメールを確認します。  
+1. メール内のリンクをクリックし、表示される手順に従ってパスワードをリセットします。リンクは 5 分間のみ有効です。
 
-### Connection timeouts
+### 接続タイムアウト
 
-The new Python client uses the gRPC protocol to connect to Weaviate Cloud. The gRPC protocol improves query performance, but the protocol is sensitive to network speeds. If you run into timeout errors, increase the connection timeout value in your connection code.
+新しい Python クライアントは gRPC プロトコルを使用して Weaviate Cloud に接続します。gRPC はクエリ性能を向上させますが、ネットワーク速度の影響を受けやすくなります。タイムアウトエラーが発生した場合は、接続コード内でタイムアウト値を増やしてください。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -139,7 +137,7 @@ import PyCodeSupp from '!!raw-loader!/_includes/code/client-libraries/python_slo
   </TabItem>
 </Tabs>
 
-Alternatively, leave the default timeout values, but skip the initial connection checks.
+あるいは、デフォルトのタイムアウト値を保持し、初期接続チェックをスキップすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -152,33 +150,32 @@ Alternatively, leave the default timeout values, but skip the initial connection
   </TabItem>
 </Tabs>
 
-### gRPC health check error
 
-**Problem**: gRPC returns a health check error after you update a Serverless cluster.
+
+### gRPC ヘルスチェック エラー
+
+**問題**:  Serverless クラスターを更新した後に  gRPC がヘルスチェック エラーを返します。
 
 ```
 weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be completed.
 ```
 
-**Solution**: Verify the cluster URL is correct and update the URL if needed.
+**解決策**:  クラスター  URL が正しいことを確認し、必要に応じて  URL を更新してください。
 
-When a Serverless cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections work, however the new gRPC and the old HTTP URLS are different so connections that require gRCP fail.
+ Serverless クラスターを更新すると、クラスター  URL がわずかに変更される場合があります。 Weaviate Cloud は旧  URL へのルーティングを引き続き行うため一部の接続は機能しますが、新しい  gRPC  URL と旧  HTTP  URL は異なるため、 gRPC を必要とする接続は失敗します。
 
-To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match.
+ URL を確認するには、 Weaviate Cloud Console を開き、クラスターの詳細パネルを確認します。クラスター  URL の前に `grpc-` を付けた場合、クラスター  URL とクラスター  gRPC  URL が一致している必要があります。
 
 import EndpointURLs from '/docs/cloud/img/weaviate-cloud-endpoint-urls.png';
 
 <div class="row">
   <div class="col col--4">
     <p>
-      Compare the Cluster URL with the connection URL in your application. The
-      old URL and the new URL are similar, but the new one may have an extra
-      subdomain such as <code>.c0.region</code>.
+      クラスター  URL とアプリケーションで使用している接続  URL を比較してください。旧  URL と新  URL は似ていますが、新しいものには <code>.c0.region</code> などのサブドメインが追加されている場合があります。
     </p>
     <br />
     <p>
-      If the URLs are different, update your application's connection code to
-      use the new Cluster URL.
+      もし  URL が異なる場合は、アプリケーションの接続コードを更新し、新しいクラスター  URL を使用してください。
     </p>
   </div>
   <div class="col col--8">
@@ -186,21 +183,21 @@ import EndpointURLs from '/docs/cloud/img/weaviate-cloud-endpoint-urls.png';
       <div class="card__image">
         <img src={EndpointURLs} alt="Cluster URLs" />
       </div>
-      <div class="card__body">Cluster URLs.</div>
+      <div class="card__body">クラスター URL。</div>
     </div>
   </div>
 </div>
 
-## More resources
+## 追加リソース
 
-To authenticate with a Weaviate client library, see the following:
+ Weaviate クライアントライブラリで認証を行う方法については、以下をご覧ください。
 
 - [Python](/weaviate/client-libraries/python/index.mdx)
 - [TypeScript/JavaScript](../../weaviate/client-libraries/typescript/index.mdx)
 - [Go](/weaviate/client-libraries/go.md#authentication)
 - [Java](/weaviate/client-libraries/java.md#authentication)
 
-## Support & feedback
+## サポート & フィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
@@ -209,3 +206,4 @@ import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 import CustomScriptLoader from '/src/components/scriptSwitch';
 
 <CustomScriptLoader />
+

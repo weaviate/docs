@@ -1,11 +1,11 @@
 ---
-title: Generative AI
+title: 生成 AI
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_anthropic.jpg
 # tags: ['model providers', 'anthropic', 'generative', 'rag']
 ---
 
-# Anthropic Generative AI with Weaviate
+# Weaviate での Anthropic 生成 AI
 
 
 import Tabs from '@theme/Tabs';
@@ -16,43 +16,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with Anthropic's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate の Anthropic API との統合により、モデルの機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with Anthropic. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your Anthropic API key.
+Anthropic の生成 AI モデルを使用するには、[Weaviate コレクションを設定](#configure-collection)してください。Weaviate は、指定したモデルとお持ちの Anthropic API キーを用いて 検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the Anthropic generative model to generate outputs.
+具体的には、 Weaviate が検索を行い、最も関連性の高いオブジェクトを取得し、それらを Anthropic の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_anthropic_rag.png)
+![RAG 統合のイラスト](../_includes/integration_anthropic_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Anthropic generative AI integration (`generative-anthropic`) module.
+ご利用の Weaviate インスタンスには、Anthropic 生成 AI 連携モジュール (`generative-anthropic`) を設定しておく必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) のユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+Weaviate Cloud (WCD) のサーバーレスインスタンスでは、この連携はデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト版ユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスター メタデータ](/deploy/configuration/meta.md) をチェックしてください。
+- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid Anthropic API key to Weaviate for this integration. Go to [Anthropic](https://www.anthropic.com/api) to sign up and obtain an API key.
+この連携を利用するには、有効な Anthropic API キーを Weaviate に提供する必要があります。API キーを取得するには、[Anthropic](https://www.anthropic.com/api) にサインアップしてください。
 
-Provide the API key to Weaviate using one of the following methods:
+次のいずれかの方法で Weaviate に API キーを渡してください。
 
-- Set the `ANTHROPIC_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate が参照できる環境変数 `ANTHROPIC_APIKEY` を設定する  
+- 以下の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -76,13 +76,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an Anthropic generative model:
+Anthropic の生成モデルを使用するには、次のように [Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -105,9 +105,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+以下の設定例のように、 Weaviate で使用する [利用可能なモデル](#available-models) を指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -130,11 +130,11 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate で使用する [利用可能なモデル](#available-models) を[指定](#generative-parameters)できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
-### Generative parameters
+### 生成パラメーター
 
-Configure the following generative parameters to customize the model behavior.
+以下の生成パラメーターを設定して、モデルの挙動をカスタマイズします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -157,11 +157,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [Anthropic API documentation](https://www.anthropic.com/docs).
+モデルパラメーターの詳細については、[Anthropic API ドキュメント](https://www.anthropic.com/docs) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることも可能です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -182,30 +182,30 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Header parameters
+## ヘッダー パラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+追加のヘッダーをリクエストに含めることで、実行時に API キーや任意のパラメーターを指定できます。利用可能なヘッダーは次のとおりです。
 
-- `X-Anthropic-Api-Key`: The Anthropic API key.
-- `X-Anthropic-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Anthropic URL.
+- `X-Anthropic-Api-Key`: Anthropic API キー  
+- `X-Anthropic-Baseurl`: 既定の Anthropic URL の代わりに使用するベース URL（例: プロキシ）
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定された追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーは上記の[API 資格情報の例](#api-credentials)のように指定してください。
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 統合を設定した後、[単一プロンプト](#single-prompt)もしくは[グループ化タスク](#grouped-task)の方法で RAG 操作を実行します。
 
-### Single prompt
+### 単一プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_anthropic_rag_single.png)
+![単一プロンプトの RAG 統合は、検索結果ごとに個別の出力を生成します](../_includes/integration_anthropic_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果の各オブジェクトに対してテキストを生成するには、単一プロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+次の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+単一プロンプトクエリを作成する際、Weaviate が言語モデルに渡すオブジェクトプロパティを埋め込むために `{}` を使用します。たとえばオブジェクトの `title` プロパティを渡したい場合は、クエリに `{title}` を含めてください。
 
 <Tabs groupId="languages">
 
@@ -229,13 +229,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ化タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_anthropic_rag_grouped.png)
+![グループ化タスクの RAG 統合は、検索結果のセットに対して 1 件の出力を生成します](../_includes/integration_anthropic_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 件のテキストを生成する場合は、グループ化タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えると、`n` 件の検索結果がある場合、生成モデルはそのグループ全体に対して 1 件の出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -259,9 +259,10 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-### RAG with images
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+### 画像を用いた RAG
+
+単一プロンプトでもグループ化タスクでも、検索拡張生成を実行する際の入力の一部として画像を渡すこともできます。 
 
 <Tabs groupId="languages">
 
@@ -283,48 +284,49 @@ You can also supply images as a part of the input when performing retrieval augm
   </TabItem>
 </Tabs>
 
-## References
+## 参考情報
 
-#### Maximum output tokens
+#### 出力トークンの上限
 
-Use the `maxTokens` parameter to set the maximum number of output tokens for the Anthropic Generative AI models. This parameter is separate from the maximum allowable input tokens, also called a "context window".
+`maxTokens` パラメーターを使用して、Anthropic 生成 AI モデルの出力トークンの最大数を設定できます。このパラメーターは、最大入力トークン数（コンテキスト ウィンドウ）とは別に設定されます。
 
-For most models, the default `maxTokens` value is `4096`, which is the maximum, and the input (context window) size is `200,000`. The specific allowable values may vary between models. Refer to the [Anthropic documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-comparison) for the latest information.
+ほとんどのモデルでは、デフォルトの `maxTokens` は `4096`（かつ最大値）で、入力（コンテキスト ウィンドウ）サイズは `200,000` です。具体的な許可値はモデルによって異なる場合があります。最新情報は [Anthropic のドキュメント](https://docs.anthropic.com/en/docs/about-claude/models#model-comparison) を参照してください。
 
 #### Base URL
 
-Note that for Anthropic, you can provide a custom base URL for the API endpoint. This is useful for users who have a dedicated API endpoint, or is behind a proxy.
+Anthropic では、API エンドポイントにカスタム Base URL を指定できます。専用の API エンドポイントを持っている、またはプロキシの背後にある場合に便利です。
 
-The custom base URL can be provided via the collection configuration as shown above, or in the header of the request. To provide it in the header, instantiate the Weaviate client using the `X-Anthropic-Baseurl` key and the custom base URL as the value.
+カスタム Base URL は、前述のようにコレクションの設定で指定するか、リクエストヘッダーで指定できます。ヘッダーで指定する場合は、`X-Anthropic-Baseurl` キーにカスタム Base URL を値として設定して Weaviate クライアントを初期化します。
 
-The default base URL is `https://api.anthropic.com`.
+デフォルトの Base URL は `https://api.anthropic.com` です。
 
-### Available models
+### 利用可能なモデル
 
-Any model available in the Anthropic API can be used with Weaviate. As of July 2024, the following models are available:
+Anthropic API に用意されているすべてのモデルを Weaviate で使用できます。2024 年 7 月時点では、次のモデルが利用可能です。
 
 - `claude-3-5-sonnet-20240620` (default)
 - `claude-3-opus-20240229`
 - `claude-3-sonnet-20240229`
 - `claude-3-haiku-20240307`
 
-See the [Anthropic API documentation](https://docs.anthropic.com/en/docs/about-claude/models#model-names) for the most up-to-date list of available models.
+最新のモデル一覧は [Anthropic API ドキュメント](https://docs.anthropic.com/en/docs/about-claude/models#model-names) をご覧ください。
 
-## Further resources
+## 追加リソース
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+インテグレーションをコレクションに設定すると、Weaviate でのデータ管理と検索操作は他のコレクションとまったく同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) では、データ操作（コレクションおよびその内部オブジェクトの作成、読み取り、更新、削除）方法を紹介しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) では、ベクトル検索、キーワード検索、ハイブリッド検索および検索拡張生成の実行方法を説明しています。
 
-### References
+### 参照
 
-- Anthropic [API documentation](https://www.anthropic.com/docs)
+- Anthropic [API ドキュメント](https://www.anthropic.com/docs)
 
-## Questions and feedback
+## 質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

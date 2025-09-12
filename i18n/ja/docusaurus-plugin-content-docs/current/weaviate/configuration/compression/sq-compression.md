@@ -1,5 +1,5 @@
 ---
-title: Scalar Quantization (SQ)
+title: スカラー量子化 (SQ)
 sidebar_position: 27
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'sq']
@@ -20,13 +20,13 @@ import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/
 
 :::
 
-[Scalar quantization (SQ)](/weaviate/concepts/vector-quantization#scalar-quantization) is a vector compression technique that can reduce the size of a vector.
+[スカラー量子化 (SQ)](/weaviate/concepts/vector-quantization#scalar-quantization) は、ベクトルのサイズを削減できるベクトル圧縮手法です。
 
-To use SQ, enable it in the collection definition, then add data to the collection.
+SQ を使用するには、コレクション定義で有効化してからデータをコレクションに追加します。
 
-## Enable compression for new collection
+## 新規コレクションでの圧縮の有効化
 
-SQ can be enabled at collection creation time through the collection definition:
+SQ はコレクション作成時に、コレクション定義を通じて有効化できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -63,13 +63,13 @@ SQ can be enabled at collection creation time through the collection definition:
   </TabItem>
 </Tabs>
 
-## Enable compression for existing collection
+## 既存コレクションでの圧縮の有効化
 
 :::info Added in `v1.31`
-The ability to enable SQ compression after collection creation was added in Weaviate `v1.31`.
+コレクション作成後に SQ 圧縮を有効化できる機能は Weaviate `v1.31` で追加されました。
 :::
 
-SQ can also be enabled for an existing collection by updating the collection definition:
+既存のコレクションでも、コレクション定義を更新することで SQ を有効化できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -98,9 +98,9 @@ SQ can also be enabled for an existing collection by updating the collection def
   </TabItem>
 </Tabs>
 
-## SQ parameters
+## SQ パラメーター
 
-To tune SQ, set these `vectorIndexConfig` parameters.
+SQ を調整するには、これらの `vectorIndexConfig` パラメーターを設定します。
 
 import SQParameters from '/\_includes/configuration/sq-compression-parameters.mdx' ;
 
@@ -141,29 +141,32 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
   </TabItem>
 </Tabs>
 
-## Additional considerations
 
-### Multiple vector embeddings (named vectors)
+
+## 追加の考慮事項
+
+### 複数ベクトル埋め込み（名前付きベクトル）
 
 import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
 
 <NamedVectorCompress />
 
-### Multi-vector embeddings (ColBERT, ColPali, etc.)
+### マルチベクトル埋め込み（ ColBERT、 ColPali など）
 
 import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
 <MultiVectorCompress />
 
-## Further resources
+## さらに学ぶ
 
-- [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
-- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [スターターガイド: 圧縮](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [リファレンス: ベクトル インデックス](/weaviate/config-refs/indexing/vector-index.mdx)
+- [概念: ベクトル 量子化](/docs/weaviate/concepts/vector-quantization.md)
+- [概念: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

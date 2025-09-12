@@ -1,5 +1,5 @@
 ---
-title: Enterprise Usage Collector
+title: エンタープライズ使用量コレクター
 sidebar_position: 7
 image: og/docs/configuration.jpg
 # tags: ['configuration']
@@ -7,16 +7,16 @@ image: og/docs/configuration.jpg
 
 
 <!-- Hidden for now as no longer used; to be removed in the future. -->
-When using Weaviate Enterprise, a proxy service is placed in between the user (or load balancer) and Weaviate. The service measures how Weaviate is used without sending through any sensitive information (e.g., function, durations, payload sizes). Below you can find an outline on how to add the proxy service to your setup.
+Weaviate エンタープライズを使用する場合、ユーザー（またはロードバランサー）と Weaviate の間にプロキシサービスが配置されます。このサービスは、機能・処理時間・ペイロードサイズなどの機密情報を送信することなく、Weaviate の利用状況を計測します。以下では、プロキシサービスをセットアップに追加する手順を説明します。
 
-## 1. Collect a Weaviate Enterprise Token
+## 1. Weaviate Enterprise トークンの取得
 
-- Login into the [Weaviate Console](https://console.weaviate.cloud).
-- Click the profile symbol in the top menu and collect the key, which is shown to you. Note, this key is a secret, and you should not make this available in public repositories.
+- [Weaviate Console](https://console.weaviate.cloud) にログインします。  
+- 上部メニューのプロフィールアイコンをクリックし、表示されるキーを取得します。このキーはシークレットです。公開リポジトリなどに公開しないようご注意ください。
 
-## 2. Add the Weaviate Enterprise Usage Collector to your Docker Compose file
+## 2. Docker Compose ファイルに Weaviate Enterprise 使用量コレクターを追加
 
-If you are using the Docker Compose file from the installation configurator, you need to add the following block to your YAML file.
+インストールコンフィギュレーターで生成された Docker Compose ファイルを使用している場合は、以下のブロックを YAML ファイルに追加します。
 
 ```yaml
 services:
@@ -33,12 +33,12 @@ services:
       - weaviate
 ```
 
-* `weaviate_enterprise_token` = is the token you collected in the previous step.
-* `weaviate_enterprise_project` = can be any identifier picked by you to identify the Weaviate cluster. For example, if you have a development and production setup, you might choose `weaviate_enterprise_project=my-project-dev` and  `weaviate_enterprise_project=my-project-prod`.
+* `weaviate_enterprise_token` = 前の手順で取得したトークンです。  
+* `weaviate_enterprise_project` = クラスターを識別する任意の文字列です。たとえば開発環境と本番環境がある場合は、`weaviate_enterprise_project=my-project-dev` と `weaviate_enterprise_project=my-project-prod` のように設定できます。
 
-## 3. Set the Weaviate ports to redirect to the proxy
+## 3. Weaviate のポートをプロキシにリダイレクト
 
-Because you will route all traffic through the Enterprise proxy, you have to make sure Weaviate accepts the incoming traffic on port 4000.
+すべてのトラフィックをエンタープライズプロキシ経由でルーティングするため、Weaviate がポート 4000 で受信できるように設定する必要があります。
 
 ```yaml
 services:
@@ -49,17 +49,18 @@ services:
     # rest of the docker-compose.yml
 ```
 
-## Using the Docker Compose configurator
+## Docker Compose コンフィギュレーターの使用
 
-You can also use the Docker compose [configurator](/deploy/installation-guides/docker-installation.md#configurator). Make sure to select `Enabled` for the Enterprise Usage Collector option.
+Docker Compose の [コンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator)も利用できます。Enterprise Usage Collector オプションでは「Enabled」を選択してください。
 
-## Collector proxy on Kubernetes using Helm
+## Helm を使用した Kubernetes 上のコレクタープロキシ
 
-Obtain your token as described in step 1.
+ステップ 1 と同様にトークンを取得します。
 
-Get a Weaviate [helm chart](https://github.com/weaviate/weaviate-helm/releases) of version `||site.helm_version||` or higher.
+バージョン `||site.helm_version||` 以上の Weaviate [Helm チャート](https://github.com/weaviate/weaviate-helm/releases) を入手します。
 
-Enable the proxy and configure the proxy using the `collector_proxy` key from the `values.yaml` like so:
+`values.yaml` の `collector_proxy` キーを用いて、プロキシを有効化し設定します。
+
 ```
 collector_proxy:
   enabled: true
@@ -72,11 +73,12 @@ collector_proxy:
     type: LoadBalancer
 ```
 
-Deploy the helm chart and make sure to use the proxy service for your requests.
+Helm チャートをデプロイし、リクエストにプロキシサービスを使用するようにしてください。
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

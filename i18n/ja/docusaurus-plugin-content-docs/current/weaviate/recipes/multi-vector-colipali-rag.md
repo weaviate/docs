@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/multi-vector/multi-vector-colipali-rag.ipynb
 toc: True
-title: "Multi-vector RAG: Using Weaviate to search a collection of PDF documents "
+title: "マルチベクトル RAG: PDF ドキュメント コレクションの検索に Weaviate を利用する"
 featured: False
 integration: False
 agent: False
@@ -12,86 +12,56 @@ tags: ['ColPali', 'Named Vectors']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-## Introduction
+## はじめに
 
-This notebook will demonstrate how to use Weaviate's multi-vector feature to 
-effectively index a collection of PDF documents in order to support textual 
-queries against the contents of the documents, including both text and figures.
+このノートブックでは、Weaviate のマルチベクトル機能を使用して PDF ドキュメント コレクションを効果的にインデックスし、テキストと図を含むドキュメント内容に対するテキスト検索をサポートする方法を紹介します。
 
-In this demonstration we will be working with a dataset of the [top-40 most 
-cited AI papers on arXiv](https://arxiv.org/abs/2412.12121) from the period 
-2023-01-01 to 2024-09-30. 
+ここでは、2023-01-01 から 2024-09-30 の期間における [arXiv で最も引用された AI 論文トップ 40](https://arxiv.org/abs/2412.12121) のデータセットを使用します。
 
-We will be performing retrieval against this collection of PDF documents by 
-embedding both the individual pages of the documents and our queries into the 
-same multi-vector space, reducing the problem to approximate nearest-neighbor 
-search on ColBERT-style multi-vectors under the MaxSim similarity measure. 
+ドキュメントの各ページとクエリの両方を同じマルチベクトル空間に埋め込み、MaxSim 類似度の下で ColBERT スタイルのマルチベクトルによる近似最近傍検索に問題を帰着させることで、この PDF コレクションに対して検索を行います。
 
-The approach we will be using to generate embeddings is outlined in the recent 
-paper [ColPali: Efficient Document Retrieval with Vision Language Models](https://arxiv.org/abs/2407.01449). 
-The paper demonstrates that it is possible to both simplify and 
-speed up traditional approaches to preprocessing PDF documents for retrieval, 
-which involves the use of OCR (Optical Character Recognition) software and 
-separate processing of text and figures, by instead feeding images (screenshots) 
-of entire pages to a Vision Language Model that produces a ColBERT-style embedding.
+埋め込み生成に用いるアプローチは、最近発表された論文 [ColPali: Efficient Document Retrieval with Vision Language Models](https://arxiv.org/abs/2407.01449) で概説されています。この論文は、OCR（Optical Character Recognition）ソフトウェアの使用やテキストと図の個別処理を必要とする従来の PDF 前処理手法を簡素化かつ高速化できることを示しています。具体的には、ページ全体の画像（スクリーンショット）を Vision Language Model に入力し、ColBERT スタイルの埋め込みを生成します。
 
 ![colipali pipeline](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/figures/colipali_pipeline.jpeg)
 
-Specifically, we will be using the publicly available model 
-[ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) to generate 
-embeddings.
+本デモでは、公開されているモデル [ColQwen2-v1.0](https://huggingface.co/vidore/colqwen2-v1.0) を使用して埋め込みを生成します。
 
-## Retrieval example
+## 検索例
 
-As an example of what we are going to build consider the following actual demo 
-query and resulting PDF page from our collection (nearest neighbor):
+構築するシステムの例として、以下の実際のデモ クエリと、その結果として得られた PDF ページ（最近傍）を紹介します。
 
-- Query: "How does DeepSeek-V2 compare against the LLaMA family of LLMs?"
-- Nearest neighbor:  "DeepSeek-V2: A Strong Economical and Efficient 
-Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1.
+- クエリ: 「DeepSeek-V2 は LLaMA 系列の LLM と比較してどのように優れていますか？」
+- 最近傍:  "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1
 
-By inspecting the first page of the 
-[DeepSeek-V2 paper](https://arxiv.org/abs/2405.04434) we see that it does indeed 
-contain a figure that is relevant for answering our query:
+[DeepSeek-V2 論文](https://arxiv.org/abs/2405.04434) の 1 ページ目を見ると、クエリに関連する図が確かに含まれていることがわかります。
 
 ![deepseek efficiency](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/multi-vector/figures/deepseek_efficiency.jpeg)
 
-## Extension to Retrieval Augmented Generation (RAG)
+## Retrieval Augmented Generation への拡張
 
-The above example gives us the most relevant pages to begin looking at in order 
-to answer our query. Vision language models are now powerful enough that we can 
-instead give the query and relevant pages to such a model and have it produce an 
-answer to our query in plain text! 
+上記の例では、クエリに答えるためにまず参照すべき最も関連性の高いページを取得できました。現在の Vision Language Model は非常に強力で、クエリと関連ページをモデルに与えることで、クエリに対する回答をテキストで生成できます。
 
-In order to accomplish this we are going to feed the top results into the 
-state-of-the-art VLM [Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct).
+これを達成するために、最上位の検索結果を最先端の VLM である [Qwen/Qwen2.5-VL-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct) に入力します。
 
-## Demonstration overview
+## デモの概要
 
-The demonstration will proceed through the following steps in order to set up a
- running retrieval example:
+このデモでは、以下の手順で実行可能な検索例を構築します。
 
-1. Loading the ColQwen model from huggingface and adding convenience functions 
-to vectorize images and queries.
-2. Load an example dataset of PDF pages from huggingface.
-3. Spinning up a local Weaviate server and creating a collection of 
-bring-your-own multivectors.
-4. Querying the collection and displaying results.
-5. Setting up Qwen2.5-VL to support retrieval-augmented generation.
+1. Hugging Face から ColQwen モデルを読み込み、画像とクエリをベクトル化するための便利な関数を追加する  
+2. Hugging Face から PDF ページのサンプル データセットをロードする  
+3. ローカル Weaviate サーバーを起動し、独自ベクトル持ち込み型のマルチベクトル コレクションを作成する  
+4. コレクションにクエリを投げて結果を表示する  
+5. Qwen2.5-VL を設定して検索拡張生成を実現する  
 
-## Prerequisites
+## 前提条件
 
-- The Python packages listed in the Pipfile in this directory.
-- A machine capable of running neural networks using 5-10 GB of memory.
-- A local instance of Weaviate version >= 1.29.0
+- Pipfile に記載されている Python パッケージ  
+- 5–10 GB のメモリでニューラルネットワークを実行できるマシン  
+- Weaviate バージョン >= 1.29.0 のローカル インスタンス  
 
-To install all dependencies as listed in the [Pipfile](https://github.com/weaviate/recipes/blob/main/weaviate-features/multi-vector/Pipfile) use `pipenv install` to set 
-up the local environment for this notebook. 
+[ Pipfile](https://github.com/weaviate/recipes/blob/main/weaviate-features/multi-vector/Pipfile) に記載の全依存関係は、`pipenv install` でインストールできます。
 
-The demonstration uses two different vision language models that both require 
-several gigabytes of memory. See the documentation for each individual model and 
-the general pytorch docs in order to figure out how to best run the models on 
-your hardware.
+本デモでは、いずれも複数ギガバイトのメモリを必要とする 2 種類の Vision Language Model を使用します。ハードウェアに合わせた最適な実行方法は、各モデルのドキュメントおよび PyTorch の一般ドキュメントをご参照ください。
 
 ```python
 # Load the ColQWEN model
@@ -338,17 +308,17 @@ qwenvl = QwenVL()
 
 "# RAG examples
 
-Try this out yourself below.
+下で実際に試してみてください。
 
-### Query 1: How did DeepSeek-V2 manage to outperform existing state of the art LLMs?
+### クエリ 1: DeepSeek-V2 は既存の最先端 LLM をどのようにして上回ったのですか？
 
-The most relevant documents for the query "How did DeepSeek-V2 manage to outperform existing state of the art LLMs?" by order of relevance:
+クエリ「DeepSeek-V2 は既存の最先端 LLM をどのようにして上回ったのですか？」に対する関連度順の最も関連性が高いドキュメント:
 
-1) MaxSim: 30.03, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 4
-2) MaxSim: 29.13, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1
-3) MaxSim: 27.68, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 5
+1) MaxSim: 30.03, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 4  
+2) MaxSim: 29.13, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 1  
+3) MaxSim: 27.68, Title: "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" (arXiv: 2405.04434), Page: 5  
 
-The answer from Qwen2.5-VL-3B-Instruct based on these documents:
+これらのドキュメントを基に Qwen2.5-VL-3B-Instruct から得られた回答:
 ```
 DeepSeek-V2 achieved this by optimizing the attention modules and Feed-Forward 
 Networks (FFNs) within the Transformer framework, introducing Multi-head 
@@ -359,15 +329,15 @@ activated parameters, saving 42.5% of training costs, reducing the KV cache by
 93.3%, and boosting the maximum generation throughput to 5.76 times
 ```
 
-### Query 2: Describe the figure on the front page of the paper "Adding Conditional Control to Text-to-Image Diffusion Models"
+### Query 2: 論文 "Adding Conditional Control to Text-to-Image Diffusion Models" の表紙に掲載された図を説明してください
 
-The most relevant documents for the query "Describe the figure on the front page of the paper "Adding Conditional Control to Text-to-Image Diffusion Models"" by order of relevance:
+問い合わせ「論文 "Adding Conditional Control to Text-to-Image Diffusion Models" の表紙にある図を説明してください」に対して、関連度順に最も関連性の高いドキュメントは以下のとおりです。
 
-1) MaxSim: 31.99, Title: "Adding Conditional Control to Text-to-Image Diffusion Models" (arXiv: 2302.05543), Page: 1
-2) MaxSim: 25.26, Title: "Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets" (arXiv: 2311.15127), Page: 1
-3) MaxSim: 24.71, Title: "SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis" (arXiv: 2307.01952), Page: 8
+1) MaxSim: 31.99, タイトル: "Adding Conditional Control to Text-to-Image Diffusion Models" (arXiv: 2302.05543), ページ: 1  
+2) MaxSim: 25.26, タイトル: "Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets" (arXiv: 2311.15127), ページ: 1  
+3) MaxSim: 24.71, タイトル: "SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis" (arXiv: 2307.01952), ページ: 8  
 
-The answer from Qwen2.5-VL-3B-Instruct based on these documents:
+これらのドキュメントに基づく Qwen2.5-VL-3B-Instruct からの回答:  
 ```
 The figure on the front page of the paper "Adding Conditional Control to 
 Text-to-Image Diffusion Models" is titled "Figure 1: Controlling Stable 
@@ -384,15 +354,16 @@ Here's a detailed description of the figure:
 2. **Default**: The default output without any additional conditions.
 3.
 ```
-### Query 3: Why do we need the retrieval step when performing retrieval augmented generation?
 
-The most relevant documents for the query "Why do we need the retrieval step when performing retrieval augmented generation?" by order of relevance:
+### Query 3: 検索拡張生成を実行する際に retrieval ステップが必要なのはなぜですか？
 
-1) MaxSim: 24.53, Title: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), Page: 2
-2) MaxSim: 23.41, Title: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), Page: 1
-3) MaxSim: 21.06, Title: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), Page: 4
+問い合わせ「検索拡張生成を実行する際に retrieval ステップが必要なのはなぜですか？」に対して、関連度順に最も関連性の高いドキュメントは以下のとおりです。
 
-The answer from Qwen2.5-VL-3B-Instruct based on these documents:
+1) MaxSim: 24.53, タイトル: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), ページ: 2  
+2) MaxSim: 23.41, タイトル: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), ページ: 1  
+3) MaxSim: 21.06, タイトル: "Retrieval-Augmented Generation for Large Language Models: A Survey" (arXiv: 2312.10997), ページ: 4  
+
+これらのドキュメントに基づく Qwen2.5-VL-3B-Instruct からの回答:
 
 ```
 The retrieval step is necessary in Retrieval-Augmented Generation (RAG) because 
@@ -438,3 +409,4 @@ with weaviate.connect_to_local() as client:
     
 print(f"\nThe answer from Qwen2.5-VL-3B-Instruct based on these documents:\n{qwenvl.query_images(query_text, result_images)}")
 ```
+

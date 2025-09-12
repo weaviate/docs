@@ -1,7 +1,7 @@
 ---
 title: Java
 sidebar_position: 50
-description: "Official Java client library documentation for integrating Weaviate with Go applications and services."
+description: "Weaviate と Go アプリケーションおよびサービスを統合するための公式 Java クライアントライブラリのドキュメント。"
 image: og/docs/client-libraries.jpg
 # tags: ['java', 'client library']
 ---
@@ -16,22 +16,22 @@ export const javaCardsData = [
   },
 ];
 
-:::note Java client (SDK)
+:::note Java クライアント (SDK)
 
-The latest Java client is version `v||site.java_client_version||`.
+最新の Java クライアントのバージョンは `v||site.java_client_version||` です。
 
 <QuickLinks items={javaCardsData} />
 
 :::
 
-:::info Breaking changes introduced in v4
-The `package` and `import` paths have been updated from `technology.semi.weaviate` to `io.weaviate`.
+:::info v4 で導入された破壊的変更
+`package` と `import` のパスが `technology.semi.weaviate` から `io.weaviate` に変更されました。
 
-See the [Migration Guide](#from-3xx-to-400) for more info.
+詳細は [移行ガイド](#from-3xx-to-400) を参照してください。
 :::
 
-## Installation and setup
-To get the latest stable version of the Java client library, add this dependency to your project:
+## インストールとセットアップ
+最新の安定版 Java クライアントライブラリを取得するには、次の依存関係をプロジェクトに追加してください。
 
 ```xml
 <dependency>
@@ -41,9 +41,9 @@ To get the latest stable version of the Java client library, add this dependency
 </dependency>
 ```
 
-This API client is compatible with Java 8 and beyond.
+この API クライアントは Java 8 以降と互換性があります。
 
-You can use the client in your project as follows:
+プロジェクト内でのクライアントの使用例は次のとおりです。
 
 ```java
 package io.weaviate;
@@ -69,21 +69,21 @@ public class App {
 }
 ```
 
-## Authentication
+## 認証
 
 import ClientAuthIntro from '/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx'
 
 <ClientAuthIntro clientName="Java"/>
 
-### WCD authentication
+### WCD 認証
 
 import ClientAuthWCD from '/docs/weaviate/client-libraries/_components/client.auth.wcs.mdx'
 
 <ClientAuthWCD />
 
-### API key authentication
+### API キー認証
 
-:::info Added in Weaviate Java client version `4.0.2`.
+:::info Weaviate Java クライアントバージョン `4.0.2` で追加されました。
 :::
 
 import ClientAuthApiKey from '/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx'
@@ -98,13 +98,13 @@ Config config = new Config("https", "WEAVIATE_INSTANCE_URL");
 WeaviateClient client = WeaviateAuthClient.apiKey(config, "YOUR-WEAVIATE-API-KEY");  // Replace with your Weaviate instance API key
 ```
 
-### OIDC authentication
+### OIDC 認証
 
 import ClientAuthOIDCIntro from '/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx'
 
 <ClientAuthOIDCIntro />
 
-#### <i class="fa-solid fa-key"></i> Resource Owner Password Flow
+#### <i class="fa-solid fa-key"></i> リソースオーナーパスワードフロー
 
 import ClientAuthFlowResourceOwnerPassword from '/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx'
 
@@ -123,7 +123,7 @@ WeaviateAuthClient.clientPassword(
 );
 ```
 
-#### <i class="fa-solid fa-key"></i> Client Credentials flow
+#### <i class="fa-solid fa-key"></i> クライアントクレデンシャルフロー
 
 import ClientAuthFlowClientCredentials from '/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx'
 
@@ -141,7 +141,7 @@ WeaviateAuthClient.clientCredentials(
 );
 ```
 
-#### <i class="fa-solid fa-key"></i> Refresh Token flow
+#### <i class="fa-solid fa-key"></i> リフレッシュトークンフロー
 
 import ClientAuthBearerToken from '/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx'
 
@@ -160,9 +160,9 @@ WeaviateAuthClient.bearerToken(
 );
 ```
 
-## Custom headers
+## カスタムヘッダー
 
-You can pass custom headers to the client, which are added at initialization:
+クライアント初期化時に追加されるカスタムヘッダーを渡すことができます。
 
 ```java
 import io.weaviate.client.Config;
@@ -179,15 +179,15 @@ public class App {
 }
 ```
 
-## References
+## 参照
 
-All [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](../api/graphql/index.md) references covered by the Java client, and explained on those reference pages in the code blocks.
+すべての [RESTful エンドポイント](/weaviate/api/rest) と [GraphQL 関数](../api/graphql/index.md) のリファレンスは Java クライアントでサポートされており、各リファレンスページのコードブロックで解説しています。
 
-## Typed GraphQL Responses
+## 型付き GraphQL 応答
 
-The Weaviate Java client supports automatic deserialization of GraphQL query responses into Java objects. This eliminates the need for manual JSON parsing and provides compile-time type safety when working with your collection data.
+Weaviate Java クライアントは、GraphQL クエリの応答を自動的に Java オブジェクトへデシリアライズします。これにより手動で JSON を解析する必要がなくなり、コレクションデータを扱う際にコンパイル時の型安全性が得られます。
 
-For example, you can define a `Pizzas` class to capture the response from the following query:
+たとえば、次のクエリの応答を受け取るために `Pizzas` クラスを定義できます。
 
 ```java
 @Getter
@@ -213,7 +213,7 @@ try (WeaviateAsyncClient asyncClient = client.async()) {
 }
 ```
 
-In return, the response will be a `GraphQLTypedResponse<Pizzas>` object:
+返却される応答は `GraphQLTypedResponse<Pizzas>` オブジェクトになります。
 
 ```java
 Result<GraphQLTypedResponse<Pizzas>> result = getResults();
@@ -230,19 +230,19 @@ Float[] vector = pizza.getAdditional().getVector();
 Float certainty = pizza.getAdditional().getCertainty();
 ```
 
-## Design
+## 設計
 
-### Builder pattern
+### ビルダー パターン
 
-The Java client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/weaviate/api/rest) and the [GraphQL reference pages](../api/graphql/index.md).
+Java クライアントの各関数は「 Builder パターン」で設計されています。 このパターンは複雑なクエリ オブジェクトを構築するために使用されます。 つまり、（ RESTful の GET リクエストに似たリクエストで Weaviate からデータを取得する場合や、より複雑な GraphQL クエリを行う場合など）1 つ 1 つのオブジェクトを組み合わせて関数を構築し、複雑さを低減します。 ビルダー オブジェクトの中にはオプションのものもあれば、特定の機能を実行するために必須のものもあります。 詳細は [RESTful API リファレンス](/weaviate/api/rest) と [GraphQL リファレンス](../api/graphql/index.md) に記載されています。
 
-The code snippet above shows a simple query similar to `RESTful GET /v1/meta`. The client is initiated by requiring the package and connecting to the running instance. Then, a query is constructed by using the `.metaGetter()` on `.misc()`. The query will be sent with the `.run()` function, this object is thus required for every function you want to build and execute.
+上記のコード スニペットは、`RESTful GET /v1/meta` に相当するシンプルなクエリを示しています。 クライアントはパッケージをインポートし、起動中のインスタンスへ接続することで初期化します。 その後、`.misc()` に対して `.metaGetter()` を呼び出してクエリを構築します。 クエリは `.run()` 関数で送信されるため、このオブジェクトは作成して実行したいすべての関数で必須になります。
 
-## Migration Guides
+## 移行ガイド
 
-### From `3.x.x` to `4.0.0`
+### `3.x.x` から `4.0.0` への移行
 
-#### Moved from `technology.semi.weaviate` to `io.weaviate` package
+#### `technology.semi.weaviate` から `io.weaviate` パッケージへ移動
 
 Before:
 ```java
@@ -256,9 +256,9 @@ package io.weaviate;
 import io.weaviate.client.*;
 ```
 
-### From `2.4.0` to `3.0.0`
+### `2.4.0` から `3.0.0` への移行
 
-#### Removed @Deprecated method `Aggregate::withFields(Fields fields)`
+#### 非推奨 (@Deprecated) メソッド `Aggregate::withFields(Fields fields)` を削除
 
 Before:
 ```java
@@ -274,7 +274,7 @@ After:
 client.graphQL().aggregate().withFields(name, description)...
 ```
 
-#### Removed @Deprecated method `Get::withFields(Fields fields)`
+#### 非推奨 (@Deprecated) メソッド `Get::withFields(Fields fields)` を削除
 
 Before:
 ```java
@@ -290,7 +290,7 @@ After:
 client.graphQL().get().withFields(name, description)...
 ```
 
-#### Removed @Deprecated method `Get::withNearVector(Float[] vector)`
+#### 非推奨 (@Deprecated) メソッド `Get::withNearVector(Float[] vector)` を削除
 
 Before:
 ```java
@@ -305,9 +305,9 @@ NearVectorArgument nearVector = NearVectorArgument.builder().vector(new Float[]{
 client.graphQL().get().withNearVector(nearVector)...
 ```
 
-#### All `where` filters use the same implementation
+#### すべての `where` フィルターが同一実装を使用
 
-With `batch delete` feature, unified `filters.WhereFilter` implementation is introduced, which replaces `classifications.WhereFilter`, `graphql.query.argument.WhereArgument` and `graphql.query.argument.WhereFilter`.
+`batch delete` 機能の導入に伴い、`filters.WhereFilter` の統一実装が追加され、`classifications.WhereFilter`、`graphql.query.argument.WhereArgument`、`graphql.query.argument.WhereFilter` を置き換えました。
 
 ##### GraphQL
 
@@ -433,7 +433,7 @@ WhereFilter where = WhereFilter.builder()
 client.graphQL().aggregate().withWhere(where)...
 ```
 
-##### Classification
+##### 分類
 
 Before:
 ```java
@@ -482,12 +482,12 @@ WhereFilter where = WhereFilter.builder()
 client.classifications().scheduler().withTrainingSetWhereFilter(where)...
 ```
 
-## Releases
+## リリース
 
-Go to the [GitHub releases page](https://github.com/weaviate/java-client/releases) to see the history of the Java client library releases.
+Java クライアント ライブラリのリリース履歴については、[GitHub のリリース ページ](https://github.com/weaviate/java-client/releases) をご覧ください。
 
 <details>
-  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+  <summary>Weaviate と対応するクライアント バージョンの表を表示</summary>
 
 import ReleaseHistory from '/_includes/release-history.md';
 
@@ -495,8 +495,9 @@ import ReleaseHistory from '/_includes/release-history.md';
 
 </details>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

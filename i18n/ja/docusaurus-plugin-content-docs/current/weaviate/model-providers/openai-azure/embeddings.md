@@ -1,12 +1,12 @@
 ---
-title: Text Embeddings
-description: "Weaviate's integration with Azure OpenAI's APIs allows you to access their models' capabilities directly from Weaviate."
+title: テキスト埋め込み
+description: "Weaviate と Azure OpenAI の API 連携により、Azure OpenAI のモデル機能を Weaviate から直接利用できます。"
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_openai_azure.jpg
 # tags: ['model providers', 'azure', 'openai', 'embeddings']
 ---
 
-# Azure OpenAI Embeddings with Weaviate
+# Weaviate における Azure OpenAI 埋め込み
 
 
 import Tabs from '@theme/Tabs';
@@ -19,43 +19,43 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with Azure OpenAI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Azure OpenAI の API 連携により、Azure OpenAI のモデル機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an Azure OpenAI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Azure OpenAI API key. This feature is called the *vectorizer*.
+[Weaviate のベクトルインデックスを設定](#configure-the-vectorizer)して Azure OpenAI 埋め込みモデルを使用すると、指定したモデルと Azure OpenAI API キーを使って Weaviate がさまざまな処理の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import)には、Weaviate がテキストオブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_openai_azure_embedding.png)
+![埋め込みの統合イメージ](../_includes/integration_openai_azure_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate 設定
 
-Your Weaviate instance must be configured with the Azure OpenAI vectorizer integration (`text2vec-openai`) module.
+お使いの Weaviate インスタンスには、Azure OpenAI ベクトライザー統合（`text2vec-openai`）モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターのメタデータ](/deploy/configuration/meta.md)を確認し、モジュールが有効かどうかを確かめてください。  
+- [モジュール設定方法](../../configuration/modules.md)に従い、Weaviate でモジュールを有効化してください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Azure OpenAI API key to Weaviate for this integration. Go to [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) to sign up and obtain an API key.
+この連携には、Weaviate に有効な Azure OpenAI API キーを提供する必要があります。API キーは [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) でサインアップして取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡します。
 
-- Set the `AZURE_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate が利用できる `AZURE_APIKEY` 環境変数を設定する  
+- 下記の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -88,11 +88,11 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an Azure OpenAI embedding model:
+Azure OpenAI 埋め込みモデルを使用するために、以下のように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer)します。
 
-To select the model, specify the Azure resource name.
+モデルを選択するには、Azure リソース名を指定してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -127,19 +127,21 @@ To select the model, specify the Azure resource name.
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-The following examples show how to configure Azure OpenAI-specific options.
 
-- `resource_name` (Required): The name of the Azure OpenAI resource to use.
-- `deployment_id` (Required): The deployment ID of the Azure OpenAI resource.
-- `base_url` (Optional): The base URL of the Azure OpenAI API.
+### ベクトライザーのパラメーター
+
+次の例では、 Azure OpenAI 固有のオプションを設定する方法を示します。
+
+- `resource_name` （必須）: 使用する Azure OpenAI リソースの名前です。  
+- `deployment_id` （必須）: Azure OpenAI リソースのデプロイメント ID です。  
+- `base_url` （任意）: Azure OpenAI API のベース URL です。  
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -168,26 +170,25 @@ The following examples show how to configure Azure OpenAI-specific options.
       language="goraw"
     />
   </TabItem>
-
 </Tabs>
 
-For further details on these parameters, see consult the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+これらのパラメーターの詳細については、 [Azure OpenAI API ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/) を参照してください。
 
-## Header parameters
+## ヘッダーのパラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+実行時にリクエストの追加ヘッダーとして、 API キーおよびいくつかの任意パラメーターを指定できます。利用可能なヘッダーは次のとおりです。  
 
-- `X-Azure-Api-Key`: The Azure API key.
-- `X-Azure-Deployment-Id`: The Azure deployment ID.
-- `X-Azure-Resource-Name`: The Azure resource name.
+- `X-Azure-Api-Key`: Azure API キーです。  
+- `X-Azure-Deployment-Id`: Azure のデプロイメント ID です。  
+- `X-Azure-Resource-Name`: Azure のリソース名です。  
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定した追加ヘッダーは、既存の Weaviate 設定を上書きします。  
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーは上記の [API 資格情報の例](#api-credentials) に示すとおりに指定してください。
 
-## Data import
+## データのインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーの設定後、 [データをインポート](../../manage-objects/import.mdx) して Weaviate に取り込みます。 Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -220,21 +221,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデルベクトルを既にお持ちの場合は、それを直接 Weaviate に渡すことができます。これは、同じモデルで既に埋め込みを生成しており、別のシステムからデータを移行する際などに Weaviate でそれらを再利用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Azure OpenAI model.
+ベクトライザーを設定すると、 Weaviate は指定した Azure OpenAI モデルを使用してベクトル検索とハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_openai_azure_embedding_search.png)
+![検索時の埋め込み統合のイラスト](../_includes/integration_openai_azure_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+ベクトル検索を実行すると、 Weaviate はクエリテキストを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。  
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、 `limit` で指定した件数 `n` の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -267,15 +268,16 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+### ハイブリッド検索
+
+:::info ハイブリッド検索とは？
+ハイブリッド検索では、ベクトル検索とキーワード（ BM25 ）検索を実行し、その結果を[結合](../../search/hybrid.md)してデータベースから最も一致するオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、 Weaviate は指定したモデルを用いてテキストクエリを埋め込みに変換し、データベースからスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した数 `n` のスコアが最も高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -308,32 +310,33 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
-See the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#embeddings-models) for a list of available models and their regional availability.
+利用可能なモデルとリージョンごとの提供状況については、[Azure OpenAI ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#embeddings-models)を参照してください。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Azure OpenAI generative models + Weaviate](./generative.md).
+- [Azure OpenAI 生成モデル + Weaviate](./generative.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合設定を行うと、 Weaviate でのデータ管理および検索操作は他のコレクションと同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ハウツー：コレクションを管理](../../manage-collections/index.mdx) と [ハウツー：オブジェクトを管理](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその中のオブジェクトの作成、読み取り、更新、削除）の方法を説明しています。
+- [ハウツー：クエリ & 検索](../../search/index.mdx) ガイドでは、ベクトル、キーワード、ハイブリッド検索および 検索拡張生成 の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
-- Azure OpenAI [API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
-- Azure OpenAI [models and availability](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#embeddings-models)
+- Azure OpenAI [API ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
+- Azure OpenAI [モデルと提供状況](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#embeddings-models)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

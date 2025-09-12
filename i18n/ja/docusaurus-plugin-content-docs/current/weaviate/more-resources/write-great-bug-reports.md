@@ -1,129 +1,58 @@
 ---
-title: How to write great bug reports
+title: 優れたバグ報告を作成する方法
 sidebar_position: 99
 image: og/docs/more-resources.jpg
 # tags: ['how to', 'reporting a bug', 'bugfix', 'reproducing example']
 ---
 
 
-## Write great bug reports!
+## 優れたバグ報告を作成する
 
-This page outlines what an ideal bug report would look like. We know that it is
-not always possible to write a perfect bug report, and we don't want to
-discourage you from reporting a bug just because you might not be able to
-provide all the info needed to make the report great. At the same time we want
-to provide you with the information to make the lives of our engineers a bit
-easier. Sometimes we also need to prioritize and decide about which bug ticket
-to pick up first. If a bug report is well-prepared, it has a greater chance of
-being picked up first.
+このページでは、理想的なバグ報告がどのようなものかを説明します。完璧なバグ報告を書くことが常に可能とは限らず、すべての情報を提供できないからといってバグ報告をためらってほしくはありません。ただし、エンジニアの作業を少しでも楽にできるよう、役立つ情報をお伝えします。また、バグのチケットをどの順番で対応するかを優先付けする必要がある場合もあります。十分に準備されたバグ報告は、先に対応される可能性が高くなります。
 
-### What makes a great bug report stand out?
+### 優れたバグ報告を際立たせる要素
 
-Here are some points that make a bug report great:
+以下のポイントが、バグ報告を優れたものにします。
 
-- **Providing Context**
-  When you have been working on a specific use-case or fighting against a
-  specific bug for ages there is probably a lot of context in your or your
-  teams' head(s). Sometimes this context gets lost when handing over a bug
-  report to one of our engineers. Since they have probably been working on
-  something completely different before, it may be difficult for them to
-  understand all your goals and assumptions that are like second-nature to you.
-  A great bug reports sets that context and makes sure that any engineer -
-  whether an inside our outside contributor - can get started on this ticket
-  easily.
+- **コンテキストの提供**  
+  特定のユースケースに取り組んでいたり、長い間特定のバグと格闘している場合、あなたやチームの頭の中には多くのコンテキストがあるでしょう。しかし、そのコンテキストはバグ報告をエンジニアに引き渡す際に失われがちです。エンジニアは全く別の作業をしていた可能性が高く、あなたにとって当たり前の目標や前提を理解しにくい場合があります。優れたバグ報告はそのコンテキストを設定し、社内外のどのエンジニアでも容易にチケットに取り組めるようにします。
 
-- **Right level of information**
-  Depending on the kind of bug, there is a different need for information.
-  Let's consider two different possible bugs: For the first one an image when
-  using the `img2vec` module was not vectorized correctly and your results are
-  off because of it. For the second one, consider a scenario where you a
-  performing a lookup by id and it is much slower than you think it should be.
-  Those are both valid bugs, but we need different kind of information for
-  each. For example, for the image-vectorization bug we need to know a lot of
-  the details about the `img2vec` module: What versions were used? Which
-  inference container was running? Was there a GPU involved? What file format
-  did the image have? But looking at the performance bug, we probably need more
-  info regarding your hardware. How was the machine sized? What kind of disks
-  were used? What were the vitals (CPU usage, Memory usage, Disk pressure)
-  during the slow query, etc.? We do not expect you to know all the internals
-  of Weaviate, but we ask you to think about what details may be helpful in
-  reproducing the bug and which are most likely superfluous.
+- **適切な情報量**  
+  バグの種類によって必要となる情報は異なります。例として 2 つのバグを考えてみましょう。1 つ目は `img2vec` モジュールを使用した際に画像が正しくベクトル化されず、結果が狂ってしまうケース。2 つ目は ID でのルックアップが予想よりもかなり遅いケースです。どちらも正当なバグですが、それぞれに必要な情報は異なります。画像ベクトル化のバグでは `img2vec` モジュールの詳細が必要です。使用したバージョンは？どの推論コンテナを実行していたか？GPU は使用していたか？画像のファイル形式は？一方、パフォーマンスのバグではハードウェアに関する情報が重要です。マシンのサイズは？どの種類のディスクを使用していたか？遅いクエリ実行中の CPU 使用率、メモリ使用量、ディスク圧迫状況は？など。すべての内部を理解している必要はありませんが、バグを再現するのに役立つ詳細と不要な詳細を考えてみてください。
 
-- **Quick to reproduce**
-  Every bug is important and we are happy about every single report. However,
-  we must still prioritize. A bug report that is easier for us to reproduce is
-  a bug report we might prefer. A great bug report contains a reproducing
-  example that makes no assumptions about prior state and reproduces be bug in
-  its entirety. Below are some examples for a great reproducing example in a
-  bug report.
+- **再現が容易**  
+  すべてのバグは重要で、私たちはどの報告にも感謝しています。しかし、優先順位を付ける必要があります。再現しやすいバグ報告は取り組みやすいです。優れたバグ報告には、事前状態を仮定せず完全にバグを再現できる例が含まれています。以下にバグ報告における良い再現例の例を示します。
 
+- **特定のエリアに絞り込まれている**  
+   Weaviate は Weaviate サーバーだけでなく、言語別の Weaviate クライアントや任意のモジュールなど、エコシステム全体で構成されています。モジュールが機械学習モデルを使用する場合は独自の推論コンテナを持つこともあります。優れたバグ報告は問題がどこで発生しているかをできるだけ絞り込みます。どこでバグが起きているかを確認するためのヒントを下に示します。
 
-- **Narrowed down to a particular area**
-  Weaviate is more than just the Weaviate server, it's an entire ecosystem that
-  often contains the Weaviate Server, a language-specific Weaviate client and
-  any number of optional modules. Those modules may bring their own inference
-  containers if they make use of a Machine-Learning model. A great bug report
-  tries to narrow down where the problem goes wrong. There are some helpful
-  tips below to see how you can find out where the bug occurs.
+ここまでで *何* が優れたバグ報告を構成するかを確認しました。次は個々の分野を見て、*どのように* すればより良い報告を書けるかを説明します。
 
-Now that we have established *what* makes a great bug report, let's look at
-some of the individual areas and see *how* we can write better reports.
+## 常に提供すべき最小限の情報とコンテキスト
 
-## What is the minimal information and context that should always be provided?
+- 使用したすべてのバージョンを明示してください。最低限、 Weaviate サーバーとクライアントのバージョンが必要です。  
+- 最近のバージョンでバグが導入された可能性がある場合は、問題が発生しない最後のバージョンも報告してください。  
+- バグの再現に重要なモジュールがある場合は、そのモジュールを指定してください。モジュールが複数のモデルを使用する場合は、モデル名も指定してください。  
 
-- Make sure that all the versions used are explicitly listed. This includes at
-  the minimum the version of the Weaviate server and the client.
-- Is there a chance that the bug was introduced in a recent version? In this
-  case, report the last version that does not have the specified issue.
-- Is there module involved that is vital to reproducing the bug? If so, specify
-  the module. If the module uses different models, specify the model names too.
+## 良い再現例の提供方法
 
-## How do I provide a good reproducing example?
+- 優れた再現例は状態を一切仮定しません。必ず空の Weaviate インスタンスから始め、バグ再現に必要なオブジェクトをインポートします。エンジニアは読み取り / 検索クエリだけからインポートすべきオブジェクトを推測できません。  
+- エラー再現に必要なものはすべて再現例の一部に含めてください。エンジニアが例をコピー＆ペーストするだけで問題を確認できるようにします。  
+- 再現例はコードで表現してください。これは Weaviate の言語クライアントでも、`curl` コマンドの一連でも構いません。  
+- 再現例には期待していた動作を明記してください。実際の挙動が望ましくない理由が明白でない場合があります。代わりに何が起こるべきだったかをコード、コードコメント、または付随テキストで伝えてください。  
 
-- A great reproducing example makes zero assumptions about state. This means
-  that the example always starts with an empty Weaviate instance and imports
-  any object that is required to reproduce the bug. Our engineers cannot predict
-  what kind of objects should be imported based on a read/search query.
-- Anything that is required to reproduce the error is part of the reproducing
-  example. Our engineers should be able to copy/paste the example and
-  immediately see that something is wrong.
-- The reproducing example is expressed as code. This could be one of Weaviate's
-  language clients or a series of `curl` commands.
-- The reproducing example tells us what you expected to happen. In some cases
-  it might not be obvious why the actual behavior is not the desired behavior.
-  Let us know what you expected to happen instead. This can be either in
-  the form of code, a code comment, or text accompanying your example.
+## 問題が Weaviate、クライアント、その他のどこで発生しているかの判別方法
 
-## How do I know if a problem occurs in Weaviate, a client or somewhere else?
+- 問題が Weaviate サーバーではなくクライアントにあると思われる場合は、別の言語クライアントまたはクライアントを使用しない方法で同様のリクエストを送信して確認できます。後者が最も確実で、クライアントの問題を完全に排除できます。純粋な HTTP（例: `curl`, Postman など）でリクエストを送ってもエラーが再現する場合、そのエラーは Weaviate サーバー側で発生しています。  
+- 言語クライアントからスタックトレースが表示された場合は、エラーがどこで発生したかを推測できます。スタックトレースにネットワークリクエスト、2xx 以外の HTTP ステータスコード、シャードやインデックスに関するエラーメッセージが含まれている場合、バグは Weaviate サーバー内で発生している可能性が高いです。反対に、その言語特有の内容が多い場合はクライアント側のエラーを示唆します。  
+- Kubernetes で実行するために `weaviate-helm` リポジトリなど、 Weaviate エコシステムの他のツールを使用している場合、それらの設定で問題が発生する可能性もあります。ランタイムやマニフェスト固有のバグと思われる場合は、別のランタイムでも試してみてください。すでに試したことがあれば教えてください。  
 
-- If you have a suspicion that a problem doesn't actually occur in the Weaviate
-  server, but possibly in one of the clients, you can verify sending a similar
-  request using a different language client or no language client. The latter
-  case is the best as it rules out client problems altogether. If you can
-  still reproduce the error by sending a request using pure HTTP (e.g. via
-  `curl`, Postman, etc.), you can be sure that the error occurs on the Weaviate
-  server-side.
-- If you see a stack trace from your language-client you can make an educated
-  guess about where the error occurred. If the stack trace contains a network
-  request, a non-2xx HTTP status code or an error message containing
-  information about shards and indexes, there is a good chance the bug occurred
-  inside the Weaviate server. If you see something that is very specific to the
-  client's language however, it may be an indication that the error occurred in
-  the client.
-- If you are using any other tools from the Weaviate eco-system, for example
-  the `weaviate-helm` repository to run on Kubernetes, there is also a chance
-  that something goes wrong there. If you think that the bug might be specific
-  to the runtime and its manifests, it might make sense to also try the setup
-  on a different runtime. Let us know what you have already tried.
+## 上記の情報を提供することが困難な場合
 
-## What if it's not feasible to provide the information mentioned above?
+心配はいりません。バグが複雑で再現が容易でないこともあると理解しています。完璧なバグ報告を書くのが難しい場合でも、ぜひ報告してください。良い報告を作成しようとしてくださる姿勢を私たちは大いに歓迎します。
 
-Don't worry about it. We know that sometimes bugs are tricky and not so easy to
-reproduce. If it is simply not feasible to write a perfect bug report, write one
-anyway. We are very happy when we see that you made an effort to write a good
-report.
+## ありがとうございます
 
-## Thank you
+Weaviate へのバグ報告は Weaviate への貢献です。私たちは、  
+問題を報告し、Weaviate を改善するために時間を割いてくださり、本当に感謝しています。ありがとうございます！
 
-A bug report is a contribution to Weaviate. We are really thankful for you
-taking the time to report the issue and helping us improve Weaviate. Thank you!

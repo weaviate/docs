@@ -1,13 +1,13 @@
 ---
-title: Generative AI
+title: 生成 AI
 sidebar_position: 51
 # image: og/docs/integrations/provider_integrations_xai.jpg
 # tags: ['model providers', 'xAI', 'generative', 'rag']
 ---
 
-# xAI Generative AI with Weaviate
+# Weaviate での xAI 生成 AI
 
-:::info Added in `v1.30.0`
+:::info `v1.30.0` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -18,43 +18,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integrations with xAI's API allows you to access their models' capabilities directly from Weaviate.
+Weaviate と xAI の API の統合により、xAI のモデル機能へ Weaviate から直接アクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with xAI. Weaviate will perform Retrieval Augmented Generation (RAG) using the specified model using your xAI API Key.
+[Weaviate コレクションを設定](#configure-collection)して、xAI の生成 AI モデルを使用してください。Weaviate は指定したモデルを用いて 検索拡張生成 (RAG) を実行し、xAI API キーを使用します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the generative model on xAI to generate outputs.
+より具体的には、Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得した後、それらを xAI 上の生成モデルへ渡して出力を生成します。
 
 ![RAG integration illustration](../_includes/integration_xai_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the xAI generative (`generative-xai`) module.
+ご利用の Weaviate インスタンスには、xAI 生成 (`generative-xai`) モジュールが設定されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md)をチェックしてください。  
+- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md)ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid API key to Weaviate for this integration. Go to [xAI](https://console.x.ai/) to sign up and obtain an API key.
+この統合を利用するには、有効な API キーを Weaviate に提供する必要があります。サインアップし API キーを取得するには [xAI](https://console.x.ai/) にアクセスしてください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で API キーを Weaviate に渡します。
 
-- Set the `XAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照可能な `XAI_APIKEY` 環境変数を設定する  
+- 以下の例のように、実行時に API キーを渡す  
 
 <Tabs groupId="languages">
 
@@ -78,13 +78,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an xAI generative AI model:
+[Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)して、xAI の生成 AI モデルを使用するには次のようにします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -107,9 +107,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### Select a model
+### モデルを選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+Weaviate で使用する [利用可能なモデル](#available-models) のいずれかを、次の設定例のように指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,11 +132,11 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models) のいずれかを[指定](#generative-parameters)できます。モデルを指定しない場合は [デフォルトモデル](#available-models) が使用されます。
 
-### Generative parameters
+### 生成パラメーター
 
-Configure the following generative parameters to customize the model behavior.
+モデルの挙動をカスタマイズするために、以下の生成パラメーターを設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -159,11 +159,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [xAI API documentation](https://docs.x.ai/docs/guides/chat#parameters).
+モデルパラメーターの詳細については、[xAI API ドキュメント](https://docs.x.ai/docs/guides/chat#parameters)を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクションを作成する際にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -183,19 +183,19 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 連携を設定した後、[シングルプロンプト](#single-prompt) または [グループタスク](#grouped-task) の方法で RAG 操作を実行します。
 
-### Single prompt
+### シングルプロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_xai_rag.png)
+![シングルプロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_xai_rag.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果内の各オブジェクトに対してテキストを生成するには、シングルプロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定された `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングルプロンプトクエリを作成する際、`{}` を使用して、言語モデルに渡したいオブジェクトのプロパティを補完します。たとえば、オブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -219,13 +219,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループタスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_xai_rag.png)
+![グループタスク RAG 統合は検索結果セットに対して 1 つの出力を生成します](../_includes/integration_xai_rag.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 つのテキストを生成するには、グループタスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えると、`n` 件の検索結果がある場合、生成モデルはそのグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -249,27 +249,28 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-## References
+## 参考資料
 
-### Available models
+### 利用可能なモデル
 
-You can use any generative model [on xAI's API](https://docs.x.ai/docs/models) with Weaviate.
+Weaviate では [xAI の API](https://docs.x.ai/docs/models) 上の任意の生成モデルを使用できます。
 
-The default model is `grok-2-latest`.
+デフォルトモデルは `grok-2-latest` です。
 
-## Further resources
+## 追加リソース
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、Weaviateでのデータ管理および検索操作は他のコレクションと同様に動作します。モデルに依存しない次の例をご覧ください:
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) の各ガイドでは、コレクションおよびその中のオブジェクトに対する作成・読み取り・更新・削除といったデータ操作の方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、ベクトル、キーワード、ハイブリッド検索に加えて 検索拡張生成 を実行する方法を示しています。
 
-### References
+### 参考資料
 
-- [xAI API Documentation](https://docs.x.ai/docs/introduction)
+- [xAI API ドキュメント](https://docs.x.ai/docs/introduction)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

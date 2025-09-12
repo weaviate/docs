@@ -7,51 +7,52 @@ image: og/docs/integrations/provider_integrations_voyageai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Voyage AI offers a wide range of models for natural language processing. Weaviate seamlessly integrates with Voyage AI's APIs, allowing users to leverage Voyage AI's models directly from the Weaviate Database.
+Voyage AI は自然言語処理向けに幅広いモデルを提供しています。 Weaviate は Voyage AI の API とシームレスに統合されており、ユーザーは Weaviate Database から直接 Voyage AI のモデルを利用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI ドリブンアプリケーションを簡単に構築できます。
 
-## Integrations with Voyage AI
+## Voyage AI との統合
 
-### Embedding models for vector search
+### ベクトル検索向け埋め込みモデル
 
 ![Embedding integration illustration](../_includes/integration_voyageai_embedding.png)
 
-Voyage AI's embedding models transform text data into vector embeddings, capturing meaning and context.
+Voyage AI の埋め込みモデルはテキストデータをベクトル埋め込みへ変換し、意味と文脈を捉えます。
 
-[Weaviate integrates with Voyage AI's embedding models](./embeddings.md) and [multimodal embedding models](./embeddings-multimodal.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Voyage AI の埋め込みモデル](./embeddings.md) と [マルチモーダル埋め込みモデル](./embeddings-multimodal.md) に対応しており、データをシームレスにベクトル化できます。この統合により、追加の前処理やデータ変換を行わずにセマンティック検索やハイブリッド検索を実行できます。
 
-- [Voyage AI embedding integration page](./embeddings.md)
-- [Voyage AI multimodal embedding integration page](./embeddings-multimodal.md)
+- [Voyage AI 埋め込み統合ページ](./embeddings.md)
+- [Voyage AI マルチモーダル埋め込み統合ページ](./embeddings-multimodal.md)
 
-### Reranker models
+### リランカー モデル
 
 ![Reranker integration illustration](../_includes/integration_voyageai_reranker.png)
 
-Voyage AI's reranker models are designed to improve the relevance and ranking of search results.
+Voyage AI のリランカーモデルは検索結果の関連性と順位を改善するよう設計されています。
 
-[The Weaviate reranker integration](./reranker.md) allows users to easily refine their search results by leveraging Voyage AI's reranker models.
+[Weaviate のリランカー統合](./reranker.md) を利用すると、Voyage AI のリランカーモデルで検索結果を簡単に洗練できます。
 
-[Voyage AI reranker integration page](./reranker.md)
+[Voyage AI リランカー統合ページ](./reranker.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage Voyage AI's powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内から直接 Voyage AI の強力なモデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI ドリブンアプリケーションの開発プロセスが簡素化され、開発スピードが向上し、革新的なソリューションの創出に専念できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Voyage AI API key to Weaviate for these integrations. Go to [Voyage AI](https://www.voyageai.com/) to sign up and obtain an API key.
+これらの統合を利用するには、有効な Voyage AI の API キーを Weaviate に設定する必要があります。 [Voyage AI](https://www.voyageai.com/) にアクセスしてサインアップし、API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Voyage AI models and start using them in your applications.
+その後、該当する統合ページで Voyage AI のモデルを Weaviate に設定する方法を確認し、アプリケーションで使い始めましょう。
 
-- [Text Embeddings](./embeddings.md)
-- [Multimodal Embeddings](./embeddings-multimodal.md)
-- [Rerankers](./reranker.md)
+- [テキスト埋め込み](./embeddings.md)
+- [マルチモーダル埋め込み](./embeddings-multimodal.md)
+- [リランカー](./reranker.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

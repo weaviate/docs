@@ -1,7 +1,7 @@
 ---
-title: Migrate from v2 to v3
+title: v2 から v3 への移行
 sidebar_position: 70
-description: "Upgrade guide for migrating TypeScript applications from v2 to current v3 client library version."
+description: "TypeScript アプリケーションを v2 から最新の v3 クライアントライブラリーへ移行するためのアップグレードガイド。"
 image: og/docs/client-libraries.jpg
 # tags: ['typescript', 'client library']
 ---
@@ -18,32 +18,32 @@ import TSClientIntro from '/_includes/clients/ts-client-intro.mdx';
 
 <TSClientIntro />
 
-## Install
+## インストール
 
-To install the TypeScript client v3, follow these steps:
+TypeScript クライアント v3 をインストールするには、次の手順に従ってください。
 
-1. **Update Node.js**
+1. **Node.js を更新する**
 
-   The v3 client requires `Node v18` or higher.
+   v3 クライアントは `Node v18` 以上が必要です。
 
-1. **Install the new client package**
+1. **新しいクライアントパッケージをインストールする**
 
   ```bash
   npm install weaviate-client
   ```
 
-1. **Upgrade Weaviate**
+1. **Weaviate をアップグレードする**
 
-   The v3 client requires Weaviate Database `1.23.7` or higher. Whenever possible, use the latest versions of Weaviate Database and the Weaviate client.
+   v3 クライアントは Weaviate Database `1.23.7` 以上が必要です。可能な限り、Weaviate Database と Weaviate クライアントは最新バージョンを使用してください。
 
-1. **Open a gRPC port**
+1. **gRPC ポートを開放する**
 
-   The default gRPC port is 50051.
+   デフォルトの gRPC ポートは 50051 です。
 
     <details>
       <summary>docker-compose.yml</summary>
 
-    To map the Weaviate gRPC port in your Docker container to a local port, add this code to your `docker-compose.yml` file:
+    あなたの Docker コンテナ内の Weaviate gRPC ポートをローカルポートへマッピングするには、`docker-compose.yml` ファイルに次のコードを追加してください:
 
     ```yaml
         ports:
@@ -52,17 +52,17 @@ To install the TypeScript client v3, follow these steps:
     ```
     </details>
 
-## Instantiate a client
+## クライアントの生成
 
-The weaviate object is the main entry point for all API operations. The v3 client instantiates the weaviate object and [creates a connection](/weaviate/connections) to your Weaviate instance.
+weaviate オブジェクトはすべての API 操作のエントリポイントです。v3 クライアントは weaviate オブジェクトを生成し、あなたの Weaviate インスタンスへ [接続を作成](/weaviate/connections) します。
 
-In most cases, you should use one of the connection helper functions to connect to your Weaviate instance:
+通常は、以下の接続ヘルパー関数のいずれかを使用して Weaviate インスタンスへ接続します。
 
 - `connectToWCD`
 - `connectToLocal`
 - `connectToCustom`
 
-You can also use a custom configuration to instantiate the client directly:
+カスタム設定を使用して、クライアントを直接生成することもできます。
 
 <Tabs groupId="connections">
 <TabItem value="local" label="Local">
@@ -91,17 +91,17 @@ You can also use a custom configuration to instantiate the client directly:
 </TabItem>
 </Tabs>
 
-## Changes in v3
+## v3 での変更点
 
-This section highlights some features of the v3 TypeScript client.
+このセクションでは、TypeScript クライアント v3 の主な機能を紹介します。
 
-### Design philosophy
+### 設計思想
 
-The v3 client interacts with collections as the primary way to work with objects in your Weaviate database.
+v3 クライアントは、Weaviate データベース内のオブジェクトを操作する際に、コレクションを主要な操作単位として扱います。
 
-Your application code creates an object that represents a collection. This object enables search and CRUD operations to be performed against it.
+アプリケーションコードでは、コレクションを表すオブジェクトを作成します。このオブジェクトを通じて、検索や CRUD 操作を実行できます。
 
-This example returns objects from the `JeopardyQuestion` collection.
+次の例は、`JeopardyQuestion` コレクションからオブジェクトを取得します。
 
 ```js
 const myCollection = client.collections.get('JeopardyQuestion');
@@ -111,19 +111,19 @@ const result = await myCollection.query.fetchObjects()
 console.log(JSON.stringify(result, null, 2));
 ```
 
-### Node support only
+### Node のみのサポート
 
-The gRPC protocol is fast and provides other internal benefits. Unfortunately, gRPC does not support browser-based client development.
+gRPC プロトコルは高速で、内部的にも多くの利点があります。しかし残念ながら、gRPC はブラウザベースのクライアント開発をサポートしていません。
 
-The v3 client uses gRPC to connect to your Weaviate instance. The client supports Node.js, server-based development. It does not support browser-based web client development.
+v3 クライアントは gRPC を使用して Weaviate インスタンスへ接続します。クライアントは Node.js を用いたサーバーサイド開発をサポートしますが、ブラウザベースの Web クライアント開発はサポートしていません。
 
-To develop a browser-based application, use the [v2 client](/weaviate/client-libraries/typescript/typescript-v2).
+ブラウザベースのアプリケーションを開発する場合は、[v2 クライアント](/weaviate/client-libraries/typescript/typescript-v2) を使用してください。
 
-### Work with collections
+### コレクションの利用
 
-The v2 client uses the `client` object for CRUD and search operations. In the v3 client, the `collection` object replaces the `client` object.
+v2 クライアントでは CRUD と検索操作に `client` オブジェクトを使用します。v3 クライアントでは、この `client` オブジェクトが `collection` オブジェクトに置き換わりました。
 
-After you create a connection, you do not have to specify the collection for each operation. This helps to reduce errors.
+接続を作成した後は、各操作で毎回コレクションを指定する必要はありません。これによりエラーが減ります。
 
 <Tabs groupId="collections">
 <TabItem value="three" label="Client v3">
@@ -144,13 +144,13 @@ After you create a connection, you do not have to specify the collection for eac
 </TabItem>
 </Tabs>
 
-The collection object can be re-used throughout the codebase.
+コレクションオブジェクトはコードベース全体で再利用できます。
 
-### Builder Pattern is removed
+### ビルダーパターンの廃止
 
-The v2 client uses builder patterns to construct queries. Builder patterns can be confusing and can lead to invalid queries.
+v2 クライアントはビルダーパターンを使用してクエリを構築します。ビルダーパターンはわかりにくく、無効なクエリにつながる可能性があります。  
 
-The v3 client doesn't use the builder pattern. The v3 client uses specific methods and method parameters instead.
+v3 クライアントはビルダーパターンを使用しません。その代わり、v3 クライアントは特定のメソッドとメソッドパラメーターを使用します。
 
 <Tabs groupId="builderEx">
 <TabItem value="three" label="Client v3">
@@ -171,13 +171,13 @@ The v3 client doesn't use the builder pattern. The v3 client uses specific metho
 </TabItem>
 </Tabs>
 
-### Batch Inserts
+### バッチ挿入
 
-The `insertMany()` method replaces `objectBatcher()` to make batch insertions easier. 
+`insertMany()` メソッドは `objectBatcher()` に代わり、バッチ挿入を容易にします。  
 
-For inserts of over 5000 objects, use `insertMany()` as part of a batch process.
+5,000 件を超えるオブジェクトを挿入する場合は、バッチプロセスの一部として `insertMany()` を使用してください。  
 
-For more information on batch processing, see [Batch Inserts](../../manage-objects/import.mdx).
+バッチ処理の詳細については、[バッチ挿入](../../manage-objects/import.mdx) を参照してください。
 
 <Tabs groupId="batchEx">
 <TabItem value="three" label="Client v3">
@@ -198,15 +198,15 @@ For more information on batch processing, see [Batch Inserts](../../manage-objec
 </TabItem>
 </Tabs>
 
-### Client Close Method
+### クライアントのクローズメソッド
 
 import TSClientClose from '/_includes/clients/ts-client-close.mdx';
 
 <TSClientClose />
 
-### Filter data
+### データフィルター
 
-The `Filter` helper class makes it easier to use filters with conditions. The v3 client streamlines how you use `Filter` so your code is cleaner and more concise.
+`Filter` ヘルパークラスにより、条件付きフィルターの利用が簡単になります。v3 クライアントでは `Filter` の使用方法が簡素化され、コードがよりクリーンで簡潔になります。
 
 <Tabs groupId="filterDataEx">
 <TabItem value="three" label="Client v3">
@@ -227,9 +227,9 @@ The `Filter` helper class makes it easier to use filters with conditions. The v3
 </TabItem>
 </Tabs>
 
-### Generate Namespace
+### generate ネームスペース
 
-The v3 client adds a new namespace, `generate` for generative queries. This makes it easier to distinguish between generative queries and vector searches.
+v3 クライアントでは、生成クエリ用の新しいネームスペース `generate` が追加されました。これにより、生成クエリと ベクトル 検索を区別しやすくなります。
 
 <Tabs groupId="generateNameEx">
 <TabItem value="three" label="Client v3">
@@ -250,9 +250,9 @@ The v3 client adds a new namespace, `generate` for generative queries. This make
 </TabItem>
 </Tabs>
 
-### Return object
+### 戻りオブジェクト
 
-The new client has a cleaner return object. It is easier to access important information like object UUIDs, object metadata, and generative query results.
+新しいクライアントでは、戻りオブジェクトがよりシンプルになりました。オブジェクトの UUID 、オブジェクトメタデータ、生成クエリの結果などの重要な情報へ容易にアクセスできます。
 
 <Tabs groupId="returnObjEx">
 <TabItem value="three" label="Client v3">
@@ -273,13 +273,15 @@ The new client has a cleaner return object. It is easier to access important inf
 </TabItem>
 </Tabs>
 
-## Code comparison
 
-These samples compare v2 client code and v3 client code.
 
-The comparison samples omit sections of the code that are the same for both clients. The complete v2 and v3 client scripts are [here](#sample-scripts).
+## コード比較
 
-### Imports
+これらのサンプルは v2 クライアントコードと v3 クライアントコードを比較したものです。
+
+比較用サンプルでは、両クライアントで共通するコード部分を省略しています。完全版の v2 および v3 クライアントスクリプトは [こちら](#sample-scripts) です。
+
+### インポート
 
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
@@ -300,7 +302,7 @@ The comparison samples omit sections of the code that are the same for both clie
 </TabItem>
 </Tabs>
 
-### Connect to Weaviate Cloud
+### Weaviate Cloud への接続
 
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
@@ -321,7 +323,7 @@ The comparison samples omit sections of the code that are the same for both clie
 </TabItem>
 </Tabs>
 
-### Create a collection
+### コレクションの作成
 
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
@@ -342,7 +344,7 @@ The comparison samples omit sections of the code that are the same for both clie
 </TabItem>
 </Tabs>
 
-### Batch insert
+### バッチ挿入
 
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
@@ -363,7 +365,7 @@ The comparison samples omit sections of the code that are the same for both clie
 </TabItem>
 </Tabs>
 
-### Query your data
+### データのクエリー
 
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
@@ -384,7 +386,7 @@ The comparison samples omit sections of the code that are the same for both clie
 </TabItem>
 </Tabs>
 
-### Delete a collection
+### コレクションの削除
 
 
 <Tabs groupId="languages">
@@ -406,12 +408,14 @@ The comparison samples omit sections of the code that are the same for both clie
 </TabItem>
 </Tabs>
 
-### Sample scripts
 
-These scripts are complete versions of the client comparison code from this section.
+
+### サンプルスクリプト
+
+これらのスクリプトは、このセクションのクライアント比較コードの完全版です。
 
 <Tabs groupId="languages">
-<TabItem value="jsv3" label="Client v3">
+<TabItem value="jsv3" label="クライアント v3">
 <FilteredTextBlock
   text={TSv3Code}
   startMarker="// CompleteScript"
@@ -419,7 +423,7 @@ These scripts are complete versions of the client comparison code from this sect
   language="js"
 />
 </TabItem>
-<TabItem value="jsv2" label="Client v2">
+<TabItem value="jsv2" label="クライアント v2">
 <FilteredTextBlock
   text={TSv2Code}
   startMarker="// CompleteScript"
@@ -429,29 +433,30 @@ These scripts are complete versions of the client comparison code from this sect
 </TabItem>
 </Tabs>
 
-For more code examples, see the following:
+追加のコード例については、以下をご覧ください。
 
-- [Search](/weaviate/search)
-- [Collection management](/weaviate/manage-collections)
-- [Connect to Weaviate](/weaviate/connections)
+- [検索](/weaviate/search)
+- [コレクション管理](/weaviate/manage-collections)
+- [Weaviate へ接続](/weaviate/connections)
 
-## How to migrate your code
+## コード移行方法
 
-To update v2 client code to v3, follow these steps:
+v2 クライアントコードを v3 に更新するには、次の手順に従ってください。
 
-1. Install the [v3 client package](https://www.npmjs.com/package/weaviate-client).
-1. Edit your v2 code to [import](/weaviate/client-libraries/typescript#import-the-client) the v3 client package.
-1. Edit your v2 [client instantiation](/weaviate/client-libraries/typescript) code.
-1. Edit your code to reflect the [collection first](#design-philosophy) client orientation.
+1. [v3 クライアントパッケージ](https://www.npmjs.com/package/weaviate-client) をインストールします。  
+1. v2 のコードを編集して、v3 クライアントパッケージを [import](/weaviate/client-libraries/typescript#import-the-client) します。  
+1. v2 の [クライアントのインスタンス化](/weaviate/client-libraries/typescript) コードを編集します。  
+1. コードを編集し、[コレクション優先](#design-philosophy) のクライアント指向に合わせます。  
 
-Continue to update the v2 code until all of the old code is replace with the v3 equivalent.
+すべての古いコードが v3 相当のコードに置き換えられるまで、v2 コードの更新を続けてください。
 
-## Client change logs
+## クライアント変更ログ
 
-The client [change logs](https://github.com/weaviate/typescript-client/releases) for each release are available on GitHub.
+各リリースのクライアント [change logs](https://github.com/weaviate/typescript-client/releases) は GitHub でご覧いただけます。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

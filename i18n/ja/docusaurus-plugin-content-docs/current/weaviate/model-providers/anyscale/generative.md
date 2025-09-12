@@ -1,11 +1,11 @@
 ---
-title: Generative AI
+title: 生成 AI
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_anyscale.jpg
 # tags: ['model providers', 'anyscale', 'generative', 'rag']
 ---
 
-# Anyscale Generative AI with Weaviate
+#  Weaviate と Anyscale による生成 AI
 
 
 import Tabs from '@theme/Tabs';
@@ -16,43 +16,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with Anyscale's Endpoints APIs allows you to access their models' capabilities directly from Weaviate.
+ Weaviate の Anyscale Endpoints API との統合により、 Weaviate から直接 Anyscale のモデル機能を利用できます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with Anyscale. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your Anyscale API key.
+[コレクションを設定](#configure-collection)して Anyscale の生成 AI モデルを使用すると、 Weaviate は指定したモデルとお客様の Anyscale API キーを用いて検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the Anyscale generative model to generate outputs.
+具体的には、 Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得した後、これらを Anyscale の生成モデルに渡して出力を生成します。
 
 ![RAG integration illustration](../_includes/integration_anyscale_rag.png)
 
-## Requirements
+## 必要条件
 
-### Weaviate configuration
+###  Weaviate の設定
 
-Your Weaviate instance must be configured with the Anyscale generative AI integration (`generative-anyscale`) module.
+お使いの Weaviate インスタンスには、 Anyscale 生成 AI 統合 ( `generative-anyscale` ) モジュールが有効化されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、 Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているかをご確認ください。  
+- [モジュールの設定方法](../../configuration/modules.md) に従って、 Weaviate でモジュールを有効にしてください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid Anyscale API key to Weaviate for this integration. Go to [Anyscale](https://www.anyscale.com/) to sign up and obtain an API key.
+この統合を利用するには、有効な Anyscale API キーを Weaviate に提供する必要があります。 [Anyscale](https://www.anyscale.com/) でサインアップし、 API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で API キーを Weaviate に渡します。
 
-- Set the `ANYSCALE_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- `ANYSCALE_APIKEY` 環境変数を設定して Weaviate から参照できるようにする。  
+- 下記の例のように、実行時に API キーを渡す。
 
 <Tabs groupId="languages">
 
@@ -76,13 +76,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an Anyscale generative model:
+[Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)して Anyscale の生成モデルを使用するには、次のように設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -105,11 +105,11 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models) のいずれかを [指定](#generative-parameters) できます。モデルを指定しない場合は[デフォルトモデル](#available-models) が使用されます。
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+ Weaviate に使用させる [利用可能なモデル](#available-models) を指定できます。以下はその設定例です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,9 +132,11 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-### Generative parameters
 
-Configure the following generative parameters to customize the model behavior.
+
+### 生成パラメーター
+
+以下の生成パラメーターを設定して、モデルの挙動をカスタマイズします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -157,11 +159,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [Anyscale Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/).
+モデルパラメーターの詳細については、[Anyscale Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定する以外に、クエリ実行時に上書きすることも可能です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -182,30 +184,30 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Header parameters
+## ヘッダーパラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+API キーおよびオプションのパラメーターは、リクエストに追加ヘッダーとして実行時に渡せます。利用可能なヘッダーは次のとおりです。
 
-- `X-Anyscale-Api-Key`: The Anyscale API key.
-- `X-Anyscale-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Anyscale URL.
+- `X-Anyscale-Api-Key`: Anyscale の API キー  
+- `X-Anyscale-Baseurl`: 既定の Anyscale URL の代わりに使用するベース URL（例: プロキシ）
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に渡された追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+上記の [API credentials の例](#api-credentials) のようにヘッダーを指定してください。
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI の統合を設定した後、[シングル プロンプト](#single-prompt) または [グループ化タスク](#grouped-task) の方法で RAG 操作を実行できます。
 
-### Single prompt
+### シングル プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_anyscale_rag_single.png)
+![シングル プロンプトの RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_anyscale_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果の各オブジェクトに対してテキストを生成する場合は、シングル プロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+次の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングル プロンプト クエリを作成する際、Weaviate から言語モデルへ渡したいオブジェクトプロパティを中括弧 `{}` でインターポレートします。たとえば、オブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -229,13 +231,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ化タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_anyscale_rag_grouped.png)
+![グループ化タスクの RAG 統合は検索結果セット全体に対して 1 つの出力を生成します](../_includes/integration_anyscale_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果のセット全体に対して 1 つのテキストを生成する場合は、グループ化タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+つまり、`n` 件の検索結果がある場合でも、生成モデルはグループ全体に対して 1 つの出力のみを生成します。
 
 <Tabs groupId="languages">
 
@@ -259,9 +261,11 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-## References
 
-### Available models
+
+## 参考資料
+
+### 利用可能なモデル
 
 * `meta-llama/Llama-2-70b-chat-hf` (default)
 * `meta-llama/Llama-2-13b-chat-hf`
@@ -270,21 +274,22 @@ In other words, when you have `n` search results, the generative model generates
 * `mistralai/Mistral-7B-Instruct-v0.1`
 * `mistralai/Mixtral-8x7B-Instruct-v0.1`
 
-## Further resources
+## 追加リソース
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、 Weaviate のデータ管理および検索操作は他のコレクションとまったく同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) のガイドでは、データ操作（つまり create、read、update、delete によるコレクションおよびそれら内のオブジェクトの作成・読み取り・更新・削除）の方法を解説しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索、さらに 検索拡張生成 の実行方法を紹介しています。
 
-### References
+### 参考
 
-- Anyscale [Endpoints API documentation](https://docs.anyscale.com/endpoints/intro/)
+- Anyscale [Endpoints API ドキュメント](https://docs.anyscale.com/endpoints/intro/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

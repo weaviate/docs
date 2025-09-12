@@ -1,11 +1,11 @@
 ---
-title: Text Embeddings
+title: テキスト 埋め込み
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_jinaai.jpg
 # tags: ['model providers', 'jinaai', 'embeddings']
 ---
 
-# Jina AI Embeddings with Weaviate
+# Weaviate での Jina AI 埋め込み
 
 
 import Tabs from '@theme/Tabs';
@@ -18,43 +18,43 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with Jina AI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate の Jina AI API との統合により、モデルの機能に Weaviate から直接アクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a Jina AI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Jina AI API key. This feature is called the *vectorizer*.
+[Jina AI 埋め込みモデルを使用するよう Weaviate の ベクトル インデックスを設定](#configure-the-vectorizer) すると、指定したモデルとお客様の Jina AI API キーを使用して、さまざまな操作のために Weaviate が埋め込みを生成します。この機能は *vectorizer* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、Weaviate はテキスト オブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate はテキスト クエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_jinaai_embedding.png)
+![埋め込み統合のイメージ](../_includes/integration_jinaai_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Jina AI vectorizer integration (`text2vec-jinaai`) module.
+お使いの Weaviate インスタンスは、Jina AI ベクトライザー統合 (`text2vec-jinaai`) モジュールが有効化されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) 利用者向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、Weaviate Cloud (WCD) のサーバーレス インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスティング利用者向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっているかどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) をご確認ください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定の手順](../../configuration/modules.md) を参照してください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Jina AI API key to Weaviate for this integration. Go to [Jina AI](https://jina.ai/embeddings/) to sign up and obtain an API key.
+この統合を利用するには、Weaviate に有効な Jina AI API キーを提供する必要があります。API キーは [Jina AI](https://jina.ai/embeddings/) でサインアップして取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡します。
 
-- Set the `JINAAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate が参照できる環境変数 `JINAAI_APIKEY` を設定する  
+- 下記の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -87,9 +87,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Jina AI embedding model:
+以下のように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) して、Jina AI 埋め込みモデルを使用します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -121,9 +121,11 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+
+### モデルの選択
+
+以下の設定例のように、ベクトライザーで使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -155,22 +157,22 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate で使用する [利用可能なモデル](#available-models) のいずれかを[指定](#vectorizer-parameters)できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザーのパラメーター
 
-The following examples show how to configure Jina AI-specific options.
+以下の例では、Jina AI 固有のオプションを設定する方法を示します。
 
-Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
+`dimensions` は `jina-embeddings-v2` モデルには適用されない点にご注意ください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -202,9 +204,9 @@ Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
 
 </Tabs>
 
-## Data import
+## データのインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、Weaviate に[データをインポート](../../manage-objects/import.mdx)します。Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -237,21 +239,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデルベクトルがすでにある場合、それを直接 Weaviate に渡すことができます。同じモデルで既に埋め込みを生成している場合や、他のシステムからデータを移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Jina AI model.
+ベクトライザーが設定されると、 Weaviate は指定された Jina AI モデルを使用してベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_jinaai_embedding_search.png)
+![検索時の Embedding 統合の図](../_includes/integration_jinaai_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、 Weaviate はテキストクエリを指定されたモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、 `limit` で設定された `n` 件の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -284,15 +286,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索はベクトル検索とキーワード（ BM25 ）検索を行い、[結果を組み合わせて](../../search/hybrid.md)データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、 Weaviate はテキストクエリを指定されたモデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、 `limit` で設定された `n` 件の最もスコアが高いオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -325,39 +327,40 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参考
 
-### Available models
+### 利用可能なモデル
 
-- `jina-embeddings-v3` (Added in Weaviate `v1.26.5` and `v1.27`)
-    - When using this model, Weaviate will automatically use the appropriate `task` type, applying `retrieval.passage` for embedding entries and `retrieval.query` for queries.
-    - By default, Weaviate uses `1024` dimensions
-- `jina-embeddings-v2-base-en` (Default)
+- `jina-embeddings-v3`（ Weaviate `v1.26.5` と `v1.27` で追加）
+    - このモデルを使用すると、 Weaviate は自動的に適切な `task` タイプを使用し、エントリの埋め込みには `retrieval.passage` を、クエリには `retrieval.query` を適用します。
+    - デフォルトで Weaviate は `1024` 次元を使用します
+- `jina-embeddings-v2-base-en`（デフォルト）
 - `jina-embeddings-v2-small-en`
 
-Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
+`jina-embeddings-v2` モデルでは `dimensions` は適用されませんのでご注意ください。
 
-## Further resources
+## 追加情報
 
-### Other integrations
+### その他の統合
 
-- [Jina AI ColBERT embedding models + Weaviate](./embeddings-colbert.md).
-- [Jina AI multimodal embedding models + Weaviate](./embeddings-multimodal.md)
-- [Jina AI reranker models + Weaviate](./reranker.md)
+- [Jina AI ColBERT Embedding モデル + Weaviate](./embeddings-colbert.md)
+- [Jina AI マルチモーダル Embedding モデル + Weaviate](./embeddings-multimodal.md)
+- [Jina AI リランカー（reranker）モデル + Weaviate](./reranker.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+統合がコレクションで設定されると、 Weaviate のデータ管理および検索操作は他のコレクションと同一の方法で動作します。モデルに依存しない以下の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクション管理](../../manage-collections/index.mdx) と [How-to: オブジェクト管理](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその中のオブジェクトの作成・読み取り・更新・削除）の方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、検索操作（ベクトル・キーワード・ハイブリッド）および検索拡張生成の方法を示しています。
 
-### External resources
+### 外部リソース
 
-- Jina AI [Embeddings API documentation](https://jina.ai/embeddings/)
+- Jina AI [Embeddings API ドキュメント](https://jina.ai/embeddings/)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

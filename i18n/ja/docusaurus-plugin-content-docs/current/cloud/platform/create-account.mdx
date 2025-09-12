@@ -1,17 +1,17 @@
 ---
-title: Create a user account
+title: ユーザー アカウントの作成
 sidebar_position: 20
-description: "Account creation process for accessing Weaviate Cloud console."
+description: "Weaviate Cloud コンソールへアクセスするためのアカウント作成プロセス。"
 image: og/wcd/user_guides.jpg
 ---
 
 import LandingRegister from '/docs/cloud/img/wcs-landing-page-register.jpg';
 
-Weaviate Cloud (WCD) has an interactive console. Create a user account, then login to manage WCD clusters, run queries, and configure your organization details.
+Weaviate Cloud（ WCD ）にはインタラクティブ コンソールがあります。ユーザー アカウントを作成し、ログインして WCD クラスターの管理、クエリの実行、組織情報の設定を行いましょう。
 
-## Create a new user account
+## 新規ユーザー アカウントの作成
 
-Follow these steps to create a new Weaviate Cloud account.
+以下の手順で Weaviate Cloud アカウントを作成します。
 
 import Register from '/docs/cloud/img/weaviate-cloud-register.png';
 
@@ -19,50 +19,49 @@ import Register from '/docs/cloud/img/weaviate-cloud-register.png';
   <div class="col col--6">
     <ol>
       <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link>を開きます。
       </li>
       <li>
-        Choose the <code>Sign up</code> option.
+        <code>Sign up</code> オプションを選択します。
       </li>
       <li>
-        To create a new account provide an email address and password and click
-        on the <code>Sign up</code> button <span class="callout">1</span>.
+        新しいアカウントを作成するには、メール アドレスとパスワードを入力し、
+        <code>Sign up</code> ボタンをクリックします <span class="callout">1</span>。
       </li>
       <ol>
         <li>
-          You can also register through the{' '}
-          <code>AWS Marketplace</code> or <code>Google Cloud Marketplace</code>
-          <span class="callout">2</span>.
+          また、<code>AWS Marketplace</code> または <code>Google Cloud Marketplace</code> から登録することもできます
+          <span class="callout">2</span>。
         </li>
       </ol>
       <li>
-        After you confirm your email address, go back to the{' '}
-        <Link to="https://console.weaviate.cloud">login page</Link>.
+        メール アドレスを確認したら、
+        <Link to="https://console.weaviate.cloud">ログイン ページ</Link>に戻ります。
       </li>
-      <li>Log in to Weaviate Cloud.</li>
+      <li>Weaviate Cloud にログインします。</li>
     </ol>
   </div>
   <div class="col col--6">
     <div class="card">
       <div class="card__image">
-        <img src={Register} alt="Create a cluster" />
+        <img src={Register} alt="クラスタの作成" />
       </div>
-      <div class="card__body">Register a new Weaviate Cloud account.</div>
+      <div class="card__body">新しい Weaviate Cloud アカウントを登録します。</div>
     </div>
   </div>
 </div>
 
-## Configure billing information
+## 計算・請求情報の設定
 
-Sandbox instances are free, short-term instances that expire after 14 days. If you are using a Sandbox instance to try out Weaviate, you don't have to set up billing.
+Sandbox インスタンスは、14 日で期限が切れる無償の短期インスタンスです。Weaviate を試すために Sandbox インスタンスを使用する場合、請求の設定は不要です。
 
-Serverless clusters are persistent instances that are suitable for production, development, and testing. Serverless clusters are paid instances. The cost of each instance depends on the instance type and the support plan you choose. You must configure billing before you can create a Serverless instance. Follow [this guide](/cloud/platform/billing) to set up a billing account.
+Serverless クラスターは、運用・開発・テストに適した永続インスタンスです。Serverless クラスターは有料インスタンスで、料金はインスタンスタイプと選択したサポート プランによって異なります。Serverless インスタンスを作成する前に請求設定を行う必要があります。[こちらのガイド](/cloud/platform/billing)に従って請求アカウントを設定してください。
 
-If you register through a cloud marketplace like [AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) or [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA), billing will be consolidated through that cloud provider.
+[AWS](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic) や [GCP](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate?inv=1&invt=AbwjlA) などのクラウド マーケットプレイス経由で登録した場合、請求はそのクラウド プロバイダーにまとめて行われます。
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

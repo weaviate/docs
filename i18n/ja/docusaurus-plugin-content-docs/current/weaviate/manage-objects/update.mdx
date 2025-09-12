@@ -1,5 +1,5 @@
 ---
-title: Update objects
+title: オブジェクトの更新
 sidebar_position: 30
 image: og/docs/howto.jpg
 ---
@@ -18,29 +18,29 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.updat
 import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
 import SkipLink from '/src/components/SkipValidationLink'
 
-Weaviate allows partial or complete object updates.
+Weaviate ではオブジェクトを部分的または完全に更新できます。
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-  - Partial updates use <SkipLink href="/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D">`PATCH` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
-  - Complete updates use <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">`PUT` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
-  - Updates that include a `vector` property will recalculate the vector embedding (unless all updated `text` properties are [skipped](../manage-collections/vector-config.mdx#property-level-settings)).
-  - To update objects, you must provide the collection name, id and properties to update.
-  - For [multi-tenancy](../concepts/data.md#multi-tenancy) collections, you will also need to specify the tenant name. See [Manage data: multi-tenancy operations]( ../manage-collections/multi-tenancy.mdx) for details on how.
+  - 部分更新は、内部的には <SkipLink href="/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D">`PATCH` リクエストを `/v1/objects` REST API エンドポイントに送信</SkipLink> して実行されます。  
+  - 完全更新は、内部的には <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">`PUT` リクエストを `/v1/objects` REST API エンドポイントに送信</SkipLink> して実行されます。  
+  - `vector` プロパティを含む更新では、`text` プロパティがすべて [スキップ](../manage-collections/vector-config.mdx#property-level-settings) されていない限り、ベクトル埋め込みが再計算されます。  
+  - オブジェクトを更新するには、コレクション名、ID、更新するプロパティを指定する必要があります。  
+  - [マルチテナンシー](../concepts/data.md#multi-tenancy) コレクションの場合は、テナント名も指定する必要があります。詳細は [データ管理: マルチテナンシー操作](../manage-collections/multi-tenancy.mdx) を参照してください。  
   <br/>
 
   <RestObjectsCRUDClassnameNote/>
 
 </details>
 
-## Update object properties
+## オブジェクトプロパティの更新
 
-This operation replaces the entire value of the specified properties only, leaving the unspecified properties. Provide the collection name, the object id, and the properties to update.
+この操作では、指定したプロパティの値をまるごと置き換え、指定していないプロパティはそのまま残します。コレクション名、オブジェクト ID、および更新するプロパティを指定してください。
 
-If you update the value of a *previously vectorized* property, Weaviate re-vectorizes the object automatically. This also reindexes the updated object.
+以前にベクトル化されたプロパティの値を更新した場合、Weaviate はオブジェクトを自動的に再ベクトル化します。これにより更新されたオブジェクトも再インデックスされます。
 
-However, if you add a *new* property to your collection definition, Weaviate only vectorizes the new objects. Weaviate doesn't re-vectorize and re-index existing objects when a new property is defined, only when an existing property is updated.
+ただし、新しいプロパティをコレクション定義に追加した場合、Weaviate は新規オブジェクトのみをベクトル化します。新しいプロパティが定義されたときに既存オブジェクトを再ベクトル化および再インデックスすることはなく、既存プロパティが更新されたときのみ行います。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -93,9 +93,9 @@ However, if you add a *new* property to your collection definition, Weaviate onl
   </TabItem>
 </Tabs>
 
-## Update object vector
+## オブジェクト ベクトルの更新
 
-The object vector can also be updated similarly to properties. For [named vectors](../config-refs/collections.mdx#named-vectors), provide the data as a dictionary/map similarly to the [object creation](./create.mdx#create-an-object-with-named-vectors).
+オブジェクト ベクトルもプロパティと同様に更新できます。[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を使用する場合は、[オブジェクト作成](./create.mdx#create-an-object-with-named-vectors) と同様に、データを辞書（マップ）形式で指定してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -126,27 +126,29 @@ The object vector can also be updated similarly to properties. For [named vector
 
   <TabItem value="js2" label="JS/TS Client v2">
 
-  >  Coming soon (vote for the [feature request](https://github.com/weaviate/typescript-client/issues/64))
+  > Coming soon (vote for the [機能リクエスト](https://github.com/weaviate/typescript-client/issues/64))
 
   </TabItem>
 
   <TabItem value="java" label="Java">
 
-  >  Coming soon
+  > 近日公開
 
   </TabItem>
 
   <TabItem value="go" label="Go">
 
-  >  Coming soon
+  > 近日公開
 
   </TabItem>
 </Tabs>
 
 
-## Replace an entire object
 
-The entire object can be replaced by providing the collection name, id and the new object.
+
+## オブジェクト全体の置換
+
+コレクション名、 id 、新しいオブジェクトを指定してオブジェクト全体を置換できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -204,11 +206,11 @@ The entire object can be replaced by providing the collection name, id and the n
 </Tabs>
 
 
-## Delete a property
+## プロパティの削除
 
-Deleting or updating properties in the collection definition is [not yet supported](https://github.com/weaviate/weaviate/issues/2848).
+コレクション定義におけるプロパティの削除や更新は[まだサポートされていません](https://github.com/weaviate/weaviate/issues/2848)。
 
-At object level, you can replace the object with a copy that has those properties deleted, or set to `""` for text properties.
+オブジェクトレベルでは、該当プロパティを削除したコピーと置き換えるか、テキストプロパティの場合は値を `""` に設定することで対応できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -265,15 +267,15 @@ At object level, you can replace the object with a copy that has those propertie
   </TabItem>
 </Tabs>
 
+## 関連ページ
 
-## Related pages
-
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">References: REST - /v1/objects</SkipLink>
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">リファレンス: REST - /v1/objects</SkipLink>
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

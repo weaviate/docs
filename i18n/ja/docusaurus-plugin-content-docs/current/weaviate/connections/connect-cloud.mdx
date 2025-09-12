@@ -1,5 +1,5 @@
 ---
-title: Weaviate Cloud
+title: Weaviate クラウド
 sidebar_position: 10
 image: og/docs/connect.jpg
 # tags: ['getting started', 'connect']
@@ -17,19 +17,19 @@ import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
 
-Follow these steps to connect to a Weaviate Cloud (WCD) instance.
+以下の手順で Weaviate クラウド (WCD) インスタンスに接続します。
 
-## Retrieve your API key and REST endpoint
+## API キーと REST エンドポイントの取得
 
 import RetrieveAPIKeys from '/_includes/wcs/retrieve-api-keys.mdx';
 
 <RetrieveAPIKeys />
 
-## Connection example
+## 接続例
 
 <!-- TODO[g-despot] Refactor into an import and reuse in Cloud docs to avoid duplication -->
 
-To connect, use the `REST Endpoint` and the `Admin` API key stored as [environment variables](#environment-variables):
+接続には、`REST Endpoint` と `Admin` API キーを [環境変数](#environment-variables) に保存して使用します。
 
 import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
 
@@ -94,9 +94,9 @@ import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
 </TabItem>
 </Tabs>
 
-## Third party API keys
+## サードパーティ API キー
 
-If you use API-based models for vectorization or RAG, you must provide an API key for the service. To add third party API keys, follow these examples:
+ベクトル化や RAG に API ベースのモデルを使用する場合、サービスの API キーが必要です。サードパーティ API キーを追加するには、以下の例に従ってください。
 
 <Tabs groupId="languages">
   <TabItem value="py4" label="Python Client v4">
@@ -157,13 +157,15 @@ If you use API-based models for vectorization or RAG, you must provide an API ke
   </TabItem>
 </Tabs>
 
-## Environment variables
+
+
+## 環境変数
 
 import EnvVarsHowto from '/_includes/environment-variables.mdx';
 
 <EnvVarsHowto />
 
-## gRPC timeouts
+## gRPC タイムアウト
 
 import GRPCTimeoutIntro from '/_includes/connect/timeouts-intro.mdx';
 
@@ -173,8 +175,9 @@ import GRPCTimeouts from '/_includes/code/connections/timeouts-cloud.mdx';
 
 <GRPCTimeouts />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback />
+

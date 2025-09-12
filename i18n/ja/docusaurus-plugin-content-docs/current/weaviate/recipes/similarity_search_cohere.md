@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb
 toc: True
-title: "Similarity Search with Cohere"
+title: "Cohere を用いた 類似検索"
 featured: False
 integration: False
 agent: False
@@ -12,13 +12,13 @@ tags: ['Similarity Search', 'Cohere']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-## Dependencies
+## 依存関係
 
 ```python
 !pip install weaviate-client
 ```
 
-## Connect to Weaviate
+## Weaviate への接続
 
 ```python
 import weaviate, os
@@ -43,8 +43,8 @@ client = weaviate.connect_to_local(
 client.is_ready()
 ```
 
-## Create a collection
-> Collection stores your data and vector embeddings.
+## コレクションの作成
+> コレクションはデータと ベクトル 埋め込みを格納します。
 
 ```python
 # Note: in practice, you shouldn"t rerun this cell, as it deletes your data
@@ -72,7 +72,7 @@ client.collections.create(
 print("Successfully created collection: JeopardyQuestion.")
 ```
 
-## Import the Data
+## データのインポート
 
 ```python
 import requests, json
@@ -95,9 +95,9 @@ else:
     print("Insert complete.")
 ```
 
-## Query Weaviate: Similarity Search (Text objects)
+## Weaviate へのクエリ: 類似検索 (テキストオブジェクト)
 
-Similarity search options for text objects in **Weaviate**:
+** Weaviate ** でテキストオブジェクトに対して利用できる類似検索オプション:
 
 1. [near_text](https://docs.weaviate.io/weaviate/search/similarity#an-input-medium)
 
@@ -105,9 +105,9 @@ Similarity search options for text objects in **Weaviate**:
 
 3. [near_vector](https://docs.weaviate.io/weaviate/search/similarity#a-vector)
 
-### nearText Example
+### nearText の例
 
-Find a `JeopardyQuestion` about "animals in movies". Limit it to only 4 responses.
+"animals in movies" に関する `JeopardyQuestion` を検索します。結果は 4 件に制限します。
 
 ```python
 # note, you can reuse the collection object from the previous cell.
@@ -124,7 +124,7 @@ for item in response.objects:
     print("Data:", json.dumps(item.properties, indent=2), "\n")
 ```
 
-Return vector embeddings.
+ベクトル 埋め込みも返します。
 
 ```python
 response = jeopardy.query.near_text(
@@ -139,7 +139,7 @@ for item in response.objects:
     print("Vector:", item.vector, "\n")
 ```
 
-Now, also request the `distance` for each returned item.
+さらに、返された各アイテムの `distance` も取得します。
 
 ```python
 import weaviate.classes.query as wq
@@ -156,9 +156,9 @@ for item in response.objects:
     print("Data:", item.properties, "\n")
 ```
 
-### nearObject Example
+### nearObject の例
 
-Search through the `JeopardyQuestion` class to find the top 4 objects closest to id `a1dd67f9-bfa7-45e1-b45e-26eb8c52e9a6`. (The id was taken from the query above)
+`JeopardyQuestion` クラス内を検索し、 id `a1dd67f9-bfa7-45e1-b45e-26eb8c52e9a6` に最も近いオブジェクト上位 4 件を取得します。 (この id は前述のクエリから取得したものです)
 
 ```python
 response = jeopardy.query.near_object(
@@ -171,9 +171,9 @@ for item in response.objects:
     print("Data:", item.properties, "\n")
 ```
 
-### nearVector Example
+### nearVector の例
 
-Search through the `JeopardyQuestion` class to find the top 2 objects closest to the query vector `[-0.0125526935, -0.021168863, ... ]`
+`JeopardyQuestion` クラス内を検索し、クエリ ベクトル `[-0.0125526935, -0.021168863, ... ]` に最も近いオブジェクト上位 2 件を取得します。
 
 ```python
 response = jeopardy.query.near_vector(
@@ -185,3 +185,4 @@ for item in response.objects:
     print("ID:", item.uuid)
     print("Data:", item.properties, "\n")
 ```
+

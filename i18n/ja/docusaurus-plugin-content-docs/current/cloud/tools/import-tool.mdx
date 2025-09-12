@@ -1,7 +1,7 @@
 ---
-title: Import tool
+title: インポート ツール
 sidebar_position: 10
-description: "CSV file upload tool that guides you through importing data into new Weaviate Cloud collections."
+description: "CSV ファイルをアップロードし、新しい Weaviate Cloud コレクションへのデータ取り込みをガイドするツールです。"
 image: og/wcd/user_guides.jpg
 ---
 
@@ -11,9 +11,9 @@ import WCDImportCollectionSettings from '/docs/cloud/img/weaviate-cloud-import-t
 import WCDImportPropertySettings from '/docs/cloud/img/weaviate-cloud-import-tool-property-settings.png';
 import WCDImportExplorer from '/docs/cloud/img/weaviate-cloud-import-tool-explorer.png';
 
-The Weaviate Cloud (WCD) *Import tool* allows you to easily upload data from a CSV file into a new Weaviate collection. The tool guides you through selecting your cluster, configuring the collection, mapping CSV columns to Weaviate properties, and then automatically imports the data.
+Weaviate Cloud (WCD) の *Import tool* を使用すると、CSV ファイルから新しい Weaviate コレクションへデータを簡単にアップロードできます。クラスタの選択、コレクションの設定、CSV 列と Weaviate プロパティのマッピングを順に案内し、最後にデータを自動でインポートします。
 
-For this guide, we will use the following `import.csv` file:
+このガイドでは、次の `import.csv` ファイルを使用します。
 
 ```csv title="import.csv"
 id,product_name,price,description
@@ -22,26 +22,25 @@ id,product_name,price,description
 3,"Keyboard",75.00,"Mechanical keyboard with RGB backlighting."
 ```
 
-## Step 1: Start the import process
+## ステップ 1: インポート プロセスの開始
 
-The Import tool is accessible from the Weaviate Cloud console.
+Import tool には Weaviate Cloud コンソールからアクセスできます。
 
 <div class="row">
   <div class="col col--3">
     <ol>
       <li>
-        To begin, select the <code>Import</code> tool from the left sidebar (
-        <span class="callout">1</span>).
+        まず、左サイドバーの <code>Import</code> ツール
+        (<span class="callout">1</span>) を選択します。
       </li>
       <li>
-        The <code>Clusters</code> panel lists the clusters that are available.
-        Select a cluster from the list where you want to import your data (
-        <span class="callout">2</span>).
+        <code>Clusters</code> パネルには利用可能なクラスタが一覧表示されます。
+        データをインポートしたいクラスタをリストから選択します
+        (<span class="callout">2</span>)。
       </li>
       <li>
-        Click on the <code>Browse CSV files</code> button (
-        <span class="callout">3</span>) to select the CSV file you want to
-        import.
+        <code>Browse CSV files</code> ボタン
+        (<span class="callout">3</span>) をクリックし、インポートしたい CSV ファイルを選択します。
       </li>
     </ol>
   </div>
@@ -54,7 +53,7 @@ The Import tool is accessible from the Weaviate Cloud console.
         />
       </div>
       <div class="card__body">
-        <p>Start the import process in Weaviate Cloud.</p>
+        <p>Weaviate Cloud でインポート プロセスを開始します。</p>
       </div>
     </div>
   </div>
@@ -62,16 +61,15 @@ The Import tool is accessible from the Weaviate Cloud console.
 
 <br />
 
-After selecting your CSV file, the tool will display the file name and size.
+CSV ファイルを選択すると、ツールにファイル名とサイズが表示されます。
 
 <div class="row">
   <div class="col col--6">
     <ol start="4">
       <li>
-        Verify that the correct file is shown. Click the <code>Next</code>{' '}
-        button (<span class="callout">1</span>) to proceed to collection
-        settings. If you selected the wrong file, you can click the red{' '}
-        <code>x</code> icon to remove it and select a different one.
+        正しいファイルが表示されていることを確認し、<code>Next</code>{' '}
+        ボタン (<span class="callout">1</span>) をクリックしてコレクション設定へ進みます。
+        ファイルを誤って選択した場合は、赤い <code>x</code> アイコンをクリックして削除し、別のファイルを選択できます。
       </li>
     </ol>
   </div>
@@ -81,33 +79,30 @@ After selecting your CSV file, the tool will display the file name and size.
         <img src={WCDImportConfirm} alt="Confirm CSV file for import" />
       </div>
       <div class="card__body">
-        <p>Confirm the CSV file to proceed with the import.</p>
+        <p>インポートする CSV ファイルを確認します。</p>
       </div>
     </div>
   </div>
 </div>
 <br />
 
-## Step 2: Collection settings
+## ステップ 2: コレクション設定
 
-In this step, you will define the settings for the new collection that will be created to store your imported data.
+このステップでは、インポートしたデータを保存する新しいコレクションの設定を行います。
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        Enter a <strong>name</strong> for your new collection (
-        <span class="callout">1</span>). For example, <code>Product</code>. The
-        collection name must begin with a capital letter and can only contain
-        letters, numbers, and the underscore character. Spaces are not allowed.
+        新しいコレクションの<strong>名前</strong>を入力します
+        (<span class="callout">1</span>)。例: <code>Product</code>。
+        コレクション名は大文字で始まり、英字・数字・アンダースコアのみ使用できます。
+        スペースは使用できません。
       </li>
       <li>
-        Configure other collection settings as needed, such as{' '}
-        <strong>multi-tenancy</strong>, <strong>vectorizer</strong>,{' '}
-        <strong>model</strong>, <strong>dimensions</strong>,{' '}
-        <strong>base URL</strong>, and whether to{' '}
-        <strong>vectorize the collection name</strong>. For this example, we
-        will use the default settings.
+        必要に応じて、<strong>マルチテナンシー</strong>、<strong>ベクトライザー</strong>、<strong>モデル</strong>、<strong>dimensions</strong>、<strong>base URL</strong>、および
+        <strong>コレクション名をベクトル化するか</strong>どうかを設定します。
+        本例ではデフォルト設定を使用します。
       </li>
     </ol>
   </div>
@@ -120,62 +115,55 @@ In this step, you will define the settings for the new collection that will be c
         />
       </div>
       <div class="card__body">
-        <p>Configure the new collection's settings.</p>
+        <p>新しいコレクションの設定を行います。</p>
       </div>
     </div>
   </div>
 </div>
 <br />
 
-## Step 3: Map properties
 
-This is the final step before the import begins. Here, you will map the columns from your CSV file to the properties in your new Weaviate collection.
+
+## ステップ 3: プロパティのマッピング
+
+これはインポートを開始する前の最後のステップです。ここでは、CSV ファイルの列を新しい Weaviate コレクションのプロパティにマッピングします。
 
 <div class="row">
   <div class="col col--6">
     <ol>
       <li>
-        The tool will display the columns detected in your CSV file (
-        <span class="callout">1</span>).
+        ツールは CSV ファイルで検出された列を表示します (
+        <span class="callout">1</span>)。
       </li>
       <li>
-        For each column, you can specify the <code>Property Name</code> as it
-        should appear in your Weaviate collection (
-        <span class="callout">2</span>). Property names must begin with a
-        lowercase letter and can only contain letters, numbers, and the
-        underscore character.
+        各列に対して、Weaviate コレクションで表示されるとおりの <code>Property Name</code> を指定できます (
+        <span class="callout">2</span>)。プロパティ名は小文字で始まり、英字・数字・アンダースコアのみを使用できます。
       </li>
       <li>
-        Select the appropriate <code>Property Type</code> for each column from
-        the dropdown menu (<span class="callout">3</span>). For our{' '}
-        <code>import.csv</code>:
+        各列の <code>Property Type</code> をプルダウンメニューから選択します (<span class="callout">3</span>)。今回の <code>import.csv</code> では:
         <ul>
           <li>
-            <code>id</code> should be <code>Int</code>
+            <code>id</code> は <code>Int</code>
           </li>
           <li>
-            <code>product_name</code> should be <code>Text</code>
+            <code>product_name</code> は <code>Text</code>
           </li>
           <li>
-            <code>price</code> should be <code>Number</code>
+            <code>price</code> は <code>Number</code>
           </li>
           <li>
-            <code>description</code> should be <code>Text</code>
+            <code>description</code> は <code>Text</code>
           </li>
         </ul>
       </li>
       <li>
-        Use the toggle switch to determine whether each property should be{' '}
-        <strong>vectorized</strong> (<span class="callout">4</span>). For text
-        fields you intend to search semantically, ensure this is enabled.
+        トグルスイッチで各プロパティを<strong>ベクトル化</strong>するかどうかを設定します (<span class="callout">4</span>)。意味検索を行いたいテキストフィールドでは、有効にしてください。
       </li>
       <li>
-        If you need to remove a property from being imported, click the trashcan
-        icon next to it (<span class="callout">5</span>).
+        インポート対象からプロパティを除外したい場合は、隣のゴミ箱アイコンをクリックします (<span class="callout">5</span>)。
       </li>
       <li>
-        Once you are satisfied with the property mapping, click the{' '}
-        <code>Submit</code> button (<span class="callout">6</span>) to start the
+        プロパティのマッピングに問題がなければ、<code>Submit</code> ボタン (<span class="callout">6</span>) をクリックしてインポートを開始します
         import process. The tool will create the collection and import the data.
       </li>
     </ol>
@@ -185,45 +173,46 @@ This is the final step before the import begins. Here, you will map the columns 
       <div class="card__image">
         <img
           src={WCDImportPropertySettings}
-          alt="Map CSV columns to collection properties"
+          alt="CSV 列をコレクションのプロパティにマッピング"
         />
       </div>
       <div class="card__body">
-        <p>Map CSV columns to collection properties and start the import.</p>
+        <p>CSV 列をコレクションのプロパティにマッピングしてインポートを開始します。</p>
       </div>
     </div>
   </div>
 </div>
 <br />
 
-A `Product Preview` section at the bottom shows how your data will be mapped. Review this to ensure everything is correct.
+画面下部の `Product Preview` セクションでは、データがどのようにマッピングされるかを確認できます。すべてが正しいことを確認してください。
 
-## Step 4: Verify imported data
+## ステップ 4: インポート済みデータの確認
 
-After the import is complete, the [Explorer tool](./explorer-tool.mdx) should automatically open to view the newly created collection and its objects.
+インポートが完了すると、自動的に [Explorer tool](./explorer-tool.mdx) が開き、新しく作成されたコレクションとそのオブジェクトを表示します。
 
 <div class="row">
   <div class="card">
     <div class="card__image">
-      <img src={WCDImportExplorer} alt="View imported data in Explorer" />
+      <img src={WCDImportExplorer} alt="Explorer でインポート済みデータを表示" />
     </div>
     <div class="card__body">
-      <p>Verify the imported data using the Explorer tool.</p>
+      <p>Explorer tool を使用してインポートされたデータを確認します。</p>
     </div>
   </div>
 </div>
 <br />
 
-You should see the imported objects listed, matching the data from your CSV file. You can expand each object to inspect its properties, metadata, and vectors.
+CSV ファイルのデータと一致するインポート済みオブジェクトが一覧表示されます。各オブジェクトを展開して、プロパティ、メタデータ、ベクトルを確認できます。
 
-## Further resources
+## 追加リソース
 
-- [Reference: Collection definition](/weaviate/config-refs/collections.mdx)
-- [Starter Guides: Collection definitions (schemas)](/weaviate/starter-guides/managing-collections)
-- [How-to: Import data](/weaviate/manage-objects/import)
+- [リファレンス: コレクション定義](/weaviate/config-refs/collections.mdx)
+- [スターターガイド: コレクション定義 (スキーマ)](/weaviate/starter-guides/managing-collections)
+- [ハウツー: データのインポート](/weaviate/manage-objects/import)
 
-## Support
+## サポート
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

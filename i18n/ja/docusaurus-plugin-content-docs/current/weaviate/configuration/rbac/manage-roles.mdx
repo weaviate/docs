@@ -1,5 +1,5 @@
 ---
-title: Manage roles
+title: ロールの管理
 sidebar_label: Manage roles
 sidebar_position: 1
 image: og/docs/configuration.jpg
@@ -16,23 +16,23 @@ import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac
 import RoleTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts';
 
 :::info Added in `v1.29`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
+ロールベースアクセス制御 (RBAC) は、Weaviate ではバージョン `v1.29` から一般公開されています。
 :::
 
-In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles. 
+Weaviate における RBAC では、ロールを定義し、そのロールに権限を割り当てることができます。ユーザーをロールに割り当てることで、そのロールに付与された権限を継承できます。
 
-On this page, you will find examples of how to **manage roles and permissions** with Weaviate client libraries.
+このページでは、Weaviate クライアントライブラリを使用して **ロールと権限を管理** する方法の例を紹介します。
 
 import ConfigureRbac from '/_includes/configuration/configure-rbac.mdx';
 
 <ConfigureRbac />
 
-## Requirements for managing roles <i class="fa-solid fa-key"></i> {#requirements}
+## ロール管理の前提条件 <i class="fa-solid fa-key"></i> {#requirements}
 
-Role management requires appropriate `role` resource permissions that can be obtained through:
+ロール管理には、以下の方法で取得できる適切な `role` リソース権限が必要です。
 
-- A predefined `root` role when [configuring RBAC](/deploy/configuration/configuring-rbac.md).
-- A role with [`Role Management`](#role-management-permissions) permissions granted.
+- [RBAC を構成](/deploy/configuration/configuring-rbac.md) する際に定義された `root` ロール
+- [`Role Management`](#role-management-permissions) 権限が付与されたロール
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -67,17 +67,17 @@ Role management requires appropriate `role` resource permissions that can be obt
   </TabItem>
 </Tabs>
 
-## Role management <i class="fa-solid fa-user-shield"></i> {#role-management}
+## ロール管理 <i class="fa-solid fa-user-shield"></i> {#role-management}
 
-### Create new roles with permissions
+### 権限付きの新しいロールの作成
 
-Permissions for these resource types can be assigned to roles:
+次のリソースタイプに対する権限をロールに割り当てることができます。
 
 1. [**Role Management**](#role-management-permissions)
 
 1. [**User Management**](#user-management-permissions)
 
-1. [**Collections**](#collections-permissions) (collection definitions only, data object permissions are separate)
+1. [**Collections**](#collections-permissions)（コレクション定義のみ。データオブジェクトの権限は別途設定）
 
 1. [**Tenants**](#tenants-permissions)
 
@@ -89,11 +89,11 @@ Permissions for these resource types can be assigned to roles:
 
 1. [**Node Data Access**](#nodes-permissions)
 
-#### Create a role with `Role Management` permissions {#role-management-permissions}
+#### `Role Management` 権限を持つロールの作成 {#role-management-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、`testRole` というロールを作成し、以下の権限を付与します。
 
-- Create, read, update and delete all roles starting with `testRole*`.
+- `testRole*` で始まるすべてのロールを作成、読み取り、更新、削除できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -128,12 +128,14 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `User Management` permissions {#user-management-permissions}
 
-This example creates a role called `testRole` with permissions to:
 
-- Create, read, update and delete all users starting with `testUser*`.
-- Assign and revoke roles to and from users starting with `testUser*`.
+#### `User Management` パーミッションを持つロールの作成 {#user-management-permissions}
+
+この例では、`testRole` というロールを作成し、次の権限を付与します:
+
+- `testUser*` で始まるすべてのユーザーの作成、読み取り、更新、および削除。
+- `testUser*` で始まるユーザーへのロールの付与および取り消し。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -167,11 +169,11 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Collections` permissions {#collections-permissions}
+#### `Collections` パーミッションを持つロールの作成 {#collections-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、`testRole` というロールを作成し、次の権限を付与します:
 
-- Create, read, update and delete all collections starting with `TargetCollection`.
+- `TargetCollection` で始まるすべてのコレクションの作成、読み取り、更新、および削除。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -206,13 +208,13 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Tenant` permissions {#tenants-permissions}
+#### `Tenant` パーミッションを持つロールの作成 {#tenants-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、`testRole` というロールを作成し、次の権限を付与します:
 
-- Create and delete tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
-- Read metadata (like tenant names and status) for tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
-- Update the status of tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
+- `TargetCollection` で始まるコレクション内で、`TargetTenant` で始まるテナントの作成および削除。
+- `TargetCollection` で始まるコレクション内で、`TargetTenant` で始まるテナントのメタデータ（テナント名やステータスなど）の読み取り。
+- `TargetCollection` で始まるコレクション内で、`TargetTenant` で始まるテナントのステータスの更新。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -247,12 +249,12 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Data Objects` permissions {#data-permissions}
+#### `Data Objects` パーミッションを持つロールの作成 {#data-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、`testRole` というロールを作成し、次の権限を付与します:
 
-- Create, read, update and delete data from collections starting with `TargetCollection`.
-- If multi-tenancy is enabled and the `tenant` filter is set, the permission only applies to tenants starting with `TargetTenant`.
+- `TargetCollection` で始まるコレクションのデータの作成、読み取り、更新、および削除。
+- マルチテナンシーが有効で `tenant` フィルターが設定されている場合、この権限は `TargetTenant` で始まるテナントにのみ適用されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -287,11 +289,11 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Backups` permissions {#backups-permissions}
+#### `Backups` 権限を持つロールの作成 {#backups-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
 
-- Manage backups for collections starting with `TargetCollection`.
+- `TargetCollection` で始まるコレクションのバックアップを管理します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -326,11 +328,11 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Cluster Data Access` permissions {#clusters-permissions}
+#### `Cluster Data Access` 権限を持つロールの作成 {#clusters-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
 
-- Read cluster metadata.
+- クラスター メタデータを読み取ります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -365,11 +367,11 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Node Data Access` permissions {#nodes-permissions}
+#### `Node Data Access` 権限を持つロールの作成 {#nodes-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
 
-- Read node metadata at the specified verbosity level for collections starting with `TargetCollection`.
+- `TargetCollection` で始まるコレクションについて、指定した詳細レベルでノード メタデータを読み取ります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -404,11 +406,11 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Collection Aliases` permissions {#aliases-permissions}
+#### `Collection Aliases` 権限を持つロールの作成 {#aliases-permissions}
 
-This example creates a role called `testRole` with permissions to:
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
 
-- Create, read, update and delete collection aliases starting with `TargetAlias`.
+- `TargetAlias` で始まるコレクション エイリアスの作成、読み取り、更新、削除を行います。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -442,11 +444,12 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Replications` permissions {#replications-permissions}
 
-This example creates a role called `testRole` with permissions to:
+#### `Replications` パーミッションを持つロールの作成 {#replications-permissions}
 
-- Create, read, update and delete replica movement operations for collections starting with `TargetCollection` and shards starting with `TargetShard`.
+この例では、 `testRole` という名前のロールを作成し、以下のパーミッションを付与します。
+
+- `TargetCollection` で始まるコレクションおよび `TargetShard` で始まるシャードに対するレプリカ移動操作の作成・読み取り・更新・削除
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -480,13 +483,13 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-### Grant additional permissions
+### 追加パーミッションの付与
 
-Additional permissions can be granted to a role at any time. The role must already exist.
+追加パーミッションはいつでもロールに付与できます。対象のロールは既に存在している必要があります。
 
-This example grants additional permissions to the role `testRole` to:
+この例では、ロール `testRole` に以下の追加パーミッションを付与します。
 
-- **Create new data** in collections that start with `TargetCollection`
+- `TargetCollection` で始まるコレクションに **新しいデータを作成** する
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -521,14 +524,14 @@ This example grants additional permissions to the role `testRole` to:
   </TabItem>
 </Tabs>
 
-### Remove permissions from a role
+### ロールからのパーミッション削除
 
-Permissions can be revoked from a role at any time. Removing all permissions from a role will delete the role itself.
+パーミッションはいつでもロールから取り消すことができます。すべてのパーミッションを削除すると、そのロール自体も削除されます。
 
-This example removes the following permissions from the role `testRole`:
+この例では、ロール `testRole` から以下のパーミッションを削除します。
 
-- Read the data from collections that start with `TargetCollection`
-- Create and delete collections that start with `TargetCollection`
+- `TargetCollection` で始まるコレクションのデータを読み取る
+- `TargetCollection` で始まるコレクションを作成および削除する
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -563,9 +566,9 @@ This example removes the following permissions from the role `testRole`:
   </TabItem>
 </Tabs>
 
-### Check if a role exists
+### ロールの存在確認
 
-Check if the role `testRole` exists:
+ロール `testRole` が存在するかどうかを確認します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -600,9 +603,11 @@ Check if the role `testRole` exists:
   </TabItem>
 </Tabs>
 
-### Inspect a role
 
-View the permissions assigned to a role.
+
+### ロールの確認
+
+ロールに割り当てられている権限を表示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -637,9 +642,9 @@ View the permissions assigned to a role.
   </TabItem>
 </Tabs>
 
-### List all roles
+### すべてのロールの一覧
 
-View all roles in the system and their permissions.
+システム内のすべてのロールとそれらの権限を表示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -674,9 +679,9 @@ View all roles in the system and their permissions.
   </TabItem>
 </Tabs>
 
-### List users with a role
+### ロールを持つユーザーの一覧
 
-List all users who have the role `testRole`.
+`testRole` を持つすべてのユーザーを一覧表示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -711,9 +716,9 @@ List all users who have the role `testRole`.
   </TabItem>
 </Tabs>
 
-### Delete a role
+### ロールの削除
 
-Deleting a role will remove it from the system, and revoke the associated permissions from all users who had this role.
+ロールを削除すると、システムからそのロールが削除され、該当するユーザーから関連する権限が取り消されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -748,18 +753,20 @@ Deleting a role will remove it from the system, and revoke the associated permis
   </TabItem>
 </Tabs>
 
-## User management <i class="fas fa-user-edit"></i> {#user-management}
+## ユーザー管理 <i class="fas fa-user-edit"></i> {#user-management}
 
-Visit the [Manage users](./manage-users.mdx) page to learn more about assigning roles to users as well as creating, updating and deleting users.
+ユーザーにロールを割り当てたり、ユーザーの作成・更新・削除について詳しく知るには、[ユーザー管理](./manage-users.mdx) ページをご覧ください。
 
-## Further resources
+## 追加リソース
 
-- [RBAC: Overview](./index.mdx)
-- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
-- [RBAC: Manage users](./manage-users.mdx)
+- [ RBAC: 概要](./index.mdx)
+- [ RBAC: 設定](/deploy/configuration/configuring-rbac.md)
+- [ RBAC: ユーザー管理](./manage-users.mdx)
 
-## Questions and feedback
+## ご質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback />
+
+

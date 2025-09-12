@@ -1,7 +1,7 @@
 ---
-title: JavaScript and TypeScript
+title: JavaScript と TypeScript
 sidebar_position: 10
-description: "Official TypeScript/JavaScript client library documentation for integrating Weaviate with web applications."
+description: Web アプリケーションに Weaviate を統合するための公式 TypeScript/JavaScript クライアントライブラリのドキュメント。
 image: og/docs/client-libraries.jpg
 # tags: ['TypeScript', 'client library']
 ---
@@ -25,9 +25,9 @@ export const typescriptCardsData = [
   },
 ];
 
-:::note JavaScript/TypeScript client (SDK)
+:::note JavaScript/TypeScript クライアント (SDK)
 
-The latest TypeScript client is version `v||site.typescript_client_version||`.
+最新の TypeScript クライアントのバージョンは `v||site.typescript_client_version||` です。
 
 <QuickLinks items={typescriptCardsData} />
 
@@ -37,23 +37,23 @@ import TSClientIntro from "/_includes/clients/ts-client-intro.mdx";
 
 <TSClientIntro />
 
-## Installation
+## インストール
 
-This section details how install and configure the v3 TypeScript client.
+このセクションでは、v3 TypeScript クライアントのインストールと設定方法を説明します。
 
-#### Install the package
+#### パッケージのインストール
 
-The v3 client package has a new name, `weaviate-client`. Use [npm](https://www.npmjs.com/) to install the TypeScript client library package:
+v3 クライアントパッケージの名前は `weaviate-client` に変わりました。TypeScript クライアントライブラリは [npm](https://www.npmjs.com/) を使用してインストールします。
 
 ```bash
 npm install weaviate-client
 ```
 
-#### Import the Client
+#### クライアントのインポート
 
-The v3 client uses `ES Modules`. Most of the sample code in the documentation also uses the `ES Module` style.
+v3 クライアントは `ES Modules` を使用します。ドキュメントにあるサンプルコードのほとんども `ES Module` 形式を採用しています。
 
-If your code requires `CommonJS` compatibility, use the `CommonJS` import style:
+コードが `CommonJS` 互換を必要とする場合は、`CommonJS` のインポート方法を使用してください。
 
 <Tabs groupId="languages">
 <TabItem value="esm" label="ES Modules">
@@ -72,15 +72,15 @@ const weaviate = require("weaviate-client").default;
 </TabItem>
 </Tabs>
 
-#### TypeScript setup
+#### TypeScript のセットアップ
 
-Edit your project's configuration files to make these changes:
+以下の変更をプロジェクトの設定ファイルに加えてください:
 
-- Add `"type": "module"` to `package.json`
-- Add the following code to [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+- `package.json` に `"type": "module"` を追加します
+- [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) に次のコードを追加します
 
 <details>
-    <summary>tsconfig.json file</summary>
+    <summary>tsconfig.json ファイル</summary>
 
 ```json
 {
@@ -99,18 +99,18 @@ Edit your project's configuration files to make these changes:
 
 </details>
 
-## Get started
+## はじめに
 
 import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
 
 <BasicPrereqs />
 
-The following code demonstrates how to:
+次のコードは以下を示します:
 
-1. Connect to a local Weaviate instance.
-1. Create a new collection.
-1. Populate the database using batch import and vectorize the data.
-1. Perform a vector search.
+1. ローカルの Weaviate インスタンスへ接続する。  
+1. 新しいコレクションを作成する。  
+1. バッチインポートでデータベースにデータを投入し、データをベクトル化する。  
+1. ベクトル検索を実行する。  
 
 <FilteredTextBlock
   text={TSv3Code}
@@ -119,19 +119,18 @@ The following code demonstrates how to:
   language="js"
 />
 
-## Asynchronous usage
+## 非同期処理の利用
 
-All client v3 methods, with the exception of `collection.use()`, use ES6 Promises with asynchronous code. This means you have to use `.then()` after function calls, or wrap your code `async/await` blocks.
+v3 クライアントのメソッドは `collection.use()` を除き、すべて ES6 の Promise を使用する非同期コードです。そのため、関数呼び出しの後に `.then()` を使用するか、コード全体を `async/await` ブロックでラップする必要があります。
 
-When there is an asynchronous code error, a promise returns the specific error message. If you use `async` and `await`, a rejected promises acts like a thrown exception
+非同期コードでエラーが発生した場合、Promise は該当するエラーメッセージを返します。`async`/`await` を使用している場合、拒否された Promise はスローされた例外として扱われます。
 
+## リリース
 
-## Releases
-
-Go to the [GitHub releases page](https://github.com/weaviate/typescript-client/releases) to see the history of the TypeScript client library releases and change logs.
+[GitHub のリリースページ](https://github.com/weaviate/typescript-client/releases) で、TypeScript クライアントライブラリのリリース履歴と変更ログを確認できます。
 
 <details>
-  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+  <summary>Weaviate と対応するクライアントバージョンの一覧はこちらをクリック</summary>
 
 import ReleaseHistory from "/_includes/release-history.md";
 
@@ -139,25 +138,28 @@ import ReleaseHistory from "/_includes/release-history.md";
 
 </details>
 
-#### Vectorizer API changes `v3.8.0` 
 
-Starting with the Weaviate JS/TS client `v3.8.0`, there are multiple changes to the vectorizer configuration API when creating collections:
-- `configure.vectorizer` has been replaced with `configure.vectors`
-- `configure.multiVectors` has been added to enable users work with [Multi-vectors](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali) 
-- `configure.vectorizer.none` have been replaced with  `configure.vectors.selfProvided` 
 
-#### Migrating from `v2` to `v3`
+#### ベクトライザー API の変更点 `v3.8.0` 
 
-If you are migrating a project from the Weaviate TypeScript client v2 to the v3 client, see the [migration page](/weaviate/client-libraries/typescript/v2_v3_migration) for additional details.
+Weaviate JS/TS クライアント `v3.8.0` から、コレクションを作成する際のベクトライザー設定 API に複数の変更が加えられました:
+- `configure.vectorizer` は `configure.vectors` に置き換えられました
+- ユーザーが [マルチ ベクトル](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali) を扱えるよう、`configure.multiVectors` が追加されました
+- `configure.vectorizer.none` は `configure.vectors.selfProvided` に置き換えられました 
 
-## Code examples & further resources
+#### `v2` から `v3` への移行
+
+Weaviate TypeScript クライアント v2 から v3 へプロジェクトを移行する場合は、詳細について [移行ページ](/weaviate/client-libraries/typescript/v2_v3_migration) をご覧ください。
+
+## コード例と追加リソース
 
 import CodeExamples from "/_includes/clients/code-examples.mdx";
 
 <CodeExamples />
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

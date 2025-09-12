@@ -1,12 +1,12 @@
 ---
-title: Text Embeddings
-description: "Weaviate's integration with AWS's SageMaker and Bedrock APIs allows you to access their models' capabilities directly from Weaviate."
+title: テキスト Embeddings
+description: " Weaviate が  AWS の  SageMaker および  Bedrock  API と連携し、これらのモデルの機能を  Weaviate から直接利用できます。"
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_aws.jpg
 # tags: ['model providers', 'aws', 'embeddings']
 ---
 
-# AWS Embeddings with Weaviate
+# Weaviate での AWS 埋め込み
 
 
 import Tabs from '@theme/Tabs';
@@ -19,43 +19,43 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with AWS's [SageMaker](https://aws.amazon.com/sagemaker/) and [Bedrock](https://aws.amazon.com/bedrock/) APIs allows you to access their models' capabilities directly from Weaviate.
+ Weaviate が  AWS の [SageMaker](https://aws.amazon.com/sagemaker/) と [Bedrock](https://aws.amazon.com/bedrock/)  API に統合されているため、これらのモデルの機能を  Weaviate から直接利用できます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an AWS embedding model, and Weaviate will generate embeddings for various operations using the specified model and your AWS API credentials. This feature is called the *vectorizer*.
+[ Weaviate ベクトルインデックス](#configure-the-vectorizer) を  AWS の埋め込みモデルで使用するように設定すると、 Weaviate は指定したモデルとお客様の  AWS  API 資格情報を用いてさまざまな操作の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、 Weaviate はテキストオブジェクトの埋め込みを生成し、インデックスに保存します。さらに [ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、 Weaviate がテキストクエリを埋め込みへと変換します。
 
 ![Embedding integration illustration](../_includes/integration_aws_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the AWS vectorizer integration (`text2vec-aws`) module.
+お使いの  Weaviate インスタンスは、 AWS ベクトライザー統合（`text2vec-aws`）モジュールを有効にしておく必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary> Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は  Weaviate Cloud (WCD) サーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効かどうかを確認します。  
+- [モジュールの設定方法](../../configuration/modules.md) ガイドに従い、 Weaviate でモジュールを有効化します。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide [access key based AWS credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to Weaviate for these integrations. Go to [AWS](https://aws.amazon.com/) to sign up and obtain an AWS access key ID and a corresponding AWS secret access key.
+これらの統合を利用するには、[アクセスキー方式の  AWS 資格情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) を  Weaviate に提供する必要があります。 [AWS](https://aws.amazon.com/) にサインアップして、 AWS アクセスキー ID と対応する AWS シークレットアクセスキーを取得してください。
 
-Provide the API credentials to Weaviate using one of the following methods:
+次のいずれかの方法で  Weaviate に API 資格情報を提供します。
 
-- Set the `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` environment variables that are available to Weaviate.
-- Provide the API credentials at runtime, as shown in the examples below.
+- `AWS_ACCESS_KEY` と `AWS_SECRET_KEY` の環境変数を設定し、 Weaviate から利用できるようにする  
+- 以下の例のように、実行時に API 資格情報を渡す
 
 <Tabs groupId="languages">
 
@@ -88,27 +88,27 @@ Provide the API credentials to Weaviate using one of the following methods:
 
 </Tabs>
 
-### AWS model access
+### AWS モデルへのアクセス
 
 #### Bedrock
 
-To use a model via [Bedrock](https://aws.amazon.com/bedrock/), it must be available, and AWS must grant you access to it.
+[Bedrock](https://aws.amazon.com/bedrock/) を介してモデルを利用するには、そのモデルが利用可能であり、 AWS からのアクセス許可が付与されている必要があります。
 
-Refer to the [AWS documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for the list of available models, and to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+利用可能なモデルの一覧は [AWS ドキュメント](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) を、モデルへのアクセス申請方法は [こちらのドキュメント](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) を参照してください。
 
 #### SageMaker
 
-To use a model via [SageMaker](https://aws.amazon.com/sagemaker/), you must have access to the model's endpoint.
+[SageMaker](https://aws.amazon.com/sagemaker/) を通じてモデルを使用する場合は、そのモデルのエンドポイントにアクセスできる必要があります。
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an AWS embedding model.
+ AWS 埋め込みモデルを使用するように [ Weaviate インデックス](../../manage-collections/vector-config.mdx#specify-a-vectorizer) を次のように設定します。
 
-The required parameters for the Bedrock and the SageMaker models are different.
+ Bedrock と SageMaker のモデルでは必要なパラメーターが異なります。
 
 ### Bedrock
 
-For Bedrock, you must provide the model name in the vectorizer configuration.
+Bedrock を使用する場合は、ベクトライザー設定にモデル名を指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -140,9 +140,11 @@ For Bedrock, you must provide the model name in the vectorizer configuration.
 
 </Tabs>
 
+
+
 ### SageMaker
 
-For SageMaker, you must provide the endpoint address in the vectorizer configuration.
+SageMaker を使用する場合、ベクトライザーの設定で endpoint アドレスを指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -177,20 +179,20 @@ For SageMaker, you must provide the endpoint address in the vectorizer configura
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザーのパラメーター
 
-The following examples show how to configure AWS-specific options.
+次の例では、AWS 固有のオプションの設定方法を示します。
 
-The AWS region setting is required for all AWS integrations.
+AWS 統合では region の設定が必須です。
 
-- Bedrock users must set `service` to `bedrock` and provide the `model` name.
-- SageMaker users must set `service` to `sagemaker` and provide the `endpoint` address.
+- Bedrock のユーザーは、`service` を `bedrock` に設定し、`model` 名を指定する必要があります。
+- SageMaker のユーザーは、`service` を `sagemaker` に設定し、`endpoint` アドレスを指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -222,9 +224,9 @@ The AWS region setting is required for all AWS integrations.
 
 </Tabs>
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx) して Weaviate に取り込みます。Weaviate は指定されたモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -257,21 +259,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデル ベクトル が既にある場合は、それを直接 Weaviate に渡すことができます。同じモデルで埋め込みを既に生成しており、他のシステムからの移行などでそれらを Weaviate で利用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified AWS model.
+ベクトライザーの設定が完了すると、 Weaviate は指定した AWS モデルを使用してベクトル検索とハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_aws_embedding_search.png)
+![検索時の埋め込み統合のイメージ](../_includes/integration_aws_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（Near Text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、 Weaviate はクエリ テキストを指定されたモデルでベクトル化し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは `limit` で指定した値に応じて、データベースから `n` 件の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -304,15 +306,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を実行し、その後で[結果を統合](../../search/hybrid.md)してデータベースから最適な一致オブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、 Weaviate はクエリ テキストを指定されたモデルでベクトル化し、データベースからスコアの高い順にオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは `limit` で指定した値に応じて、データベースから `n` 件のスコアが最も高いオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -345,43 +347,44 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
 #### Bedrock
 
 - `amazon.titan-embed-text-v1`
 - `amazon.titan-embed-text-v2:0`
-- `cohere.embed-english-v3` 
-- `cohere.embed-multilingual-v3` 
+- `cohere.embed-english-v3`
+- `cohere.embed-multilingual-v3`
 
-Refer to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out if the model is available in your region and how request access to a model.
+モデルがご利用のリージョンで使用可能か、またモデルへのアクセスをリクエストする方法については[こちらのドキュメント](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html)をご確認ください。
 
 ### SageMaker
 
-Any custom SageMaker name (e.g., "TEI-xxx") can be used as an endpoint.
+カスタム SageMaker 名（例: "TEI-xxx"）はエンドポイントとして使用できます。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [AWS generative models + Weaviate](./generative.md).
+- [AWS 生成モデル + Weaviate](./generative.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションに統合を設定すると、 Weaviate のデータ管理および検索操作は他のコレクションと同じ方法で動作します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) と [How-to: Manage objects](../../manage-objects/index.mdx) のガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）の方法を説明しています。
+- [How-to: Query & Search](../../search/index.mdx) のガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索、さらに検索拡張生成の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
 - AWS [Bedrock documentation](https://docs.aws.amazon.com/bedrock/)
 - AWS [SageMaker documentation](https://docs.aws.amazon.com/sagemaker/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -1,5 +1,5 @@
 ---
-title: Multi-vector encodings
+title: マルチ ベクトル エンコーディング
 sidebar_position: 30
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression']
@@ -12,13 +12,13 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.
 import TSCode from '!!raw-loader!/\_includes/code/howto/manage-data.collections.ts';
 
 
-Multi-vector embeddings represent a single data object, like a document or image, using a set of multiple vectors rather than a single vector. This approach allows for a more granular capture of semantic information, as each vector can represent different parts of the object. However, this leads to a significant increase in memory consumption, as multiple vectors are stored for each item.
+マルチ ベクトル 埋め込みは、ドキュメントや画像などの単一データ オブジェクトを 1 本の ベクトル ではなく、複数の ベクトル の集合で表現します。これにより、各 ベクトル がオブジェクトの異なる部分を表すことで、より細かな意味情報を捉えられます。しかし、その分各アイテムに複数の ベクトル を保持するため、メモリ使用量が大幅に増加します。
 
-Compression techniques become especially crucial for multi-vector systems to manage storage costs and improve query latency. **Encodings** transform the entire set of multi-vectors into a new, more compact single vector representation while aiming to preserve semantic relationships.
+そのため、ストレージ コストを抑えクエリ レイテンシを改善するには、マルチ ベクトル システムにおける圧縮技術が特に重要になります。**エンコーディング** は、マルチ ベクトル 全体を新しいコンパクトな単一 ベクトル 表現へと変換し、意味的な関係性を維持しようとします。
 
-## MUVERA encoding
+## MUVERA エンコーディング
 
-**MUVERA**, which stands for _Multi-Vector Retrieval via Fixed Dimensional Encodings_, tackles the higher memory usage and slower processing times of multi-vector embeddings by encoding them into single, fixed-dimensional vectors. This leads to reduced memory usage compared to traditional multi-vector approaches.
+** MUVERA **（ _Multi-Vector Retrieval via Fixed Dimensional Encodings_ ）は、マルチ ベクトル 埋め込みを固定次元の単一 ベクトル にエンコードすることで、メモリ使用量の増加と処理速度の低下という課題に取り組みます。これにより、従来のマルチ ベクトル 手法と比べてメモリ消費を抑えられます。
 
 <!-- TODO[g-despot]: Add link to blog post: Read more about it in this blog post. -->
 
@@ -55,50 +55,32 @@ Compression techniques become especially crucial for multi-vector systems to man
 </TabItem>
 </Tabs>
 
-The final dimensionality of the MUVERA encoded vector will be
-`repetition * 2^ksim * dprojections`. Carefully tuning these parameters
-is crucial to balance memory usage and retrieval accuracy.
+MUVERA でエンコードされた ベクトル の最終次元数は  
+`repetition * 2^ksim * dprojections` になります。これらのパラメータを慎重にチューニングし、メモリ使用量と検索精度のバランスを取ることが重要です。
 
-These parameters can be used to fine-tune MUVERA:
+以下のパラメータで MUVERA を微調整できます。
 
-- **`ksim`** (`int`):
-  The number of Gaussian vectors sampled for the SimHash partitioning function.
-  This parameter determines the number of bits in the hash, and consequently,
-  the number of buckets created in the space partitioning step. The total
-  number of buckets will be $2^{ksim}$. A higher value of `ksim` leads to a
-  finer-grained partitioning of the embedding space, potentially improving
-  the accuracy of the approximation but also increasing the dimensionality
-  of the intermediate encoded vectors.
+- **`ksim`** (`int`):  
+  SimHash パーティショニング関数のためにサンプリングされるガウシアン ベクトル の本数です。この値がハッシュのビット数、ひいては空間分割ステップで作成されるバケット数を決定します。総バケット数は $2^{ksim}$ となります。`ksim` を大きくすると埋め込み空間がより細かく分割され、近似精度が向上する可能性がありますが、中間エンコード ベクトル の次元数も増加します。
 
-- **`dprojections`** (`int`):
-  The dimensionality of the sub-vectors after the random linear projection
-  in the dimensionality reduction step. After partitioning the multi-vector
-  embedding into buckets, each bucket's aggregated vector is projected down
-  to `dprojections` dimensions using a random matrix. A smaller value of
-  `dprojections` helps in reducing the overall dimensionality of the final
-  fixed-dimensional encoding, leading to lower memory consumption but potentially
-  at the cost of some information loss and retrieval accuracy.
+- **`dprojections`** (`int`):  
+  次元削減ステップでランダム線形射影後のサブ ベクトル の次元数です。バケットごとに集約された ベクトル はランダム行列を用いて `dprojections` 次元に射影されます。`dprojections` を小さくすると、最終的な固定次元エンコーディングの総次元数を抑えられるためメモリ消費を削減できますが、情報損失と検索精度低下を招く可能性があります。
 
-- **`repetition`** (`int`):
-  The number of times the space partitioning and dimensionality reduction
-  steps are repeated. This repetition allows for capturing different perspectives
-  of the multi-vector embedding and can improve the robustness and accuracy
-  of the final fixed-dimensional encoding. The resulting single vectors from
-  each repetition are concatenated. A higher number of repetitions increases
-  the dimensionality of the final encoding but can lead to better approximation
-  of the original multi-vector similarity.
+- **`repetition`** (`int`):  
+  空間分割と次元削減ステップを繰り返す回数です。繰り返しによってマルチ ベクトル 埋め込みの異なる側面を捉え、最終的な固定次元エンコーディングの堅牢性と精度を高められます。各繰り返しで得られた単一 ベクトル は連結されます。`repetition` を増やすと最終エンコーディングの次元数は増加しますが、元のマルチ ベクトル 類似度をより良く近似できる場合があります。
 
 :::note Quantization
-Quantization is also available as a compression technique for multi-vector embeddings. It reduces the memory footprint of individual vectors by approximating their values with less precision. Just like with single vectors, multi-vectors support [PQ](./pq-compression.md), [BQ](./bq-compression.md), [RQ](./rq-compression.md) and [SQ](./sq-compression.md) quantization.
+量子化（Quantization）は、マルチ ベクトル 埋め込みに対する圧縮技術としても利用できます。値を低精度で近似することで各 ベクトル のメモリ フットプリントを削減します。単一 ベクトル と同様に、マルチ ベクトル でも [PQ](./pq-compression.md)、[BQ](./bq-compression.md)、[RQ](./rq-compression.md)、[SQ](./sq-compression.md) の量子化をサポートしています。
 :::
 
-## Further resources
+## 参考リソース
 
-- [How-to: Manage collections](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali)
-- [Concepts: Vector quantization](../../concepts/vector-quantization.md)
+- [操作ガイド: コレクションの管理](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali)
+- [概念: ベクトル 量子化](../../concepts/vector-quantization.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

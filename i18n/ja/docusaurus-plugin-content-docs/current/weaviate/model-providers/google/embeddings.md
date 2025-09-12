@@ -1,96 +1,96 @@
 ---
-title: Text Embeddings
-description: "Weaviate's integration with Google Gemini API and Google Vertex AI APIs allows you to access their models' capabilities directly from Weaviate."
+title: テキスト Embeddings
+description: "Weaviate の Google Gemini API および Google Vertex AI API との統合により、これらのモデルの機能へ Weaviate から直接アクセスできます。"
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_google.jpg
 # tags: ['model providers', 'google', 'embeddings']
 ---
 
-# Google Text Embeddings with Weaviate
+# Weaviate での Google テキスト Embeddings
 
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyConnect from '!!raw-loader!../_includes/provider.connect.py';
-import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
-import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect/main.go';
-import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
-import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import PyConnect from '!!raw-loader!../_includes/provider.connect.py';  
+import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';  
+import GoConnect from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/1-connect/main.go';  
+import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';  
+import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';  
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';  
 
-Weaviate's integration with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) および [Google Vertex AI](https://cloud.google.com/vertex-ai) API との統合により、これらのモデルの機能へ Weaviate から直接アクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a Google embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Google API key. This feature is called the *vectorizer*.
+[Weaviate ベクトルインデックスを設定](#configure-the-vectorizer) して Google の埋め込みモデルを使用すると、Weaviate は指定したモデルとお持ちの Google API キーを用いてさまざまな操作のために埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) には、Weaviate がテキストオブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みに変換します。
 
 ![Embedding integration illustration](../_includes/integration_google_embedding.png)
 
-:::info Gemini API availability
-At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
+:::info Gemini API の提供状況
+執筆時点（2023 年 11 月）では、Gemini API はすべてのリージョンで利用できるわけではありません。最新情報は [こちらのページ](https://ai.google.dev/gemini-api/docs/available-regions) をご覧ください。
 :::
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Google vectorizer integration (`text2vec-google`) module.
+お使いの Weaviate インスタンスには、Google ベクトライザー統合（`text2vec-google`）モジュールが有効になっている必要があります。
 
-:::info Module name change
-`text2vec-google` was called `text2vec-palm` in Weaviate versions prior to `v1.27`.
+:::info モジュール名の変更
+`text2vec-google` は Weaviate v1.27 より前のバージョンでは `text2vec-palm` と呼ばれていました。
 :::
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの方へ</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの方へ</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) をチェックしてください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定方法](../../configuration/modules.md) ガイドをご覧ください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide valid API credentials to Weaviate for the appropriate integration.
+該当する統合用の有効な API 認証情報を Weaviate に提供する必要があります。
 
 #### Gemini API
 
-Go to [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
+[Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) にアクセスし、サインアップして API キーを取得してください。
 
 #### Vertex AI
 
-This is called an `access token` in Google Cloud.
+Google Cloud では `access token` と呼ばれます。
 
-##### Automatic token generation
+##### 自動トークン生成
 
 import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.mdx';
 
 <UseGoogleAuthInstructions/>
 
-If you have the [Google Cloud CLI tool](https://cloud.google.com/cli) installed and set up, you can view your token by running the following command:
+[Google Cloud CLI ツール](https://cloud.google.com/cli) がインストール済みで設定されている場合、次のコマンドでトークンを確認できます。
 
 ```shell
 gcloud auth print-access-token
 ```
 
-#### Token expiry for Vertex AI users
+#### Vertex AI ユーザー向けのトークン有効期限
 
 import GCPTokenExpiryNotes from '/_includes/gcp.token.expiry.notes.mdx';
 
 <GCPTokenExpiryNotes/>
 
-#### Provide the API key
+#### API キーの提供
 
-Provide the API key to Weaviate at runtime, as shown in the examples below.
+以下の例のように、実行時に Weaviate へ API キーを渡してください。
 
-Note the separate headers that are available for [Gemini API](#gemini-api) and [Vertex AI](#vertex-ai) users.
+[Gemini API](#gemini-api) と [Vertex AI](#vertex-ai) 向けに用意された別々のヘッダーに注意してください。
 
 import ApiKeyNote from '../_includes/google-api-key-note.md';
 
@@ -127,17 +127,19 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 </Tabs>
 
-## Configure the vectorizer
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Google embedding model:
 
-Note that the required parameters differ between Vertex AI and Gemini API.
+## ベクトライザーの設定
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) して、 Google 埋め込みモデルを使用するには次のようにします:
+
+必須パラメーターは Vertex AI と Gemini API で異なる点にご注意ください。
+
+Weaviate で使用する [利用可能なモデル](#available-models) のいずれかを [指定](#vectorizer-parameters) できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 ### Vertex AI
 
-Vertex AI users must provide the Google Cloud project ID in the vectorizer configuration.
+Vertex AI のユーザーは、ベクトライザー設定で Google Cloud プロジェクト ID を指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -204,19 +206,19 @@ Vertex AI users must provide the Google Cloud project ID in the vectorizer confi
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザーのパラメーター
 
-The following examples show how to configure Google-specific options.
+以下の例では、 Google 固有のオプションを設定する方法を示します。
 
-- `projectId` (Only required if using Vertex AI): e.g. `cloud-large-language-models`
-- `apiEndpoint` (Optional): e.g. `us-central1-aiplatform.googleapis.com`
-- `modelId` (Optional): e.g. `gemini-embedding-001`
+- `projectId` ( Vertex AI 使用時のみ必須): 例 `cloud-large-language-models`
+- `apiEndpoint` (任意): 例 `us-central1-aiplatform.googleapis.com`
+- `modelId` (任意): 例 `gemini-embedding-001`
 <!-- - `titleProperty` (Optional): The Weaviate property name for the `gecko-002` or `gecko-003` model to use as the title. -->
 
 <Tabs groupId="languages">
@@ -249,9 +251,11 @@ The following examples show how to configure Google-specific options.
 
 </Tabs>
 
-## Data import
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+
+## データのインポート
+
+ベクトライザーを設定したら、Weaviate に [データをインポート](../../manage-objects/import.mdx) します。Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -284,21 +288,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデルベクトルがすでにある場合は、それを直接 Weaviate に渡すことができます。これは同じモデルで埋め込みをすでに生成しており、他システムからデータを移行する際などに Weaviate でそれらを再利用したい場合に役立ちます。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Google model.
+ベクトライザーを設定すると、Weaviate は指定した Google モデルを使用してベクトル検索およびハイブリッド検索を実行します。
 
 ![Embedding integration at search illustration](../_includes/integration_google_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（ near text ）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はテキストクエリを指定したモデルでベクトル化し、データベースからもっとも類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定された `n` 件のもっとも類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -331,15 +335,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索はベクトル検索とキーワード（BM25）検索を実行し、その後 [結果を結合](../../search/hybrid.md) してデータベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はテキストクエリを指定したモデルでベクトル化し、データベースからもっともスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定された `n` 件のもっともスコアの高いオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -372,19 +376,19 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
 Vertex AI:
-- `gemini-embedding-001` (default, added in 1.29.9, 1.30.11, 1.31.5 and onwards)
-- `text-embedding-005` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
-- `text-multilingual-embedding-002` (added in v1.29.9, 1.30.11, 1.31.5 and onwards)
+- `gemini-embedding-001` (デフォルト、 1.29.9 、 1.30.11 、 1.31.5 以降で追加)
+- `text-embedding-005` (v 1.29.9 、 1.30.11 、 1.31.5 以降で追加)
+- `text-multilingual-embedding-002` (v 1.29.9 、 1.30.11 、 1.31.5 以降で追加)
 
 <details>
-  <summary>Deprecated models</summary>
+  <summary>非推奨モデル</summary>
 
-The following models have been deprecated by Google and are no longer supported. They may not function as expected.
+以下のモデルは Google によって非推奨となり、サポートされていません。期待どおりに動作しない可能性があります。
 
 - `textembedding-gecko@001`
 - `textembedding-gecko@002`
@@ -398,30 +402,31 @@ The following models have been deprecated by Google and are no longer supported.
 </details>
 
 Gemini API:
-- `gemini-embedding-001` (default)
-    - `embedding-001` (deprecated name for `gemini-embedding-001`)
+- `gemini-embedding-001` (デフォルト)
+    - `embedding-001` (`gemini-embedding-001` の旧名、非推奨)
 - `text-embedding-004`
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他のインテグレーション
 
-- [Google generative models + Weaviate](./generative.md).
+- [Google generative models + Weaviate](./generative.md)。
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、 Weaviate におけるデータ管理および検索操作は他のコレクションと同一に動作します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) のガイドでは、データ操作（すなわちコレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）の方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) のガイドでは、ベクトル、キーワード、ハイブリッド検索を含む検索操作および 検索拡張生成 の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
 - [Google Vertex AI](https://cloud.google.com/vertex-ai)
 - [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

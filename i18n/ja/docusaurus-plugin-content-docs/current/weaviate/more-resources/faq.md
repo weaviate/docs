@@ -1,490 +1,498 @@
 ---
-title: FAQ
+title: よくある質問
 sidebar_position: 3
 image: og/docs/more-resources.jpg
 # tags: ['FAQ']
 ---
 
+## 一般
 
-## General
-
-#### Q: Why would I use Weaviate as my vector database?
+#### Q: Weaviate を ベクトル データベースとして使用する理由は何ですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Our goal is three-folded. Firstly, we want to make it as easy as possible for others to create their own semantic systems or vector search engines (hence, our APIs are GraphQL based). Secondly, we have a strong focus on the semantic element (the "knowledge" in "vector databases," if you will). Our ultimate goal is to have Weaviate help you manage, index, and "understand" your data so that you can build newer, better, and faster applications. And thirdly, we want you to be able to run it everywhere. This is the reason why Weaviate comes containerized.
+> 私たちの目標は三つあります。  
+> 1. まず、他の人が独自のセマンティック システムや ベクトル 検索エンジンをできる限り簡単に作成できるようにすることです（そのため API は GraphQL ベースです）。  
+> 2. 次に、セマンティック要素（「ベクトル データベース」における「知識」部分）に強くフォーカスしています。最終的には、 Weaviate がデータの管理・インデックス作成・「理解」を支援し、より新しく、優れた、そして高速なアプリケーションを構築できるようにすることがゴールです。  
+> 3. そして三つ目に、どこでも実行できるようにしたいと考えています。そのため Weaviate はコンテナ化されています。  
 
 </details>
 
-#### Q: What is the difference between Weaviate and for example Elasticsearch?
+#### Q: Weaviate と Elasticsearch などとの違いは何ですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Other database systems like Elasticsearch rely on inverted indexes, which makes search super fast. Weaviate also uses inverted indexes to store data and values. But additionally, Weaviate is also a vector-native search database, which means that data is stored as vectors, which enables semantic search. This combination of data storage is unique, and enables fast, filtered and semantic search from end-to-end.
+> 他のデータベース システム（例: Elasticsearch）は転置インデックスに依存しており、高速な検索が可能です。 Weaviate もデータと値を保存するために転置インデックスを使用します。さらに、 Weaviate は ベクトル ネイティブ検索データベースでもあり、データを ベクトル として保存することでセマンティック検索を実現します。このデータ保存方式の組み合わせはユニークで、エンドツーエンドで高速・フィルタリング付き・セマンティック検索を可能にします。
 
 </details>
 
-#### Q: Do you offer Weaviate as a managed service?
+#### Q: Weaviate をマネージド サービスとして提供していますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Yes, we do - check out [Weaviate Cloud](https://weaviate.io/pricing).
+> はい、提供しています。詳しくは [Weaviate Cloud](https://weaviate.io/pricing) をご覧ください。
 
 </details>
 
-## Configuration and setup
+## 設定とセットアップ
 
-#### Q: How should I configure the size of my instance?
+#### Q: インスタンスのサイズはどのように設定すれば良いですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> You can find this in the [architecture section](/weaviate/concepts/resources.md#an-example-calculation) of the docs.
+> ドキュメントの [アーキテクチャ セクション](/weaviate/concepts/resources.md#an-example-calculation) を参照してください。
 
 </details>
 
-#### Q: Do I need to know about Docker (Compose) to use Weaviate?
+#### Q: Weaviate を利用するのに Docker（Compose）を理解している必要がありますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Weaviate uses Docker images as a means to distribute releases and uses Docker Compose to tie a module-rich runtime together. If you are new to those technologies, we recommend reading the [Docker Introduction for Weaviate Users](https://medium.com/semi-technologies/what-weaviate-users-should-know-about-docker-containers-1601c6afa079).
+> Weaviate はリリースを配布する手段として Docker イメージを使用し、モジュールが豊富なランタイムをまとめるために Docker Compose を利用します。これらの技術に不慣れな場合は、[Docker Introduction for Weaviate Users](https://medium.com/semi-technologies/what-weaviate-users-should-know-about-docker-containers-1601c6afa079) をお読みいただくことをおすすめします。
 
 </details>
 
-#### Q: What happens when the Weaviate Docker container restarts? Is my data in the Weaviate database lost?
+#### Q: Weaviate の Docker コンテナが再起動した場合、データは失われますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> There are three levels:
-> 1. You have no volume configured (the default in our `Docker Compose` files), if the container restarts (e.g. due to a crash, or because of `docker stop/start`) your data is kept
-> 2. You have no volume configured (the default in our `Docker Compose` files), if the container is removed (e.g. from `docker compose down` or `docker rm`) your data is gone
-> 3. If a volume is configured, your data is persisted regardless of what happens to the container. They can be completely removed or replaced, next time they start up with a volume, all your data will be there
+> 3 つのレベルがあります。  
+> 1. ボリュームを設定していない（ `Docker Compose` ファイルのデフォルト）場合、コンテナが再起動しても（例: クラッシュや `docker stop/start`）データは保持されます。  
+> 2. ボリュームを設定していない状態でコンテナを削除した場合（例: `docker compose down` や `docker rm`）、データは失われます。  
+> 3. ボリュームを設定している場合、コンテナに何が起きてもデータは保持されます。コンテナを完全に削除・置換しても、次回ボリューム付きで起動すればすべてのデータがそこにあります。  
 
 </details>
 
-#### Q: How to enable RBAC in Weaviate?
+#### Q: Weaviate で RBAC を有効にするには？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Role-based access control (RBAC) can be enabled when configuring Weaviate via the `AUTHORIZATION_RBAC_ENABLED` environment variable.
-> For more info visit the [RBAC: Configuration](/deploy/configuration/configuring-rbac.md) guide.
+> RBAC（ロールベースアクセス制御）は、 `AUTHORIZATION_RBAC_ENABLED` 環境変数で Weaviate を設定するときに有効化できます。詳細は [RBAC: Configuration](/deploy/configuration/configuring-rbac.md) ガイドをご覧ください。
 
 </details>
 
-## Schema and data structure
+## スキーマとデータ構造
 
-#### Q: Are there any 'best practices' or guidelines to consider when designing a schema?
+#### Q: スキーマを設計する際に考慮すべきベストプラクティスやガイドラインはありますか？
 
-*(E.g. if I was looking to perform a semantic search over a the content of a Book would I look to have Chapter and Paragraph represented in the schema etc, would this be preferred over including the entire content of the novel in a single property?)*
+*(例: 書籍の内容に対してセマンティック検索を行う場合、スキーマに Chapter や Paragraph を表現すべきか、それとも小説全体を 1 つのプロパティに含める方が良いかなど)*
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> As a rule of thumb, the smaller the units, the more accurate the search will be. Two objects of e.g. a sentence would most likely contain more information in their vector embedding than a common vector (which is essentially just the mean of sentences). At the same time more objects leads to a higher import time and (since each vector also makes up some data) more space. (E.g. when using transformers, a single vector is 768xfloat32 = 3KB. This can easily make a difference if you have millions, etc.) of vectors. As a rule of thumb, the more vectors you have the more memory you're going to need.
+> 大まかな目安として、単位が小さいほど検索は高精度になります。たとえば文という 2 つのオブジェクトは、共通の ベクトル（実質的には文の平均値）よりも多くの情報を ベクトル 埋め込みに含む傾向があります。一方で、オブジェクト数が増えるとインポート時間が長くなり（各 ベクトル もデータ量になるため）ディスク容量も増加します。例として、 transformers を使用する場合、1 つの ベクトル は 768×float32 = 3 KB です。数百万の ベクトル があれば大きな差になります。一般的に、 ベクトル が多いほどメモリも多く必要になります。  
 >
-> So, basically, it's a set of tradeoffs. Personally we've had great success with using paragraphs as individual units, as there's little benefit in going even more granular, but it's still much more precise than whole chapters, etc.
+> つまり、いくつかのトレードオフがあります。私たちの経験では、段落を個別の単位として扱うと非常に良い結果が得られました。より細粒度にしても大きなメリットはなく、章全体よりはるかに高精度だからです。  
 >
-> You can use cross-references to link e.g. chapters to paragraphs. Note that resolving a cross-references takes a performance penalty. Essentially resolving A1->B1 is the same cost as looking up both A1 and B1 indvidually. But at scale, this can add up.
+> 章を段落へリンクする際などにはクロスリファレンスを使用できます。ただし、クロスリファレンスを解決するにはパフォーマンス上のペナルティがあります。実質的に A1→B1 を解決するコストは A1 と B1 の両方を個別に検索するのと同じです。大規模になるとこのコストが積み重なります。  
 >
-> So, consider denormalizing your data, i.e. storing the data in a way that you can resolve the cross-references without actually looking them up. This is a common pattern in databases, and it's also a common pattern in Weaviate.
+> そのため、データを正規化せず、クロスリファレンスを実際に参照せずとも解決できる形で保存する（デノーマライズする）ことを検討してください。これはデータベースで一般的なパターンであり、 Weaviate でも同様です。  
 
 </details>
 
-#### Q: Should I use references in my schema?
+#### Q: スキーマで参照（リファレンス）を使うべきですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> In short: for convenience you can add relations to your data schema, because you need less code and queries to get data. But resolving references in queries takes some of the performance.
+> 端的に言えば、利便性のためにデータ スキーマへリレーションを追加すると、コードやクエリが少なくて済みますが、クエリ実行時に参照を解決する分だけパフォーマンスが低下します。  
 >
-> 1. If your ultimate goal is performance, references probably don't add any value, as resolving them adds a cost.
-> 2. If your goal is represent complex relationships between your data items, they can help a lot. You can resolve references in a single query, so if you have collections with multiple links, it could definitely be helpful to resolve some of those connections in a single query. On the other hand, if you have a single (bi-directional) reference in your data, you could also just denormalize the links (e.g. with an ID field) and resolve them during search.
+> 1. 最終的な目標がパフォーマンスであれば、参照は付加価値を生まない可能性があります。解決コストがかかるためです。  
+> 2. データ項目間の複雑な関係を表現することが目的であれば、大いに役立ちます。1 回のクエリで参照を解決できるため、複数のリンクを持つコレクションでは特に便利です。一方で、単一の（双方向）参照しかない場合は、リンクをデノーマライズ（例: ID フィールド）し検索時に解決する方法もあります。  
 
 </details>
 
-#### Q: Is it possible to create one-to-many relationships in the schema?
+#### Q: スキーマで 1 対多のリレーションシップを作成できますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Yes, it is possible to reference to one or more objects (Class -> one or more Classes) through cross-references. Referring to lists or arrays of primitives, this will be available [soon](https://github.com/weaviate/weaviate/issues/1611).
+> はい、クロスリファレンスを使用して 1 つまたは複数のオブジェクト（Class → 複数の Class）を参照できます。プリミティブのリストまたは配列への参照については、[こちら](https://github.com/weaviate/weaviate/issues/1611) で近日対応予定です。
 
 </details>
 
-#### Q: What is the difference between `text` and `string` and `valueText` and `valueString`?
+#### Q: `text` と `string`、そして `valueText` と `valueString` の違いは何ですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/collections.mdx#tokenization) on the differences.
-
-</details>
-
-#### Q: Do Weaviate collections have namespaces?
-
-<details>
-  <summary>Answer</summary>
-
-Yes. Each collection itself acts like namespaces. Additionally, you can use the [multi-tenancy](../concepts/data.md#multi-tenancy) feature to create isolated storage for each tenant. This is especially useful for use cases where one cluster might be used to store data for multiple customers or users.
-
-</details>
-
-#### Q: Are there restrictions on UUID formatting? Do I have to adhere to any standards?
-
-<details>
-  <summary>Answer</summary>
-
-> The UUID must be presented as a string matching the [Canonical Textual representation](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format). If you don't specify a UUID, Weaviate will generate a `v4` i.e. a random UUID. If you generate them yourself you could either use random ones or deterministically determine them based on some fields that you have. For this you'll need to use [`v3` or `v5`](https://en.wikipedia.org/wiki/Universally_unique_identifier#Versions_3_and_5_(namespace_name-based)).
-
-</details>
-
-#### Q: If I do not specify a UUID during adding data objects, will Weaviate create one automatically?
-
-<details>
-  <summary>Answer</summary>
-
-> Yes, Weaviate creates a UUID if one is not specified.
+> `text` と `string` のデータ型はトークナイズ方法が異なります。`string` は現在非推奨です。詳細は [このセクション](../config-refs/collections.mdx#tokenization) をご覧ください。
 
 </details>
 
 
-#### Q: Why does Weaviate have a schema and not an ontology?
+
+#### Q: Weaviate コレクションには名前空間がありますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> We use a schema because it focusses on the representation of your data (in our case in the GraphQL API) but you can use a Weaviate schema to express an ontology. One of Weaviate's core features is that it semantically interprets your schema (and with that your ontology) so that you can search for concepts rather than formally defined entities.
+はい。各コレクション自体が名前空間のように機能します。さらに、[マルチテナンシー](../concepts/data.md#multi-tenancy)機能を使用して、テナントごとに分離されたストレージを作成できます。これは、1 つのクラスターが複数の顧客やユーザーのデータを保存するユースケースで特に有用です。
 
 </details>
 
-#### Q: What is the difference between a Weaviate data schema, ontologies and taxonomies?
+#### Q: UUID の形式に制限はありますか？何か標準に従う必要がありますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Read about how taxonomies, ontologies and schemas are related to Weaviate in [this blog post](https://medium.com/semi-technologies/taxonomies-ontologies-and-schemas-how-do-they-relate-to-weaviate-9f76739fc695).
+> UUID は、[Canonical Textual representation](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format) に一致する文字列として提供する必要があります。UUID を指定しない場合、 Weaviate は `v4`、つまりランダム UUID を生成します。ご自身で生成する場合は、ランダムに生成するか、保有するフィールドに基づいて決定論的に生成するかを選べます。その場合は、[`v3` または `v5`](https://en.wikipedia.org/wiki/Universally_unique_identifier#Versions_3_and_5_(namespace_name-based)) を使用する必要があります。
 
 </details>
 
-## Text and language processing
-
-#### Q: How to deal with custom terminology?
+#### Q: データオブジェクト追加時に UUID を指定しないと、 Weaviate が自動で生成しますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Sometimes, users work with custom terminology, which often comes in the form of abbreviations or jargon. You can find more information on how to use the endpoint [here](/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary)
+> はい、 UUID を指定しない場合は Weaviate が自動で生成します。
 
 </details>
 
-#### Q: How can you index data near-realtime without losing semantic meaning?
+
+#### Q: なぜ Weaviate にはオントロジーではなくスキーマがあるのですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Every data object gets its vector embedding based on its semantic meaning. In a nutshell, we calculate the vector position of the data object based on the words and concepts used in the data object. The existing model in the contextionary gives already enough context. If you want to get in the nitty-gritty, you can [browse the code here](https://github.com/weaviate/contextionary/tree/master/server), but you can also ask a [specific question on Stackoverflow](https://stackoverflow.com/tags/weaviate/) and tag it with Weaviate.
+> スキーマはデータの表現（本ケースでは GraphQL API）に焦点を当てているためです。しかし、 Weaviate のスキーマを使ってオントロジーを表現することもできます。 Weaviate のコア機能の 1 つは、スキーマ（およびそのオントロジー）を意味的に解釈し、形式的に定義されたエンティティではなく概念で検索できるようにすることです。
 
 </details>
 
-#### Q: Why isn't there a text2vec-contextionary in my language?
+#### Q: Weaviate のデータスキーマ、オントロジー、タクソノミーの違いは何ですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Because you are probably one of the first that needs one! Ping us [here on GitHub](https://github.com/weaviate/weaviate/issues), and we will make sure in the next iteration it will become available (unless you want it in [Silbo Gomero](https://en.wikipedia.org/wiki/Silbo_Gomero) or another language which is whistled).
+> タクソノミー、オントロジー、スキーマが Weaviate とどのように関連しているかについては、[このブログ記事](https://medium.com/semi-technologies/taxonomies-ontologies-and-schemas-how-do-they-relate-to-weaviate-9f76739fc695)をご覧ください。
 
 </details>
 
-#### Q: How do you deal with words that have multiple meanings?
+## テキストと言語の処理
+
+#### Q: カスタム用語はどのように扱えばよいですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> How can Weaviate interpret that you mean a company, as in business, and not as the division of the army? We do this based on the structure of the schema and the data you add. A schema in Weaviate might contain a company collection with the property name and the value Apple. This simple representation (company, name, apple) is already enough to gravitate the vector position of the data object towards businesses or the iPhone. You can read [here](../) how we do this, or you can ask a specific question on [Stackoverflow](https://stackoverflow.com/tags/weaviate/) and tag it with Weaviate.
+> ユーザーが略語や専門用語などのカスタム用語を使用することがあります。エンドポイントの使用方法については [こちら](/weaviate/modules/text2vec-contextionary.md#extending-the-contextionary) を参照してください。
 
 </details>
 
-#### Q: Is there support to multiple versions of the query/document embedding models to co-exist at a given time? (helps with live experiments of new model versions)
+#### Q: セマンティックな意味を失わずにほぼリアルタイムでデータをインデックスするには？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> You can create multiple collections in the Weaviate schema, where one collection will act like a namespace in Kubernetes or an index in Elasticsearch. So the spaces will be completely independent, this allows space 1 to use completely different embeddings from space 2. The configured vectorizer is always scoped only to a single collection. You can also use Weaviate's Cross-Reference features to make a graph-like connection between an object of Class 1 to the corresponding object of Class 2 to make it easy to see the equivalent in the other space.
+> すべてのデータオブジェクトは、そのセマンティックな意味に基づいたベクトル埋め込みを取得します。要するに、データオブジェクトに使用されている語や概念に基づいてベクトル位置を計算します。コンテキショナリーに既に含まれるモデルだけで十分なコンテキストが得られます。詳細を確認したい場合は [こちらのコード](https://github.com/weaviate/contextionary/tree/master/server)を参照するか、[Stack Overflow](https://stackoverflow.com/tags/weaviate/) で Weaviate タグを付けて具体的な質問をしてください。
 
 </details>
 
-## Queries
-
-#### Q: How can I retrieve the total object count in a collection?
+#### Q: 自分の言語用の text2vec-contextionary が存在しないのはなぜですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
+
+> おそらく、あなたがその言語を最初に必要としているからです！[GitHub でこちら](https://github.com/weaviate/weaviate/issues)にお知らせいただければ、次のリリースで対応します（ただし、[Silbo Gomero](https://en.wikipedia.org/wiki/Silbo_Gomero) など笛で話す言語は除きます）。
+
+</details>
+
+#### Q: 多義語はどのように処理しますか？
+
+<details>
+  <summary>回答</summary>
+
+> 「会社（ビジネス）」を意味するのか、「軍隊の部隊」を意味するのかを Weaviate はどのように解釈するのでしょうか？これはスキーマ構造と追加するデータに基づいて行います。 Weaviate のスキーマには company コレクションがあり、そのプロパティ name に Apple という値が入っているとします。このシンプルな表現（company, name, apple）だけで、データオブジェクトのベクトル位置がビジネスや iPhone 方面に引き寄せられます。詳細は[こちら](../)を参照するか、[Stack Overflow](https://stackoverflow.com/tags/weaviate/) で Weaviate タグを付けて具体的な質問をしてください。
+
+</details>
+
+#### Q: クエリ／ドキュメント埋め込みモデルの複数バージョンを同時に利用できますか？（新モデルのライブ実験に便利）
+
+<details>
+  <summary>回答</summary>
+
+> Weaviate のスキーマで複数のコレクションを作成できます。1 つのコレクションは Kubernetes のネームスペースや Elasticsearch のインデックスのように機能します。スペース同士は完全に独立しているため、スペース 1 はスペース 2 とはまったく異なる埋め込みを使用できます。設定されたベクトライザーは常に単一のコレクションのみにスコープされます。また、 Weaviate のクロスリファレンス機能を使用して Class 1 のオブジェクトと Class 2 の対応オブジェクトをグラフ状に接続し、別スペースの同等オブジェクトを簡単に参照できます。
+
+</details>
+
+## クエリ
+
+#### Q: コレクション内のオブジェクト総数を取得するには？
+
+<details>
+  <summary>回答</summary>
 
 import HowToGetObjectCount from '/_includes/how.to.get.object.count.mdx';
 
-> This `Aggregate` query returns the total object count in a collection.
+> この `Aggregate` クエリはコレクション内のオブジェクト総数を返します。
 
 <HowToGetObjectCount/>
 
 </details>
 
-#### Q: How do I get the cosine similarity from Weaviate's certainty?
+#### Q: Weaviate の certainty からコサイン類似度を求めるには？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> To obtain the [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) from weaviate's `certainty`, you can do `cosine_sim = 2*certainty - 1`
+> Weaviate の `certainty` から[コサイン類似度](https://en.wikipedia.org/wiki/Cosine_similarity)を取得するには、`cosine_sim = 2*certainty - 1` を使用してください。
 
 </details>
 
-#### Q: The quality of my search results change depending on the specified limit. Why? How can I fix this?
+#### Q: 指定した limit によって検索結果の品質が変わるのはなぜですか？どうすれば解決できますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-Weaviate makes use of ANN indexes to serve vector searches. An ANN index is an approximate nearest neighbor index. The "approximate" part refers to an explicit recall-query-speed tradeoff. This trade-off is presented in detail in the [ANN benchmarks section](/weaviate/benchmarks/ann.md#benchmark-results). For example, a 98% recall for a given set of HNSW parameters means that 2% of results will not match the true nearest neighbors. What build parameters lead to what recall depends on the dataset used. The benchmark pages shows 4 different example datasets. Based on the characteristic of each dataset you can pick the one closest to your production load and draw conclusions about the expected recall for the respective build and query-time parameters.
+Weaviate はベクトル検索を提供するために ANN インデックスを使用します。ANN インデックスとは近似最近傍 (approximate nearest neighbor) インデックスです。「近似」はリコールとクエリ速度のトレードオフを意味します。このトレードオフは [ANN ベンチマークセクション](/weaviate/benchmarks/ann.md#benchmark-results)で詳細に説明しています。たとえば、特定の HNSW パラメータでリコール 98% とは、結果の 2% が真の最近傍と一致しないことを意味します。どのビルドパラメータがどのリコールにつながるかはデータセットによって異なります。ベンチマークページでは 4 つの例示データセットを示しています。ご自身の本番ワークロードに最も近い特性を持つデータセットを基に、各ビルドおよびクエリ時パラメータでのリコールを推定できます。
 
-Generally if you need a higher recall than the default parameters provide you with, you can use stronger parameters. This can either be done at build time (`efConstruction`, `maxConnections`) or at query time (`ef`). Roughly speaking, a higher `ef` value at query time means a more thorough search. It will have a slightly higher latency, but also lead to a slightly better recall.
+一般的に、デフォルトパラメータより高いリコールが必要な場合は、より強いパラメータを使用できます。これはビルド時（`efConstruction`, `maxConnections`）かクエリ時（`ef`）に設定できます。概ね、クエリ時に `ef` を大きくすると検索がより綿密になり、レイテンシーはやや増えますがリコールも向上します。
 
-By changing the specified limit, you are implicitly changing the `ef` parameter. This is because the default `ef` value is set to `-1`, indicating that Weaviate should pick the parameter based on the limit. The dynamic `ef` value is controlled using the configuration fields `dynamicEfMin` which acts as a lower boundary, `dynamicEfMax` which acts as an upper boundary and `dynamicEfFactor` which is the factor to derive the target `ef` based on the limit within the lower and upper boundary.
+指定した limit を変更すると、暗黙的に `ef` パラメータも変わります。これはデフォルトの `ef` が `-1` に設定されており、 Weaviate が limit に基づいて `ef` を決定するためです。動的な `ef` 値は、下限となる `dynamicEfMin`、上限となる `dynamicEfMax`、limit から目標 `ef` を導出する係数 `dynamicEfFactor` によって制御されます。
 
-Example: Using the default parameters `ef=-1`, `dynamicEfMin=100`, `dynamicEfMax=500`, `dynamicEfFactor=8`, you will end up with the following `ef` values based on the limit:
+例: デフォルトパラメータ `ef=-1`, `dynamicEfMin=100`, `dynamicEfMax=500`, `dynamicEfFactor=8` を使用した場合、limit に応じた `ef` は以下のようになります。
 
-* `limit=1`, dynamically calculated: `ef=1*8=8`. This value is below the lower boundary, so `ef` is set to `100`.
-* `limit=20`, dynamically calculated: `ef=20*8=160`. This value is within the boundaries, so `ef` is `160`.
-* `limit=100`, dynamically calculated: `ef=100*8=800`. This value is above the upper boundary, so `ef` is set to `500`.
+* `limit=1` の場合: 計算上 `ef=1*8=8`。下限を下回るため `ef` は `100`。
+* `limit=20` の場合: 計算上 `ef=20*8=160`。範囲内のため `ef` は `160`。
+* `limit=100` の場合: 計算上 `ef=100*8=800`。上限を超えるため `ef` は `500`。
 
-If you need a higher search quality for a given limit you can consider the following options:
+特定の limit でより高い検索品質が必要な場合は、次の選択肢を検討できます。
 
-1. Instead of using a dynamic `ef` value, use a fixed one that provides the desired recall.
-1. If your search quality varies a lot depending on the query-time `ef` values, you should also consider choosing stronger build parameters. The [ANN benchmarks section](/weaviate/benchmarks/ann.md#benchmark-results) present a combination of many different parameter combination for various datasets.
+1. 動的 `ef` の代わりに、望ましいリコールを満たす固定値を使用する。
+1. クエリ時の `ef` によって検索品質が大きく変動する場合は、より強力なビルドパラメータを選択することも検討してください。[ANN ベンチマークセクション](/weaviate/benchmarks/ann.md#benchmark-results)には、さまざまなデータセットに対する多数のパラメータ組み合わせが掲載されています。
 
 </details>
 
-#### Q: Why did you use GraphQL instead of SPARQL?
+
+
+#### Q: なぜ SPARQL ではなく GraphQL を使用したのですか?
 
 <details>
   <summary>Answer</summary>
 
-> For user experience. We want to make it as simple as possible to integrate Weaviate into your stack, and we believe that GraphQL is the answer to this. The community and client libraries around GraphQL are enormous, and you can use almost all of them with Weaviate.
+> ユーザー エクスペリエンスのためです。スタックへ Weaviate を統合する作業をできる限り簡単にしたいと考えており、それに対する答えが GraphQL だと信じています。GraphQL を取り巻くコミュニティとクライアント ライブラリは非常に豊富で、そのほとんどを Weaviate で利用できます。
 
 </details>
 
-## Data management
+## データ管理
 
-#### Q: What is the best way to iterate through objects? Can I do paginated API calls?
+#### Q: オブジェクトを反復処理する最良の方法は何ですか？ページネーションされた API 呼び出しは可能ですか？
 
 <details>
   <summary>Answer</summary>
 
-> Yes, Weaviate supports cursor-based iteration as well as pagination through a result set.
+> はい、Weaviate はカーソル ベースのイテレーションと結果セットのページネーションの両方をサポートしています。
 >
-> To iterate through all objects, you can use the [`after` operator](../manage-objects/read-all-objects.mdx).
+> すべてのオブジェクトを反復処理するには、[`after` 演算子](../manage-objects/read-all-objects.mdx)を使用できます。
 >
-> For pagination through a result set, you can use the `offset` and `limit` operators for GraphQL API calls. Take a look at [this page](../api/graphql/filters.md) which describes how to use these operators, including tips on performance and limitations.
+> 結果セットをページネーションする場合は、GraphQL API 呼び出しで `offset` と `limit` 演算子を使用できます。パフォーマンス上のヒントや制限事項を含むこれらの演算子の使い方については、[このページ](../api/graphql/filters.md)をご覧ください。
 
 </details>
 
-#### Q: What is best practice for updating data?
+#### Q: データを更新する際のベストプラクティスは何ですか？
 
 <details>
   <summary>Answer</summary>
 
-> Here are top 3 best practices for updating data:
-> 1. Use the [batch API](../manage-objects/import.mdx)
-> 2. Start with a small-ish batch size e.g. 100 per batch. Adjust up if it is very fast, adjust down if you run into timeouts
-> 3. If you have unidirectional relationships (e.g. `Foo -> Bar`.) it's easiest to first import all `Bar` objects, then import all `Foo` objects with the refs already set. If you have more complex relationships, you can also import the objects without references, then [add references](../manage-objects/import.mdx#import-with-references) to set links between collections in arbitrary directions.
+> データを更新する際のベストプラクティスを 3 つ挙げます:  
+> 1. [バッチ API](../manage-objects/import.mdx) を使用する  
+> 2. まず 1 バッチあたり 100 件程度の小さめのバッチ サイズから始める。非常に高速であれば増やし、タイムアウトが発生する場合は減らす  
+> 3. 一方向のリレーションシップ (例: `Foo -> Bar`) がある場合は、まずすべての `Bar` オブジェクトをインポートし、その後リファレンスを設定済みの `Foo` オブジェクトをインポートするのが最も簡単です。より複雑なリレーションシップがある場合は、まずリファレンスなしでオブジェクトをインポートし、その後で[リファレンスを追加](../manage-objects/import.mdx#import-with-references)してコレクション間のリンクを任意の方向に設定できます。
 
 </details>
 
-## Modules
+## モジュール
 
-#### Q: Can I connect my own module?
+#### Q: 独自のモジュールを接続できますか？
 
 <details>
   <summary>Answer</summary>
 
-> [Yes!](/weaviate/modules/custom-modules.md)
+> [はい!](/weaviate/modules/custom-modules.md)
 
 </details>
 
-#### Q: Can I train my own text2vec-contextionary vectorizer module?
+#### Q: 自分で text2vec-contextionary ベクトライザー モジュールをトレーニングできますか？
 
 <details>
   <summary>Answer</summary>
 
-> Not at the moment. You can currently use the [available contextionaries](/weaviate/modules/text2vec-contextionary.md) in a variety of languages and use the transfer learning feature to add custom concepts if needed.
+> 現時点ではできません。現在は[既存の contextionary](../weaviate/modules/text2vec-contextionary.md)を複数の言語で使用でき、必要に応じて転移学習機能でカスタム概念を追加できます。
 
 </details>
 
-## Indexes in Weaviate
+## Weaviate におけるインデックス
 
-#### Q: Does Weaviate use Hnswlib?
+#### Q: Weaviate は Hnswlib を使用していますか？
 
 <details>
   <summary>Answer</summary>
 
-> No
+> いいえ  
+>   
+> Weaviate は、[hnswlib](https://github.com/nmslib/hnswlib) の制限 (永続性要件、CRUD サポート、プリフィルタリング など) を克服した独自実装の HNSW を使用しています。  
+>   
+> Weaviate におけるカスタム HNSW 実装の参考情報:  
+>   
+> - [HNSW プラグイン (GitHub)](https://github.com/weaviate/weaviate/tree/master/adapters/repos/db/vector/hnsw)  
+> - [vector dot product ASM](https://github.com/weaviate/weaviate/blob/master/adapters/repos/db/vector/hnsw/distancer/asm/dot_amd64.s)  
+>   
+> さらに詳しく:  
+>   
+> - [Weaviate, an ANN Database with CRUD support – DB-Engines.com](https://db-engines.com/en/blog_post/87) ⬅️ このトピックで最も優れた資料  
+> - [Weaviate の HNSW 実装 (ドキュメント)](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index)  
+>   
+> _Note I: HNSW は Weaviate で使用されている実装の 1 つに過ぎません。Weaviate は[こちら](/weaviate/concepts/indexing/vector-index.md)で説明されているように複数のインデックス アルゴリズムをサポートできます_
+
+</details>
+
+#### Q: すべての ANN アルゴリズムが Weaviate のインデックス プラグイン候補になり得ますか？
+
+<details>
+  <summary>Answer</summary>
+
+> いいえ  
+>   
+> 一部のアルゴリズム (例: Annoy や ScaNN) は、ビルド後は完全にイミュータブルで、変更や段階的な構築ができません。すべてのベクトルがそろった状態で一度だけビルドし、その後はクエリのみ可能で、要素の追加や変更はできません。したがって、Weaviate がサポートしたい CRUD 操作には対応できません。
+
+</details>
+
+#### Q: Weaviate は ANN インデックス検索でプレフィルタリングとポストフィルタリングのどちらを使っていますか？
+
+<details>
+  <summary>Answer</summary>
+
+> 現在、Weaviate はフィルター付き ANN 検索においてプレフィルタリングのみを採用しています。詳細は「Weaviate の ベクトル とスカラー フィルタリングの仕組み」をご覧ください。
+
+</details>
+
+#### Q: Weaviate の ベクトル とスカラー フィルタリングの仕組みは？
+
+<details>
+  <summary>Answer</summary>
+
+> 2 ステップのプロセスです:  
+>   
+> 1. インポート時に構築される転置インデックスがクエリを実行し、指定されたドキュメント ID の許可リストを生成します。その後、ANN インデックスがこの許可リストを使ってクエリされます (このリストが独自実装の理由の一つです)。  
+> 2. 近いマッチではあるが許可リストに存在しないドキュメント ID に遭遇した場合、その ID は候補として扱われ (評価するリンク リストに追加)、結果セットには追加されません。許可された ID だけを結果セットに追加するため、上位 k 要素に到達する前に早期終了しません。  
+>   
+> 技術的な実装の詳細については、[この動画](https://www.youtube.com/watch?v=6hdEJdHWXRE)をご覧ください。
+
+</details>
+
+#### 埋め込みの ベクトル 次元数の最大値は？
+
+<details>
+  <summary>Answer</summary>
+
+> 現在、埋め込みは `uint16` で保存されているため、最大長は 65535 です。
+
+</details>
+
+
+
+## パフォーマンス
+
+#### Q: Weaviate のクエリ速度にとってより重要なのは何ですか?  より多くの CPU パワーですか、それともより多くの RAM ですか?
+
+より具体的には: 16 GB の RAM と 2 つの CPU を搭載したマシンと、8 GB の RAM と 4 つの CPU を搭載したマシンのどちらを選びますか?
+
+<details>
+  <summary>回答</summary>
+
+> これを 100% 正確に答えるのは非常に難しいですが、いくつかの要因があります:
+> * **ベクトル検索自体**  
+>   この部分は CPU ボトルネックですが、スループットに関してのみです。1 件の検索はシングルスレッドで実行されますが、複数の並列検索は複数スレッドを利用できます。そのため、ほかに処理がない状態で単一リクエストの時間を測定すると、マシンが 1 core でも 100 core でも同じです。しかし QPS が CPU のスループットに近づくと、コア数を増やすことで大きなメリットが得られます。  
+> * **オブジェクトの取得**  
+>   ベクトル検索が終わると、n 個の ID のリストを実際のオブジェクトへ解決する必要があります。これは一般的に IO ボトルネックです。ただし、すべてのディスクファイルはメモリマップされています。そのため、メモリが多いほどディスク状態をメモリに保持できます。とはいえ検索は均一に分散しているわけではありません。たとえば検索の 90% が 10% のオブジェクトだけを返すとしましょう（人気のある検索結果）。その 10% のディスクオブジェクトがすでにメモリにキャッシュされていれば、メモリを追加してもメリットはありません。  
 >
-> Weaviate uses a custom implementation of HNSW that overcomes certain limitations of [hnswlib](https://github.com/nmslib/hnswlib), such as durability requirements, CRUD support, pre-filtering, etc.
->
-> Custom HNSW implementation in Weaviate references:
->
-> - [HNSW plugin (GitHub)](https://github.com/weaviate/weaviate/tree/master/adapters/repos/db/vector/hnsw)
-> - [vector dot product ASM](https://github.com/weaviate/weaviate/blob/master/adapters/repos/db/vector/hnsw/distancer/asm/dot_amd64.s)
->
-> More information:
->
-> - [Weaviate, an ANN Database with CRUD support – DB-Engines.com](https://db-engines.com/en/blog_post/87) ⬅️ best resource on the topic
-> - [Weaviate's HNSW implementation in the docs](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index)
->
-> _Note I: HNSW is just one implementation in Weaviate, but Weaviate can support multiple indexing algoritmns as outlined [here](/weaviate/concepts/indexing/vector-index.md)_
+> 以上を踏まえると、スループットが問題なら CPU を増やし、応答時間が問題ならメモリを増やすことを慎重に推奨できます。ただし後者は、キャッシュ可能なものが十分にある場合にのみ価値があります。ディスク状態（少なくとも大半のクエリに関連する部分）全体をキャッシュできるだけのメモリがすでにある場合、これ以上メモリを増やしてもメリットはありません。  
+> なお、インポートについては HNSW インデックス作成のコストによりほぼ常に CPU ボトルネックです。もしインポート時とクエリ実行時でリサイズできるなら、インポート時は CPU を優先し、その後クエリ実行時に徐々に CPU をメモリに置き換えていくことをお勧めします。効果がなくなるまで続けてください。（実運用でインポートとクエリが分離していない場合もあります。）  
 
 </details>
 
-#### Q: Are all ANN algorithms potential candidates to become an indexation plugin in Weaviate?
+#### Q: データのインポートが時間がかかる／遅いのですが、原因と対策は?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> No
->
-> Some algorithms (e.g., Annoy or ScaNN) are entirely immutable once built, they can neither be changed nor built up incrementally. Instead, they require you to have all of your vectors present, then you build the algorithm once. After a build, you can only query them, but cannot add more elements or change existing elements. Thus, they aren't capable of the CRUD operations we want to support in Weaviate.
+> HNSW はクエリ時には非常に高速ですが、ベクトル化時は遅くなります。つまり、データオブジェクトの追加や更新には比較的時間がかかります。[非同期インデックス作成](../config-refs/indexing/vector-index.mdx#asynchronous-indexing)を試すことで、データ取り込みとベクトル化を分離できます。
 
 </details>
 
-#### Q: Does Weaviate use pre- or post-filtering ANN index search?
+#### Q: 遅いクエリをどのように最適化できますか?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Weaviate currently uses pre-filtering exclusively on filtered ANN search.
-> See "How does Weaviate's vector and scalar filtering work" for more details.
-
-</details>
-
-#### Q: How does Weaviate's vector and scalar filtering work?
-
-<details>
-  <summary>Answer</summary>
-
-> It's a 2-step process:
->
-> 1. The inverted index (which is [built at import time](#q-does-weaviate-use-hnswlib)) queries to produce an allowed list of the specified document ids. Then the ANN index is queried with this allow list (the list being one of the reasons for our custom implementation).
-> 2. If we encounter a document id which would be a close match, but isn't on the allow list the id is treated as a candidate (i.e. we add it to our list of links to evaluate), but is never added to the result set. Since we only add allowed IDs to the set, we don't exit early, i.e. before the top `k` elements are reached.
->
-> For more information on the technical implementations, see [this video](https://www.youtube.com/watch?v=6hdEJdHWXRE).
-
-</details>
-
-#### What is the maximum number of vector dimensions for embeddings?
-
-<details>
-  <summary>Answer</summary>
-
-> As the embedding is currently stored using `uint16`, the maximum possible length is currently 65535.
-
-</details>
-
-## Performance
-
-#### Q: What would you say is more important for query speed in Weaviate: More CPU power, or more RAM?
-
-More concretely: If you had to pick between a machine that has 16 GB of RAM and 2 CPUs, or a machine that has 8 GB of RAM and 4 CPUs, which would you pick?
-
-<details>
-  <summary>Answer</summary>
-
-> This is a very difficult to answer 100% correctly, because there are several factors in play:
-> * **The vector search itself**. This part is CPU-bound, however only with regards to throughput: A single search is single-threaded. Multiple parallel searches can use multiple threads. So if you measure the time of a single request (otherwise idle), it will be the same whether the machine has 1 core or 100. However, if your QPS approach the throughput of a CPU, you'll see massive benefits by adding more Cores
-> * **The retrieval of the objects**. Once the vector search part is done, we are essentially left with a list of n IDs which need to be resolved to actual objects. This is IO-bound in general. However, all disk files are memory-mapped. So generally, more mem will allow you to hold more of the disk state in memory. In real life however, it's not that simple. Searches are rarely evenly distributed. So let's pretend that 90% of searches will return just 10% of objects (because these are more popular search results). Then if those 10% of the disk objects are already cached in mem, there's no benefit in adding more memory.
->
-> Taking the above in mind: we can carefully say: If throughput is the problem, increase CPU, if response time is the problem increase mem. However, note that the latter only adds value if there are more things that can be cached. If you have enough mem to cache your entire disk state (or at least the parts that are relevant for most queries), additional memory won't add any additional benefit.
-> If we are talking about imports on the other hand, they are almost always CPU-bound because of the cost of creating the HNSW index. So, if you can resize between import and query, my recommendation would be roughly prefer CPUs while importing and then gradually replace CPU with memory at query time - until you see no more benefits. (This assumes that there is a separation between importing and querying which might not always be the case in real life).
-
-</details>
-
-#### Q: Data import takes long / is slow, what is causing this and what can I do?
-
-<details>
-  <summary>Answer</summary>
-
-> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/indexing/vector-index.mdx#asynchronous-indexing), which separates data ingestion from vectorization.
-
-</details>
-
-#### Q: How can slow queries be optimized?
-
-<details>
-  <summary>Answer</summary>
-
-> Queries containing deeply nested references that need to be filtered or resolved can take some time. Read on optimization strategies [here](./performance.md#costs-of-queries-and-operations).
+> フィルタリングや解決が必要な深いネスト参照を含むクエリは時間がかかることがあります。最適化戦略については [こちら](./performance.md#costs-of-queries-and-operations) をご覧ください。
 
 </details>
 
 
-#### Q: When scalar and vector search are combined, will the scalar filter happen before or after the nearest neighbor (vector) search?
+#### Q: スカラー検索とベクトル検索を組み合わせた場合、スカラーフィルタは最近傍（ベクトル）検索の前に実行されますか、それとも後に実行されますか?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> The mixed structured vector searches in Weaviate are pre-filter. There is an inverted index which is queried first to basically form an allow-list, in the HNSW search the allow list is then used to treat non-allowed doc ids only as nodes to follow connections, but not to add to the result set.
+> Weaviate における混合構造化ベクトル検索はプリフィルタ方式です。最初に転置インデックスにクエリをかけ、許可リストを作成します。HNSW 検索ではこのリストを使用し、許可されていないドキュメント ID は接続をたどるノードとしてのみ扱い、結果セットには追加しません。
 
 </details>
 
-#### Q: Regarding "filtered vector search": Since this is a two-phase pipeline, how big can that list of IDs get? Do you know how that size might affect query performance?
+#### Q: 「フィルタ付きベクトル検索」について: これは 2 段階のパイプラインですが、ID のリストはどのくらい大きくなりますか? そのサイズはクエリ性能にどのように影響しますか?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Essentially the list ids uses the internal doc id which is a `uint64` or 8 bytes per ID. The list can grow as long as you have memory available. So for example with 2GB of free memory, it could hold 250M ids, with 20GB it could hold 2.5B ids, etc.
+> ID のリストは内部ドキュメント ID を使用しており、型は `uint64`、1 ID あたり 8 バイトです。メモリが許す限りリストを拡張できます。たとえば空きメモリが 2 GB なら 250 M ID、20 GB なら 2.5 B ID を保持できます。  
 >
-> Performance wise there are two things to consider:
-> 1. Building the lookup list
-> 2. Filtering the results when vector searching
+> 性能面では 2 つのポイントがあります:  
+> 1. ルックアップリストの作成  
+> 2. ベクトル検索時の結果フィルタリング  
 >
-> Building the list is a typical inverted index look up, so depending on the operator this is just a single read on == (or a set of range reads, e.g. for >7, we'd read the value rows from 7 to infinity). This process is pretty efficient, similar to how the same thing would happen in a traditional search engine, such as elasticsearch
+> リストの作成は典型的な転置インデックスのルックアップで、演算子に応じて == の場合は 1 回の読み取り、範囲検索（例: >7）の場合は値行を 7 から無限大まで読み取ります。このプロセスは従来の検索エンジン（Elasticsearch など）と同じく効率的です。  
 >
-> Performing the filtering during the vector search depends on whether the filter is very restrictive or very loose. In the case you mentioned where a lot of IDs are included, it will be very efficient. Because the equivalent of an unfiltered search would be the one where your ID list contains all possible IDs. So the HNSW index would behave normally. There is however, a small penalty whenever a list is present: We need to check if the current ID is contained an the allow-list. This is essentially a hashmap lookup, so it should be O(1) per object. Nevertheless, there is a slight performance penalty.
+> ベクトル検索中のフィルタリングは、フィルタの制約度合いによって異なります。ご質問のように多くの ID が含まれる場合は非常に効率的です。許可リストにすべての ID が含まれている状態がフィルタなし検索に相当し、HNSW インデックスは通常どおり動作します。ただしリストが存在する場合は毎回許可リストに含まれているかを確認する必要があり、これはハッシュマップのルックアップで O(1) ですが、わずかなオーバーヘッドがあります。  
 >
-> Now the other extreme, a very restrictive list, i.e few IDs on the list, actually takes considerably more time. Because the HNSW index will find neighboring IDs, but since they're not contained, they cannot be added as result candidates, meaning that all we can do with them is evaluating their connections, but not the points themselves. In the extreme case of a list that is very, very restrictive, say just 10 objects out of 1B in the worst case the search would become exhaustive if you the filtered ids are very far from the query. In this extreme case, it would actually be much more efficient to just skip the index and do a brute-force indexless vector search on the 10 ids. So, there is a cut-off when a brute-force search becomes more efficient than a heavily-restricted vector search with HNSW. We do not yet have any optimization to discovery such a cut-off point and skip the index, but this should be fairly simple to implement if this ever becomes an actual problem.
+> 逆にリストが非常に制限的で ID が少ない場合は、かなり時間がかかります。HNSW インデックスは近傍 ID を見つけても、それらがリストに含まれていなければ候補に追加できず、接続の評価だけを行います。極端に制限的なリスト（例: 10 件 / 1 B）の場合、フィルタ対象の ID がクエリから遠いと検索が網羅的になり、インデックスなしの総当たりベクトル検索の方が効率的になります。このように、ブラインドフォース検索の方が効率的になる境界があります。現在このカットオフポイントを検出してインデックスをスキップする最適化は実装されていませんが、実際に問題になれば比較的簡単に実装できるはずです。
 
 </details>
 
-#### Q: My Weaviate instance uses more memory than I think is reasonable. How can I debug this?
+#### Q: Weaviate インスタンスが期待以上のメモリを使用しています。どのようにデバッグできますか?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Check that your import uses the latest version of Weaviate. `v1.12.0` and `v1.12.1` fix an [issue](https://github.com/weaviate/weaviate/issues/1868) where excessive amounts of data are written to disk, resulting in unreasonable memory consumption after restarts. If upgrading does not fix the issue, see this post on [how to profile memory use](https://stackoverflow.com/a/71793178/5322199).
+> インポートに使用している Weaviate のバージョンが最新か確認してください。`v1.12.0` と `v1.12.1` では、大量のデータをディスクに書き込み、再起動後に過剰なメモリ消費を招く [問題](https://github.com/weaviate/weaviate/issues/1868) が修正されています。アップグレードしても解決しない場合は、[メモリ使用状況のプロファイリング方法](https://stackoverflow.com/a/71793178/5322199) を参照してください。
 
 </details>
 
-## Troubleshooting / debugging
+## トラブルシューティング / デバッグ
 
-#### Q: How can I print a stack trace of Weaviate?
+#### Q: Weaviate のスタックトレースを出力する方法は?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](/deploy/configuration/env-vars/index.md).
+`SIGQUIT` シグナルをプロセスに送ることでスタックトレースをコンソールに出力できます。ログレベルとデバッグ変数は `LOG_LEVEL` と `DEBUG` の [環境変数](/deploy/configuration/env-vars/index.md) で設定できます。
 
-Read more on SIGQUIT [here](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) and this [StackOverflow answer](https://stackoverflow.com/questions/19094099/how-to-dump-goroutine-stacktraces/35290196#35290196).
+SIGQUIT については [こちら](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) と、この [StackOverflow の回答](https://stackoverflow.com/questions/19094099/how-to-dump-goroutine-stacktraces/35290196#35290196) をご覧ください。
 
 </details>
 
-#### Q: 'invalid properties' error when creating a collection (Python client versions 4.16.0 to 4.16.3)
+#### Q: コレクション作成時に 'invalid properties' エラーが発生する（Python クライアント 4.16.0〜4.16.3）
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-In Weaviate Python client versions `4.16.0` to `4.16.3`, the following pattern when creating a collection with a text2vec_xxx vectorizer will result in an error:
+Weaviate Python クライアントの `4.16.0` から `4.16.3` では、text2vec_xxx ベクトライザーで以下のパターンでコレクションを作成するとエラーになります:
 
 ```python
 client.collections.create(
@@ -493,19 +501,19 @@ client.collections.create(
 )
 ```
 
-The error message will look like this:
+エラーメッセージ例:
 
 ```text
 UnexpectedStatusCodeError: Collection may not have been created properly.! Unexpected status code: 422, with response body: {'error': [{'message': "module 'text2vec-cohere': invalid properties: didn't find a single property which is of type string or text and is not excluded from indexing....
 ```
 
-This is a known issue, which will occur when setting a vectorizer definition without defining any `TEXT` or `TEXT_ARRAY` properties in the collection, in order to rely on AutoSchema to create the data schema for you.
+これは既知の問題で、ベクトライザー定義を設定しながらコレクションに `TEXT` または `TEXT_ARRAY` プロパティを 1 つも定義せず、AutoSchema にスキーマ作成を任せた場合に発生します。
 
-**This issue is addressed in Weaviate Python client patch release `4.16.4`. So, we recommend updating to the version `4.16.4` of the Weaviate Python client, or later.**
+**この問題は Weaviate Python クライアントのパッチリリース `4.16.4` で修正されています。バージョン `4.16.4` 以降へのアップデートを推奨します。**
 
-If you are unable to change your Weaviate Python client version from the affected ones, you can work around this issue in one of two ways:
+もし該当バージョンから変更できない場合は、次のいずれかの方法で回避できます。
 
-1. By explicitly defining at least one `TEXT` or `TEXT_ARRAY` property in the collection schema, like this:
+1. コレクションスキーマで少なくとも 1 つの `TEXT` または `TEXT_ARRAY` プロパティを明示的に定義する:
 
 ```python
 client.collections.create(
@@ -518,7 +526,7 @@ client.collections.create(
 )
 ```
 
-2. By setting `vectorize_collection_name` to `True` in the vectorizer definition, like this:
+2. ベクトライザー定義で `vectorize_collection_name` を `True` に設定する:
 
 ```python
 client.collections.create(
@@ -532,43 +540,45 @@ client.collections.create(
 
 </details>
 
-## Miscellaneous
+## その他
 
-#### Q: Can I request a feature in Weaviate?
+#### Q: Weaviate に機能追加をリクエストできますか?
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Sure (also, feel free to [issue a pull request](https://github.com/weaviate/weaviate/pulls) 😉) you can [add those requests here](https://github.com/weaviate/weaviate/issues). The only thing you need is a GitHub account, and while you're there, make sure to give us a star 😇.
+> もちろんです（[プルリクエスト](https://github.com/weaviate/weaviate/pulls) も大歓迎です 😉）。[こちら](https://github.com/weaviate/weaviate/issues) にリクエストを追加してください。GitHub アカウントさえあれば OK ですし、ついでにスターもぜひ 😇。
 
 </details>
 
-#### Q: What is Weaviate's consistency model in a distributed setup?
+
+
+#### Q: 分散セットアップにおける Weaviate の整合性モデルは何ですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> Weaviate is generally modeled to prefer Availability over Consistency (AP over CP). It is designed to deliver low search latencies under high throughput in situations where availability is more business-critical than consistency. If strict serializability is required on your data, we generally recommend storing your data in a different primary data store, use Weaviate as an auxiliary data store, and set up replication between the two. If you do not need serializability and eventual consistency is enough for your use case, Weaviate can be used as a primary datastore.
+> Weaviate は一般的に Availability を Consistency より優先するようにモデル化されており ( AP over CP ) 、可用性が整合性よりもビジネス上クリティカルな状況で、高スループット下でも低い検索レイテンシを提供できるよう設計されています。データに対して厳密なシリアライザビリティが必要な場合は、別のプライマリデータストアにデータを保存し、 Weaviate を補助的なデータストアとして使用し、両者間でレプリケーションを設定することを推奨します。シリアライザビリティが不要で最終的な整合性で十分なユースケースであれば、 Weaviate をプライマリデータストアとして使用できます。
 >
-> Weaviate has no notion of transactions, operations always affect exactly a single key, therefore Serializability is not applicable. In a distributed setup (under development) Weaviate's consistency model is eventual consistency. When a cluster is healthy, all changes are replicated to all affected nodes by the time the write is acknowledged by the user. Objects will immediately be present in search results on all nodes after the import request completes. If a search query occurs concurrently with an import operation nodes may not be in sync yet. This means some nodes might already include the newly added or updated objects, while others don't yet. In a healthy cluster, all nodes will have converged by the time the import request has been completed successfully. If a node is temporarily unavailable and rejoins a cluster it may temporarily be out of sync. It will then sync the missed changes from other replica nodes and eventually serve the same data again.
+> Weaviate にはトランザクションの概念がなく、操作は常に正確に 1 つのキーにのみ影響するため、シリアライザビリティは適用されません。分散セットアップ ( 開発中 ) では、 Weaviate の整合性モデルは最終的な整合性です。クラスタが健全な状態の場合、書き込みがユーザーに ACK されるまでに、すべての変更が影響を受けるすべてのノードにレプリケートされます。インポートリクエストが完了すると、オブジェクトはすべてのノードの検索結果に即座に表示されます。インポート操作と同時に検索クエリが行われた場合、ノード間でまだ同期が取れていない可能性があります。つまり、一部のノードには新しく追加または更新されたオブジェクトが既に含まれている一方で、他のノードにはまだ含まれていない場合があります。健全なクラスタでは、インポートリクエストが正常に完了するまでにすべてのノードが収束します。一時的にノードが利用不可になり再参加した場合、一時的に同期が取れていないことがあります。その場合、当該ノードは他のレプリカノードから欠落している変更を同期し、最終的には再び同じデータを提供します。
 
 </details>
 
-#### Q: With your aggregations I could not see how to do time buckets, is this possible?
+#### Q: 集計でタイムバケットを作成する方法が見当たりませんでしたが、可能ですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> At the moment, we cannot aggregate over timeseries into time buckets yet, but architecturally there's nothing in the way. If there is demand, this seems like a nice feature request, you can submit an [issue here](https://github.com/weaviate/weaviate/issues). (We're a very small company though and the priority is on Horizontal Scaling at the moment.)
+> 現時点では、タイムシリーズをタイムバケットに集計することはまだできませんが、アーキテクチャ的には障壁はありません。要望があれば素晴らしい機能リクエストになりそうですので、[こちら](https://github.com/weaviate/weaviate/issues) で issue を送っていただけます。 ( 私たちは非常に小さな会社であり、現在は水平スケーリングが優先事項です ) 。
 
 </details>
 
-#### Q: How can I run the latest master branch with Docker Compose?
+#### Q: Docker Compose で最新の master ブランチを実行するにはどうすればよいですか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-> You can run Weaviate with `Docker Compose`, you can build your own container off the [`master`](https://github.com/weaviate/weaviate) branch. Note that this is not an officially released Weaviate version, so this might contain bugs.
+> `Docker Compose` を使用して Weaviate を実行する場合、[`master`](https://github.com/weaviate/weaviate) ブランチから独自のコンテナをビルドできます。これは正式にリリースされた Weaviate のバージョンではないため、バグが含まれている可能性がある点にご注意ください。
 >
 > ```sh
 > git clone https://github.com/weaviate/weaviate.git
@@ -576,7 +586,7 @@ client.collections.create(
 > docker build --target weaviate -t name-of-your-weaviate-image .
 > ```
 >
-> Then, make a `docker-compose.yml` file with this new image. For example:
+> その後、この新しいイメージを使用して `docker-compose.yml` ファイルを作成します。例:
 >
 > ```yml
 >
@@ -602,7 +612,7 @@ client.collections.create(
 >     image: cr.weaviate.io/semitechnologies/contextionary:en0.16.0-v1.0.2
 > ```
 >
-> After the build is complete, you can run this Weaviate build with docker compose:
+> ビルドが完了したら、docker compose でこの Weaviate ビルドを実行できます:
 
 ```bash
 docker compose up
@@ -610,19 +620,20 @@ docker compose up
 
 </details>
 
-#### Q: Can I run Weaviate on Windows?
+#### Q: Windows で Weaviate を実行できますか？
 
 <details>
-  <summary>Answer</summary>
+  <summary>回答</summary>
 
-Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/),
+Weaviate は、[Docker](/deploy/installation-guides/docker-installation.md) や [WSL](https://learn.microsoft.com/en-us/windows/wsl/) などのコンテナ化された環境を通じて Windows で利用できます。
 
-Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](/docs/deploy/installation-guides/embedded.md) should be avoided.
+現在、ネイティブ Windows サポートは提供していないため、[Weaviate Embedded](/docs/deploy/installation-guides/embedded.md) のようなデプロイオプションは避けてください。
 
 </details>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

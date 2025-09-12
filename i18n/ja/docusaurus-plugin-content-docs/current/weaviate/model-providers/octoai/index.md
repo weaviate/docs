@@ -1,5 +1,5 @@
 ---
-title: OctoAI + Weaviate (Deprecated)
+title: OctoAI + Weaviate（非推奨）
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_octoai.jpg
 # tags: ['model providers', 'octoai']
@@ -11,52 +11,53 @@ import OctoAIDeprecationNote from './_includes/octoai_deprecation.md';
 
 <OctoAIDeprecationNote/>
 
-:::info Added in `v1.25.0`
+:::info `v1.25.0` で追加
 :::
 
-OctoAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with OctoAI's APIs, allowing users to leverage OctoAI's models directly from the Weaviate Database.
+OctoAI は自然言語処理と生成のための幅広いモデルを提供しています。 Weaviate は OctoAI の API とシームレスに統合されており、ユーザーは Weaviate Database から直接 OctoAI のモデルを活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI ドリブンアプリケーションを簡単に構築できます。
 
-## Integrations with OctoAI
+## OctoAI との統合
 
-### Embedding models for vector search
+### ベクトル検索の埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_octoai_embedding.png)
+![埋め込み統合のイメージ](../_includes/integration_octoai_embedding.png)
 
-OctoAI's embedding models transform text data into vector embeddings, capturing meaning and context.
+OctoAI の埋め込みモデルはテキストデータをベクトル埋め込みに変換し、意味と文脈を捉えます。
 
-[Weaviate integrates with OctoAI's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は OctoAI の埋め込みモデルと統合しています](./embeddings.md) ので、データをシームレスにベクトライゼーションできます。この統合により、追加の前処理やデータ変換を行わずに、セマンティック検索やハイブリッド検索を実行できます。
 
-[OctoAI embedding integration page](./embeddings.md)
+[OctoAI 埋め込み統合ページ](./embeddings.md)
 
-### Generative AI models for RAG
+### RAG 用生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_octoai_rag_single.png)
+![単一プロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_octoai_rag_single.png)
 
-OctoAI's generative AI models can generate human-like text based on given prompts and contexts.
+OctoAI の生成 AI モデルは、与えられたプロンプトとコンテキストに基づいて人間のようなテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with OctoAI's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md) を使用すると、検索拡張生成 (RAG) を Weaviate Database から直接実行できます。これにより、Weaviate の効率的なストレージと高速検索機能が OctoAI の生成 AI モデルと組み合わさり、パーソナライズされた文脈に沿った応答を生成します。
 
-[OctoAI generative AI integration page](./generative.md)
+[OctoAI 生成 AI 統合ページ](./generative.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage OctoAI's powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内で直接 OctoAI の強力なモデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI ドリブンアプリケーションの構築プロセスが簡素化され、開発を加速し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid OctoAI API key to Weaviate for these integrations. Go to [OctoAI](https://octo.ai/) to sign up and obtain an API key.
+これらの統合を使用するには、有効な OctoAI API キーを Weaviate に提供する必要があります。 [OctoAI](https://octo.ai/) にアクセスしてサインアップし、API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the OctoAI models and start using them in your applications.
+次に、該当する統合ページで OctoAI モデルを使用するための Weaviate の設定方法を確認し、アプリケーションで活用しましょう。
 
-- [Text Embeddings](./embeddings.md)
-- [Generative AI](./generative.md)
+- [テキスト埋め込み](./embeddings.md)
+- [生成 AI](./generative.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

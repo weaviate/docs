@@ -1,7 +1,7 @@
 ---
-title: Migrate from v3 to v4
+title: v3 から v4 への移行
 sidebar_position: 50
-description: "Migration guide for upgrading Python applications from deprecated v3 to current v4 client library."
+description: "非推奨の v3 から現行の v4 クライアント ライブラリーへ Python アプリケーションをアップグレードするための移行ガイド。"
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---
@@ -12,38 +12,38 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
 
 :::note Python client version
-The current Python client version is `v||site.python_client_version||`
+現在の Python クライアント バージョンは `v||site.python_client_version||` です  
 :::
 
-The `v4` Weaviate Python client API is a complete rewrite, aimed at an improved overall user experience. It is therefore also very different to the `v3` API, and will require re-learning of changed patterns in the way you interact with Weaviate.
+` v4 ` の Weaviate Python クライアント API はユーザー エクスペリエンスを向上させるために全面的に書き直されました。そのため、` v3 ` API とは大きく異なり、Weaviate とのやり取り方法を学び直す必要があります。
 
-While this may introduce some overhead, we believe the `v4` API is a significant improvement to your developer experience. For instance, using the `v4` client will allow you to take full advantage faster speeds through the gRPC API, and additional static analysis for IDE assistance through strong typing.
+多少のオーバーヘッドが発生するかもしれませんが、` v4 ` API は開発者エクスペリエンスを大きく向上させると考えています。たとえば、` v4 ` クライアントを使用すると gRPC API を介した高速化をフルに活用でき、強い型付けによる IDE の静的解析支援も受けられます。
 
-Due to the extensive API surface changes, this guide does not cover every change. Instead, this guide is designed to help you understand the major changes and how to migrate your code at a high level.
+API の変更範囲が広いため、このガイドではすべての変更点を網羅していません。ここでは主要な変更点と、コードをどのように高いレベルで移行するかを説明します。
 
-For code examples, refer to the documentation throughout the site, [starting with these suggested sections](#how-to-migrate-your-code).
+コード例については、[こちらの推奨セクション](#how-to-migrate-your-code) からサイト全体のドキュメントを参照してください。
 
-## Installation
+## インストール
 
-To go from `v3` to `v4`, you must
+` v3 ` から ` v4 ` へ移行するには、以下を行います。
 
-1. Upgrade the client library:
+1. クライアント ライブラリーをアップグレードします。
 
     ```bash
     pip install -U weaviate-client
     ```
 
-2. Upgrade Weaviate to a compatible version. Each minor Python client version is closely tied to a minor Weaviate version.
-    - For example, Weaviate `v1.27.x` were developed together with `v4.9.x` of the Python client.
-    - Generally, we recommend you use the latest versions of Weaviate and the client. You can find the version compatibility matrix in the [release notes](../../release-notes/index.md#weaviate-database-and-client-releases)
+2. 互換性のあるバージョンの Weaviate にアップグレードします。各マイナー Python クライアント バージョンは、対応するマイナー Weaviate バージョンと密接に結び付いています。  
+    - 例として、Weaviate ` v1.27.x ` は Python クライアント ` v4.9.x ` と共に開発されました。  
+    - 一般的には、Weaviate とクライアントの最新バージョンを使用することを推奨します。バージョン互換性マトリクスは [リリース ノート](../../release-notes/index.md#weaviate-database-and-client-releases) で確認できます。
 
-3. Make sure a port for gRPC is open to Weaviate.
-    - The default port is 50051.
+3. Weaviate に対して gRPC 用のポートが開いていることを確認します。  
+    - デフォルト ポートは 50051 です。
 
     <details>
-      <summary>docker-compose.yml example</summary>
+      <summary>docker-compose.yml の例</summary>
 
-    If you are running Weaviate with Docker, you can map the default port (`50051`) by adding the following to your `docker-compose.yml` file:
+    Docker で Weaviate を実行している場合、` 50051 ` のデフォルト ポートをマッピングするには、`docker-compose.yml` ファイルに次を追加します。
 
     ```yaml
         ports:
@@ -53,11 +53,11 @@ To go from `v3` to `v4`, you must
 
     </details>
 
-## Instantiate a client
+## クライアントのインスタンス化
 
-The `v4` client is instantiated by the `WeaviateClient` object. The `WeaviateClient` object is the main entry point for all API operations.
+` v4 ` クライアントは `WeaviateClient` オブジェクトによってインスタンス化されます。`WeaviateClient` オブジェクトはすべての API 操作へのメイン エントリ ポイントです。
 
-You can instantiate the `WeaviateClient` object directly. However, in most cases it is easier to use a connection helper function such as `connect_to_local` or `connect_to_weaviate_cloud`.
+`WeaviateClient` オブジェクトを直接インスタンス化することもできますが、ほとんどの場合は `connect_to_local` や `connect_to_weaviate_cloud` などの接続ヘルパー関数を使用する方が簡単です。
 
 <Tabs groupId="languages">
 <TabItem value="wcd" label="WCD">
@@ -73,7 +73,7 @@ You can instantiate the `WeaviateClient` object directly. However, in most cases
 <!-- To configure connection timeout values, see [Timeout values](/weaviate/client-libraries/python#timeout-values). -->
 
 </TabItem>
-<TabItem value="local" label="Local">
+<TabItem value="local" label="ローカル">
 
   <FilteredTextBlock
     text={PythonCode}
@@ -83,7 +83,7 @@ You can instantiate the `WeaviateClient` object directly. However, in most cases
   />
 
 </TabItem>
-<TabItem value="embedded" label="Embedded">
+<TabItem value="embedded" label="組み込み">
 
 <FilteredTextBlock
   text={PythonCode}
@@ -93,7 +93,7 @@ You can instantiate the `WeaviateClient` object directly. However, in most cases
 />
 
 </TabItem>
-<TabItem value="custom" label="Custom">
+<TabItem value="custom" label="カスタム">
 
 <FilteredTextBlock
   text={PythonCode}
@@ -105,24 +105,24 @@ You can instantiate the `WeaviateClient` object directly. However, in most cases
 </TabItem>
 </Tabs>
 
-## Major changes
+## 主な変更点
 
-The `v4` client API is very different from the `v3` API. Major user-facing changes in the `v4` client include:
+` v4 ` クライアント API は ` v3 ` API とは大きく異なります。` v4 ` クライアントの主なユーザー向け変更点は次のとおりです。
 
-- Extensive use of helper classes
-- Interaction with collections
-- Removal of builder patterns
+- ヘルパー クラスの大幅な活用  
+- コレクションとのやり取り  
+- ビルダー パターンの廃止  
 
-### Helper classes
+### ヘルパー クラス
 
-The `v4` client makes extensive use of helper classes. These classes provide strong typing and thus static type checking. It also makes coding easier through your IDE's auto-completion feature.
+` v4 ` クライアントはヘルパー クラスを広範に利用します。これらのクラスは強い型付けを提供し、静的型チェックを可能にします。また、IDE の自動補完機能を通じてコーディングを容易にします。
 
-When you are coding, check the auto-complete frequently. It provides useful guidance for API changes and client options.
+コーディング中はオートコンプリートを頻繁に確認してください。API の変更点やクライアント オプションに関する有用なガイダンスが得られます。
 
 import QuickStartCode from '!!raw-loader!/_includes/code/graphql.filters.nearText.generic.py';
 
 <Tabs groupId="languages">
-<TabItem value="create" label="Create a collection">
+<TabItem value="create" label="コレクションの作成">
 
   <FilteredTextBlock
     text={PythonCode}
@@ -132,7 +132,7 @@ import QuickStartCode from '!!raw-loader!/_includes/code/graphql.filters.nearTex
   />
 
 </TabItem>
-<TabItem value="query" label="NearText query">
+<TabItem value="query" label="NearText クエリ">
 
   <FilteredTextBlock
     text={QuickStartCode}
@@ -144,7 +144,7 @@ import QuickStartCode from '!!raw-loader!/_includes/code/graphql.filters.nearTex
 </TabItem>
 </Tabs>
 
-The `wvc` namespace exposes commonly used classes in the `v4` API. The namespace is divided further into submodules based on their primary purpose.
+`wvc` 名前空間は、` v4 ` API でよく使用されるクラスを公開しています。この名前空間は主な用途に基づいてさらにサブモジュールに分かれています。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -153,19 +153,21 @@ The `wvc` namespace exposes commonly used classes in the `v4` API. The namespace
   language="py"
 />
 
-### Interact with collections
 
-When you connect to a Weaviate Database, the v4 API returns a `WeaviateClient` object, while the v3 API returns a `Client` object.
 
-The `v3` API's interactions were built around the `client` object (an instance of `Client`). This includes server interactions for CRUD and search operations.
+### コレクションの操作
 
-In the `v4` API, the main starting points for your interaction with Weaviate follow a different paradigm.
+Weaviate Database に接続すると、v4 API では `WeaviateClient` オブジェクトが、v3 API では `Client` オブジェクトが返されます。
 
-Server-level interactions such as checking readiness (`client.is_ready()`) or getting node statuses (`client.cluster.nodes()`) still remain with `client` (now an instance of `WeaviateClient`).
+`v3` API の操作は `client` オブジェクト（`Client` のインスタンス）を中心に設計されており、CRUD や検索などのサーバー操作をここから実行していました。
 
-CRUD and search operations are now performed against a `Collection` object to reflect that these operations target a particular collection.
+`v4` API では、Weaviate とのやり取りを開始する入口が別のパラダイムに変わっています。
 
-This example below shows a function with a `Collection` typing hint).
+サーバーレベルの操作（例: `client.is_ready()` でのレディネス確認や `client.cluster.nodes()` でのノード状況取得）は引き続き `client`（`WeaviateClient` のインスタンス）で行います。
+
+CRUD と検索操作は、対象となる特定のコレクションを反映するために `Collection` オブジェクトに対して実行します。
+
+以下の例は、`Collection` 型ヒントを持つ関数を示しています。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -174,7 +176,7 @@ This example below shows a function with a `Collection` typing hint).
   language="py"
 />
 
-The collection object includes its name as an attribute. Accordingly, operations such as a `near_text` query can be performed without specifying the collection name. The `v4` collection object has a more focussed namespace in comparison to the breadth of operations available with the `v3` client object. This simplifies your code and reduces the potential for errors.
+コレクションオブジェクトは自分自身の名前を属性として保持しています。そのため、`near_text` クエリなどの操作を行う際にコレクション名を指定する必要がありません。v4 のコレクションオブジェクトは、v3 のクライアントオブジェクトで利用できた幅広い操作と比べて、よりフォーカスされた名前空間を持っています。これによりコードが簡潔になり、エラーの可能性が減少します。
 
 import ManageDataCode from '!!raw-loader!/_includes/code/howto/manage-data.read.py';
 import ManageDataCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.read-v3.py';
@@ -199,22 +201,22 @@ import ManageDataCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.rea
   </TabItem>
 </Tabs>
 
-### Terminology changes (e.g. class -> collection)
+### 用語の変更（例: class → collection）
 
-Some of the terms within the Weaviate ecosystem are changing, and the client has changed accordingly:
+Weaviate エコシステム内のいくつかの用語が変更され、それに合わせてクライアントも更新されました。
 
-- A Weaviate "Class" is now called a "Collection". A collection stores a set of data objects together with their vector embeddings.
-- A "Schema" is now called a "Collection Configuration", a set of settings that define collection name, vectorizers, index configurations, property definitions, and so on.
+- Weaviate の「Class」は「Collection」と呼ばれるようになりました。コレクションはデータオブジェクトとそのベクトル埋め込みをまとめて格納します。  
+- 「Schema」は「Collection Configuration」と呼ばれるようになり、コレクション名、ベクトライザー、インデックス設定、プロパティ定義などを含む設定の集合です。
 
-Due to the architectural changes as well as changes to the terminology, most of the API has been changed. Expect to find differences in the way you interact with Weaviate.
+アーキテクチャおよび用語の変更に伴い、API の大部分が変更されました。Weaviate とのやり取り方法に違いがあると考えてください。
 
-For example, `client.collections.list_all()` is the replacement for `client.schema.get()`.
+たとえば、`client.collections.list_all()` は `client.schema.get()` の置き換えです。
 
-[Manage collections](../../manage-collections/index.mdx) has more details and additional sample code for working with collections. See [searches](../../search/index.mdx) for further details on various queries and filters.
+[コレクションの管理](../../manage-collections/index.mdx) には、コレクションを扱うための詳細と追加サンプルコードがあります。各種クエリやフィルターについては [検索](../../search/index.mdx) を参照してください。
 
-### Collection creation from JSON
+### JSON からのコレクション作成
 
-You can still create a collection from a JSON definition. This may be a useful way to migrate your existing data, for example. You could [fetch an existing definition](../../manage-collections/collection-operations.mdx#read-a-single-collection-definition) and then use it to create a new collection.
+JSON 定義からコレクションを作成することは引き続き可能です。既存データを移行する際などに便利でしょう。たとえば、[既存の定義を取得](../../manage-collections/collection-operations.mdx#read-a-single-collection-definition) し、それを用いて新しいコレクションを作成できます。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -223,11 +225,11 @@ You can still create a collection from a JSON definition. This may be a useful w
   language="py"
 />
 
-### Removal of builder patterns
+### ビルダーパターンの廃止
 
-The builder patterns for constructing queries have been removed. Builder patterns could be confusing, and led to runtime errors that could not be picked up with static analysis.
+クエリを構築するビルダーパターンは削除されました。ビルダーパターンは混乱を招きやすく、静的解析では検出できない実行時エラーが発生しがちでした。
 
-Instead, construct queries in the `v4` API using specific methods and its parameters.
+代わりに、`v4` API では特定のメソッドとそのパラメーターを使ってクエリを構築します。
 
 import SearchSimilarityCode from '!!raw-loader!/_includes/code/howto/search.similarity.py';
 import SearchSimilarityCodeV3 from '!!raw-loader!/_includes/code/howto/search.similarity-v3.py';
@@ -252,25 +254,26 @@ import SearchSimilarityCodeV3 from '!!raw-loader!/_includes/code/howto/search.si
   </TabItem>
 </Tabs>
 
-Additionally, many arguments are now constructed using helper classes (e.g. `MetadataQuery` or `Filter`) which makes it easier to use and reduces errors through IDE assistance and static analysis.
+さらに、多くの引数は `MetadataQuery` や `Filter` などのヘルパークラスを用いて構築されるようになり、IDE の支援や静的解析によって利用が容易になり、エラーも減少します。
 
-## How to migrate your code
+## コード移行の方法
 
-The migration will likely involve significant changes to your codebase. Review the [Python client library documentation](./index.mdx) to get started, including instantiation details and various submodules.
+移行ではコードベースに大幅な変更が必要になる可能性があります。まずは [Python クライアントライブラリのドキュメント](./index.mdx) を確認し、インスタンス化の詳細や各サブモジュールを把握してください。
 
-Then, take a look at the how-to guides for [Managing collections](../../manage-collections/index.mdx) and [Queries](../../search/index.mdx).
+その後、[コレクション管理](../../manage-collections/index.mdx) や [クエリ](../../search/index.mdx) のハウツーガイドを参照してください。
 
-In particular, check out the pages for:
+特に次のページをご覧ください。
 
-- [Manage collections](../../manage-collections/index.mdx),
-- [Batch import](../../manage-objects/import.mdx)
-- [Cross-reference](../../manage-collections/cross-references.mdx)
-- [Basic search](../../search/basics.md)
-- [Similarity search](../../search/similarity.md)
-- [Filters](../../search/filters.md)
+- [コレクションの管理](../../manage-collections/index.mdx)
+- [バッチインポート](../../manage-objects/import.mdx)
+- [クロスリファレンス](../../manage-collections/cross-references.mdx)
+- [基本検索](../../search/basics.md)
+- [類似検索](../../search/similarity.md)
+- [フィルター](../../search/filters.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

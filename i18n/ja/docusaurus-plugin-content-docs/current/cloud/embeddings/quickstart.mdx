@@ -1,7 +1,7 @@
 ---
-title: Quickstart
+title: クイックスタート
 sidebar_position: 1
-description: "Getting started guide for importing and querying data using the Weaviate Embeddings service."
+description: Weaviate Embeddings サービスを使用してデータをインポートし検索するための入門ガイド。
 image: og/wcd/user_guides.jpg
 ---
 
@@ -18,17 +18,17 @@ import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/model-providers/2
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java";
 import JavaImportQueries from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java";
 
-<span class="badge badge--secondary">Expected time: 30 minutes</span>
+<span class="badge badge--secondary">想定所要時間: 30 分</span>
 <br />
 <br />
 
-:::info What you will learn
+:::info 学べること
 
-This quickstart shows you how to combine Weaviate Cloud and the **Weaviate Embeddings** service to:
+このクイックスタートでは、 Weaviate Cloud と **Weaviate Embeddings** を組み合わせて以下を行う方法を学びます。
 
-1. Set up a Weaviate Cloud instance. (10 minutes)
-2. Add and vectorize your data using Weaviate Embeddings. (10 minutes)
-3. Perform a semantic (vector) search and hybrid search. (10 minutes)
+1. Weaviate Cloud インスタンスをセットアップします。（10 分）
+2. Weaviate Embeddings を使ってデータを追加しベクトル化します。（10 分）
+3. セマンティック（ベクトル）検索とハイブリッド検索を実行します。（10 分）
 
 ```mermaid
 flowchart LR
@@ -69,45 +69,45 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#7AD6EB,stroke-width:2px,color:#130C49
 ```
 
-Notes:
+注意:
 
-- The code examples here are self-contained. You can copy and paste them into your own environment to try them out.
+- ここに掲載しているコード例は自己完結型です。コピー＆ペーストしてご自身の環境でそのままお試しいただけます。
 
 :::
 
-## Requirements
+## 必要条件
 
-To use Weaviate Embeddings, you will need:
+Weaviate Embeddings を利用するには、次が必要です。
 
 <!-- TODO[g-despot]: Update prerequisites with correct client versions -->
 
-- A Weaviate Cloud Sandbox running at least Weaviate `1.28.5`
-- A Weaviate client library that supports Weaviate Embeddings:
-  - **Python** client version `4.9.5` or higher
-  - **JavaScript/TypeScript** client version `3.2.5` or higher
-  - **Go/Java** clients are not yet officially supported; you must pass the `X-Weaviate-Api-Key` and `X-Weaviate-Cluster-Url` headers manually upon instantiation as shown below.
+- Weaviate `1.28.5` 以上で稼働する Weaviate Cloud Sandbox
+- Weaviate Embeddings をサポートする Weaviate クライアント ライブラリ  
+  - **Python** クライアント バージョン `4.9.5` 以上  
+  - **JavaScript/TypeScript** クライアント バージョン `3.2.5` 以上  
+  - **Go/Java** クライアントはまだ公式サポートされていません。以下の例のように、インスタンス化時に `X-Weaviate-Api-Key` と `X-Weaviate-Cluster-Url` ヘッダーを手動で渡す必要があります。
 
-## Step 1: Set up Weaviate
+## ステップ 1: Weaviate をセットアップ
 
-### 1.1 Create a new cluster
+### 1.1 新しいクラスターの作成
 
-To create a free **Sandbox** cluster in Weaviate Cloud, follow **[these instructions](/cloud/manage-clusters/create#create-a-cluster)**.
+無料の **Sandbox** クラスターを Weaviate Cloud に作成するには、**[こちらの手順](/cloud/manage-clusters/create#create-a-cluster)** に従ってください。
 
 import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
 <LatestWeaviateVersion />
 
-### 1.2 Install a client library
+### 1.2 クライアント ライブラリをインストール
 
-We recommend using a [client library](/weaviate/client-libraries) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](/weaviate/client-libraries/python), [JavaScript/TypeScript](/weaviate/client-libraries/typescript), [Go](/weaviate/client-libraries/go), and [Java](/weaviate/client-libraries/java).
+Weaviate を操作する際には [クライアント ライブラリ](/weaviate/client-libraries) の利用を推奨します。以下の手順に従って、公式クライアント ライブラリ（[Python](/weaviate/client-libraries/python)、[JavaScript/TypeScript](/weaviate/client-libraries/typescript)、[Go](/weaviate/client-libraries/go)、[Java](/weaviate/client-libraries/java)）のいずれかをインストールしてください。
 
 import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
 <CodeClientInstall />
 
-### 1.3 Connect to Weaviate Cloud
+### 1.3 Weaviate Cloud に接続
 
-Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud instance's access for Weaviate Embeddings.
+Weaviate Embeddings は Weaviate Cloud と統合されています。 Weaviate Cloud の認証情報が、 Weaviate Embeddings へのアクセス許可に使用されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -144,11 +144,11 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
   </TabItem>
 </Tabs>
 
-## Step 2: Populate the database
+## ステップ 2: データベースを準備する
 
-### 2.1 Define a collection
+### 2.1 コレクションを定義する
 
-Now we can define a collection that will store our data. When creating a collection, you need to specify one of the [available models](/cloud/embeddings/models) for the vectorizer to use. This model will be used to create vector embeddings from your data.
+次に、データを格納するコレクションを定義します。コレクションを作成する際には、ベクトライザーが使用する [利用可能なモデル](/cloud/embeddings/models) のいずれかを指定する必要があります。このモデルが、データからベクトル埋め込みを生成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -185,11 +185,13 @@ Now we can define a collection that will store our data. When creating a collect
   </TabItem>
 </Tabs>
 
-For more information about the available model options visit the [Choose a model](/cloud/embeddings/models) page.
+利用可能なモデルの詳細については、[モデルを選択](/cloud/embeddings/models) ページをご覧ください。
 
-### 2.2 Import objects
 
-After configuring the vectorizer, [import data](/weaviate/manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+
+### 2.2 オブジェクトのインポート
+
+ベクトライザーを設定したら、[データをインポート](/weaviate/manage-objects/import.mdx) して Weaviate に取り込みます。Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -226,15 +228,15 @@ After configuring the vectorizer, [import data](/weaviate/manage-objects/import.
   </TabItem>
 </Tabs>
 
-## Step 3: Query your data
+## ステップ 3：データのクエリ
 
-Once the vectorizer is configured, Weaviate will perform vector search operations using the specified model.
+ベクトライザーが設定されると、Weaviate は指定したモデルを使用してベクトル検索を実行します。
 
-### Vector (near text) search
+### ベクトル（ near text ）検索
 
-When you perform a [vector search](/weaviate/search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](/weaviate/search/similarity.md#search-with-text) を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した数だけデータベースから最も類似した  n  個のオブジェクトを返します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -271,7 +273,7 @@ The query below returns the `n` most similar objects from the database, set by `
   </TabItem>
 </Tabs>
 
-## Next steps
+## 次のステップ
 
 import CardsSection from "/src/components/CardsSection";
 
@@ -295,8 +297,10 @@ export const nextStepsData = [
 <CardsSection items={nextStepsData} />
 <br />
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />
+
+

@@ -1,53 +1,54 @@
 ---
-title: Manage objects
+title: オブジェクトの管理
 sidebar_position: 0
 image: og/docs/howto.jpg
 hide_table_of_contents: true
 # tags: ['how to', 'manage data', 'crud']
 ---
 
-Learn the fundamental CRUD (Create, Read, Update, Delete) operations for Weaviate objects. The following guides provide detailed steps for creating single objects, batch importing, reading specific objects, retrieving all objects, updating existing objects, and deleting objects within your collections.
+ Weaviate オブジェクトに対する基本的な CRUD (Create, Read, Update, Delete) 操作を学びます。  
+このガイドでは、単一オブジェクトの作成、バッチインポート、特定オブジェクトの読み取り、すべてのオブジェクトの取得、既存オブジェクトの更新、そしてコレクション内のオブジェクトの削除について、詳細な手順を提供します。
 
 import CardsSection from "/src/components/CardsSection";
 
 export const objectCrudData = [
   {
-    title: "Create objects",
-    description: "Add individual data objects to a Weaviate collection.",
+    title: "オブジェクトの作成",
+    description: "個々のデータオブジェクトを Weaviate コレクションに追加します。",
     link: "/weaviate/manage-objects/create",
     icon: "fas fa-plus-circle",
   },
   {
-    title: "Batch import",
+    title: "バッチインポート",
     description:
-      "Efficiently add multiple data objects to a collection in batches.",
+      "複数のデータオブジェクトをバッチで効率的にコレクションに追加します。",
     link: "/weaviate/manage-objects/import",
     icon: "fas fa-file-import",
   },
   {
-    title: "Read objects",
+    title: "オブジェクトの読み取り",
     description:
-      "Retrieve specific data objects from a collection by their ID or vector.",
+      "ID や ベクトル で指定したデータオブジェクトをコレクションから取得します。",
     link: "/weaviate/manage-objects/read",
     icon: "fas fa-eye",
   },
   {
-    title: "Read all objects",
+    title: "すべてのオブジェクトの読み取り",
     description:
-      "Fetch multiple or all objects from a collection, often with pagination.",
+      "ページネーションを用いて、コレクションから複数またはすべてのオブジェクトを取得します。",
     link: "/weaviate/manage-objects/read-all-objects", 
     icon: "fas fa-list",
   },
   {
-    title: "Update objects",
+    title: "オブジェクトの更新",
     description:
-      "Modify existing data objects within a collection (full or partial updates).",
+      "コレクション内の既存データオブジェクトを変更します (フルまたは部分更新)。",
     link: "/weaviate/manage-objects/update",
     icon: "fas fa-edit",
   },
   {
-    title: "Delete objects",
-    description: "Remove specific data objects from a collection.",
+    title: "オブジェクトの削除",
+    description: "コレクションから特定のデータオブジェクトを削除します。",
     link: "/weaviate/manage-objects/delete",
     icon: "fas fa-trash-alt",
   },
@@ -57,8 +58,9 @@ export const objectCrudData = [
 <CardsSection items={objectCrudData} />
 <br />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

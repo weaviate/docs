@@ -1,12 +1,12 @@
 ---
-title: Reranker
-description: Enhance search results with the transformers reranker module in Weaviate.
+title: リランカー
+description: Weaviate の Transformers リランカー モジュールで検索結果を強化します。
 sidebar_position: 80
 image: og/docs/integrations/provider_integrations_transformers.jpg
 # tags: ['model providers', 'transformers', 'reranking']
 ---
 
-# Locally Hosted Transformers Reranker Models with Weaviate
+# Weaviate でのローカルホスト Transformers リランカー モデル
 
 
 import Tabs from '@theme/Tabs';
@@ -17,49 +17,49 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.reranker.py';
 import TSCode from '!!raw-loader!../_includes/provider.reranker.ts';
 
-Weaviate's integration with the Hugging Face Transformers library allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Hugging Face の Transformers ライブラリを統合することで、そのモデルの機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate collection](#configure-the-reranker) to use Transformers integration, and [configure the Weaviate instance](#weaviate-configuration) with a model image, and Weaviate will use the specified model in the Transformers inference container to rerank search results.
+[Weaviate コレクションを設定](#configure-the-reranker) して Transformers 連携を有効にし、[Weaviate インスタンスを設定](#weaviate-configuration) してモデル イメージを指定すると、Transformers 推論コンテナー内の指定モデルを使用して検索結果をリランクします。
 
-This two-step process involves Weaviate first performing a search and then reranking the results using the specified model.
+この 2 ステップの処理では、まず Weaviate が検索を実行し、その後で指定したモデルを使って結果をリランクします。
 
 ![Reranker integration illustration](../_includes/integration_transformers_reranker.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の構成
 
-Your Weaviate instance must be configured with the Transformers reranker integration (`reranker-transformers`) module.
+お使いの Weaviate インスタンスには、Transformers リランカー連携モジュール（`reranker-transformers`）が有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the Hugging Face model.
+この連携は Hugging Face モデルを含むコンテナーを起動する必要があるため、Weaviate Cloud (WCD) のサーバーレス インスタンスでは利用できません。
 
 </details>
 
-#### Enable the integration module
+#### 統合モジュールを有効化する
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているか調べます。  
+- [モジュール設定方法](../../configuration/modules.md) のガイドに従い、Weaviate でモジュールを有効にします。
 
-#### Configure the integration
+#### 統合の設定
 
-To use this integration, configure the container image of the Hugging Face Transformers model and the inference endpoint of the containerized model.
+この連携を利用するには、Hugging Face Transformers モデルのコンテナー イメージと、そのコンテナ化モデルの推論エンドポイントを設定します。
 
-The following example shows how to configure the Hugging Face Transformers integration in Weaviate:
+以下の例は、Weaviate で Hugging Face Transformers 連携を設定する方法を示しています。
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
 
-#### Docker Option 1: Use a pre-configured `docker-compose.yml` file
+#### Docker オプション 1: 事前設定済み `docker-compose.yml` ファイルを使用
 
-Follow the instructions on the [Weaviate Docker installation configurator](/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+[Weaviate Docker インストール コンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator) の手順に従い、選択したモデルを含む事前設定済み `docker-compose.yml` ファイルをダウンロードします。  
 <br/>
 
-#### Docker Option 2: Add the configuration manually
+#### Docker オプション 2: 手動で設定を追加
 
-Alternatively, add the configuration to the `docker-compose.yml` file manually as in the example below.
+あるいは、下記例のように `docker-compose.yml` ファイルへ設定を手動で追加します。
 
 ```yaml
 services:
@@ -73,17 +73,17 @@ services:
       ENABLE_CUDA: 0  # Set to 1 to enable
 ```
 
-- `RERANKER_INFERENCE_API` environment variable sets the inference API endpoint
-- `reranker-transformers` is the name of the inference container
-- `image` is the container image
-- `ENABLE_CUDA` environment variable enables GPU usage
+- `RERANKER_INFERENCE_API` 環境変数は推論 API エンドポイントを設定します  
+- `reranker-transformers` は推論コンテナーの名前です  
+- `image` はコンテナー イメージです  
+- `ENABLE_CUDA` 環境変数で GPU 使用を有効化します  
 
-Set `image` from a [list of available models](#available-models) to specify a particular model to be used.
+特定のモデルを使用する場合は、`image` に [利用可能なモデル一覧](#available-models) から選択したイメージを設定してください。
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the Hugging Face Transformers integration in Weaviate by adding or updating the `reranker-transformers` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Weaviate Helm チャートの `values.yaml` ファイルの `modules` セクションに `reranker-transformers` モジュールを追加または更新して、Hugging Face Transformers 連携を設定します。例として、`values.yaml` を以下のように変更します。
 
 ```yaml
 modules:
@@ -98,16 +98,16 @@ modules:
       enable_cuda: true
 ```
 
-See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) for an example of the `values.yaml` file including more configuration options.
+より多くの設定オプションを含む `values.yaml` の例については、[Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) を参照してください。
 
-Set `tag` from a [list of available models](#available-models) to specify a particular model to be used.
+特定のモデルを使用する場合は、`tag` に [利用可能なモデル一覧](#available-models) から選択したイメージを設定してください。
 
 </TabItem>
 </Tabs>
 
-### Credentials
+### 認証情報
 
-As this integration runs a local container with the transformers model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+この連携はローカル コンテナーで Transformers モデルを実行するため、追加の認証情報（API キーなど）は不要です。以下の例のように通常どおり Weaviate に接続してください。
 
 <Tabs groupId="languages">
 
@@ -131,13 +131,13 @@ As this integration runs a local container with the transformers model, no addit
 
 </Tabs>
 
-## Configure the reranker
+## リランカーの設定
 
 import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 
 <MutableRerankerConfig />
 
-Configure a Weaviate collection to use a Transformer reranker model as follows:
+Transformers リランカー モデルを使用するように Weaviate コレクションを次のように設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -160,19 +160,21 @@ Configure a Weaviate collection to use a Transformer reranker model as follows:
 
 </Tabs>
 
-:::note Chose a container image to select a model
-To chose a model, select the [container image](#configure-the-integration) that hosts it.
+:::note モデル選択用コンテナーイメージ
+モデルを選択するには、それをホストする [コンテナー イメージ](#configure-the-integration) を選択してください。
 :::
 
-## Reranking query
 
-Once the reranker is configured, Weaviate performs [reranking operations](../../search/rerank.md) using the specified reranker model.
 
-More specifically, Weaviate performs an initial search, then reranks the results using the specified model.
+## リランキング クエリ
 
-Any search in Weaviate can be combined with a reranker to perform reranking operations.
+リランカーを構成すると、 Weaviate は指定されたリランカー・モデルを使用して[ リランキング処理 ](../../search/rerank.md)を実行します。
 
-![Reranker integration illustration](../_includes/integration_transformers_reranker.png)
+より具体的には、 Weaviate は最初に検索を行い、その後に指定されたモデルを用いて結果をリランキングします。
+
+Weaviate の任意の検索はリランカーと組み合わせることでリランキング処理を実行できます。
+
+![リランカー統合のイメージ](../_includes/integration_transformers_reranker.png)
 
 <Tabs groupId="languages">
 
@@ -196,34 +198,35 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
 - `cross-encoder/ms-marco-MiniLM-L-6-v2`
 - `cross-encoder/ms-marco-MiniLM-L-2-v2`
 - `cross-encoder/ms-marco-TinyBERT-L-2-v2`
 
-These pre-trained models are open-sourced on Hugging Face. The `cross-encoder/ms-marco-MiniLM-L-6-v2` model, for example, provides approximately the same benchmark performance as the largest model (L-12) when evaluated on [MS-MARCO](https://microsoft.github.io/msmarco/) (39.01 vs. 39.02).
+これらの事前学習済みモデルは Hugging Face でオープンソース公開されています。たとえば、 `cross-encoder/ms-marco-MiniLM-L-6-v2` モデルは、 [ MS-MARCO ](https://microsoft.github.io/msmarco/) 上で評価した際に、最も大きいモデル (L-12) とほぼ同じベンチマーク性能 (39.01 vs. 39.02) を提供します。
 
-We add new model support over time. For the latest list of available models, see the Docker Hub tags for the [reranker-transformers](https://hub.docker.com/r/semitechnologies/reranker-transformers/tags) container.
+モデルのサポートは随時追加しています。利用可能なモデルの最新リストは、 [ reranker-transformers ](https://hub.docker.com/r/semitechnologies/reranker-transformers/tags) コンテナの Docker Hub タグを参照してください。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Transformers embedding models + Weaviate](./embeddings.md).
-- [Transformers multi-modal embedding models + Weaviate](./embeddings-multimodal.md).
+- [Transformers 埋め込みモデル + Weaviate](./embeddings.md)
+- [Transformers マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、 Weaviate におけるデータ管理および検索操作は他のコレクションと同様に機能します。モデル非依存の次の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ ハウツー: コレクションの管理 ](../../manage-collections/index.mdx) および [ ハウツー: オブジェクトの管理 ](../../manage-objects/index.mdx) ガイドでは、データ操作 (コレクションおよびその中のオブジェクトの作成・読み取り・更新・削除) の方法を紹介しています。
+- [ ハウツー: クエリ & 検索 ](../../search/index.mdx) ガイドでは、ベクトル、キーワード、ハイブリッド検索に加え、検索拡張生成の実行方法を説明しています。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -1,12 +1,12 @@
 ---
-title: Text Embeddings (custom)
-description: Transformers Custom Image Embeddings
+title: テキスト埋め込み（カスタム）
+description: Transformers カスタムイメージ埋め込み
 sidebar_position: 25
 image: og/docs/integrations/provider_integrations_transformers.jpg
 # tags: ['model providers', 'huggingface', 'embeddings', 'transformers']
 ---
 
-# Locally Hosted Transformers Embeddings + Weaviate (Custom Image)
+# ローカルホスト Transformers 埋め込み + Weaviate（カスタムイメージ）
 
 
 import Tabs from '@theme/Tabs';
@@ -17,40 +17,40 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with the Hugging Face Transformers library allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Hugging Face Transformers ライブラリの統合により、Transformers のモデル機能を Weaviate から直接利用できます。
 
-Configure a Weaviate vector index to use the Transformers integration, and [configure the Weaviate instance](#configure-the-weaviate-instance) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the Transformers inference container. This feature is called the *vectorizer*.
+Weaviate ベクトルインデックスを Transformers 統合で構成し、[Weaviate インスタンスを設定](#configure-the-weaviate-instance)してモデルイメージを指定すると、Weaviate は Transformers 推論コンテナ内の指定モデルを使用して各種操作の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-This page shows how to [build a custom Transformers model image](#build-a-custom-transformers-model-image) and configure Weaviate with it, for users whose desired model is not available in [the pre-built images](./embeddings.md#available-models).
+本ページでは、[カスタム Transformers モデルイメージを作成](#build-a-custom-transformers-model-image)し、それを Weaviate で利用する方法を紹介します。これは、ご希望のモデルが[事前構築済みイメージ](./embeddings.md#available-models)に含まれていない場合に役立ちます。
 
-Once a custom image is built and configured, usage patterns are identical to the pre-built images.
+カスタムイメージを構築して設定すれば、利用方法は事前構築済みイメージと同一です。
 
-## Build a custom Transformers model image
+## カスタム Transformers モデルイメージの作成
 
-You can build a custom Transformers model image to use with Weaviate. This can be a public model from the Hugging Face model hub, or a compatible private or local model.
+Weaviate で使用するカスタム Transformers モデルイメージを作成できます。これは Hugging Face モデル Hub の公開モデルでも、プライベートまたはローカルの互換モデルでも構いません。
 
-Embedding (also called 'feature extraction') models from the [Hugging Face model hub](https://huggingface.co/models) can be used with Weaviate by building a custom Docker image.
+[Hugging Face モデル Hub](https://huggingface.co/models) にある埋め込み（feature extraction）モデルは、カスタム Docker イメージを構築することで Weaviate で使用できます。
 
-The steps to build a custom image are:
+カスタムイメージを作成する手順は次のとおりです。
 
-- [Create a `Dockerfile` that downloads the model](#create-a-dockerfile).
-- [Build and tag the Dockerfile](#build-and-tag-the-dockerfile).
-- [Use the image in your Weaviate instance](#use-the-image).
+- [`Dockerfile` を作成](#create-a-dockerfile)してモデルをダウンロードします。
+- [`Dockerfile` をビルドしてタグ付け](#build-and-tag-the-dockerfile)します。
+- [イメージを Weaviate インスタンスで使用](#use-the-image)します。
 
-#### Create a `Dockerfile`
+#### `Dockerfile` の作成
 
-The `Dockerfile` to create depends on whether you are using a public model from the Hugging Face model hub, or a private or local model.
+作成する `Dockerfile` は、Hugging Face モデル Hub の公開モデルを使うか、プライベートまたはローカルモデルを使うかで異なります。
 
 <Tabs groupId="languages">
 <TabItem value="public" label="Public model">
 
-This example creates a custom image for the [`distilroberta-base` model](https://huggingface.co/distilbert/distilroberta-base). Replace `distilroberta-base` with the model name you want to use.
+以下の例では [`distilroberta-base` モデル](https://huggingface.co/distilbert/distilroberta-base) 用のカスタムイメージを作成します。`distilroberta-base` を使用したいモデル名に置き換えてください。
 <br/>
 
-To build an image with a model from the Hugging Face Hub, create a new `Dockerfile` similar to the following.
+Hugging Face Hub のモデルでイメージを構築するには、次のような `Dockerfile` を新規作成します。
 <br/>
 
-Save the `Dockerfile` as `my-inference-image.Dockerfile`. (You can name it anything you like.)
+`Dockerfile` を `my-inference-image.Dockerfile` という名前（任意）で保存します。
 <br/>
 
 ```yaml
@@ -61,16 +61,16 @@ RUN MODEL_NAME=distilroberta-base ./download.py
 </TabItem>
 <TabItem value="private" label="Private/local model">
 
-You can also build a custom image with any model that is compatible with the Transformer library's `AutoModel` and `AutoTokenizer` classes.
+Transformers ライブラリの `AutoModel` と `AutoTokenizer` クラスに対応する任意のモデルでもカスタムイメージを作成できます。
 <br/>
 
-To build an image with a local, custom model, create a new `Dockerfile` similar to the following, replacing `./my-model` with the path to your model folder.
+ローカルのカスタムモデルでイメージを構築するには、次のような `Dockerfile` を新規作成し、`./my-model` をモデルフォルダーのパスに置き換えます。
 <br/>
 
-Save the `Dockerfile` as `my-inference-image.Dockerfile`. (You can name it anything you like.)
+`Dockerfile` を `my-inference-image.Dockerfile` という名前（任意）で保存します。
 <br/>
 
-This will creates a custom image for a model stored in a local folder `my-model` on your machine.
+これは、ローカルフォルダー `my-model` に保存されているモデル用のカスタムイメージを作成します。
 <br/>
 
 ```yaml
@@ -79,50 +79,50 @@ COPY ./my-model /app/models/model
 ```
 <br/>
 
-Do not modify `/app/models/model`, as this is the path where the application expects to find the model.
+アプリケーションがモデルを探すパスは `/app/models/model` ですので、変更しないでください。
 
 </TabItem>
 </Tabs>
 
-#### Build and tag the Dockerfile.
+#### `Dockerfile` のビルドとタグ付け
 
-Tag the Dockerfile with a name, for example `my-inference-image`:
+たとえば `my-inference-image` という名前で `Dockerfile` にタグを付けます:
 
 ```shell
 docker build -f my-inference-image.Dockerfile -t my-inference-image .
 ```
 
-#### (Optional) Push the image to a registry
+#### （オプション）イメージをレジストリへプッシュ
 
-If you want to use the image in a different environment, you can push it to a Docker registry:
+別の環境でイメージを使用する場合は、Docker レジストリへプッシュできます:
 
 ```shell
 docker push my-inference-image
 ```
 
-#### Use the image
+#### イメージの使用
 
-[Specify the image in your Weaviate configuration](./embeddings.md#weaviate-configuration), such as in `docker-compose.yml`, using the chosen local Docker tag (e.g. `my-inference-image`), or the image from the registry.
+`docker-compose.yml` などの [Weaviate 設定](./embeddings.md#weaviate-configuration)で、ローカルの Docker タグ（例: `my-inference-image`）またはレジストリのイメージ名を `image` パラメーターに指定します。
 
-#### (Optional) Use the `sentence-transformers` vectorizer
+#### （オプション）`sentence-transformers` ベクトライザーの使用
 
-:::caution Experimental feature
+:::caution 実験的機能
 This is an experimental feature. Use with caution.
 :::
 
-When using a custom image, you may set the `USE_SENTENCE_TRANSFORMERS_VECTORIZER` environment variable to use the [`sentence-transformers` vectorizer](https://sbert.net/) instead of the default vectorizer from the `transformers` library.
+カスタムイメージを使用する際、環境変数 `USE_SENTENCE_TRANSFORMERS_VECTORIZER` を設定すると、デフォルトの `transformers` ライブラリではなく [`sentence-transformers` ベクトライザー](https://sbert.net/)を利用できます。
 
-## Configure the Weaviate instance
+## Weaviate インスタンスの設定
 
-Once you have built and configured the custom Transformers model image, continue on to the [Transformers embeddings integrations](./embeddings.md) guide to use the model with Weaviate.
+カスタム Transformers モデルイメージを構築・設定したら、[Transformers 埋め込み統合](./embeddings.md)ガイドに従って Weaviate でモデルを使用してください。
 
-Following the above example, set the `image` parameter in the `text2vec-transformers` service as the name of the custom image, e.g. `my-inference-image`.
+上記の例では、`text2vec-transformers` サービスの `image` パラメーターにカスタムイメージ名（例: `my-inference-image`）を設定します。
 
-## (Optional) Test the inference container
+## （オプション）推論コンテナのテスト
 
-Once the inference container is configured and running, you can send queries it directly to test its functionality.
+推論コンテナが設定されて稼働したら、直接クエリを送信して機能をテストできます。
 
-First, expose the inference container. If deployed using Docker, forward the port by adding the following to the `text2vec-transformers` service in your `docker-compose.yml`:
+まず、推論コンテナを公開します。Docker でデプロイしている場合は、`docker-compose.yml` の `text2vec-transformers` サービスに次を追加してポートをフォワードします:
 
 ```yaml
 services:
@@ -134,20 +134,23 @@ services:
       - "9090:8080"  # Add this line to expose the container
 ```
 
-Once the container is running and exposed, you can send REST requests to it directly, e.g.:
+コンテナが稼働して公開されたら、次のように REST リクエストを直接送信できます:
 
 ```shell
 curl localhost:9090/vectors -H 'Content-Type: application/json' -d '{"text": "foo bar"}'
 ```
 
-If the container is running and configured correctly, you should receive a response with the vector embedding of the input text.
+コンテナが正しく稼働・設定されていれば、入力テキストのベクトル埋め込みを含むレスポンスが返されます。
 
-### External resources
+
+
+### 外部リソース
 
 - Hugging Face [Model Hub](https://huggingface.co/models)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

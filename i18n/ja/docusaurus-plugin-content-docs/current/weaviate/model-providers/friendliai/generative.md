@@ -1,14 +1,13 @@
 ---
-title: Generative AI
+title: 生成 AI
 sidebar_position: 51
 image: og/docs/integrations/provider_integrations_friendliai.jpg
 # tags: ['model providers', 'friendliai', 'generative', 'rag']
 ---
 
-# FriendliAI Generative AI with Weaviate
+# Weaviate と FriendliAI の生成 AI
 
-
-:::info Added in `v1.26.3`
+:::info `v1.26.3` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -19,43 +18,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integrations with FriendliAI APIs allow you to access their models' capabilities directly from Weaviate.
+Weaviate の FriendliAI API 連携を利用すると、FriendliAI のモデル機能に Weaviate から直接アクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with FriendliAI. Weaviate will perform Retrieval Augmented Generation (RAG) using the specified model and your Friendli token.
+FriendliAI の生成 AI モデルを使用するように [Weaviate のコレクションを設定](#configure-collection) してください。指定したモデルと Friendli トークンを用いて、Weaviate が 検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the FriendliAI generative model to generate outputs.
+具体的には、Weaviate が検索を実行して最も関連性の高いオブジェクトを取得し、それらを FriendliAI の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_friendliai_rag.png)
+![RAG 連携のイメージ](../_includes/integration_friendliai_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the FriendliAI generative AI integration (`generative-friendliai`) module.
+お使いの Weaviate インスタンスには、FriendliAI 生成 AI 連携 (`generative-friendliai`) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この連携は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかは、[クラスターメタデータ](/deploy/configuration/meta.md) で確認してください。
+- Weaviate でモジュールを有効にする手順は、[モジュール設定方法](../../configuration/modules.md) ガイドを参照してください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Friendli Suite Token to Weaviate for this integration. Go to [Friendli Suite](https://docs.friendli.ai/openapi/create-chat-completions) to sign up and obtain a personal access token.
+この連携を利用するには、有効な Friendli Suite Token を Weaviate に提供する必要があります。登録とトークン取得は [Friendli Suite](https://docs.friendli.ai/openapi/create-chat-completions) で行えます。
 
-Provide the Friendli token to Weaviate using one of the following methods:
+Friendli トークンは、次のいずれかの方法で Weaviate に渡してください。
 
-- Set the `FRIENDLI_TOKEN` environment variable that is available to Weaviate.
-- Provide the token at runtime, as shown in the examples below.
+- Weaviate で参照可能な `FRIENDLI_TOKEN` 環境変数を設定する
+- 下記の例のように実行時にトークンを渡す
 
 <Tabs groupId="languages">
 
@@ -79,13 +78,13 @@ Provide the Friendli token to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use a FriendliAI generative AI model:
+FriendliAI の生成 AI モデルを使用するには、以下のように [Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -108,9 +107,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+次の設定例のように、Weaviate に使用させる [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -133,11 +132,11 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models) のいずれかを [指定](#generative-parameters) できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
-### Generative parameters
+### 生成パラメーター
 
-Configure the following generative parameters to customize the model behavior.
+次の生成パラメーターを設定して、モデルの挙動をカスタマイズします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -160,11 +159,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [FriendliAI API documentation](https://docs.friendli.ai/openapi/create-chat-completions).
+モデルパラメーターの詳細については、[FriendliAI の API ドキュメント](https://docs.friendli.ai/openapi/create-chat-completions) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクションを作成するときにデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -185,30 +184,30 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Header parameters
+## ヘッダーパラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+リクエストに追加のヘッダーを付与することで、実行時に API キーと任意のパラメーターを指定できます。利用可能なヘッダーは次のとおりです。
 
-- `X-Friendli-Api-Key`: The Friendli API key.
-- `X-Friendli-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Friendli URL.
+- `X-Friendli-Api-Key`: Friendli の API キー。
+- `X-Friendli-Baseurl`: 既定の Friendli URL の代わりに使用するベース URL（例: プロキシ）。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定した追加ヘッダーは、既存の Weaviate の設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーの指定方法については、上記の [API credentials の例](#api-credentials) を参照してください。
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI との統合を設定したら、[single prompt](#single-prompt) もしくは [grouped task](#grouped-task) のいずれかの方法で RAG 操作を実行します。
 
-### Single prompt
+### シングルプロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_friendliai_rag_single.png)
+![シングルプロンプトの RAG 統合は、検索結果ごとに個別の出力を生成します](../_includes/integration_friendliai_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果の各オブジェクトに対してテキストを生成する場合は、シングルプロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+次の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングルプロンプト クエリを作成する際は、波かっこ `{}` を使用して、言語モデルに渡したいオブジェクトのプロパティを埋め込みます。たとえば、オブジェクトの `title` プロパティを渡す場合は、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -232,13 +231,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループタスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_friendliai_rag_grouped.png)
+![グループタスクの RAG 統合は、検索結果の集合に対して 1 つの出力を生成します](../_includes/integration_friendliai_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 つのテキストを生成する場合は、グループタスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えると、`n` 件の検索結果がある場合でも、生成モデルはグループ全体に対して 1 つの出力だけを生成します。
 
 <Tabs groupId="languages">
 
@@ -262,19 +261,19 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
 * `meta-llama-3.1-70b-instruct` (default)
 * `meta-llama-3.1-8b-instruct`
 * `mixtral-8x7b-instruct-v0-1`
 
-You can use any model deployed on Friendli Suite with Weaviate.
+Weaviate とともに Friendli Suite にデプロイされた任意のモデルを使用できます。
 
-FriendliAI's provide a wide range of [available models](https://friendli.ai/models), which can optionally be [fine-tuned](https://docs.friendli.ai/guides/dedicated_endpoints/fine-tuning). See the [FriendliAI quickstart guide](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) for instructions.
+FriendliAI が提供する [利用可能なモデル](https://friendli.ai/models) は幅広く、オプションで [ファインチューニング](https://docs.friendli.ai/guides/dedicated_endpoints/fine-tuning) も可能です。手順については [FriendliAI クイックスタートガイド](https://docs.friendli.ai/guides/dedicated_endpoints/quickstart) を参照してください。
 
-If using a dedicated FriendliAI endpoint with the Weaviate integration, specify it as shown below:
+Weaviate との統合で専用の FriendliAI エンドポイントを使用する場合は、以下のように指定します。
 
 <Tabs groupId="languages">
 
@@ -319,19 +318,20 @@ If using a dedicated FriendliAI endpoint with the Weaviate integration, specify 
 
 </Tabs>
 
-## Further resources
+## 追加リソース
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合が構成されると、Weaviate におけるデータ管理および検索操作は他のコレクションと同様に動作します。以下のモデル非依存の例を参照してください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) および [How-to: Manage objects](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）を行う方法を示しています。
+- [How-to: Query & Search](../../search/index.mdx) ガイドでは、検索操作（ベクトル、キーワード、ハイブリッド）と検 索拡張生成の実行方法を説明しています。
 
-### References
+### 参照
 
-- [FriendliAI API documentation](https://docs.friendli.ai/openapi/create-chat-completions)
+- [FriendliAI API ドキュメント](https://docs.friendli.ai/openapi/create-chat-completions)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

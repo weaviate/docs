@@ -1,5 +1,5 @@
 ---
-title: Text Embeddings
+title: テキスト 埋め込み
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_databricks.jpg
 # tags: ['model providers', 'databricks', 'embeddings']
@@ -8,7 +8,7 @@ image: og/docs/integrations/provider_integrations_databricks.jpg
 :::info Added in `v1.26.3`
 :::
 
-# Databricks Embeddings with Weaviate
+# Weaviate と Databricks の埋め込み
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -20,43 +20,43 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with Databricks' APIs allows you to access models hosted on their platform directly from Weaviate.
+Weaviate の Databricks API 連携により、Databricks プラットフォームでホストされているモデルへ Weaviate から直接アクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a Databricks embedding model, and Weaviate will generate embeddings for various operations using the specified endpoint and your Databricks token. This feature is called the *vectorizer*.
+[Weaviate ベクトル インデックスを設定](#configure-the-vectorizer)して Databricks の埋め込みモデルを使用すると、指定したエンドポイントと Databricks トークンを用いて、さまざまな操作のために Weaviate が埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import)には、Weaviate がテキストオブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) や [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みに変換します。
 
 ![Embedding integration illustration](../_includes/integration_databricks_embedding.png)
 
-## Requirements
+## 必要条件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Databricks vectorizer integration (`text2vec-databricks`) module.
+お使いの Weaviate インスタンスには、Databricks ベクトライザー連携 (`text2vec-databricks`) モジュールが組み込まれている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この連携は、Weaviate Cloud (WCD) のサーバーレス インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト ユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているかを確認してください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定方法](../../configuration/modules.md) ガイドをご覧ください。
 
 </details>
 
 ### Databricks Personal Access Token {#api-credentials}
 
-You must provide a valid Databricks Personal Access Token (PAT) to Weaviate for this integration. Refer to the [Databricks documentation](https://docs.databricks.com/en/dev-tools/auth/pat.html) for instructions on generating your PAT in your workspace.
+この連携には、有効な Databricks Personal Access Token (PAT) を Weaviate に提供する必要があります。ワークスペースでの PAT 生成方法については、[Databricks のドキュメント](https://docs.databricks.com/en/dev-tools/auth/pat.html) を参照してください。
 
-Provide the Dataricks token to Weaviate using one of the following methods:
+以下のいずれかの方法で Databricks トークンを Weaviate に渡します。
 
-- Set the `DATABRICKS_TOKEN` environment variable that is available to Weaviate.
-- Provide the token at runtime, as shown in the examples below.
+- Weaviate が参照できる `DATABRICKS_TOKEN` 環境変数を設定する  
+- 下記の例のように実行時にトークンを渡す
 
 <Tabs groupId="languages">
 
@@ -89,9 +89,9 @@ Provide the Dataricks token to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) to use a Databricks serving model endpoint by setting the vectorizer as follows:
+Databricks のサービングモデル エンドポイントを使用するように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) するには、次のようにベクトライザーを指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -123,30 +123,32 @@ Provide the Dataricks token to Weaviate using one of the following methods:
 
 </Tabs>
 
-This will configure Weaviate to use the vectorizer served through the endpoint you specify.
+これにより、指定したエンドポイントで提供されるベクトライザーを Weaviate が使用するように構成されます。
 
-### Vectorizer parameters
 
-- `endpoint`: The URL of the embedding model hosted on Databricks.
-- `instruction`:An optional instruction to pass to the embedding model.
 
-For further details on model parameters, see the [Databricks documentation](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#embedding-request).
+### ベクトライザーのパラメーター
 
-## Header parameters
+- `endpoint`:  Databricks にホストされている埋め込みモデルの URL です。  
+- `instruction`:  埋め込みモデルに渡す任意の instruction です。  
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+モデルパラメーターの詳細については、[Databricks のドキュメント](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html#embedding-request) を参照してください。
 
-- `X-Databricks-Token`: The Databricks API token.
-- `X-Databricks-Endpoint`: The endpoint to use for the Databricks model.
-- `X-Databricks-User-Agent`: The user agent to use for the Databricks model.
+## ヘッダーパラメーター
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+リクエストに追加ヘッダーを付与することで、実行時に API キーおよび任意のパラメーターを指定できます。利用可能なヘッダーは次のとおりです:
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+- `X-Databricks-Token`:  Databricks API トークンです。  
+- `X-Databricks-Endpoint`:  Databricks モデルで使用する endpoint です。  
+- `X-Databricks-User-Agent`:  Databricks モデルで使用する user agent です。  
 
-## Data import
+実行時に指定したその他のヘッダーは、既存の Weaviate の設定を上書きします。
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using [the specified model](#vectorizer-parameters).
+ヘッダーは上記の [API 資格情報の例](#api-credentials) のとおりに指定してください。
+
+## データインポート
+
+ベクトライザーの設定が完了したら、Weaviate に[データをインポート](../../manage-objects/import.mdx)します。Weaviate は [指定したモデル](#vectorizer-parameters) を使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -178,21 +180,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
   </TabItem>
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルを再利用する
+互換性のあるモデル ベクトルが既にある場合は、それを直接 Weaviate に渡すことができます。同じモデルで既に埋め込みを生成しており、それらを Weaviate で使用したい場合、例えば他のシステムからデータを移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified model.
+ベクトライザーが設定されると、Weaviate は指定したモデルを使用してベクトル検索とハイブリッド検索を実行します。
 
 ![Embedding integration at search illustration](../_includes/integration_databricks_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル (near text) 検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はクエリー文字列を指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリーは、`limit` で指定した数 `n` の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -224,15 +226,15 @@ The query below returns the `n` most similar objects from the database, set by `
   </TabItem>
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索はベクトル検索とキーワード (BM25) 検索を行い、[結果を結合](../../search/hybrid.md)してデータベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はクエリー文字列を指定したモデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリーは、`limit` で指定した数 `n` の最もスコアの高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -264,27 +266,30 @@ The query below returns the `n` best scoring objects from the database, set by `
   </TabItem>
 </Tabs>
 
-## References
 
-## Further resources
 
-### Other integrations
+## 参考資料
 
-- [Databricks generative models + Weaviate](./generative.md).
+## 追加リソース
 
-### Code examples
+### 他のインテグレーション
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+- [Databricks 生成モデル + Weaviate](./generative.md)
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+### コード例
 
-### External resources
+コレクションで統合を設定すると、Weaviate でのデータ管理および検索操作は他のコレクションとまったく同じ方法で動作します。以下のモデル非依存の例をご覧ください:
 
-- Databricks [Foundation model REST API reference](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html)
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) と [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) ガイドでは、データ操作 (例: コレクションとその中のオブジェクトの作成、読み取り、更新、削除) の方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、検索操作 (例: ベクトル、キーワード、ハイブリッド) と検索拡張生成の方法を解説しています。
 
-## Questions and feedback
+### 外部リソース
+
+- Databricks [Foundation model REST API リファレンス](https://docs.databricks.com/en/machine-learning/foundation-models/api-reference.html)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

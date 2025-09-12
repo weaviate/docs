@@ -1,5 +1,5 @@
 ---
-title: Generative AI (Deprecated)
+title: 生成 AI（非推奨）
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_octoai.jpg
 # tags: ['model providers', 'octoai', 'generative', 'rag']
@@ -9,10 +9,10 @@ import OctoAIDeprecationNote from './_includes/octoai_deprecation.md';
 
 <OctoAIDeprecationNote/>
 
-# OctoAI Generative AI with Weaviate
+# Weaviate と OctoAI の生成 AI
 
 
-:::info Added in `v1.25.0`
+:::info `v1.25.0` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -23,43 +23,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with OctoAI's APIs allows you to access open source and their models' capabilities directly from Weaviate.
+Weaviate と OctoAI の API を統合することで、オープンソースと OctoAI のモデル機能に Weaviate から直接アクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with OctoAI. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your OctoAI API key.
+[Weaviate コレクションを設定](#configure-collection)して OctoAI の生成 AI モデルを使用すると、Weaviate は指定したモデルとお持ちの OctoAI API キーを用いて検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the OctoAI generative model to generate outputs.
+具体的には、Weaviate が検索を行い、最も関連性の高いオブジェクトを取得したうえで、それらを OctoAI の生成モデルに渡して出力を生成します。
 
 ![RAG integration illustration](../_includes/integration_octoai_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate 構成
 
-Your Weaviate instance must be configured with the OctoAI generative AI integration (`generative-octoai`) module.
+ご利用の Weaviate インスタンスには、OctoAI 生成 AI 統合モジュール (`generative-octoai`) が有効化されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効です。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかは [クラスターメタデータ](/deploy/configuration/meta.md) を確認してください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定ガイド](../../configuration/modules.md) をご覧ください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid OctoAI API key to Weaviate for this integration. Go to [OctoAI](https://octo.ai/docs/getting-started/how-to-create-an-octoai-access-token) to sign up and obtain an API key.
+この統合を使用するには、有効な OctoAI API キーを Weaviate に渡す必要があります。サインアップして API キーを取得するには、[OctoAI](https://octo.ai/docs/getting-started/how-to-create-an-octoai-access-token) にアクセスしてください。
 
-Provide the API key to Weaviate using one of the following methods:
+Weaviate への API キーの渡し方は次のいずれかです。
 
-- Set the `OCTOAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照可能な環境変数 `OCTOAI_APIKEY` を設定する  
+- 下記の例のように実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -83,13 +83,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an OctoAI generative AI model:
+[Weaviate インデックスの設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)を以下のように行い、OctoAI の生成 AI モデルを使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -112,9 +112,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+Weaviate に使用させる [利用可能なモデル](#available-models) のいずれかを、次の設定例のように指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -137,11 +137,13 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models) のいずれかを [指定](#generative-parameters) できます。指定しない場合は [デフォルトモデル](#available-models) が使用されます。
 
-### Generative parameters
 
-Configure the following generative parameters to customize the model behavior.
+
+### 生成パラメーター
+
+モデルの挙動をカスタマイズするには、以下の生成パラメーターを設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -164,21 +166,21 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [OctoAI API documentation](https://octo.ai/docs/text-gen-solution/rest-api).
+モデルパラメーターの詳細については、[OctoAI API documentation](https://octo.ai/docs/text-gen-solution/rest-api) を参照してください。
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 統合を設定したら、[シングルプロンプト](#single-prompt) または [グループタスク](#grouped-task) の方法で RAG 操作を実行します。
 
-### Single prompt
+### シングルプロンプト
 
 ![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_octoai_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果の各オブジェクトに対してテキストを生成する場合は、シングルプロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定された `n` 件の検索結果それぞれに対し出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングルプロンプトクエリを作成する際、Weaviate から言語モデルへ渡したいオブジェクトプロパティを波かっこ `{}` で囲んでインターポレーションします。たとえば、オブジェクトの `title` プロパティを渡す場合はクエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -202,13 +204,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループタスク
 
 ![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_octoai_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 つのテキストを生成する場合は、グループタスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えると、`n` 件の検索結果がある場合でも、生成モデルはグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -232,9 +234,9 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
 * `qwen1.5-32b-chat`
 * `meta-llama-3-8b-instruct`
@@ -251,23 +253,24 @@ In other words, when you have `n` search results, the generative model generates
 * `llama-2-13b-chat`
 * `llama-2-70b-chat`
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [OctoAI embedding models + Weaviate](./embeddings.md).
+- [OctoAI embedding models + Weaviate](./embeddings.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、Weaviate のデータ管理および検索操作は他のコレクションと同様に動作します。以下のモデル非依存の例を参照してください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) および [How-to: Manage objects](../../manage-objects/index.mdx) ガイドでは、データ操作 (コレクションおよびその中のオブジェクトの作成、読み取り、更新、削除) 方法を示しています。
+- [How-to: Query & Search](../../search/index.mdx) ガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索に加え、検索拡張生成の実行方法を示しています。
 
-### References
+### 参考資料
 
-- OctoAI [API documentation](https://octo.ai/docs/getting-started/inference-models)
+- OctoAI [API ドキュメント](https://octo.ai/docs/getting-started/inference-models)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

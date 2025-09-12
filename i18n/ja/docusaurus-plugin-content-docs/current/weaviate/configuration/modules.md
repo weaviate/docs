@@ -1,29 +1,29 @@
 ---
-title: Modules
+title: モジュール
 sidebar_position: 11
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'modules']
 ---
 
-Weaviate's functionality can be customized by using [modules](/weaviate/concepts/modules.md). This page explains how to enable and configure modules.
+Weaviate の機能は、[モジュール](/weaviate/concepts/modules.md) を使用してカスタマイズできます。ここでは、モジュールを有効化して設定する方法について説明します。
 
-## Instance-level configuration
+## インスタンスレベルの設定
 
-At the instance (i.e. Weaviate cluster) level, you can:
+インスタンス (つまり Weaviate クラスター) レベルでは、次のことが行えます。
 
-- Enable modules
-- Configure the default vectorizer module
-- Configure module-specific variables (e.g. API keys), where applicable
+- モジュールの有効化  
+- デフォルト ベクトライザー モジュールの設定  
+- モジュール固有の変数 (例: API キー) の設定
 
-This can be done by setting the appropriate [environment variables](/deploy/configuration/env-vars/index.md) as shown below.
+これらは、以下のように適切な [環境変数](/deploy/configuration/env-vars/index.md) を設定することで行えます。
 
-:::tip What about WCD?
-Weaviate Cloud (WCD) instances come with modules pre-configured. See [this page](/cloud/manage-clusters/status#enabled-modules) for details.
+:::tip WCD については？
+Weaviate Cloud (WCD) のインスタンスにはモジュールがあらかじめ設定されています。詳細は [こちらのページ](/cloud/manage-clusters/status#enabled-modules) をご覧ください。
 :::
 
-### Enable individual modules
+### 個別モジュールの有効化
 
-You can enable modules by specifying the list of modules in the `ENABLE_MODULES` variable. For example, this code enables the `text2vec-transformers` module.
+`ENABLE_MODULES` 変数にモジュールのリストを指定すると、モジュールを有効化できます。たとえば、以下のコードは `text2vec-transformers` モジュールを有効化します。
 
 ```yaml
 services:
@@ -32,9 +32,9 @@ services:
       ENABLE_MODULES: 'text2vec-transformers'
 ```
 
-To enable multiple modules, add them in a comma-separated list.
+複数のモジュールを有効化する場合は、カンマ区切りで追加します。
 
-This example code enables the `'text2vec-huggingface`, `generative-cohere`, and `qna-openai` modules.
+次の例では、`text2vec-huggingface`、`generative-cohere`、`qna-openai` モジュールを有効化します。
 
 ```yaml
 services:
@@ -43,13 +43,13 @@ services:
       ENABLE_MODULES: 'text2vec-huggingface,generative-cohere,qna-openai'
 ```
 
-### Enable all API-based modules
+### すべての API ベース モジュールを有効化
 
-:::caution Experimental feature
-Available starting in `v1.26.0`. This is an experimental feature. Use with caution.
+:::caution 実験的機能
+`v1.26.0` 以降で利用可能な実験的機能です。使用にはご注意ください。
 :::
 
-You can enable all API-based modules by setting the `ENABLE_API_BASED_MODULES` variable to `true`. This will enable all API-based [model integrations](../model-providers/index.md), such as those for Anthropic, Cohere, OpenAI and so on by enabling the relevant modules. These modules are lightweight, so enabling them all will not significantly increase resource usage.
+`ENABLE_API_BASED_MODULES` 変数を `true` に設定すると、すべての API ベース [モデル統合](../model-providers/index.md) (Anthropic、Cohere、OpenAI など) を有効化できます。これにより関連モジュールがすべて有効化されます。これらのモジュールは軽量のため、まとめて有効化してもリソース使用量が大幅に増えることはありません。
 
 ```yaml
 services:
@@ -58,9 +58,9 @@ services:
       ENABLE_API_BASED_MODULES: 'true'
 ```
 
-The list of API-based modules can be found on the [model provider integrations page](../model-providers/index.md#api-based). You can also inspect the [source code](https://github.com/weaviate/weaviate/blob/main/adapters/handlers/rest/configure_api.go) where the list is defined.
+API ベース モジュールの一覧は [モデルプロバイダー統合ページ](../model-providers/index.md#api-based) で確認できます。また、リストが定義されている [ソースコード](https://github.com/weaviate/weaviate/blob/main/adapters/handlers/rest/configure_api.go) を参照することも可能です。
 
-This can be combined with enabling individual modules. For example, the example below enables all API-based modules, Ollama modules and the `backup-s3` module.
+個別モジュールの有効化と組み合わせることもできます。たとえば、次の例ではすべての API ベース モジュール、Ollama モジュール、そして `backup-s3` モジュールを有効化しています。
 
 ```yaml
 services:
@@ -70,25 +70,25 @@ services:
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-s3'
 ```
 
-Note that enabling multiple vectorizer (e.g. `text2vec`, `multi2vec`) modules will disable the [`Explore` functionality](../api/graphql/explore.md). If you need to use `Explore`, you should only enable one vectorizer module.
+複数のベクトライザー (例: `text2vec`, `multi2vec`) モジュールを有効化すると、[`Explore` 機能](../api/graphql/explore.md) が無効化されます。`Explore` を使用する必要がある場合は、ベクトライザー モジュールを 1 つだけ有効化してください。
 
-### Module-specific variables
+### モジュール固有の変数
 
-You may need to specify additional environment variables to configure each module where applicable. For example, the `backup-s3` module requires the backup S3 bucket to be set via `BACKUP_S3_BUCKET`, and the `text2vec-contextionary` module requires the inference API location via `TRANSFORMERS_INFERENCE_API`.
+モジュールによっては、追加の環境変数設定が必要です。たとえば、`backup-s3` モジュールでは `BACKUP_S3_BUCKET` にバックアップ用 S3 バケットを指定する必要があり、`text2vec-contextionary` モジュールでは `TRANSFORMERS_INFERENCE_API` に推論 API の場所を指定する必要があります。
 
-Refer to the individual [module documentation](../modules/index.md) for more details.
+詳細は各 [モジュールのドキュメント](../modules/index.md) を参照してください。
 
-## Vectorizer modules
+## ベクトライザーモジュール
 
-The [vectorization integration](../model-providers/index.md) enable Weaviate to vectorize data at import, and to perform [`near<Media>`](../search/similarity.md) searches such as `nearText` or `nearImage`.
+[ベクトル化統合](../model-providers/index.md) により、インポート時にデータをベクトル化し、`nearText` や `nearImage` などの [`near<Media>`](../search/similarity.md) 検索を実行できます。
 
-:::info List of available vectorizer integrations
-Can be found [in this section](../model-providers/index.md).
+:::info 利用可能なベクトライザー統合の一覧
+[こちらのセクション](../model-providers/index.md) に掲載しています。
 :::
 
-### Enable vectorizer modules
+### ベクトライザーモジュールの有効化
 
-You can enable vectorizer modules by adding them to the `ENABLE_MODULES` environment variable. For example, this code enables the `text2vec-cohere`, `text2vec-huggingface`, and `text2vec-openai` vectorizer modules.
+`ENABLE_MODULES` 環境変数に追加することで、ベクトライザーモジュールを有効化できます。下記コードは `text2vec-cohere`、`text2vec-huggingface`、`text2vec-openai` の各ベクトライザーモジュールを有効化します。
 
 ```yaml
 services:
@@ -97,13 +97,13 @@ services:
       ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-openai'
 ```
 
-### Default vectorizer module
+### デフォルト ベクトライザー モジュール
 
-You can specify a default vectorization module with the `DEFAULT_VECTORIZER_MODULE` variable as below.
+`DEFAULT_VECTORIZER_MODULE` 変数を使用して、デフォルトのベクトライザーモジュールを指定できます。
 
-If a default vectorizer module is not set, you must set a vectorizer in the schema before you can use `near<Media>` or vectorization at import time.
+デフォルト ベクトライザーモジュールを設定しない場合、スキーマでベクトライザーを設定するまで `near<Media>` やインポート時のベクトル化は利用できません。
 
-This code sets `text2vec-huggingface` as the default vectorizer. Thus, `text2vec-huggingface` module will be used unless another vectorizer is specified for that class.
+次のコードでは `text2vec-huggingface` をデフォルト ベクトライザーとして設定しています。そのため、クラスで別のベクトライザーを指定しない限り、`text2vec-huggingface` が使用されます。
 
 ``` yaml
 services:
@@ -112,13 +112,13 @@ services:
       DEFAULT_VECTORIZER_MODULE: text2vec-huggingface
 ```
 
-## Generative model integrations
+## 生成モデル統合
 
-The [generative model integrations](../model-providers/index.md) enable [retrieval augmented generation](../search/generative.md) functions.
+[生成モデル統合](../model-providers/index.md) により、[検索拡張生成](../search/generative.md) 機能を利用できます。
 
-### Enable a generative module
+### 生成モジュールの有効化
 
-You can enable generative modules by adding the desired module to the `ENABLE_MODULES` environment variable. For example, this code enables the `generative-cohere` module and the `text2vec-huggingface` vectorizer module.
+生成モジュールを有効化するには、目的のモジュールを `ENABLE_MODULES` 環境変数に追加します。以下のコードは、`generative-cohere` モジュールと `text2vec-huggingface` ベクトライザーモジュールを有効化します。
 
 ```yaml
 services:
@@ -127,30 +127,32 @@ services:
       ENABLE_MODULES: 'text2vec-huggingface,generative-cohere'
 ```
 
-:::tip `generative` module selection unrelated to `text2vec` module selection
-Your choice of the `text2vec` module does not restrict your choice of `generative` module, or vice versa.
+:::tip `generative` モジュールと `text2vec` モジュールの選択は独立
+`text2vec` モジュールの選択が `generative` モジュールの選択を制限することはありません。逆も同様です。
 :::
 
-## Tenant offload modules
+## テナントオフロードモジュール
 
-Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
+テナントをコールドストレージにオフロードしてメモリとディスクの使用量を削減し、必要に応じてオンロードできます。
 
-See the [dedicated page on tenant offloading](/deploy/configuration/tenant-offloading.md) for more information on how to configure Weaviate for tenant offloading. For information on how to offload and onload tenants, see [How-to: manage tenant states](../manage-collections/tenant-states.mdx).
+設定方法の詳細は [テナントオフロード設定](/deploy/configuration/tenant-offloading.md) の専用ページをご覧ください。テナントのオフロードとオンロードの方法については、[How-to: テナント状態の管理](../manage-collections/tenant-states.mdx) を参照してください。
 
-## Custom modules
+## カスタムモジュール
 
-See [here](../modules/custom-modules.md) how you can create and use your own modules.
+独自モジュールの作成と使用方法については [こちら](../modules/custom-modules.md) をご覧ください。
 
-## Usage modules
+## 使用量モジュール
 
-The [usage module](../modules/usage-modules.md) collects and uploads usage analytics to GCS or S3. 
+[使用量モジュール](../modules/usage-modules.md) は、使用状況の分析データを GCS または S3 に収集しアップロードします。 
 
-## Related pages
-- [Concepts: Modules](../concepts/modules.md)
-- [References: Modules](../modules/index.md)
+## 関連ページ
+- [概念: モジュール](../concepts/modules.md)
+- [リファレンス: モジュール](../modules/index.md)
 
-## Questions and feedback
+## 質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

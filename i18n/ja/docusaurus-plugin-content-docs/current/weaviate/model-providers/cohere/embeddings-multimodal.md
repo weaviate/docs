@@ -1,12 +1,12 @@
 ---
-title: Multimodal Embeddings
-description: "Weaviate's integration with Cohere's APIs allows you to access their models' capabilities directly from Weaviate."
+title: マルチモーダル埋め込み
+description: "Weaviate と Cohere の API 連携により、Weaviate から直接 Cohere モデルの機能にアクセスできます。"
 sidebar_position: 25
 image: og/docs/integrations/provider_integrations_cohere.jpg
 # tags: ['model providers', 'cohere', 'embeddings']
 ---
 
-# Cohere Multimodal Embeddings with Weaviate
+# Weaviate における Cohere マルチモーダル埋め込み
 
 :::info Added in `1.25.25`, `1.26.9` and `v1.27.2`
 :::
@@ -19,43 +19,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with Cohere's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Cohere の API 連携により、Weaviate から Cohere モデルの機能に直接アクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a Cohere embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Cohere API key. This feature is called the *vectorizer*.
+[vector インデックスを設定](#configure-the-vectorizer) して Cohere の埋め込みモデルを使用すると、Weaviate は指定したモデルとお持ちの Cohere API キーを用いて、各種操作に必要な埋め込みを生成します。この機能は *vectorizer* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates multimodal object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings. [Multimodal search operations](#vector-near-media-search) are also supported.
+[インポート時](#data-import) に、Weaviate はマルチモーダルオブジェクト埋め込みを生成し、インデックスへ保存します。[vector](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みに変換します。[マルチモーダル検索](#vector-near-media-search) もサポートされています。
 
 ![Embedding integration illustration](../_includes/integration_cohere_embedding.png)
 
-## Requirements
+## 必要条件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Cohere vectorizer integration (`multi2vec-cohere`) module.
+お使いの Weaviate インスタンスには Cohere ベクトライザー統合 (`multi2vec-cohere`) モジュールが有効である必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は WCD サーバーレスインスタンスでデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効かどうかを確認します。
+- Weaviate でモジュールを有効化するには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Cohere API key to Weaviate for this integration. Go to [Cohere](https://cohere.com/) to sign up and obtain an API key.
+この連携を使用するには、有効な Cohere API キーを Weaviate に提供する必要があります。API キーの取得には [Cohere](https://cohere.com/) にサインアップしてください。
 
-Provide the API key to Weaviate using one of the following methods:
+次のいずれかの方法で API キーを Weaviate に渡します。
 
-- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate が参照できる `COHERE_APIKEY` 環境変数を設定する。
+- 以下の例のように、実行時に API キーを提供する。
 
 <Tabs groupId="languages">
 
@@ -79,9 +79,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Cohere embedding model:
+Cohere 埋め込みモデルを使用するように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -104,9 +104,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+以下の設定例のように、ベクトライザーが使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -129,20 +129,22 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate に使用させるモデルは [指定](#vectorizer-parameters) できます。モデルを指定しない場合は [デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-The following examples show how to configure Cohere-specific options.
+
+### ベクトライザーのパラメーター
+
+以下の例では、Cohere 固有のオプションを設定する方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -165,11 +167,11 @@ The following examples show how to configure Cohere-specific options.
 
 </Tabs>
 
-For further details on model parameters, see the [Cohere API documentation](https://docs.cohere.com/reference/embed).
+モデルのパラメーターの詳細については、[Cohere API ドキュメント](https://docs.cohere.com/reference/embed)をご覧ください。
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、Weaviate に[データをインポート](../../manage-objects/import.mdx)します。Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -193,21 +195,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+すでに互換性のあるモデルベクトルをお持ちの場合は、それを直接 Weaviate に渡すことができます。たとえば、同じモデルで既に埋め込みを生成しており、他のシステムからデータを移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Cohere model.
+ベクトライザーを設定すると、Weaviate は指定した Cohere モデルを用いてベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_cohere_embedding_search.png)
+![検索時の埋め込み統合の図](../_includes/integration_cohere_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した数 `n` の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -231,15 +233,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を行い、その結果を[組み合わせ](../../search/hybrid.md)てデータベースから最も一致するオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースからスコアが最も高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した数 `n` のスコアが最も高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -263,13 +265,15 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-### Vector (near media) search
 
-When you perform a media search such as a [near image search](../../search/similarity.md#search-with-image), Weaviate converts the query into an embedding using the specified model and returns the most similar objects from the database.
 
-To perform a near media search such as near image search, convert the media query into a base64 string and pass it to the search query.
+### ベクトル（near media）検索
 
-The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
+[near image search](../../search/similarity.md#search-with-image) のようなメディア検索を実行すると、Weaviate はクエリを指定されたモデルで埋め込みに変換し、データベースからもっとも類似したオブジェクトを返します。
+
+near image search のような near media 検索を行うには、メディアクエリを base64 文字列に変換し、それを検索クエリに渡します。
+
+以下のクエリは、`limit` で設定した数 `n` 件の、入力画像にもっとも類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -293,36 +297,37 @@ The query below returns the `n` most similar objects to the input image from the
 
 </Tabs>
 
-## References
+## 参考資料
 
-### Available models
+### 利用可能なモデル
 
-- `embed-multilingual-v3.0` (Default)
+- `embed-multilingual-v3.0` (デフォルト)
 - `embed-multilingual-light-v3.0`
 - `embed-english-v3.0`
 - `embed-english-light-v3.0`
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Cohere text embedding models + Weaviate](./embeddings.md).
-- [Cohere generative models + Weaviate](./generative.md).
-- [Cohere reranker models + Weaviate](./reranker.md).
+- [Cohere テキスト埋め込みモデル + Weaviate](./embeddings.md).
+- [Cohere 生成モデル + Weaviate](./generative.md).
+- [Cohere reranker モデル + Weaviate](./reranker.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+統合をコレクションで設定すると、Weaviate におけるデータ管理および検索操作は他のコレクションとまったく同じように機能します。モデルに依存しない以下の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) のガイドでは、データ操作（コレクションとその内部のオブジェクトの作成・読み取り・更新・削除）方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) のガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索、および 検索拡張生成 の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
-- Cohere [Embed API documentation](https://docs.cohere.com/reference/embed)
+- Cohere [Embed API ドキュメント](https://docs.cohere.com/reference/embed)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

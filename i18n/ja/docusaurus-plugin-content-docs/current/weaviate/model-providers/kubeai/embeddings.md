@@ -1,12 +1,12 @@
 ---
-title: Text Embeddings
-description: Implement KubeAI embeddings in Weaviate to enrich data with contextual vectors.
+title: テキスト Embeddings
+description: Weaviate で KubeAI Embeddings を実装し、コンテキスト ベクトル でデータを強化します。
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_kubeai.jpg
 # tags: ['model providers', 'openai', 'embeddings']
 ---
 
-# KubeAI Embeddings with Weaviate
+# Weaviate における KubeAI Embeddings
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -16,47 +16,47 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with OpenAI-style APIs allows you to access KubeAI models' directly from Weaviate.
+Weaviate と OpenAI スタイルの API の統合により、Weaviate から直接 KubeAI モデル にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a KubeAI embedding model, and Weaviate will generate embeddings for various operations using the specified model. This feature is called the *vectorizer*.
+[ベクトルインデックスを構成](#configure-the-vectorizer) して KubeAI の Embedding モデルを使用すると、指定したモデルで各種操作の Embedding が生成されます。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、Weaviate はテキストオブジェクトの Embedding を生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索では、Weaviate がテキストクエリを Embedding に変換します。
 
 ![Embedding integration illustration](../_includes/integration_kubeai_embedding.png)
 
-## Requirements
+## 前提条件
 
-### KubeAI configuration
+### KubeAI 設定
 
-KubeAI must be deployed in a Kubernetes cluster with an embedding model. For more specific instructions, see this [KubeAI deployment guide](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration).
+KubeAI は、Embedding モデルを備えた Kubernetes クラスター内にデプロイされている必要があります。詳しくは、この [KubeAI デプロイ ガイド](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration) を参照してください。
 
-### Weaviate configuration
+### Weaviate 設定
 
-Your Weaviate instance must be configured with the OpenAI vectorizer integration (`text2vec-openai`) module.
+ご利用の Weaviate インスタンスに `text2vec-openai` モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、Weaviate Cloud (WCD) のサーバーレス インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト ユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効かどうかを確認します。  
+- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-The OpenAI integration requires an API key value. To use KubeAI, provide any value for the API key, as this value is not used by KubeAI.
+OpenAI 統合には API キーが必要です。KubeAI を使用する場合、この値は KubeAI では使用されないため、任意の値を設定してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを提供します。
 
-- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照できる `OPENAI_APIKEY` 環境変数を設定する  
+- 以下の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -80,9 +80,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a KubeAI embedding model.
+KubeAI Embedding モデルを使用するように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -108,22 +108,24 @@ Provide the API key to Weaviate using one of the following methods:
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザーのパラメーター
 
-- `model`: The KubeAI model name.
-- `dimensions`: The number of dimensions for the model.
-- `baseURL`: The OpenAI-style endpoint provided by KubeAI.
-    - In most cases the `baseURL` is `http://kubeai/openai`. Unless you have Weaviate deployed in a different cluster or namespace.
+- `model`: KubeAI モデル名  
+- `dimensions`: モデルの次元数  
+- `baseURL`: KubeAI が提供する OpenAI スタイルのエンドポイント  
+    - 通常、`baseURL` は `http://kubeai/openai` です。異なるクラスターや名前空間で Weaviate をデプロイしている場合を除きます。
 
-## Data import
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+
+## データインポート
+
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx) して Weaviate に取り込みます。Weaviate は、指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -147,21 +149,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルを再利用する
+すでに互換性のあるモデルベクトルをお持ちの場合は、それを直接 Weaviate に渡すことができます。これは、同じモデルで既に埋め込みを生成しており、別のシステムからデータを移行する際などに Weaviate で再利用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified KubeAI model.
+ベクトライザーが設定されると、Weaviate は指定された KubeAI モデルを使用してベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_kubeai_embedding_search.png)
+![検索における埋め込み統合の図](../_includes/integration_kubeai_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、Weaviate はテキストクエリを指定されたモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した数 `n` 件の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -185,15 +187,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（ BM25 ）検索を実行し、その結果を[組み合わせて](../../search/hybrid.md) データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、Weaviate はテキストクエリを指定されたモデルで埋め込みに変換し、データベースから最高スコアのオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した数 `n` 件の最高スコアのオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -217,27 +219,28 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参照
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他のインテグレーション
 
-- [KubeAI generative models + Weaviate](./generative.md).
+- [KubeAI 生成モデル + Weaviate](./generative.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+インテグレーションがコレクションで設定されると、Weaviate のデータ管理および検索操作は他のコレクションと同様に動作します。モデル非依存の例は次のとおりです。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) および [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) では、データ操作（コレクションおよびその中のオブジェクトの作成・読み取り・更新・削除）の方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) では、検索操作（ベクトル、キーワード、ハイブリッド）や検索拡張生成の方法を示しています。
 
-### External resources
+### 外部リソース
 
 - [KubeAI documentation](https://www.kubeai.org/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

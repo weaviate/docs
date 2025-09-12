@@ -1,12 +1,12 @@
 ---
-title: Text Embeddings
-description: "Weaviate's integration with the Hugging Face Transformers library allows you to access their models' capabilities directly from Weaviate."
+title: テキスト埋め込み
+description: "Weaviate が Hugging Face Transformers ライブラリと統合することで、モデルの機能を Weaviate から直接利用できます。"
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_transformers.jpg
 # tags: ['model providers', 'huggingface', 'embeddings', 'transformers']
 ---
 
-# Locally Hosted Transformers Text Embeddings + Weaviate
+# ローカルホスト Transformers テキスト埋め込み + Weaviate
 
 
 import Tabs from '@theme/Tabs';
@@ -17,49 +17,49 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with the Hugging Face Transformers library allows you to access their models' capabilities directly from Weaviate.
+Weaviate の Hugging Face Transformers ライブラリとの統合により、Weaviate からモデルの機能に直接アクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use the Transformers integration, and [configure the Weaviate instance](#weaviate-configuration) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the Transformers inference container. This feature is called the *vectorizer*.
+[Weaviate ベクトル インデックスを構成する](#configure-the-vectorizer) で Transformers 統合を使用し、[Weaviate インスタンスを構成する](#weaviate-configuration) 際にモデル イメージを指定すると、Weaviate は Transformers 推論コンテナ内の指定モデルを用いて各種操作の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) には、Weaviate がテキスト オブジェクトの埋め込みを生成してインデックスに保存します。また、[ベクトル](#vector-near-text-search) や [ハイブリッド](#hybrid-search) 検索では、Weaviate がテキスト クエリを埋め込みに変換します。
 
 ![Embedding integration illustration](../_includes/integration_transformers_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate 構成
 
-Your Weaviate instance must be configured with the Hugging Face Transformers vectorizer integration (`text2vec-transformers`) module.
+ご利用の Weaviate インスタンスには、Hugging Face Transformers ベクトライザー統合 (`text2vec-transformers`) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) 利用者向け</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the Hugging Face model.
+この統合は Hugging Face モデル用のコンテナを起動する必要があるため、Weaviate Cloud (WCD) のサーバーレス インスタンスでは利用できません。
 
 </details>
 
-#### Enable the integration module
+#### 統合モジュールの有効化
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスタ メタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているかどうかを確認します。  
+- [モジュールの設定方法](../../configuration/modules.md) ガイドに従い、Weaviate でモジュールを有効化します。
 
-#### Configure the integration
+#### 統合の構成
 
-To use this integration, configure the container image of the Hugging Face Transformers model and the inference endpoint of the containerized model.
+この統合を使用するには、Hugging Face Transformers モデルのコンテナ イメージと、コンテナ化されたモデルの推論エンドポイントを構成します。
 
-The following example shows how to configure the Hugging Face Transformers integration in Weaviate:
+以下は、Weaviate で Hugging Face Transformers 統合を構成する例です。
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
 
-#### Docker Option 1: Use a pre-configured `docker-compose.yml` file
+#### Docker オプション 1: 事前構成済み `docker-compose.yml` を使用
 
-Follow the instructions on the [Weaviate Docker installation configurator](/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+[Weaviate Docker インストール コンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator) の手順に従い、選択したモデル入りの事前構成済み `docker-compose.yml` ファイルをダウンロードしてください。
 <br/>
 
-#### Docker Option 2: Add the configuration manually
+#### Docker オプション 2: 手動で設定を追加
 
-Alternatively, add the configuration to the `docker-compose.yml` file manually as in the example below.
+または、下記の例のように `docker-compose.yml` ファイルへ手動で設定を追加します。
 
 ```yaml
 services:
@@ -74,17 +74,17 @@ services:
       ENABLE_CUDA: 0  # Set to 1 to enable
 ```
 
-- `TRANSFORMERS_INFERENCE_API` environment variable sets the inference API endpoint
-- `text2vec-transformers` is the name of the inference container
-- `image` is the container image
-- `ENABLE_CUDA` environment variable enables GPU usage
+- `TRANSFORMERS_INFERENCE_API` 環境変数は推論 API エンドポイントを指定します  
+- `text2vec-transformers` は推論コンテナの名前です  
+- `image` はコンテナ イメージです  
+- `ENABLE_CUDA` 環境変数で GPU 使用を有効化します  
 
-Set `image` from a [list of available models](#available-models) to specify a particular model to be used.
+使用するモデルを指定するには、`image` を [利用可能なモデル一覧](#available-models) から選択してください。
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the Hugging Face Transformers integration in Weaviate by adding or updating the `text2vec-transformers` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Weaviate Helm チャートの `values.yaml` ファイル内 `modules` セクションに `text2vec-transformers` モジュールを追加または更新して、Hugging Face Transformers 統合を構成します。例として、`values.yaml` を以下のように修正します。
 
 ```yaml
 modules:
@@ -99,18 +99,18 @@ modules:
       enable_cuda: true
 ```
 
-If you are using a [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) model, also configure the parameters listed under `passageQueryServices`.
+[DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) モデルをご利用の場合は、`passageQueryServices` 以下のパラメーターも設定してください。
 
-See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) for an example of the `values.yaml` file including more configuration options.
+より多くの設定オプションを含む `values.yaml` の例については、[Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) を参照してください。
 
-Set `tag` from a [list of available models](#available-models) to specify a particular model to be used.
+使用するモデルを指定するには、`tag` を [利用可能なモデル一覧](#available-models) から選択してください。
 
 </TabItem>
 </Tabs>
 
-### Credentials
+### 資格情報
 
-As this integration runs a local container with the Transformers model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+この統合はローカル コンテナで Transformers モデルを実行するため、追加の資格情報 (API キーなど) は不要です。以下の例のように通常どおり Weaviate に接続してください。
 
 <Tabs groupId="languages">
 
@@ -134,9 +134,9 @@ As this integration runs a local container with the Transformers model, no addit
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの構成
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use the Transformer inference container:
+[Weaviate インデックスを構成](../../manage-collections/vector-config.mdx#specify-a-vectorizer) して、Transformer 推論コンテナを使用するには次のようにします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -159,37 +159,39 @@ As this integration runs a local container with the Transformers model, no addit
 
 </Tabs>
 
-:::note Chose a container image to select a model
-To chose a model, select the [container image](#configure-the-integration) that hosts it.
+:::note コンテナ イメージを選択してモデルを指定
+モデルを選択するには、それをホストする [コンテナ イメージ](#configure-the-integration) を選択してください。
 :::
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-The following examples show how to configure Transformers-specific options.
 
-#### Inference URL parameters
+### ベクトライザーのパラメーター
 
-Optionally, if your stack includes multiple inference containers, specify the inference container(s) to use with a collection.
+以下の例では、Transformers 固有のオプションを設定する方法を示します。
 
-If no parameters are specified, the default inference URL from the Weaviate configuration is used.
+#### 推論 URL のパラメーター
 
-Specify `inferenceUrl` for a single inference container.
+スタックに複数の推論コンテナが含まれている場合、使用する推論コンテナをコレクションごとに指定できます。
 
-Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) model.
+パラメーターを指定しない場合は、Weaviate 構成で設定されたデフォルトの推論 URL が使用されます。
 
-#### Additional parameters
+単一の推論コンテナを指定するには `inferenceUrl` を使用します。
 
-- `poolingStrategy` – the pooling strategy to use when the input exceeds the model's context window.
-  - Default: `masked_mean`. Allowed values: `masked_mean` or `cls`. ([Read more on this topic.](https://arxiv.org/abs/1908.10084))
+[DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) モデルを使用している場合は、`passageInferenceUrl` と `queryInferenceUrl` を指定します。
+
+#### 追加パラメーター
+
+- `poolingStrategy` – 入力がモデルのコンテキストウィンドウを超えた場合に使用するプーリング戦略。  
+  - デフォルト: `masked_mean`。許可される値: `masked_mean` または `cls`。（[詳細はこちら](https://arxiv.org/abs/1908.10084)）
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -212,9 +214,9 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
 
 </Tabs>
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、Weaviate に[データをインポート](../../manage-objects/import.mdx)します。Weaviate は指定されたモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -238,21 +240,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+既に互換性のあるモデルベクトルをお持ちの場合、それを直接 Weaviate に渡すことができます。これは、同じモデルを使って既に埋め込みを生成しており、それらを Weaviate で利用したい場合、たとえば他のシステムからデータを移行するときに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the Transformers inference container.
+ベクトライザーが設定されると、Weaviate は Transformers 推論コンテナを使用してベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_transformers_embedding_search.png)
+![検索時の埋め込み統合の図](../_includes/integration_transformers_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+次のクエリは、`limit` で設定した数 `n` 件の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -276,15 +278,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を実行し、その後[結果を組み合わせて](../../search/hybrid.md)データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+次のクエリは、`limit` で設定した数 `n` 件の最もスコアの高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -308,25 +310,27 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
 
-### Available models
 
-Lists of pre-built Docker images for this integration are available in the tabs below. If you do not have a GPU available, we recommend using an ONNX-enabled image for CPU inference.
+## 参照
 
-[You can also build your own Docker image](./embeddings-custom-image.md)
+### 利用可能なモデル
+
+このインテグレーション用に事前構築された Docker イメージの一覧は、以下のタブに掲載されています。 GPU が利用できない場合は、 CPU 推論用に ONNX 対応イメージのご使用を推奨します。
+
+[独自の Docker イメージをビルドすることもできます](./embeddings-custom-image.md)
 
 <Tabs groupId="languages">
 <TabItem value="main" label="Single container models">
 
 :::info
-These models benefit from GPU acceleration. Enable CUDA acceleration where available through your [Docker or Kubernetes configuration](#weaviate-configuration).
+これらのモデルは GPU アクセラレーションの恩恵を受けます。 利用可能な環境では、[ Docker もしくは Kubernetes の設定](#weaviate-configuration)で CUDA アクセラレーションを有効にしてください。
 :::
 
 <details>
-  <summary>See the full list</summary>
+  <summary>全リストを表示</summary>
 
-|Model Name|Image Name|
+|モデル名|イメージ名|
 |---|---|
 |`distilbert-base-uncased` ([Info](https://huggingface.co/distilbert-base-uncased))|`cr.weaviate.io/semitechnologies/transformers-inference:distilbert-base-uncased`|
 |`sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` ([Info](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2))|`cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-paraphrase-multilingual-MiniLM-L12-v2`|
@@ -350,13 +354,13 @@ These models benefit from GPU acceleration. Enable CUDA acceleration where avail
 <TabItem value="dpr" label="DPR models">
 
 :::info
-[DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) models use two inference containers, one for the passage encoder and one for the query encoder. These models benefit from GPU acceleration. Enable CUDA acceleration where available through your [Docker or Kubernetes configuration](#weaviate-configuration).
+[DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) モデルでは、パッセージエンコーダー用とクエリーエンコーダー用の 2 つの推論コンテナを使用します。 これらのモデルは GPU アクセラレーションの恩恵を受けます。 利用可能な環境では、[ Docker もしくは Kubernetes の設定](#weaviate-configuration)で CUDA アクセラレーションを有効にしてください。
 :::
 
 <details>
-  <summary>See the full list</summary>
+  <summary>全リストを表示</summary>
 
-|Model Name|Image Name|
+|モデル名|イメージ名|
 |---|---|
 |`facebook/dpr-ctx_encoder-single-nq-base` ([Info](https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base))|`cr.weaviate.io/semitechnologies/transformers-inference:facebook-dpr-ctx_encoder-single-nq-base`|
 |`facebook/dpr-question_encoder-single-nq-base` ([Info](https://huggingface.co/facebook/dpr-question_encoder-single-nq-base))|`cr.weaviate.io/semitechnologies/transformers-inference:facebook-dpr-question_encoder-single-nq-base`|
@@ -372,13 +376,13 @@ These models benefit from GPU acceleration. Enable CUDA acceleration where avail
 <TabItem value="snowflake" label="Snowflake">
 
 :::info
-Snowflake's [Arctic](https://huggingface.co/collections/Snowflake/arctic-embed-661fd57d50fab5fc314e4c18) embedding models are also available. These models benefit from GPU acceleration. Enable CUDA acceleration where available through your [Docker or Kubernetes configuration](#weaviate-configuration).
+Snowflake の [Arctic](https://huggingface.co/collections/Snowflake/arctic-embed-661fd57d50fab5fc314e4c18) 埋め込みモデルも利用できます。 これらのモデルは GPU アクセラレーションの恩恵を受けます。 利用可能な環境では、[ Docker もしくは Kubernetes の設定](#weaviate-configuration)で CUDA アクセラレーションを有効にしてください。
 :::
 
 <details>
-  <summary>See the full list</summary>
+  <summary>全リストを表示</summary>
 
-|Model Name|Image Name|
+|モデル名|イメージ名|
 |---|---|
 |`Snowflake/snowflake-arctic-embed-xs` ([Info](https://huggingface.co/Snowflake/snowflake-arctic-embed-xs))|`cr.weaviate.io/semitechnologies/transformers-inference:snowflake-snowflake-arctic-embed-xs`|
 |`Snowflake/snowflake-arctic-embed-s` ([Info](https://huggingface.co/Snowflake/snowflake-arctic-embed-s))|`cr.weaviate.io/semitechnologies/transformers-inference:snowflake-snowflake-arctic-embed-s`|
@@ -391,15 +395,15 @@ Snowflake's [Arctic](https://huggingface.co/collections/Snowflake/arctic-embed-6
 <TabItem value="onnx" label="ONNX (CPU)">
 
 :::info
-ONNX-enabled images use [ONNX Runtime](https://onnxruntime.ai/docs/) for faster inference on CPUs. They are quantized for ARM64 and AMD64 (AVX2) hardware.
+ONNX 対応イメージは、[ONNX Runtime](https://onnxruntime.ai/docs/) を使用して CPU 上で高速に推論を行います。 ARM64 と AMD64 (AVX2) ハードウェア向けに量子化されています。
 
-They are indicated by the `-onnx` suffix in the image name.
+イメージ名の末尾が `-onnx` であることが目印です。
 :::
 
 <details>
-  <summary>See the full list</summary>
+  <summary>全リストを表示</summary>
 
-|Model Name|Image Name|
+|モデル名|イメージ名|
 |---|---|
 |`sentence-transformers/all-MiniLM-L6-v2` ([Info](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2))|`cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-all-MiniLM-L6-v2-onnx`|
 |`BAAI/bge-small-en-v1.5` ([Info](https://huggingface.co/BAAI/bge-small-en-v1.5))|`cr.weaviate.io/semitechnologies/transformers-inference:baai-bge-small-en-v1.5-onnx`|
@@ -415,62 +419,63 @@ They are indicated by the `-onnx` suffix in the image name.
 </TabItem>
 </Tabs>
 
-We add new model support over time. For the latest list of available models, see the Docker Hub tags for the [transformers-inference](https://hub.docker.com/r/semitechnologies/transformers-inference/tags) container.
+新しいモデルは随時追加しています。 最新のモデル一覧については、[transformers-inference](https://hub.docker.com/r/semitechnologies/transformers-inference/tags) コンテナの Docker Hub タグをご覧ください。
 
-## Advanced configuration
+## 高度な設定
 
-### Run a separate inference container
+### 推論コンテナを個別に実行する
 
-As an alternative, you can run the inference container independently from Weaviate. To do so, follow these steps:
+別の方法として、推論コンテナを Weaviate とは独立して実行することも可能です。 以下の手順に従ってください。
 
-- Enable `text2vec-transformers` and omit `text2vec-transformers` container parameters in your [Weaviate configuration](#weaviate-configuration)
-- Run the inference container separately, e.g. using Docker, and
-- Use `TRANSFORMERS_INFERENCE_API` or [`inferenceUrl`](#configure-the-vectorizer) to set the URL of the inference container.
+- `text2vec-transformers` を有効にし、[Weaviate の設定](#weaviate-configuration)では `text2vec-transformers` コンテナのパラメーターを省略します  
+- たとえば Docker を使用して推論コンテナを別プロセスで実行します  
+- 推論コンテナの URL を設定するために、`TRANSFORMERS_INFERENCE_API` または [`inferenceUrl`](#configure-the-vectorizer) を使用します  
 
-For example, run the container with Docker:
+たとえば、Docker でコンテナを実行します。
 
 ```shell
 docker run -itp "8000:8080" semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
 ```
 
-Then, set `TRANSFORMERS_INFERENCE_API="http://localhost:8000"`. If Weaviate is part of the same Docker network, as a part of the same `docker-compose.yml` file, you can use the Docker networking/DNS, such as `TRANSFORMERS_INFERENCE_API=http://text2vec-transformers:8080`.
+その後、`TRANSFORMERS_INFERENCE_API="http://localhost:8000"` を設定します。 Weaviate が同じ Docker ネットワーク、つまり同じ `docker-compose.yml` の一部として実行されている場合は、`TRANSFORMERS_INFERENCE_API=http://text2vec-transformers:8080` のように Docker のネットワーク/DNS 名を利用できます。
 
-## Further resources
+## さらなるリソース
 
-### Other integrations
+### その他の統合
 
-- [Transformers multi-modal embedding models + Weaviate](./embeddings-multimodal.md).
-- [Transformers reranker models + Weaviate](./reranker.md).
+- [Transformers マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md)
+- [Transformers リランカーモデル + Weaviate](./reranker.md)
 
-### Chunking
+### チャンク化
 
-This integration automatically chunks text if it exceeds the model's maximum token length before it is passed to the model. It will then return the pooled vectors.
+この統合では、モデルに渡す前にテキストがモデルの最大 token 長を超えている場合、自動的にチャンク化します。その後、プールされた ベクトル を返します。
 
-See [HuggingFaceVectorizer.vectorizer()](https://github.com/weaviate/text2vec-transformers-models/blob/main/vectorizer.py) for the exact implementation.
+具体的な実装については [HuggingFaceVectorizer.vectorizer()](https://github.com/weaviate/text2vec-transformers-models/blob/main/vectorizer.py) を参照してください。
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、Weaviate におけるデータ管理および検索操作は他のコレクションと同一の方法で動作します。モデルに依存しない以下の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) および [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) ガイドでは、データ操作（つまりコレクションとその内部のオブジェクトの作成、読み取り、更新、削除）の方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、 ベクトル 、キーワード、ハイブリッド検索のほか、検索拡張生成の実行方法を示しています。
 
-### Model licenses
+### モデルライセンス
 
-Each of the compatible models has its own license. For detailed information, review the license for the model you are using in the [Hugging Face Model Hub](https://huggingface.co/models).
+互換性のある各モデルには、それぞれのライセンスがあります。詳細については、使用するモデルのライセンスを [Hugging Face Model Hub](https://huggingface.co/models) で確認してください。
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+使用目的に対してそのライセンス条件が適切かどうかを評価する責任は、利用者にあります。
 
-### Custom models
+### カスタムモデル
 
-To run the integration with a custom model, refer to [the custom image guide](./embeddings-custom-image.md).
+カスタムモデルで統合を実行するには、[カスタムイメージガイド](./embeddings-custom-image.md) を参照してください。
 
-### External resources
+### 外部リソース
 
 - Hugging Face [Model Hub](https://huggingface.co/models)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

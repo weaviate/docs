@@ -1,5 +1,5 @@
 ---
-title: Rotational Quantization (RQ)
+title: 回転量子化 (RQ)
 sidebar_position: 25
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'rq']
@@ -13,23 +13,23 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
-:::caution Technical preview
+:::caution 技術プレビュー
 
-Rotational quantization (RQ) was added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+回転量子化 ( RQ ) は **`v1.32`** で **技術プレビュー** として追加されました。<br/><br/>
+これは、この機能がまだ開発中であり、将来のリリースで変更される可能性があることを意味します。互換性が破壊される変更が含まれる場合もあります。  
+**現時点では本番環境での使用は推奨しません。**
 
 :::
 
-[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast untrained vector compression technique that offers 4x compression while retaining almost perfect recall (98-99% on most datasets).
+[**回転量子化 ( RQ )**](../../concepts/vector-quantization.md#rotational-quantization) は、4 倍の圧縮率でほぼ完璧なリコール ( ほとんどのデータセットで 98-99% ) を維持する、高速で学習不要なベクトル圧縮手法です。
 
-:::note HNSW only
-RQ is currently not supported for the flat index type.
+:::note HNSW のみ
+RQ は現在、フラットインデックス型をサポートしていません。
 :::
 
-## Enable compression for new collection
+## 新しいコレクションでの圧縮の有効化
 
-RQ can be enabled at collection creation time through the collection definition:
+RQ はコレクション作成時に、コレクション定義を通じて有効化できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -66,9 +66,9 @@ RQ can be enabled at collection creation time through the collection definition:
   </TabItem>
 </Tabs>
 
-## Enable compression for existing collection
+## 既存コレクションでの圧縮の有効化
 
-RQ can also be enabled for an existing collection by updating the collection definition:
+RQ は、既存のコレクションに対してもコレクション定義を更新することで有効化できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -97,9 +97,9 @@ RQ can also be enabled for an existing collection by updating the collection def
   </TabItem>
 </Tabs>
 
-## RQ parameters
+## RQ パラメーター
 
-To tune RQ, use these quantization and vector index parameters:
+RQ を調整するには、以下の量子化およびベクトルインデックスパラメーターを使用します。
 
 import RQParameters from '/\_includes/configuration/rq-compression-parameters.mdx' ;
 
@@ -148,33 +148,36 @@ For maximum query performance with minimal recall impact, consider setting `resc
 :::
 -->
 
-## Additional considerations
 
-### Multiple vector embeddings (named vectors)
+
+## 追加の考慮事項
+
+### 複数 ベクトル エンベディング（名前付き ベクトル）
 
 import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
 
 <NamedVectorCompress />
 
-### Multi-vector embeddings (ColBERT, ColPali, etc.)
+### マルチベクトル エンベディング (ColBERT、ColPali など)
 
 import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
 <MultiVectorCompress />
 
-:::note Multi-vector performance
-RQ supports multi-vector embeddings. Each token vector is rounded up to a multiple of 64 dimensions, which may result in less than 4x compression for very short vectors. This is a technical limitation that may be addressed in future versions.
+:::note マルチベクトルのパフォーマンス
+RQ はマルチベクトル エンベディングをサポートしています。各トークン ベクトルは 64 次元の倍数に切り上げられるため、非常に短いベクトルでは 4x 未満の圧縮になる場合があります。これは技術的な制限であり、将来のバージョンで改善される可能性があります。
 :::
 
-## Further resources
+## 追加リソース
 
-- [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
-- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [スターター ガイド: 圧縮](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [リファレンス: ベクトル インデックス](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コンセプト: ベクトル 量子化](/docs/weaviate/concepts/vector-quantization.md)
+- [コンセプト: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

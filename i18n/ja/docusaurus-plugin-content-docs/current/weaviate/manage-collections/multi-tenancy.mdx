@@ -1,5 +1,5 @@
 ---
-title: Multi-tenancy operations
+title: マルチテナンシーの操作
 sidebar_position: 4
 image: og/docs/configuration.jpg
 ---
@@ -17,31 +17,31 @@ import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.c
 import CurlCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh";
 import SkipLink from "/src/components/SkipValidationLink";
 
-Multi-tenancy provides data isolation. Each tenant is stored on a separate shard. Data stored in one tenant is not visible to another tenant. If your application serves many different users, multi-tenancy keeps their data private and makes database operations more efficient.
+マルチテナンシーはデータの分離を提供します。各テナントは個別のシャードに保存され、あるテナントに保存されたデータは他のテナントからは見えません。アプリケーションが多数のユーザーにサービスを提供する場合、マルチテナンシーによりユーザーデータを非公開に保ち、データベース操作を効率化できます。
 
 <details>
   <summary>
-    Multi-tenancy availability
+    マルチテナンシーの対応状況
   </summary>
 
-- Multi-tenancy added in `v1.20`
-- Tenant activity status setting added in `v1.21`
-- Auto-tenant creation for batch imports added in `v1.25.0`
-- Auto-tenant creation for single object insertions added in `v1.25.2`
-- Auto-tenant activation added in `v1.25.2`
+- `v1.20` でマルチテナンシーを追加  
+- `v1.21` でテナントのアクティビティステータス設定を追加  
+- `v1.25.0` でバッチインポート時の自動テナント作成を追加  
+- `v1.25.2` で単一オブジェクト挿入時の自動テナント作成を追加  
+- `v1.25.2` で自動テナントアクティベーションを追加  
 
 </details>
 
-:::info Tenant status renamed in `v1.26`
-In `v1.26`, the `HOT` status was renamed to `ACTIVE` and the `COLD` status was renamed to `INACTIVE`.
+:::info `v1.26` でテナントステータスの名称変更
+`v1.26` では、`HOT` ステータスは `ACTIVE` に、`COLD` ステータスは `INACTIVE` に変更されました。
 :::
 
-## Enable multi-tenancy
+## マルチテナンシーの有効化
 
-Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancyConfig`in the collection definition:
+デフォルトでは マルチテナンシー は無効です。マルチテナンシーを有効にするには、コレクション定義で `multiTenancyConfig` を設定します。
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START EnableMultiTenancy"
@@ -49,7 +49,7 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
+  <TabItem value="py3" label="Python クライアント v3">
     <FilteredTextBlock
       text={PyCodeV3}
       startMarker="# START EnableMultiTenancy"
@@ -57,7 +57,7 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="pyv3"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS クライアント v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableMultiTenancy"
@@ -65,7 +65,7 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="ts"
     />
   </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
+  <TabItem value="js2" label="JS/TS クライアント v2">
     <FilteredTextBlock
       text={TSCodeLegacy}
       startMarker="// START EnableMultiTenancy"
@@ -91,16 +91,16 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
   </TabItem>
 </Tabs>
 
-## Automatically add new tenants
+## 新しいテナントを自動追加
 
 import AutoTenant from "/_includes/auto-tenant.mdx";
 
 <AutoTenant />
 
-### Create a collection
+### コレクションの作成
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START EnableAutoMT"
@@ -108,7 +108,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS クライアント v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableAutoMT"
@@ -134,9 +134,11 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
   </TabItem>
 </Tabs>
 
-### Update a collection
 
-Use the client to update the auto-tenant creation setting. Auto-tenant is only available for batch inserts.
+
+### コレクションの更新
+
+クライアントを使用して auto-tenant 作成設定を更新します。auto-tenant はバッチ挿入でのみ利用できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -165,20 +167,20 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
   </TabItem>
 </Tabs>
 
-## Add new tenants manually
+## 新しいテナントの手動追加
 
-To add tenants to a collection, specify the collection and the new tenants. Optionally, specify the tenant activity status as `ACTIVE`(available, default), `INACTIVE` (not available, on disk), or `OFFLOADED` (not available, [offloaded to cloud](../concepts/data.md#tenant-states)).
+コレクションにテナントを追加するには、対象のコレクションと新しいテナントを指定します。必要に応じて、テナントのアクティブ状態を `ACTIVE`（利用可能、デフォルト）、`INACTIVE`（利用不可、ディスク上）、または `OFFLOADED`（利用不可、[クラウドへオフロード](../concepts/data.md#tenant-states)）として指定できます。
 
-This example adds `tenantA` to the `MultiTenancyCollection` collection:
+以下の例では、`MultiTenancyCollection` コレクションに `tenantA` を追加しています。
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
 import TenantNameFormat from "/_includes/tenant-names.mdx";
 
-Tenant status is available from Weaviate `1.21` onwards.
+テナントステータスは Weaviate `1.21` 以降で利用可能です。
 
 <br />
 
@@ -242,11 +244,11 @@ Tenant status is available from Weaviate `1.21` onwards.
   </TabItem>
 </Tabs>
 
-## List all tenants
+## テナントの一覧
 
-List existing tenants in a collection.
+既存のテナントをコレクション内で一覧表示します。
 
-This example lists the tenants in the `MultiTenancyCollection` collection:
+この例では、`MultiTenancyCollection` コレクションに含まれるテナントを一覧表示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -304,11 +306,12 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
   </TabItem>
 </Tabs>
 
-## Get tenants by name
 
-Get tenants from a collection by name. Note that non-existent tenant names are ignored in the response.
+## 名前でのテナント取得
 
-This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` collection:
+コレクションから名前を指定してテナントを取得します。存在しないテナント名はレスポンスで無視される点に注意してください。
+
+次の例では、`MultiTenancyCollection` コレクションから `tenantA` と `tenantB` を返します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -331,11 +334,11 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
 
 </Tabs>
 
-## Get one tenant
+## 単一テナントの取得
 
-Get a particular tenant from a collection.
+コレクションから特定のテナントを取得します。
 
-This example returns a tenant from the `MultiTenancyCollection` collection:
+次の例では、`MultiTenancyCollection` コレクションからテナントを返します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -358,12 +361,12 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
 
 </Tabs>
 
-## Delete tenants
+## テナントの削除
 
-To delete tenants from a collection, specify the collection (e.g. `MultiTenancyCollection`) and the tenants (`tenantB` and `tenantX`). The delete operation ignores tenant names if a named tenant is not a part of the collection.
+テナントをコレクションから削除するには、コレクション（例: `MultiTenancyCollection`）とテナント（`tenantB` と `tenantX`）を指定します。指定されたテナントがコレクションに含まれていない場合、その名前は無視されます。
 
-:::caution Tenant deletion == Tenant data deletion
-Deleting a tenant deletes all associated objects.
+:::caution テナント削除 ＝ テナント データ削除
+テナントを削除すると、関連するすべてのオブジェクトも削除されます。
 :::
 
 <Tabs groupId="languages">
@@ -422,9 +425,9 @@ Deleting a tenant deletes all associated objects.
   </TabItem>
 </Tabs>
 
-## Manage tenant states
+## テナント状態の管理
 
-Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
+`ACTIVE`、`INACTIVE`、`OFFLOADED` の間でテナントの状態を変更します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -446,15 +449,15 @@ Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
   </TabItem>
 </Tabs>
 
-:::info Learn more
+:::info 詳細はこちら
 
-See [How-to: Manage tenant states](./tenant-states.mdx) for more hands-on examples, and the [Guide: Manage resources](../starter-guides/managing-resources/index.md) for more information and strategies to manage **hot**, **warm** and **cold** storage tiers.
+より実践的な例については [ハウツー: テナント状態を管理する](./tenant-states.mdx) を参照してください。また、**ホット**、**ウォーム**、**コールド** の各ストレージ階層を管理する方法については、[ガイド: リソースの管理](../starter-guides/managing-resources/index.md) もご覧ください。
 
 :::
 
-## CRUD operations
+## CRUD 操作
 
-Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD operation, as shown in the object creation example below.
+マルチテナンシーコレクションでは、各 CRUD 操作にテナント名（例：`tenantA`）を指定する必要があります。以下のオブジェクト作成例をご覧ください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -512,9 +515,9 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
   </TabItem>
 </Tabs>
 
-## Search queries
+## 検索クエリ
 
-Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Get` and `Aggregate` query operation.
+マルチテナンシーコレクションでは、`Get` および `Aggregate` クエリを実行するたびにテナント名（例：`tenantA`）を指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -572,18 +575,18 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
   </TabItem>
 </Tabs>
 
-## Cross-references
+## クロスリファレンス
 
 import CrossReferencePerformanceNote from "/_includes/cross-reference-performance-note.mdx";
 
 <CrossReferencePerformanceNote />
 
-A cross-reference can be added from a multi-tenancy collection object to:
+マルチテナンシー コレクション オブジェクトから、次のいずれかにクロスリファレンスを追加できます:
 
-- A non-multi-tenancy collection object, or
-- An object belonging to the same tenant.
+- 非マルチテナンシー コレクション オブジェクト
+- 同じテナントに属するオブジェクト
 
-Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating, updating or deleting cross-references.
+クロスリファレンスを作成、更新、削除する際、マルチテナンシー コレクションではテナント名（例: `tenantA`）が必須です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -641,21 +644,22 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
   </TabItem>
 </Tabs>
 
-## Backups
+## バックアップ
 
-:::caution Backups do not include inactive or offloaded tenants
-Backups of [multi-tenant collections](../concepts/data.md#multi-tenancy) will only include `active` tenants, and not `inactive` or `offloaded` tenants. [Activate tenants](#manage-tenant-states) before creating a backup to ensure all data is included.
+:::caution 非アクティブまたはオフロード済みテナントはバックアップに含まれません
+[マルチテナント コレクション](../concepts/data.md#multi-tenancy)のバックアップには `active` テナントのみが含まれ、`inactive` や `offloaded` テナントは含まれません。すべてのデータをバックアップに含めるために、バックアップ作成前に [テナントをアクティブにする](#manage-tenant-states) ことを推奨します。
 :::
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [How to: Manage collections](../manage-collections/index.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/schema">References: REST API: Schema</SkipLink>
-- [Concepts: Data Structure: Multi-tenancy](../concepts/data.md#multi-tenancy)
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [How to: コレクションを管理する](../manage-collections/index.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/schema">参照: REST API: スキーマ</SkipLink>
+- [概念: データ構造: マルチテナンシー](../concepts/data.md#multi-tenancy)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

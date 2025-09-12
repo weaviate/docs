@@ -1,18 +1,19 @@
 ---
-title: Compression
+title: 圧縮
 sidebar_position: 5
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'pq']
 ---
 
-Uncompressed vectors can be large. Compressed vectors lose some information, but they use fewer resources and can be very cost effective. 
+未圧縮のベクトルは大きくなる場合があります。圧縮したベクトルは一部の情報を失いますが、使用リソースが少なく、コスト効率に優れています。  
 
-To balance resource costs and system performance, consider one of these options:
+リソースコストとシステム性能を両立させるために、次のオプションを検討してください。
 
-- [Binary Quantization (BQ)](/weaviate/configuration/compression/bq-compression)
-- [Product Quantization (PQ)](/weaviate/configuration/compression/pq-compression)
-- [Rotational Quantization (RQ)](/weaviate/configuration/compression/rq-compression)
-- [Scalar Quantization (SQ)](/weaviate/configuration/compression/sq-compression)
+- [バイナリ量子化 ( BQ )](/weaviate/configuration/compression/bq-compression)
+- [直積量子化 ( PQ )](/weaviate/configuration/compression/pq-compression)
+- [回転量子化 ( RQ )](/weaviate/configuration/compression/rq-compression)
+- [スカラー量子化 ( SQ )](/weaviate/configuration/compression/sq-compression)
 
-Aside from quantization, Weaviate also offers encodings for multi-vector embeddings:
-- [MUVERA encoding](./multi-vectors.md)
+量子化以外にも、Weaviate ではマルチ ベクトル埋め込み向けのエンコーディングを提供しています:  
+- [MUVERA エンコーディング](./multi-vectors.md)
+

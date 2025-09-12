@@ -1,12 +1,12 @@
 ---
-title: Multimodal (CLIP) Embeddings
-description: Transformers Multimodal Embeddings
+title: マルチモーダル (CLIP) 埋め込み
+description: Transformers マルチモーダル埋め込み
 sidebar_position: 30
 image: og/docs/integrations/provider_integrations_transformers.jpg
 # tags: ['model providers', 'transformers', 'embeddings']
 ---
 
-# Locally Hosted CLIP Embeddings + Weaviate
+# ローカルホスト CLIP 埋め込み + Weaviate
 
 
 import Tabs from '@theme/Tabs';
@@ -17,49 +17,49 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with the Hugging Face Transformers library allows you to access their CLIP models' capabilities directly from Weaviate.
+Weaviate と Hugging Face Transformers ライブラリの連携により、CLIP モデルの機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use the CLIP integration, and [configure the Weaviate instance](#weaviate-configuration) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the CLIP inference container. This feature is called the *vectorizer*.
+[Weaviate ベクトルインデックスを設定](#configure-the-vectorizer)し、[Weaviate インスタンスを設定](#weaviate-configuration)してモデルイメージを指定すると、CLIP 推論コンテナ内の指定モデルを用いて各種操作の埋め込みを生成します。この機能は *vectorizer* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates multimodal object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts queries of one or more modalities into embeddings. [Multimodal search operations](#vector-near-media-search) are also supported.
+[インポート時](#data-import) に Weaviate はマルチモーダルオブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、1 つ以上のモダリティを含むクエリを埋め込みに変換します。[マルチモーダル検索操作](#vector-near-media-search) にも対応しています。
 
 ![Embedding integration illustration](../_includes/integration_transformers_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the CLIP multimodal vectorizer integration (`multi2vec-clip`) module.
+ご利用の Weaviate インスタンスは、CLIP マルチモーダル ベクトライザー統合 (`multi2vec-clip`) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the Hugging Face model.
+この統合は Hugging Face モデルを含むコンテナを起動する必要があるため、Weaviate Cloud (WCD) のサーバーレスインスタンスでは利用できません。
 
 </details>
 
-#### Enable the integration module
+#### 統合モジュールを有効化する
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているか確認します。
+- Weaviate でモジュールを有効にする方法は、[モジュール設定方法](../../configuration/modules.md) ガイドをご覧ください。
 
-#### Configure the integration
+#### 統合を設定する
 
-To use this integration, configure the container image of the CLIP model and the inference endpoint of the containerized model.
+本統合を使用するには、CLIP モデルのコンテナイメージと、そのコンテナ化モデルの推論エンドポイントを設定します。
 
-The following example shows how to configure the CLIP integration in Weaviate:
+以下の例は、Weaviate で CLIP 統合を設定する方法を示しています。
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
 
-#### Docker Option 1: Use a pre-configured `docker-compose.yml` file
+#### Docker オプション 1: 事前構成済み `docker-compose.yml` ファイルを使用
 
-Follow the instructions on the [Weaviate Docker installation configurator](/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+[Weaviate Docker インストールコンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator) の手順に従い、選択したモデルを含む事前構成済み `docker-compose.yml` ファイルをダウンロードしてください。
 <br/>
 
-#### Docker Option 2: Add the configuration manually
+#### Docker オプション 2: 手動で設定を追加
 
-Alternatively, add the configuration to the `docker-compose.yml` file manually as in the example below.
+または、以下の例のように `docker-compose.yml` ファイルへ手動で設定を追加します。
 
 ```yaml
 services:
@@ -73,17 +73,17 @@ services:
       ENABLE_CUDA: 0  # Set to 1 to enable
 ```
 
-- `CLIP_INFERENCE_API` environment variable sets the inference API endpoint
-- `multi2vec-clip` is the name of the inference container
-- `image` is the container image
-- `ENABLE_CUDA` environment variable enables GPU usage
+- `CLIP_INFERENCE_API` 環境変数は推論 API エンドポイントを指定します  
+- `multi2vec-clip` は推論コンテナの名前です  
+- `image` はコンテナイメージです  
+- `ENABLE_CUDA` 環境変数で GPU 使用を有効化します  
 
-Set `image` from a [list of available models](#available-models) to specify a particular model to be used.
+使用するモデルを指定するには、`image` に [利用可能なモデル一覧](#available-models) の中からイメージを設定してください。
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the Hugging Face Transformers integration in Weaviate by adding or updating the `multi2vec-clip` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Weaviate Helm チャートの values ファイルの `modules` セクションに `multi2vec-clip` モジュールを追加または更新して、Hugging Face Transformers 連携を設定します。たとえば、`values.yaml` ファイルを次のように変更します。
 
 ```yaml
 modules:
@@ -98,16 +98,16 @@ modules:
       enable_cuda: true
 ```
 
-See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) for an example of the `values.yaml` file including more configuration options.
+より多くの設定オプションを含む `values.yaml` ファイルの例は、[Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) を参照してください。
 
-Set `tag` from a [list of available models](#available-models) to specify a particular model to be used.
+使用するモデルを指定するには、`tag` に [利用可能なモデル一覧](#available-models) の中からタグを設定してください。
 
 </TabItem>
 </Tabs>
 
-### Credentials
+### 認証情報
 
-As this integration runs a local container with the CLIP model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+本統合は CLIP モデルを含むローカルコンテナを実行するため、追加の認証情報 (例: API キー) は不要です。以下の例のように通常どおり Weaviate へ接続してください。
 
 <Tabs groupId="languages">
 
@@ -131,9 +131,9 @@ As this integration runs a local container with the CLIP model, no additional cr
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a CLIP embedding model:
+CLIP 埋め込みモデルを使用するには、次のように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -156,28 +156,30 @@ As this integration runs a local container with the CLIP model, no additional cr
 
 </Tabs>
 
-:::note Chose a container image to select a model
-To chose a model, select the [container image](#configure-the-integration) that hosts it.
+:::note コンテナイメージを選択してモデルを指定
+モデルを選択するには、それをホストする [コンテナイメージ](#configure-the-integration) を指定してください。
 :::
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-#### Inference URL parameters
 
-Optionally, if your stack includes multiple inference containers, specify the inference container(s) to use with a collection.
+### ベクトライザーのパラメーター
 
-If no parameters are specified, the default inference URL from the Weaviate configuration is used.
+#### 推論 URL パラメーター
 
-Specify `inferenceUrl` for a single inference container.
+オプションとして、スタックに複数の推論コンテナが含まれている場合は、コレクションで使用する推論コンテナを指定できます。
+
+パラメーターを指定しない場合、 Weaviate の設定で定義されたデフォルトの推論 URL が使用されます。
+
+単一の推論コンテナを指定する場合は、 `inferenceUrl` を設定してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -197,12 +199,11 @@ Specify `inferenceUrl` for a single inference container.
       language="ts"
     />
   </TabItem>
-
 </Tabs>
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for the objects using the specified model.
+ベクトライザーを設定したら、 Weaviate に [データをインポート](../../manage-objects/import.mdx) します。 Weaviate は指定されたモデルを使用してオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -226,21 +227,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存のベクトルを再利用する
+すでに互換性のあるモデルベクトルをお持ちの場合は、それを直接 Weaviate に渡すことができます。同じモデルで既に埋め込みを生成しており、データを他のシステムから移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified CLIP model.
+ベクトライザーが設定されると、 Weaviate は指定した CLIP モデルを使ってベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_transformers_embedding_search.png)
+![検索時の埋め込み統合のイラスト](../_includes/integration_transformers_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、 Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、 `limit` で設定した数 `n` の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -264,15 +265,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索はベクトル検索とキーワード（BM25）検索を行い、その結果を [組み合わせて](../../search/hybrid.md) データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、 Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、 `limit` で設定した数 `n` の最もスコアの高いオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -296,13 +297,13 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-### Vector (near media) search
+### ベクトル（near media）検索
 
-When you perform a media search such as a [near image search](../../search/similarity.md#search-with-image), Weaviate converts the query into an embedding using the specified model and returns the most similar objects from the database.
+[近傍画像検索](../../search/similarity.md#search-with-image) のようなメディア検索を実行すると、Weaviate は指定されたモデルを用いてクエリを埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-To perform a near media search such as near image search, convert the media query into a base64 string and pass it to the search query.
+near image 検索などの near media 検索を行う場合は、メディアクエリを base64 文字列に変換し、検索クエリに渡してください。
 
-The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
+次のクエリは、入力画像に最も類似したオブジェクトを `limit` で指定した数（ n ）だけ返します。
 
 <Tabs groupId="languages">
 
@@ -326,69 +327,70 @@ The query below returns the `n` most similar objects to the input image from the
 
 </Tabs>
 
-## References
+## 参考
 
-### Available models
+### 利用可能なモデル
 
-Lists of pre-built Docker images for this integration are below.
+このインテグレーション用にビルド済み Docker イメージの一覧を以下に示します。
 
-| Model Name | Image Name | Notes |
+| モデル名 | イメージ名 | 備考 |
 | --- | --- | --- |
-| google/siglip2-so400m-patch16-512 |  `cr.weaviate.io/semitechnologies/multi2vec-clip:google-siglip2-so400m-patch16-512` | SigLIP 2 model with 512x512 input size, added in `multi2vec-clip` `v1.4.0` (Multilingual, 1152d) |
-| google/siglip2-so400m-patch16-384 |  `cr.weaviate.io/semitechnologies/multi2vec-clip:google-siglip2-so400m-patch16-384` | SigLIP 2 model with 384x384 input size, added in `multi2vec-clip` `v1.4.0` (Multilingual, 1152d) |
-| sentence-transformers-clip-ViT-B-32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32` | Texts must be in English. (English, 768d) |
-| sentence-transformers-clip-ViT-B-32-multilingual-v1 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1` | Supports a wide variety of languages for text. See sbert.net for details. (Multilingual, 768d) |
-| openai-clip-vit-base-patch16 | `cr.weaviate.io/semitechnologies/multi2vec-clip:openai-clip-vit-base-patch16` | The base model uses a ViT-B/16 Transformer architecture as an image encoder and uses a masked self-attention Transformer as a text encoder. |
-| ViT-B-16-laion2b_s34b_b88k | `cr.weaviate.io/semitechnologies/multi2vec-clip:ViT-B-16-laion2b_s34b_b88k` | The base model uses a ViT-B/16 Transformer architecture as an image encoder trained with LAION-2B dataset using OpenCLIP. |
-| ViT-B-32-quickgelu-laion400m_e32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:ViT-B-32-quickgelu-laion400m_e32` | The base model uses a ViT-B/32 Transformer architecture as an image encoder trained with LAION-400M dataset using OpenCLIP. |
-| xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k | `cr.weaviate.io/semitechnologies/multi2vec-clip:xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k` | Uses ViT-B/32 xlm roberta base model trained with the LAION-5B dataset using OpenCLIP. |
+| google/siglip2-so400m-patch16-512 |  `cr.weaviate.io/semitechnologies/multi2vec-clip:google-siglip2-so400m-patch16-512` | 512×512 入力サイズの SigLIP 2 モデル。`multi2vec-clip` `v1.4.0` で追加。（多言語、1152d） |
+| google/siglip2-so400m-patch16-384 |  `cr.weaviate.io/semitechnologies/multi2vec-clip:google-siglip2-so400m-patch16-384` | 384×384 入力サイズの SigLIP 2 モデル。`multi2vec-clip` `v1.4.0` で追加。（多言語、1152d） |
+| sentence-transformers-clip-ViT-B-32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32` | テキストは英語である必要があります。（英語、768d） |
+| sentence-transformers-clip-ViT-B-32-multilingual-v1 | `cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1` | テキストに多数の言語をサポート。詳細は sbert.net を参照。（多言語、768d） |
+| openai-clip-vit-base-patch16 | `cr.weaviate.io/semitechnologies/multi2vec-clip:openai-clip-vit-base-patch16` | 画像エンコーダとして ViT-B/16 Transformer、テキストエンコーダとしてマスクド Self-Attention Transformer を使用するベースモデル。 |
+| ViT-B-16-laion2b_s34b_b88k | `cr.weaviate.io/semitechnologies/multi2vec-clip:ViT-B-16-laion2b_s34b_b88k` | LAION-2B データセットで学習された ViT-B/16 Transformer 画像エンコーダを採用。OpenCLIP 使用。 |
+| ViT-B-32-quickgelu-laion400m_e32 | `cr.weaviate.io/semitechnologies/multi2vec-clip:ViT-B-32-quickgelu-laion400m_e32` | LAION-400M データセットで学習された ViT-B/32 Transformer 画像エンコーダを採用。OpenCLIP 使用。 |
+| xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k | `cr.weaviate.io/semitechnologies/multi2vec-clip:xlm-roberta-base-ViT-B-32-laion5b_s13b_b90k` | LAION-5B データセットで学習された ViT-B/32 xlm-roberta ベースモデルを採用。OpenCLIP 使用。 |
 
-We add new model support over time. For a complete list of available models, see the Docker Hub tags for the [multi2vec-clip](https://hub.docker.com/r/semitechnologies/multi2vec-clip/tags) container.
+新しいモデルは随時追加されます。最新のモデル一覧は、[multi2vec-clip](https://hub.docker.com/r/semitechnologies/multi2vec-clip/tags) コンテナの Docker Hub タグをご覧ください。
 
-## Advanced configuration
+## 高度な設定
 
-### Run a separate inference container
+### 推論コンテナを個別に実行する
 
-As an alternative, you can run the inference container independently from Weaviate. To do so, follow these steps:
+代替手段として、推論コンテナを Weaviate とは別に実行できます。以下の手順に従ってください。
 
-- Enable `multi2vec-clip` and omit `multi2vec-clip` container parameters in your [Weaviate configuration](#weaviate-configuration)
-- Run the inference container separately, e.g. using Docker, and
-- Use `CLIP_INFERENCE_API` or [`inferenceUrl`](#configure-the-vectorizer) to set the URL of the inference container.
+- `multi2vec-clip` を有効にし、[Weaviate の設定](#weaviate-configuration) では `multi2vec-clip` コンテナのパラメータを省略します  
+- 推論コンテナを（Docker などで）別途起動します  
+- `CLIP_INFERENCE_API` または [`inferenceUrl`](#configure-the-vectorizer) で推論コンテナの URL を指定します  
 
-For example, run the container with Docker:
+例として、Docker でコンテナを起動します。
 
 ```shell
 docker run -itp "8000:8080" semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1
 ```
 
-Then, set `CLIP_INFERENCE_API="http://localhost:8000"`. If Weaviate is part of the same Docker network, as a part of the same `docker-compose.yml` file, you can use the Docker networking/DNS, such as `CLIP_INFERENCE_API=http://multi2vec-clip:8080`.
+その後、`CLIP_INFERENCE_API="http://localhost:8000"` を設定します。Weaviate が同じ `docker-compose.yml` 内の同一 Docker ネットワークに属している場合は、`CLIP_INFERENCE_API=http://multi2vec-clip:8080` のように Docker のネットワーク/DNS 名を使用できます。
 
-## Further resources
+## さらに詳しく
 
-### Other integrations
+### 他のインテグレーション
 
-- [Transformers text embedding models + Weaviate](./embeddings.md).
-- [Transformers reranker models + Weaviate](./reranker.md).
+- [Transformers テキスト埋め込みモデル + Weaviate](./embeddings.md)
+- [Transformers reranker モデル + Weaviate](./reranker.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+インテグレーションをコレクションに設定すると、Weaviate のデータ管理および検索操作は他のコレクションと同様に機能します。モデル非依存の例を以下に示します。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) および [How-to: Manage objects](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその内部オブジェクトの作成・取得・更新・削除）方法を説明しています。  
+- [How-to: Query & Search](../../search/index.mdx) ガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索、検索拡張生成の実行方法を説明しています。  
 
-### Model licenses
+### モデルライセンス
 
-Each of the compatible models has its own license. For detailed information, review the license for the model you are using in the [Hugging Face Model Hub](https://huggingface.co/models).
+各対応モデルには独自のライセンスがあります。詳細は、使用するモデルの [Hugging Face Model Hub](https://huggingface.co/models) ページでライセンスを確認してください。
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+各ライセンスの条件がご自身の利用目的に適しているかどうかを判断する責任は、利用者にあります。
 
-### External resources
+### 外部リソース
 
 - Hugging Face [Model Hub](https://huggingface.co/models)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

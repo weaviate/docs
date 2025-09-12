@@ -1,11 +1,11 @@
 ---
-title: Text Embeddings
+title: テキスト埋め込み
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_gpt4all.jpg
 # tags: ['model providers', 'gpt4all', 'embeddings']
 ---
 
-# GPT4All Embeddings with Weaviate
+# Weaviate での GPT4All 埋め込み
 
 
 import Tabs from '@theme/Tabs';
@@ -16,56 +16,56 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with GPT4All's models allows you to access their models' capabilities directly from Weaviate.
+Weaviate と GPT4All のモデル統合により、Weaviate から直接それらのモデルの機能にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an GPT4All embedding model, and Weaviate will generate embeddings for various operations using the specified model via the GPT4All inference container. This feature is called the *vectorizer*.
+GPT4All の埋め込みモデルを使用するように [Weaviate ベクトル インデックス](#configure-the-vectorizer) を設定すると、Weaviate は GPT4All 推論コンテナを介して指定したモデルを用い、さまざまな操作のために埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、Weaviate はテキストオブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) 検索および [ハイブリッド](#hybrid-search) 検索では、テキストクエリを埋め込みに変換します。
 
 ![Embedding integration illustration](../_includes/integration_gpt4all_embedding.png)
 
-This module is optimized for CPU using the [`ggml` library](https://github.com/ggerganov/ggml), allowing for fast inference even without a GPU.
+このモジュールは `ggml` ライブラリを使用して CPU に最適化されており、GPU がなくても高速な推論が可能です。
 
-## Requirements
+## 要件
 
-Currently, the GPT4All integration is only available for `amd64/x86_64` architecture devices, as the `gpt4all` library currently does not support ARM devices, such as Apple M-series.
+現在、GPT4All 統合は `amd64/x86_64` アーキテクチャのデバイスでのみ利用可能です。`gpt4all` ライブラリは Apple M シリーズなどの ARM デバイスをまだサポートしていないためです。
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the GPT4All vectorizer integration (`text2vec-gpt4all`) module.
+ご利用の Weaviate インスタンスには、GPT4All ベクトライザー統合（`text2vec-gpt4all` モジュール）を有効にしておく必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) をご利用の場合</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running GPT4All instance.
+この統合はローカルで動作する GPT4All インスタンスを必要とするため、Weaviate Cloud (WCD) のサーバーレス インスタンスでは利用できません。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト環境の場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっているかどうかを確認するには、[クラスター メタデータ](/deploy/configuration/meta.md) をご覧ください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定方法](../../configuration/modules.md) ガイドを参照してください。
 
 </details>
 
-#### Configure the integration
+#### 統合の設定
 
-To use this integration, you must configure the container image of the GPT4All model, and the inference endpoint of the containerized model.
+この統合を使用するには、GPT4All モデルのコンテナーイメージと、そのコンテナー化されたモデルの推論エンドポイントを設定する必要があります。
 
-The following example shows how to configure the GPT4All integration in Weaviate:
+以下の例は、Weaviate で GPT4All 統合を設定する方法を示しています。
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
 
-#### Docker Option 1: Use a pre-configured `docker-compose.yml` file
+#### Docker オプション 1: 事前設定済みの `docker-compose.yml` を使用する
 
-Follow the instructions on the [Weaviate Docker installation configurator](/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+[Weaviate Docker インストール コンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator) の手順に従い、選択したモデルが設定された `docker-compose.yml` をダウンロードしてください。  
 <br/>
 
-#### Docker Option 2: Add the configuration manually
+#### Docker オプション 2: 手動で設定を追加する
 
-Alternatively, add the configuration to the `docker-compose.yml` file manually as in the example below.
+あるいは、以下の例のように `docker-compose.yml` に設定を手動で追加します。
 
 ```yaml
 services:
@@ -77,14 +77,14 @@ services:
     image: cr.weaviate.io/semitechnologies/gpt4all-inference:all-MiniLM-L6-v2
 ```
 
-- `GPT4ALL_INFERENCE_API` environment variable sets the inference API endpoint
-- `text2vec-gpt4all` is the name of the inference container
-- `image` is the container image
+- `GPT4ALL_INFERENCE_API` 環境変数で推論 API エンドポイントを指定します  
+- `text2vec-gpt4all` は推論コンテナーの名前です  
+- `image` はコンテナー イメージです  
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the GPT4All integration in Weaviate by adding or updating the `text2vec-gpt4all` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Weaviate の Helm チャートの `values.yaml` ファイルで、`modules` セクションに `text2vec-gpt4all` モジュールを追加または更新して GPT4All 統合を設定します。例として、`values.yaml` を以下のように変更します。
 
 ```yaml
 modules:
@@ -97,14 +97,14 @@ modules:
     registry: cr.weaviate.io
 ```
 
-See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) for an example of the `values.yaml` file including more configuration options.
+より多くの設定オプションを含む `values.yaml` の例は、[Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) を参照してください。
 
 </TabItem>
 </Tabs>
 
-### Credentials
+### 認証情報
 
-As this integration connects to a local GPT4All container, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+この統合はローカルの GPT4All コンテナーに接続するため、追加の認証情報（API キーなど）は不要です。以下の例のように通常どおり Weaviate に接続してください。
 
 <Tabs groupId="languages">
 
@@ -128,9 +128,9 @@ As this integration connects to a local GPT4All container, no additional credent
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a GPT4All embedding model:
+GPT4All 埋め込みモデルを使用するように [Weaviate インデックス](../../manage-collections/vector-config.mdx#specify-a-vectorizer) を設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -153,20 +153,22 @@ As this integration connects to a local GPT4All container, no additional credent
 
 </Tabs>
 
-Currently, the only available model is [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+現在利用できるモデルは [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) のみです。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-## Data import
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+
+## データインポート
+
+ベクトライザーを設定した後、[データをインポート](../../manage-objects/import.mdx)して Weaviate に取り込みます。Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -190,21 +192,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+既に互換性のあるモデルベクトルをお持ちの場合は、それを直接 Weaviate に提供できます。これは同じモデルで埋め込みを生成済みで、他システムからデータ移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified GPT4All model.
+ベクトライザーが設定されると、Weaviate は指定した GPT4All モデルを用いてベクトル検索およびハイブリッド検索を実行します。
 
 ![Embedding integration at search illustration](../_includes/integration_gpt4all_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定された `n` 件の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -228,15 +230,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を実行した後、それらを[組み合わせて結果を統合](../../search/hybrid.md)し、データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最適なスコアのオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定された `n` 件の最も高スコアのオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -260,7 +262,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参考
 
 <!-- #### Example configuration -->
 
@@ -287,25 +289,28 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs> -->
 
-### Available models
 
-Currently, the only available model is [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
 
-## Further resources
+### 利用可能なモデル
 
-### Code examples
+現在、利用可能なモデルは [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) だけです。
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+## 追加リソース
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+### コード例
 
-### External resources
+コレクションでインテグレーションを設定すると、 Weaviate のデータ管理と検索操作は他のコレクションとまったく同じになります。以下のモデル非依存の例をご覧ください。
 
-- [GPT4All documentation](https://docs.gpt4all.io/)
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) のガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）の方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) のガイドでは、ベクトル、キーワード、ハイブリッド検索、および検索拡張生成の実行方法を説明しています。
 
-## Questions and feedback
+### 外部リソース
+
+- [GPT4All ドキュメント](https://docs.gpt4all.io/)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -1,5 +1,5 @@
 ---
-title: KubeAI + Weaviate
+title: KubeAI と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_kubeai.jpg
 # tags: ['model providers', 'openai']
@@ -7,49 +7,51 @@ image: og/docs/integrations/provider_integrations_kubeai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-[KubeAI](https://github.com/substratusai/kubeai) provides offers a wide range of models for natural language processing and generation through OpenAI-style API endpoints. Weaviate seamlessly integrates with KubeAI's APIs, allowing users to leverage any KubeAI models directly from the Weaviate Database.
+[KubeAI](https://github.com/substratusai/kubeai) は、OpenAI 形式の API エンドポイントを通じて自然言語処理および生成のための幅広いモデルを提供します。Weaviate は KubeAI の API とシームレスに統合され、ユーザーは KubeAI の任意のモデルを Weaviate Database から直接利用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI ドリブンアプリケーションを容易に構築できます。
 
-## Integrations with KubeAI
+## KubeAI との統合
 
-### Embedding models for vector search
+### ベクトル検索のための埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_kubeai_embedding.png)
+![埋め込み統合の図解](../_includes/integration_kubeai_embedding.png)
 
-KubeAI's embedding models transform text data into vector embeddings, capturing meaning and context.
+KubeAI の埋め込みモデルはテキストデータをベクトル埋め込みへと変換し、意味と文脈を捉えます。
 
-[Weaviate integrates with KubeAI's embedding endpoint](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は KubeAI の埋め込みエンドポイントと統合](./embeddings.md)しており、データのシームレスなベクトル化を実現します。この統合により、追加の前処理やデータ変換ステップを必要とせずにセマンティック検索やハイブリッド検索を実行できます。
 
-[KubeAI embedding integration page](./embeddings.md)
+[KubeAI 埋め込み統合ページ](./embeddings.md)
 
-### Generative AI models for RAG
+### RAG 用の生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_kubeai_rag_single.png)
+![単一プロンプト RAG の統合は検索結果ごとに個別の出力を生成します](../_includes/integration_kubeai_rag_single.png)
 
-KubeAI's generative AI models can generate human-like text based on given prompts and contexts.
+KubeAI の生成 AI モデルは、与えられたプロンプトとコンテキストに基づいて人間らしいテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with KubeAI's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md)を使用すると、Weaviate Database から直接 検索拡張生成 (RAG) を実行できます。これにより、Weaviate の効率的なストレージと高速検索能力に KubeAI の生成 AI モデルを組み合わせ、パーソナライズされた文脈に応じた応答を生成します。
 
-[KubeAI generative AI integration page](./generative.md)
+[KubeAI 生成 AI 統合ページ](./generative.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage KubeAI's powerful models directly within Weaviate.
+これらの統合により、開発者は KubeAI の強力なモデルを Weaviate 内で直接活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI ドリブンアプリケーションの構築プロセスが簡素化され、開発スピードが向上し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## 開始方法
 
-Deploy KubeAI in a Kubernetes cluster with an embedding and generative model. For more specific instructions, see this [KubeAI deployment guide](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration).
+Kubernetes クラスターに KubeAI をデプロイし、埋め込みモデルおよび生成モデルを用意します。詳細は、[KubeAI デプロイガイド](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration)をご覧ください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the KubeAI models and start using them in your applications.
+その後、該当する統合ページに移動し、KubeAI モデルで Weaviate を設定してアプリケーションで利用を開始してください。
 
-- [Text Embeddings](./embeddings.md)
-- [Generative AI](./generative.md)
+- [テキスト埋め込み](./embeddings.md)
+- [生成 AI](./generative.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

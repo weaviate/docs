@@ -1,6 +1,6 @@
 ---
-title: Text Embeddings
-description: "Weaviate's integration with Voyage AI's APIs allows you to access their models' capabilities directly from Weaviate."
+title: テキスト埋め込み
+description: "Weaviate と Voyage AI の API 統合により、Weaviate から直接モデルの機能にアクセスできます。"
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_voyageai.jpg
 # tags: ['model providers', 'voyageai', 'embeddings']
@@ -17,45 +17,45 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-# Voyage AI Embeddings with Weaviate
+# Weaviate における Voyage AI 埋め込み
 
-Weaviate's integration with Voyage AI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Voyage AI の API 統合により、Weaviate から直接それらのモデルの機能にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an Voyage AI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Voyage AI API key. This feature is called the *vectorizer*.
+[Weaviate のベクトル インデックスを設定](#configure-the-vectorizer)して Voyage AI の埋め込みモデルを使用すると、指定したモデルとお持ちの Voyage AI API キーを使って、さまざまな操作向けに埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import)に、Weaviate はテキストオブジェクトの埋め込みを生成してインデックスに保存します。[ベクトル](#vector-near-text-search)および[ハイブリッド](#hybrid-search)検索操作では、Weaviate がテキストクエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_voyageai_embedding.png)
+![埋め込み統合のイメージ](../_includes/integration_voyageai_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の構成
 
-Your Weaviate instance must be configured with the Voyage AI vectorizer integration (`text2vec-voyageai`) module.
+ご利用の Weaviate インスタンスには、Voyage AI ベクトライザー統合（`text2vec-voyageai`）モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスター メタデータ](/deploy/configuration/meta.md)を確認し、モジュールが有効になっているか確認してください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定ガイド](../../configuration/modules.md)をご覧ください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid Voyage AI API key to Weaviate for this integration. Go to [Voyage AI](https://www.voyageai.com/) to sign up and obtain an API key.
+この統合を利用するには、有効な Voyage AI API キーを Weaviate に提供する必要があります。API キーは [Voyage AI](https://www.voyageai.com/) でサインアップして取得できます。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡してください。
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate がアクセス可能な環境変数 `VOYAGEAI_APIKEY` を設定する  
+- 以下の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -88,9 +88,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Voyage AI embedding model:
+Voyage AI 埋め込みモデルを使用するよう、[Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer)します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -122,9 +122,11 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+
+### モデルの選択
+
+以下の設定例に示すように、ベクトライザーで使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -156,20 +158,20 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models) のいずれかを [指定](#vectorizer-parameters) して  Weaviate で使用できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザーのパラメーター
 
-The following examples show how to configure Voyage AI-specific options.
+以下の例は、 Voyage AI 固有のオプションを設定する方法を示しています。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -201,22 +203,22 @@ The following examples show how to configure Voyage AI-specific options.
 
 </Tabs>
 
-For further details on model parameters, see the [Voyage AI Embedding API documentation](https://docs.voyageai.com/docs/embeddings).
+モデルパラメーターの詳細については、[Voyage AI Embedding API ドキュメント](https://docs.voyageai.com/docs/embeddings) を参照してください。
 
-## Header parameters
+## ヘッダーパラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+実行時にリクエストの追加ヘッダーを通じて、 API キーおよびいくつかのオプションパラメーターを渡すことができます。利用可能なヘッダーは次のとおりです。
 
-- `X-VoyageAI-Api-Key`: The Voyage AI API key.
-- `X-VoyageAI-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Voyage AI URL.
+- `X-VoyageAI-Api-Key`: Voyage AI の API キー。
+- `X-VoyageAI-Baseurl`: デフォルトの Voyage AI URL の代わりに使用するベース URL（例: プロキシ）。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定された追加ヘッダーは、既存の  Weaviate  の設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+上記の [API 資格情報の例](#api-credentials) に示すようにヘッダーを指定してください。
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx) して  Weaviate に取り込みます。 Weaviate は、指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -249,21 +251,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデルのベクトルが既にある場合は、それを直接  Weaviate  に提供できます。同じモデルで既に埋め込みを生成しており、他のシステムからの移行などでそれらを Weaviate で使用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Voyage AI model.
+ベクトライザーを設定すると、Weaviate は指定した Voyage AI モデルを用いて ベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_voyageai_embedding_search.png)
+![検索時の埋め込み統合の図](../_includes/integration_voyageai_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した件数 `n` の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -296,15 +298,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を実行し、その後 [結果を結合](../../search/hybrid.md) してデータベースから最も一致するオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で指定した件数 `n` の最もスコアの高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -337,9 +339,9 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
 - voyage-3.5
 - voyage-3.5-lite
@@ -356,42 +358,43 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 <details>
   <summary>
-    Model support history
+    モデルサポート履歴
   </summary>
 
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
-    - Added `voyage-3`, `voyage-3-lite`
-    - Default model changed to `voyage-3` from `voyage-large-2`
+    - `voyage-3`, `voyage-3-lite` を追加
+    - デフォルトモデルが `voyage-large-2` から `voyage-3` に変更
 - `v1.24.14`, `v1.25.1`:
-    - Added `voyage-large-2-instruct`
-    - Removed `voyage-lite-02-instruct`
+    - `voyage-large-2-instruct` を追加
+    - `voyage-lite-02-instruct` を削除
 - `v1.24.9`:
-    - Added `voyage-law-2`, `voyage-lite-02-instruct`
+    - `voyage-law-2`, `voyage-lite-02-instruct` を追加
 - `v1.24.2`:
-    - Introduced `text2vec-voyage`, with `voyage-large-2`, `voyage-code-2`, `voyage-2` support
+    - `text2vec-voyage` を導入し、`voyage-large-2`, `voyage-code-2`, `voyage-2` をサポート
 
 </details>
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他のインテグレーション
 
-- [Voyage AI multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
-- [Voyage AI reranker models + Weaviate](./embeddings.md).
+- [Voyage AI マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md)
+- [Voyage AI リランカー モデル + Weaviate](./embeddings.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、Weaviate におけるデータ管理および検索操作は他のコレクションとまったく同じように動作します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) と [How-to: Manage objects](../../manage-objects/index.mdx) の各ガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）を実行する方法を解説しています。
+- [How-to: Query & Search](../../search/index.mdx) ガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索に加えて、検索拡張生成を実行する方法を説明しています。
 
-### External resources
+### 外部リソース
 
 - Voyage AI [Embeddings API documentation](https://docs.voyageai.com/docs/embeddings)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

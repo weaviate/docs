@@ -1,17 +1,17 @@
 ---
-title: Authentication and authorization
+title: 認証と認可
 sidebar_position: 30
 image: og/docs/configuration.jpg
 # tags: ['authentication']
 ---
 
-:::info Authentication and authorization
-Authentication and authorization are closely related concepts, and sometimes abbreviated as `AuthN` and `AuthZ`. Authentication (`AuthN`) is the process of verifying the identity of a user, while authorization (`AuthZ`) is the process of determining what permissions the user has.
+:::info 認証と認可
+認証と認可は密接に関連する概念で、`AuthN` と `AuthZ` と略されることがあります。認証 (`AuthN`) はユーザーの身元を検証するプロセスであり、認可 (`AuthZ`) はユーザーがどの権限を持つかを決定するプロセスです。
 :::
 
-## Authentication
+## 認証
 
-Weaviate controls access through user authentication via API keys or OpenID Connect (OIDC), with an option for anonymous access. Users can then be assigned different [authorization](/deploy/configuration/authorization.md) levels, as shown in the diagram below.
+Weaviate は API キーまたは OpenID Connect (OIDC) によるユーザー認証を通じてアクセスを制御します。また、匿名アクセスを許可するオプションもあります。認証後、ユーザーには下図のように異なる [認可](/deploy/configuration/authorization.md) レベルを割り当てられます。
 
 ```mermaid
 flowchart LR
@@ -56,86 +56,87 @@ flowchart LR
     style auth fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-For example, a user logging in with the API key `jane-secret` may be granted administrator permissions, while another user logging in with the API key `ian-secret` may be granted read-only permissions.
+たとえば、API キー `jane-secret` でログインしたユーザーには管理者権限が付与され、API キー `ian-secret` でログインした別のユーザーには読み取り専用権限が付与される、といった運用が可能です。
 
-In summary, Weaviate allows the following authentication methods:
+まとめると、Weaviate では次の認証方法が利用できます。
 
-- [API key](/deploy/configuration/authentication.md#api-key-authentication)
+- [API キー](/deploy/configuration/authentication.md#api-key-authentication)
 - [OpenID Connect (OIDC)](/deploy/configuration/authentication.md#oidc-authentication)
-- [Anonymous access](/deploy/configuration/authentication.md#anonymous-access) (no authentication, strongly discouraged except for development or evaluation)
+- [匿名アクセス](/deploy/configuration/authentication.md#anonymous-access)（認証なし。開発・評価以外では非推奨）
 
-Note that API key and OIDC authentication can be both enabled at the same time.
+API キー認証と OIDC 認証は同時に有効化できます。
 
-The way to configure authentication differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
+認証の設定方法は、Docker で実行するか Kubernetes で実行するかによって異なります。以下に両方の例を示します。
 
-:::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](../connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/cloud/manage-clusters/connect.mdx).
+:::info Weaviate Cloud (WCD) では？
+Weaviate Cloud (WCD) インスタンスでは、OIDC と API キーアクセスによる認証があらかじめ構成されています。OIDC を用いて WCD の資格情報で [Weaviate に認証](../connections/connect-cloud.mdx) するか、[API キー](/cloud/manage-clusters/connect.mdx) を使用できます。
 :::
 
-### API key
+### API キー
 
-For more details on how to work with API keys in Weaviate, check out the [authentication guide](/deploy/configuration/authentication.md#api-key-authentication).
+Weaviate での API キーの利用方法については、[認証ガイド](/deploy/configuration/authentication.md#api-key-authentication)をご覧ください。
 
-We recommend using a client library to authenticate against Weaviate. See [How-to: Connect](docs/weaviate/connections/index.mdx) pages for more information. 
+Weaviate への認証にはクライアントライブラリの使用を推奨します。詳細は [How-to: Connect](docs/weaviate/connections/index.mdx) を参照してください。 
 
 ### OIDC
 
-For more details on how to work with OIDC authentication in Weaviate, check out the [authentication guide](/deploy/configuration/authentication.md#oidc-authentication).
+Weaviate での OIDC 認証の利用方法については、[認証ガイド](/deploy/configuration/authentication.md#oidc-authentication)をご覧ください。
 
-The OIDC standard allows for many different methods _(flows)_ of obtaining tokens. The appropriate method can vary depending on your situation, including configurations at the token issuer, and your requirements.
+OIDC ではトークンを取得するためのさまざまな手法 _(フロー)_ が定義されています。適切な手法はトークン発行者の設定や要件により異なります。
 
-OIDC authentication flows are outside the scope of this documentation, but here are some options to consider:
+OIDC 認証フロー自体の詳細は本ドキュメントの範囲外ですが、検討すべき主なオプションを以下に示します。
 
-1. Use the `client credentials flow` for machine-to-machine authorization. (Note that this authorizes an app, not a user.)
-   - Validated using Okta and Azure as identity providers; GCP does not support client credentials grant flow (as of December 2022).
-   - Weaviate's Python client directly supports this method.
-   - Client credential flows usually do not come with a refresh token and the credentials are saved in the respective clients to acquire a new access token on expiration of the old one.
-1. Use the `resource owner password flow` for trusted applications like [Weaviate Cloud](/cloud/manage-clusters/connect).
-1. Use `hybrid flow` if Azure is your token issuer or if you would like to prevent exposing passwords.
+1. `client credentials flow` を使用してマシン間認可を行う（これはユーザーではなくアプリを認可します）。  
+   - Okta と Azure をアイデンティティプロバイダーとして検証済み。GCP は 2022 年 12 月時点で client credentials grant flow をサポートしていません。  
+   - Weaviate の Python クライアントはこの方式を直接サポートします。  
+   - client credentials flow には通常リフレッシュトークンが付随せず、クライアントに資格情報を保存してトークン失効時に新しいアクセストークンを取得します。
+2. `resource owner password flow` を使用して、[Weaviate Cloud](/cloud/manage-clusters/connect) のような信頼済みアプリケーションに適用する。
+3. トークン発行者が Azure である場合やパスワードの露出を避けたい場合には `hybrid flow` を使用する。
 
-### Support for Weaviate clients
+### Weaviate クライアントのサポート
 
-If Weaviate Database is configured to use the `client credentials grant` flow or the `resource owner password flow`, a Weaviate client can instantiate a connection to Weaviate Database that incorporates the authentication flow.
+Weaviate Database が `client credentials grant` フローまたは `resource owner password flow` を使用するよう構成されている場合、Weaviate クライアントは認証フローを組み込んだ接続を生成できます。
 
 import OIDCExamples from '/\_includes/code/connections/oidc-connect.mdx';
 
 <OIDCExamples/>
 
-### Get and pass tokens manually
+### トークンを手動で取得・送信する
 
 <details>
   <summary>
-    Manually obtaining and passing tokens
+    トークンを手動で取得して送信する
   </summary>
 
-For cases or workflows where you may wish to manually obtain a token, we outline below the steps to do so, for the resource owner password flow and hybrid flow.
+ワークフローによってはトークンを手動で取得したい場合があります。以下に resource owner password flow と hybrid flow での手順を示します。
 
 #### Resource owner password flow
 
-1. Send a GET request to `WEAVIATE_INSTANCE_URL/v1/.well-known/openid-configuration` to fetch Weaviate's OIDC configuration (`wv_oidc_config`). Replace WEAVIATE_INSTANCE_URL with your instance URL.
-1. Parse the `clientId` and `href` from `wv_oidc_config`.
-1. Send a GET request to `href` to fetch the token issuer's OIDC configuration (`token_oidc_config`).
-1. If `token_oidc_config` includes the optional `grant_types_supported` key, check that `password` is in the list of values.
-   - If `password` is not in the list of values, the token issuer is likely not configured for `resource owner password flow`. You may need to reconfigure the token issuer or use another method.
-   - If the `grant_types_supported` key is not available, you may need to contact the token issuer to see if `resource owner password flow` is supported.
-1. Send a POST request to the `token_endpoint` of `token_oidc_config` with the body:
-   - `{"grant_type": "password", "client_id": client_id, "username": USERNAME, "password": PASSWORD`. Replace `USERNAME` and `PASSWORD` with the actual values.
-1. Parse the response (`token_resp`), and look for `access_token` in `token_resp`. This is your Bearer token.
+1. `WEAVIATE_INSTANCE_URL/v1/.well-known/openid-configuration` に GET リクエストを送り、Weaviate の OIDC 設定 (`wv_oidc_config`) を取得します。`WEAVIATE_INSTANCE_URL` は実際のインスタンス URL に置き換えてください。
+2. `wv_oidc_config` から `clientId` と `href` を取得します。
+3. `href` に GET リクエストを送り、トークン発行者の OIDC 設定 (`token_oidc_config`) を取得します。
+4. `token_oidc_config` にオプションの `grant_types_supported` キーが含まれる場合、値のリストに `password` があることを確認します。  
+   - `password` が無い場合、トークン発行者が `resource owner password flow` に対応していない可能性があります。トークン発行者を再設定するか別の方法を利用してください。  
+   - `grant_types_supported` キーが無い場合、トークン発行者に `resource owner password flow` がサポートされているか問い合わせてください。
+5. `token_oidc_config` の `token_endpoint` に対し、以下の内容で POST リクエストを送信します。  
+   - `{"grant_type": "password", "client_id": client_id, "username": USERNAME, "password": PASSWORD}`  
+     `USERNAME` と `PASSWORD` は実際の値に置き換えてください。
+6. レスポンス (`token_resp`) を解析し、`access_token` を取得します。これが Bearer トークンです。
 
 #### Hybrid flow
 
-1. Send a GET request to `WEAVIATE_INSTANCE_URL/v1/.well-known/openid-configuration` to fetch Weaviate's OIDC configuration (`wv_oidc_config`). Replace WEAVIATE_INSTANCE_URL with your instance URL.
-2. Parse the `clientId` and `href` from `wv_oidc_config`
-3. Send a GET request to `href` to fetch the token issuer's OIDC configuration (`token_oidc_config`)
-4. Construct a URL (`auth_url`) with the following parameters, based on `authorization_endpoint` from `token_oidc_config`. This will look like the following:
-   - `{authorization_endpoint}`?client_id=`{clientId}`&response_type=code%20id_token&response_mode=fragment&redirect_url=`{redirect_url}`&scope=openid&nonce=abcd
-   - the `redirect_url` must have been [pre-registered](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest) with your token issuer.
-5. Go to the `auth_url` in your browser, and log in if prompted. If successful, the token issuer will redirect the browser to the `redirect_url`, with additional parameters that include an `id_token` parameter.
-6. Parse the `id_token` parameter value. This is your Bearer token.
+1. `WEAVIATE_INSTANCE_URL/v1/.well-known/openid-configuration` に GET リクエストを送り、Weaviate の OIDC 設定 (`wv_oidc_config`) を取得します。`WEAVIATE_INSTANCE_URL` は実際のインスタンス URL に置き換えてください。
+2. `wv_oidc_config` から `clientId` と `href` を取得します。
+3. `href` に GET リクエストを送り、トークン発行者の OIDC 設定 (`token_oidc_config`) を取得します。
+4. `authorization_endpoint` を基に以下のパラメータで URL (`auth_url`) を構築します。  
+   - `{authorization_endpoint}`?client_id=`{clientId}`&response_type=code%20id_token&response_mode=fragment&redirect_url=`{redirect_url}`&scope=openid&nonce=abcd  
+   - `redirect_url` はトークン発行者に[事前登録](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)されている必要があります。
+5. ブラウザで `auth_url` にアクセスし、必要に応じてログインします。成功するとトークン発行者はブラウザを `redirect_url` にリダイレクトし、`id_token` などのパラメータを付与します。
+6. `id_token` の値を取得します。これが Bearer トークンです。
 
-#### Code example
+#### コード例
 
-This example demonstrate how to obtain an OIDC token.
+以下は OIDC トークンを取得する例です。
 
 ```python
 import requests
@@ -200,29 +201,29 @@ else:
 print("Set as bearer token in the clients to access Weaviate.")
 ```
 
-#### Token lifetime
+#### トークンの有効期間
 
-The token has a configurable expiry time that is set by the token issuer. We suggest establishing a workflow to periodically obtain a new token before expiry.
+トークンの有効期限はトークン発行者によって設定可能です。有効期限前に新しいトークンを取得するワークフローを確立することを推奨します。
 
 </details>
 
-### Add a Bearer to a Request
+### リクエストに Bearer を追加する
 
 import APIKeyUsage from '/\_includes/clients/api-token-usage.mdx';
 
 <APIKeyUsage />
 
-For example, the cURL command looks like this:
+たとえば cURL コマンドは次のようになります。
 
 ```bash
 curl https://localhost:8080/v1/objects -H "Authorization: Bearer ${WEAVIATE_API_KEY}" | jq
 ```
 
-## Authorization
+## 認可
 
-Weaviate provides differentiated access through authorization levels, based on the user's [authentication](#authentication) status. A user can be granted admin permission, read-only permission, or no permission at all. From `v1.29.0`, Weaviate also supports [Role-Based Access Control (RBAC)](./rbac/index.mdx) for more fine-grained control over user permissions.
+Weaviate はユーザーの [認証](#認証) 状態に基づいて、権限レベルを分けたアクセス制御を提供します。ユーザーには管理者権限、読み取り専用権限、あるいは権限なしのいずれかを付与できます。`v1.29.0` からは、ユーザー権限をより細かく制御できる [ロールベースアクセス制御 (RBAC)](./rbac/index.mdx) もサポートされました。
 
-The following diagram illustrates the flow of a user request through the authentication and authorization process:
+次の図は、ユーザーリクエストが認証・認可のプロセスを経る流れを示しています。
 
 ```mermaid
 flowchart TB
@@ -277,24 +278,27 @@ flowchart TB
     style undiffer fill:#fff0e6,stroke:#ff9933
 ```
 
-The following authorization schemes are available in Weaviate:
+Weaviate で利用できる認可方式は以下のとおりです。
 
-- [Role-Based Access Control (RBAC)](../../deploy/configuration/authorization.md#role-based-access-control-rbac)
-- [Admin list](../../deploy/configuration/authorization.md#admin-list)
-- [Undifferentiated access](../../deploy/configuration/authorization.md#undifferentiated-access)
+- [ロールベースアクセス制御 (RBAC)](../../deploy/configuration/authorization.md#role-based-access-control-rbac)
+- [管理者リスト](../../deploy/configuration/authorization.md#admin-list)
+- [区別なしアクセス](../../deploy/configuration/authorization.md#undifferentiated-access)
 
-In the Admin list authorization scheme, [anonymous users](../../deploy/configuration/authorization.md#anonymous-users) can be granted permissions.
+Admin リスト方式では、[匿名ユーザー](../../deploy/configuration/authorization.md#anonymous-users) に権限を付与することも可能です。
 
-The way to configure authorization differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
+認可の設定方法は、Docker で実行するか Kubernetes で実行するかによって異なります。以下に両方の例を示します。
 
-## Further resources
 
-- [Configuration: Authentication](/deploy/configuration/authentication.md)
-- [Configuration: Authorization](/deploy/configuration/authorization.md)
-- [Configuration: Environment variables - Authentication and Authorization](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
 
-## Questions and feedback
+## 追加リソース
+
+- [構成: 認証](/deploy/configuration/authentication.md)
+- [構成: 認可](/deploy/configuration/authorization.md)
+- [構成: 環境変数 - 認証と認可](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

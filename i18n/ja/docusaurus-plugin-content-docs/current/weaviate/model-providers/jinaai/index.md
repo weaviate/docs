@@ -1,5 +1,5 @@
 ---
-title: Jina AI + Weaviate
+title: Jina AI と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_jinaai.jpg
 # tags: ['model providers', 'jinaai']
@@ -7,43 +7,44 @@ image: og/docs/integrations/provider_integrations_jinaai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Jina AI offers a wide range of models for natural language processing. Weaviate seamlessly integrates with Jina AI's APIs, allowing users to leverage Jina AI's models directly from the Weaviate Database.
+Jina AI は自然言語処理のための幅広いモデルを提供しています。 Weaviate は Jina AI の API とシームレスに統合され、ユーザーは Weaviate Database から直接 Jina AI のモデルを活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 主導のアプリケーションを簡単に構築できます。
 
-## Integrations with Jina AI
+## Jina AI との統合
 
-### Embedding models for vector search
+### ベクトル検索向け埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_jinaai_embedding.png)
+![埋め込み統合の図](../_includes/integration_jinaai_embedding.png)
 
-Jina AI's embedding models transform text data into vector embeddings, capturing meaning and context.
+Jina AI の埋め込みモデルはテキスト データをベクトル埋め込みに変換し、意味とコンテキストを捉えます。
 
-[Weaviate integrates with Jina AI's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Jina AI の埋め込みモデルと統合](./embeddings.md) し、データのシームレスなベクトル化を可能にします。これにより、追加の前処理やデータ変換ステップなしで意味検索やハイブリッド検索を実行できます。
 
-[Jina AI embedding integration page](./embeddings.md)
-[Jina AI ColBERT embedding integration page](./embeddings-colbert.md)
-[Jina AI multimodal embedding integration page](./embeddings-multimodal.md)
+[Jina AI 埋め込み統合ページ](./embeddings.md)  
+[Jina AI ColBERT 埋め込み統合ページ](./embeddings-colbert.md)  
+[Jina AI マルチモーダル埋め込み統合ページ](./embeddings-multimodal.md)
 
-## Summary
+## 概要
 
-These integrations enable developers to leverage Jina AI's powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内で直接 Jina AI の強力なモデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI 主導のアプリケーション開発が簡素化され、開発プロセスが加速するため、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Jina AI API key to Weaviate for these integrations. Go to [Jina AI](https://jina.ai/embeddings/) to sign up and obtain an API key.
+これらの統合を利用するには、Weaviate に有効な Jina AI API キーを設定する必要があります。 [Jina AI](https://jina.ai/embeddings/) にアクセスしてサインアップし、API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Jina AI models and start using them in your applications.
+次に、該当する統合ページで Jina AI モデルを用いた Weaviate の設定方法を確認し、アプリケーションで利用を開始してください。
 
-- [Text Embeddings](./embeddings.md)
-- [ColBERT embeddings](./embeddings-colbert.md)
-- [Multimodal embeddings](./embeddings-multimodal.md)
-- [Rerankers](./reranker.md)
+- [テキスト埋め込み](./embeddings.md)
+- [ColBERT 埋め込み](./embeddings-colbert.md)
+- [マルチモーダル埋め込み](./embeddings-multimodal.md)
+- [リランカー](./reranker.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

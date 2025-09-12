@@ -1,15 +1,15 @@
 ---
-title: Generative AI
-description: OpenAI Generative Model Provider
+title: 生成 AI
+description: OpenAI 生成モデルプロバイダー
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_openai.jpg
 # tags: ['model providers', 'openai', 'generative', 'rag']
 ---
 
-# OpenAI Generative AI with Weaviate
+# Weaviate と OpenAI 生成 AI
 
-:::info Looking for Azure OpenAI integration docs?
-For Azure OpenAI integration docs, see [this page instead](../openai-azure/generative.md).
+:::info Azure OpenAI の統合ドキュメントをお探しですか？
+Azure OpenAI の統合ドキュメントについては[こちらのページ](../openai-azure/generative.md)をご覧ください。
 :::
 
 import Tabs from '@theme/Tabs';
@@ -20,45 +20,45 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with OpenAI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate が OpenAI の API と統合されているため、Weaviate から直接これらのモデルの機能にアクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with OpenAI. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your OpenAI API key.
+OpenAI の生成 AI モデルを使用するには、[Weaviate コレクションを設定](#configure-collection)してください。Weaviate は指定したモデルとお客様の OpenAI API キーを用いて検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the OpenAI generative model to generate outputs.
+具体的には、Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得した後、それらを OpenAI の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_openai_rag.png)
+![検索拡張生成 (RAG) 統合のイメージ](../_includes/integration_openai_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the OpenAI generative AI integration (`generative-openai`) module.
+お使いの Weaviate インスタンスは、OpenAI 生成 AI 統合 (`generative-openai`) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かを確認するには、[クラスタメタデータ](/deploy/configuration/meta.md)をチェックしてください。  
+- モジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md)ガイドに従ってください。
 
 </details>
 
 <!-- Docs note: the `OPENAI_ORGANIZATION` environment variable is not documented, as it is not the recommended way to provide the OpenAI organization parameter. -->
 
-### API credentials
+### API 資格情報
 
-You must provide a valid OpenAI API key to Weaviate for this integration. Go to [OpenAI](https://openai.com/) to sign up and obtain an API key.
+この統合を利用するには、有効な OpenAI API キーを Weaviate に提供する必要があります。[OpenAI](https://openai.com/) でサインアップし、API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+次のいずれかの方法で API キーを Weaviate に渡します。
 
-- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate が参照できる `OPENAI_APIKEY` 環境変数を設定する  
+- 以下の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -82,13 +82,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an OpenAI generative AI model:
+OpenAI 生成 AI モデルを使用するには、次のように[Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -111,9 +111,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+以下の設定例のように、Weaviate で使用する[利用可能なモデル](#available-models)のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -136,11 +136,11 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models)のいずれかを[指定](#generative-parameters)することができます。モデルを指定しない場合は[デフォルトモデル](#available-models)が使用されます。
 
-### Generative parameters
+### 生成パラメーター
 
-Configure the following generative parameters to customize the model behavior.
+モデルの挙動をカスタマイズするために、以下の生成パラメーターを設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -163,11 +163,11 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/chat).
+モデルパラメーターの詳細については、[OpenAI API ドキュメント](https://platform.openai.com/docs/api-reference/chat) をご覧ください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定する以外に、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -188,31 +188,31 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Header parameters
+## ヘッダーパラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+リクエストの追加ヘッダーを介して、実行時に API キーおよびいくつかのオプションパラメーターを渡すことができます。利用可能なヘッダーは次のとおりです。
 
-- `X-OpenAI-Api-Key`: The OpenAI API key.
-- `X-OpenAI-Baseurl`: The base URL to use (e.g. a proxy) instead of the default OpenAI URL.
-- `X-OpenAI-Organization`: The OpenAI organization ID.
+- `X-OpenAI-Api-Key`: OpenAI の API キー。
+- `X-OpenAI-Baseurl`: デフォルトの OpenAI URL の代わりに使用するベース URL (たとえばプロキシ)。
+- `X-OpenAI-Organization`: OpenAI の組織 ID。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定された追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+上記の [API 資格情報の例](#api-credentials) に示すようにヘッダーを渡してください。
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 統合を設定した後、[シングル プロンプト](#single-prompt) または [グループ タスク](#grouped-task) の方法で RAG 操作を実行します。
 
-### Single prompt
+### シングル プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_openai_rag_single.png)
+![シングル プロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_openai_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果に含まれる各オブジェクトに対してテキストを生成する場合は、シングル プロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれについて出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングル プロンプト クエリを作成する際は、波かっこ `{}` を使用して、Weaviate から言語モデルへ渡したいオブジェクトプロパティを差し込みます。たとえばオブジェクトの `title` プロパティを渡したい場合、クエリ内に `{title}` を含めてください。
 
 <Tabs groupId="languages">
 
@@ -236,13 +236,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_openai_rag_grouped.png)
+![グループ タスク RAG 統合は検索結果の集合に対して 1 つの出力を生成します](../_includes/integration_openai_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 つのテキストを生成する場合は、グループ タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えれば、`n` 件の検索結果がある場合でも、生成モデルはそのグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -266,9 +266,10 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-### RAG with images
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+### 画像を用いた RAG
+
+単一プロンプトでもグループタスクでも、検索拡張生成を行う際に入力の一部として画像を渡すことができます。 
 
 <Tabs groupId="languages">
 
@@ -290,48 +291,49 @@ You can also supply images as a part of the input when performing retrieval augm
   </TabItem>
 </Tabs>
 
-## References
+## 参考
 
-### Available models
+### 利用可能なモデル
 
-* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (default)
+* [gpt-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) (デフォルト)
 * [gpt-3.5-turbo-16k](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-3.5-turbo-1106](https://platform.openai.com/docs/models/gpt-3-5)
 * [gpt-4](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4-1106-preview](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4-32k](https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo)
 * [gpt-4o](https://platform.openai.com/docs/models#gpt-4o)
-* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini) (Added in v1.26.7)
+* [gpt-4o-mini](https://platform.openai.com/docs/models#gpt-4o-mini) (v1.26.7 で追加)
 
 <details>
-  <summary>Older models</summary>
+  <summary>旧モデル</summary>
 
-The following models are available, but not recommended:
+以下のモデルも利用可能ですが、推奨されません。
 
 * [davinci 002](https://platform.openai.com/docs/models/overview)
 * [davinci 003](https://platform.openai.com/docs/models/overview)
 
 </details>
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [OpenAI embedding models + Weaviate](./embeddings.md).
+- [OpenAI 埋め込みモデル + Weaviate](./embeddings.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、Weaviate におけるデータ管理および検索操作は他のコレクションと同様に機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) および [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) では、データ操作（コレクションやその内部のオブジェクトの作成・読み取り・更新・削除）の方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) では、 ベクトル・キーワード・ハイブリッド検索のほか、検索拡張生成の方法を説明しています。
 
-### References
+### 参考
 
-- OpenAI [Chat API documentation](https://platform.openai.com/docs/api-reference/chat)
+- OpenAI [Chat API ドキュメント](https://platform.openai.com/docs/api-reference/chat)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

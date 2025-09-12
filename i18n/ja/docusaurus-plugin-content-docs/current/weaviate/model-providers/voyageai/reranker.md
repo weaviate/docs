@@ -1,6 +1,6 @@
 ---
-title: Reranker
-description: VoyageAI Reranker Model Provider
+title: リランカー
+description: VoyageAI リランカーモデルプロバイダー
 sidebar_position: 70
 image: og/docs/integrations/provider_integrations_voyageai.jpg
 # tags: ['model providers', 'voyageai', 'reranking']
@@ -15,45 +15,45 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.reranker.py';
 import TSCode from '!!raw-loader!../_includes/provider.reranker.ts';
 
-# Voyage AI reranker models with Weaviate
+# Weaviate と Voyage AI のリランカーモデル
 
-Weaviate's integration with Voyage AI's APIs allows you to access their models' capabilities directly from Weaviate.
+ Weaviate と Voyage AI の API を統合することで、Weaviate から直接モデルの機能を利用できます。
 
-[Configure a Weaviate collection](#configure-the-reranker) to use a Voyage AI reranker model, and Weaviate will use the specified model and your Voyage AI API key to rerank search results.
+ Voyage AI のリランカーモデルを使用するように Weaviate コレクションを設定すると、Weaviate は指定したモデルとお客様の Voyage AI API キーを使用して検索結果を再ランキングします。
 
-This two-step process involves Weaviate first performing a search and then reranking the results using the specified model.
+ この 2 ステップのプロセスでは、まず Weaviate が検索を実行し、その後指定したモデルで結果を再ランキングします。
 
-![Reranker integration illustration](../_includes/integration_voyageai_reranker.png)
+![リランカー統合のイメージ](../_includes/integration_voyageai_reranker.png)
 
-## Requirements
+## 必要条件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Voyage AI reranker integration (`reranker-voyageai`) module.
+ お使いの Weaviate インスタンスは Voyage AI リランカー統合（`reranker-voyageai`）モジュールで設定されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ご利用の方へ</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+ この統合は Weaviate Cloud (WCD) サーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト環境の方へ</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっていることを確認するために [クラスターメタデータ](/deploy/configuration/meta.md) をチェックしてください。
+- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid Voyage AI API key to Weaviate for this integration. Go to [Voyage AI](https://www.voyageai.com/) to sign up and obtain an API key.
+ この統合には、有効な Voyage AI API キーを Weaviate に提供する必要があります。[Voyage AI](https://www.voyageai.com/) にアクセスし、サインアップして API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+ 次のいずれかの方法で API キーを Weaviate に渡してください。
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- `VOYAGEAI_APIKEY` という環境変数を設定し、Weaviate から参照できるようにします。
+- 以下の例のように、実行時に API キーを渡します。
 
 <Tabs groupId="languages">
 
@@ -77,13 +77,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the reranker
+## リランカーの設定
 
 import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 
 <MutableRerankerConfig />
 
-Configure a Weaviate collection to use a Voyage AI reranker model as follows:
+ 次のようにして、Voyage AI リランカーモデルを使用するように Weaviate コレクションを設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -106,28 +106,28 @@ Configure a Weaviate collection to use a Voyage AI reranker model as follows:
 
 </Tabs>
 
-You can specify one of the [available models](#available-models) for the reranker to use.
+ リランカーが使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
-The [default model](#available-models) is used if no model is specified.
+ モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
-## Header parameters
+## ヘッダーパラメータ
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+ 実行時にリクエストヘッダーを追加することで、API キーおよびいくつかのオプションパラメータを渡せます。利用可能なヘッダーは次のとおりです。
 
-- `X-VoyageAI-Api-Key`: The Voyage AI API key.
-- `X-VoyageAI-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Voyage AI URL.
+- `X-VoyageAI-Api-Key`: Voyage AI API キー。
+- `X-VoyageAI-Baseurl`: デフォルトの Voyage AI URL の代わりに使用するベース URL（例: プロキシ）。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+ 実行時に追加されたヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ 上記の [API 認証情報の例](#api-credentials) に示すようにヘッダーを指定してください。
 
-## Reranking query
+## リランキング クエリ
 
-Once the reranker is configured, Weaviate performs [reranking operations](../../search/rerank.md) using the specified Voyage AI model.
+リランカーが構成されると、 Weaviate は指定された Voyage AI モデルを使用して [リランキング操作](../../search/rerank.md) を実行します。
 
-More specifically, Weaviate performs an initial search, then reranks the results using the specified model.
+具体的には、 Weaviate が初期検索を行った後、その結果を指定されたモデルでリランキングします。
 
-Any search in Weaviate can be combined with a reranker to perform reranking operations.
+Weaviate では、任意の検索にリランカーを組み合わせてリランキング操作を実行できます。
 
 ![Reranker integration illustration](../_includes/integration_voyageai_reranker.png)
 
@@ -153,9 +153,9 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 </Tabs>
 
-## References
+## 参考
 
-### Available models
+### 利用可能なモデル
 
 - rerank-2
 - rerank-2-lite
@@ -164,38 +164,39 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 <details>
   <summary>
-    Model support history
+    モデルのサポート履歴
   </summary>
 
 - `v1.24.25`, `v1.25.18`, `v1.26.5`:
-    - Added `rerank-2`, `rerank-2-lite`
+    - `rerank-2`, `rerank-2-lite` を追加
 - `v1.24.18`, `v1.25.3`:
-    - Added `rerank-1`
+    - `rerank-1` を追加
 - `1.24.7`:
-    - Introduced `reranker-voyageai`, with `rerank-lite-1` support
+    - `reranker-voyageai` を導入し、 `rerank-lite-1` をサポート
 
 </details>
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Voyage AI embedding models + Weaviate](./embeddings.md).
-- [Voyage AI multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
+- [Voyage AI 埋め込みモデル + Weaviate](./embeddings.md)  
+- [Voyage AI マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を構成すると、 Weaviate のデータ管理および検索操作は他のコレクションと同一に動作します。モデルに依存しない次の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) と [How-to: Manage objects](../../manage-objects/index.mdx) では、データ操作 (コレクションおよびその中のオブジェクトの作成、読み取り、更新、削除) の方法を示しています。  
+- [How-to: Query & Search](../../search/index.mdx) では、 ベクトル、キーワード、ハイブリッド検索および 検索拡張生成 の実行方法を説明しています。
 
-### References
+### 参考情報
 
-- Voyage AI [Reranker API documentation](https://docs.voyageai.com/docs/reranker)
+- Voyage AI [Reranker API ドキュメント](https://docs.voyageai.com/docs/reranker)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

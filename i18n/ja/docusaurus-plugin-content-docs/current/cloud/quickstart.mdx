@@ -1,8 +1,8 @@
 ---
-title: Weaviate Cloud Quickstart
-sidebar_label: Quickstart
+title: Weaviate Cloud クイックスタート
+sidebar_label: クイックスタート
 sidebar_position: 1
-description: "Getting started guide for new Weaviate Cloud users to deploy their first cluster."
+description: "新規 Weaviate Cloud ユーザーが最初のクラスターをデプロイするための入門ガイド。"
 image: og/docs/quickstart-tutorial.jpg
 # tags: ['getting started']
 ---
@@ -10,17 +10,17 @@ image: og/docs/quickstart-tutorial.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<span class="badge badge--secondary">Expected time: 30 minutes</span>
+<span class="badge badge--secondary">想定所要時間: 30 分</span>
 <br />
 <br />
 
-:::info What you will learn
+:::info 学習内容
 
-This quickstart shows you how to combine Weaviate Cloud and [Weaviate Embeddings](/cloud/embeddings) to:
+このクイックスタートでは、Weaviate Cloud と [Weaviate Embeddings](/cloud/embeddings) を組み合わせて、以下を行う方法を学びます。
 
-1. Set up a Weaviate instance. (10 minutes)
-1. Add and vectorize your data. (10 minutes)
-1. Perform a semantic search and retrieval augmented generation (RAG). (10 minutes)
+1. Weaviate インスタンスをセットアップする。 (10 分)  
+1. データを追加してベクトル化する。 (10 分)  
+1. セマンティック検索および 検索拡張生成 (RAG) を実行する。 (10 分)
 
 ```mermaid
 flowchart LR
@@ -65,29 +65,29 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#7AD6EB,stroke-width:2px,color:#130C49
 ```
 
-Notes:
+注意:
 
-- The code examples here are self-contained. You can copy and paste them into your own environment to try them out.
+- ここで紹介するコード例は自己完結型です。コピー＆ペーストしてご自身の環境でお試しください。
 
 :::
 
-## Requirements
+## 前提条件
 
-- A [Weaviate Cloud account](./platform/create-account.mdx).
-- In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need a [Cohere](https://dashboard.cohere.com/) account. You can use a free Cohere trial API key. If you have another preferred [model provider](/weaviate/model-providers), you can use that instead of Cohere.
+- [Weaviate Cloud アカウント](./platform/create-account.mdx)
+- 最後のステップで Retrieval Augmented Generation (RAG) を実行するには、[Cohere](https://dashboard.cohere.com/) アカウントが必要です。無料の Cohere トライアル API キーを利用できます。別の [モデルプロバイダー](/weaviate/model-providers) を使用する場合は、Cohere の代わりにそちらをご利用ください。
 
 <hr />
 
-## Step 1: Set up Weaviate Cloud
+## ステップ 1: Weaviate Cloud のセットアップ
 
-### 1.1 Create a cluster
+### 1.1 クラスターの作成
 
-Weaviate offers the following cluster options:
+Weaviate では次のクラスター オプションを提供しています。
 
-- **Sandbox clusters**: free short-term cluster for development purposes.
-- **Serverless clusters**: permanent production-ready environment.
+- **Sandbox クラスター**: 開発目的向けの無料短期クラスター  
+- **Serverless クラスター**: 本番環境向けの永続的なクラスター  
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance.
+[Weaviate Cloud コンソール](https://console.weaviate.cloud) にアクセスし、無料の Sandbox インスタンスを作成します。
 
 <div
   style={{
@@ -119,9 +119,9 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 :::note
 
-- Cluster provisioning typically takes 1-3 minutes.
-- When the cluster is ready, Weaviate Cloud displays a checkmark (`✔️`) next to the cluster name.
-- Note that Weaviate Cloud adds a random suffix to sandbox cluster names to ensure uniqueness.
+- クラスターのプロビジョニングには通常 1〜3 分かかります。  
+- クラスターが準備完了すると、Weaviate Cloud はクラスター名の横にチェックマーク (`✔️`) を表示します。  
+- 一意性を保つため、Sandbox クラスター名にはランダムなサフィックスが追加されます。  
 
 :::
 
@@ -129,28 +129,28 @@ import LatestWeaviateVersion from '/_includes/latest-weaviate-version.mdx';
 
 <LatestWeaviateVersion />
 
-### 1.2 Install a client library
+### 1.2 クライアント ライブラリのインストール
 
-The Weaviate Cloud console includes a query interface, but most interactions rely on a [Weaviate client](/weaviate/client-libraries/index.mdx). Clients are available in several programming languages. Choose one that makes sense for your project.
+Weaviate Cloud コンソールにはクエリ インターフェースが含まれていますが、ほとんどの操作は [Weaviate クライアント](/weaviate/client-libraries/index.mdx) を介して行います。クライアントは複数のプログラミング言語で提供されています。プロジェクトに適したものを選択してください。
 
-To install a client, follow these steps for your language:
+言語ごとのインストール手順:
 
 import CodeClientInstall from '/_includes/code/quickstart/clients.install.mdx';
 
 <CodeClientInstall />
 
-### 1.3 Connect to your Weaviate Cloud instance
+### 1.3 Weaviate Cloud インスタンスへの接続
 
-Now you can connect to your Weaviate instance. You will need the:
+これで Weaviate インスタンスに接続できます。必要な情報は以下のとおりです。
 
-- **REST Endpoint URL** and the
-- **Administrator API Key**.
+- **REST Endpoint URL**  
+- **Administrator API Key**
 
-You can retrieve them both from the [WCD console](https://console.weaviate.cloud) as shown in the interactive example below.
+両方とも [WCD コンソール](https://console.weaviate.cloud) から取得できます。インタラクティブな例を参照してください。
 
 :::note
 
-New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled by default. These clusters don't come with API keys, you will need to create an API key yourself and assign it a role (`admin`, `viewer` or a custom role). 
+Weaviate バージョン `v1.30` 以降の新規クラスターでは、デフォルトで [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) が有効になっています。これらのクラスターには API キーが付属していないため、自身で API キーを作成し、`admin`、`viewer` またはカスタムロールを割り当てる必要があります。 
 
 :::
 
@@ -182,61 +182,63 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
 
 <br />
 
-:::info REST vs gRPC endpoints
+:::info REST と gRPC のエンドポイント
 
-Weaviate supports both REST and gRPC protocols. For Weaviate Cloud deployments, you only need to provide the REST endpoint URL - the client will automatically configure gRPC.
+Weaviate は REST と gRPC の両方のプロトコルをサポートしています。Weaviate Cloud デプロイでは REST エンドポイント URL のみを指定すれば、クライアントが自動的に gRPC を設定します。
 
 :::
 
-Once you have the **REST Endpoint URL** and the **Admin API key**, you can connect to the Sandbox instance and work with Weaviate.
+**REST Endpoint URL** と **Admin API key** を取得したら、Sandbox インスタンスに接続して Weaviate を操作できます。
 
-The example below shows how to connect to Weaviate and perform a basic operation, like checking the cluster status.
+以下の例では、Weaviate に接続し、クラスターの状態を確認する基本操作を実行します。
 
 import ConnectIsReady from '/_includes/code/quickstart/quickstart.is_ready.mdx';
 
 <ConnectIsReady />
 
-If you did not see any errors, you are ready to proceed. We will replace the simple cluster status check with more meaningful operations in the next steps.
+エラーが表示されなければ準備完了です。次のステップでは、簡単なクラスター状態チェックをより実用的な操作に置き換えていきます。
 
 <hr />
 
-## Step 2: Populate your database
 
-### 2.1 Define a collection
 
-The following example creates a _collection_ called `Question` with:
+## ステップ 2: データベースの投入
 
-- The [Weaviate Embeddings model integration](/weaviate/model-providers/weaviate/embeddings.md) to create vectors during ingestion & queries.
-- Cohere [generative AI integrations](/weaviate/model-providers/cohere/generative.md) for retrieval augmented generation (RAG).
+### 2.1 コレクションの定義
+
+次の例では `Question` という _コレクション_ を作成します。内容は以下のとおりです。
+
+- 取り込み時とクエリ時にベクトルを生成するための [Weaviate Embeddings モデル統合](/weaviate/model-providers/weaviate/embeddings.md)
+- 検索拡張生成 (RAG) 用の Cohere [生成 AI 統合](/weaviate/model-providers/cohere/generative.md)
 
 import CreateCollection from '/_includes/code/quickstart/quickstart.create_collection.mdx';
 
 <CreateCollection />
 
-Run this code to create the collection to which you can add data.
+このコードを実行して、データを追加できるコレクションを作成します。
 
-:::info What models are being used?
+:::info 使用されるモデルは？
 
-You can optionally specify the model in the collection definition. As we did not specify models in the collection definition above, these integrations will use the Weaviate-defined default models.
+コレクション定義でモデルを任意指定することもできます。上記ではモデルを指定していないため、これらの統合は Weaviate が定義したデフォルトモデルを使用します。
 
 <br />
 
-See the [model providers integration](/weaviate/model-providers/index.md) section for more information.
+詳しくは [モデルプロバイダー統合](/weaviate/model-providers/index.md) セクションをご覧ください。
 
 :::
 
-### 2.2 Load the data
+### 2.2 データの読み込み
 
-We can now add data to our collection.
+これでコレクションにデータを追加できます。
 
-The following example:
+次の例では、
 
-- Loads objects, and
-- Adds objects to the target collection (`Question`) using a batch process.
+- オブジェクトを読み込み、
+- バッチ処理で対象コレクション (`Question`) に追加します。
 
-:::tip Batch imports
+:::tip バッチインポート
 
-([Batch imports](/weaviate/manage-objects/import.mdx)) are the most efficient way to add large amounts of data, as it sends multiple objects in a single request. See the [How-to: Batch import](/weaviate/manage-objects/import.mdx) guide for more information.
+([バッチインポート](/weaviate/manage-objects/import.mdx)) は複数のオブジェクトを 1 回のリクエストで送信するため、大量データを追加する最も効率的な方法です。詳しくは [How-to: Batch import](/weaviate/manage-objects/import.mdx) ガイドをご覧ください。
 
 :::
 
@@ -244,28 +246,28 @@ import ImportObjects from '/_includes/code/quickstart/quickstart.import_objects.
 
 <ImportObjects />
 
-Run this code to add the demo data.
+このコードを実行してデモデータを追加します。
 
 <hr />
 
-## Step 3: Query your data
+## ステップ 3: データのクエリ
 
-Weaviate provides a wide range of query tools to help you find the right data. We will try a few searches here.
+Weaviate は、目的のデータを見つけるための多彩なクエリツールを提供しています。ここではいくつかの検索を試してみましょう。
 
-### 3.1 Semantic search {#semantic-search}
+### 3.1 セマンティック検索 {#semantic-search}
 
-Semantic search finds results based on meaning. This is called `nearText` in Weaviate.
+セマンティック検索は意味に基づいて結果を取得します。Weaviate では `nearText` と呼ばれます。
 
-The following example searches for 2 objects whose meaning is most similar to that of `biology`.
+次の例では、`biology` と最も意味が近い 2 つのオブジェクトを検索します。
 
 import QueryNearText from '/_includes/code/quickstart/quickstart.query.neartext.mdx';
 
 <QueryNearText />
 
-Run this code to perform the query. Our query found entries for `DNA` and `species`.
+このコードを実行してクエリを実行します。`DNA` と `species` のエントリーが見つかるはずです。
 
 <details>
-  <summary>Example full response in JSON format</summary>
+  <summary>JSON 形式の例示的な完全応答</summary>
 
 ```json
 {
@@ -284,11 +286,11 @@ Run this code to perform the query. Our query found entries for `DNA` and `speci
 
 </details>
 
-If you inspect the full response, you will see that the word `biology` does not appear anywhere.
+完全応答を確認すると、`biology` という単語がどこにも含まれていないことがわかります。
 
-Even so, Weaviate was able to return biology-related entries. This is made possible by _vector embeddings_ that capture meaning. Under the hood, semantic search is powered by vectors, or vector embeddings.
+それでも Weaviate は生物学関連のエントリーを返しました。これは意味を捉えた _ベクトル埋め込み_ によって可能となっています。内部的には、セマンティック検索はベクトル、つまりベクトル埋め込みによって実現されています。
 
-Here is a diagram showing the workflow in Weaviate.
+以下は Weaviate におけるワークフローを示した図です。
 
 ```mermaid
 flowchart LR
@@ -319,27 +321,27 @@ flowchart LR
     style sg2 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-:::info Where did the vectors come from?
+:::info ベクトルはどこから来たのですか？
 
-Weaviate used the [Weaviate Embeddings](/cloud/embeddings) service to generate a vector embedding for each object during import. During the query, Weaviate similarly converted the query (`biology`) into a vector.
+Weaviate は [Weaviate Embeddings](/cloud/embeddings) サービスを使用して、インポート時に各オブジェクトのベクトル埋め込みを生成しました。クエリ時にも、`biology` をベクトルに変換しています。
 
-As we mentioned above, this is optional. See [Starter Guide: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) if you would prefer to provide your own vectors.
-
-:::
-
-:::tip More search types available
-
-Weaviate is capable of many types of searches. See, for example, our how-to guides on [similarity searches](/weaviate/search/similarity.md), [keyword searches](/weaviate/search/bm25.md), [hybrid searches](/weaviate/search/hybrid.md), and [filtered searches](/weaviate/search/filters.md).
+これは任意設定であることは前述のとおりです。独自のベクトルを用意したい場合は、[スターターガイド: Bring Your Own Vectors](/weaviate/starter-guides/custom-vectors.mdx) をご覧ください。
 
 :::
 
-### 3.2 Retrieval augmented generation
+:::tip さらに利用できる検索タイプ
 
-Retrieval augmented generation (RAG), also called generative search, combines the power of generative AI models such as large language models (LLMs) with the up-to-date truthfulness of a database.
+Weaviate は多様な検索に対応しています。たとえば [類似度検索](/weaviate/search/similarity.md)、[キーワード検索](/weaviate/search/bm25.md)、[ハイブリッド検索](/weaviate/search/hybrid.md)、[フィルタ検索](/weaviate/search/filters.md) の How-to ガイドをご覧ください。
 
-RAG works by prompting a large language model (LLM) with a combination of a _user query_ and _data retrieved from a database_.
+:::
 
-This diagram shows the RAG workflow in Weaviate.
+### 3.2 検索拡張生成
+
+検索拡張生成 (RAG)、別名 生成検索 は、大規模言語モデル (LLM) などの生成 AI モデルのパワーと、データベースの最新かつ正確な情報を組み合わせたものです。
+
+RAG は、_ユーザークエリ_ と _データベースから取得したデータ_ を組み合わせて大規模言語モデル (LLM) にプロンプトを与えることで機能します。
+
+次の図は、Weaviate における RAG のワークフローを示しています。
 
 ```mermaid
 flowchart LR
@@ -391,19 +393,19 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-The following example combines the same search (for `biology`) with a prompt to generate a tweet.
+以下の例では、`biology` の検索結果とツイート生成のプロンプトを組み合わせています。
 
 import QueryRAG from '/_includes/code/quickstart/quickstart.query.rag.mdx';
 
 <QueryRAG />
 
-:::info Cohere API key in the header
+:::info ヘッダー内の Cohere API キー
 
-Note that this code includes an additional header for the Cohere API key. Weaviate uses this key to access the Cohere generative AI model and perform retrieval augmented generation (RAG).
+このコードには Cohere API キー用の追加ヘッダーが含まれている点に注意してください。Weaviate はこのキーを使用して Cohere の生成 AI モデルにアクセスし、検索拡張生成 (RAG) を行います。
 
 :::
 
-Run this code to perform the query. Here is one possible response (your response will likely be different).
+このコードを実行してクエリを実行します。次のような応答が返ってくるはずです (内容は異なる場合があります)。
 
 ```text
 🧬 In 1953 Watson & Crick built a model of the molecular structure of DNA, the gene-carrying substance! 🧬🔬
@@ -411,15 +413,17 @@ Run this code to perform the query. Here is one possible response (your response
 🦢 2000 news: the Gunnison sage grouse isn't just another northern sage grouse, but a new species! 🦢🌿 #ScienceFacts #DNA #SpeciesClassification
 ```
 
-The response should be new, yet familiar. This is because you have seen the entries above for `DNA` and `species` in the [semantic search](#semantic-search) section.
+どこかで見覚えのある内容ながら新しい応答になっているはずです。これは [セマンティック検索](#semantic-search) セクションで確認した `DNA` と `species` のエントリーが使用されているためです。
 
-The power of RAG comes from the ability to transform your own data. Weaviate helps you in this journey by making it easy to perform a combined search & generation in just a few lines of code.
+RAG の強みは、独自データを変換できる点にあります。Weaviate は検索と生成をわずか数行のコードで組み合わせられるようサポートします。
 
 <hr />
 
-## Next steps
 
-Try these additional resources to learn more about Weaviate:
+
+## 次のステップ
+
+Weaviate についてさらに学ぶために、以下の追加リソースをご利用ください:
 
 import CardsSection from "/src/components/CardsSection";
 
@@ -446,8 +450,9 @@ export const nextStepsData = [
 
 <CardsSection items={nextStepsData} />
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

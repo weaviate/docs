@@ -1,5 +1,5 @@
 ---
-title: Cross-references
+title: クロスリファレンス
 sidebar_position: 7
 image: og/docs/howto.jpg
 ---
@@ -20,24 +20,24 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.cross
 import SkipLink from '/src/components/SkipValidationLink'
 
 
-Use cross-references to establish directional relationships between collections.
+クロスリファレンスを使用して、コレクション間に方向性のあるリレーションシップを確立します。
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-Notes:
-- Cross-references does not affect object vectors of the source or the target objects.
-- For multi-tenancy collection, you can establish a cross-reference from a multi-tenancy collection object to:
-    - A non-multi-tenancy collection object, or
-    - A multi-tenancy collection object belonging to the same tenant.
+注記:
+- クロスリファレンスは、ソースまたはターゲットオブジェクトのオブジェクト ベクトルには影響しません。
+- マルチテナンシ コレクションでは、次のいずれかに対してクロスリファレンスを設定できます:
+    - マルチテナンシでないコレクション オブジェクト
+    - 同じテナントに属するマルチテナンシ コレクション オブジェクト
 
 </details>
 
-## Define a cross-reference property
+## クロスリファレンス プロパティの定義
 
-Include the reference property in the collection definition before adding cross-references to it.
+クロスリファレンスを追加する前に、その参照プロパティをコレクション定義に含めておきます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -66,9 +66,9 @@ Include the reference property in the collection definition before adding cross-
   </TabItem>
 </Tabs>
 
-## Add a cross-reference property
+## クロスリファレンス プロパティの追加
 
-It is also possible to add a cross-reference property to an existing collection definition.
+既存のコレクション定義にクロスリファレンス プロパティを追加することもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -107,9 +107,9 @@ It is also possible to add a cross-reference property to an existing collection 
 </Tabs>
 
 
-## Create an object with a cross-reference
+## クロスリファレンス付きオブジェクトの作成
 
-Specify a cross-reference when creating an object.
+オブジェクトを作成する際にクロスリファレンスを指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -150,9 +150,11 @@ Specify a cross-reference when creating an object.
 </Tabs>
 
 
-## Add a one-way cross-reference
 
-Specify the required id and properties for the source and the target.
+
+## 一方向クロスリファレンスの追加
+
+ソースとターゲットの必須 id とプロパティを指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -211,11 +213,11 @@ Specify the required id and properties for the source and the target.
 </Tabs>
 
 
-## Add two-way cross-references
+## 双方向クロスリファレンスの追加
 
-This requires adding reference properties in both directions, and adding two cross-references per object pair (`from` A -> `to` B and `from` B -> `to` A).
+これは、両方向にリファレンスプロパティを追加し、オブジェクトペアごとに 2 つのクロスリファレンス（ `from` A -> `to` B と `from` B -> `to` A）を追加する必要があります。
 
-Create the `JeopardyCategory` collection:
+`JeopardyCategory` コレクションを作成します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -253,7 +255,7 @@ Create the `JeopardyCategory` collection:
   </TabItem>
 </Tabs>
 
-Create the `JeopardyQuestion` collection including the reference property to `JeopardyCategory`:
+`JeopardyQuestion` コレクションを作成し、 `JeopardyCategory` へのリファレンスプロパティを含めます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -291,7 +293,7 @@ Create the `JeopardyQuestion` collection including the reference property to `Je
   </TabItem>
 </Tabs>
 
-Modify `JeopardyCategory` to add the reference to `JeopardyQuestion`:
+`JeopardyCategory` を修正し、 `JeopardyQuestion` へのリファレンスを追加します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -329,7 +331,7 @@ Modify `JeopardyCategory` to add the reference to `JeopardyQuestion`:
   </TabItem>
 </Tabs>
 
-And add the cross-references:
+そしてクロスリファレンスを追加します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -388,9 +390,12 @@ And add the cross-references:
 </Tabs>
 
 
-## Add multiple (one-to-many) cross-references
 
-Weaviate allows creation of multiple cross-references from one source object.
+
+
+## 複数 (一対多) のクロスリファレンスを追加
+
+Weaviate では、1 つのソースオブジェクトから複数のクロスリファレンスを作成できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -448,9 +453,9 @@ Weaviate allows creation of multiple cross-references from one source object.
   </TabItem>
 </Tabs>
 
-## Read cross-references
+## クロスリファレンスの読み取り
 
-Cross-references can be read as part of the object.
+クロスリファレンスはオブジェクトの一部として読み取ることができます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -481,9 +486,9 @@ Cross-references can be read as part of the object.
   </TabItem>
 </Tabs>
 
-## Delete a cross-reference
+## クロスリファレンスの削除
 
-Deleting a cross-reference with the same parameters used to define the cross-reference.
+クロスリファレンスを定義したときと同じパラメーターを使用してクロスリファレンスを削除します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -543,18 +548,17 @@ Deleting a cross-reference with the same parameters used to define the cross-ref
 
 <details>
   <summary>
-    What happens if the target object is deleted?
+    ターゲットオブジェクトが削除された場合はどうなりますか？
   </summary>
 
-What happens if the `to` object is deleted?
-If an object is deleted, cross-references to it will be left intact. A [Get query using the inline fragment syntax](../search/basics.md#retrieve-cross-referenced-properties) will correctly retrieve only fields in the existing cross-references objects, but [getting the object by ID](../manage-objects/read.mdx#get-an-object-by-id) will show all cross-references, whether the objects they point to exist or not.
+`to` オブジェクトが削除された場合はどうなりますか？  
+オブジェクトが削除されても、それへのクロスリファレンスはそのまま残ります。[インラインフラグメント構文を使用した Get クエリ](../search/basics.md#retrieve-cross-referenced-properties)は、既存のクロスリファレンスオブジェクトに含まれるフィールドのみを正しく取得しますが、[ID でオブジェクトを取得](../manage-objects/read.mdx#get-an-object-by-id)した場合は、参照先のオブジェクトが存在するかどうかに関係なく、すべてのクロスリファレンスが表示されます。
 
 </details>
 
+## クロスリファレンスの更新
 
-## Update a cross-reference
-
-The targets of a cross-reference can be updated.
+クロスリファレンスのターゲットは更新できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -613,14 +617,15 @@ The targets of a cross-reference can be updated.
 </Tabs>
 
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
-- [Retrieve the cross-reference](../search/basics.md#retrieve-cross-referenced-properties) as a part of a query.
+- [Weaviate に接続](/weaviate/connections/index.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects">リファレンス: REST - /v1/objects</SkipLink>
+- [クエリの一部としてクロスリファレンスを取得](../search/basics.md#retrieve-cross-referenced-properties)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

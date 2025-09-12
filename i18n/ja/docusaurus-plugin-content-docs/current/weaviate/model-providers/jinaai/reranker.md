@@ -1,13 +1,13 @@
 ---
-title: Reranker
+title: リランカー
 sidebar_position: 70
 image: og/docs/integrations/provider_integrations_jinaai.jpg
 # tags: ['model providers', 'jinaai', 'reranking']
 ---
 
-# Jina AI Reranker Models with Weaviate
+# Weaviate との Jina AI リランカー モデル
 
-:::info Added in `v1.26.1`
+:::info `v1.26.1` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -18,43 +18,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.reranker.py';
 import TSCode from '!!raw-loader!../_includes/provider.reranker.ts';
 
-Weaviate's integration with Jina AI's APIs allows you to access their models' capabilities directly from Weaviate.
+ Weaviate と Jina AI の API を統合することで、Jina AI モデルの機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate collection](#configure-the-reranker) to use a Jina AI reranker model, and Weaviate will use the specified model and your Jina AI API key to rerank search results.
+[リランカーを設定](#configure-the-reranker) して Jina AI リランカー モデルを使用すると、 Weaviate は指定したモデルとお持ちの Jina AI API キーを用いて検索結果をリランクします。
 
-This two-step process involves Weaviate first performing a search and then reranking the results using the specified model.
+この 2 ステップのプロセスでは、まず Weaviate が検索を実行し、その後に指定したモデルで結果をリランクします。
 
 ![Reranker integration illustration](../_includes/integration_jinaai_reranker.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の構成
 
-Your Weaviate instance must be configured with the JinaAI reranker integration (`reranker-jinaai`) module.
+ご利用の Weaviate インスタンスには、JinaAI リランカー統合（`reranker-jinaai`）モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレス インスタンスでデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト ユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効かどうかを確認してください。
+- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid JinaAI API key to Weaviate for this integration. Go to [Jina AI](https://jina.ai/embeddings/) to sign up and obtain an API key.
+この統合を利用するには、有効な JinaAI API キーを Weaviate に提供する必要があります。Jina AI の [公式サイト](https://jina.ai/embeddings/) でサインアップし、API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡します。
 
-- Set the `JINAAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- `JINAAI_APIKEY` 環境変数を設定し、 Weaviate から参照できるようにする。
+- 下記の例のように、実行時に API キーを渡す。
 
 <Tabs groupId="languages">
 
@@ -78,13 +78,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the reranker
+## リランカーを設定する
 
 import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 
 <MutableRerankerConfig />
 
-Configure a Weaviate collection to use a Jina AI reranker model as follows:
+Jina AI リランカー モデルを使用するように Weaviate コレクションを設定する方法は次のとおりです。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -107,9 +107,9 @@ Configure a Weaviate collection to use a Jina AI reranker model as follows:
 
 </Tabs>
 
-### Select a model
+### モデルを選択する
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+以下の設定例のように、 Weaviate で使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,17 +132,19 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+モデルを指定しない場合は [デフォルトモデル](#available-models) が使用されます。
 
-## Reranking query
 
-Once the reranker is configured, Weaviate performs [reranking operations](../../search/rerank.md) using the specified Jina AI model.
 
-More specifically, Weaviate performs an initial search, then reranks the results using the specified model.
+## リランキングクエリ
 
-Any search in Weaviate can be combined with a reranker to perform reranking operations.
+リランカーが設定されると、 Weaviate は指定した Jina AI モデルを使用して[リランキング操作](../../search/rerank.md)を実行します。
 
-![Reranker integration illustration](../_includes/integration_jinaai_reranker.png)
+具体的には、 Weaviate は最初に検索を行い、その結果を指定したモデルでリランキングします。
+
+Weaviate のどの検索でもリランカーと組み合わせてリランキングを実行できます。
+
+![リランカー統合のイメージ](../_includes/integration_jinaai_reranker.png)
 
 <Tabs groupId="languages">
 
@@ -166,9 +168,9 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 </Tabs>
 
-## References
+## 参考
 
-### Available models
+### 利用可能なモデル
 
 - `jina-reranker-v2-base-multilingual` (default)
 - `jina-reranker-v1-base-en`
@@ -176,27 +178,28 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 - `jina-reranker-v1-tiny-en`
 - `jina-colbert-v1-en`
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Jina AI text embedding models + Weaviate](./embeddings.md)
-- [Jina AI ColBERT embedding models + Weaviate](./embeddings-colbert.md).
-- [Jina AI multimodal embedding models + Weaviate](./embeddings-multimodal.md)
+- [Jina AI テキスト埋め込みモデル + Weaviate](./embeddings.md)
+- [Jina AI ColBERT 埋め込みモデル + Weaviate](./embeddings-colbert.md)
+- [Jina AI マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+統合がコレクションに設定されると、 Weaviate におけるデータ管理と検索操作は他のコレクションと同様に動作します。以下のモデル非依存の例をご覧ください:
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) と [How-to: Manage objects](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションやその中のオブジェクトの作成、読み取り、更新、削除）方法を説明しています。
+- [How-to: Query & Search](../../search/index.mdx) ガイドでは、ベクトル検索、キーワード検索、ハイブリッド検索、検索拡張生成などの検索方法を紹介しています。
 
-### References
+### 参考
 
-- Jina AI [Reranker documentation](https://jina.ai/reranker/)
+- Jina AI [Reranker ドキュメント](https://jina.ai/reranker/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

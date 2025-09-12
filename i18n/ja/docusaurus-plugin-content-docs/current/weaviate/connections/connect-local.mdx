@@ -1,5 +1,5 @@
 ---
-title: Local instances
+title: ローカル インスタンス
 sidebar_position: 20
 image: og/docs/connect.jpg
 # tags: ['getting started', 'connect']
@@ -21,20 +21,20 @@ import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
 
-Follow these steps to connect to a locally hosted Weaviate instance.
+ローカルにホストした Weaviate インスタンスへ接続するには、次の手順に従います。
 
-## Local connection URL
+## ローカル接続 URL
 
-Docker instances default to `http://localhost:8080`. The gRPC port, `50051`, is also on `localhost`.
+Docker インスタンスのデフォルト URL は `http://localhost:8080` です。gRPC ポート `50051` も `localhost` でリッスンしています。
 
-If your instance runs on Kubernetes, see the `host` and `port` values in your Helm chart's `values.yaml` file.
+インスタンスを Kubernetes 上で実行している場合は、Helm チャートの `values.yaml` ファイルにある `host` と `port` の値を確認してください。
 
-## No authentication enabled
+## 認証なしでの接続
 
-To connect to a local instance without authentication, follow these examples.
+認証を有効にしていないローカル インスタンスへ接続するには、以下の例を参照してください。
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python クライアント v4">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START LocalNoAuth"
@@ -42,7 +42,7 @@ To connect to a local instance without authentication, follow these examples.
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
+<TabItem value="py3" label="Python クライアント v3">
    <FilteredTextBlock
      text={PyCodeV3}
      startMarker="# START LocalNoAuth"
@@ -50,7 +50,7 @@ To connect to a local instance without authentication, follow these examples.
      language="pyv3"
    />
 </TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS クライアント v3">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START LocalNoAuth"
@@ -58,7 +58,7 @@ To connect to a local instance without authentication, follow these examples.
      language="js"
    />
 </TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
+<TabItem value="ts2" label="JS/TS クライアント v2">
    <FilteredTextBlock
      text={TsCodeV2}
      startMarker="// START LocalNoAuth"
@@ -92,12 +92,12 @@ To connect to a local instance without authentication, follow these examples.
 </TabItem>
 </Tabs>
 
-## Change the URL or port
+## URL またはポートを変更する
 
-To change the default URL or port number, follow these examples.
+デフォルトの URL やポート番号を変更する場合は、以下の例を参照してください。
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python クライアント v4">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START CustomURL"
@@ -105,7 +105,7 @@ To change the default URL or port number, follow these examples.
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
+<TabItem value="py3" label="Python クライアント v3">
    <FilteredTextBlock
      text={PyCodeV3}
      startMarker="# START CustomURL"
@@ -113,7 +113,7 @@ To change the default URL or port number, follow these examples.
      language="pyv3"
    />
 </TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS クライアント v3">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START CustomURL"
@@ -121,7 +121,7 @@ To change the default URL or port number, follow these examples.
      language="js"
    />
 </TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
+<TabItem value="ts2" label="JS/TS クライアント v2">
    <FilteredTextBlock
      text={TsCodeV2}
      startMarker="// START CustomURL"
@@ -156,9 +156,9 @@ To change the default URL or port number, follow these examples.
 </Tabs>
 
 
-## Authentication enabled
+## 認証の有効化
 
-To authenticate with a Weaviate API key, follow these examples.
+Weaviate の API キーで認証するには、次の例に従ってください。
 
 <Tabs groupId="languages">
 <TabItem value="py4" label="Python Client v4">
@@ -219,17 +219,17 @@ To authenticate with a Weaviate API key, follow these examples.
 </TabItem>
 </Tabs>
 
-### OIDC authentication
+### OIDC 認証
 
 import OIDCConnect from '/_includes/connect/oidc-connect-ref.mdx';
 
 <OIDCConnect/>
 
-For additional client examples, see [OIDC authentication](/weaviate/connections/connect-custom#oidc-authentication).
+その他のクライアント例については、[OIDC 認証](/weaviate/connections/connect-custom#oidc-authentication) を参照してください。
 
-## Third party API keys
+## サードパーティ API キー
 
-Integrations that use external APIs often need API keys. To add third party API keys, follow these examples:
+外部 API を利用する統合では、API キーが必要になることがよくあります。サードパーティ API キーを追加するには、次の例に従ってください:
 
 <Tabs groupId="languages">
 <TabItem value="py4" label="Python Client v4">
@@ -290,13 +290,15 @@ Integrations that use external APIs often need API keys. To add third party API 
 </TabItem>
 </Tabs>
 
-## Environment variables
+
+
+## 環境変数
 
 import EnvVarsHowto from '/_includes/environment-variables.mdx';
 
 <EnvVarsHowto/>
 
-## gRPC timeouts
+## gRPC タイムアウト
 
 import GRPCTimeoutIntro from '/_includes/connect/timeouts-intro.mdx';
 
@@ -306,8 +308,9 @@ import GRPCTimeouts from '/_includes/code/connections/timeouts-local.mdx';
 
 <GRPCTimeouts/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

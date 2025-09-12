@@ -1,20 +1,20 @@
 ---
-title: Explorer tool
+title: Explorer ツール
 sidebar_position: 30
-description: "Graphical interface for browsing collections, examining objects, and inspecting metadata and vectors."
+description: "コレクションを閲覧し、オブジェクトを確認し、メタデータとベクトルを調査するためのグラフィカルインターフェース。"
 image: og/wcd/user_guides.jpg
 ---
 
-The *Explorer* tool provides a graphical interface for inspecting your Weaviate instance that is connected to Weaviate Cloud. Browse collections, examine objects, and inspect metadata and vectors - all without writing code.
+*Explorer* ツールは、Weaviate Cloud に接続された Weaviate インスタンスをグラフィカルに確認できるインターフェースを提供します。コーディングなしでコレクションを閲覧し、オブジェクトを確認し、メタデータやベクトルを調査できます。
 
-## Navigating the Interface
+## インターフェースのナビゲーション
 
-The Explorer tool is organized hierarchically, guiding you from clusters down to individual objects. Follow these steps to navigate through your data.
+Explorer ツールは階層構造になっており、クラスターから個々のオブジェクトまで順にたどることができます。以下の手順でデータをナビゲートしてください。
 
-### Select a cluster
+### クラスターの選択
 
-import ExplorerImg1 from '/docs/cloud/img/explorer-1.png';
-import ExplorerImg2 from '/docs/cloud/img/explorer-2.png';
+import ExplorerImg1 from '/docs/cloud/img/explorer-1.png';  
+import ExplorerImg2 from '/docs/cloud/img/explorer-2.png';  
 
 <div class="row">
     <div class="card">
@@ -22,7 +22,7 @@ import ExplorerImg2 from '/docs/cloud/img/explorer-2.png';
             <img src={ExplorerImg1} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>To begin, select the <code>Explorer</code> tool from the left-hand menu as shown below (item <span class="callout">1</span>).</p>
+            <p>まず、左側メニューから <code>Explorer</code> ツールを選択します（項目 <span class="callout">1</span>）。</p>
         </div>
     </div>
 </div>
@@ -34,19 +34,19 @@ import ExplorerImg2 from '/docs/cloud/img/explorer-2.png';
             <img src={ExplorerImg2} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>This will load a list of available clusters (item <span class="callout">2</span>). Select a cluster from the list (item <span class="callout">3</span>) to view the collections and objects within that cluster.</p>
+            <p>利用可能なクラスターの一覧が読み込まれます（項目 <span class="callout">2</span>）。一覧からクラスターを選択すると（項目 <span class="callout">3</span>）、そのクラスター内のコレクションとオブジェクトを閲覧できます。</p>
         </div>
     </div>
 </div>
 <br/>
 
-### Explore collections and objects
+### コレクションとオブジェクトの探索
 
-Once you've selected a cluster, you can dive into your [collections](/weaviate/concepts/data.md#collections) and examine its [objects](/weaviate/concepts/data.md#data-object-concepts).
+クラスターを選択したら、[コレクション](/weaviate/concepts/data.md#collections)に入り、その[オブジェクト](/weaviate/concepts/data.md#data-object-concepts)を確認できます。
 
-import ExplorerImg3 from '/docs/cloud/img/explorer-3.png';
-import ExplorerImg4 from '/docs/cloud/img/explorer-4.png';
-import ExplorerImg5 from '/docs/cloud/img/explorer-5.png';
+import ExplorerImg3 from '/docs/cloud/img/explorer-3.png';  
+import ExplorerImg4 from '/docs/cloud/img/explorer-4.png';  
+import ExplorerImg5 from '/docs/cloud/img/explorer-5.png';  
 
 <div class="row">
     <div class="card">
@@ -54,22 +54,22 @@ import ExplorerImg5 from '/docs/cloud/img/explorer-5.png';
             <img src={ExplorerImg3} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>Selecting a cluster shows a list of available collections (item <span class="callout">4</span>). Select a collection (item <span class="callout">5</span>) to view its objects.</p>
+            <p>クラスターを選択すると、利用可能なコレクションが一覧表示されます（項目 <span class="callout">4</span>）。コレクションを選択すると（項目 <span class="callout">5</span>）、そのオブジェクトを閲覧できます。</p>
         </div>
     </div>
 </div>
 <br/>
 
-#### Examining Objects
+#### オブジェクトの確認
 
-When you select a collection, Explorer displays its objects in an easy-to-read format. Each object is shown with its:
+コレクションを選択すると、Explorer はオブジェクトを読みやすい形式で表示します。各オブジェクトには次の情報が示されます。
 
-- Unique identifier (UUID)
-- Properties and their values
-- Metadata (expandable)
-- Vector embeddings
+- 一意の識別子 (UUID)
+- プロパティとその値
+- メタデータ（展開可能）
+- ベクトル埋め込み
 
-Some details are initially shown as collapsed. Click on the color-coded property group to expand and view the details.
+一部の詳細は折りたたまれた状態で表示されます。カラーコードされたプロパティグループをクリックして展開し、詳細を確認してください。
 
 <div class="row">
     <div class="card">
@@ -77,9 +77,9 @@ Some details are initially shown as collapsed. Click on the color-coded property
             <img src={ExplorerImg4} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>Objects in the selected collection is shown (item <span class="callout">6</span>) as a list of objects. </p>
+            <p>選択したコレクションのオブジェクトが一覧で表示されます（項目 <span class="callout">6</span>）。</p>
             <br/>
-            <p>Each object is listed with its unique ID and its properties (item <span class="callout">7</span>), including the property name and value. Hover over the property name as (item <span class="callout">7a</span>) to see the property type.</p>
+            <p>各オブジェクトは、そのユニーク ID とプロパティ（項目 <span class="callout">7</span>）が表示されます。プロパティ名にカーソルを合わせると（項目 <span class="callout">7a</span>）、プロパティの型が表示されます。</p>
         </div>
     </div>
 </div>
@@ -91,25 +91,25 @@ Some details are initially shown as collapsed. Click on the color-coded property
             <img src={ExplorerImg5} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>Click on the color-coded property group such as metadata (item <span class="callout">8</span>) or vectors (item <span class="callout">9</span>) to expand collapsed details.</p>
+            <p>メタデータ（項目 <span class="callout">8</span>）やベクトル（項目 <span class="callout">9</span>）など、カラーコードされたプロパティグループをクリックして折りたたまれた詳細を展開します。</p>
             <br/>
-            <p>Vectors are shown initially by its name where <Link to="/weaviate/concepts/data#multiple-vector-embeddings-named-vectors">named vectors</Link> are used and number of dimensions. Expand the item further to see some of the vectors, or click `copy` (item <span class="callout">10</span>) to copy the entire vector to clipboard.</p>
+            <p>ベクトルは、<Link to="/weaviate/concepts/data#multiple-vector-embeddings-named-vectors">名前付きベクトル</Link>を使用している場合はベクトル名と次元数のみが最初に表示されます。さらに展開すると一部のベクトル値が表示され、`copy`（項目 <span class="callout">10</span>）をクリックするとベクトル全体をクリップボードにコピーできます。</p>
         </div>
     </div>
 </div>
 <br/>
 
-### View as JSON
+### JSON 形式で表示
 
-Explorer offers both a structured view and a raw JSON format.
+Explorer では、構造化ビューと生の JSON フォーマットの両方を提供しています。
 
-Toggle between the standard formatted view and JSON view for any object:
+任意のオブジェクトで以下の操作が可能です。
 
-- Click the `{}` icon to switch to JSON view
-- Click again to return to the formatted view
-- The JSON view shows the complete object structure, including all nested properties, metadata, and vectors
+- `{}` アイコンをクリックして JSON ビューに切り替える  
+- もう一度クリックしてフォーマットビューに戻る  
+- JSON ビューでは、すべてのネストされたプロパティ、メタデータ、ベクトルを含む完全なオブジェクト構造が表示されます  
 
-import ExplorerImg6 from '/docs/cloud/img/explorer-6.png';
+import ExplorerImg6 from '/docs/cloud/img/explorer-6.png';  
 
 <div class="row">
     <div class="card">
@@ -117,17 +117,17 @@ import ExplorerImg6 from '/docs/cloud/img/explorer-6.png';
             <img src={ExplorerImg6} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>View an object in JSON format (item <span class="callout">11</span>) by clicking the <code>{}</code> icon (item <span class="callout">12</span>). Return to the object view by clicking the same icon again.</p>
+            <p><code>{}</code> アイコン（項目 <span class="callout">12</span>）をクリックして、オブジェクトを JSON 形式で表示します（項目 <span class="callout">11</span>）。同じアイコンをもう一度クリックすると、元のオブジェクトビューに戻ります。</p>
         </div>
     </div>
 </div>
 <br/>
 
-### Pagination & Refresh
+### ページネーション & 更新
 
-When viewing a collection with many objects, pagination controls are available at the bottom of the list. Use these controls to navigate through the objects.
+オブジェクトが多数あるコレクションを表示していると、リストの下部にページネーション コントロールが表示されます。これらのコントロールを使用してオブジェクトを閲覧してください。
 
-Additionally, the refresh button at the top of the page allows you to update the list of objects in the collection.
+さらに、ページ上部のリフレッシュ ボタンをクリックすると、コレクション内のオブジェクト一覧を更新できます。
 
 import ExplorerImg7 from '/docs/cloud/img/explorer-7.png';
 
@@ -137,17 +137,18 @@ import ExplorerImg7 from '/docs/cloud/img/explorer-7.png';
             <img src={ExplorerImg7} alt="Explorer Tool"/>
         </div>
         <div class="card__body">
-            <p>When viewing a collection with many objects, pagination controls (item <span class="callout">13</span>) are available at the bottom of the list. Use these controls to navigate through the objects.</p>
+            <p>オブジェクトが多数あるコレクションを表示していると、リストの下部にページネーション コントロール (item <span class="callout">13</span>) が表示されます。これらのコントロールを使用してオブジェクトを閲覧してください。</p>
             <br/>
-            <p>The number of objects per page can be adjusted using the dropdown (item <span class="callout">14</span>), where the total number of objects in the collection is also shown.</p>
+            <p>ページあたりのオブジェクト数はドロップダウン (item <span class="callout">14</span>) で変更できます。また、コレクション内の総オブジェクト数もここに表示されます。</p>
             <br/>
-            <p>The "refresh" button (item <span class="callout">15</span>) at the top right of the page allows you to update the list of objects in the collection.</p>
+            <p>ページ右上にある "refresh" ボタン (item <span class="callout">15</span>) をクリックすると、コレクション内のオブジェクト一覧を更新できます。</p>
         </div>
     </div>
 </div>
 
-## Support & feedback
+## サポート & フィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

@@ -1,5 +1,5 @@
 ---
-title: Batch import
+title: バッチインポート
 sidebar_position: 15
 image: og/docs/howto.jpg
 ---
@@ -17,22 +17,22 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
-[Batch imports](../tutorials/import.md#to-batch-or-not-to-batch) are an efficient way to add multiple data objects and cross-references.
+[バッチ インポート](../tutorials/import.md#to-batch-or-not-to-batch)は、複数のデータオブジェクトとクロス リファレンスを効率的に追加する方法です。
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-To create a bulk import job, follow these steps:
+バルクインポートジョブを作成するには、次の手順に従います。
 
-1. Initialize a batch object.
-1. Add items to the batch object.
-1. Ensure that the last batch is sent (flushed).
+1. バッチオブジェクトを初期化します。
+1. バッチオブジェクトに項目を追加します。
+1. 最後のバッチが送信（フラッシュ）されることを確認します。
 
 </details>
 
-## Basic import
+## 基本インポート
 
-The following example adds objects to the `MyCollection` collection.
+次の例では、`MyCollection` コレクションにオブジェクトを追加します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -43,14 +43,13 @@ The following example adds objects to the `MyCollection` collection.
       language="py"
     />
 
-### Error handling
+### エラー処理
 
-<!-- TODO[g-despot]: Add link to external Python references once created for "reference page" -->
-During a batch import, any failed objects or references will be stored and can be obtained through `batch.failed_objects` and `batch.failed_references`.
-Additionally, a running count of failed objects and references is maintained and can be accessed through `batch.number_errors` within the context manager.
-This counter can be used to stop the import process in order to investigate the failed objects or references.
+バッチ インポート中に失敗したオブジェクトやリファレンスは保存され、`batch.failed_objects` と `batch.failed_references` から取得できます。  
+さらに、失敗したオブジェクトとリファレンスの累計は、コンテキストマネージャ内で `batch.number_errors` から取得できます。  
+このカウンターを利用して、失敗したオブジェクトやリファレンスを調査するためにインポート処理を停止できます。
 
-Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python).
+Python クライアントのエラー処理についての詳細は、[リファレンスページ](/weaviate/client-libraries/python)をご覧ください。
 
   </TabItem>
 
@@ -100,33 +99,31 @@ Find out more about error handling on the Python client [reference page](/weavia
   </TabItem>
 </Tabs>
 
-## Use the gRPC API
+## gRPC API の使用
 
-:::info Added in `v1.23`.
+:::info `v1.23` で追加されました。
 :::
 
-The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
+[gRPC API](../api/index.mdx) は REST API より高速です。インポート速度を向上させるために gRPC API をご利用ください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
 
-<!-- TODO[g-despot]: Add link to external Python references once created for "batch import configuration options" -->
-<!-- See the client page for additional batch import [configuration options](/weaviate/client-libraries/python#batch-imports). -->
-The Python client uses gRPC by default. 
+Python クライアントはデフォルトで gRPC を使用します。  
 
-<br/>The legacy Python client does not support gRPC.
+<br/>レガシー Python クライアントは gRPC をサポートしていません。
 
 </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
 
-The TypeScript client v3 uses gRPC by default.
+TypeScript クライアント v3 はデフォルトで gRPC を使用します。  
 
-<br/>The legacy TypeScript client does not support gRPC.
+<br/>レガシー TypeScript クライアントは gRPC をサポートしていません。
 
   </TabItem>
   <TabItem value="java" label="Java">
 
-To use the gRPC API with the Java client, add the `setGRPCHost` field to your client connection code. Update `setGRPCSecured` if you use an encrypted connection.<br/><br/>
+Java クライアントで gRPC API を使用するには、クライアント接続コードに `setGRPCHost` フィールドを追加してください。暗号化接続を使用する場合は `setGRPCSecured` を更新します。<br/><br/>
 
 ```java
 Config config = new Config("http", "localhost:8080");
@@ -136,7 +133,7 @@ config.setGRPCHost("localhost:50051");
   </TabItem>
   <TabItem value="go" label="Go">
 
-To use the gRPC API with the Go client, add the `GrpcConfig` field to your client connection code. Update `Secured` if you use an encrypted connection.<br/><br/>
+Go クライアントで gRPC API を使用するには、クライアント接続コードに `GrpcConfig` フィールドを追加してください。暗号化接続を使用する場合は `Secured` を更新します。<br/><br/>
 
 ```java
 cfg := weaviate.Config{
@@ -158,7 +155,7 @@ if err != nil {
   </TabItem>
   <TabItem value="spark" label="Spark">
 
-To use the gRPC API with the [Spark connector](https://github.com/weaviate/spark-connector), add the `grpc:host` field to your client connection code. Update `grpc:secured` if you use an encrypted connection.<br/><br/>
+[Spark コネクター](https://github.com/weaviate/spark-connector) で gRPC API を使用するには、クライアント接続コードに `grpc:host` フィールドを追加してください。暗号化接続を使用する場合は `grpc:secured` を更新します。<br/><br/>
 
 ```java
   df.write
@@ -177,9 +174,11 @@ To use the gRPC API with the [Spark connector](https://github.com/weaviate/spark
   </TabItem>
 </Tabs>
 
-## Specify an ID value
 
-Weaviate generates an UUID for each object. Object IDs must be unique. If you set object IDs, use one of these deterministic UUID methods to prevent duplicate IDs:
+
+## ID 値の指定
+
+Weaviate は各オブジェクトに対して UUID を生成します。オブジェクト ID は一意である必要があります。オブジェクト ID を自分で設定する場合は、重複 ID を防ぐために次の決定論的 UUID メソッドのいずれかを使用してください:
 
 - `generate_uuid5` (Python)
 - `generateUuid5` (TypeScript)
@@ -240,9 +239,9 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
   </TabItem>
 </Tabs>
 
-## Specify a vector
+## ベクトルの指定
 
-Use the `vector` property to specify a vector for each object.
+`vector` プロパティを使用して、各オブジェクトにベクトルを指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -300,12 +299,13 @@ Use the `vector` property to specify a vector for each object.
   </TabItem>
 </Tabs>
 
-## Specify named vectors
 
-:::info Added in `v1.24`
+## 名前付き ベクトル の指定
+
+:::info `v1.24` で追加
 :::
 
-When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
+オブジェクトを作成する際、（[コレクションで設定されている場合](../manage-collections/vector-config.mdx#define-named-vectors)）名前付き ベクトル を指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -346,9 +346,9 @@ When you create an object, you can specify named vectors (if [configured in your
 
 </Tabs>
 
-## Import with references
+## 参照付きインポート
 
-You can batch create links from an object to another other object through cross-references.
+クロスリファレンスを介して、あるオブジェクトから別のオブジェクトへリンクをまとめて作成できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -377,25 +377,25 @@ You can batch create links from an object to another other object through cross-
   </TabItem>
 </Tabs>
 
-## Python-specific considerations
+## Python 固有の考慮事項
 
-The Python clients have built-in batching methods to help you optimize import speed. For details, see the client documentation:
+Python クライアントには、インポート速度を最適化するための組み込みバッチ処理メソッドがあります。詳細はクライアントドキュメントをご覧ください。
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "Python client `v4`" -->
-- [Python client `v4`](../client-libraries/python/index.mdx)
+- [Python クライアント `v4`](../client-libraries/python/index.mdx)
 
-### Async Python client and batching
+### 非同期 Python クライアントとバッチ処理
 
-Currently, the [async Python client does not support batching](../client-libraries/python/async.md#bulk-data-insertion). To use batching, use the sync Python client.
+現在、[非同期 Python クライアントはバッチ処理をサポートしていません](../client-libraries/python/async.md#bulk-data-insertion)。バッチ処理を使用する場合は、同期 Python クライアントをご利用ください。
 
-## Stream data from large files
+## 大きなファイルからのストリーミング処理
 
-If your dataset is large, consider streaming the import to avoid out-of-memory issues.
+データセットが大きい場合、メモリ不足を避けるためにインポートをストリーミングすることを検討してください。
 
-To try the example code, download the sample data and create the sample input files.
+サンプルコードを試すには、サンプルデータをダウンロードし、サンプル入力ファイルを作成します。
 
 <details>
-  <summary>Get the sample data</summary>
+  <summary>サンプルデータを取得する</summary>
 
 <Tabs groupId="languages">
   <TabItem value="pycsv" label="Python">
@@ -419,7 +419,7 @@ To try the example code, download the sample data and create the sample input fi
 </details>
 
 <details>
-  <summary>Stream JSON files example code</summary>
+  <summary>JSON ファイルをストリーミングするサンプルコード</summary>
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -452,7 +452,7 @@ To try the example code, download the sample data and create the sample input fi
 
 
 <details>
-  <summary>Stream CSV files example code</summary>
+  <summary>CSV ファイルをストリーミングするサンプルコード</summary>
 
 <Tabs groupId="languages">
   <TabItem value="pycsv" label="Python Client v4">
@@ -483,20 +483,22 @@ To try the example code, download the sample data and create the sample input fi
 
 </details>
 
-## Batch vectorization
 
-:::info Added in `v1.25`.
+
+## バッチ ベクトル化
+
+:::info `v1.25` で追加されました。
 :::
 
 import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
 
 <BatchVectorizationOverview />
 
-## Model provider configurations
+## モデルプロバイダーの設定
 
-You can configure the batch vectorization settings for each model provider, such as the requests per minute or tokens per minute. The following examples sets rate limits for Cohere and OpenAI integrations, and provides API keys for both.
+各モデルプロバイダーごとに、1 分あたりのリクエスト数や 1 分あたりのトークン数など、バッチ ベクトル化の設定を行えます。以下の例では、 Cohere と OpenAI の統合に対してレート制限を設定し、両方の API キーを指定しています。
 
-Note that each provider exposes different configuration options.
+プロバイダーごとに利用できる設定項目が異なる点にご注意ください。
 
  <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -509,19 +511,19 @@ Note that each provider exposes different configuration options.
   </TabItem>
 </Tabs>
 
-## Additional considerations
+## 追加の考慮事項
 
-Data imports can be resource intensive. Consider the following when you import large amounts of data.
+データのインポートは多くのリソースを消費します。大量のデータをインポートする際は、次の点を考慮してください。
 
-### Asynchronous imports
+### 非同期インポート
 
 :::caution Experimental
-Available starting in `v1.22`. This is an experimental feature. Use with caution.
+`v1.22` から利用可能です。これは試験的な機能です。ご注意ください。
 :::
 
-To maximize import speed, enable [asynchronous indexing](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing).
+インポート速度を最大化するには、[非同期インデックス作成](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing)を有効化してください。
 
-To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration file.
+非同期インデックス作成を有効にするには、 Weaviate の設定ファイルで `ASYNC_INDEXING` 環境変数を `true` に設定します。
 
 ```yaml
 weaviate:
@@ -532,24 +534,25 @@ weaviate:
   ...
 ```
 
-### Automatically add new tenants
+### 新しいテナントの自動追加
 
 import AutoTenant from '/_includes/auto-tenant.mdx';
 
 <AutoTenant/>
 
-For details, see [auto-tenant](/weaviate/manage-collections/multi-tenancy#automatically-add-new-tenants).
+詳細は [auto-tenant](/weaviate/manage-collections/multi-tenancy#automatically-add-new-tenants) をご覧ください。
 
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [How-to: Create objects](./create.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/batch">References: REST - /v1/batch</SkipLink>
-- [Configuration: Indexes](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing)
+- [Weaviate に接続する](/weaviate/connections/index.mdx)
+- [ハウツー: オブジェクトを作成する](./create.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/batch">参照: REST - /v1/batch</SkipLink>
+- [設定: インデックス](/weaviate/config-refs/indexing/vector-index.mdx#asynchronous-indexing)
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

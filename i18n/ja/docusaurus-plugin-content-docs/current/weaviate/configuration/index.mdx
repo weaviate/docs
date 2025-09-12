@@ -1,41 +1,41 @@
 ---
-title: How to configure Weaviate
+title: Weaviate の設定方法
 sidebar_position: 0
 image: og/docs/configuration.jpg
 hide_table_of_contents: true
 # tags: ['configuration']
 ---
 
-Configure and manage key operational aspects of your Weaviate instance with these guides:
+以下のガイドを使用して、 Weaviate インスタンスの主要な運用面を設定および管理します:
 
 import CardsSection from "/src/components/CardsSection";
 
 export const configOpsData = [
   {
-    title: "Compression/Quantization (PQ/BQ/RQ/SQ)",
+    title: "圧縮 / 量子化 (PQ/BQ/RQ/SQ)",
     description:
-      "Reduce memory usage with Product, Binary, Rotational or Scalar Quantization techniques.",
+      "直積、バイナリ、回転、スカラーの量子化手法でメモリ使用量を削減します。",
     link: "/weaviate/configuration/compression",
     icon: "fas fa-compress-alt",
   },
   {
-    title: "Modules",
+    title: "モジュール",
     description:
-      "Explore Weaviate's ecosystem of vectorizer, generative (RAG), and other modules.",
+      " Weaviate のベクトライザー、検索拡張生成 (RAG) などのモジュール エコシステムを探索します。",
     link: "/weaviate/configuration/modules",
     icon: "fas fa-puzzle-piece",
   },
   {
-    title: "Authentication and authorization",
+    title: "認証と認可",
     description:
-      "Set up methods to authenticate and to verify user identities before granting access.",
+      "アクセスを許可する前にユーザーの身元を認証・確認する方法を設定します。",
     link: "/weaviate/configuration/authz-authn",
     icon: "fas fa-key",
   },
   {
     title: "RBAC",
     description:
-      "Learn about Role-Based Access Control concepts, predefined/custom roles, and permissions.",
+      "ロールベースアクセス制御の概念、事前定義 / カスタム ロール、および権限について学びます。",
     link: "/weaviate/configuration/rbac",
     icon: "fas fa-user-shield",
   },
@@ -45,41 +45,41 @@ export const configOpsData = [
 <CardsSection items={configOpsData} />
 <br />
 
-## Deployment guides
+## デプロイ ガイド
 
-### Configuration
+### 設定
 
 export const configurationData = [
   {
-    title: "Backups",
+    title: "バックアップ",
     description:
-      "Configure backup and restore processes for your Weaviate instance.",
+      " Weaviate インスタンスのバックアップとリストア手順を設定します。",
     link: "/deploy/configuration/backups",
     icon: "fas fa-save",
   },
   {
-    title: "Environment variables",
+    title: "環境変数",
     description:
-      "Configure your environment variables for connection strings, ports, and security credentials.",
+      "接続文字列、ポート、セキュリティ資格情報のために環境変数を設定します。",
     link: "/deploy/configuration/env-vars",
     icon: "fas fa-cog",
   },
   {
-    title: "Horizontal scaling",
-    description: "Scale your deployment for high availability.",
+    title: "水平スケーリング",
+    description: "高可用性のためにデプロイメントをスケールします。",
     link: "/deploy/configuration/horizontal-scaling",
     icon: "fas fa-arrow-up-right-dots",
   },
   {
-    title: "Persistence",
-    description: "Enable backups and configure retention policies.",
+    title: "永続化",
+    description: "バックアップを有効化し、保持ポリシーを設定します。",
     link: "/deploy/configuration/persistence",
     icon: "fas fa-floppy-disk",
   },
   {
-    title: "Tenant offloading",
+    title: "テナント オフロード",
     description:
-      "Manage resource usage by offloading inactive tenants in multi-tenant setups.",
+      "マルチテナント構成で非アクティブなテナントをオフロードしてリソース使用量を管理します。",
     link: "/deploy/configuration/tenant-offloading",
     icon: "fas fa-pause-circle",
   },
@@ -89,32 +89,32 @@ export const configurationData = [
 <CardsSection items={configurationData} />
 <br />
 
-### Authorization and Authentication
+### 認可と認証
 
 export const authData = [
   {
-    title: "Authentication",
-    description: "Configure access management of your deployment.",
+    title: "認証",
+    description: "デプロイメントのアクセス管理を設定します。",
     link: "/deploy/configuration/authentication",
     icon: "fas fa-shield-halved",
   },
   {
-    title: "Authorization",
-    description: "Define and manage user roles and permissions.",
+    title: "認可",
+    description: "ユーザー ロールと権限を定義および管理します。",
     link: "/deploy/configuration/authorization",
     icon: "fas fa-user-shield",
   },
   {
-    title: "Configuring RBAC",
+    title: "RBAC の設定",
     description:
-      "Set up Role-Based Access Control for fine-grained permissions.",
+      "詳細な権限のためにロールベースアクセス制御を設定します。",
     link: "/deploy/configuration/configuring-rbac",
     icon: "fas fa-users-cog",
   },
   {
-    title: "OIDC Configuration",
+    title: "OIDC 設定",
     description:
-      "Configure OpenID Connect for secure authentication with Weaviate.",
+      " Weaviate と安全に連携する OpenID Connect を設定します。",
     link: "/deploy/configuration/oidc",
     icon: "fas fa-lock",
   },
@@ -124,20 +124,21 @@ export const authData = [
 <CardsSection items={authData} />
 <br />
 
-### Replication
+
+### レプリケーション
 
 export const replicationData = [
   {
-    title: "Replication",
+    title: "レプリケーション",
     description:
-      "Set up data replication across nodes for high availability and fault tolerance.",
+      "高可用性と障害耐性を実現するため、ノード間でデータのレプリケーションを設定します。",
     link: "/deploy/configuration/replication",
     icon: "fas fa-copy",
   },
   {
-    title: "Asynchronous Replication",
+    title: "非同期レプリケーション",
     description:
-      "Ensure eventual consistency across nodes in a distributed cluster.",
+      "分散クラスタ内のノード間で最終的な整合性を確保します。",
     link: "/deploy/configuration/async-rep",
     icon: "fas fa-clone",
   },
@@ -147,37 +148,37 @@ export const replicationData = [
 <CardsSection items={replicationData} />
 <br />
 
-### Cluster Information
+### クラスタ情報
 
 export const clusterInfoData = [
   {
-    title: "Cluster metadata",
-    description: "Access and manage metadata about your Weaviate cluster.",
+    title: "クラスタメタデータ",
+    description: "Weaviate クラスタに関するメタデータへアクセスし、管理します。",
     link: "/deploy/configuration/meta",
     icon: "fas fa-info-circle",
   },
   {
-    title: "Monitoring, metrics, and logging",
-    description: "Monitor the status and health of your Weaviate instance.",
+    title: "モニタリング、メトリクス、およびログ",
+    description: "Weaviate インスタンスの状態と健全性を監視します。",
     link: "/deploy/configuration/monitoring",
     icon: "fas fa-chart-bar",
   },
   {
-    title: "Cluster node data",
-    description: "View and manage data about individual nodes in your cluster.",
+    title: "クラスタノードデータ",
+    description: "クラスタ内の各ノードに関するデータを表示および管理します。",
     link: "/deploy/configuration/nodes",
     icon: "fas fa-server",
   },
   {
-    title: "Status",
-    description: "Monitor the status and health of your Weaviate instance.",
+    title: "ステータス",
+    description: "Weaviate インスタンスの状態と健全性を監視します。",
     link: "/deploy/configuration/status",
     icon: "fas fa-heartbeat",
   },
   {
-    title: "Telemetry",
+    title: "テレメトリ",
     description:
-      "Understand how Weaviate telemetry works and how to configure it.",
+      "Weaviate のテレメトリがどのように機能するかを理解し、設定方法を確認します。",
     link: "/deploy/configuration/telemetry",
     icon: "fas fa-chart-line",
   },
@@ -187,8 +188,9 @@ export const clusterInfoData = [
 <CardsSection items={clusterInfoData} />
 <br />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

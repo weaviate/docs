@@ -1,5 +1,5 @@
 ---
-title: Collection aliases
+title: コレクション エイリアス
 sidebar_label: Collection aliases
 sidebar_position: 2
 image: og/docs/howto.jpg
@@ -16,17 +16,17 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 
 :::caution Technical preview
 
-Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+コレクション エイリアスは **`v1.32`** で **技術プレビュー** として追加されました。<br/><br/>
+この機能は現在も開発中であり、将来のリリースで変更される可能性があります。互換性が失われる変更が入ることもあります。  
+**現時点では、本番環境での使用はおすすめしません。**
 
 :::
 
-Collection aliases allow you to create alternative names for your collections. This is useful for changing collection definitions without downtime, A/B testing, or providing more convenient names for collections. An alias acts as a reference to a collection - when you query using an alias name, Weaviate automatically routes the request to the target collection.
+コレクション エイリアスを使用すると、コレクションに別名を設定できます。これにより、ダウンタイムなしでのコレクション定義の変更、A/B テスト、あるいはより分かりやすい名前の提供などが可能になります。エイリアスはコレクションへの参照として機能し、エイリアス名でクエリを実行すると、 Weaviate が自動的に対象コレクションへリクエストをルーティングします。
 
-## Create an alias
+## エイリアスの作成
 
-To create an alias, specify the alias name and the target collection it should point to.
+エイリアスを作成するには、エイリアス名と、それが参照する対象コレクションを指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -65,14 +65,14 @@ To create an alias, specify the alias name and the target collection it should p
 
 :::note
 
-- An alias name must be unique and cannot match any existing collection or alias name
-- Multiple aliases can point to the same collection
-- Aliases can be used instead of collection names in most operations (except when deleting collections)
-  :::
+- エイリアス名は一意でなければならず、既存のコレクション名またはエイリアス名と重複できません  
+- 複数のエイリアスを同じコレクションに向けることができます  
+- コレクションを削除する場合を除き、ほとんどの操作でコレクション名の代わりにエイリアスを使用できます  
+:::
 
-## List all aliases
+## すべてのエイリアスの一覧
 
-Retrieve all aliases in your Weaviate instance.
+ Weaviate インスタンス内のすべてのエイリアスを取得します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -109,9 +109,9 @@ Retrieve all aliases in your Weaviate instance.
   </TabItem>
 </Tabs>
 
-## List aliases for a specific collection
+## 特定のコレクションのエイリアス一覧
 
-Get all aliases that point to a specific collection.
+特定のコレクションを参照しているすべてのエイリアスを取得します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -148,9 +148,11 @@ Get all aliases that point to a specific collection.
   </TabItem>
 </Tabs>
 
-## Get alias details
 
-Retrieve information about a specific alias.
+
+## エイリアス詳細の取得
+
+特定のエイリアスに関する情報を取得します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -187,9 +189,9 @@ Retrieve information about a specific alias.
   </TabItem>
 </Tabs>
 
-## Update an alias
+## エイリアスの更新
 
-Change the target collection that an alias points to. This operation is atomic and provides instant switching between collections.
+エイリアスが参照するターゲット コレクションを変更します。この操作はアトミックで、コレクション間を即座に切り替えられます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -226,21 +228,21 @@ Change the target collection that an alias points to. This operation is atomic a
   </TabItem>
 </Tabs>
 
-:::tip Use case: Zero-downtime migration
+:::tip ユースケース: ゼロダウンタイム マイグレーション
 
-Updating an alias is particularly useful for migrations:
+エイリアスを更新することで、マイグレーションをシームレスに行えます。
 
-1. Create a new collection with updated collection definition
-2. Import data into the new collection
-3. Update the alias to point to the new collection
-4. Continue to use the alias - all queries to it are now directed to the new collection
+1. 更新したコレクション定義で新しいコレクションを作成  
+2. 新しいコレクションにデータをインポート  
+3. エイリアスを新しいコレクションへ向けて更新  
+4. エイリアスを引き続き使用 — これ以降、そのエイリアスへのクエリはすべて新しいコレクションへ転送されます  
 
-For a code example on how to perform migrations, visit the [Starter guide: Managing collections](../starter-guides/managing-collections/index.mdx#collection-aliases)
+マイグレーションを実行するコード例については、[スターター ガイド: コレクション管理](../starter-guides/managing-collections/index.mdx#collection-aliases) を参照してください。
 :::
 
-## Delete an alias
+## エイリアスの削除
 
-Remove an alias. This only deletes the alias pointer, not the underlying collection.
+エイリアスを削除します。これはエイリアス ポインターのみを削除し、基盤となるコレクションは削除しません。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -279,13 +281,14 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
 
 :::note
 
-- Deleting a collection does not automatically delete aliases pointing to it
+- コレクションを削除しても、それを参照するエイリアスは自動で削除されません
 
 :::
 
-## Using aliases in operations
 
-Once created, aliases can be used instead of collection names in most operations (except when deleting collections):
+## 操作でのエイリアスの使用
+
+エイリアスを作成すると、ほとんどの操作でコレクション名の代わりに使用できます（コレクションを削除する場合を除く）:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -322,16 +325,17 @@ Once created, aliases can be used instead of collection names in most operations
   </TabItem>
 </Tabs>
 
-## Further resources
+## 参考リソース
 
-- [Manage collections: Basic operations](./collection-operations.mdx)
-- [References: Collection definition](/weaviate/config-refs/collections.mdx)
+- [コレクションの管理：基本操作](./collection-operations.mdx)
+- [リファレンス：コレクション定義](/weaviate/config-refs/collections.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/aliases">
-    API References: REST: Aliases
+    API リファレンス：REST：エイリアス
   </SkipLink>
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

@@ -1,5 +1,5 @@
 ---
-title: Text Embeddings (Deprecated)
+title: テキスト埋め込み（非推奨）
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_octoai.jpg
 # tags: ['model providers', 'octoai', 'embeddings']
@@ -9,9 +9,9 @@ import OctoAIDeprecationNote from './_includes/octoai_deprecation.md';
 
 <OctoAIDeprecationNote/>
 
-# OctoAI Embeddings with Weaviate
+# Weaviate での OctoAI 埋め込み
 
-:::info Added in `v1.25.0`
+:::info `v1.25.0` で追加
 :::
 
 import Tabs from '@theme/Tabs';
@@ -22,43 +22,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with OctoAI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate が OctoAI の API と統合されているため、OctoAI のモデル機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an OctoAI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your OctoAI API key. This feature is called the *vectorizer*.
+OctoAI の埋め込みモデルを利用するように [Weaviate の ベクトル index を設定](#configure-the-vectorizer) すると、Weaviate は指定したモデルとお客様の OctoAI API キーを用いてさまざまな操作のための埋め込みを生成します。この機能を *vectorizer* と呼びます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、Weaviate はテキストオブジェクトの埋め込みを生成し、index に保存します。[ベクトル](#vector-near-text-search) 検索および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate はテキストクエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_octoai_embedding.png)
+![埋め込み統合のイラスト](../_includes/integration_octoai_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の構成
 
-Your Weaviate instance must be configured with the OctoAI vectorizer integration (`text2vec-octoai`) module.
+ご利用の Weaviate インスタンスには、OctoAI ベクトライザー統合（`text2vec-octoai`）モジュールが設定されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) を確認してください。  
+- Weaviate でモジュールを有効にするには、[モジュールの設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid OctoAI API key to Weaviate for this integration. Go to [OctoAI](https://octo.ai/) to sign up and obtain an API key.
+この統合を利用するには、有効な OctoAI API キーを Weaviate に提供する必要があります。[OctoAI](https://octo.ai/) にアクセスしてサインアップし、API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で API キーを Weaviate に渡します:
 
-- Set the `OCTOAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照できる環境変数 `OCTOAI_APIKEY` を設定する。  
+- 下記の例のように、実行時に API キーを渡す。
 
 <Tabs groupId="languages">
 
@@ -82,9 +82,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an OctoAI embedding model:
+OctoAI の埋め込みモデルを利用するには、次のように [Weaviate の index を設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -107,9 +107,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+以下の設定例のように、ベクトライザーで使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,24 +132,26 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate で利用するモデルは、[ベクトライザーのパラメーター](#vectorizer-parameters) で [利用可能なモデル](#available-models) のいずれかを指定できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-- `model`: Model name, default - `"thenlper/gte-large"`.
-- `vectorize_collection_name`: If the Collection name should be vectorized, default - `True`.
-- `base_url`: The URL to use (e.g. a proxy) instead of the default OctoAI URL - `"https://text.octoai.run"`.
 
-The following examples show how to configure OctoAI-specific options.
+### ベクトライザーのパラメーター
+
+- `model`: モデル名。デフォルト - `"thenlper/gte-large"`。
+- `vectorize_collection_name`: コレクション名をベクトル化するかどうか。デフォルト - `True`。
+- `base_url`: デフォルトの OctoAI URL である `"https://text.octoai.run"` の代わりに使用する URL（プロキシなど）。
+
+以下の例は、OctoAI 固有のオプションを設定する方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -172,11 +174,11 @@ The following examples show how to configure OctoAI-specific options.
 
 </Tabs>
 
-For further details on model parameters, see the [OctoAI API documentation](https://octo.ai/docs/text-gen-solution/getting-started).
+モデルパラメーターの詳細については、[OctoAI API ドキュメント](https://octo.ai/docs/text-gen-solution/getting-started) をご覧ください。
 
-## Data import
+## データのインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx)して Weaviate に取り込みます。Weaviate は、指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -200,21 +202,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+すでに互換性のあるモデルのベクトルをお持ちの場合は、それを直接 Weaviate に渡すことができます。同じモデルで埋め込みを生成済みの場合や、別のシステムからデータを移行する際に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified OctoAI model.
+ベクトライザーが設定されると、Weaviate は指定した OctoAI モデルを使用してベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_octoai_embedding_search.png)
+![検索時の埋め込み統合のイラスト](../_includes/integration_octoai_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text)を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した数  n  件の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -238,15 +240,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を行い、その結果を[組み合わせて](../../search/hybrid.md)データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md)を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した数  n  件の最高スコアのオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -270,33 +272,35 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
 
-### Available models
+## 参考資料
 
-You can use any embedding model hosted by OctoAI with `text2vec-octoai`.
+### 利用可能なモデル
 
-Currently the embedding models OctoAI has made [available](https://octo.ai/docs/text-gen-solution/getting-started) are:
+`text2vec-octoai` を使用すると、 OctoAI がホストする任意の埋め込みモデルを利用できます。
+
+現在 OctoAI が [公開している](https://octo.ai/docs/text-gen-solution/getting-started) 埋め込みモデルは次のとおりです:
 
 * `thenlper/gte-large`
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [OctoAI generative models + Weaviate](./generative.md).
+- [OctoAI 生成モデル + Weaviate](./generative.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、 Weaviate におけるデータ管理および検索操作は他のコレクションとまったく同じように動作します。モデルに依存しない以下の例をご覧ください:
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ 操作方法: コレクションを管理する ](../../manage-collections/index.mdx) および [ 操作方法: オブジェクトを管理する ](../../manage-objects/index.mdx) ガイドでは、データ操作 (すなわちコレクションおよびその中のオブジェクトの作成・参照・更新・削除) の方法を説明しています。
+- [ 操作方法: クエリ & 検索 ](../../search/index.mdx) ガイドでは、 ベクトル ・キーワード・ハイブリッド検索に加え、 検索拡張生成 の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
-- OctoAI [Embed API documentation](https://octo.ai/docs/text-gen-solution/getting-started)
+- OctoAI [ Embed API ドキュメント](https://octo.ai/docs/text-gen-solution/getting-started)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

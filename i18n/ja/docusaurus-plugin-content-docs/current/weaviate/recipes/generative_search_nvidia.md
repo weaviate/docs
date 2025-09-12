@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/generative-search/generative_search_nvidia.ipynb
 toc: True
-title: "Generate new content with NVIDIA models and RAG"
+title: "NVIDIA モデルと RAG で新しいコンテンツを生成する"
 featured: False
 integration: False
 agent: False
@@ -12,19 +12,19 @@ tags: ['Generative Search', 'RAG', 'NVIDIA']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-In this demo, we will use an embedding and generative model on NVIDIA to generate embeddings for the blog posts and use a generative model to create new content!
+このデモでは、NVIDIA 上の埋め込みモデルと生成モデルを使用してブログ記事の埋め込みを生成し、生成モデルで新しいコンテンツを作成します。
 
-## Requirements
+## 必要条件
 
-1. Weaviate cluster
-    1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
-    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
-    3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation#starter-docker-compose-file)
-    4. [Other options](https://docs.weaviate.io/deploy/installation-guides)
+1. Weaviate クラスター  
+    1. [ WCD ](https://console.weaviate.cloud/) で 14 日間無料のサンドボックスを作成できます  
+    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)  
+    3. [ローカルデプロイ](https://docs.weaviate.io/deploy/installation-guides/docker-installation#starter-docker-compose-file)  
+    4. [その他のオプション](https://docs.weaviate.io/deploy/installation-guides)  
 
-2. NVIDIA NIM API key. Grab one [here](https://build.nvidia.com/models).
-3. Weaviate client version `4.11.0` or newer
-4. Weaviate database version `1.28.5`, `1.29.0`, or newer.
+2. NVIDIA NIM API キー。 [こちら](https://build.nvidia.com/models) から取得してください。  
+3. Weaviate クライアントバージョン `4.11.0` 以降  
+4. Weaviate データベースバージョン `1.28.5`、`1.29.0` 以降  
 
 ```python
 import weaviate
@@ -40,11 +40,11 @@ from weaviate.util import get_valid_uuid
 from uuid import uuid4
 ```
 
-## Connect to Weaviate
+## Weaviate への接続
 
-Only choose one option from the below.
+以下から 1 つだけ選択してください。
 
-**Weaviate Cloud Deployment**
+**Weaviate クラウドデプロイ**
 
 ```python
 WCD_URL = os.environ["WEAVIATE_URL"] # Replace with your Weaviate cluster URL
@@ -61,7 +61,7 @@ client = weaviate.connect_to_wcs(
 print(client.is_ready())
 ```
 
-Python output:
+Python 出力:
 ```text
 True
 ```
@@ -84,7 +84,7 @@ True
 # client.connect()
 ```
 
-**Local Deployment**
+**ローカルデプロイ**
 
 ```python
 # NVIDIA_KEY = os.environ["NVIDIA_API_KEY"] # Replace with your NVIDIA key
@@ -97,10 +97,10 @@ True
 # print(client.is_ready())
 ```
 
-## Create a collection
-Collection stores your data and vector embeddings.
+## コレクションの作成
+コレクションはデータとベクトル埋め込みを保存します。
 
-Full list of [generative models](https://docs.weaviate.io/weaviate/model-providers/octoai/generative#available-models)
+[生成モデルの完全リスト](https://docs.weaviate.io/weaviate/model-providers/octoai/generative#available-models)
 
 ```python
 # Note: in practice, you shouldn't rerun this cell, as it deletes your data
@@ -129,13 +129,13 @@ client.collections.create(
 print("Successfully created collection: BlogChunks.")
 ```
 
-Python output:
+Python 出力:
 ```text
 Successfully created collection: BlogChunks.
 ```
-## Chunk and Import Data
+## データのチャンク化とインポート
 
-We need to break our blog posts into smaller chunks
+ブログ記事をより小さなチャンクに分割する必要があります。
 
 ```python
 def chunk_list(lst, chunk_size):
@@ -172,7 +172,7 @@ blog_chunks = read_and_chunk_index_files(main_folder_path)
 blog_chunks[0]
 ```
 
-Python output:
+Python 出力:
 ```text
 '---\ntitle: What is Ref2Vec and why you need it for your recommendation system\nslug: ref2vec-centroid\nauthors: [connor]\ndate: 2022-11-23\ntags: [\'integrations\', \'concepts\']\nimage: ./img/hero.png\ndescription: "Weaviate introduces Ref2Vec, a new module that utilises Cross-References for Recommendation!"\n---\n![Ref2vec-centroid](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/generative-search/img/hero.png)\n\n<!-- truncate -->\n\nWeaviate 1.16 introduced the [Ref2Vec](/developers/weaviate/modules/retriever-vectorizer-modules/ref2vec-centroid) module. In this article, we give you an overview of what Ref2Vec is and some examples in which it can add value such as recommendations or representing long objects. ## What is Ref2Vec? The name Ref2Vec is short for reference-to-vector, and it offers the ability to vectorize a data object with its cross-references to other objects. The Ref2Vec module currently holds the name ref2vec-**centroid** because it uses the average, or centroid vector, of the cross-referenced vectors to represent the **referencing** object.'
 ```
@@ -192,17 +192,17 @@ for blog_chunk in blog_chunks:
 
 ```
 
-## Query Time 
+## クエリ実行 
 
-## Hybrid Search Query
+## ハイブリッド検索クエリ
 
-Hybrid search combines BM25 and vector search and weighs the two algorithms depending on the `alpha` parameter. 
+ハイブリッド検索は BM25 と ベクトル検索 を組み合わせ、`alpha` パラメーターに応じて 2 つのアルゴリズムを重み付けします。 
 
-`alpha`= 0 --> pure BM25
+`alpha` = 0 --> 純粋な BM25
 
-`alpha`= 0.5 --> half BM25, half vector search
+`alpha` = 0.5 --> BM25 と ベクトル検索 を半分ずつ
 
-`alpha`= 1 --> pure vector search
+`alpha` = 1 --> 純粋な ベクトル検索
 
 ```python
 import json 
@@ -219,7 +219,7 @@ for o in response.objects:
     print(json.dumps(o.properties, indent=2))
 ```
 
-Python output:
+Python 出力:
 ```text
 {
   "content": "---\ntitle: What is Ref2Vec and why you need it for your recommendation system\nslug: ref2vec-centroid\nauthors: [connor]\ndate: 2022-11-23\ntags: ['integrations', 'concepts']\nimage: ./img/hero.png\ndescription: \"Weaviate introduces Ref2Vec, a new module that utilises Cross-References for Recommendation!\"\n---\n![Ref2vec-centroid](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/generative-search/img/hero.png)\n\n<!-- truncate -->\n\nWeaviate 1.16 introduced the [Ref2Vec](/developers/weaviate/modules/retriever-vectorizer-modules/ref2vec-centroid) module. In this article, we give you an overview of what Ref2Vec is and some examples in which it can add value such as recommendations or representing long objects. ## What is Ref2Vec? The name Ref2Vec is short for reference-to-vector, and it offers the ability to vectorize a data object with its cross-references to other objects. The Ref2Vec module currently holds the name ref2vec-**centroid** because it uses the average, or centroid vector, of the cross-referenced vectors to represent the **referencing** object."
@@ -231,13 +231,13 @@ Python output:
   "content": "Although all the query does is provide the ID of the User object, Ref2Vec has done the hard work by inferring a centroid vector from the User's references to other vectors. And as the set of references continues to evolve, the Ref2Vec vectors will continue to evolve also, ensuring that the User vector remains up-to-date with their latest interests. Whether your goal is to construct a Home Feed interface for users or to pair with search queries, Ref2Vec provides a strong foundation to enable Recommendation with fairly low overhead. For example, it can achieve personalized re-ranking, also known as a session-based recommendation, without persisting user data over a long sequence of interactions. A new user could have personalization available after a few interactions on the app which will help them quickly settle in and feel at home, helping to overcome what is known as the cold-start problem."
 }
 ```
-### Generative Search Query
+### 生成検索クエリ
 
-Here is what happens in the below:
-1. We will retrieve 3 relevant chunks from our vector database
-2. We will pass the 3 chunks to NVIDIA to generate the short paragraph about Ref2Vec
+以下で行われる処理は次のとおりです。  
+1. ベクトルデータベースから関連性の高い 3 つのチャンクを取得します。  
+2. 取得した 3 つのチャンクを NVIDIA に渡し、Ref2Vec についての短い段落を生成します。  
 
-The first line in the output is the generated text, and the `content` pieces below it, are what was retrieved from Weaviate and passed to NVIDIA.
+出力の最初の行が生成されたテキストで、その下の `content` が Weaviate から取得され NVIDIA に渡された内容です。
 
 ```python
 blogs = client.collections.get("BlogChunks")
@@ -253,7 +253,7 @@ for o in response.objects:
     print(json.dumps(o.properties, indent=2))
 ```
 
-Python output:
+Python 出力:
 ```text
 Here is a short paragraph about Ref2Vec:
 
@@ -274,3 +274,4 @@ The image showcases how Ref2Vec generates a composite representation of a user b
   "content": "The following image depicts how Ref2Vec aggregates the representations of 3 Product items to represent a User who has purchased a pair of boots, shorts, and Weaviate t-shirt!\n\n![Ref2Vec Image](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-features/generative-search/img/ref2vec.png)\n\nSuch a representation of the User, by an aggregation of their cross-references, allows Weaviate to conveniently and immediately learn from each User's preferences and actions to provide improved and up-to-date characterizations. Ref2Vec can in other words capture each User's interests and tendencies across multiple axes, such as product categories or even fashion styles! And by doing so, the resulting recommendations can more closely match the User's product and style preferences. We envision Ref2Vec to have great potential in multiple application areas. Let's take a look at a few of them in more detail, starting with recommendation systems. ## Recommendation in Weaviate\nMany of you might primarily know Weaviate as a vector database and search engine, but Weaviate can also power high-quality, lightning-fast recommendations."
 }
 ```
+

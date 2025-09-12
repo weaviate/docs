@@ -1,5 +1,5 @@
 ---
-title: AWS + Weaviate
+title: AWS と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_aws.jpg
 # tags: ['model providers', 'aws']
@@ -7,55 +7,56 @@ image: og/docs/integrations/provider_integrations_aws.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-AWS offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with AWS's APIs, allowing users to leverage AWS's models directly from the Weaviate Database.
+ AWS は、自然言語処理および生成のための幅広いモデルを提供しています。 Weaviate は AWS の API とシームレスに統合され、ユーザーは Weaviate Database から直接 AWS のモデルを活用できます。
 
-Weaviate integrates with both AWS [Sagemaker](https://aws.amazon.com/sagemaker/) and [Bedrock](https://aws.amazon.com/bedrock/).
+ Weaviate は、 AWS の [Sagemaker](https://aws.amazon.com/sagemaker/) と [Bedrock](https://aws.amazon.com/bedrock/) の両方と統合しています。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+ これらの統合により、開発者は高度な AI 駆動アプリケーションを容易に構築できます。
 
 :::tip Sagemaker vs Bedrock
-Amazon SageMaker is a fully managed service where you can build, train and deploy ML models. Amazon Bedrock is a fully managed service that offers a choice of high-performing foundation models (FMs) from leading AI companies.
+Amazon SageMaker は、機械学習モデルの構築、トレーニング、デプロイを行えるフルマネージドサービスです。Amazon Bedrock は、主要な AI 企業が提供する高性能な基盤モデル (FM) を選択できるフルマネージドサービスです。
 :::
 
-## Integrations with AWS
+## AWS との統合
 
-### Embedding models for vector search
+### ベクトル検索用埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_aws_embedding.png)
+![埋め込み統合のイラスト](../_includes/integration_aws_embedding.png)
 
-AWS's embedding models transform text data into vector embeddings, capturing meaning and context.
+ AWS の埋め込みモデルは、テキストデータをベクトル埋め込みに変換し、意味とコンテキストを捉えます。
 
-[Weaviate integrates with AWS's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+ [Weaviate は AWS の埋め込みモデルと統合](./embeddings.md) し、データのシームレスなベクトル化を実現します。この統合により、追加の前処理やデータ変換を行わずに、セマンティック検索およびハイブリッド検索を実行できます。
 
-[AWS embedding integration page](./embeddings.md)
+[AWS 埋め込み統合ページ](./embeddings.md)
 
-### Generative AI models for RAG
+### RAG 向け生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_aws_rag_single.png)
+![シングルプロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_aws_rag_single.png)
 
-AWS's generative AI models can generate human-like text based on given prompts and contexts.
+ AWS の生成 AI モデルは、与えられたプロンプトとコンテキストに基づき、人間のようなテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with AWS's generative AI models to generate personalized and context-aware responses.
+ [Weaviate の生成 AI 統合](./generative.md) により、 Weaviate Database から直接 検索拡張生成 (RAG) を実行できます。これにより、 Weaviate の効率的なストレージと高速な検索機能を AWS の生成 AI モデルと組み合わせ、パーソナライズされたコンテキスト認識の応答を生成します。
 
-[AWS generative AI integration page](./generative.md)
+[AWS 生成 AI 統合ページ](./generative.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage AWS's powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内で直接 AWS の強力なモデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI 駆動アプリケーションの構築プロセスが簡素化され、開発を加速し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide [access key based AWS credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to Weaviate for these integrations. Go to [AWS](https://aws.amazon.com/) to sign up and obtain an AWS access key and a corresponding AWS secret access key.
+これらの統合を利用するには、 Weaviate に [アクセスキー形式の AWS 認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) を提供する必要があります。 AWS にアクセスし、サインアップして AWS アクセスキーと対応する AWS シークレットアクセスキーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the AWS models and start using them in your applications.
+その後、該当する統合ページに移動し、 AWS モデルで Weaviate を設定してアプリケーションで使用する方法をご確認ください。
 
-- [Text Embeddings](./embeddings.md)
-- [Generative AI](./generative.md)
+- [テキスト埋め込み](./embeddings.md)
+- [生成 AI](./generative.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

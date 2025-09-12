@@ -1,13 +1,12 @@
 ---
-title: Generative AI
-description: Ollama Generative Model Provider
+title: 生成 AI
+description: Ollama 生成モデルプロバイダー
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_ollama.jpg
 # tags: ['model providers', 'ollama', 'generative', 'rag']
 ---
 
-# Ollama Generative AI with Weaviate
-
+# Weaviate と Ollama の生成 AI
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -17,50 +16,50 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with Ollama's models allows you to access their models' capabilities directly from Weaviate.
+ Weaviate と  Ollama のモデルを統合すると、 Weaviate から直接それらのモデル機能にアクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with Ollama. Weaviate will perform retrieval augmented generation (RAG) using the specified model via your local Ollama instance.
+[ Weaviate コレクションを設定](#configure-collection)して、 Ollama の生成 AI モデルを利用します。 Weaviate は指定したモデルを介してローカルの  Ollama インスタンスと連携し、検索拡張生成 ( RAG ) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the Ollama generative model to generate outputs.
+具体的には、 Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得した後、それらを  Ollama の生成モデルに渡して出力を生成します。
 
 ![RAG integration illustration](../_includes/integration_ollama_rag.png)
 
-## Requirements
+## 要件
 
 ### Ollama
 
-This integration requires a locally running Ollama instance with your selected model available. Refer to the [Ollama documentation](https://ollama.com/) for installation and model download instructions.
+この統合には、選択したモデルが利用可能なローカル実行中の  Ollama インスタンスが必要です。インストールとモデルのダウンロード方法については、[ Ollama ドキュメント](https://ollama.com/)を参照してください。
 
-### Weaviate configuration
+### Weaviate 設定
 
-Your Weaviate instance must be configured with the Ollama generative AI integration (`generative-ollama`) module.
+お使いの  Weaviate インスタンスには、 Ollama 生成 AI 統合 ( `generative-ollama` ) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary> Weaviate Cloud ( WCD ) ユーザーの方へ</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は  Weaviate Cloud ( WCD ) の serverless インスタンスでデフォルトで有効になっています。
 <br/>
 
-To use Ollama with Weaviate Cloud, make sure your Ollama server is running and accessible from the Weaviate Cloud instance. If you are running Ollama on your own machine, you may need to expose it to the internet. Carefully consider the security implications of exposing your Ollama server to the internet.
+ Weaviate Cloud で  Ollama を使用するには、 Ollama サーバーが稼働しており、 Weaviate Cloud インスタンスからアクセス可能であることを確認してください。ご自身のマシンで  Ollama を実行している場合は、インターネットに公開する必要があるかもしれません。 Ollama サーバーをインターネットに公開する際のセキュリティ上の影響を慎重にご検討ください。
 <br/>
 
-For use cases such as this, consider using a self-hosted Weaviate instance, or another API-based integration method.
+このようなユースケースでは、セルフホストの  Weaviate インスタンスや、その他の API ベースの統合方法の利用をご検討ください。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの方へ</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md)を確認し、モジュールが有効かどうかを確かめてください。  
+-  Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md)ガイドに従ってください。
 
 </details>
 
-Your Weaviate instance must be able to access the Ollama endpoint. If you area a Docker user, specify the [Ollama endpoint using `host.docker.internal`](#configure-collection) alias to access the host machine from within the container.
+お使いの  Weaviate インスタンスから  Ollama エンドポイントへアクセスできる必要があります。 Docker を使用している場合は、コンテナ内からホストマシンへアクセスするために、[ `host.docker.internal` を使用して Ollama エンドポイントを指定](#configure-collection)してください。
 
-### Credentials
+### 資格情報
 
-As this integration connects to a local Ollama container, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+この統合はローカルの  Ollama コンテナに接続するため、追加の資格情報 (例: API キー) は不要です。以下の例のように通常どおり  Weaviate へ接続してください。
 
 <Tabs groupId="languages">
 
@@ -84,13 +83,13 @@ As this integration connects to a local Ollama container, no additional credenti
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定 {#configure-collection}
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an Ollama generative model:
+[ Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)して、 Ollama 生成モデルを使用するには以下のようにします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -117,11 +116,11 @@ import APIEndpoint from '/docs/weaviate/model-providers/_includes/ollama/api-end
 
 <APIEndpoint/>
 
-The [default model](#available-models) is used if no model is specified.
+モデルを指定しない場合は、[デフォルトモデル](#available-models)が使用されます。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -142,19 +141,19 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Retrieval augmented generation
+## 検索拡張生成 (RAG)
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 連携を設定したら、RAG 操作を [単一プロンプト](#single-prompt) 方法または [グループ化タスク](#grouped-task) 方法で実行できます。
 
-### Single prompt
+### 単一プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_ollama_rag_single.png)
+![単一プロンプト RAG 連携により検索結果ごとに個別の出力を生成](../_includes/integration_ollama_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果内の各オブジェクトに対してテキストを生成するには、単一プロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+単一プロンプトクエリを作成する際、Weaviate が言語モデルに渡すオブジェクトのプロパティを中括弧 `{}` で挿入します。たとえばオブジェクトの `title` プロパティを渡したい場合、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -178,13 +177,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ化タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_ollama_rag_grouped.png)
+![グループ化タスク RAG 連携により検索結果全体に対して 1 つの出力を生成](../_includes/integration_ollama_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果の集合全体に対して 1 つのテキストを生成するには、グループ化タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+言い換えると、`n` 件の検索結果があっても、生成モデルはその全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -208,9 +207,9 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-### RAG with images
+### 画像を含む RAG
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+単一プロンプトとグループ化タスクのどちらでも、入力の一部として画像を渡すことができます。 
 
 <Tabs groupId="languages">
 
@@ -232,7 +231,7 @@ You can also supply images as a part of the input when performing retrieval augm
   </TabItem>
 </Tabs>
 
-## References
+## 参考資料
 
 <!-- Hiding "full" examples as no other parameters exist than shown above -->
 <!-- <Tabs groupId="languages">
@@ -256,33 +255,34 @@ You can also supply images as a part of the input when performing retrieval augm
 
 </Tabs> -->
 
-### Available models
+### 利用可能なモデル
 
-See the [Ollama documentation](https://ollama.com/library) for a list of available models. Note that this list includes both generative models and embedding models; specify a generative model for the `generative-ollama` module.
+[ Ollama ドキュメント](https://ollama.com/library) で利用可能なモデルの一覧をご覧いただけます。 この一覧には生成モデルと埋め込みモデルの両方が含まれている点にご注意ください。 `generative-ollama` モジュールには生成モデルを指定してください。
 
-Download the desired model with `ollama pull <model-name>`.
+目的のモデルは `ollama pull <model-name>` でダウンロードできます。
 
-If no model is specified, the default model (`llama3`) is used.
+モデルを指定しない場合は、デフォルトで `llama3` が使用されます。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Ollama embedding models + Weaviate](./embeddings.md).
+- [ Ollama 埋め込みモデル + Weaviate](./embeddings.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、 Weaviate でのデータ管理および検索操作は他のコレクションと同様に動作します。 以下のモデル非依存の例をご覧ください:
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) ガイドでは、データ操作 (つまり、コレクションおよびその中のオブジェクトの作成・読み取り・更新・削除) の方法を説明しています。
+- [How-to: クエリ &amp; 検索](../../search/index.mdx) ガイドでは、ベクトル、キーワード、ハイブリッド検索に加えて 検索拡張生成 を実行する方法を説明しています。
 
-### References
+### 参考資料
 
-- [Ollama models](https://ollama.com/library)
-- [Ollama repository](https://github.com/ollama/ollama)
-- [How to change the host and port of the Ollama server](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-expose-ollama-on-my-network)
+- [ Ollama モデル](https://ollama.com/library)
+- [ Ollama レポジトリ](https://github.com/ollama/ollama)
+- [ Ollama サーバーのホストとポートを変更する方法](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-expose-ollama-on-my-network)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

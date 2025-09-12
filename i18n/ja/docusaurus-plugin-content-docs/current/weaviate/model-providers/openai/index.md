@@ -1,6 +1,6 @@
 ---
-title: OpenAI + Weaviate
-description: "OpenAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with OpenAI's APIs, allowing users to leverage OpenAI's models directly from the Weaviate Database."
+title: OpenAI と Weaviate
+description: "OpenAI は、自然言語処理と生成のために幅広いモデルを提供しています。Weaviate は OpenAI の API とシームレスに統合され、ユーザーは Weaviate Database から直接 OpenAI のモデルを活用できます。"
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_openai.jpg
 # tags: ['model providers', 'openai']
@@ -8,53 +8,54 @@ image: og/docs/integrations/provider_integrations_openai.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-:::info Looking for Azure OpenAI integration docs?
-For Azure OpenAI integration docs, see [this page instead](../openai-azure/index.md).
+:::info Azure OpenAI 統合ドキュメントをお探しですか？
+Azure OpenAI の統合ドキュメントについては、代わりに [こちらのページ](../openai-azure/index.md) をご覧ください。
 :::
 
-OpenAI offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with OpenAI's APIs, allowing users to leverage OpenAI's models directly from the Weaviate Database.
+OpenAI は、自然言語処理と生成のために幅広いモデルを提供しています。Weaviate は OpenAI の API とシームレスに統合されており、ユーザーは Weaviate Database から直接 OpenAI のモデルを活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with OpenAI
+## OpenAI との統合
 
-### Embedding models for vector search
+### ベクトル検索用 Embedding モデル
 
-![Embedding integration illustration](../_includes/integration_openai_embedding.png)
+![Embedding 統合のイラスト](../_includes/integration_openai_embedding.png)
 
-OpenAI's embedding models transform text data into vector embeddings, capturing meaning and context.
+OpenAI の embedding モデルは、テキストデータを意味とコンテキストを捉えたベクトル埋め込みへ変換します。
 
-[Weaviate integrates with OpenAI's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は OpenAI の embedding モデルと統合](./embeddings.md) しており、データのシームレスなベクトライゼーションを実現します。この統合により、追加の前処理やデータ変換を行わずに、セマンティック検索やハイブリッド検索を実行できます。
 
-[OpenAI embedding integration page](./embeddings.md)
+[OpenAI embedding 統合ページ](./embeddings.md)
 
-### Generative AI models for RAG
+### RAG 用生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_openai_rag_single.png)
+![単一プロンプト RAG 統合では検索結果ごとに個別の出力を生成](../_includes/integration_openai_rag_single.png)
 
-OpenAI's generative AI models can generate human-like text based on given prompts and contexts.
+OpenAI の生成 AI モデルは、与えられたプロンプトとコンテキストに基づき、人間らしいテキストを生成します。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with OpenAI's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 統合](./generative.md) を利用すると、Weaviate Database から直接 検索拡張生成 (RAG) を実行できます。これにより、Weaviate の効率的なストレージと高速検索機能に OpenAI の生成 AI モデルを組み合わせ、パーソナライズされたコンテキスト重視の応答を生成できます。
 
-[OpenAI generative AI integration page](./generative.md)
+[OpenAI 生成 AI 統合ページ](./generative.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage OpenAI's powerful models directly within Weaviate.
+これらの統合により、開発者は Weaviate 内で直接 OpenAI の強力なモデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI 駆動アプリケーションの構築プロセスが簡素化され、開発スピードが向上し、革新的なソリューションの創出に専念できます。
 
-## Get started
+## 開始方法
 
-You must provide a valid OpenAI API key to Weaviate for these integrations. Go to [OpenAI](https://openai.com/) to sign up and obtain an API key.
+これらの統合を利用するには、有効な OpenAI API キーを Weaviate に提供する必要があります。OpenAI に [サインアップ](https://openai.com/) して API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the OpenAI models and start using them in your applications.
+その後、該当する統合ページに移動し、OpenAI モデルを Weaviate に設定してアプリケーションで利用する方法を学びましょう。
 
-- [Text Embeddings](./embeddings.md)
-- [Generative AI](./generative.md)
+- [テキスト Embeddings](./embeddings.md)
+- [生成 AI](./generative.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

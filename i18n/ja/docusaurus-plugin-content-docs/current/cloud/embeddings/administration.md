@@ -1,7 +1,7 @@
 ---
-title: Administration
+title: 管理
 sidebar_position: 3
-description: "Configuration and management settings for Weaviate Embeddings service at the organization level."
+description: "組織レベルでの Weaviate Embeddings サービスの設定と管理。"
 image: og/wcd/user_guides.jpg
 ---
 
@@ -9,12 +9,12 @@ import Link from '@docusaurus/Link';
 
 
 :::info
-Weaviate Embeddings is enabled by default at the organization level and is available to all Weaviate Cloud users. 
+Weaviate Embeddings はデフォルトで組織レベルで有効になっており、すべての Weaviate Cloud ユーザーが利用できます。 
 :::
 
-## Disable Weaviate Embeddings
+## Weaviate Embeddings の無効化
 
-Weaviate Embeddings is **enabled by default** at the organization level. To disable the Weaviate Embeddings service for your whole organization, follow these steps:
+Weaviate Embeddings は組織レベルで **デフォルトで有効** になっています。組織全体で Weaviate Embeddings サービスを無効にするには、次の手順に従ってください。
 
 import DisableWeaviateEmbeddings from '/docs/cloud/img/weaviate-cloud-disable-embeddings.png';
 
@@ -22,46 +22,47 @@ import DisableWeaviateEmbeddings from '/docs/cloud/img/weaviate-cloud-disable-em
   <div class="col col--4">
     <ol>
       <li>
-        Open the <Link to="https://console.weaviate.cloud/">Weaviate Cloud console</Link>.
+        <Link to="https://console.weaviate.cloud/">Weaviate Cloud コンソール</Link> を開きます。
       </li>
       <li>
-       Click on <code>Weaviate Embeddings</code> in the left sidebar (<span class="callout">1</span>). 
+        左側のサイドバー (<span class="callout">1</span>) で <code>Weaviate Embeddings</code> をクリックします。 
       </li>
       <li>
-       Use the toggle button <code>Enabled</code> to either disable or enable the service. (<span class="callout">2</span>). 
+        <code>Enabled</code> トグルボタン (<span class="callout">2</span>) を使用してサービスを有効化または無効化します。 
       </li>
     </ol>
   </div>
   <div class="col col--8">
     <div class="card">
       <div class="card__image">
-        <img src={DisableWeaviateEmbeddings} alt="Disable Weaviate Embeddings globally" />
+        <img src={DisableWeaviateEmbeddings} alt="Weaviate Embeddings をグローバルで無効化" />
       </div>
-      <div class="card__body">Disable Weaviate Embeddings globally.</div>
+      <div class="card__body">Weaviate Embeddings をグローバルで無効化します。</div>
     </div>
   </div>
 </div>
 
 <!-- TODO[g-despot] Update screenshot if necessary -->
 
-## Pricing and billing
+## 料金と課金
 
 <!-- TODO[g-despot] Update link -->
-If you would like to learn about the pricing model, you can visit the Weaviate Embeddings [product page](https://weaviate.io/product/embeddings). 
-The pricing works on a per-token basis. This means that you will only be billed for the tokens that are successfully consumed. 
-In other words, only requests that result in valid responses from the API are considered.
+料金モデルの詳細については、Weaviate Embeddings の [製品ページ](https://weaviate.io/product/embeddings) をご覧ください。  
+料金はトークン単位で計算されます。つまり、実際に消費されたトークン分のみ課金されます。言い換えると、API から有効なレスポンスが返されたリクエストのみが課金対象になります。
 
-More info about billing in Weaviate Cloud can be found on [this page](/cloud/platform/billing).
+Weaviate Cloud の課金に関する詳細は [こちらのページ](/cloud/platform/billing) でご確認いただけます。
 
-## Additional resources
+## 追加リソース
 
-- [Weaviate Embeddings: Overview](/cloud/embeddings)
-- [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
-- [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
-- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Weaviate Embeddings: 概要](/cloud/embeddings)
+- [Weaviate Embeddings: クイックスタート](/cloud/embeddings/quickstart)
+- [Weaviate Embeddings: モデルの選択](/cloud/embeddings/models)
+- [モデルプロバイダー統合: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+
+

@@ -1,15 +1,15 @@
 ---
-title: Text Embeddings
-description: OpenAI Embedding Model Provider
+title: テキスト埋め込み
+description: OpenAI 埋め込みモデルプロバイダー
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_openai.jpg
 # tags: ['model providers', 'openai', 'embeddings']
 ---
 
-# OpenAI Embeddings with Weaviate
+# Weaviate での OpenAI 埋め込み
 
-:::info Looking for Azure OpenAI integration docs?
-For Azure OpenAI integration docs, see [this page instead](../openai-azure/embeddings.md).
+:::info Azure OpenAI 連携ドキュメントをお探しですか？
+Azure OpenAI 連携ドキュメントについては、代わりに [こちらのページ](../openai-azure/embeddings.md) をご覧ください。
 :::
 
 import Tabs from '@theme/Tabs';
@@ -22,45 +22,45 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with OpenAI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate の OpenAI API 連携により、Weaviate から直接 OpenAI モデルの機能にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an OpenAI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your OpenAI API key. This feature is called the *vectorizer*.
+[Weaviate ベクトルインデックスを設定](#configure-the-vectorizer) して OpenAI 埋め込みモデルを使用すると、Weaviate は指定したモデルとお客様の OpenAI API キーを用いて各種操作の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、Weaviate はテキストオブジェクトの埋め込みを生成し、インデックスに保存します。また、[vector](#vector-near-text-search) 検索や [hybrid](#hybrid-search) 検索を行う際には、Weaviate がテキストクエリを埋め込みへ変換します。
 
 ![Embedding integration illustration](../_includes/integration_openai_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the OpenAI vectorizer integration (`text2vec-openai`) module.
+お使いの Weaviate インスタンスには、OpenAI ベクトライザー連携 (`text2vec-openai`) モジュールが有効化されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この連携は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかは、[クラスターメタデータ](/deploy/configuration/meta.md) で確認できます。  
+- Weaviate でモジュールを有効化するには、[モジュール設定方法](../../configuration/modules.md) ガイドを参照してください。
 
 </details>
 
 <!-- Docs note: the `OPENAI_ORGANIZATION` environment variable is not documented, as it is not the recommended way to provide the OpenAI organization parameter. -->
 
-### API credentials
+### API 資格情報
 
-You must provide a valid OpenAI API key to Weaviate for this integration. Go to [OpenAI](https://openai.com/) to sign up and obtain an API key.
+この連携を使用するには、有効な OpenAI API キーを Weaviate に提供する必要があります。API キーは [OpenAI](https://openai.com/) で取得できます。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡してください。
 
-- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- `OPENAI_APIKEY` 環境変数を設定して Weaviate から参照できるようにする  
+- 下記の例のように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -93,9 +93,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定 {#configure-the-vectorizer}
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an OpenAI embedding model:
+[Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) して OpenAI 埋め込みモデルを利用するには、以下のようにします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -127,13 +127,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
+### モデルの選択
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration examples.
+以下の設定例に示すように、ベクトライザーで使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
-#### For `text-embedding-3` model family
+#### `text-embedding-3` モデル ファミリーの場合
 
-For `v3` models such as `text-embedding-3-large`, provide the model name and optionally the dimensions (e.g. `1024`).
+`text-embedding-3-large` などの `v3` モデルでは、モデル名と必要に応じて次元数（例: `1024`）を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -165,9 +165,9 @@ For `v3` models such as `text-embedding-3-large`, provide the model name and opt
 
 </Tabs>
 
-#### For older model families (e.g. `ada`)
+#### 旧モデル ファミリーの場合（例: `ada`）
 
-For older models such as `text-embedding-ada-002`, provide the model name (`ada`), the type (`text`) and the model version (`002`).
+`text-embedding-ada-002` などの旧モデルでは、モデル名（`ada`）、タイプ（`text`）、モデル バージョン（`002`）を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -199,34 +199,34 @@ For older models such as `text-embedding-ada-002`, provide the model name (`ada`
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate が使用する [利用可能なモデル](#available-models) のいずれかを[指定](#vectorizer-parameters)できます。モデルを指定しない場合は、[既定のモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
+### ベクトライザー パラメーター
 
-- `model`: The OpenAI model name or family.
-- `dimensions`: The number of dimensions for the model.
-- `modelVersion`: The version string for the model.
-- `type`: The model type, either `text` or `code`.
-- `baseURL`: The URL to use (e.g. a proxy) instead of the default OpenAI URL.
+- `model`: OpenAI のモデル名またはファミリーです。
+- `dimensions`: モデルの次元数です。
+- `modelVersion`: モデルのバージョン文字列です。
+- `type`: モデルのタイプで、`text` か `code` のいずれかです。
+- `baseURL`: 既定の OpenAI URL の代わりに使用する URL（例: プロキシ）です。
 
-#### (`model` & `dimensions`) or (`model` & `modelVersion`)
+#### (`model` & `dimensions`) または (`model` & `modelVersion`)
 
-For `v3` models such as `text-embedding-3-large`, provide the model name and optionally the dimensions (e.g. `1024`).
+`text-embedding-3-large` のような `v3` モデルでは、モデル名と必要に応じて次元数（例: `1024`）を指定します。
 
-For older models such as `text-embedding-ada-002`, provide the model name (`ada`), the type (`text`) and the model version (`002`).
+`text-embedding-ada-002` のような旧モデルでは、モデル名（`ada`）、タイプ（`text`）およびモデル バージョン（`002`）を指定します。
 
-#### Example configuration
+#### 設定例
 
-The following examples show how to configure OpenAI-specific options.
+以下の例では、OpenAI 固有のオプションの設定方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -258,23 +258,23 @@ The following examples show how to configure OpenAI-specific options.
 
 </Tabs>
 
-For further details on model parameters, see the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/embeddings).
+モデル パラメーターの詳細については、[OpenAI API ドキュメント](https://platform.openai.com/docs/api-reference/embeddings) を参照してください。
 
-## Header parameters
+## ヘッダー・パラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+実行時に追加ヘッダーをリクエストに含めることで、API キーやいくつかのオプションパラメーターを指定できます。使用可能なヘッダーは次のとおりです。
 
-- `X-OpenAI-Api-Key`: The OpenAI API key.
-- `X-OpenAI-Baseurl`: The base URL to use (e.g. a proxy) instead of the default OpenAI URL.
-- `X-OpenAI-Organization`: The OpenAI organization ID.
+- `X-OpenAI-Api-Key`: OpenAI API キー  
+- `X-OpenAI-Baseurl`: 既定の OpenAI URL の代わりに使用するベース URL（例: プロキシ）  
+- `X-OpenAI-Organization`: OpenAI 組織 ID  
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定した追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーの指定方法は、上記の [API 資格情報の例](#api-credentials) をご覧ください。
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定した後、Weaviate に [データをインポート](../../manage-objects/import.mdx) します。Weaviate は指定されたモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -307,21 +307,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+既に互換性のあるモデルベクトルをお持ちの場合は、それを直接 Weaviate に渡すことができます。たとえば同じモデルで埋め込みを生成済みで、他のシステムからデータを移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified OpenAI model.
+ベクトライザーが設定されると、Weaviate は指定された OpenAI モデルを使用してベクトル検索およびハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_openai_embedding_search.png)
+![検索時の埋め込み統合のイラスト](../_includes/integration_openai_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した数 `n` の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -354,15 +354,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード（BM25）検索を行い、その結果を [結合](../../search/hybrid.md) してデータベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、Weaviate はテキストクエリを指定モデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した数 `n` の最もスコアが高いオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -395,52 +395,55 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
 
-### Available models
 
-You can use any OpenAI embedding model with `text2vec-openai`. For document embeddings, choose from the following [embedding model families](https://platform.openai.com/docs/models/embeddings):
+## 参考資料
+
+### 利用可能なモデル
+
+`text2vec-openai` では、任意の OpenAI 埋め込みモデルを使用できます。ドキュメント埋め込みには、次の [埋め込みモデルファミリー](https://platform.openai.com/docs/models/embeddings) から選択してください。
 
 * `text-embedding-3`
-    * Available dimensions:
-        * `text-embedding-3-large`: `256`, `1024`, `3072` (default)
-        * `text-embedding-3-small`: `512`, `1536` (default)
+    * 利用可能な次元:
+        * `text-embedding-3-large`: `256`, `1024`, `3072` (デフォルト)
+        * `text-embedding-3-small`: `512`, `1536` (デフォルト)
 * `ada`
 * `babbage`
 * `davinci`
 
 <details>
-  <summary>Deprecated models</summary>
+  <summary>非推奨モデル</summary>
 
-The following models are available, but deprecated:
+以下のモデルは利用可能ですが、非推奨です:
 * Codex
 * babbage-001
 * davinci-001
 * curie
 
-[Source](https://platform.openai.com/docs/deprecations)
+[出典](https://platform.openai.com/docs/deprecations)
 
 </details>
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### 他の統合
 
-- [OpenAI generative models + Weaviate](./generative.md).
+- [OpenAI 生成モデル + Weaviate](./generative.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、 Weaviate におけるデータ管理と検索操作は他のコレクションと同様に機能します。モデル非依存の例を以下に示します。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ハウツー: コレクションを管理](../../manage-collections/index.mdx) および [ハウツー: オブジェクトを管理](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションとその内部のオブジェクトの作成・読み取り・更新・削除）方法を説明しています。
+- [ハウツー: クエリ & 検索](../../search/index.mdx) ガイドでは、検索操作（ ベクトル 、キーワード、ハイブリッド）および 検索拡張生成 の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
-- OpenAI [Embed API documentation](https://platform.openai.com/docs/api-reference/embeddings)
+- OpenAI [Embed API ドキュメント](https://platform.openai.com/docs/api-reference/embeddings)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

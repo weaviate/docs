@@ -7,38 +7,39 @@ image: og/docs/integrations/provider_integrations_anthropic.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Anthropic offers a wide range of models for natural language processing and generation. Weaviate seamlessly integrates with Anthropic's APIs, allowing users to leverage Anthropic's models directly from the Weaviate Database.
+Anthropic は、自然言語処理および生成向けの幅広いモデルを提供しています。 Weaviate は Anthropic の API とシームレスに連携し、ユーザーは Weaviate データベースから直接 Anthropic のモデルを活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの連携により、開発者は高度な AI 主導のアプリケーションを簡単に構築できます。
 
-## Integrations with Anthropic
+## Anthropic との連携
 
-### Generative AI models for RAG
+### RAG 向け生成 AI モデル
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_anthropic_rag_single.png)
+![単一プロンプトの RAG 連携は検索結果ごとに個別の出力を生成します](../_includes/integration_anthropic_rag_single.png)
 
-Anthropic's generative AI models can generate human-like text based on given prompts and contexts.
+Anthropic の生成 AI モデルは、与えられたプロンプトとコンテキストに基づいて人間らしいテキストを生成できます。
 
-[Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with Anthropic's generative AI models to generate personalized and context-aware responses.
+[Weaviate の生成 AI 連携](./generative.md) により、ユーザーは Weaviate データベースから直接 検索拡張生成 (RAG) を実行できます。これにより、 Weaviate の高効率なストレージと高速検索機能と Anthropic の生成 AI モデルが組み合わさり、パーソナライズされた文脈認識応答を生成できます。
 
-[Anthropic generative AI integration page](./generative.md)
+[Anthropic 生成 AI 連携ページ](./generative.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage Anthropic's powerful models directly within Weaviate.
+これらの連携により、開発者は Weaviate 内で Anthropic の強力なモデルを直接活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、 AI 主導のアプリケーションを構築するプロセスが簡素化され、開発サイクルが加速するため、イノベーティブなソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Anthropic API key to Weaviate for these integrations. Go to [Anthropic](https://www.anthropic.com/) to sign up and obtain an API key.
+これらの連携を利用するには、 Weaviate に有効な Anthropic API キーを設定する必要があります。 [Anthropic](https://www.anthropic.com/) にアクセスしてサインアップし、 API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Anthropic models and start using them in your applications.
+次に、関連する連携ページに移動し、 Anthropic モデルで Weaviate を設定して、アプリケーションで使用を開始してください。
 
-- [Generative AI](./generative.md)
+- [生成 AI](./generative.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

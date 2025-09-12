@@ -1,7 +1,7 @@
 ---
-title: Notes and best practices
+title: 注意事項とベストプラクティス
 sidebar_position: 2
-description: "Python client best practices, optimization tips, and recommended implementation patterns for Weaviate."
+description: "Weaviate の Python クライアントにおけるベストプラクティス、最適化のヒント、おすすめ実装パターンです。"
 image: og/docs/client-libraries.jpg
 ---
 
@@ -11,17 +11,17 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
 import BatchVectorCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
 
-## Instantiate a client
+## クライアントの生成
 
-There are multiple ways to connect to your Weaviate instance. To instantiate a client, use one of these styles:
+Weaviate インスタンスへ接続する方法はいくつかあります。クライアントを生成するには、次のいずれかの方法を使用します。
 
-- [Connection helper functions](#connection-helper-functions)
-- [Explicit instantiation](#explicit-instantiation)
+- [接続ヘルパー関数](#connection-helper-functions)
+- [明示的な生成](#explicit-instantiation)
 
-### Connection helper functions
+### 接続ヘルパー関数
 
 - `weaviate.connect_to_weaviate_cloud()`
-    - Previously `connect_to_wcs()`
+    - 以前は `connect_to_wcs()` です
 - `weaviate.connect_to_local()`
 - `weaviate.connect_to_embedded()`
 - `weaviate.connect_to_custom()`
@@ -69,15 +69,15 @@ There are multiple ways to connect to your Weaviate instance. To instantiate a c
 </TabItem>
 </Tabs>
 
-The `v4` client helper functions provide some optional parameters to customize your client.
+`v4` クライアントのヘルパー関数では、クライアントをカスタマイズするためのオプションパラメーターを指定できます。
 
-- [Specify external API keys](#external-api-keys)
-- [Specify connection timeout values](#timeout-values)
-- [Specify authentication details](#authentication)
+- [外部 API キーを指定](#external-api-keys)
+- [タイムアウト値を指定](#timeout-values)
+- [認証情報を指定](#authentication)
 
-#### External API keys
+#### 外部 API キー
 
-To add API keys for services such as Cohere or OpenAI, use the `headers` parameter.
+Cohere や OpenAI などのサービス向け API キーを追加するには、`headers` パラメーターを使用します。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -86,9 +86,9 @@ To add API keys for services such as Cohere or OpenAI, use the `headers` paramet
   language="py"
 />
 
-#### Timeout values
+#### タイムアウト値
 
-You can set timeout values, in seconds, for the client. Use the `Timeout` class to configure the timeout values for initialization checks as well as query and insert operations.
+クライアントのタイムアウト値（秒）を設定できます。`Timeout` クラスを使用して、初期化チェックやクエリ、挿入操作のタイムアウト値を構成します。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -97,14 +97,14 @@ You can set timeout values, in seconds, for the client. Use the `Timeout` class 
   language="py"
 />
 
-:::tip Timeouts on `generate` queries
+:::tip `generate` クエリのタイムアウト
 
-If you see errors while using the `generate` submodule, try increasing the query timeout values (`Timeout(query=60)`). <br/><br/>The `generate` submodule uses a large language model to generate text. The submodule is dependent on the speed of the language model and any API that serves the language model. <br/><br/>Increase the timeout values to allow the client to wait longer for the language model to respond.
+`generate` サブモジュールを使用している際にエラーが発生した場合は、クエリのタイムアウト値（`Timeout(query=60)`）を増やしてみてください。 <br/><br/>`generate` サブモジュールでは、大規模言語モデルを使ってテキストを生成します。このサブモジュールは、言語モデルやその API の速度に依存します。 <br/><br/>タイムアウト値を増やすことで、言語モデルからの応答をクライアントがより長く待機できるようになります。
 :::
 
-#### Authentication
+#### 認証
 
-Some of the `connect` helper functions take authentication credentials. For example, `connect_to_weaviate_cloud` accepts a WCD API key or OIDC authentication credentials.
+一部の `connect` ヘルパー関数は認証情報を受け取ります。たとえば、`connect_to_weaviate_cloud` は WCD API キーまたは OIDC 認証情報を受け付けます。
 
 <Tabs groupId="languages">
 <TabItem value="api_key" label="API Key">
@@ -128,24 +128,24 @@ Some of the `connect` helper functions take authentication credentials. For exam
 
 :::warning 
 
-Connecting to Weaviate Cloud (WCD) using OIDC is deprecated and will be removed in the near future. Please use API key authentication instead.
+OIDC を使用した Weaviate Cloud （WCD）への接続は非推奨となっており、近い将来削除されます。代わりに API キー認証をご利用ください。
 
 :::
 
 </TabItem>
 </Tabs>
 
-For OIDC authentication with the Client Credentials flow, use the `AuthClientCredentials` class.
+Client Credentials フローによる OIDC 認証には、`AuthClientCredentials` クラスを使用します。
 
-For OIDC authentication with the Refresh Token flow, use the `AuthBearerToken` class.
+Refresh Token フローによる OIDC 認証には、`AuthBearerToken` クラスを使用します。
 
-If the helper functions do not provide the customization you need, use the [`WeaviateClient`](#explicit-instantiation) class to instantiate the client.
+ヘルパー関数で必要なカスタマイズができない場合は、[`WeaviateClient`](#explicit-instantiation) クラスを使用してクライアントを生成してください。
 
-### Explicit instantiation
+### 明示的なインスタンス化
 
-If you need to pass custom parameters, use the `weaviate.WeaviateClient` class to instantiate a client. This is the most flexible way to instantiate the client object.
+独自のパラメーターを渡す必要がある場合は、`weaviate.WeaviateClient` クラスを使用してクライアントをインスタンス化します。これはクライアントオブジェクトをインスタンス化する最も柔軟な方法です。
 
-When you instantiate a connection directly, you have to call the `.connect()` method to connect to the server.
+接続を直接インスタンス化した場合、サーバーへ接続するには `.connect()` メソッドを呼び出す必要があります。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -154,17 +154,17 @@ When you instantiate a connection directly, you have to call the `.connect()` me
   language="py"
 />
 
-### Using Custom SSL Certificates
+### カスタム SSL 証明書の使用
 
-The Python client doesn't directly support passing SSL certificates. If you need to work with self-signed certificates (e.g. for enterprise environments), you have two options:
+Python クライアントは SSL 証明書の直接指定をサポートしていません。自己署名証明書（例: エンタープライズ環境）を使用する必要がある場合は、以下の 2 つの方法があります。
 
-#### Option 1: Add the certificate to the underlying libraries
+#### オプション 1: 証明書を基盤ライブラリに追加する
 
-You can add the custom SSL certificates to the underlying libraries such as `certifi` that the Weaviate client library uses.
+Weaviate クライアントライブラリが使用する `certifi` などの基盤ライブラリにカスタム SSL 証明書を追加できます。
 
-#### Option 2: Set the environment variables
+#### オプション 2: 環境変数を設定する
 
-Alternatively, you can set the environment variables `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` and `SSL_CERT_FILE` to the path of the certificate file. At instantiation, also set `additional_config=AdditionalConfig(trust_env=True)`. Otherwise, the client library will not use the environment variables.
+または、環境変数 `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` と `SSL_CERT_FILE` に証明書ファイルのパスを設定します。インスタンス化時に `additional_config=AdditionalConfig(trust_env=True)` も指定してください。これを行わないと、クライアントライブラリは環境変数を使用しません。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -173,11 +173,11 @@ Alternatively, you can set the environment variables `GRPC_DEFAULT_SSL_ROOTS_FIL
   language="py"
 />
 
-## Initial connection checks
+## 初期接続チェック
 
-When establishing a connection to the Weaviate server, the client performs a series of checks. These includes checks for the server version, and to make sure that the REST and gRPC ports are available.
+Weaviate サーバーへ接続を確立する際、クライアントは一連のチェックを実行します。これらにはサーバーバージョンの確認や、REST と gRPC のポートが利用可能であるかの確認が含まれます。
 
-You can set `skip_init_checks` to `True` to skip these checks.
+これらのチェックをスキップするには `skip_init_checks` を `True` に設定します。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -186,32 +186,32 @@ You can set `skip_init_checks` to `True` to skip these checks.
   language="py"
 />
 
-In most cases, you should use the default `False` setting for `skip_init_checks`. However, setting `skip_init_checks=True` may be a useful temporary measure if you have connection issues.
+ほとんどの場合、`skip_init_checks` はデフォルト値の `False` のまま使用すべきです。ただし接続に問題がある場合、一時的に `skip_init_checks=True` とすることで役立つことがあります。
 
-For additional connection configuration, see [Timeout values](#timeout-values).
+追加の接続設定については [タイムアウト値](#timeout-values) を参照してください。
 
 
-## Batch imports
+## バッチインポート
 
-The `v4` client offers two ways to perform batch imports. From the client object directly, or from the collection object.
+`v4` クライアントには、バッチインポートを実行する 2 通りの方法があります。クライアントオブジェクトから直接行う方法と、コレクションオブジェクトから行う方法です。
 
-We recommend using the collection object to perform batch imports of single collections or tenants. If you are importing objects across many collections, such as in a multi-tenancy configuration, using `client.batch` may be more convenient.
+単一のコレクションまたはテナントに対してバッチインポートを行う場合は、コレクションオブジェクトを使用することを推奨します。マルチテナンシー構成など複数のコレクションに渡ってオブジェクトをインポートする場合は、`client.batch` を使用する方が便利かもしれません。
 
-### Batch sizing
+### バッチサイズの設定
 
-There are three methods to configure the batching behavior. They are `dynamic`, `fixed_size` and `rate_limit`.
+バッチング動作を設定する方法は 3 つあります。`dynamic`、`fixed_size`、`rate_limit` です。
 
-| Method | Description | When to use |
+| 方法 | 説明 | 使用する場面 |
 | :-- | :-- | :-- |
-| `dynamic` | The batch size and the number of concurrent requests are dynamically adjusted on-the-fly during import, depending on the server load. | Recommended starting point. |
-| `fixed_size` | The batch size and number of concurrent requests are fixed to sizes specified by the user. | When you want to specify fixed parameters. |
-| `rate_limit` | The number of objects sent to Weaviate is rate limited (specified as n_objects per minute). | When you want to avoid hitting third-party vectorization API rate limits. |
+| `dynamic` | バッチサイズと同時実行リクエスト数をインポート中にサーバー負荷に応じて動的に調整します。 | 推奨される開始点。 |
+| `fixed_size` | ユーザーが指定した固定サイズのバッチサイズと同時実行リクエスト数を使用します。 | 固定パラメーターを指定したい場合。 |
+| `rate_limit` | Weaviate へ送信されるオブジェクト数をレートリミットします（n_objects per minute で指定）。 | サードパーティのベクトライゼーション API のレートリミットを回避したい場合。 |
 
-#### Usage
+#### 使用方法
 
-We recommend using a context manager as shown below.
+以下のようにコンテキストマネージャーを使用することを推奨します。
 
-These methods return a new context manager for each batch. Attributes that are returned from one batch, such as `failed_objects` or `failed_references`, are not included in any subsequent calls.
+これらのメソッドは、各バッチごとに新しいコンテキストマネージャーを返します。`failed_objects` や `failed_references` など、あるバッチから返された属性は、後続の呼び出しには含まれません。
 
 <Tabs groupId="languages">
 <TabItem value="dynamic" label="Dynamic">
@@ -246,17 +246,17 @@ These methods return a new context manager for each batch. Attributes that are r
 </TabItem>
 </Tabs>
 
-If the background thread that is responsible for sending the batches raises an exception during batch processing, the error is raised to the main thread.
+バッチ送信を担当するバックグラウンドスレッドがバッチ処理中に例外を発生させた場合、そのエラーはメインスレッドへ伝搬します。
 
-### Error handling
+### エラー処理
 
-During a batch import, any failed objects or references will be stored for retrieval. Additionally, a running count of failed objects and references is maintained.
+バッチインポート中に失敗したオブジェクトや参照は、後で取得できるように保存されます。さらに、失敗したオブジェクトおよび参照の累計数も保持されます。
 
-The counter can be accessed through `batch.number_errors` within the context manager.
+カウンターはコンテキストマネージャー内で `batch.number_errors` から取得できます。
 
-A list of failed objects can be obtained through `batch.failed_objects` and a list of failed references can be obtained through `batch.failed_references`.
+失敗したオブジェクトの一覧は `batch.failed_objects` から、失敗した参照の一覧は `batch.failed_references` から取得できます。
 
-Note that these lists are reset when a batching process is initialized. So make sure to retrieve them before starting a new batch import block.
+これらのリストは、バッチングプロセスを初期化するとリセットされる点に注意してください。新しいバッチインポートブロックを開始する前に、必ず取得してください。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -265,16 +265,16 @@ Note that these lists are reset when a batching process is initialized. So make 
   language="py"
 />
 
-### Batch vectorization
+### バッチ ベクトル化
 
-:::info Added in `v1.25`.
+:::info `v1.25` で追加
 :::
 
 import BatchVectorizationOverview from '/_includes/code/client-libraries/batch-import.mdx';
 
 <BatchVectorizationOverview />
 
-The client automatically handles vectorization if you set the vectorizer when you create the collection.
+コレクションを作成する際に **ベクトライザー** を設定すると、クライアントは自動的にベクトル化を処理します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Create a client">
@@ -287,13 +287,13 @@ The client automatically handles vectorization if you set the vectorizer when yo
   </TabItem>
 </Tabs>
 
-To modify the vectorization settings, update the client object. This example adds multiple vectorizers:
+ベクトル化設定を変更するには、クライアント オブジェクトを更新します。次の例では複数のベクトライザーを追加しています。
 
-- **Cohere**. Set the service API key. Set the request rate.
-- **OpenAI**. Set the service API key. Set the base URL.
-- **VoyageAI**. Set the service API key.
+- **Cohere**: サービス API キーを設定し、リクエスト レートを設定します。  
+- **OpenAI**: サービス API キーを設定し、ベース URL を設定します。  
+- **VoyageAI**: サービス API キーを設定します。  
 
- <Tabs groupId="languages">
+<Tabs groupId="languages">
   <TabItem value="py" label="Modify the client">
     <FilteredTextBlock
       text={BatchVectorCode}
@@ -304,9 +304,9 @@ To modify the vectorization settings, update the client object. This example add
   </TabItem>
 </Tabs>
 
-## Helper classes
+## ヘルパー クラス
 
-The client library provides numerous additional Python classes to provide IDE assistance and typing help. You can import them individually, like so:
+クライアント ライブラリは、多数の追加 Python クラスを提供しており、 IDE 補助や型ヒントを受けられます。次のように個別にインポートできます。
 
 ```
 from weaviate.classes.config import Property, ConfigFactory
@@ -314,37 +314,37 @@ from weaviate.classes.data import DataObject
 from weaviate.classes.query import Filter
 ```
 
-But it may be convenient to import the whole set of classes like this. You will see both usage styles in our documentation.
+ただし、すべてのクラスをまとめてインポートすると便利な場合もあります。ドキュメントでは両方の使用スタイルを紹介しています。
 
 ```
 import weaviate.classes as wvc
 ```
 
-For discoverability, the classes are arranged into submodules.
+探索しやすいように、クラスはサブモジュールに整理されています。
 
 <details>
-  <summary>See the list of submodules</summary>
+  <summary>サブモジュールの一覧を見る</summary>
 
-| Module                       | Description                        |
+| Module                       | Description（説明）                |
 | ---------------------------- | ---------------------------------- |
-| `weaviate.classes.config`    | Collection creation / modification |
-| `weaviate.classes.data`      | CUD operations                     |
-| `weaviate.classes.query`     | query/search operations            |
-| `weaviate.classes.aggregate` | aggregate operations               |
-| `weaviate.classes.generic`   | generics                           |
-| `weaviate.classes.init`      | initialization                     |
-| `weaviate.classes.tenants`   | tenants                            |
-| `weaviate.classes.batch`     | batch operations                   |
+| `weaviate.classes.config`    | コレクションの作成 / 変更          |
+| `weaviate.classes.data`      | CUD 操作                           |
+| `weaviate.classes.query`     | クエリ / 検索操作                  |
+| `weaviate.classes.aggregate` | 集約操作                           |
+| `weaviate.classes.generic`   | 汎用                               |
+| `weaviate.classes.init`      | 初期化                             |
+| `weaviate.classes.tenants`   | テナント                           |
+| `weaviate.classes.batch`     | バッチ操作                         |
 
 </details>
 
-## Connection termination
+## 接続の終了
 
-You must ensure your client connections are closed. You can use `client.close()`, or use a context manager to close client connections for you.
+クライアント接続を必ず閉じる必要があります。`client.close()` を使用するか、コンテキスト マネージャを利用して自動で接続を閉じることができます。
 
-### `client.close()` with `try` / `finally`
+### `client.close()` と `try` / `finally`
 
-This will close the client connection when the `try` block is complete (or if an exception is raised).
+`try` ブロックが完了したとき（または例外が発生したとき）にクライアント接続を閉じます。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -353,9 +353,9 @@ This will close the client connection when the `try` block is complete (or if an
   language="py"
 />
 
-### Context manager
+### コンテキスト マネージャ
 
-This will close the client connection when you leave the `with` block.
+`with` ブロックを抜けるとクライアント接続が閉じられます。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -364,16 +364,16 @@ This will close the client connection when you leave the `with` block.
   language="py"
 />
 
-## Exception handling
+## 例外処理
 
-The client library raises exceptions for various error conditions. These include, for example:
+クライアント ライブラリは、さまざまなエラー条件で例外を送出します。例えば次のようなものがあります。
 
-- `weaviate.exceptions.WeaviateConnectionError` for failed connections.
-- `weaviate.exceptions.WeaviateQueryError` for failed queries.
-- `weaviate.exceptions.WeaviateBatchError` for failed batch operations.
-- `weaviate.exceptions.WeaviateClosedClientError` for operations on a closed client.
+- `weaviate.exceptions.WeaviateConnectionError` : 接続に失敗した場合  
+- `weaviate.exceptions.WeaviateQueryError` : クエリに失敗した場合  
+- `weaviate.exceptions.WeaviateBatchError` : バッチ操作に失敗した場合  
+- `weaviate.exceptions.WeaviateClosedClientError` : 閉じたクライアントで操作した場合  
 
-Each of these exceptions inherit from `weaviate.exceptions.WeaviateBaseError`, and can be caught using this base class, as shown below.
+これらの例外はすべて `weaviate.exceptions.WeaviateBaseError` を継承しており、以下のようにこのベース クラスで捕捉できます。
 
 <FilteredTextBlock
     text={PythonCode}
@@ -382,25 +382,25 @@ Each of these exceptions inherit from `weaviate.exceptions.WeaviateBaseError`, a
     language="py"
 />
 
-You can review [this module](https://github.com/weaviate/weaviate-python-client/blob/main/weaviate/exceptions.py) which defines the exceptions that can be raised by the client library.
+クライアント ライブラリで送出される例外の定義は、[このモジュール](https://github.com/weaviate/weaviate-python-client/blob/main/weaviate/exceptions.py) を参照してください。
 
-The client library doc strings also provide information on the exceptions that can be raised by each method. You can view these by using the `help` function in Python, by using the `?` operator in Jupyter notebooks, or by using an IDE, such as hover-over tooltips in VSCode.
+各メソッドで送出される可能性のある例外は、クライアント ライブラリの docstring でも確認できます。 Python の `help` 関数、 Jupyter ノートブックの `?` 演算子、または VSCode などの IDE のホバー ツールチップで閲覧可能です。
 
-## Thread-safety
+## スレッド セーフティ
 
-While the Python client is fundamentally designed to be thread-safe, it's important to note that due to its dependency on the `requests` library, complete thread safety isn't guaranteed.
+Python クライアントは基本的にスレッド セーフとなるよう設計されていますが、`requests` ライブラリへ依存しているため完全なスレッド セーフティは保証されません。
 
-This is an area that we are looking to improve in the future.
+将来的にこの点を改善する予定です。
 
 :::warning Thread safety
-The batching algorithm in our client is not thread-safe. Keep this in mind to help ensure smoother, more predictable operations when using our Python client in multi-threaded environments.
+当社クライアントのバッチング アルゴリズムはスレッド セーフではありません。 Python クライアントをマルチスレッド環境で使用する際は、円滑で予測可能な動作を確保するためにご留意ください。
 :::
 
-If you are performing batching in a multi-threaded scenario, ensure that only one of the threads is performing the batching workflow at any given time. No two threads can use the same `client.batch` object at one time.
+マルチスレッド シナリオでバッチングを行う場合、任意の時点でバッチング ワークフローを実行するスレッドは 1 つだけにしてください。2 つ以上のスレッドが同時に同じ `client.batch` オブジェクトを使用することはできません。
 
-## Response object structure
+## レスポンスオブジェクト構造
 
-Each query response object typically include multiple attributes. Consider this query.
+各クエリのレスポンスオブジェクトには、通常複数の属性が含まれます。次のクエリを確認してください。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -409,7 +409,7 @@ Each query response object typically include multiple attributes. Consider this 
   language="py"
 />
 
-Each response includes attributes such as `objects` and `generated`. Then, each object in `objects` include multiple attributes such as `uuid`, `vector`, `properties`, `references`, `metadata` and `generated`.
+各レスポンスには `objects` や `generated` などの属性が含まれます。そして、`objects` 内の各オブジェクトには `uuid`、`vector`、`properties`、`references`、`metadata`、`generated` といった複数の属性が含まれます。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -418,7 +418,7 @@ Each response includes attributes such as `objects` and `generated`. Then, each 
   language="bash"
 />
 
-To limit the response payload, you can specify which properties and metadata to return.
+レスポンスのペイロードを制限するには、返すプロパティやメタデータを指定できます。
 
 <!-- Additionally, to view the response object in a more readable format, you can use the `json.dumps()` function as shown below
 
@@ -438,11 +438,11 @@ This is the formatted output.
   language="bash"
 /> -->
 
-## Input argument validation
+## 入力引数のバリデーション
 
-The client library performs input argument validation by default to make sure that the input types match the expected types.
+クライアントライブラリは、デフォルトで入力引数の型が期待どおりであることを確認するバリデーションを行います。
 
-You can disable this validation to improve performance. You can do this by setting the `skip_argument_validation` parameter to `True` when you instantiate a collection object, with `collections.get`, or with `collections.create` for example.
+パフォーマンスを向上させるために、このバリデーションを無効化できます。たとえばコレクションオブジェクトのインスタンス化時や `collections.get`、`collections.create` で `skip_argument_validation` パラメーターを `True` に設定します。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -451,12 +451,13 @@ You can disable this validation to improve performance. You can do this by setti
   language="bash"
 />
 
-This may be useful in cases where you are using the client library in a production environment, where you can be confident that the input arguments are typed correctly.
+これは、運用環境でクライアントライブラリを使用し、入力引数の型が正しいことを確信できる場合に便利です。
 
-## Tab completion in Jupyter notebooks
+## Jupyter ノートブックでのタブ補完
 
-If you use a browser to run the Python client with a Jupyter notebook, press `Tab` for code completion while you edit. If you use VSCode to run your Jupyter notebook, press `control` + `space` for code completion.
+ブラウザで Jupyter ノートブックを実行して Python クライアントを使用する場合、編集中に `Tab` キーを押すとコード補完が利用できます。VSCode で Jupyter ノートブックを実行している場合は、`control` + `space` でコード補完を呼び出せます。
 
-## Raw GraphQL queries
+## 生の GraphQL クエリ
 
-To provide raw GraphQL queries, you can use the `client.graphql_raw_query` method (previously `client.query.raw` in the `v3` client). This method takes a string as input.
+生の GraphQL クエリを送信するには、`client.graphql_raw_query` メソッド（`v3` クライアントでは `client.query.raw`）を使用します。このメソッドは文字列を入力として受け取ります。
+

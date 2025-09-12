@@ -1,11 +1,11 @@
 ---
-title: Multimodal Embeddings
+title: マルチモーダル埋め込み
 sidebar_position: 30
 image: og/docs/integrations/provider_integrations_imagebind.jpg
 # tags: ['model providers', 'imagebind', 'embeddings']
 ---
 
-# Locally Hosted ImageBind Embeddings + Weaviate
+# ローカルホスト ImageBind 埋め込み + Weaviate
 
 
 import Tabs from '@theme/Tabs';
@@ -16,49 +16,49 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with the Meta ImageBind library allows you to access its capabilities directly from Weaviate. The ImageBind model supports multiple modalities (text, image, audio, video, thermal, IMU and depth).
+Weaviate の Meta ImageBind ライブラリとの統合により、 ImageBind の機能を Weaviate から直接利用できます。 ImageBind モデルは複数のモダリティ（テキスト、画像、音声、動画、サーマル、 IMU、深度）をサポートします。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use the ImageBind integration, and [configure the Weaviate instance](#weaviate-configuration) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the ImageBind inference container. This feature is called the *vectorizer*.
+[ベクトル化を設定](#configure-the-vectorizer)して ImageBind 統合を使用し、[Weaviate インスタンスを設定](#weaviate-configuration)してモデルイメージを指定すると、 Weaviate は ImageBind 推論コンテナ内の指定モデルを用いて各種操作の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates multimodal object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts queries of one or more modalities into embeddings. [Multimodal search operations](#vector-near-media-search) are also supported.
+[インポート時](#data-import)には、 Weaviate がマルチモーダルオブジェクト埋め込みを生成し、インデックスに保存します。 [ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、 Weaviate が 1 つ以上のモダリティのクエリを埋め込みに変換します。 [マルチモーダル検索操作](#vector-near-media-search) もサポートされています。
 
 ![Embedding integration illustration](../_includes/integration_imagebind_embedding.png)
 
-## Requirements
+## 必要条件
 
-### Weaviate configuration
+### Weaviate 設定
 
-Your Weaviate instance must be configured with the ImageBind multimodal vectorizer integration (`multi2vec-bind`) module.
+お使いの Weaviate インスタンスは、 ImageBind マルチモーダル ベクトライザー統合（`multi2vec-bind`）モジュールを有効にしている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the ImageBind model.
+この統合は ImageBind モデルを含むコンテナを起動する必要があるため、 Weaviate Cloud (WCD) のサーバーレスインスタンスでは利用できません。
 
 </details>
 
-#### Enable the integration module
+#### 統合モジュールの有効化
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっているかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) を確認してください。
+- Weaviate でモジュールを有効化するには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
-#### Configure the integration
+#### 統合の設定
 
-To use this integration, you must configure the container image of the ImageBind model, and the inference endpoint of the containerized model.
+この統合を使用するには、 ImageBind モデルのコンテナイメージと、その推論エンドポイントを設定する必要があります。
 
-The following example shows how to configure the ImageBind integration in Weaviate:
+以下は Weaviate で ImageBind 統合を設定する例です。
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
 
-#### Docker Option 1: Use a pre-configured `docker-compose.yml` file
+#### Docker オプション 1: 事前設定済み `docker-compose.yml` を使用
 
-Follow the instructions on the [Weaviate Docker installation configurator](/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+[Weaviate Docker インストールコンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator) の手順に従い、選択したモデルを含む事前設定済み `docker-compose.yml` ファイルをダウンロードしてください。
 <br/>
 
-#### Docker Option 2: Add the configuration manually
+#### Docker オプション 2: 手動で設定を追加
 
-Alternatively, add the configuration to the `docker-compose.yml` file manually as in the example below.
+または、下記の例のように `docker-compose.yml` ファイルへ手動で設定を追加します。
 
 ```yaml
 services:
@@ -73,15 +73,15 @@ services:
       ENABLE_CUDA: 0  # Set to 1 to enable
 ```
 
-- `BIND_INFERENCE_API` environment variable sets the inference API endpoint
-- `multi2vec-bind` is the name of the inference container
-- `image` is the container image
-- `ENABLE_CUDA` environment variable enables GPU usage
+- `BIND_INFERENCE_API` 環境変数で推論 API エンドポイントを指定します
+- `multi2vec-bind` は推論コンテナの名前です
+- `image` はコンテナイメージです
+- `ENABLE_CUDA` 環境変数で GPU 使用を有効化します
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the ImageBind integration in Weaviate by adding or updating the `multi2vec-bind` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Weaviate Helm チャートの `values.yaml` ファイルで `modules` セクションに `multi2vec-bind` モジュールを追加または更新し、 ImageBind 統合を設定します。例として、 `values.yaml` を以下のように修正します。
 
 ```yaml
 modules:
@@ -96,14 +96,14 @@ modules:
       enable_cuda: true
 ```
 
-See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) for an example of the `values.yaml` file including more configuration options.
+より多くの設定オプションを含む `values.yaml` の例については、[Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) を参照してください。
 
 </TabItem>
 </Tabs>
 
-### Credentials
+### 認証情報
 
-As this integration runs a local container with the ImageBind model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+この統合は ImageBind モデルを含むローカルコンテナを起動するため、追加の認証情報（例: API キー）は不要です。以下の例のように通常どおり Weaviate に接続してください。
 
 <Tabs groupId="languages">
 
@@ -127,9 +127,9 @@ As this integration runs a local container with the ImageBind model, no addition
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an ImageBind embedding model:
+ImageBind 埋め込みモデルを使用するように、[Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer)します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -152,20 +152,22 @@ As this integration runs a local container with the ImageBind model, no addition
 
 </Tabs>
 
-There is only one ImageBind model available.
+利用可能な ImageBind モデルは 1 つのみです。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-The ImageBind vectorizer supports multiple modalities (text, image, audio, video, thermal, IMU and depth). One or more of these can be specified in the vectorizer configuration as shown.
+
+### ベクトライザーのパラメーター
+
+ImageBind ベクトライザーは複数のモダリティ（テキスト、画像、音声、動画、サーマル、IMU、深度）をサポートします。以下のように、これらのうち 1 つ以上をベクトライザー設定で指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -188,9 +190,9 @@ The ImageBind vectorizer supports multiple modalities (text, image, audio, video
 
 </Tabs>
 
-## Data import
+## データインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for the objects using the specified model.
+ベクトライザーを設定したら、Weaviate に [データをインポート](../../manage-objects/import.mdx) します。Weaviate は指定したモデルを使用してオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -214,21 +216,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+すでに互換性のあるモデルベクトルをお持ちの場合は、それを Weaviate に直接渡すことができます。すでに同じモデルで埋め込みを生成しており、別のシステムからデータを移行する際などに便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified ImageBind model.
+ベクトライザーの設定が完了すると、Weaviate は指定した ImageBind モデルを使用して ベクトル検索 とハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_imagebind_embedding_search.png)
+![検索時の埋め込み統合のイメージ](../_includes/integration_imagebind_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（near text）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+次のクエリは、`limit` で設定した数 `n` 件の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -252,15 +254,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索は ベクトル検索 とキーワード（BM25）検索を行い、その結果を [組み合わせて](../../search/hybrid.md) データベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最もスコアの高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+次のクエリは、`limit` で設定した数 `n` 件の最もスコアが高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -284,13 +286,13 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-### Vector (near media) search
+### ベクトル ( near メディア ) 検索
 
-When you perform a media search such as a [near image search](../../search/similarity.md#search-with-image), Weaviate converts the query into an embedding using the specified model and returns the most similar objects from the database.
+メディア検索（例えば [near image 検索](../../search/similarity.md#search-with-image)）を実行すると、Weaviate はクエリを指定モデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-To perform a near media search such as near image search, convert the media query into a base64 string and pass it to the search query.
+near メディア検索（near image 検索など）を実行するには、メディアクエリを base64 文字列に変換し、それを検索クエリに渡します。
 
-The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
+以下のクエリは、`limit` で設定された件数、つまり入力画像に最も類似した `n` 件のオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -314,35 +316,36 @@ The query below returns the `n` most similar objects to the input image from the
 
 </Tabs>
 
-You can perform similar searches for other media types such as audio, video, thermal, IMU, and depth, by using an equivalent search query for the respective media type.
+同様の検索は、オーディオ、ビデオ、サーマル、IMU、デプスなど他のメディアタイプについても、対応する検索クエリを使用して実行できます。
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
-There is only one ImageBind model available.
+利用可能な ImageBind モデルは 1 つだけです。
 
-## Further resources
+## 追加リソース
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+インテグレーションをコレクションで設定すると、Weaviate でのデータ管理および検索操作は他のコレクションとまったく同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）を実行する方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、検索操作（ベクトル、キーワード、ハイブリッド）および検索拡張生成を実行する方法を説明しています。
 
-### Model licenses
+### モデルライセンス
 
-Review the license for the model on the [ImageBind page](https://github.com/facebookresearch/ImageBind).
+[ImageBind ページ](https://github.com/facebookresearch/ImageBind)でモデルのライセンスを確認してください。
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+そのライセンス条件がご自身の用途に適切かどうかを評価する責任は、利用者にあります。
 
-### External resources
+### 外部リソース
 
-- [ImageBind GitHub page](https://github.com/facebookresearch/ImageBind)
+- [ImageBind GitHub ページ](https://github.com/facebookresearch/ImageBind)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

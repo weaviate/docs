@@ -1,5 +1,5 @@
 ---
-title: Vectorizer and vector index config
+title: ベクトライザー と ベクトル インデックス の設定
 sidebar_label: Vectorizer and vector index
 sidebar_position: 2
 image: og/docs/howto.jpg
@@ -20,17 +20,17 @@ import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
 <VectorConfigSyntax />
 
-## Specify a vectorizer
+## ベクトライザーを指定する
 
-Specify a `vectorizer` for a collection.
+コレクションに対して `vectorizer` を指定します。
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-Collection level settings override default values and general configuration parameters such as [environment variables](/deploy/configuration/env-vars/index.md).
+コレクションレベルの設定は、デフォルト値および [環境変数](/deploy/configuration/env-vars/index.md) などの一般的な設定パラメーターよりも優先されます。
 
-- [Available model integrations](../model-providers/index.md)
-- [Vectorizer configuration references](/weaviate/config-refs/collections.mdx#vector-configuration)
+- [利用可能なモデル統合](../model-providers/index.md)
+- [ベクトライザー設定リファレンス](/weaviate/config-refs/collections.mdx#vector-configuration)
 
 </details>
 
@@ -91,13 +91,13 @@ Collection level settings override default values and general configuration para
 
 </Tabs>
 
-## Specify vectorizer settings
+## ベクトライザーの設定を指定する
 
 import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
 
 <VectorsAutoSchemaError />
 
-To configure how a vectorizer works (i.e. what model to use) with a specific collection, set the vectorizer parameters.
+特定のコレクションでベクトライザーの動作（使用するモデルなど）を設定するには、ベクトライザーのパラメーターを指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -156,14 +156,16 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
 
 </Tabs>
 
-## Define named vectors
 
-:::info Added in `v1.24`
+
+## 名前付き ベクトルの定義
+
+:::info `v1.24` で追加
 :::
 
-You can define multiple [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors) per collection. This allows each object to be represented by multiple vector embeddings, each with its own vector index.
+各コレクションに複数の [名前付き ベクトル](../concepts/data.md#multiple-vector-embeddings-named-vectors) を定義できます。これにより、各オブジェクトを複数のベクトル埋め込みで表現でき、それぞれに独自のベクトル インデックスを持たせることが可能です。
 
-As such, each named vector configuration can include its own vectorizer and vector index settings.
+そのため、各名前付き ベクトルの設定では、個別のベクトライザーとベクトル インデックス設定を指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -222,12 +224,12 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 </Tabs>
 
-## Add new named vectors
+## 新しい名前付き ベクトルの追加
 
-:::info Added in `v1.31`
+:::info `v1.31` で追加
 :::
 
-Named vectors can be added to existing collection definitions with named vectors. (This is not possible for collections without named vectors.)
+名前付き ベクトルは、すでに名前付き ベクトルを含むコレクション定義に追加できます。（名前付き ベクトルを持たないコレクションには追加できません。）
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -262,16 +264,16 @@ Named vectors can be added to existing collection definitions with named vectors
   </TabItem>
 </Tabs>
 
-:::caution Objects aren't automatically revectorized
-Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../concepts/data.md#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
+:::caution オブジェクトは自動的に再ベクトル化されません
+コレクション定義に新しい名前付き ベクトルを追加しても、既存オブジェクトのベクトル化は実行されません。新規または更新済みのオブジェクトのみが、追加された名前付き ベクトル定義に対する埋め込みを取得します。
 :::
 
-## Define multi-vector embeddings (e.g. ColBERT, ColPali)
+## マルチ ベクトル埋め込みの定義 (例: ColBERT, ColPali)
 
-:::info Added in `v1.29`, `v1.30`
+:::info `v1.29`, `v1.30` で追加
 :::
 
-Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
+マルチ ベクトル埋め込み（マルチ ベクトルとも呼ばれます）は、1 つのオブジェクトを複数のベクトル、つまり 2 次元行列で表現します。現在、マルチ ベクトルは名前付き ベクトル用の HNSW インデックスでのみ利用できます。マルチ ベクトルを使用するには、該当する名前付き ベクトルで有効化してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -300,13 +302,15 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
   </TabItem>
 </Tabs>
 
-:::tip Use quantization and encoding to compress your vectors
-Multi-vector embeddings use up more memory than single vector embeddings. You can use [vector quantization](../configuration/compression/index.md) and [encoding](../configuration/compression/multi-vectors.md#muvera-encoding) to compress them and reduce memory usage.
+:::tip ベクトルを圧縮するために量子化とエンコーディングを使用する
+マルチ ベクトル埋め込みは単一 ベクトル埋め込みよりも多くのメモリを消費します。[ベクトル量子化](../configuration/compression/index.md) と [エンコーディング](../configuration/compression/multi-vectors.md#muvera-encoding) を使用して圧縮し、メモリ使用量を削減できます。
 :::
 
-## Set vector index type
 
-The vector index type can be set for each collection at creation time, between `hnsw`, `flat` and `dynamic` index types.
+
+## ベクトル インデックス タイプの設定
+
+ベクトル インデックス タイプは、コレクション作成時に `hnsw`、`flat`、`dynamic` から選択して設定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -367,13 +371,13 @@ The vector index type can be set for each collection at creation time, between `
 <details>
   <summary>Additional information</summary>
 
-- Read more about index types & compression in [Concepts: Vector index](../concepts/indexing/vector-index.md).
+- インデックス タイプと圧縮の詳細については、[概念: ベクトル インデックス](../concepts/indexing/vector-index.md) を参照してください。
 
 </details>
 
-## Set vector index parameters
+## ベクトル インデックス パラメーターの設定
 
-Set vector index parameters such as [compression](../configuration/compression/index.md) and [filter strategy](../concepts/filtering.md#filter-strategy) through collection configuration. Some parameters can be [updated later](collection-operations.mdx#update-a-collection-definition) after collection creation.
+[圧縮](../configuration/compression/index.md) や [フィルター ストラテジ](../concepts/filtering.md#filter-strategy) などのベクトル インデックス パラメーターは、コレクション設定を通じて指定できます。いくつかのパラメーターは、コレクション作成後に[更新](collection-operations.mdx#update-a-collection-definition)することも可能です。
 
 :::info Filter strategy parameter
 Was added in `v1.27`
@@ -438,17 +442,19 @@ Was added in `v1.27`
 <details>
   <summary>Additional information</summary>
 
-- Read more about index types & compression in [Concepts: Vector index](../concepts/indexing/vector-index.md).
+- インデックス タイプと圧縮の詳細については、[概念: ベクトル インデックス](../concepts/indexing/vector-index.md) を参照してください。
 
 </details>
 
-## Property-level settings
 
-Configure individual properties in a collection. Each property can have it's own configuration. Here are some common settings:
 
-- Vectorize the property
-- Vectorize the property name
-- Set a [tokenization type](../config-refs/collections.mdx#tokenization)
+## プロパティレベルの設定
+
+コレクション内の個々のプロパティを設定します。各プロパティは独自の設定を持つことができます。一般的な設定例を次に示します。
+
+- プロパティをベクトル化する
+- プロパティ名をベクトル化する
+- [トークナイゼーションタイプ](../config-refs/collections.mdx#tokenization) を設定する
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -506,9 +512,9 @@ Configure individual properties in a collection. Each property can have it's own
   </TabItem>
 </Tabs>
 
-## Specify a distance metric
+## 距離メトリックの指定
 
-If you choose to bring your own vectors, you should specify the `distance metric`.
+独自にベクトルを用意する場合は、`distance metric` を指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -568,24 +574,26 @@ If you choose to bring your own vectors, you should specify the `distance metric
 
 <details>
   <summary>
-     Additional information
+     追加情報
   </summary>
 
-For details on the configuration parameters, see the following:
+設定パラメーターの詳細については、次を参照してください。
 
-- [Distances](../config-refs/distances.md)
-- [Vector indexes](../config-refs/indexing/vector-index.mdx)
+- [距離](../config-refs/distances.md)
+- [ベクトルインデックス](../config-refs/indexing/vector-index.mdx)
 
 </details>
 
-## Further resources
 
-- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
-- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
-- [Concepts: Data structure](../concepts/data.md)
+## 追加リソース
 
-## Questions and feedback
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API リファレンス: REST: スキーマ</SkipLink>
+- [リファレンス: 設定: スキーマ](/weaviate/config-refs/collections.mdx)
+- [コンセプト: データ構造](../concepts/data.md)
+
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

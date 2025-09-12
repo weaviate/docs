@@ -1,25 +1,25 @@
 ---
 title: Weaviate Embeddings
 sidebar_position: 0
-description: "Managed embedding inference service that generates embeddings for data and queries directly from Weaviate Cloud."
+description: "Weaviate Cloud から直接データとクエリの埋め込みを生成する、マネージド埋め込み推論サービスです。"
 image: og/wcd/user_guides.jpg
 ---
 
-Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud users. It helps generate embeddings for your data and queries conveniently and directly from a Weaviate Cloud database instance.
+Weaviate Embeddings は、Weaviate Cloud ユーザー向けのマネージド埋め込み推論サービスです。データとクエリの埋め込みを、Weaviate Cloud データベース インスタンスから直接、簡単に生成できます。
 
 ![Weaviate Embeddings flowchart](../img/weaviate-embeddings-flowchart.png "Weaviate Embeddings flowchart")
 
 :::info
-Weaviate Embeddings is a paid service and only available for use with Weaviate Cloud instances.  
-You can try it out **for free by using a Sandbox cluster**.
+Weaviate Embeddings は有料サービスで、Weaviate Cloud インスタンスでのみご利用いただけます。  
+**Sandbox クラスターを使用すると無料でお試しいただけます。**
 :::
 
-With Weaviate Embeddings, you can generate embeddings for your data and queries directly from a Weaviate Cloud database instance.
+Weaviate Embeddings を使うと、Weaviate Cloud データベース インスタンスから直接、データとクエリの埋め込みを生成できます。
 
-This means you can perform [keyword](/weaviate/search/bm25), [vector](/weaviate/search/similarity) and [hybrid searches](/weaviate/search/hybrid) without the need to externally generate vector embeddings, or manage additional model providers.
+これにより、外部でベクトル埋め込みを生成したり、追加のモデルプロバイダーを管理したりすることなく、[キーワード](/weaviate/search/bm25)、[ベクトル](/weaviate/search/similarity)、および[ハイブリッド検索](/weaviate/search/hybrid)を実行できます。
 
 :::tip Quickstart
-Follow the **[quickstart guide](/cloud/embeddings/quickstart)** to get started with Weaviate Embeddings.
+Weaviate Embeddings をすぐに使い始めたい場合は、**[クイックスタート ガイド](/cloud/embeddings/quickstart)** をご覧ください。
 :::
 
 <!--
@@ -32,56 +32,59 @@ Simplified embedding management through:
 - **[Unified billing](/cloud/embeddings/administration#pricing-and-billing)**: Your billing and usage can be managed in one place through Weaviate Cloud.
 -->
 
-## Available models
+## 利用可能なモデル
 
-The following models are available for use with Weaviate Embeddings:
+Weaviate Embeddings で利用できるモデルは次のとおりです。
 
 - **[`Snowflake/snowflake-arctic-embed-m-v1.5`](/cloud/embeddings/models#snowflake-arctic-embed-m-v1.5)**
 - **[`Snowflake/snowflake-arctic-embed-l-v2.0`](/cloud/embeddings/models#snowflake-arctic-embed-l-v2.0)**
 
-## Authentication
+## 認証
 
-In order to use Weaviate Embeddings you only need a [connection to your Weaviate Cloud cluster](/cloud/manage-clusters/connect). 
-No additional authentication is specifically needed, and the Weaviate Embeddings service is enabled by default for all clusters. You can use the service no matter if you connect with a [client library](/weaviate/client-libraries) or, for example, via [OIDC](/weaviate/configuration/authz-authn#oidc).
+Weaviate Embeddings を利用するには、[Weaviate Cloud クラスターへの接続](/cloud/manage-clusters/connect)だけで十分です。  
+追加の認証は不要で、Weaviate Embeddings サービスはすべてのクラスターでデフォルトで有効になっています。  
+[クライアント ライブラリ](/weaviate/client-libraries)を使用して接続する場合でも、[OIDC](/weaviate/configuration/authz-authn#oidc)などで接続する場合でも、サービスをご利用いただけます。
 
-## Usage limits
+## 使用制限
 
 <!-- TODO[g-despot] Don't hardcode these values here if possible -->
-Weaviate Embeddings only imposes usage limits on requests for free Sandbox clusters.
-The rate limit for Sandbox clusters is `2000` requests per cluster per day.
+Weaviate Embeddings では、無料の Sandbox クラスターに対するリクエストにのみ使用制限を設けています。  
+Sandbox クラスターのレートリミットは、クラスターあたり 1 日 `2000` リクエストです。
 
 :::info
-If you use a [batch import](/weaviate/manage-objects/import) to vectorize your data, the maximum size is `200` objects per batch. 
-This means that you can generate up to a maximum of `400 000` embeddings (`2000 (requests) * 200 (objects per request)`) within your free Sandbox cluster.
+[バッチ インポート](/weaviate/manage-objects/import)でデータをベクトル化する場合、1 バッチの最大サイズは `200` オブジェクトです。  
+つまり、無料の Sandbox クラスターでは最大 `400 000` 個の埋め込み（`2000`（リクエスト） × `200`（オブジェクト/リクエスト））を生成できます。
 :::
 
-## Requirements
+## 必要条件
 
 import Requirements from '/_includes/weaviate-embeddings-requirements.mdx';
 
 <Requirements />
 
-## Data privacy
+## データ プライバシー
 
-Weaviate Embeddings is a stateless service that does not store any data.
+Weaviate Embeddings はステートレス サービスで、データを保存しません。
 
-The data provided to Weaviate Embeddings is used solely for the purpose of generating embeddings. We do not store or use your data for any other purpose, including training or model improvement.
+Weaviate Embeddings に提供されたデータは、埋め込みを生成する目的のみに使用されます。当社は、お客様のデータをトレーニングやモデル改善など、ほかの目的で保存または使用することはありません。
 
-### Service and data location
+### サービスとデータの所在地
 
-Weaviate Embeddings makes use of infrastructure located in the United States. Note that by using Weaviate Embeddings, you are agreeing to have your data transferred to the United States for processing.
+Weaviate Embeddings は、アメリカ合衆国にあるインフラストラクチャを利用しています。  
+Weaviate Embeddings を利用することで、データが処理のために米国へ転送されることに同意したものとみなされます。
 
-We may expand the service to other regions in the future.
+今後、ほかのリージョンへサービスを拡大する可能性があります。
 
-## Additional resources
+## 追加リソース
 
-- [Weaviate Embeddings: Quickstart](/cloud/embeddings/quickstart)
-- [Weaviate Embeddings: Choose a model](/cloud/embeddings/models)
-- [Weaviate Embeddings: Administration](/cloud/embeddings/administration)
-- [Model provider integrations: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
+- [Weaviate Embeddings: クイックスタート](/cloud/embeddings/quickstart)
+- [Weaviate Embeddings: モデルの選択](/cloud/embeddings/models)
+- [Weaviate Embeddings: 管理](/cloud/embeddings/administration)
+- [モデル プロバイダー統合: Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md)
 
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

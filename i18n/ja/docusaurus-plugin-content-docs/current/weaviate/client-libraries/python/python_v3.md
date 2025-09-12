@@ -1,59 +1,59 @@
 ---
-title: "Legacy (v3) API (DEPRECATED)"
+title: "レガシー (v3) API (非推奨)"
 sidebar_position: 80
-description: "Deprecated Python v3 client documentation maintained for legacy application compatibility only."
+description: "レガシーアプリケーションの互換性維持のみを目的とした、非推奨の Python v3 クライアント向けドキュメントです。"
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---
 
 :::caution `v3` client is deprecated
-This document relates to the legacy `v3` client and API.
+このドキュメントはレガシーである `v3` クライアントおよび API に関するものです。  
 <br/>
 
-From `v4.10.0`, the [Weaviate Python client installations](https://pypi.org/project/weaviate-client/) no longer include the `v3` API (i.e. the `weaviate.Client` class). This separation helps us to provide the best developer experience for you and provide support for the latest Weaviate features.
+`v4.10.0` 以降、[Weaviate Python クライアントのインストール](https://pypi.org/project/weaviate-client/)には `v3` API（つまり `weaviate.Client` クラス）が含まれません。これにより、開発者体験を最適化し、最新の Weaviate 機能をサポートできるようになりました。  
 <br/>
 
-The `v3` client will continue to get critical security updates and bugfixes for the foreseeable future, but it will not support any new features.
+`v3` クライアントには、今後もしばらくの間は重大なセキュリティアップデートとバグ修正が提供されますが、新機能の追加は行われません。  
 <br/>
 
-**What does this mean for me?**
+**これは何を意味するのでしょうか？**  
 <br/>
 
-To take advantage of the latest developments on the Weaviate Database, we recommend migrating your codebase to use the [`v4` client API](./index.mdx).
+最新の Weaviate Database の開発成果を利用するために、コードベースを [`v4` クライアント API](./index.mdx) へ移行することを推奨します。  
 <br/>
 
-Our documentation includes [a migration guide here](./v3_v4_migration.md), and many code examples include both `v3` and `v4` syntax. We will be adding more dedicated resources for you to ease the migration experience.
+ドキュメントには[移行ガイド](./v3_v4_migration.md)があり、多くのコード例で `v3` と `v4` の構文を併記しています。今後も移行を容易にする専用リソースを追加していく予定です。  
 <br/>
 
-If you have an existing codebase and Weaviate Database that you expect to remain static, we recommend pinning the version in your requirements file (e.g. `requirements.txt`), like so:
+既存のコードベースと Weaviate Database を当面変更しない予定の場合は、`requirements.txt` などの要件ファイルでバージョンを固定してください。例:
 
 ```bash
   weaviate-client>=3.26.7,<4.0.0
 ```
 
-We appreciate that code migration can be cumbersome, but we feel strongly that the end experience and feature set will make your time worthwhile.
+コード移行は手間がかかることがありますが、最終的な体験と機能セットがその価値を十分に上回ると確信しています。  
 <br/>
 
-If you have specific requests for migration documentation or resources, please reach out through [our GitHub repository](https://github.com/weaviate/docs/issues).
+移行ドキュメントやリソースに関する具体的な要望がございましたら、[GitHub リポジトリ](https://github.com/weaviate/docs/issues)までお気軽にお知らせください。
 :::
 
-## Installation and setup
+## インストールとセットアップ
 
-### Requirements
+### 要件
 
-The `v3` client is not to be used with with the gRPC API that was introduced in Weaviate `1.22`. You can still use Weaviate `1.22` and newer with the `v3` client, however it will not take advantage of improvements made with the gRPC API. For the gRPC API, use the `v4` client.
+`v3` クライアントは、Weaviate `1.22` で導入された gRPC API とは併用できません。Weaviate `1.22` 以降でも `v3` クライアントを使用できますが、gRPC API による改善の恩恵は受けられません。gRPC API を利用する場合は `v4` クライアントをご使用ください。
 
-### Installation
+### インストール
 
-The `v3` Python library is available on [PyPI.org](https://pypi.org/project/weaviate-client/). The package can be installed using [pip](https://pypi.org/project/pip/). The client is developed and tested for Python 3.7 and higher.
+`v3` Python ライブラリは [PyPI.org](https://pypi.org/project/weaviate-client/) で利用可能です。パッケージは [pip](https://pypi.org/project/pip/) を使用してインストールできます。クライアントは Python 3.7 以上で開発・テストされています。
 
 ```bash
 pip install "weaviate-client==3.*"
 ```
 
-### Set-up
+### セットアップ
 
-Now you can use the client in your Python scripts as follows:
+Python スクリプト内では次のようにクライアントを使用できます。
 
 ```python
 import weaviate
@@ -63,7 +63,7 @@ client = weaviate.Client("https://WEAVIATE_INSTANCE_URL")  # Replace WEAVIATE_IN
 assert client.is_ready()  # Will return True if the client is connected & the server is ready to accept requests
 ```
 
-Or, with additional arguments such as those below:
+あるいは、以下のような追加引数を指定することも可能です。
 
 ```python
 import weaviate
@@ -82,21 +82,21 @@ client = weaviate.Client(
 assert client.is_ready()  # Will return True if the client is connected & the server is ready to accept requests
 ```
 
-## Authentication
+## 認証
 
 import ClientAuthIntro from '/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx'
 
 <ClientAuthIntro clientName="Python"/>
 
-### WCD authentication
+### WCD 認証
 
 import ClientAuthWCD from '/docs/weaviate/client-libraries/_components/client.auth.wcs.mdx'
 
 <ClientAuthWCD />
 
-### API key authentication
+### API キー認証
 
-:::info Added in Weaviate Python client version `3.14.0`.
+:::info Weaviate Python クライアント バージョン `3.14.0` で追加されました。
 :::
 
 import ClientAuthApiKey from '/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx'
@@ -115,13 +115,13 @@ client = weaviate.Client(
 )
 ```
 
-### OIDC authentication
+### OIDC 認証
 
 import ClientAuthOIDCIntro from '/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx'
 
 <ClientAuthOIDCIntro />
 
-#### <i class="fa-solid fa-key"></i> Resource Owner Password Flow
+#### <i class="fa-solid fa-key"></i> Resource Owner Password フロー
 
 import ClientAuthFlowResourceOwnerPassword from '/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx'
 
@@ -140,7 +140,7 @@ resource_owner_config = weaviate.AuthClientPassword(
 client = weaviate.Client("http://localhost:8080", auth_client_secret=resource_owner_config)
 ```
 
-#### <i class="fa-solid fa-key"></i> Client Credentials flow
+#### <i class="fa-solid fa-key"></i> Client Credentials フロー
 
 import ClientAuthFlowClientCredentials from '/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx'
 
@@ -158,7 +158,7 @@ client_credentials_config = weaviate.AuthClientCredentials(
 client = weaviate.Client("https://localhost:8080", auth_client_secret=client_credentials_config)
 ```
 
-#### <i class="fa-solid fa-key"></i> Refresh Token flow
+#### <i class="fa-solid fa-key"></i> Refresh Token フロー
 
 import ClientAuthBearerToken from '/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx'
 
@@ -177,9 +177,9 @@ bearer_config = weaviate.AuthBearerToken(
 client = weaviate.Client("https://localhost:8080", auth_client_secret=bearer_config)
 ```
 
-## Custom headers
+## カスタムヘッダー
 
-You can pass custom headers to the client, which are added at initialization:
+クライアント初期化時にカスタムヘッダーを渡すことができます。
 
 ```python
 client = weaviate.Client(
@@ -188,19 +188,22 @@ client = weaviate.Client(
 )
 ```
 
-## Neural Search Frameworks
+## ニューラル検索フレームワーク
 
-There is a variety of neural search frameworks that use Weaviate under the hood to store, search through, and retrieve vectors.
+Weaviate を基盤としてベクトルを保存・検索・取得する多様なニューラル検索フレームワークがあります。
 
-- deepset's [haystack](https://www.deepset.ai/weaviate-vector-search-engine-integration)
-- Jina's [DocArray](https://github.com/docarray/docarray)
+- deepset の [haystack](https://www.deepset.ai/weaviate-vector-search-engine-integration)  
+- Jina の [DocArray](https://github.com/docarray/docarray)
 
-# References documentation
 
-On this Weaviate documentation website, you will find how to use the Python client for all [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](/weaviate/api). For each reference, a code block is included with an example of how to use the function with the Python (and other) clients. The Python client, however, has additional functionalities, which are covered in the full client documentation on [weaviate-python-client.readthedocs.io](https://weaviate-python-client.readthedocs.io/en/stable/). Some of these additional functions are highlighted here below.
 
-### Example: client.schema.create(schema)
-Instead of adding classes one by one using the RESTful `v1/schema` endpoint, you can upload a full schema in JSON format at once using the Python client. Use the function `client.schema.create(schema)` as follows:
+# 参照ドキュメント
+
+この Weaviate ドキュメントサイトでは、すべての RESTful エンドポイントおよび GraphQL 関数を Python クライアントで利用する方法をご覧いただけます。各リファレンスには、Python（およびその他）のクライアントでその関数を使用する例を示したコードブロックが含まれています。とはいえ、Python クライアントには追加機能もあり、これらは weaviate-python-client.readthedocs.io にある完全版クライアントドキュメントで説明されています。以下では、そのうちいくつかの機能を紹介します。
+
+### 例: client.schema.create(schema)
+
+RESTful の `v1/schema` エンドポイントを使用してクラスを 1 つずつ追加する代わりに、Python クライアントを使って JSON 形式のスキーマ全体を一度にアップロードできます。次のように `client.schema.create(schema)` 関数を使用してください:
 
 ```python
 import weaviate
@@ -285,39 +288,39 @@ schema = {
 client.schema.create(schema)
 ```
 
-#### Example: Blog Post on How to get started with Weaviate and the Python client
+#### 例: Weaviate と Python クライアントの入門ブログポスト
 
-A full example of how to use the Python client for Weaviate can be found in [this article on Towards Data Science](https://towardsdatascience.com/quickstart-with-weaviate-python-client-e85d14f19e4f).
+Weaviate の Python クライアントを使ったフル例は、[この Towards Data Science の記事](https://towardsdatascience.com/quickstart-with-weaviate-python-client-e85d14f19e4f)でご覧いただけます。
 
-## Batching
+## バッチ処理
 
-Batching is a way of importing/creating `objects` and `references` in bulk using a single API request to the Weaviate server. With Python this can be done using 3 different methods:
+バッチ処理とは、単一の API リクエストで `objects` と `references` を一括でインポート／作成する方法です。Python では次の 3 つの方法を利用できます。
 
 1. ***Auto-batching***
 2. ***Dynamic-batching***
 3. ***Manual-batching***
 
-Generally, we recommend use of `client.batch` in a context manager, which will automatically flush the batch when exiting. This is the easiest way to use the batching functionality.
+一般的には、コンテキストマネージャ内で `client.batch` を使用することを推奨します。コンテキストを抜ける際に自動でフラッシュされるため、最も簡単にバッチ機能を利用できます。
 
-The following parameters have the greatest impact on the batch import speed:
+バッチインポート速度に最も影響する主なパラメーターは次のとおりです。
 
-| Parameter | Type | Recommended<br/>value | Purpose |
-| :- | :- | :- |:- |
-| `batch_size` | integer | 50 - 200 | Initial batch size
-| `num_workers` | integer | 1 - 2 | Maximum number of parallel workers
-| `dynamic` | boolean | True | If true, dynamically adjust the `batch_size`<br/> based on the number of items in the batch
+| Parameter | Type | 推奨<br/>値 | 目的 |
+| :- | :- | :- | :- |
+| `batch_size` | integer | 50 - 200 | 初期バッチサイズ |
+| `num_workers` | integer | 1 - 2 | 同時実行ワーカーの最大数 |
+| `dynamic` | boolean | True | `batch_size` に基づきバッチサイズを動的に調整するか |
 
-### Multi-threading batch import
+### マルチスレッドバッチインポート
 
-:::info Added in Weaviate Python client version `3.9.0`.
+:::info Weaviate Python クライアント バージョン `3.9.0` で追加されました。
 :::
 
-Multi-threading Batch import works with both `Auto-batching` and `Dynamic-batching`.
+マルチスレッドバッチインポートは `Auto-batching` と `Dynamic-batching` の両方で動作します。
 
-To use it, set the number of workers (threads) using the `.configure(...)` (same as `.__call__(...)`) by setting the argument `num_workers` in the batch configuration. See also [Batch configuration](#batch-configuration) below.
+利用するには、`.configure(...)`（`.__call__(...)` と同じ）でバッチ設定の引数 `num_workers` にワーカー（スレッド）の数を指定します。詳しくは後述の [Batch configuration](#batch-configuration) をご覧ください。
 
 :::warning
-Multithreading is disabled by default (num_workers=1). Use with care to not overload your Weaviate instance.
+マルチスレッドはデフォルトでは無効（`num_workers=1`）です。ご利用の Weaviate インスタンスを過負荷にしないようご注意ください。
 :::
 
 **Example**
@@ -332,7 +335,7 @@ client.batch(  # or client.batch.configure(
 
 ### Auto-batching
 
-This method allows the Python client to handle all the `object` and `reference` import/creation. This means that you do NOT have to explicitly import/create objects and cross-references. All you need to do is add everything you want imported/created to the `Batch`, and the `Batch` is going to take care of creating the objects and cross-references among them. To enable auto-batching we need to configure `batch_size` to be a positive integer (by default `None`) (see [Batch configuration](#batch-configuration) below for more information). The `Batch` is going to import/create objects, then create cross-references, if the number of objects + number of references == `batch_size`. See example below:
+この方法では、Python クライアントが `object` と `reference` のインポート／作成をすべて処理します。つまり、オブジェクトやクロスリファレンスを明示的に作成する必要はありません。インポート／作成したいものをすべて `Batch` に追加するだけで、`Batch` がオブジェクトとクロスリファレンスの作成を行います。Auto-batching を有効にするには、`batch_size` を正の整数（デフォルトは `None`）に設定します（詳細は [Batch configuration](#batch-configuration) を参照）。`Batch` は「オブジェクト数 + リファレンス数 == `batch_size`」になったタイミングで、オブジェクトを作成し、その後クロスリファレンスを作成します。例を以下に示します。
 
 ```python
 import weaviate
@@ -448,8 +451,7 @@ with client.batch as batch:
 
 ### Dynamic-batching
 
-This method allows the Python client to handle all object and cross-reference import/creations in a dynamic manner. This means that the user does NOT have to explicitly import/create objects and cross-reference (same as with [Auto-batching](#auto-batching). To enable dynamic-batching we need to configure `batch_size` to be a positive integer (by default `None`) AND set `dynamic` to `True` (by default `False`) (see [Batch-configuration](#batch-configuration) below for more information). For this method the `Batch` is going to compute the `recommended_num_objects` and `recommended_num_references` after the first `Batch` creation, where the `batch_size` is used for `recommended_num_objects` and `recommended_num_references` as the initial value. The `Batch` is going to import/create objects then references, if current number of objects reached `recommended_num_objects` OR current number of reference reached `recommended_num_references`. See example below:
-
+この方法も、Python クライアントがオブジェクトとクロスリファレンスのインポート／作成を動的に処理します（[Auto-batching](#auto-batching) と同様、ユーザーが明示的に行う必要はありません）。Dynamic-batching を有効にするには、`batch_size` を正の整数（デフォルトは `None`）に設定し、さらに `dynamic` を `True`（デフォルトは `False`）にします（詳細は [Batch configuration](#batch-configuration) を参照）。この方法では、最初の `Batch` 作成後に `recommended_num_objects` と `recommended_num_references` が計算され、その初期値として `batch_size` が使用されます。`Batch` は現在のオブジェクト数が `recommended_num_objects` に達するか、リファレンス数が `recommended_num_references` に達した時点で、オブジェクトまたはリファレンスを作成します。例を以下に示します。
 
 ```python
 import weaviate
@@ -565,8 +567,7 @@ with client.batch as batch:
 
 ### Manual-batching
 
-This method gives the user total control over the `Batch`, meaning the `Batch` is NOT going to perform any import/creation implicitly but will leave it to the user's discretion. See example below:
-
+この方法では、`Batch` の操作をすべてユーザーが制御します。つまり、`Batch` はインポート／作成を自動では行わず、全てユーザーに委ねます。例を以下に示します。
 
 ```python
 import weaviate
@@ -689,17 +690,18 @@ with client.batch as batch:
 ```
 
 ### Batch configuration
-The `Batch` object can be configured using the `batch.configure()` method or the `batch()` (i.e. call batch object, `__call__`) method. They are the same function. In the examples above we saw that we can configure the `batch_size` and `dynamic` parameters. Here are more available parameters:
 
-- `batch_size` - (`int` or `None`: default `None`): If it is `int` then auto-/dynamic-batching is enabled. For Auto-batching, if number of objects + number of references == `batch_size` then the `Batch` is going to import/create current objects then references (see [Auto-batching](#auto-batching) for more info). For Dynamic-batching it is used as the initial value for `recommended_num_objects` and `recommended_num_references` (see [Dynamic batching](#dynamic-batching) for more info). A value of `None` means it is Manual-batching—no automatic object/reference import/creation.
-- `dynamic` - (`bool`, default: `False`): Enables/disables Dynamic-batching. Does not have any effect if `batch_size` is `None`.
-- `creation_time` - (`int` or `float`, default: `10`): It is the interval of time in which the batch import/create should be done. It used to compute `recommended_num_objects` and `recommended_num_references`, consequently has an impact for Dynamic-batching.
-- `callback` (Optional[Callable[[dict], None]], default `weaviate.util.check_batch_result`): It is a callback function on the results of the `batch.create_objects()` and `batch.create_references()`. It is used for error handling for Auto-/Dynamic-batching. Has no effect if `batch_size` is `None`.
-- `timeout_retries` - (`int`, default `3`): Number of attempts to import/create a batch before resulting in `TimeoutError`.
-- `connection_error_retries` - (`int`, default `3`): Number of attempts to import/create a batch before resulting in `ConnectionError`. **NOTE:** Added in `weaviate-client 3.9.0`.
-- `num_workers` - (`int`, default `1`): The maximal number of concurrent threads to run batch import. Only used for non-MANUAL batching. i.e. is used only with AUTO or DYNAMIC batching. ***Use with care to not overload your Weaviate instance.*** **NOTE:** Added in `weaviate-client 3.9.0`.
+`Batch` オブジェクトは `batch.configure()` メソッド、または `batch()`（`__call__`）メソッドで設定できます。両者は同じ関数です。上記の例では `batch_size` と `dynamic` を設定しましたが、利用可能なパラメーターは以下のとおりです。
 
-NOTE: You have to specify all the configurations that you want at each call of this method, otherwise some setting are going to be replaced by default values.
+- `batch_size` - (`int` または `None`、デフォルト `None`): `int` を指定すると Auto／Dynamic-batching が有効になります。Auto-batching では「オブジェクト数 + リファレンス数 == `batch_size`」になるとオブジェクト → リファレンスの順で作成します（詳細は [Auto-batching](#auto-batching) を参照）。Dynamic-batching では初期値として `recommended_num_objects` と `recommended_num_references` に使用されます（詳細は [Dynamic-batching](#dynamic-batching) を参照）。`None` の場合は Manual-batching となり、自動作成は行われません。  
+- `dynamic` - (`bool`, デフォルト `False`): Dynamic-batching の有効／無効を切り替えます。`batch_size` が `None` の場合は無効です。  
+- `creation_time` - (`int` または `float`, デフォルト `10`): バッチのインポート／作成を行う時間間隔（秒）です。`recommended_num_objects` と `recommended_num_references` の計算に使用され、Dynamic-batching に影響します。  
+- `callback` (Optional[Callable[[dict], None]], デフォルト `weaviate.util.check_batch_result`): `batch.create_objects()` と `batch.create_references()` の結果に対して呼び出されるコールバック関数です。Auto／Dynamic-batching におけるエラーハンドリングに使用されます。`batch_size` が `None` の場合は影響しません。  
+- `timeout_retries` - (`int`, デフォルト `3`): `TimeoutError` になる前にバッチのインポート／作成を再試行する回数です。  
+- `connection_error_retries` - (`int`, デフォルト `3`): `ConnectionError` になる前にバッチのインポート／作成を再試行する回数です。**注:** `weaviate-client 3.9.0` で追加されました。  
+- `num_workers` - (`int`, デフォルト `1`): バッチインポートを並列化する最大スレッド数です。Manual-batching 以外（AUTO または DYNAMIC）のみで使用されます。***Weaviate インスタンスを過負荷にしないようご注意ください。*** **注:** `weaviate-client 3.9.0` で追加されました。  
+
+NOTE: このメソッドを呼び出すたびに、必要な設定をすべて指定してください。指定しない設定はデフォルト値に置き換えられます。  
 ```python
 client.batch(
   batch_size=100,
@@ -712,20 +714,20 @@ client.batch(
 )
 ```
 
-### Tips &amp; Tricks
+### ヒント & コツ
 
-* There is no limit to how many objects/references one could add to a batch before committing/creating it. However a too large batch can lead to a TimeOut error, which means that Weaviate could not process and create all the objects from the batch in the specified time (the timeout configuration can be set like [this](https://weaviate-python-client.readthedocs.io/en/latest/weaviate.html#weaviate.Client) or [this](https://weaviate-python-client.readthedocs.io/en/latest/weaviate.html#weaviate.Client.timeout_config)). Note that setting a timeout configuration higher that 60s would require some changes to the docker-compose.yml/helm chart file.
-* The `batch` class in the Python Client can be used in three ways:
-    * Case 1: Everything should be done by the user, i.e. the user should add the objects/object-references and create them whenever the user wants. To create one of the data type use these methods of this class: `create_objects`, `create_references` and `flush`. This case has the Batch instance's batch_size set to None (see docs for the `configure` or `__call__` method). Can be used in a context manager, see below.
-    * Case 2: Batch auto-creates when full. This can be achieved by setting the Batch instance's batch_size set to a positive integer (see docs for the `configure` or `__call__` method). The batch_size in this case corresponds to the sum of added objects and references. This case does not require the user to create the batch/s, but it can be done. Also to create non-full batches (last batches) that do not meet the requirement to be auto-created use the `flush` method. Can be used in a context manager, see below.
-    * Case 3: Similar to Case II but uses dynamic batching, i.e. auto-creates either objects or references when one of them reached the `recommended_num_objects` or `recommended_num_references` respectively. See docs for the `configure` or `__call__` method for how to enable it.
-    * **Context-manager support**: Can be use with the with statement. When it exists the context-manager it calls the flush method for you. Can be combined with `configure` or `__call__` method, in order to set it to the desired Case.
+* コミット／作成前にバッチへ追加できるオブジェクト／リファレンスの数に制限はありません。ただし、バッチが大きすぎると TimeOut エラーが発生する場合があります。これは、Weaviate が指定された時間内にバッチ内のすべてのオブジェクトを処理・作成できなかったことを意味します（タイムアウト設定は [こちら](https://weaviate-python-client.readthedocs.io/en/latest/weaviate.html#weaviate.Client) や [こちら](https://weaviate-python-client.readthedocs.io/en/latest/weaviate.html#weaviate.Client.timeout_config) を参照）。タイムアウト設定を 60 秒以上にする場合は docker-compose.yml／Helm chart の変更が必要です。  
+* Python クライアントの `batch` クラスは次の 3 通りの使い方ができます。  
+    * ケース 1: すべてユーザーが実行。ユーザーはオブジェクト／オブジェクト参照を追加し、任意のタイミングで作成します。データ型を作成するには `create_objects`、`create_references`、`flush` を使用します。この場合、Batch インスタンスの `batch_size` は `None` です（`configure` または `__call__` のドキュメントを参照）。コンテキストマネージャでも使用できます。  
+    * ケース 2: バッチが満杯になると自動作成。Batch インスタンスの `batch_size` を正の整数に設定します（`configure` または `__call__` を参照）。このとき `batch_size` は追加されたオブジェクトとリファレンスの合計に対応します。ユーザーによるバッチ作成は必須ではありませんが、行うことも可能です。要件を満たさない最後のバッチを作成するには `flush` を使用します。コンテキストマネージャでも使用できます。  
+    * ケース 3: ケース 2 と似ていますが、Dynamic-batching を使用します。すなわち、オブジェクトまたはリファレンスのいずれかが `recommended_num_objects` または `recommended_num_references` に達した時点で自動作成されます。設定方法は `configure` または `__call__` のドキュメントを参照してください。  
+    * **コンテキストマネージャ対応**: `with` 文と共に使用できます。コンテキストを抜ける際に `flush` を自動で呼び出します。`configure` または `__call__` と組み合わせて、上記の任意のケースに設定できます。  
 
-### Error Handling
+### エラー処理
 
-Creating objects in `Batch` is faster then creating each object/reference individually but it comes at the cost of skipping some validation steps. Skipping some validation steps at object/reference level can result in some objects that failed to create or some references that could not be added. In this case the `Batch` does not fail but individual objects/references might and we can make sure that everything was imported/created without errors by checking the returned value of the `batch.create_objects()` and `batch.create_references()`. Here are examples how to catch and handle errors on individual `Batch` objects/references.
+`Batch` でオブジェクトを作成する方が、オブジェクト／リファレンスを個別に作成するより高速ですが、その分いくつかのバリデーションステップをスキップします。バリデーションをスキップすると、作成に失敗するオブジェクトや、追加に失敗するリファレンスが発生する場合があります。このとき `Batch` 自体は失敗しませんが、個々のオブジェクト／リファレンスが失敗する可能性があります。そのため、`batch.create_objects()` や `batch.create_references()` の戻り値をチェックし、すべてがエラーなくインポート／作成されたか確認することを推奨します。以下に、個々の `Batch` オブジェクト／リファレンスでエラーを検出・処理する方法を示します。
 
-Lets define a function that checks for such errors and prints them:
+まず、エラーをチェックして出力する関数を定義します。  
 ```python
 def check_batch_result(results: dict):
   """
@@ -744,7 +746,7 @@ def check_batch_result(results: dict):
           print(result["result"])
 ```
 
-Now we can use this function to print the error messages at item (object/reference) level. Lets look how we can do it using Auto-/Dynamic-batching where we never implicitly call the `create` methods:
+次に、この関数を使用してアイテム（オブジェクト／リファレンス）レベルのエラーメッセージを出力します。Auto／Dynamic-batching を用い、`create` メソッドを暗黙的に呼び出さない場合の例を示します。
 
 ```python
 client.batch(
@@ -759,7 +761,7 @@ client.batch(
 # done, easy as that
 ```
 
-For Manual-batching we can call the function on the returned value:
+Manual-batching では、戻り値に対してこの関数を呼び出せます。  
 ```python
 # on objects
 result = client.batch.create_object()
@@ -772,9 +774,9 @@ check_batch_result(result)
 
 
 <details>
-  <summary>Example code</summary>
+  <summary>例コード</summary>
 
-The following Python code can be used to handle errors on individual data objects in the batch.
+以下の Python コードは、バッチ内の個々のデータオブジェクトでエラーを処理する方法を示しています。
 
 ```python
 import weaviate
@@ -823,16 +825,16 @@ with client.batch as batch:
   batch.add_data_object(object_to_add, "Author", "cb7d0da4-ceaa-42d0-a483-282f545deed7", vector=[1,2,3])
 ```
 
-This can also be applied to adding references in batch. Note that sending batches, especially references, skips some validations at the object and reference level. Adding this validation on single data objects like above makes it less likely for errors to go undiscovered.
+同じ方法はリファレンスの追加にも適用できます。特にリファレンスをバッチで送信する場合、オブジェクトやリファレンスレベルのバリデーションが一部スキップされます。上記のように単一データオブジェクトで検証を行うことで、エラーが見逃される可能性を低減できます。
 
 </details>
 
 
-## Design
+## 設計
 
-### GraphQL query builder pattern
+### GraphQL クエリビルダー パターン
 
-For complex GraphQL queries (e.g. with filters), the client uses a builder pattern to form the queries. An example is the following query with multiple filters:
+複雑な GraphQL クエリ（例: フィルターを使用する場合）を扱う際、クライアントではビルダー パターンを使用してクエリを組み立てます。以下は、複数のフィルターを持つクエリの例です:
 
 ```python
 import weaviate
@@ -867,10 +869,10 @@ query_result = client.query\
 print(query_result)
 ```
 
-Note that you need to use the `.do()` method to execute the query.
+クエリを実行するには `.do()` メソッドを使用する必要がある点にご注意ください。
 
 :::tip
-You can use `.build()` to inspect the resulting GraphQL query
+`.build()` を使用すると、生成される GraphQL クエリ を確認できます
 :::
 
 ```python
@@ -886,26 +888,26 @@ query_result.build()
 
 ```
 
-## Best practices and notes
+## ベストプラクティスと注意事項
 
-### Thread-safety
+### スレッド セーフティ
 
-While the Python client is fundamentally designed to be thread-safe, it's important to note that due to its dependency on the `requests` library, complete thread safety isn't guaranteed.
+Python クライアントは基本的にスレッド セーフになるよう設計されていますが、`requests` ライブラリに依存しているため、完全なスレッド セーフティは保証されません。
 
-This is an area that we are looking to improve in the future.
+この点については将来的に改善を検討しています。
 
 :::warning Thread safety
-The batching algorithm in our client is not thread-safe. Keep this in mind to help ensure smoother, more predictable operations when using our Python client in multi-threaded environments.
+クライアントのバッチ処理アルゴリズムはスレッド セーフではありません。Python クライアントをマルチスレッド環境で使用する際は、この点を念頭に置き、よりスムーズで予測しやすい動作を確保してください。
 :::
 
-If you are performing batching in a multi-threaded scenario, ensure that only one of the threads is performing the batching workflow at any given time. No two threads can use the same `client.batch` object at one time.
+マルチスレッド環境でバッチ処理を行う場合は、任意の時点でバッチ ワークフローを実行するスレッドが 1 つだけになるようにしてください。複数のスレッドが同じ `client.batch` オブジェクトを同時に使用することはできません。
 
-## Releases
+## リリース
 
-Go to the [GitHub releases page](https://github.com/weaviate/weaviate-python-client/releases) to see the history of the Python client library releases.
+[GitHub のリリース ページ](https://github.com/weaviate/weaviate-python-client/releases) にアクセスすると、Python クライアント ライブラリのリリース履歴を確認できます。
 
 <details>
-  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+  <summary>Weaviate と対応するクライアント バージョンの一覧を表示するにはここをクリック</summary>
 
 import ReleaseHistory from '/_includes/release-history.md';
 
@@ -913,8 +915,9 @@ import ReleaseHistory from '/_includes/release-history.md';
 
 </details>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

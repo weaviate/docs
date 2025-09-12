@@ -1,6 +1,6 @@
 ---
-title: Multimodal Embeddings
-description: "Weaviate's integration with VoyageAI's APIs allows you to access their models' capabilities directly from Weaviate."
+title: マルチモーダル埋め込み
+description: "Weaviate と VoyageAI の API 連携により、Weaviate から直接モデルの機能へアクセスできます。"
 sidebar_position: 25
 image: og/docs/integrations/provider_integrations_voyageai.jpg
 # tags: ['model providers', 'voyageai', 'embeddings']
@@ -14,50 +14,50 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-# VoyageAI Multimodal Embeddings with Weaviate
+# Weaviate での VoyageAI マルチモーダル埋め込み
 
-:::info Added in `v1.25.28`, `v1.26.12`, `1.27.8`
+:::info `v1.25.28`、`v1.26.12`、`1.27.8` で追加
 :::
 
-Weaviate's integration with VoyageAI's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate と VoyageAI の API 連携により、Weaviate から直接モデルの機能へアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use a VoyageAI embedding model, and Weaviate will generate embeddings for various operations using the specified model and your VoyageAI API key. This feature is called the *vectorizer*.
+[Weaviate ベクトルインデックスを構成](#configure-the-vectorizer) して VoyageAI の埋め込みモデルを使用すると、指定したモデルとお持ちの VoyageAI API キーを用いて、さまざまな操作のための埋め込みを Weaviate が生成します。この機能は *ベクトライザー* と呼ばれます。
 
-Note this integration does not support Voyage AI's "interleaving" input mode. For this type of usage, import your own vectors with objects as [shown in this guide](../../starter-guides/custom-vectors.mdx).
+この統合は VoyageAI の「interleaving」入力モードをサポートしていません。このタイプの利用方法では、[このガイド](../../starter-guides/custom-vectors.mdx) で示すようにオブジェクトと共に自己生成したベクトルをインポートしてください。
 
-At [import time](#data-import), Weaviate generates multimodal object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings. [Multimodal search operations](#vector-near-media-search) are also supported.
+[インポート時](#data-import) に、Weaviate はマルチモーダルオブジェクト埋め込みを生成し、インデックスへ保存します。[ベクトル](#vector-near-text-search) および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みへ変換します。[マルチモーダル検索操作](#vector-near-media-search) もサポートされています。
 
 ![Embedding integration illustration](../_includes/integration_voyageai_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the VoyageAI vectorizer integration (`multi2vec-voyageai`) module.
+ご利用の Weaviate インスタンスは VoyageAI ベクトライザー統合 (`multi2vec-voyageai`) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) のユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスでデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) をご確認ください。
+- Weaviate でモジュールを有効化する手順は、[モジュール設定方法](../../configuration/modules.md) ガイドをご覧ください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid VoyageAI API key to Weaviate for this integration. Go to [VoyageAI](https://voyageai.com/) to sign up and obtain an API key.
+この統合には、有効な VoyageAI API キーを Weaviate に提供する必要があります。[VoyageAI](https://voyageai.com/) でサインアップし、API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+次のいずれかの方法で Weaviate に API キーを渡します。
 
-- Set the `VOYAGEAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate が参照できる `VOYAGEAI_APIKEY` 環境変数を設定する。
+- 以下の例のように実行時に API キーを渡す。
 
 <Tabs groupId="languages">
 
@@ -81,9 +81,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーを構成する
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a VoyageAI embedding model:
+VoyageAI の埋め込みモデルを使用するように、[Weaviate インデックスを構成](../../manage-collections/vector-config.mdx#specify-a-vectorizer) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -106,9 +106,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-### Select a model
+### モデルを選択する
 
-You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
+以下の設定例のように、[利用可能なモデル](#available-models) のいずれかをベクトライザーに指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -131,20 +131,22 @@ You can specify one of the [available models](#available-models) for the vectori
 
 </Tabs>
 
-You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate に使用させるモデルは、[ベクトライザーのパラメーター](#vectorizer-parameters) で [利用可能なモデル](#available-models) のいずれかを指定できます。指定がない場合は [デフォルトモデル](#available-models) が使用されます。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-The following examples show how to configure VoyageAI-specific options.
+
+### ベクトライザーのパラメーター
+
+以下の例は、 VoyageAI 固有のオプションを設定する方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -167,23 +169,24 @@ The following examples show how to configure VoyageAI-specific options.
 
 </Tabs>
 
-For further details on model parameters, see the [VoyageAI API documentation](https://docs.voyageai.com/docs/multimodal-embeddings).
+モデル パラメーターの詳細については、[VoyageAI API ドキュメント](https://docs.voyageai.com/docs/multimodal-embeddings) を参照してください。
 
 
-## Header parameters
+## ヘッダー パラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+リクエストの追加ヘッダーを使って、実行時に API キーと任意パラメーターを提供できます。  
+利用可能なヘッダーは次のとおりです:
 
-- `X-VoyageAI-Api-Key`: The Voyage AI API key.
-- `X-VoyageAI-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Voyage AI URL.
+- `X-VoyageAI-Api-Key`: VoyageAI の API キー。  
+- `X-VoyageAI-Baseurl`: 既定の VoyageAI URL の代わりに使用するベース URL (例: プロキシ)。
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に追加ヘッダーを指定した場合、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーは上記の [API 資格情報の例](#api-credentials) のとおりに指定してください。
 
-## Data import
+## データのインポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定した後、 Weaviate に [データをインポート](../../manage-objects/import.mdx) します。 Weaviate は、指定したモデルを使用してテキスト オブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -207,21 +210,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+すでに互換性のあるモデル ベクトルがある場合は、それを直接 Weaviate に渡すことができます。同じモデルで既に埋め込みを生成しており、それらを Weaviate で利用したい場合 (他システムからデータを移行する際など) に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified VoyageAI model.
+ベクトライザーを設定すると、 Weaviate は指定した VoyageAI モデルを使用してベクトル検索とハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_voyageai_embedding_search.png)
+![検索時の埋め込み統合のイメージ](../_includes/integration_voyageai_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル (near text) 検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を実行すると、 Weaviate はテキスト クエリを指定したモデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した数 (`n`) の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -245,15 +248,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは
+ハイブリッド検索は、ベクトル検索とキーワード (BM25) 検索を実行し、その結果を [組み合わせる](../../search/hybrid.md) ことでデータベースから最適なオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、 Weaviate はテキスト クエリを指定したモデルで埋め込みに変換し、データベースからスコアが最も高いオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した数 (`n`) のスコアが最も高いオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -277,13 +280,15 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-### Vector (near media) search
 
-When you perform a media search such as a [near image search](../../search/similarity.md#search-with-image), Weaviate converts the query into an embedding using the specified model and returns the most similar objects from the database.
 
-To perform a near media search such as near image search, convert the media query into a base64 string and pass it to the search query.
+### ベクトル (near media) 検索
 
-The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
+[near image 検索](../../search/similarity.md#search-with-image) のようなメディア検索を実行すると、 Weaviate は指定したモデルを使用してクエリを埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
+
+near image 検索などの near media 検索を行うには、メディアクエリを base64 文字列に変換し、それを検索クエリに渡します。
+
+以下のクエリは、`limit` で設定した n 件の入力画像に最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -307,32 +312,33 @@ The query below returns the `n` most similar objects to the input image from the
 
 </Tabs>
 
-## References
+## リファレンス
 
-### Available models
+### 利用可能なモデル
 
-- `voyage-multimodal-3` (Default)
+- `voyage-multimodal-3` （デフォルト）
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [VoyageAI text embedding models + Weaviate](./embeddings.md).
-- [VoyageAI reranker models + Weaviate](./reranker.md).
+- [VoyageAI テキスト埋め込みモデル + Weaviate](./embeddings.md).
+- [VoyageAI reranker モデル + Weaviate](./reranker.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+統合をコレクションに設定すると、 Weaviate でのデータ管理および検索操作は他のコレクションと同じ手順で行えます。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) と [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) では、コレクションおよびその中のオブジェクトの作成、読み取り、更新、削除といったデータ操作方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) では、ベクトル検索、キーワード検索、ハイブリッド検索に加え、検索拡張生成の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
-- VoyageAI [Multimodal Embed API documentation](https://docs.voyageai.com/docs/multimodal-embeddings)
+- VoyageAI [Multimodal Embed API ドキュメント](https://docs.voyageai.com/docs/multimodal-embeddings)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

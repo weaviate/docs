@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/hybrid-search/hybrid_search_mistral.ipynb
 toc: True
-title: "Hybrid Search with Mistral"
+title: "Mistral を用いたハイブリッド検索"
 featured: False
 integration: False
 agent: False
@@ -12,17 +12,17 @@ tags: ['Hybrid Search', 'Mistral']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-This recipe will show you how to run hybrid search with embeddings from Mistral.
+このレシピでは、 Mistral の埋め込みを使用してハイブリッド検索を実行する方法を示します。
 
 ## Requirements
 
-1. Weaviate cluster
-    1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
-    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
-    3. [Local deployment]((https://docs.weaviate.io/deploy/installation-guides/docker-installation#starter-docker-compose-file)
-    4. [Other options](https://docs.weaviate.io/deploy/installation-guides)
+1. Weaviate クラスター  
+    1. [WCD](https://console.weaviate.cloud/) で 14 日間の無料サンドボックスを作成できます  
+    2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)  
+    3. [Local deployment]((https://docs.weaviate.io/deploy/installation-guides/docker-installation#starter-docker-compose-file)  
+    4. [その他のオプション](https://docs.weaviate.io/deploy/installation-guides)  
 
-2. Mistral API key. Grab one [here](https://docs.mistral.ai/api/).
+2. Mistral API キー — [こちら](https://docs.mistral.ai/api/) で取得できます。
 
 ```python
 import weaviate, os
@@ -33,9 +33,9 @@ import requests, json
 import weaviate.classes.query as wq
 ```
 
-## Connect to Weaviate
+## Weaviate へ接続
 
-Only choose one option from the below.
+以下から 1 つだけ選択してください。
 
 **Weaviate Cloud Deployment**
 
@@ -86,8 +86,8 @@ print(client.is_ready())
 # print(client.is_ready())
 ```
 
-## Create a collection
-> Collection stores your data and vector embeddings.
+## コレクションを作成する
+> コレクションはデータとベクトル埋め込みを保存します。
 
 ```python
 # Note: in practice, you shouldn't rerun this cell, as it deletes your data
@@ -114,7 +114,7 @@ client.collections.create(
 print("Successfully created collection: JeopardyQuestion.")
 ```
 
-## Import Data
+## データをインポートする
 
 ```python
 url = 'https://raw.githubusercontent.com/weaviate/weaviate-examples/main/jeopardy_small_dataset/jeopardy_tiny.json'
@@ -136,15 +136,15 @@ else:
     print("Insert complete.")
 ```
 
-## Hybrid Search
+## ハイブリッド検索
 
-The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search. 
+`alpha` パラメーターは、スパース検索とデンス検索に与える重みを決定します。`alpha = 0` は純粋なスパース（ bm25 ）検索、`alpha = 1` は純粋なデンス（ ベクトル ）検索です。  
 
-Alpha is an optional parameter. The default is set to `0.75`.
+`alpha` は任意のパラメーターで、デフォルトは `0.75` です。
 
-### Hybrid Search only
+### ハイブリッド検索のみ
 
-The below query is finding Jeopardy questions about animals and is limiting the output to only two results. Notice `alpha` is set to `0.80`, which means it is weighing the vector search results more than bm25. If you were to set `alpha = 0.25`, you would get different results. 
+以下のクエリは動物に関する  Jeopardy  の質問を検索し、結果を 2 件に制限します。`alpha` を `0.80` に設定しているため、 bm25 よりベクトル検索結果を重視しています。`alpha = 0.25` に設定すると、異なる結果が得られます。 
 
 ```python
 response = jeopardy.query.hybrid(
@@ -159,9 +159,9 @@ for item in response.objects:
     print("Data:", json.dumps(item.properties, indent=2), "\n")
 ```
 
-### Hybrid Search with a `where` filter
+### `where` フィルター付きハイブリッド検索
 
-Find Jeopardy questions about elephants, where the category is set to Animals.
+カテゴリーが Animals の中から、象に関する  Jeopardy  の質問を検索します。
 
 ```python
 response = jeopardy.query.hybrid(
@@ -175,3 +175,4 @@ for item in response.objects:
     print("ID:", item.uuid)
     print("Data:", json.dumps(item.properties, indent=2), "\n")
 ```
+

@@ -1,5 +1,5 @@
 ---
-title: Model2Vec + Weaviate
+title: Model2Vec と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_model2vec.jpg
 # tags: ['model providers', 'model2vec']
@@ -7,40 +7,41 @@ image: og/docs/integrations/provider_integrations_model2vec.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-The Model2Vec library allows you to easily run a range of embeddings models on your own device as lightweight, static models. Weaviate seamlessly integrates with the Model2Vec library, allowing users to leverage compatible models directly from the Weaviate Database.
+Model2Vec ライブラリを利用すると、軽量でスタティックなモデルとして、さまざまな埋め込みモデルをローカルデバイス上で簡単に実行できます。Weaviate は Model2Vec ライブラリとシームレスに統合されており、互換性のあるモデルを Weaviate Database から直接活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI ドリブンアプリケーションを簡単に構築できます。
 
-## Integrations with Model2Vec
+## Model2Vec との統合
 
-Weaviate integrates with compatible Model2Vec models by accessing the locally hosted Model2Vec API.
+Weaviate は、ローカルでホストされている Model2Vec API にアクセスすることで、互換性のある Model2Vec モデルと統合します。
 
-### Embedding models for vector search
+### ベクトル検索用埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_model2vec_embedding.png)
+![埋め込み統合のイメージ](../_includes/integration_model2vec_embedding.png)
 
-Model2Vec's embedding models transform text data into vector embeddings, using faster, static versions of sentence transformer models.
+Model2Vec の埋め込みモデルは、テキストデータをベクトル 埋め込みに変換し、高速なスタティック版の sentence transformer モデルを使用します。
 
-[Weaviate integrates with Model2Vec's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Model2Vec の埋め込みモデルと統合](./embeddings.md) し、データのベクトル化を容易にします。この統合により、追加の前処理やデータ変換を行わずに、セマンティック検索やハイブリッド検索を実行できます。
 
-[Model2Vec embedding integration page](./embeddings.md)
+[Model2Vec 埋め込み統合ページ](./embeddings.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage powerful Model2Vec models from directly within Weaviate.
+これらの統合により、開発者は Weaviate から直接強力な Model2Vec モデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI ドリブンアプリケーションの構築プロセスが簡素化され、開発を加速し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-A locally hosted Weaviate instance is required for these integrations so that you can host your own Model2Vec models.
+これらの統合を利用するには、Model2Vec モデルをホストできるローカルホストの Weaviate インスタンスが必要です。
 
-Go to the relevant integration page to learn how to configure Weaviate with the Model2Vec models and start using them in your applications.
+該当する統合ページで、Weaviate を Model2Vec モデルと連携させる方法を学び、アプリケーションで活用してください。
 
-- [Text Embeddings](./embeddings.md)
+- [テキスト埋め込み](./embeddings.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

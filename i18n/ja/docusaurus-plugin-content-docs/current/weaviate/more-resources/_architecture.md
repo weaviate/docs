@@ -1,5 +1,5 @@
 ---
-title: Architecture
+title: アーキテクチャ
 sidebar_position: 4
 image: og/docs/more-resources.jpg
 # tags: ['Architecture']
@@ -8,175 +8,88 @@ image: og/docs/more-resources.jpg
 
 ...
 
-## More Resources - bullet points, not ready for publishing (!)
+## 追加リソース - 箇条書き、公開準備前（！）
 
-The following are some bullet points, that need to be converted to proper text.
-I tried to be quite detailed, if there are details in there that should not be
-published, feel free to remove them, as long as the general message still makes
-sense. Similarly, all bullet points are brutally honest, for some there might be
-a more marketing-suited way of saying the same things. Feel free to adopt.
+以下は箇条書きのメモです。正式な文章へと書き換える必要があります。  
+詳細に記載していますが、公開に不適切な内容があれば、一般的な意味が変わらない範囲で削除してください。  
+また、すべての箇条書きはかなり率直な表現になっています。同じ内容でもマーケティング向けに言い換えたほうが良い場合は、自由に調整してください。
 
-## 0.22.x ("Third-party setup")
+## 0.22.x（「サードパーティーセットアップ」）
 
-### 10,000 feet view
-* The "Core" Weaviate application (not to be confused with the Weaviate Stack)
-  itself is stateless and stores its data in third-party databases
-* The two databases used are `etcd` and `Elasticsearch`.
-* `Etcd` has mostly historic reasons and is currently used to store
-  configuration, the schema and contextionary extensions
-* `Elasticsearch` stores all data objects and provides search functionalities
-* The "Core" Weaviate application handles converting text-to-vector, enriching
-  the schema in data objects, building and resolving of cross-references,
-  validation and the APIs
+### 10,000 feet ビュー
+* 「Core」 Weaviate アプリケーション（Weaviate Stack と混同しないでください）はステートレスで、データをサードパーティーのデータベースに保存します  
+* 使用しているデータベースは `etcd` と `Elasticsearch` の 2 種類です  
+* `etcd` は主に歴史的理由で採用されており、設定、スキーマ、contextionary の拡張を保存しています  
+* `Elasticsearch` はすべてのデータオブジェクトを保存し、検索機能を提供します  
+* 「Core」 Weaviate アプリケーションは、テキストからベクトルへの変換、データオブジェクトのスキーマ拡張、クロスリファレンスの構築と解決、バリデーション、および各種 API を担当します  
 
-### Vector Search
-* When a vector search happens, Core uses the Contextionary to convert the
-  query text to a vector and passes it to Elasticsearch.
-* Elasticsearch does a cosine similarity comparison using the OSS plugin
-  `lior-k/fast-elasticsearch-vector-scoring`
-* This is a primitive, exhaustive approach, in other words, the query vector is
-  compared to every other vector in the index with O(n) time complexity
+### ベクトル検索
+* ベクトル検索が実行されると、Core は Contextionary を用いてクエリテキストをベクトルに変換し、それを Elasticsearch に渡します  
+* Elasticsearch は OSS プラグイン `lior-k/fast-elasticsearch-vector-scoring` を使用してコサイン類似度を比較します  
+* これは素朴で網羅的な手法であり、クエリベクトルをインデックス内のすべてのベクトルと比較するため、計算量は O(n) です  
 
-### Structured Search
-* A structured search uses the default ES/Lucene inverted indexes
+### 構造化検索
+* 構造化検索では、標準の ES/Lucene 転置インデックスが使用されます  
 
-### Other
-* One Weaviate schema class maps to one Elasticsearch index
-* By default, 3 Elasticsearch shards are created for one index
-* Weaviate Database is stateless, so it can be horizontally scaled at will
-* Elasticsearch can be scaled horizontally
-* Etcd can be scaled horizontally, but it is unlikely that etcd will become the
-  bottleneck in the stack.
-* The contextionary container (only present when the "Semantic Search
-  Extension" is enabled), converts text to vectors, both on import, as well as
-  at query time.
-* During an import load typically peaks in both the contextionary containers,
-  as well as in the Elasticsearch containers. They are usually the first
-  components that require scaling. As a rule of thumb, monitor your cluster and
-  scale whatever requires the most resources, as different dataset have
-  different requirements.
+### その他
+* 1 つの Weaviate スキーマクラスは 1 つの Elasticsearch インデックスに対応します  
+* デフォルトで、1 インデックスにつき 3 つの Elasticsearch シャードが作成されます  
+* Weaviate データベースはステートレスのため、水平スケールが容易です  
+* Elasticsearch は水平スケールが可能です  
+* `etcd` も水平スケールが可能ですが、スタック内でボトルネックになる可能性は低いです  
+* contextionary コンテナ（「Semantic Search Extension」使用時のみ存在）は、インポート時とクエリ時の両方でテキストをベクトル化します  
+* インポート時には、contextionary コンテナと Elasticsearch コンテナの両方で負荷がピークになることが一般的です。通常、最初にスケールが必要になるコンポーネントです。経験則として、クラスターを監視し、リソースを最も消費している部分をスケールしてください。データセットごとに必要なリソースは異なります。  
 
-## 1.0.0 ("Standalone")
+## 1.0.0（「スタンドアロン」）
 
-### 10,000 feet view
-* The "Core" Weaviate application handles all persistence, no third-party
-  databases are involved.
-* Weaviate's persistence layer is built to be vector-native. At the same time
-  it provides the benefits of combined structured search with vector-search
-  that has been popular in 0.22.x.
-* Each class maps to an index. An index is a self-contained unit consisting
-  of 1..n shards.
-* Each shard is a self-contained unit consisting of 3 parts: (1) A key-value
-  store holding all data objects as presented by the user, (2) a Lucene-like
-  inverted index allowing for structured search, (3) a vector index allowing
-  for vector search.
-* The key-value store and inverted index use `boltdb` for its disk-interaction
-* The vector-index is a custom `hnsw` implementation, optimized for
-  persistence. In the future, other vector indexes can be used, however HNSW
-  should be a good fit for most cases.
+### 10,000 feet ビュー
+* 「Core」 Weaviate アプリケーションがすべての永続化を担当し、サードパーティーのデータベースは不要です  
+* Weaviate の永続化レイヤーはベクトルネイティブに設計されています。同時に、0.22.x で人気だった構造化検索とベクトル検索の組み合わせも提供します  
+* 各クラスは 1 インデックスにマッピングされます。インデックスは 1..n 個のシャードから構成される自己完結型ユニットです  
+* 各シャードは 3 つの部分からなる自己完結型ユニットです：(1) ユーザーが入力したデータオブジェクトを保持するキー・バリュー ストア、(2) 構造化検索を可能にする Lucene 風の転置インデックス、(3) ベクトル検索を可能にするベクトルインデックス  
+* キー・バリュー ストアと転置インデックスはディスク操作に `boltdb` を使用します  
+* ベクトルインデックスは永続化に最適化した独自実装の `hnsw` です。将来的には他のベクトルインデックスも利用可能になりますが、多くのケースで HNSW が適切に機能します  
 
-### Vector-Search
-* If the "Semantic Search Extension" is used, the Contextionary translates the
-  text to a query vector, otherwise the user provides a query vector directly.
-* The internal HNSW index for that particular class-index is used for a kNN search.
-* HNSW returns document ids, they are "resolved" to their full data objects
-  using the inverted index and object data key-value store
-* This process roughly has O(log n) time complexity and is therefore orders of
-  magnitude faster on large indexes
+### ベクトル検索
+* 「Semantic Search Extension」を使用している場合、Contextionary がテキストをクエリベクトルに変換し、使用していない場合はユーザーがベクトルを直接提供します  
+* 対象クラスインデックスの内部 HNSW インデックスを使用して kNN 検索を行います  
+* HNSW はドキュメント ID を返し、それを転置インデックスとオブジェクトデータのキー・バリュー ストアで解決して完全なデータオブジェクトへ変換します  
+* このプロセスの計算量は概ね O(log n) で、大規模インデックスでは桁違いに高速です  
 
-### Structured search
-* If the search is a pure structured search (without combining it with a vector
-  search), the inverted indexes are used to retrieve the document ids. The
-  document ids are resolved to data objects, which are then served to the user.
-* If the search is a combined vector and structured search, the inverted index
-  is used to build an allow list of matching document ids. This allow list is
-  passed to the vector index. (The rest of this answer is specific to HNSW:)
-  The vector index follows all links normally, but in the lowest level, it only
-  includes document ids which are present on the allow list in the result list.
-* A future optimization will skip the vector index and perform a primitive
-  search on the allow list. There is a point where a primitive search can be
-  more efficient for two reasons: (1) If the allow list is already short, only
-  few vector comparisons have to be made, in other words a primitive approach
-  becomes faster with fewer items. (2) HNSW on the other hand can actually
-  become slower with a short allow list. Because if the allowed items happen to
-  be very-far from the query vector - in other words, there are closer matches,
-  but they aren't contained on the allowlist - the search can become
-  exhaustive. However, exhaustive in this case means exhaustive against the
-  entire index, which can be considerably slower. Imagine the following extreme
-  example. The index contains 1bn elements, the allow list contains two
-  elements. There are 500m items closer to the query vector than the two
-  results, but they are not contained on the allow list. The primitive approach
-  will have to do only two comparisons. The HNSW approach will have to do 500m
-  vector comparisons until it even discovers the allowed items.
+### 構造化検索
+* ベクトル検索を組み合わせない純粋な構造化検索では、転置インデックスを用いてドキュメント ID を取得し、その ID を解決してデータオブジェクトを取得し、ユーザーへ返します  
+* ベクトル検索と構造化検索を組み合わせる場合、転置インデックスでマッチするドキュメント ID の許可リスト（allow list）を作成し、それをベクトルインデックスへ渡します。（以下は HNSW 特有の挙動です）ベクトルインデックスは通常どおりリンクを辿りますが、最下層では許可リストに含まれるドキュメント ID のみを結果に含めます  
+* 将来的な最適化として、ベクトルインデックスをスキップし、許可リストに対して素朴検索を行う予定です。素朴検索が有利になるケースは 2 つあります：(1) 許可リストが短い場合、比較回数が少なくなるため素朴検索のほうが速い。(2) 逆に HNSW は許可リストが短い場合に遅くなる可能性があります。許可されたアイテムがクエリベクトルから非常に遠い位置にある場合（つまり、より近いマッチが許可リストに含まれない場合）、検索が網羅的になりやすいためです。ただしこの「網羅的」はインデックス全体に対するもので、かなり遅くなることがあります。例として、インデックスに 10 億件あり、許可リストに 2 件しか含まれない場合を考えてください。クエリベクトルに近い 5 億件が許可リストに含まれず、素朴検索なら比較は 2 回で済みますが、HNSW では 5 億回のベクトル比較が発生する場合があります。  
 
-### Multi-node setup / distributed setup / horizontal scaling
-* This feature will not be present in `1.0.0` yet, it will follow in a future
-  released. However, the entire persistence layer has been build with
-  horizontal scalability in mind.
-* The purpose of shards is to distribute parts of the index among multiple
-  nodes in the cluster.
-* Replication is masterless, i.e. there are no primary or secondary shards,
-  each replication can accept writes. Therefore true horizontal scaling is
-  possible, even when the number of shards is set to 1
-* Examples:
-  * in a 5-node cluster with 1 index made up of 1 shard and replication set to
-    5, each node owns a copy of the entire index. The total disk/memory
-    requirements are five times that of the index. The cluster is highly
-    available, as up to 4 nodes could fail and all data could still be served.
-    Additionally, this configuration has the highest query performance - even
-    on queries which are biased towards a certain area of the index - as every
-    node can fully answer every query.
-  * in a 5-node cluster with 1 index made up of 5 shards and replication set to
-    three, each node owns three (different) shards. Therefore the total
-    disk/memory requirements are three times that of the index (5 shards each
-    containing one 5th of the index replicated 3 times -> 5/5 * 3 = 3). The
-    cluster is highly-available, up to 2 nodes can fail and the cluster can
-    still serve everything. If more than 2 nodes fail, there is a chance that
-    all 3 nodes containing a shard are down. In this case the affected shard
-    (i.e. one fifth of the total index) cannot be served.
-  * in a 5-node cluster with 1 index made up of 1 shard and replication is set
-    to 3: The cluster is not utilized properly. The single shard is replicated
-    onto 3 nodes, therefore two nodes don't hold any data at all and are
-    idling. In this case the index should have been made up of more shards.
-* Weaviate is an AP-database with respect to the CAP theorem.
+### マルチノード構成 / 分散構成 / 水平スケール
+* この機能は `1.0.0` にはまだ含まれず、将来のリリースで提供予定です。ただし永続化レイヤー全体は水平スケールを念頭に設計されています  
+* シャードの目的は、インデックスの一部をクラスター内の複数ノードに分散することです  
+* レプリケーションはマスターなしで行われます。つまりプライマリやセカンダリの区別がなく、どのレプリカも書き込みを受け付けます。そのため、シャード数が 1 でも真の水平スケールが可能です  
+* 例:  
+  * 5 ノードクラスターで、1 インデックスが 1 シャード、レプリケーション 5 の場合、各ノードがインデックス全体のコピーを保持します。ディスク/メモリ要件はインデックスの 5 倍です。最大 4 ノードがダウンしてもすべてのデータを提供でき、高い可用性を持ちます。また、インデックスの特定領域に偏ったクエリでも全ノードが完全に回答できるため、クエリ性能は最も高くなります。  
+  * 5 ノードクラスターで、1 インデックスが 5 シャード、レプリケーション 3 の場合、各ノードは 3 つ（異なる）シャードを保持します。ディスク/メモリ要件はインデックスの 3 倍です（5 シャード × 1/5 ずつ × 3 レプリカ → 3）。最大 2 ノードがダウンしてもすべてのデータを提供できますが、3 ノード以上ダウンすると、同一シャードを保持する 3 ノードすべてが停止する可能性があり、その場合該当シャード（インデックス全体の 1/5）が提供できなくなります。  
+  * 5 ノードクラスターで、1 インデックスが 1 シャード、レプリケーション 3 の場合: クラスターは十分に活用されていません。単一シャードが 3 ノードに複製され、残り 2 ノードはデータを保持せずアイドル状態になります。この場合はシャード数を増やすべきです。  
+* Weaviate は CAP 定理において AP データベースです。  
 
-### Memory usage
-* The HNSW index needs to fit into memory. Note that this doesn't mean that
-  every single vector has to fit into memory, just the index structure (a graph
-  with plenty of links) needs to fit. Failing to provide enough memory for the
-  index to fit, Weaviate cannot start up.
-* Vectors which are commonly used in similarity comparisons are cached, it is
-  therefore not required that every single vector fits into memory. If the
-  cache runs full, items are deleted. If the cache is deleted to frequently a
-  lot of disk reads are required. For maximum performance the cache should be
-  designed so that it fits all vectors. However - on very large clusters, which
-  is where memory requirements are most relevant - it is unlikely that incoming
-  search queries are evenly distributed over the entire index. So, most real
-  life cases can use a vector cache that is smaller than all vectors and still
-  achieve great performance.
-* The key-value stores for the inverted indexes and object storage are
-  memory-mapped. So roughly 50% of the available memory (YMMV, depends on the
-  data set and query profile) should be left as linux page cache.
 
-## Standalone mode in 0.22.x
+
+### メモリ使用量
+* HNSW インデックスはメモリに収まる必要があります。ただし、これはすべての ベクトル がメモリに入る必要があるという意味ではなく、インデックス構造（多数のリンクを持つグラフ）だけが収まればよいことに注意してください。十分なメモリを確保できない場合、 Weaviate は起動できません。  
+* 類似度比較でよく使用される ベクトル はキャッシュされます。そのため、すべての ベクトル をメモリに収める必要はありません。キャッシュがいっぱいになると項目は削除されます。キャッシュが頻繁に削除されるとディスク読み取りが増加します。最大のパフォーマンスを得るには、キャッシュがすべての ベクトル を収容できるサイズであることが理想です。ただし、メモリ要件が特に重要となる大規模クラスタでは、検索クエリがインデックス全体に均一に分散されることは稀です。そのため、多くの実際のケースでは、すべての ベクトル より小さいキャッシュでも高いパフォーマンスを達成できます。  
+* 転置インデックスとオブジェクトストレージ用のキー・バリュー・ストアはメモリマップされています。そのため、利用可能メモリのおおよそ 50%（データセットとクエリプロファイルにより異なります）を Linux ページキャッシュとして残しておくべきです。  
+
+## 0.22.x の Standalone モード
 <!-- **NOTE: KEEP THIS HEADER FOR REFS FROM THE SOFTWARE ERROR MESSAGES (/docs/weaviate/more-resources/architecture.html#standalone-mode-in-022x)** -->
 
-* **Important**: While standalone mode is a preview of the standalone feature
-  which will become the standard in 1.0.0, standalone mode is **not a preview
-  of 1.0.0**. In other words, the switch to 1.0.0 will probably contain
-  breaking changes which are not currently reflected in 0.22.x standalone mode
-* As of 0.22.16, standalone mode is not feature complete.
-* Instead, standalone mode in 0.22.x is meant as a preview to see what Weaviate
-  will be like once it no longer depends on third-party DBs for its persistence
-* As of 0.22.16, standalone mode currently still requires `etcd` in the stack.
-  This has no technical reasons, a replacement for the data currently stored
-  there, simply hasn't been built yet into Weaviate Standalone. `Etcd` will be
-  removed completely before `1.0.0`
-* as of 0.22.16 each index has a single shard. Support for a custom number of
-  shards will be added before `1.0.0`
+* **重要**: Standalone モードは、1.0.0 で標準となる Standalone 機能のプレビューですが、Standalone モードは **1.0.0 のプレビューではありません**。言い換えると、1.0.0 への移行時には、0.22.x の Standalone モードには反映されていない破壊的変更が含まれる可能性があります。  
+* 0.22.16 時点では、Standalone モードはまだ機能が完全ではありません。  
+* 0.22.x の Standalone モードは、 Weaviate が永続化に外部 DB に依存しなくなった場合の姿をプレビューすることを目的としています。  
+* 0.22.16 現在、Standalone モードにはスタックに `etcd` が依然として必要です。これは技術的な理由ではなく、現在 `etcd` に保存されているデータを置き換える仕組みが Weaviate Standalone にまだ組み込まれていないためです。`etcd` は 1.0.0 までに完全に削除される予定です。  
+* 0.22.16 現在、各インデックスは 1 シャードのみです。カスタムのシャード数のサポートは `1.0.0` までに追加されます。  
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

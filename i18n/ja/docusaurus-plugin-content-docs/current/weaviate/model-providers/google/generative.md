@@ -1,12 +1,12 @@
 ---
-title: Generative AI
-description: Google Generative Model Provider
+title: 生成 AI
+description: Google 生成モデルプロバイダー
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_google.jpg
 # tags: ['model providers', 'google', 'generative', 'rag']
 ---
 
-# Google Generative AI with Weaviate
+# Weaviate と Google 生成 AI
 
 
 import Tabs from '@theme/Tabs';
@@ -17,66 +17,66 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) and [Google Vertex AI](https://cloud.google.com/vertex-ai) APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate の統合により、[Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) と [Google Vertex AI](https://cloud.google.com/vertex-ai) の各 API が提供するモデル機能を Weaviate から直接利用できます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with Google. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your Google API key.
+[コレクションを設定](#configure-collection) して Google の生成 AI モデルを使用すると、Weaviate が 検索拡張生成 (RAG) を指定したモデルとお客様の Google API キーで実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the Google generative model to generate outputs.
+具体的には、Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得した後、それらを Google の生成モデルに渡して出力を生成します。
 
 ![RAG integration illustration](../_includes/integration_google_rag.png)
 
-:::info Gemini API availability
-At the time of writing (November 2023), Gemini API is not available in all regions. See [this page](https://ai.google.dev/gemini-api/docs/available-regions) for the latest information.
+:::info Gemini API の提供状況
+執筆時点 (2023 年 11 月) では、Gemini API はすべてのリージョンで利用可能ではありません。最新情報は [こちら](https://ai.google.dev/gemini-api/docs/available-regions) をご覧ください。
 :::
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Google generative AI integration (`generative-google`) module.
+ご利用の Weaviate インスタンスには、Google 生成 AI 連携 (`generative-google`) モジュールが有効になっている必要があります。
 
-:::info Module name change
-`generative-google` was called `generative-palm` in Weaviate versions prior to `v1.27`.
+:::info モジュール名の変更
+`generative-google` は Weaviate `v1.27` 以前では `generative-palm` と呼ばれていました。
 :::
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザーの場合</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この連携は、Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザーの場合</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているかを確認してください。  
+- Weaviate でモジュールを有効にする方法は、[モジュール設定方法](../../configuration/modules.md) ガイドをご覧ください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide valid API credentials to Weaviate for the appropriate integration.
+適切な連携を利用するために、有効な API 資格情報を Weaviate に提供する必要があります。
 
 #### Gemini API
 
-Go to [Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key.
+[Google Gemini API](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) にアクセスしてサインアップし、API キーを取得してください。
 
 #### Vertex AI
 
-This is called an `access token` in Google Cloud.
+Google Cloud では `access token` と呼ばれます。
 
-##### Automatic token generation
+##### トークンの自動生成
 
 import UseGoogleAuthInstructions from './_includes/use_google_auth_instructions.mdx';
 
 <UseGoogleAuthInstructions/>
 
-##### Manual token retrieval
+##### トークンの手動取得
 
-This is called an `access token` in Google Cloud.
+Google Cloud では `access token` と呼ばれます。
 
-If you have the [Google Cloud CLI tool](https://cloud.google.com/cli) installed and set up, you can view your token by running the following command:
+[Google Cloud CLI ツール](https://cloud.google.com/cli) をインストールして設定済みの場合、以下のコマンドでトークンを確認できます。
 
 ```shell
 gcloud auth print-access-token
@@ -86,11 +86,11 @@ import GCPTokenExpiryNotes from '/_includes/gcp.token.expiry.notes.mdx';
 
 <GCPTokenExpiryNotes/>
 
-#### Provide the API key
+#### API キーの提供
 
-Provide the API key to Weaviate at runtime, as shown in the examples below.
+以下の例に示すように、実行時に API キーを Weaviate に渡してください。
 
-Note the separate headers that are available for [Gemini API](#gemini-api) and [Vertex AI](#vertex-ai) users.
+[Gemin​​i API](#gemini-api) と [Vertex AI](#vertex-ai) ユーザー向けに、個別のヘッダーが用意されていますのでご注意ください。
 
 import ApiKeyNote from '../_includes/google-api-key-note.md';
 
@@ -118,21 +118,21 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use a Google generative AI model as follows:
+[Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) し、Google の生成 AI モデルを使用するには次のようにします。
 
-Note that the required parameters differ between Vertex AI and Gemini API.
+Vertex AI と Gemini API では、必要なパラメーターが異なる点に注意してください。
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+Weaviate に [利用可能なモデル](#available-models) の中から [指定](#generative-parameters) することも、モデルを指定しない場合は [デフォルトモデル](#available-models) が使用されます。
 
 ### Vertex AI
 
-Vertex AI users must provide the Google Cloud project ID in the collection configuration.
+Vertex AI ユーザーは、コレクション設定で Google Cloud プロジェクト ID を指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -178,9 +178,9 @@ Vertex AI users must provide the Google Cloud project ID in the collection confi
 
 </Tabs>
 
-### Generative parameters
+### 生成パラメーター
 
-Configure the following generative parameters to customize the model behavior.
+以下の生成パラメーターを設定して、モデルの動作をカスタマイズします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -203,9 +203,9 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-## Select a model at runtime
+## 実行時モデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するほか、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -226,19 +226,19 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI の統合を設定した後、[single prompt](#single-prompt) または [grouped task](#grouped-task) の方法で RAG 操作を実行します。
 
-### Single prompt
+### シングル プロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_google_rag_single.png)
+![シングル プロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_google_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果内の各オブジェクトに対してテキストを生成する場合は、シングル プロンプト方式を利用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定された `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングル プロンプト クエリを作成する際は、Weaviate から言語モデルへ渡したいオブジェクトプロパティを波かっこ `{}` で囲んで挿入します。たとえば、オブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -262,13 +262,14 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_google_rag_grouped.png)
+### グループ化タスク
 
-To generate one text for the entire set of search results, use the grouped task method.
+![検索結果セットに対して 1 つの出力を生成するグループ化タスク RAG 統合](../_includes/integration_google_rag_grouped.png)
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+検索結果全体に対して 1 つのテキストを生成するには、グループ化タスク方式を使用します。
+
+つまり、`n` 件の検索結果がある場合でも、生成モデルはそのグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -292,9 +293,9 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-### RAG with images
+### 画像を用いた RAG
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks.
+検索拡張生成を行う際、単一プロンプトでもグループ化タスクでも、入力の一部として画像を渡すことができます。
 
 <Tabs groupId="languages">
 
@@ -316,9 +317,9 @@ You can also supply images as a part of the input when performing retrieval augm
   </TabItem>
 </Tabs>
 
-## References
+## 参考情報
 
-### Available models
+### 利用可能なモデル
 
 Vertex AI:
 - `chat-bison` (default)
@@ -338,27 +339,28 @@ Gemini API:
 - `gemini-pro`
 <!-- - `gemini-pro-vision` (from Weaviate `v1.24.2`) -->
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [Google text embedding models + Weaviate](./embeddings.md).
-- [Google multimodal embedding models + Weaviate](./embeddings-multimodal.md).
+- [Google テキスト埋め込みモデル + Weaviate](./embeddings.md).
+- [Google マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションで統合を設定すると、Weaviate におけるデータ管理と検索操作は他のコレクションと同様に動作します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ハウツー: コレクションを管理](../../manage-collections/index.mdx) および [ハウツー: オブジェクトを管理](../../manage-objects/index.mdx) では、データ操作 (コレクションとその中のオブジェクトの作成、読み込み、更新、削除) の方法を示しています。
+- [ハウツー: クエリ & 検索](../../search/index.mdx) では、ベクトル検索、キーワード検索、ハイブリッド検索、そして検索拡張生成の実行方法を解説しています。
 
-### References
+### 参考文献
 
 - [Google Vertex AI](https://cloud.google.com/vertex-ai)
 - [Google Gemini API](https://ai.google.dev/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

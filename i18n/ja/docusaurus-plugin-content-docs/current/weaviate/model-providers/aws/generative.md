@@ -1,12 +1,12 @@
 ---
-title: Generative AI
-description: AWS Generative Model Provider
+title: 生成 AI
+description: AWS 生成モデルプロバイダー
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_aws.jpg
 # tags: ['model providers', 'aws', 'generative', 'rag']
 ---
 
-# AWS Generative AI with Weaviate
+# Weaviate と AWS 生成 AI
 
 
 import Tabs from '@theme/Tabs';
@@ -17,43 +17,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with AWS's [SageMaker](https://aws.amazon.com/sagemaker/) and [Bedrock](https://aws.amazon.com/bedrock/) APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate の AWS の [SageMaker](https://aws.amazon.com/sagemaker/) と [Bedrock](https://aws.amazon.com/bedrock/) API との統合により、モデルの機能に Weaviate から直接アクセスできます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with AWS. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your AWS API credentials.
+[AWS とともに生成 AI モデルを使用するように Weaviate コレクションを設定](#configure-collection)します。Weaviate は、指定したモデルと AWS の API 資格情報を用いて 検索拡張生成 (RAG) を実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the AWS generative model to generate outputs.
+具体的には、Weaviate が検索を実行して最も関連性の高いオブジェクトを取得し、それらを AWS の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_aws_rag.png)
+![RAG 統合のイラスト](../_includes/integration_aws_rag.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the AWS generative AI integration (`generative-aws`) module.
+お使いの Weaviate インスタンスには、AWS 生成 AI 統合 (`generative-aws`) モジュールが設定されている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) 利用者向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホスト環境向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっているかどうかを確認するには、[クラスター メタデータ](/deploy/configuration/meta.md) をチェックしてください。  
+- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide [access key based AWS credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) to Weaviate for these integrations. Go to [AWS](https://aws.amazon.com/) to sign up and obtain an AWS access key ID and a corresponding AWS secret access key.
+これらの統合を行うには、アクセスキー方式の AWS 資格情報を Weaviate に提供する必要があります。AWS に登録し、AWS access key ID と対応する AWS secret access key を取得してください。
 
-Provide the API credentials to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API 資格情報を渡します。
 
-- Set the `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` environment variables that are available to Weaviate.
-- Provide the API credentials at runtime, as shown in the examples below.
+- `AWS_ACCESS_KEY` と `AWS_SECRET_KEY` 環境変数を設定し、Weaviate から参照できるようにします。  
+- 下記の例のように、実行時に API 資格情報を渡します。
 
 <Tabs groupId="languages">
 
@@ -77,29 +77,29 @@ Provide the API credentials to Weaviate using one of the following methods:
 
 </Tabs>
 
-### AWS model access
+### AWS モデルへのアクセス
 
 #### Bedrock
 
-To use a model via [Bedrock](https://aws.amazon.com/bedrock/), it must be available, and AWS must grant you access to it.
+[Bedrock](https://aws.amazon.com/bedrock/) 経由でモデルを利用するには、そのモデルが利用可能であり、かつ AWS からアクセスが許可されている必要があります。
 
-Refer to the [AWS documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) for the list of available models, and to [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+利用可能なモデルの一覧は [AWS のドキュメント](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html) を、モデルへのアクセス申請方法は [こちら](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) を参照してください。
 
 #### SageMaker
 
-To use a model via [SageMaker](https://aws.amazon.com/sagemaker/), you must have access to the model's endpoint.
+[SageMaker](https://aws.amazon.com/sagemaker/) 経由でモデルを利用するには、モデルのエンドポイントへのアクセス権が必要です。
 
-## Configure collection
+## コレクションの設定
 
 import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an AWS generative model:
+AWS の生成モデルを使用するように、次のように [Weaviate インデックス](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) を設定します。
 
 ### Bedrock
 
-For Bedrock, you must provide the model name in the generative AI configuration.
+Bedrock を使用する場合、生成 AI 設定でモデル名を指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -124,7 +124,7 @@ For Bedrock, you must provide the model name in the generative AI configuration.
 
 ### SageMaker
 
-For SageMaker, you must provide the endpoint address in the generative AI configuration.
+SageMaker を使用する場合は、生成 AI 設定でエンドポイントアドレスを指定する必要があります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -147,15 +147,15 @@ For SageMaker, you must provide the endpoint address in the generative AI config
 
 </Tabs>
 
-You can [specify](#generative-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
+[利用可能なモデル](#available-models) のいずれかを Weaviate に使用させるように [指定](#generative-parameters) できます。モデルを指定しない場合は [デフォルトモデル](#available-models) が使用されます。
 
-### Generative parameters
+### 生成パラメーター
 
-For further details on model parameters, see the [relevant AWS documentation](#further-resources).
+モデルパラメーターの詳細については、[関連する AWS ドキュメント](#further-resources) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることも可能です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -176,19 +176,19 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Retrieval augmented generation
+## 検索拡張生成
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
+生成 AI 連携を設定した後、[シングルプロンプト](#single-prompt) または [グループ化タスク](#grouped-task) の方法で RAG 操作を実行します。
 
-### Single prompt
+### シングルプロンプト
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_aws_rag_single.png)
+![シングルプロンプトの RAG 連携では検索結果ごとに個別の出力を生成します](../_includes/integration_aws_rag_single.png)
 
-To generate text for each object in the search results, use the single prompt method.
+検索結果の各オブジェクトに対してテキストを生成するには、シングルプロンプト方式を使用します。
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+以下の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+シングルプロンプトクエリを作成する際、渡したいオブジェクトプロパティを波かっこ `{}` で囲んで記述すると、Weaviate がその値を言語モデルに渡します。たとえば、オブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -212,13 +212,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループ化タスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_aws_rag_grouped.png)
+![グループ化タスクの RAG 連携では検索結果全体に対して一つの出力を生成します](../_includes/integration_aws_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して一つのテキストを生成するには、グループ化タスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+つまり、`n` 件の検索結果があっても、生成モデルはそのグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -242,9 +242,11 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-### RAG with images
 
-You can also supply images as a part of the input when performing retrieval augmented generation in both single prompts and grouped tasks. 
+
+### 画像付き RAG
+
+単一プロンプトでもグループ化されたタスクでも、検索拡張生成を行う際の入力の一部として画像を渡すこともできます。 
 
 <Tabs groupId="languages">
 
@@ -266,9 +268,9 @@ You can also supply images as a part of the input when performing retrieval augm
   </TabItem>
 </Tabs>
 
-## References
+## 参考資料
 
-### Available models
+### 利用可能なモデル
 
 #### Bedrock
 
@@ -294,32 +296,33 @@ You can also supply images as a part of the input when performing retrieval augm
 - `mistral.mixtral-8x7b-instruct-v0:1`
 - `mistral.mistral-large-2402-v1:0`
 
-Refer to the [this document](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) to find out how request access to a model.
+モデルへのアクセスをリクエストする方法については [こちらのドキュメント](https://docs.aws.amazon.com/bedrock/latest/userguide/model-usage.html) を参照してください。
 
 ### SageMaker
 
-Any custom SageMaker URL can be used as an endpoint.
+任意のカスタム SageMaker URL をエンドポイントとして使用できます。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他の統合
 
-- [AWS embedding models + Weaviate](./embeddings.md).
+- [AWS embedding models + Weaviate](./embeddings.md)。
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+インテグレーションをコレクションで設定すると、Weaviate におけるデータ管理および検索操作は他のコレクションと同一の方法で機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [ハウツー: コレクション管理](../../manage-collections/index.mdx) および [ハウツー: オブジェクト管理](../../manage-objects/index.mdx) ガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）を行う方法を示しています。
+- [ハウツー: クエリ & 検索](../../search/index.mdx) ガイドでは、検索操作（ベクトル、キーワード、ハイブリッド）および 検索拡張生成 を実行する方法を示します。
 
-### References
+### 参考文献
 
-- AWS [Bedrock documentation](https://docs.aws.amazon.com/bedrock/)
-- AWS [SageMaker documentation](https://docs.aws.amazon.com/sagemaker/)
+- AWS [Bedrock ドキュメント](https://docs.aws.amazon.com/bedrock/)
+- AWS [SageMaker ドキュメント](https://docs.aws.amazon.com/sagemaker/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

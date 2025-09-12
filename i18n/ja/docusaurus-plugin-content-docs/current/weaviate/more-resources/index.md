@@ -1,5 +1,5 @@
 ---
-title: More resources
+title: 追加リソース
 sidebar_position: 0
 image: og/docs/more-resources.jpg
 # tags: ['More resources']
@@ -10,26 +10,28 @@ import Badges from '/_includes/badges.mdx';
 <Badges/>
 
 
-These pages can help with common questions:
+よくある質問に役立つページです:
 
 - [FAQ](./faq.md)
-- [Glossary](./glossary.md)
-- [Example datasets](./example-datasets.md)
-- [Example use cases](./example-use-cases.md)
-- [Index types and performance](./performance.md)
-- [Migration Guide](/deploy/migration/index.md)
+- [用語集](./glossary.md)
+- [サンプルデータセット](./example-datasets.md)
+- [ユースケース例](./example-use-cases.md)
+- [インデックス種類とパフォーマンス](./performance.md)
+- [移行ガイド](/deploy/migration/index.md)
 
-## (Even) more resources
+## 追加リソース（さらに）
 
-For additional information, try these sources.
+追加情報については、以下の資料もご覧ください。
 
-- [Weaviate Community Forum](https://forum.weaviate.io/)
-- [Knowledge base of old issues](https://github.com/weaviate/weaviate/issues?utf8=%E2%9C%93&q=label%3Abug)
-- [Weaviate slack channel](https://weaviate.io/slack)
+- [ Weaviate コミュニティフォーラム](https://forum.weaviate.io/)
+- [過去の Issue のナレッジベース](https://github.com/weaviate/weaviate/issues?utf8=%E2%9C%93&q=label%3Abug)
+- [ Weaviate Slack チャンネル](https://weaviate.io/slack)
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

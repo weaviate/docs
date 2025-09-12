@@ -1,5 +1,5 @@
 ---
-title: Custom connections
+title: カスタム接続
 sidebar_position: 30
 image: og/docs/connect.jpg
 # tags: ['getting started', 'connect']
@@ -12,9 +12,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
 
-The [Python Client v4](/weaviate/client-libraries/python) and the [TypeScript Client v3](../client-libraries/typescript/index.mdx) provide helper methods for common connection types. They also provide custom methods for when you need additional connection configuration.
+[ Python Client v4 ](/weaviate/client-libraries/python) と [ TypeScript Client v3 ](../client-libraries/typescript/index.mdx) には、一般的な接続タイプ向けのヘルパーメソッドが用意されています。さらに、追加の接続設定が必要な場合のためにカスタムメソッドも提供しています。
 
-If you are using one of the other clients, the standard connection methods are configurable for all connections.
+その他のクライアントをお使いの場合でも、標準の接続メソッドはすべての接続で設定可能です。
 
 <Tabs groupId="languages">
 <TabItem value="py4" label="Python Client v4">
@@ -35,13 +35,13 @@ If you are using one of the other clients, the standard connection methods are c
 </TabItem>
 </Tabs>
 
-## Environment variables
+## 環境変数
 
 import EnvVarsHowto from '/_includes/environment-variables.mdx';
 
 <EnvVarsHowto/>
 
-## gRPC Timeouts
+## gRPC タイムアウト
 
 import GRPCTimeoutIntro from '/_includes/connect/timeouts-intro.mdx';
 
@@ -51,9 +51,9 @@ import GRPCTimeouts from '/_includes/code/connections/timeouts-custom.mdx';
 
 <GRPCTimeouts/>
 
-## Third party API keys
+## サードパーティ API キー
 
-Integrations that use external APIs often need API keys. To add third party API keys, follow these examples:
+外部 API を使用する統合では、API キーが必要になることがよくあります。サードパーティ API キーを追加するには、次の例を参考にしてください。
 
 <Tabs groupId="languages">
 <TabItem value="py4" label="Python Client v4">
@@ -74,7 +74,7 @@ Integrations that use external APIs often need API keys. To add third party API 
 </TabItem>
 </Tabs>
 
-## OIDC authentication
+## OIDC 認証
 
 import OIDCConnect from '/_includes/connect/oidc-connect-ref.mdx';
 
@@ -84,8 +84,10 @@ import OIDCExamples from '/_includes/code/connections/oidc-connect.mdx';
 
 <OIDCExamples/>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

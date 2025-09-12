@@ -1,5 +1,5 @@
 ---
-title: Binary Quantization (BQ)
+title: バイナリ量子化 (BQ)
 sidebar_position: 6
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'bq']
@@ -17,23 +17,23 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
 :::info Added in `v1.23`
-BQ is available for the [`flat` index](/weaviate/concepts/indexing/vector-index.md#flat-index) type from `v1.23` onwards and for the [`hnsw` index](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) type from `v1.24`.
+BQ は `v1.23` 以降で [`flat` index](/weaviate/concepts/indexing/vector-index.md#flat-index) タイプに対応し、`v1.24` からは [`hnsw` index](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) タイプにも対応しています。
 :::
 
-Binary quantization (BQ) is a vector compression technique that can reduce the size of a vector.
+バイナリ量子化 (BQ) は、ベクトルのサイズを削減できるベクトル圧縮手法です。
 
-To use BQ, enable it as shown below and add data to the collection.
+BQ を使用するには、以下のように有効化し、コレクションにデータを追加します。
 
 <details>
-  <summary>Additional information</summary>
+  <summary>追加情報</summary>
 
-- How to [set the index type](../../manage-collections/vector-config.mdx#set-vector-index-type)
+- [インデックス タイプを設定する方法](../../manage-collections/vector-config.mdx#set-vector-index-type)
 
 </details>
 
-## Enable compression for new collection
+## 新規コレクションでの圧縮の有効化
 
-BQ can be enabled at collection creation time through the collection definition:
+コレクション作成時に、コレクション定義で BQ を有効化できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -91,13 +91,13 @@ BQ can be enabled at collection creation time through the collection definition:
   </TabItem>
 </Tabs>
 
-## Enable compression for existing collection
+## 既存コレクションでの圧縮の有効化
 
 :::info Added in `v1.31`
-The ability to enable BQ compression after collection creation was added in Weaviate `v1.31`.
+コレクション作成後に BQ 圧縮を有効化する機能は Weaviate `v1.31` で追加されました。
 :::
 
-BQ can also be enabled for an existing collection by updating the collection definition:
+既存のコレクションでも、コレクション定義を更新することで BQ を有効化できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -126,15 +126,17 @@ BQ can also be enabled for an existing collection by updating the collection def
   </TabItem>
 </Tabs>
 
-## BQ parameters
 
-The following parameters are available for BQ compression, under `vectorIndexConfig`:
+
+## BQ パラメーター
+
+BQ 圧縮には、`vectorIndexConfig` 内で次のパラメーターを使用できます:
 
 import BQParameters from '/\_includes/configuration/bq-compression-parameters.mdx' ;
 
 <BQParameters />
 
-For example:
+例:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -192,29 +194,30 @@ For example:
   </TabItem>
 </Tabs>
 
-## Additional considerations
+## 追加の考慮事項
 
-### Multiple vector embeddings (named vectors)
+### 複数 ベクトル 埋め込み（名前付き ベクトル）
 
 import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
 
 <NamedVectorCompress />
 
-### Multi-vector embeddings (ColBERT, ColPali, etc.)
+### マルチ ベクトル 埋め込み（ColBERT、ColPali など）
 
 import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
 <MultiVectorCompress />
 
-## Further resources
+## 追加リソース
 
-- [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
-- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [スターターガイド: 圧縮](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [リファレンス: ベクトル インデックス](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コンセプト: ベクトル 量子化](/docs/weaviate/concepts/vector-quantization.md)
+- [コンセプト: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -1,12 +1,12 @@
 ---
-title: Generative AI
-description: Set up generative models with KubeAI in Weaviate for creative data outputs.
+title: 生成 AI
+description: Weaviate で KubeAI を使用して創造的なデータ出力を行う生成モデルを設定します。
 sidebar_position: 50
 image: og/docs/integrations/provider_integrations_kubeai.jpg
 # tags: ['model providers', 'openai', 'generative', 'rag']
 ---
 
-# KubeAI Generative AI with Weaviate
+# Weaviate での KubeAI 生成 AI
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -16,47 +16,47 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with OpenAI-style APIs allows you to access KubeAI models' directly from Weaviate.
+Weaviate の OpenAI-style API との統合により、KubeAI モデルを Weaviate から直接利用できます。
 
-[Configure a Weaviate collection](#configure-collection) to use a generative AI model with KubeAI. Weaviate will perform retrieval augmented generation (RAG) using the specified model.
+[コレクションを設定](#configure-collection) して、KubeAI で生成 AI モデルを使用します。Weaviate は 検索拡張生成 (RAG) を、指定したモデルで実行します。
 
-More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the KubeAI generative model to generate outputs.
+具体的には、Weaviate が検索を実行して最も関連性の高いオブジェクトを取得し、それらを KubeAI の生成モデルに渡して出力を生成します。
 
 ![RAG integration illustration](../_includes/integration_kubeai_rag.png)
 
-## Requirements
+## 要件
 
-### KubeAI configuration
+### KubeAI の設定
 
-KubeAI must be deployed in a Kubernetes cluster with an embedding model. For more specific instructions, see this [KubeAI deployment guide](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration).
+KubeAI は埋め込みモデルを備えた Kubernetes クラスターにデプロイされている必要があります。詳細な手順については、この [KubeAI デプロイ ガイド](https://www.kubeai.org/tutorials/weaviate/#kubeai-configuration) を参照してください。
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the OpenAI generative AI integration (`generative-openai`) module.
+お使いの Weaviate インスタンスは、OpenAI 生成 AI 統合 (`generative-openai`) モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレス インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) をチェックしてください。
+- Weaviate でモジュールを有効にする方法については、[モジュールの設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-The OpenAI integration requires an API key value. To use KubeAI, provide any value for the API key, as this value is not used by KubeAI.
+OpenAI 統合には API キー値が必要です。KubeAI を使用する場合、この値は KubeAI では使用されないため、任意の値を設定してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを渡します。
 
-- Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照できる `OPENAI_APIKEY` 環境変数を設定する
+- 下記の例のように実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -80,9 +80,9 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure collection
+## コレクションの設定 {#configure-collection}
 
-Configure Weaviate to use a KubeAI generative AI model:
+Weaviate で KubeAI 生成 AI モデルを使用するように設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -105,13 +105,13 @@ Configure Weaviate to use a KubeAI generative AI model:
 
 </Tabs>
 
-Any model that is supported by vLLM or Ollama can be used with KubeAI.
+vLLM または Ollama がサポートするモデルはすべて KubeAI で使用できます。
 
-Refer to the [KubeAI docs on model management](https://www.kubeai.org/how-to/install-models/) for more information on available models and how to configure them.
+利用可能なモデルおよびその設定方法の詳細は、[KubeAI のモデル管理に関するドキュメント](https://www.kubeai.org/how-to/install-models/) を参照してください。
 
-## Select a model at runtime
+## 実行時のモデル選択
 
-Aside from setting the default model provider when creating the collection, you can also override it at query time.
+コレクション作成時にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,19 +132,21 @@ Aside from setting the default model provider when creating the collection, you 
   </TabItem>
 </Tabs>
 
-## Retrieval augmented generation
 
-After configuring the generative AI integration, perform RAG operations, either with the [single prompt](#single-prompt) or [grouped task](#grouped-task) method.
 
-### Single prompt
+## 検索拡張生成
 
-![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_kubeai_rag_single.png)
+生成 AI インテグレーションを設定したら、[単一プロンプト](#single-prompt)方式または[グループタスク](#grouped-task)方式で RAG 操作を実行します。
 
-To generate text for each object in the search results, use the single prompt method.
+### 単一プロンプト
 
-The example below generates outputs for each of the `n` search results, where `n` is specified by the `limit` parameter.
+![単一プロンプトの RAG インテグレーションは検索結果ごとに個別の出力を生成します](../_includes/integration_kubeai_rag_single.png)
 
-When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
+検索結果内の各オブジェクトに対してテキストを生成するには、単一プロンプト方式を使用します。
+
+以下の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
+
+単一プロンプトクエリを作成する際は、`{}` を使用して、言語モデルに渡したいオブジェクトプロパティを挿入します。たとえば、オブジェクトの `title` プロパティを渡したい場合は、クエリに `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -168,13 +170,13 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 </Tabs>
 
-### Grouped task
+### グループタスク
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_kubeai_rag_grouped.png)
+![グループタスクの RAG インテグレーションは検索結果全体に対して 1 つの出力を生成します](../_includes/integration_kubeai_rag_grouped.png)
 
-To generate one text for the entire set of search results, use the grouped task method.
+検索結果全体に対して 1 つのテキストを生成するには、グループタスク方式を使用します。
 
-In other words, when you have `n` search results, the generative model generates one output for the entire group.
+つまり、`n` 件の検索結果がある場合でも、生成モデルはグループ全体に対して 1 つの出力を生成します。
 
 <Tabs groupId="languages">
 
@@ -198,26 +200,27 @@ In other words, when you have `n` search results, the generative model generates
 
 </Tabs>
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### 他のインテグレーション
 
-- [KubeAI embedding models + Weaviate](./embeddings.md).
+- [KubeAI 埋め込みモデル + Weaviate](./embeddings.md).
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+インテグレーションがコレクションに設定されると、Weaviate のデータ管理および検索操作は他のコレクションと同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx)および[How-to: オブジェクトを管理する](../../manage-objects/index.mdx)ガイドでは、データ操作（コレクションとその内部のオブジェクトの作成・読み取り・更新・削除）の方法を説明しています。
+- [How-to: クエリ & 検索](../../search/index.mdx)ガイドでは、ベクトル検索・キーワード検索・ハイブリッド検索に加えて検索拡張生成の実行方法を説明しています。
 
-### External resources
+### 外部リソース
 
 - [KubeAI documentation](https://www.kubeai.org/)
 - [KubeAI documentation on model management](https://www.kubeai.org/how-to/install-models/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

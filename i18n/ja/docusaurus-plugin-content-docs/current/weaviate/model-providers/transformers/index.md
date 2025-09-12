@@ -1,5 +1,5 @@
 ---
-title: Locally Hosted Transformers + Weaviate
+title: ローカルホストされた Transformers ＋ Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_transformers.jpg
 # tags: ['model providers', 'huggingface', 'transformers']
@@ -7,43 +7,44 @@ image: og/docs/integrations/provider_integrations_transformers.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Hugging Face's Transformers library can be used with a wide range of models for natural language processing. Weaviate seamlessly integrates with the Transformers library, allowing users to leverage compatible models directly from the Weaviate Database.
+Hugging Face の Transformers ライブラリは、自然言語処理向けの幅広いモデルで利用できます。 Weaviate は Transformers ライブラリとシームレスに統合し、ユーザーは Weaviate Database から直接互換性のあるモデルを活用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with Hugging Face Transformers
+## Hugging Face Transformers との統合
 
-Weaviate integrates with compatible Hugging Face Transformers models by spinning them up in containers. This allows users to host their own models and use them with Weaviate.
+Weaviate は、互換性のある Hugging Face Transformers モデルをコンテナで起動することで統合します。 これにより、ユーザーは独自のモデルをホストし、 Weaviate と共に利用できます。
 
-### Embedding models for vector search
+### ベクトル検索用エンベディングモデル
 
 ![Embedding integration illustration](../_includes/integration_transformers_embedding.png)
 
-Transformers-compatible embedding models transform text data into vector embeddings, capturing meaning and context.
+Transformers 互換のエンベディングモデルは、テキストデータを意味とコンテキストを捉えたベクトル埋め込みに変換します。
 
-[Weaviate integrates with Hugging Face Transformers' embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Hugging Face Transformers のエンベディングモデルと統合しています](./embeddings.md) 。この統合により、追加の前処理やデータ変換を行うことなく、意味検索およびハイブリッド検索を実行できます。
 
-[Hugging Face Transformers embedding integration page](./embeddings.md)
+[Hugging Face Transformers エンベディング統合ページ](./embeddings.md)
 
-## Summary
+## 概要
 
-These integrations enable developers to leverage powerful Hugging Face Transformers models from directly within Weaviate.
+これらの統合により、開発者は Weaviate 内部から直接強力な Hugging Face Transformers モデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、 AI 駆動アプリケーションの構築プロセスが簡素化され、開発スピードが向上し、革新的なソリューションの創出に集中できます。
 
-## Get started
+## 始める
 
-A locally hosted Weaviate instance is required for these integrations so that you can host your own Hugging Face Transformers models.
+これらの統合を利用するには、ローカルでホストされた Weaviate インスタンスが必要です。 これにより、ご自身の Hugging Face Transformers モデルをホストできます。
 
-Go to the relevant integration page to learn how to configure Weaviate with the Hugging Face Transformers models and start using them in your applications.
+関連する統合ページにアクセスして、 Hugging Face Transformers モデルを Weaviate で構成し、アプリケーションでの使用を開始してください。
 
-- [Text Embeddings](./embeddings.md)
-- [Text Embeddings (custom image)](./embeddings-custom-image.md)
-- [Multimodal Embeddings](./embeddings-multimodal.md)
-- [Multimodal Embeddings (custom image)](./embeddings-multimodal-custom-image.md)
+- [テキストエンベディング](./embeddings.md)
+- [テキストエンベディング（カスタムイメージ）](./embeddings-custom-image.md)
+- [マルチモーダルエンベディング](./embeddings-multimodal.md)
+- [マルチモーダルエンベディング（カスタムイメージ）](./embeddings-multimodal-custom-image.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

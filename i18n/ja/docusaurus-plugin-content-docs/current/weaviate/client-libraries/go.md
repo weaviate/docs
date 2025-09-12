@@ -1,7 +1,7 @@
 ---
 title: Go
 sidebar_position: 70
-description: "Official Go client library documentation for integrating Weaviate with Go applications and services."
+description: Weaviate を Go アプリケーションやサービスに統合するための公式 Go クライアントライブラリのドキュメント。
 image: og/docs/client-libraries.jpg
 # tags: ['go', 'client library']
 ---
@@ -18,33 +18,33 @@ export const goCardsData = [
 
 :::note Go client (SDK)
 
-The latest Go client is version `v||site.go_client_version||`.
+最新の Go クライアントはバージョン `v||site.go_client_version||` です。
 
 <QuickLinks items={goCardsData} />
 
 :::
 
-The Weaviate Go client is compatible with Go 1.16+.
+Weaviate Go クライアントは Go 1.16+ と互換性があります。
 
-## Installation
-The client doesn't support the old Go modules system. Create a repository for your code before you import the Weaviate client.
+## インストール
+クライアントは旧式の Go modules システムをサポートしていません。Weaviate クライアントをインポートする前に、コード用のリポジトリを作成してください。
 
-Create a repository:
+リポジトリを作成します:
 
 ```bash
 go mod init github.com/weaviate-go-client
 go mod tidy
 ```
 
-To get the latest stable version of the Go client library, run the following:
+最新の安定版 Go クライアントライブラリを取得するには、次を実行します:
 
 ```bash
 go get github.com/weaviate/weaviate-go-client/v4
 ```
 
-## Example
+## 例
 
-This example establishes a connection to your Weaviate instance and retrieves the schema.:
+この例では、Weaviate インスタンスへ接続し、スキーマを取得します:
 
 ``` go
 package main
@@ -77,21 +77,21 @@ func main() {
 }
 ```
 
-## Authentication
+## 認証
 
 import ClientAuthIntro from '/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx'
 
 <ClientAuthIntro clientName="Go"/>
 
-### WCD authentication
+### WCD 認証
 
 import ClientAuthWCD from '/docs/weaviate/client-libraries/_components/client.auth.wcs.mdx'
 
 <ClientAuthWCD />
 
-### API key authentication
+### API キー認証
 
-:::info Added in Weaviate Go client version `4.7.0`.
+:::info Weaviate Go クライアントバージョン `4.7.0` で追加されました。
 :::
 
 import ClientAuthApiKey from '/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx'
@@ -112,13 +112,13 @@ if err != nil{
 }
 ```
 
-### OIDC authentication
+### OIDC 認証
 
 import ClientAuthOIDCIntro from '/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx'
 
 <ClientAuthOIDCIntro />
 
-#### <i class="fa-solid fa-key"></i> Resource Owner Password Flow
+#### <i class="fa-solid fa-key"></i> リソースオーナー パスワードフロー
 
 import ClientAuthFlowResourceOwnerPassword from '/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx'
 
@@ -141,7 +141,7 @@ if err != nil{
 }
 ```
 
-#### <i class="fa-solid fa-key"></i> Client Credentials flow
+#### <i class="fa-solid fa-key"></i> クライアントクレデンシャルフロー
 
 import ClientAuthFlowClientCredentials from '/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx'
 
@@ -163,7 +163,7 @@ if err != nil{
 }
 ```
 
-#### <i class="fa-solid fa-key"></i> Refresh Token flow
+#### <i class="fa-solid fa-key"></i> リフレッシュトークンフロー
 
 import ClientAuthBearerToken from '/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx'
 
@@ -186,9 +186,9 @@ if err != nil{
 }
 ```
 
-## Custom headers
+## カスタムヘッダー
 
-You can pass custom headers to the client, which are added at initialization:
+初期化時に追加されるカスタムヘッダーをクライアントに渡すことができます:
 
 ```go
 cfg := weaviate.Config{
@@ -206,23 +206,23 @@ if err != nil{
 }
 ```
 
-## References
+## リファレンス
 
-All [RESTful endpoints](/weaviate/api/rest) and [GraphQL functions](/weaviate/api) references covered by the Go client, and explained on those reference pages in the code blocks.
+Go クライアントでカバーされているすべての [RESTful エンドポイント](/weaviate/api/rest) と [GraphQL 関数](/weaviate/api) のリファレンスは、これらのリファレンスページ上のコードブロックで解説されています。
 
-## Design
+## 設計
 
-### Builder pattern
+### ビルダー・パターン
 
-The Go client functions are designed with a 'Builder pattern'. A pattern is used to build complex query objects. This means that a function (for example to retrieve data from Weaviate with a request similar to a RESTful GET request, or a more complex GraphQL query) is built with single objects to reduce complexity. Some builder objects are optional, others are required to perform specific functions. All is documented on the [RESTful API reference pages](/weaviate/api/rest) and the [GraphQL reference pages](/weaviate/api).
+Go クライアントの関数は「ビルダー・パターン」で設計されています。これは複雑なクエリオブジェクトを構築するためのパターンです。たとえば、RESTful の GET リクエストに近いデータ取得や、より複雑な GraphQL クエリのリクエストを行う関数は、複数のオブジェクトを組み合わせて構築され、複雑さを軽減します。ビルダーオブジェクトにはオプションのものと必須のものがあり、すべて [RESTful API リファレンスページ](/weaviate/api/rest) と [GraphQL リファレンスページ](/weaviate/api) にドキュメントがあります。
 
-The code snippet above shows a simple query similar to `RESTful GET /v1/schema`. The client is initiated by requiring the package and connecting to the running instance. Then, a query is constructed by getting the `.Schema` with `.Getter()`. The query will be sent with the `.Go()` function, this object is thus required for every function you want to build and execute.
+上記のコードスニペットは `RESTful GET /v1/schema` に類似したシンプルなクエリを示しています。まずパッケージを読み込み、実行中のインスタンスへ接続してクライアントを初期化します。その後、`.Getter()` で `.Schema` を取得してクエリを構築します。クエリは `.Go()` 関数で送信されます。このオブジェクトは、構築して実行したいすべての関数で必須です。
 
-## Migration Guides
+## 移行ガイド
 
-### From `v2` to `v4`
+### `v2` から `v4` への移行
 
-#### Unnecessary `.Objects()` removed from `GraphQL.Get()`
+#### 不要な `.Objects()` の削除
 
 Before:
 
@@ -236,9 +236,9 @@ After:
 client.GraphQL().Get().WithClassName
 ```
 
-#### GraphQL `Get().WithNearVector()` uses a builder pattern
+#### GraphQL `Get().WithNearVector()` のビルダーパターン化
 
-In `v2` specifying a `nearVector` argument to `client.GraphQL().Get()` required passing a string. As a result the user had to know the structure of the GraphQL API. `v4` fixes this by using a builder pattern like so:
+`v2` では `client.GraphQL().Get()` に `nearVector` 引数を指定する際、文字列を渡す必要がありました。そのため、ユーザーは GraphQL API の構造を理解している必要がありました。`v4` では次のようにビルダーパターンを採用してこの問題を解決しています。
 
 Before:
 
@@ -257,10 +257,9 @@ client.GraphQL().Get().
   WithNearVector(nearVector)...
 ```
 
+#### すべての `where` フィルターが同一のビルダーを使用
 
-#### All `where` filters use the same builder
-
-In `v2` filters were sometimes specified as strings, sometimes in a structured way. `v4` unifies this and makes sure that you can always use the same builder pattern.
+`v2` ではフィルターの指定方法が文字列だったり構造化されていたりとまちまちでした。`v4` では統一され、常に同じビルダーパターンを使用できます。
 
 ##### GraphQL Get
 
@@ -375,7 +374,7 @@ client.Classifications().Scheduler().
 
 #### GraphQL `Get().WithFields()`
 
-In `v2` `.WithFields()` took a GraphQL string that required knowledge of how GraphQL fields are structured. Now this can be done with a variadic function. E.g:
+`v2` の `.WithFields()` は GraphQL 文字列を受け取り、GraphQL フィールド構造の理解が必要でした。現在は可変長引数の関数で指定できます。例:
 
 Before:
 
@@ -390,9 +389,9 @@ client.GraphQL.Get().WithClassName("MyClass").
   WithFields(graphql.Field{Name: "name"},graphql.Field{Name: "price"}, graphql.Field{Name: "age"})...
 ```
 
-#### Graphql `Get().WithGroup()`
+#### GraphQL `Get().WithGroup()`
 
-In `v2` `.WithFields()` took a GraphQL string that required knowledge of how GraphQL fields are structured. Now this can be done with a builder. E.g:
+`v2` の `.WithGroup()` は GraphQL 文字列を受け取り、GraphQL フィールド構造の理解が必要でした。現在はビルダーで指定できます。例:
 
 Before:
 
@@ -410,9 +409,9 @@ group := client.GraphQL().GroupArgBuilder()
 client.GraphQL.Get().WithClassName("MyClass").WithGroup(group)
 ```
 
-#### Graphql `Data().Validator()` property renamed
+#### GraphQL `Data().Validator()` プロパティのリネーム
 
-In `v2` the naming of the method to specify the Schema was inconsistent with other places in the client. This has been fixed in `v4`. Rename according to the following:
+`v2` ではスキーマを指定するメソッド名がクライアントの他の場所と一貫していませんでした。`v4` で修正されています。以下のようにリネームしてください。
 
 Before:
 ```go
@@ -424,12 +423,12 @@ After:
 client.Data().Validator().WithProperties(properties)
 ```
 
-## Releases
+## リリース
 
-Go to the [GitHub releases page](https://github.com/weaviate/weaviate-go-client/releases) to see the history of the Go client library releases.
+Go のクライアントライブラリのリリース履歴は、[GitHub releases ページ](https://github.com/weaviate/weaviate-go-client/releases)をご覧ください。
 
 <details>
-  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+  <summary>Weaviate と対応クライアントバージョンの一覧はこちらをクリック</summary>
 
 import ReleaseHistory from '/_includes/release-history.md';
 
@@ -437,8 +436,9 @@ import ReleaseHistory from '/_includes/release-history.md';
 
 </details>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -1,7 +1,7 @@
 ---
-title: Notes and best practices
+title: 注意事項とベストプラクティス
 sidebar_position: 2
-description: "TypeScript client optimization guidelines and recommended implementation patterns for web development."
+description: "TypeScript クライアントの最適化ガイドラインとウェブ開発向け推奨実装パターン。"
 image: og/docs/client-libraries.jpg
 ---
 
@@ -11,13 +11,13 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PythonCode from "!!raw-loader!/_includes/code/client-libraries/python_v4.py";
 import BatchVectorCode from "!!raw-loader!/_includes/code/howto/manage-data.import.py";
 
-## Instantiate a client
+## クライアントの初期化
 
-The v3 client provides helper functions to connect your application to your Weaviate instance.
+v3 クライアントは、お使いのアプリケーションを Weaviate インスタンスへ接続するためのヘルパー関数を提供します。
 
-[Embedded Weaviate](/deploy/installation-guides/embedded) is not supported in the v3 client. The v2 client supports embedded Weaviate.
+[Embedded Weaviate](/deploy/installation-guides/embedded) は v3 クライアントではサポートされていません。v2 クライアントでは Embedded Weaviate を利用できます。
 
-### Connect to Weaviate
+### Weaviate への接続
 
 <Tabs groupId="platforms">
 <TabItem value="wcd" label="WCD">
@@ -72,13 +72,13 @@ console.log(client);
 </TabItem>
 </Tabs>
 
-### Close client method
+### クライアント終了メソッド
 
 import TSClientClose from "/_includes/clients/ts-client-close.mdx";
 
 <TSClientClose />
 
-### Authentication
+### 認証
 
 import ClientAuthApiKey from "/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx";
 
@@ -98,7 +98,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 console.log(client);
 ```
 
-To include custom headers, such as API keys for third party services, add the custom headers to the `headers` section when you initialize the client:
+サードパーティーサービスの API キーなど、独自ヘッダーを含めたい場合は、クライアントを初期化するときに `headers` セクションへヘッダーを追加してください:
 
 ```ts
 import weaviate, { WeaviateClient } from "weaviate-client";
@@ -114,13 +114,13 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 );
 ```
 
-The client sends the headers every it makes a request to the Weaviate instance.
+クライアントは Weaviate インスタンスへリクエストを送信するたびに、これらのヘッダーを送信します。
 
-### Initial connection checks
+### 初期接続チェック
 
-When establishing a connection to the Weaviate server, the client performs a series of checks. These includes checks for the server version, and to make sure that the REST and gRPC ports are available.
+Weaviate サーバーへの接続を確立する際、クライアントはいくつかのチェックを実行します。これにはサーバーバージョンの確認や、REST と gRPC ポートが利用可能かどうかの確認が含まれます。
 
-You can set `skipInitChecks` to `true` to skip these checks.
+これらのチェックをスキップするには、`skipInitChecks` を `true` に設定します。
 
 ```js
 import weaviate from 'weaviate-client';
@@ -130,13 +130,13 @@ const client = await weaviate.connectToLocal({
 })
 ```
 
-In most cases, you should use the default `false` setting for `skipInitChecks`. However, setting `skipInitChecks: true` may be a useful temporary measure if you have connection issues.
+ほとんどの場合、`skipInitChecks` はデフォルトの `false` のままにしておくことを推奨します。ただし接続に問題がある場合、一時的な措置として `skipInitChecks: true` を設定することが役立つ場合があります。
 
-For additional connection configuration, see [Timeout values](#timeout-values).
+追加の接続設定については、[タイムアウト値](#タイムアウト値) を参照してください。
 
-## Generics
+## ジェネリクス
 
-TypeScript users can define custom Generics. Generics make it easier to manipulate objects and their properties. Compile time type checks help to ensure that operations like `insert()` and `create()` are safe and error free.
+TypeScript ユーザーは独自のジェネリクスを定義できます。ジェネリクスを使用すると、オブジェクトとそのプロパティの操作が容易になります。コンパイル時の型チェックにより、`insert()` や `create()` といった操作の安全性とエラーのない実行が保証されます。
 
 ```js
 import weaviate from "weaviate-client";
@@ -155,9 +155,9 @@ await collection.data.insert({
 });
 ```
 
-## Iterator Method
+## イテレーター メソッド
 
-The cursor API has a new iterator method. To repeat an action over an entire collection, use `iterator()`.
+カーソル API には新しくイテレーター メソッドが追加されました。コレクション全体にわたって処理を繰り返す場合は `iterator()` を使用してください。
 
 ```js
 const articles = client.collections.get("Article");
@@ -168,23 +168,23 @@ for await (const article of articles.iterator()) {
 }
 ```
 
-## Type Safety
+## 型安全性
 
-The v3 client enables strong typing with custom TypeScript types and user-defined generics.
+v3 クライアントでは、カスタム TypeScript 型とユーザー定義ジェネリクスによって強力な型付けが可能です。
 
-You can find the type definitions in the folder that stores your Weaviate client package. The package is stored in a folder under the `node/` directory. Custom type definitions are stored in sub-folder for each bundle.
+型定義は、お使いの Weaviate クライアントパッケージが格納されているフォルダー内にあります。パッケージは `node/` ディレクトリー配下のフォルダーに格納され、カスタム型定義は各バンドルごとのサブフォルダーに保存されています。
 
-For example, the `index.d.ts` file stores type definitions for the `cjs` bundle:
+たとえば、`index.d.ts` ファイルには `cjs` バンドルの型定義が含まれています:
 
 ```bash
 node/cjs/index.d.ts
 ```
 
-The v3 client also adds internal features that make JavaScript development more type-safe.
+さらに、v3 クライアントには JavaScript 開発をより型安全にする内部機能が追加されています。
 
-### Timeout values
+### タイムアウト値
 
-You can set timeout values, in seconds, for the client. Use the `timeout` property to configure the timeout values for initialization checks as well as query and insert operations.
+クライアントのタイムアウト値を秒単位で設定できます。`timeout` プロパティを使用して、初期化チェック、クエリー、および挿入操作のタイムアウト値を設定します。
 
 ```js 
 import weaviate from 'weaviate-client';
@@ -199,5 +199,7 @@ const client = await weaviate.connectToLocal({
 ```
 :::tip Timeouts on `generate` queries
 
-If you see errors while using the `generate` submodule, try increasing the query timeout values (`query: 60`). <br/><br/>The `generate` submodule uses a large language model to generate text. The submodule is dependent on the speed of the language model and any API that serves the language model. <br/><br/>Increase the timeout values to allow the client to wait longer for the language model to respond.
+`generate` サブモジュールを使用中にエラーが発生する場合は、クエリーのタイムアウト値（`query: 60`）を大きくしてみてください。<br/><br/>`generate` サブモジュールは、大規模言語モデルを用いてテキストを生成します。処理速度は言語モデルおよびその API の応答速度に依存します。<br/><br/>タイムアウト値を引き上げることで、クライアントが言語モデルからの応答をより長く待機できるようになります。
 :::
+
+

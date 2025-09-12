@@ -1,5 +1,5 @@
 ---
-title: RBAC Overview
+title: RBAC 概要
 sidebar_label: RBAC
 sidebar_position: 0
 image: og/docs/configuration.jpg
@@ -9,28 +9,27 @@ image: og/docs/configuration.jpg
 import Link from '@docusaurus/Link';
 import SkipLink from '/src/components/SkipValidationLink'
 
-:::info Added in `v1.29`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
+:::info `v1.29` で追加
+ロールベースアクセス制御（RBAC）は、バージョン `v1.29` から Weaviate で正式に利用可能になりました。
 :::
 
-Weaviate provides differentiated access through [authorization](/deploy/configuration/authorization.md) levels based on the [authenticated](/deploy/configuration/authentication.md) user identity.
+Weaviate は、[認証](/deploy/configuration/authentication.md) 済みユーザーの ID に基づき、[認可](/deploy/configuration/authorization.md) レベルごとに差別化されたアクセスを提供します。
 
-If **role-based access control (RBAC)** is enabled, access can be further restricted based on the roles of users.
-The diagram below illustrates the RBAC model in Weaviate, where access is governed by defining roles and assigning them specific permissions. These permissions determine which actions users can perform on designated resource types.
+RBAC を有効にすると、ユーザーのロールに基づいてさらにアクセスを制限できます。以下の図は Weaviate における RBAC モデルを示しており、ロールを定義し、それぞれに特定の権限を割り当てることでアクセスを制御します。これらの権限は、指定されたリソースタイプに対してユーザーが実行できる操作を決定します。
 
-The main components are:
+主な構成要素は次のとおりです。
 
-- **Users**:
-  Individual users (e.g., `user-a` and `user-b`) are assigned to specific roles.
+- **ユーザー**  
+  個々のユーザー（例: `user-a`, `user-b`）は特定のロールに割り当てられます。
 
-- **Roles**:
-  Each role encapsulates a set of permissions. This abstraction lets you manage what actions a group of users can perform.
+- **ロール**  
+  各ロールは一連の権限をカプセル化します。この抽象化により、ユーザーグループが実行できる操作を管理できます。
 
-- **Permissions**:
-  Permissions are comprised of three parts:
-  - **Actions**: Operations like create, read, update, delete, and manage.
-  - **Resources**: Specific targets for these actions, such as collections and backups.
-  - **Optional constraints**: Resource-specific constraints such as filtering by collection names.
+- **権限**  
+  権限は 3 つの要素で構成されます。  
+  - **アクション**: create、read、update、delete、manage などの操作  
+  - **リソース**: コレクションやバックアップなど、これらの操作の対象  
+  - **オプションの制約**: コレクション名でのフィルタリングなど、リソース固有の制約
 
 ```mermaid
 graph LR
@@ -90,46 +89,46 @@ style Resources fill:#CFD8DC,stroke:#AAB4BA,stroke-width:1px
 style Permissions fill:#E0F7FA,stroke:#B2EBF2,stroke-width:1px
 ```
 
-This RBAC system ensures that users only have the access necessary for their roles, enhancing both security and manageability within Weaviate. Roles and permissions can be managed through the Weaviate <b><SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink></b> directly or through a **[client library](/weaviate/configuration/rbac/manage-roles)** programmatically.
+この RBAC システムにより、ユーザーは自身のロールに必要な最小限のアクセスのみを持つことになり、Weaviate 内のセキュリティと管理性が向上します。ロールと権限は、Weaviate の <b><SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink></b> もしくは **[クライアントライブラリ](/weaviate/configuration/rbac/manage-roles)** からプログラムで管理できます。
 
-## Roles
+## ロール
 
-### Predefined roles
+### 事前定義ロール
 
-Weaviate comes with a set of predefined roles. These roles are:
+Weaviate には、いくつかの事前定義ロールが用意されています。
 
-- `root`: The root role has **full access** to all resources in Weaviate.
-- `viewer`: The viewer role has **read-only access** to all resources in Weaviate.
+- `root`: すべてのリソースに対する **フルアクセス** を持ちます。  
+- `viewer`: すべてのリソースに対する **読み取り専用アクセス** を持ちます。
 
-The `root` role can be assigned to a user through the Weaviate configuration file using the [`AUTHORIZATION_RBAC_ROOT_USERS`](/deploy/configuration/env-vars/index.md#rbac-authorization) environment variable. A predefined role cannot be modified. The user can, however, be assigned additional roles through the Weaviate API.
+`root` ロールは、[`AUTHORIZATION_RBAC_ROOT_USERS`](/deploy/configuration/env-vars/index.md#rbac-authorization) 環境変数を使用して Weaviate の設定ファイル経由でユーザーに割り当てられます。事前定義ロールは変更できませんが、ユーザーには Weaviate API を通じて追加ロールを付与することが可能です。
 
-All roles can also be assigned through the Weaviate API, including the predefined role. The predefined roles cannot be modified, but they can be assigned to or revoked from users.
+事前定義ロールを含むすべてのロールは、Weaviate API でユーザーに割り当てたり取り消したりできます。事前定義ロール自体を変更することはできません。
 
-Refer to the [RBAC: Configuration](/deploy/configuration/configuring-rbac.md) page for more information on how to assign predefined roles to users.
+ユーザーへ事前定義ロールを割り当てる方法の詳細は、[RBAC: 設定](/deploy/configuration/configuring-rbac.md) を参照してください。
 
-### Custom roles
+### カスタムロール
 
-Any authenticated user that is not assigned a predefined role has no roles or permissions by default.
+事前定義ロールが割り当てられていない認証済みユーザーには、デフォルトでロールも権限もありません。
 
-These users' permissions can be modified through Weaviate by those with the appropriate permissions for **managing roles**. This allows for the creation of custom roles, which can be assigned to users as needed.
+これらのユーザーの権限は、**ロール管理** の適切な権限を持つユーザーによって Weaviate 上で変更できます。これにより、必要に応じてカスタムロールを作成し、ユーザーに割り当てることが可能です。
 
-Role management can be performed with a [predefined `root` role](/deploy/configuration/configuring-rbac.md) or a custom role with [`manage_roles` permissions](/weaviate/configuration/rbac/manage-roles#role-management-permissions).
+ロール管理は、[事前定義 `root` ロール](/deploy/configuration/configuring-rbac.md) または [`manage_roles` 権限](/weaviate/configuration/rbac/manage-roles#role-management-permissions) を持つカスタムロールで実行できます。
 
 :::caution Role Management Permissions
-Be careful when assigning permissions to roles that manage roles. These permissions can be used to escalate privileges by assigning additional roles to users. Only assign these permissions to trusted users.
+ロールを管理する権限をロールに付与する際は注意してください。これらの権限を利用して、ユーザーに追加のロールを割り当てることで特権を昇格させる可能性があります。信頼できるユーザーにのみ付与してください。
 :::
 
-## Permissions
+## 権限
 
-Permissions in Weaviate define what actions users can perform on specific resources. Each permission consists of:
+Weaviate における権限は、ユーザーが特定リソースに対してどの操作を実行できるかを定義します。各権限は以下で構成されます。
 
-- A resource type (e.g., collections, objects)
-- Access levels (read, write, update, delete, manage)
-- Optional resource-specific constraints
+- リソースタイプ（例: collections, objects）
+- アクセスレベル（read, write, update, delete, manage）
+- オプションのリソース固有制約
 
-### Available permissions
+### 利用可能な権限
 
-Permissions can be defined with the following resources, access levels and optional constraints:
+権限は、以下のリソース・アクセスレベル・オプション制約で定義できます。
 
 <!-- TODO: Potentially replace with a React component -->
 
@@ -141,42 +140,41 @@ Permissions can be defined with the following resources, access levels and optio
   </colgroup>
   <thead>
     <tr>
-      <th>Resource type</th>
-      <th>Access levels</th>
-      <th>Optional resource‑specific constraints</th>
+      <th>リソースタイプ</th>
+      <th>アクセスレベル</th>
+      <th>リソース固有のオプション制約</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#role-management-permissions">
-          <strong>Role Management</strong>
+          <strong>ロール管理</strong>
         </Link>
       </td>
       <td class="access-cell">
-        <div class="access-level">Create roles</div>
-        <div class="access-level">Read role info</div>
-        <div class="access-level">Update role permissions</div>
-        <div class="access-level">Delete roles</div>
+        <div class="access-level">ロールの作成</div>
+        <div class="access-level">ロール情報の読み取り</div>
+        <div class="access-level">ロール権限の更新</div>
+        <div class="access-level">ロールの削除</div>
       </td>
       <td class="constraints-cell">
         <div class="constraints-level">
-          <p>Role name filter:</p>
+          <p>ロール名フィルタ:</p>
           <ul>
             <li>
-              <code>string or regex</code>: specifies which roles can be managed
+              <code>string または regex</code>: 管理対象のロールを指定
             </li>
           </ul>
         </div>
         <div class="constraints-level">
-          <p>Role scope:</p>
+          <p>ロールスコープ:</p>
           <ul>
             <li>
-              <code>all</code>: Allow role management with all permissions
+              <code>all</code>: すべての権限でロール管理を許可
             </li>
             <li>
-              <code>match</code>: Only allow role management with the current
-              user's permission level
+              <code>match</code>: 現在のユーザーと同レベルの権限でのみロール管理を許可
             </li>
           </ul>
         </div>
@@ -185,24 +183,24 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#user-management-permissions">
-          <strong>User Management</strong>
+          <strong>ユーザー管理</strong>
         </Link>
       </td>
       <td class="access-cell">
-        <div class="access-level">Create users</div>
-        <div class="access-level">Read user info</div>
-        <div class="access-level">Update/rotate user API key</div>
-        <div class="access-level">Delete users</div>
+        <div class="access-level">ユーザーの作成</div>
+        <div class="access-level">ユーザー情報の読み取り</div>
+        <div class="access-level">ユーザー API キーの更新/ローテート</div>
+        <div class="access-level">ユーザーの削除</div>
         <div class="access-level">
-          Assign and revoke roles to and from users
+          ユーザーへのロール付与および取り消し
         </div>
       </td>
       <td class="constraints-cell">
         <div class="constraints-level">
-          <p>User name filter:</p>
+          <p>ユーザー名フィルタ:</p>
           <ul>
             <li>
-              <code>string or regex</code>: specifies which users can be managed
+              <code>string または regex</code>: 管理対象のユーザーを指定
             </li>
           </ul>
         </div>
@@ -211,25 +209,24 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#collections-permissions">
-          <strong>Collections</strong>
+          <strong>コレクション</strong>
         </Link>
         <br />
         <small>
-          (collection definitions only, data object permissions are separate)
+          （コレクション定義のみ、データオブジェクトの権限は別）
         </small>
       </td>
       <td class="access-cell">
-        <div class="access-level">Create collections</div>
-        <div class="access-level">Read collection definitions</div>
-        <div class="access-level">Update collection definitions</div>
-        <div class="access-level">Delete collections</div>
+        <div class="access-level">コレクションの作成</div>
+        <div class="access-level">コレクション定義の読み取り</div>
+        <div class="access-level">コレクション定義の更新</div>
+        <div class="access-level">コレクションの削除</div>
       </td>
       <td>
-        <p>Collection name filter:</p>
+        <p>コレクション名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which collections can be
-            managed
+            <code>string または regex</code>: 管理対象のコレクションを指定
           </li>
         </ul>
       </td>
@@ -237,27 +234,26 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#tenants-permissions">
-          <strong>Tenants</strong>
+          <strong>テナント</strong>
         </Link>
       </td>
       <td>
-        <div class="access-level">Create tenants</div>
-        <div class="access-level">Read tenant info</div>
-        <div class="access-level">Update tenants</div>
-        <div class="access-level">Delete tenants</div>
+        <div class="access-level">テナントの作成</div>
+        <div class="access-level">テナント情報の読み取り</div>
+        <div class="access-level">テナントの更新</div>
+        <div class="access-level">テナントの削除</div>
       </td>
       <td>
-        <p>Collection name filter:</p>
+        <p>コレクション名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which collections' tenants
-            can be managed
+            <code>string または regex</code>: 管理対象のコレクションを指定
           </li>
         </ul>
-        <p>Tenant name filter:</p>
+        <p>テナント名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which tenants can be managed
+            <code>string または regex</code>: 管理対象のテナントを指定
           </li>
         </ul>
       </td>
@@ -265,28 +261,26 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#data-permissions">
-          <strong>Data Objects</strong>
+          <strong>データオブジェクト</strong>
         </Link>
       </td>
       <td>
-        <div class="access-level">Create objects</div>
-        <div class="access-level">Read objects</div>
-        <div class="access-level">Update objects</div>
-        <div class="access-level">Delete objects</div>
+        <div class="access-level">オブジェクトの作成</div>
+        <div class="access-level">オブジェクトの読み取り</div>
+        <div class="access-level">オブジェクトの更新</div>
+        <div class="access-level">オブジェクトの削除</div>
       </td>
       <td>
-        <p>Collection name filter:</p>
+        <p>コレクション名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which collections' objects
-            can be managed
+            <code>string または regex</code>: 管理対象のコレクションを指定
           </li>
         </ul>
-        <p>Tenant name filter:</p>
+        <p>テナント名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which tenants' objects can
-            be managed
+            <code>string または regex</code>: 管理対象のテナントを指定
           </li>
         </ul>
       </td>
@@ -294,16 +288,15 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#backups-permissions">
-          <strong>Backups</strong>
+          <strong>バックアップ</strong>
         </Link>
       </td>
-      <td>Manage backups</td>
+      <td>バックアップの管理</td>
       <td>
-        <p>Collection name filter:</p>
+        <p>コレクション名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which collections' backups
-            can be managed
+            <code>string または regex</code>: 管理対象のコレクションを指定
           </li>
         </ul>
       </td>
@@ -311,40 +304,38 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#clusters-permissions">
-          <strong>Cluster Data Access</strong>
+          <strong>クラスター データアクセス</strong>
         </Link>
       </td>
-      <td>Read cluster metadata</td>
+      <td>クラスター メタデータの読み取り</td>
       <td></td>
     </tr>
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#nodes-permissions">
-          <strong>Node Data Access</strong>
+          <strong>ノード データアクセス</strong>
         </Link>
       </td>
-      <td>Read node metadata at a specified verbosity level</td>
+      <td>指定した詳細度でノードメタデータを読み取り</td>
       <td class="constraints-cell">
         <div class="constraints-level">
-          <p>Verbosity level:</p>
+          <p>詳細度 (Verbosity level):</p>
           <ul>
             <li>
-              <code>minimal</code>: Minimal read permission for all collections.
+              <code>minimal</code>: すべてのコレクションに対し最小限の読み取り
             </li>
             <li>
-              <code>verbose</code>: Verbose read permission for specified
-              collections.
+              <code>verbose</code>: 指定したコレクションに対し詳細な読み取り
             </li>
           </ul>
         </div>
         <div class="constraints-level">
           <p>
-            Collection name filter (only for <code>verbose</code>):
+            コレクション名フィルタ（<code>verbose</code> のみ）:
           </p>
           <ul>
             <li>
-              <code>string or regex</code>: specifies which collections can be
-              managed
+              <code>string または regex</code>: 管理対象のコレクションを指定
             </li>
           </ul>
         </div>
@@ -353,21 +344,20 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#aliases-permissions">
-          <strong>Collection aliases</strong>
+          <strong>コレクションエイリアス</strong>
         </Link>
       </td>
       <td>
-        <div class="access-level">Create aliases</div>
-        <div class="access-level">Read aliases</div>
-        <div class="access-level">Update aliases</div>
-        <div class="access-level">Delete aliases</div>
+        <div class="access-level">エイリアスの作成</div>
+        <div class="access-level">エイリアスの読み取り</div>
+        <div class="access-level">エイリアスの更新</div>
+        <div class="access-level">エイリアスの削除</div>
       </td>
       <td>
-        <p>Alias name filter:</p>
+        <p>エイリアス名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which aliases
-            can be managed
+            <code>string または regex</code>: 管理対象のエイリアスを指定
           </li>
         </ul>
       </td>
@@ -375,27 +365,26 @@ Permissions can be defined with the following resources, access levels and optio
     <tr>
       <td>
         <Link to="/weaviate/configuration/rbac/manage-roles#replications-permissions">
-          <strong>Replications</strong>
+          <strong>レプリケーション</strong>
         </Link>
       </td>
       <td>
-        <div class="access-level">Create replications</div>
-        <div class="access-level">Read replications</div>
-        <div class="access-level">Update replications</div>
-        <div class="access-level">Delete replications</div>
+        <div class="access-level">レプリケーションの作成</div>
+        <div class="access-level">レプリケーションの読み取り</div>
+        <div class="access-level">レプリケーションの更新</div>
+        <div class="access-level">レプリケーションの削除</div>
       </td>
       <td>
-        <p>Collection name filter:</p>
+        <p>コレクション名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which collections' objects
-            can be managed
+            <code>string または regex</code>: 管理対象のコレクションを指定
           </li>
         </ul>
-        <p>Shard name filter:</p>
+        <p>シャード名フィルタ:</p>
         <ul>
           <li>
-            <code>string or regex</code>: specifies which shards can be managed
+            <code>string または regex</code>: 管理対象のシャードを指定
           </li>
         </ul>
       </td>
@@ -403,44 +392,47 @@ Permissions can be defined with the following resources, access levels and optio
   </tbody>
 </table>
 
-### Permission behavior
 
-When defining permissions, setting a permission to `False` indicates that the permission is _not set_, rather than explicitly denying access. This means that if a user has multiple roles, and one role grants a permission while another sets it to `False`, the user will still have that permission through the role that grants it.
 
-For example, if a user has two roles:
+### 権限の動作
 
-- Role A sets `read` to `False` for Collection X
-- Role B sets `read` to `True` for Collection X
+権限を定義する際、ある権限を `False` に設定すると、それはアクセスを明示的に拒否するのではなく _設定されていない_ ことを意味します。したがって、ユーザーが複数のロールを持ち、一方のロールが権限を付与し、もう一方のロールがその権限を `False` に設定している場合でも、権限を付与しているロールによってユーザーはその権限を保持します。
 
-The user will have read access to Collection X because Role B grants the permission, while Role A's `False` value simply indicates no permission is set rather than blocking access.
+たとえば、ユーザーが次の 2 つのロールを持っている場合:
 
-### Name filters in permissions
+- ロール A は Collection X に対して `read` を `False` に設定
+- ロール B は Collection X に対して `read` を `True` に設定
 
-Some permissions require a collection name filter to specify which collections the permission applies to.
+ユーザーは Collection X に対する読み取りアクセスを持ちます。これは、ロール B が権限を付与しており、ロール A の `False` はアクセスをブロックするのではなく権限が設定されていないことを示すだけだからです。
 
-In this case, `"*"` acts as a multi-character wildcard. As an example, setting a permission with `"Test*"` as the collection name filter would apply that permission to all collections that start with `Test`. Or, setting a permission with `"*"` as the collection filter would apply that permission to all available collections.
+### 権限における名前フィルター
 
-### Collection and tenant permissions
+一部の権限では、その権限を適用するコレクションを指定するためにコレクション名フィルターが必要です。
 
-A collection permission is independent of tenant permissions.
+この場合、`"*"` は複数文字のワイルドカードとして機能します。たとえば、コレクション名フィルターに `"Test*"` を指定すると、`Test` で始まるすべてのコレクションにその権限が適用されます。また、`"*"` をフィルターに指定すると、利用可能なすべてのコレクションに適用されます。
 
-To have permissions to operate on a tenant that belongs to a collection, the user must have the appropriate tenant-level permissions for that collection. Collection-level permissions, such as that to create collections, do not grant the equivalent tenant-level permissions, such as that to create tenants for that collection.
+### コレクションとテナントの権限
 
-For example, to create a tenant in a collection called `TestCollection`, the user must have permission to "create" tenants in that collection. This is separate from the permission to create a collection called `TestCollection`.
+コレクションに対する権限は、テナントに対する権限とは独立しています。
 
-## Users
+あるコレクションに属するテナントを操作する権限を得るには、そのコレクションに対する適切なテナントレベルの権限が必要です。コレクションの作成などのコレクションレベルの権限は、そのコレクションのテナントを作成するなどの同等のテナントレベルの権限を付与しません。
 
-The [user management](./manage-users.mdx) API can be used to create, delete and list users, rotate their API keys and manage their roles. 
+たとえば、`TestCollection` というコレクションでテナントを作成するには、そのコレクション内のテナントを "create" する権限が必要です。これは `TestCollection` というコレクションを作成する権限とは別です。
 
-## Further resources
+## ユーザー
 
-- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
-- [RBAC: Manage roles](./manage-roles.mdx)
-- [RBAC: Manage users](./manage-users.mdx)
-- [RBAC: Tutorial](/deploy/tutorials/rbac.mdx)
+[user 管理](./manage-users.mdx) API を使用して、ユーザーの作成、削除、一覧取得、API キーのローテーション、およびロールの管理ができます。 
 
-## Questions and feedback
+## 参考リソース
+
+- [RBAC: 設定](/deploy/configuration/configuring-rbac.md)
+- [RBAC: ロール管理](./manage-roles.mdx)
+- [RBAC: ユーザー管理](./manage-users.mdx)
+- [RBAC: チュートリアル](/deploy/tutorials/rbac.mdx)
+
+## ご質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

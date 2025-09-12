@@ -1,12 +1,12 @@
 ---
-title: Reranker
-description: Cohere Reranker Model Provider
+title: リランカー
+description: Cohere リランカー モデルプロバイダー
 sidebar_position: 70
 image: og/docs/integrations/provider_integrations_cohere.jpg
 # tags: ['model providers', 'cohere', 'reranking']
 ---
 
-# Cohere Reranker Models with Weaviate
+# Weaviate との Cohere リランカー モデル
 
 
 import Tabs from '@theme/Tabs';
@@ -17,43 +17,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.reranker.py';
 import TSCode from '!!raw-loader!../_includes/provider.reranker.ts';
 
-Weaviate's integration with Cohere's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate は Cohere の API と統合することで、同社のモデル機能に直接アクセスできます。
 
-[Configure a Weaviate collection](#configure-the-reranker) to use a Cohere reranker model, and Weaviate will use the specified model and your Cohere API key to rerank search results.
+Cohere のリランカーモデルを使用するように [ Weaviate コレクションを設定](#configure-the-reranker) すると、 Weaviate は指定したモデルとお客様の Cohere API キーを使用して検索結果をリランクします。
 
-This two-step process involves Weaviate first performing a search and then reranking the results using the specified model.
+この 2 ステップのプロセスでは、まず Weaviate が検索を実行し、その後指定したモデルを使用して結果をリランクします。
 
-![Reranker integration illustration](../_includes/integration_cohere_reranker.png)
+![リランカー統合の図](../_includes/integration_cohere_reranker.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate 構成
 
-Your Weaviate instance must be configured with the Cohere reranker integration (`reranker-cohere`) module.
+お使いの Weaviate インスタンスは、 Cohere リランカー統合（`reranker-cohere`）モジュールを有効にしておく必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud ( WCD ) ユーザー向け</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は、 Weaviate Cloud ( WCD ) の serverless インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効になっているか確認するには、 [ クラスター メタデータ ](/deploy/configuration/meta.md) を確認してください。  
+- モジュールを Weaviate で有効にするには、 [ モジュールの構成方法 ](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
-### API credentials
+### API 資格情報
 
-You must provide a valid Cohere API key to Weaviate for this integration. Go to [Cohere](https://cohere.com/) to sign up and obtain an API key.
+この統合には、 Weaviate に有効な Cohere API キーを提供する必要があります。 [ Cohere ](https://cohere.com/) にアクセスしてサインアップし、 API キーを取得してください。
 
-Provide the API key to Weaviate using one of the following methods:
+次のいずれかの方法で Weaviate に API キーを渡してください：
 
-- Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- `COHERE_APIKEY` 環境変数を設定し、 Weaviate から参照できるようにします。  
+- 以下の例のように、実行時に API キーを渡します。
 
 <Tabs groupId="languages">
 
@@ -77,13 +77,13 @@ Provide the API key to Weaviate using one of the following methods:
 
 </Tabs>
 
-## Configure the reranker
+## リランカーの設定
 
 import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 
 <MutableRerankerConfig />
 
-Configure a Weaviate collection to use a Cohere reranker model as follows:
+以下のように設定して、 Weaviate コレクションで Cohere リランカー モデルを使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -106,9 +106,9 @@ Configure a Weaviate collection to use a Cohere reranker model as follows:
 
 </Tabs>
 
-### Select a model
+### モデルを選択する
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+以下の設定例のように、 Weaviate が使用する [ 利用可能なモデル ](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -131,26 +131,26 @@ You can specify one of the [available models](#available-models) for Weaviate to
 
 </Tabs>
 
-The [default model](#available-models) is used if no model is specified.
+モデルを指定しない場合は、 [ デフォルトモデル ](#available-models) が使用されます。
 
-## Header parameters
+## ヘッダー パラメーター
 
-You can provide the API key as well as some optional parameters at runtime through additional headers in the request. The following headers are available:
+リクエストの追加ヘッダーを通じて、実行時に API キーおよびオプション パラメーターを設定できます。利用可能なヘッダーは次のとおりです:
 
-- `X-Cohere-Api-Key`: The Cohere API key.
-- `X-Cohere-Baseurl`: The base URL to use (e.g. a proxy) instead of the default Cohere URL.
+- `X-Cohere-Api-Key`: Cohere API キー  
+- `X-Cohere-Baseurl`: デフォルトの Cohere URL の代わりに使用するベース URL (例: プロキシ)
 
-Any additional headers provided at runtime will override the existing Weaviate configuration.
+実行時に指定した追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-Provide the headers as shown in the [API credentials examples](#api-credentials) above.
+ヘッダーの指定方法は、上記の [API 認証情報の例](#api-credentials) を参照してください。
 
-## Reranking query
+## リランキング クエリ
 
-Once the reranker is configured, Weaviate performs [reranking operations](../../search/rerank.md) using the specified Cohere model.
+リランカーの設定が完了すると、Weaviate は指定した Cohere モデルを使用して [リランキング処理](../../search/rerank.md) を実行します。
 
-More specifically, Weaviate performs an initial search, then reranks the results using the specified model.
+具体的には、まず Weaviate が初期検索を行い、その結果を指定したモデルでリランキングします。
 
-Any search in Weaviate can be combined with a reranker to perform reranking operations.
+Weaviate のあらゆる検索はリランカーと組み合わせてリランキングを実行できます。
 
 ![Reranker integration illustration](../_includes/integration_cohere_reranker.png)
 
@@ -176,9 +176,9 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 </Tabs>
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
 - `rerank-v3.5` (default)
 - `rerank-english-v3.0`
@@ -186,35 +186,36 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 - `rerank-english-v2.0`
 - `rerank-multilingual-v2.0`
 
-You can also select a fine-tuned reranker model_id, such as:
+以下のようなファインチューニング済みリランカーの model_id も選択できます:
 
 - `500df123-afr3-...`
 
-See [this blog post](https://weaviate.io/blog/fine-tuning-coheres-reranker) for more information.
+詳細は [こちらのブログ記事](https://weaviate.io/blog/fine-tuning-coheres-reranker) をご覧ください。
 
-For further details on model parameters, see the [Cohere API documentation](https://docs.cohere.com/reference/rerank).
+モデル パラメーターの詳細については [Cohere API ドキュメント](https://docs.cohere.com/reference/rerank) を参照してください。
 
-## Further resources
+## 追加リソース
 
-### Other integrations
+### その他のインテグレーション
 
-- [Cohere text embedding models + Weaviate](./embeddings.md).
-- [Cohere multimodal embedding embeddings models + Weaviate](./embeddings-multimodal.md)
-- [Cohere generative models + Weaviate](./generative.md).
+- [Cohere テキスト埋め込みモデル + Weaviate](./embeddings.md)
+- [Cohere マルチモーダル埋め込みモデル + Weaviate](./embeddings-multimodal.md)
+- [Cohere 生成モデル + Weaviate](./generative.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+コレクションでインテグレーションを設定すると、Weaviate のデータ管理および検索操作は他のコレクションと同様に動作します。モデル非依存の次の例をご覧ください:
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: Manage collections](../../manage-collections/index.mdx) と [How-to: Manage objects](../../manage-objects/index.mdx) のガイドでは、データ操作 (コレクションおよびその中のオブジェクトの作成、読み取り、更新、削除) を行う方法を示しています。  
+- [How-to: Query & Search](../../search/index.mdx) のガイドでは、検索操作 ( ベクトル、キーワード、ハイブリッド) と 検索拡張生成 を実行する方法を説明しています。
 
-### References
+### 参照
 
-- Cohere [Rerank API documentation](https://docs.cohere.com/reference/rerank)
+- Cohere [Rerank API ドキュメント](https://docs.cohere.com/reference/rerank)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

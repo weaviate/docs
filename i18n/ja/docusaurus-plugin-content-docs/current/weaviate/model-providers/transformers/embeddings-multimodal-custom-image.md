@@ -1,12 +1,12 @@
 ---
-title: Multimodal Embeddings (custom)
-description: Transformers Custom Image Multimodal Embeddings
+title: マルチモーダル埋め込み（カスタム）
+description: Transformers カスタムイメージ マルチモーダル埋め込み
 sidebar_position: 35
 image: og/docs/integrations/provider_integrations_transformers.jpg
 # tags: ['model providers', 'huggingface', 'embeddings', 'clip']
 ---
 
-# Locally Hosted CLIP Embeddings + Weaviate (Custom Image)
+# ローカルホスト CLIP 埋め込み + Weaviate（カスタム画像）
 
 
 import Tabs from '@theme/Tabs';
@@ -17,40 +17,40 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with the Hugging Face Transformers library allows you to access their CLIP models' capabilities directly from Weaviate.
+Weaviate の Hugging Face Transformers ライブラリとの統合により、CLIP モデルの機能を Weaviate から直接利用できます。
 
-Configure a Weaviate vector index to use the CLIP integration, and [configure the Weaviate instance](#configure-the-weaviate-instance) with a model image, and Weaviate will generate embeddings for various operations using the specified model in the CLIP inference container. This feature is called the *vectorizer*.
+Weaviate の ベクトル インデックスを CLIP 連携で構成し、[Weaviate インスタンスを設定](#configure-the-weaviate-instance) してモデルイメージを指定すると、CLIP 推論コンテナ内の指定モデルを用いて各種操作の埋め込みを生成します。この機能は *ベクトライザー* と呼ばれます。
 
-This page shows how to [build a custom CLIP model image](#build-a-custom-clip-model-image) and configure Weaviate with it, for users whose desired model is not available in [the pre-built images](./embeddings-multimodal.md#available-models).
+このページでは、[カスタム CLIP モデル イメージを作成](#build-a-custom-clip-model-image) し、それを Weaviate で利用する方法を説明します。これは、使用したいモデルが[事前構築イメージ](./embeddings-multimodal.md#available-models)に含まれていない場合に役立ちます。
 
-Once a custom image is built and configured, usage patterns are identical to the pre-built images.
+カスタムイメージを作成して設定すると、利用方法は事前構築イメージと同一です。
 
-## Build a custom CLIP model image
+## カスタム CLIP モデル イメージの作成
 
-You can build a custom CLIP model image to use with Weaviate. This can be a public model from the Hugging Face model hub, or a compatible private or local model.
+Weaviate で使用するためのカスタム CLIP モデル イメージを作成できます。これは Hugging Face Model Hub の公開モデルでも、互換性のある非公開またはローカルモデルでもかまいません。
 
-Any **public SBERT CLIP** models from the [Hugging Face model hub](https://huggingface.co/models) can be used with Weaviate by building a custom Docker image.
+[Hugging Face Model Hub](https://huggingface.co/models) にある **公開 SBERT CLIP** モデルは、カスタム Docker イメージを作成することで Weaviate で利用できます。
 
-The steps to build a custom image are:
+カスタムイメージを作成する手順は次のとおりです。
 
-- [Create a `Dockerfile` that downloads the model](#create-a-dockerfile).
-- [Build and tag the Dockerfile](#build-and-tag-the-dockerfile).
-- [Use the image in your Weaviate instance](#use-the-image).
+- [モデルをダウンロードする `Dockerfile` を作成](#create-a-dockerfile)
+- [Dockerfile をビルドしてタグ付け](#build-and-tag-the-dockerfile)
+- [イメージを Weaviate インスタンスで利用](#use-the-image)
 
-#### Create a `Dockerfile`
+#### `Dockerfile` の作成
 
-The `Dockerfile` to create depends on whether you are using a public model from the Hugging Face model hub, or a private or local model.
+作成する `Dockerfile` は、Hugging Face Model Hub からの公開モデルを使用するか、非公開またはローカルモデルを使用するかによって異なります。
 
 <Tabs groupId="languages">
 <TabItem value="public" label="Public model">
 
-This example creates a custom image for the [`clip-ViT-B-32` model](https://huggingface.co/sentence-transformers/clip-ViT-B-32). Replace `clip-ViT-B-32` with the model name you want to use.
+以下の例では、[`clip-ViT-B-32` モデル](https://huggingface.co/sentence-transformers/clip-ViT-B-32) 用のカスタムイメージを作成します。使用したいモデル名に `clip-ViT-B-32` を置き換えてください。  
 <br/>
 
-To build an image with a model from the Hugging Face Hub, create a new `Dockerfile` similar to the following.
+Hugging Face Hub のモデルでイメージをビルドするには、次のような新しい `Dockerfile` を作成します。  
 <br/>
 
-Save the `Dockerfile` as `my-inference-image.Dockerfile`. (You can name it anything you like.)
+`Dockerfile` を `my-inference-image.Dockerfile` として保存します。（任意の名前でかまいません。）  
 <br/>
 
 ```yaml
@@ -61,61 +61,61 @@ RUN CLIP_MODEL_NAME=clip-ViT-B-32 TEXT_MODEL_NAME=clip-ViT-B-32 ./download.py
 </TabItem>
 <TabItem value="private" label="Private/local model">
 
-You can also build a custom image with any model that is compatible with the Transformer library's `SentenceTransformers` and `ClIPModel` classes. To ensure that text embeddings will output compatible vectors to image embeddings, you must only use models that have been specifically trained for use with CLIP models. (Note that a CLIP model is in reality two models: one for text and one for images.)
+Transformers ライブラリの `SentenceTransformers` と `ClIPModel` クラスに互換性のあるモデルであれば、どのモデルでもカスタムイメージを作成できます。テキスト埋め込みと画像埋め込みで互換性のある ベクトル を出力するために、必ず CLIP 用に特別に学習されたモデルのみを使用してください。（CLIP モデルは実際にはテキスト用と画像用の 2 つのモデルで構成されています。）  
 <br/>
 
-To build an image with a local, custom model, create a new `Dockerfile` similar to the following, replacing `./my-test-model` and `./my-clip-model` with the path to your model folder.
+ローカルのカスタムモデルでイメージを作成するには、次のような新しい `Dockerfile` を作成し、`./my-test-model` と `./my-clip-model` をモデルフォルダーへのパスに置き換えてください。  
 <br/>
 
-Save the `Dockerfile` as `my-inference-image.Dockerfile`. (You can name it anything you like.)
+`Dockerfile` を `my-inference-image.Dockerfile` として保存します。（任意の名前でかまいません。）  
 <br/>
 
-This will creates a custom image for a model stored in a local folder `my-model` on your machine.
+この例では、ローカルマシンのフォルダー `my-model` に保存されたモデル用のカスタムイメージを作成します。  
 <br/>
 
 ```yaml
 FROM semitechnologies/multi2vec-clip:custom
 COPY ./my-text-model /app/models/text
 COPY ./my-clip-model /app/models/clip
-```
+```  
 <br/>
 
-Do not modify `/app/models/text` or `/app/models/clip`, as these are the paths where the application expects to find the model files.
+アプリケーションはモデルファイルを `/app/models/text` と `/app/models/clip` に配置されていることを前提としていますので、これらのパスは変更しないでください。
 
 </TabItem>
 </Tabs>
 
-#### Build and tag the Dockerfile.
+#### Dockerfile のビルドとタグ付け
 
-Tag the Dockerfile with a name, for example `my-inference-image`:
+Dockerfile を例えば `my-inference-image` という名前でタグ付けします:
 
 ```shell
 docker build -f my-inference-image.Dockerfile -t my-inference-image .
 ```
 
-#### (Optional) Push the image to a registry
+#### （任意）イメージをレジストリへプッシュ
 
-If you want to use the image in a different environment, you can push it to a Docker registry:
+別の環境でこのイメージを使用したい場合は、Docker レジストリへプッシュできます:
 
 ```shell
 docker push my-inference-image
 ```
 
-#### Use the image
+#### イメージの利用
 
-[Specify the image in your Weaviate configuration](./embeddings.md#weaviate-configuration), such as in `docker-compose.yml`, using the chosen local Docker tag (e.g. `my-inference-image`), or the image from the registry.
+`docker-compose.yml` などの [Weaviate 設定](./embeddings.md#weaviate-configuration) で、ローカル Docker タグ（例: `my-inference-image`）またはレジストリのイメージを `image` パラメーターに指定してください。
 
-## Configure the Weaviate instance
+## Weaviate インスタンスの設定
 
-Once you have built and configured the custom Transformers model image, continue on to the [CLIP embeddings integrations](./embeddings-multimodal.md) guide to use the model with Weaviate.
+カスタム Transformers モデルイメージを作成して設定したら、[CLIP 埋め込み連携](./embeddings-multimodal.md) ガイドに従って Weaviate でモデルを使用します。
 
-Following the above example, set the `image` parameter in the `multi2vec-clip` service as the name of the custom image, e.g. `my-inference-image`.
+上記の例では、`multi2vec-clip` サービスの `image` パラメーターにカスタムイメージ名（例: `my-inference-image`）を設定します。
 
-## (Optional) Test the inference container
+## （任意）推論コンテナのテスト
 
-Once the inference container is configured and running, you can send queries it directly to test its functionality.
+推論コンテナを設定して起動したら、その機能を直接テストするためにクエリを送信できます。
 
-First, expose the inference container. If deployed using Docker, forward the port by adding the following to the `multi2vec-clip` service in your `docker-compose.yml`:
+まず、推論コンテナを公開します。Docker でデプロイしている場合、`docker-compose.yml` の `multi2vec-clip` サービスに次を追加してポートをフォワードします:
 
 ```yaml
 services:
@@ -127,20 +127,24 @@ services:
       - "9090:8080"  # Add this line to expose the container
 ```
 
-Once the container is running and exposed, you can send REST requests to it directly, e.g.:
+コンテナが起動して公開されたら、次のように REST リクエストを直接送信できます:
 
 ```shell
 curl localhost:9090/vectors -H 'Content-Type: application/json' -d '{"text": "foo bar"}'
 ```
 
-If the container is running and configured correctly, you should receive a response with the vector embedding of the input text.
+コンテナが正しく稼働・設定されていれば、入力テキストの ベクトル 埋め込みがレスポンスとして返ってきます。
 
-### External resources
+### 参考リソース
 
 - Hugging Face [Model Hub](https://huggingface.co/models)
 
-## Questions and feedback
+
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

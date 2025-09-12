@@ -1,14 +1,14 @@
 ---
-title: Text Embeddings
+title: テキスト埋め込み
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_model2vec.jpg
 # tags: ['model providers', 'model2vec', 'embeddings']
 ---
 
-:::info Added in `v1.31.0`
+:::info `v1.31.0` で追加
 :::
 
-# Model2Vec Embeddings with Weaviate
+# Weaviate との Model2Vec 埋め込み
 
 
 import Tabs from '@theme/Tabs';
@@ -19,52 +19,52 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.local.ts';
 import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 
-Weaviate's integration with Model2Vec's models allows you to access their models' capabilities directly from Weaviate.
+Weaviate と Model2Vec のモデル統合により、Weaviate から直接それらのモデル機能を利用できます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an Model2Vec embedding model, and Weaviate will generate embeddings for various operations using the specified model via the Model2Vec inference container. This feature is called the *vectorizer*.
+[Weaviate のベクトルインデックスを設定](#configure-the-vectorizer)して Model2Vec の埋め込みモデルを使用すると、Weaviate は Model2Vec 推論コンテナを介して指定したモデルで各種操作のための埋め込みを生成します。この機能は *vectorizer* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import)には、Weaviate がテキストオブジェクトの埋め込みを生成してインデックスに保存します。[ベクトル](#vector-near-text-search) や [ハイブリッド](#hybrid-search) 検索操作では、Weaviate がテキストクエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_model2vec_embedding.png)
+![埋め込み統合の概要図](../_includes/integration_model2vec_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Model2Vec vectorizer integration (`text2vec-model2vec`) module.
+Weaviate インスタンスには、Model2Vec ベクトライザー統合（`text2vec-model2vec`）モジュールが有効になっている必要があります。
 
 <details>
-  <summary>For Weaviate Cloud (WCD) users</summary>
+  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires a locally running Model2Vec instance.
+この統合はローカルで動作する Model2Vec インスタンスを必要とするため、Weaviate Cloud (WCD) のサーバーレスインスタンスでは利用できません。
 
 </details>
 
 <details>
-  <summary>For self-hosted users</summary>
+  <summary>セルフホストユーザー向け</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- モジュールが有効かどうかを確認するには [クラスターメタデータ](/deploy/configuration/meta.md) をご覧ください。  
+- Weaviate でモジュールを有効化するには、[モジュール設定方法](../../configuration/modules.md) を参照してください。
 
 </details>
 
-#### Configure the integration
+#### 統合の設定
 
-To use this integration, you must configure the container image of the Model2Vec model, and the inference endpoint of the containerized model.
+この統合を使用するには、Model2Vec モデルのコンテナーイメージと、そのコンテナー化されたモデルの推論エンドポイントを設定する必要があります。
 
-The following example shows how to configure the Model2Vec integration in Weaviate:
+次の例は、Weaviate で Model2Vec 統合を設定する方法を示しています。
 
 <Tabs groupId="languages">
 <TabItem value="docker" label="Docker">
 
-#### Docker Option 1: Use a pre-configured `docker-compose.yml` file
+#### Docker オプション 1: 事前設定済み `docker-compose.yml` ファイルを使用
 
-Follow the instructions on the [Weaviate Docker installation configurator](/deploy/installation-guides/docker-installation.md#configurator) to download a pre-configured `docker-compose.yml` file with a selected model
+[Weaviate Docker インストールコンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator) の手順に従い、選択したモデルが設定済みの `docker-compose.yml` ファイルをダウンロードします  
 <br/>
 
-#### Docker Option 2: Add the configuration manually
+#### Docker オプション 2: 手動で設定を追加
 
-Alternatively, add the configuration to the `docker-compose.yml` file manually as in the example below.
+または、以下の例のように `docker-compose.yml` ファイルへ手動で設定を追加します。
 
 ```yaml
 services:
@@ -76,14 +76,14 @@ services:
     image: cr.weaviate.io/semitechnologies/model2vec-inference:minishlab-potion-base-32M
 ```
 
-- `MODEL2VEC_INFERENCE_API` environment variable sets the inference API endpoint
-- `text2vec-model2vec` is the name of the inference container
-- `image` is the container image
+- `MODEL2VEC_INFERENCE_API` 環境変数は推論 API エンドポイントを設定します  
+- `text2vec-model2vec` は推論コンテナーの名前です  
+- `image` はコンテナーイメージです  
 
 </TabItem>
 <TabItem value="k8s" label="Kubernetes">
 
-Configure the Model2Vec integration in Weaviate by adding or updating the `text2vec-model2vec` module in the `modules` section of the Weaviate Helm chart values file. For example, modify the `values.yaml` file as follows:
+Weaviate の Helm チャート values ファイルの `modules` セクションに `text2vec-model2vec` モジュールを追加または更新して、Model2Vec 統合を設定します。たとえば、`values.yaml` ファイルを次のように変更します。
 
 ```yaml
 modules:
@@ -96,14 +96,14 @@ modules:
     registry: cr.weaviate.io
 ```
 
-See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) for an example of the `values.yaml` file including more configuration options.
+より多くの設定オプションを含む `values.yaml` ファイルの例については、[Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml) を参照してください。
 
 </TabItem>
 </Tabs>
 
-### Credentials
+### 認証情報
 
-As this integration connects to a local Model2Vec container, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
+この統合はローカルの Model2Vec コンテナーに接続するため、追加の認証情報（例: API キー）は不要です。以下の例のように通常どおり Weaviate へ接続してください。
 
 <Tabs groupId="languages">
 
@@ -127,9 +127,9 @@ As this integration connects to a local Model2Vec container, no additional crede
 
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Model2Vec embedding model:
+[Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer)して、Model2Vec の埋め込みモデルを使用するには次のようにします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -152,20 +152,22 @@ As this integration connects to a local Model2Vec container, no additional crede
 
 </Tabs>
 
-Note that for this integration, you specify the model to be used in the Weaviate configuration file.
+この統合では、使用するモデルを Weaviate の設定ファイル内で指定します。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の動作</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-## Data import
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+
+## データのインポート
+
+ベクトライザーを設定したら、[データをインポート](../../manage-objects/import.mdx) して Weaviate に取り込みます。 Weaviate は指定したモデルを使用してテキストオブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -189,21 +191,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+互換性のあるモデル ベクトル がすでにある場合は、それを直接 Weaviate に渡せます。すでに同じモデルで埋め込みを生成しており、別のシステムからデータを移行する際などに Weaviate で再利用したい場合に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Model2Vec model.
+ベクトライザーを設定すると、 Weaviate は指定した Model2Vec モデルを使用して ベクトル 検索とハイブリッド検索を実行します。
 
-![Embedding integration at search illustration](../_includes/integration_model2vec_embedding_search.png)
+![検索時の埋め込み統合のイラスト](../_includes/integration_model2vec_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル（ニアテキスト）検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+ベクトル検索を実行すると、 Weaviate は指定されたモデルを使用してテキストクエリを埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+以下のクエリは、`limit` で設定した `n` 件の最も類似したオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -227,15 +229,15 @@ The query below returns the `n` most similar objects from the database, set by `
 
 </Tabs>
 
-### Hybrid search
+### ハイブリッド検索
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+:::info ハイブリッド検索とは？
+ハイブリッド検索では、ベクトル検索とキーワード（BM25）検索を行い、[結果を結合](../../search/hybrid.md) してデータベースから最適な一致オブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+ハイブリッド検索を実行すると、 Weaviate は指定されたモデルを使用してテキストクエリを埋め込みに変換し、データベースから最高スコアのオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で設定した `n` 件の最高スコアのオブジェクトをデータベースから返します。
 
 <Tabs groupId="languages">
 
@@ -259,7 +261,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs>
 
-## References
+## 参考資料
 
 <!-- #### Example configuration -->
 
@@ -286,25 +288,28 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 </Tabs> -->
 
-### Available models
 
-For the latest list of available models, see the Docker Hub tags for the [model2vec-inference](https://hub.docker.com/r/semitechnologies/model2vec-inference/tags) container.
 
-## Further resources
+### 利用可能なモデル
 
-### Code examples
+最新のモデル一覧については、 Docker Hub の [model2vec-inference](https://hub.docker.com/r/semitechnologies/model2vec-inference/tags) コンテナのタグをご覧ください。
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+## 追加リソース
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+### コード例
 
-### External resources
+コレクションでインテグレーションが設定されると、 Weaviate のデータ管理および検索操作は他のコレクションと同様に機能します。以下のモデル非依存の例をご確認ください。
 
-- [Model2Vec documentation](https://minish.ai/packages/model2vec/introduction)
+- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) の各ガイドでは、データ操作（コレクションおよびその中のオブジェクトの作成・読み取り・更新・削除）の方法を示しています。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、検索操作（ベクトル、キーワード、ハイブリッド）に加えて検索拡張生成の実行方法を説明しています。
 
-## Questions and feedback
+### 外部リソース
+
+- [Model2Vec ドキュメント](https://minish.ai/packages/model2vec/introduction)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

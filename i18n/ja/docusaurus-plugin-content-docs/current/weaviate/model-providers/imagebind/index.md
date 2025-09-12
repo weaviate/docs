@@ -1,5 +1,5 @@
 ---
-title: Locally Hosted ImageBind + Weaviate
+title: ローカルホストの ImageBind と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_imagebind.jpg
 # tags: ['model providers', 'huggingface', 'imagebind']
@@ -7,40 +7,41 @@ image: og/docs/integrations/provider_integrations_imagebind.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Meta's ImageBind library can be used with a wide range of models for natural language processing. Weaviate seamlessly integrates with the ImageBind library, allowing users to leverage compatible models directly from the Weaviate Database.
+Meta の ImageBind ライブラリは、自然言語処理向けの幅広いモデルで利用できます。Weaviate は ImageBind ライブラリとシームレスに統合されており、ユーザーは Weaviate Database から互換性のあるモデルを直接利用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 駆動型アプリケーションを簡単に構築できます。
 
-## Integrations with ImageBind
+## ImageBind との統合
 
-Weaviate integrates with the ImageBind model by spinning it up in a container. This allows users to host their own model and use them with Weaviate.
+Weaviate はコンテナ内で ImageBind モデルを起動することで統合を実現しています。これにより、ユーザーは独自のモデルをホストし、Weaviate と一緒に利用できます。
 
-### Embedding models for vector search
+### ベクトル検索用の埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_imagebind_embedding.png)
+![埋め込み統合のイラスト](../_includes/integration_imagebind_embedding.png)
 
-The ImageBind embedding model transforms multi-modal data into vector embeddings, capturing meaning and context.
+ImageBind の埋め込みモデルは、マルチモーダルデータをベクトル埋め込みに変換し、その意味とコンテキストを捉えます。
 
-[Weaviate integrates with ImageBind's embedding models](./embeddings-multimodal.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は ImageBind の埋め込みモデルと統合](./embeddings-multimodal.md)し、データのシームレスなベクトル化を可能にします。この統合により、追加の前処理やデータ変換を行うことなく、セマンティック検索やハイブリッド検索を実行できます。
 
-[ImageBind embedding integration page](./embeddings-multimodal.md)
+[ImageBind 埋め込み統合ページ](./embeddings-multimodal.md)
 
-## Summary
+## 概要
 
-These integrations enable developers to leverage the powerful ImageBind model from directly within Weaviate.
+これらの統合により、開発者は Weaviate 内から直接強力な ImageBind モデルを活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、AI 駆動型アプリケーションの開発プロセスが簡素化され、イノベーティブなソリューションの創造に集中できます。
 
-## Get started
+## 開始方法
 
-A locally hosted Weaviate instance is required for these integrations so that you can host your own ImageBind model.
+これらの統合を利用するには、ローカルホストの Weaviate インスタンスが必要です。これにより、ご自身の ImageBind モデルをホストできます。
 
-Go to the relevant integration page to learn how to configure Weaviate with the ImageBind model and start using it in your applications.
+該当の統合ページにアクセスし、ImageBind モデルで Weaviate を構成する方法を学び、アプリケーションで利用を開始してください。
 
-- [Multimodal Embeddings](./embeddings-multimodal.md)
+- [マルチモーダル埋め込み](./embeddings-multimodal.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

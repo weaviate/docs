@@ -1,15 +1,15 @@
 ---
-title: Query Agent
+title: Query エージェント
 image: og/wcd/user_guides.jpg
 ---
 
-The **Weaviate Cloud (WCD) Query Agent** provides and interactive console for using the Weaviate [Query Agent](/docs/agents/query/index.md), a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
+**Weaviate Cloud （WCD） Query エージェント** は、Weaviate に保存されたデータを基に自然言語の質問に回答するために設計された事前構築済みのエージェントサービスである Weaviate [Query エージェント](/docs/agents/query/index.md) を、インタラクティブなコンソールとして提供します。
 
-The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
+ユーザーは自然言語でプロンプトや質問を入力するだけで、Query エージェントが途中のすべての処理を実行し、回答を提示します。
 
-## Query a collection
+## コレクションのクエリ実行
 
-In order to use the Query Agent, log into your Weaviate Cloud account and select `Agents` in the sidebar panel.
+Query エージェントを使用するには、Weaviate Cloud アカウントにログインし、サイドバーの `Agents` を選択します。
 
 <div
   style={{
@@ -33,13 +33,13 @@ In order to use the Query Agent, log into your Weaviate Cloud account and select
   />
 </div>
 
-## Additional parameters for querying
+## クエリ実行の追加パラメーター
 
-In addition to selecting one or more collections to query, you can also:
+1 つ以上のコレクションを選択してクエリを実行するほか、次の設定も可能です。
 
-- Specify API keys for external model providers (like OpenAI, Anthropic, etc.)
-- Select which vectors in a collection to query (if there are multiple vectors in the collection)
-- Specify a _system prompt_ that provides additional information or instructions to the agent (for example, setting the tone, language, etc.)
+- OpenAI や Anthropic など、外部モデルプロバイダー用の API キーを指定する  
+- コレクションに複数のベクトルがある場合、どのベクトルを検索するかを指定する  
+- エージェントに追加情報や指示を与える _system prompt_ を設定する（例：トーンや使用言語など）
 
 <div
   style={{
@@ -63,9 +63,9 @@ In addition to selecting one or more collections to query, you can also:
   />
 </div>
 
-## Generate code snippets
+## コードスニペットの生成
 
-After executing a query, you can also generate a code snippet that performs the same task through one of the available Weaviate Agents client libraries, either Python or TypeScript.
+クエリ実行後、Python または TypeScript の Weaviate Agents クライアントライブラリを用いて同じ処理を行うコードスニペットを生成することもできます。
 
 <div
   style={{
@@ -89,36 +89,37 @@ After executing a query, you can also generate a code snippet that performs the 
   />
 </div>
 
-## Usage and limitations
+## 使用方法と制限事項
 
-### Usage limits
+### 使用制限
 
 import UsageLimits from "/_includes/agents/query-agent-usage-limits.mdx";
 
 <UsageLimits />
 
-### Custom collection descriptions
+### カスタムコレクション説明
 
 import CollectionDescriptions from "/_includes/agents/query-agent-collection-descriptions.mdx";
 
 <CollectionDescriptions />
 
-### Execution times
+### 実行時間
 
 import ExecutionTimes from "/_includes/agents/query-agent-execution-times.mdx";
 
 <ExecutionTimes />
 
-### Multi-tenancy
+### マルチテナンシー
 
-The WCD Query Agent does not support multi-tenancy. In order to utilize multi-tenancy with the Query Agent, use a [client library](/docs/agents/query/usage.md#configure-collections).
+WCD Query エージェントはマルチテナンシーをサポートしていません。Query エージェントでマルチテナンシーを利用するには、[クライアントライブラリ](/docs/agents/query/usage.md#configure-collections) をご使用ください。
 
-## Further resources
+## 参考リソース
 
-- [Weaviate Agents: Query Agent](/docs/agents/query/index.md)
+- [Weaviate Agents: Query エージェント](/docs/agents/query/index.md)
 
-## Support
+## サポート
 
 import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />
+

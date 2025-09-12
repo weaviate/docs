@@ -1,5 +1,5 @@
 ---
-title: Create objects
+title: オブジェクトの作成
 sidebar_position: 10
 image: og/docs/howto.jpg
 ---
@@ -16,15 +16,15 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go';
 
 
-The examples on this page demonstrate how to create individual objects in Weaviate.
+このページの例では、Weaviate で個々のオブジェクトを作成する方法を示します。
 
-:::tip Use batch import for multiple objects
-For creating multiple objects at once, see [How-to: Batch Import](./import.mdx).
+:::tip 複数オブジェクトにはバッチインポートを使用
+複数のオブジェクトをまとめて作成する場合は、[How-to: Batch Import](./import.mdx) を参照してください。
 :::
 
-## Create an object
+## オブジェクトの作成
 
-This example creates an object in the `JeopardyQuestion` collection.
+この例では、`JeopardyQuestion` コレクションにオブジェクトを作成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -84,22 +84,22 @@ This example creates an object in the `JeopardyQuestion` collection.
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
 
-To create an object, specify the following:
+オブジェクトを作成するには、次の項目を指定します:
 
-- The object data you want to add
-- The target collection
-- If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant]( ../manage-collections/multi-tenancy.mdx)
+- 追加したいオブジェクトデータ
+- 対象のコレクション
+- [マルチテナンシー](../concepts/data.md#multi-tenancy) が有効な場合は、[テナントを指定]( ../manage-collections/multi-tenancy.mdx) します
 
-By default, [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) creates new collections and adds new properties.
+デフォルトでは、[auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) により、新しいコレクションの作成とプロパティの追加が行われます。
 
 </details>
 
-## Create an object with a specified vector
+## 指定ベクトル付きオブジェクトの作成
 
-When you create an object, you can provide a vector. (For specifying multiple, named vectors, see [below](#create-an-object-with-named-vectors).)
+オブジェクトを作成する際に、 ベクトル を指定できます。（複数の名前付き ベクトル を指定する方法については[下記](#create-an-object-with-named-vectors)を参照してください。）
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -157,15 +157,17 @@ When you create an object, you can provide a vector. (For specifying multiple, n
   </TabItem>
 </Tabs>
 
-## Create an object with named vectors
 
-:::info Added in `v1.24`
+
+## 名前付き ベクトル を使用したオブジェクト作成
+
+:::info `v1.24` で追加
 :::
 
-When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
+オブジェクトを作成する際、（[コレクションで設定されている場合](../manage-collections/vector-config.mdx#define-named-vectors)）名前付き ベクトル を指定できます。
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectNamedVectors START"
@@ -174,7 +176,7 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
+  <TabItem value="py3" label="Python クライアント v3">
     <FilteredTextBlock
       text={PyCodeV3}
       startMarker="# CreateObjectNamedVectors START"
@@ -183,7 +185,7 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS クライアント v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectNamedVectors START"
@@ -192,7 +194,7 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+  <TabItem value="js2" label="JS/TS クライアント v2">
     <FilteredTextBlock
       text={TSCodeLegacy}
       startMarker="// CreateObjectNamedVectors START"
@@ -202,16 +204,16 @@ When you create an object, you can specify named vectors (if [configured in your
   </TabItem>
 </Tabs>
 
-## Create an object with a specified ID
+## 指定した ID でオブジェクトを作成
 
-When you create an object, you can specify an [ID](../api/graphql/additional-properties.md#id).
+オブジェクトを作成する際、[ID](../api/graphql/additional-properties.md#id) を指定できます。
 
 :::info
-If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+ID を指定しない場合、Weaviate はランダムな [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) を生成します。
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithId START"
@@ -220,7 +222,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
+  <TabItem value="py3" label="Python クライアント v3">
     <FilteredTextBlock
       text={PyCodeV3}
       startMarker="# CreateObjectWithId START"
@@ -229,7 +231,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS クライアント v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithId START"
@@ -238,7 +240,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+  <TabItem value="js2" label="JS/TS クライアント v2">
     <FilteredTextBlock
       text={TSCodeLegacy}
       startMarker="// CreateObjectWithId START"
@@ -266,16 +268,16 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
   </TabItem>
 </Tabs>
 
-## Generate deterministic IDs
+## 決定論的 ID の生成
 
-You can generate an ID based on your data object.
+データオブジェクトに基づいて ID を生成できます。
 
 :::info
-Object IDs are not randomly generated. The same value always generates the same ID.<br/>Weaviate throws an error if you provide a duplicate ID. Use deterministic IDs to avoid inserting duplicate objects.
+オブジェクト ID はランダムに生成されません。同じ値からは常に同じ ID が生成されます。<br/>重複した ID を指定すると Weaviate はエラーを返します。重複オブジェクトの挿入を避けるために、決定論的 ID を使用してください。
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithDeterministicId START"
@@ -284,7 +286,7 @@ Object IDs are not randomly generated. The same value always generates the same 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
+  <TabItem value="py3" label="Python クライアント v3">
     <FilteredTextBlock
       text={PyCodeV3}
       startMarker="# CreateObjectWithDeterministicId START"
@@ -293,7 +295,7 @@ Object IDs are not randomly generated. The same value always generates the same 
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS クライアント v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithDeterministicId START"
@@ -302,7 +304,7 @@ Object IDs are not randomly generated. The same value always generates the same 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+  <TabItem value="js2" label="JS/TS クライアント v2">
     <FilteredTextBlock
       text={TSCodeLegacy}
       startMarker="// CreateObjectWithDeterministicId START"
@@ -331,16 +333,17 @@ Object IDs are not randomly generated. The same value always generates the same 
 
 <details>
   <summary>
-    Additional information
+    追加情報
   </summary>
-To generate deterministic IDs, use one of these methods:
+決定論的 ID を生成するには、次のメソッドを使用してください:
 
 - `generate_uuid5` (Python)
 - `generateUuid5` (TypeScript)
 
 </details>
 
-## Create an object with cross-references
+
+## クロスリファレンス付きオブジェクトの作成
 
 import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
 
@@ -351,7 +354,7 @@ import XrefPyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.cross-r
 import XrefTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
 import XrefTSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2';
 
-You can create an object with cross-references to other objects.
+他のオブジェクトへのクロスリファレンスを含むオブジェクトを作成できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -392,24 +395,24 @@ You can create an object with cross-references to other objects.
 </Tabs>
 
 :::tip Additional information
-See [How-to: Cross-references](../manage-collections/cross-references.mdx) for more on working with cross-references.
+クロスリファレンスの詳細については、[How-to: Cross-references](../manage-collections/cross-references.mdx) を参照してください。
 :::
 
-## Create an object with `geoCoordinates`
+## `geoCoordinates`付きオブジェクトの作成
 
 import GeoLimitations from '/_includes/geo-limitations.mdx';
 
 <GeoLimitations/>
 
-If you want to supply a [`geoCoordinates`](/weaviate/config-refs/datatypes.md#geocoordinates) property, you need to specify the `latitude` and `longitude` as floating point decimal degrees:
+[`geoCoordinates`](/weaviate/config-refs/datatypes.md#geocoordinates) プロパティを指定する場合、`latitude` と `longitude` を浮動小数点の 10 進度で指定する必要があります。
 
 import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx';
 
 <CreateWithGeo/>
 
-## Validate objects before creation
+## 作成前のオブジェクト検証
 
-Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
+オブジェクトを作成する前に、コレクション定義に対して <SkipLink href="/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -467,20 +470,21 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
   </TabItem>
 </Tabs>
 
-## Multiple vector embeddings (named vectors)
+## 複数ベクトル埋め込み（名前付きベクトル）
 
 import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 <MultiVectorSupport />
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [How-to: (Batch) Import items](./import.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [方法: ( Batch ) アイテムをインポート](./import.mdx)
+- <SkipLink href="/weaviate/api/rest#tag/objects">参照： REST - /v1/objects</SkipLink>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

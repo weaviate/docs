@@ -1,5 +1,5 @@
 ---
-title: Product Quantization (PQ)
+title: 直積量子化 (PQ)
 sidebar_position: 5
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'pq']
@@ -17,7 +17,7 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
 :::note
-Starting in v1.23, AutoPQ simplifies configuring PQ on new collections.
+v1.23 から、AutoPQ は新しいコレクションでの PQ 設定を簡素化します。
 :::
 
 import PQOverview from '/\_includes/configuration/pq-compression/overview-text.mdx' ;
@@ -28,32 +28,32 @@ import PQTradeoffs from '/\_includes/configuration/pq-compression/tradeoffs.mdx'
 
 <PQTradeoffs />
 
-To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/indexing/vector-index.mdx).
+HNSW を設定するには、[設定: ベクトル インデックス](/weaviate/config-refs/indexing/vector-index.mdx) を参照してください。
 
-## Enable PQ compression
+## PQ 圧縮の有効化
 
-PQ is configured at a collection level. There are two ways to enable PQ compression:
+PQ はコレクション単位で設定します。PQ 圧縮を有効にする方法は 2 つあります。
 
-- [Use AutoPQ to enable PQ compression](./pq-compression.md#configure-autopq).
-- [Manually enable PQ compression](./pq-compression.md#manually-configure-pq).
+- [AutoPQ を使用して PQ 圧縮を有効化](./pq-compression.md#configure-autopq)
+- [手動で PQ 圧縮を有効化](./pq-compression.md#manually-configure-pq)
 
-## Configure AutoPQ
+## AutoPQ の設定
 
-:::info Added in v1.23.0
+:::info v1.23.0 で追加
 :::
 
-For new collections, use AutoPQ. AutoPQ automates triggering of the PQ training step based on the size of the collection.
+新しいコレクションでは AutoPQ を使用してください。AutoPQ は、コレクションのサイズに基づき PQ のトレーニング ステップのトリガーを自動化します。
 
-### 1. Set the environment variable
+### 1. 環境変数の設定
 
-AutoPQ requires asynchronous indexing.
+AutoPQ には非同期インデックス作成が必要です。
 
-- **Open-source Weaviate users**: To enable AutoPQ, set the environment variable `ASYNC_INDEXING=true` and restart your Weaviate instance.
-- [**Weaviate Cloud (WCD)**](https://console.weaviate.cloud/) users: Enable async indexing through the WCD Console and restart your Weaviate instance.
+- **オープンソース版 Weaviate 利用者**: AutoPQ を有効にするには、環境変数 `ASYNC_INDEXING=true` を設定し、Weaviate インスタンスを再起動します。  
+- [**Weaviate Cloud (WCD)**](https://console.weaviate.cloud/) 利用者: WCD コンソールで非同期インデックス作成を有効にし、Weaviate インスタンスを再起動します。
 
-### 2. Configure PQ
+### 2. PQ の設定
 
-To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-parameters).
+コレクションで PQ を設定するには、[PQ パラメーター](./pq-compression.md#pq-parameters) を使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -94,39 +94,41 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
 
 </Tabs>
 
-### 3. Load your data
+### 3. データのロード
 
-Load your data. You do not have to load an initial set of training data.
+データをロードします。トレーニング用の初期データをロードする必要はありません。
 
-AutoPQ creates the PQ codebook when the object count reaches the training limit. By default, the training limit is 100,000 objects per shard.
+AutoPQ は、オブジェクト数がトレーニング上限に達した時点で PQ コードブックを作成します。デフォルトでは、トレーニング上限はシャードあたり 100,000 オブジェクトです。
 
-## Manually configure PQ
+## PQ を手動で設定
 
-You can manually enable PQ on an existing collection. After PQ is enabled, Weaviate trains the PQ codebook. Before you enable PQ, verify that the training set has 100,000 objects per shard.
+既存のコレクションに対して PQ を手動で有効にできます。PQ を有効にすると、Weaviate は PQ コードブックをトレーニングします。PQ を有効にする前に、トレーニング セットがシャードあたり 100,000 オブジェクトあることを確認してください。
 
-To manually enable PQ, follow these steps:
+PQ を手動で有効にするには、次の手順に従います。
 
-- Phase One: Create a codebook
+- フェーズ 1: コードブックの作成
 
-  - [Define a collection without PQ](./pq-compression.md#1-define-a-collection-without-pq)
-  - [Load some training data](./pq-compression.md#2-load-training-data)
-  - [Enable and train PQ](./pq-compression.md#3-enable-pq-and-create-the-codebook)
+  - [PQ なしでコレクションを定義](./pq-compression.md#1-define-a-collection-without-pq)  
+  - [トレーニング データをロード](./pq-compression.md#2-load-training-data)  
+  - [PQ を有効化し、コードブックを作成](./pq-compression.md#3-enable-pq-and-create-the-codebook)
 
-- Phase Two: Load the rest of your data
+- フェーズ 2: 残りのデータをロード
 
-  - [Load the rest of your data](./pq-compression.md#4-load-the-rest-of-your-data)
+  - [残りのデータをロード](./pq-compression.md#4-load-the-rest-of-your-data)
 
-:::tip How large should the training set be?
-We suggest 10,000 to 100,000 objects per shard.
+:::tip トレーニング セットの推奨サイズ
+シャードあたり 10,000 〜 100,000 オブジェクトを推奨します。
 :::
 
-Weaviate [logs a message](#check-the-system-logs) when PQ is enabled and another message when vector compression is complete. Do not import the rest of your data until the initial training step is complete.
+PQ が有効になったとき、そしてベクトル圧縮が完了したときに、Weaviate は[メッセージをログに出力](#check-the-system-logs)します。初期トレーニング ステップが完了するまでは、残りのデータをインポートしないでください。
 
-Follow these steps to manually enable PQ.
+以上が、PQ を手動で有効にする手順です。
 
-### 1. Define a collection without PQ
 
-[Create a collection](../../manage-collections/collection-operations.mdx#create-a-collection) without specifying a quantizer.
+
+### 1. PQ なしのコレクション定義
+
+[コレクションを作成](../../manage-collections/collection-operations.mdx#create-a-collection) し、量子化器を指定しません。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -184,23 +186,23 @@ Follow these steps to manually enable PQ.
   </TabItem>
 </Tabs>
 
-### 2. Load training data
+### 2. 学習データの読み込み
 
-[Add objects](/weaviate/manage-objects/import.mdx) that will be used to train PQ. Weaviate will use the greater of the training limit, or the collection size, to train PQ.
+PQ の学習に使用する [オブジェクトを追加](/weaviate/manage-objects/import.mdx) します。Weaviate は、学習上限とコレクションサイズのうち大きい方を使用して PQ を学習します。
 
-We recommend loading a representative sample such that the trained centroids are representative of the entire dataset.
+学習済みのセントロイドが全データセットを代表するように、代表的なサンプルを読み込むことを推奨します。
 
-From `v1.27.0`, Weaviate uses a sparse [Fisher-Yates algorithm](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle) to select the training set from the available objects when PQ is enabled manually. Nonetheless, it is still recommended to load a representative sample of the data so that the trained centroids are representative of the entire dataset.
+バージョン v1.27.0 から、Weaviate は手動で PQ を有効にした場合に利用可能なオブジェクトから学習セットを選択するため、疎な [Fisher-Yates アルゴリズム](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle) を使用します。それでもなお、学習済みのセントロイドがデータセット全体を代表するように、代表的なサンプルを読み込むことを推奨します。
 
-### 3. Enable PQ and create the codebook
+### 3. PQ の有効化とコードブックの作成
 
-Update your collection definition to enable PQ. Once PQ is enabled, Weaviate trains the codebook using the training data.
+コレクション定義を更新して PQ を有効化します。PQ が有効になると、Weaviate は学習データを使用してコードブックを学習します。
 
 import PQMakesCodebook from '/\_includes/configuration/pq-compression/makes-a-codebook.mdx' ;
 
 <PQMakesCodebook />
 
-To enable PQ, update your collection definition as shown below. For additional configuration options, see the [PQ parameter table](./pq-compression.md#pq-parameters).
+PQ を有効にするには、以下のようにコレクション定義を更新します。追加の設定オプションについては、[PQ パラメータ一覧](./pq-compression.md#pq-parameters) を参照してください。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -258,31 +260,33 @@ To enable PQ, update your collection definition as shown below. For additional c
   </TabItem>
 </Tabs>
 
-### 4. Load the rest of your data
 
-Once the [codebook has been trained](#3-enable-pq-and-create-the-codebook), you may continue to add data as per normal. Weaviate compresses the new data when it adds it to the database.
 
-If you already have data in your Weaviate instance when you create the codebook, Weaviate automatically compresses the remaining objects (the ones after the initial training set).
+### 4. 残りのデータのロード
 
-## PQ parameters
+[コードブックのトレーニング完了後](#3-enable-pq-and-create-the-codebook)、通常どおりにデータを追加できます。Weaviate は新しいデータをデータベースに追加する際に圧縮します。
 
-You can configure PQ compression by setting the following parameters at the collection level.
+コードブックを作成する時点で既に Weaviate インスタンスにデータが存在する場合、Weaviate は残りのオブジェクト（初期トレーニングセット以降のもの）を自動的に圧縮します。
+
+## PQ パラメーター
+
+コレクションレベルで以下のパラメーターを設定することで、PQ 圧縮を構成できます。
 
 import PQParameters from '/\_includes/configuration/pq-compression/parameters.mdx' ;
 
 <PQParameters />
 
-## Additional tools and considerations
+## 追加ツールと留意事項
 
-### Change the codebook training limit
+### コードブックのトレーニング上限の変更
 
-For most use cases, 100,000 objects is an optimal training size. There is little benefit to increasing `trainingLimit`. If you do increase `trainingLimit`, the training period will take longer. You could also have memory problems if you set a high `trainingLimit`.
+一般的なユースケースでは、100,000 オブジェクトが最適なトレーニングサイズです。`trainingLimit` を増やしても大きな効果は得られません。`trainingLimit` を大きくするとトレーニング時間が長くなるほか、高すぎるとメモリ不足が発生する可能性があります。
 
-If you have a small dataset and wish to enable compression, consider using [binary quantization (BQ)](./bq-compression.md). BQ is a simpler compression method that does not require training.
+小規模データセットで圧縮を有効にしたい場合は、[バイナリ量子化 (BQ)](./bq-compression.md) の利用を検討してください。BQ はトレーニングを必要としない、よりシンプルな圧縮方式です。
 
-### Check the system logs
+### システムログの確認
 
-When compression is enabled, Weaviate logs diagnostic messages like these.
+圧縮が有効になると、Weaviate は次のような診断メッセージをログに記録します。
 
 ```bash
 pq-conf-demo-1  | {"action":"compress","level":"info","msg":"switching to compressed vectors","time":"2023-11-13T21:10:52Z"}
@@ -290,21 +294,21 @@ pq-conf-demo-1  | {"action":"compress","level":"info","msg":"switching to compre
 pq-conf-demo-1  | {"action":"compress","level":"info","msg":"vector compression complete","time":"2023-11-13T21:10:53Z"}
 ```
 
-If you use `docker-compose` to run Weaviate, you can get the logs on the system console.
+`docker-compose` で Weaviate を実行している場合、システムコンソールからログを取得できます。
 
 ```bash
 docker compose logs -f --tail 10 weaviate
 ```
 
-You can also view the log file directly. Check `docker` to get the file location.
+また、ログファイルを直接確認することもできます。ファイルの場所は `docker` でご確認ください。
 
 ```bash
 docker inspect --format='{{.LogPath}}' <your-weaviate-container-id>
 ```
 
-### Review the current `pq` configuration
+### 現在の `pq` 設定の確認
 
-To review the current `pq` configuration, you can retrieve it as shown below.
+現在の `pq` 設定を確認するには、次のように取得できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -362,27 +366,28 @@ To review the current `pq` configuration, you can retrieve it as shown below.
   </TabItem>
 </Tabs>
 
-### Multiple vector embeddings (named vectors)
+### 複数ベクトル埋め込み（名前付きベクトル）
 
 import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
 
 <NamedVectorCompress />
 
-### Multi-vector embeddings (ColBERT, ColPali, etc.)
+### マルチベクトル埋め込み（ColBERT、ColPali など）
 
 import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
 <MultiVectorCompress />
 
-## Further resources
+## さらなる参考資料
 
-- [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
-- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
-- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
-- [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
+- [スターターガイド: 圧縮](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [リファレンス: ベクトルインデックス](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コンセプト: ベクトル量子化](/docs/weaviate/concepts/vector-quantization.md)
+- [コンセプト: ベクトルインデックス](/weaviate/concepts/indexing/vector-index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

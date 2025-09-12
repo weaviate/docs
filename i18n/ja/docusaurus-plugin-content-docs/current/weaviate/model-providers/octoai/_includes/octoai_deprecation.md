@@ -1,70 +1,71 @@
 :::warning Deprecated integrations
 
-### OctoAI integrations are deprecated
+### OctoAI インテグレーションの非推奨
 
 <!-- They have been removed from the Weaviate codebase from `v1.25.22`, `v1.26.8` and `v1.27.1`. -->
 
-OctoAI announced that they are winding down the commercial availability of its services by **31 October 2024**. Accordingly, the Weaviate OctoAI integrations are deprecated. Do not use these integrations for new projects.
+OctoAI は 2024 年 10 月 31 日 までに商用サービスの提供を終了すると発表しました。これに伴い、Weaviate の OctoAI インテグレーションは非推奨となります。新しいプロジェクトではこれらのインテグレーションを使用しないでください。
 <br/>
 
-If you have a collection that is using an OctoAI integration, consider your options depending on whether you are using OctoAI's embedding models ([your options](#for-collections-with-octoai-embedding-integrations)) or generative models ([your options](#for-collections-with-octoai-generative-ai-integrations)).
+OctoAI インテグレーションを使用しているコレクションをお持ちの場合、埋め込みモデルを利用しているか（[検討事項](#for-collections-with-octoai-embedding-integrations)）、生成モデルを利用しているか（[検討事項](#for-collections-with-octoai-generative-ai-integrations)）に応じて対応をご検討ください。
 
-#### For collections with OctoAI embedding integrations
+#### OctoAI 埋め込みインテグレーションを使用するコレクション
 
-OctoAI provided `thenlper/gte-large` as the embedding model. This model is also available through the [Hugging Face API](../../huggingface/embeddings.md).
+OctoAI は `thenlper/gte-large` を埋め込みモデルとして提供していました。このモデルは [Hugging Face API](../../huggingface/embeddings.md) からも利用できます。
 <!-- , and through the [locally hosted Transformers](../../transformers/embeddings.md) integration. -->
 <br/>
 
-After the shutdown date, this model will no longer be available through OctoAI. If you are using this integration, you have the following options:
+サービス終了日以降、このモデルは OctoAI からは利用できなくなります。このインテグレーションをご利用の場合、次の選択肢があります。
 <br/>
 
-**Option 1: Use the existing collection, and provide your own vectors**
+**Option 1: 既存のコレクションを使用し、独自の ベクトル を提供する**
 <br/>
 
-You can continue to use the existing collection, provided that you rely on some other method to generate the required embeddings yourself for any new data, and for queries. If you are unfamiliar with the "bring your own vectors" approach, [refer to this starter guide](../../../starter-guides/custom-vectors.mdx).
+既存のコレクションをそのまま使い、新しいデータやクエリに必要な埋め込みは別の方法でご自身で生成できます。「bring your own ベクトル」方式に慣れていない場合は、[スターターガイド](../../../starter-guides/custom-vectors.mdx) をご参照ください。
 <br/>
 
-**Option 2: Migrate to a new collection with another model provider**
+**Option 2: 別のモデルプロバイダーを用いた新しいコレクションへ移行する**
 
-Alternatively, you can migrate your data to a new collection ([read how](#how-to-migrate)). At this point, you can re-use the existing embeddings or choose a new model.
+あるいは、データを新しいコレクションに移行することもできます（[手順はこちら](#how-to-migrate)）。この際、既存の埋め込みを再利用することも、新しいモデルを選択することも可能です。
 <br/>
 
-- **Re-using the existing embeddings** will save on time and inference costs.
-- **Choosing a new model** will allow you to explore new models and potentially improve the performance of your application.
+- **既存の埋め込みを再利用する** ことで、時間と推論コストを節約できます。
+- **新しいモデルを選択する** と、最新モデルを試せるほか、アプリケーション性能を向上できる可能性があります。
 
-If you would like to re-use the existing embeddings, you must select a model provider (e.g. [Hugging Face API](../../huggingface/embeddings.md)) that offers the same embedding model.
+既存の埋め込みを再利用する場合は、同じ埋め込みモデルを提供しているモデルプロバイダー（例: [Hugging Face API](../../huggingface/embeddings.md)）を選択してください。
 <br/>
 
-You can also select a new model with any embedding model provider. This will require you to re-generate the embeddings for your data, as the existing embeddings will not be compatible with the new model.
+任意の埋め込みモデルプロバイダーで新しいモデルを選択することもできます。その場合は既存の埋め込みと互換性がないため、データの埋め込みを再生成する必要があります。
 <br/>
 
-#### For collections with OctoAI generative AI integrations
+#### OctoAI 生成 AI インテグレーションを使用するコレクション
 
-If you are only using the generative AI integration, you do not need to migrate your data to a new collection.
+生成 AI インテグレーションのみを使用している場合、データを新しいコレクションへ移行する必要はありません。
 <br/>
 
-Follow [this how-to](../../../manage-collections/generative-reranker-models.mdx#update-the-generative-model-integration) to re-configure your collection with a new generative AI model provider. Note this requires Weaviate `v1.25.23`, `v1.26.8`, `v1.27.1`, or later.
+[このハウツー](../../../manage-collections/generative-reranker-models.mdx#update-the-generative-model-integration) に従い、新しい生成 AI モデルプロバイダーでコレクションを再設定してください。これは Weaviate `v1.25.23`、`v1.26.8`、`v1.27.1` 以降が必要です。
 <br/>
 
-You can select any model provider that offers generative AI models.
+生成 AI モデルを提供している任意のモデルプロバイダーを選択できます。
 <br/>
 
-If you would like to continue to use the same model that you used with OctoAI, providers such as [Anyscale](../../anyscale/generative.md), [FriendliAI](../../friendliai/generative.md), [Mistral](../../mistral/generative.md) or local models with [Ollama](../../ollama/generative.md) each offer some of the suite of models that OctoAI provided.
+OctoAI で使用していたのと同じモデルを継続利用したい場合は、[Anyscale](../../anyscale/generative.md)、[FriendliAI](../../friendliai/generative.md)、[Mistral](../../mistral/generative.md)、あるいは [Ollama](../../ollama/generative.md) を用いたローカルモデルなどで、OctoAI が提供していたモデル群の一部を利用できます。
 <br/>
 
-#### How to migrate
+#### 移行方法
 
-An outline of the migration process is as follows:
+移行プロセスの概要は次のとおりです。
 <br/>
 
-- Create a new collection with the desired model provider integration(s).
-- Export the data from the existing collection.
-    - (Optional) To re-use the existing embeddings, export the data with the existing embeddings.
-- Import the data into the new collection.
-    - (Optional) To re-use the existing embeddings, import the data with the existing embeddings.
-- Update your application to use the new collection.
+- 希望するモデルプロバイダーのインテグレーションを使って、新しいコレクションを作成します。
+- 既存のコレクションからデータをエクスポートします。
+    - （任意）既存の埋め込みを再利用する場合は、埋め込みを含めてエクスポートします。
+- データを新しいコレクションにインポートします。
+    - （任意）既存の埋め込みを再利用する場合は、埋め込みを含めてインポートします。
+- アプリケーションを更新して、新しいコレクションを使用するようにします。
 <br/>
 
-See [How-to manage data: migrate data](../../../manage-collections/migrate.mdx) for examples on migrating data objects between collections.
+データオブジェクトをコレクション間で移行する例については、[How-to manage data: migrate data](../../../manage-collections/migrate.mdx) をご覧ください。
 
 :::
+

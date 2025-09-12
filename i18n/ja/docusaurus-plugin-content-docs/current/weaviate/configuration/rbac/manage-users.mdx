@@ -1,6 +1,6 @@
 ---
-title: Manage users
-sidebar_label: Manage users
+title: ユーザー管理
+sidebar_label: ユーザー管理
 sidebar_position: 1
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
@@ -18,34 +18,34 @@ import OidcUserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.
 import OidcUserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.users.ts';
 
 
-:::info Added in `v1.29` and `v1.30`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.  
-User management is available from version `v1.30`.
+:::info `v1.29` と `v1.30` で追加
+ロールベースアクセス制御 ( RBAC ) は Weaviate `v1.29` から一般提供されています。  
+ユーザー管理機能は `v1.30` から利用可能です。
 :::
 
-In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
+Weaviate では、ロールベースアクセス制御 ( RBAC ) により、ロールを定義し、それぞれに権限を割り当てられます。ユーザーはロールに紐付けられ、そのロールに設定された権限を継承します。
 
-Weaviate differentiates multiple types of users. **Database users** are fully managed by the Weaviate instance, while **OIDC** users are managed by an external identity provider. Both types can be used together with RBAC. 
+Weaviate には複数種類のユーザーが存在します。**データベースユーザー** は Weaviate インスタンスによって完全に管理され、**OIDC** ユーザーは外部アイデンティティプロバイダーによって管理されます。どちらのタイプも RBAC と併用できます。 
 
-On this page, you will find examples of how to programmatically **manage users** and their associated roles with Weaviate client libraries.
+このページでは、Weaviate クライアントライブラリーを使用して **ユーザー** とそのロールをプログラムで管理する方法を示します。
 
-:::note User types in Weaviate
+:::note Weaviate におけるユーザータイプ
 
 <!-- NOTE: left out AUTHORIZATION_ADMINLIST_USERS to dissuade usage -->
 
-Under the hood, Weaviate differentiates three types of users:
+内部的には、Weaviate は次の 3 種類のユーザーを区別します。
 
-- `db_user`: Database users that can be fully managed through the API.
-- `db_env_user`: Database users that are defined through the `AUTHENTICATION_APIKEY_USERS` environment variable and can only be updated through this variable and by restarting the Weaviate instance.
-- `oidc`: Users that can only be created/deleted through the external OIDC service.
+- `db_user`: API を通じて完全に管理できるデータベースユーザー
+- `db_env_user`: `AUTHENTICATION_APIKEY_USERS` 環境変数で定義され、変数の変更と Weaviate 再起動によってのみ更新可能なデータベースユーザー
+- `oidc`: 外部 OIDC サービスでのみ作成/削除できるユーザー
 
 :::
 
-## User management <i class="fas fa-user-edit"></i> {#user-management}
+## ユーザー管理 <i class="fas fa-user-edit"></i> {#user-management}
 
-### List all users
+### ユーザー一覧
 
-This example shows how to get a list of all the users (`db_user`, `db_env_user` and `oidc`) in Weaviate.
+この例では、Weaviate 内のすべてのユーザー (`db_user`, `db_env_user`, `oidc`) を取得する方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -81,7 +81,7 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
 ```text
 [
@@ -92,9 +92,9 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
 
 </details>
 
-### Create a database user {#create-a-user}
+### データベースユーザーの作成 {#create-a-user}
 
-This example creates a user called `custom-user`.
+この例では `custom-user` というユーザーを作成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -130,7 +130,7 @@ This example creates a user called `custom-user`.
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
 ```text
 RXF1dU1VcWM1Q3hvVndYT0F1OTBOTDZLZWx0ME5kbWVJRVdPL25EVW12QT1fMXlDUEhUNjhSMlNtazdHcV92MjAw
@@ -138,9 +138,11 @@ RXF1dU1VcWM1Q3hvVndYT0F1OTBOTDZLZWx0ME5kbWVJRVdPL25EVW12QT1fMXlDUEhUNjhSMlNtazdH
 
 </details>
 
-### Delete a database user
 
-This example deletes a user called `custom-user`.
+
+### データベースユーザーの削除
+
+この例では `custom-user` というユーザーを削除します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -175,9 +177,9 @@ This example deletes a user called `custom-user`.
   </TabItem>
 </Tabs>
 
-### Rotate database user API key {#rotate-user-api-key}
+### データベースユーザー API キーのローテーション {#rotate-user-api-key}
 
-This example updates (rotates) the API key for `custom-user`.
+この例では `custom-user` の API キーを更新（ローテーション）します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -213,7 +215,7 @@ This example updates (rotates) the API key for `custom-user`.
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+  <summary>実行結果の例</summary>
 
 ```text
 SSs3WGVFbUxMVFhlOEsxVVMrQVBzM1VhQTJIM2xXWngwY01HaXFYVnM1az1fMXlDUEhUNjhSMlNtazdHcV92MjAw
@@ -221,13 +223,13 @@ SSs3WGVFbUxMVFhlOEsxVVMrQVBzM1VhQTJIM2xXWngwY01HaXFYVnM1az1fMXlDUEhUNjhSMlNtazdH
 
 </details>
 
-## Database users: Permissions management <i class="fas fa-user-lock"></i> {#user-permissions-management}
+## データベースユーザー：権限管理 <i class="fas fa-user-lock"></i> {#user-permissions-management}
 
-### Assign a role to a database user
+### データベースユーザーへのロール割り当て
 
-A custom user can have any number of roles assigned to them (including none). The role can be a predefined role (e.g. `viewer`) or a custom role.
+カスタムユーザーには、ゼロ個を含む任意の数のロールを割り当てることができます。ロールはあらかじめ定義されたロール（例： `viewer`）でも、カスタムロールでもかまいません。
 
-This example assigns the custom `testRole` role and predefined `viewer` role to `custom-user`.
+この例では、カスタムロール `testRole` と、事前定義済みロール `viewer` を `custom-user` に割り当てます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -262,11 +264,11 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
   </TabItem>
 </Tabs>
 
-### Remove a role from a database user
+### データベースユーザーからのロール削除
 
-You can revoke one or more roles from a specific user.
+特定のユーザーから 1 つ以上のロールを取り消すことができます。
 
-This example removes the role `testRole` from the user `custom-user`.
+この例では、ユーザー `custom-user` からロール `testRole` を削除します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -301,9 +303,10 @@ This example removes the role `testRole` from the user `custom-user`.
   </TabItem>
 </Tabs>
 
-### Get a database user's roles
 
-Retrieve the role information for any user.
+### データベース ユーザーのロール取得
+
+任意のユーザーのロール情報を取得します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -339,7 +342,7 @@ Retrieve the role information for any user.
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
 ```text
 testRole
@@ -348,15 +351,15 @@ viewer
 
 </details>
 
-## OIDC users: Permissions management <i class="fas fa-user-lock"></i> {#oidc-user-permissions-management}
+## OIDC ユーザー: 権限管理 <i class="fas fa-user-lock"></i> {#oidc-user-permissions-management}
 
-When using [OIDC](/deploy/configuration/oidc.md), an identity provider authenticates the user and issues tokens, which are then validated by Weaviate. These users can be assigned roles with custom permissions using RBAC.
+[OIDC](/deploy/configuration/oidc.md) を使用すると、アイデンティティ プロバイダーがユーザーを認証してトークンを発行し、それを Weaviate が検証します。これらのユーザーには RBAC を用いてカスタム権限を持つロールを割り当てられます。
 
-### Assign a role to an OIDC user
+### OIDC ユーザーへのロール割り当て
 
-An OIDC user can have any number of roles assigned to them (including none). The role can be a predefined role (e.g. `viewer`) or a custom role.
+OIDC ユーザーには、ロールを 0 個以上割り当てることができます。ロールはあらかじめ定義されたロール（例: `viewer`）でも、カスタム ロールでも構いません。
 
-This example assigns the custom `testRole` role and predefined `viewer` role to `custom-user`.
+この例では、カスタム ロール `testRole` と、定義済みロール `viewer` を `custom-user` に割り当てます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -391,11 +394,11 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
   </TabItem>
 </Tabs>
 
-### Remove a role from an OIDC user
+### OIDC ユーザーからのロール削除
 
-You can revoke one or more roles from a specific OIDC user.
+特定の OIDC ユーザーから 1 つ以上のロールを取り消すことができます。
 
-This example removes the role `testRole` from the user `custom-user`.
+この例では、ユーザー `custom-user` からロール `testRole` を削除します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -430,9 +433,9 @@ This example removes the role `testRole` from the user `custom-user`.
   </TabItem>
 </Tabs>
 
-### Get an OIDC user's roles
+### OIDC ユーザーのロール取得
 
-Retrieve the role information for an OIDC user.
+OIDC ユーザーのロール情報を取得します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -468,7 +471,7 @@ Retrieve the role information for an OIDC user.
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+  <summary>結果例</summary>
 
 ```text
 testRole
@@ -477,14 +480,17 @@ viewer
 
 </details>
 
-## Further resources
 
-- [RBAC: Overview](./index.mdx)
-- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
-- [RBAC: Manage roles](./manage-roles.mdx)
 
-## Questions and feedback
+## 追加リソース
+
+-  RBAC ：概要](./index.mdx)
+-  RBAC ：設定](/deploy/configuration/configuring-rbac.md)
+-  RBAC ：ロールの管理](./manage-roles.mdx)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback />
+

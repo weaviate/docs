@@ -1,101 +1,97 @@
 ---
-title: Example datasets
+title: データセット例
 sidebar_position: 5
 image: og/docs/more-resources.jpg
 # tags: ['example datasets']
 ---
 
-## Multi-Modal Text/Image search using CLIP
+## CLIP を使用したマルチモーダル テキスト/画像検索
 
-This example application spins up a Weaviate instance using the
-[multi2vec-clip](/weaviate/model-providers/transformers/embeddings-multimodal.md)
-integration, imports a few sample images (you can add your own images, too!) and
-provides a very simple search frontend in [React](https://reactjs.org/) using
-the [TypeScript/JavaScript](../client-libraries/typescript/index.mdx) client.
+このサンプルアプリケーションでは、[multi2vec-clip](/weaviate/model-providers/transformers/embeddings-multimodal.md) 連携を利用して Weaviate インスタンスを起動し、いくつかのサンプル画像をインポートします（ご自身の画像を追加することも可能です）。さらに、[React](https://reactjs.org/) と [TypeScript/JavaScript](../client-libraries/typescript/index.mdx) クライアントを使った非常にシンプルな検索フロントエンドを提供します。
 
-[Get started here](https://github.com/weaviate/weaviate-examples/blob/main/clip-multi-modal-text-image-search/README.md)
+[ここから始める](https://github.com/weaviate/weaviate-examples/blob/main/clip-multi-modal-text-image-search/README.md)
 
-## Semantic Search through Wikipedia
+## Wikipedia を用いたセマンティック検索
 
-We imported the complete English language Wikipedia article dataset into a single Weaviate instance to conduct semantic search queries through the Wikipedia articles, besides this, we've made all the graph relations between the articles too. We have made the import scripts, pre-processed articles, and backup available so that you can run the complete setup yourself.
+英語版 Wikipedia の記事全体を単一の Weaviate インスタンスにインポートし、記事間のすべてのグラフ関係も作成したうえで、Wikipedia 記事に対するセマンティック検索クエリを実行できるようにしました。インポートスクリプト、前処理済みの記事、バックアップを公開しているため、完全なセットアップをご自身で実行できます。
 
-[Get started here](https://github.com/weaviate/semantic-search-through-Wikipedia-with-Weaviate)
+[ここから始める](https://github.com/weaviate/semantic-search-through-Wikipedia-with-Weaviate)
 
-## Meta AI Research - Biggraph on Wikidata
+## Meta AI Research - Wikidata 上の Biggraph
 
-We have imported the complete Wikidata PBG model into a Weaviate to search through the entire dataset in < 50 milliseconds (excluding internet latency). The demo GraphQL queries contain both pure vector search and scalar and vector searched mixed queries.
+Wikidata の PBG モデル全体を Weaviate にインポートし、インターネット遅延を除いて 50 ミリ秒未満でデータセット全体を検索できるようにしました。デモの GraphQL クエリには、純粋な ベクトル 検索とスカラー検索を組み合わせたクエリの両方が含まれています。
 
-[Get started here](https://github.com/weaviate/biggraph-wikidata-search-with-weaviate)
+[ここから始める](https://github.com/weaviate/biggraph-wikidata-search-with-weaviate)
 
-## News publications
+## ニュース記事
 
-This dataset contains +/- 1000 random news articles from; Financial Times, New York Times, Guardian, Wallstreet Journal, CNN, Fox News, The Economist, New Yorker, Wired, Vogue, Game Informer.
+このデータセットには、Financial Times、New York Times、Guardian、Wallstreet Journal、CNN、Fox News、The Economist、New Yorker、Wired、Vogue、Game Informer からランダムに抽出した約 1,000 件のニュース記事が含まれています。
 
-It includes a [schema](../starter-guides/managing-collections/index.mdx) with classes for `Article`, `Publication`, `Category` and `Author`.
+`Article`、`Publication`、`Category`、`Author` クラスを含む [スキーマ](../starter-guides/managing-collections/index.mdx) が同梱されています。
 
-### Run with Docker Compose
+### Docker Compose で実行
 
-If you want to run this dataset locally, you can run it in one go with Docker Compose.
+このデータセットをローカルで実行したい場合は、Docker Compose で一括実行できます。
 
-You can run this demo dataset with any `text2vec` module. Examples:
+このデモデータセットは、任意の `text2vec` モジュールで実行できます。例を以下に示します。
 
 #### Text2vec-contextionary
 
-The Docker Compose file contains both Weaviate with the `text2vec-contextionary` module and the dataset.
+Docker Compose ファイルには、`text2vec-contextionary` モジュールを組み込んだ Weaviate とデータセットの両方が含まれています。
 
-Download the Docker Compose file
+Docker Compose ファイルをダウンロード
 
 ```bash
 curl -o docker-compose.yml https://raw.githubusercontent.com/weaviate/weaviate-examples/main/weaviate-contextionary-newspublications/docker-compose.yaml
 ```
 
-Run Docker (optional: run with `-d` to run Docker in the background)
+Docker を実行（バックグラウンドで実行する場合は `-d` を追加）
 
 ```bash
 docker compose up
 ```
 
-To work with the News Articles demo dataset, connect to  `http://localhost:8080/`.
+ニュース記事デモデータセットを操作するには `http://localhost:8080/` に接続してください。
 
 #### Text2vec-transformers (without GPU)
 
-The Docker Compose file contains both Weaviate with the `text2vec-contextionary` module, `NER` module, `Q&A` module and `spellcheck` module, and the dataset.
+Docker Compose ファイルには、`text2vec-contextionary`、`NER`、`Q&A`、`spellcheck` の各モジュールを組み込んだ Weaviate とデータセットの両方が含まれています。
 
-Download the Docker Compose file
+Docker Compose ファイルをダウンロード
 
 ```bash
 curl -o docker-compose.yml https://raw.githubusercontent.com/weaviate/weaviate-examples/main/weaviate-transformers-newspublications/docker-compose.yml
 ```
 
-Run Docker (optional: run with `-d` to run Docker in the background)
+Docker を実行（バックグラウンドで実行する場合は `-d` を追加）
 
 ```bash
 docker compose up
 ```
 
-To work with the News Articles demo dataset, connect to  `http://localhost:8080/`.
+ニュース記事デモデータセットを操作するには `http://localhost:8080/` に接続してください。
 
 #### Text2vec-transformers (with GPU enabled)
 
-The Docker Compose file contains both Weaviate with the `text2vec-contextionary` module, `NER` module, `Q&A` module and `spellcheck` module, and the dataset. GPU should be available on your machine when running this configuration.
+Docker Compose ファイルには、`text2vec-contextionary`、`NER`、`Q&A`、`spellcheck` の各モジュールを組み込んだ Weaviate とデータセットの両方が含まれています。この構成を使用する場合、マシンに GPU が搭載されている必要があります。
 
-Download the Docker Compose file
+Docker Compose ファイルをダウンロード
 
 ```bash
 curl -o docker-compose.yml https://raw.githubusercontent.com/weaviate/weaviate-examples/main/weaviate-transformers-newspublications/docker-compose-gpu.yaml
 ```
 
-Run Docker (optional: run with `-d` to run Docker in the background)
+Docker を実行（バックグラウンドで実行する場合は `-d` を追加）
 
 ```bash
 docker compose up
 ```
 
-To work with the News Articles demo dataset, connect to  `http://localhost:8080/`.
+ニュース記事デモデータセットを操作するには `http://localhost:8080/` に接続してください。
 
-### Run manually
+### 手動で実行
 
-If you have your own version of Weaviate running on an **external** host or localhost **without** Docker Compose;
+**外部** ホストまたは Docker Compose を使用しないローカルホストで独自の Weaviate を実行している場合:
 
 ```bash
 # WEAVIATE ORIGIN (e.g., https://foobar.weaviate.network), note paragraph basics for setting the local IP
@@ -109,9 +105,9 @@ docker run -it -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir-$CACHE_DIR -e batc
 
 ```
 
-Usage with Docker on **local with** Docker Compose;
+Docker を使用してローカル（Docker Compose あり）で実行する場合:
 
-_Note: run this from the same directory where the Docker Compose files are located_
+_注意：Docker Compose ファイルがある同じディレクトリで実行してください_
 
 ```bash
 # This gets the Weaviate container name and because the docker uses only lowercase we need to do it too (Can be found manually if 'tr' does not work for you)
@@ -128,8 +124,9 @@ export BATCH_SIZE=<YOUR_CHOICE_OF_BATCH_SIZE>
 docker run -it --network=$WEAVIATE_NETWORK -e weaviate_host=$WEAVIATE_ORIGIN -e cache_dir-$CACHE_DIR -e batch_size=$BATCH_SIZE  semitechnologies/weaviate-demo-newspublications:latest
 ```
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

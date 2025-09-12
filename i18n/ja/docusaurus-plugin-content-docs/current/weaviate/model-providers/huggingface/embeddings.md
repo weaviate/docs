@@ -1,11 +1,11 @@
 ---
-title: Text Embeddings
+title: テキスト 埋め込み
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_huggingface.jpg
 # tags: ['model providers', 'huggingface', 'embeddings']
 ---
 
-# Hugging Face Embeddings with Weaviate
+# Weaviate と Hugging Face の埋め込み
 
 
 import Tabs from '@theme/Tabs';
@@ -18,43 +18,43 @@ import PyCode from '!!raw-loader!../_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
 
-Weaviate's integration with Hugging Face's APIs allows you to access their models' capabilities directly from Weaviate.
+Weaviate の Hugging Face API との統合により、Weaviate から直接モデルの機能にアクセスできます。
 
-[Configure a Weaviate vector index](#configure-the-vectorizer) to use an Hugging Face Hub embedding model, and Weaviate will generate embeddings for various operations using the specified model and your Hugging Face API key. This feature is called the *vectorizer*.
+[Weaviate の ベクトル インデックスを設定](#configure-the-vectorizer) して Hugging Face Hub の埋め込みモデルを使用すると、Weaviate は指定したモデルと Hugging Face API キーを使用して各種操作のための埋め込みを生成します。この機能は *vectorizer* と呼ばれます。
 
-At [import time](#data-import), Weaviate generates text object embeddings and saves them into the index. For [vector](#vector-near-text-search) and [hybrid](#hybrid-search) search operations, Weaviate converts text queries into embeddings.
+[インポート時](#data-import) に、Weaviate はテキストオブジェクトの埋め込みを生成し、インデックスに保存します。[ベクトル](#vector-near-text-search) 検索および [ハイブリッド](#hybrid-search) 検索操作では、Weaviate はテキストクエリを埋め込みに変換します。
 
-![Embedding integration illustration](../_includes/integration_huggingface_embedding.png)
+![埋め込み統合の図](../_includes/integration_huggingface_embedding.png)
 
-## Requirements
+## 要件
 
-### Weaviate configuration
+### Weaviate の設定
 
-Your Weaviate instance must be configured with the Hugging Face vectorizer integration (`text2vec-huggingface`) module.
+お使いの Weaviate インスタンスは、Hugging Face ベクトライザー統合（`text2vec-huggingface`）モジュールが有効になっている必要があります。
 
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is enabled by default on Weaviate Cloud (WCD) serverless instances.
+この統合は Weaviate Cloud (WCD) のサーバーレス インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
   <summary>For self-hosted users</summary>
 
-- Check the [cluster metadata](/deploy/configuration/meta.md) to verify if the module is enabled.
-- Follow the [how-to configure modules](../../configuration/modules.md) guide to enable the module in Weaviate.
+- [クラスターメタデータ](/deploy/configuration/meta.md) を確認し、モジュールが有効かどうかを確認します。  
+- [モジュールの設定方法](../../configuration/modules.md) ガイドに従い、Weaviate でモジュールを有効にします。
 
 </details>
 
-### API credentials
+### API 認証情報
 
-You must provide a valid Hugging Face API key to Weaviate for this integration. Go to [Hugging Face](https://huggingface.co/docs/api-inference/en/quicktour) to sign up and obtain an API key.
+この統合を使用するには、Weaviate に有効な Hugging Face API キーを渡す必要があります。API キーの取得方法は [Hugging Face](https://huggingface.co/docs/api-inference/en/quicktour) を参照してください。
 
-Provide the API key to Weaviate using one of the following methods:
+以下のいずれかの方法で Weaviate に API キーを提供します。
 
-- Set the `HUGGINGFACE_APIKEY` environment variable that is available to Weaviate.
-- Provide the API key at runtime, as shown in the examples below.
+- Weaviate から参照できる `HUGGINGFACE_APIKEY` 環境変数を設定します。  
+- 下記の例のように、実行時に API キーを渡します。
 
 <Tabs groupId="languages">
 
@@ -86,9 +86,9 @@ Provide the API key to Weaviate using one of the following methods:
   </TabItem>
 </Tabs>
 
-## Configure the vectorizer
+## ベクトライザーの設定
 
-[Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Hugging Face embedding model:
+以下のように [Weaviate インデックスを設定](../../manage-collections/vector-config.mdx#specify-a-vectorizer) し、Hugging Face の埋め込みモデルを使用します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -119,20 +119,22 @@ Provide the API key to Weaviate using one of the following methods:
   </TabItem>
 </Tabs>
 
-You must specify one of the [available models](#available-models) for the vectorizer to use.
+ベクトライザーで使用する [利用可能なモデル](#available-models) のいずれかを指定する必要があります。
 
 import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 <details>
-  <summary>Vectorization behavior</summary>
+  <summary>ベクトル化の挙動</summary>
 
 <VectorizationBehavior/>
 
 </details>
 
-### Vectorizer parameters
 
-The following examples show how to configure Hugging Face-specific options.
+
+### ベクトライザー パラメーター
+
+以下の例では、Hugging Face 固有のオプションの設定方法を示します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -164,29 +166,29 @@ The following examples show how to configure Hugging Face-specific options.
 
 </Tabs>
 
-#### Model selection parameters
+#### モデル選択パラメーター
 
-Only select one of the following parameters to specify the model:
+モデルを指定するには、次のパラメーターのうち 1 つだけを選択してください:
 
-- `model`,
-- `passageModel` and `queryModel`, or
+- `model`
+- `passageModel` と `queryModel`
 - `endpointURL`
 
-:::note Differences between `model`, `passageModel`/`queryModel` and `endpointURL`
-The `passageModel` and `queryModel` parameters are used together to specify a [DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) passage and query model.
+:::note `model`、`passageModel`/`queryModel` と `endpointURL` の違い
+`passageModel` と `queryModel` パラメーターは組み合わせて使用し、[DPR](https://huggingface.co/docs/transformers/en/model_doc/dpr) の passage モデルと query モデルを指定します。
 
-The `endpointURL` parameter is used to specify a [custom Hugging Face Inference Endpoint](https://huggingface.co/inference-endpoints). This parameter overrides the `model`, `passageModel`, and `queryModel` parameters.
+`endpointURL` パラメーターは、[カスタム Hugging Face Inference Endpoint](https://huggingface.co/inference-endpoints) を指定するために使用します。このパラメーターを設定すると、`model`、`passageModel`、`queryModel` の各パラメーターより優先されます。
 :::
 
-#### Additional parameters
+#### 追加パラメーター
 
-- `options.waitForModel`: If the model is not ready, wait for it rather than returning a `503` error.
-- `options.useGPU`: Use a GPU for inference if your [account plan](https://huggingface.co/inference-api#pricing) supports it.
-- `options.useCache`: Use a cached result if available. (For non-deterministic models to prevent the caching mechanism from being used.)
+- `options.waitForModel`：モデルが準備完了でない場合、`503` エラーを返す代わりに準備が整うまで待機します。  
+- `options.useGPU`：ご利用の [アカウント プラン](https://huggingface.co/inference-api#pricing) が対応している場合、推論に GPU を使用します。  
+- `options.useCache`：キャッシュがある場合はそれを利用します。（非決定的なモデルではキャッシュ メカニズムを無効にする際に使用します。）
 
-## Data import
+## データ インポート
 
-After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
+ベクトライザーを設定したら、Weaviate に [データをインポート](../../manage-objects/import.mdx) します。Weaviate は指定されたモデルを使用してテキスト オブジェクトの埋め込みを生成します。
 
 <Tabs groupId="languages">
 
@@ -218,21 +220,21 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
   </TabItem>
 </Tabs>
 
-:::tip Re-use existing vectors
-If you already have a compatible model vector available, you can provide it directly to Weaviate. This can be useful if you have already generated embeddings using the same model and want to use them in Weaviate, such as when migrating data from another system.
+:::tip 既存ベクトルの再利用
+既に互換性のあるモデル ベクトルをお持ちの場合、それを Weaviate に直接提供できます。これは、同じモデルを使用して埋め込みを生成済みで、それらを Weaviate で再利用したい場合、たとえば別システムからデータを移行する際に便利です。
 :::
 
-## Searches
+## 検索
 
-Once the vectorizer is configured, Weaviate will perform vector and hybrid search operations using the specified Hugging Face model.
+ベクトライザーが設定されると、Weaviate は指定された Hugging Face モデルを使用してベクトル検索およびハイブリッド検索を実行します。
 
 ![Embedding integration at search illustration](../_includes/integration_huggingface_embedding_search.png)
 
-### Vector (near text) search
+### ベクトル (near text) 検索
 
-When you perform a [vector search](../../search/similarity.md#search-with-text), Weaviate converts the text query into an embedding using the specified model and returns the most similar objects from the database.
+[ベクトル検索](../../search/similarity.md#search-with-text) を行うと、Weaviate はテキスト クエリを指定モデルで埋め込みに変換し、データベースから最も類似したオブジェクトを返します。
 
-The query below returns the `n` most similar objects from the database, set by `limit`.
+次のクエリは、`limit` で指定した件数 `n` の最も類似したオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -264,15 +266,17 @@ The query below returns the `n` most similar objects from the database, set by `
   </TabItem>
 </Tabs>
 
-### Hybrid search
 
-:::info What is a hybrid search?
-A hybrid search performs a vector search and a keyword (BM25) search, before [combining the results](../../search/hybrid.md) to return the best matching objects from the database.
+
+### ハイブリッド検索
+
+:::info ハイブリッド検索とは？
+ハイブリッド検索は、ベクトル検索とキーワード (BM25) 検索を実行し、その結果を [結合](../../search/hybrid.md) してデータベースから最も一致するオブジェクトを返します。
 :::
 
-When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts the text query into an embedding using the specified model and returns the best scoring objects from the database.
+[ハイブリッド検索](../../search/hybrid.md) を実行すると、Weaviate はテキストクエリを指定したモデルで埋め込みに変換し、データベースから最も高いスコアのオブジェクトを返します。
 
-The query below returns the `n` best scoring objects from the database, set by `limit`.
+以下のクエリは、`limit` で設定されたデータベース内の `n` 件の最もスコアが高いオブジェクトを返します。
 
 <Tabs groupId="languages">
 
@@ -304,30 +308,31 @@ The query below returns the `n` best scoring objects from the database, set by `
   </TabItem>
 </Tabs>
 
-## References
+## 参照
 
-### Available models
+### 利用可能なモデル
 
-You can use any Hugging Face embedding model with `text2vec-huggingface`, including public and private Hugging Face models. [Sentence similarity models](https://huggingface.co/models?pipeline_tag=sentence-similarity&sort=downloads) generally work best.
+`text2vec-huggingface` では、パブリックおよびプライベートの Hugging Face モデルを含む任意の Hugging Face 埋め込みモデルを使用できます。一般的に、[Sentence similarity モデル](https://huggingface.co/models?pipeline_tag=sentence-similarity&sort=downloads) が最も良い結果をもたらします。
 
-## Further resources
+## 追加リソース
 
-- [Hugging Face integrations (locally hosted)](../transformers/index.md)
+- [Hugging Face 連携 (ローカルホスト)](../transformers/index.md)
 
-### Code examples
+### コード例
 
-Once the integrations are configured at the collection, the data management and search operations in Weaviate work identically to any other collection. See the following model-agnostic examples:
+連携をコレクションで設定すると、Weaviate のデータ管理および検索操作は他のコレクションと同じように機能します。以下のモデル非依存の例をご覧ください。
 
-- The [How-to: Manage collections](../../manage-collections/index.mdx) and [How-to: Manage objects](../../manage-objects/index.mdx) guides show how to perform data operations (i.e. create, read, update, delete collections and objects within them).
-- The [How-to: Query & Search](../../search/index.mdx) guides show how to perform search operations (i.e. vector, keyword, hybrid) as well as retrieval augmented generation.
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) と [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) では、コレクションおよびその中のオブジェクトを作成・読み取り・更新・削除する方法を示しています。
+- [How-to: 検索 & クエリ](../../search/index.mdx) では、ベクトル、キーワード、ハイブリッド検索に加え、検索拡張生成の方法を解説しています。
 
-### External resources
+### 外部リソース
 
-- Hugging Face [Inference API documentation](https://huggingface.co/docs/api-inference/en/quicktour)
+- Hugging Face [Inference API ドキュメント](https://huggingface.co/docs/api-inference/en/quicktour)
 - Hugging Face [Model Hub](https://huggingface.co/models)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

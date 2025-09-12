@@ -1,18 +1,18 @@
 ---
-title: Multi-factor authentication
+title: 多要素認証
 sidebar_position: 60
-description: "Enhanced security setup with multi-factor authentication for Weaviate Cloud browser logins."
+description: "Weaviate Cloud のブラウザー ログインに多要素認証を追加してセキュリティを強化します。"
 image: og/wcd/user_guides.jpg
 ---
 
 import MFAOneTime from '/docs/cloud/img/mfa-one-time-code.jpg';
 import MFAEnableIcon from '/docs/cloud/img/mfa-enable-icon.jpg';
 
-Multi-factor authentication (MFA) increases the security of browser logins. MFA is not enabled by default.
+多要素認証 ( MFA ) を使用するとブラウザー ログインのセキュリティが向上します。MFA はデフォルトでは有効になっていません。
 
-## Enable multi-factor authentication
+## 多要素認証の有効化
 
-To enable MFA, follow these steps:
+MFA を有効にするには、次の手順に従います。
 
 import EnableMFA from '/docs/cloud/img/weaviate-cloud-enable-mfa.png';
 import MFA from '/docs/cloud/img/weaviate-cloud-mfa.png';
@@ -21,18 +21,16 @@ import MFA from '/docs/cloud/img/weaviate-cloud-mfa.png';
   <div class="col col--4">
     <ol>
       <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
+        <Link to="https://console.weaviate.cloud">Weaviate Cloud コンソール</Link> を開きます。
       </li>
       <li>
-        Click on the <code>Account</code> dropdown menu in the lower left corner
-        of the console (<span class="callout">1</span>). 
+        コンソールの左下隅にある <code>Account</code> ドロップダウン メニューをクリックします (<span class="callout">1</span>)。
       </li>
       <li>
-        Select <code>Account settings</code> (<span class="callout">2</span>).
+        <code>Account settings</code> を選択します (<span class="callout">2</span>)。
       </li>
       <li>
-        Click on <code>Enable MFA</code> button (<span class="callout">3</span>).
+        <code>Enable MFA</code> ボタンをクリックします (<span class="callout">3</span>)。
       </li>
     </ol>
   </div>
@@ -42,8 +40,7 @@ import MFA from '/docs/cloud/img/weaviate-cloud-mfa.png';
         <img src={EnableMFA} alt="Multi-factor authentication page" />
       </div>
       <div class="card__body">
-        Open the Multi-factor authentication page and find the{' '}
-        <code>Enable MFA</code> button.
+        Multi-factor authentication ページを開き、<code>Enable MFA</code> ボタンを見つけます。
       </div>
     </div>
   </div>
@@ -53,16 +50,16 @@ import MFA from '/docs/cloud/img/weaviate-cloud-mfa.png';
   <div class="col col--6">
     <ol start="5">
       <li>
-        Open your authenticator application and scan the QR code.
+        認証アプリを開いて QR コードをスキャンします。
       </li>
       <li>
-        Enter the one-time code from your application (<span class="callout">4</span>).
+        アプリに表示されたワンタイム コードを入力します (<span class="callout">4</span>)。
       </li>
       <li>
-        Choose a name for your MFA device (<span class="callout">5</span>).
+        MFA デバイスの名前を入力します (<span class="callout">5</span>)。
       </li>
       <li>
-        Click on the <code>Submit</code> button.
+        <code>Submit</code> ボタンをクリックします。
       </li>
     </ol>
   </div>
@@ -72,28 +69,27 @@ import MFA from '/docs/cloud/img/weaviate-cloud-mfa.png';
         <img src={MFA} alt="Enable MFA" />
       </div>
       <div class="card__body">
-        Set up Multi-factor authentication.
+        Multi-factor authentication のセットアップを行います。
       </div>
     </div>
   </div>
 </div>
 
-After you configure MFA, Weaviate Cloud prompts you to supply the one-time authentication code each time you log in.
+MFA を設定すると、ログインのたびに Weaviate Cloud がワンタイム認証コードの入力を求めます。
 
+## MFA の無効化
 
-## Disable MFA
+MFA を無効にするには、[サポート](mailto:support@weaviate.io) までお問い合わせください。
 
-To disable MFA, [contact support](mailto:support@weaviate.io).
+## MFA とアプリケーション
 
-## MFA and applications
+ブラウザーでホストされるアプリケーションを JavaScript / TypeScript クライアントで Weaviate に接続している場合、そのクライアントのアカウントでは MFA を有効にしないでください。
 
-If you use a JavaScript/TypeScript client to connect a browser hosted application to Weaviate, do not enable MFA for that client's account.
+アプリケーションにワンタイム認証コードを渡す方法がないため、アプリケーションは Weaviate Cloud に接続できなくなります。
 
-There is no way to pass the the one-time authentication code to the application, so the application cannot connect to Weaviate Cloud.
+ブラウザーベースのクライアント アプリケーションを Weaviate Cloud に接続するには、API キーをご利用ください。
 
-Use API keys to connect browser based client applications to Weaviate Cloud.
-
-## Support & feedback
+## サポートとフィードバック
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
@@ -102,3 +98,4 @@ import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 import CustomScriptLoader from '/src/components/scriptSwitch';
 
 <CustomScriptLoader />
+

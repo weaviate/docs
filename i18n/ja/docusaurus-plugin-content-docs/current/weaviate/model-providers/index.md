@@ -1,68 +1,68 @@
 ---
-title: Model provider integrations
+title: モデルプロバイダー連携
 sidebar_position: 50
 image: og/docs/model-provider-integrations.jpg
 # tags: ['getting started', 'model providers', 'integrations']
 ---
 
-Weaviate integrates with a variety of [self-hosted](#locally-hosted) and [API-based](#api-based) models from a range of providers.
+Weaviate は、さまざまなプロバイダーが提供する [自己ホスト型](#locally-hosted) と [API ベース](#api-based) のモデルに対応しています。
 
-This enables an enhanced developed experience, such as the ability to:
-- Import objects directly into Weaviate without having to manually specify embeddings, and
-- Build an integrated retrieval augmented generation (RAG) pipeline with generative AI models.
+これにより、例えば次のような開発体験が向上します:
+- ベクトルを手動で指定することなく、オブジェクトを Weaviate に直接インポートできる  
+- 生成 AI モデルを用いた統合型の 検索拡張生成 (RAG) パイプラインを構築できる
 
-## Model provider integrations
+## モデルプロバイダー連携
 
-### API-based
+### API ベース
 
-| Model provider | Embeddings | Generative AI | Others |
+| モデルプロバイダー | Embeddings | 生成 AI | その他 |
 | --- | --- | --- | --- |
-| [Anthropic](./anthropic/index.md) | - | [Text](./anthropic/generative.md) | - |
-| [Anyscale](./anyscale/index.md) | - | [Text](./anyscale/generative.md) | - |
-| [AWS](./aws/index.md) | [Text](./aws/embeddings.md) | [Text](./aws/generative.md) |
-| [Cohere](./cohere/index.md) | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md) | [Text](./cohere/generative.md) | [Reranker](./cohere/reranker.md) |
-| [Databricks](./databricks/index.md) | [Text](./databricks/embeddings.md) | [Text](./databricks/generative.md) | - |
-| [FriendliAI](./friendliai/index.md) | - | [Text](./friendliai/generative.md) | - |
-| [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
-| [Hugging Face](./huggingface/index.md) | [Text](./huggingface/embeddings.md) | - | - |
-| [Jina AI](./jinaai/index.md) | [Text](./jinaai/embeddings.md), [Multimodal](./jinaai/embeddings-multimodal.md) | - | [Reranker](./jinaai/reranker.md) |
-| [Mistral](./mistral/index.md) | [Text](./mistral/embeddings.md) | [Text](./mistral/generative.md) | - |
-| [NVIDIA](./nvidia/index.md) | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md) | [Text](./nvidia/generative.md) | [Reranker](./nvidia/reranker.md) |
-| [OctoAI (Deprecated)](./octoai/index.md) | [Text](./octoai/embeddings.md) | [Text](./octoai/generative.md) | - |
-| [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
-| [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
-| [Voyage AI](./voyageai/index.md) | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | - | [Reranker](./voyageai/reranker.md) |
-| [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md) | - | - |
-| [xAI](./xai/index.md) | - | [Text](./xai/generative.md) | - |
+| [Anthropic](./anthropic/index.md) | - | [テキスト](./anthropic/generative.md) | - |
+| [Anyscale](./anyscale/index.md) | - | [テキスト](./anyscale/generative.md) | - |
+| [AWS](./aws/index.md) | [テキスト](./aws/embeddings.md) | [テキスト](./aws/generative.md) |
+| [Cohere](./cohere/index.md) | [テキスト](./cohere/embeddings.md), [マルチモーダル](./cohere/embeddings-multimodal.md) | [テキスト](./cohere/generative.md) | [リランカー](./cohere/reranker.md) |
+| [Databricks](./databricks/index.md) | [テキスト](./databricks/embeddings.md) | [テキスト](./databricks/generative.md) | - |
+| [FriendliAI](./friendliai/index.md) | - | [テキスト](./friendliai/generative.md) | - |
+| [Google](./google/index.md) | [テキスト](./google/embeddings.md), [マルチモーダル](./google/embeddings-multimodal.md) | [テキスト](./google/generative.md) | - |
+| [Hugging Face](./huggingface/index.md) | [テキスト](./huggingface/embeddings.md) | - | - |
+| [Jina AI](./jinaai/index.md) | [テキスト](./jinaai/embeddings.md), [マルチモーダル](./jinaai/embeddings-multimodal.md) | - | [リランカー](./jinaai/reranker.md) |
+| [Mistral](./mistral/index.md) | [テキスト](./mistral/embeddings.md) | [テキスト](./mistral/generative.md) | - |
+| [NVIDIA](./nvidia/index.md) | [テキスト](./nvidia/embeddings.md), [マルチモーダル](./nvidia/embeddings-multimodal.md) | [テキスト](./nvidia/generative.md) | [リランカー](./nvidia/reranker.md) |
+| [OctoAI（非推奨）](./octoai/index.md) | [テキスト](./octoai/embeddings.md) | [テキスト](./octoai/generative.md) | - |
+| [OpenAI](./openai/index.md) | [テキスト](./openai/embeddings.md) | [テキスト](./openai/generative.md) | - |
+| [Azure OpenAI](./openai-azure/index.md) | [テキスト](./openai-azure/embeddings.md) | [テキスト](./openai-azure/generative.md) | - |
+| [Voyage AI](./voyageai/index.md) | [テキスト](./voyageai/embeddings.md), [マルチモーダル](./voyageai/embeddings-multimodal.md) | - | [リランカー](./voyageai/reranker.md) |
+| [Weaviate](./weaviate/index.md) | [テキスト](./weaviate/embeddings.md) | - | - |
+| [xAI](./xai/index.md) | - | [テキスト](./xai/generative.md) | - |
 
-#### Enable all API-based modules
+#### すべての API ベースモジュールを有効化する
 
-:::caution Experimental feature
-Available starting in `v1.26.0`. This is an experimental feature. Use with caution.
+:::caution 実験的な機能
+`v1.26.0` 以降で利用可能です。これは実験的な機能ですので、ご注意ください。
 :::
 
-You can enable all API-based integrations at once by [by setting the `ENABLE_API_BASED_MODULES` environment variable to `true`](../configuration/modules.md#enable-all-api-based-modules).
+[ `ENABLE_API_BASED_MODULES` 環境変数を `true` に設定](../configuration/modules.md#enable-all-api-based-modules) すると、すべての API ベース統合を一度に有効化できます。
 
-This make all API-based model integrations available for use, such as those for Anthropic, Cohere, OpenAI, and so on. These modules are lightweight, so enabling them all will not significantly increase resource usage.
+これにより Anthropic、Cohere、OpenAI など、すべての API ベースモデル連携が利用可能になります。これらのモジュールは軽量なため、すべてを有効にしてもリソース使用量が大幅に増加することはありません。
 
-Read more about [enabling all API-based modules](../configuration/modules.md#enable-all-api-based-modules).
+詳しくは、[API ベースモジュールをすべて有効化する](../configuration/modules.md#enable-all-api-based-modules) を参照してください。
 
-### Locally hosted
+### ローカルホスト型
 
-| Model provider | Embeddings | Generative AI | Others |
+| モデルプロバイダー | Embeddings | 生成 AI | その他 |
 | --- | --- | --- | --- |
-| [GPT4All](./gpt4all/index.md) | [Text](./gpt4all/embeddings.md) | - | - |
-| [Hugging Face](./transformers/index.md) | [Text](./transformers/embeddings.md), [Multimodal (CLIP)](./transformers/embeddings-multimodal.md) | - | [Reranker](./transformers/reranker.md) |
-| [KubeAI](./kubeai/index.md) | [Text](./kubeai/embeddings.md) | - | - |
-| [Model2vec](./model2vec/index.md) | [Text](./model2vec/embeddings.md) | - | - |
-| [Meta ImageBind](./imagebind/index.md) | [Multimodal](./imagebind/embeddings-multimodal.md) | - | - |
-| [Ollama](./ollama/index.md) | [Text](./ollama/embeddings.md) | [Text](./ollama/generative.md) | - |
+| [GPT4All](./gpt4all/index.md) | [テキスト](./gpt4all/embeddings.md) | - | - |
+| [Hugging Face](./transformers/index.md) | [テキスト](./transformers/embeddings.md), [マルチモーダル (CLIP)](./transformers/embeddings-multimodal.md) | - | [リランカー](./transformers/reranker.md) |
+| [KubeAI](./kubeai/index.md) | [テキスト](./kubeai/embeddings.md) | - | - |
+| [Model2vec](./model2vec/index.md) | [テキスト](./model2vec/embeddings.md) | - | - |
+| [Meta ImageBind](./imagebind/index.md) | [マルチモーダル](./imagebind/embeddings-multimodal.md) | - | - |
+| [Ollama](./ollama/index.md) | [テキスト](./ollama/embeddings.md) | [テキスト](./ollama/generative.md) | - |
 
-## How does Weaviate generate embeddings?
+## Weaviate はどのようにしてベクトルを生成しますか？
 
-When a model provider integration for embeddings is enabled, Weaviate automatically generates embeddings for objects that are added to the database.
+Embeddings 用のモデルプロバイダー連携を有効にすると、データベースに追加されたオブジェクトに対して Weaviate が自動的にベクトルを生成します。
 
-This is done by providing the source data to the integration provider, which then returns the embeddings to Weaviate. The embeddings are then stored in the Weaviate Database.
+これは、ソースデータを連携プロバイダーに渡し、生成されたベクトルを Weaviate が受け取って保存することで行われます。
 
 ```mermaid
 %%{init: {
@@ -114,21 +114,22 @@ flowchart LR
     class data,core,vectorizer,inference component
 ```
 
-Weaviate generates embeddings for objects as follows:
+Weaviate がオブジェクトのベクトルを生成する手順は次のとおりです:
 
-- Selects properties with `text` or `text[]` data types unless they are configured to be skipped
-- Sorts properties in alphabetical (a-z) order before concatenating values
-- Prepends the collection name if configured
+- `text` または `text[]` データ型を持つプロパティを、スキップ設定がない限り選択する  
+- プロパティの値を連結する前に、プロパティ名をアルファベット順 (a-z) にソートする  
+- 設定されている場合は、コレクション名を前置する  
 
-:::note Case sensitivity
-For Weaviate versions before `v1.27`, the string created above is lowercased before being sent to the model provider. Starting in `v1.27`, the string is sent as is.
+:::note 大文字と小文字の区別
+`v1.27` より前の Weaviate では、上記で生成した文字列はモデルプロバイダーに送信される前に小文字化されます。`v1.27` 以降では、文字列はそのまま送信されます。
 
-If you prefer the text to be lowercased, you can do so by setting the `LOWERCASE_VECTORIZATION_INPUT` environment variable.
-The text is always lowercased for the `text2vec-contextionary` integration.
+テキストを小文字化したい場合は、`LOWERCASE_VECTORIZATION_INPUT` 環境変数を設定してください。  
+`text2vec-contextionary` 連携では、常に小文字化されます。
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

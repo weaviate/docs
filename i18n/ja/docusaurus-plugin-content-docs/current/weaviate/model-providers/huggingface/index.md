@@ -1,5 +1,5 @@
 ---
-title: Hugging Face + Weaviate
+title: Hugging Face と Weaviate
 sidebar_position: 10
 image: og/docs/integrations/provider_integrations_huggingface.jpg
 # tags: ['model providers', 'huggingface']
@@ -7,38 +7,40 @@ image: og/docs/integrations/provider_integrations_huggingface.jpg
 
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
 
-Hugging Face offers a wide range of models for natural language processing. Weaviate seamlessly integrates with Hugging Face's Inference API, allowing users to leverage Hugging Face Hub's models directly from the Weaviate Database.
+Hugging Face は自然言語処理向けに幅広いモデルを提供しています。 Weaviate は Hugging Face の Inference API とシームレスに統合されており、ユーザーは Hugging Face Hub のモデルを Weaviate データベースから直接利用できます。
 
-These integrations empower developers to build sophisticated AI-driven applications with ease.
+これらの統合により、開発者は高度な AI 駆動アプリケーションを簡単に構築できます。
 
-## Integrations with Hugging Face
+## Hugging Face との統合
 
-### Embedding models for vector search
+### ベクトル検索用の埋め込みモデル
 
-![Embedding integration illustration](../_includes/integration_huggingface_embedding.png)
+![埋め込み統合のイメージ](../_includes/integration_huggingface_embedding.png)
 
-Hugging Face Hub's embedding models transform text data into vector embeddings, capturing meaning and context.
+Hugging Face Hub の埋め込みモデルはテキストデータをベクトル埋め込みに変換し、意味とコンテキストを捉えます。
 
-[Weaviate integrates with Hugging Face Hub's embedding models](./embeddings.md) to enable seamless vectorization of data. This integration allows users to perform semantic and hybrid search operations without the need for additional preprocessing or data transformation steps.
+[Weaviate は Hugging Face Hub の埋め込みモデルと統合](./embeddings.md) しており、データをシームレスにベクトル化できます。この統合により、追加の前処理やデータ変換を行わずにセマンティック検索やハイブリッド検索が可能になります。
 
-[Hugging Face embedding integration page](./embeddings.md)
+[Hugging Face 埋め込み統合ページ](./embeddings.md)
 
-## Summary
+## まとめ
 
-These integrations enable developers to leverage Hugging Face's powerful models directly within Weaviate.
+これらの統合を利用することで、開発者は Hugging Face の強力なモデルを Weaviate 内で直接活用できます。
 
-In turn, they simplify the process of building AI-driven applications to speed up your development process, so that you can focus on creating innovative solutions.
+その結果、 AI 駆動アプリケーションの開発プロセスが簡素化され、イノベーティブなソリューションの創出に集中できます。
 
-## Get started
+## はじめに
 
-You must provide a valid Hugging Face API key to Weaviate for these integrations. Go to [Hugging Face](https://huggingface.co/docs/api-inference/en/quicktour) to sign up and obtain an API key.
+これらの統合を使用するには、有効な Hugging Face API キーを Weaviate に提供する必要があります。 [Hugging Face](https://huggingface.co/docs/api-inference/en/quicktour) にアクセスしてサインアップし、 API キーを取得してください。
 
-Then, go to the relevant integration page to learn how to configure Weaviate with the Hugging Face Hub models and start using them in your applications.
+次に、該当する統合ページに移動し、 Hugging Face Hub のモデルで Weaviate を設定してアプリケーションで使用を開始しましょう。
 
-- [Text Embeddings](./embeddings.md)
+- [テキスト埋め込み](./embeddings.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

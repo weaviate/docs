@@ -1,59 +1,61 @@
 ---
-title: Index types and performance
+title: インデックスタイプとパフォーマンス
 sidebar_position: 7
 image: og/docs/more-resources.jpg
 # tags: ['performance']
 ---
 
-Weaviate uses different types of indexes to achieve performance goals.  This page focuses on [HNSW](https://arxiv.org/abs/1603.09320) and [inverted indexes](https://en.wikipedia.org/wiki/Inverted_index).
+Weaviate はパフォーマンス目標を達成するために、さまざまなインデックスタイプを使用します。  
+このページでは、 [ HNSW ](https://arxiv.org/abs/1603.09320) と [ 転置インデックス ](https://en.wikipedia.org/wiki/Inverted_index) に焦点を当てます。
 
-These indexes are available:
+以下のインデックスが利用可能です。
 
-Vector Indexes:
+ベクトルインデックス:
 
 - [HNSW](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index)
 - [Flat](/weaviate/config-refs/indexing/vector-index.mdx#flat-index)
 
-Traditional Indexes:
+従来型インデックス:
 
 - [Inverted index](#inverted-index)
 
-## Inverted index
-The inverted index is essentially what powers all the [GraphQL `where` filters](../api/graphql/filters.md), where vectors or semantics are needed to find results. With inverted indexes, contents or data object properties such as words and numbers are mapped to its location in the database. This is the opposite of the more traditional forward index, which maps from documents to its content.
+## 転置インデックス
+転置インデックスは、ベクトルやセマンティクスを必要とせずに結果を見つける [ GraphQL `where` フィルター](../api/graphql/filters.md) を支える仕組みです。転置インデックスでは、単語や数値などのコンテンツやデータオブジェクトのプロパティが、データベース内の位置にマッピングされます。これは、ドキュメントからその内容へマッピングする従来のフォワードインデックスとは逆の構造です。
 
-Inverted indexes are used often in document retrieval systems and search engines, because it allows fast full-text search and fast key-based search instead of brute-force. This fast data retrieval comes with the only cost of slight increase of processing time when a new data object is added, since the data object will indexed and stored in an inverted way, rather than only storing the index of the data object. In the database (Weaviate), there is a big lookup table which contains all the inverted indexes. If you want to retrieve objects with a specific property or content, then the database starts looking for only one row with this property which points to the relevant data objects (the row contains pointers to the data object IDs). This makes data object retrieval with these kind of queries very fast. Even if there are more than a billion entries, if you only care about the entries that contain the specific words or properties you're looking for, only one row will be read with the document pointers.
+転置インデックスはドキュメント検索システムや検索エンジンでよく使用され、ブルートフォースを用いずに高速な全文検索やキー検索を可能にします。この高速なデータ取得の代償は、新しいデータオブジェクト追加時の処理時間がわずかに増えることだけです。これは、データオブジェクトを単に保存するのではなく、転置方式でインデックス化・保存する必要があるためです。データベース（Weaviate）には、すべての転置インデックスを保持する大きなルックアップテーブルがあります。特定のプロパティやコンテンツを持つオブジェクトを取得したい場合、データベースはそのプロパティを含む 1 行のみを検索し、関連するデータオブジェクト（行にはデータオブジェクト ID へのポインタが格納されています）を指し示します。これにより、この種のクエリでのデータオブジェクト取得は非常に高速になります。エントリーが 10 億件以上あっても、特定の単語やプロパティを含むエントリーだけを対象にする場合、読まれるのはポインタを含む 1 行だけです。
 
-The inverted index currently does not do any weighing (e.g. tf-idf) for sorting, since the vector index is used for these features like sorting. The inverted index is thus, at the moment, rather a binary operation: including or excluding data objects from the query result list, which results in an 'allow list'.
+転置インデックスは現在、ソートのための重み付け（例: tf-idf）を行いません。これらの機能にはベクトルインデックスが使用されるためです。そのため転置インデックスは現状、結果リストからデータオブジェクトを含めるか除外するかの二択、いわば「許可リスト」を作るためのバイナリ操作となります。
 
-## Vector index
-Everything that has a vector, thus every data object in Weaviate, is also indexed in the vector index. Weaviate currently supports [HNSW](https://arxiv.org/abs/1603.09320) and flat vector indexes.
+## ベクトルインデックス
+ベクトルを持つすべてのデータオブジェクトは、ベクトルインデックスにも登録されます。Weaviate は現在、 [ HNSW ](https://arxiv.org/abs/1603.09320) と Flat のベクトルインデックスをサポートしています。
 
-See [Concepts: vector index](../concepts/indexing/vector-index.md) for more information about the vector index.
+詳細は [Concepts: vector index](../concepts/indexing/vector-index.md) をご覧ください。
 
-## Costs of queries and operations
+## クエリおよび操作のコスト
 
-This section discusses the cost of some common operations.
+このセクションでは、一般的な操作のコストについて説明します。
 
-### Cost of data import
-At the moment, data import is relatively slow compared to the query times, because of the HNSW indexing. The cheapest data import operation is a simple 'write' operation of a data object that was not seen before. It will get a completely new index. If you update a data object, the update itself is also really cheap, because in the backend an entirely new object will be created and indexed as if it was new. The 'old' object will be cleaned up, which happens asynchronous and will thus add up to the operation time.
+### データインポートのコスト
+現時点では、HNSW インデックス化の影響でデータインポートはクエリ時間に比べて相対的に遅くなります。もっとも安価なデータインポート操作は、以前に存在しなかったデータオブジェクトの単純な書き込みです。まったく新しいインデックスが付与されます。データオブジェクトを更新する場合も安価で、バックエンドではまったく新しいオブジェクトが作成され、新規オブジェクトとしてインデックス化されます。古いオブジェクトは非同期でクリーンアップされるため、その分の時間が追加でかかります。
 
-### Cost of queries
-Simple `Get` queries that only have a `where` filter are very cheap, because the [inverted index](#inverted-index) is used. A simple `Get` query that uses only the `explore` filter (vector search) is also very cheap, since the very efficient vector index HNSW is used. Sub-50ms 20NN-vector queries on datasets of over 1-100M objects are possible. Weaviate relies on a number of caches, but does not require keeping all vectors in memory. Thus it is also possible to run Weaviate on machines where the available memory is smaller than the size of all vectors.
+### クエリのコスト
+`where` フィルターのみを持つ単純な `Get` クエリは非常に安価で、 [転置インデックス](#inverted-index) が使用されます。`explore` フィルター（ベクトル検索）のみを使用する単純な `Get` クエリも同様に安価で、高速なベクトルインデックス HNSW が利用されます。2,000 万〜 1 億件以上のデータセットでも、20NN ベクトルクエリで 50ms 未満が可能です。Weaviate は複数のキャッシュに依存していますが、すべてのベクトルをメモリに常駐させる必要はありません。そのため、全ベクトルサイズよりメモリが少ないマシンでも Weaviate を実行できます。
 
-Combining the `explore` (vector) and `where` filters in one search query (which is what makes Weaviate unique), is slightly more expensive. The inverted index is called first which returns all data items that match the `where` filter. This list is then passed on to the vector index search with HNSW. The cost of this combined operation depends on the dataset size and the amount of data returned by the inverted index search. The less items that are returned from the `where` filter search, the more items the vector search needs to skip, thus the longer it will take. These differences are however very small, perhaps not even noticeable.
+`explore`（ベクトル）と `where` フィルターを 1 つの検索クエリで組み合わせる（これが Weaviate の特長）は、わずかに高コストになります。まず転置インデックスが呼び出され、`where` フィルターに一致するすべてのデータアイテムを返します。そのリストが HNSW によるベクトルインデックス検索に渡されます。この複合操作のコストは、データセットサイズと転置インデックス検索で返されたデータ量に依存します。`where` フィルターの結果が少ないほど、ベクトル検索がスキップする項目が増え時間が延びます。ただし、差は非常に小さく、体感できない程度です。
 
-### Cost of resolving referencing
-Weaviate is a database with a graph-like data model, not a pure graph database. Graph databases are built in a fashion where following links and references are very cheap, where querying links is cheaper than querying multiple items. Weaviate, on the other hand, is a [vector database](https://weaviate.io/blog/what-is-a-vector-database). This means that one of the cheapest operations you can do with Weaviate is listing data. In a traditional graph database that is quite expensive. Weaviate does however have graph functionalities on top of the vector-search focus. So although its primary focus is on searching through data objects with the inverted index and/or vector index, we offer graph references between data objects. Searching, following and retrieving graph references between data objects is therefore less optimized than pure search. This means that using the graph-like features like resolving object references need more query time than pure data object search as described above.
+### 参照解決のコスト
+Weaviate はグラフライクなデータモデルを持つデータベースですが、純粋なグラフデータベースではありません。グラフデータベースはリンクや参照を辿る操作が安価であり、複数アイテムを検索するよりリンククエリが安価です。一方、Weaviate は [ベクトルデータベース](https://weaviate.io/blog/what-is-a-vector-database) です。そのため、Weaviate で最も安価な操作の 1 つはデータのリスト取得であり、従来のグラフデータベースでは高コストになる操作です。Weaviate にはベクトル検索を中心としつつグラフ機能も備わっています。そのため、転置インデックスやベクトルインデックスによる検索が主目的でありながら、データオブジェクト間のグラフ参照も提供します。結果として、データオブジェクトの検索に比べ、グラフ参照の検索・追跡・取得は最適化の度合いが低く、より多くのクエリ時間を要します。
 
-Important to know is that the more connections between data objects and the deeper you try to query in a single query, the more costly the query operation gets. The best you can deal with these kind of queries is to not do *wide* and *deep* searches at the same time. If you have to resolve a lot of nested references, try to set a low limit (a low number of data objects to be returned). A second tip is to not try to resolve all the references. This could perhaps be split into separate queries, depending on your query. In practice, this could mean that you do a first search to retrieve the top 100 data objects of your query, and only get the deeper references of the top 5 results you're actually interested in.
+特に重要なのは、データオブジェクト間の接続数が多いほど、また単一クエリでより深く辿るほどクエリコストが増大する点です。こうしたクエリを扱う最良の方法は、*広く*かつ*深く*検索しないことです。多くのネスト参照を解決する必要がある場合は、返却件数（limit）を低く設定してください。また、すべての参照を一度に解決しないことも有効です。クエリに応じて複数クエリに分割できます。実際には、まずトップ 100 のデータオブジェクトを取得し、関心のある上位 5 件のみで深い参照を取得するといった方法が考えられます。
 
-### Cost of filtering by reference
-If you have a nested reference filter, Weaviate starts by resolving the deepest reference and from there go upwards to the inner layers resolving other references. It thus finds the beacons of the deepest references first. This allows to use inverted index lookups for the other layers, which makes matching of results relatively cheap. However, queries that have nested references in the filter are still relatively costly because multiple search queries (for each nested layer) are performed and the results need to be combined into one result. The cost increases when a lot of results are returned on an inner layer, which needs to be searched through by the one layer deeper, and so on. Thus, this cost could in theory go up exponentially.
+### 参照によるフィルターのコスト
+ネストした参照フィルターを使用する場合、Weaviate は最も深い参照を解決してから、内側の層へと順に上がって他の参照を解決します。つまり、最深層の参照のビーコンを最初に取得します。これにより他の層では転置インデックスのルックアップを使用でき、マッチングは比較的安価になります。しかし、フィルター内にネスト参照を持つクエリは、それでも複数検索（各ネスト層ごと）が行われ、その結果を一つに結合する必要があるため比較的高コストです。内部層で大量の結果が返されるほど、一つ上の層が検索すべき対象が増えるため、コストは理論的には指数的に上がり得ます。
 
-A tip is to avoid deeply nested filters in the queries. Additionally, try to make your queries as restrictive as possible, because a ten-level deep query would for example not be so expensive if all levels return only a single ID. In that case only ten one ID searches need to be performed, which is a lot of searches in one query, but each search is very cheap.
+ネストの深いフィルターは可能な限り避けてください。また、クエリをできる限り制限的にするのも有効です。たとえば 10 階層のクエリでも、各階層が 1 件のみを返すのであればそれほど高コストではありません。この場合、1 件検索を 10 回実行するだけなので、クエリ内の検索回数は多いものの、各検索自体は非常に安価です。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

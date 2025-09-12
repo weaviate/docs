@@ -1,123 +1,124 @@
 ---
-title: FAQs
+title: よくある質問
 sidebar_position: 7
-description: "Frequently asked questions and answers about Weaviate Cloud (WCD) features, pricing, and troubleshooting."
+description: "Weaviate Cloud ( WCD ) の機能、料金、トラブルシューティングに関するよくある質問と回答。"
 image: og/wcd/faq.jpg
 ---
 
-Frequently asked questions (FAQs) about [Weaviate Cloud (WCD)](https://console.weaviate.cloud/).
+[ Weaviate Cloud ( WCD )](https://console.weaviate.cloud/) に関するよくある質問 ( FAQ ) をまとめています。
 
-## Features
+## 機能
 
-#### Q: How is Weaviate Cloud different from other deployment options?
+#### Q: Weaviate Cloud は他のデプロイ方法とどのように違いますか？
 
 <details>
 <summary> Answer </summary>
 
-Using Weaviate Cloud gives you access to a 14-day free sandbox for testing. You also get access to advanced features like [Weaviate Embeddings](docs/cloud/embeddings/index.md) and [Weaviate Agents](docs/agents/index.md), which are not available in all deployment methods.
+Weaviate Cloud を使用すると、テスト用に 14 日間無料で利用できるサンドボックスにアクセスできます。さらに、すべてのデプロイ方法で利用できるわけではない [ Weaviate Embeddings ](docs/cloud/embeddings/index.md) や [ Weaviate Agents ](docs/agents/index.md) などの高度な機能も利用できます。
 
 </details>
 
-## Account management
+## アカウント管理
 
-#### Q: Can I reset or change my account password? {#reset-password}
+#### Q: アカウントのパスワードをリセットまたは変更できますか？ {#reset-password}
 
 <details>
 <summary> Answer </summary>
 
-Yes. Go to the [Weaviate Cloud login page](https://console.weaviate.cloud/) and click the "Log in" button. Then, click **"Forgot Password"** and enter your email. You’ll receive a reset email at that address.
+はい。[ Weaviate Cloud ログインページ](https://console.weaviate.cloud/) にアクセスし、"Log in" ボタンをクリックしてください。その後 **"Forgot Password"** をクリックしてメールアドレスを入力します。そのアドレスにリセット用メールが届きます。
 
 </details>
 
-#### Q: Where is my verification email?
+#### Q: 認証メールが届きません。
 
 <details>
 <summary> Answer </summary>
 
-If you don’t see the verification email in your inbox, check your spam folder. Still nothing? You can trigger another email by [resetting your password](./faq.mdx#reset-password).
+受信トレイに認証メールが見当たらない場合は、迷惑メールフォルダーを確認してください。それでも届いていない場合は、[ パスワードをリセット ](./faq.mdx#reset-password) して再送できます。
 
 </details>
 
-## Instance management
+## インスタンス管理
 
-#### Q: Are Weaviate Cloud clusters backed up?
+#### Q: Weaviate Cloud クラスターはバックアップされていますか？
 
 <details>
 <summary> Answer </summary>
 
-Yes. Weaviate Cloud performs daily automated backups. It also backs up your data before applying a version update to your cluster.
+はい。Weaviate Cloud では毎日自動バックアップを実行しています。また、クラスターのバージョンを更新する前にもデータをバックアップします。
 
 </details>
 
-#### Q: Can Weaviate Cloud clusters be updated to newer versions?
+#### Q: Weaviate Cloud クラスターを新しいバージョンに更新できますか？
 
 <details>
 <summary> Answer </summary>
 
-Yes. In the Cloud Console, go to your cluster and click **"Details."** If a newer version is available, you’ll see an **"Update!"** button. Only update during a safe maintenance window.
+はい。Cloud Console で対象クラスターを開き **"Details."** をクリックしてください。新しいバージョンが利用可能な場合は **"Update!"** ボタンが表示されます。安全なメンテナンス時間帯にのみ更新してください。
 
 </details>
 
-#### Q: Are cluster resources scaled automatically?
+#### Q: クラスターリソースは自動でスケールしますか？
 
 <details>
 <summary> Answer </summary>
 
-Not currently. Weaviate Cloud monitors your cluster and flags when resizing may be required, but automatic scaling is not enabled by default.
+現時点では自動スケーリングは行われません。Weaviate Cloud がクラスターを監視し、リサイズが必要と思われる場合に通知は行いますが、デフォルトでは自動スケールは無効です。
 
 </details>
 
-#### Q: Can I request more cluster resources?
+#### Q: 追加のクラスターリソースを要求できますか？
 
 <details>
 <summary> Answer </summary>
 
-Possibly. Contact [support@weaviate.io](mailto:support@weaviate.io) to discuss custom provisioning or increased resource needs for your cluster.
+可能な場合があります。[support@weaviate.io](mailto:support@weaviate.io) までご連絡いただき、カスタムプロビジョニングやリソース増強のご要望をお知らせください。
 
 </details>
 
-#### Q: How many clusters can I have at once?
+#### Q: 同時にいくつのクラスターを作成できますか？
 
 <details>
 <summary> Answer </summary>
 
-By default, each organization can have up to **six (6)** serverless clusters and **two (2)** sandbox clusters. If you need more, [contact support](mailto:support@weaviate.io).
+デフォルトでは、各組織につき **six ( 6 )** 件の serverless クラスターと **two ( 2 )** 件の sandbox クラスターを作成できます。さらに必要な場合は [ サポートへお問い合わせください ](mailto:support@weaviate.io)。
 
 </details>
 
-## Infrastructure
+## インフラストラクチャ
 
-#### Q: What infrastructure does Weaviate Cloud run on?
+#### Q: Weaviate Cloud はどのインフラストラクチャ上で稼働していますか？
 
 <details>
 <summary> Answer </summary>
 
-Weaviate Cloud currently runs on **Google Cloud Platform (GCP)**. Support for **AWS** and **Azure** is on the roadmap.
+現在、Weaviate Cloud は **Google Cloud Platform ( GCP )** 上で稼働しています。**AWS** と **Azure** への対応もロードマップにあります。
 
 </details>
 
 ## Weaviate Cloud Console
 
-#### Q: Does the Weaviate Cloud Console collect data from users?
+#### Q: Weaviate Cloud Console はユーザーデータを収集しますか？
 
 <details>
 <summary> Answer </summary>
 
-The console does **not** collect data from your Weaviate instance. It does collect **operational metrics** to help manage and maintain the infrastructure.
+コンソールは Weaviate インスタンスからデータを収集 **しません**。インフラ管理・保守のために **operational metrics** のみを収集します。
 
 </details>
 
-#### Q: Can the Weaviate Cloud Console connect to non-Weaviate Cloud instances?
+#### Q: Weaviate Cloud Console から Weaviate Cloud 以外のインスタンスに接続できますか？
 
 <details>
 <summary> Answer </summary>
 
-Yes. The GraphQL query tool in the Weaviate Cloud Console can connect to **external Weaviate instances** as long as they are publicly accessible.
+はい。Weaviate Cloud Console にある GraphQL クエリツールは、公開アクセス可能であれば **外部 Weaviate インスタンス** にも接続できます。
 
 </details>
 
-## Support
+## サポート
 
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
+

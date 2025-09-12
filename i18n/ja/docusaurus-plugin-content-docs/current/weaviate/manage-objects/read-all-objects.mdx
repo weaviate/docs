@@ -1,5 +1,5 @@
 ---
-title: Read all objects
+title: すべてのオブジェクトを読み込む
 sidebar_position: 25
 image: og/docs/howto.jpg
 # tags: ['how-to', 'cursor']
@@ -16,17 +16,17 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-al
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read-all-objects.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go';
 
-Weaviate provides the necessary APIs to iterate through all your data. This is useful when you want to manually copy/migrate your data (and vector embeddings) from one place to another.
+Weaviate は、すべてのデータを反復処理するために必要な API を提供します。これは、データ（および ベクトル エンベディング）を別の場所へ手動でコピー／移行したい場合に役立ちます。
 
-This is done with the help of the `after` operator, also called the [cursor API](../api/graphql/additional-operators.md#cursor-with-after).
+これには `after` 演算子、別名 [cursor API](../api/graphql/additional-operators.md#cursor-with-after) を使用します。
 
 :::info Iterator
-The new API clients (currently supported by the Python Client v4), encapsulate this functionality as an `Iterator`.
+新しい API クライアント（現在は Python Client v4 が対応）では、この機能が `Iterator` としてカプセル化されています。
 :::
 
-## Read object properties and ids
+## オブジェクトのプロパティと ID を読み込む
 
-The following code iterates through all objects, providing the properties and id for each object.
+次のコードは、すべてのオブジェクトを走査し、各オブジェクトのプロパティと ID を取得します。
 
 <Tabs groupId="languages">
 
@@ -85,9 +85,9 @@ The following code iterates through all objects, providing the properties and id
   </TabItem>
 </Tabs>
 
-## Read all objects including vectors
+## ベクトルを含むすべてのオブジェクトを読み込む
 
-Read through all data including the vectors. (Also applicable where [named vectors](../config-refs/collections.mdx#named-vectors) are used.)
+ベクトル を含むすべてのデータを読み込みます。（[named vectors](../config-refs/collections.mdx#named-vectors) を使用している場合にも適用されます。）
 
 <Tabs groupId="languages">
 
@@ -128,17 +128,19 @@ Read through all data including the vectors. (Also applicable where [named vecto
   </TabItem>
 </Tabs>
 
-## Read all objects - Multi-tenant collections
 
-Iterate through all tenants and read data for each.
+
+## 全オブジェクトの読み取り - マルチ テナント コレクション
+
+すべてのテナントを順に処理し、それぞれのデータを読み取ります。
 
 :::tip Multi-tenancy
-For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, you need to specify the tenant name when reading or creating objects. See [Manage data: multi-tenancy operations]( ../manage-collections/multi-tenancy.mdx) for details.
+[multi-tenancy](../concepts/data.md#multi-tenancy) が有効になっているクラスでは、オブジェクトを読み取る場合や作成する場合にテナント名を指定する必要があります。詳細は [データ管理: マルチ テナンシー操作]( ../manage-collections/multi-tenancy.mdx) をご覧ください。
 :::
 
 <Tabs groupId="languages">
 
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadAllTenants"
@@ -147,7 +149,7 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
+  <TabItem value="py3" label="Python クライアント v3">
     <FilteredTextBlock
       text={PyCodeV3}
       startMarker="# START ReadAllTenants"
@@ -156,7 +158,7 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS クライアント v3">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadAllTenants"
@@ -165,7 +167,7 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
+  <TabItem value="js2" label="JS/TS クライアント v2">
     <FilteredTextBlock
       text={TSCodeLegacy}
       startMarker="// START ReadAllTenants"
@@ -175,15 +177,16 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
   </TabItem>
 </Tabs>
 
-## Related pages
+## 関連ページ
 
-- [Connect to Weaviate](/weaviate/connections/index.mdx)
-- [How-to: Read objects](./read.mdx)
-- [References: GraphQL - Additional Operators](../api/graphql/additional-operators.md#cursor-with-after)
-- [Manage data: multi-tenancy operations]( ../manage-collections/multi-tenancy.mdx)
+- [Weaviate への接続](/weaviate/connections/index.mdx)
+- [How-to: オブジェクトの読み取り](./read.mdx)
+- [リファレンス: GraphQL - 追加演算子](../api/graphql/additional-operators.md#cursor-with-after)
+- [データ管理: マルチ テナンシー操作]( ../manage-collections/multi-tenancy.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
