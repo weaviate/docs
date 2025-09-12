@@ -8,15 +8,6 @@ image: og/docs/agents.jpg
 
 # Weaviate Agents - Introduction
 
-:::caution Technical Preview
-
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents are in technical preview.")
-![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents are in technical preview.")
-
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
-
-:::
-
 Weaviate Agents are pre-built agentic services designed for specific tasks. They are available out-of-the-box for Weaviate Cloud users to interact with their data in Weaviate Cloud to simplify data engineering and AI development workflows.
 
 :::info Changelog and feedback
@@ -44,6 +35,15 @@ The [Query Agent](./query/index.md) provides an answer to your natural language 
 
 ## Transformation Agent
 
+:::caution Technical Preview
+
+![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents are in technical preview.")
+![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents are in technical preview.")
+
+[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+
+:::
+
 The [Transformation Agent](./transformation/index.md) enhances your data by manipulating it based on your instructions.
 
 [![Click to read more about the Transformation Agent](./_includes/transformation_agent_overview_light.png#gh-light-mode-only "Click to read more about the Transformation Agent")](./transformation/index.md)
@@ -52,6 +52,15 @@ The [Transformation Agent](./transformation/index.md) enhances your data by mani
 [Read more about the Transformation Agent](./transformation/index.md)
 
 ## Personalization Agent
+
+:::caution Technical Preview
+
+![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_light.png#gh-light-mode-only "Weaviate Agents are in technical preview.")
+![Weaviate Agents are in technical preview.](./_includes/agents_tech_preview_dark.png#gh-dark-mode-only "Weaviate Agents are in technical preview.")
+
+[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
+
+:::
 
 The [Personalization Agent](./personalization/index.md) customizes outputs based on persona-specific information, which can even be learned over time.
 
