@@ -34,10 +34,10 @@ You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud]
 ### Client library
 
 :::note Supported languages
-At this time, this Agent is available only for Python and JavaScript. Support for other languages will be added in the future.
+At this time, this Agent is available only for Python and TypeScript/JavaScript. Support for other languages will be added in the future.
 :::
 
-For Python, you can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package. For JavaScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
+For Python, you can install the Weaviate client library with the optional `agents` extras to use Weaviate Agents. This will install the `weaviate-agents` package along with the `weaviate-client` package. For TypeScript/JavaScript, you can install the `weaviate-agents` package alongside the `weaviate-client` package.
 
 Install the client library using the following command:
 
@@ -186,40 +186,16 @@ You can apply persistent filters that will always be combined with any agent-gen
 
 For usage example with the async Python client, see the [Async Python client section](#usage---async-python-client).
 
-## Operating modes
+## Querying
 
-The Query Agent offers two modes for querying collections:
+The Query Agent supports two query types:
 
-- [**Ask mode**](#ask-mode)
-- [**Search mode**](#search-mode)
+- [**`Search`**](#search)
+- [**`Ask`**](#ask)
 
-### Ask mode
+### `Search`
 
-**Ask mode** allows you to provide a natural language query. The Query Agent will process the query, perform the necessary searches in Weaviate, and return the answer.
-
-This is a synchronous operation. The Query Agent will return the answer to the user as soon as it is available.
-
-:::tip Consider your query carefully
-The Query Agent will formulate its strategy based on your query. So, aim to be unambiguous, complete, yet concise in your query as much as possible.
-:::
-
-<Tabs groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START BasicAskQuery"
-            endMarker="# END BasicAskQuery"
-            language="py"
-        />
-    </TabItem>
-    <TabItem value="ts_agents" label="JavaScript/TypeScript">
-    </TabItem>
-
-</Tabs>
-
-### Search mode
-
-**Search mode** is similar to **Ask mode** but without answer generation. It optimizes for retrieval quality, eliminating the need for complex querying.
+`Search` Weaviate with the Query Agent using natural langauge. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the relevant objects.
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -241,7 +217,7 @@ The Query Agent will formulate its strategy based on your query. So, aim to be u
 
 </Tabs>
 
-#### Search mode response structure
+#### `Search` response structure
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -279,9 +255,9 @@ Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'c
 
 </details>
 
-#### Search mode with pagination
+#### `Search` with pagination
 
-Search mode supports pagination to handle large result sets efficiently:
+`Search` supports pagination to handle large result sets efficiently:
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -318,6 +294,28 @@ Page 3:
 ```
 
 </details>
+
+### `Ask`
+
+`Ask` the Query Agent a question using natural language. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the answer.
+
+:::tip Consider your query carefully
+The Query Agent will formulate its strategy based on your query. So, aim to be unambiguous, complete, yet concise in your query as much as possible.
+:::
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START BasicAskQuery"
+            endMarker="# END BasicAskQuery"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
+
+</Tabs>
 
 ### Configure collections at runtime
 
@@ -366,7 +364,7 @@ This example overrides the configured Query Agent collections for this query onl
 
 ### Conversational queries
 
-The Query Agent supports multi-turn conversations by passing a list of `ChatMessage` objects.
+The Query Agent supports multi-turn conversations by passing a list of `ChatMessage` objects. This works with both `Search` and `Ask` query types.
 
 When building conversations with `ChatMessage` there are two available roles for messages:
 

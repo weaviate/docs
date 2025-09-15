@@ -54,21 +54,23 @@ Note that the term `Query Agent` refers to the entire system. The Query Agent ma
 ![Weaviate Query Agent comprises multiple agents](../_includes/query_agent_info_light.png#gh-light-mode-only "Weaviate Query Agent comprises multiple agents")
 ![Weaviate Query Agent comprises multiple agents](../_includes/query_agent_info_dark.png#gh-dark-mode-only "Weaviate Query Agent comprises multiple agents")
 
-## Operating modes
+## Querying
 
-The Query Agent offers two modes:
+The Query Agent supports two query types:
 
-**Ask mode**: Examines your collections to determine effective query strategies and generates precise answers grounded in your data.
+- **`Search`** Weaviate with the Query Agent using natural langauge. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the relevant objects.
 
-**Search mode**: Similar to ask mode but without answer generation, it optimizes for retrieval quality, eliminating the need for complex queries.
+- **`Ask`** the Query Agent a question using natural language. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the answer.
 
 ## Basic usage
 
 Here is an overview of how to use the this Weaviate Agent. For more detailed information, refer to the [Usage](./usage.md) page.
 
-### Prerequisites
+:::note Prerequisites
 
-This Agent is available exclusively for use with a Weaviate Cloud instance, and a supported version of the Weaviate client library.
+This Agent is available exclusively for use with a [Weaviate Cloud](/cloud/index.mdx) instance, and a supported version of the Weaviate [client library](./usage.md#client-library).
+
+:::
 
 ### Example usage
 
@@ -96,22 +98,7 @@ Pass an instance of the Weaviate client to the Query Agent, and the Query Agent 
 
 Then, provide a natural language query input. The Query Agent will process the query, perform the necessary searches in Weaviate, and return the answer.
 
-#### Ask mode (with answer generation)
-
-<Tabs groupId="languages">
-    <TabItem value="py_agents" label="Python">
-        <FilteredTextBlock
-            text={PyCode}
-            startMarker="# START BasicAskQuery"
-            endMarker="# END BasicAskQuery"
-            language="py"
-        />
-    </TabItem>
-    <TabItem value="ts_agents" label="JavaScript/TypeScript">
-    </TabItem>
-</Tabs>
-
-#### Search mode (retrieval only)
+### `Search` (retrieval only)
 
 <Tabs groupId="languages">
     <TabItem value="py_agents" label="Python">
@@ -141,6 +128,21 @@ The Query Agent can even handle follow-up queries, using the previous response a
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
     </TabItem>
 
+</Tabs>
+
+### `Ask` (with answer generation)
+
+<Tabs groupId="languages">
+    <TabItem value="py_agents" label="Python">
+        <FilteredTextBlock
+            text={PyCode}
+            startMarker="# START BasicAskQuery"
+            endMarker="# END BasicAskQuery"
+            language="py"
+        />
+    </TabItem>
+    <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    </TabItem>
 </Tabs>
 
 ## Further resources
