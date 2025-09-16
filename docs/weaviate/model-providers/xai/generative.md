@@ -175,11 +175,12 @@ Aside from setting the default model provider when creating the collection, you 
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
-
-```ts
-// TS support coming soon
-```
-
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START RuntimeModelSelectionxAI"
+      endMarker="// END RuntimeModelSelectionxAI"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
