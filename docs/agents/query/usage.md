@@ -580,10 +580,6 @@ import ExecutionTimes from "/\_includes/agents/query-agent-execution-times.mdx";
 
 ## Questions and feedback
 
-:::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
-:::
-
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
