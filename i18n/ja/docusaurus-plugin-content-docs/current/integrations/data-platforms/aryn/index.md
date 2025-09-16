@@ -4,33 +4,34 @@ sidebar_position: 2
 image: og/integrations/home.jpg
 ---
 
-[Aryn](https://www.aryn.ai/) is an AI powered ETL system for language model applications and vector databases. 
+Aryn は AI によって強化された ETL システムで、言語モデル アプリケーションと ベクトル データベース向けに設計されています。 
 
-Aryn offers two components:
-* [Aryn Partitioning Service](https://sycamore.readthedocs.io/en/stable/aryn_cloud/accessing_the_partitioning_service.html)
+Aryn には次の 2 つのコンポーネントがあります:  
+* [Aryn Partitioning Service](https://sycamore.readthedocs.io/en/stable/aryn_cloud/accessing_the_partitioning_service.html)  
 * [Sycamore](https://github.com/aryn-ai/sycamore)
 
-## Aryn and Weaviate
-Weaviate is a supported [connector](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/weaviate.html) in Aryn.
+## Aryn と Weaviate
+Weaviate は Aryn でサポートされている [コネクター](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/weaviate.html) です。
 
-You can:
-1. [Write to Weaviate](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/weaviate.html#writing-to-weaviate) with `write.weaviate()`
-2. [Read from Weaviate](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/weaviate.html#reading-from-weaviate) with `read.weaviate()`
+次のことができます:  
+1. `write.weaviate()` を使用して [Weaviate に書き込む](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/weaviate.html#writing-to-weaviate)  
+2. `read.weaviate()` を使用して [Weaviate から読み取る](https://sycamore.readthedocs.io/en/stable/sycamore/connectors/weaviate.html#reading-from-weaviate)  
 
 ## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
-
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+リソースは 2 つのカテゴリに分かれています:  
+1. [**Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めます。  
+2. [**Read and Listen**](#read-and-listen): これらのテクノロジーに関する概念的理解を高めます。  
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Using Aryn to ingest data into Weaviate | Demo on how to prepare and load data into Weaviate using Sycamore. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/aryn/weaviate_blog_post.ipynb) |
+| Aryn を使用して Weaviate にデータを取り込む | Sycamore を使用してデータを準備し、Weaviate にロードする方法のデモ。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/aryn/weaviate_blog_post.ipynb) |
 
 ### Read and Listen 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Enriching and Ingesting Data into Weaviate with Aryn | Demo on how to ingest PDFs into Weaviate using Aryn. | [Blog](https://weaviate.io/blog/sycamore-and-weaviate) |
+| Aryn でデータを拡充して Weaviate に取り込む | Aryn を使用して PDF を Weaviate に取り込む方法のデモ。 | [Blog](https://weaviate.io/blog/sycamore-and-weaviate) |
+
+
 

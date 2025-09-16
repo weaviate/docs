@@ -1,30 +1,29 @@
 ---
-title: Named Entity Recognition
-description: Integrate NER Transformers in Weaviate to identify and categorize entities in text.
+title: 固有表現認識
+description: Weaviate で NER Transformers を統合し、テキスト内のエンティティを識別・分類します。
 sidebar_position: 60
 image: og/docs/modules/ner-transformers.jpg
 # tags: ['ner-transformers', 'transformers', 'token classification']
 ---
 
+## 概要
 
-## In short
+* Named Entity Recognition（NER）モジュールは、トークン分類用の Weaviate モジュールです。  
+* 本モジュールは Weaviate と共に稼働する NER Transformers モデルに依存します。あらかじめビルド済みのモデルも利用できますが、別の HuggingFace Transformer や独自の NER モデルを接続することも可能です。  
+* GraphQL の `_additional {}` フィールドに `tokens {}` フィルターが追加されます。  
+* モジュールはデータオブジェクトを通常どおり返し、その中で認識されたトークンは GraphQL の `_additional { tokens {} }` フィールドに含まれます。  
 
-* The Named Entity Recognition (NER) module is a Weaviate module for token classification.
-* The module depends on a NER Transformers model that should be running with Weaviate. There are pre-built models available, but you can also attach another HuggingFace Transformer or custom NER model.
-* The module adds a `tokens {}` filter to the GraphQL `_additional {}` field.
-* The module returns data objects as usual, with recognized tokens in the GraphQL `_additional { tokens {} }` field.
+## はじめに
 
-## Introduction
+Named Entity Recognition（NER）モジュールは、既存の Weaviate テキストオブジェクトからエンティティをオンザフライで抽出するためのモジュールです。エンティティ抽出はクエリー時に実行されます。最高のパフォーマンスを得るには、Transformer ベースのモデルを GPU で実行することを推奨します。CPU でも動作しますが、スループットは低下します。
 
-Named Entity Recognition (NER) module is a Weaviate module to extract entities from your existing Weaviate (text) objects on the fly. Entity Extraction happens at query time. Note that for maximum performance, transformer-based models should run with GPUs. CPUs can be used, but the throughput will be lower.
+現在、以下の 3 種類の NER モジュールが利用可能です（[Hugging Face](https://huggingface.co/) より）: [`dbmdz-bert-large-cased-finetuned-conll03-english`](https://huggingface.co/dbmdz/bert-large-cased-finetuned-conll03-english)、[`dslim-bert-base-NER`](https://huggingface.co/dslim/bert-base-NER)、[`davlan-bert-base-multilingual-cased-ner-hrl`](https://huggingface.co/Davlan/bert-base-multilingual-cased-ner-hrl?text=%D8%A5%D8%B3%D9%85%D9%8A+%D8%B3%D8%A7%D9%85%D9%8A+%D9%88%D8%A3%D8%B3%D9%83%D9%86+%D9%81%D9%8A+%D8%A7%D9%84%D9%82%D8%AF%D8%B3+%D9%81%D9%8A+%D9%81%D9%84%D8%B3%D8%B7%D9%8A%D9%86.).
 
-There are currently three different NER modules available (taken from [Hugging Face](https://huggingface.co/)): [`dbmdz-bert-large-cased-finetuned-conll03-english`](https://huggingface.co/dbmdz/bert-large-cased-finetuned-conll03-english), [`dslim-bert-base-NER`](https://huggingface.co/dslim/bert-base-NER), [`davlan-bert-base-multilingual-cased-ner-hrl`](https://huggingface.co/Davlan/bert-base-multilingual-cased-ner-hrl?text=%D8%A5%D8%B3%D9%85%D9%8A+%D8%B3%D8%A7%D9%85%D9%8A+%D9%88%D8%A3%D8%B3%D9%83%D9%86+%D9%81%D9%8A+%D8%A7%D9%84%D9%82%D8%AF%D8%B3+%D9%81%D9%8A+%D9%81%D9%84%D8%B3%D8%B7%D9%8A%D9%86.).
-
-## How to enable (module configuration)
+## 有効化方法（モジュール設定）
 
 ### Docker Compose
 
-The NER module can be added as a service to the Docker Compose file. You must have a text vectorizer like `text2vec-contextionary` or `text2vec-transformers` running. An example Docker Compose file for using the `ner-transformers` module (`dbmdz-bert-large-cased-finetuned-conll03-english`) in combination with the `text2vec-contextionary`:
+NER モジュールは Docker Compose ファイルにサービスとして追加できます。`text2vec-contextionary` や `text2vec-transformers` のようなテキスト ベクトライザーが稼働している必要があります。以下は、`text2vec-contextionary` と組み合わせて `ner-transformers` モジュール（`dbmdz-bert-large-cased-finetuned-conll03-english`）を使用するための Docker Compose ファイル例です。
 
 ```yaml
 ---
@@ -65,40 +64,40 @@ services:
 ...
 ```
 
-Variable explanations:
-* `NER_INFERENCE_API`: where the qna module is running
+変数の説明:  
+* `NER_INFERENCE_API`: qna モジュールが稼働している場所を指定します。
 
-## How to use (GraphQL)
+## 使用方法（GraphQL）
 
-To make use of the modules capabilities, simply extend your query with the following new `_additional` property:
+モジュールの機能を利用するには、クエリーに次の `_additional` プロパティを追加するだけです。
 
-### GraphQL Token
+### GraphQL トークン
 
-This module adds a search filter to the GraphQL `_additional` field in queries: `token{}`. This new filter takes the following arguments:
+このモジュールは、GraphQL の `_additional` フィールドに `token{}` 検索フィルターを追加します。新しいフィルターは次の引数を取ります。
 
-| Field 	| Data Type 	| Required 	| Example value 	| Description 	|
+| 項目 	| データタイプ 	| 必須 	| 例 	| 説明 	|
 |-	|-	|-	|-	|-	|
-| `properties` 	| list of strings 	| yes 	| `["summary"]` 	| The properties of the queries Class which contains text (`text` or `string` Datatype). You must provide at least one property	|
-| `certainty` 	| float 	| no 	| `0.75` | Desired minimal certainty or confidence that the recognized token must have. The higher the value, the stricter the token classification. If no certainty is set, all tokens that are found by the model will be returned. |
-| `limit` 	| int 	| no 	| `1` | The maximum amount of tokens returned per data object in total. |
+| `properties` 	| list of strings 	| yes 	| `["summary"]` 	| クエリー対象クラスでテキスト（`text` または `string` 型）を含むプロパティ。少なくとも 1 つは指定する必要があります。 |
+| `certainty` 	| float 	| no 	| `0.75` | 認識されたトークンが満たすべき最小確信度。値が高いほど分類は厳密になります。設定しない場合、モデルが検出したすべてのトークンが返されます。 |
+| `limit` 	| int 	| no 	| `1` | データオブジェクトごとに返されるトークンの最大数。 |
 
-### Example query
+### クエリ例
 
 import CodeNerTransformer from '/_includes/code/ner-transformers-module.mdx';
 
 <CodeNerTransformer />
 
-### GraphQL response
+### GraphQL レスポンス
 
-The answer is contained in a new GraphQL `_additional` property called `tokens`, which returns a list of tokens. It contains the following fields:
-* `entity` (`string`): The Entity group (classified token)
-* `word` (`string`): The word that is recognized as entity
-* `property` (`string`): The property in which the token is found
-* `certainty` (`float`): 0.0-1.0 of how certain the model is that the token is correctly classified
-* `startPosition` (`int`): The position of the first character of the word in the property value
-* `endPosition` (`int`): The position of the last character of the word in the property value
+レスポンスは新しい GraphQL `_additional` プロパティ `tokens` に含まれ、トークンのリストを返します。各トークンには以下のフィールドがあります:  
+* `entity` (`string`): エンティティグループ（分類されたトークン）  
+* `word` (`string`): エンティティとして認識された語  
+* `property` (`string`): トークンが見つかったプロパティ  
+* `certainty` (`float`): トークンが正しく分類された確信度（0.0–1.0）  
+* `startPosition` (`int`): プロパティ値内で単語の最初の文字がある位置  
+* `endPosition` (`int`): プロパティ値内で単語の最後の文字がある位置  
 
-### Example response
+### レスポンス例
 
 ```json
 {
@@ -135,31 +134,30 @@ The answer is contained in a new GraphQL `_additional` property called `tokens`,
 }
 ```
 
-## Use another NER Transformer module from HuggingFace
+## HuggingFace の別 NER Transformer モジュールの使用
 
-You can build a Docker image which supports any model from the [Hugging Face model hub](https://huggingface.co/models) with a two-line Dockerfile. In the following example, we are going to build a custom image for the [`Davlan/bert-base-multilingual-cased-ner-hrl` model](https://huggingface.co/Davlan/bert-base-multilingual-cased-ner-hrl).
+2 行だけの Dockerfile で、[Hugging Face model hub](https://huggingface.co/models) にある任意のモデルをサポートする Docker イメージを作成できます。以下の例では、[`Davlan/bert-base-multilingual-cased-ner-hrl` モデル](https://huggingface.co/Davlan/bert-base-multilingual-cased-ner-hrl) 用のカスタムイメージをビルドします。
 
-#### Step 1: Create a `Dockerfile`
-Create a new `Dockerfile`. We will name it `my-model.Dockerfile`. Add the following lines to it:
+#### ステップ 1: `Dockerfile` の作成
+新しい `Dockerfile` を作成します。ここでは `my-model.Dockerfile` という名前にし、次の行を追加します。  
 ```
 FROM semitechnologies/ner-transformers:custom
 RUN chmod +x ./download.py
 RUN MODEL_NAME=Davlan/bert-base-multilingual-cased-ner-hrl ./download.py
 ```
 
-#### Step 2: Build and tag your Dockerfile.
-We will tag our Dockerfile as `davlan-bert-base-multilingual-cased-ner-hrl`:
+#### ステップ 2: Dockerfile をビルドしてタグ付けする
+Dockerfile に `davlan-bert-base-multilingual-cased-ner-hrl` というタグを付けてビルドします。  
 ```
 docker build -f my-model.Dockerfile -t davlan-bert-base-multilingual-cased-ner-hrl .
 ```
 
-#### Step 3: That's it!
-You can now push your image to your favorite registry or reference it locally in your Weaviate `docker-compose.yml` using the Docker tag `davlan-bert-base-multilingual-cased-ner-hrl`.
+#### ステップ 3: 完了！
+イメージを任意のレジストリにプッシュするか、`docker-compose.yml` 内で Docker タグ `davlan-bert-base-multilingual-cased-ner-hrl` を使ってローカル参照できます。
 
+## 仕組み（内部動作）
 
-## How it works (under the hood)
-
-The code for the application in this repo works well with models that take in a text input like `My name is Sarah and I live in London` and return information in JSON format like this:
+このリポジトリのアプリケーションコードは、`My name is Sarah and I live in London` のようなテキスト入力を受け取り、次のような JSON 形式で情報を返すモデルと互換性があります。
 
 ```json
 [
@@ -180,17 +178,17 @@ The code for the application in this repo works well with models that take in a 
 ]
 ```
 
-The Weaviate NER Module then takes this output and processes this to GraphQL output.
+Weaviate NER モジュールはこの出力を受け取り、GraphQL 出力に変換します。
 
-## Model license(s)
+## モデルのライセンス
 
-The `ner-transformers` module is compatible with various models, each with their own license. For detailed information, see the license of the model you are using in the [Hugging Face Model Hub](https://huggingface.co/models).
+`ner-transformers` モジュールは複数のモデルと互換性があり、それぞれに独自のライセンスがあります。詳しくは、使用するモデルのライセンスを [Hugging Face Model Hub](https://huggingface.co/models) でご確認ください。
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+ライセンス条件がご自身の用途に適しているかどうかは、利用者ご自身でご判断ください。
 
-
-## Questions and feedback
+## ご質問・フィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

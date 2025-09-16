@@ -3,44 +3,45 @@ title: LlamaIndex
 sidebar_position: 5
 ---
 
-[LlamaIndex](https://www.llamaindex.ai/) is a framework for building large language model (LLM) applications. 
+[LlamaIndex](https://www.llamaindex.ai/) は、大規模言語モデル ( LLM ) アプリケーションを構築するためのフレームワークです。 
 
-## LlamaIndex and Weaviate
-Weaviate is a [supported vector store](https://docs.llamaindex.ai/en/stable/api_reference/storage/vector_store/weaviate/) in LlamaIndex. 
+## LlamaIndex と Weaviate
+Weaviate は、LlamaIndex における [サポートされているベクトルストア](https://docs.llamaindex.ai/en/stable/api_reference/storage/vector_store/weaviate/) です。 
 
-Create a vector store:
+ベクトルストアを作成します:
 
 ```python
 vector_store = WeaviateVectorStore(weaviate_client=client, index_name="LlamaIndex")
 ```
 
-## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース 
+リソースは次の 2 つのカテゴリに分かれています:  
+1. [ **ハンズオンラーニング** ](#hands-on-learning): エンドツーエンドのチュートリアルで技術的な理解を深めましょう。
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+2. [ **読む・聞く** ](#read-and-listen): これらの技術に関する概念的な理解を深めましょう。
 
-### Hands on Learning
+### ハンズオンラーニング
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Data Loaders in LlamaIndex | Learn how to load data into Weaviate using LlamaIndex, and how to connect LlamaIndex to an existing Weaviate cluster. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/data-loaders-episode1/episode1.ipynb) |
-| Indexes in LlamaIndex | Learn about the various indexes you can build in LlamaIndex. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/indexes-episode2/indexes-in-llamaindex.ipynb) |
-| Recursive Query Engine | Learn how to build a recursive query engine. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/recursive-query-engine/recursive-retrieval.ipynb) |
-| Self Correcting Query Engine | Setup your vector store and build a self-correcting query engine. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/self-correcting-query-engine/self-correcting.ipynb) | 
-| Simple Query Engine | Build a simple query engine | [Notebook](https://github.com/weaviate/recipes/tree/main/integrations/llm-agent-frameworks/llamaindex/simple-query-engine) |
-| SQL Router Query Engine | Build a SQL Query Engine to search through your vector and SQL database. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sql-router-query-engine/sql-query-router.ipynb) |
-| Sub-Question Query Engine | Build a query engine that will break down a complex question into multiple parts. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sub-question-query-engine/sub_question_query_engine.ipynb) |
-| Advanced RAG | This notebook walks you through an advanced Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/advanced_rag.ipynb) | 
-| Naive RAG | This notebook walks you through a naive Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/naive_rag.ipynb) |
-| Agent vs No Agent | Learn the difference between naive RAG, and an agent that has RAG tools. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/llama-index-weaviate-assistant-agent.ipynb) |
-| LlamaIndex and Weaviate Query Agent | Use the Query Agent as a tool with the LlamaIndex `AgentWorkflow`. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-with-weaviate-query-agent-.ipynb) | 
+| LlamaIndex におけるデータローダー | LlamaIndex を使用して Weaviate にデータをロードする方法、および既存の Weaviate クラスターに LlamaIndex を接続する方法を学びます。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/data-loaders-episode1/episode1.ipynb) |
+| LlamaIndex におけるインデックス | LlamaIndex で構築できるさまざまなインデックスについて学びます。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/indexes-episode2/indexes-in-llamaindex.ipynb) |
+| リカーシブクエリエンジン | リカーシブクエリエンジンの構築方法を学びます。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/recursive-query-engine/recursive-retrieval.ipynb) |
+| 自己修正クエリエンジン | ベクトルストアをセットアップし、自己修正クエリエンジンを構築します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/self-correcting-query-engine/self-correcting.ipynb) | 
+| シンプルクエリエンジン | シンプルなクエリエンジンを構築します。 | [Notebook](https://github.com/weaviate/recipes/tree/main/integrations/llm-agent-frameworks/llamaindex/simple-query-engine) |
+| SQL ルータークエリエンジン | ベクトルデータベースと SQL データベースを検索する SQL クエリエンジンを構築します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sql-router-query-engine/sql-query-router.ipynb) |
+| サブクエスチョンクエリエンジン | 複雑な質問を複数のパートに分割するクエリエンジンを構築します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/sub-question-query-engine/sub_question_query_engine.ipynb) |
+| 高度な RAG | この Notebook では、LlamaIndex と Weaviate を用いた高度な Retrieval-Augmented Generation ( RAG ) パイプラインをガイドします。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/advanced_rag.ipynb) | 
+| ナイーブ RAG | この Notebook では、LlamaIndex と Weaviate を用いたナイーブな RAG パイプラインをガイドします。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/retrieval-augmented-generation/naive_rag.ipynb) |
+| エージェントと非エージェントの比較 | ナイーブ RAG と、RAG ツールを持つエージェントの違いを学びます。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/llama-index-weaviate-assistant-agent.ipynb) |
+| LlamaIndex と Weaviate Query エージェント | LlamaIndex の `AgentWorkflow` で Query エージェントをツールとして使用します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-with-weaviate-query-agent-.ipynb) | 
 
 
-### Read and Listen 
-| Topic | Description | Resource | 
+### 読む・聞く 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Episode 1: Data Loading | This episode shows you how to connect your data to LlamaIndex and Weaviate.| [Video](https://youtu.be/Bu9skgCrJY8?feature=shared) | 
-| Episode 2: Indexes in LlamaIndex | The video covers the three LlamaIndex indexes (Vector Store Index, List Index, and Tree Index) and walks through the architecture design. The video ends with a demo using the Vector Store Index and List Index.  | [Video](https://youtu.be/6pLgOJrFL38?feature=shared) |
-| Episode 3: RAG Techniques in LlamaIndex | Learn about four query engines implemented in LlamaIndex. | [Video](https://youtu.be/Su-ROQMaiaw?feature=shared) | 
-| LlamaIndex and Weaviate Blog | An introduction on LlamaIndex and an overview of the integration. | [Blog](https://weaviate.io/blog/llamaindex-and-weaviate) | 
+| エピソード 1: データロード | このエピソードでは、データを LlamaIndex と Weaviate に接続する方法を示します。 | [Video](https://youtu.be/Bu9skgCrJY8?feature=shared) | 
+| エピソード 2: LlamaIndex のインデックス | この動画では、3 種類の LlamaIndex インデックス (Vector Store Index、List Index、Tree Index) を取り上げ、アーキテクチャ設計を解説します。最後に Vector Store Index と List Index のデモを行います。  | [Video](https://youtu.be/6pLgOJrFL38?feature=shared) |
+| エピソード 3: LlamaIndex における RAG 手法 | LlamaIndex で実装されている 4 つのクエリエンジンについて学びます。 | [Video](https://youtu.be/Su-ROQMaiaw?feature=shared) | 
+| LlamaIndex と Weaviate のブログ | LlamaIndex の概要と統合の概要を紹介しています。 | [Blog](https://weaviate.io/blog/llamaindex-and-weaviate) |
+

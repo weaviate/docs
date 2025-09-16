@@ -4,24 +4,26 @@ sidebar_position: 2
 image: og/integrations/home.jpg
 ---
 
-[DeepEval](https://www.deepeval.com/) is an open-source LLM evaluation framework, built for engineers to unit-test LLM applications and AI Agents. It provides out-of-the-box LLM-powered metrics, including RAG, conversational, red-teaming, agentic, multimodal, and custom metrics.
+[DeepEval](https://www.deepeval.com/) はオープンソースの LLM 評価フレームワークで、エンジニアが LLM アプリケーションや AI エージェントをユニットテストできるように設計されています。RAG、会話、レッドチーミング、エージェント指向、マルチモーダル、そしてカスタムメトリクスなど、すぐに使える LLM ベースのメトリクスを提供します。
 
-## DeepEval and Weaviate
-You can use DeepEval to optimize search, retrieval, and RAG with Weaviate by leveraging DeepEval's custom and RAG metrics to select the best hyperparameters like `embedding model` and `top-K` for your Weaviate collection.
+## DeepEval と Weaviate
+DeepEval のカスタムメトリクスおよび RAG メトリクスを活用することで、Weaviate の検索・リトリーバル・RAG を最適化し、`embedding model` や `top-K` など Weaviate コレクションのハイパーパラメーターを最良に調整できます。
 
-### Custom Metrics 
+### カスタムメトリクス 
 1. [G-Eval](https://www.deepeval.com/docs/metrics-llm-evals)
 2. [DAG](https://www.deepeval.com/docs/metrics-dag)
 
-### RAG Metrics 
+### RAG メトリクス 
 1. [Answer Relevancy](https://www.deepeval.com/docs/metrics-answer-relevancy)
 2. [Faithfulness](https://www.deepeval.com/docs/metrics-faithfulness)
 3. [Contextual Precision](https://www.deepeval.com/docs/metrics-contextual-precision)
 4. [Contextual Recall](https://www.deepeval.com/docs/metrics-contextual-recall)
 5. [Contextual Relevancy](https://www.deepeval.com/docs/metrics-contextual-relevancy)
 
-## Hands on Learning
+## ハンズオン学習
 
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Optimizing RAG with DeepEval | This notebook shows how to build a RAG pipeline using Weaviate and how to optimize its performance with DeepEval. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/deepeval/rag_evaluation_deepeval.ipynb) |
+| DeepEval で RAG を最適化 | この Notebook では、Weaviate を使用して RAG パイプラインを構築し、そのパフォーマンスを DeepEval で最適化する方法を示します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/deepeval/rag_evaluation_deepeval.ipynb) |
+
+

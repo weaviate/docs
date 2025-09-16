@@ -1,5 +1,5 @@
 ---
-title: Backups
+title: バックアップ
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'backups']
 ---
@@ -18,27 +18,27 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_te
 import JavaCode from '!!raw-loader!/_includes/code/howto/configure.backups.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
 
-Weaviate's Backup feature is designed to work natively with cloud technology. Most notably, it allows:
+Weaviate の Backup 機能は、クラウド テクノロジーとネイティブに連携するよう設計されています。主な特長は次のとおりです。
 
-* Seamless integration with widely-used cloud blob storage, such as AWS S3, GCS, or Azure Storage
-* Backup and Restore between different storage providers
-* Single-command backup and restore
-* Choice of backing up an entire instance, or selected collections only
-* Easy migration to new environments
+* AWS S3、GCS、Azure Storage など、広く利用されているクラウド ブロブ ストレージとのシームレスな統合  
+* 異なるストレージ プロバイダー間での Backup および Restore  
+* 単一コマンドでのバックアップとリストア  
+* インスタンス全体、または選択したコレクションのみをバックアップするオプション  
+* 新しい環境への簡単な移行  
 
-:::caution Important backup considerations
+:::caution 重要なバックアップに関する注意事項
 
-- **Version Requirements**: If you are running Weaviate `v1.23.12` or older, you must [update](/deploy/migration/index.md) to `v1.23.13` or higher before restoring a backup to prevent data corruption.
-- **[Multi-tenancy](/weaviate/concepts/data.md#multi-tenancy) limitations**: Backups will only include `active` tenants. `Inactive` or `offloaded` tenants in multi-tenant collections will not be included. Be sure to [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) any required tenants before creating a backup.
+- **バージョン要件**: Weaviate `v1.23.12` 以前をご利用の場合、バックアップをリストアする前に必ず [アップデート](/deploy/migration/index.md) して `v1.23.13` 以上にしてください。データ破損を防ぎます。  
+- **[マルチテナンシー](/weaviate/concepts/data.md#multi-tenancy) の制限**: バックアップに含まれるのは `active` テナントのみです。マルチテナント コレクション内の `inactive` または `offloaded` テナントは含まれません。バックアップ作成前に、必要なテナントを必ず [activate](/weaviate/manage-collections/multi-tenancy.mdx#manage-tenant-states) してください。  
 :::
 
-## Backup Quickstart
+## バックアップ クイックスタート
 
-This quickstart demonstrates using backups in Weaviate using the local filesystem as a backup provider, which is suitable for development and testing environments.
+このクイックスタートでは、ローカル ファイルシステムをバックアップ プロバイダーとして使用し、開発およびテスト環境に適した Weaviate のバックアップ手順を示します。
 
-### 1. Configure Weaviate
+### 1. Weaviate の設定
 
-Add these environment variables to your Weaviate configuration (e.g. Docker or Kubernetes configuration file):
+次の環境変数を Weaviate の構成（例: Docker または Kubernetes の設定ファイル）に追加します。
 
 ```yaml
 # Enable the filesystem backup module
@@ -48,9 +48,9 @@ ENABLE_MODULES=backup-filesystem
 BACKUP_FILESYSTEM_PATH=/var/lib/weaviate/backups
 ```
 
-### 2. Start a backup
+### 2. バックアップの開始
 
-Restart Weaviate to apply the new configuration. Then, you are ready to start a backup:
+新しい構成を適用するために Weaviate を再起動します。その後、バックアップを開始できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -117,224 +117,228 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
   </TabItem>
 </Tabs>
 
-That's all there is to getting started with backups in Weaviate. The backup will be stored in the specified location on the local filesystem.
+以上で Weaviate でのバックアップの準備は完了です。バックアップはローカル ファイルシステム上の指定した場所に保存されます。
 
-You can also:
-- [Restore the backup](#restore-backup) to a Weaviate instance
-- [Check the status](#asynchronous-status-checking) of the backup (if you did not wait for completion)
-- [Cancel the backup](#cancel-backup) if needed
+また、次のことも可能です。  
+- Weaviate インスタンスへ [バックアップをリストア](#restore-backup)  
+- バックアップの [ステータス確認](#asynchronous-status-checking)（完了を待たなかった場合）  
+- 必要に応じて [バックアップをキャンセル](#cancel-backup)  
 
-Note that local backups are not suitable for production environments. For production, use a cloud provider like S3, GCS, or Azure Storage.
+ローカル バックアップは本番環境には適していません。本番環境では S3、GCS、Azure Storage などのクラウド プロバイダーをご利用ください。
 
-The following sections provide more details on how to configure and use backups in Weaviate.
+以下のセクションでは、Weaviate でバックアップを構成および使用する方法をさらに詳しく説明します。
 
-## Configuration
 
-Weaviate supports four backup storage options:
 
-| Provider | Module Name | Best For | Multi-Node Support |
+## 設定
+
+Weaviate は 4 つのバックアップストレージオプションをサポートしています:
+
+| プロバイダー | モジュール名 | 最適用途 | マルチノード対応 |
 |----------|------------|-----------|-------------------|
-| AWS S3 | `backup-s3` | Production deployments, AWS environments | Yes |
-| Google Cloud Storage | `backup-gcs` | Production deployments, GCP environments | Yes |
-| Azure Storage | `backup-azure` | Production deployments, Azure environments | Yes |
-| Local Filesystem | `backup-filesystem` | Development, testing, single-node setups | No |
+| AWS S3 | `backup-s3` | 本番環境、AWS 環境 | Yes |
+| Google Cloud Storage | `backup-gcs` | 本番環境、GCP 環境 | Yes |
+| Azure Storage | `backup-azure` | 本番環境、Azure 環境 | Yes |
+| ローカルファイルシステム | `backup-filesystem` | 開発、テスト、シングルノード構成 | No |
 
-To use any provider:
-1. Enable the module
-    - Add the module name to the `ENABLE_MODULES` environment variable
-    - On Weaviate Cloud instances, a relevant default module is enabled
-2. Configure the required modules
-    - Option 1: Set the necessary environment variables
-    - Option 2 (Kubernetes): Configure the [Helm chart values](#kubernetes-configuration)
+任意のプロバイダーを使用する手順:
+1. モジュールを有効化  
+   - `ENABLE_MODULES` 環境変数にモジュール名を追加します  
+   - Weaviate Cloud インスタンスでは、関連するデフォルトモジュールが有効化されています
+2. 必要なモジュールを設定  
+   - オプション 1: 必要な環境変数を設定する  
+   - オプション 2 (Kubernetes): [Helm チャートの values](#kubernetes-configuration) を設定する
 
-Note multiple providers can be enabled simultaneously
+複数のプロバイダーを同時に有効化できます
 
-### S3 (AWS or S3-compatible)
+### S3 (AWS または S3 互換)
 
-- Works with AWS S3 and S3-compatible services (e.g., MinIO)
-- Supports multi-node deployments
-- Recommended for production use
+- AWS S3 および S3 互換サービス (例: MinIO) で動作します
+- マルチノードデプロイをサポートします
+- 本番環境での使用を推奨します
 
-To configure `backup-s3`, you need to enable the module and provide the necessary configuration.
+`backup-s3` を設定するには、モジュールを有効化し、必要な設定を行います。
 
-#### Enable module
+#### モジュールの有効化
 
-Add `backup-s3` to the `ENABLE_MODULES` environment variable. For example, to enable the S3 module along with the `text2vec-cohere` module, set:
+`backup-s3` を `ENABLE_MODULES` 環境変数に追加します。たとえば `text2vec-cohere` モジュールと併せて S3 モジュールを有効化する場合は、次のように設定します:
 
 ```
 ENABLE_MODULES=backup-s3,text2vec-cohere
 ```
 
-#### S3 Configuration (vendor-agnostic)
+#### S3 設定 (ベンダー非依存)
 
-This configuration applies to any S3-compatible backend.
+この設定はすべての S3 互換バックエンドに適用されます。
 
-| Environment variable | Required | Description |
+| 環境変数 | 必須 | 説明 |
 | --- | --- | --- |
-| `BACKUP_S3_BUCKET` | yes | The name of the S3 bucket for all backups. |
-| `BACKUP_S3_PATH` | no | The root path inside your bucket that all your backups will be copied into and retrieved from. <br/><br/>Optional, defaults to `""` which means that the backups will be stored in the bucket root instead of a sub-folder. |
-| `BACKUP_S3_ENDPOINT` | no | The S3 endpoint to be used. <br/><br/>Optional, defaults to `"s3.amazonaws.com"`. |
-| `BACKUP_S3_USE_SSL` | no | Whether the connection should be secured with SSL/TLS. <br/><br/>Optional, defaults to `"true"`. |
+| `BACKUP_S3_BUCKET` | yes | すべてのバックアップに使用する S3 バケット名です。 |
+| `BACKUP_S3_PATH` | no | バケット内でバックアップをコピーおよび取得する先頭パスです。<br/><br/>オプション。デフォルトは `""` で、バックアップはサブフォルダーではなくバケットのルートに保存されます。 |
+| `BACKUP_S3_ENDPOINT` | no | 使用する S3 エンドポイントです。<br/><br/>オプション。デフォルトは `"s3.amazonaws.com"` です。 |
+| `BACKUP_S3_USE_SSL` | no | 接続を SSL/TLS で保護するかどうか。<br/><br/>オプション。デフォルトは `"true"` です。 |
 
-#### S3 Configuration (AWS-specific)
+#### S3 設定 (AWS 固有)
 
-For AWS, provide Weaviate with authentication details. You can choose between access-key or ARN-based authentication:
+AWS では、Weaviate に認証情報を提供する必要があります。アクセスキー認証と ARN ベース認証のいずれかを選択できます。
 
-#### Option 1: With IAM and ARN roles
+#### オプション 1: IAM と ARN ロールを使用
 
-The backup module will first try to authenticate itself using AWS IAM. If the authentication fails then it will try to authenticate with `Option 2`.
+バックアップモジュールは最初に AWS IAM を使用して認証を試みます。認証に失敗した場合は `Option 2` で認証を試行します。
 
-#### Option 2: With access key and secret access key
+#### オプション 2: アクセスキーとシークレットアクセスキーを使用
 
-| Environment variable | Description |
+| 環境変数 | 説明 |
 | --- | --- |
-| `AWS_ACCESS_KEY_ID` | The id of the AWS access key for the desired account. |
-| `AWS_SECRET_ACCESS_KEY` | The secret AWS access key for the desired account. |
-| `AWS_REGION` | (Optional) The AWS Region. If not provided, the module will try to parse `AWS_DEFAULT_REGION`. |
+| `AWS_ACCESS_KEY_ID` | 対象アカウントの AWS アクセスキー ID。 |
+| `AWS_SECRET_ACCESS_KEY` | 対象アカウントの AWS シークレットアクセスキー。 |
+| `AWS_REGION` | (Optional) AWS リージョン。指定しない場合、モジュールは `AWS_DEFAULT_REGION` を解析しようとします。 |
 
 
 ### GCS (Google Cloud Storage)
 
-- Works with Google Cloud Storage
-- Supports multi-node deployments
-- Recommended for production use
+- Google Cloud Storage で動作します
+- マルチノードデプロイをサポートします
+- 本番環境での使用を推奨します
 
-To configure `backup-gcs`, you need to enable the module and provide the necessary configuration.
+`backup-gcs` を設定するには、モジュールを有効化し、必要な設定を行います。
 
-#### Enable module
+#### モジュールの有効化
 
-Add `backup-gcs` to the `ENABLE_MODULES` environment variable. For example, to enable the S3 module along with the `text2vec-cohere` module, set:
+`backup-gcs` を `ENABLE_MODULES` 環境変数に追加します。たとえば `text2vec-cohere` モジュールと併せて S3 モジュールを有効化する場合は、次のように設定します:
 
 ```
 ENABLE_MODULES=backup-gcs,text2vec-cohere
 ```
 
-#### GCS bucket-related variables
+#### GCS バケット関連変数
 
-| Environment variable | Required | Description |
+| 環境変数 | 必須 | 説明 |
 | --- | --- | --- |
-| `BACKUP_GCS_BUCKET` | yes | The name of the GCS bucket for all backups. |
-| `BACKUP_GCS_USE_AUTH` | no | Whether or not credentials will be used for authentication. Defaults to `true`. A case for `false` would be for use with a local GCS emulator. |
-| `BACKUP_GCS_PATH` | no | The root path inside your bucket that all your backups will be copied into and retrieved from. <br/><br/>Optional, defaults to `""` which means that the backups will be stored in the bucket root instead of a sub-folder. |
+| `BACKUP_GCS_BUCKET` | yes | すべてのバックアップに使用する GCS バケット名です。 |
+| `BACKUP_GCS_USE_AUTH` | no | 認証に資格情報を使用するかどうか。デフォルトは `true` です。ローカル GCS エミュレーターを使用する場合は `false` にすることがあります。 |
+| `BACKUP_GCS_PATH` | no | バケット内でバックアップをコピーおよび取得する先頭パスです。<br/><br/>オプション。デフォルトは `""` で、バックアップはサブフォルダーではなくバケットのルートに保存されます。 |
 
 #### Google Application Default Credentials
 
-The `backup-gcs` module follows the Google [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials) best-practices. This means that credentials can be discovered through the environment, through a local Google Cloud CLI setup, or through an attached service account.
+`backup-gcs` モジュールは Google の [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials) のベストプラクティスに従います。これにより、環境変数、ローカルの Google Cloud CLI 設定、またはアタッチされたサービスアカウントを通じて資格情報を検出できます。
 
-This makes it easy to use the same module in different setups. For example, you can use the environment-based approach in production, and the CLI-based approach on your local machine. This way you can easily pull a backup that was created in a remote environment to your local system. This can be helpful in debugging an issue, for example.
+そのため、異なる環境で同じモジュールを簡単に使用できます。たとえば、本番環境では環境変数ベースの方法を使用し、ローカルマシンでは CLI ベースの方法を使用できます。これにより、リモート環境で作成したバックアップをローカル環境に簡単に取得でき、問題のデバッグに役立ちます。
 
-#### Environment-based Configuration
+#### 環境変数による設定
 
-| Environment variable | Example value | Description |
+| 環境変数 | 例 | 説明 |
 | --- | --- | --- |
-| `GOOGLE_APPLICATION_CREDENTIALS` | `/your/google/credentials.json` | The path to the secret GCP service account or workload identity file. |
-| `GCP_PROJECT` | `my-gcp-project` | Optional. If you use a service account with `GOOGLE_APPLICATION_CREDENTIALS` the service account will already contain a Google project. You can use this variable to explicitly set a project if you are using user credentials which may have access to more than one project. |
+| `GOOGLE_APPLICATION_CREDENTIALS` | `/your/google/credentials.json` | GCP サービスアカウントまたはワークロードアイデンティティファイルへのパス。 |
+| `GCP_PROJECT` | `my-gcp-project` | オプション。`GOOGLE_APPLICATION_CREDENTIALS` でサービスアカウントを使用している場合、プロジェクトはサービスアカウントに含まれています。ユーザー資格情報を使用し複数プロジェクトへアクセスできる場合などに、明示的にプロジェクトを設定できます。 |
 
 ### Azure Storage
 
-- Works with Microsoft Azure Storage
-- Supports multi-node deployments
-- Recommended for production use
+- Microsoft Azure Storage で動作します
+- マルチノードデプロイをサポートします
+- 本番環境での使用を推奨します
 
-To configure `backup-azure`, you need to enable the module and provide the necessary configuration.
+`backup-azure` を設定するには、モジュールを有効化し、必要な設定を行います。
 
-#### Enable module
+#### モジュールの有効化
 
-Add `backup-azure` to the `ENABLE_MODULES` environment variable. For example, to enable the Azure module along with the `text2vec-cohere` module, set:
+`backup-azure` を `ENABLE_MODULES` 環境変数に追加します。たとえば `text2vec-cohere` モジュールと併せて Azure モジュールを有効化する場合は、次のように設定します:
 
 ```
 ENABLE_MODULES=backup-azure,text2vec-cohere
 ```
 
-In addition to enabling the module, you need to configure it using environment variables. There are container-related variables, as well as credential-related variables.
+モジュールを有効化するだけでなく、環境変数を使用して設定する必要があります。コンテナー関連の変数と認証関連の変数があります。
 
-#### Azure container-related variables
+#### Azure コンテナー関連変数
+
+| 環境変数 | 必須 | 説明 |
+| --- | --- | --- |
+| `BACKUP_AZURE_CONTAINER` | yes | すべてのバックアップに使用する Azure コンテナー名です。 |
+| `BACKUP_AZURE_PATH` | no | コンテナー内でバックアップをコピーおよび取得する先頭パスです。<br/><br/>オプション。デフォルトは `""` で、バックアップはサブフォルダーではなくコンテナーのルートに保存されます。 |
+
+
+
+#### Azure 認証情報
+
+`backup-azure` で Azure に対して認証を行う方法は 2 通りあります。次のいずれかを使用できます:
+
+1. Azure Storage の接続文字列、または  
+1. Azure Storage のアカウント名とキー
+
+どちらの方法も、以下の環境変数で設定できます。
 
 | Environment variable | Required | Description |
 | --- | --- | --- |
-| `BACKUP_AZURE_CONTAINER` | yes | The name of the Azure container for all backups. |
-| `BACKUP_AZURE_PATH` | no | The root path inside your container that all your backups will be copied into and retrieved from. <br/><br/>Optional, defaults to `""` which means that the backups will be stored in the container root instead of a sub-folder. |
+| `AZURE_STORAGE_CONNECTION_STRING` | yes (*see note) | 認証情報を含む文字列です（[Azure のドキュメント](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string) を参照）。 <br/><br/> `AZURE_STORAGE_ACCOUNT` よりも先にこちらがチェックされ、使用されます。 |
+| `AZURE_STORAGE_ACCOUNT` | yes (*see note) | Azure Storage アカウントの名前です。 |
+| `AZURE_STORAGE_KEY` | no | Azure Storage アカウントのアクセスキーです。<br/><br/>匿名アクセスを行う場合は `""` を指定してください。 |
 
-#### Azure Credentials
-
-There are two different ways to authenticate against Azure with `backup-azure`. You can use either:
-
-1. An Azure Storage connection string, or
-1. An Azure Storage account name and key.
-
-Both options can be implemented using environment variables as follows:
-
-| Environment variable | Required | Description |
-| --- | --- | --- |
-| `AZURE_STORAGE_CONNECTION_STRING` | yes (*see note) | A string that includes the authorization information required ([Azure documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string)). <br/><br/> This variable is checked and used first before `AZURE_STORAGE_ACCOUNT`. |
-| `AZURE_STORAGE_ACCOUNT` | yes (*see note) | The name of your Azure Storage account. |
-| `AZURE_STORAGE_KEY` | no | An access key for your Azure Storage account. <br/><br/>For anonymous access, specify `""`. |
-
-If both of `AZURE_STORAGE_CONNECTION_STRING` and `AZURE_STORAGE_ACCOUNT` are provided, Weaviate will use `AZURE_STORAGE_CONNECTION_STRING` to authenticate.
+`AZURE_STORAGE_CONNECTION_STRING` と `AZURE_STORAGE_ACCOUNT` の両方が指定されている場合、認証には `AZURE_STORAGE_CONNECTION_STRING` が使用されます。
 
 :::note At least one credential option is required
-At least one of `AZURE_STORAGE_CONNECTION_STRING` or `AZURE_STORAGE_ACCOUNT` must be present.
+`AZURE_STORAGE_CONNECTION_STRING` または `AZURE_STORAGE_ACCOUNT` のいずれかは必ず設定する必要があります。
 :::
 
-#### Azure block size and Concurrency
+#### Azure ブロック サイズと並列度
 
 | Environment variable | Required | Default | Description |
 | --- | --- | --- | --- |
-| `AZURE_BLOCK_SIZE` | no | `41943040` (40MB) | The Azure block size (in bytes) |
-| `AZURE_CONCURRENCY` | no | `1` | Upload concurrency |
+| `AZURE_BLOCK_SIZE` | no | `41943040` (40MB) | Azure のブロックサイズ（バイト単位） |
+| `AZURE_CONCURRENCY` | no | `1` | アップロードの並列度 |
 
 :::note
-You can also use `X-Azure-Block-Size` and `X-Azure-Concurrency` as a client header parameter. If provided, they will override any environment variables.
+クライアントヘッダーのパラメーターとして `X-Azure-Block-Size` および `X-Azure-Concurrency` を使用することもできます。これらが指定された場合、環境変数より優先されます。
 :::
 
-### Filesystem
+### ファイルシステム
 
-- Works with Google Cloud Storage
-- Supports single-node deployments only
-- Not recommended for production use
+- Google Cloud Storage で動作します  
+- シングルノード デプロイのみをサポートします  
+- 本番利用には推奨されません  
 
-To configure `backup-filesystem`, you need to enable the module and provide the necessary configuration.
+`backup-filesystem` を設定するには、モジュールを有効化し、必要な設定を行います。
 
-#### Enable module
+#### モジュールの有効化
 
-Add `backup-filesystem` to the `ENABLE_MODULES` environment variable. For example, to enable the S3 module along with the `text2vec-cohere` module, set:
+`ENABLE_MODULES` 環境変数に `backup-filesystem` を追加します。たとえば、S3 モジュールと `text2vec-cohere` モジュールを併用する場合は、次のように設定します:
 
 ```
 ENABLE_MODULES=backup-filesystem,text2vec-cohere
 ```
 
-#### Backup Configuration
+#### バックアップ設定
 
-In addition to enabling the module, you need to configure it using environment variables:
+モジュールを有効化するだけでなく、以下の環境変数で設定を行う必要があります。
 
 | Environment variable | Required | Description |
 | --- | --- | --- |
-| `BACKUP_FILESYSTEM_PATH` | yes | The root path that all your backups will be copied into and retrieved from |
+| `BACKUP_FILESYSTEM_PATH` | yes | すべてのバックアップをコピーして取得するルートパス |
 
-### Other Backup Backends
+### その他のバックアップバックエンド
 
-If you are missing your desired backup module, you can open a feature request on the [Weaviate GitHub repository](https://github.com/weaviate/weaviate/issues). We are also open to community contributions for new backup modules.
+ご希望のバックアップモジュールがない場合は、[Weaviate GitHub リポジトリ](https://github.com/weaviate/weaviate/issues) でフィーチャーリクエストを提出できます。新しいバックアップモジュールに関するコミュニティからの貢献も歓迎しています。
 
 ## API
 
-For REST API documentation, see the <SkipLink href="/weaviate/api/rest#tag/backups">Backups section</SkipLink>.
+REST API の詳細は <SkipLink href="/weaviate/api/rest#tag/backups">バックアップ セクション</SkipLink> をご覧ください。
 
-### Create Backup
+### バックアップの作成
 
-Once the modules are enabled and the configuration is provided, you can start a backup on any running instance with a single request.
+モジュールを有効化し設定が完了したら、1 つのリクエストで実行中の任意のインスタンスに対してバックアップを開始できます。
 
-You can choose to include or exclude specific collections in the backup. If you do not specify any collections, all collections are included by default.
+バックアップに特定のコレクションを含める、または除外することができます。コレクションを指定しない場合、すべてのコレクションがデフォルトで含まれます。
 
-The `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those.
+`include` と `exclude` オプションは排他的です。どちらも設定しないか、どちらか一方のみ設定してください。
 
-##### Available `config` object properties
+##### 使用可能な `config` オブジェクトのプロパティ
 
 | name | type | required | default | description |
-| ---- | ---- | ---- | ---- |---- |
-| `CPUPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
-| `ChunkSize`       | number | no | `128MB` | An optional integer represents the desired size for chunks. Weaviate will attempt to come close the specified size, with a minimum of 2MB, default of 128MB, and a maximum of 512MB.|
-| `CompressionLevel`| string | no | `DefaultCompression` | An optional compression level used by compression algorithm from options. (`DefaultCompression`, `BestSpeed`, `BestCompression`) Weaviate uses [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) by default. |
-| `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
+| ---- | ---- | ---- | ---- | ---- |
+| `CPUPercentage`   | number | no | `50%` | 1%〜80% の範囲で希望する CPU コア使用率を設定するオプションの整数値です。 |
+| `ChunkSize`       | number | no | `128MB` | チャンクサイズを指定するオプションの整数値です。Weaviate は指定サイズに近づけるよう試みます。最小 2MB、デフォルト 128MB、最大 512MB です。 |
+| `CompressionLevel`| string | no | `DefaultCompression` | 圧縮アルゴリズムで使用する圧縮レベルを指定するオプションの値です。（`DefaultCompression`、`BestSpeed`、`BestCompression`） Weaviate はデフォルトで [gzip 圧縮](https://pkg.go.dev/compress/gzip#pkg-constants) を使用します。 |
+| `Path`            | string | no | `""` | バックアップの保存先を手動で設定するオプションの文字列です。指定しない場合はデフォルトの場所に保存されます。Weaviate `v1.27.2` で追加されました。 |
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -401,30 +405,28 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
   </TabItem>
 </Tabs>
 
+バックアップが完了するまでの間も、[Weaviate は利用可能なままです](#read--write-requests-while-a-backup-is-running)。
 
-While you are waiting for a backup to complete, [Weaviate stays available](#read--write-requests-while-a-backup-is-running).
+#### 非同期ステータス確認
 
+すべてのクライアント実装には、バックアップのステータスをバックグラウンドでポーリングし、バックアップが完了（成功・失敗を問わず）するまで戻らない `wait for completion` オプションがあります。
 
-#### Asynchronous Status Checking
-
-All client implementations have a "wait for completion" option which will poll the backup status in the background and only return once the backup has completed (successfully or unsuccessfully).
-
-If you set the "wait for completion" option to false, you can also check the status yourself using the Backup Creation Status API.
+この `wait for completion` オプションを `false` に設定した場合、Backup Creation Status API を使用してご自身でステータスを確認できます。
 
 ```js
 GET /v1/backups/{backend}/{backup_id}
 ```
 
-#### Parameters
+#### パラメーター
 
-##### URL Parameters
+##### URL パラメーター
 
 | Name | Type | Required | Description |
 | ---- | ---- | ---- | ---- |
-| `backend` | string | yes | The name of the backup provider module without the `backup-` prefix, for example `s3`, `gcs`, or `filesystem`. |
-| `backup_id` | string | yes | The user-provided backup identifier that was used when sending the request to create the backup. |
+| `backend` | string | yes | `backup-` プレフィックスを除いたバックアッププロバイダー モジュールの名前。例：`s3`、`gcs`、`filesystem`。 |
+| `backup_id` | string | yes | バックアップ作成リクエスト時にユーザーが指定したバックアップ識別子。 |
 
-The response contains a `"status"` field. If the status is `SUCCESS`, the backup is complete. If the status is `FAILED`, an additional error is provided.
+レスポンスには `"status"` フィールドが含まれます。ステータスが `SUCCESS` の場合、バックアップは完了しています。ステータスが `FAILED` の場合は追加のエラー情報が返されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -490,9 +492,9 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
   </TabItem>
 </Tabs>
 
-### Cancel Backup
+### バックアップのキャンセル
 
-An ongoing backup can be cancelled at any time. The backup process will be stopped, and the backup will be marked as `CANCELLED`.
+進行中のバックアップはいつでもキャンセルできます。バックアップ プロセスは停止し、バックアップは `CANCELLED` とマークされます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -521,29 +523,29 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
   </TabItem>
 </Tabs>
 
-This operation is particularly useful if you have started a backup by accident, or if you would like to stop a backup that is taking too long.
+この操作は、誤ってバックアップを開始してしまった場合や、時間がかかり過ぎているバックアップを停止したい場合に特に便利です。
 
-### Restore Backup
+### バックアップの復元
 
-You can restore any backup to any machine as long as the name and number of nodes between source and target are identical. The backup does not need to be created on the same instance. Once a backup backend is configured, you can restore a backup with a single request.
+ソースとターゲット間でノードの名前と数が同一であれば、任意のバックアップを任意のマシンへ復元できます。バックアップは同じインスタンスで作成されている必要はありません。バックアップ backend を設定したら、単一のリクエストでバックアップを復元できます。
 
-As with backup creation, the `include` and `exclude` options are mutually exclusive. You can set none or exactly one of those. In a restore operation, `include` and `exclude` are relative to the collections contained in the backup. The restore process is not aware of collections that existed on the source machine if they were not part of the backup.
+バックアップ作成時と同様に、`include` と `exclude` オプションは相互排他的です。どちらも設定しないか、どちらか一方だけを設定してください。復元操作では、`include` と `exclude` はバックアップに含まれるコレクションを基準とします。バックアップに含まれていないソース マシン上のコレクションについて、復元プロセスは認識していません。
 
-Note that a restore fails if any of the collections already exist on this instance.
+なお、復元先インスタンスに同名のコレクションがすでに存在する場合、復元は失敗します。
 
-:::caution Restoring backups from `v1.23.12` and older
-If you are running Weaviate `v1.23.12` or older, first **[update Weaviate](/deploy/migration/index.md) to version 1.23.13** or higher before restoring a backup.
-Versions prior to `v1.23.13` had a bug that could lead to data not being stored correctly from a backup of your data.
+:::caution `v1.23.12` 以前からのバックアップを復元する場合
+Weaviate `v1.23.12` 以前をご利用の場合は、バックアップを復元する前に **[Weaviate をバージョン 1.23.13 以上へ更新](/deploy/migration/index.md)** してください。  
+`v1.23.13` より前のバージョンには、バックアップからデータが正しく保存されない可能性があるバグが存在しました。
 :::
 
-##### Available `config` object properties
+##### 利用可能な `config` オブジェクトのプロパティ
 
-| name | type | required | default | description |
+| 名前 | 型 | 必須 | デフォルト | 説明 |
 | ---- | ---- | ---- | ---- |---- |
-| `cpuPercentage`   | number | no | `50%` | An optional integer to set the desired CPU core utilization ranging from 1%-80%. |
-| `Path`            | string | Required if created at a custom path | `""` | An optional string to manually set the backup location. If not provided, the backup will be restored from the default location. Introduced in Weaviate `v1.27.2`. |
-| `rolesOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
-| `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
+| `cpuPercentage`   | number | いいえ | `50%` | 1%〜80% の範囲で希望する CPU コア使用率を設定するためのオプションの整数です。 |
+| `Path`            | string | カスタムパスで作成する場合は必須 | `""` | バックアップ場所を手動で設定するためのオプションの文字列です。指定しない場合、バックアップはデフォルトのロケーションから復元されます。Weaviate `v1.27.2` で導入されました。 |
+| `rolesOptions`            | string | いいえ | `"noRestore"` | RBAC ロールをバックアップおよび復元するかどうかを手動で設定するためのオプションの文字列です。`"noRestore"` を指定するとロールと権限をバックアップせず、`"all"` を指定するとすべてを含めます。Weaviate `v1.32.0` で導入されました。 |
+| `usersOptions`            | string | いいえ | `"noRestore"` | RBAC ユーザーをバックアップするかどうかを手動で設定するためのオプションの文字列です。`"noRestore"` を指定するとユーザーをバックアップせず、`"all"` を指定するとすべてを含めます。Weaviate `v1.32.0` で導入されました。 |
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -610,13 +612,13 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 </Tabs>
 
 
-#### Asynchronous Status Checking
+#### 非同期ステータスチェック
 
-All client implementations have a "wait for completion" option which will poll the restore status in the background and only return once the restore has completed (successfully or unsuccessfully).
+すべてのクライアント実装には、復元が完了するまでバックグラウンドでステータスをポーリングし、完了（成功または失敗）した時点でのみ結果を返す `wait for completion` オプションがあります。
 
-If you set the "wait for completion" option to false, you can also check the status yourself using the Backup Restore Status API.
+`wait for completion` オプションを false に設定した場合は、ご自身で Backup Restore Status API を使用してステータスを確認できます。
 
-The response contains a `"status"` field. If the status is `SUCCESS`, the restore is complete. If the status is `FAILED`, an additional error is provided.
+レスポンスには `"status"` フィールドが含まれます。ステータスが `SUCCESS` の場合、復元は完了しています。ステータスが `FAILED` の場合は、追加のエラー情報が提供されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -682,62 +684,64 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
   </TabItem>
 </Tabs>
 
-## Kubernetes configuration
 
-When running Weaviate on Kubernetes, you can configure the backup provider using Helm chart values.
+## Kubernetes 構成
 
-These values are available under the `backups` key in the `values.yaml` file. Refer to the inline documentation in the `values.yaml` file for more information.
+ Kubernetes 上で Weaviate を実行する際、Helm chart の values を用いてバックアッププロバイダーを設定できます。
+
+これらの値は `values.yaml` ファイルの `backups` キー配下で指定します。詳細は `values.yaml` 内のインラインドキュメントを参照してください。
 
 <!-- TODO - update this page with proper Helm docs. -->
 
-## Technical Considerations
+## 技術的考慮事項
 
-### Read & Write requests while a backup is running
+### バックアップ実行中の Read & Write リクエスト
 
-The backup process is designed to be minimally invasive to a running setup. Even on very large setups, where terabytes of data need to be copied, Weaviate stays available during backup. It even accepts write requests while a backup process is running. This sections explains how backups work under the hood and why Weaviate can safely accept writes while a backup is copied.
+バックアッププロセスは稼働中のセットアップへの影響を最小限に抑えるよう設計されています。テラバイト級のデータコピーが必要な非常に大規模な環境でも、 Weaviate はバックアップ中も利用可能です。バックアップ実行中であっても Write リクエストを受け付けます。本セクションではバックアップの仕組みと、バックアップ中に Write を安全に受け付けられる理由を説明します。
 
-Weaviate uses a custom [LSM Store](/weaviate/concepts/storage.md#object-and-inverted-index-store) for its object store and inverted index. LSM stores are a hybrid of immutable disk segments and an in-memory structure called a memtable that accepts all writes (including updates and deletes). Most of the time, files on disk are immutable, there are only three situations where files are changed:
+ Weaviate はオブジェクトストアと転置インデックスに独自の [LSM ストア](/weaviate/concepts/storage.md#object-and-inverted-index-store) を使用しています。LSM ストアは不変のディスクセグメントと、書き込み（更新・削除を含む）を受け付けるインメモリ構造である memtable のハイブリッドです。通常、ディスク上のファイルは不変ですが、ファイルが変更されるのは次の 3 つの状況のみです。
 
-1. Anytime a memtable is flushed. This creates a new segment. Existing segments are not changed.
-2. Any write into the memtable is also written into a Write-Ahead-Log (WAL). The WAL is only needed for disaster-recovery. Once a segment has been orderly flushed, the WAL can be discarded.
-3. There is an async background process called Compaction that optimizes existing segments. It can merge two small segments into a single larger segment and remove redundant data as part of the process.
+1. memtable がフラッシュされるたびに新しいセグメントが作成されます。既存のセグメントは変更されません。  
+2. memtable へのすべての書き込みは Write-Ahead-Log (WAL) にも書き込まれます。WAL は災害復旧のためだけに必要です。セグメントが正常にフラッシュされると WAL は破棄できます。  
+3. 既存セグメントを最適化する非同期バックグラウンドプロセス Compaction があり、2 つの小さなセグメントを 1 つの大きなセグメントにマージしたり、冗長データを削除したりします。
 
-Weaviate's Backup implementation makes use of the above properties in the following ways:
+ Weaviate のバックアップ実装は上記の特性を次のように利用します。
 
-1. Weaviate first flushes all active memtables to disk. This process takes in the 10s or 100s of milliseconds. Any pending write requests simply waits for a new memtable to be created without any failing requests or substantial delays.
-2. Now that the memtables are flushed, there is a guarantee: All data that should be part of the backup is present in the existing disk segments. Any data that will be imported after the backup request ends up in new disk segments. The backup references a list of immutable files.
-3. To prevent a compaction process from changing the files on disk while they are being copied, compactions are temporarily paused until all files have been copied. They are automatically resumed right after.
+1. まずすべてのアクティブな memtable をディスクへフラッシュします。この処理は数十〜数百ミリ秒で完了します。保留中の Write リクエストは、新しい memtable が作成されるまで待つだけで、失敗や大きな遅延は発生しません。  
+2. memtable がフラッシュされたことで、バックアップ対象のデータが既存ディスクセグメントに含まれていることが保証されます。バックアップ要求後に取り込まれるデータは新しいディスクセグメントに書き込まれます。バックアップは不変ファイルのリストを参照します。  
+3. コピー中にディスク上のファイルが変更されないよう、Compaction はファイルコピー完了まで一時停止し、その後自動で再開します。  
 
-This way the backup process can guarantee that the files that are transferred to the remote backend are immutable (and thus safe to copy) even with new writes coming in. Even if it takes minutes or hours to backup a very large setup, Weaviate stays available without any user impact while the backup process is running.
+この方法により、リモートバックエンドへ転送されるファイルは不変であり（したがって安全にコピー可能）、新規 Write が届いても問題ありません。数分〜数時間かかる大規模バックアップでも、 Weaviate はバックアップ実行中にユーザーへの影響なく利用できます。
 
-It is not just safe - but even recommended - to create backups on live production instances while they are serving user requests.
+バックアップは安全であるだけでなく、ユーザーリクエストを処理中の本番環境で取得することが推奨されます。
 
-### Async nature of the Backup API
+### Backup API の非同期特性
 
-The backup API is built in a way that no long-running network requests are required. The request to create a new backup returns immediately. It does some basic validation, then returns to the user. The backup is now in status `STARTED`. To get the status of a running backup you can poll the [status endpoint](#asynchronous-status-checking). This makes the backup itself resilient to network or client failures.
+Backup API は長時間のネットワークリクエストを必要としないように設計されています。新しいバックアップ作成リクエストは即時に戻り、基本的なバリデーションのみを実行してからユーザーに応答します。この時点でバックアップのステータスは `STARTED` になります。実行中バックアップのステータスを取得するには、[ステータスエンドポイント](#asynchronous-status-checking) をポーリングしてください。これによりネットワークやクライアントの障害にも強くなります。
 
-If you would like your application to wait for the background backup process to complete, you can use the "wait for completion" feature that is present in all language clients. The clients will poll the status endpoint in the background and block until the status is either `SUCCESS` or `FAILED`. This makes it easy to write simple synchronous backup scripts, even with the async nature of the API.
+アプリケーション側でバックグラウンドのバックアップ完了を待ちたい場合、各言語クライアントに備わる「完了待ち」機能を使用できます。クライアントはバックグラウンドでステータスエンドポイントをポーリングし、ステータスが `SUCCESS` または `FAILED` になるまでブロックします。これにより、API が非同期であってもシンプルな同期バックアップスクリプトを容易に記述できます。
 
-## Other Use cases
+## その他のユースケース
 
-### Migrating to another environment
+### 別環境への移行
 
-The flexibility around backup providers opens up new use cases. Besides using the backup & restore feature for disaster recovery, you can also use it for duplicating environments or migrating between clusters.
+バックアッププロバイダーの柔軟性により、新しいユースケースが生まれます。災害復旧だけでなく、環境複製やクラスター間移行にもバックアップ & リストア機能を利用できます。
 
-For example, consider the following situation: You would like to do a load test on production data. If you would do the load test in production it might affect users. An easy way to get meaningful results without affecting uses it to duplicate your entire environment. Once the new production-like "loadtest" environment is up, create a backup from your production environment and restore it into your "loadtest" environment. This even works if the production environment is running on a completely different cloud provider than the new environment.
+例として、次のような状況を考えてみましょう。プロダクションデータでロードテストを実施したいが、本番環境で行うとユーザーに影響が出るかもしれません。影響を与えず有意義な結果を得る簡単な方法は、環境全体を複製することです。新しい本番相当の「loadtest」環境を立ち上げたら、プロダクション環境でバックアップを作成し、それを「loadtest」環境へリストアします。プロダクション環境がまったく別のクラウドプロバイダー上で稼働していても機能します。
 
-## Troubleshooting and notes
+## トラブルシューティングと注意事項
 
-- Single node backup is available starting in Weaviate `v1.15`. Multi-node backups is available starting in `v1.16`.
-- In some cases, backups can take a long time, or get "stuck", causing Weaviate to be unresponsive. If this happens, you can [cancel the backup](#cancel-backup) and try again.
-- If a backup module is misconfigured, such as having an invalid backup path, it can cause Weaviate to not start. Review the system logs for any errors.
-- RBAC roles and users are not restored by default. You need to enable them manually through the configuration properties when [restoring a backup](#restore-backup).
+- シングルノードバックアップは Weaviate `v1.15` から利用可能です。マルチノードバックアップは `v1.16` から利用可能です。  
+- 場合によってはバックアップに時間がかかったり「停止」状態になったりして、 Weaviate が応答しなくなることがあります。その際は [バックアップをキャンセル](#cancel-backup) して再試行してください。  
+- バックアップモジュールの設定ミス（無効なバックアップパスなど）があると、 Weaviate が起動しないことがあります。システムログでエラーを確認してください。  
+- RBAC のロールとユーザーはデフォルトではリストアされません。 [バックアップをリストア](#restore-backup) する際、設定プロパティで手動有効化が必要です。  
 
-## Related pages
-- <SkipLink href="/weaviate/api/rest#tag/backups">References: REST API: Backups</SkipLink>
+## 関連ページ
+- <SkipLink href="/weaviate/api/rest#tag/backups">リファレンス: REST API: バックアップ</SkipLink>
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

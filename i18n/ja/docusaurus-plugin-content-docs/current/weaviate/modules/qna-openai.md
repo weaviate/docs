@@ -1,57 +1,57 @@
 ---
-title: Question Answering - OpenAI
+title: 質問応答 - OpenAI
 sidebar_position: 41
 image: og/docs/modules/qna-openai.jpg
 # tags: ['qna', 'qna-openai', 'transformers', 'openai']
 ---
 
-:::caution OpenAI generative integration recommended for new projects
-Currently, `qna-openai` is not maintained and uses older models such as `gpt-3.5-turbo-instruct`. For new projects, we recommend using the [OpenAI generative integration](../model-providers/openai/generative.md) instead of `qna-openai`.
+:::caution 新しいプロジェクトには OpenAI 生成統合がおすすめです
+現在、 `qna-openai` は保守されておらず、 `gpt-3.5-turbo-instruct` などの古いモデルを使用しています。新しいプロジェクトでは、 `qna-openai` の代わりに [OpenAI 生成統合](../model-providers/openai/generative.md) を使用することをおすすめします。
 
-Additionally, the generative integration is more versatile and can be used for a wider range of use cases, not limited to question answering. Since `gpt-3.5-turbo-instruct` is not necessarily strictly trained for question answering, there are limited use cases where `qna-openai` is the best choice.
+さらに、この生成統合は汎用性が高く、質問応答に限定されない幅広いユースケースで利用できます。 `gpt-3.5-turbo-instruct` は必ずしも質問応答専用に学習されているわけではないため、 `qna-openai` が最適となるケースは限られています。
 :::
 
 
-## In short
+## 概要
 
-* The OpenAI Question and Answer (Q&A) module is a Weaviate module for answer extraction from data through the OpenAI [completions endpoint](https://platform.openai.com/docs/api-reference/completions) or the Azure OpenAI equivalent.
-* The module depends on a text vectorization module that should be running with Weaviate.
-* The module adds an `ask {}` operator to the GraphQL `Get {}` queries
-* The module returns a max. of 1 answer in the GraphQL `_additional {}` field.
-* The answer with the highest `certainty` (confidence level) will be returned.
-* Added in Weaviate `v1.16.6`
+* OpenAI Question and Answer (Q&A) モジュールは、 OpenAI [completions endpoint](https://platform.openai.com/docs/api-reference/completions) または Azure OpenAI 相当のエンドポイントを通じてデータから回答を抽出するための Weaviate モジュールです。  
+* このモジュールは、 Weaviate と共に稼働しているテキスト ベクトライザー モジュールに依存します。  
+* GraphQL の `Get {}` クエリに `ask {}` オペレーターを追加します。  
+* GraphQL の `_additional {}` フィールドに最大 1 件の回答を返します。  
+* 最も高い `certainty` （信頼度）の回答が返されます。  
+* Weaviate `v1.16.6` で追加されました。  
 
 import OpenAIOrAzureOpenAI from '/_includes/openai.or.azure.openai.mdx';
 
 <OpenAIOrAzureOpenAI/>
 
-## Introduction
+## はじめに
 
-The Question and Answer (Q&A) OpenAI module is a Weaviate module for answer extraction from data. It uses an OpenAI completions endpoint to try and extract an answer from the most relevant docs.
+Question and Answer (Q&A) OpenAI モジュールは、データから回答を抽出するための Weaviate モジュールです。最も関連性の高いドキュメントから回答を抽出するために、 OpenAI の completions エンドポイントを使用します。
 
-This module can be used in GraphQL `Get{...}` queries, as a search operator. The `qna-openai` module tries to find an answer in the data objects of the specified class. If an answer is found within the given `certainty` range, it will be returned in the GraphQL `_additional { answer { ... } }` field. There will be a maximum of 1 answer returned, if this is above the optionally set `certainty`. The answer with the highest `certainty` (confidence level) will be returned.
+このモジュールは、 GraphQL の `Get{...}` クエリで検索オペレーターとして使用できます。 `qna-openai` モジュールは、指定されたクラスのデータオブジェクトから回答を探します。指定した `certainty` 範囲内で回答が見つかった場合、 GraphQL の `_additional { answer { ... } }` フィールドに返されます。回答は最大 1 件で、（オプションで設定した） `certainty` を上回っている場合のみ返されます。最も高い `certainty` （信頼度）を持つ回答が返されます。
 
-## Inference API key
+## 推論 API キー
 
-`qna-openai` requires an API key from OpenAI or Azure OpenAI.
+`qna-openai` を利用するには、 OpenAI または Azure OpenAI の API キーが必要です。
 
 :::tip
-You only need to provide one of the two keys, depending on which service (OpenAI or Azure OpenAI) you are using.
+使用するサービス（OpenAI または Azure OpenAI）に応じて、いずれか一方のキーを用意すれば十分です。
 :::
 
-## Organization name
+## 組織名
 
-:::info Added in `v1.21.1`
+:::info `v1.21.1` で追加
 :::
 
-For requests that require the OpenAI organization name, you can provide it at query time by adding it to the HTTP header:
-- `"X-OpenAI-Organization": "YOUR-OPENAI-ORGANIZATION"` for OpenAI
+OpenAI の組織名が必要なリクエストでは、クエリ時に HTTP ヘッダーへ次のように追加できます。  
+- `"X-OpenAI-Organization": "YOUR-OPENAI-ORGANIZATION"` （OpenAI）
 
-### Providing the key to Weaviate
+### Weaviate へのキー提供
 
-You can provide your API key in two ways:
+API キーは次の 2 つの方法で設定できます。
 
-1. During the **configuration** of your Docker instance, by adding `OPENAI_APIKEY` or `AZURE_APIKEY` as appropriate under `environment` to your `Docker Compose` file, like this:
+1. **構成時** — Docker インスタンスの設定中に、`Docker Compose` ファイルの `environment` セクションへ `OPENAI_APIKEY` または `AZURE_APIKEY`（サービスに応じて）を追加します。例:
 
   ```yaml
   environment:
@@ -60,27 +60,27 @@ You can provide your API key in two ways:
     ...
   ```
 
-2. At **run-time** (recommended), by providing `"X-OpenAI-Api-Key"` or `"X-Azure-Api-Key"` through the request header. You can provide it using the Weaviate client, like this:
+2. **実行時**（推奨） — リクエストヘッダーに `"X-OpenAI-Api-Key"` または `"X-Azure-Api-Key"` を指定します。Weaviate クライアントを使用する場合の例:
 
 import ClientKey from '/_includes/code/core.client.openai.apikey.mdx';
 
 <ClientKey />
 
-## Module configuration
+## モジュール設定
 
 :::tip
-If you use Weaviate Cloud (WCD), this module is already enabled and pre-configured. You cannot edit the configuration in WCD.
+Weaviate Cloud (WCD) をご利用の場合、このモジュールはすでに有効化・設定済みです。WCD では設定を編集できません。
 :::
 
-### Docker Compose file (Weaviate Database only)
+### Docker Compose ファイル (Weaviate Database のみ)
 
-You can enable the OpenAI Q&A module in your Docker Compose file (e.g. `docker-compose.yml`). Add the `qna-openai` module (alongside any other module you may need) to the `ENABLE_MODULES` property, like this:
+`docker-compose.yml` などの Docker Compose ファイルで OpenAI Q&A モジュールを有効にできます。`ENABLE_MODULES` プロパティに `qna-openai`（および必要な他のモジュール）を追加します。
 
 ```
 ENABLE_MODULES: 'text2vec-openai,qna-openai'
 ```
 
-Here is a full example of a Docker configuration, which uses the `qna-openai` module in combination with `text2vec-openai`:
+以下は、`qna-openai` モジュールと `text2vec-openai` を組み合わせて使用する完全な Docker 構成例です。
 
 ```yaml
 ---
@@ -110,24 +110,22 @@ services:
       CLUSTER_HOSTNAME: 'node1'
 ```
 
-## Schema configuration
+## スキーマ設定
 
-You can define settings for this module in the schema.
+### OpenAI と Azure OpenAI の違い
 
-### OpenAI vs Azure OpenAI
+- **OpenAI** を利用する場合、`model` パラメーターは任意です。  
+- **Azure OpenAI** を利用する場合、`resourceName` と `deploymentId` の設定が必須です。  
 
-- **OpenAI** users can optionally set the `model` parameter.
-- **Azure OpenAI** users must set the parameters `resourceName` and `deploymentId`.
+### モデルパラメーター
 
-### Model parameters
+下記のパラメーターを通じて、モデルの追加設定も行えます。
 
-You can also configure additional parameters for the model through the parameters shown below.
+### スキーマ例
 
-### Example schema
+次のスキーマ設定では、`Document` クラスで `qna-openai` モデルを使用します。
 
-For example, the following schema configuration will set Weaviate to use the `qna-openai` model with the `Document` class.
-
-The following schema configuration uses the `gpt-3.5-turbo-instruct` model.
+この設定では `gpt-3.5-turbo-instruct` モデルを指定しています。
 
 ```json
 {
@@ -162,41 +160,43 @@ The following schema configuration uses the `gpt-3.5-turbo-instruct` model.
 }
 ```
 
-For information on how to use the individual parameters you [can check here](https://platform.openai.com/docs/api-reference/completions)
+個々のパラメーターの使い方については [こちら](https://platform.openai.com/docs/api-reference/completions) を参照してください。
 
-## How to use
+## 使い方
 
-This module adds a search operator to GraphQL `Get{...}` queries: `ask{}`. This operator takes the following arguments:
+このモジュールは、 GraphQL の `Get{...}` クエリに `ask{}` という検索オペレーターを追加します。`ask{}` は以下の引数を受け取ります。
 
-| Field | Data Type | Required | Example value | Description |
+| フィールド | データ型 | 必須 | 例 | 説明 |
 |- |- |- |- |- |
-| `question`  | string | yes | `"What is the name of the Dutch king?"` | The question to be answered. |
-| `properties`  | list of strings | no | `["summary"]` | The properties of the queries Class which contains text. If no properties are set, all are considered. |
+| `question`  | string | yes | `"What is the name of the Dutch king?"` | 回答を求める質問。 |
+| `properties`  | list of strings | no | `["summary"]` | テキストを含むクラスのプロパティ。未指定の場合、すべてのプロパティが対象。 |
 
-Notes:
+注意:
 
-* The GraphQL `Explore { }` function does support the `ask` searcher, but the result is only a beacon to the object containing the answer. It is thus not any different from performing a nearText semantic search with the question. No extraction is happening.
-* You cannot use the `'ask'` operator along with a `'neaXXX'` operator!
+* GraphQL の `Explore { }` でも `ask` サーチャーは使えますが、結果は回答を含むオブジェクトへのビーコンのみです。そのため、質問で `nearText` セマンティック検索を行うのと実質的に同じで、抽出は行われません。  
+* `'ask'` オペレーターは `'neaXXX'` 系オペレーターと同時に使用できません。  
 
-### Example query
+### クエリ例
 
 import CodeQNAOpenAIAsk from '/_includes/code/qna-openai.ask.mdx';
 
 <CodeQNAOpenAIAsk/>
 
-### GraphQL response
 
-The answer is contained in a new GraphQL `_additional` property called `answer`. It contains the following fields:
 
-* `hasAnswer` (`boolean`): could an answer be found?
-* `result` (nullable `string`): An answer if one could be found. `null` if `hasAnswer==false`
-* `property` (nullable `string`): The property which contains the answer. `null` if `hasAnswer==false`
-* `startPosition` (`int`): The character offset where the answer starts. `0` if `hasAnswer==false`
-* `endPosition` (`int`): The character offset where the answer ends `0` if `hasAnswer==false`
+### GraphQL レスポンス
 
-Note: `startPosition`, `endPosition` and `property` in the response are not guaranteed to be present. They are calculated by a case-insensitive string matching function against the input text. If the transformer model formats the output differently (e.g. by introducing spaces between tokens which were not present in the original input), the calculation of the position and determining the property fails.
+回答は、新しい GraphQL の `_additional` プロパティ `answer` に含まれます。`answer` には次のフィールドがあります。
 
-### Example response
+* `hasAnswer` (`boolean`): 回答を見つけられたかどうか  
+* `result` (nullable `string`): 回答が見つかった場合の回答。`hasAnswer==false` の場合は `null`  
+* `property` (nullable `string`): 回答を含むプロパティ。`hasAnswer==false` の場合は `null`  
+* `startPosition` (`int`): 回答が始まる文字オフセット。`hasAnswer==false` の場合は `0`  
+* `endPosition` (`int`): 回答が終わる文字オフセット。`hasAnswer==false` の場合は `0`
+
+注: レスポンスの `startPosition`、`endPosition`、`property` は常に存在するとは限りません。これらは入力テキストに対して大文字小文字を無視した文字列一致関数で計算されます。もしトランスフォーマーモデルが出力を異なる形式で返した場合 (例: 元の入力にはなかったトークン間にスペースを挿入するなど)、位置計算やプロパティの特定に失敗します。
+
+### レスポンス例
 
 ```json
 {
@@ -217,29 +217,29 @@ Note: `startPosition`, `endPosition` and `property` in the response are not guar
 }
 ```
 
-### Token limits
+### トークン制限
 
-If the number of input tokens exceed the limit of the model, the module will return the OpenAI API's error.
+入力トークン数がモデルの上限を超えた場合、モジュールは OpenAI API のエラーを返します。
 
-## How it works (under the hood)
+## 仕組み (内部動作)
 
-Under the hood, the model uses a two-step approach. First it performs a semantic search to find the documents (e.g. a Sentence, Paragraph, Article, etc.) most likely to contain the answer. In a second step, Weaviate creates the required prompt as an input to an external call made to the OpenAI Completions endpoint. Weaviate uses the most relevant documents to establish a prompt for which OpenAI extracts the answer. There are three possible outcomes:
+内部では 2 段階のアプローチを使用します。まず、質問の回答を含む可能性が最も高いドキュメント (Sentence、Paragraph、Article など) を見つけるためにセマンティック検索を行います。次に、Weaviate が OpenAI Completions エンドポイントへの外部呼び出しに必要なプロンプトを生成します。もっとも関連性の高いドキュメントを使ってプロンプトを作成し、OpenAI が回答を抽出します。結果は次の 3 つのいずれかです。
 
-1. No answer was found because the question can not be answered,
-2. An answer was found, but did not meet the user-specified minimum certainty, so it was discarded (typically the case when the document is on topic, but does not contain an actual answer to the question), and
-3. An answer was found that matches the desired certainty. It is returned to the user.
+1. 質問に回答できず、回答が見つからなかった  
+2. 回答は見つかったが、ユーザーが指定した最小確信度を満たさず破棄された (通常、ドキュメントがトピックに関連しているものの実際の回答が含まれていない場合)  
+3. 望ましい確信度を満たす回答が見つかり、ユーザーに返される  
 
-The module performs a semantic search under the hood, so a `text2vec-...` module is required. It does not need to be of the same type as the `qna-...` module. For example, you can use a `text2vec-contextionary` module to perform the semantic search, and a `qna-openai` module to extract the answer.
+モジュールは内部でセマンティック検索を実行するため、`text2vec-...` モジュールが必要です。ただし、`qna-...` モジュールと同じタイプである必要はありません。たとえば、セマンティック検索には `text2vec-contextionary`、回答抽出には `qna-openai` を使用できます。
 
-## Additional information
+## 追加情報
 
-### Available models
+### 利用可能なモデル
 
-We recommend using:
+推奨モデル:
 
 - `gpt-3.5-turbo-instruct`
 
-The following models are now deprecated:
+以下のモデルは廃止予定です:
 
 - `text-ada-001`
 - `text-babbage-001`
@@ -247,8 +247,9 @@ The following models are now deprecated:
 - `text-davinci-002`
 - `text-davinci-003`
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

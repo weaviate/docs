@@ -1,59 +1,59 @@
 ---
-title: "Contextionary Vectorizer"
-description: Use Text2Vec Contextionary in Weaviate for improved context-based text vectorization.
+title: "Contextionary ベクトライザー"
+description: Weaviate で Text2Vec Contextionary を使用し、コンテキストに基づくテキスト ベクトル化を向上させます。
 sidebar_position: 10
 image: og/docs/modules/text2vec-contextionary.jpg
 # tags: ['text2vec', 'text2vec-contextionary', 'contextionary']
 ---
 
-The `text2vec-contextionary` module enables Weaviate to obtain vectors locally using a lightweight model.
+`text2vec-contextionary` モジュールを使用すると、軽量モデルでローカルにベクトルを取得できます。
 
 :::caution Deprecated module
-The `Contextionary` model is old, and not recommended for any use cases. Instead, we recommend using other modules.
+`Contextionary` モデルは古く、どのユースケースにも推奨されません。代わりに他のモジュールをご利用ください。
 
-If you are looking for a local, lightweight model for testing or development purposes, try [the `text2vec-model2vec` module](../model-providers/model2vec/embeddings.md).
+ローカルかつ軽量なモデルをテストや開発目的でお探しの場合は、[`text2vec-model2vec` モジュール](../model-providers/model2vec/embeddings.md) をお試しください。
 
-For cases where the vector quality is important, such as in production, we recommend using [other model integrations](../model-providers/index.md) that use a more modern, transformer-based architecture.
+本番環境などでベクトル品質が重要な場合は、よりモダンな Transformer ベースのアーキテクチャを採用している[他のモデル統合](../model-providers/index.md)を推奨します。
 :::
 
-Key notes:
+主なポイント:
 
-- This module is not available on Weaviate Cloud (WCD).
-- Enabling this module will enable the [`nearText` search operator](/weaviate/api/graphql/search-operators.md#neartext).
-- This module is based on FastText and uses a weighted mean of word embeddings (WMOWE) to produce the vector.
-- Available for multiple languages
+- このモジュールは Weaviate Cloud (WCD) では利用できません。
+- モジュールを有効にすると、[`nearText` 検索オペレーター](/weaviate/api/graphql/search-operators.md#neartext) が使用可能になります。
+- このモジュールは FastText に基づき、語彙の重み付き平均 (WMOWE) を使用してベクトルを生成します。
+- 複数言語に対応しています。
 
-## Weaviate instance configuration
+## Weaviate インスタンス設定
 
 :::info Not applicable to WCD
-This module is not available on Weaviate Cloud.
+このモジュールは Weaviate Cloud では利用できません。
 :::
 
-### Docker Compose file
+### Docker Compose ファイル
 
-To use `text2vec-contextionary`, you must enable it in your Docker Compose file (e.g. `docker-compose.yml`).
+`text2vec-contextionary` を使うには、Docker Compose ファイル (例: `docker-compose.yml`) で有効化する必要があります。
 
 :::tip Use the configuration tool
-While you can do so manually, we recommend using the [Weaviate configuration tool](/deploy/installation-guides/docker-installation.md#configurator) to generate the `Docker Compose` file.
+手動でも設定できますが、[`Weaviate` 設定ツール](/deploy/installation-guides/docker-installation.md#configurator)を使用して `Docker Compose` ファイルを生成することを推奨します。
 :::
 
-#### Parameters
+#### パラメーター
 
 Weaviate:
 
-- `ENABLE_MODULES` (Required): The modules to enable. Include `text2vec-contextionary` to enable the module.
-- `DEFAULT_VECTORIZER_MODULE` (Optional): The default vectorizer module. You can set this to `text2vec-contextionary` to make it the default for all classes.
+- `ENABLE_MODULES` (必須): 有効にするモジュール。`text2vec-contextionary` を含めてください。
+- `DEFAULT_VECTORIZER_MODULE` (任意): 既定のベクトライザーモジュール。`text2vec-contextionary` を設定すると、すべてのクラスで既定になります。
 
 Contextionary:
 
-* `EXTENSIONS_STORAGE_MODE`: Location of storage for extensions to the Contextionary
-* `EXTENSIONS_STORAGE_ORIGIN`: The host of the custom extension storage
-* `NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE`: this can be used to hide very rare words. If you set it to '5', this means the 5th percentile of words by occurrence are removed in the nearestNeighbor search (for example used in the GraphQL `_additional { nearestNeighbors }` feature).
-* `ENABLE_COMPOUND_SPLITTING`: see [here](#compound-splitting).
+* `EXTENSIONS_STORAGE_MODE`: Contextionary の拡張を保存する場所  
+* `EXTENSIONS_STORAGE_ORIGIN`: カスタム拡張ストレージのホスト  
+* `NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE`: 非常にまれな単語を非表示にできます。たとえば `5` を設定すると、出現頻度の第 5 パーセンタイルに当たる単語が最近傍探索 (GraphQL の `_additional { nearestNeighbors }` 機能など) から除外されます。  
+* `ENABLE_COMPOUND_SPLITTING`: [こちら](#compound-splitting) を参照してください。  
 
-#### Example
+#### 例
 
-This configuration enables `text2vec-contextionary`, sets it as the default vectorizer, and sets the parameters for the Contextionary Docker container.
+この設定では `text2vec-contextionary` を有効化し、既定のベクトライザーとして設定し、Contextionary 用 Docker コンテナのパラメーターを指定しています。
 
 ```yaml
 ---
@@ -95,25 +95,25 @@ services:
 ...
 ```
 
-## Collection configuration
+## コレクション設定
 
-You can configure how the module will behave in each class through the [collection configuration](../manage-collections/vector-config.mdx).
+各クラスでのモジュール動作は、[コレクション設定](../manage-collections/vector-config.mdx)で制御できます。
 
-### Vectorization settings
+### ベクトル化設定
 
-You can set vectorizer behavior using the `moduleConfig` section under each class and property:
+クラスおよびプロパティごとに、`moduleConfig` セクションでベクトライザーの動作を設定できます。
 
-#### Class-level
+#### クラスレベル
 
-- `vectorizer` - what module to use to vectorize the data.
-- `vectorizeClassName` – whether to vectorize the class name. Default: `true`.
+- `vectorizer` – データのベクトル化に使用するモジュール  
+- `vectorizeClassName` – クラス名をベクトル化するかどうか。既定値: `true`  
 
-#### Property-level
+#### プロパティレベル
 
-- `skip` – whether to skip vectorizing the property altogether. Default: `false`
-- `vectorizePropertyName` – whether to vectorize the property name. Default: `false`
+- `skip` – プロパティのベクトル化を完全にスキップするかどうか。既定値: `false`  
+- `vectorizePropertyName` – プロパティ名をベクトル化するかどうか。既定値: `false`  
 
-#### Example
+#### 例
 
 ```json
 {
@@ -151,15 +151,15 @@ You can set vectorizer behavior using the `moduleConfig` section under each clas
 }
 ```
 
-### Class/property names
+### クラス / プロパティ名
 
-If you are using this module and are vectorizing the class or property name, the name(s) must be a part of the `text2vec-contextionary`.
+このモジュールを使用し、クラス名やプロパティ名をベクトル化する場合、それらの名前は `text2vec-contextionary` に含まれている必要があります。
 
-To use multiple words as a class or property definition, concatenate them as:
-- camel case (e.g. `bornIn`) for class or property names, or
-- snake case (e.g. `born_in`) for property names.
+複数語をクラスまたはプロパティ定義に使用する場合は、以下のように結合してください。
+- クラス名やプロパティ名: camelCase (例: `bornIn`)  
+- プロパティ名: snake_case (例: `born_in`)  
 
-For example, the following are acceptable:
+たとえば、次の例はすべて有効です。
 
 ```yaml
 Publication
@@ -179,56 +179,56 @@ Author
   writesFor
 ```
 
-## Usage example
+## 使用例
 
-This is an example of a `nearText` query with `text2vec-contextionary`.
+`text2vec-contextionary` を使った `nearText` クエリの例です。
 
 import CodeNearText from '/_includes/code/graphql.filters.nearText.mdx';
 
 <CodeNearText />
 
-## Additional information
+## 追加情報
 
-### Find concepts
+### コンセプトの検索
 
-To find concepts or words or to check if a concept is part of the Contextionary, use the `v1/modules/text2vec-contextionary/concepts/<concept>` endpoint.
+概念や単語を検索したり、コンセプトが Contextionary に含まれているか確認したりするには、`v1/modules/text2vec-contextionary/concepts/<concept>` エンドポイントを使用します。
 
 ```js
 GET /v1/modules/text2vec-contextionary/concepts/<concept>
 ```
 
-#### Parameters
+#### パラメーター
 
-The only parameter `concept` is a string that should be camelCased in case of compound words or a list of words.
+唯一のパラメーター `concept` は文字列で、複合語の場合は camelCase、または単語のリストを指定します。
 
-#### Response
+#### レスポンス
 <!-- TODO: (phase 2) can we make a list of parameters like this look better? -->
-The result contains the following fields:
-- `"individualWords"`: a list of the results of individual words or concepts in the query, which contains:
-  - `"word"`: a string of requested concept or single word from the concept.
-  - `"present"`: a boolean value which is `true` if the word exists in the Contextionary.
-  - `"info"`: an object with the following fields:
-    - `""nearestNeighbors"`: a list with the nearest neighbors, containing `"word"` and `"distance"` (between the two words in the high dimensional space). Note that `"word"` can also be a data object.
-    - `"vector"`: the raw 300-long vector value.
-  - `"concatenatedWord"`: an object of the concatenated concept.
-    - `"concatenatedWord"`: the concatenated word if the concept given is a camelCased word.
-      - `"singleWords"`: a list of the single words in the concatenated concept.
-      - `"concatenatedVector"`: a list of vector values of the concatenated concept.
-      - `"concatenatedNearestNeighbors"`: a list with the nearest neighbors, containing `"word"` and `"distance"` (between the two words in the high dimensional space). Note that `"word"` can also be a data object.
+結果には以下のフィールドが含まれます:
+- `"individualWords"`: クエリ内の各単語またはコンセプトの結果リスト  
+  - `"word"`: 要求したコンセプトまたは単語  
+  - `"present"`: 単語が Contextionary に存在する場合は `true`  
+  - `"info"`: 次のフィールドを持つオブジェクト  
+    - `""nearestNeighbors"`: 最近傍のリストで、`"word"` と高次元空間での `"distance"` を含みます。`"word"` にはデータオブジェクトが含まれる場合もあります。  
+    - `"vector"`: 300 次元の生ベクトル値  
+  - `"concatenatedWord"`: 結合されたコンセプトのオブジェクト  
+    - `"concatenatedWord"`: 指定したコンセプトが camelCase の場合、その結合語  
+      - `"singleWords"`: 結合コンセプト内の単語リスト  
+      - `"concatenatedVector"`: 結合コンセプトのベクトル値リスト  
+      - `"concatenatedNearestNeighbors"`: 最近傍のリストで、`"word"` と高次元空間での `"distance"` を含みます。`"word"` にはデータオブジェクトが含まれる場合もあります。
 
-#### Example
+#### 例
 
 ```bash
 curl http://localhost:8080/v1/modules/text2vec-contextionary/concepts/magazine
 ```
 
-or (note the camelCased compound concept)
+または ( camelCased の複合コンセプトである点に注意してください)
 
 import CodeContextionary from '/_includes/code/contextionary.get.mdx';
 
 <CodeContextionary />
 
-with a result similar to:
+結果は次のようになります:
 
 ```json
 {
@@ -273,66 +273,66 @@ with a result similar to:
 }
 ```
 
-### Model details
+### モデル詳細
 
-`text2vec-contextionary` (Contextionary) is Weaviate's own language vectorizer that is trained using [fastText](https://fasttext.cc/) on Wiki and CommonCrawl data.
+`text2vec-contextionary` (Contextionary) は、Wiki と CommonCrawl データに対して [fastText](https://fasttext.cc/) を用いて学習された Weaviate 独自の言語 ベクトライザー です。
 
-The `text2vec-contextionary` model outputs a 300-dimensional vector. This vector is computed by using a Weighted Mean of Word Embeddings (WMOWE) technique.
+`text2vec-contextionary` モデルは 300 次元の ベクトル を出力します。この ベクトル は Weighted Mean of Word Embeddings (WMOWE) 手法によって計算されます。
 
-The vector is calculated based on the centroid of the words weighted by the occurrences of the individual words in the original training text-corpus (e.g., the word `"has"` is seen as less important than the word `"apples"`).
+この ベクトル は、元の学習テキストコーパスにおける各単語の出現回数で重み付けされた単語のセントロイドに基づいて計算されます (例: 単語 `"has"` は 単語 `"apples"` よりも重要度が低いと見なされます)。
 
-![data to vector with contextionary](./img/data2vec-c11y.svg "data to vector with contextionary")
+![contextionary を用いたデータから ベクトル への変換](./img/data2vec-c11y.svg "contextionary を用いたデータから ベクトル への変換")
 
-### Available languages
+### 利用可能な言語
 
-Contextionary models are available for the following languages:
+Contextionary モデルは以下の言語で利用できます:
 
-* Trained with on CommonCrawl and Wiki, using GloVe
+* CommonCrawl と Wiki を用い、GloVe で学習
   * English
   * Dutch
   * German
   * Czech
   * Italian
-* Trained on Wiki
+* Wiki で学習
   * English
   * Dutch
 
-### Extending the Contextionary
+### Contextionary の拡張
 
-Custom words or abbreviations (i.e., "concepts") can be added to `text2vec-contextionary` through the `v1/modules/text2vec-contextionary/extensions/` endpoint.
+カスタムの単語や略語 (すなわち「コンセプト」) は、`v1/modules/text2vec-contextionary/extensions/` エンドポイントを通じて `text2vec-contextionary` に追加できます。
 
-Using this endpoint will enrich the Contextionary with your own words, abbreviations or concepts in context by [transfer learning](https://en.wikipedia.org/wiki/Transfer_learning). Using the `v1/modules/text2vec-contextionary/extensions/` endpoint adds or updates the concepts in real-time.
+このエンドポイントを使用すると、[transfer learning](https://en.wikipedia.org/wiki/Transfer_learning) により、独自の単語・略語・コンセプトを Contextionary にコンテキストごと追加して拡充できます。`v1/modules/text2vec-contextionary/extensions/` エンドポイントを使用すると、コンセプトはリアルタイムで追加または更新されます。
 
-Note that you need to introduce the new concepts in to Weaviate before adding the data, as this will note cause Weaviate to automatically update the vectors.
+データを追加する前に新しいコンセプトを Weaviate に導入する必要があります。そうしないと Weaviate が ベクトル を自動更新することはありません。
 
-#### Parameters
+#### パラメーター
 
-A body (in JSON or YAML) with the extension word or abbreviation you want to add to the Contextionary with the following fields includes a:
-- `"concept"`: a string with the word, compound word or abbreviation
-- `"definition"`: a clear description of the concept, which will be used to create the context of the concept and place it in the high dimensional Contextionary space.
-- `"weight"`: a float with the relative weight of the concept (default concepts in the Contextionary have a weight of 1.0)
+Contextionary に追加したい拡張単語または略語を持つボディ (JSON または YAML) には、以下のフィールドを含めます:
+- `"concept"`: 単語、複合語、略語を指定する文字列
+- `"definition"`: コンセプトのコンテキストを作成し、高次元 Contextionary 空間に配置するための明確な説明
+- `"weight"`: コンセプトの相対的重みを表す float 値 (Contextionary 既定のコンセプトは 1.0)
 
-#### Response
+#### レスポンス
 
-The same fields as the input parameters will be in the response body if the extension was successful.
+拡張が成功すると、入力パラメーターと同じフィールドがレスポンスボディに含まれます。
 
-#### Example
+#### 例
 
-Let's add the concept `"weaviate"` to the Contextionary.
+コンセプト `"weaviate"` を Contextionary に追加してみましょう。
 
 import CodeContextionaryExtensions from '/_includes/code/contextionary.extensions.mdx';
 
 <CodeContextionaryExtensions />
 
-You can always check if the new concept exists in the Contextionary:
+新しいコンセプトが Contextionary に存在するかは、いつでも確認できます:
 
 ```bash
 curl http://localhost:8080/v1/modules/text2vec-contextionary/concepts/weaviate
 ```
 
-Note that it is not (yet) possible to extend the Contextionary with concatenated words or concepts consisting of more than one word.
+なお、連結語や複数単語から成るコンセプトで Contextionary を拡張することは (まだ) できません。
 
-You can also overwrite current concepts with this endpoint. Let's say you are using the abbreviation `API` for `Academic Performance Index` instead of `Application Programming Interface`, and you want to reposition this concept in the Contextionary:
+このエンドポイントで既存のコンセプトを上書きすることも可能です。たとえば、`Application Programming Interface` ではなく `Academic Performance Index` を表す略語 `API` を使用しており、このコンセプトを Contextionary で再配置したい場合は次のようにします:
 
 ```bash
 curl \
@@ -346,11 +346,11 @@ curl \
   http://localhost:8080/v1/modules/text2vec-contextionary/extensions
 ```
 
-The meaning of the concept `API` has now changed in your Weaviate setting.
+これで `API` の意味があなたの Weaviate 環境で変更されました。
 
-### Stopwords
+### ストップワード
 
-Note that stopwords are automatically removed from camelCased and CamelCased names.
+camelCased や CamelCased の名前からは、ストップワードが自動的に削除されます。
 
 <!-- ### What stopwords are and why they matter
 
@@ -358,29 +358,29 @@ Stopwords are words that don't add semantic meaning to your concepts and are ext
 
 However, if we remove stopwords from both sentences, they become "car parked street" and "banana lying table". Suddenly there are 0% identical words in the sentences, so it becomes easier to perform vector comparisons. Note at this point we cannot say whether both sentences are related or not. For this we'd need to know how close the vector position of the sentence "car parked street" is to the vector position of "banana lying table". But we do know that the result can now be calculated with a lot less noise. -->
 
-#### Vectorization behavior
+#### ベクトル化の挙動
 
-Stopwords can be useful, so we don't want to encourage you to leave them out completely. Instead Weaviate will remove them during vectorization.
+ストップワードは役立つ場合もあるため、完全に除外することを推奨するわけではありません。代わりに Weaviate は ベクトル化 の際にストップワードを取り除きます。
 
-In most cases you won't even notice that this happens in the background, however, there are a few edge cases that might cause a validation error:
+多くの場合、この処理は裏側で行われるため気付きませんが、検証エラーを引き起こす可能性があるいくつかのエッジケースがあります:
 
-* If your camelCased class or property name consists **only** of stopwords, validation will fail. Example: `TheInA` is not a valid class name, however, `TheCarInAField` is (and would internally be represented as `CarField`).
+* camelCased のクラス名またはプロパティ名がストップワード **のみ** で構成されている場合、検証は失敗します。例: `TheInA` は無効ですが、`TheCarInAField` は有効です (内部では `CarField` として扱われます)。
 
-* If your keyword list contains stop words, they will be removed. However, if every single keyword is a stop word, validation will fail.
+* キーワードリストにストップワードが含まれている場合、それらは削除されます。ただし、すべてのキーワードがストップワードである場合、検証は失敗します。
 
-#### How does Weaviate decide whether a word is a stop word or not?
+#### Weaviate によるストップワードの判定方法
 
-The list of stopwords is derived from the Contextionary version used and is published alongside the Contextionary files.
+ストップワードのリストは使用している Contextionary バージョンから派生しており、Contextionary ファイルと一緒に公開されています。
 
-### Compound splitting
+### 複合語分割
 
-Sometimes Weaviate's Contextionary does not understand words which are compounded out of words it would otherwise understand. This impact is far greater in languages that allow for arbitrary compounding (such as Dutch or German) than in languages where compounding is not very common (such as English).
+Weaviate の Contextionary が、本来理解できるはずの単語から成る複合語を理解できないことがあります。この影響は、任意の複合語が許される言語 (オランダ語やドイツ語など) では大きく、複合語があまり一般的でない言語 (英語など) では小さくなります。
 
-#### Effect
+#### 効果
 
-Imagine you import an object of class `Post` with content `This is a thunderstormcloud`. The arbitrarily compounded word `thunderstormcloud` is not present in the Contextionary. So your object's position will be made up of the only words it recognizes: `"post", "this"` (`"is"` and `"a"` are removed as stopwords).
+クラス `Post` のオブジェクトを `This is a thunderstormcloud` という内容でインポートすると仮定します。任意に複合された `thunderstormcloud` という単語は Contextionary に存在しません。そのため、オブジェクトの位置は Contextionary が認識する `"post", "this"` のみで決定されます (`"is"` と `"a"` はストップワードのため削除)。
 
-If you check how this content was vectorized using the `_interpretation` feature, you will see something like the following:
+`_interpretation` 機能を使ってこの内容がどのように ベクトル化 されたかを確認すると、次のようになります:
 
 ```json
 "_interpretation": {
@@ -399,7 +399,7 @@ If you check how this content was vectorized using the `_interpretation` feature
 }
 ```
 
-To overcome this limitation the optional **Compound Splitting Feature** can be enabled in the Contextionary. It will understand the arbitrary compounded word and interpret your object as follows:
+この制限を克服するには、オプションの **Compound Splitting Feature** を Contextionary で有効にします。これにより任意の複合語を理解し、オブジェクトを次のように解釈します:
 
   ```json
 "_interpretation": {
@@ -423,30 +423,31 @@ To overcome this limitation the optional **Compound Splitting Feature** can be e
 }
   ```
 
-Note that the newly found word (made up of the parts `thunderstorm` and `cloud` has the highest weight in the vectorization. So this meaning, which would have been lost without Compound Splitting, can now be recognized.
+新しく見つかった単語 ( `thunderstorm` と `cloud` から構成) が ベクトル化 で最も高い重みを持つ点に注意してください。Compound Splitting がなければ失われていたこの意味を、いまや認識できます。
 
-#### How to enable
-You can enable Compound Splitting in the Docker Compose file of the `text2vec-contextionary`. See how this is done [here](#compound-splitting).
+#### 有効化方法
 
-#### Trade-Off Import speed vs Word recognition
+`text2vec-contextionary` の Docker Compose ファイルで Compound Splitting を有効にできます。設定方法の詳細は [こちら](#compound-splitting) をご覧ください。
 
-Compound Splitting runs an any word that is otherwise not recognized. Depending on your dataset, this can lead to a significantly longer import time (up to 100% longer). Therefore, you should carefully evaluate whether the higher precision in recognition or the faster import times are more important to your use case. As the benefit is larger in some languages (e.g. Dutch, German) than in others (e.g. English) this feature is turned off by default.
+#### インポート速度と単語認識のトレードオフ
 
-### Noise filtering
+Compound Splitting は、通常は認識されない単語に対して実行されます。データセットによっては、インポート時間が最大で 100% 長くなる可能性があります。そのため、より高い認識精度と高速なインポートのどちらがご利用のユースケースにとって重要かを慎重に評価してください。この機能のメリットは言語によって異なり（例：オランダ語やドイツ語では大きく、英語では小さい）、デフォルトではオフになっています。
 
-So called "noise words" are concatenated words of random words with no easily recognizable meaning. These words are present in the Contextionary training space, but are extremely rare and therefore distributed seemingly randomly. As a consequence, an "ordinary" result of querying features relying on nearest neighbors (additional properties `nearestNeighbors` or `semanticPath`) might contain such noise words as immediate neighbors.
+### ノイズ フィルタリング
 
-To combat this noise, a neighbor filtering feature was introduced in the contextionary, which ignores words of the configured bottom percentile - ranked by occurrence in the respective training set. By default this value is set to the bottom 5th percentile. This setting can be overridden. To set another value, e.g. to ignore the bottom 10th percentile, provide the environment variable `NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE=10` to the `text2vec-contextionary` container, in the Docker Compose file.
+「ノイズ ワード」とは、容易に意味を判別できないランダムな単語の連結語を指します。これらの単語は Contextionary の学習空間に存在しますが、極めてまれであるためランダムに分布しています。その結果、最近傍検索に依存する機能（追加プロパティ `nearestNeighbors` または `semanticPath`）でクエリを実行すると、こうしたノイズ ワードが直近の近傍として返される場合があります。
 
-## Model license(s)
+このノイズに対処するため、Contextionary には近傍フィルタリング機能が導入されており、学習セット内での出現回数に基づいて下位パーセンタイルの単語を無視します。デフォルトでは下位 5 パーセンタイルが除外対象です。この設定は上書き可能で、たとえば下位 10 パーセンタイルを無視したい場合は、Docker Compose ファイルで `text2vec-contextionary` コンテナに環境変数 `NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE=10` を指定してください。
 
-The `text2vec-contextionary` module is based on the [`fastText`](https://github.com/facebookresearch/fastText/tree/main) library, which is released under the MIT license. See the [license file](https://github.com/facebookresearch/fastText/blob/main/LICENSE) for more information.
+## モデル ライセンス
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+`text2vec-contextionary` モジュールは、MIT ライセンスで公開されている [`fastText`](https://github.com/facebookresearch/fastText/tree/main) ライブラリに基づいています。詳細については [license file](https://github.com/facebookresearch/fastText/blob/main/LICENSE) をご確認ください。
 
+本ライブラリのライセンス条件が、ご利用目的に適切かどうかを評価する責任は利用者にあります。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

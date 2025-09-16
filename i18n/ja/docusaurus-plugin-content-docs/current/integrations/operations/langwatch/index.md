@@ -3,18 +3,20 @@ title: LangWatch
 sidebar_position: 3
 image: og/integrations/home.jpg
 ---
-[LangWatch](https://langwatch.ai/) is an LLM operations platform that offers tools to control the quality of your AI application. 
+[LangWatch](https://langwatch.ai/) は、AI アプリケーションの品質を管理するための LLM オペレーション プラットフォームです。 
 
-## LangWatch and Weaviate
-Connect LangWatch to your Weaviate instance to log operational traces.
+## LangWatch と Weaviate
+LangWatch をお使いの Weaviate インスタンスに接続し、運用トレースを記録します。
 
-LangWatch also connects to DSPy to track the performance of each prompt paraphrasing.
+LangWatch は DSPy にも接続し、各プロンプトのパラフレーズの性能を追跡します。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース 
+[ **ハンズオン学習** ](#hands-on-learning): エンドツーエンドのチュートリアルで技術理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| DSPy with Weaviate + LangWatch DSPy Visualizer | This notebook shows an example of DSPy RAG program using Weaviate as the vector database and LangWatch for visualization of the DSPy optimization process. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/langwatch/weaviate_dspy_visualization.ipynb) |
+| Weaviate と DSPy + LangWatch DSPy Visualizer | このノートブックでは、ベクトルデータベースとして Weaviate を使用し、LangWatch で DSPy の最適化プロセスを可視化する DSPy RAG プログラムの例を紹介します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/operations/langwatch/weaviate_dspy_visualization.ipynb) |
+
+

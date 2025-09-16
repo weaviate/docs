@@ -3,36 +3,38 @@ title: LangChain
 sidebar_position: 4
 ---
 
-[LangChain](https://python.langchain.com/v0.2/docs/introduction/) is a framework for building applications that use large language models (LLMs).
+[ LangChain ](https://python.langchain.com/v0.2/docs/introduction/) は、大規模言語モデル（ LLM ）を利用するアプリケーションを構築するためのフレームワークです。
 
-## LangChain and Weaviate
-Weaviate is a supported [vector store](https://python.langchain.com/v0.2/docs/integrations/vectorstores/weaviate/#step-1-data-import) in LangChain. You will need a running Weaviate cluster to use the integration.
+## LangChain と Weaviate
+Weaviate は、 LangChain でサポートされている ベクトル ストアです。統合を利用するには、稼働中の Weaviate クラスターが必要です。
 
-Connect LangChain to your Weaviate cluster:
+お使いの Weaviate クラスターに LangChain を接続します:  
 ```python
 weaviate_client = weaviate.connect_to_local()
 db = WeaviateVectorStore.from_documents(docs, embeddings, client=weaviate_client)
 ```
 
-## Our Resources
-The resources are broken into two categories:
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+これらのリソースは 2 つのカテゴリに分かれています:
+1. [**ハンズオン学習**](#hands-on-learning)：エンドツーエンドのチュートリアルで技術的な理解を深めます。
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+2. [**読む・聴く**](#read-and-listen)：これらの技術に関する概念的理解を深めます。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| LangChain LCEL | A notebook that defines a language program with LangChain LCEL, compiles it with DSPy, and converts it back to LangChain LCEL. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/LCEL/RAG-with-LangChain-LCEL-and-DSPy.ipynb) |
-| LangChain and Multi-Tenancy | Build a multi-language RAG by multiple PDFs per tenant with Langchain, OpenAI, and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/loading-data/langchain-simple-pdf-multitenant.ipynb) |
-| Multi-Language RAG | Simple notebook showing you how to build a RAG application using LangChain and Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/loading-data/langchain-simple-pdf.ipynb) |
-| LangChain and Weaviate Query Agent | Use the Weaviate Query Agent as a tool with LangChain. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/agents/langchain-weaviate-query-agent.ipynb) |
+| LangChain LCEL | LangChain LCEL で言語プログラムを定義し、それを DSPy でコンパイルし、再び LangChain LCEL に変換するノートブックです。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/LCEL/RAG-with-LangChain-LCEL-and-DSPy.ipynb) |
+| LangChain とマルチテナンシー | LangChain、 OpenAI、 Weaviate を使用し、テナントごとに複数の PDF を取り込んで多言語 RAG を構築します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/loading-data/langchain-simple-pdf-multitenant.ipynb) |
+| 多言語 RAG | LangChain と Weaviate を使って RAG アプリケーションを構築する方法を示すシンプルなノートブックです。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/loading-data/langchain-simple-pdf.ipynb) |
+| LangChain と Weaviate Query エージェント | Weaviate Query エージェントを LangChain のツールとして使用します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/langchain/agents/langchain-weaviate-query-agent.ipynb) |
 
 
-### Read and Listen
-| Topic | Description | Resource |
+### 読む・聴く
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Combining LangChain and Weaviate | Learn about how Weaviate is integrated in LangChain and the different `CombineDocuments` techniques. | [Blog](https://weaviate.io/blog/combining-langchain-and-weaviate) |
-| Weaviate Podcast #36 | LangChain and Weaviate with Harrison Chase and Bob van Luijt | [Podcast](https://www.youtube.com/watch?v=lhby7Ql7hbk) |
-| Weaviate + LangChain for LLM apps | An overview of how LangChain and Weaviate work together. | [Video](https://youtu.be/7AGj4Td5Lgw?feature=shared) |
+| LangChain と Weaviate の組み合わせ | LangChain における Weaviate との統合方法と、さまざまな `CombineDocuments` 手法について学びます。 | [ブログ](https://weaviate.io/blog/combining-langchain-and-weaviate) |
+| Weaviate Podcast #36 | Harrison Chase と Bob van Luijt による LangChain と Weaviate の対談 | [ポッドキャスト](https://www.youtube.com/watch?v=lhby7Ql7hbk) |
+| LLM アプリのための Weaviate + LangChain | LangChain と Weaviate がどのように連携するかの概要です。 | [動画](https://youtu.be/7AGj4Td5Lgw?feature=shared) |
+
+

@@ -1,33 +1,32 @@
 ---
-title: Question Answering - transformers
-description: Add QnA Transformers to Weaviate for accurate question answering and insights.
+title: 質問応答 - transformers
+description: Weaviate に QnA Transformers を追加して正確な質問応答とインサイトを得ます。
 sidebar_position: 40
 image: og/docs/modules/qna-transformers.jpg
 # tags: ['qna', 'qna-transformers', 'transformers']
 ---
 
+## 概要
 
-## In short
+* Question and Answer (Q&A) モジュールは、データから回答を抽出するための Weaviate モジュールです。  
+* このモジュールは、Weaviate と一緒に実行されるテキストベクトル化モジュールに依存します。  
+* `ask {}` オペレーターを  GraphQL  `Get {}` クエリに追加します。  
+* GraphQL の `_additional {}` フィールド内に最大 1 件の回答を返します。  
+* `certainty`（信頼度）が最も高い回答が返されます。  
 
-* The Question and Answer (Q&A) module is a Weaviate module for answer extraction from data.
-* The module depends on a text vectorization module that should be running with Weaviate.
-* The module adds an `ask {}` operator to the GraphQL `Get {}` queries
-* The module returns a max. of 1 answer in the GraphQL `_additional {}` field.
-* The answer with the highest `certainty` (confidence level) will be returned.
+## はじめに
 
-## Introduction
+Question and Answer (Q&A) モジュールは、データから回答を抽出するための Weaviate モジュールです。BERT 系モデルを使用して回答を検索・抽出します。このモジュールは  GraphQL  `Get{...}` クエリ内で検索オペレーターとして利用できます。`qna-transformers` モジュールは、指定クラスのデータオブジェクト内から回答を探します。指定した `certainty` 範囲内で回答が見つかった場合、GraphQL の `_additional { answer { ... } }` フィールドに返されます。回答は最大 1 件で、設定された（オプション）`certainty` を上回っている場合のみ返却されます。`certainty`（信頼度）が最も高い回答が返されます。
 
-The Question and Answer (Q&A) module is a Weaviate module for answer extraction from data. It uses BERT-related models for finding and extracting answers. This module can be used in GraphQL `Get{...}` queries, as a search operator. The `qna-transformers` module tries to find an answer in the data objects of the specified class. If an answer is found within the given `certainty` range, it will be returned in the GraphQL `_additional { answer { ... } }` field. There will be a maximum of 1 answer returned, if this is above the optionally set `certainty`. The answer with the highest `certainty` (confidence level) will be returned.
+現在利用できる Question Answering モデルは 5 種類あります（出典: [Hugging Face Model Hub](https://huggingface.co/models)）: [`distilbert-base-uncased-distilled-squad (uncased)`](https://huggingface.co/distilbert-base-uncased-distilled-squad)、[`bert-large-uncased-whole-word-masking-finetuned-squad (uncased)`](https://huggingface.co/bert-large-uncased-whole-word-masking-finetuned-squad)、[`distilbert-base-cased-distilled-squad (cased)`](https://huggingface.co/distilbert-base-cased-distilled-squad)、[`deepset/roberta-base-squad2`](https://huggingface.co/deepset/roberta-base-squad2)、[`deepset/bert-large-uncased-whole-word-masking-squad2 (uncased)`](https://huggingface.co/deepset/bert-large-uncased-whole-word-masking-squad2)。すべてのモデルがすべてのデータセットやユースケースで高性能とは限りませんが、ほとんどのデータセットで高い性能を示す `bert-large-uncased-whole-word-masking-finetuned-squad (uncased)` の使用を推奨します（ただしサイズは大きめです）。
 
-There are currently five different Question Answering models available (source: [Hugging Face Model Hub](https://huggingface.co/models)): [`distilbert-base-uncased-distilled-squad (uncased)`](https://huggingface.co/distilbert-base-uncased-distilled-squad), [`bert-large-uncased-whole-word-masking-finetuned-squad (uncased)`](https://huggingface.co/bert-large-uncased-whole-word-masking-finetuned-squad), [`distilbert-base-cased-distilled-squad (cased)`](https://huggingface.co/distilbert-base-cased-distilled-squad), [`deepset/roberta-base-squad2`](https://huggingface.co/deepset/roberta-base-squad2), and [`deepset/bert-large-uncased-whole-word-masking-squad2 (uncased)`](https://huggingface.co/deepset/bert-large-uncased-whole-word-masking-squad2). Note that not all models perform well on every dataset and use case. We recommend to use `bert-large-uncased-whole-word-masking-finetuned-squad (uncased)`, which performs best on most datasets (although it's quite heavyweighted).
+`v1.10.0` 以降では、回答スコアを検索結果のリランキング要因として利用できます。
 
-Starting with `v1.10.0`, the answer score can be used as a reranking factor for the search results.
-
-## How to enable (module configuration)
+## 有効化方法（モジュール設定）
 
 ### Docker Compose
 
-The Q&A module can be added as a service to the Docker Compose file. You must have a text vectorizer like `text2vec-contextionary` or `text2vec-transformers` running. An example Docker Compose file for using the `qna-transformers` module (`bert-large-uncased-whole-word-masking-finetuned-squad (uncased)`) in combination with the `text2vec-transformers`is as follows:
+Q&A モジュールは Docker Compose ファイルにサービスとして追加できます。`text2vec-contextionary` もしくは `text2vec-transformers` などのテキストベクトライザーが必要です。`qna-transformers` モジュール（`bert-large-uncased-whole-word-masking-finetuned-squad (uncased)`）を `text2vec-transformers` と組み合わせて使用する Docker Compose 例は以下のとおりです。
 
 ```yaml
 ---
@@ -76,48 +75,48 @@ services:
 ...
 ```
 
-Variable explanations:
-* `QNA_INFERENCE_API`: where the qna module is running
-* `ENABLE_CUDA`: if set to 1 it uses GPU (if available on the host machine)
+変数の説明:  
+* `QNA_INFERENCE_API`: qna モジュールが稼働している場所  
+* `ENABLE_CUDA`: 1 に設定すると、ホストマシンに GPU があれば使用します  
 
-_Note: at the moment, text vectorization modules cannot be combined in a single setup. This means that you can either enable the `text2vec-contextionary`, the `text2vec-transformers` or no text vectorization module._
+_注: 現時点では、テキストベクトル化モジュールを 1 つのセットアップで併用することはできません。`text2vec-contextionary`、`text2vec-transformers`、あるいはテキストベクトル化モジュールなしのいずれかを選択する必要があります。_
 
-## How to use (GraphQL)
+## 使い方（ GraphQL ）
 
-### GraphQL Ask search
+### GraphQL Ask 検索
 
-This module adds a search operator to GraphQL `Get{...}` queries: `ask{}`. This new operator takes the following arguments:
+このモジュールは  GraphQL  `Get{...}` クエリに `ask{}` 検索オペレーターを追加します。`ask{}` は以下の引数を取ります。
 
-| Field 	| Data Type 	| Required 	| Example value 	| Description 	|
-|-	|-	|-	|-	|-	|
-| `question` 	| string 	| yes 	| `"What is the name of the Dutch king?"` 	| The question to be answered. 	|
-| `certainty` 	| float 	| no 	| `0.75` | Desired minimal certainty or confidence of answer to the question. The higher the value, the stricter the search becomes. The lower the value, the fuzzier the search becomes. If no certainty is set, any answer that could be extracted will be returned|
-| `properties` 	| list of strings 	| no 	| `["summary"]` 	| The properties of the queries Class which contains text. If no properties are set, all are considered.	|
-| `rerank` 	| bool 	| no 	| `true` 	| If enabled, the qna module will rerank the result based on the answer score. For example, if the 3rd result - as determined by the previous (semantic) search contained the most likely answer, result 3 will be pushed to position 1, etc. *Not supported prior to v1.10.0* |
+| Field | Data Type | Required | Example value | Description |
+|-|-|-|-|-|
+| `question` | string | yes | `"What is the name of the Dutch king?"` | 回答を求める質問 |
+| `certainty` | float | no | `0.75` | 回答の最小信頼度。値が高いほど検索が厳格になり、低いほど曖昧になります。設定しない場合、抽出可能な回答はすべて返されます |
+| `properties` | list of strings | no | `["summary"]` | テキストを含むクラスのプロパティ。指定しない場合、すべてのプロパティが対象 |
+| `rerank` | bool | no | `true` | 有効にすると、qna モジュールが回答スコアで結果をリランキングします。たとえば、以前の（セマンティック）検索で 3 番目だった結果に最も有力な回答が含まれていた場合、結果 3 が位置 1 に繰り上がります。*v1.10.0 より前では非対応* |
 
-Notes:
-* The GraphQL `Explore { }` function does support the `ask` searcher, but the result is only a beacon to the object containing the answer. It is thus not any different from performing a nearText semantic search with the question. No extraction is happening.
-* You cannot use the `'ask'` operator along with a `'nearXXX'` operator!
+注意:  
+* GraphQL の `Explore { }` 機能も `ask` 検索をサポートしますが、結果は回答を含むオブジェクトへの beacon のみであり、実際の抽出は行われません。したがって質問で `nearText` セマンティック検索を行うのと違いはありません。  
+* `'ask'` オペレーターは `'nearXXX'` オペレーターと同時には使用できません。  
 
-### Example query
+### クエリ例
 
 import CodeQnaTransformer from '/_includes/code/qna-transformers.ask.mdx';
 
 <CodeQnaTransformer />
 
-### GraphQL response
+### GraphQL レスポンス
 
-The answer is contained in a new GraphQL `_additional` property called `answer`. It contains the following fields:
-* `hasAnswer` (`boolean`): could an answer be found?
-* `result` (nullable `string`): An answer if one could be found. `null` if `hasAnswer==false`
-* `certainty` (nullable `float`): The certainty of the answer returned. `null` if `hasAnswer==false`
-* `property` (nullable `string`): The property which contains the answer. `null` if `hasAnswer==false`
-* `startPosition` (`int`): The character offset where the answer starts. `0` if `hasAnswer==false`
-* `endPosition` (`int`): The character offset where the answer ends `0` if `hasAnswer==false`
+回答は `_additional` プロパティ内の `answer` に含まれます。フィールドは次のとおりです。  
+* `hasAnswer` (`boolean`): 回答が見つかったかどうか  
+* `result` (nullable `string`): 回答文字列。`hasAnswer==false` の場合は `null`  
+* `certainty` (nullable `float`): 返された回答の信頼度。`hasAnswer==false` の場合は `null`  
+* `property` (nullable `string`): 回答を含むプロパティ名。`hasAnswer==false` の場合は `null`  
+* `startPosition` (`int`): 回答開始位置の文字オフセット。`hasAnswer==false` の場合は `0`  
+* `endPosition` (`int`): 回答終了位置の文字オフセット。`hasAnswer==false` の場合は `0`  
 
-Note: `startPosition`, `endPosition` and `property` in the response are not guaranteed to be present. They are calculated by a case-insensitive string matching function against the input text. If the transformer model formats the output differently (e.g. by introducing spaces between tokens which were not present in the original input), the calculation of the position and determining the property fails.
+注: レスポンスの `startPosition`、`endPosition`、`property` は必ずしも返されるとは限りません。これらは入力テキストに対して大文字小文字を区別しない文字列マッチング関数で計算されます。Transformer モデルが出力をフォーマットする際に（元入力に存在しないトークン間スペースを追加するなどして）差異が生じた場合、位置計算やプロパティの判定に失敗する可能性があります。
 
-### Example response
+### レスポンス例
 
 ```json
 {
@@ -144,33 +143,32 @@ Note: `startPosition`, `endPosition` and `property` in the response are not guar
 }
 ```
 
-## Custom Q&A Transformer module
+## カスタム Q&A Transformer モジュール
 
-You can use the same approach as for `text2vec-transformers`, see [here](/weaviate/model-providers/transformers/embeddings-custom-image.md), i.e. either pick one of the pre-built containers or build your own container from your own model using the `semitechnologies/qna-transformers:custom` base image. Make sure that your model is compatible with Hugging Face's `transformers.AutoModelForQuestionAnswering`.
+`text2vec-transformers` と同様の方法が利用できます。詳細は [こちら](/weaviate/model-providers/transformers/embeddings-custom-image.md) を参照してください。つまり、プリビルドのコンテナを選択するか、`semitechnologies/qna-transformers:custom` ベースイメージを使って独自モデルからコンテナをビルドします。モデルが Hugging Face の `transformers.AutoModelForQuestionAnswering` と互換性を持つことを確認してください。
 
-## How it works (under the hood)
+## 仕組み（内部動作）
 
-Under the hood, the model uses a two-step approach. First it performs a semantic search to find the documents (e.g. a Sentence, Paragraph, Article, etc.) most likely to contain the answer. In a second step, a BERT-style answer extraction is performed on all `text` and `string` properties of the document. There are now three possible outcomes:
-1.  No answer was found because the question can not be answered,
-2.  An answer was found, but did not meet the user-specified minimum certainty, so it was discarded (typically the case when the document is on topic, but does not contain an actual answer to the question), and
-3.  An answer was found that matches the desired certainty. It is returned to the user.
+内部では 2 段階アプローチを採用しています。最初にセマンティック検索を行い、回答を含む可能性が高いドキュメント（例: 文、段落、記事など）を見つけます。次に、そのドキュメントのすべての `text` と `string` プロパティに対して BERT 形式の回答抽出を行います。結果は次の 3 通りです。  
+1. 質問に対する回答が存在しないため、回答が見つからなかった。  
+2. 回答は見つかったが、ユーザー指定の最小 `certainty` に達しておらず破棄された（トピックは合っているが実際の回答が含まれていない場合によく発生）。  
+3. 指定した `certainty` を満たす回答が見つかり、ユーザーに返される。  
 
-The module performs a semantic search under the hood, so a `text2vec-...` module is required. It does not need to be of the same type as the `qna-...` module. For example, you can use a `text2vec-contextionary` module to perform the semantic search, and a `qna-transformers` module to extract the answer.
+このモジュールは内部でセマンティック検索を実行するため、`text2vec-...` モジュールが必要です。`qna-...` モジュールと同じ種類である必要はありません。たとえば、`text2vec-contextionary` でセマンティック検索を行い、`qna-transformers` で回答を抽出することもできます。
 
-### Automatic sliding window for long documents
+### 長いドキュメントへの自動スライディングウィンドウ
 
-If a text value in a data object is longer than 512 tokens, the Q&A Transformer module automatically splits the text into smaller texts. The module uses a sliding window, i.e. overlapping pieces of text, to avoid a scenario that an answer cannot be found if it lies on a boundary. If an answer lies on the boundary, the Q&A module returns the result (answer) with the highest score (as the sliding mechanism could lead to duplicates).
+データオブジェクト内のテキストが 512 トークンを超える場合、Q&A Transformer モジュールは自動でテキストを小さなチャンクに分割します。モジュールはスライディングウィンドウ（重複部分を持つテキスト片）を使用し、境界に回答がある場合でも見逃さないようにします。回答が重複して検出された場合は、最高スコアの回答が返されます。
 
-## Model license(s)
+## モデルのライセンス
 
-The `qna-transformers` module is compatible with various models, each with their own license. For detailed information, see the license of the model you are using in the [Hugging Face Hub](https://huggingface.co/models).
+`qna-transformers` モジュールは複数のモデルと互換性があり、それぞれ独自のライセンスを持ちます。詳細は使用するモデルのライセンスを [Hugging Face Hub](https://huggingface.co/models) でご確認ください。
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+ライセンス条件が意図する用途に適しているかどうかを評価する責任はユーザーにあります。
 
-
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

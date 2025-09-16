@@ -1,132 +1,133 @@
 ---
-title: Custom modules
-description: Explore custom modules in Weaviate for personalized data management features.
+title: カスタムモジュール
+description: Weaviate でカスタムモジュールを利用してパーソナライズされたデータ管理機能を探求しましょう。
 sidebar_position: 90
 image: og/docs/modules/custom-modules.jpg
 # tags: ['modules', 'other modules', 'custom modules']
 ---
 
 
-## Introduction
+## 概要
 
-Besides using one of the out-of-the-box vectorization models, you can also attach your own machine learning model to Weaviate. This way, you can use Weaviate to scale your ML and NLP models, since Weaviate takes care of efficient data storage and retrieval. A custom vectorizer module is, for example, a model that you trained on your own training data, that is able to transform data (e.g. text or image data) to embeddings.
+標準のベクトル化モデルを使用するだけでなく、独自の機械学習モデルを Weaviate に接続することもできます。これにより、効率的なデータ保存と取得を Weaviate が担うため、ML や NLP モデルを容易にスケールできます。カスタム ベクトライザー モジュールとは、たとえば独自の学習データで学習したモデルで、テキストや画像などのデータを埋め込みへ変換できるものです。
 
-If you have model that already fits with an existing model architecture (e.g. Transformers), you don't have to write any custom code and you can just run this Transformer model with the existing [`text2vec-transformer` module](/weaviate/model-providers/transformers/embeddings.md).
+既存のモデルアーキテクチャ（例: Transformers）に適合するモデルがすでにある場合は、カスタムコードを書く必要はありません。既存の [`text2vec-transformer` モジュール](/weaviate/model-providers/transformers/embeddings.md)でその Transformer モデルをそのまま実行できます。
 
-This page contains information about how you can attach your own ML model to Weaviate. You will need to attach your ML model to Weaviate's Module API as a module. First, there is some information about how (vectorizer/embedding) modules in Weaviate work.
+このページでは、独自の ML モデルを Weaviate にモジュールとして接続する方法を説明します。まず、Weaviate における（ベクトライザー / 埋め込み）モジュールの動作について解説します。
 
-Quick links:
-* To build your own inference container (which uses an existing Weaviate Module API), click [here](/weaviate/modules/custom-modules.md#a-replace-parts-of-an-existing-module).
-* To build a completely new module (to create your own Weaviate Module API to e.g. add fields to GraphQL, etc), click [here](/contributor-guide/weaviate-modules/how-to-build-a-new-module.md).
+クイックリンク:
+* 既存の Weaviate Module API を利用して独自の推論コンテナを作成する場合は [こちら](/weaviate/modules/custom-modules.md#a-replace-parts-of-an-existing-module)。
+* GraphQL へのフィールド追加など、完全に新しいモジュールを作成する場合は [こちら](/contributor-guide/weaviate-modules/how-to-build-a-new-module.md)。
 
-## Video: How to create custom modules in Weaviate?
+## 動画: Weaviate でカスタムモジュールを作成する方法
 
 <iframe width="100%" height="375" src="https://www.youtube.com/embed/uKYDHzjEsbU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-_Recorded during the Weaviate meetup – custom modules section starts @ 13:30min_
+_Weaviate meetup で収録 – カスタムモジュールの章は 13:30 分から開始_
 
-## Background: Module architecture in Weaviate
+## 背景: Weaviate のモジュールアーキテクチャ
 
-To understand how to create a new module, you'll need to understand how the module system of Weaviate works in general.
+新しいモジュールを作成するには、まず Weaviate のモジュールシステムがどのように機能するかを理解する必要があります。
 
-Weaviate is entirely agnostic on how a module obtains the values it needs for the specific lifecycle hooks. For example, for a vectorizer module, the contract between Weaviate and the module is as follows: At import time, each object is passed to the (configured) vectorizer module and the module must extend it with a vector (embedding). Weaviate is agnostic to how the module does that. For example, if the module's purpose is to use a pre-existing ML model for inference, the module may decide to provide a second inference service and contact that inference service as part of the "vectorize" lifecycle hook. Weaviate is agnostic on how that communication occurs. For example, the `text2vec-contextionary` module uses a gRPC API on its inference service, whereas the the `text2vec-transformers` module uses a REST API for the same purpose.
+Weaviate は、モジュールが特定のライフサイクルフックに必要な値をどのように取得するかについては完全にアグノスティックです。たとえばベクトライザー モジュールの場合、Weaviate とモジュール間の契約は次のとおりです。インポート時に各オブジェクトが（設定された）ベクトライザー モジュールへ渡され、モジュールはそれをベクトル（埋め込み）で拡張しなければなりません。Weaviate はモジュールがその処理をどのように行うかを問いません。モジュールが既存の ML モデルを推論に使用する目的であれば、「vectorize」ライフサイクルフックの一環として別の推論サービスを用意し、そのサービスと通信してもかまいません。実際、`text2vec-contextionary` モジュールは推論サービスに gRPC API を使用していますが、`text2vec-transformers` モジュールは同じ目的で REST API を使用しています。
 
-Typically a (vectorizer) module consists of two parts:
-1. **Module code for Weaviate, written in Go**, which hooks into specific lifecycles and provides various capabilities (like controlling the API function) to integrate the module into the regular flow in Weaviate.
-2. **Inference service**, typically a containerized application that wraps an ML model with a module-specific API which is consumed by the module code executed in Weaviate (part 1).
+一般的に（ベクトライザー）モジュールは 2 つの部分で構成されます:
+1. **Weaviate 用のモジュールコード (Go で記述)**  
+   Weaviate のさまざまなライフサイクルにフックし、API 機能などの能力を提供して通常のフローに統合します。
+2. **推論サービス**  
+   通常はコンテナ化されたアプリケーションで、ML モデルをモジュール固有の API でラップし、パート 1 のモジュールコードから呼び出されます。
 
-The visualization below shows how modules are part of and connected to Weaviate. The black border indicates Weaviate Database, with the grey boxes as internals. Everything in red involves how Weaviate uses the modules that are connected, with the general Module System API. The red Module API spans two internal 'layers', because it can influence the Weaviate APIs (e.g. by extending GraphQL or providing additional properties), and it can influence the business logic (e.g. by taking the properties of an object and setting a vector).
+次の図は、モジュールが Weaviate にどのように接続されているかを示しています。黒枠が Weaviate Database、本体が灰色のボックスです。赤い部分はモジュールをどのように利用するかを示しており、一般的な Module System API を介しています。赤い Module API は 2 つの内部レイヤーにまたがり、GraphQL を拡張したり追加プロパティを提供したりして Weaviate API に影響を与えるほか、ビジネスロジックにも影響を与えます（例: オブジェクトのプロパティを取得してベクトルを設定）。
 
-Everything that is blue belongs to a specific module (more than one module can be attached, but here we show one module). Here we have the example of Weaviate using the `text2vec-transformers` module `bert-base-uncased`. Everything that belongs to the `text2vec-transformers` module is thus drawn in blue. The blue box inside Weaviate Database is the part 1 of the module: the module code for Weaviate. The blue box outside Weaviate Database is the separate inference service, part 2.
+青色の部分は特定モジュールに属します（複数のモジュールを接続できますが、ここでは 1 つの例を示しています）。例として `text2vec-transformers` モジュール `bert-base-uncased` を使用しています。Weaviate Database 内の青いボックスがパート 1 のモジュールコード、外側の青いボックスがパート 2 の推論サービスです。
 
-The picture shows three APIs:
-* The first grey box inside Weaviate Database, which is the user-facing RESTful and GraphQL API.
-* The red box is the Module System API, which are interfaces written in Go.
-* The third API is completely owned by the module, which is used to communicate with the separate module container. In this case, this is a Python container, shown on the left.
+図では 3 つの API を示しています:
+* Weaviate Database 内の灰色ボックスはユーザー向けの RESTful と GraphQL API です。
+* 赤いボックスは Go で書かれた Module System API です。
+* 3 つ目の API はモジュールが完全に所有しており、別コンテナとの通信に使用します。この例では左側の Python コンテナです。
 
 ![Weaviate module APIs overview](/img/contributor-guide/weaviate-modules/weaviate-module-apis.svg "Weaviate module APIs overview")
 
-To use a custom ML model with Weaviate, you have two options: ([further explained below](#how-to-build-and-use-a-custom-module))
-* A: Replace parts of an existing module, where you only replace the inference service (part 2). You don't have to touch Weaviate Database here.
-* B: Build a completely new module and replace all existing (blue) module parts (both 1 and 2). You can configure custom behavior like extending the GraphQL API, as long as the module can hook into the 'red' Module System API. Keep in mind that you'll need to write some module code in Go to achieve this.
+独自の ML モデルを Weaviate で使用するには、次の 2 つのオプションがあります（[詳細はこちら](#how-to-build-and-use-a-custom-module)）:
+* A: 既存モジュールの一部を置き換え、推論サービス (パート 2) のみを差し替える。Weaviate Database 本体には手を加えません。
+* B: 完全に新しいモジュールを作成し、既存の青いパート (1 と 2) をすべて置き換える。GraphQL API の拡張など、独自の動作を設定できますが、赤い Module System API にフックするために Go でモジュールコードを書く必要があります。
 
 
 <!-- ![Weaviate module APIs overview](/img/weaviate-module-apis.svg "Weaviate module APIs overview") -->
 
-Let's take a more detailed example of how you configure Weaviate to use a specific module: if we look at the [`text2vec-transformers`](/weaviate/model-providers/transformers/embeddings.md) module, you set `ENABLE_MODULES=text2vec-transformers` in the Docker Compose file, which instructs Weaviate to load the respective Go code (part 1). Additionally, you include another service in `docker-compose.yml` which contains the actual model for inference (part 2). In more detail, let's look at how a specific (GraphQL) function is implemented in the [`text2vec-transformers`](/weaviate/model-providers/transformers/embeddings.md) module:
+`text2vec-transformers` モジュールを例に、Weaviate で特定のモジュールを使用する設定方法を詳しく見てみましょう。`docker-compose.yml` で `ENABLE_MODULES=text2vec-transformers` を設定すると、Weaviate に該当する Go コード（パート 1）をロードさせます。さらに推論用モデルを含む別サービス（パート 2）も `docker-compose.yml` に追加します。`text2vec-transformers` モジュールの特定の (GraphQL) 機能実装を詳しく見ると以下のようになります。
 
-1. **Module code for Weaviate, written in Go:**
-   * Tells the Weaviate GraphQL API that the module provides a specific `nearText` method.
-   * Validates specific configuration and schema settings and makes them available to the APIs.
-   * Tells Weaviate how to obtain a vector (e.g. a word or image embedding) when one is necessary (by sending an HTTP request to a third-party service, in this case the Python application around the inference model)
-2. **Inference service:**
-   * Provides a service that can do model inference.
-   * Implements an API that is in contract with A (not with Weaviate itself).
+1. **Weaviate 用モジュールコード (Go):**  
+   * Weaviate GraphQL API に `nearText` メソッドを提供することを通知  
+   * 特定の設定やスキーマを検証し、API で利用できるようにする  
+   * ベクトル（例: 単語や画像の埋め込み）が必要になった際に取得する方法を定義（この例では Python アプリケーションに HTTP リクエストを送信）
+2. **推論サービス:**  
+   * モデル推論を提供  
+   * A と契約した API を実装（Weaviate と直接の契約ではありません）
 
-Note that this is just one example, and variations are possible as long as both part 1 and 2 are present where 1 contains the connection to Weaviate in Go and 2 contains that inference model that part 1 uses. It would also be possible to amend, for example, the Weaviate `text2vec-transformers` module (part 1) to use the Hugging Face API or some other third-party hosted inference service, instead of its own container (now in part 2) that it brings.
+これは一例であり、パート 1 が Go で Weaviate と接続し、パート 2 がパート 1 から利用される推論モデルを持つという点さえ満たせば、さまざまなバリエーションが可能です。たとえば、`text2vec-transformers` モジュール（パート 1）を修正し、自前のコンテナではなく Hugging Face API などのサードパーティー推論サービスを使用することもできます。
 
-A module completely controls the communication with any container or service it depends on. So, for example, in the `text2vec-transformers` module, the API of the inference container is a REST API. But for the `text2vec-contextionary` module has a gRPC, rather than a REST API or another protocol.
+モジュールは依存するコンテナやサービスとの通信方法を完全に制御します。たとえば `text2vec-transformers` モジュールでは推論コンテナとの通信に REST API を使用していますが、`text2vec-contextionary` モジュールでは gRPC を使用しています。
 
-### Module characteristics
+### モジュールの特性
 
-A module is a custom code that can extend Weaviate by hooking into specific lifecycle hooks. As Weaviate is written in Go, so module code must also be written in Go. However, some existing modules make use of independent services which can be written in any language, as is often the case with vectorizer modules which bring along model inference containers often written in Python.
+モジュールは特定のライフサイクルフックに接続して Weaviate を拡張するカスタムコードです。Weaviate が Go で書かれているため、モジュールコードも Go で書く必要があります。ただし既存モジュールの中には独立したサービスを併用しているものもあり、こうしたサービスは任意の言語で実装できます。ベクトライザー モジュールでは推論コンテナが Python で書かれていることがよくあります。
 
-Modules can be "vectorizers" (defines how the numbers in the vectors are chosen from the data) or other modules providing additional functions like question answering, custom classification, etc. Modules have the following characteristics:
-- Naming convention:
-  - Vectorizer: `<media>2vec-<name>-<optional>`, for example `text2vec-contextionary`, `img2vec-neural` or `text2vec-transformers`.
-  - Other modules: `<functionality>-<name>-<optional>`.
-  - A module name must be url-safe, meaning it must not contain any characters which would require url-encoding.
-  - A module name is not case-sensitive. `text2vec-bert` would be the same module as `text2vec-BERT`.
-- Module information is accessible through the `v1/modules/<module-name>/<module-specific-endpoint>` RESTful endpoint.
-- General module information (which modules are attached, version, etc.) is accessible through Weaviate's [`v1/meta` endpoint](/weaviate/api).
-- Modules can add `additional` properties in the RESTful API and [`_additional` properties in the GraphQL API](/weaviate/api/graphql/additional-properties.md).
-- A module can add [filters](/weaviate/api/graphql/filters.md) in GraphQL queries.
-- Which vectorizer and other modules are applied to which data classes is configured in the [collection configuration](../manage-collections/vector-config.mdx).
+モジュールは「ベクトライザー」（データからベクトルの数値を生成する方法を定義）として機能するものや、質問応答やカスタム分類など追加機能を提供するものがあります。モジュールの特性は以下のとおりです。
+- 命名規則  
+  - ベクトライザー: `<media>2vec-<name>-<optional>` 例: `text2vec-contextionary`, `img2vec-neural`, `text2vec-transformers`  
+  - その他: `<functionality>-<name>-<optional>`  
+  - モジュール名は URL セーフである必要があります。つまり URL エンコードが必要な文字を含めてはいけません。  
+  - モジュール名は大文字小文字を区別しません。`text2vec-bert` と `text2vec-BERT` は同じモジュールです。  
+- モジュール情報は `v1/modules/<module-name>/<module-specific-endpoint>` RESTful エンドポイントから取得可能です。  
+- 一般的なモジュール情報（接続されているモジュール、バージョンなど）は Weaviate の [`v1/meta` エンドポイント](/weaviate/api) で取得できます。  
+- モジュールは RESTful API の `additional` プロパティおよび GraphQL API の [`_additional` プロパティ](/weaviate/api/graphql/additional-properties.md) を追加できます。  
+- モジュールは GraphQL クエリで [フィルター](/weaviate/api/graphql/filters.md) を追加できます。  
+- どのベクトライザーやその他モジュールをどのデータクラスに適用するかは、[コレクション設定](../manage-collections/vector-config.mdx) で指定します。  
 
-## How to build and use a custom module
+## カスタムモジュールを構築して使用する方法
 
-There are two different ways to extend Weaviate with custom vectorization capabilities: You can either build a completely custom module (parts 1 + 2) or only replace the inference service of an existing module (only replace part 2, Option A). The latter is a good option for fast prototyping and proofs of concepts. In this case, you simply replace the inference model (part 2), but keep the interface with Weaviate in Go. This is a quick way to integrate completely different model types. You can also choose to build a complete new module (Option B). This is the most flexible option, but it means you'll have to write a Weaviate interface in Go. We recommend to only go for option B if you are happy with the prototype results. With option B you can turn the PoC into a full module, because you can control all configuration and naming when you go for option B.
+Weaviate をカスタムベクトル化機能で拡張する方法は 2 つあります。完全に新しいモジュール（パート 1 + 2）を構築するか、既存モジュールの推論サービス（パート 2）のみを置き換えるか（オプション A）です。後者は迅速なプロトタイプや PoC に適しています。この場合、推論モデル（パート 2）だけを差し替え、Weaviate とやり取りする Go 製インターフェースはそのまま再利用します。まったく異なるモデルタイプを素早く統合できる方法です。オプション B の完全新規モジュールは最も柔軟ですが、Weaviate インターフェースを Go で書く必要があります。まずはオプション A で結果を確認し、PoC が満足できるものになったらオプション B で正式なモジュールに移行することを推奨します。  
 
-### A. Replace parts of an existing module
+### A. 既存モジュールの一部を置き換える
 
-The quickest way to integrate a completely different inference model is replacing parts of an existing module. You reuse part 1 (the interface with Weaviate) and thus adhere to part 1's API contract, and only implement changes to or replace part 2.
+まったく異なる推論モデルを統合する最短経路は、既存モジュールの一部を置き換える方法です。パート 1（Weaviate とのインターフェース）は再利用し、その API 契約に従いながらパート 2 だけを変更または置き換えます。
 
-Because you are not touching the Go Weaviate interface code, you don't have the possibility to introduce a new configuration that is specific to your module inference into Weaviate's APIs provided and consumed by existing modules that are not existing in part 1 (i.e. all the configuration parameters, e.g. those of `text2vec-transformers`). This also implies that you cannot change or introduce new (GraphQL) API functions or filters.
-_Note that Weaviate APIs are not guaranteed to be stable. Even on a non-breaking Weaviate release, 'internal' APIS could always change._
+Go で書かれた Weaviate インターフェースコードに手を加えないため、パート 1 に存在しないモジュール固有の新しい設定を Weaviate の API に導入することはできません。また、新しい（GraphQL）API 関数やフィルターを追加・変更することもできません。  
+_なお、Weaviate の API は安定性を保証するものではありません。互換性を損なわない Weaviate のリリースでも「内部」API は変更される可能性があります。_
 
-To use a new inference model (part 2) with an existing Weaviate interface (part 1), you could reuse all the Go-code from the existing module and simply point it to a different inference container. As an example, here's how to use a custom inference module using the `text2vec-transformers` Go-code:
-1. In a valid `docker-compose.yml` that's configured to use transformers (e.g. for example configure one via the [configuration configurator](/deploy/installation-guides/docker-installation.md#configurator)), you will find an env var like this: `TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'`, you can point that to any app you like. You should keep the variable name `TRANSFORMERS_INFERENCE_API`.
-2. Build a small HTTP API wrapper around your model, it should at the minimum have the endpoints listed below (which is in this example entirely specific to the `text2vec-transformers` module and fully in its control):
-   1. `GET /.well-known/live` -> respond `204` when the app is alive
-   2. `GET /.well-known/ready` -> respond `204` when the app is ready to serve traffic
-   3. `GET /meta` -> respond meta information about the inference model
-   4. `POST /vectors` -> see example request and response payloads below. (Note that the app is exposed locally on port `8090` on my machine by adding `ports: ["8090:8080"]` in the Docker Compose file).
+既存の Weaviate インターフェース（パート 1）で新しい推論モデル（パート 2）を使用するには、既存モジュールの Go コードをすべて再利用し、別の推論コンテナを指すように設定するだけです。`text2vec-transformers` モジュールを例に、カスタム推論モジュールを使用する手順は次のとおりです。  
+1. Transformers を利用するように設定された有効な `docker-compose.yml`（[設定コンフィギュレーター](/deploy/installation-guides/docker-installation.md#configurator)で作成可能）を開くと、`TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'` のような環境変数があります。これを任意のアプリへ向けるだけです。変数名 `TRANSFORMERS_INFERENCE_API` はそのまま残してください。  
+2. モデルをラップする小さな HTTP API を構築します。最低限、以下のエンドポイントを実装してください（この例は `text2vec-transformers` モジュール固有であり、完全にモジュール側の制御となります）。  
+   1. `GET /.well-known/live` -> アプリが動作中なら `204` を返す  
+   2. `GET /.well-known/ready` -> サービス開始可能なら `204` を返す  
+   3. `GET /meta` -> 推論モデルのメタ情報を返す  
+   4. `POST /vectors` -> 以下のリクエスト / レスポンス例を参照（この例では Docker Compose で `ports: ["8090:8080"]` を追加し、ローカルの 8090 番ポートで公開しています）  
 
-Request:
+リクエスト:
 ```bash
 curl localhost:8090/vectors/ -H "Content-Type: application/json" -d '{"text":"hello world"}'
-```
-Response:
+```  
+レスポンス:
 ```bash
 {"text":"hello world","vector":[-0.08469954133033752,0.4564870595932007, ..., 0.14153483510017395],"dim":384}
-```
+```  
 
-### B. Build a completely new module
+### B. 完全に新しいモジュールを構築する
 
-Implementing a fully new module with both part 1 and 2 is a lot more flexible, because you can control naming, APIs, behavior, etc. To achieve this, you are essentially contributing to Weaviate. Note that for this option, you need to understand at least parts of Weaviate's architecture, and what a module can and can not control (what is "fixed"). You can fork [Weaviate's repository](https://github.com/weaviate/weaviate) and create a completely new [module](https://github.com/weaviate/weaviate/tree/master/modules) inside it. This new module can also depend on any number of other containers (which you will have to supply), and could use any API for communication with its dependencies (it could also have not any dependencies).
+パート 1 と 2 の両方を含む完全新規モジュールを実装すると、命名、API、動作などを自在に制御できます。この場合は実質的に Weaviate へ貢献する形になります。Weaviate のアーキテクチャや、モジュールが制御できる範囲（「固定」されている部分）を理解する必要があります。[Weaviate のリポジトリ](https://github.com/weaviate/weaviate) をフォークし、その中に完全新規の [module](https://github.com/weaviate/weaviate/tree/master/modules) を作成可能です。この新モジュールは複数のコンテナに依存させることもでき、依存先との通信に任意の API を使用できます（依存先がない場合も可）。
 
-Detailed instructions are described in the [contributor guide](/contributor-guide/weaviate-modules/how-to-build-a-new-module)
+詳細手順は [コントリビューターガイド](/contributor-guide/weaviate-modules/how-to-build-a-new-module) に記載しています。
 
-If you choose to build a completely new module including a Weaviate Go interface, you can contact us via [the forum](https://forum.weaviate.io) or through an [issue on GitHub](https://github.com/weaviate/weaviate/issues), so we can help you get started.
+Weaviate の Go インターフェースを含む完全新規モジュールを構築する場合は、[フォーラム](https://forum.weaviate.io) または [GitHub Issue](https://github.com/weaviate/weaviate/issues) でご連絡ください。開始時のサポートを行います。
 
-## Important notes
-- The length of the vectors your vectorizer has influences later usage, for example if you're exploring your data by vector with the GraphQL explore filter, the length of this vector should match with the vector length of the data points.
-- Weaviate APIs internal to a module are not guaranteed to be stable. Even on a non-breaking Weaviate release, 'internal' APIS could always change.
+## 重要な注意点
+- ベクトライザーが生成するベクトルの長さは後の利用に影響します。たとえば GraphQL の explore フィルターでデータをベクトル探索する場合、クエリに渡すベクトルの長さはデータポイントのベクトル長と一致している必要があります。
+- モジュール内部で使用される Weaviate の API は安定性を保証するものではありません。互換性を損なわないリリースでも「内部」API は変更される可能性があります。  
 
-
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

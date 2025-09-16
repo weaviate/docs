@@ -1,7 +1,7 @@
 ---
-title: Property data types
+title: プロパティ データ型
 sidebar_label: Data types
-description: Weaviate schema data types reference for defining object properties and field specifications.
+description: オブジェクト プロパティとフィールド仕様を定義するための Weaviate スキーマ データ型リファレンスです。
 image: og/docs/configuration.jpg
 # tags: ['Data types']
 ---
@@ -11,43 +11,43 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import SkipLink from '/src/components/SkipValidationLink'
 
-When [creating a property](../manage-collections/collection-operations.mdx#add-a-property), you must specify a data type. Weaviate accepts the following types.
+[プロパティを作成する](../manage-collections/collection-operations.mdx#add-a-property) ときには、データ型を指定する必要があります。Weaviate では次の型を利用できます。
 
-## Available data types
+## 利用可能なデータ型
 
-:::note Array types
-Arrays of a data type are specified by adding `[]` to the type (e.g. `text` ➡ `text[]`). Note that not all data types support arrays.
+:::note 配列型
+あるデータ型の配列を指定する場合は、その型に `[]` を付けます（例: `text` ➡ `text[]`）。すべてのデータ型が配列をサポートしているわけではありませんのでご注意ください。
 :::
 
 import DataTypes from '/\_includes/datatypes.mdx';
 
 <DataTypes />
 
-Further details on each data type are provided below.
+各データ型の詳細は以下をご覧ください。
 
 ## `text`
 
-Use this type for any text data.
+あらゆるテキスト データに使用します。
 
-- Properties with the `text` type is used for vectorization and keyword search unless specified otherwise [in the property settings](../manage-collections/vector-config.mdx#property-level-settings).
-- If using [named vectors](../concepts/data.md#multiple-vector-embeddings-named-vectors), the property vectorization is defined in the [named vector definition](../manage-collections/vector-config.mdx#define-named-vectors).
-- Text properties are tokenized prior to being indexed for keyword/BM25 searches. See [collection definition: tokenization](../config-refs/collections.mdx#tokenization) for more information.
+- `text` 型のプロパティは、別途 [プロパティ設定](../manage-collections/vector-config.mdx#property-level-settings) で指定しない限り、ベクトル化およびキーワード検索に利用されます。
+- [名前付きベクトル](../concepts/data.md#multiple-vector-embeddings-named-vectors) を使用する場合、プロパティのベクトル化は [名前付きベクトル定義](../manage-collections/vector-config.mdx#define-named-vectors) で設定します。
+- テキスト プロパティは、キーワード/BM25 検索用にインデックス化される前にトークン化されます。詳細は [コレクション定義: tokenization](../config-refs/collections.mdx#tokenization) を参照してください。
 
 <details>
-  <summary><code>string</code> is deprecated</summary>
+  <summary><code>string</code> は非推奨です</summary>
 
-Prior to `v1.19`, Weaviate supported an additional datatype `string`, which was differentiated by tokenization behavior to `text`. As of `v1.19`, this type is deprecated and will be removed in a future release.
+`v1.19` より前の Weaviate では、トークン化の挙動が `text` と異なる `string` という追加データ型をサポートしていました。`v1.19` 以降、この型は非推奨となり、今後のリリースで削除される予定です。
 
-Use `text` instead of `string`. `text` supports the tokenization options that are available through `string`.
+`string` の代わりに `text` をお使いください。`text` は `string` で利用可能だったトークン化オプションをサポートしています。
 
 </details>
 
-### Examples
+### 例
 
 import TextTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.text.py';
 import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.text.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -68,7 +68,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクト挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -91,14 +91,14 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 ## `boolean` / `int` / `number`
 
-The `boolean`, `int`, and `number` types are used for storing boolean, integer, and floating-point numbers, respectively.
+`boolean`、`int`、`number` の各型は、それぞれブール値、整数、浮動小数点数を格納するために使用します。
 
-### Examples
+### 例
 
 import NumericalTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.numerical.py';
 import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.numerical.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -119,7 +119,9 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
   </TabItem>
 </Tabs>
 
-#### Object insertion
+
+
+#### オブジェクト挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -140,30 +142,30 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
   </TabItem>
 </Tabs>
 
-### Note: GraphQL and `int64`
+### 注意: GraphQL と `int64`
 
-Although Weaviate supports `int64`, GraphQL currently only supports `int32`, and does not support `int64`. This means that currently _integer_ data fields in Weaviate with integer values larger than `int32`, will not be returned using GraphQL queries. We are working on solving this [issue](https://github.com/weaviate/weaviate/issues/1563). As current workaround is to use a `string` instead.
+Weaviate は `int64` をサポートしていますが、GraphQL は現在 `int32` のみをサポートしており、`int64` には対応していません。つまり、Weaviate の _integer_ データフィールドに `int32` を超える値が格納されている場合、GraphQL クエリで返されません。この [issue](https://github.com/weaviate/weaviate/issues/1563) の解決に取り組んでいます。現時点での回避策としては、代わりに `string` を使用してください。
 
 ## `date`
 
-A `date` in Weaviate is represented by an [RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) timestamp in the `date-time` format. The timestamp includes the time and an offset.
+Weaviate における `date` は、[RFC 3339](https://datatracker.ietf.org/doc/rfc3339/) の `date-time` 形式タイムスタンプで表されます。このタイムスタンプには時刻とオフセットが含まれます。
 
-For example:
+例:
 
 - `"1985-04-12T23:20:50.52Z"`
 - `"1996-12-19T16:39:57-08:00"`
 - `"1937-01-01T12:00:27.87+00:20"`
 
-To add a list of dates as a single entity, use an array of `date-time` formatted strings. For example: `["1985-04-12T23:20:50.52Z", "1937-01-01T12:00:27.87+00:20"]`
+複数の日付を 1 つのエンティティとして追加する場合は、`date-time` 形式の文字列配列を使用します。例: `["1985-04-12T23:20:50.52Z", "1937-01-01T12:00:27.87+00:20"]`
 
-In specific client libraries, you may be able to use the native date object as shown in the following examples.
+特定のクライアントライブラリでは、以下の例のようにネイティブ日付オブジェクトを使用できる場合があります。
 
-### Examples
+### 例
 
 import DateTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.date.py';
 import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.date.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -184,7 +186,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクト挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -207,21 +209,21 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 ## `uuid`
 
-The dedicated `uuid` and `uuid[]` data types efficiently store [UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+専用の `uuid` および `uuid[]` データタイプは、[UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) を効率的に保存します。
 
-- Each `uuid` is a 128-bit (16-byte) number.
-- The filterable index uses roaring bitmaps.
+- 各 `uuid` は 128-bit (16-byte) の数値です。  
+- フィルタリング用インデックスには Roaring Bitmap が使用されます。
 
-:::note Aggregate/sort currently not possible
-It is currently not possible to aggregate or sort by `uuid` or `uuid[]` types.
+:::note 集計/ソートは現在利用できません
+現在、`uuid` および `uuid[]` 型で集計やソートを行うことはできません。
 :::
 
-### Examples
+### 例
 
 import UUIDTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.uuid.py';
 import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.uuid.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -242,7 +244,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクト挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -265,9 +267,9 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 ## `geoCoordinates`
 
-Geo coordinates can be used to find objects in a radius around a query location. A geo coordinate value stored as a float, and is processed as [decimal degree](https://en.wikipedia.org/wiki/Decimal_degrees) according to the [ISO standard](https://www.iso.org/standard/39242.html#:~:text=For%20computer%20data%20interchange%20of,minutes%2C%20seconds%20and%20decimal%20seconds).
+`geoCoordinates` は、クエリ地点から半径内にあるオブジェクトを検索するために使用できます。geo 座標の値は  float として保存され、[ISO 規格](https://www.iso.org/standard/39242.html#:~:text=For%20computer%20data%20interchange%20of,minutes%2C%20seconds%20and%20decimal%20seconds) に従い [10 進度](https://en.wikipedia.org/wiki/Decimal_degrees) として処理されます。
 
-To supply a `geoCoordinates` property, specify the `latitude` and `longitude` as floating point decimal degrees.
+`geoCoordinates` プロパティを指定するには、`latitude` と `longitude` を浮動小数点形式の 10 進度で入力してください。
 
 <!-- An example of how geo coordinates are used in a data object:
 
@@ -282,12 +284,12 @@ To supply a `geoCoordinates` property, specify the `latitude` and `longitude` as
 }
 ``` -->
 
-### Examples
+### 例
 
 import GeoTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.geocoordinates.py';
 import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.geocoordinates.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -308,7 +310,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクト挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -335,7 +337,7 @@ import GeoLimitations from '/\_includes/geo-limitations.mdx';
 
 ## `phoneNumber`
 
-A `phoneNumber` input will be normalized and validated, unlike the single fields as `number` and `string`. The data field is an object with multiple fields.
+`phoneNumber` 入力は、`number` や `string` のような単一フィールドとは異なり、正規化およびバリデーションが行われます。このデータフィールドは複数のフィールドを持つオブジェクトです。
 
 ```yaml
 {
@@ -351,19 +353,19 @@ A `phoneNumber` input will be normalized and validated, unlike the single fields
 }
 ```
 
-There are two fields that accept input. `input` must always be set, while `defaultCountry` must only be set in specific situations. There are two scenarios possible:
+入力を受け取るフィールドは 2 つあります。`input` は常に設定する必要がありますが、`defaultCountry` は特定の状況でのみ設定します。考えられるシナリオは次の 2 つです。
 
-- When you enter an international number (e.g. `"+31 20 1234567"`) to the `input` field, no `defaultCountry` needs to be entered. The underlying parser will automatically recognize the number's country.
-- When you enter a national number (e.g. `"020 1234567"`), you need to specify the country in `defaultCountry` (in this case, `"nl"`), so that the parse can correctly convert the number into all formats. The string in `defaultCountry` should be an [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code.
+- `input` フィールドに国際電話番号（例: `"+31 20 1234567"`）を入力する場合、`defaultCountry` を設定する必要はありません。基盤となるパーサーが番号の国を自動で判別します。
+- 国番号を含まない国内電話番号（例: `"020 1234567"`）を入力する場合は、`defaultCountry` に国を指定する必要があります（この例では `"nl"`）。これにより、パーサーが番号を正しく各形式に変換できます。`defaultCountry` には [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) 形式の国コードを入力してください。
 
-Weaviate will also add further read-only fields such as `internationalFormatted`, `countryCode`, `national`, `nationalFormatted` and `valid` when reading back a field of type `phoneNumber`.
+Weaviate で `phoneNumber` 型のフィールドを読み取る際には、`internationalFormatted`、`countryCode`、`national`、`nationalFormatted`、`valid` といった読み取り専用フィールドが追加されます。
 
-### Examples
+### 例
 
 import PhoneTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.phonenumber.py';
 import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.phonenumber.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -384,7 +386,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクトの挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -407,13 +409,13 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
 
 ## `blob`
 
-The datatype blob accepts any binary data. The data should be `base64` encoded, and passed as a `string`. Characteristics:
+データタイプ `blob` は、任意のバイナリデータを受け付けます。データは `base64` でエンコードされ、 `string` として渡す必要があります。特徴は次のとおりです。  
 
-- Weaviate doesn't make assumptions about the type of data that is encoded. A module (e.g. `img2vec`) can investigate file headers as it wishes, but Weaviate itself does not do this.
-- When storing, the data is `base64` decoded (so Weaviate stores it more efficiently).
-- When serving, the data is `base64` encoded (so it is safe to serve as `json`).
-- There is no max file size limit.
-- This `blob` field is always skipped in the inverted index, regardless of setting. This mean you can not search by this `blob` field in a Weaviate GraphQL `where` filter, and there is no `valueBlob` field accordingly. Depending on the module, this field can be used in module-specific filters (e.g. `nearImage`{} in the `img2vec-neural` filter).
+- Weaviate は、エンコードされたデータの種類について一切の前提を置きません。モジュール（例: `img2vec`）は必要に応じてファイルヘッダーを調査できますが、Weaviate 自体は行いません。  
+- 保存時には、データが `base64` デコードされるため、より効率的に保存されます。  
+- 配信時には、データが `base64` エンコードされるため、 `json` として安全に提供できます。  
+- ファイルサイズの上限はありません。  
+- この `blob` フィールドは、設定に関わらず常に 転置インデックス からスキップされます。そのため、Weaviate GraphQL `where` フィルターでこの `blob` フィールドによる検索はできず、対応する `valueBlob` フィールドも存在しません。モジュールによっては、このフィールドをモジュール固有のフィルター（例: `img2vec-neural` フィルターの `nearImage`{}）で使用できます。  
 
 <!-- Example:
 
@@ -478,7 +480,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクトの挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -501,17 +503,17 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 ## `object`
 
-:::info Added in `v1.22`
+:::info `v1.22` で追加
 :::
 
-The `object` type allows you to store nested data as a JSON object that can be nested to any depth.
+`object` タイプを使用すると、任意の深さでネストできる JSON オブジェクトとしてデータを保存できます。
 
-For example, a `Person` collection could have an `address` property as an object. It could in turn include nested properties such as `street` and `city`:
+たとえば、 `Person` コレクションに `address` プロパティを `object` として定義し、その中に `street` や `city` などのネストしたプロパティを含めることができます。
 
-:::note Limitations
-Currently, `object` and `object[]` datatype properties are not indexed and not vectorized.
+:::note 制限事項
+現在、 `object` および `object[]` データタイプのプロパティは インデックス化 も ベクトル化 もされません。
 
-Future plans include the ability to index nested properties, for example to allow for filtering on nested properties and vectorization options.
+将来的には、ネストしたプロパティをインデックス化してフィルタリングやベクトル化を可能にする予定です。
 :::
 
 ### Examples
@@ -519,7 +521,7 @@ Future plans include the ability to index nested properties, for example to allo
 import ObjectTypePy from '!!raw-loader!/\_includes/code/python/config-refs.datatypes.object.py';
 import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.datatypes.object.ts';
 
-#### Property definition
+#### プロパティ定義
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -540,7 +542,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
   </TabItem>
 </Tabs>
 
-#### Object insertion
+#### オブジェクトの挿入
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -624,3 +626,4 @@ In raw payloads (e.g. JSON payloads for REST), data types are specified as an ar
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

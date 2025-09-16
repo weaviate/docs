@@ -4,34 +4,36 @@ sidebar_position: 6
 image: og/integrations/home.jpg
 ---
 
-Confluent is a fully managed Apache Kafka service that offers real-time data streaming, seamless integration across major cloud providers, high performance, and robust security features.
+Confluent は、リアルタイムデータストリーミング、主要クラウドプロバイダーへのシームレスな統合、高性能、堅牢なセキュリティ機能を提供するフルマネージドの Apache Kafka サービスです。
 
-Learn more at [Confluent Cloud](https://www.confluent.io/confluent-cloud/).
+詳細は [Confluent Cloud](https://www.confluent.io/confluent-cloud/) をご覧ください。
 
-## Confluent and Weaviate
-Stream data from Confluent Cloud to Weaviate with the [Weaviate Confluent Connector](https://github.com/weaviate/confluent-connector). 
+## Confluent と Weaviate
+[Weaviate Confluent Connector](https://github.com/weaviate/confluent-connector) を使用して Confluent Cloud から Weaviate へデータをストリームします。 
 
-For setup and usage details, see the [connector README](https://github.com/weaviate/confluent-connector/blob/main/README.md).
+セットアップと使用方法の詳細は、[connector README](https://github.com/weaviate/confluent-connector/blob/main/README.md) をご覧ください。
 
 
-## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+リソースは次の 2 つのカテゴリに分類されています: 
+1. [**Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めます。
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+2. [**Read and Listen**](#read-and-listen): これらのテクノロジーに関する概念的理解を深めます。
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| PySpark Notebook | Learn how to use PySpark | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/01_demo_pyspark.ipynb) |
-| Confluent-Weaviate Connector with Embedded | This notebook shows you how to use the confluent-weaviate connector with Weaviate Embedded. | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/02_demo_confluent_weaviate.ipynb) |
-| Confluent-Weaviate Connector with Weaviate Cloud | This notebook shows you how to use the confluent-weaviate connector with Weaviate Cloud. | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/03_demo_confluent_wcs.ipynb) |
-| Confluent-Weaviate Connector with Weaviate Cloud and Databricks | Learn how to integrate the confluent-weaviate connector with Weaviate Cloud and Databricks. | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/04_demo_confluent_databricks.ipynb) |
+| PySpark Notebook | PySpark の使い方を学びます | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/01_demo_pyspark.ipynb) |
+| Confluent-Weaviate Connector with Embedded | このノートブックでは、Weaviate Embedded で confluent-weaviate connector を使用する方法を示します。 | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/02_demo_confluent_weaviate.ipynb) |
+| Confluent-Weaviate Connector with Weaviate Cloud | このノートブックでは、Weaviate Cloud で confluent-weaviate connector を使用する方法を示します。 | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/03_demo_confluent_wcs.ipynb) |
+| Confluent-Weaviate Connector with Weaviate Cloud and Databricks | confluent-weaviate connector を Weaviate Cloud と Databricks に統合する方法を学びます。 | [Notebook](https://github.com/weaviate/confluent-connector/blob/main/notebooks/04_demo_confluent_databricks.ipynb) |
 
 
 ### Read and Listen
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Make Real-Time AI a Reality with Weaviate + Confluent | Learn how to build an application using Weaviate and Confluent. | [Blog](https://weaviate.io/blog/confluent-and-weaviate) |
-| Introducing the New Weaviate Confluent Apache Kafka® Connector: Real-Time Vector Data Pipelines Made Easy | Learn about the new certified Weaviate Confluent Apache Kafka Connector! | [Blog](https://weaviate.io/blog/weaviate-apache-kafka-connector) |
+| Make Real-Time AI a Reality with Weaviate + Confluent | Weaviate と Confluent を使用してアプリケーションを構築する方法を学びます。 | [Blog](https://weaviate.io/blog/confluent-and-weaviate) |
+| Introducing the New Weaviate Confluent Apache Kafka® Connector: Real-Time Vector Data Pipelines Made Easy | 新しい認定 Weaviate Confluent Apache Kafka Connector について学びましょう！ | [Blog](https://weaviate.io/blog/weaviate-apache-kafka-connector) |
+
+

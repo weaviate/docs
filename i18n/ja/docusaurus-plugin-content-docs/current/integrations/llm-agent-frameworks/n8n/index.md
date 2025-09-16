@@ -3,29 +3,30 @@ title: N8n
 sidebar_position: 6
 ---
 
-[N8n](https://n8n.io/) is a low‑code workflow automation platform that lets both technical and non‑technical users build generative AI applications.
+[N8n](https://n8n.io/) は、技術者と非技術者の両方が生成 AI アプリケーションを構築できるローコードのワークフロー自動化プラットフォームです。
 
-## N8n and Weaviate
-You can use [n8n’s Weaviate Vector Store node](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.vectorstoreweaviate/) to:
+## N8n と Weaviate
+[n8n の Weaviate Vector Store ノード](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.vectorstoreweaviate/) を使用すると、次のことができます。
 
-1. Inserts documents into a Weaviate collection.
-2. Returns ranked documents based on queries from a Weaviate collection.
-3. Performs RAG by acting as a tool for AI nodes.
-4. Performs agentic RAG by acting as a tool for AI agent nodes.
+1. Weaviate のコレクションにドキュメントを挿入します。  
+2. Weaviate のコレクションから、クエリに基づいてドキュメントをランキングして返します。  
+3. AI ノードのツールとして動作し、RAG を実行します。  
+4. AI エージェントノードのツールとして動作し、エージェント型 RAG を実行します。  
 
-## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+リソースは 2 つのカテゴリーに分かれています。  
+1. [**Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めます。  
+2. [**Read and Listen**](#read-and-listen): これらの技術に関する概念的理解を高めます。  
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
-
-### Hands on Learning
+### ハンズオン学習
 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Weaviate N8n template | Build a Weekly AI Trend Alerter with arXiv and Weaviate | [Template](https://n8n.io/workflows/5817-build-a-weekly-ai-trend-alerter-with-arxiv-and-weaviate/) |
+| Weaviate N8n テンプレート | arXiv と Weaviate を使った Weekly AI Trend Alerter を構築 | [Template](https://n8n.io/workflows/5817-build-a-weekly-ai-trend-alerter-with-arxiv-and-weaviate/) |
 
-### Read and Listen 
+### 読み物・視聴コンテンツ
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Weaviate N8n Community Node | You can now use Weaviate with n8n for no-code agentic workflows. This article teaches you how. | [Blog](https://weaviate.io/blog/agent-workflow-automation-n8n-weaviate)
+| Weaviate N8n Community Node | n8n と Weaviate を組み合わせてノーコードのエージェントワークフローが利用可能に。本記事でその方法を学べます。 | [Blog](https://weaviate.io/blog/agent-workflow-automation-n8n-weaviate) |
+
+

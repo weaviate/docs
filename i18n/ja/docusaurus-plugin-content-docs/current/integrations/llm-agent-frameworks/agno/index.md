@@ -3,11 +3,11 @@ title: Agno
 sidebar_position: 1
 ---
 
-[Agno](https://docs.agno.com/introduction) is a lightweight library for building Multimodal Agents. It exposes LLMs as a unified API and gives them superpowers like memory, knowledge, tools and reasoning.
+[Agno](https://docs.agno.com/introduction) は、マルチモーダル エージェント を構築するための軽量ライブラリです。LLM を統一された API として公開し、メモリ、ナレッジ、tools、推論といったスーパーパワーを付与します。
 
 
-## Agno and Weaviate
-Weaviate is a [supported vector database](https://docs.agno.com/vectordb/weaviate) in Agno. You first create the vector store with:
+## Agno と Weaviate
+Weaviate は Agno で [サポートされている ベクトル データベース](https://docs.agno.com/vectordb/weaviate) です。まずは次のようにして ベクトル ストア を作成します。
 
 ```python
 from agno.agent import Agent
@@ -24,7 +24,7 @@ vector_db = Weaviate(
 )
 ```
 
-Then you'll create the knowledge base for your agents with:
+次に、エージェント のためのナレッジベースを作成します。
 
 ```python
 knowledge_base = PDFUrlKnowledgeBase(
@@ -33,11 +33,13 @@ knowledge_base = PDFUrlKnowledgeBase(
 )
 ```
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## 当社リソース 
+[**Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Weaviate Query Agent with Agno | This notebook will show you how to define the Weaviate Query Agent as a tool through Agno. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/agno/agno-weaviate-query-agent.ipynb) |
+| Weaviate Query Agent with Agno | このノートブックでは、Agno を通じて Weaviate Query Agent を tool として定義する方法を紹介します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/agno/agno-weaviate-query-agent.ipynb) |
+
+

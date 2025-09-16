@@ -4,20 +4,18 @@ sidebar_position: 4
 image: og/integrations/home.jpg
 ---
 
-[Boomi](https://boomi.com/) is an integration platform as a service, API management, master data management and data preparation solution.
+[Boomi](https://boomi.com/) は、統合プラットフォーム as a service、API 管理、マスターデータ管理、データ準備ソリューションです。
 
-## Boomi and Weaviate
-Weaviate is integrated into Boomi's platform through Boomi's REST Client Connector. This integration allows users to perform operations such as data ingestion and retrieval within Weaviate directly from Boomi's low-code environment.
+## Boomi と Weaviate
+Weaviate は Boomi の REST Client Connector を通じて Boomi プラットフォームに統合されています。この統合により、ユーザーは Boomi のローコード環境から Weaviate へのデータの取り込みや検索などの操作を直接実行できます。
 
+## 参考リソース 
+[**ハンズオンラーニング**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+### ハンズオンラーニング
 
-### Hands on Learning
-
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Start Connecting with Weaviate | A replication of Weaviate's Quickstart tutorial on the Boomi platform using the REST Client connector. | [Article](https://community.boomi.com/s/article/Start-Connecting-with-Weaviate) [Tutorial](https://discover.boomi.com/solutions/start-connecting-with-weaviate) | 
-| AI Agent: Weaviate Quickstart Q&A Agent | Learn how to use the Boomi Agent Designer and Weaviate as the vector store for RAG based agents. | [Tutorial](https://discover.boomi.com/solutions/ai-agent-weaviate-quickstart-qa-agent) |
-
+| Weaviate 接続を開始する | REST Client Connector を使用して Boomi プラットフォーム上で Weaviate の Quickstart チュートリアルを再現します。 | [記事](https://community.boomi.com/s/article/Start-Connecting-with-Weaviate) [チュートリアル](https://discover.boomi.com/solutions/start-connecting-with-weaviate) | 
+| AI エージェント: Weaviate Quickstart Q&A エージェント | Boomi Agent Designer と Weaviate を ベクトルストアとして使用し、RAG ベースの エージェント を構築する方法を学びます。 | [チュートリアル](https://discover.boomi.com/solutions/ai-agent-weaviate-quickstart-qa-agent) |
 

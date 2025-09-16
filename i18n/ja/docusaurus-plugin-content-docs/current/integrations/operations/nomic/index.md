@@ -3,18 +3,17 @@ title: Nomic
 sidebar_position: 3
 image: og/integrations/home.jpg
 ---
-[Nomic AI's](https://www.nomic.ai/) Atlas uses algorithms such as t-SNE, UMAP, or PCA to reduce high-dimensional vectors into 2 or 3 dimensions. The lower dimensional vectors are useful for visualizing vector embeddings. 
+[Nomic AI](https://www.nomic.ai/) の Atlas は、 t-SNE 、 UMAP 、または PCA などのアルゴリズムを使用して、高次元の ベクトル を 2 または 3 次元に削減します。低次元化された ベクトル は、 ベクトル 埋め込みを可視化するのに役立ちます。 
 
-## Nomic and Weaviate 
-Connect Nomic to your Weaviate cluster to visualize the embeddings in your collection. 
+## Nomic と Weaviate 
+お使いの Weaviate クラスターに Nomic を接続して、コレクション内の埋め込みを可視化しましょう。 
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## 参考リソース 
+[**Hands on Learning**](#hands-on-learning)：エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Vector Space Visual | Visualize the embeddings in your Weaviate cluster. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/nomic/vector_space_visual.ipynb) |
-
+| ベクトル空間の可視化 | Weaviate クラスター内の埋め込みを可視化します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/operations/nomic/vector_space_visual.ipynb) |
 

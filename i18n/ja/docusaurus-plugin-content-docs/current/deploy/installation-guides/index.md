@@ -1,53 +1,53 @@
 ---
-title: How to install Weaviate
+title: Weaviate のインストール方法
 sidebar_position: 0
 image: og/docs/installation.jpg
 # tags: ['installation']
 ---
 
-Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](https://console.weaviate.cloud/), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
+Weaviate はホスト型サービスの [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) またはセルフマネージドのインスタンスとして利用できます。セルフマネージドの場合、ローカルまたはクラウドプロバイダー上でホストできます。セルフマネージド環境でも WCD と同じ Weaviate データベースを使用します。
 
-If you are upgrading from a previous version of Weaviate, see the [Migration Guide](/deploy/migration/index.md) for any changes that may affect your installation.
+以前のバージョンから Weaviate をアップグレードする場合は、インストールに影響する変更点について [Migration Guide](/deploy/migration/index.md) をご確認ください。
 
-## Installation methods
+## インストール方法
 
-To install and configure Weaviate, see the following:
+- **[Weaviate Cloud](/cloud/quickstart.mdx)**：開発および運用環境向けのマネージドサービス。  
+- **[Docker Compose](/deploy/installation-guides/docker-installation.md)**：Docker コンテナは開発やテストに適しています。  
+- **[Kubernetes](/deploy/installation-guides/k8s-installation.md)**：Kubernetes はスケーラブルな本番環境のデプロイに最適です。  
+- **[AWS Marketplace](./aws-marketplace.md)**：AWS Marketplace から直接 Weaviate をデプロイします。  
+- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)**：Snowflake の Snowpark 環境に Weaviate をデプロイします。  
+- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**：実験的。Embedded Weaviate はクライアントベースのツールです。  
 
-- **[Weaviate Cloud](/cloud/quickstart.mdx)**: Managed services for development and production environments.
-- **[Docker Compose](/deploy/installation-guides/docker-installation.md)**: Docker containers are well suited for development and testing.
-- **[Kubernetes](/deploy/installation-guides/k8s-installation.md)**: Kubernetes is ideal for scalable, production deployments.
-- **[AWS Marketplace](./aws-marketplace.md)**: Deploy Weaviate directly from the AWS Marketplace.
-- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
-- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
+:::caution ネイティブ Windows サポート
 
-:::caution Native Windows support
-
-Although Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/), we don't offer native Windows support at this time.
+Weaviate は [Docker](/deploy/installation-guides/docker-installation.md) や [WSL](https://learn.microsoft.com/en-us/windows/wsl/) などのコンテナ化環境を介して Windows で利用できますが、現時点ではネイティブ Windows サポートは提供していません。
 
 :::
 
-## Configuration files
+## 設定ファイル
 
-Docker Compose and Kubernetes use `yaml` files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](/deploy/installation-guides/docker-installation.md) file. Kubernetes relies on [Helm charts](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
+Docker Compose と Kubernetes では、Weaviate インスタンスの設定に `yaml` ファイルを使用します。Docker では [`docker-compose.yml`](/deploy/installation-guides/docker-installation.md) を、Kubernetes では [Helm チャート](/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) と `values.yaml` を利用します。Weaviate のドキュメントでは、これらのファイルを `configuration yaml files` と呼ぶこともあります。
 
-If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
+セルフホスティングの場合、まずは Docker で小規模に試し、Weaviate に慣れてきたら設定を Kubernetes の Helm チャートへ移行することをお勧めします。
 
-## Unreleased versions
+## 未リリース版
 
 import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
 
 <RunUnreleasedImages />
 
-When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
+未公開機能をお試しいただいた際は、[フィードバック](https://github.com/weaviate/weaviate/issues/new/choose) をぜひお寄せください。皆さまからのご意見は Weaviate の改善に役立ちます。
 
-## Related pages
-- [Connect to Weaviate](docs/weaviate/connections/index.mdx)
-- [Weaviate Quickstart](docs/weaviate/quickstart/index.md)
-- [Weaviate Cloud Quickstart](docs/cloud/quickstart.mdx)
-- [References: Configuration](../configuration/index.mdx)
+## 関連ページ
 
-## Questions and feedback
+- [Weaviate への接続](docs/weaviate/connections/index.mdx)
+- [Weaviate クイックスタート](docs/weaviate/quickstart/index.md)
+- [Weaviate Cloud クイックスタート](docs/cloud/quickstart.mdx)
+- [リファレンス: 設定](../configuration/index.mdx)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

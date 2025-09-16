@@ -1,76 +1,77 @@
 ---
-title: Migration and Upgrades 
+title: 移行とアップグレード
 sidebar_position: 0
 image: og/docs/more-resources.jpg
 # tags: ['migration']
 ---
 
-## Upgrades
+## アップグレード
 
-Weaviate is under active development, with new features and improvements being added regularly, including bugfixes. To take advantage of these updates, we recommend upgrading your Weaviate instance regularly.
+Weaviate は活発に開発が進められており、新機能や改良、バグ修正が定期的に追加されています。これらのアップデートを活用するために、Weaviate インスタンスを定期的にアップグレードすることをおすすめします。
 
-### General upgrade instructions
+### 一般的なアップグレード手順
 
-When upgrading Weaviate, we recommend that you:
+Weaviate をアップグレードする際は、次の手順を推奨します。
 
-1. Create a complete [backup](/deploy/configuration/backups.md) of your current Weaviate instance before beginning any upgrade process.
-1. Plan to upgrade one minor version at a time, always using the latest patch version of each minor release.
+1. アップグレードを開始する前に、現在の Weaviate インスタンスの [バックアップ](/deploy/configuration/backups.md) を完全に作成します。  
+1. 常に各マイナーリリースの最新パッチバージョンを使用しながら、1 つのマイナー バージョンずつ順番にアップグレードします。
 
-This approach of upgrading one minor version at a time helps to minimize the risk of issues during the upgrade process, by mirroring our testing and release process. Upgrading to the latest patch version of each minor release ensures that you have the latest bugfixes and improvements.
+マイナー バージョンを 1 つずつアップグレードすることで、弊社のテストおよびリリースプロセスを反映し、アップグレード中のリスクを最小限に抑えられます。また、各マイナーリリースの最新パッチバージョンを使用することで、最新のバグ修正と改良を取り込めます。
 
-### Version-specific migration guides
+### バージョン別移行ガイド
 
-- When upgrading to version `1.25.x` from `1.24.x` (or lower), you must perform a [Raft migration](#raft-migration-v1250).
-- When upgrading to version `1.26.x` or higher (from the preceding version), ensure that the cluster metadata is synchronized.
-    - To do so, poll the `/cluster/statistics` endpoint, and check that the correct number of nodes are reporting statistics, and the `synchronized` flag is showing `true`, before proceeding with the upgrade.
-    - For an example implementation, see the [`wait_for_raft_sync` function here](https://github.com/weaviate/weaviate-local-k8s/blob/main/utilities/helpers.sh).
+- `1.24.x`（またはそれ以前）から `1.25.x` にアップグレードする場合、[Raft マイグレーション](#raft-マイグレーション-v1250) が必要です。  
+- 前バージョンから `1.26.x` 以降へアップグレードする場合、クラスタメタデータが同期されていることを確認してください。  
+    - `/cluster/statistics` エンドポイントをポーリングし、正しいノード数が統計を返し、`synchronized` フラグが `true` になっていることを確認してからアップグレードを続行します。  
+    - 実装例は [`wait_for_raft_sync` 関数](https://github.com/weaviate/weaviate-local-k8s/blob/main/utilities/helpers.sh) を参照してください。
 
-:::tip Scenario: upgrading from `v1.25.10` to `v1.27`
+:::tip シナリオ: `v1.25.10` から `v1.27` へのアップグレード
 
-Between `v1.25` and `v1.27`, there are two minor versions, `v1.26` and `v1.27`. So:
+`v1.25` と `v1.27` の間には `v1.26` と `v1.27` の 2 つのマイナー バージョンがあります。したがって:
 <br/>
 
-1. Create a backup of your current Weaviate instance.
-1. Go to the [Weaviate releases page](https://github.com/weaviate/weaviate/tags):
-    1. Find the latest `v1.26` patch version (e.g.: `1.26.11`).
-    1. Find the latest `v1.27` patch version (e.g.: `1.27.5`).
-1. Upgrade to the latest patch version of `v1.26`.
-1. Upgrade to the latest patch version of `v1.27`.
+1. 現在の Weaviate インスタンスのバックアップを作成します。  
+1. [Weaviate リリースページ](https://github.com/weaviate/weaviate/tags) にアクセスし、  
+    1. 最新の `v1.26` パッチバージョン（例: `1.26.11`）を探します。  
+    1. 最新の `v1.27` パッチバージョン（例: `1.27.5`）を探します。  
+1. `v1.26` の最新パッチバージョンへアップグレードします。  
+1. 続いて `v1.27` の最新パッチバージョンへアップグレードします。  
 
 :::
 
-### Raft Migration (v1.25.0+)
+### Raft マイグレーション (v1.25.0+)
 
-Weaviate `v1.25.0` introduced Raft [as the consensus algorithm for cluster metadata](/weaviate/concepts/replication-architecture/cluster-architecture#metadata-replication-raft). This requires a one-time migration of the cluster metadata.
+Weaviate `v1.25.0` では、[クラスタメタデータの合意アルゴリズムとして Raft を導入しました](/weaviate/concepts/replication-architecture/cluster-architecture#metadata-replication-raft)。これにより、クラスタメタデータの一度きりのマイグレーションが必要です。
 
-In [Docker-based self-hosted instances](/deploy/installation-guides/docker-installation.md), the migration is automatic.
+[Docker ベースのセルフホスト環境](/deploy/installation-guides/docker-installation.md) では、マイグレーションは自動で行われます。
 
-In [Kubernetes-based self-hosted instances](/deploy/installation-guides/k8s-installation.md), you must perform a manual migration step. For more information, see the [Weaviate `v1.25.0` migration guide](./weaviate-1-25.md).
+[Kubernetes ベースのセルフホスト環境](/deploy/installation-guides/k8s-installation.md) では、手動でマイグレーションを実行する必要があります。詳細は [Weaviate `v1.25.0` マイグレーションガイド](./weaviate-1-25.md) を参照してください。
 
-This was a significant change to the Weaviate architecture. Accordingly, we suggest performing another backup after upgrading to `v1.25.latest`, before proceeding with further upgrades to ensure that you have a recent backup.
+これは Weaviate アーキテクチャにおける大きな変更です。そのため、`v1.25.latest` へアップグレードした後、さらにアップグレードを進める前にもう一度バックアップを取得しておくことを推奨します。
 
-### Backup Restoration Fix (v1.23.13+)
+### バックアップリストアの修正 (v1.23.13+)
 
-Before `v1.23.13`, there was a bug with the backup restoration process, which could lead to data not being stored correctly.
+`v1.23.13` より前のバージョンでは、バックアップリストア処理に不具合があり、データが正しく保存されない可能性がありました。
 
-If you are upgrading from a version before `v1.23.13`, we recommend that you:
+`v1.23.13` より前のバージョンからアップグレードする場合は、次の手順を推奨します。
 
-1. Create a backup of your current Weaviate instance.
-2. Upgrade to at least `v1.23.13` (preferably to `v1.23.16`) or higher, using the [general upgrade instructions above](#general-upgrade-instructions).
-3. Restore your backup to the upgraded instance.
+1. 現在の Weaviate インスタンスのバックアップを作成します。  
+2. 上記の[一般的なアップグレード手順](#一般的なアップグレード手順)に従い、少なくとも `v1.23.13`（可能なら `v1.23.16`）以上へアップグレードします。  
+3. アップグレード後のインスタンスにバックアップをリストアします。  
 
-## Downgrades
+## ダウングレード
 
-### RAFT Snapshots (v1.28.13+, v1.29.5+, v1.30.2+)
+### RAFT スナップショット (v1.28.13+, v1.29.5+, v1.30.2+)
 
-Multi-node instances of Weaviate running `1.28.13+`, `1.29.5+`, or `1.30.2+` may experience problems if downgraded to a `v1.27.x` version earlier than `1.27.26`. The cluster may not reach a **Ready** state due to a change in the way that RAFT snapshots are stored in the database.
+`1.28.13+`、`1.29.5+`、`1.30.2+` を実行する複数ノードの Weaviate インスタンスを `v1.27.x`（`1.27.26` より前）へダウングレードすると、データベースでの RAFT スナップショットの保存方式変更によりクラスタが **Ready** 状態に到達しない問題が発生する可能性があります。
 
-A fix for this issue will be released with `1.27.26`, which safely handles the downgrade path to `1.27`.
+この問題の修正は `1.27.26` でリリースされ、`1.27` への安全なダウングレードが可能になります。
 
-If you need to downgrade Weaviate to `v1.27.x`, use `1.27.26` or higher.
+Weaviate を `v1.27.x` にダウングレードする必要がある場合は、`1.27.26` 以上を使用してください。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -3,12 +3,12 @@ title: CrewAI
 sidebar_position: 1
 ---
 
-[CrewAI](https://www.crewai.com/) is a framework for building multi-agent applications.
+[CrewAI](https://www.crewai.com/) はマルチ エージェント アプリケーションを構築するためのフレームワークです。
 
-## CrewAI and Weaviate
-Weaviate is a [supported vector search tool](https://docs.crewai.com/tools/weaviatevectorsearchtool) in CrewAI. It enables you to run semantic search queries over your documents stored in your Weaviate cluster. 
+## CrewAI と Weaviate
+Weaviate は CrewAI で [サポートされている ベクトル 検索ツール](https://docs.crewai.com/tools/weaviatevectorsearchtool) です。これにより、Weaviate クラスターに保存されているドキュメントに対してセマンティック検索クエリを実行できます。 
 
-You can initialize the tool with:
+次のようにツールを初期化できます:
 
 ```python
 from crewai_tools import WeaviateVectorSearchTool
@@ -22,26 +22,22 @@ tool = WeaviateVectorSearchTool(
 )
 ```
 
-## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+リソースは 2 つのカテゴリーに分かれています:  
+1. [**ハンズオン学習**](#hands-on-learning) : エンドツーエンドのチュートリアルで技術的な理解を深めます。  
+2. [**読み物と動画**](#read-and-listen) : これらの技術について概念的な理解を深めます。  
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+### ハンズオン学習 <!-- {#hands-on-learning} -->
 
-### Hands on Learning
-
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Weaviate Query Agent with Crew AI | This notebook will show you how to define the Weaviate Query Agent as a tool through the Crew AI. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/crewai/crewai-query-agent-as-tool.ipynb) | 
+| Weaviate Query Agent with Crew AI | Crew AI を通じて Weaviate Query Agent をツールとして定義する方法を示します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/crewai/crewai-query-agent-as-tool.ipynb) |
 
+### 読み物と動画 <!-- {#read-and-listen} -->
 
-
-
-
-### Read and Listen
-
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Practical Multi Agent RAG using CrewAI, Weaviate, Groq and ExaTool | Learn how to build RAG powered CrewAI agents that enables code_interpretation, rag, memory, and building a custom tool. | [Blog](https://lorenzejay.dev/articles/practical-agentic-rag) | 
-| Rag Techniques Tutorial for Agentic Rag | A video on RAG techniques for beginners. | [Video](https://youtu.be/zXBlvpaFNxE?si=KkE14m1KngPZvu_W) | 
-|How to Build an Agentic RAG Recommendation Engine | Learn how you can leverage Knowledge to give your crew of agents access to relevant context and information. | [Video](https://youtu.be/2Fu_GgS-Q4s?si=ZnDeucXrGnG7UaQY) | 
+| Practical Multi Agent RAG using CrewAI, Weaviate, Groq and ExaTool | code_interpretation、rag、memory、カスタムツールを可能にする RAG 搭載 CrewAI エージェントの構築方法を学びます。 | [Blog](https://lorenzejay.dev/articles/practical-agentic-rag) |
+| Rag Techniques Tutorial for Agentic Rag | RAG 初心者向けのテクニックを解説する動画です。 | [Video](https://youtu.be/zXBlvpaFNxE?si=KkE14m1KngPZvu_W) |
+| How to Build an Agentic RAG Recommendation Engine | Knowledge を活用して、エージェントのクルーに関連するコンテキストと情報へアクセスさせる方法を学びます。 | [Video](https://youtu.be/2Fu_GgS-Q4s?si=ZnDeucXrGnG7UaQY) |
+

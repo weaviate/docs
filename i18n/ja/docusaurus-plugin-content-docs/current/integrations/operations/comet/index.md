@@ -4,18 +4,20 @@ sidebar_position: 2
 image: og/integrations/home.jpg
 ---
 
-[Comet](https://www.comet.com/site/) is a centralized platform that allows you to track, evaluate, and monitor both traditional and LLM models end-to-end.
+[Comet](https://www.comet.com/site/) は、従来型モデルと LLM モデルの両方をエンドツーエンドでトラッキング、評価、モニタリングできる集中管理プラットフォームです。
 
-## Comet and Weaviate
-For teams working on training and fine-tuning LLMs, Comet’s Experiment Tracking solution can first be used to track any LLM fine-tuning runs in a reproducible way, and easily share with the team.
+## Comet と Weaviate
+LLM のトレーニングやファインチューニングに取り組むチーム向けに、Comet の Experiment Tracking ソリューションを使うことで、LLM のファインチューニング実行を再現可能な形で記録し、チームと簡単に共有できます。
 
-Once you have a model that you want to move forward with, whether that is a fine tuned OS model or a proprietary model, you will need to evaluate how that model performs with different datasets, RAGs, prompt templates, and other input tweaks before moving your application to production.
+採用したいモデルが決まったら、それがファインチューニングした OS モデルでも独自モデルでも、アプリケーションを本番環境へ移行する前に、さまざまなデータセット、RAGs、プロンプトテンプレート、その他の入力調整でそのモデルがどのように動作するかを評価する必要があります。
 
-## Our Resources
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+[**実践的学習**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### 実践的学習
 
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| RAG with Opik Tracing and Evals | Learn how to use Opik, Weaviate, and OpenAI to build a RAG system | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/comet/Opik-Tracing-and-Evals.ipynb) |
+| Opik Tracing と Evals を用いた RAG | Opik、Weaviate、OpenAI を使用して RAG システムを構築する方法を学びます | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/comet/Opik-Tracing-and-Evals.ipynb) |
+
+

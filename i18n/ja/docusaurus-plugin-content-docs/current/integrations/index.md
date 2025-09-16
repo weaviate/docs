@@ -1,12 +1,12 @@
 ---
-title: Integrations
+title: インテグレーション
 sidebar_position: 0
 image: og/integrations/home.jpg
 ---
 
-Weaviate's integration ecosystem enables developers to build various applications leveraging Weaviate and another technology.
+Weaviate のインテグレーション エコシステムを利用すると、開発者は Weaviate と他の技術を組み合わせて、さまざまなアプリケーションを構築できます。
 
-All the notebooks and code examples are on [Weaviate Recipes](https://github.com/weaviate/recipes)!
+すべてのノートブックとコード例は [Weaviate Recipes](https://github.com/weaviate/recipes) にあります!
 
 <img
     src={require('./ecosystem.png').default}
@@ -15,28 +15,29 @@ All the notebooks and code examples are on [Weaviate Recipes](https://github.com
 />
 
 
-## About the Categories
-The ecosystem is divided into these categories:
+## カテゴリーについて
+エコシステムは次のカテゴリーに分かれています:
 
-* **Cloud Hyperscalers** - Large-scale computing and storage
-* **Compute Infrastructure** - Run and scale containerized applications
-* **Data Platforms** - Data ingestion and web scraping 
-* **LLM and Agent Frameworks** - Build agents and generative AI applications
-* **Operations** - Tools for monitoring and analyzing generative AI workflows
+* **クラウド ハイパースケーラー** - 大規模な計算とストレージ
+* **コンピュート インフラストラクチャ** - コンテナ化されたアプリケーションの実行とスケール
+* **データ プラットフォーム** - データ取り込みと Web スクレイピング
+* **LLM と エージェント フレームワーク** - エージェントおよび生成 AI アプリケーションの構築
+* **オペレーション** - 生成 AI ワークフローの監視と分析ツール
 
 
 
-## List of Companies
+## 企業一覧
 
-| Company Category | Companies |
+| 企業カテゴリー | 企業 |
 |------------------|-----------|
-| Cloud Hyperscalers | [AWS](/integrations/cloud-hyperscalers/aws), [Google](/integrations/cloud-hyperscalers/google)|
-| Compute Infrastructure | [Modal](/integrations/compute-infrastructure/modal), [Replicate](/integrations/compute-infrastructure/replicate), [Replicated](/integrations/compute-infrastructure/replicated) |
-| Data Platforms |[Airbyte](/integrations/data-platforms/airbyte), [Aryn](/integrations/data-platforms/aryn/), [Boomi](/integrations/data-platforms/boomi/), [Box](/integrations/data-platforms/box/), [Confluent](/integrations/data-platforms/confluent), [Astronomer](/integrations/data-platforms/astronomer), [Context Data](/integrations/data-platforms/context-data/), [Databricks](/integrations/data-platforms/databricks/), [Firecrawl](/integrations/data-platforms/firecrawl), [IBM](/integrations/data-platforms/ibm/),  [Unstructured](/integrations/data-platforms/unstructured) |
-| LLM and Agent Frameworks | [Agno](/integrations/llm-agent-frameworks/agno/) , [Composio](/integrations/llm-agent-frameworks/composio/), [CrewAI](/integrations/llm-agent-frameworks/crewai/), [DSPy](/integrations/llm-agent-frameworks/dspy/), [Dynamiq](/integrations/llm-agent-frameworks/dynamiq/), [Haystack](/integrations/llm-agent-frameworks/haystack/), [LangChain](/integrations/llm-agent-frameworks/langchain/), [LlamaIndex](/integrations/llm-agent-frameworks/llamaindex/), [N8n](/integrations/llm-agent-frameworks/n8n/), [Semantic Kernel](/integrations/llm-agent-frameworks/semantic-kernel/) |
-| Operations | [AIMon](/integrations/operations/aimon/), [Arize](/integrations/operations/arize/), [Cleanlab](/integrations/operations/cleanlab/), [Comet](/integrations/operations/comet/), [DeepEval](/integrations/operations/deepeval/), [Langtrace](/integrations/operations/langtrace/), [LangWatch](/integrations/operations/langwatch/), [Nomic](/integrations/operations/nomic/), [Patronus AI](/integrations/operations/patronus/), [Ragas](/integrations/operations/ragas/), [TruLens](/integrations/operations/trulens/), [Weights & Biases](/integrations/operations/wandb/) |
+| クラウド ハイパースケーラー | [AWS](/integrations/cloud-hyperscalers/aws), [Google](/integrations/cloud-hyperscalers/google)|
+| コンピュート インフラストラクチャ | [Modal](/integrations/compute-infrastructure/modal), [Replicate](/integrations/compute-infrastructure/replicate), [Replicated](/integrations/compute-infrastructure/replicated) |
+| データ プラットフォーム |[Airbyte](/integrations/data-platforms/airbyte), [Aryn](/integrations/data-platforms/aryn/), [Boomi](/integrations/data-platforms/boomi/), [Box](/integrations/data-platforms/box/), [Confluent](/integrations/data-platforms/confluent), [Astronomer](/integrations/data-platforms/astronomer), [Context Data](/integrations/data-platforms/context-data/), [Databricks](/integrations/data-platforms/databricks/), [Firecrawl](/integrations/data-platforms/firecrawl), [IBM](/integrations/data-platforms/ibm/),  [Unstructured](/integrations/data-platforms/unstructured) |
+| LLM と エージェント フレームワーク | [Agno](/integrations/llm-agent-frameworks/agno/) , [Composio](/integrations/llm-agent-frameworks/composio/), [CrewAI](/integrations/llm-agent-frameworks/crewai/), [DSPy](/integrations/llm-agent-frameworks/dspy/), [Dynamiq](/integrations/llm-agent-frameworks/dynamiq/), [Haystack](/integrations/llm-agent-frameworks/haystack/), [LangChain](/integrations/llm-agent-frameworks/langchain/), [LlamaIndex](/integrations/llm-agent-frameworks/llamaindex/), [N8n](/integrations/llm-agent-frameworks/n8n/), [Semantic Kernel](/integrations/llm-agent-frameworks/semantic-kernel/) |
+| オペレーション | [AIMon](/integrations/operations/aimon/), [Arize](/integrations/operations/arize/), [Cleanlab](/integrations/operations/cleanlab/), [Comet](/integrations/operations/comet/), [DeepEval](/integrations/operations/deepeval/), [Langtrace](/integrations/operations/langtrace/), [LangWatch](/integrations/operations/langwatch/), [Nomic](/integrations/operations/nomic/), [Patronus AI](/integrations/operations/patronus/), [Ragas](/integrations/operations/ragas/), [TruLens](/integrations/operations/trulens/), [Weights & Biases](/integrations/operations/wandb/) |
 
-## Model Provider Integrations 
-Weaviate integrates with self-hosted and API-based embedding models from a range of providers.
+## モデル プロバイダーとのインテグレーション
+Weaviate は、さまざまなプロバイダーが提供するセルフホスト型および API ベースのエンベディング モデルと連携します。
 
-Refer to the [documentation page](/weaviate/model-providers) to see the full list of model providers.
+モデル プロバイダーの全リストについては、[ドキュメント ページ](/weaviate/model-providers)をご覧ください。
+

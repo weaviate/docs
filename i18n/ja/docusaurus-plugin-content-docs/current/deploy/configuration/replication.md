@@ -1,112 +1,112 @@
 ---
-title: Replication
+title: レプリケーション
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'operations', 'monitoring', 'observability']
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-Weaviate instances can be replicated. Replication can improve read throughput, improve availability, and enable zero-downtime upgrades.
+Weaviate インスタンスはレプリケーション可能です。レプリケーションにより読み取りスループットが向上し、可用性が高まり、ゼロダウンタイムでのアップグレードが可能になります。
 
-For more details on how replication is designed and built in Weaviate, see [Replication Architecture](/weaviate/concepts/replication-architecture/index.md).
+Weaviate におけるレプリケーションの設計と実装の詳細については、[レプリケーションアーキテクチャ](/weaviate/concepts/replication-architecture/index.md)を参照してください。
 
-## How to configure
+## 設定方法
 
 import RaftRFChangeWarning from '/\_includes/1-25-replication-factor.mdx';
 
 <RaftRFChangeWarning/>
 
-Replication is disabled by default. It can be enabled per collection in the [collection configuration](/weaviate/manage-collections/multi-node-setup.mdx#replication-settings). This means you can set different replication factors per class in your dataset.
+レプリケーションはデフォルトで無効になっています。コレクションごとに[コレクション設定](/weaviate/manage-collections/multi-node-setup.mdx#replication-settings)で有効化できます。これにより、データセット内の各クラスに異なるレプリケーションファクターを設定できます。
 
-To enable replication, you can set one or both of the following:
+レプリケーションを有効にするには、以下のいずれか、または両方を設定します。
 
-- `REPLICATION_MINIMUM_FACTOR` environment variable for the entire Weaviate instance, or
-- `replicationFactor` parameter for a collection.
+- Weaviate 全体に対して `REPLICATION_MINIMUM_FACTOR` 環境変数を設定
+- コレクションに対して `replicationFactor` パラメーターを設定
 
-### Weaviate-wide minimum replication factor
+### Weaviate 全体の最小レプリケーションファクター
 
-The `REPLICATION_MINIMUM_FACTOR` environment variable sets the minimum replication factor for all collections in the Weaviate instance.
+`REPLICATION_MINIMUM_FACTOR` 環境変数は、該当 Weaviate インスタンス内のすべてのコレクションに対する最小レプリケーションファクターを設定します。
 
-If you set the [replication factor for a collection](#replication-factor-for-a-collection), the collection's replication factor overrides the minimum replication factor.
+[コレクションのレプリケーションファクター](#replication-factor-for-a-collection)を設定した場合は、そのコレクションの値が最小レプリケーションファクターより優先されます。
 
-### Replication factor for a collection
+### コレクションのレプリケーションファクター
 
 import SchemaReplication from '/\_includes/code/schema.things.create.replication.mdx';
 
 <SchemaReplication/>
 
-In this example, there are three replicas. If you set the replication factor before you import data, all of the data is replicated three times.
+この例ではレプリケーション数が 3 です。データをインポートする前にレプリケーションファクターを設定すると、すべてのデータが 3 回複製されます。
 
-The replication factor can be modified after you add data to a collection. If you modify the replication factor afterwards, new data is copied across the new and pre-existing replica nodes.
+レプリケーションファクターは、データを追加した後でも変更できます。変更後は、新しいデータが新旧両方のレプリカノードにコピーされます。
 
-The example data schema has a [write consistency](/weaviate/concepts/replication-architecture/consistency.md#tunable-write-consistency) level of `ALL`. When you upload or update a schema, the changes are sent to `ALL` nodes (via a coordinator node). The coordinator node waits for a successful acknowledgment from `ALL` nodes before sending a success message back to the client. This ensures a highly consistent schema in your distributed Weaviate setup.
+例のデータスキーマでは[書き込み整合性](/weaviate/concepts/replication-architecture/consistency.md#tunable-write-consistency)レベルが `ALL` に設定されています。スキーマをアップロードまたは更新すると、変更はコーディネーターノード経由で `ALL` ノードに送信されます。コーディネーターノードはすべてのノードから成功応答を受け取ってからクライアントに成功メッセージを返すため、分散 Weaviate で高い整合性が確保されます。
 
-## Data consistency
+## データ整合性
 
-When Weaviate detects inconsistent data across nodes, it attempts to repair the out of sync data.
+Weaviate はノード間でデータの不一致を検出すると、同期が取れていないデータを修復しようとします。
 
-Starting in v1.26, Weaviate adds [async replication](/weaviate/concepts/replication-architecture/consistency.md#async-replication) to proactively detect inconsistencies. In earlier versions, Weaviate uses a [repair-on-read](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read) strategy to repair inconsistencies at read time.
+バージョン  v1.26 以降では、Weaviate は[非同期レプリケーション](/weaviate/concepts/replication-architecture/consistency.md#async-replication)を追加し、能動的に不整合を検出します。以前のバージョンでは、Weaviate は[リード時修復](/weaviate/concepts/replication-architecture/consistency.md#repair-on-read)戦略を採用しており、読み取り時に不整合を修復します。
 
-Repair-on-read is automatic. To activate async replication, set `asyncEnabled` to true in the `replicationConfig` section of your collection definition.
+リード時修復は自動で行われます。非同期レプリケーションを有効にするには、コレクション定義の `replicationConfig` セクションで `asyncEnabled` を `true` に設定します。
 
 import ReplicationConfigWithAsyncRepair from '/\_includes/code/configuration/replication-consistency.mdx';
 
 <ReplicationConfigWithAsyncRepair />
 
-### Configure async replication settings {#async-replication-settings}
+### 非同期レプリケーション設定 {#async-replication-settings}
 
-:::info Added in `v1.29`
-The [environment variables](/deploy/configuration/env-vars/index.md#async-replication) for configuring async replication (`ASYNC_*`) have been introduced in `v1.29`.
+:::info `v1.29` で追加
+非同期レプリケーションを設定するための[環境変数](/deploy/configuration/env-vars/index.md#async-replication)（`ASYNC_*`）は  v1.29 で導入されました。
 :::
 
-Async replication helps achieve consistency for data replicated across multiple nodes.
+非同期レプリケーションは、複数ノード間で複製されたデータの整合性を確保するのに役立ちます。
 
-Update the following [environment variables](/deploy/configuration/env-vars/index.md#async-replication) to configure async replication for your particular use case.
+ユースケースに合わせて、以下の[環境変数](/deploy/configuration/env-vars/index.md#async-replication)を調整してください。
 
-#### Logging
+#### ロギング
 
-- **Set the frequency of the logger:** `ASYNC_REPLICATION_LOGGING_FREQUENCY`
-  Define how often the async replication background process will log events.
+- **ロガーの頻度を設定:** `ASYNC_REPLICATION_LOGGING_FREQUENCY`  
+  非同期レプリケーションのバックグラウンドプロセスがイベントをログ出力する間隔を定義します。
 
-#### Data comparison
+#### データ比較
 
-- **Set the frequency of comparisons:** `ASYNC_REPLICATION_FREQUENCY`
-  Define how often each node compares its local data with other nodes.
-- **Set comparison timeout:** `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT`
-  Optionally configure a timeout for how long to wait during comparison when a node is unresponsive.
-- **Monitor node availability:** `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
-  Trigger comparisons whenever there’s a change in node availability.
-- **Configure hash tree height:** `ASYNC_REPLICATION_HASHTREE_HEIGHT`
-  Specify the size of the hash tree, which helps narrow down data differences by comparing hash digests at multiple levels instead of scanning entire datasets. See [this page](/weaviate/concepts/replication-architecture/consistency.md#memory-and-performance-considerations-for-async-replication) for more information on the memory and performance considerations for async replication.
-- **Batch size for digest comparison:** `ASYNC_REPLICATION_DIFF_BATCH_SIZE`
-  Define the number of objects whose digest (e.g., last update time) is compared between nodes before propagating actual objects.
+- **比較の実行頻度を設定:** `ASYNC_REPLICATION_FREQUENCY`  
+  各ノードがローカルデータを他ノードと比較する間隔を定義します。
+- **比較タイムアウトを設定:** `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT`  
+  ノードが応答しない場合に比較処理を待機するタイムアウトを任意で設定します。
+- **ノード可用性を監視:** `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`  
+  ノードの可用性に変化があった際に比較をトリガーします。
+- **ハッシュツリーの高さを設定:** `ASYNC_REPLICATION_HASHTREE_HEIGHT`  
+  ハッシュツリーのサイズを指定します。複数レベルでハッシュダイジェストを比較することで、全データをスキャンする代わりに差分を絞り込みます。メモリおよびパフォーマンスへの影響については[こちら](/weaviate/concepts/replication-architecture/consistency.md#memory-and-performance-considerations-for-async-replication)を参照してください。
+- **ダイジェスト比較のバッチサイズ:** `ASYNC_REPLICATION_DIFF_BATCH_SIZE`  
+  ノード間でダイジェスト（例: 最終更新時刻）を比較してから実際のオブジェクトを伝播するまでに比較するオブジェクト数を定義します。
 
-#### Data synchronization
+#### データ同期
 
-Once differences between nodes are detected, Weaviate propagates outdated or missing data. Configure synchronization as follows:
+ノード間の差分が検出されると、Weaviate は不足または古いデータを伝播します。同期を次のように設定してください。
 
-- **Set the frequency of propagation:** `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING`
-  After synchronization is completed on a node, temporarily adjust the data comparison frequency to the set value.
-- **Set propagation timeout:** `ASYNC_REPLICATION_PROPAGATION_TIMEOUT`
-  Optionally configure a timeout for how long to wait during propagation when a node is unresponsive.
-- **Set propagation delay:** `ASYNC_REPLICATION_PROPAGATION_DELAY`
-  Define a delay period to allow asynchronous write operations to reach all nodes before propagating new or updated objects.
-- **Batch size for data propagation:** `ASYNC_REPLICATION_PROPAGATION_BATCH_SIZE`
-  Define the number of objects that are sent in each synchronization batch during the propagation phase.
-- **Set propagation limits:** `ASYNC_REPLICATION_PROPAGATION_LIMIT`
-  Enforce a limit on the number of out-of-sync objects to be propagated per replication iteration.
-- **Set propagation concurrency:** `ASYNC_REPLICATION_PROPAGATION_CONCURRENCY`
-  Specify the number of concurrent workers that can send batches of objects to other nodes, allowing multiple propagation batches to be sent simultaneously.
+- **伝播の頻度を設定:** `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING`  
+  ノードで同期が完了した後、一時的にデータ比較の頻度をこの値に調整します。
+- **伝播タイムアウトを設定:** `ASYNC_REPLICATION_PROPAGATION_TIMEOUT`  
+  ノードが応答しない場合に伝播処理を待機するタイムアウトを任意で設定します。
+- **伝播遅延を設定:** `ASYNC_REPLICATION_PROPAGATION_DELAY`  
+  非同期書き込みがすべてのノードに届くまで待機する遅延時間を定義します。
+- **データ伝播のバッチサイズ:** `ASYNC_REPLICATION_PROPAGATION_BATCH_SIZE`  
+  伝播フェーズで 1 バッチとして送信されるオブジェクト数を定義します。
+- **伝播の上限を設定:** `ASYNC_REPLICATION_PROPAGATION_LIMIT`  
+  1 回のレプリケーションイテレーションで伝播する未同期オブジェクトの上限を設定します。
+- **伝播の並列数を設定:** `ASYNC_REPLICATION_PROPAGATION_CONCURRENCY`  
+  オブジェクトのバッチを他ノードへ送信できる同時ワーカー数を指定し、複数の伝播バッチを同時に送信できるようにします。
 
 :::tip
-Tweak these settings based on your cluster size and network latency to achieve optimal performance. Smaller batch sizes and shorter timeouts may be beneficial for high-traffic clusters, while larger clusters might require more conservative settings.
+クラスターサイズやネットワーク遅延に応じてこれらの設定を調整し、最適なパフォーマンスを確保してください。高トラフィックのクラスターでは小さなバッチサイズと短いタイムアウトが有効な場合があり、大規模クラスターではより保守的な設定が必要になることがあります。
 :::
 
-## How to use: Queries
+## 使用方法: クエリ
 
-When you add (write) or query (read) data, one or more replica nodes in the cluster will respond to the request. How many nodes need to send a successful response and acknowledgment to the coordinator node depends on the `consistency_level`. Available [consistency levels](/weaviate/concepts/replication-architecture/consistency.md) are `ONE`, `QUORUM` (replication_factor / 2 + 1) and `ALL`.
+データを追加（書き込み）したりクエリ（読み取り）を実行したりすると、クラスター内の 1 つ以上のレプリカノードがリクエストに応答します。何台のノードから成功応答と確認応答をコーディネーターノードが受け取る必要があるかは `consistency_level` に依存します。利用可能な[整合性レベル](/weaviate/concepts/replication-architecture/consistency.md)は `ONE`, `QUORUM`（`replication_factor / 2 + 1`）および `ALL` です。
 
-The `consistency_level` can be specified at query time:
+`consistency_level` はクエリ時に指定できます。
 
 ```bash
 # Get an object by ID, with consistency level ONE
@@ -114,27 +114,30 @@ curl "http://localhost:8080/v1/objects/{ClassName}/{id}?consistency_level=ONE"
 ```
 
 :::note
-In v1.17, only [read queries that get data by ID](/weaviate/manage-objects/read.mdx#get-an-object-by-id) had a tunable consistency level. All other object-specific REST endpoints (read or write) used the consistency level `ALL`. Starting with v1.18, all write and read queries are tunable to either `ONE`, `QUORUM` (default) or `ALL`. GraphQL endpoints use the consistency level `ONE` (in both versions).
+バージョン  v1.17 では、[ID でデータを取得する読み取りクエリ](/weaviate/manage-objects/read.mdx#get-an-object-by-id)のみが調整可能な整合性レベルを持ち、その他のオブジェクト固有 REST エンドポイント（読み取り・書き込み）はすべて `ALL` を使用していました。  v1.18 以降は、すべての書き込み・読み取りクエリで `ONE`, `QUORUM`（デフォルト）または `ALL` を選択できます。GraphQL エンドポイントは両バージョンとも `ONE` を使用します。
 :::
 
 import QueryReplication from '/\_includes/code/replication.get.object.by.id.mdx';
 
 <QueryReplication/>
 
-## Replica movement and status
+
+
+## レプリカの移動とステータス
 
 :::info Added in `v1.32`
 :::
 
-Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated <SkipLink href="/weaviate/api/rest#tag/replication">RESTful API endpoints</SkipLink> or [programmatically through client libraries](./replica-movement.mdx).
+初期のレプリケーションファクターを設定するだけでなく、Weaviate クラスター内でシャード レプリカの配置を積極的に管理できます。これは、スケール後のデータ再バランス、ノードの廃止、データローカリティの最適化に役立ちます。レプリカの移動は、専用の <SkipLink href="/weaviate/api/rest#tag/replication">RESTful API エンドポイント</SkipLink> または [クライアントライブラリを通じたプログラムによる操作](./replica-movement.mdx) により管理できます。
 
-## Related pages
+## 関連ページ
 
-- [Concepts: Replication Architecture](/weaviate/concepts/replication-architecture/index.md)
-- [Configurinfg Async Replication](./async-rep.md)
+- [概念: レプリケーションアーキテクチャ](/weaviate/concepts/replication-architecture/index.md)
+- [非同期レプリケーションの設定](./async-rep.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

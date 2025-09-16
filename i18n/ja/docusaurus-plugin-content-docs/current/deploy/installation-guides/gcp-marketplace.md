@@ -1,16 +1,16 @@
 ---
-title: GCP Marketplace - Weaviate Serverless
-description: Set up Weaviate using Google Cloud Marketplace for simplified deployment.
+title: GCP Marketplace - Weaviate サーバーレス
+description: Google Cloud Marketplace を使用して Weaviate を簡単にデプロイする
 image: og/docs/installation.jpg
 tags: ['installation', 'Google Cloud Marketplace']
 ---
 
-A Weaviate cluster is easy to deploy with Google Cloud Marketplace (GCP).
+Weaviate クラスタは Google Cloud Marketplace ( GCP ) を使用して簡単にデプロイできます。
 
-:::info Prerequisites
+:::info 前提条件
 
-- A Google Cloud account with sufficient credit / payment method.
-- (Recommended) Familiarity with Google Cloud and the Google Cloud console.
+- 十分なクレジットまたは支払い方法が設定されている Google Cloud アカウント  
+- （推奨）Google Cloud および Google Cloud コンソールに慣れていること
 :::
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
@@ -30,43 +30,43 @@ A Weaviate cluster is easy to deploy with Google Cloud Marketplace (GCP).
   <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="dr97j66hop"></script>
 </div>
 
-## Installation instructions
+## インストール手順
 
-1. Go to Weaviate's [Google Cloud Marketplace listing](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate) page and click <kbd>Subscribe</kbd>.
-1. Configure and deploy Weaviate by following the on-screen instructions.
+1. Weaviate の [Google Cloud Marketplace のリスティング](https://console.cloud.google.com/marketplace/product/weaviate-gcp-mktplace/weaviate) ページに移動し、<kbd>Subscribe</kbd> をクリックします。  
+1. 画面の指示に従って Weaviate を構成してデプロイします。  
 
-Once completed, you will have a [Weaviate serverless cloud](/cloud/index.mdx) deployment. 
+完了すると、[Weaviate サーバーレス クラウド](/cloud/index.mdx) がデプロイされます。 
 
 :::info
 <details>
 
-<summary> A little background information </summary>
+<summary>背景情報</summary>
 
-- When you deploy Weaviate Serverless Cloud through the GCP Marketplace, you're subscribing to a Software as a Service (SaaS) solution that is specifically built for GCP customers. 
+- GCP Marketplace から Weaviate Serverless Cloud をデプロイすると、GCP のお客様向けに構築された Software as a Service ( SaaS ) ソリューションにサブスクライブすることになります。  
+- Weaviate サーバーレス クラスタが利用可能になると、GCP から通知が届きます。  
 
-- GCP will notify you once your Weaviate serverless cluster is available. 
+**このソリューションは次のようなケースに最適です:**
 
-**This solution is ideal for:**
-
-- Organizations requiring GCP billing integration. 
-- Organizations with regulatory requirements who need specific regional deployments. 
+- GCP の請求連携が必要な組織  
+- 規制要件により特定のリージョンでのデプロイが必要な組織  
 
 </details>
 
 :::
 
-## Billing
+## 課金
 
-You will be charged for Weaviate and associated resources directly by Google Cloud.
+Weaviate と関連リソースの料金は Google Cloud から直接請求されます。
 
 :::warning
 
-If you cancel your Weaviate GCP marketplace subscription, your Weaviate organization and its clusters will be deleted by Weaviate.
+Weaviate GCP Marketplace のサブスクリプションを解約すると、Weaviate によりお客様の Weaviate 組織およびそのクラスタが削除されます。
 
 :::
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

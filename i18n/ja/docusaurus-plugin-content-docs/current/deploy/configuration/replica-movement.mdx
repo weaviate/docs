@@ -1,18 +1,18 @@
 ---
-title: Replica movement
+title: レプリカ移動
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.32`
+:::info `v1.32` で追加
 :::
 
-Beyond setting the initial replication factor, you can actively manage the placement of shard replicas within your Weaviate cluster. This is useful for rebalancing data after scaling, decommissioning nodes, or optimizing data locality. Replica movement is managed through a set of dedicated [RESTful API endpoints](/docs/weaviate/api/rest.md) or through the client library API described below.
+初期のレプリケーションファクターを設定するだけでなく、 Weaviate クラスター内でシャードレプリカの配置を積極的に管理できます。これは、スケーリング後のデータの再バランス、ノードの廃止、またはデータローカリティの最適化に役立ちます。レプリカ移動は、専用の [ RESTful API エンドポイント ] もしくは下記のクライアントライブラリ API を通じて操作できます。
 
-When a replica movement is initiated, it changes the replication factor of that shard *only*, not the entire collection. A collection has a particular replication factor, but a shard (a subset of a collection), can have its own replication factor which can be different. If a replica COPY operation is made, this can be incremented.
+レプリカ移動を開始すると、変更されるのはそのシャードのレプリケーションファクターだけであり、コレクション全体ではありません。コレクションには特定のレプリケーションファクターがありますが、シャード (コレクションのサブセット) は異なるレプリケーションファクターを持つことができます。レプリカを COPY する操作を行うと、この値を増やすことができます。
 
-## Check shard state
+## シャード状態の確認
 
-Before initiating any movement, you might want to inspect the current distribution of replicas. You can retrieve the sharding state of an entire collection, or its specific shard.
+移動を開始する前に、現在のレプリカ分布を確認したい場合があります。コレクション全体、または特定のシャードのシャーディング状態を取得できます。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -63,9 +63,9 @@ Nodes for shard 'w5OcBGbNvRt4': ['node2', 'node3']
 
 </details>
 
-## Initiate a replica movement
+## レプリカ移動の開始
 
-Copy or move a shard replica by specifying the the source node, destination node, collection name, shard ID and operation type (`MOVE` or `COPY`).
+ソースノード、デスティネーションノード、コレクション名、シャード ID、そして操作タイプ ( `MOVE` または `COPY` ) を指定して、シャードレプリカを COPY または MOVE できます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -108,9 +108,9 @@ Replication initiated, ID: 32536c0e-09e1-4ea1-a2c5-e85af10a9d58
 
 </details>
 
-## Check the status of a replication operation
+## レプリケーション操作のステータス確認
 
-Shard replication operations are asynchronous. An operation status can be queried, with an option to view the full operation history.
+シャードのレプリケーション操作は非同期で実行されます。操作のステータスを問い合わせることができ、完全な操作履歴を表示するオプションもあります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -155,7 +155,7 @@ History for f771aae1-f3c4-4fac-bae6-90597e8c70bd: [ReplicateOperationStatus(stat
 </details>
 
 :::note
-The movement operation can have one of the following states:
+移動操作は次のいずれかの状態になります:
 
 - `REGISTERED`
 - `HYDRATING`
@@ -164,13 +164,13 @@ The movement operation can have one of the following states:
 - `READY`
 - `CANCELLED`
 
-To learn more about the replication states, check out [Concepts: Replication architecture](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement).
+レプリケーション状態について詳しくは、[ 概念: レプリケーションアーキテクチャ ](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement) を参照してください。
 
 :::
 
-## List replication operations
+## レプリケーション操作の一覧取得
 
-List all ongoing and completed operations. This can be filtered by node, collection and shard.
+進行中および完了済みのすべての操作を一覧表示します。ノード、コレクション、シャードでフィルタリングできます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -205,7 +205,7 @@ language="py"
 </Tabs>
 
 <details>
-  <summary>Code output</summary>
+  <summary>コード出力</summary>
 
 ```
 Total replication operations: 1
@@ -214,9 +214,9 @@ Filtered operations for collection 'MyReplicatedDocCollection' on 'node3': 1
 
 </details>
 
-## Cancel a replication operation
+## レプリケーション操作のキャンセル
 
-The operation will be stopped if possible. If successfully cancelled, its state will change to `CANCELLED`.
+可能な場合、操作を停止します。正常にキャンセルされると、その状態は `CANCELLED` に変わります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -250,9 +250,9 @@ language="py"
 </TabItem>
 </Tabs>
 
-## Delete a replication operation
+## レプリケーション操作の削除
 
-Remove a replication operation from the logs. If the operation is active, it will be cancelled first.
+ログからレプリケーション操作を削除します。操作がアクティブな場合、先にキャンセルされます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -286,9 +286,9 @@ language="py"
 </TabItem>
 </Tabs>
 
-## Delete all replication operations
+## すべてのレプリケーション操作の削除
 
-Remove all replication operations from the logs. If any operations are active, they will be cancelled first.
+ログからすべてのレプリケーション操作を削除します。アクティブな操作がある場合は、先にキャンセルされます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -322,13 +322,15 @@ language="py"
 </TabItem>
 </Tabs>
 
-## Further resources
 
-- [RESTful API: Replication endpoints](/docs/weaviate/api/rest.md)
-- [Concepts: Replication architecture](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement)
+## 参考リソース
 
-## Questions and feedback
+- [RESTful API：レプリケーションエンドポイント](/docs/weaviate/api/rest.md)
+- [コンセプト：レプリケーションアーキテクチャ](/docs/weaviate/concepts/replication-architecture/consistency.md#replica-movement)
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback />
+

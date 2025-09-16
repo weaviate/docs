@@ -1,6 +1,6 @@
 ---
-title: Set up RBAC in Weaviate
-description: Learn how to set up RBAC (Role Based Access Control) in Weaviate
+title: Weaviate で RBAC を設定する
+description: Weaviate で RBAC (Role Based Access Control) を設定する方法を学びます
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
@@ -15,46 +15,46 @@ import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac
 import UserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.users.py';
 import RoleTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts';
 
-**Role-Based Access Control (RBAC)** is a powerful security mechanism that lets you manage who can access and modify your Weaviate instance. In this tutorial, you'll learn how to set up RBAC in Weaviate by defining roles with tailored permissions and assigning them to users. This enables granular control over operations—from reading and writing data to managing collections and tenants—ensuring that only authorized users can perform specific actions.
+**Role-Based Access Control (RBAC)** は、Weaviate インスタンスへのアクセスと変更を管理できる強力なセキュリティ機構です。ここでは、権限を細かく設定したロールを定義し、それらをユーザーに割り当てることで Weaviate で RBAC を設定する方法を解説します。これにより、データの読み書きからコレクションやテナントの管理まで、特定の操作を実行できるユーザーを限定することができます。
 
-## Introduction
+## 導入
 
-In the steps that follow, we’ll cover:
+以下のステップを順に説明します。
 
-- **Step 1: Connecting to Weaviate**  
-  Ensure you're authenticated with a user who has the necessary role management permissions.
-- **Step 2: Creating custom roles**  
-  Define roles with specific permissions, such as read, write, tenant management, etc.
-- **Step 3: Assigning roles to new users**  
-  Apply these roles to a new user, limiting their access across different resources.
+- **ステップ 1: Weaviate への接続**  
+  必要なロール管理権限を持つユーザーで認証されていることを確認します。
+- **ステップ 2: カスタムロールの作成**  
+  読み取り、書き込み、テナント管理など、特定の権限を持つロールを定義します。
+- **ステップ 3: 新しいユーザーへのロール割り当て**  
+  これらのロールを新規ユーザーに適用し、リソースごとのアクセスを制限します。
 
 ![RBAC Tutorial Diagram](./imgs/rbac-tutorial-diagram.png)
 
-By the end of this guide, you’ll have a clear roadmap for implementing RBAC in your Weaviate deployment, adding an essential layer of security to your AI powered applications.
+このガイドを終える頃には、Weaviate デプロイに RBAC を実装するための明確な手順を理解し、AI 搭載アプリケーションに不可欠なセキュリティ層を追加できるようになります。
 
 ---
 
-We are going to create the following roles:
+作成するロールは次のとおりです。
 
-- **[Read and write permissions](#read-and-write-permissions):** `rw_role`  
-  Learn how to create a custom role that grants read and write access to collections and data, and assign it to a user.
-- **[Viewer permissions](#viewer-permissions):** `viewer_role`  
-  Set up a role that restricts users to read-only access for specific collections.
-- **[Tenant permissions](#tenant-permissions):** `tenant_manager`  
-  Configure roles with permissions to manage tenants, including creating, reading, and updating tenant information.
+- **[読み取りおよび書き込み権限](#read-and-write-permissions):** `rw_role`  
+  コレクションとデータへの読み取り・書き込みアクセスを許可するカスタムロールを作成し、ユーザーに割り当てる方法を学びます。
+- **[閲覧権限](#viewer-permissions):** `viewer_role`  
+  特定のコレクションに対して読み取り専用アクセスに制限するロールを設定します。
+- **[テナント権限](#tenant-permissions):** `tenant_manager`  
+  テナントの作成、読み取り、更新を含む管理権限を持つロールを構成します。
 
-## Prerequisites
+## 前提条件
 
-Before starting this tutorial, ensure you have the following:
+このチュートリアルを始める前に、次のものを用意してください。
 
-- Docker for running a Weaviate instance locally.
-- Your preferred Weaviate [client library](/weaviate/client-libraries/index.mdx) installed.
+- ローカルで Weaviate インスタンスを実行するための Docker  
+- お好みの Weaviate [クライアントライブラリ](/weaviate/client-libraries/index.mdx) がインストールされていること
 
-### Local instance - `root` user
+### ローカルインスタンス - `root` ユーザー
 
-In order to follow the rest of the tutorial we will need to connect to Weaviate with a user who has the `root` role assigned. This will allow us to manage roles and permissions.
+このチュートリアルを進めるには、`root` ロールが割り当てられているユーザーで Weaviate に接続する必要があります。これにより、ロールと権限を管理できます。
 
-Create a Docker Compose file (`docker-compose.yml`) and copy the following configuration:
+`docker-compose.yml` という Docker Compose ファイルを作成し、次の設定をコピーしてください。
 
 ```yaml
 ---
@@ -90,18 +90,18 @@ volumes:
   weaviate_data:
 ```
 
-The environment variables in this configuration:
+この設定内の環境変数は以下を行います。
 
-- Enable RBAC.
-- Configure `root-user` as a user with built-in root/admin permissions.
+- RBAC を有効化します。
+- `root-user` を組み込みの root / 管理者権限を持つユーザーとして設定します。
 
-We will connect to Weaviate with `root-user`, and once we create a new role, we will also create a new user `custom-user` and assign the role to it.
+まず `root-user` で Weaviate に接続し、新しいロールを作成したら `custom-user` というユーザーを作成し、そのロールを割り当てます。
 
-## Read and write permissions
+## 読み取り/書き込み権限
 
-### Step 1: Connect to Weaviate
+### ステップ 1: Weaviate 接続
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
+ロールを管理できる十分な権限を持つユーザーで Weaviate に接続していることを確認してください。これは、[Weaviate 設定](/deploy/configuration/configuring-rbac.md) 時に組み込みの `root` ロールを使用するか、ユーザーに [`manage_roles` 権限](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions) を付与することで実現できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -136,9 +136,9 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
   </TabItem>
 </Tabs>
 
-### Step 2: Create new role with custom permissions
+### ステップ 2: カスタム権限付きロールの作成
 
-This grants read and write permissions for collections starting with `TargetCollection`, and read permissions to nodes and cluster metadata.
+このロールは `TargetCollection` で始まるコレクションに対して読み取り・書き込み権限を付与し、ノードとクラスターメタデータに対して読み取り権限を付与します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -173,9 +173,11 @@ This grants read and write permissions for collections starting with `TargetColl
   </TabItem>
 </Tabs>
 
-### Step 3: Assign the role to a new user
 
-First, let's create the new user `custom-user`:
+
+### ステップ 3: 新しいユーザーへのロール割り当て
+
+まず、新しいユーザー `custom-user` を作成します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -209,7 +211,7 @@ First, let's create the new user `custom-user`:
   </TabItem>
 </Tabs>
 
-Now, you can assign the role `rw_role` to `custom-user`:
+次に、`custom-user` にロール `rw_role` を割り当てます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -244,13 +246,12 @@ Now, you can assign the role `rw_role` to `custom-user`:
   </TabItem>
 </Tabs>
 
-## Viewer permissions
+## ビューアー権限
 
-### Step 1: Connect to Weaviate
+### ステップ 1: Weaviate への接続
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
-You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac) 
-or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles#role-management).
+ロールを管理する十分な権限を持つユーザーで Weaviate に接続していることを確認します。  
+これは、[Weaviate の設定](/deploy/configuration/configuring-rbac) 時にあらかじめ定義されている `root` ロールを使用するか、ユーザーに [`manage_roles` 権限](/weaviate/configuration/rbac/manage-roles#role-management) を付与することで実現できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -285,9 +286,9 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
   </TabItem>
 </Tabs>
 
-### Step 2: Create new role with custom permissions
+### ステップ 2: カスタム権限を持つ新しいロールの作成
 
-This grants viewer permissions for collections starting with `TargetCollection`.
+これにより、`TargetCollection` で始まるコレクションに対するビューアー権限が付与されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -322,9 +323,9 @@ This grants viewer permissions for collections starting with `TargetCollection`.
   </TabItem>
 </Tabs>
 
-### Step 3: Assign the role to a new user
+### ステップ 3: 新規ユーザーへのロール割り当て
 
-First, let's create the new user `custom-user`:
+最初に、新しいユーザー `custom-user` を作成します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -358,7 +359,7 @@ First, let's create the new user `custom-user`:
   </TabItem>
 </Tabs>
 
-Now, you can assign the role `viewer_role` to `custom-user`:
+次に、`viewer_role` を `custom-user` に割り当てます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -393,13 +394,12 @@ Now, you can assign the role `viewer_role` to `custom-user`:
   </TabItem>
 </Tabs>
 
-## Tenant permissions
+## テナント権限
 
-### Step 1: Connect to Weaviate
+### ステップ 1: Weaviate への接続
 
-Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
-You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) 
-or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
+ロールを管理できる十分な権限を持つユーザーで Weaviate に接続されていることを確認してください。  
+これは、[Weaviate 構成](/deploy/configuration/configuring-rbac.md) で用意されている `root` ロールを使用するか、ユーザーに [`manage_roles` 権限](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions) を付与することで達成できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -434,11 +434,11 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
   </TabItem>
 </Tabs>
 
-### Step 2: Create new role with custom permissions
+### ステップ 2: カスタム権限を持つ新規ロールの作成
 
-This grants permissions to:
-- Completely manage tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
-- Create, read, update and delete data for tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
+このロールは以下の権限を付与します:
+- `TargetCollection` で始まるコレクション内の `TargetTenant` で始まるテナントを完全に管理
+- `TargetCollection` で始まるコレクション内の `TargetTenant` で始まるテナントのデータを作成、読み取り、更新、および削除
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -473,9 +473,9 @@ This grants permissions to:
   </TabItem>
 </Tabs>
 
-### Step 3: Assign the role to a new user
+### ステップ 3: 新規ユーザーへのロール割り当て
 
-First, let's create the new user `custom-user`:
+まず、`custom-user` という新しいユーザーを作成します:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -509,7 +509,7 @@ First, let's create the new user `custom-user`:
   </TabItem>
 </Tabs>
 
-Now, you can assign the role `tenant_manager` to `custom-user`:
+次に、`tenant_manager` ロールを `custom-user` に割り当てます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -544,20 +544,21 @@ Now, you can assign the role `tenant_manager` to `custom-user`:
   </TabItem>
 </Tabs>
 
-## Summary
+## 概要
 
-This tutorial provides a comprehensive guide to configuring RBAC in Weaviate, helping you secure your vector database by managing user access with tailored roles and permissions.
+このチュートリアルは、 Weaviate における RBAC の設定方法を包括的に解説し、カスタマイズしたロールとパーミッションによってユーザー アクセスを管理し、ベクトル データベースのセキュリティを強化する方法を紹介します。
 
-It walks you through connecting to Weaviate using a user with role management capabilities, then demonstrates how to create custom roles for different access levels. You’ll learn how to set up roles with read and write permissions to manage collections and data, configure viewer permissions for read-only access, and establish tenant permissions for managing tenant operations.
+ロール管理権限を持つユーザーで Weaviate に接続するところから始め、さまざまなアクセス レベル向けにカスタム ロールを作成する手順を示します。コレクションとデータを管理するための読み取り・書き込み権限を持つロールの設定、読み取り専用アクセスのための viewer パーミッションの構成、そしてテナント操作を管理する tenant パーミッションの確立方法を学べます。
 
-## Additional resources
+## 追加リソース
 
-- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
-- [RBAC: Manage roles](/weaviate/configuration/rbac/manage-roles.mdx)
-- [RBAC: Manage users](/weaviate/configuration/rbac/manage-users.mdx)
+- [RBAC: 設定](/deploy/configuration/configuring-rbac.md)
+- [RBAC: ロールの管理](/weaviate/configuration/rbac/manage-roles.mdx)
+- [RBAC: ユーザーの管理](/weaviate/configuration/rbac/manage-users.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback />
+

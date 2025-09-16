@@ -1,49 +1,49 @@
 ---
-title: Summarization
-description: Summarize data efficiently using the SUM Transformers module in Weaviate.
+title: 要約
+description: Weaviate の SUM Transformers モジュールを使用してデータを効率的に要約します。
 sidebar_position: 80
 image: og/docs/modules/sum-transformers.jpg
 # tags: ['transformers']
 ---
 
+## 概要
 
-## In short
+* Summarization ( `sum-transformers` ) モジュールは、段落全体を短いテキストに要約する Weaviate モジュールです。  
+* このモジュールは要約に特化した transformers モデルをコンテナ化し、Weaviate から接続できるようにします。ここでは事前構築済みモデルを提供していますが、Hugging Face から別の transformer モデルを接続したり、カスタムモデルを使用したりすることも可能です。  
+* モジュールは GraphQL の `_additional {}` フィールドに `summary {}` フィルターを追加します。  
+* モジュールは GraphQL `_additional { summary {} }` フィールドで結果を返します。  
 
-* The Summarization (`sum-transformers`) module is a Weaviate module that summarizes whole paragraphs into a short text.
-* The module containerizes a summarization-focussed transformers model for Weaviate to connect to. We make pre-built models available here, but you can also attach another transformer model from Hugging Face or even a custom model.
-* The module adds a `summary {}` filter to the GraphQL `_additional {}` field.
-* The module returns the results in the GraphQL `_additional { summary {} }` field.
+## はじめに
 
-## Introduction
+名前が示すとおり、Summarization モジュールはクエリ時に Weaviate のテキストオブジェクトを要約できます。
 
-As the name indicates, the summarization module can produce a summary of Weaviate text objects at query time.
-
-**For example**, it allows us to run a query on our data in Weaviate, which can take a text like this:
+**例として**、Weaviate 内のデータに対してクエリを実行し、次のようなテキストを取得できます。
 
 > <em>"The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become the tallest man-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure to reach a height of 300 metres. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 5.2 metres (17 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct."</em>
 
-and transform it to a short sentence like this:
+このテキストを次のような短い文に変換します。
 
 > <em>"The Eiffel Tower is a landmark in Paris, France."</em>
 
 :::note GPUs preferred
-For maximum performance of your queries, transformer-based models should run with GPUs.
-CPUs can be used, however, this will significantly slow down your queries.
+クエリのパフォーマンスを最大化するには、transformer ベースのモデルを GPU で実行することを推奨します。  
+CPU でも実行できますが、クエリ速度が大幅に低下します。
 :::
 
-### Available modules
+### 利用可能なモジュール
 
-Here is the current list of available `SUM` modules - sourced from [Hugging Face Model Hub](https://huggingface.co/models):
+現在利用可能な `SUM` モジュールの一覧です（[Hugging Face Model Hub](https://huggingface.co/models) から取得）:
 * [`bart-large-cnn`](https://huggingface.co/facebook/bart-large-cnn)
 * [`pegasus-xsum`](https://huggingface.co/google/pegasus-xsum)
 
-## How to enable (module configuration)
+## 有効化方法（モジュール設定）
 
 ### Docker Compose
 
-The `sum-transformers` module can be added as a service to the Docker Compose file. You must have a text vectorizer like `text2vec-contextionary` or `text2vec-transformers` running.
+`sum-transformers` モジュールは Docker Compose ファイルにサービスとして追加できます。  
+`text2vec-contextionary` や `text2vec-transformers` などのテキストベクトライザーが稼働している必要があります。
 
-An example Docker Compose file for using the `sum-transformers` module (with the `facebook-bart-large-cnn` model) in combination with the `text2vec-contextionary` vectorizer module is below:
+以下は `facebook-bart-large-cnn` モデルを使用した `sum-transformers` モジュールと、`text2vec-contextionary` ベクトライザー モジュールを組み合わせた Docker Compose ファイルの例です。
 
 ```yaml
 ---
@@ -85,34 +85,36 @@ services:
 ...
 ```
 
-Variable explanations:
-* `SUM_INFERENCE_API`: where the summarization module is running
+変数の説明:
+* `SUM_INFERENCE_API`: Summarization モジュールが稼働している場所
 
-## How to use (GraphQL)
+## 使い方（GraphQL）
 
-To make use of the modules capabilities, extend your query with the following new `_additional` property:
+モジュールの機能を利用するには、クエリの `_additional` プロパティを次のように拡張します。
 
-### GraphQL Token
+### GraphQL トークン
 
-This module adds a search filter to the GraphQL `_additional` field in queries: `summary{}`. This new filter takes the following arguments:
+このモジュールは GraphQL クエリの `_additional` フィールドに `summary{}` という検索フィルターを追加します。  
+この新しいフィルターは次の引数を取ります。
 
-| Field 	| Data Type 	| Required 	| Example value 	| Description 	|
-|-	|-	|-	|-	|-	|
-| `properties` 	| list of strings 	| yes 	| `["description"]` 	| The properties of the queries Class which contains text (`text` or `string` Datatype). You must provide at least one property	|
+| Field | Data Type | Required | Example value | Description |
+| - | - | - | - | - |
+| `properties` | list of strings | yes | `["description"]` | クラスのうちテキストを含むプロパティ（ `text` または `string` データタイプ）。少なくとも 1 つのプロパティを指定する必要があります |
 
-### Example query
+### クエリ例
 
 import CodeSumTransformer from '/_includes/code/sum-transformers-module.mdx';
 
 <CodeSumTransformer />
 
-### GraphQL response
+### GraphQL レスポンス
 
-The answer is contained in a new GraphQL `_additional` property called `summary`, which returns a list of tokens. It contains the following fields:
-* `property` (`string`): The property that was summarized – this is useful when you summarize more than one property
-* `result` (`string`): The output summary
+回答は `summary` という新しい GraphQL `_additional` プロパティに含まれ、トークンのリストを返します。  
+内容は次のフィールドです:
+* `property` ( `string` ): 要約されたプロパティ名。複数プロパティを要約する場合に役立ちます  
+* `result` ( `string` ): 出力された要約文  
 
-### Example response
+### レスポンス例
 
 ```json
 {
@@ -137,64 +139,69 @@ The answer is contained in a new GraphQL `_additional` property called `summary`
 }
 ```
 
-## Use another Summarization module from Hugging Face
+## Hugging Face の別の Summarization モジュールを使用する
 
-You can build a Docker image which supports any summarization model from the [Hugging Face Model Hub](https://huggingface.co/models?pipeline_tag=summarization) with a two-line Dockerfile. In the following example, we are going to build a custom image for the [`google/pegasus-pubmed` model](https://huggingface.co/google/pegasus-pubmed).
+[Hugging Face Model Hub](https://huggingface.co/models?pipeline_tag=summarization) にある任意の要約モデルを、2 行の Dockerfile でサポートする Docker イメージを構築できます。  
+以下の例では、[`google/pegasus-pubmed` モデル](https://huggingface.co/google/pegasus-pubmed) 用のカスタムイメージを作成します。
 
-#### Step 1: Create a `Dockerfile`
+#### Step 1: `Dockerfile` を作成する
 
-Create a new `Dockerfile`. We will name it `my-model.Dockerfile`. Add the following lines to it:
+新しい `Dockerfile` を作成し、`my-model.Dockerfile` と名付けます。次の行を追加してください。  
 ```
 FROM semitechnologies/sum-transformers:custom
 RUN chmod +x ./download.py
 RUN MODEL_NAME=google/pegasus-pubmed ./download.py
 ```
 
-#### Step 2: Build and tag your Dockerfile.
+#### Step 2: Dockerfile をビルドしてタグ付けする
 
-We will tag our Dockerfile as `google-pegasus-pubmed`:
+Dockerfile に `google-pegasus-pubmed` というタグを付けてビルドします。  
 ```
 docker build -f my-model.Dockerfile -t google-pegasus-pubmed .
 ```
 
-#### Step 3: Use the image with Weaviate
+#### Step 3: Weaviate でイメージを使用する
 
-You can now push your image to your favorite registry or reference it locally in your Weaviate `docker-compose.yml` using the Docker tag `google-pegasus-pubmed`.
+イメージを任意のレジストリへプッシュするか、`docker-compose.yml` で `google-pegasus-pubmed` タグを参照して Weaviate から利用できます。
 
+## 仕組み（内部動作）
 
-## How it works (under the hood)
-
-The `sum-transformers` module uses transformer-based summarizer models. They are abstractive, in that they generate new text from the input text, rather than to extract particular sentences. For example, a model may take text like this:
+`sum-transformers` モジュールは transformer ベースの要約モデルを使用します。  
+これらは抽象的 (abstractive) 要約を行い、入力テキストから新しいテキストを生成します。例として、以下のようなテキストを入力すると:
 
 <details>
-  <summary>See original text</summary>
+  <summary>元のテキストを表示</summary>
 
 > *The Loch Ness Monster (Scottish Gaelic: Uilebheist Loch Nis), affectionately known as Nessie, is a creature in Scottish folklore that is said to inhabit Loch Ness in the Scottish Highlands. It is often described as large, long-necked, and with one or more humps protruding from the water. Popular interest and belief in the creature has varied since it was brought to worldwide attention in 1933. Evidence of its existence is anecdotal, with a number of disputed photographs and sonar readings.*
 > *The scientific community explains alleged sightings of the Loch Ness Monster as hoaxes, wishful thinking, and the misidentification of mundane objects. The pseudoscience and subculture of cryptozoology has placed particular emphasis on the creature.*
 
 </details>
 
-And summarize it to produce a text like:
+次のように要約を生成します。
 
 > *The Loch Ness Monster is said to be a large, long-necked creature. Popular belief in the creature has varied since it was brought to worldwide attention in 1933. Evidence of its existence is disputed, with a number of disputed photographs and sonar readings. The pseudoscience and subculture of cryptozoology has placed particular emphasis on the creature.*
 
-Note that much of output does not copy the input verbatim, but is *based on* it. The `sum-transformers` module then delivers this output in the response.
+出力の多くは入力をそのままコピーせず、*基づいて* 生成されている点に注意してください。`sum-transformers` モジュールはこの出力をレスポンスとして返します。
 
 :::note Input length
-Note that like many other language models, summarizer models can only process a limited amount of text. The `sum-transformers` module will be limited to the maximum length of the model it is using. For example, the `facebook/bart-large-cnn` model can only process 1024 tokens.
+他の多くの言語モデルと同様に、要約モデルが処理できるテキスト量には制限があります。  
+`sum-transformers` モジュールは使用するモデルの最大長に制限されます。例として、`facebook/bart-large-cnn` モデルは 1024 トークンまでしか処理できません。
 
-On the other hand, be aware that providing an input of insufficient length and detail may cause the transformer model to [hallucinate](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)).
+一方、入力が短すぎたり詳細が不足したりすると、transformer モデルが [幻覚](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)) を起こす可能性がある点にもご注意ください。
 :::
 
-## Model license(s)
-
-The `sum-transformers` module is compatible with various models, each with their own license. For detailed information, see the license of the model you are using in the [Hugging Face Model Hub](https://huggingface.co/models).
-
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
 
 
-## Questions and feedback
+## モデルライセンス
+
+`sum-transformers` モジュールは、ライセンスがそれぞれ異なる複数のモデルと互換性があります。詳細については、[Hugging Face モデル Hub](https://huggingface.co/models) でご利用のモデルのライセンスをご確認ください。
+
+ライセンスが存在する場合、その条件がご予定の用途に適しているかどうかを評価する責任はお客様にあります。
+
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

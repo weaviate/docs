@@ -3,20 +3,21 @@ title: Modal
 sidebar_position: 1
 ---
 
-[Modal](https://modal.com/) provides a serverless platform that has on-demand access to GPUs and a custom high-performance container runtime. 
+[Modal](https://modal.com/) は、GPU をオンデマンドで利用できるサーバーレス プラットフォームと、カスタムの高性能コンテナーランタイムを提供します。  
 
-Use Modal to easily deploy and automatically scale high-performance applications.
+Modal を使用すると、高性能アプリケーションを簡単にデプロイし、自動でスケールさせることができます。
 
-## Modal and Weaviate
-Weaviate leverages Modal's serverless infrastructure for fast embedding generation and generative model calls.
+## Modal と Weaviate
+Weaviate は、エンベディングの高速生成と生成モデル呼び出しのために、Modal のサーバーレス インフラを活用します。
 
-To dynamically scale your application based on workload demands, [host the Weaviate client](https://modal.com/docs/examples/vector-analogies-wikipedia#deploy-a-serverless-read-only-weaviate-client-with-modal) on Modal.
+ワークロードの需要に応じてアプリケーションを動的にスケールさせるには、[Weaviate クライアントを Modal でホスト](https://modal.com/docs/examples/vector-analogies-wikipedia#deploy-a-serverless-read-only-weaviate-client-with-modal)してください。
 
 
 
-## Our Resources 
-**Hands on Learning**: Build your technical understanding with end-to-end tutorials.
+## リソース 
+ **Hands-on Learning（実践学習）** : エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Embed and Search Text at Scale with Modal and Weaviate | Build a full application that discovers analogies between Wikipedia articles. Combine serverless infrastructure from Modal with the search and storage capabilities of Weaviate. | [Blog post](https://weaviate.io/blog/modal-and-weaviate#modal-serverless-infrastructure-for-gpus-and-more), [Notebook](https://github.com/weaviate/recipes/tree/main/integrations/compute-infrastructure/modal), [Modal Guide](https://modal.com/docs/examples/vector-analogies-wikipedia#deploy-a-serverless-read-only-weaviate-client-with-modal)|
+| Modal と Weaviate でテキストを大規模に埋め込み＆検索 | Wikipedia の記事間で類推を見つける完全なアプリケーションを構築します。Modal のサーバーレス インフラと Weaviate の検索・ストレージ機能を組み合わせます。 | [ブログ記事](https://weaviate.io/blog/modal-and-weaviate#modal-serverless-infrastructure-for-gpus-and-more), [ノートブック](https://github.com/weaviate/recipes/tree/main/integrations/compute-infrastructure/modal), [Modal ガイド](https://modal.com/docs/examples/vector-analogies-wikipedia#deploy-a-serverless-read-only-weaviate-client-with-modal) |
+

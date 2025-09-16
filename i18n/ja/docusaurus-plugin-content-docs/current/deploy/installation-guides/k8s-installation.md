@@ -6,27 +6,27 @@ image: og/docs/installation.jpg
 ---
 
 :::tip End-to-end guide
-For a tutorial on how to use [minikube](https://minikube.sigs.k8s.io/docs/) to deploy Weaviate on Kubernetes, see the Weaviate Academy course, [Weaviate on Kubernetes](../../academy/deployment/k8s/index.md).
+[minikube](https://minikube.sigs.k8s.io/docs/) を使って Kubernetes 上に Weaviate をデプロイするチュートリアルについては、Weaviate Academy コースの [Weaviate on Kubernetes](../../academy/deployment/k8s/index.md) をご覧ください。
 :::
 
 ## Requirements
 
-* A recent Kubernetes Cluster (at least version 1.23). If you are in a development environment, consider using the kubernetes cluster that is built into Docker desktop. For more information, see the [Docker documentation](https://docs.docker.com/desktop/kubernetes/).
-* The cluster needs to be able to provision `PersistentVolumes` using Kubernetes' `PersistentVolumeClaims`.
-* A file system that can be mounted read-write by a single node to allow Kubernetes' `ReadWriteOnce` access mode.
-* Helm version v3 or higher. The current Helm chart is version `||site.helm_version||`.
+* 最新の Kubernetes クラスター（少なくともバージョン 1.23）。開発環境の場合、Docker Desktop に組み込まれている Kubernetes クラスターを使用することを検討してください。詳しくは [Docker のドキュメント](https://docs.docker.com/desktop/kubernetes/) を参照してください。
+* クラスターが Kubernetes の `PersistentVolumeClaims` を使用して `PersistentVolumes` をプロビジョニングできること。
+* Kubernetes の `ReadWriteOnce` アクセスモードを許可するため、単一ノードによって読み書きマウントできるファイルシステム。
+* Helm バージョン v3 以上。現在の Helm チャートのバージョンは `||site.helm_version||` です。
 
 ## Weaviate Helm chart
 
 :::note Important: Set the correct Weaviate version
-As a best practice, explicitly set the Weaviate version in the Helm chart.<br/><br/>
+ベストプラクティスとして、Helm チャート内で Weaviate のバージョンを明示的に設定してください。<br/><br/>
 
-Set the version in your `values.yaml` file or [overwrite the default value](#deploy-install-the-helm-chart) during deployment.
+`values.yaml` ファイルでバージョンを設定するか、デプロイ時に [既定値を上書き](#deploy-install-the-helm-chart) してください。
 :::
 
-To install the Weaviate chart on your Kubernetes cluster, follow these steps:
+Kubernetes クラスターに Weaviate チャートをインストールするには、以下の手順に従います。
 
-### Verify tool setup and cluster access
+### ツールセットアップとクラスターアクセスの確認
 
 ```bash
 # Check if helm is installed
@@ -36,43 +36,42 @@ helm version
 kubectl get pods
 ```
 
-### Get the Helm Chart
+### Helm チャートの取得
 
-Add the Weaviate helm repo that contains the Weaviate helm chart.
+Weaviate Helm リポジトリを追加します。このリポジトリには Weaviate の Helm チャートが含まれています。
 
 ```bash
 helm repo add weaviate https://weaviate.github.io/weaviate-helm
 helm repo update
 ```
 
-Get the default `values.yaml` configuration file from the Weaviate helm chart:
+Weaviate Helm チャートからデフォルトの `values.yaml` 設定ファイルを取得します:
 ```bash
 helm show values weaviate/weaviate > values.yaml
 ```
 
-### Modify values.yaml
+### values.yaml の編集
 
-To customize the Helm chart for your environment, edit the [`values.yaml`](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml)
-file. The default `yaml` file is extensively documented to help you configure your system.
+環境に合わせて Helm チャートをカスタマイズするには、[`values.yaml`](https://github.com/weaviate/weaviate-helm/blob/master/weaviate/values.yaml)
+ファイルを編集します。デフォルトの `yaml` ファイルには詳細なコメントが付いており、設定の参考になります。
 
-#### Replication
+#### レプリケーション
 
-The default configuration defines one Weaviate replica cluster.
+デフォルト設定では、1 つの Weaviate レプリカ クラスターが定義されています。
 
-#### Local models
+#### ローカルモデル
 
-Local models, such as `text2vec-transformers`, `qna-transformers`, and  `img2vec-neural` are disabled by default. To enable a model, set the model's
-`enabled` flag to `true`.
+`text2vec-transformers`、`qna-transformers`、`img2vec-neural` などのローカルモデルはデフォルトで無効です。モデルを有効にするには、そのモデルの `enabled` フラグを `true` に設定してください。
 
-#### Resource limits
+#### リソース制限
 
-Starting in Helm chart version 17.0.1, constraints on module resources are commented out to improve performance. To constrain resources for specific modules, add the constraints in your `values.yaml` file.
+Helm チャート バージョン 17.0.1 以降では、パフォーマンス向上のためモジュールのリソース制約がコメントアウトされています。特定のモジュールにリソース制限を設ける場合は、`values.yaml` に制約を追加してください。
 
-#### gRPC service configuration
+#### gRPC サービスの設定
 
-Starting in Helm chart version 17.0.0, the gRPC service is enabled by default. If you use an older Helm chart, edit your `values.yaml` file to enable gRPC.
+Helm チャート バージョン 17.0.0 以降では、gRPC サービスがデフォルトで有効になっています。古い Helm チャートを使用している場合は、`values.yaml` を編集して gRPC を有効にしてください。
 
-Check that the `enabled` field is set to `true` and the `type` field to `LoadBalancer`. These settings allow you to access the [gRPC API](https://weaviate.io/blog/grpc-performance-improvements) from outside the Kubernetes cluster.
+`enabled` フィールドが `true`、`type` フィールドが `LoadBalancer` になっていることを確認してください。これにより、Kubernetes クラスター外部から [gRPC API](https://weaviate.io/blog/grpc-performance-improvements) にアクセスできます。
 
 ```yaml
 grpcService:
@@ -85,9 +84,9 @@ grpcService:
   type: LoadBalancer  # ⬅️ Set this to LoadBalancer (from NodePort)
 ```
 
-#### Authentication and authorization
+#### 認証と認可
 
-An example configuration for authentication is shown below.
+以下に認証設定の例を示します。
 
 ```yaml
 authentication:
@@ -117,23 +116,23 @@ authorization:
       - readonly@example.com
 ```
 
-In this example, the key `readonly-key` will authenticate a user as the `readonly@example.com` identity, and `secr3tk3y` will authenticate a user as `admin@example.com`.
+この例では、キー `readonly-key` によって `readonly@example.com` として、`secr3tk3y` によって `admin@example.com` として認証されます。
 
-OIDC authentication is also enabled, with WCD as the token issuer/identity provider. Thus, users with WCD accounts could be authenticated. This configuration sets `someuser@weaviate.io` as an admin user, so if `someuser@weaviate.io` were to authenticate, they will be given full (read and write) privileges.
+また、OIDC 認証が有効になっており、トークン発行者／IdP として WCD を使用しています。そのため、WCD アカウントを持つユーザーは認証可能です。この設定では `someuser@weaviate.io` を管理者ユーザーとして指定しているため、`someuser@weaviate.io` が認証されると読み書き両方の権限が付与されます。
 
-For further, general documentation on authentication and authorization configuration, see:
-- [Authentication](../configuration/authentication.md)
-- [Authorization](../configuration/authorization.md)
+詳細な認証・認可設定については次を参照してください:
+- [認証](../configuration/authentication.md)
+- [認可](../configuration/authorization.md)
 
-#### Run as non-root user
+#### 非 root ユーザーでの実行
 
-By default, weaviate runs as the root user. To run as a non-privileged user, edit the settings in the `containerSecurityContext` section.
+デフォルトでは、Weaviate は root ユーザーとして実行されます。非特権ユーザーとして実行する場合は、`containerSecurityContext` セクションの設定を編集してください。
 
-The `init` container always runs as root to configure the node. Once the system is started, it run a non-privileged user if you have one configured.
+`init` コンテナはノードを設定するため常に root として実行されます。システム起動後は、設定した非特権ユーザーで実行されます。
 
-### Deploy (install the Helm chart)
+### デプロイ（Helm チャートのインストール）
 
-You can deploy the helm charts as follows:
+Helm チャートは次のようにデプロイできます。
 
 ```bash
 # Create a Weaviate namespace
@@ -147,46 +146,43 @@ helm upgrade --install \
   --values ./values.yaml
 ```
 
-The above assumes that you have permissions to create a new namespace. If you
-have only namespace-level permissions, you can skip creating a new
-namespace and adjust the namespace argument on `helm upgrade` according to the
-name of your pre-configured namespace.
+上記コマンドは、新しいネームスペースを作成する権限があることを前提としています。ネームスペースレベルの権限しかない場合は、新規ネームスペースの作成をスキップし、`helm upgrade` の `--namespace` 引数を既存のネームスペース名に合わせて変更してください。
 
-Optionally, you can provide the `--create-namespace` parameter which will create the namespace if not present.
+オプションとして、`--create-namespace` パラメータを指定すると、ネームスペースが存在しない場合に自動で作成されます。
 
-### Updating the installation after the initial deployment
+### 初回デプロイ後のインストールの更新
 
-The above command (`helm upgrade...`) is idempotent. In other words, you can run it multiple times after adjusting your desired configuration without causing any unintended changes or side effects.
+前述のコマンド（`helm upgrade...`）は冪等です。設定を変更した後でも、何度でも実行でき、副作用なく望ましい状態に更新されます。
 
-### Upgrading to `1.25` or higher from pre-`1.25`
+### pre-`1.25` から `1.25` 以上へのアップグレード
 
 :::caution Important
 :::
 
-To upgrade to `1.25` or higher from a pre-`1.25` version, you must delete the deployed `StatefulSet`, update the helm chart to version `17.0.0` or higher, and re-deploy Weaviate.
+pre-`1.25` バージョンから `1.25` 以上へアップグレードするには、デプロイ済みの `StatefulSet` を削除し、Helm チャートをバージョン `17.0.0` 以上に更新してから Weaviate を再デプロイする必要があります。
 
-See the [1.25 migration guide for Kubernetes](../migration/weaviate-1-25.md) for more details.
+詳しくは [Kubernetes 用 1.25 マイグレーションガイド](../migration/weaviate-1-25.md) を参照してください。
 
-## Additional Configuration Help
+## 追加の設定ヘルプ
 
 - [Cannot list resource "configmaps" in API group when deploying Weaviate k8s setup on GCP](https://stackoverflow.com/questions/58501558/cannot-list-resource-configmaps-in-api-group-when-deploying-weaviate-k8s-setup)
 - [Error: UPGRADE FAILED: configmaps is forbidden](https://stackoverflow.com/questions/58501558/cannot-list-resource-configmaps-in-api-group-when-deploying-weaviate-k8s-setup)
 
-### Using EFS with Weaviate
+### Weaviate での EFS の使用
 
-In some circumstances, you may wish, or need, to use EFS (Amazon Elastic File System) with Weaviate. And we note in the case of AWS Fargate, you must create the [PV (persistent volume)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) manually, as the PVC will NOT create a PV for you.
+場合によっては、Weaviate と併せて EFS（Amazon Elastic File System）を使用したい、あるいは使用する必要があることがあります。特に AWS Fargate を利用する場合、[PV（Persistent Volume）](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) は PVC から自動作成されないため、手動で作成する必要がある点に注意してください。
 
-To use EFS with Weaviate, you need to:
+Weaviate で EFS を使用するには、次の手順が必要です。
 
-- Create an EFS file system.
-- Create an EFS access point for every Weaviate replica.
-    - All of the Access Points must have a different root-directory so that Pods do not share the data, otherwise it will fail.
-- Create EFS mount targets for each subnet of the VPC where Weaviate is deployed.
-- Create StorageClass in Kubernetes using EFS.
-- Create Weaviate Volumes, where each volume has a different AccessPoint for VolumeHandle(as mentioned above).
-- Deploy Weaviate.
+- EFS ファイルシステムを作成する。
+- Weaviate のレプリカごとに EFS アクセスポイントを作成する。
+    - すべてのアクセス ポイントは別々の root-directory を持つ必要があります。Pod がデータを共有すると失敗します。
+- Weaviate をデプロイする VPC の各サブネットに対して EFS マウントターゲットを作成する。
+- Kubernetes で EFS を使用する StorageClass を作成する。
+- Weaviate ボリュームを作成し、各ボリュームに異なる AccessPoint を VolumeHandle として設定する。
+- Weaviate をデプロイする。
 
-This code is an example of a PV for `weaviate-0` Pod:
+以下は `weaviate-0` Pod 用 PV の例です。
 
 ```yaml
 apiVersion: v1
@@ -209,10 +205,12 @@ spec:
     name: weaviate-data-weaviate-0
 ```
 
-For more, general information on running EFS with Fargate, we recommend reading [this AWS blog](https://aws.amazon.com/blogs/containers/running-stateful-workloads-with-amazon-eks-on-aws-fargate-using-amazon-efs/).
+Fargate で EFS を使用したステートフル ワークロードの実行についての一般的な情報は、[AWS 公式ブログ](https://aws.amazon.com/blogs/containers/running-stateful-workloads-with-amazon-eks-on-aws-fargate-using-amazon-efs/) を参照することをお勧めします。
 
-### Using Azure file CSI with Weaviate
-The provisioner `file.csi.azure.com` is **not supported** and will lead to file corruptions. Instead, make sure the storage class defined in values.yaml is from provisioner `disk.csi.azure.com`, for example:
+
+
+### Weaviate における Azure file CSI の利用
+プロビジョナー `file.csi.azure.com` は **サポートされておらず**、ファイル破損を引き起こします。代わりに、`values.yaml` で定義する ` StorageClass ` がプロビジョナー `disk.csi.azure.com` を使用していることを確認してください。例:
 
 ```yaml
 storage:
@@ -220,15 +218,15 @@ storage:
   storageClassName: managed
 ```
 
-you can get the list of available storage classes in your cluster with:
+クラスタで利用可能な ` StorageClass ` の一覧は次のコマンドで取得できます:
 
 ```
 kubectl get storageclasses
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-- If you see `No private IP address found, and explicit IP not provided`, set the pod subnet to be in an valid ip address range of the following:
+- `No private IP address found, and explicit IP not provided` と表示された場合は、Pod サブネットを次のいずれかの有効な IP アドレス範囲に設定してください:
 
     ```
     10.0.0.0/8
@@ -238,17 +236,18 @@ kubectl get storageclasses
     198.19.0.0/16
     ```
 
-### Set `CLUSTER_HOSTNAME` if it may change over time
+### `CLUSTER_HOSTNAME` の設定（ホスト名が変わる場合）
 
-In some systems, the cluster hostname may change over time. This is known to create issues with a single-node Weaviate deployment. To avoid this, set the `CLUSTER_HOSTNAME` environment variable in the `values.yaml` file to the cluster hostname.
+一部のシステムでは、 クラスタホスト名 が時間とともに変化する場合があります。これは、単一ノードの Weaviate デプロイメントで問題を引き起こすことが知られています。これを回避するため、`values.yaml` ファイルで `CLUSTER_HOSTNAME` 環境変数を クラスタホスト名 に設定してください。
 
 ```yaml
 env:
   - CLUSTER_HOSTNAME: "node-1"
 ```
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

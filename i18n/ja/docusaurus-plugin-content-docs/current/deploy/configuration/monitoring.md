@@ -1,174 +1,151 @@
 ---
-title: Monitoring
+title: 監視
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'operations', 'monitoring', 'observability']
 ---
 
-Weaviate can expose Prometheus-compatible metrics for monitoring. A standard
-Prometheus/Grafana setup can be used to visualize metrics on various
-dashboards.
+Weaviate は監視用に Prometheus 互換のメトリクスを公開できます。  
+一般的な Prometheus/Grafana 構成を使って、メトリクスをさまざまなダッシュボードで可視化できます。
 
-Metrics can be used to measure request latencies, import
-speed, time spent on vector vs object storage, memory usage, application usage,
-and more.
+メトリクスを使用すると、リクエストのレイテンシー、インポート速度、ベクトルストレージとオブジェクトストレージに費やした時間、メモリ使用量、アプリケーション使用状況などを測定できます。
 
-## Configure Monitoring
+## 監視の設定
 
-### Enable within Weaviate
+### Weaviate での有効化
 
-To tell Weaviate to collect metrics and expose them in a Prometheus-compatible
-format, all that's required is to set the following environment variable:
+Weaviate にメトリクスを収集し、Prometheus 互換形式で公開させるには、次の環境変数を設定するだけです。
 
 ```sh
 PROMETHEUS_MONITORING_ENABLED=true
 ```
 
-By default, Weaviate will expose the metrics at `<hostname>:2112/metrics`. You
-can optionally change the port to a custom port using the following environment
-variable:
+デフォルトでは、Weaviate は `<hostname>:2112/metrics` でメトリクスを公開します。必要に応じて、次の環境変数を使用してポートを変更できます。
 
 ```sh
 PROMETHEUS_MONITORING_PORT=3456
 ```
 
-### Scrape metrics from Weaviate
+### Weaviate からのメトリクス収集
 
-Metrics are typically scraped into a time-series database, such as Prometheus.
-How you consume metrics depends on your setup and environment.
+メトリクスは通常、Prometheus などの時系列データベースにスクレイピングされます。メトリクスの利用方法は、環境やセットアップによって異なります。
 
-The [Weaviate examples repo contains a fully pre-configured setup using
-Prometheus, Grafana and some example
-dashboards](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana).
-You can start up a full-setup including monitoring and dashboards with a single
-command. In this setup the following components are used:
+[Weaviate examples レポジトリには、Prometheus、Grafana、いくつかのサンプルダッシュボードを使用した完全に事前設定済みのセットアップが含まれています](https://github.com/weaviate/weaviate-examples/tree/main/monitoring-prometheus-grafana)。  
+1 つのコマンドで監視とダッシュボードを含むフルセットアップを起動できます。このセットアップでは、次のコンポーネントが使用されます。
 
-* Docker Compose is used to provide a fully-configured setup that can be
-  started with a single command.
-* Weaviate is configured to expose Prometheus metrics as outlined in the
-  section above.
-* A Prometheus instance is started with the setup and configured to scrape
-  metrics from Weaviate every 15s.
-* A Grafana instance is started with the setup and configured to use the
-  Prometheus instance as a metrics provider. Additionally, it runs a dashboard
-  provider that contains a few sample dashboards.
+* Docker Compose を使用して、1 つのコマンドで起動できる完全構成済みのセットアップを提供します。  
+* Weaviate は前述のとおり Prometheus メトリクスを公開するように設定されています。  
+* Prometheus インスタンスも起動され、15 秒ごとに Weaviate からメトリクスをスクレイピングするよう構成されています。  
+* Grafana インスタンスも起動され、Prometheus インスタンスをメトリクスプロバイダーとして使用するように設定されています。さらに、いくつかのサンプルダッシュボードを含むダッシュボードプロバイダーも実行します。
 
-### Multi-tenancy
+### マルチテナンシー
 
-When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](/deploy/configuration/env-vars/index.md) as `true` so that data across all tenants are grouped together for monitoring.
+マルチテナンシーを使用する場合は、すべてのテナントのデータをまとめて監視できるよう、`PROMETHEUS_MONITORING_GROUP` [環境変数](/deploy/configuration/env-vars/index.md) を `true` に設定することをお勧めします。
 
-## Obtainable Metrics
+## 取得可能なメトリクス
 
-The list of metrics that are obtainable through Weaviate's metric system is
-constantly being expanded. The complete list is in the [`prometheus.go`](https://github.com/weaviate/weaviate/blob/main/usecases/monitoring/prometheus.go) source code file.
+Weaviate のメトリクスシステムで取得できるメトリクスのリストは、継続的に拡張されています。完全な一覧は [`prometheus.go`](https://github.com/weaviate/weaviate/blob/main/usecases/monitoring/prometheus.go) ソースコードファイルにあります。
 
-This page describes some noteworthy metrics and their uses.
+このページでは、特に重要なメトリクスとその用途を紹介します。
 
-Typically metrics are quite granular, as they can always be aggregated later
-on. For example if the granularity is "shard", you could aggregate all "shard"
-metrics of the same "class" to obtain a class metrics, or aggregate all metrics
-to obtain the metric for the entire Weaviate instance.
+メトリクスは通常、後から集約できるよう、かなり細かい粒度で収集されます。たとえば粒度が「shard」の場合、同じ「class」のすべての「shard」メトリクスを集約してクラス単位のメトリクスを得たり、すべてを集約して Weaviate インスタンス全体のメトリクスを得たりできます。
 
-| Metric | Description | Labels | Type |
+| メトリクス | 説明 | ラベル | 種類 |
 |---|---|---|---|
-| `async_operations_running` | Number of currently running async operations. The operation itself is defined through the `operation` label. | `operation`, `class_name`, `shard_name`, `path` | `Gauge` |
-| `batch_delete_durations_ms` | Duration of a batch delete in ms. The `operation` label further defines what operation as part of the batch delete is being measured. Granularity is a shard of a class | `class_name`, `shard_name` | `Histogram` |
-| `batch_durations_ms` | Duration of a single batch operation in ms. The `operation` label further defines what operation as part of the batch (e.g. object, inverted, vector) is being used. Granularity is a shard of a class. | `operation`, `class_name`, `shard_name` | `Histogram` |
-| `index_queue_delete_duration_ms` | Duration of deleting one or more vectors from the index queue and the underlying index. | `class_name`, `shard_name`, `target_vector` | `Summary` |
-| `index_queue_paused` | Whether the index queue is paused. | `class_name`, `shard_name`, `target_vector` | `Gauge` |
-| `index_queue_preload_count` | Number of vectors preloaded to the index queue. | `class_name`, `shard_name`, `target_vector` | `Gauge` |
-| `index_queue_preload_duration_ms` | Duration of preloading un-indexed vectors to the index queue. | `class_name`, `shard_name`, `target_vector` | `Summary` |
-| `index_queue_push_duration_ms` | Duration of pushing one or more vectors to the index queue. | `class_name`, `shard_name`, `target_vector` | `Summary` |
-| `index_queue_search_duration_ms` | Duration of searching for vectors in the index queue and the underlying index. | `class_name`, `shard_name`, `target_vector` | `Summary` |
-| `index_queue_size` | Number of vectors in the index queue. | `class_name`, `shard_name`, `target_vector` | `Gauge` |
-| `index_queue_stale_count` | Number of times the index queue has been marked as stale. | `class_name`, `shard_name`, `target_vector` | `Counter` |
-| `index_queue_vectors_dequeued` | Number of vectors sent to the workers per tick. | `class_name`, `shard_name`, `target_vector` | `Gauge` |
-| `index_queue_wait_duration_ms` | Duration of waiting for the workers to finish. | `class_name`, `shard_name`, `target_vector` | `Summary` |
-| `lsm_active_segments` | Number of currently present segments per shard. Granularity is shard of a class. Grouped by `strategy`. | `strategy`, `class_name`, `shard_name`, `path` | `Gauge` |
-| `lsm_bloom_filter_duration_ms` | Duration of a bloom filter operation per shard in ms. Granularity is shard of a class. Grouped by `strategy`. | `operation`, `strategy`, `class_name`, `shard_name` | `Histogram` |
-| `lsm_segment_count` | Number of segments by level | `strategy`, `class_name`, `shard_name`, `path`, `level` | `Gauge` |
-| `lsm_segment_objects` | Number of entries per LSM segment by level. Granularity is shard of a class. Grouped by `strategy` and `level`. | `operation`, `strategy`, `class_name`, `shard_name`, `path`, `level` | `Gauge` |
-| `lsm_segment_size` | Size of LSM segment by level and unit. | `strategy`, `class_name`, `shard_name`, `path`, `level`, `unit` | `Gauge` |
-| `object_count` | Numbers of objects present. Granularity is a shard of a class | `class_name`, `shard_name` | `Gauge` |
-| `objects_durations_ms` | Duration of an individual object operation, such as `put`, `delete`, etc. as indicated by the `operation` label, also as part of a batch. The `step` label adds additional precisions to each `operation`. Granularity is a shard of a class. | `class_name`, `shard_name` | `Histogram` |
-| `requests_total` | Metric that tracks all user requests to determine if it was successful or failed. | `api`, `query_type`, `class_name` | `Gauge` |
-| `startup_diskio_throughput` | Disk I/O throughput in bytes/s at startup operations, such as reading back the HNSW index or recovering LSM segments. The operation itself is defined by the `operation` label. | `operation`, `step`, `class_name`, `shard_name` | `Histogram` |
-| `startup_durations_ms` | Duration of individual startup operations in ms. The operation itself is defined through the `operation` label. | `operation`, `class_name`, `shard_name` | `Histogram` |
-| `vector_index_durations_ms` | Duration of regular vector index operation, such as insert or delete. The operation itself is defined through the `operation` label. The `step` label adds more granularity to each operation. | `operation`, `step`, `class_name`, `shard_name` | `Histogram` |
-| `vector_index_maintenance_durations_ms` | Duration of a sync or async vector index maintenance operation. The operation itself is defined through the `operation` label. | `opeartion`, `class_name`, `shard_name` | `Histogram` |
-| `vector_index_operations` | Total number of mutating operations on the vector index. The operation itself is defined by the `operation` label. | `operation`, `class_name`, `shard_name` | `Gauge` |
-| `vector_index_size` | The total capacity of the vector index. Typically larger than the number of vectors imported as it grows proactively. | `class_name`, `shard_name` | `Gauge` |
-| `vector_index_tombstone_cleaned` | Total number of deleted and removed vectors after repair operations. | `class_name`, `shard_name` | `Counter` |
-| `vector_index_tombstone_cleanup_threads` | Number of currently active threads for repairing/cleaning up the vector index after deletes have occurred. | `class_name`, `shard_name` | `Gauge` |
-| `vector_index_tombstones` | Number of currently active tombstones in the vector index. Will go up on each incoming delete and go down after a completed repair operation. | `class_name`, `shard_name` | `Gauge` |
-| `weaviate_build_info` | Provides general information about the build (What version is currently running? How long has this version been running, etc) | `version`, `revision`, `branch`, `goVersion` | `Gauge` |
-| `weaviate_runtime_config_hash` | Hash value of the currently active runtime configuration, useful for tracking when new configurations take effect. | `sha256` | `Gauge` |
-| `weaviate_runtime_config_last_load_success` | Indicates whether the last loading attempt was successful (`1` for success, `0` for failure). |  | `Gauge` |
-| `weaviate_schema_collections` | Shows the total number of collections at any given point. | `nodeID` | `Gauge` |
-| `weaviate_schema_shards` | Shows the total number of shards at any given point.  | `nodeID`, `status(HOT, COLD, WARM, FROZEN)` | `Gauge` |
-| `weaviate_internal_sample_memberlist_queue_broadcasts` | Shows the number of messages in the broadcast queue of Memberlist. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_timer_memberlist_gossip` | Shows the latency distribution of the each gossip made in Memberlist. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_counter_raft_apply` | Number of transactions in the configured interval. | NA | `counter` |
-| `weaviate_internal_counter_raft_state_candidate` | Number of times the raft server initiated an election. | NA | `counter` |
-| `weaviate_internal_counter_raft_state_follower` | Number of times in the configured interval that the raft server became a follower. | NA | `summary` |
-| `weaviate_internal_counter_raft_state_leader` | Number of times the raft server became a leader. | NA | `counter` |
-| `weaviate_internal_counter_raft_transition_heartbeat_timeout` | Number of times that the node transitioned to `candidate` state after not receiving a heartbeat message from the last known leader. | NA | `Counter` |
-| `weaviate_internal_gauge_raft_commitNumLogs` | Number of logs processed for application to the finite state machine in a single batch. | NA | `gauge` |
-| `weaviate_internal_gauge_raft_leader_dispatchNumLogs` | Number of logs committed to disk in the most recent batch. | NA | `gauge` |
-| `weaviate_internal_gauge_raft_leader_oldestLogAge` | The number of milliseconds since the oldest log in the leader's log store was written. This can be important for replication health where write rate is high and the snapshot is large as followers may be unable to recover from a restart if restoring takes longer than the minimum value for the current leader. Compare this with `raft_fsm_lastRestoreDuration` and `aft_rpc_installSnapshot` to monitor. In normal usage this gauge value will grow linearly over time until a snapshot completes on the leader and the log is truncated. | NA | `gauge` |
-| `weaviate_internal_gauge_raft_peers` | The number of peers in the raft cluster configuration. | NA | `gauge` |
-| `weaviate_internal_sample_raft_boltdb_logBatchSize` | Measures the total size in bytes of logs being written to the db in a single batch. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_sample_raft_boltdb_logSize` | Measures the size of logs being written to the db. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_sample_raft_boltdb_logsPerBatch` | Measures the number of logs being written per batch to the db. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_sample_raft_boltdb_writeCapacity` | Theoretical write capacity in terms of the number of logs that can be written per second. Each sample outputs what the capacity would be if future batched log write operations were similar to this one. This similarity encompasses 4 things: batch size, byte size, disk performance and boltdb performance. While none of these will be static and its highly likely individual samples of this metric will vary, aggregating this metric over a larger time window should provide a decent picture into how this BoltDB store can perform | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_sample_raft_thread_fsm_saturation` | An approximate measurement of the proportion of time the Raft FSM goroutine is busy and unavailable to accept new work. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_sample_raft_thread_main_saturation` | An approximate measurement of the proportion of time the main Raft goroutine is busy and unavailable to accept new work (percentage).  |  `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_timer_raft_boltdb_getLog` | Measures the amount of time spent reading logs from the db (in ms). | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_timer_raft_boltdb_storeLogs` | Time required to record any outstanding logs since the last request to append entries for the given node. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_internal_timer_raft_commitTime` | Time required to commit a new entry to the raft log on the leader node. | `quantile=0.5, 0.9, 0.99` | `summary` |
-| `weaviate_internal_timer_raft_fsm_apply` | Number of logs committed by the finite state machine since the last interval. | `quantile=0.5, 0.9, 0.99` | `summary` |
-| `weaviate_internal_timer_raft_fsm_enqueue` | Time required to queue up a batch of logs for the finite state machine to apply. | `quantile=0.5, 0.9, 0.99` | `summary` |
-| `weaviate_internal_timer_raft_leader_dispatchLog` | Time required for the leader node to write a log entry to disk. | `quantile=0.5, 0.9, 0.99` | `Summary` |
-| `weaviate_usage_{gcs\|s3}_operations_total` | Total number of operations for module labels | `operation`: collect/upload, `status`: success/error | `Counter` |
-| `weaviate_usage_{gcs\|s3}_operation_latency_seconds` | Latency of usage operations in seconds | `operation`: collect/upload | `Histogram` |
-| `weaviate_usage_{gcs\|s3}_resource_count` | Number of resources tracked by module | `resource_type`: collections/shards/backups | `Gauge` |
-| `weaviate_usage_{gcs\|s3}_uploaded_file_size_bytes` | Size of the uploaded usage file in bytes | NA | `Gauge` |
+| `async_operations_running` | 現在実行中の非同期操作の数。対象の操作は `operation` ラベルで定義されます。 | `operation`, `class_name`, `shard_name`, `path` | `Gauge` |
+| `batch_delete_durations_ms` | バッチ削除に要した時間（ms）。どの操作を測定しているかは `operation` ラベルでさらに区別します。粒度はクラスのシャードです。 | `class_name`, `shard_name` | `Histogram` |
+| `batch_durations_ms` | 単一のバッチ操作に要した時間（ms）。バッチ内でどの操作（例: object、inverted、vector）が実行されたかは `operation` ラベルで区別します。粒度はクラスのシャードです。 | `operation`, `class_name`, `shard_name` | `Histogram` |
+| `index_queue_delete_duration_ms` | インデックスキューおよび基盤となるインデックスから 1 つ以上のベクトルを削除するのに要した時間。 | `class_name`, `shard_name`, `target_vector` | `Summary` |
+| `index_queue_paused` | インデックスキューが一時停止しているかどうか。 | `class_name`, `shard_name`, `target_vector` | `Gauge` |
+| `index_queue_preload_count` | インデックスキューに事前ロードされたベクトルの数。 | `class_name`, `shard_name`, `target_vector` | `Gauge` |
+| `index_queue_preload_duration_ms` | 未インデックスのベクトルをインデックスキューに事前ロードするのに要した時間。 | `class_name`, `shard_name`, `target_vector` | `Summary` |
+| `index_queue_push_duration_ms` | 1 つ以上のベクトルをインデックスキューにプッシュするのに要した時間。 | `class_name`, `shard_name`, `target_vector` | `Summary` |
+| `index_queue_search_duration_ms` | インデックスキューおよび基盤となるインデックス内でベクトルを検索するのに要した時間。 | `class_name`, `shard_name`, `target_vector` | `Summary` |
+| `index_queue_size` | インデックスキュー内のベクトルの数。 | `class_name`, `shard_name`, `target_vector` | `Gauge` |
+| `index_queue_stale_count` | インデックスキューが stale と判定された回数。 | `class_name`, `shard_name`, `target_vector` | `Counter` |
+| `index_queue_vectors_dequeued` | 1 ティックあたりにワーカーへ送信されたベクトルの数。 | `class_name`, `shard_name`, `target_vector` | `Gauge` |
+| `index_queue_wait_duration_ms` | ワーカーの処理完了を待機した時間。 | `class_name`, `shard_name`, `target_vector` | `Summary` |
+| `lsm_active_segments` | 各シャードに現在存在するセグメントの数。粒度はクラスのシャードで、`strategy` ごとにグループ化されます。 | `strategy`, `class_name`, `shard_name`, `path` | `Gauge` |
+| `lsm_bloom_filter_duration_ms` | シャードごとのブルームフィルター操作に要した時間（ms）。粒度はクラスのシャードで、`strategy` ごとにグループ化されます。 | `operation`, `strategy`, `class_name`, `shard_name` | `Histogram` |
+| `lsm_segment_count` | レベル別のセグメント数。 | `strategy`, `class_name`, `shard_name`, `path`, `level` | `Gauge` |
+| `lsm_segment_objects` | レベル別の LSM セグメントあたりのエントリ数。粒度はクラスのシャードで、`strategy` と `level` でグループ化されます。 | `operation`, `strategy`, `class_name`, `shard_name`, `path`, `level` | `Gauge` |
+| `lsm_segment_size` | レベルと単位ごとの LSM セグメントサイズ。 | `strategy`, `class_name`, `shard_name`, `path`, `level`, `unit` | `Gauge` |
+| `object_count` | 存在するオブジェクトの数。粒度はクラスのシャードです。 | `class_name`, `shard_name` | `Gauge` |
+| `objects_durations_ms` | `put`、`delete` など `operation` ラベルで示される個別オブジェクト操作の所要時間（バッチの一部としても計測）。`step` ラベルでさらに詳細な区別が可能です。粒度はクラスのシャードです。 | `class_name`, `shard_name` | `Histogram` |
+| `requests_total` | ユーザーリクエストが成功したか失敗したかを追跡するメトリクス。 | `api`, `query_type`, `class_name` | `Gauge` |
+| `startup_diskio_throughput` | 起動時操作（HNSW インデックスの読み込みや LSM セグメントの復元など）におけるディスク I/O スループット（bytes/s）。操作の種類は `operation` ラベルで定義されます。 | `operation`, `step`, `class_name`, `shard_name` | `Histogram` |
+| `startup_durations_ms` | 個々の起動時操作に要した時間（ms）。操作の種類は `operation` ラベルで定義されます。 | `operation`, `class_name`, `shard_name` | `Histogram` |
+| `vector_index_durations_ms` | ベクトルインデックスの通常操作（挿入、削除など）に要した時間。操作の種類は `operation` ラベルで定義され、`step` ラベルでさらに詳細を区別できます。 | `operation`, `step`, `class_name`, `shard_name` | `Histogram` |
+| `vector_index_maintenance_durations_ms` | 同期または非同期のベクトルインデックスメンテナンス操作に要した時間。操作の種類は `operation` ラベルで定義されます。 | `opeartion`, `class_name`, `shard_name` | `Histogram` |
+| `vector_index_operations` | ベクトルインデックスに対して実行された変更操作の総数。操作の種類は `operation` ラベルで定義されます。 | `operation`, `class_name`, `shard_name` | `Gauge` |
+| `vector_index_size` | ベクトルインデックスの総容量。インデックスは先読みで拡張されるため、取り込んだベクトル数より大きくなるのが一般的です。 | `class_name`, `shard_name` | `Gauge` |
+| `vector_index_tombstone_cleaned` | 修復操作後に削除・除去されたベクトルの総数。 | `class_name`, `shard_name` | `Counter` |
+| `vector_index_tombstone_cleanup_threads` | 削除後のベクトルインデックス修復・クリーンアップで現在稼働中のスレッド数。 | `class_name`, `shard_name` | `Gauge` |
+| `vector_index_tombstones` | ベクトルインデックス内で現在有効なトゥームストーンの数。削除が行われるたびに増加し、修復が完了すると減少します。 | `class_name`, `shard_name` | `Gauge` |
+| `weaviate_build_info` | ビルドに関する一般情報（実行中のバージョン、稼働時間など）を提供します。 | `version`, `revision`, `branch`, `goVersion` | `Gauge` |
+| `weaviate_runtime_config_hash` | 現在有効なランタイム設定のハッシュ値。新しい設定が反映されたタイミングを追跡するのに役立ちます。 | `sha256` | `Gauge` |
+| `weaviate_runtime_config_last_load_success` | 最後の設定読み込みが成功したかどうかを示します（成功は `1`、失敗は `0`）。 |  | `Gauge` |
+| `weaviate_schema_collections` | 任意の時点でのコレクション総数を示します。 | `nodeID` | `Gauge` |
+| `weaviate_schema_shards` | 任意の時点でのシャード総数を示します。  | `nodeID`, `status(HOT, COLD, WARM, FROZEN)` | `Gauge` |
+| `weaviate_internal_sample_memberlist_queue_broadcasts` | Memberlist のブロードキャストキューにあるメッセージ数を示します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_timer_memberlist_gossip` | Memberlist で行われる各ゴシップのレイテンシー分布を示します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_counter_raft_apply` | 設定された間隔内のトランザクション数。 | NA | `counter` |
+| `weaviate_internal_counter_raft_state_candidate` | Raft サーバーが選挙を開始した回数。 | NA | `counter` |
+| `weaviate_internal_counter_raft_state_follower` | 設定間隔内で Raft サーバーが follower になった回数。 | NA | `summary` |
+| `weaviate_internal_counter_raft_state_leader` | Raft サーバーが leader になった回数。 | NA | `counter` |
+| `weaviate_internal_counter_raft_transition_heartbeat_timeout` | 最後に認識した leader からのハートビートを受信できず `candidate` 状態へ遷移した回数。 | NA | `Counter` |
+| `weaviate_internal_gauge_raft_commitNumLogs` | 有限状態マシンに適用するために 1 バッチで処理されたログ数。 | NA | `gauge` |
+| `weaviate_internal_gauge_raft_leader_dispatchNumLogs` | 直近のバッチでディスクにコミットされたログ数。 | NA | `gauge` |
+| `weaviate_internal_gauge_raft_leader_oldestLogAge` | リーダーのログストアにある最も古いログが書き込まれてからの経過ミリ秒数。書き込み速度が高くスナップショットが大きい場合、レプリケーションの健全性に影響する可能性があります。フォロワーが再起動後に復元を行う際、この値より復元時間が長いと追従できなくなる可能性があるためです。`raft_fsm_lastRestoreDuration` や `aft_rpc_installSnapshot` と合わせて監視してください。通常は、リーダーでスナップショットが完了してログが切り詰められるまで、このゲージ値は時間とともに線形に増加します。 | NA | `gauge` |
+| `weaviate_internal_gauge_raft_peers` | Raft クラスター構成内のピア数。 | NA | `gauge` |
+| `weaviate_internal_sample_raft_boltdb_logBatchSize` | 1 バッチで DB に書き込まれるログの合計サイズ（バイト）を測定します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_sample_raft_boltdb_logSize` | DB に書き込まれるログのサイズを測定します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_sample_raft_boltdb_logsPerBatch` | DB にバッチ書き込みされるログ数を測定します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_sample_raft_boltdb_writeCapacity` | 1 秒あたりに書き込めるログ数という観点での理論上の書き込み容量。このサンプルは、今後のバッチログ書き込みが今回と同様であった場合の容量を示します。この“同様”には、バッチサイズ、バイトサイズ、ディスク性能、BoltDB 性能の 4 つが含まれます。これらは固定ではなく、サンプルごとに値が変動する可能性が高いですが、より長い時間窓で集約することで、この BoltDB ストアの実力を把握できます。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_sample_raft_thread_fsm_saturation` | Raft FSM の goroutine がビジーで新しい作業を受け付けられない時間の割合を概算で測定します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_sample_raft_thread_main_saturation` | Raft のメイン goroutine がビジーで新しい作業を受け付けられない時間の割合（パーセント）を概算で測定します。 |  `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_timer_raft_boltdb_getLog` | DB からログを読み出すのに要した時間（ms）を測定します。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_timer_raft_boltdb_storeLogs` | 指定されたノードに対して最後にエントリ追加を要求してから未処理のログをすべて記録するまでの時間。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_internal_timer_raft_commitTime` | リーダーノードで新しいエントリを Raft ログにコミットするのに要した時間。 | `quantile=0.5, 0.9, 0.99` | `summary` |
+| `weaviate_internal_timer_raft_fsm_apply` | 前回のインターバル以降に有限状態マシンがコミットしたログ数。 | `quantile=0.5, 0.9, 0.99` | `summary` |
+| `weaviate_internal_timer_raft_fsm_enqueue` | 有限状態マシンが適用するためにログをバッチでキューに入れるのに要した時間。 | `quantile=0.5, 0.9, 0.99` | `summary` |
+| `weaviate_internal_timer_raft_leader_dispatchLog` | リーダーノードがログエントリをディスクに書き込むのに要した時間。 | `quantile=0.5, 0.9, 0.99` | `Summary` |
+| `weaviate_usage_{gcs\|s3}_operations_total` | モジュールラベルごとの操作総数。 | `operation`: collect/upload, `status`: success/error | `Counter` |
+| `weaviate_usage_{gcs\|s3}_operation_latency_seconds` | 使用状況操作のレイテンシー（秒）。 | `operation`: collect/upload | `Histogram` |
+| `weaviate_usage_{gcs\|s3}_resource_count` | モジュールが追跡しているリソース数。 | `resource_type`: collections/shards/backups | `Gauge` |
+| `weaviate_usage_{gcs\|s3}_uploaded_file_size_bytes` | アップロードされた使用状況ファイルのサイズ（バイト）。 | NA | `Gauge` |
 
+新しいメトリクスで Weaviate を拡張するのは非常に簡単です。新しいメトリクスを提案するには、[コントリビューターガイド](/contributor-guide) をご覧ください。
 
-Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).
+### バージョニング
 
-### Versioning
+メトリクスは他の Weaviate 機能で採用されているセマンティックバージョニングのガイドラインには従わないことにご注意ください。Weaviate のメイン API は安定しており、破壊的変更は非常にまれです。しかし、メトリクスはライフサイクルが短い傾向があります。たとえば、本番環境で特定のメトリクスを監視するコストが高くなり過ぎた場合、互換性のない変更を導入したりメトリクス自体を削除したりする必要が生じることがあります。その結果、Weaviate のマイナーリリースに Monitoring システムへ影響する破壊的変更が含まれる可能性があります。その際には、リリースノートで明確に案内されます。
 
-Be aware that metrics do not follow the semantic versioning guidelines of other Weaviate features. Weaviate's main APIs are stable and breaking changes are extremely rare. Metrics, however, have shorter feature lifecycles. It can sometimes be necessary to introduce an incompatible change or entirely remove a metric, for example, because the cost of observing a specific metric in production has grown too high. As a result, it is possible that a Weaviate minor release contains a breaking change for the Monitoring system. If so, it will be clearly highlighted in the release notes.
+## サンプルダッシュボード
 
-## Sample Dashboards
+Weaviate にはデフォルトでダッシュボードは付属していませんが、開発中およびユーザー支援時に各 Weaviate チームが使用しているダッシュボードの一覧を以下に示します。サポートは提供されませんが、参考になるかもしれません。用途に最適化した独自のダッシュボードを設計する際のヒントとしてご活用ください:
 
-Weaviate does not ship with any dashboards by default, but here is a list of
-dashboards being used by the various Weaviate teams, both during development,
-and when helping users. These do not come with any support, but may still be
-helpful. Treat them as inspiration to design your own dashboards which fit
-your uses perfectly:
-
-| Dashboard                                                                                                                     | Purpose                                                                                                                 | Preview                                                                                                            |
+| ダッシュボード | 目的 | プレビュー |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [Cluster Workload in Kubernetes](https://github.com/weaviate/weaviate/blob/main/tools/dev/grafana/dashboards/kubernetes.json) | Visualize cluster workload, usage and activity in Kubernetes                                                            | ![Cluster Workload in Kubernetes](./img/weaviate-sample-dashboard-kubernetes.png 'Cluster Workload in Kubernetes') |
-| [Importing Data Into Weaviate](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/importing.json)  | Visualize speed of import operations (including its components, such as object store, inverted index, and vector index) | ![Importing Data into Weaviate](./img/weaviate-sample-dashboard-importing.png 'Importing Data Into Weaviate')      |
-| [Object Operations](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/objects.json)               | Visualize speed of whole object operations, such as GET, PUT, etc.                                                      | ![Objects](./img/weaviate-sample-dashboard-objects.png 'Objects')                                                  |
-| [Vector Index](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/vectorindex.json)                | Visualize the current state, as well as operations on the HNSW vector index                                             | ![Vector Index](./img/weaviate-sample-dashboard-vector.png 'Vector Index')                                         |
-| [LSM Stores](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/lsm.json)                          | Get insights into the internals (including segments) of the various LSM stores within Weaviate                          | ![LSM Store](./img/weaviate-sample-dashboard-lsm.png 'LSM Store')                                                  |
-| [Startup](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/startup.json)                         | Visualize the startup process, including recovery operations                                                            | ![Startup](./img/weaviate-sample-dashboard-startup.png 'Vector Index')                                             |
-| [Usage](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/usage.json)                             | Obtain usage metrics, such as number of objects imported, etc.                                                          | ![Usage](./img/weaviate-sample-dashboard-usage.png 'Usage')                                                        |
-| [Aysnc index queue](https://github.com/weaviate/weaviate/blob/main/tools/dev/grafana/dashboards/index_queue.json)             | Observe index queue activity                                                                                            | ![Async index queue](./img/weaviate-sample-dashboard-async-queue.png 'Async index queue')                          |
+| [Kubernetes でのクラスターワークロード](https://github.com/weaviate/weaviate/blob/main/tools/dev/grafana/dashboards/kubernetes.json) | Kubernetes におけるクラスターワークロード、使用状況、アクティビティを可視化します | ![Kubernetes でのクラスターワークロード](./img/weaviate-sample-dashboard-kubernetes.png 'Kubernetes でのクラスターワークロード') |
+| [Weaviate へのデータインポート](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/importing.json) | インポート処理（オブジェクトストア、転置インデックス、ベクトルインデックスなどのコンポーネントを含む）の速度を可視化します | ![Weaviate へのデータインポート](./img/weaviate-sample-dashboard-importing.png 'Weaviate へのデータインポート') |
+| [オブジェクト操作](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/objects.json) | GET や PUT など、オブジェクト操作全体の速度を可視化します | ![オブジェクト操作](./img/weaviate-sample-dashboard-objects.png 'オブジェクト操作') |
+| [ベクトルインデックス](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/vectorindex.json) | HNSW ベクトルインデックスの現在の状態と操作を可視化します | ![ベクトルインデックス](./img/weaviate-sample-dashboard-vector.png 'ベクトルインデックス') |
+| [LSM ストア](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/lsm.json) | Weaviate 内の各 LSM ストア（セグメントを含む）の内部を分析できます | ![LSM ストア](./img/weaviate-sample-dashboard-lsm.png 'LSM ストア') |
+| [スタートアップ](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/startup.json) | リカバリー処理を含む起動プロセスを可視化します | ![スタートアップ](./img/weaviate-sample-dashboard-startup.png 'スタートアップ') |
+| [使用状況](https://github.com/weaviate/weaviate/blob/master/tools/dev/grafana/dashboards/usage.json) | インポートされたオブジェクト数などの使用状況メトリクスを取得します | ![使用状況](./img/weaviate-sample-dashboard-usage.png '使用状況') |
+| [非同期インデックスキュー](https://github.com/weaviate/weaviate/blob/main/tools/dev/grafana/dashboards/index_queue.json) | インデックスキューのアクティビティを監視します | ![非同期インデックスキュー](./img/weaviate-sample-dashboard-async-queue.png '非同期インデックスキュー') |
 
-## `nodes` API Endpoint
+## `nodes` API エンドポイント
 
-To get collection details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
+コレクションの詳細をプログラムから取得するには、[`nodes`](/deploy/configuration/nodes.md) REST エンドポイントをご利用ください。
 
 import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
 
 <APIOutputs />
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

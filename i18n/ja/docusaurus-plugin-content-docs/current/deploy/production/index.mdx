@@ -5,40 +5,42 @@ sidebar_position: 0
 
 ---
 
-# Production Environments
+# 本番環境
 
-Deploying Weaviate in a production environment requires careful planning to ensure stability, security, and performance. 
-Currently, the only supported method of deploying Weaviate in a production environment is through Kubernetes. 
-Unlike development or testing environments, a production instance must be resilient, scalable, and optimized for real-world workloads.
+本番環境に Weaviate をデプロイするには、安定性、セキュリティ、パフォーマンスを確保するための慎重な計画が必要です。  
+現在、本番環境で Weaviate をデプロイする際に公式にサポートされている唯一の方法は Kubernetes の利用です。  
+開発環境やテスト環境とは異なり、本番インスタンスは高いレジリエンスとスケーラビリティを備え、実際のワークロード向けに最適化されている必要があります。
 
-## Key Aspects of a Production Environments
+## 本番環境の主要な側面
 
-- **Scalability and Performance**
-    - Production workloads demand high availability and low latency.
-    - Auto-scaling strategies and resource monitoring must be in place. 
-- **Data Resilience and Backups**
-    - Data must be safeguarded against corruption and loss. 
-    - Disaster recover strategies and automated backups must be implemented. 
-- **Security and Compliance**
-    - Data at rest and in transit should be encrypted. 
-    - liance best practices must be followed.  
-- **Monitoring and Observability**
-    - Logs and metrics must be collected for troubleshooting and optimization. 
-    - Monitoring tools should be used to track performance. 
-    - Alerting mechanisms must be set up to detect any anaomolies or failures. 
-- **Networking and Access Control**
-    - Privileges should be limited using RBAC (role-based access control). 
-    - Load balancing should be configured. 
+- **スケーラビリティとパフォーマンス**
+    - 本番ワークロードでは高可用性と低レイテンシーが求められます。 
+    - オートスケーリング戦略とリソース監視を導入しておく必要があります。 
+- **データのレジリエンスとバックアップ**
+    - データを破損や損失から保護しなければなりません。 
+    - ディザスタリカバリ戦略と自動バックアップを実装する必要があります。 
+- **セキュリティとコンプライアンス**
+    - 保存データおよび転送中データは暗号化する必要があります。 
+    - コンプライアンスのベストプラクティスに従う必要があります。  
+- **モニタリングと可観測性**
+    - トラブルシューティングと最適化のためにログとメトリクスを収集する必要があります。 
+    - モニタリングツールを使用してパフォーマンスを追跡する必要があります。 
+    - 異常や障害を検知するためのアラート機構を構築しなければなりません。 
+- **ネットワーキングとアクセス制御**
+    - 権限は RBAC (role-based access control) を用いて最小限に制限するべきです。 
+    - ロードバランシングを構成する必要があります。 
 
-### Weaviate Production Environments
-Weaviate has different options for deploying in a production environment using: 
+### Weaviate 本番環境
 
-- **Serverless Cloud**: A Serverless Cloud instance is a robust cluster designed for production use.
-- **Enterprise Cloud**: Enterprise Cloud is a fully-managed deployment of dedicated resources within a secure, highly available environment.
-- **Bring Your Own Cloud (BYOC)**: Using your own cloud environment, you are able to have a fully managed deployed.
+Weaviate には以下のような本番環境向けデプロイオプションがあります: 
 
-## Questions and feedback
+- **Serverless Cloud**: Serverless Cloud インスタンスは本番利用向けに設計された堅牢なクラスターです。
+- **Enterprise Cloud**: Enterprise Cloud は、安全で高可用な環境内に専用リソースを展開する完全マネージド型のデプロイです。
+- **Bring Your Own Cloud (BYOC)**: 自身のクラウド環境を使用することで、完全マネージドなデプロイを実現できます。
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

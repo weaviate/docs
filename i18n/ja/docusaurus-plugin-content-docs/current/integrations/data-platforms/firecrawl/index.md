@@ -4,18 +4,20 @@ sidebar_position: 10
 image: og/integrations/home.jpg
 ---
 
-[Firecrawl](https://www.firecrawl.dev/) is an AI-first web scraping tool.
+[Firecrawl](https://www.firecrawl.dev/) は AI ファーストのウェブスクレイピングツールです。
 
-It allows you to easily crawl and extract clean, structured data from websites. It is an API service that converts a URL into clean markdown or structured data.
+これにより、ウェブサイトを簡単にクロールし、クリーンで構造化されたデータを抽出できます。これは、 URL をクリーンな markdown または構造化データへ変換する API サービスです。
 
-## Firecrawl and Weaviate
-Firecrawl handles the complexities of web scraping like proxies, caching, rate limits, and dynamic content. It produces markdown or JSON formatted output that is ready to be ingested into vector databases like Weaviate.
+## Firecrawl と Weaviate
+Firecrawl は、プロキシ、キャッシュ、レート制限、動的コンテンツなど、ウェブスクレイピングに伴う複雑さを処理します。また、Weaviate のような ベクトル データベースにそのまま取り込める markdown や JSON 形式の出力を生成します。
 
-## Our Resources
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+[**ハンズオン学習**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Firecrawl to Weaviate | This notebook shows you how to scrape webpages with Firecrawl and load their contents into Weaviate. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/web-search/firecrawl/firecrawl-to-weaviate.ipynb)
+| Firecrawl から Weaviate へ | このノートブックでは、Firecrawl を使用してウェブページをスクレイピングし、その内容を Weaviate に読み込む方法を示します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/web-search/firecrawl/firecrawl-to-weaviate.ipynb)
+
+

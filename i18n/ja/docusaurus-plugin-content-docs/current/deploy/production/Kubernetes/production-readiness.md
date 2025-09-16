@@ -2,92 +2,91 @@
 sidebar_label: Production Readiness Self-Assessment
 ---
 
-# Kubernetes Production Readiness Self-Assessment
+# Kubernetes 本番環境準備セルフアセスメント
 
-Think you’re ready for production? Ensuring that your Weaviate cluster is production-ready requires careful planning, configuration, and ongoing maintenance. Ensuring that you have a stable, reliable deployment requires you to think of your *ending* at the *beginning.* This guide provides you with introspective questions to assess readiness and identify any potential gaps before moving your workloads into production.
+本番環境への準備は万端でしょうか？ Weaviate クラスターを本番環境向けに整えるには、綿密な計画、適切な構成、そして継続的なメンテナンスが必要です。安定して信頼できるデプロイを実現するためには、*始めに* こそ *終わり* を見据えることが重要です。本ガイドでは、本番環境にワークロードを移行する前に準備状況を評価し、潜在的なギャップを特定するための内省的な質問を提供します。
 
 :::tip
-If you *do* identify gaps within your deployment, be sure to reach out to your SE (solutions engineer) who can help steer you on the path to production success!
+もしギャップが見つかった場合は、ぜひ SE (Solutions Engineer) にご連絡ください。本番環境で成功するためのサポートを受けられます。
 :::
 
+### 高可用性とレジリエンス
 
-### High Availability and Resilience
+- [ ] クラスターを複数の可用性ゾーン (AZ) やリージョンに分散してデプロイし、ダウンタイムを防いでいますか？
+- [ ] Weaviate を 3 ノード以上の高可用構成で実行していますか？
+- [ ] ノード障害時にもデータのコピーが利用できるよう、スキーマでレプリケーション係数を 3 に設定していますか？
+- [ ] レプリカを複数ノードに配置し、冗長性を確保していますか？
+- [ ] コントロールプレーンは高可用ですか？
+- [ ] アプリケーションはコントロールプレーンがなくても障害耐性がありますか？
+- [ ] ノードの自動修復や自己回復メカニズムを導入していますか？
+- [ ] フェイルオーバーシナリオをテストし、レジリエンスを検証しましたか？
+- [ ] Weaviate のバックアップ機能を災害復旧に活用していますか？
+    - [ ] これらのメカニズムはどのくらいの頻度でテストしていますか？
+    - [ ] ノード障害やデータベース破損からの復旧をテストしましたか？
+- [ ] バックアップの保持期間を検討していますか？
+  - [ ] 古いバックアップをクリーンアップする方法を定義していますか？
+- [ ] ローリングアップデートを実施し、ダウンタイムを回避していますか？
+- [ ] カナリアリリースを行い、新しいリリースを安全にテストしていますか？
+- [ ] 変更を安全にテストできる開発またはテスト環境がありますか？
 
-- [ ]  Are your clusters deployed across multiple availability zones (AZs) or regions to prevent downtime?
-- [ ]  Are you running Weaviate in a highly available setup with a 3-node minimum?
-- [ ]  Have you configured your schema to use a replication factor of 3 to ensure copies of data are available during node outage?
-- [ ]  Are replicas deployed across multiple nodes for redundancy?
-- [ ]  Is your control plane highly available?
-- [ ]  Is your application fault-tolerant *without* your control plane?
-- [ ]  Are there automatic node repair or self-healing mechanisms in place?
-- [ ]  Have failover scenarios been tested to validate resilience?
-- [ ]  Are you utilizing Weaviate’s backup capabilities for disaster recovery?
-    - [ ]  How often are these mechanisms tested?
-    - [ ]  Has the ability to recover from a node failure or database corruption been tested?
-- [ ]  Have you thought about the retention period of backups?
-  - [ ]  How do you clean up any out-of-date backups?
-- [ ]  Are rolling updates performed to avoid downtime?
-- [ ]  Are canary deployments implemented to safely test new releases?
-- [ ]  Do you have development or test environments to safely test changes?
+### データ取り込みとクエリパフォーマンス
 
-### Data Ingestion and Query Performance
+- [ ] 高負荷の取り込みを処理するための戦略がありますか？
+- [ ] インデックス作成とクエリ処理に割り当てるリソースの割合を決めていますか？
+- [ ] 取り込み前にデータの重複排除とクリーンアップを行う戦略がありますか？
+- [ ] データはどのくらいの頻度で追加、更新、削除されますか？
+  - [ ] データはインプレース更新ですか、それとも追記が中心ですか？
+  - [ ] 削除操作に伴うガーベジコレクションはどのくらいの頻度で発生しますか？
+- [ ] 大規模な取り込みジョブ用にスケジューリング戦略を実装していますか？
+- [ ] 負荷下でクエリパフォーマンスをテストしましたか？
+  - [ ] Prometheus や Grafana を用いてクエリパフォーマンスを監視していますか？
+- [ ] 負荷分散とフェイルオーバーをサポートするためにレプリカシャードを配置していますか？
 
-- [ ] Is there a strategy for handling heavy ingestion loads?
-- [ ] Has the percentage of resources for indexing vs querying applications been specified?
-- [ ] Is there a defined strategy for data deduplication and cleanup before ingestion?
-- [ ] How frequently is data added, updated, or deleted?
-  - [ ] Is data updated in place or mostly append-only
-  - [ ] How often do deletion operations trigger garbage collection?
-- [ ] Have you implemented a scheduling strategy for large ingestion jobs?
-- [ ] Have you tested query performance under load?
-  - [ ] Is query performance monitored using Prometheus or Grafana?
-- [ ] Have replica shards been deployed for load balancing and failover support?
+### リソース管理
 
+- [ ] データの利用パターンを検討していますか？
+    - [ ] ワークロード需要に合わせてメモリ割り当てを適正化していますか？
+    - [ ] ストレージやコンピュートの割り当ても需要に合わせて適正化していますか？
+    - [ ] 古いオブジェクトや未使用オブジェクトを削除するプロセスがありますか？
+- [ ] 読み取り負荷が高いワークロードを分散させるため、複数レプリカを設定していますか？
+- [ ] ニーズに合ったストレージクラスを選択していますか？
+    - [ ] ストレージクラスはボリューム拡張をサポートし、将来的な成長に対応できますか？
+- [ ] クラスター内のデータ (永続ストレージを含む) を適切にバックアップしていますか？
+- [ ] シャーディング戦略はデータセットのサイズとアクセスパターンに合っていますか？
+- [ ] メモリ管理のために `GOMEMLIMIT` を適切に設定していますか？
+  - [ ] `GOMEMLIMIT` をシステムの利用可能メモリに基づいて設定し、過度なガーベジコレクション停止を防いでいますか？
+- [ ] メモリ要件を削減するため、ベクトル量子化技術を検討していますか？
 
-### Resource Management
+### テナント状態管理
 
-- [ ]  Have you considered your data’s consumption pattern(s)?
-    - [ ]  Has your memory allocation been right-sized to match workload demand?
-    - [ ]  Has your storage/compute allocation also been right-sized to match workload demand?
-    - [ ]  Is there a process to delete old or unused objects?
-- [ ] Have multiple replicas been configured to balance read-heavy workloads?
-- [ ] Has the proper storage class been selected for your needs?
-    - [ ] Does your storage class support volume expansion so that you can support growth over time?
-- [ ] Is the data within your cluster properly backed up, including the persistent storage?
-- [ ] Is the sharding strategy aligned with the size and access patterns of the dataset?
-- [ ] Is `GOMEMLIMIT` properly configured for memory management?
-  - [ ] Is `GOMEMLIMIT` set based on available system memory to prevent excessive garbage collection pauses?
-- [ ] Have you considered vector quantization techniques to reduce memory requirements?
+- [ ] マルチテナンシーを実装していますか？
+  - [ ] ノイジーネイバー問題を回避するため、テナントごとの制限やクォータを設定していますか？
+- [ ] アクティブでないテナントデータをオフロードする戦略がありますか？
 
-### Tenant State Management
+### セキュリティ
 
-- [ ] Are you implementing multi-tenancy?
-  - [ ] Are there limits or quotas per tenant to avoid noisy neighbor issues?
-- [ ] Is there a strategy for offloading inactive tenant data?
+- [ ] クラスターのコンポーネント間通信に SSL/TLS と信頼できる証明書を使用していますか？
+- [ ] *最小権限の原則* を遵守していますか？
+- [ ] コンテナのセキュリティデフォルトを正しく設定していますか？
+- [ ] クラスターへのアクセスを厳密に制限していますか？
+- [ ] [RBAC](/weaviate/configuration/rbac/index.mdx) を実装し、アクセスを制限していますか？
+- [ ] Pod 間通信を制限するネットワークポリシーを実装していますか？
+- [ ] シークレットを K8s Secrets または Vault ソリューションで保護していますか？
+- [ ] シークレットの漏えい、キーや証明書の紛失、シークレットのローテーションが必要な場合のプロセスがありますか？
 
-### Security
+### 監視とオブザーバビリティ
 
-- [ ]  Are the components of your cluster communicating via SSL/TLS and trusted certificates?
-- [ ]  Is the *“principle of least privilege”* being followed?
-- [ ]  Are your container security defaults set properly?
-- [ ]  Is access to your cluster strictly limited?
-- [ ]  Has [RBAC](/weaviate/configuration/rbac/index.mdx) been implemented to restrict access?
-- [ ]  Have network policies been implemented to limit pod-to-pod communication?
-- [ ]  Are secrets secured with K8s Secrets or a vault solution?
-- [ ]  Do you have a process for when secrets are exposed, when access is lost to a key or certificate, and when secrets need to be rotated?
+- [ ] ロギングを実装していますか？
+    - [ ] 収集したログを中央集約していますか？
+- [ ] Prometheus (または Alloy、DataDog など) を使用してメトリクス収集を有効にしていますか？
+- [ ] Grafana でヘルスとパフォーマンスのメトリクスを可視化していますか？
+- [ ] イベントに対してアラートを設定していますか？
 
-### Monitoring and Observability
+これらの重要分野を評価することで、高可用でレジリエントかつ効率的なデプロイを構築し、ビジネスのニーズに合わせてスケールさせることができます。ここで挙げたセルフアセスメントの質問に対応することで、潜在的なリスクを事前に特定し、デプロイの信頼性を最大化できます。 
 
-- [ ]  Is logging implemented?
-    - [ ]  Are the collected logs stored centrally?
-- [ ]  Is metric collection enabled using Prometheus (or Alloy, DataDog, or another monitoring platform)?
-- [ ]  Are health and performance metrics being visualized in Grafana?
-- [ ]  Are alerts configured for events?
-
-Evaluate these key areas to build a highly available, resilient, and efficient deployment that will scale to meet your business needs. By ensuring that these self-assessment questions have been addressed, you can proactively identify potential risks and maximize the reliability of your deployment. 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

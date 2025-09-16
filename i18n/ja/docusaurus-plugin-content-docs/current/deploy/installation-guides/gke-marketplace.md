@@ -1,16 +1,16 @@
 ---
 title: GCP Marketplace - Kubernetes
-description: Set up Weaviate using Google Cloud Marketplace for simplified deployment.
+description: Google Cloud Marketplace を使用して Weaviate を簡単にデプロイします。
 sidebar_position: 15
 image: og/docs/installation.jpg
 tags: ['installation', 'Google Cloud Marketplace']
 ---
 
-You can use [Google Cloud Marketplace](https://console.cloud.google.com/marketplace) to directly launch a Weaviate cluster.
+[Google Cloud Marketplace](https://console.cloud.google.com/marketplace) を使用して Weaviate クラスターを直接起動できます。
 
-:::info Prerequisites
-- A Google Cloud account with sufficient credit / payment method.
-- (Recommended) Familiarity with Google Cloud and the Google Cloud console.
+:::info 前提条件
+- 十分なクレジットまたは支払い方法が設定された Google Cloud アカウント。
+- (推奨) Google Cloud および Google Cloud コンソールに慣れていること。
 :::
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
@@ -31,20 +31,20 @@ You can use [Google Cloud Marketplace](https://console.cloud.google.com/marketpl
 </div>
 
 
-## Installation instructions
+## インストール手順
 
-Broadly, the steps are as follows:
+大まかな流れは次のとおりです。
 
-1. Go to Weaviate's Google Cloud Marketplace listing page and click <kbd>Configure</kbd>.
-1. Configure and deploy Weaviate by following the on-screen instructions.
+1. Weaviate の Google Cloud Marketplace のリストページに移動し、<kbd>Configure</kbd> をクリックします。  
+1. 画面の指示に従って Weaviate を設定してデプロイします。  
 <!-- 1. Review the GC Marketplace Terms of Service, and if you agree with the terms, confirm accordingly. -->
 <!-- 1. Select Deploy to start deploying Weaviate on your GKE cluster.  -->
 
-We go through these steps in detail below.
+以下でこれらの手順を詳しく説明します。
 
-### Configuration options
+### 設定オプション
 
-:::info Before you get started
+:::info 開始する前に
 
 <!-- #### Some settings may not be changed after launch
 
@@ -58,54 +58,53 @@ Not all settings may be changed after launch. For example, these settings are cu
 
 - Changes to the instance type will lead to recreation of the node pool. -->
 
-#### Suggested configurations
+#### 推奨設定
 
-- The default values for settings such as `Global Query limit`, `Modules` and `Storage Size` should be suitable for a majority of cases.
-- `Storage size`: For production environments, at least 500GB per pod is recommended. (Smaller disks may be sufficient for dev environments.)
+- `Global Query limit`、`Modules`、`Storage Size` などのデフォルト値は多くの場合そのままで問題ありません。  
+- `Storage size`: 本番環境では 1 ポッドあたり少なくとも 500GB を推奨します。(開発環境ではより小さいディスクでも十分な場合があります。)  
 <!-- - `weaviateAuthType`: We recommend not running Weaviate with anonymous access. We suggest setting it to `apikey` and setting a key, for example by excuting `pwgen -A -s 32` to generate a random string. -->
 
 :::
 
-Once you are at the deployment page, you should see a set of options.
+デプロイページに進むと、さまざまなオプションが表示されます。
 
-You will need to:
-1. Select a GKE cluster to deploy Weaviate to.
-    1. Optionally, you can create a new cluster and then specify it.
-1. Set the `namespace` (for dividing cluster resources) and a unique `app instance name` for identifying the application.
-1. Set the app instance name.
-1. Set the service account for billing.
-1. Set Weaviate parameters, such as `Replicas of Weaviate Instances`, `Global Query Limit`, `Enable Modules` and `Storage Size`.
+1. Weaviate をデプロイする GKE クラスターを選択します。  
+    1. 任意で、新しいクラスターを作成してそれを指定することもできます。  
+1. `namespace` (クラスターリソースを分割するため) と、アプリケーションを識別する一意の `app instance name` を設定します。  
+1. アプリインスタンス名を設定します。  
+1. 請求用のサービスアカウントを設定します。  
+1. `Replicas of Weaviate Instances`、`Global Query Limit`、`Enable Modules`、`Storage Size` などの Weaviate パラメーターを設定します。  
     <!-- - Weaviate authentication parameters. -->
-1. If you agree, accept the terms of service and click <kbd>Deploy</kbd>.
+1. 内容に同意する場合は、利用規約を承諾し、<kbd>Deploy</kbd> をクリックします。
 
-Once you have done so, Weaviate will be deployed to the selected cluster. This should take a few minutes.
+これで Weaviate が選択したクラスターにデプロイされます。数分かかる場合があります。
 
-## Accessing the cluster
+## クラスターへのアクセス
 
-Once the application has been created, you can access the cluster through the load balancer.
+アプリケーションが作成されると、ロードバランサー経由でクラスターにアクセスできます。
 
-You can interact with the cluster using [`kubectl`](https://kubernetes.io/docs/tasks/tools/), or through the Weaviate API. We show examples below.
+`kubectl` を使用するか、Weaviate API 経由でクラスターと対話できます。以下に例を示します。
 
-### Interaction using `kubectl`
+### `kubectl` での操作
 
-You can run the following command which will update or create a kubeconfig file for the Weaviate cluster:
+次のコマンドを実行すると、Weaviate クラスター用の kubeconfig ファイルが更新または作成されます。
 
 ```
 gcloud container clusters get-credentials [YOUR_CLUSTER_NAME] --zone [YOUR_GC_ZONE] --project [YOUR_GC_PROJECT]
 ```
 
-:::tip How to find the kubectl command
-The exact command can be found in the Kubernetes Engine page, by clicking on the vertical ellipsis ( <i class="fa-solid fa-ellipsis-vertical"></i> ) for your cluster, and clicking <kbd>Connect</kbd>.
+:::tip kubectl コマンドの見つけ方
+正確なコマンドは Kubernetes Engine ページで、対象クラスターの縦三点リーダ ( <i class="fa-solid fa-ellipsis-vertical"></i> ) をクリックし、<kbd>Connect</kbd> を選択すると確認できます。
 :::
 
-Once that's set up, you can run `kubectl` commands as usual. For example
-- `kubectl get pods -n default` to list all pods in the `default` namespace (or whatever namespace you specified).
-- `kubectl get svc --all-namespaces` to list all services in all namespaces.
+設定が完了したら、通常どおり `kubectl` コマンドを実行できます。例えば  
+- `kubectl get pods -n default` で `default` ネームスペース (または指定したネームスペース) 内のすべての Pod を一覧表示します。  
+- `kubectl get svc --all-namespaces` で全ネームスペースの Service を一覧表示します。  
 
 <details>
-  <summary>Example output</summary>
+  <summary>例の出力</summary>
 
-An example output of `kubectl get svc --all-namespaces` is:
+`kubectl get svc --all-namespaces` の例の出力は次のとおりです。
 
 ```bash
 NAMESPACE            NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)            AGE
@@ -121,44 +120,46 @@ kube-system          kube-dns                                 ClusterIP      10.
 kube-system          metrics-server                           ClusterIP      10.24.13.204   <none>         443/TCP
 ```
 
-Here, the externally accessible Weaviate IP is `34.173.96.14`.
+ここでは、外部からアクセス可能な Weaviate の IP は `34.173.96.14` です。
 
 </details>
 
-### Finding the Weaviate URL
+### Weaviate URL の確認
 
-Once the application has been created, you can access Weaviate via the load balancer URL.
+アプリケーションが作成されたら、ロードバランサーの URL から Weaviate にアクセスできます。
 
-You can find the Weaviate endpoint URL by any of:
-- Going to the `Kubernetes Engine` section of Google Cloud, under `Service & Ingress`. Find the load balancer, and look for the `Endpoints` column.
-- Running `kubectl get svc -n [YOUR_NAMESPACE_NAME]` and looking for the `EXTERNAL-IP` of the `weaviate` service.
-The load balancer URL (e.g. `34.38.6.240`) will be the Weaviate URL (e.g. `http://34.38.6.240`).
+Weaviate のエンドポイント URL は次のいずれかの方法で確認できます:
 
-## Removing Weaviate and the cluster
+- Google Cloud の `Kubernetes Engine` セクションで `Service & Ingress` を開き、ロードバランサーを探して `Endpoints` 列を確認します。  
+- `kubectl get svc -n [YOUR_NAMESPACE_NAME]` を実行し、`weaviate` Service の `EXTERNAL-IP` を確認します。  
+
+ロードバランサーの URL (例: `34.38.6.240`) がそのまま Weaviate の URL (例: `http://34.38.6.240`) になります。
+
+## Weaviate とクラスターの削除
 
 :::caution
-Verify that all unused resources are deleted. You continue to incur costs for any remaining resources.
+未使用のリソースがすべて削除されていることを確認してください。残っているリソースについてはコストが発生し続けます。
 :::
 
-### Removing Weaviate
+### Weaviate の削除
 
-To remove Weaviate and the associated services, go to the `Applications` section of `Kubernetes Engine` in Google Cloud, and delete the Weaviate deployment.
+Weaviate と関連サービスを削除するには、 Google Cloud の `Kubernetes Engine` の `Applications` セクションに移動し、 Weaviate デプロイメントを削除します。
 
-Review the `Services & Ingress` section as well as the `Storage` section to ensure that all associated services and storage are removed. You may need to delete any remaining resources manually.
+`Services & Ingress` セクションおよび `Storage` セクションも確認し、関連するサービスとストレージがすべて削除されたことを確認してください。残っているリソースがある場合は、手動で削除する必要があります。
 
-### Removing the cluster
+### クラスターの削除
 
-If you no longer require the cluster (e.g. if you created a new cluster for Weaviate), you can delete the cluster by going to the `Applications` section of `Kubernetes Engine` in Google Cloud. Delete the cluster by selecting it from the list, clicking <kbd>DELETE</kbd>, and following the prompts.
+クラスターが不要になった場合 (例: Weaviate 用に新しいクラスターを作成した場合) は、 Google Cloud の `Kubernetes Engine` の `Applications` セクションからクラスターを削除できます。リストからクラスターを選択し、 <kbd>DELETE</kbd> をクリックして、表示される指示に従って削除してください。
 
-## Billing
+## 課金
 
-You will be charged for Weaviate and associated resources directly by Google Cloud.
+Weaviate と関連リソースの料金は Google Cloud から直接請求されます。
 
-This will, for example, include the compute instances, volumes, and any other resources used by the cluster.
+たとえば、コンピュートインスタンス、ボリューム、およびクラスターで使用されるその他のリソースが含まれます。
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

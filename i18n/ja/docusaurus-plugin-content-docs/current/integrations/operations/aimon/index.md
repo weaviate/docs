@@ -3,19 +3,20 @@ title: AIMon
 sidebar_position: 1
 image: og/integrations/home.jpg
 ---
-[AIMon](https://www.aimon.ai/) offers monitoring and reranking tools to evaluate, optimize, and improve LLM applications.
+[AIMon](https://www.aimon.ai/) は、LLM アプリケーションを評価、最適化、改善するためのモニタリングおよびリランキング ツールを提供します。
 
+## AIMon と Weaviate
+AIMon は、低レイテンシでドメイン適応可能なリランカーを用いてベクトル検索結果を強化することで Weaviate と統合します。
 
-## AIMon and Weaviate
-AIMon integrates with Weaviate by enhancing vector search results using its low-latency, domain-adaptable reranker. 
+ユーザーは、ハルシネーション、instructions への準拠、検索関連性といったメトリクスを組み合わせて、取得した結果全体の複合的な品質スコアを計算できます。
 
-Users can compute a composite quality score across retrieved results—combining hallucination, instruction adherence, and retrieval relevance metrics.
+## 当社のリソース
+[**ハンズオン学習**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的な理解を深めましょう。
 
-## Our Resources
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+### ハンズオン学習
 
-### Hands on Learning
-
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Improve the Quality of your LLM Application with AIMon | In this tutorial, we'll help you build a retrieval-augmented generation (RAG) chatbot and show you how to improve the relevance. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/aimon/reranking_and_evaluation.ipynb) |
+| AIMon で LLM アプリケーションの品質を向上させる | このチュートリアルでは、検索拡張生成 (RAG) チャットボットを構築し、その関連性を向上させる方法をご紹介します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/operations/aimon/reranking_and_evaluation.ipynb) |
+
+

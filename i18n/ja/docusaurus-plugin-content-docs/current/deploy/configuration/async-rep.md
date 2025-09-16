@@ -1,179 +1,184 @@
 ---
 
-title: Async Replication
+title: 非同期レプリケーション
 
 ---
 
-Introduced to GA in the 1.29 release, Async Replication is a mechanism used to ensure eventual consistency across nodes in a distributed cluster. It works as a background process that automatically keeps nodes in sync without requiring user queries. Previously, consistency was achieved through "read repair" which involved nodes comparing data during a read request and exchanging missing or outdated information. This approach guarantees eventual consistency without requiring read operations. 
+1.29 リリースで GA となった非同期レプリケーションは、分散クラスタ内のノード間で最終的な整合性を保証するための仕組みです。これはバックグラウンドプロセスとして動作し、ユーザーのクエリを必要とせずにノード間の同期を自動的に保ちます。以前は「リードリペア」と呼ばれる手法で整合性を確保しており、これは読み取りリクエストの際にノード同士がデータを比較し、欠落もしくは古い情報を交換するものでした。このアプローチによって、読み取り操作を行わなくても最終的な整合性が保証されます。 
 
 :::info
 
-This applies solely to data objects, as metadata consistency is treated differently (through RAFT consensus).
+これはデータオブジェクトにのみ適用され、メタデータの整合性は別の方法（RAFT コンセンサス）で処理されます。
 :::
 
-### Under the Hood
+### 内部動作
 
-- Async replication operates as a background process either per tenant (in a multi-tenant collection) or per shard (in a non-multi-tenant collection).
-- It is disabled by default but can be enabled through collection configuration changes, similar to setting the replication factor. 
+- 非同期レプリケーションは、マルチテナントコレクションではテナントごと、非マルチテナントコレクションではシャードごとにバックグラウンドプロセスとして動作します。
+- デフォルトでは無効ですが、レプリケーションファクターを設定する場合と同様にコレクション設定を変更することで有効化できます。 
 
-## Environment Variable Deep Dive
+## 環境変数詳細
 
-These environment variables can be used to fine-tune behavior for your specific use case or deployment environment. 
+これらの環境変数を使用すると、ユースケースやデプロイ環境に合わせて動作を細かく調整できます。 
 
 :::tip 
-The optimal values for these variables will ultimately depend on factors like: data size, network conditions, write patterns, and the desired level of eventual consistency. 
+これらの変数の最適値は、データサイズ、ネットワーク状況、書き込みパターン、求める最終的な整合性レベルなどの要因によって決まります。 
 :::
 
-## Use Cases
+## ユースケース
 
-### General
+### 一般
 
 <details>
 
-<summary> Feature Control </summary>
-#### `ASYNC_REPLICATION_DISABLED`
-Globally disables the entire async replication feature.
+<summary> 機能制御 </summary>
 
-- Its default value is `false`. 
-- **Use case**: This is useful when you have many tenants or collections where a temporary global disable is needed, like during debugging or critical maintenance. 
-- **Special Considerations**:
-  - This overrides any collection configuration.
+#### `ASYNC_REPLICATION_DISABLED`
+非同期レプリケーション機能全体をグローバルに無効化します。
+
+- 既定値は `false` です。 
+- **ユースケース**: テナントやコレクションが多数存在し、一時的にグローバルで無効化する必要がある（デバッグ中や重大なメンテナンス時など）場合に便利です。 
+- **特記事項**:
+  - この設定はコレクションごとの設定よりも優先されます。
 
 </details>
 
 <details>
-<summary>Replication Control </summary>
+<summary> レプリケーション制御 </summary>
 
 #### `ASYNC_REPLICATION_PROPAGATION_LIMIT`
-Defines the maximum number of objects that will be propagated in a single async replication iteration (after one hash tree comparison).
-  - By default is set to 10,000.
-  - **Use Case(s)**: Can be adjusted based on network capacity and the desired rate of convergence.
-  - **Considerations**: Even if more than this number of differences are detected, only this many objects will be propagated in the current iteration. Subsequent iterations will handle the remaining differences.
+1 回の非同期レプリケーションのイテレーション（ハッシュツリー比較 1 回後）で伝播されるオブジェクトの最大数を定義します。
+  - 既定値は 10,000 です。
+  - **ユースケース**: ネットワーク容量や求める収束速度に応じて調整できます。
+  - **注意点**: 差分がこの数を超えて検出されても、現在のイテレーションで伝播されるのはこの数までです。残りの差分は次回以降のイテレーションで処理されます。
 
 
 #### `ASYNC_REPLICATION_PROPAGATION_DELAY`
-Introduces a delay before considering an object for propagation. Only objects older than this delay are considered.
-  - By default it is set to 30 seconds.
-  - **Use Case(s)**: If an object is inserted into one node but the insertion is still in progress, the hash comparison might detect it. This delay prevents the async replication from trying to propagate it before the local write operation is fully complete.
-  - **Considerations**: This should be set based on the typical write latency of the system.
+オブジェクトを伝播対象とみなす前に遅延を導入します。この遅延より古いオブジェクトのみが対象となります。
+  - 既定値は 30 秒です。
+  - **ユースケース**: オブジェクトが 1 つのノードに挿入され、挿入処理がまだ進行中の場合にハッシュ比較で検出される可能性があります。この遅延を設けることで、ローカルの書き込み操作が完全に完了する前に非同期レプリケーションが伝播を試みることを防ぎます。
+  - **注意点**: システムの一般的な書き込みレイテンシを基に設定してください。
 </details>
 
 <details>
-<summary> Operational Visibility </summary>
+<summary> 運用可視性 </summary>
 
 #### `ASYNC_REPLICATION_LOGGING_FREQUENCY`
-Controls how often the background async replication process logs its activity.
-  - By default it is set to 5 seconds. 
-  - **Use Case(s)**: Increasing the frequency provides more detailed logs, while decreasing it reduces log verbosity.
+バックグラウンドの非同期レプリケーションプロセスが活動をログする頻度を制御します。
+  - 既定値は 5 秒です。 
+  - **ユースケース**: 頻度を高くすると詳細なログが得られますが、低くするとログの冗長性を抑えられます。
 </details>
 
-### Performance Tuning
+### パフォーマンスチューニング
 
 <details>
 
-<summary> Memory Optimization </summary>
+<summary> メモリ最適化 </summary>
 
 #### `ASYNC_REPLICATION_HASHTREE_HEIGHT`
-Customizes the height of the hash tree built by each node to represent its locally stored data. 
-- By default the value is set to 16 which is roughly 2MB of RAM per shard on each node. 
-- **Use case(s)**: 
-  - In multi-tenant setups with a large number of tenants, reducing the hash tree would minimize the memory footprint. 
-  - For very large collections, a larger hash tree could be more beneficial for more efficient identification of differing data ranges. 
-- **Special Considerations**:
-  - Modification of the hash tree height requires rebuilding the hash tree on each node, which involves iterating over all existing objects. 
+各ノードがローカルに保持するデータを表現するハッシュツリーの高さをカスタマイズします。 
+- 既定値は 16 で、各ノードのシャードあたりおよそ 2 MB の RAM を使用します。 
+- **ユースケース**: 
+  - マルチテナント環境でテナント数が多い場合、高さを下げるとメモリ使用量を抑えられます。 
+  - 非常に大規模なコレクションでは、高さを上げることで差分データ範囲の特定がより効率的になることがあります。 
+- **特記事項**:
+  - ハッシュツリーの高さを変更すると、各ノードでハッシュツリーを再構築する必要があり、既存オブジェクトをすべて走査します。 
 
 </details>
 
 <details>
 
-<summary> Throughput and Concurrency </summary>
+<summary> スループットと並行性 </summary>
 
 #### `ASYNC_REPLICATION_PROPAGATION_CONCURRENCY`
-Controls the number of concurrent goroutines (or threads) used to send batches of objects during the propagation phase.
-  - By default it is set to 5.
-  - **Considerations**: Increasing concurrency can improve propagation speed, but needs to be balanced with potential resource contention (CPU, network).
+伝播フェーズでオブジェクトのバッチを送信する際に使用する同時実行 goroutine（またはスレッド）の数を制御します。
+  - 既定値は 5 です。
+  - **注意点**: 並行度を上げると伝播速度が向上する場合がありますが、CPU やネットワークなどのリソース競合とのバランスを取る必要があります。
 
 </details>
 
 <details>
 
-<summary> Batch Processing </summary>
+<summary> バッチ処理 </summary>
 
 #### `ASYNC_REPLICATION_DIFF_BATCH_SIZE`
-Sets the number of object metadata fetched per request during the comparison phase.
-  - By default it is set to 1000.
-  - **Use Case(s)**: May be increased to potentially improve performance if network latency is low and nodes can handle larger requests.
-  - **Considerations**: Fetching metadata in batches optimizes network communication.
+比較フェーズで 1 リクエストあたりに取得するオブジェクトメタデータの数を設定します。
+  - 既定値は 1000 です。
+  - **ユースケース**: ネットワークレイテンシが低く、ノードが大きなリクエストを処理できる場合、値を増やすことでパフォーマンスが向上する可能性があります。
+  - **注意点**: メタデータをバッチ取得することでネットワーク通信を最適化します。
 
 
 #### `ASYNC_REPLICATION_PROPAGATION_BATCH_SIZE`
-Sets the maximum number of objects included in each batch when propagating data to a remote node.
-  - By default is set to 100.
-  - **Use Case(s)**: 
-    - For large objects, reducing the batch size can help manage memory usage during propagation. The batch size could be similar to the batch size used during initial data insertion.
-    - For smaller objects, increasing the batch size might improve propagation efficiency by reducing the overhead of individual requests, but needs to be balanced with potential memory pressure.
-  - **Considerations**: This setting is particularly important for large objects, as larger batches can lead to higher memory consumption during transmission. Multiple batches may be sent within a single iteration to reach the `ASYNC_REPLICATION_PROPAGATION_LIMIT`.
+リモートノードへデータを伝播する際、各バッチに含めるオブジェクトの最大数を設定します。
+  - 既定値は 100 です。
+  - **ユースケース**: 
+    - 大きなオブジェクトの場合、バッチサイズを小さくすると伝播中のメモリ使用を抑制できます。バッチサイズは初期データ挿入時に使用したバッチサイズに近い値にするとよいでしょう。
+    - 小さなオブジェクトの場合、バッチサイズを大きくすると個別リクエストのオーバーヘッドが減り伝播効率が向上する可能性がありますが、メモリプレッシャーとのバランスが必要です。
+  - **注意点**: この設定は大きなオブジェクトの場合に特に重要で、大きなバッチでは送信中のメモリ消費が増加します。`ASYNC_REPLICATION_PROPAGATION_LIMIT` に到達するまで、1 イテレーション内で複数バッチが送信されることがあります。
 
 </details>
 
-### Consistency Tuning
+### 整合性チューニング
 
 <details>
 
-<summary> Synchronization Frequency </summary>
+<summary> 同期頻度 </summary>
+
+
+
 #### `ASYNC_REPLICATION_FREQUENCY` 
-Defines how often each node initiates the process of comparing its local data (via the hash tree) with other nodes storing the same shard. This regularly checks for inconsistencies, even if no changes have been explicitly triggered. 
-- It's default value is 30 seconds. 
-- **Use Case(s)**
-  - Decreasing the frequency can be beneficial for applications that require faster convergence to eventual consistency. 
-  - Increasing the frequency can be beneficial for reducing the load on the system by relaxing the eventual consistency. 
+各ノードがローカルデータ（ハッシュツリー経由）を、同じシャードを保持する他のノードと比較する処理を開始する頻度を定義します。明示的な変更がトリガーされていなくても、定期的に不整合をチェックします。 
+- デフォルト値は 30 秒です。 
+- **ユースケース**
+  - 頻度を短くすると、最終的な整合性への収束を高速化したいアプリケーションに有用です。 
+  - 頻度を長くすると、最終的な整合性を緩和することでシステム負荷を軽減できます。 
 
 #### `ASYNC_REPLICATION_FREQUENCY_WHILE_PROPAGATING`
-Defines a shorter frequency for subsequent comparison and propagation attempts when a previous propagation cycle did not complete (i.e., not all detected differences were synchronized).
-  - By default it is set to 20 milliseconds. 
-  -  **Use Case(s)**: When inconsistencies are known to exist, this expedites the synchronization process. 
-  - **Considerations**: This is activated after a propagation cycle detects differences but does not propagate all of them due to limits. 
+前回の伝播サイクルが完了しなかった場合（検出された差分がすべて同期されなかった場合）に、後続の比較および伝播試行に用いる短い頻度を定義します。
+  - デフォルトでは 20 ミリ秒に設定されています。 
+  - **ユースケース**: 不整合が存在すると分かっている場合、同期プロセスを迅速化します。 
+  - **考慮事項**: 伝播サイクルで差分が検出されたものの、制限によりすべてを伝播できなかった後に有効化されます。 
 
 </details>
 
 <details>
-<summary> Node Status Monitoring </summary>
+<summary> ノードステータス監視 </summary>
 
 #### `ASYNC_REPLICATION_ALIVE_NODES_CHECKING_FREQUENCY`
-Defines the frequency at which the system checks for changes in the availability of nodes within the cluster.
-  - By default it is set to 5 seconds. 
-  - **Use Case(s)**: When a node rejoins the cluster after a period of downtime, it is highly likely to be out of sync. This setting ensures that the replication process is initiated promptly.
+クラスター内のノードの可用性変化をチェックする頻度を定義します。
+  - デフォルトでは 5 秒に設定されています。 
+  - **ユースケース**: ダウンタイム後にノードが再参加すると、同期が取れていない可能性が高いです。この設定により、レプリケーションプロセスが迅速に開始されます。
 
 </details>
 
 <details>
-<summary>Timeout Management </summary>
+<summary> タイムアウト管理 </summary>
 
 #### `ASYNC_REPLICATION_DIFF_PER_NODE_TIMEOUT`
-Defines the maximum time to wait for a response when requesting object metadata from a remote node during the comparison phase, this prevents indefinite blocking if a node is unresponsive.
-  - By default is set to 10 seconds. 
-  - **Use Case(s)**: May need to be increased in environments with high network latency or potentially slow-responding nodes.
+比較フェーズでリモートノードからオブジェクトメタデータを要求する際の応答待ち最大時間を定義し、ノードが応答しない場合の無限待機を防ぎます。
+  - デフォルトは 10 秒です。 
+  - **ユースケース**: ネットワーク遅延が大きい環境や応答が遅いノードがある可能性がある場合、増加が必要となることがあります。
 
 #### `ASYNC_REPLICATION_PROPAGATION_TIMEOUT`
-Sets the maximum time allowed for a single propagation request (sending actual object data) to a remote node.
-  - By default is set to 30 seconds. 
-  - **Use Case(s)**: May need to be increased in scenarios with high network latency, large object sizes (e.g., images, vectors), or when sending large batches of objects.
-  - **Considerations**: Network latency, batch size, and the size of the objects being propagated can all affect timeouts. 
+リモートノードへ単一の伝播リクエスト（実際のオブジェクトデータ送信）を行う際に許容される最大時間を設定します。
+  - デフォルトは 30 秒です。 
+  - **ユースケース**: ネットワーク遅延が大きい場合、オブジェクトサイズ（例: 画像、 ベクトル）が大きい場合、または大量のオブジェクトをバッチ送信する場合に増加が必要となることがあります。
+  - **考慮事項**: ネットワーク遅延、バッチサイズ、伝播するオブジェクトのサイズがタイムアウトに影響します。 
 
 </details>
 
 
 
-### Further Resources
+### 追加リソース
 
-- [Concepts: Replication](https://docs.weaviate.io/weaviate/concepts/replication-architecture/consistency)
+- [概念: Replication](https://docs.weaviate.io/weaviate/concepts/replication-architecture/consistency)
 
 - [Replication How-To](/deploy/configuration/replication.md#async-replication-settings)
 
-- [Environment Variables](/deploy/configuration/env-vars/index.md#async-replication)
+- [環境変数](/deploy/configuration/env-vars/index.md#async-replication)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

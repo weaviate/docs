@@ -7,46 +7,46 @@ image: og/docs/installation.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Weaviate supports deployment with Docker.
+Weaviate は Docker を使用してデプロイできます。
 
-You can [run Weaviate with default settings from a command line](#run-weaviate-with-default-settings), or [customize your configuration](#customize-your-weaviate-configuration) by creating your own `docker-compose.yml` file.
+[コマンドラインから Weaviate をデフォルト設定で実行](#run-weaviate-with-default-settings)するか、独自の `docker-compose.yml` ファイルを作成して[設定をカスタマイズ](#customize-your-weaviate-configuration)できます。
 
-## Run Weaviate with default settings
+## デフォルト設定で Weaviate を実行
 
 :::info Added in v1.24.1
 
 :::
 
-To run Weaviate with Docker using default settings, run this command from from your shell:
+デフォルト設定で Docker を使用して Weaviate を実行するには、シェルから次のコマンドを実行してください。
 
 ```bash
 docker run -p 8080:8080 -p 50051:50051 cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
 ```
 
-The command sets the following default [environment variables](#environment-variables) in the container:
+このコマンドは、コンテナ内で以下のデフォルトの[環境変数](#environment-variables)を設定します。
 
-- `PERSISTENCE_DATA_PATH` defaults to `./data`
-- `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED` defaults to `true`.
-- `QUERY_DEFAULTS_LIMIT` defaults to `10`.
+- `PERSISTENCE_DATA_PATH` のデフォルトは `./data` です  
+- `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED` のデフォルトは `true` です  
+- `QUERY_DEFAULTS_LIMIT` のデフォルトは `10` です
 
-## Customize your Weaviate configuration
+## Weaviate 設定をカスタマイズ
 
-You can customize your Weaviate configuration by creating a `docker-compose.yml` file. Start from our [sample Docker Compose file](#sample-docker-compose-file), or use the interactive [Configurator](#configurator) to generate a `docker-compose.yml` file.
+`docker-compose.yml` ファイルを作成して Weaviate の設定をカスタマイズできます。[サンプルの Docker Compose ファイル](#sample-docker-compose-file)を利用するか、対話型の[Configurator](#configurator)で `docker-compose.yml` ファイルを生成してください。
 
-## Sample Docker Compose file
+## サンプル Docker Compose ファイル
 
-This starter Docker Compose file allows:
-* Use of any [API-based model provider integrations](/weaviate/model-providers/index.md) (e.g. `OpenAI`, `Cohere`, `Google`, and `Anthropic`).
-    * This includes the relevant embedding model, generative, and reranker [integrations](/weaviate/model-providers/index.md).
-* Searching pre-vectorized data (without a vectorizer).
-* Mounts a persistent volume called `weaviate_data` to `/var/lib/weaviate` in the container to store data.
+このスターター Docker Compose ファイルでは次のことが可能です。  
+* 任意の[API ベースのモデルプロバイダー連携](/weaviate/model-providers/index.md)（例: `OpenAI`、`Cohere`、`Google`、`Anthropic`）の利用  
+    * これには、対応する埋め込みモデル、生成、リランカーの[連携](/weaviate/model-providers/index.md)が含まれます。  
+* ベクトライザーなしでの事前ベクトル化データの検索  
+* コンテナ内 `/var/lib/weaviate` に `weaviate_data` という永続ボリュームをマウントしてデータを保存
 
-### Download and run
+### ダウンロードと実行
 
 <Tabs queryString="docker-compose">
   <TabItem value="anonymous" label="Anonymous access" default>
 
-Save the code below as `docker-compose.yml` to download and run Weaviate with anonymous access enabled:
+次のコードを `docker-compose.yml` として保存し、匿名アクセスを有効にした状態で Weaviate をダウンロードして実行します。
 
 ```yaml
 ---
@@ -78,13 +78,13 @@ volumes:
 ```
 
 :::caution
-Anonymous access is strongly discouraged except for development or evaluation purposes.
+匿名アクセスは開発または評価用途以外では強く推奨されません。
 :::
 
   </TabItem>
   <TabItem value="auth" label="With authentication and authorization enabled">
 
-Save the code below as `docker-compose.yml` to download and run Weaviate with authentication (non-anonymous access) and authorization enabled:
+次のコードを `docker-compose.yml` として保存し、認証（非匿名アクセス）および認可を有効にした状態で Weaviate をダウンロードして実行します。
 
 ```yaml
 ---
@@ -120,18 +120,18 @@ volumes:
 ...
 ```
 
-This setup enables API-key based [authentication](/deploy/configuration/authentication.md) and role-based access control [authorization](/deploy/configuration/authorization.md).
+この設定では、API キーを用いた[認証](/deploy/configuration/authentication.md)と、ロールベースアクセス制御による[認可](/deploy/configuration/authorization.md)が有効になります。
 
-It defines the users `user-a` and `user-b` and corresponding keys `user-a-key` and `user-b-key` which serve as authentication credentials for connecting to your Weaviate instance.
+`user-a` と `user-b` のユーザー、およびそれぞれのキー `user-a-key` と `user-b-key` が定義されており、これが Weaviate インスタンスへの接続時の認証情報となります。
 
-The user `user-a` is granted admin access rights using the **Role-based access control (RBAC)** method. A custom role can be assigned to the user `user-b` by following the [authorization and RBAC guide](/deploy/configuration/authorization.md).
+ユーザー `user-a` には **ロールベースアクセス制御 (RBAC)** 方式で管理者権限が付与されています。ユーザー `user-b` には[認可と RBAC ガイド](/deploy/configuration/authorization.md)に従ってカスタムロールを割り当てることができます。
 
   </TabItem>
 </Tabs>
 
-Edit the `docker-compose.yml` file to suit your needs. You can add or remove [environment variables](#environment-variables), change the port mappings, or add additional [model provider integrations](/weaviate/model-providers/index.md), such as [Ollama](/weaviate/model-providers/ollama/index.md), or [Hugging Face Transformers](/weaviate/model-providers/transformers/index.md).
+`docker-compose.yml` を編集して環境に合わせてください。[環境変数](#environment-variables)の追加・削除、ポートマッピングの変更、または [Ollama](/weaviate/model-providers/ollama/index.md) や [Hugging Face Transformers](/weaviate/model-providers/transformers/index.md) など追加の[モデルプロバイダー連携](/weaviate/model-providers/index.md)を行うことができます。
 
-To start your Weaviate instance, run this command from your shell:
+Weaviate インスタンスを起動するには、シェルから次のコマンドを実行してください。
 
 ```bash
 docker compose up -d
@@ -139,31 +139,31 @@ docker compose up -d
 
 ## Configurator
 
-The Configurator can generate a `docker-compose.yml` file for you. Use the Configurator to select specific Weaviate modules, including vectorizers that run locally (i.e. `text2vec-transformers`, or `multi2vec-clip`)
+Configurator を使うと `docker-compose.yml` を自動生成できます。ローカルで実行されるベクトライザー（例: `text2vec-transformers`、`multi2vec-clip`）を含む特定の Weaviate モジュールを選択できます。
 
 import DocsConfigGen from '@site/src/components/DockerConfigGen';
 
 <DocsConfigGen />
 
-## Environment variables
+## 環境変数
 
-You can use environment variables to control your Weaviate setup, authentication and authorization, module settings, and data storage settings.
+環境変数を使用して Weaviate のセットアップ、認証と認可、モジュール設定、データストレージ設定を制御できます。
 
 :::info List of environment variables
-A comprehensive of list environment variables [can be found on this page](/deploy/configuration/env-vars/index.md).
+環境変数の包括的な一覧は[こちらのページ](/deploy/configuration/env-vars/index.md)をご覧ください。
 :::
 
-## Example configurations
+## 設定例
 
-Here are some examples of how to configure `docker-compose.yml`.
+以下に `docker-compose.yml` の設定例を示します。
 
-### Persistent volume
+### 永続ボリューム
 
-We recommended setting a persistent volume to avoid data loss as well as to improve reading and writing speeds.
+データ損失を防ぎ、読み書き速度を向上させるために永続ボリュームを設定することを推奨します。
 
-Make sure to run `docker compose down` when shutting down. This writes all the files from memory to disk.
+シャットダウン時には `docker compose down` を実行して、メモリ上のファイルをディスクに書き込んでください。
 
-**With named volume**
+**名前付きボリュームの場合**  
 ```yaml
 services:
   weaviate:
@@ -175,9 +175,9 @@ volumes:
     weaviate_data:
 ```
 
-After running a `docker compose up -d`, Docker will create a named volume `weaviate_data` and mount it to the `PERSISTENCE_DATA_PATH` inside the container.
+`docker compose up -d` を実行すると、Docker は名前付きボリューム `weaviate_data` を作成し、コンテナ内の `PERSISTENCE_DATA_PATH` にマウントします。
 
-**With host binding**
+**ホストバインドの場合**  
 ```yaml
 services:
   weaviate:
@@ -186,11 +186,11 @@ services:
     # etc
 ```
 
-After running a `docker compose up -d`, Docker will mount `/var/weaviate` on the host to the `PERSISTENCE_DATA_PATH` inside the container.
+`docker compose up -d` を実行すると、ホストの `/var/weaviate` がコンテナ内の `PERSISTENCE_DATA_PATH` にマウントされます。
 
-### Weaviate without any modules
+### モジュールなしの Weaviate
 
-An example Docker Compose setup for Weaviate without any modules can be found below. In this case, no model inference is performed at either import or search time. You will need to provide your own vectors (e.g. from an outside ML model) at import and search time:
+モジュールを一切使用しない Weaviate 用 Docker Compose 設定例です。この場合、インポート時と検索時の両方でモデル推論は行われません。外部の ML モデルなどで生成したベクトルを、インポート時と検索時にご自身で提供する必要があります。
 
 ```yaml
 services:
@@ -207,9 +207,9 @@ services:
       CLUSTER_HOSTNAME: 'node1'
 ```
 
-### Weaviate with the `text2vec-transformers` module
+### `text2vec-transformers` モジュールを使用した Weaviate
 
-An example Docker Compose file with the transformers model [`sentence-transformers/multi-qa-MiniLM-L6-cos-v1`](https://huggingface.co/sentence-transformers/multi-qa-MiniLM-L6-cos-v1) is:
+transformers モデル [`sentence-transformers/multi-qa-MiniLM-L6-cos-v1`](https://huggingface.co/sentence-transformers/multi-qa-MiniLM-L6-cos-v1) を使用する Docker Compose ファイル例です。
 
 ```yaml
 services:
@@ -234,35 +234,35 @@ services:
       # NVIDIA_VISIBLE_DEVICES: all # enable if running with CUDA
 ```
 
-Note that transformer models are neural networks built to run on GPUs. Running Weaviate with the `text2vec-transformers` module and without GPU is possible, but it will be slower. Enable CUDA with `ENABLE_CUDA=1` if you have a GPU available.
+transformer モデルは GPU での実行を想定したニューラルネットワークです。`text2vec-transformers` モジュールを GPU なしで実行することも可能ですが、速度は低下します。GPU が利用可能な場合は `ENABLE_CUDA=1` で CUDA を有効にしてください。
 
-For more information on how to set up the environment with the
-`text2vec-transformers` integration, see [this
-page](/weaviate/model-providers/transformers/embeddings.md).
+`text2vec-transformers` 連携のセットアップ方法について詳しくは[こちらのページ](/weaviate/model-providers/transformers/embeddings.md)をご覧ください。
 
-The `text2vec-transformers` module requires at least Weaviate version `v1.2.0`.
+`text2vec-transformers` モジュールを使用するには、Weaviate バージョン `v1.2.0` 以上が必要です。
 
-### Unreleased versions
+
+
+### 未リリース版
 
 import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
 
 <RunUnreleasedImages />
 
-## Multi-node configuration
+## マルチノード構成
 
-To configure Weaviate to use multiple host nodes, follow these steps:
+複数のホストノードで Weaviate を構成するには、次の手順を行います。
 
-- Configure one node as a "founding" member
-- Set the `CLUSTER_JOIN` variable for the other nodes in the cluster.
-- Set the `CLUSTER_GOSSIP_BIND_PORT` for each node.
-- Set the `CLUSTER_DATA_BIND_PORT` for each node.
-- Set the `RAFT_JOIN` each node.
-- Set the `RAFT_BOOTSTRAP_EXPECT` for each node with the number of voters.
-- Optionally, set the hostname for each node using `CLUSTER_HOSTNAME`.
+- 1 つのノードを「創設」メンバーとして設定します  
+- クラスター内の他のノードに `CLUSTER_JOIN` 変数を設定します  
+- 各ノードに `CLUSTER_GOSSIP_BIND_PORT` を設定します  
+- 各ノードに `CLUSTER_DATA_BIND_PORT` を設定します  
+- 各ノードに `RAFT_JOIN` を設定します  
+- 各ノードに投票者数を指定する `RAFT_BOOTSTRAP_EXPECT` を設定します  
+- 必要に応じて `CLUSTER_HOSTNAME` を使用して各ノードのホスト名を設定します  
 
-(Read more about [horizontal replication in Weaviate](/weaviate/concepts/cluster.md).)
+（詳しくは [Weaviate における水平レプリケーション](/weaviate/concepts/cluster.md) を参照してください。）
 
-So, the Docker Compose file includes environment variables for the "founding" member that look like this:
+そのため、Docker Compose ファイルでは「創設」メンバー用に以下のような環境変数を含めます。
 
 ```yaml
   weaviate-node-1:  # Founding member service name
@@ -275,7 +275,7 @@ So, the Docker Compose file includes environment variables for the "founding" me
       RAFT_BOOTSTRAP_EXPECT: 3
 ```
 
-And the other members' configurations may look like this:
+その他のメンバーの設定例は次のようになります。
 
 ```yaml
   weaviate-node-2:
@@ -289,11 +289,10 @@ And the other members' configurations may look like this:
       RAFT_BOOTSTRAP_EXPECT: 3
 ```
 
-Below is an example configuration for a 3-node setup. You may be able to test [replication](/deploy/configuration/replication.md) examples locally using this configuration.
-
+以下は 3 ノード構成のサンプル設定です。この構成を使ってローカルで [レプリケーション](/deploy/configuration/replication.md) の例をテストできる場合があります。
 
 <details>
-  <summary>Docker Compose file for a replication setup with 3 nodes</summary>
+  <summary>3 ノードのレプリケーション構成用 Docker Compose ファイル</summary>
 
 ```yaml
 services:
@@ -390,32 +389,31 @@ services:
 </details>
 
 :::note Port number conventions
-It is a Weaviate convention to set the `CLUSTER_DATA_BIND_PORT` to 1 higher than `CLUSTER_GOSSIP_BIND_PORT`.
+Weaviate では `CLUSTER_GOSSIP_BIND_PORT` より 1 大きい値を `CLUSTER_DATA_BIND_PORT` に設定するのが慣例です。
 :::
 
+## シェルのアタッチオプション
 
-## Shell attachment options
+`docker compose up` の出力はすべてのコンテナのログにアタッチするため、かなり冗長になります。
 
-The output of `docker compose up` is quite verbose as it attaches to the logs of all containers.
-
-You can attach the logs only to Weaviate itself, for example, by running the following command instead of `docker compose up`:
+代わりに次のコマンドを実行すると、Weaviate 自身のログのみにアタッチできます。
 
 ```bash
 # Run Docker Compose
 docker compose up -d && docker compose logs -f weaviate
 ```
 
-Alternatively you can run docker compose entirely detached with `docker compose up -d` _and_ then poll `{bindaddress}:{port}/v1/meta` until you receive a status `200 OK`.
+あるいは、`docker compose up -d` で完全にデタッチして起動し、`{bindaddress}:{port}/v1/meta` をステータス `200 OK` を受け取るまでポーリングする方法もあります。
 
 <!-- TODO:
 1. Check that all environment variables are also applicable for the kubernetes setup and associated values.yaml config file.
 2. Take this section out and into References; potentially consolidate with others as they are strewn around the docs. (E.g. backup env variables are not included here.) -->
 
-## Troubleshooting
+## トラブルシューティング
 
-### Set `CLUSTER_HOSTNAME` if it may change over time
+### `CLUSTER_HOSTNAME` の変動に備えた設定
 
-In some systems, the cluster hostname may change over time. This is known to create issues with a single-node Weaviate deployment. To avoid this, set the `CLUSTER_HOSTNAME` environment variable in the `values.yaml` file to the cluster hostname.
+システムによっては、クラスターのホスト名が時間とともに変わる場合があります。これは単一ノードの Weaviate デプロイで問題を引き起こすことが知られています。これを回避するために、`values.yaml` ファイルで `CLUSTER_HOSTNAME` 環境変数をクラスターのホスト名に設定してください。
 
 ```yaml
 ---
@@ -427,12 +425,13 @@ services:
 ...
 ```
 
-## Related pages
+## 関連ページ
 
-- If you are new to Docker, see [Docker Introduction for Weaviate Users](https://weaviate.io/blog/docker-and-containers-with-weaviate).
+- Docker が初めての方は [Weaviate ユーザーのための Docker 入門](https://weaviate.io/blog/docker-and-containers-with-weaviate) をご覧ください。
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

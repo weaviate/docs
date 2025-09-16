@@ -3,18 +3,19 @@ title: Dynamiq
 sidebar_position: 2
 ---
 
-[Dynamiq](https://www.getdynamiq.ai/) is an operating platform for building agentic AI applications.
+[Dynamiq](https://www.getdynamiq.ai/) はエージェント的 AI アプリケーションを構築するためのオペレーティング プラットフォームです。
  
 
-## Dynamiq and Weaviate
-Weaviate is a [supported document retriever](https://docs.getdynamiq.ai/low-code-builder/rag-nodes/inference-rag-workflow/document-retrievers#weaviate-retriever) in Dynamiq. The integration allows you to `read` and `write` to your Weaviate cluster to build robust RAG applications.
+## Dynamiq と Weaviate
+Weaviate は Dynamiq で[サポートされているドキュメント リトリーバー](https://docs.getdynamiq.ai/low-code-builder/rag-nodes/inference-rag-workflow/document-retrievers#weaviate-retriever)です。この統合により、Weaviate クラスターに対して `read` および `write` 操作を行い、堅牢な RAG アプリケーションを構築できます。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## 参考リソース 
+[ **ハンズオン学習** ](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Dynamiq Getting Started | A guide to integrating the Weaviate vector database with Dynamiq. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dynamiq/dynamiq-getting-started.ipynb) | 
-| Dynamiq Research Flow | Combine Dynamiq and Weaviate to streamline the research process, automate data storage, and generate research reports. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dynamiq/dynamiq-research-workflow.ipynb) |
+| Dynamiq 入門 | Weaviate ベクトル データベースを Dynamiq と統合するためのガイドです。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dynamiq/dynamiq-getting-started.ipynb) | 
+| Dynamiq リサーチフロー | Dynamiq と Weaviate を組み合わせてリサーチプロセスを効率化し、データ保存を自動化し、調査レポートを生成します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/dynamiq/dynamiq-research-workflow.ipynb) |
+

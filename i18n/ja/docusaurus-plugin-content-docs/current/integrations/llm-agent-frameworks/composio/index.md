@@ -1,28 +1,23 @@
----
-title: Composio
-sidebar_position: 1
-image: og/integrations/home.jpg
----
+[Composio](https://docs.composio.dev/introduction/intro/overview) は、function calling を使用してツールを言語モデルや AI エージェントと連携・統合します。  
 
-[Composio](https://docs.composio.dev/introduction/intro/overview) uses function calling to manage and integrate tools with language models and AI agents.  
+## Composio と Weaviate 
+Weaviate の検索機能を利用することで、エージェントをパーソナライズし、よりコンテキストを把握させることができます。 
 
-## Composio and Weaviate 
-With Weaviate's retrieval, you can personalize the agent(s) and make them more context aware. 
+この統合は、LangChain ベクトルストアを介してサポートされています。 
 
-The integration is supported through our LangChain vector store. 
-
-To configure the integration, create the vector store and connect to your Weaviate instance:
+統合を設定するには、ベクトルストアを作成し、ご使用の Weaviate インスタンスに接続します:  
 ```python
 WeaviateVectorStore.from_documents( )
 ```
 
-Learn how to [create a vector store](https://python.langchain.com/v0.2/docs/integrations/vectorstores/weaviate/#step-1-data-import).
+ベクトルストアの作成方法については [こちら](https://python.langchain.com/v0.2/docs/integrations/vectorstores/weaviate/#step-1-data-import) をご覧ください。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## 参考リソース 
+[ **Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Gmail Agent | Integrate Composio's Gmail tool with Weaviate to create an agent that will respond to new messages. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/function-calling/composio/agent.ipynb) |
+| Gmail エージェント | Composio の Gmail ツールを Weaviate と統合し、新着メッセージに返信するエージェントを作成します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/function-calling/composio/agent.ipynb) |
+

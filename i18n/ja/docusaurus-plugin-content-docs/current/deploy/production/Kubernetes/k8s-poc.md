@@ -1,58 +1,59 @@
-# Building with Weaviate: Getting to Production
+# Weaviate での構築：本番運用への移行
 
-## Introduction
+## 概要
 
-Are you ready to deploy and test Weaviate on a self-managed K8s (Kubernetes) cluster? This guide shows how to validate Weaviate’s capabilities in your enterprise environment.  
+自社管理の K8s ( Kubernetes ) クラスターで Weaviate をデプロイしてテストする準備はできていますか？  
+本ガイドでは、エンタープライズ環境で Weaviate の機能を検証する方法を説明します。  
 
-At the end of this guide, expect to have:
+このガイドの終わりには、以下を完了していることを想定しています。
 
-- A configured Helm-based deployment and networking setup
-- Basic scaling, persistent storage, and resource management
-- TLS, RBAC, and security best practices implements
-- Monitoring, logging, and backup strategies enabled
+- Helm を利用したデプロイとネットワーク設定の構成
+- 基本的なスケーリング、永続ストレージ、およびリソース管理
+- TLS、 RBAC、セキュリティのベストプラクティスの実装
+- 監視、ログ、バックアップ戦略の有効化
 
-### Prerequisites
+### 前提条件
 
-Before beginning, ensure that you have the following:
+開始前に以下を確認してください。
 
-#### Technical Knowledge
+#### 技術知識
 
-- Basic Kubernetes and containerization conceptual knowledge
-- Basic experience with Helm and `kubectl`
+- Kubernetes およびコンテナ化の基本概念
+- Helm と `kubectl` の基本的な操作経験
 
 :::note
 
-Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.weaviate.io/academy/deployment/k8s) if you need assistance. 
+サポートが必要な場合は、 Academy コース [「Run Weaviate on Kubernetes」](https://docs.weaviate.io/academy/deployment/k8s) をご覧ください。 
 
 :::
 
-#### Required Tools
+#### 必要なツール
 
-- A running Kubernetes cluster with Weaviate installed
-- `kubectl` installed
-- Helm installed
+- Weaviate がインストールされた稼働中の Kubernetes クラスター
+- `kubectl` のインストール
+- Helm のインストール
 
-## Step 1: Configure your Helm Chart
+## ステップ 1: Helm チャートの設定
 
-- Use the official [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm) for your installation:
+- 公式の [Weaviate Helm チャート](https://github.com/weaviate/weaviate-helm) を使用してインストールします:
  
 ```
   helm repo add weaviate https://weaviate.github.io/weaviate-helm
   helm install my-weaviate weaviate/weaviate
 ```
 
-- Customize the values to fit your enterprise requirements (e.g., resource allocation, storage settings).
-- Deploy the chart and verify pod health.
+- エンタープライズ要件に合わせて値をカスタマイズします (例：リソース割り当て、ストレージ設定)。
+- チャートをデプロイし、 Pod の正常性を確認します。
 
-## Step 2: Network Security
+## ステップ 2: ネットワークセキュリティ
 
-- Configure an ingress controller to securely expose Weaviate.
-- Enable TLS with a certificate manager and enforce TLS encryption for all client-server communication.
-- Assign a domain name for external access.
-- Implement RBAC or admin lists to restrict user access.
+- Ingress コントローラーを構成して Weaviate を安全に公開します。
+- 証明書マネージャーで TLS を有効にし、クライアントとサーバー間の通信をすべて TLS で暗号化します。
+- 外部アクセス用のドメイン名を割り当てます。
+- RBAC または admin list を実装してユーザーアクセスを制限します。
 
 <details>
-  <summary> An example of RBAC enabled on your Helm chart </summary>
+  <summary> Helm チャートで RBAC を有効化した例 </summary>
 
 ```yaml
   authorization:
@@ -65,7 +66,7 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.wea
 </details>
 
 <details>
-<summary> An example of admin lists implemented on your Helm chart (if not using RBAC)</summary>
+<summary> RBAC を使用しない場合の admin list を実装した例</summary>
 
 ```yaml
   admin_list:
@@ -84,21 +85,21 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.wea
 </details>
 
 :::tip
-Using an admin list will allow you to define your admin or read-only user/API-key pairs across all Weaviate resources. Whereas RBAC allows you more granular permissions by defining roles and assigning them to users either via API keys or OIDC.
+Admin list を使用すると、すべての Weaviate リソースにわたり、管理者または読み取り専用のユーザー / API キーのペアを定義できます。 一方、 RBAC ではロールを定義し、それらをユーザー ( API キーまたは OIDC 経由 ) に割り当てることで、よりきめ細かな権限管理が可能です。
 :::
 
-## Step 3: Scaling
+## ステップ 3: スケーリング
 
-- Implement horizontal scaling to ensure high availability:
+- 高可用性を確保するために水平スケーリングを実装します。
 
 ```yaml
 replicaCount: 3
 ```
 
-- Define CPU/memory limits and requests to optimize pod efficiency.
+- Pod の効率を最適化するために CPU / メモリの limits と requests を定義します。
 
 <details>
-<summary> An example of defining CPU and memory limits and cores </summary>
+<summary> CPU とメモリの limit およびコア数を定義する例 </summary>
 
 ```yaml
 resources:
@@ -111,13 +112,13 @@ resources:
 ```
 </details>
 
-## Step 4: Monitoring and Logging
+## ステップ 4: 監視とログ
 
-- Use Prometheus and Grafana to collect and analyze performance metrics. 
-- Implement alerting for issue resolution.
+- Prometheus と Grafana を使用してパフォーマンスメトリクスを収集・分析します。 
+- 問題解決のためにアラートを設定します。
 
 <details>
-<summary> An example of enabling service monitoring </summary>
+<summary> サービス監視を有効化する例 </summary>
 
 ```yaml
 serviceMonitor:
@@ -128,12 +129,12 @@ serviceMonitor:
 </details>
 
 
-## Step 5: Upgrades and Backups
+## ステップ 5: アップグレードとバックアップ
 
-- Use the rolling update strategy used by Helm to minimize downtime.
+- ダウンタイムを最小化するために、 Helm が利用するローリングアップデート戦略を使用します。
 
 <details>
-<summary> An example of configuring the rolling update strategy.</summary>
+<summary> ローリングアップデート戦略を構成する例 </summary>
 
 ```yaml
 updateStrategy:
@@ -144,17 +145,18 @@ updateStrategy:
 ```
 </details>
 
-- Test new Weaviate versions before deploying into production.
-- Implement disaster recovery procedures to ensure that data is restored quickly.
+- 新しい Weaviate バージョンを本番環境にデプロイする前にテストします。
+- データを迅速に復旧できるよう、ディザスタリカバリ手順を実装します。
 
-### Conclusion
+### まとめ
 
-Voila! You now have a deployment that is *somewhat* ready for production. Your next step will be to complete the self-assessment and identify any gaps. 
+Voila! これで本番環境に *ある程度* 対応したデプロイが完成しました。 次のステップとして、自己評価を実施し、ギャップを特定してください。 
 
-### Next Steps: [Production Readiness Self-Assessment](./production-readiness.md)
+### 次のステップ: [本番環境準備完了度セルフアセスメント](./production-readiness.md)
 
-## Questions and feedback
+## 質問やフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

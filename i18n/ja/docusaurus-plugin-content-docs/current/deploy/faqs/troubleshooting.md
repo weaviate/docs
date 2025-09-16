@@ -1,85 +1,88 @@
 ---
-title: Deployment Troubleshooting Guide
+title: デプロイ トラブルシューティング ガイド
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-So you've deployed Weaviate and you're fully immersed in the world of vectors when suddenly you encounter a puzzling mystery. This page will serve as your handbook for when things go awry in "Vector Land!"
+Weaviate をデプロイしてベクトルの世界にどっぷり浸かっていると、突然謎に遭遇することがあります。このページは、「Vector Land」で問題が発生したときのハンドブックとしてお役立てください。
 
-Consider every error message a clue to solving the mystery you're encountering. The [LOG_LEVEL](/deploy/configuration/env-vars#LOG_LEVEL) environment variable helps you to solve any mysteries you encounter. The various levels of logging will allow you to right-size the precise amount of information you need to solve any Vector Land mysteries.
+すべてのエラーメッセージは、遭遇している謎を解くための手がかりです。[LOG_LEVEL](/deploy/configuration/env-vars#LOG_LEVEL) 環境変数を設定すると、遭遇した謎を解くのに役立ちます。さまざまなログ レベルを使い分けることで、Vector Land の謎を解くために必要な、最適な量の情報を取得できます。
 
-## Common issues and solutions
+## 一般的な問題と解決策
 
-### The cluster is not accepting new information and there are disk space or `read-only` error messages in the logs.
+### クラスターが新しい情報を受け付けず、ログにディスク容量不足または `read-only` エラーが表示される
 
 <details>
 
 <summary>Answer</summary>
 
-#### Identifying the issue
+#### 問題の特定
 
-As a first step, you'll want to examine your cluster's logs to identify the problem. If after checking the logs of your cluster you see error messages that include phrases like "read-only" or "disk space," then your cluster is more than likely in a `read-only` state due to insufficient disk space.
+まずはクラスターのログを確認して、問題を特定します。ログに「read-only」や「disk space」といった文言が含まれている場合、ディスク容量不足によりクラスターが `read-only` 状態になっている可能性が高いです。
 
-#### Resolving the issue
+#### 解決方法
 
-To solve this mystery, you'll need to increase the available disk space for your nodes. Once the disk space is increased, then you'll need to manually mark the affected shards or collections as writeable again.
-You can also set the [`MEMORY_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) environment variable to issue warnings when the memory limit is near.
+この謎を解くには、ノードの空きディスク容量を増やす必要があります。ディスク容量を増やした後、影響を受けたシャードまたはコレクションを手動で再度書き込み可能に設定してください。  
+また、[`MEMORY_WARNING_PERCENTAGE`](/deploy/configuration/env-vars/index.md#MEMORY_WARNING_PERCENTAGE) 環境変数を設定すると、メモリ使用量が上限に近づいたときに警告を発することができます。
 
 </details>
 
-### You're receiving inconsistent query results.
+### クエリ結果が一貫しない
 
 <details>
 
 <summary> Answer </summary>
 
-#### Identifying the issue
+#### 問題の特定
 
-To confirm and identify the issue, you'll want to first run the same query multiple times to confirm that the results are inconsistent. If the inconsistent results are persisting, then you probably have asynchronous replication disabled for your deployment.
+まず同じクエリを複数回実行して、結果が一貫しないことを確認します。結果の不一致が続く場合、デプロイで非同期レプリケーションが無効になっている可能性があります。
 
-#### Resolving the issue
+#### 解決方法
 
-Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes.
+設定を確認し、非同期レプリケーションが有効かどうかを確かめてください。`async_replication_disabled` が "true" の場合は "false" に変更します。有効化すると、ログにノード間のピアチェックと同期が成功した旨のメッセージが表示されます。
 
 </details>
 
-### Your nodes won't communicate, join a cluster, or maintain consensus.
+### ノードが通信・クラスタ参加・コンセンサス維持を行えない
 
 <details>
 
 <summary> Answer </summary>
 
-#### Identifying the issue
+#### 問題の特定
 
-To confirm and identify the issue, you'll want to first run the same query multiple times to confirm that the results are inconsistent. If the inconsistent results are persisting, then you probably have asynchronous replication disabled for your deployment.
+まず同じクエリを複数回実行して、結果が一貫しないことを確認します。結果の不一致が続く場合、デプロイで非同期レプリケーションが無効になっている可能性があります。
 
-#### Resolving the issue
+#### 解決方法
 
-Check your settings to check if you have asynchronous replication enabled. If `async_replication_disabled` is set to "true" then you'll need to set that variable to "false." Once it is enabled, the logs will show messages that indicate successful peers checks and synchronization for the nodes. Additionally, test the <SkipLink href="/weaviate/api/rest#tag/well-known/GET/.well-known/live">live and ready REST endpoints</SkipLink>. and check the network configuration of the nodes.
+設定を確認し、非同期レプリケーションが有効かどうかを確かめてください。`async_replication_disabled` が "true" の場合は "false" に変更します。有効化すると、ログにノード間のピアチェックと同期が成功した旨のメッセージが表示されます。  
+さらに、<SkipLink href="/weaviate/api/rest#tag/well-known/GET/.well-known/live">live と ready の REST エンドポイント</SkipLink> をテストし、ノードのネットワーク設定を確認してください。
+
 </details>
 
-### You've downgraded and now your clusters won't reach the `Ready` state.
+### ダウングレード後、クラスターが `Ready` 状態に到達しない
 
 <details>
 
 <summary> Answer </summary>
 
-#### Identifying the issue
+#### 問題の特定
 
-If you have a multi-node instance running `1.28.13+`, `1.29.5+`, or `1.30.2+` and have downgraded to a `v1.27.x` version earlier than `1.27.26`.
+`1.28.13+`、`1.29.5+`、または `1.30.2+` を実行している複数ノードのインスタンスを、`1.27.26` より前の `v1.27.x` バージョンにダウングレードした場合に発生します。
 
-#### Resolving the issue
+#### 解決方法
 
-If you need to downgrade Weaviate to `v1.27.x`, use `1.27.26` or higher.
+Weaviate を `v1.27.x` へダウングレードする必要がある場合は、`1.27.26` 以上を使用してください。
 
-- [Migration guides](../migration/index.md)
+- [移行ガイド](../migration/index.md)
 
 </details>
 
-As you continue your adventures in Vector Land, remember that even the most seasoned vector detectives encounter mysterious cases from time to time. Behind every error message lies not just a problem, but the clue you need to run Weaviate in its most optimal form!
+Vector Land での冒険を続ける中で、熟練したベクトル探偵でも時には不可解な事件に遭遇するものです。すべてのエラーメッセージの背後には、Weaviate を最適に運用するための手がかりが隠れています！
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

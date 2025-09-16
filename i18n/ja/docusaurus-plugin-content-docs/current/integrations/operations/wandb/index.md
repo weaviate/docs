@@ -4,17 +4,18 @@ sidebar_position: 5
 image: og/integrations/home.jpg
 ---
 
-[Weights & Biases (W&B)](https://wandb.ai/site) is an AI developer platform with products such as `Models` and `Weave`. 
+[Weights & Biases (W&B)](https://wandb.ai/site) は `Models` や `Weave` などのプロダクトを提供する AI 開発プラットフォームです。 
 
-## Weights and Biases and Weaviate 
-`Weave` has a user interface and data analysis APIs for monitoring applications that use LLM, RAG, Agents, and Vector Databases.
+## Weights & Biases と Weaviate
+`Weave` は LLM、RAG、エージェント、ベクトルデータベースを利用するアプリケーションを監視するためのユーザーインターフェースとデータ分析 API を備えています。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## 当社のリソース
+[**Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| W&B Logging with DSPy and Cohere RAG app | An example of using wandb logging to monitor optimizing a RAG system with DSPy, Weaviate, and Cohere. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/weights_and_biases/wandb_logging_RAG_dspy_cohere.ipynb) |
+| DSPy と Cohere を用いた RAG アプリでの W&B ロギング | DSPy、Weaviate、Cohere を組み合わせて RAG システムを最適化し、その過程を wandb ログで監視する例です。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/weights_and_biases/wandb_logging_RAG_dspy_cohere.ipynb) |
+
 

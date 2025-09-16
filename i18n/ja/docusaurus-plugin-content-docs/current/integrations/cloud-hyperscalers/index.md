@@ -1,10 +1,11 @@
 ---
-title: Cloud Hyperscalers
+title: クラウドハイパースケーラー
 sidebar_position: 1
 ---
 
-Cloud hyperscalers offer a variety of services and infrastructure for large-scale computing and storage.
+クラウドハイパースケーラーは、大規模なコンピューティングとストレージ向けに多様なサービスとインフラストラクチャを提供します。
 
-Learn about how Weaviate integrates with these hyperscalers: 
-* [Amazon Web Services](/integrations/cloud-hyperscalers/aws)
+Weaviate がこれらのハイパースケーラーと統合する方法について学びましょう:  
+* [Amazon Web Services](/integrations/cloud-hyperscalers/aws)  
 * [Google Cloud Platform](/integrations/cloud-hyperscalers/google)
+

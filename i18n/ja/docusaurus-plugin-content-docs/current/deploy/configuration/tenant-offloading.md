@@ -1,29 +1,29 @@
 ---
-title: Tenant Offloading
+title: テナントオフロード
 sidebar_position: 5
 image: og/docs/configuration.jpg
 ---
 
-:::info Added in `v1.26`
+:::info `v1.26` で追加
 :::
 
-Tenants can be offloaded to cold storage to reduce memory and disk usage, and onloaded back when needed.
+テナントはコールドストレージへオフロードしてメモリとディスク使用量を削減でき、必要に応じてオンロードし直すことができます。
 
-This page explains how to configure tenant offloading in Weaviate. For information on how to offload and onload tenants, see [How-to: manage tenant states](/weaviate/manage-collections/tenant-states.mdx).
+このページでは、Weaviate でテナントオフロードを設定する方法を説明します。テナントのオフロードおよびオンロード手順については、[How-to: テナント状態の管理](/weaviate/manage-collections/tenant-states.mdx) を参照してください。
 
-## Tenant offload modules
+## テナントオフロードモジュール
 
 import OffloadingLimitation from '/_includes/offloading-limitation.mdx';
 
 <OffloadingLimitation/>
 
-To use tenant offloading in Weaviate, you need enable a relevant offloading [module](/weaviate/configuration/modules.md).
+Weaviate でテナントオフロードを利用するには、該当するオフロード [module](/weaviate/configuration/modules.md) を有効化する必要があります。
 
-## `offload-s3` module
+## `offload-s3` モジュール
 
-The `offload-s3` module enables you to [offload or onload tenants](/weaviate/manage-collections/tenant-states.mdx) to/from an S3 bucket.
+`offload-s3` モジュールを使用すると、S3 バケットへテナントを[オフロードまたはオンロード](/weaviate/manage-collections/tenant-states.mdx)できます。
 
-To use the `offload-s3` module, add `offload-s3` to the `ENABLE_MODULES` in your docker-compose file as shown below.
+`offload-s3` モジュールを利用するには、以下のように docker-compose ファイルの `ENABLE_MODULES` に `offload-s3` を追加してください。
 
 ```yaml
 services:
@@ -36,9 +36,9 @@ services:
       # highlight-end
 ```
 
-If the target S3 bucket does not exist, the `OFFLOAD_S3_BUCKET_AUTO_CREATE` must be set to `true` so that Weaviate can create the bucket automatically.
+対象の S3 バケットが存在しない場合、Weaviate が自動でバケットを作成できるように `OFFLOAD_S3_BUCKET_AUTO_CREATE` を `true` に設定する必要があります。
 
-For kubernetes users, enable the relevant offload service in the helm chart values file, and set the necessary environment variables:
+kubernetes を利用している場合は、helm chart の values ファイルで該当するオフロードサービスを有効化し、必要な環境変数を設定してください。
 
 ```yaml
 # Configure offload providers
@@ -50,53 +50,55 @@ offload:
       OFFLOAD_S3_BUCKET_AUTO_CREATE: true  # create the bucket if it does not exist
 ```
 
-### Environment variables
+### 環境変数
 
-The `offload-s3` module reads the following environment variables:
+`offload-s3` モジュールは次の環境変数を読み取ります。
 
-| Env Var | Description | Default Value |
+| Env Var | 説明 | 既定値 |
 |---|---|---|
-| `OFFLOAD_S3_BUCKET` | The destination S3 bucket to offload tenants. | `weaviate-offload` |
-| `OFFLOAD_S3_BUCKET_AUTO_CREATE` | When `true`, Weaviate automatically creates an S3 bucket if it does not exist. | `false` |
-| `OFFLOAD_S3_CONCURRENCY` | The number of concurrent offload operations. | `25` |
-| `OFFLOAD_TIMEOUT` | The timeout for offloading operations (create bucket, upload, download). | `120` (in seconds) |
+| `OFFLOAD_S3_BUCKET` | テナントをオフロードする先の S3 バケット名。 | `weaviate-offload` |
+| `OFFLOAD_S3_BUCKET_AUTO_CREATE` | `true` の場合、バケットが存在しなければ Weaviate が自動作成します。 | `false` |
+| `OFFLOAD_S3_CONCURRENCY` | 同時に実行するオフロード操作数。 | `25` |
+| `OFFLOAD_TIMEOUT` | オフロード操作（バケット作成、アップロード、ダウンロード）のタイムアウト。 | `120`（秒） |
 
 :::info Timeout
 
-- Offload operations are asynchronous. As a result, the timeout is for the operation to start, not to complete.
-- Each operation will retry up to 10 times on timeouts, except on authentication/authorization errors.
+- オフロード操作は非同期で実行されます。そのため、このタイムアウトは操作完了ではなく開始までの制限時間です。
+- 各操作はタイムアウト時に最大 10 回までリトライします。ただし認証／認可エラーの場合は除きます。
 
 :::
 
-### AWS permissions
+### AWS パーミッション
 
 :::tip Requirements
-The Weaviate instance must have the [necessary permissions to access the S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html).
-- The provided AWS identity must be able to write to the bucket.
-- If `OFFLOAD_S3_BUCKET_AUTO_CREATE` is set to `true`, the AWS identity must have permission to create the bucket.
+Weaviate インスタンスには [S3 バケットへのアクセス権限](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html) が必要です。
+- 指定された AWS アイデンティティはバケットへ書き込める必要があります。
+- `OFFLOAD_S3_BUCKET_AUTO_CREATE` が `true` の場合、バケット作成権限も必要です。
 :::
 
-You must provide Weaviate with AWS authentication details. You can choose between access-key or ARN-based authentication:
+Weaviate に AWS 認証情報を提供する必要があります。アクセスキー方式と ARN 方式のいずれかを選択できます。
 
-#### Option 1: With IAM and ARN roles
+#### Option 1: IAM および ARN ロールを使用
 
-The backup module will first try to authenticate itself using AWS IAM. If the authentication fails then it will try to authenticate with `Option 2`.
+バックアップモジュールはまず AWS IAM を用いた認証を試みます。失敗した場合は `Option 2` の認証を試みます。
 
-#### Option 2: With access key and secret access key
+#### Option 2: アクセスキーとシークレットアクセスキーを使用
 
-| Environment variable | Description |
+| Environment variable | 説明 |
 | --- | --- |
-| `AWS_ACCESS_KEY_ID` | The id of the AWS access key for the desired account. |
-| `AWS_SECRET_ACCESS_KEY` | The secret AWS access key for the desired account. |
-| `AWS_REGION` | (Optional) The AWS Region. If not provided, the module will try to parse `AWS_DEFAULT_REGION`. |
+| `AWS_ACCESS_KEY_ID` | 対象アカウントの AWS アクセスキー ID。 |
+| `AWS_SECRET_ACCESS_KEY` | 対象アカウントの AWS シークレットアクセスキー。 |
+| `AWS_REGION` | （任意）AWS リージョン。指定しない場合、モジュールは `AWS_DEFAULT_REGION` の解析を試みます。 |
 
-## Related pages
+## 関連ページ
 - [Configure: Modules](/weaviate/configuration/modules.md)
-- [How-to: Manage tenant states](/weaviate/manage-collections/tenant-states.mdx)
-- [Guide: Manage tenant states](/weaviate/starter-guides/managing-resources/tenant-states.mdx)
+- [How-to: テナント状態の管理](/weaviate/manage-collections/tenant-states.mdx)
+- [Guide: テナント状態の管理](/weaviate/starter-guides/managing-resources/tenant-states.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

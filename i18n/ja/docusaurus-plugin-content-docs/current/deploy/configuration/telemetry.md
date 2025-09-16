@@ -1,35 +1,36 @@
 ---
-title: Telemetry
+title: テレメトリー
 sidebar_position: 80
 image: og/docs/configuration.jpg
 # tags: ['telemetry', 'reference', 'configuration']
 ---
 
-In order to better understand community needs, Weaviate collects some telemetry data. This data helps Weaviate to identify usage trends and improve our software for our users. Weaviate collects this information by default, but you can disable telemetry at any time.
+コミュニティのニーズをより深く理解するために、 Weaviate は一部のテレメトリー データを収集しています。これらのデータは、使用状況の傾向を把握し、ユーザーの皆さま向けにソフトウェアを改善する目的で利用されます。テレメトリーはデフォルトで有効になっていますが、いつでも無効にできます。
 
-## Data collected
+## 収集されるデータ
 
-On startup, the Weaviate server generates a unique instance ID. Every 24 ours the instance sends this information:
+起動時に、 Weaviate サーバーは一意のインスタンス ID を生成します。24 時間ごとにインスタンスは次の情報を送信します。
 
-- Machine id
-- Payload type
-- Server version
-- Host operating system
-- Modules used
-- Number of objects in the instance
+- マシン ID
+- ペイロードタイプ
+- サーバー バージョン
+- ホスト OS
+- 使用されているモジュール
+- インスタンス内のオブジェクト数
 
-Weaviate does not collect any other telemetry information.
+Weaviate はこれ以外のテレメトリー情報を収集しません。
 
-## Disabling Telemetry Data
+## テレメトリーの無効化
 
-To disable telemetry data collection, add this line to your [system configuration](/deploy/configuration/env-vars/index.md) file:
+テレメトリー データの収集を無効にするには、次の行を [システム設定](/deploy/configuration/env-vars/index.md) ファイルに追加してください。
 
 ```bash
 DISABLE_TELEMETRY=true
 ```
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

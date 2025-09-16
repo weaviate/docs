@@ -1,25 +1,24 @@
 ---
-title: Ref2Vec Centroid Vectorizer
-description: Enhance vector search with Ref2Vec Centroid for stronger data representations.
+title: Ref2Vec Centroid ベクトライザー
+description: Ref2Vec Centroid でより強力なデータ表現を用いた ベクトル 検索を強化します。
 sidebar_position: 25
 image: og/docs/modules/ref2vec-centroid.jpg
 # tags: ['ref2vec', 'ref2vec-centroid', 'centroid']
 ---
 
+## 概要
 
-## Introduction
+`ref2Vec-centroid` モジュールは、参照先 ベクトル の重心 (centroid) を基にオブジェクトの ベクトル を計算するために使用します。この重心 ベクトル は、オブジェクトが参照する ベクトル から算出され、オブジェクト群のクラスタ間の関連付けを可能にします。これは、ユーザーの行動や嗜好を集約して提案を行うようなアプリケーションに役立ちます。
 
-The `ref2Vec-centroid` module is used to calculate object vectors based on the centroid of referenced vectors. The idea is that this centroid vector would be calculated from the vectors of an object's references, enabling associations between clusters of objects. This is useful in applications such as making suggestions based on the aggregation of a user's actions or preferences.
-
-## How to enable
+## 有効化方法
 
 ### Weaviate Cloud
 
-This module is enabled by default on the WCD.
+このモジュールは WCD ではデフォルトで有効になっています。
 
 ### Weaviate Database
 
-Which modules to use in a Weaviate instance can be specified in the `Docker Compose` file. Ref2Vec-centroid can be added like this:
+どのモジュールを Weaviate インスタンスで使用するかは、`Docker Compose` ファイルで指定できます。`ref2Vec-centroid` を追加するには次のようにします:
 
 ```yaml
 ---
@@ -46,22 +45,22 @@ services:html
 ...
 ```
 
-## How to configure
+## 設定方法
 
-In your Weaviate schema, you must define how you want this module to vectorize your data. If you are new to Weaviate schemas, you might want to check out the [tutorial on the Weaviate schema](../starter-guides/managing-collections/index.mdx) first.
+Weaviate スキーマ内で、このモジュールがデータをどのように ベクトル 化するかを定義する必要があります。Weaviate のスキーマに不慣れな場合は、まず [Weaviate スキーマに関するチュートリアル](../starter-guides/managing-collections/index.mdx) をご覧ください。
 
-For example, here is an `Article` class which is configured to use ref2vec-centroid. Doing so requires only a class-level `moduleConfig`, containing two fields:
+例えば、`ref2vec-centroid` を使用するように設定された `Article` クラスは次のとおりです。これにはクラス レベルの `moduleConfig` で 2 つのフィールドを指定するだけで済みます:
 
-1. `referenceProperties`: a list of the class' reference properties which should be used during the calculation of the centroid.
-2. `method`: the method by which the centroid is calculated. Currently only `mean` is supported.
+1. `referenceProperties`: 重心計算に使用する参照プロパティのリスト  
+2. `method`: 重心を計算する方法。現在は `mean` のみサポートされています。
 
-The `Article` class specifies its `hasParagraphs` property as the only reference property to be used in the calculation of an `Article` object's vector.
+`Article` クラスでは、`hasParagraphs` プロパティを唯一の参照プロパティとして指定し、`Article` オブジェクトの ベクトル を計算します。
 
-It is important to note that unlike the other vectorizer modules (e.g. text2vec/multi2vec/img2vec), ref2vec-centroid does not generate embeddings based on the contents of an object. Rather, the point of this module is to calculate an object's vector based on vectors of its *references*.
+他のベクトライザー モジュール（例: text2vec / multi2vec / img2vec）とは異なり、ref2vec-centroid はオブジェクトの内容から埋め込みを生成しない点に注意してください。本モジュールの目的は、オブジェクトが *参照する* ベクトル を基にオブジェクト自身の ベクトル を計算することです。
 
-In this case, the `Paragraph` class is configured to generate vectors using the text2vec-contextionary module. Thus, the vector embedding of the `Article` class is an average of text2vec-contextionary vectors sourced from referenced `Paragraph` instances.
+この例では、`Paragraph` クラスは text2vec-contextionary モジュールで ベクトル を生成するように設定されています。そのため、`Article` クラスの ベクトル 埋め込みは、参照された `Paragraph` インスタンスから取得した text2vec-contextionary ベクトル の平均になります。
 
-Although this example uses text2vec-contextionary to generate vectors for the `Paragraph` class, ref2vec-centroid's behavior remains identical for user-provided vectors. In such a case, ref2vec-centroid's output will still be calculated as an average of the reference vectors; the only difference being the provenance of the reference vectors.
+この例では `Paragraph` クラスの ベクトル 生成に text2vec-contextionary を使用していますが、ユーザーが独自に用意した ベクトル を使用する場合でも ref2vec-centroid の挙動は同じです。その場合でも、ref2vec-centroid の出力は参照 ベクトル の平均として計算され、参照 ベクトル の由来だけが異なります。
 
 ```json
 {
@@ -118,48 +117,48 @@ Although this example uses text2vec-contextionary to generate vectors for the `P
 }
 ```
 
-## How to use
+## 利用方法
 
-Now that the `Article` class is properly configured to use the ref2vec-centroid module, we can begin to create some objects. If there are not yet any `Paragraph` objects to reference, or if we simply don't want to reference a `Paragraph` object yet, any newly created `Article` object will have its vector set to `nil`.
+`Article` クラスを ref2vec-centroid モジュールで正しく設定できたので、オブジェクトの作成を始められます。まだ参照する `Paragraph` オブジェクトが存在しない場合、あるいは `Paragraph` オブジェクトをまだ参照したくない場合は、新しく作成した `Article` オブジェクトの ベクトル は `nil` に設定されます。
 
-Once we are ready to reference one or more existing `Paragraph` objects (with non-nil vectors), our `Article` object will automatically be assigned a centroid vector, calculated using the vectors from all the `Paragraph` objects which are referenced by our `Article` object.
+既存の（`nil` ではない ベクトル を持つ）`Paragraph` オブジェクトを 1 つ以上参照すると、`Article` オブジェクトには自動的に重心 ベクトル が割り当てられます。この ベクトル は、`Article` オブジェクトが参照するすべての `Paragraph` オブジェクトの ベクトル から計算されます。
 
-### Updating the centroid
+### 重心の更新
 
-An object whose class is configured to use ref2vec-centroid will have its vector calculated (or recalculated) as a result of these events:
-- Creating the object with references already assigned as properties
-  - Object `POST`: create a single new object with references
-  - Batch object `POST`: create multiple objects at once, each with references
-- Updating an existing object's list of references. Note that this can happen several ways:
-  - Object `PUT`: update all of the object's properties with a new set of references. This totally replaces the object's existing reference list with the newly provided one
-  - Object `PATCH`: update an existing object by adding any newly provided reference(s) to the object's existing reference list
-  - Reference `POST`: create a new reference to an existing object
-  - Reference `PUT`: update all of the object's references
-- Deleting references from the object. Note that this can happen several ways:
-  - Object `PUT`: update all of the object's properties, removing all references
-  - Reference `DELETE`: delete an existing reference from the object's list of references
+ref2vec-centroid を使用するよう設定されたクラスのオブジェクトは、以下のイベントが発生したときに ベクトル が計算（再計算）されます:
+- 参照を含むプロパティを設定した状態でオブジェクトを作成したとき  
+  - Object `POST`: 参照付きで 1 件のオブジェクトを作成  
+  - Batch object `POST`: 複数のオブジェクトを一度に作成し、それぞれに参照を付与
+- 既存のオブジェクトの参照リストを更新したとき。これには複数の方法があります:  
+  - Object `PUT`: オブジェクトのすべてのプロパティを新しい参照セットで更新（既存の参照リストを完全に置き換え）  
+  - Object `PATCH`: 既存のオブジェクトに新しい参照を追加  
+  - Reference `POST`: 既存のオブジェクトに対して新しい参照を作成  
+  - Reference `PUT`: オブジェクトのすべての参照を更新
+- オブジェクトから参照を削除したとき。これには複数の方法があります:  
+  - Object `PUT`: オブジェクトのすべてのプロパティを更新し、すべての参照を削除  
+  - Reference `DELETE`: オブジェクトの参照リストから既存の参照を削除
 
-**Note:** Adding references in batches is not currently supported. This is because the batch reference feature is specifically built to avoid the cost of updating the vector index. If this is an important use case for you, open a [feature request](https://github.com/weaviate/weaviate/issues/new) on GitHub.
+**注意:** 参照をバッチで追加することは現在サポートされていません。バッチ参照機能は ベクトル インデックスの更新コストを回避するために設計されているためです。もしこのユースケースが重要な場合は、GitHub で [feature request](https://github.com/weaviate/weaviate/issues/new) を作成してください。
 
-### Making queries
+### クエリの実行
 
-This module can be used with the existing [nearVector](/weaviate/api/graphql/search-operators.md#nearvector) and [`nearObject`](/weaviate/api/graphql/search-operators.md#nearobject) filters. It does not add any additional GraphQL extensions like `nearText`.
+このモジュールは、既存の [nearVector](/weaviate/api/graphql/search-operators.md#nearvector) フィルターおよび [`nearObject`](/weaviate/api/graphql/search-operators.md#nearobject) フィルターと組み合わせて使用できます。`nearText` のような追加の GraphQL 拡張は提供しません。
 
-## Additional information
+## 追加情報
 
 :::caution
-It is important to note that updating a _referenced_ object will not automatically trigger an update to the _referencing_ object's vector.
+注意: _参照先_ オブジェクトを更新しても、_参照元_ オブジェクトの ベクトル は自動的には更新されません。
 :::
 
-In other words, using our `Article`/`Paragraph` example:
+言い換えると、前述の `Article` / `Paragraph` の例を用いると:
 
-Let's say an `Article` object, `"On the Philosophy of Modern Ant Colonies"`, references three `Paragraph` objects: `"intro"`, `"body"`, and `"conclusion"`. Over time, `"body"` may be updated as more research has been conducted on the dynamic between worker ants and soldier ants. In this case, the existing vector for the article will not be updated with a new vector based on the refactored `"body"`.
+`"On the Philosophy of Modern Ant Colonies"` という `Article` オブジェクトが `"intro"`, `"body"`, `"conclusion"` の 3 つの `Paragraph` オブジェクトを参照しているとします。時間の経過とともに、働きアリと兵隊アリのダイナミクスに関する研究が進み、`"body"` が更新されるかもしれません。この場合でも、記事の既存 ベクトル は、リファクタリングされた `"body"` に基づいて自動的に更新されることはありません。
 
-If we want `"On the Philosophy of Modern Ant Colonies"`'s centroid vector to be recalculated, we would need to otherwise trigger an update. For example, we could either remove the reference to `"body"` and add it back, or simply `PUT` the `Article` object with an identical object.
+`"On the Philosophy of Modern Ant Colonies"` の重心 ベクトル を再計算したい場合は、何らかの形で更新をトリガーする必要があります。例えば、`"body"` への参照を一度削除してから再追加する、あるいは同一内容のまま `Article` オブジェクトを `PUT` するなどの方法です。
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

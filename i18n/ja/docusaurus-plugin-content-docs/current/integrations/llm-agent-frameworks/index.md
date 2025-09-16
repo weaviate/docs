@@ -1,12 +1,12 @@
 ---
-title: LLM and Agent Frameworks
+title: LLM とエージェントフレームワーク
 sidebar_position: 4
 image: og/integrations/home.jpg
 ---
 
-These Large Language Model (LLM) and Agent frameworks have tools to help developers build agentic applications with generative models.
+これらの Large Language Model ( LLM ) とエージェントフレームワークには、生成モデルを用いたエージェントアプリケーションの構築を支援するツールが用意されています。
 
-Learn how Weaviate integrates with these solutions:
+ Weaviate がこれらのソリューションとどのように統合されるかをご覧ください:
 * [Agno](/integrations/llm-agent-frameworks/agno/)
 * [Composio](/integrations/llm-agent-frameworks/composio/)
 * [CrewAI](/integrations/llm-agent-frameworks/crewai/)
@@ -17,4 +17,6 @@ Learn how Weaviate integrates with these solutions:
 * [LlamaIndex](/integrations/llm-agent-frameworks/llamaindex/)
 * [N8n](/integrations/llm-agent-frameworks/n8n/)
 * [Semantic Kernel](/integrations/llm-agent-frameworks/semantic-kernel/)
+
+
 

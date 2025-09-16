@@ -1,224 +1,226 @@
 ---
-title: Vector index
-description: Reference for vector index types and parameters in Weaviate.
+title: ベクトルインデックス
+description: Weaviate におけるベクトルインデックスの種類とパラメーターのリファレンス。
 ---
 
-**[Vector indexes](../../concepts/indexing/vector-index.md)** facilitate efficient, vector-first data storage and retrieval.
-There are three supported vector index types:
+**[ベクトルインデックス](../../concepts/indexing/vector-index.md)** は、ベクトルファーストのデータ保存と検索を効率的に行うための仕組みです。  
+サポートされているベクトルインデックスは次の 3 種類です:
 
-- **[HNSW index](#hnsw-index)**
-- **[Flat index](#flat-index)**
-- **[Dynamic index](#dynamic-index)**
+- **[HNSW インデックス](#hnsw-index)**
+- **[Flat インデックス](#flat-index)**
+- **[Dynamic インデックス](#dynamic-index)**
 
-## HNSW index
+## HNSW インデックス
 
-HNSW indexes are scalable and super fast at query time, but HNSW algorithms are costly when you add data during the index building process.
+HNSW インデックスはスケーラブルでクエリ時には非常に高速ですが、インデックス構築中にデータを追加する際にはコストが高くなります。
 
-### HNSW index parameters
+### HNSW インデックスのパラメーター
 
-Some HNSW parameters are mutable, but others cannot be modified after you create your collection.
+一部の HNSW パラメーターは変更可能ですが、コレクション作成後に変更できないものもあります。
 
-| Parameter                | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Default    | Mutable |
-| :----------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------ |
-| `cleanupIntervalSeconds` | integer | Cleanup frequency. This value does not normally need to be adjusted. A higher value means cleanup runs less frequently, but it does more in a single batch. A lower value means cleanup is more frequent, but it may be less efficient on each run.                                                                                                                                                                                                                    | 300        | Yes     |
-| `distance`               | string  | Distance metric. The metric that measures the distance between two arbitrary vectors. For available distance metrics, see [supported distance metrics](/weaviate/config-refs/distances.md).                                                                                                                                                                                                                                                                            | `cosine`   | No      |
-| `ef`                     | integer | Balance search speed and recall. `ef` is the size of the dynamic list that the HNSW uses during search. Search is more accurate when `ef` is higher, but it is also slower. `ef` values greater than 512 show diminishing improvements in recall.<br/><br/>Dynamic `ef`. Weaviate automatically adjusts the `ef` value and creates a dynamic `ef` list when `ef` is set to -1. For more details, see [dynamic ef](../../concepts/indexing/vector-index.md#dynamic-ef). | -1         | Yes     |
-| `efConstruction`         | integer | Balance index search speed and build speed. A high `efConstruction` value means you can lower your `ef` settings, but importing is slower.<br/><br/>`efConstruction` must be greater than 0.                                                                                                                                                                                                                                                                           | 128        | No      |
-| `maxConnections`         | integer | Maximum number of connections per element. `maxConnections` is the connection limit per layer for layers above the zero layer. The zero layer can have (2 \* `maxConnections`) connections. <br/><br/> `maxConnections` must be greater than 0.                                                                                                                                                                                                                        | 32         | No      |
-| `dynamicEfMin`           | integer | Lower bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against a creating search list that is too short.<br/><br/>This setting is only used when `ef` is -1.                                                                                                                                                                                                                                                                     | 100        | Yes     |
-| `dynamicEfMax`           | integer | Upper bound for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Protects against creating a search list that is too long. <br/><br/>If `dynamicEfMax` is higher than the limit, `dynamicEfMax` does not have any effect. In this case, `ef` is the limit.<br/><br/>This setting is only used when `ef` is -1.                                                                                                                                      | 500        | Yes     |
-| `dynamicEfFactor`        | integer | Multiplier for [dynamic `ef`](../../concepts/indexing/vector-index.md#dynamic-ef). Sets the potential length of the search list. <br/><br/>This setting is only used when `ef` is -1.                                                                                                                                                                                                                                                                                  | 8          | Yes     |
-| `filterStrategy`         | string  | Added in `v1.27.0`. The filter strategy to use for filtering the search results. The filter strategy can be set to `sweeping` or `acorn`. <br/><br/> - `sweeping`: The default filter strategy. <br/> - `acorn`: Uses Weaviate's ACORN implementation. [Read more](../../concepts/filtering.md#filter-strategy)                                                                                                                                                        | `sweeping` | Yes     |
-| `flatSearchCutoff`       | integer | Optional. Threshold for the [flat-search cutoff](/weaviate/concepts/filtering.md#flat-search-cutoff). To force a vector index search, set `"flatSearchCutoff": 0`.                                                                                                                                                                                                                                                                                                   | 40000      | Yes     |
-| `skip`                   | boolean | When true, do not index the collection. <br/><br/> Weaviate decouples vector creation and vector storage. If you skip vector indexing, but a vectorizer is configured (or a vector is provided manually), Weaviate logs a warning each import. <br/><br/> To skip indexing and vector generation, set `"vectorizer": "none"` when you set `"skip": true`. <br/><br/> See [When to skip indexing](../../concepts/indexing/vector-index.md#when-to-skip-indexing).       | `false`    | No      |
-| `vectorCacheMaxObjects`  | integer | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations).                                                                                                                                                                                    | `1e12`     | Yes     |
-| `pq`                     | object  | Enable and configure [product quantization (PQ)](/weaviate/concepts/indexing/vector-index.md) compression. <br/><br/> PQ assumes some data has already been loaded. You should have 10,000 to 100,000 vectors per shard loaded before you enable PQ. <br/><br/> For PQ configuration details, see [PQ configuration parameters](#pq-parameters).                                                                                                         | --         | Yes     |
+| パラメーター                | 型      | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | 既定値     | 変更可 |
+| :-------------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- | :----- |
+| `cleanupIntervalSeconds`    | integer | クリーンアップの実行間隔。通常は調整する必要はありません。値を大きくするとクリーンアップの実行回数が減りますが、一度に処理する量が増えます。値を小さくするとクリーンアップは頻繁になりますが、各実行あたりの効率が下がる場合があります。                                                                                                                                                                                                                                        | 300        | Yes    |
+| `distance`                  | string  | 距離メトリック。任意の 2 つのベクトル間の距離を測定する指標です。利用可能なメトリックは [対応距離メトリック](/weaviate/config-refs/distances.md) をご参照ください。                                                                                                                                                                                                                                                                                                          | `cosine`   | No     |
+| `ef`                        | integer | 検索速度とリコールのバランスを調整します。`ef` は検索時に HNSW が使用する動的リストのサイズです。`ef` が大きいほど検索の精度は向上しますが、速度は低下します。`ef` が 512 を超えるとリコールの改善は逓減します。<br/><br/>動的 `ef`。`ef` を -1 に設定すると、Weaviate が `ef` の値を自動で調整し、動的 `ef` リストを作成します。詳細は [dynamic ef](../../concepts/indexing/vector-index.md#dynamic-ef) をご覧ください。 | -1         | Yes    |
+| `efConstruction`            | integer | インデックス検索速度と構築速度のバランスを調整します。`efConstruction` を高くすると `ef` を低く設定できますが、インポートは遅くなります。<br/><br/>`efConstruction` は 0 より大きい必要があります。                                                                                                                                                                                                                                                                                  | 128        | No     |
+| `maxConnections`            | integer | 要素ごとの最大接続数。`maxConnections` は 0 以外のレイヤーでの接続上限です。0 レイヤーでは (2 \* `maxConnections`) の接続が可能です。<br/><br/>`maxConnections` は 0 より大きい必要があります。                                                                                                                                                                                                                                                                                        | 32         | No     |
+| `dynamicEfMin`              | integer | [動的 `ef`](../../concepts/indexing/vector-index.md#dynamic-ef) の下限値。検索リストが短くなりすぎるのを防ぎます。<br/><br/>この設定は `ef` が -1 の場合のみ使用されます。                                                                                                                                                                                                                                                                                                         | 100        | Yes    |
+| `dynamicEfMax`              | integer | [動的 `ef`](../../concepts/indexing/vector-index.md#dynamic-ef) の上限値。検索リストが長くなりすぎるのを防ぎます。<br/><br/>`dynamicEfMax` が制限値を超える場合、`dynamicEfMax` は無効となり、その場合の制限値は `ef` です。<br/><br/>この設定は `ef` が -1 の場合のみ使用されます。                                                                                                                                                                               | 500        | Yes    |
+| `dynamicEfFactor`           | integer | [動的 `ef`](../../concepts/indexing/vector-index.md#dynamic-ef) の乗数。検索リストの潜在的な長さを設定します。<br/><br/>この設定は `ef` が -1 の場合のみ使用されます。                                                                                                                                                                                                                                                                                                            | 8          | Yes    |
+| `filterStrategy`            | string  | `v1.27.0` で追加。検索結果のフィルタリングに使用するフィルターストラテジー。`sweeping` または `acorn` を指定できます。<br/><br/> - `sweeping`: 既定のストラテジー<br/> - `acorn`: Weaviate の ACORN 実装を使用します。[詳細](../../concepts/filtering.md#filter-strategy)                                                                                                                                                                            | `sweeping` | Yes    |
+| `flatSearchCutoff`          | integer | オプション。[フラット検索カットオフ](/weaviate/concepts/filtering.md#flat-search-cutoff) の閾値。ベクトルインデックス検索を強制するには `"flatSearchCutoff": 0` を設定してください。                                                                                                                                                                                                                                                                                         | 40000      | Yes    |
+| `skip`                      | boolean | `true` にするとコレクションをインデックスしません。<br/><br/>Weaviate はベクトル生成とベクトル保存を分離しています。インデックスをスキップしてもベクトライザーが設定されている（または手動でベクトルを指定している）場合、インポートのたびに警告が記録されます。<br/><br/>インデックスとベクトル生成を共にスキップするには、`"skip": true` を設定する際に `"vectorizer": "none"` を指定してください。<br/><br/>詳細は [インデックスをスキップするタイミング](../../concepts/indexing/vector-index.md#when-to-skip-indexing) を参照してください。 | `false`    | No     |
+| `vectorCacheMaxObjects`     | integer | メモリキャッシュ内のオブジェクトの最大数。デフォルトでは、新しいコレクション作成時に 1 兆 (`1e12`) オブジェクトに設定されています。サイジングの推奨事項は [ベクトルキャッシュの考慮事項](../../concepts/indexing/vector-index.md#vector-cache-considerations) をご確認ください。                                                                                                                                                                                                                                             | `1e12`     | Yes    |
+| `pq`                        | object  | [直積量子化 (PQ)](/weaviate/concepts/indexing/vector-index.md) 圧縮を有効化して設定します。<br/><br/>PQ はある程度のデータがすでにロードされていることを前提とします。PQ を有効にする前に、1 シャード当たり 10,000 ～ 100,000 ベクトルがロードされていることを推奨します。<br/><br/>PQ の詳細設定は [PQ 設定パラメーター](#pq-parameters) をご覧ください。                                                                                                                  | --         | Yes    |
 
-### Database parameters for HNSW
+### HNSW 用のデータベースパラメーター
 
-Note that some database-level parameters are available to configure HNSW indexing behavior.
+HNSW のインデックス動作を構成するためのデータベースレベルのパラメーターもあります。
 
-- `PERSISTENCE_HNSW_MAX_LOG_SIZE` is a database-level parameter that sets the maximum size of the HNSW write-ahead-log. The default value is `500MiB`.
+- `PERSISTENCE_HNSW_MAX_LOG_SIZE` は HNSW の書き込み先行ログの最大サイズを設定します。既定値は `500MiB` です。
 
-Increase this value to improve efficiency of the compaction process, but be aware that this will increase the memory usage of the database. Conversely, decreasing this value will reduce memory usage but may slow down the compaction process.
+この値を大きくするとコンパクションプロセスの効率が向上しますが、データベースのメモリ使用量も増えます。逆に小さくするとメモリ使用量は減りますが、コンパクションが遅くなる可能性があります。
 
-Preferably, the `PERSISTENCE_HNSW_MAX_LOG_SIZE` should set to a value close to the size of the HNSW graph.
+理想的には、`PERSISTENCE_HNSW_MAX_LOG_SIZE` は HNSW グラフのサイズに近い値に設定してください。
 
-### Tombstone cleanup parameters
+### Tombstone クリーンアップパラメーター
 
 :::info Environment variable availability
 
-- `TOMBSTONE_DELETION_CONCURRENCY` is available in `v1.24.0` and up.
-- `TOMBSTONE_DELETION_MIN_PER_CYCLE` and `TOMBSTONE_DELETION_MAX_PER_CYCLE` are available in `v1.24.15` / `v1.25.2` and up.
+- `TOMBSTONE_DELETION_CONCURRENCY` は `v1.24.0` 以降で利用可能です。  
+- `TOMBSTONE_DELETION_MIN_PER_CYCLE` と `TOMBSTONE_DELETION_MAX_PER_CYCLE` は `v1.24.15` / `v1.25.2` 以降で利用可能です。
 
 :::
 
-Tombstones are records that mark deleted objects. In an HNSW index, tombstones are regularly cleaned up, triggered periodically by the `cleanupIntervalSeconds` parameter.
+Tombstone は削除されたオブジェクトを示すレコードです。HNSW インデックスでは `cleanupIntervalSeconds` で定期的にクリーンアップがトリガーされます。
 
-As the index grows in size, the cleanup process may take longer to complete and require more resources. For very large indexes, this may cause performance issues.
+インデックスが大きくなると、クリーンアップ処理にかかる時間とリソースが増加し、大規模なインデックスではパフォーマンス問題を引き起こす場合があります。
 
-To control the number of tombstones deleted per cleanup cycle and prevent performance issues, set the [`TOMBSTONE_DELETION_MAX_PER_CYCLE` and `TOMBSTONE_DELETION_MIN_PER_CYCLE` environment variables](/deploy/configuration/env-vars/index.md#general).
+クリーンアップサイクルあたりに削除される Tombstone の数を制御し、パフォーマンス問題を防ぐために、[`TOMBSTONE_DELETION_MAX_PER_CYCLE` と `TOMBSTONE_DELETION_MIN_PER_CYCLE` の環境変数](/deploy/configuration/env-vars/index.md#general) を設定してください。
 
-- Set `TOMBSTONE_DELETION_MIN_PER_CYCLE` to prevent occurrences of unnecessary cleanup cycles.
-- Set `TOMBSTONE_DELETION_MAX_PER_CYCLE` to prevent the cleanup process from taking too long and consuming too many resources.
+- `TOMBSTONE_DELETION_MIN_PER_CYCLE` を設定して、不必要なクリーンアップサイクルの発生を防ぎます。  
+- `TOMBSTONE_DELETION_MAX_PER_CYCLE` を設定して、クリーンアップが長時間実行されたり過剰にリソースを消費したりするのを防ぎます。
 
-As an example, for a cluster with 300 million objects per shard, a `TOMBSTONE_DELETION_MIN_PER_CYCLE` value of 1000000 (1 million) and a `TOMBSTONE_DELETION_MAX_PER_CYCLE` value of 10000000 (10 million) may be good starting points.
+例として、1 シャードあたり 3 億オブジェクトのクラスターでは、`TOMBSTONE_DELETION_MIN_PER_CYCLE` を 1,000,000、`TOMBSTONE_DELETION_MAX_PER_CYCLE` を 10,000,000 に設定すると良い出発点となります。
 
-You can also set the `TOMBSTONE_DELETION_CONCURRENCY` environment variable to limit the number of threads used for tombstone cleanup. This can help prevent prevent the cleanup process from unnecessarily consuming too many resources, or the cleanup process from taking too long.
+また、`TOMBSTONE_DELETION_CONCURRENCY` 環境変数を設定して Tombstone クリーンアップに使用するスレッド数を制限できます。これにより、クリーンアップが不要に多くのリソースを消費したり、逆に時間がかかりすぎたりするのを防げます。
 
-The default value for `TOMBSTONE_DELETION_CONCURRENCY` is set to half the number of CPU cores available to Weaviate.
+`TOMBSTONE_DELETION_CONCURRENCY` の既定値は、Weaviate が利用できる CPU コア数の半分です。
 
-In a cluster with a large number of cores, you may want to set `TOMBSTONE_DELETION_CONCURRENCY` to a lower value to prevent the cleanup process from consuming too many resources. Conversely, in a cluster with a small number of cores and a large number of deletions, you may want to set `TOMBSTONE_DELETION_CONCURRENCY` to a higher value to speed up the cleanup process.
+コア数が多いクラスターでは、クリーンアップがリソースを消費しすぎないよう `TOMBSTONE_DELETION_CONCURRENCY` を低めに設定することを検討してください。逆にコア数が少なく削除が多い場合は、クリーンアップを高速化するために値を高くするとよいでしょう。
 
-### HNSW Configuration tips
+### HNSW 設定のヒント
 
-To determine reasonable settings for your use case, consider the following questions and compare your answers in the table below:
+ご自身のユースケースに適した値を決めるため、以下の質問を検討し、表と照らし合わせてください。
 
-1. How many queries do you expect per second?
-1. Do you expect a lot of imports or updates?
-1. How high should the recall be?
+1. 1 秒あたりどれくらいのクエリを想定していますか?  
+1. インポートや更新は多いですか?  
+1. リコールはどの程度必要ですか?
 
-| Number of queries | Many imports or updates | Recall level | Configuration suggestions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ----------------- | ----------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| not many          | no                      | low          | This is the ideal scenario. Keep both the `ef` and `efConstruction` settings low. You don't need a big machine and you will still be happy with the results.                                                                                                                                                                                                                                                                                                                                                                                   |
-| not many          | no                      | high         | Here the tricky thing is that your recall needs to be high. Since you're not expecting a lot of requests or imports, you can increase both the `ef` and `efConstruction` settings. Keep increasing them until you are happy with the recall. In this case, you can get pretty close to 100%.                                                                                                                                                                                                                                                   |
-| not many          | yes                     | low          | Here the tricky thing is the high volume of imports and updates. Be sure to keep `efConstruction` low. Since you don't need a high recall, and you're not expecting a lot of queries, you can adjust the `ef` setting until you've reached the desired recall.                                                                                                                                                                                                                                                                                 |
-| not many          | yes                     | high         | The trade-offs are getting harder. You need high recall _and_ you're dealing with a lot of imports or updates. This means you need to keep the `efConstruction` setting low, but you can significantly increase your `ef` setting because your queries per second rate is low.                                                                                                                                                                                                                                                                 |
-| many              | no                      | low          | Many queries per second means you need a low `ef` setting. Luckily you don't need high recall so you can significantly increase the `efConstruction` value.                                                                                                                                                                                                                                                                                                                                                                                    |
-| many              | no                      | high         | Many queries per second means a low `ef` setting. Since you need a high recall but you are not expecting a lot of imports or updates, you can increase your `efConstruction` until you've reached the desired recall.                                                                                                                                                                                                                                                                                                                          |
-| many              | yes                     | low          | Many queries per second means you need a low `ef` setting. A high number of imports and updates also means you need a low `efConstruction` setting. Luckily your recall does not have to be as close to 100% as possible. You can set `efConstruction` relatively low to support your input or update throughput, and you can use the `ef` setting to regulate the query per second speed.                                                                                                                                                     |
-| many              | yes                     | high         | Aha, this means you're a perfectionist _or_ you have a use case that needs the best of all three worlds. Increase your `efConstruction` value until you hit the time limit of imports and updates. Next, increase your `ef` setting until you reach your desired balance of queries per second versus recall. <br/><br/> While many people think they need maximize all three dimensions, in practice that's usually not the case. We leave it up to you to decide, and you can always ask for help in [our forum](https://forum.weaviate.io). |
+| クエリ数 | インポート / 更新が多いか | リコール | 構成の提案                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| -------- | ------------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 少ない    | いいえ                  | 低い     | 理想的なシナリオです。`ef` と `efConstruction` をいずれも低く保ちます。大きなマシンは不要で、結果にも満足できるでしょう。                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 少ない    | いいえ                  | 高い     | リコールを高くする必要があります。リクエストやインポートが少ないため、`ef` と `efConstruction` の両方を増やせます。リコールが満足いくまで段階的に増やしてください。この場合、ほぼ 100% に近づけることも可能です。                                                                                                                                                                                                                                                                                                                                                                      |
+| 少ない    | はい                    | 低い     | インポート / 更新の量が多い点が課題です。`efConstruction` は低く保ちます。高いリコールは不要でクエリ数も少ないため、`ef` を調整して希望のリコールを得てください。                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 少ない    | はい                    | 高い     | 高いリコールが必要で、インポート / 更新も多いという難しいトレードオフです。`efConstruction` を低く保つ必要がありますが、クエリ数が少ないため `ef` を大きく設定できます。                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 多い      | いいえ                  | 低い     | クエリ数が多いため `ef` は低くする必要があります。幸いリコールは高くなくてよいので、`efConstruction` を大きくできます。                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 多い      | いいえ                  | 高い     | クエリ数が多いため `ef` は低くします。リコールを高くする必要がありますが、インポートや更新は多くないため `efConstruction` を増やしてリコールを調整します。                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 多い      | はい                    | 低い     | クエリ数が多いので `ef` は低く、インポート / 更新も多いため `efConstruction` も低くします。リコールを 100% に近づける必要がないので、`efConstruction` を比較的低く設定してインポート / 更新スループットを確保し、`ef` で QPS を調整します。                                                                                                                                                                                                                                                                                                                              |
+| 多い      | はい                    | 高い     | すべてを最高にしたい場合です。インポート / 更新の時間制限に達するまで `efConstruction` を増やし、その後クエリ数とリコールのバランスが取れるまで `ef` を増やします。<br/><br/>多くの人は 3 つすべての指標を最大化したいと考えがちですが、実際にはそうでないケースも多いです。判断に迷ったら [フォーラム](https://forum.weaviate.io) でご相談ください。 |
 
 :::tip
-This set of values is a good starting point for many use cases.
+多くのユースケースでの出発点として、以下の値が適しています。
 
-| Parameter        | Value |
-| :--------------- | :---- |
-| `ef`             | `64`  |
-| `efConstruction` | `128` |
-| `maxConnections` | `32`  |
+| パラメーター        | 値   |
+| :------------------ | :--- |
+| `ef`               | `64` |
+| `efConstruction`   | `128`|
+| `maxConnections`   | `32` |
 
 :::
 
-## Flat index
+## Flat インデックス
 
 :::info Added in `v1.23`
 :::
 
-Flat indexes are recommended for use cases where the number of objects per index is low, such as in multi-tenancy use cases.
+Flat インデックスは、マルチテナンシーなど、インデックスあたりのオブジェクト数が少ないユースケースで推奨されます。
 
-| Parameter               | Type    | Default | Changeable | Details                                                                                                                                                                                                                                                                             |
-| :---------------------- | :------ | :------ | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vectorCacheMaxObjects` | integer | `1e12`  | Yes        | Maximum number of objects in the memory cache. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created. For sizing recommendations, see [Vector cache considerations](../../concepts/indexing/vector-index.md#vector-cache-considerations). |
-| `bq`                    | object  | --      | No         | Enable and configure [binary quantization (BQ)](../../concepts/vector-quantization.md#binary-quantization) compression. <br/><br/> For BQ configuration details, see [BQ configuration parameters](#bq-configuration-parameters).                                                   |
+| パラメーター                | 型      | 既定値  | 変更可 | 詳細                                                                                                                                                                                                                                                                                                   |
+| :-------------------------- | :------ | :------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vectorCacheMaxObjects`     | integer | `1e12`  | Yes    | メモリキャッシュ内のオブジェクトの最大数。デフォルトでは、新しいコレクション作成時に 1 兆 (`1e12`) オブジェクトに設定されています。サイジングの推奨事項は [ベクトルキャッシュの考慮事項](../../concepts/indexing/vector-index.md#vector-cache-considerations) をご参照ください。 |
+| `bq`                        | object  | --      | No     | [バイナリ量子化 (BQ)](../../concepts/vector-quantization.md#binary-quantization) 圧縮を有効化して設定します。<br/><br/>BQ の詳細設定は [BQ 設定パラメーター](#bq-configuration-parameters) をご覧ください。                                                                                     |
 
-### BQ configuration parameters
+### BQ 設定パラメーター
 
-Configure `bq` with these parameters.
+`bq` は次のパラメーターで構成します。
 
-| Parameter      | Type    | Default | Details                                                                    |
-| :------------- | :------ | :------ | :------------------------------------------------------------------------- |
-| `enabled`      | boolean | `false` | Enable BQ. Weaviate uses binary quantization (BQ) compression when `true`. |
-| `rescoreLimit` | integer | -1      | The minimum number of candidates to fetch before rescoring.                |
-| `cache`        | boolean | `false` | Whether to use the vector cache.                                           |
+| パラメーター      | 型      | 既定値 | 詳細                                                       |
+| :--------------- | :------ | :----- | :--------------------------------------------------------- |
+| `enabled`        | boolean | `false`| BQ を有効化します。`true` にすると Weaviate は BQ 圧縮を使用します。|
+| `rescoreLimit`   | integer | -1     | リスコアを行う前に取得する最小候補数。                     |
+| `cache`          | boolean | `false`| ベクトルキャッシュを使用するかどうか。                     |
 
-## Dynamic index
+
+
+## 動的インデックス
 
 :::caution Experimental feature
-Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use with caution.
+`v1.25` から利用可能です。動的インデックスは実験的機能です。ご使用の際はご注意ください。
 :::
 
 import DynamicAsyncRequirements from "/_includes/dynamic-index-async-req.mdx";
 
 <DynamicAsyncRequirements />
 
-Using the `dynamic` index will initially create a flat index and once the number of objects exceeds a certain threshold (by default 10,000 objects) it will automatically switch you over to an HNSW index.
+`dynamic` インデックスを使用すると、初期状態ではフラットインデックスが作成され、オブジェクト数がしきい値（デフォルトでは 10,000 件）を超えると自動的に HNSW インデックスへ切り替わります。
 
-This is only a one-way switch that converts a flat index to a HNSW, the index does not support changing back to a flat index even if the object count goes below the threshold due to deletion.
+これはフラットインデックスを HNSW に一方向で変換するのみで、削除によってオブジェクト数がしきい値を下回ってもフラットインデックスへ戻ることはできません。
 
-The goal of `dynamic` indexing is to shorten latencies during query time at the cost of a larger memory footprint.
+`dynamic` インデックスの目的は、より大きなメモリフットプリントと引き換えにクエリ時間のレイテンシを短縮することです。
 
-### Dynamic index parameters
+### 動的インデックスのパラメーター
 
 | Parameter   | Type    | Default      | Details                                                                               |
 | :---------- | :------ | :----------- | :------------------------------------------------------------------------------------ |
-| `distance`  | string  | `cosine`     | Distance metric. The metric that measures the distance between two arbitrary vectors. |
-| `hnsw`      | object  | default HNSW | [HNSW index configuration](#hnsw-index-parameters) to be used.                        |
-| `flat`      | object  | default Flat | [Flat index configuration](#flat-index) to be used.                                 |
-| `threshold` | integer | 10000        | Threshold object count at which `flat` to `hnsw` conversion happens                   |
+| `distance`  | string  | `cosine`     | 距離メトリクス。２つの任意の ベクトル 間の距離を測定するメトリクスです。 |
+| `hnsw`      | object  | default HNSW | 使用する [ HNSW インデックス設定](#hnsw-index-parameters)。                        |
+| `flat`      | object  | default Flat | 使用する [フラットインデックス設定](#flat-index)。                                 |
+| `threshold` | integer | 10000        | `flat` から `hnsw` への変換が行われるオブジェクト数のしきい値                       |
 
-## Index configuration parameters
+## インデックス設定パラメーター
 
 :::caution Experimental feature
-Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use with caution.
+`v1.25` から利用可能です。動的インデックスは実験的機能です。ご使用の際はご注意ください。
 :::
 
-Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-collections/vector-config.mdx#set-vector-index-type).
+以下のパラメーターでインデックスタイプとそのプロパティを設定できます。これらは [コレクション設定](../../manage-collections/vector-config.mdx#set-vector-index-type) で指定します。
 
 | Parameter           | Type   | Default | Details                                                              |
 | :------------------ | :----- | :------ | :------------------------------------------------------------------- |
-| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat` or `dynamic`.       |
-| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type. |
+| `vectorIndexType`   | string | `hnsw`  | 任意。インデックスタイプ。`hnsw`、`flat`、`dynamic` から選択できます。       |
+| `vectorIndexConfig` | object | -       | 任意。 ベクトル インデックスタイプ固有のパラメーターを設定します。 |
 
 <details>
-  <summary>How to select the index type</summary>
+  <summary>インデックスタイプの選び方</summary>
 
-Generally, the `hnsw` index type is recommended for most use cases. The `flat` index type is recommended for use cases where the data the number of objects per index is low, such as in multi-tenancy cases. You can also opt for the `dynamic` index which will initially configure a `flat` index and once the object count exceeds a specified threshold it will automatically convert to an `hnsw` index.
+一般的には、ほとんどのユースケースで `hnsw` インデックスタイプが推奨されます。`flat` インデックスタイプは、マルチテナンシーのようにインデックスあたりのデータ（オブジェクト）数が少ないケースで推奨されます。最初に `flat` インデックスを構成し、オブジェクト数が指定のしきい値を超えたら自動で `hnsw` に変換する `dynamic` インデックスを選択することもできます。
 
-See [this section](../../concepts/indexing/vector-index.md#which-vector-index-is-right-for-me) for more information about the different index types and how to choose between them.
+各インデックスタイプの詳細と選択方法については [こちらのセクション](../../concepts/indexing/vector-index.md#which-vector-index-is-right-for-me) を参照してください。
 
 </details>
 
-If faster import speeds are desired, [asynchronous indexing](#asynchronous-indexing) allows de-coupling of indexing from object creation.
+インポート速度をさらに高めたい場合は、[非同期インデックス](#asynchronous-indexing) を使用してオブジェクト作成とインデックス作成を分離できます。
 
-### RQ parameters
+### RQ パラメーター
 
-The following parameters are available for RQ compression, under `vectorIndexConfig`:
+`vectorIndexConfig` 内で、RQ 圧縮に利用できるパラメーターは次のとおりです。
 
 import RQParameters from "/_includes/configuration/rq-compression-parameters.mdx";
 
 <RQParameters />
 
-### SQ parameters
+### SQ パラメーーター
 
-The following parameters are available for SQ compression, under `vectorIndexConfig`:
+`vectorIndexConfig` 内で、SQ 圧縮に利用できるパラメーターは次のとおりです。
 
 import SQParameters from "/_includes/configuration/sq-compression-parameters.mdx";
 
 <SQParameters />
 
-### PQ parameters
+### PQ パラメーター
 
-The following parameters are available for PQ compression, under `vectorIndexConfig`:
+`vectorIndexConfig` 内で、PQ 圧縮に利用できるパラメーターは次のとおりです。
 
 import PQParameters from "/_includes/configuration/pq-compression/parameters.mdx";
 
 <PQParameters />
 
-### BQ parameters
+### BQ パラメーター
 
-The following parameters are available for BQ compression, under `vectorIndexConfig`:
+`vectorIndexConfig` 内で、BQ 圧縮に利用できるパラメーターは次のとおりです。
 
 import BQParameters from "/_includes/configuration/bq-compression-parameters.mdx";
 
 <BQParameters />
 
-## Configure semantic indexing
+## セマンティックインデックスの設定
 
-Weaviate can generate vector embeddings for objects using [model provider integrations](/weaviate/model-providers/).
+Weaviate は [モデルプロバイダー統合](/weaviate/model-providers/) を使用してオブジェクトのベクトル埋め込みを生成できます。
 
-For instance, text embedding integrations (e.g. `text2vec-cohere` for Cohere, or `text2vec-ollama` for Ollama) can generate vectors from text objects. Weaviate follows the collection configuration and a set of predetermined rules to vectorize objects.
+たとえば、テキスト埋め込み統合（Cohere 用の `text2vec-cohere` や Ollama 用の `text2vec-ollama` など）は、テキストオブジェクトから ベクトル を生成できます。Weaviate はコレクション設定と所定のルールに従ってオブジェクトをベクトライズします。
 
-Unless specified otherwise in the collection definition, the default behavior is to:
+コレクション定義で別途指定しない限り、デフォルトの動作は以下のとおりです。
 
-- Only vectorize properties that use the `text` or `text[]` data type (unless [skipped](../../manage-collections/vector-config.mdx#property-level-settings))
-- Sort properties in alphabetical (a-z) order before concatenating values
-- If `vectorizePropertyName` is `true` (`false` by default) prepend the property name to each property value
-- Join the (prepended) property values with spaces
-- Prepend the class name (unless `vectorizeClassName` is `false`)
-- Convert the produced string to lowercase
+- `text` または `text[]` データタイプを使用するプロパティのみをベクトライズします（[スキップ](../../manage-collections/vector-config.mdx#property-level-settings) されていない限り）
+- プロパティ値を連結する前に、プロパティをアルファベット（a-z）順に並べ替えます
+- `vectorizePropertyName` が `true`（デフォルトは `false`）の場合、各プロパティ値の前にプロパティ名を付けます
+- （前置された）プロパティ値をスペースで結合します
+- クラス名を先頭に付けます（`vectorizeClassName` が `false` の場合を除く）
+- 生成された文字列を小文字に変換します
 
-For example, this data object,
+例として、次のデータオブジェクト
 
 ```js
 Article = {
@@ -227,30 +229,30 @@ Article = {
 };
 ```
 
-will be vectorized as:
+は以下のようにベクトライズされます。
 
 ```md
 article cows lose their jobs as milk prices drop as his 100 diary cows lumbered over for their monday...
 ```
 
-By default, the calculation includes the collection name and all property values, but the property names are not indexed.
+デフォルトでは、計算にはコレクション名とすべてのプロパティ値が含まれますが、プロパティ名はインデックスされません。
 
-To configure vectorization behavior on a per-collection basis, use `vectorizeClassName`.
+コレクション単位でベクトライズの挙動を設定するには `vectorizeClassName` を使用します。
 
-To configure vectorization on a per-property basis, use `skip` and `vectorizePropertyName`.
+プロパティ単位で設定するには `skip` と `vectorizePropertyName` を使用します。
 
-## Asynchronous indexing
+## 非同期インデックス
 
 :::caution Experimental
-Available starting in `v1.22`. This is an experimental feature. Use with caution.
+`v1.22` から利用可能です。こちらは実験的機能です。ご使用の際はご注意ください。
 :::
 
-Starting in Weaviate `1.22`, you can use asynchronous indexing by opting in.
+Weaviate `1.22` 以降では、オプトインにより非同期インデックスを使用できます。
 
-To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration (the `docker-compose.yml` file if you use Docker Compose). This setting enables asynchronous indexing for all collections.
+非同期インデックスを有効にするには、Weaviate の設定（Docker Compose を使用している場合は `docker-compose.yml` ファイル）で環境変数 `ASYNC_INDEXING` を `true` に設定します。この設定により、すべてのコレクションで非同期インデックスが有効になります。
 
 <details>
-  <summary>Example Docker Compose configuration</summary>
+  <summary>Docker Compose 設定例</summary>
 
 ```yaml
 ---
@@ -281,22 +283,22 @@ services:
 
 </details>
 
-To get the index status, check the [node status](/deploy/configuration/nodes.md) endpoint.
+インデックスのステータスを取得するには、[ノードステータス](/deploy/configuration/nodes.md) エンドポイントを確認します。
 
 <details>
-  <summary><code>Node status</code> example usage</summary>
+  <summary><code>Node status</code> の使用例</summary>
 
-The `nodes/shards/vectorQueueLength` field shows the number of objects that still have to be indexed.
+`nodes/shards/vectorQueueLength` フィールドは、まだインデックス作成が必要なオブジェクト数を示します。
 
 import Nodes from "/_includes/code/nodes.mdx";
 
 <Nodes />
 
-Then, you can check the status of the vector index queue by inspecting the output.
+次に、出力を確認して ベクトル インデックスキューの状態をチェックします。
 
 <br />
 
-The `vectorQueueLength` field will show the number of remaining objects to be indexed. In the example below, the vector index queue has 425 objects remaining to be indexed on the `TestArticle` shard, out of a total of 1000 objects.
+`vectorQueueLength` フィールドには、残りのインデックス対象オブジェクト数が表示されます。下記の例では、`TestArticle` シャードの ベクトル インデックスキューに 1000 件中 425 件が残っていることを示しています。
 
 ```json
 {
@@ -331,19 +333,22 @@ The `vectorQueueLength` field will show the number of remaining objects to be in
 
 </details>
 
-## Multiple vector embeddings (named vectors)
+
+
+## 複数ベクトル埋め込み（名前付きベクトル）
 
 import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
 
-## Further resources
+## 追加リソース
 
-- [Concepts: Vector index](../../concepts/indexing/vector-index.md)
-- [How-to: Configure collections](../../manage-collections/vector-config.mdx)
+- [概念: ベクトルインデックス](../../concepts/indexing/vector-index.md)
+- [方法: コレクションを設定する](../../manage-collections/vector-config.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

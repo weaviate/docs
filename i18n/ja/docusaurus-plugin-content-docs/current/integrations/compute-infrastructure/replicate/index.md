@@ -3,14 +3,16 @@ title: Replicate
 sidebar_position: 2
 ---
 
-[Replicate](https://replicate.com/) is a platform that allows users to run machine learning models through a cloud API. They host many open-source models, including embedding and language models. Users can run or fine-tune the models to meet their application needs.
+[Replicate](https://replicate.com/) は、クラウド API 経由で機械学習モデルを実行できるプラットフォームです。オープンソースモデルを多数ホストしており、埋め込みモデルや言語モデルも含まれます。ユーザーは、アプリケーションの要件に合わせてモデルを実行したりファインチューニングしたりできます。
 
-## Replicate and Weaviate
-To use models on Replicate, you need to use [LlamaIndex](https://docs.llamaindex.ai/en/stable/api_reference/llms/replicate/) or [LangChain](https://python.langchain.com/v0.2/docs/integrations/llms/replicate/) and connect it to your Weaviate vector store.
+## Replicate と Weaviate
+Replicate 上のモデルを使用するには、[LlamaIndex](https://docs.llamaindex.ai/en/stable/api_reference/llms/replicate/) または [LangChain](https://python.langchain.com/v0.2/docs/integrations/llms/replicate/) を利用し、Weaviate ベクトルストアに接続する必要があります。
 
-## Our Resources 
-**Hands on Learning**: Build your technical understanding with end-to-end tutorials.
+## 当社のリソース
+**Hands on Learning**: エンドツーエンドのチュートリアルで技術的な理解を深めましょう。
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-Run Llama 2 on Replicate | Build a LlamaIndex query engine using Replicate, Weaviate, and Llama 2 as the generative model. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/compute-infrastructure/replicate-llama2/notebook.ipynb) |
+Replicate で Llama 2 を実行 | Replicate、Weaviate、そして生成モデルとしての Llama 2 を使って LlamaIndex クエリエンジンを構築します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/compute-infrastructure/replicate-llama2/notebook.ipynb) |
+
+

@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/crewai/crewai-query-agent-as-tool.ipynb
 toc: True
-title: "Weaviate Query Agent with Crew AI"
+title: "Weaviate クエリ エージェントと Crew AI"
 featured: False
 integration: True
 agent: False
@@ -12,15 +12,15 @@ tags: ['Query Agent', 'Integration']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-This notebook will show you how to define the Weaviate Query Agent as a tool through the Crew AI.
+このノートブックでは、Crew AI を通じて Weaviate クエリ エージェントをツールとして定義する方法をご紹介します。
 
-## Requirements
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://console.weaviate.cloud/).
-2. Install Crew AI with `pip install crewai`
-3. Install the Weaviate Agents package with `pip install weaviate-agents`
-4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
+## 必要条件
+1. Weaviate Cloud インスタンス ( WCD )：Weaviate クエリ エージェントは現時点では WCD でのみ利用できます。サーバーレス クラスターまたは 14 日間無料のサンドボックスを [こちら](https://console.weaviate.cloud/) から作成できます。  
+2. `pip install crewai` で Crew AI をインストールします。  
+3. `pip install weaviate-agents` で Weaviate Agents パッケージをインストールします。  
+4. データを含む Weaviate クラスターが必要です。まだお持ちでない場合は、Weaviate ブログをインポートするために [このノートブック](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) をご覧ください。  
 
-## Import libraries and keys
+## ライブラリとキーのインポート
 
 ```python
 import weaviate
@@ -47,7 +47,7 @@ os.environ["WEAVIATE_URL"] = ""
 os.environ["WEAVIATE_API_KEY"] = ""
 ```
 
-## Define Weaviate Query Agent as a tool
+## Weaviate クエリ エージェントをツールとして定義
 
 ```python
 class WeaviateQuerySchema(BaseModel):
@@ -126,7 +126,7 @@ blog_crew = Crew(
 )
 ```
 
-## Query Time
+## クエリの実行
 
 ```python
 result = blog_crew.kickoff()
@@ -176,3 +176,4 @@ One of the key benefits of using Docker is its portability: as long as the Docke
 
 Docker Compose is often used in parallel with Docker to manage multi-container applications. It allows developers to define and run multi-container Docker applications in a single file, making it easier to manage complex applications that consist of multiple interacting services.
 ```
+

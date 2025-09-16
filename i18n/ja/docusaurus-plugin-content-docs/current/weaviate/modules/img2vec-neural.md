@@ -1,55 +1,55 @@
 ---
-title: ResNet Image Vectorizer
+title: ResNet 画像 ベクトライザー
 sidebar_position: 20
 image: og/docs/modules/img2vec-neural.jpg
 # tags: ['img2vec', 'img2vec-neural']
 ---
 
-:::caution CLIP recommended for new projects
-For new projects, we recommend using the [Transformers multi-modal integration](../model-providers/transformers/embeddings-multimodal.md) module instead of `img2vec-neural`. This uses CLIP models, which uses a more modern model architecture than `resnet` models used in `img2vec-neural`. CLIP models are also multi-modal, meaning they can handle both images and text and therefore applicable to a wider range of use cases.
+:::caution 新規プロジェクトには CLIP を推奨
+新規プロジェクトでは `img2vec-neural` の代わりに [Transformers マルチモーダル統合](../model-providers/transformers/embeddings-multimodal.md) モジュールの利用を推奨します。これは CLIP モデルを使用しており、`img2vec-neural` が使用する `resnet` モデルよりもモダンなアーキテクチャです。さらに CLIP モデルはマルチモーダルで、画像とテキストの両方を扱えるため、より広いユースケースに適用できます。
 :::
 
-The `img2vec-neural` module enables Weaviate to obtain vectors locally images using a [`resnet50`](https://arxiv.org/abs/1512.03385) model.
+`img2vec-neural` モジュールを使用すると、 Weaviate は [`resnet50`](https://arxiv.org/abs/1512.03385) モデルを用いてローカルで画像からベクトルを取得できます。
 
-`img2vec-neural` encapsulates the model in a Docker container, which allows independent scaling on GPU-enabled hardware while keeping Weaviate on CPU-only hardware, as Weaviate is CPU-optimized.
+`img2vec-neural` はモデルを Docker コンテナにカプセル化しており、 GPU 対応ハードウェア上で独立してスケールさせつつ、 CPU 最適化された Weaviate を CPU のみのハードウェア上で動かすことが可能です。
 
 Key notes:
 
-- This module is not available on Weaviate Cloud (WCD).
-- Enabling this module will enable the [`nearImage` search operator](#additional-search-operator).
-- Model encapsulated in a Docker container.
-- This module is not compatible with Auto-schema. You must define your classes manually as [shown below](#class-configuration).
+- このモジュールは Weaviate Cloud (WCD) では利用できません。
+- 本モジュールを有効にすると [`nearImage` 検索オペレーター](#additional-search-operator) が利用可能になります。
+- モデルは Docker コンテナにカプセル化されています。
+- 本モジュールは Auto-schema と互換性がありません。 [以下](#class-configuration) のとおりクラスを手動で定義する必要があります。
 
 
-## Weaviate instance configuration
+## Weaviate インスタンス設定
 
-:::info Not applicable to WCD
-This module is not available on Weaviate Cloud.
+:::info WCD には適用されません
+このモジュールは Weaviate Cloud では利用できません。
 :::
 
-### Docker Compose file
+### Docker Compose ファイル
 
-To use `img2vec-neural`, you must enable it in your Docker Compose file (e.g. `docker-compose.yml`).
+`img2vec-neural` を使用するには、 Docker Compose ファイル (例: `docker-compose.yml`) で本モジュールを有効にする必要があります。
 
-:::tip Use the configuration tool
-While you can do so manually, we recommend using the [Weaviate configuration tool](/deploy/installation-guides/docker-installation.md#configurator) to generate the `Docker Compose` file.
+:::tip 設定ツールの利用を推奨
+手動で記述することも可能ですが、 [Weaviate 設定ツール](/deploy/installation-guides/docker-installation.md#configurator) を使って `Docker Compose` ファイルを生成することを推奨します。
 :::
 
-#### Parameters
+#### パラメーター
 
 Weaviate:
 
-- `ENABLE_MODULES` (Required): The modules to enable. Include `img2vec-neural` to enable the module.
-- `DEFAULT_VECTORIZER_MODULE` (Optional): The default vectorizer module. You can set this to `img2vec-neural` to make it the default for all classes.
-- `IMAGE_INFERENCE_API` (Required): The URL of the inference container.
+- `ENABLE_MODULES` (Required): 有効化するモジュールを指定します。 `img2vec-neural` を含めてください。
+- `DEFAULT_VECTORIZER_MODULE` (Optional): 既定のベクトライザーモジュールを指定します。すべてのクラスで `img2vec-neural` を既定にする場合に設定します。
+- `IMAGE_INFERENCE_API` (Required): 推論コンテナの URL。
 
-Inference container:
+推論コンテナ:
 
-- `image` (Required): The image name of the inference container. (e.g. `semitechnologies/img2vec-pytorch:resnet50` or `semitechnologies/img2vec-keras:resnet50`)
+- `image` (Required): 推論コンテナのイメージ名 (例: `semitechnologies/img2vec-pytorch:resnet50` または `semitechnologies/img2vec-keras:resnet50`)。
 
-#### Example
+#### 例
 
-This configuration enables `img2vec-neural`, sets it as the default vectorizer, and sets the parameters for the Docker container, including setting it to use `img2vec-pytorch:resnet50` image.
+この設定例では `img2vec-neural` を有効にし、既定のベクトライザーに設定し、 Docker コンテナの各種パラメーターを指定しています。ここでは `img2vec-pytorch:resnet50` イメージを使用しています。
 
 ```yaml
 services:
@@ -75,46 +75,46 @@ services:
 ...
 ```
 
-### Alternative: Run a separate container
+### 代替案: 別コンテナの実行
 
-As an alternative, you can run the inference container independently from Weaviate. To do so, you can:
+代替として、推論コンテナを Weaviate とは別に起動することも可能です。手順は以下のとおりです。
 
-- Enable `img2vec-neural` in your Docker Compose file,
-- Omit `img2vec-neural` parameters,
-- Run the inference container separately, e.g. using Docker, and
-- Set `IMAGE_INFERENCE_API` to the URL of the inference container.
+- Docker Compose ファイルで `img2vec-neural` を有効化する  
+- `img2vec-neural` 固有のパラメーターを省略する  
+- 推論コンテナを Docker などで個別に起動する  
+- `IMAGE_INFERENCE_API` に推論コンテナの URL を設定する  
 
-Then, for example if Weaviate is running outside of Docker, set `IMAGE_INFERENCE_API="http://localhost:8000"`. Alternatively if Weaviate is part of the same Docker network, e.g. because they are part of the same `docker-compose.yml` file, you can use Docker networking/DNS, such as `IMAGE_INFERENCE_API=http://i2v-neural:8080`.
+たとえば Weaviate を Docker 外で動かしている場合は、 `IMAGE_INFERENCE_API="http://localhost:8000"` と設定します。 Weaviate と推論コンテナが同じ Docker ネットワークに属している場合 (同じ `docker-compose.yml` に記述されているなど) は、 `IMAGE_INFERENCE_API=http://i2v-neural:8080` のように Docker の DNS 名を利用できます。
 
-For example, can spin up an inference container with the following command:
+推論コンテナを起動する例:
 
 ```shell
 docker run -itp "8000:8080" semitechnologies/img2vec-neural:resnet50-61dcbf8
 ```
 
 
-## Class configuration
+## クラス設定
 
-You can configure how the module will behave in each class through the [collection configuration](../manage-collections/vector-config.mdx).
+各クラスでのモジュール挙動は [コレクション設定](../manage-collections/vector-config.mdx) で調整できます。
 
-### Vectorization settings
+### ベクトル化設定
 
-You can set vectorizer behavior using the `moduleConfig` section under each class and property:
+クラスおよびプロパティの `moduleConfig` セクションでベクトライザーの挙動を設定します。
 
-#### Class-level
+#### クラスレベル
 
-- `vectorizer` - what module to use to vectorize the data.
-- `imageFields` - property names for images to be vectorized
+- `vectorizer` - データをベクトル化する際に使用するモジュール
+- `imageFields` - ベクトル化対象となる画像プロパティ名
 
-#### Property-level
+#### プロパティレベル
 
-- `dataType` - the data type of the property. For use in `imageFields`, must be set to `blob`.
+- `dataType` - プロパティのデータ型。 `imageFields` で使用する場合は `blob` に設定する必要があります。
 
-#### Example
+#### 例
 
-The following example class definition sets the `img2vec-neural` module as the `vectorizer` for the class `FashionItem`. It also sets:
+以下のクラス定義では、 `FashionItem` クラスの `vectorizer` として `img2vec-neural` を設定し、
 
-- `image` property as a `blob` datatype and as the image field,
+- `image` プロパティを `blob` 型かつ画像フィールドとして指定しています。
 
 ```json
 {
@@ -162,23 +162,23 @@ The following example class definition sets the `img2vec-neural` module as the `
 }
 ```
 
-:::note All `blob` properties must be in base64-encoded data.
+:::note すべての `blob` プロパティは base64 エンコードされたデータである必要があります。
 :::
 
 
-### Adding `blob` data objects
+### `blob` データオブジェクトの追加
 
-Any `blob` property type data must be base64 encoded. To obtain the base64-encoded value of an image for example, you can use the helper methods in the Weaviate clients or run the following command:
+`blob` 型のデータはすべて base64 エンコードする必要があります。画像の base64 文字列を取得するには、 Weaviate クライアントのヘルパーメソッドを使うか、次のコマンドを実行してください。
 
 ```bash
 cat my_image.png | base64
 ```
 
-## Additional search operator
+## 追加の検索オペレーター
 
-The `img2vec-neural` vectorizer module will enable the `nearImage` search operator.
+`img2vec-neural` ベクトライザーモジュールを有効にすると `nearImage` 検索オペレーターが利用可能になります。
 
-## Usage example
+## 使用例
 
 ### NearImage
 
@@ -186,31 +186,33 @@ import CodeNearImage from '/_includes/code/img2vec-neural.nearimage.mdx';
 
 <CodeNearImage />
 
-## About the model
+## モデルについて
 
-[`resnet50`](https://arxiv.org/abs/1512.03385) is a residual convolutional neural network with 25.5 million parameters trained on more than a million images from the [ImageNet database](https://www.image-net.org/). As the name suggests, it has a total of 50 layers: 48 convolution layers, 1 MaxPool layer and 1 Average Pool layer.
+[`resnet50`](https://arxiv.org/abs/1512.03385) は、 residual 畳み込みニューラルネットワークで、 2,550 万個のパラメーターを持ち、 [ImageNet データベース](https://www.image-net.org/) の 100 万枚以上の画像で学習されています。名前が示すとおり合計 50 層で構成され、 48 の畳み込み層、 1 つの MaxPool 層、 1 つの Average Pool 層からなります。
 
-### Available img2vec-neural models
 
-There are two different inference models you can choose from. Depending on your machine (`arm64` or other) and whether you prefer to use multi-threading to extract feature vectors or not, you can choose between `keras` and `pytorch`. There are no other differences between the two models.
+
+### 利用可能な img2vec-neural モデル
+
+選択できる推論モデルは 2 種類あります。マシンが `arm64` かその他か、また特徴 ベクトル 抽出にマルチスレッドを使用するかどうかに応じて、`keras` と `pytorch` から選択できます。両モデルの違いはそれ以外にはありません。  
 - `resnet50` (`keras`):
-  - Supports `amd64`, but not `arm64`.
-  - Does not currently support `CUDA`
-  - Supports multi-threaded inference
+  - `amd64` をサポートし、`arm64` はサポートしません。
+  - 現在 `CUDA` をサポートしていません
+  - マルチスレッド推論をサポートします
 - `resnet50` (`pytorch`):
-  - Supports both `amd64` and `arm64`.
-  - Supports `CUDA`
-  - Does not support multi-threaded inference
+  - `amd64` と `arm64` の両方をサポートします。
+  - `CUDA` をサポートします
+  - マルチスレッド推論はサポートしません
 
-## Model license(s)
+## モデルライセンス
 
-The `img2vec-neural` module uses the `resnet50` model.
+`img2vec-neural` モジュールは `resnet50` モデルを使用しています。  
 
-It is your responsibility to evaluate whether the terms of its license(s), if any, are appropriate for your intended use.
+ライセンス条件がご利用目的に適しているかどうかを評価する責任は利用者にあります。
 
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

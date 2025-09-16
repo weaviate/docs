@@ -1,14 +1,14 @@
 ---
-title: Authentication
+title: 認証
 image: og/docs/configuration.jpg
 # tags: ['authentication']
 ---
 
-:::info Authentication and authorization
-Authentication and authorization are closely related concepts, and sometimes abbreviated as `AuthN` and `AuthZ`. Authentication (`AuthN`) is the process of verifying the identity of a user, while authorization (`AuthZ`) is the process of determining what permissions the user has.
+:::info 認証と認可
+認証と認可は密接に関連する概念で、`AuthN` と `AuthZ` と略されることがあります。認証 (`AuthN`) はユーザーの身元を検証するプロセスであり、認可 (`AuthZ`) はユーザーが持つ権限を決定するプロセスです。
 :::
 
-Weaviate controls access through user authentication via API keys or OpenID Connect (OIDC), with an option for anonymous access. Users can then be assigned different [authorization](./authorization.md) levels, as shown in the diagram below.
+Weaviate は API キーまたは OpenID Connect (OIDC) によるユーザー認証を通じてアクセスを制御し、匿名アクセスを許可するオプションも提供します。その後、ユーザーに対して下図のように異なる [認可](./authorization.md) レベルを割り当てることができます。
 
 ```mermaid
 flowchart LR
@@ -53,33 +53,33 @@ flowchart LR
     style auth fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-For example, a user logging in with the API key `jane-secret` may be granted administrator permissions, while another user logging in with the API key `ian-secret` may be granted read-only permissions.
+たとえば、API キー `jane-secret` でログインしたユーザーには管理者権限を付与し、`ian-secret` でログインした別のユーザーには読み取り専用権限を付与するといった運用が可能です。
 
-In summary, Weaviate allows the following authentication methods:
+まとめると、Weaviate では次の認証方法を利用できます。
 
-- API key
+- API キー
 - OpenID Connect (OIDC)
-- Anonymous access (no authentication, strongly discouraged except for development or evaluation)
+- 匿名アクセス (認証なし。開発や評価目的を除き推奨されません)
 
-Note that API key and OIDC authentication can be both enabled at the same time.
+API キー認証と OIDC 認証は同時に有効化できます。
 
-The way to configure authentication differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
+認証の設定方法はデプロイ方法によって異なり、Docker か Kubernetes かで設定が変わります。以下にそれぞれの例を示します。
 
-:::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authentication is pre-configured with OIDC and API key access. You can [authenticate against Weaviate](/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with API keys](/cloud/manage-clusters/connect.mdx).
+:::info Weaviate Cloud (WCD) について
+Weaviate Cloud (WCD) インスタンスでは、OIDC と API キーによる認証があらかじめ設定されています。WCD の資格情報で OIDC を使って [Weaviate へ認証](/weaviate/connections/connect-cloud.mdx) するか、[API キー](/cloud/manage-clusters/connect.mdx) を用いて接続できます。
 :::
 
-## API Key Authentication
+## API キー認証
 
-API key authentication is a simple and effective way to authenticate users. Each user is assigned a unique API key, which is used to authenticate the user.
+API キー認証はシンプルかつ効果的なユーザー認証方法です。各ユーザーには一意の API キーが割り当てられ、そのキーでユーザーを認証します。
 
-### API keys: Database users
+### API キー: データベースユーザー
 
-When [creating database users programmatically](/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key). 
+[データベースユーザーをプログラムから作成](/weaviate/configuration/rbac/manage-users.mdx#create-a-user) する際、各ユーザーには作成時に固有の API キーが割り当てられます。これらの API キーは [再生成 (ローテーション)](/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key) することも可能です。 
 
-### API keys: Docker
+### API キー: Docker
 
-API key authentication can be configured using environment variables. In Docker Compose, set them in the configuration file (`docker-compose.yml`) such as in the following example:
+API キー認証は環境変数で設定できます。Docker Compose では、以下のように構成ファイル (`docker-compose.yml`) に設定します。
 
 ```yaml
 services:
@@ -100,31 +100,29 @@ services:
       AUTHENTICATION_APIKEY_USERS: 'user-a,user-b'
 ```
 
-This configuration:
-- Disables anonymous access
-- Enables API key authentication
-- Defines plaintext API keys in `AUTHENTICATION_APIKEY_ALLOWED_KEYS`
-- Associates users with the API keys in `AUTHENTICATION_APIKEY_USERS`
+この設定では以下を行っています。
+- 匿名アクセスを無効化
+- API キー認証を有効化
+- `AUTHENTICATION_APIKEY_ALLOWED_KEYS` に平文の API キーを定義
+- `AUTHENTICATION_APIKEY_USERS` で API キーにユーザーを関連付け
 
-These users can now be assigned permissions based on the authorization settings.
+これらのユーザーには、後述の認可設定に基づいて権限を割り当てられます。
 
 import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
 
 <DynamicUserManagement />
 
 :::note
+次のいずれかの方法で設定してください。
+- すべての API キーに対して 1 つのユーザーを設定する  
+- API キーごとに 1 つのユーザーを設定する (ユーザー数と API キー数を一致させる)
 
-Note that you can either:
-- Set one user for all API keys, or
-- Define one user per API key (the number of users must match the number of API keys)
-
-Make sure all listed users are also configured in the authorization settings.
-
+列挙されたすべてのユーザーが認可設定にも含まれていることを確認してください。
 :::
 
-### API keys: Kubernetes
+### API キー: Kubernetes
 
-For Kubernetes deployments using Helm, API key authentication can be configured in the `values.yaml` file under the `authentication` section. Here's an example configuration:
+Helm を用いた Kubernetes デプロイでは、`values.yaml` の `authentication` セクションで API キー認証を設定します。以下は例です。
 
 ```yaml
 authentication:
@@ -147,56 +145,51 @@ authentication:
       - user-b
 ```
 
-This configuration:
+この設定では以下を行っています。
 
-- Disables anonymous access
-- Enables API key authentication
-- Defines plaintext API keys in `allowed_keys`
-- Associates users with the API keys in `users`
+- 匿名アクセスを無効化
+- API キー認証を有効化
+- `allowed_keys` に平文の API キーを定義
+- `users` で API キーにユーザーを関連付け
 
-:::warning Environment Variables Take Precedence
-If you configure API keys using environment variables, those settings will take precedence over the values in `values.yaml`. To use the Helm values configuration, ensure you have not set the corresponding environment variables.
+:::warning 環境変数が優先されます
+API キーを環境変数で設定した場合、その設定が `values.yaml` より優先されます。Helm の設定を使用する場合は、該当する環境変数を設定しないでください。
 :::
 
-For enhanced security in production environments, you can store API keys in Kubernetes secrets and reference them using environment variables instead of storing them as plaintext in the Helm values.
+本番環境でのセキュリティを高めるため、API キーを Kubernetes のシークレットに格納し、平文ではなく環境変数経由で参照する方法を推奨します。
 
-## OIDC Authentication
+## OIDC 認証
 
-OIDC authentication requires the resource (Weaviate) to validate tokens issued by an identity provider. The identity provider authenticates the user and issues tokens, which are then validated by Weaviate.
+OIDC 認証では、リソース (Weaviate) がアイデンティティプロバイダーから発行されたトークンを検証します。アイデンティティプロバイダーがユーザーを認証してトークンを発行し、Weaviate がそのトークンを検証します。
 
-In an example setup, a Weaviate instance acts as the resource, Weaviate Cloud (WCD) acts as the identity provider, and the Weaviate client acts on behalf of the user.
+一例として、Weaviate インスタンスがリソース、Weaviate Cloud (WCD) がアイデンティティプロバイダー、そして Weaviate クライアントがユーザーの代理として振る舞う構成が考えられます。
 
-Any "OpenID Connect" compatible token issuer that implements OpenID Connect Discovery is compatible with Weaviate.
+OpenID Connect Discovery を実装する任意の「OpenID Connect」互換トークン発行者は Weaviate と互換性があります。
 
-This document discusses how to configure Weaviate as the resource.
+ここでは Weaviate をリソースとして設定する方法を説明します。
 
 <details>
   <summary>
-    More about OIDC
+    OIDC について詳しく
   </summary>
 
-With [OpenID Connect](https://openid.net/connect/) (based on OAuth2), an
-external identity provider and token issuer ('token issuer' hereafter) is responsible for managing users.
+[OpenID Connect](https://openid.net/connect/) (OAuth2 に基づく) では、外部のアイデンティティプロバイダー兼トークン発行者 (以下「トークン発行者」) がユーザー管理を担当します。
 
-OIDC authentication requires obtaining a valid token from the token issuer so that it can be sent in the header of any request to Weaviate. This applies to both REST and GraphQL requests.
+OIDC 認証では、トークン発行者から有効なトークンを取得し、それを Weaviate へのすべてのリクエストのヘッダーに含める必要があります。REST と GraphQL の両方に適用されます。
 
-When Weaviate receives a token (JSON Web Token or JWT), it verifies
-that it was indeed signed by the configured token issuer. If the signature is
-correct, all contents of the token are trusted, which authenticates the user based on the information in the token.
+Weaviate がトークン (JSON Web Token、JWT) を受け取ると、設定されたトークン発行者によって署名されたものであるかを検証します。署名が正しければトークン内容を信頼し、その情報に基づいてユーザーを認証します。
 
 </details>
 
-:::tip TIP: OIDC and RBAC
-
-The [user management API](/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) allows you to assign custom roles and permissions to OIDC users via [Role-Based Access Control (RBAC)](/weaviate/configuration/rbac/index.mdx).
-
+:::tip TIP: OIDC と RBAC
+[user management API](/weaviate/configuration/rbac/manage-users.mdx#oidc-user-permissions-management) を使用すると、[ロールベースアクセス制御 (RBAC)](/weaviate/configuration/rbac/index.mdx) を通じて OIDC ユーザーにカスタムロールと権限を割り当てられます。
 :::
 
 ### OIDC: Docker
 
-To configure Weaviate for OIDC-based authentication, add the following environment variables to your configuration file.
+OIDC 認証を利用するには、以下の環境変数を構成ファイルに追加して Weaviate を設定します。
 
-An example `docker-compose.yml` file looks like this:
+`docker-compose.yml` の例は次のとおりです。
 
 ```yaml
 services:
@@ -241,13 +234,15 @@ services:
       AUTHENTICATION_OIDC_SCOPES: ''
 ```
 
-:::info OIDC and Azure
-As of November 2022, we were aware of some differences in Microsoft Azure's OIDC implementation compared to others. If you are using Azure and experiencing difficulties, [this external blog post](https://xsreality.medium.com/making-azure-ad-oidc-compliant-5734b70c43ff) may be useful.
+:::info OIDC と Azure
+2022 年 11 月時点で、Microsoft Azure の OIDC 実装に他と異なる点があることを確認しています。Azure を使用していて問題が発生する場合は、[こちらの外部ブログ記事](https://xsreality.medium.com/making-azure-ad-oidc-compliant-5734b70c43ff) が参考になるかもしれません。
 :::
 
-### OIDC: Kubernetes
 
-For Kubernetes deployments using Helm, OIDC authentication can be configured in the `values.yaml` file under the `authentication` section. Here's an example configuration:
+
+### OIDC：Kubernetes
+
+Helm を使用した Kubernetes デプロイメントでは、`values.yaml` ファイルの `authentication` セクションで OIDC 認証を構成できます。以下は設定例です。
 
 ```yaml
 authentication:
@@ -294,36 +289,36 @@ authentication:
     # groups_claim: ''
 ```
 
-### Note: Configuring the OIDC token issuer
+### 注記：OIDC トークン発行者の設定
 
-Configuring the OIDC token issuer is outside the scope of this document, but here are a few options as a starting point:
+OIDC トークン発行者の設定は本ドキュメントの範囲外ですが、出発点としていくつかの選択肢を示します。
 
-- For simple use-cases such as for a single user, you can use Weaviate Cloud (WCD) as the OIDC token issuer. To do so:
-    - Make sure you have a WCD account (you can [sign up here](https://console.weaviate.cloud/)).
-    - In the Docker Compose file (e.g. `docker-compose.yml`), specify:
-      - `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` as the issuer (in `AUTHENTICATION_OIDC_ISSUER`),
-      - `wcs` as the client id (in `AUTHENTICATION_OIDC_CLIENT_ID`), and
-      - enable the adminlist (`AUTHORIZATION_ADMINLIST_ENABLED: 'true'`) and add your WCD account email as the user (in `AUTHORIZATION_ADMINLIST_USERS`) .
-      - `email` as the username claim (in `AUTHENTICATION_OIDC_USERNAME_CLAIM`).
+- 単一ユーザーなどのシンプルなユースケースの場合、OIDC トークン発行者として Weaviate Cloud (WCD) を使用できます。その手順は次のとおりです。  
+    - WCD アカウントをお持ちでない場合は、[こちら](https://console.weaviate.cloud/) からサインアップしてください。  
+    - Docker Compose ファイル (例：`docker-compose.yml`) で次を指定します。  
+      - `AUTHENTICATION_OIDC_ISSUER` に `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` を issuer として設定  
+      - `AUTHENTICATION_OIDC_CLIENT_ID` に `wcs` を client id として設定  
+      - `AUTHORIZATION_ADMINLIST_ENABLED: 'true'` で adminlist を有効化し、`AUTHORIZATION_ADMINLIST_USERS` に WCD アカウントのメールアドレスを追加  
+      - `AUTHENTICATION_OIDC_USERNAME_CLAIM` に `email` を username claim として設定  
 
-- If you need a more customizable setup you can use commercial OIDC providers like [Okta](https://www.okta.com/).
-- As another alternative, you can run your own OIDC token issuer server, which may be the most complex but also configurable solution. Popular open-source solutions include Java-based [Keycloak](https://www.keycloak.org/) and Golang-based [dex](https://github.com/dexidp/dex).
+- さらにカスタマイズが必要な場合は、[Okta](https://www.okta.com/) などの商用 OIDC プロバイダーを利用できます。  
+- もう一つの選択肢として、自身で OIDC トークン発行者サーバーを運用する方法もあります。これは最も複雑ですが柔軟性の高い解決策です。代表的な OSS には Java ベースの [Keycloak](https://www.keycloak.org/) や Golang ベースの [dex](https://github.com/dexidp/dex) があります。
 
 :::info
-By default, Weaviate validates that the token includes a specified client id in the audience claim. If your token issuer does not support this feature, you can turn it off as outlined in the configuration section below.
+デフォルトでは、Weaviate はトークンに指定された client id が audience クレームに含まれているか検証します。トークン発行者がこの機能をサポートしていない場合は、下記の設定で無効化できます。
 :::
 
 ## Anonymous Access
 
-Weaviate can be configured to accept anonymous requests. This is strongly discouraged except for development or evaluation purposes.
+Weaviate は匿名リクエストを受け付けるように構成できますが、開発または評価目的以外での使用は強く非推奨です。
 
-Users that send requests without explicit authentication are authenticated as `user: anonymous`.
+明示的な認証なしでリクエストを送信したユーザーは、`user: anonymous` として認証されます。
 
-You can use the authorization plugin to specify which permissions to apply to this `anonymous` user. If anonymous access is disabled altogether, any request without an allowed authentication scheme returns `401 Unauthorized`.
+authorization プラグインを使用して、この `anonymous` ユーザーに適用する権限を指定できます。匿名アクセスを完全に無効にしている場合、許可された認証方式を伴わないリクエストは `401 Unauthorized` を返します。
 
-### Anonymous access: Docker
+### Anonymous access：Docker
 
-To enable anonymous access in Docker Compose, add the following environment variable to your configuration file:
+Docker Compose で匿名アクセスを有効にするには、次の環境変数を設定ファイルに追加します。
 
 ```yaml
 services:
@@ -334,9 +329,9 @@ services:
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
 ```
 
-### Anonymous access: Kubernetes
+### Anonymous access：Kubernetes
 
-To enable anonymous access in Kubernetes, add the following configuration to your `values.yaml` file:
+Kubernetes で匿名アクセスを有効にするには、`values.yaml` ファイルに次の設定を追加します。
 
 ```yaml
 authentication:
@@ -344,13 +339,14 @@ authentication:
     enabled: true
 ```
 
-## Further resources
+## 参考資料
 
-- [Configuration: Authorization and RBAC](./authorization.md)
-- [References: Environment variables / Authentication and Authorization](/deploy/configuration/env-vars#authentication-and-authorization)
+- [設定：Authorization と RBAC](./authorization.md)
+- [リファレンス：環境変数 / 認証と認可](/deploy/configuration/env-vars#authentication-and-authorization)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

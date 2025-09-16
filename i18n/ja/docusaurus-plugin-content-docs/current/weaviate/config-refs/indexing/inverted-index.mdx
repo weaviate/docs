@@ -1,6 +1,6 @@
 ---
-title: Inverted index
-description: Reference for inverted index parameters in Weaviate.
+title: 転置インデックス
+description: Weaviate における転置インデックスのパラメーターリファレンスです。
 ---
 
 import SkipLink from "/src/components/SkipValidationLink";
@@ -13,39 +13,39 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
-The **[inverted index](../../concepts/indexing/inverted-index.md)** maps values (like words or numbers) to the objects that contain them. It is the backbone for all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
+**[転置インデックス](../../concepts/indexing/inverted-index.md)** は、値（単語や数値など）をそれを含むオブジェクトへマッピングします。これは、すべての属性ベースフィルタリング（ `where` フィルター）およびキーワード検索（ `bm25` 、 `hybrid` ）の基盤となります。
 
-## Inverted index types
+## 転置インデックスのタイプ
 
-Multiple [inverted index types](../../concepts/indexing/inverted-index.md) are available in Weaviate. Not all inverted index types are available for all data types. The available inverted index types are:
+Weaviate では複数の [転置インデックスタイプ](../../concepts/indexing/inverted-index.md) が利用可能です。ただし、すべてのデータ型で利用できるわけではありません。利用可能な転置インデックスタイプは以下のとおりです。
 
 import InvertedIndexTypesSummary from "/_includes/inverted-index-types-summary.mdx";
 
 <InvertedIndexTypesSummary />
 
-- Enable one or both of `indexFilterable` and `indexRangeFilters` to index a property for faster filtering.
-  - If only one is enabled, the respective index is used for filtering.
-  - If both are enabled, `indexRangeFilters` is used for operations involving comparison operators, and `indexFilterable` is used for equality and inequality operations.
+- `indexFilterable` と `indexRangeFilters` のいずれか、または両方を有効にしてプロパティをインデックス化すると、フィルタリングが高速化されます。  
+  - どちらか一方のみを有効にした場合、そのインデックスがフィルタリングに使用されます。  
+  - 両方を有効にした場合、比較演算子を含む操作では `indexRangeFilters` が、等価・非等価演算では `indexFilterable` が使用されます。  
 
-## Inverted index parameters
+## 転置インデックスのパラメーター
 
-These parameters are set within the `invertedIndexConfig` object in your collection definition.
+これらのパラメーターはコレクション定義内の `invertedIndexConfig` オブジェクトで設定します。
 
-| Parameter                                     | Type    | Default                    | Details                                                                                                                                              |
-| :-------------------------------------------- | :------ | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`bm25`](#bm25)                               | Object  | `{ "k1": 1.2, "b": 0.75 }` | Sets the `k1` and `b` parameters for the BM25 ranking algorithm. Can be overridden at the property level. See [**BM25 Configuration**](#bm25) below. |
-| [`stopwords`](#stopwords)                     | Object  | (Varies)                   | Defines the stopword list to exclude common words from search queries. See [**Stopwords Configuration**](#stopwords) below.                          |
-| [`indexTimestamps`](#indextimestamps)         | Boolean | `false`                    | If `true`, indexes object creation and update timestamps, enabling filtering by `creationTimeUnix` and `lastUpdateTimeUnix`.                         |
-| [`indexNullState`](#indexnullstate)           | Boolean | `false`                    | If `true`, indexes the null/non-null state of each property, enabling filtering for `null` values.                                                   |
-| [`indexPropertyLength`](#indexpropertylength) | Boolean | `false`                    | If `true`, indexes the length of each property, enabling filtering by property length.                                                               |
+| Parameter                                     | Type    | Default                    | Details                                                                                                                                                                        |
+| :-------------------------------------------- | :------ | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`bm25`](#bm25)                               | Object  | `{ "k1": 1.2, "b": 0.75 }` | BM25 ランキングアルゴリズムの `k1` と `b` を設定します。プロパティ単位で上書き可能です。詳細は [**BM25 の設定**](#bm25) をご覧ください。                   |
+| [`stopwords`](#stopwords)                     | Object  | (Varies)                   | ストップワードリストを定義し、検索クエリから一般的な語を除外します。詳細は [**ストップワードの設定**](#stopwords) をご覧ください。                          |
+| [`indexTimestamps`](#indextimestamps)         | Boolean | `false`                    | `true` にするとオブジェクトの作成・更新タイムスタンプをインデックス化し、 `creationTimeUnix` と `lastUpdateTimeUnix` でフィルタリングできるようになります。 |
+| [`indexNullState`](#indexnullstate)           | Boolean | `false`                    | `true` にすると各プロパティの null / 非 null 状態をインデックス化し、 `null` 値でフィルタリングできるようになります。                                   |
+| [`indexPropertyLength`](#indexpropertylength) | Boolean | `false`                    | `true` にすると各プロパティの長さをインデックス化し、プロパティ長でフィルタリングできるようになります。                                                     |
 
-:::caution Performance Impact
-Enabling `indexTimestamps`, `indexNullState`, or `indexPropertyLength` adds overhead as these additional indexes must be created and maintained. Only enable them if you require these specific filtering capabilities.
+:::caution パフォーマンスへの影響
+`indexTimestamps` 、 `indexNullState` 、 `indexPropertyLength` を有効にすると、これらの追加インデックスを作成・維持するためのオーバーヘッドが発生します。必要なフィルタリング機能がある場合のみ有効にしてください。
 :::
 
-#### Code example
+#### コード例
 
-This code example shows how to configure inverted index parameters through a client library:
+以下の例は、クライアントライブラリを使用して転置インデックスのパラメーターを設定する方法を示しています。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -89,14 +89,14 @@ This code example shows how to configure inverted index parameters through a cli
 
 #### `bm25`
 
-Part of `invertedIndexConfig`. The settings for BM25 are the [free parameters `k1` and `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function), and they are optional. The defaults (`k1` = 1.2 and `b` = 0.75) work well for most cases.
+`invertedIndexConfig` の一部です。BM25 の設定項目は [自由パラメーター `k1` と `b`](https://en.wikipedia.org/wiki/Okapi_BM25#The_ranking_function) で、指定は任意です。デフォルト値（ `k1` = 1.2、 `b` = 0.75）は多くのケースで良好に機能します。
 
-They can be configured per collection, and can optionally be overridden per property.
+コレクション単位で設定でき、プロパティ単位で上書きすることも可能です。
 
 <details>
-  <summary>Example `bm25` configuration -  JSON object</summary>
+  <summary>例 `bm25` 設定 - JSON オブジェクト</summary>
 
-An example of a complete collection object with `bm25` configuration:
+`bm25` を設定した完全なコレクションオブジェクトの例:
 
 ```json
 {
@@ -131,14 +131,14 @@ An example of a complete collection object with `bm25` configuration:
 
 #### `stopwords`
 
-Part of `invertedIndexConfig`. `text` properties may contain words that are very common and don't contribute to search results. Ignoring them speeds up queries that contain stopwords, as they can be automatically removed from queries as well. This speedup is very notable on scored searches, such as `BM25`.
+`invertedIndexConfig` の一部です。`text` プロパティには検索結果に寄与しない非常に一般的な語が含まれる場合があります。それらを無視すると、クエリにストップワードが含まれる場合の検索速度が向上します。特にスコアリング検索（例: ` BM25 `）では顕著です。
 
-The stopword configuration uses a preset system. You can select a preset to use the most common stopwords for a particular language (e.g. [`"en"` preset](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go)). If you need more fine-grained control, you can add additional stopwords or remove stopwords that you believe should not be part of the list. Alternatively, you can create your custom stopword list by starting with an empty (`"none"`) preset and adding all your desired stopwords as additions.
+ストップワード設定はプリセット方式を採用しています。特定の言語における一般的なストップワードを使用する場合はプリセットを選択します（例: [`"en"` プリセット](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/inverted/stopwords/presets.go)）。より詳細に制御したい場合は、追加したい語を `additions` に、除外したい語を `removals` に設定できます。また、空のプリセット（ `"none"` ）から始めて完全にカスタムのストップワードリストを作成することも可能です。
 
 <details>
-  <summary>Example `stopwords` configuration -  JSON object</summary>
+  <summary>例 `stopwords` 設定 - JSON オブジェクト</summary>
 
-An example of a complete collection object with `stopwords` configuration:
+`stopwords` を設定した完全なコレクションオブジェクトの例:
 
 ```json
   "invertedIndexConfig": {
@@ -152,103 +152,100 @@ An example of a complete collection object with `stopwords` configuration:
 
 </details>
 
-This configuration allows stopwords to be configured by collection. If not set, these values are set to the following defaults:
+この設定により、ストップワードはコレクション単位で設定できます。未設定の場合、以下のデフォルトが適用されます。
 
 | Parameter     | Default value | Acceptable values          |
 | ------------- | ------------- | -------------------------- |
-| `"preset"`    | `"en"`        | `"en"`, `"none"`           |
-| `"additions"` | `[]`          | _any list of custom words_ |
-| `"removals"`  | `[]`          | _any list of custom words_ |
+| `"preset"`    | `"en"`        | `"en"` 、 `"none"`         |
+| `"additions"` | `[]`          | 任意のカスタム語リスト     |
+| `"removals"`  | `[]`          | 任意のカスタム語リスト     |
 
 :::note
 
-- If `preset` is `none`, then the collection only uses stopwords from the `additions` list.
-- If the same item is included in both `additions` and `removals`, Weaviate returns an error.
-  :::
+- `preset` が `none` の場合、コレクションは `additions` リストのみをストップワードとして使用します。  
+- 同じ語が `additions` と `removals` の両方に含まれている場合、Weaviate はエラーを返します。  
+:::
 
-As of `v1.18`, stopwords are indexed. Thus stopwords are included in the inverted index, but not in the tokenized query. As a result, when the BM25 algorithm is applied, stopwords are ignored in the input for relevance ranking but will affect the score.
+`v1.18` 以降、ストップワードもインデックス化されます。そのため、ストップワードは転置インデックスに含まれますが、トークン化されたクエリには含まれません。この結果、BM25 アルゴリズム適用時にはストップワードは関連度計算の入力から除外されますが、スコアには影響します。
 
-Stopwords can now be configured at runtime. You can use the RESTful API to <SkipLink href="/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">update</SkipLink> the list of stopwords after your data has been indexed.
+ストップワードはランタイムに設定変更が可能になりました。データをインデックス化した後でも RESTful API を使用して <SkipLink href="/weaviate/api/rest#tag/schema/put/schema/%7BclassName%7D">更新</SkipLink> できます。
 
 :::info
 
-Stopwords are only removed when [tokenization](../collections.mdx#tokenization) is set to `word`.
+ストップワードが除去されるのは [トークン化](../collections.mdx#tokenization) が `word` に設定されている場合のみです。
 
 :::
 
 #### `indexTimestamps`
 
-Part of `invertedIndexConfig`. To perform queries that are filtered by timestamps, configure the target collection to maintain an inverted index based on the objects' internal timestamps. Currently the timestamps include `creationTimeUnix` and `lastUpdateTimeUnix`.
+`invertedIndexConfig` の一部です。タイムスタンプでフィルターするクエリを実行するには、対象コレクションにオブジェクトの内部タイムスタンプに基づく 転置インデックス を維持させます。現在サポートされているタイムスタンプは `creationTimeUnix` と `lastUpdateTimeUnix` です。
 
-To configure timestamp based indexing, set `indexTimestamps` to `true` in the `invertedIndexConfig` object.
+タイムスタンプベースのインデックスを有効にするには、`invertedIndexConfig` オブジェクトで `indexTimestamps` を `true` に設定します。
 
 #### `indexNullState`
 
-Part of `invertedIndexConfig`. To perform queries that filter on `null`, configure the target collection to maintain an inverted index that tracks `null` values for each property in a collection .
+`invertedIndexConfig` の一部です。`null` でフィルターするクエリを実行するには、対象コレクションに各プロパティの `null` 値を追跡する 転置インデックス を維持させます。
 
-To configure `null` based indexing, setting `indexNullState` to `true` in the `invertedIndexConfig` object.
+`null` ベースのインデックスを有効にするには、`invertedIndexConfig` オブジェクトで `indexNullState` を `true` に設定します。
 
 #### `indexPropertyLength`
 
-Part of `invertedIndexConfig`. To perform queries that filter by the length of a property, configure the target collection to maintain an inverted index based on the length of the properties.
+`invertedIndexConfig` の一部です。プロパティの長さでフィルターするクエリを実行するには、対象コレクションにプロパティの長さに基づく 転置インデックス を維持させます。
 
-To configure indexing based on property length, set `indexPropertyLength` to `true` in the `invertedIndexConfig` object.
+プロパティ長ベースのインデックスを有効にするには、`invertedIndexConfig` オブジェクトで `indexPropertyLength` を `true` に設定します。
 
 :::note
-Using these features requires more resources. The additional inverted indexes must be created and maintained for the lifetime of the collection.
+これらの機能を使用すると、より多くのリソースが必要になります。追加の 転置インデックス はコレクションの存続期間中、作成および維持されます。
 :::
 
-## How Weaviate creates inverted indexes
+## Weaviate による転置インデックスの作成方法
 
-Weaviate creates **separate inverted indexes for each property and each index type**. For example, if you have a `title` property that is both searchable and filterable,
-Weaviate will create two separate inverted indexes for that property - one optimized for search operations and another for filtering operations.
-Find out more in [Concepts: Inverted index](../../concepts/indexing/inverted-index.md#how-weaviate-creates-inverted-indexes).
+Weaviate は **各プロパティと各インデックスタイプごとに個別の 転置インデックス を作成** します。たとえば、`title` プロパティが検索可能かつフィルター可能な場合、Weaviate はそのプロパティに対して検索操作用とフィルター操作用の 2 つの 転置インデックス を作成します。詳細は [概念: 転置インデックス](../../concepts/indexing/inverted-index.md#how-weaviate-creates-inverted-indexes) をご覧ください。
 
-### Adding a property after collection creation
+### コレクション作成後にプロパティを追加する場合
 
-Adding a property after importing objects can lead to limitations in inverted-index related behavior, such as filtering by the new property's length or null status.
+オブジェクトをインポートした後にプロパティを追加すると、新しいプロパティの長さや `null` 状態でのフィルタリングなど、 転置インデックス に関連する機能に制限が生じる可能性があります。
 
-This is caused by the inverted index being built at import time. If you add a property after importing objects, the inverted index for metadata such as the length or the null status will not be updated to include the new properties. This means that the new property will not be indexed for existing objects. This can lead to unexpected behavior when querying.
+これは、 転置インデックス がインポート時に構築されるためです。オブジェクトのインポート後にプロパティを追加しても、長さや `null` 状態といったメタデータ用の 転置インデックス は新しいプロパティを含むよう更新されません。その結果、既存オブジェクトでは新しいプロパティがインデックスされず、クエリ時に予期しない動作が発生する可能性があります。
 
-To avoid this, you can either:
+これを避けるには、以下のいずれかを実施してください。
 
-- Add the property before importing objects.
-- Delete the collection, re-create it with the new property and then re-import the data.
+- オブジェクトをインポートする前にプロパティを追加する  
+- コレクションを削除し、新しいプロパティを含めて再作成した後、データを再インポートする  
 
-We are working on a re-indexing API to allow you to re-index the data after adding a property. This will be available in a future release.
+プロパティ追加後にデータを再インデックスできる API を開発中です。将来のリリースで提供予定です。
 
-## How tokenization affects inverted indexing
+## トークナイゼーションが転置インデックスに与える影響
 
-For `text` properties, Weaviate first **[tokenizes](../collections.mdx#tokenization)** the text before creating inverted index entries. Tokenization is the process of breaking text into individual tokens (words, phrases, or characters) that can be indexed and searched.
+`text` プロパティでは、Weaviate はまず **[トークナイゼーション](../collections.mdx#tokenization)** を行い、その後 転置インデックス エントリを作成します。トークナイゼーションとは、テキストをインデックスや検索に利用できる個々のトークン（単語、フレーズ、文字など）へ分割するプロセスです。
 
-The tokenization method you choose directly impacts:
+選択したトークナイゼーション方式は次の点に直接影響します。
 
-- What tokens are created from your text
-- How these tokens are stored in the inverted index
-- How search queries and filters match against your data
+- テキストから生成されるトークン
+- それらトークンが 転置インデックス にどのように保存されるか
+- 検索クエリやフィルターがデータにどのようにマッチするか
 
-For example, with the text `"Hello, (beautiful) world"`:
+例として、テキスト `"Hello, (beautiful) world"` では次のようになります。
 
-- **`word` tokenization** creates tokens: `["hello", "beautiful", "world"]`
-- **`whitespace` tokenization** creates tokens: `["hello", "(beautiful)", "world"]`
-- **`field` tokenization** creates a single token: `["Hello, (beautiful) world"]`
+- **`word` トークナイゼーション**: `["hello", "beautiful", "world"]`
+- **`whitespace` トークナイゼーション**: `["hello", "(beautiful)", "world"]`
+- **`field` トークナイゼーション**: `["Hello, (beautiful) world"]`
 
-Each token becomes a separate entry in the inverted index, pointing back to the objects containing that token.
+各トークンは 転置インデックス の個別エントリとなり、そのトークンを含むオブジェクトを指し示します。
 
 :::tip
-
-Different tokenization methods suit different use cases. Use `word` (default) for general text search, `field` for exact matching, or specialized tokenizers like `gse` or `kagome_ja` for Asian languages. Learn more about [tokenization options](../collections.mdx#tokenization).
-
+用途によって適切なトークナイゼーション方式は異なります。一般的なテキスト検索にはデフォルトの `word`、完全一致には `field`、アジア言語には `gse` や `kagome_ja` などの特殊なトークナイザーを選択してください。詳しくは [トークナイゼーションオプション](../collections.mdx#tokenization) をご覧ください。
 :::
 
-## Further resources
+## 参考リソース
 
-- [Concepts: Inverted index](../../concepts/indexing/inverted-index.md)
-- [How-to: Set inverted index parameters](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
-- [Reference: Tokenization options](../collections.mdx#tokenization) - Learn about different tokenization methods and how they affect text indexing
+- [概念: 転置インデックス](../../concepts/indexing/inverted-index.md)
+- [ハウツー: 転置インデックスパラメーターの設定](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters)
+- [リファレンス: トークナイゼーションオプション](../collections.mdx#tokenization) - さまざまなトークナイゼーション方式とテキストインデックスへの影響について
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

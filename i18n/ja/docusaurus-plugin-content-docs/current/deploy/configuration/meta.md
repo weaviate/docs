@@ -1,23 +1,23 @@
 ---
-title: Cluster metadata
+title: クラスタ メタデータ
 sidebar_position: 90
 image: og/docs/configuration.jpg
 # tags: ['metadata', 'reference', 'configuration']
 ---
 
-You can retrieve metadata about the Weaviate instance, such as:
+以下のような Weaviate インスタンスのメタデータを取得できます:
 
-- `hostname`: The location of the Weaviate instance.
-- `version`: The version of Weaviate.
-- `modules`: Module specific info.
+- `hostname`: Weaviate インスタンスの場所。
+- `version`: Weaviate のバージョン。
+- `modules`: モジュール固有の情報。
 
-## Example
+## 例
 
 import Meta from '/_includes/code/meta.mdx';
 
 <Meta/>
 
-returns:
+返り値:
 
 ```json
 {
@@ -33,8 +33,9 @@ returns:
 ```
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

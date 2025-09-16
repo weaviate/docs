@@ -1,27 +1,27 @@
 ---
-title: Usage Module
-description: Add the usage module to collect and upload usage analytics data to Google Cloud Storage (GCS) or AWS S3. 
+title: Usage モジュール
+description: 使用状況モジュールを追加して、Google Cloud Storage (GCS) または AWS S3 に使用状況分析データを収集・アップロードします。 
 ---
 
-:::info Added in `v1.32`
-The usage module collects and uploads usage anaytics data to Google Cloud Storage (GCS) or AWS S3. The modules help to track Weaviate instance usage for analytics and monitoring for the purposes of **billing**.
+:::info ` v1.32 ` で追加
+Usage モジュールは使用状況分析データを収集し、Google Cloud Storage (GCS) または AWS S3 にアップロードします。このモジュールは **課金** を目的とした分析およびモニタリングのために Weaviate インスタンスの使用状況を追跡します。
 :::
 
 :::danger
-This module is in development and breaking changes can and will happen. 
+このモジュールは開発中のため、破壊的変更が発生する場合があります。 
 :::
 
-### What it does:
+### 機能
 
-- Periodically collecting usage data.
-- Uploading JSON reports to  either S3 or GCS.
-- Supports runtime configuration overrides. 
-- Includes metrics and logging. 
-- Verifies storage permissions before uploading.
+- 定期的に使用状況データを収集。
+- JSON レポートを S3 または GCS にアップロード。
+- 実行時の設定上書きをサポート。 
+- メトリクスとログを含む。 
+- アップロード前にストレージ権限を検証。
 
-## Configuration
+## 設定
 
-### Example configuration with backup and usage
+### Backup と Usage を含む設定例
 
 ```yaml
 
@@ -43,11 +43,11 @@ usage_gcs_prefix: billing
 
 ```
 
-### Environment variables
+### 環境変数
 
 :::tip
-The usage module must be enabled for any configuration to take effect. 
-While this module is not related to backups, if backups are not enabled it won't collect metrics for backups. 
+Usage モジュールを有効にしない限り、いかなる設定も効果を持ちません。  
+このモジュールはバックアップ機能とは直接関係ありませんが、バックアップが有効でない場合はバックアップのメトリクスは収集されません。 
 :::
 
 ```bash
@@ -59,10 +59,10 @@ ENABLE_MODULES=usage-s3,usage-gcs # or both
 
 ```
 
-#### Runtime overrides
+#### 実行時オーバーライド
 
 :::tip
-`TRACK_VECTOR_DIMENSIONS=true` is required to collect vector dimension metrics in your usage reports, from `v1.32.1` this will no longer be required. 
+`TRACK_VECTOR_DIMENSIONS=true` は Usage レポートでベクトル次元のメトリクスを収集するために必要です。 ` v1.32.1 ` からは不要になります。 
 :::
 
 ```shell
@@ -88,10 +88,10 @@ USAGE_VERIFY_PERMISSIONS=true
 ```
 
 :::info
-Enable runtime overrides to avoid needing to restart Weaviate when updating usage module configurations.
+実行時オーバーライドを有効にすると、Usage モジュールの設定を更新しても Weaviate を再起動する必要がありません。
 :::
 
-#### Example `runtime-overrides.yaml`
+#### `runtime-overrides.yaml` の例
 
 ```yaml
 usage_scrape_interval: 1s
@@ -107,7 +107,7 @@ usage_s3_bucket: weaviate-usage
 usage_s3_prefix: billing
 ```
 
-#### AWS S3 variables
+#### AWS S3 変数
 
 ```bash
 # Required: S3 bucket name
@@ -118,7 +118,7 @@ USAGE_S3_PREFIX=usage-reports
 
 ```
 
-#### GCP GCS variables 
+#### GCP GCS 変数 
 
 ```bash
 # Required: GCS bucket name
@@ -128,46 +128,47 @@ USAGE_GCS_BUCKET=my-weaviate-usage-bucket
 USAGE_GCS_PREFIX=usage-reports
 ```
 
-### Monitoring
+### 監視
 
-The modules provide Prometheus metrics:
+モジュールは Prometheus メトリクスを提供します:
 
-- `weaviate_usage_{gcs|s3}_operations_total`: Total number of operations for module labels (`operation`:collect/upload,  status: success, error).
-- `weaviate_usage_{gcs|s3}_operation_latency_seconds`: Latency of usage operations in seconds labels (`operation` :collect/upload).
-- `weaviate_usage_{gcs|s3}_resource_count`: Number of resources tracked by module, labels (`resource_type` :collections/shards/backups).
-- `weaviate_usage_{gcs|s3}_uploaded_file_size_bytes`: Size of the uploaded usage file in bytes.
+- `weaviate_usage_{gcs|s3}_operations_total`: モジュールの総操作回数。ラベル (`operation`: collect/upload, `status`: success, error)。
+- `weaviate_usage_{gcs|s3}_operation_latency_seconds`: 使用状況操作のレイテンシ (秒)。ラベル (`operation`: collect/upload)。
+- `weaviate_usage_{gcs|s3}_resource_count`: モジュールが追跡するリソース数。ラベル (`resource_type`: collections/shards/backups)。
+- `weaviate_usage_{gcs|s3}_uploaded_file_size_bytes`: アップロードされた使用状況ファイルのサイズ (バイト)。
 
-### Debug logs
+### デバッグログ
 
-See detailed module activity by enabling debugging. 
+デバッグを有効にするとモジュールの詳細な動作を確認できます。 
 
 ```bash
 LOG_LEVEL=debug
 ```
 
-### Testing
-If using Minio, set the environment variable `AWS_ENDPOINT`, `AWS_REGION`
+### テスト
+Minio を使用する場合は、環境変数 `AWS_ENDPOINT`, `AWS_REGION` を設定してください。
 
-#### Local
+#### ローカル
 ```bash
 AWS_REGION=us-east-1
 AWS_ENDPOINT=http://localhost:9000
 ```
 
-#### Cloud
+#### クラウド
 
 ```
 AWS_REGION=us-east-1
 AWS_ENDPOINT=minio.weaviate.svc.cluster.local:9000 
 ```
 
-## Further resources
+## 参考リソース
 
-- [Monitoring](/docs/deploy/configuration/monitoring.md)
-- [Environment variables](/docs/deploy/configuration/env-vars/index.md)
+- [監視](/docs/deploy/configuration/monitoring.md)
+- [環境変数](/docs/deploy/configuration/env-vars/index.md)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

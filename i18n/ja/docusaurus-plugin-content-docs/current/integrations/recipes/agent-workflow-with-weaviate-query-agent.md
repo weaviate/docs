@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/llamaindex/agents/agent-workflow-with-weaviate-query-agent.ipynb
 toc: True
-title: "Weaviate Query Agent with LlamaIndex"
+title: Weaviate Query Agent と LlamaIndex
 featured: False
 integration: True
 agent: False
@@ -12,22 +12,22 @@ tags: ['Query Agent', 'Integration']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-## Weaviate Query Agent with LlamaIndex
+## Weaviate Query Agent と LlamaIndex
 
-This notebook will show you how to define the Weaviate Query Agent as a tool through LlamaIndex.
+このノートブックでは、 LlamaIndex を通じて Weaviate Query Agent をツールとして定義する方法を説明します。
 
-### Requirements
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://console.weaviate.cloud/).
-2. Install LlamaIndex with `pip install llama-index` (we used version `0.12.22` for this notebook)
-3. Install the Weaviate Agents package with `pip install weaviate-agents`
-4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
+### 必要条件
+1. Weaviate Cloud インスタンス (WCD): 現在、 Weaviate Query Agent には WCD からのみアクセスできます。サーバーレス クラスターまたは 14 日間無料のサンドボックスを [こちら](https://console.weaviate.cloud/) から作成できます。  
+2. `pip install llama-index` で LlamaIndex をインストールします (このノートブックではバージョン `0.12.22` を使用)。  
+3. `pip install weaviate-agents` で Weaviate Agents パッケージをインストールします。  
+4. データが入った Weaviate クラスターが必要です。まだお持ちでない場合は、 Weaviate Blogs をインポートするために [このノートブック](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) をご覧ください。  
 
-### Resources on the LlamaIndex Agent Workflow
-1. [Getting Started Guide](https://docs.llamaindex.ai/en/latest/getting_started/starter_example/)
-1. [Agent Tutorial](https://docs.llamaindex.ai/en/latest/understanding/agent/)
-1. [Key Features in the Agent Workflow](https://docs.llamaindex.ai/en/latest/examples/agent/agent_workflow_basic/)
+### LlamaIndex エージェント ワークフローのリソース
+1. [クイックスタート ガイド](https://docs.llamaindex.ai/en/latest/getting_started/starter_example/)
+1. [エージェント チュートリアル](https://docs.llamaindex.ai/en/latest/understanding/agent/)
+1. [エージェント ワークフローの主な機能](https://docs.llamaindex.ai/en/latest/examples/agent/agent_workflow_basic/)
 
-### Import libraries and keys
+### ライブラリとキーのインポート
 
 ```python
 import weaviate
@@ -45,7 +45,7 @@ os.environ["WEAVIATE_API_KEY"] = ""
 os.environ["OPENAI_API_KEY"] = ""
 ```
 
-### Define Query Agent function
+### Query Agent 関数の定義
 
 ```python
 def query_agent_request(query: str) -> str:
@@ -75,13 +75,13 @@ def query_agent_request(query: str) -> str:
     return query_agent.run(query).final_answer
 ```
 
-### Define model
+### モデルの定義
 
 ```python
 llm = OpenAI(model="gpt-4o-mini")
 ```
 
-### Create Agent Workflow
+### エージェント ワークフローの作成
 
 ```python
 workflow = AgentWorkflow.from_tools_or_functions(
@@ -91,14 +91,14 @@ workflow = AgentWorkflow.from_tools_or_functions(
 )
 ```
 
-### Query Time
+### クエリ実行
 
 ```python
 response = await workflow.run(user_msg="How do I run Weaviate with Docker?")
 print(response)
 ```
 
-Python output:
+Python 出力:
 ```text
 /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/weaviate/warnings.py:314: ResourceWarning: Con004: The connection to Weaviate was not closed properly. This can lead to memory leaks.
             Please make sure to close the connection using `client.close()`.
@@ -143,3 +143,4 @@ To run Weaviate with Docker, follow these steps:
    \```
    This command will confirm if Weaviate is up and ready for use.
 ```
+

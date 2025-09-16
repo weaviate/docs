@@ -1,16 +1,16 @@
 ---
-title: Authorization
+title: 認可
 image: og/docs/configuration.jpg
 # tags: ['authorization']
 ---
 
-:::info Authentication and authorization
-Authentication and authorization are closely related concepts, and sometimes abbreviated as `AuthN` and `AuthZ`. Authentication (`AuthN`) is the process of verifying the identity of a user, while authorization (`AuthZ`) is the process of determining what permissions the user has.
+:::info 認証と認可
+認証と認可は密接に関連する概念で、しばしば `AuthN` と `AuthZ` と省略されます。認証（`AuthN`）はユーザーの身元を確認するプロセスであり、認可（`AuthZ`）はそのユーザーがどのような権限を持つかを決定するプロセスです。
 :::
 
-Weaviate provides differentiated access through [authorization](./authorization.md) levels, based on the user's [authentication](./authentication.md) status. A user can be granted admin permission, read-only permission, or no permission at all. From `v1.29.0`, Weaviate also supports [Role-Based Access Control (RBAC)](/weaviate/configuration/rbac) for more fine-grained control over user permissions.
+ Weaviate は、ユーザーの [authentication](./authentication.md) 状態に基づいて [authorization](./authorization.md) レベルによる差別化されたアクセスを提供します。ユーザーには管理者権限、読み取り専用権限、または権限なしを付与できます。`v1.29.0` から、 Weaviate はユーザー権限をより細かく制御できる [Role-Based Access Control (RBAC)](/weaviate/configuration/rbac) もサポートしています。
 
-The following diagram illustrates the flow of a user request through the authentication and authorization process:
+次の図は、ユーザーリクエストが認証と認可を通過するフローを示しています。
 
 ```mermaid
 flowchart TB
@@ -65,46 +65,46 @@ flowchart TB
     style undiffer fill:#fff0e6,stroke:#ff9933
 ```
 
-## Available authorization schemes
+## 利用可能な認可方式
 
-The following authorization schemes are available in Weaviate:
+ Weaviate では、次の認可方式が利用できます。
 
-- [Role-Based Access Control (RBAC)](#role-based-access-control-rbac)
-- [Admin list](#admin-list)
-- [Undifferentiated access](#undifferentiated-access)
+- [ロールベースアクセス制御 (RBAC)](#ロールベースアクセス制御-rbac)
+- [管理者リスト](#管理者リスト)
+- [区別のないアクセス](#区別のないアクセス)
 
-In the Admin list authorization scheme, [anonymous users](#anonymous-users) can be granted permissions.
+管理者リスト方式では、[匿名ユーザー](#匿名ユーザー) に権限を付与できます。
 
-The way to configure authorization differs by your deployment method, depending on whether you are running Weaviate in Docker or Kubernetes. Below, we provide examples for both.
+認可の設定方法は、 Weaviate を Docker で実行するか Kubernetes で実行するかなど、デプロイ方法によって異なります。以下では、両方の例を示します。
 
-:::info What about Weaviate Cloud (WCD)?
-For Weaviate Cloud (WCD) instances, authorization is pre-configured with Admin list access. You can [authenticate against Weaviate](/weaviate/connections/connect-cloud.mdx) with your WCD credentials using OIDC, or [with admin or read-only API keys](/cloud/manage-clusters/connect.mdx).
+:::info Weaviate Cloud (WCD) について
+ Weaviate Cloud (WCD) インスタンスでは、認可は管理者リスト方式であらかじめ設定されています。OIDC を使用して WCD 資格情報で [ Weaviate に認証](/weaviate/connections/connect-cloud.mdx) するか、[管理者または読み取り専用 API キー](/cloud/manage-clusters/connect.mdx) で接続できます。  
 <br/>
 
-RBAC access will be available in WCD in a future release.
+RBAC アクセスは将来のリリースで WCD に追加される予定です。
 :::
 
-## Role-Based Access Control (RBAC)
+## ロールベースアクセス制御 (RBAC)
 
-:::info Available from `v1.29`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
+:::info `v1.29` から利用可能
+ロールベースアクセス制御 (RBAC) は、バージョン `v1.29` から Weaviate で一般利用可能です。
 :::
 
-Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to define **roles** and assign **permissions** to those roles. Users can then be assigned to roles, and inherit the permissions associated with those roles.
+ロールベースアクセス制御 (RBAC) は、ユーザーのロールに基づいてリソースへのアクセスを制限する方法です。 Weaviate では、RBAC を使用して **ロール** を定義し、そのロールに **権限** を割り当てることができます。ユーザーをロールに割り当てると、そのロールに関連付けられた権限を継承します。
 
-Check out the dedicated **[RBAC documentation](/weaviate/configuration/rbac/index.mdx)** for instructions on how to [configure RBAC](/deploy/configuration/configuring-rbac.md) in your Weaviate instance and examples on how to [manage roles an users](/weaviate/configuration/rbac/manage-roles.mdx).
+RBAC の設定方法やロール・ユーザー管理の例については、専用の **[RBAC ドキュメント](/weaviate/configuration/rbac/index.mdx)** を参照してください。 Weaviate インスタンスでの [RBAC の設定](/deploy/configuration/configuring-rbac.md) や [ロールとユーザーの管理](/weaviate/configuration/rbac/manage-roles.mdx) 方法が記載されています。
 
-## Admin list
+## 管理者リスト
 
-The "Admin list" authorization scheme allows you to specify a list of admin users with full permissions to perform all actions in Weaviate, and a list of read-only users with permissions to perform only read operations.
+「管理者リスト」認可方式では、 Weaviate 内のすべての操作を実行できるフル権限を持つ管理者ユーザーと、読み取り操作のみを実行できる読み取り専用ユーザーのリストを指定できます。
 
-These permissions cannot be customized or extended. For more fine-grained control over user permissions, use [RBAC](#role-based-access-control-rbac) instead.
+これらの権限はカスタマイズや拡張ができません。より細かい権限制御が必要な場合は、[RBAC](#ロールベースアクセス制御-rbac) を利用してください。
 
-Admin list authorization scheme cannot be used in combination with RBAC.
+管理者リスト方式は RBAC と併用できません。
 
-### Admin list: Docker
+### 管理者リスト: Docker
 
-Admin list authorization can be configured using environment variables. In Docker Compose, set them in the configuration file (`docker-compose.yml`) such as in the following example:
+管理者リスト認可は環境変数で設定できます。Docker Compose では、以下のように `docker-compose.yml` に設定します。
 
 ```yaml
 services:
@@ -131,16 +131,16 @@ services:
       AUTHORIZATION_ADMINLIST_READONLY_USERS: 'user-b'
 ```
 
-This configuration:
-- Enables Admin list authorization
-- Configures `user-a` as a user with built-in admin permissions
-- Configures `user-b` as a user with built-in viewer permissions
+この設定では以下を行っています。
+- 管理者リスト認可を有効化
+- `user-a` を組み込みの管理者権限ユーザーとして設定
+- `user-b` を組み込みの閲覧者権限ユーザーとして設定
 
-Note that in this configuration, `user-c` has no permissions.
+この構成では、`user-c` には権限がありません。
 
-### Admin list: Kubernetes
+### 管理者リスト: Kubernetes
 
-For Kubernetes deployments using Helm, API key authentication can be configured in the `values.yaml` file under the `authorization` section. Here's an example configuration:
+Helm を使用した Kubernetes デプロイでは、`values.yaml` の `authorization` セクションで API キー認証を設定します。以下はその例です。
 
 ```yaml
 # Example authentication configuration using API keys
@@ -174,11 +174,11 @@ authorization:
     - user-b
 ```
 
-### Anonymous users
+### 匿名ユーザー
 
-Anonymous users are identified as `anonymous` in Weaviate. In the Admin list authorization scheme, you can apply permissions to anonymous users. The RBAC authorization scheme is not compatible with anonymous users.
+匿名ユーザーは Weaviate では `anonymous` として識別されます。管理者リスト認可方式では、匿名ユーザーに権限を付与できます。RBAC 方式は匿名ユーザーに対応していません。
 
-To confer permissions to anonymous users in the Admin list scheme, you can use the `anonymous` keyword in the configuration as shown below.
+管理者リスト方式で匿名ユーザーに権限を与えるには、以下のように設定で `anonymous` キーワードを使用します。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -242,18 +242,19 @@ authorization:
 
 </Tabs>
 
-## Undifferentiated access
+## 区別のないアクセス
 
-Weaviate can be configured to provide undifferentiated access, by disabling authentication for example and enabling anonymous access. This configuration is strongly discouraged except for development or evaluation purposes.
+ Weaviate は、たとえば認証を無効にして匿名アクセスを有効にすることで、区別のないアクセスを提供するように設定できます。本番環境では推奨されず、開発や評価目的に限って使用してください。
 
-## Further resources
+## さらに詳しく
 
-- [Configuration: Authentication](./authentication.md)
-- [Configuration: RBAC](/weaviate/configuration/rbac/index.mdx)
-- [References: Environment variables / Authentication and Authorization](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
+- [設定: 認証](./authentication.md)
+- [設定: RBAC](/weaviate/configuration/rbac/index.mdx)
+- [リファレンス: 環境変数 / 認証と認可](/deploy/configuration/env-vars/index.md#authentication-and-authorization)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

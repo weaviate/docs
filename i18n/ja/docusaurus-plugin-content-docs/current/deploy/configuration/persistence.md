@@ -1,19 +1,19 @@
 ---
-title: Persistence
+title: 永続化
 image: og/docs/configuration.jpg
 ---
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-When running Weaviate with Docker or Kubernetes, you can persist its data by mounting a volume to store the data outside of the containers. Doing so will cause the Weaviate instance to also load the data from the mounted volume when it is restarted.
+Weaviate を Docker または Kubernetes で実行する際、ボリュームをマウントしてコンテナ外にデータを保存することでデータを永続化できます。これにより、再起動時に Weaviate インスタンスはマウントされたボリュームからデータを読み込みます。
 
-Note that Weaviate now offers native backup modules starting with `v1.15` for single-node instances, and `v1.16` for multi-node instances. For older versions of Weaviate, persisting data as described here will allow you to back up Weaviate.
+Weaviate は `v1.15` からシングルノード、`v1.16` からマルチノード向けにネイティブのバックアップモジュールを提供しています。より古いバージョンでは、ここで説明する方法でデータを永続化することでバックアップが可能です。
 
 ## Docker Compose
 
-### Persistence
+### 永続化
 
-When running Weaviate with Docker Compose, you can set the `volumes` variable under the `weaviate` service and a unique cluster hostname as an environment variable.
+Docker Compose で Weaviate を実行する場合、`weaviate` サービスの下に `volumes` 変数と、環境変数として一意のクラスター hostname を設定します。
 
 ```yaml
 services:
@@ -25,13 +25,13 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
 ```
 
-* About the volumes
-  * `/var/weaviate` is the location where you want to store the data on the local machine
-  * `/var/lib/weaviate` The value after the colon (:) is the storage location inside the container. This value must match the PERSISTENCE_DATA_PATH variable.
-* About the hostname
-  * `CLUSTER_HOSTNAME` can be any name
+* volumes について  
+  * `/var/weaviate` はローカルマシン上でデータを保存したい場所です  
+  * `/var/lib/weaviate` コロン (:) 以降の値はコンテナ内の保存場所です。この値は PERSISTENCE_DATA_PATH 変数と一致させる必要があります。  
+* hostname について  
+  * `CLUSTER_HOSTNAME` は任意の名前を指定できます  
 
-In the case you want a more verbose output, you can change the environment variable for the `LOG_LEVEL`
+より詳細な出力が必要な場合は、`LOG_LEVEL` の環境変数を変更してください。
 
 ```yaml
 services:
@@ -40,7 +40,7 @@ services:
       LOG_LEVEL: 'debug'
 ```
 
-A complete example of a Weaviate without modules but with an externally mounted volume and more verbose output:
+モジュールなし、外部ボリュームをマウントし、詳細ログ出力を有効にした Weaviate の完全な例:
 
 ```yaml
 ---
@@ -69,44 +69,42 @@ services:
 ...
 ```
 
-### Backups
+### バックアップ
 
-See [Backups](./backups.md).
+[バックアップ](./backups.md) を参照してください。
 
 ## Kubernetes
 
-For Kubernetes setup, the only thing to bear in mind is that Weaviate needs a `PersistentVolumes` through `PersistentVolumeClaims` ([more info](../installation-guides/k8s-installation.md#requirements)) but the Helm chart is already configured to store the data on an external volume.
+Kubernetes セットアップでは、Weaviate が `PersistentVolumeClaims` を通じて `PersistentVolumes` を必要とする点だけを覚えておいてください（[詳細はこちら](../installation-guides/k8s-installation.md#requirements)）。Helm chart は既にデータを外部ボリュームに保存するよう構成されています。
 
-## Disk Pressure Warnings and Limits
+## ディスクプレッシャーの警告と制限
 
-Starting with `v1.12.0` there are two levels of disk usage notifications and actions configured through environment variables. Both variables are optional. If not set they default to the values outlined below:
+`v1.12.0` 以降、ディスク使用量に関する 2 段階の通知と動作を環境変数で設定できます。どちらの変数も任意で、設定しない場合は下記のデフォルト値が適用されます。
 
 | Variable | Default Value | Description |
 | --- | --- | --- |
-| `DISK_USE_WARNING_PERCENTAGE` | `80` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk |
-| `DISK_USE_READONLY_PERCENTAGE` | `90` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. |
+| `DISK_USE_WARNING_PERCENTAGE` | `80` | ディスク使用率が指定パーセンテージを超えると、そのノードのすべてのシャードが警告をログに記録します |
+| `DISK_USE_READONLY_PERCENTAGE` | `90` | ディスク使用率が指定パーセンテージを超えると、そのノードのすべてのシャードが `READONLY` とマークされ、以降の書き込み要求は失敗します |
 
-If a shard was marked `READONLY` due to disk pressure and you want to mark the
-shard as ready again (either because you have made more space available or
-changed the thresholds) you can use the <SkipLink href="/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> to do so.
+ディスクプレッシャーによりシャードが `READONLY` にマークされ、空き容量を増やすか閾値を変更したあとでシャードを再び ready にしたい場合は、<SkipLink href="/weaviate/api/rest#tag/schema/get/schema/%7BclassName%7D/shards">Shards API</SkipLink> を使用してください。
 
-## Disk access method
+## ディスクアクセス方式
 
 :::info Added in `v1.21`
 :::
 
-Weaviate maps data on disk to memory. To configure how Weaviate uses virtual memory, set the `PERSISTENCE_LSM_ACCESS_STRATEGY` environment variable. The default value is `mmap`. Use `pread` to as an alternative.
+Weaviate はディスク上のデータをメモリにマッピングします。仮想メモリの使用方法を設定するには、`PERSISTENCE_LSM_ACCESS_STRATEGY` 環境変数を設定します。デフォルト値は `mmap` です。代替として `pread` を使用できます。
 
-The two functions reflect different under-the-hood memory management behaviors. `mmap` uses a memory-mapped file, which means that the file is mapped into the virtual memory of the process. `pread` is a function that reads data from a file descriptor at a given offset.
+これら 2 つの関数は、メモリ管理の内部動作が異なります。`mmap` はメモリマップファイルを使用し、ファイルをプロセスの仮想メモリにマッピングします。`pread` は指定したオフセットからファイルディスクリプタを読み取る関数です。
 
-In general, `mmap` may be a preferred option with memory management benefits. However, if you experience stalling situations under heavy memory load, we suggest trying `pread` instead.
+一般的にはメモリ管理上の利点から `mmap` が推奨されますが、メモリ負荷が高い状況で停止が発生する場合は `pread` を試してみてください。
 
+## 関連ページ
+- [設定: バックアップ](/deploy/configuration/backups.md)
 
-## Related pages
-- [Configuration: Backups](/deploy/configuration/backups.md)
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

@@ -4,18 +4,20 @@ sidebar_position: 1
 image: og/integrations/home.jpg
 ---
 
-[Arize AI](https://arize.com/) created Phoenix, an open-source tool for tracing and evaluation.
+Arize AI は、トレーシングと評価のためのオープンソース ツールである Phoenix を開発しました。
 
-## Arize and Weaviate
-You can use [OpenTelemetry](https://opentelemetry.io/) to log search queries sent to Weaviate and requests sent to LLM providers in Phoenix.
+## Arize と Weaviate
+OpenTelemetry を使用して、 Weaviate に送信される検索クエリと LLM プロバイダーに送信されるリクエストを Phoenix で記録できます。
 
-Phoenix provides a data visualization UI and additional APIs for accessing logged data.
+Phoenix は、データの可視化 UI と、記録されたデータへアクセスするための追加の API を提供します。
 
-## Our Resources
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+[ **ハンズオン学習** ](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| DSPy Instrumentor | Log calls sent to DSPy using Phoenix | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/arize/DSPy-Instrumentor.py) |
+| DSPy Instrumentor | Phoenix を使用して DSPy に送信される呼び出しを記録する | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/operations/arize/DSPy-Instrumentor.py) |
+
+

@@ -3,33 +3,35 @@ title: Google Cloud Platform
 sidebar_position: 2
 ---
 
-Launch a Weaviate cluster from the Google Cloud Platform (GCP) marketplace. Weaviate integrates with Google Gemini API and Google Vertex AI.
+Google Cloud Platform ( GCP ) の Marketplace から Weaviate クラスターを起動できます。Weaviate は Google Gemini API と Google Vertex AI と統合できます。
 
-## GCP and Weaviate
-Weaviate integrates with GCP infrastructure and services like Google [Gemini API](https://ai.google.dev/aistudio) and [Vertex AI](https://cloud.google.com/vertex-ai?hl=en).
+## GCP と Weaviate
+Weaviate は GCP のインフラストラクチャおよび Google の [Gemini API](https://ai.google.dev/aistudio) や [Vertex AI](https://cloud.google.com/vertex-ai?hl=en) などのサービスと連携します。
 
-* [Run embedding and generative models on Vertex AI and Gemini API](/weaviate/model-providers/google)
+* [Vertex AI と Gemini API で埋め込みモデルおよび生成モデルを実行する](/weaviate/model-providers/google)
 
 
-## Our Resources
-The resources are broken into two categories:
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+これらのリソースは次の 2 つのカテゴリに分類されます:
+1. [**ハンズオン学習**](#ハンズオン学習): エンドツーエンドのチュートリアルで技術的理解を深めます。
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+2. [**読むと聞く**](#読むと聞く): これらのテクノロジーに関する概念的理解を深めます。
 
-### Hands on Learning
+### ハンズオン学習
 
 | Topic | Description | Resource |
 | --- | --- | --- |
-| Build a multimodal application using Gemini Flash | This notebook shows you how to use Weaviate and Gemini Flash to build a multimodal application. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/gemini/multimodal-and-gemini-flash/NY-Roadshow-Gemini.ipynb) |
-| BigQuery and Weaviate | Sync data between BigQuery and Weaviate using DSPy. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/bigquery/BigQuery-Weaviate-DSPy-RAG.ipynb) |
-| Semantic Search with Gemini Ultra | This notebook shows you how to use Weaviate and Gemini Ultra. |[Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/gemini/gemini-ultra/gemini-ultra-weaviate.ipynb) |
-| Weaviate Query Agent with Gemini API | Use the Query Agent as a tool with the Gemini API. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/agents/gemini-api-query-agent.ipynb) |
-| Weaviate Query Agent with Vertex AI | Use the Query Agent as a tool with Vertex AI. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/agents/vertex-ai-query-agent.ipynb) |
-| Deploy a Weaviate vector database on GKE | This tutorial shows you how to deploy a Weaviate vector database cluster on Google Kubernetes Engine (GKE). | [Guide](https://cloud.google.com/kubernetes-engine/docs/tutorials/deploy-weaviate) |
-| Personalized Product Descriptions with Weaviate and the Gemini API | Learn how to embed your data, run a semantic search, make a generative call to the Gemini API and store the output back in your database. | [Notebook](https://github.com/google-gemini/cookbook/blob/main/examples/weaviate/personalized_description_with_weaviate_and_gemini_api.ipynb) |
+| Gemini Flash を使用したマルチモーダル アプリケーションの構築 | このノートブックでは、Weaviate と Gemini Flash を使ってマルチモーダル アプリケーションを構築する方法を示します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/gemini/multimodal-and-gemini-flash/NY-Roadshow-Gemini.ipynb) |
+| BigQuery と Weaviate | DSPy を使用して BigQuery と Weaviate 間でデータを同期します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/bigquery/BigQuery-Weaviate-DSPy-RAG.ipynb) |
+| Gemini Ultra でのセマンティック検索 | このノートブックでは、Weaviate と Gemini Ultra の使い方を紹介します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/gemini/gemini-ultra/gemini-ultra-weaviate.ipynb) |
+| Gemini API を用いた Weaviate Query Agent | Query Agent を Gemini API のツールとして使用します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/agents/gemini-api-query-agent.ipynb) |
+| Vertex AI を用いた Weaviate Query Agent | Query Agent を Vertex AI のツールとして使用します。 | [ノートブック](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/google/agents/vertex-ai-query-agent.ipynb) |
+| GKE への Weaviate ベクトル データベースのデプロイ | このチュートリアルでは、Google Kubernetes Engine ( GKE ) 上に Weaviate ベクトル データベース クラスターをデプロイする方法を説明します。 | [ガイド](https://cloud.google.com/kubernetes-engine/docs/tutorials/deploy-weaviate) |
+| Weaviate と Gemini API によるパーソナライズされた商品説明 | データを埋め込み、セマンティック検索を実行し、Gemini API へ生成呼び出しを行い、その出力をデータベースに保存する方法を学びます。 | [ノートブック](https://github.com/google-gemini/cookbook/blob/main/examples/weaviate/personalized_description_with_weaviate_and_gemini_api.ipynb) |
 
-### Read and Listen
+### 読むと聞く
 | Topic | Description | Resource |
 | --- | --- | --- |
-| Weaviate on Vertex AI RAG Engine: Building RAG Applications on Google Cloud | Learn how to build RAG Applications on Google Cloud using the new RAG Engine on Vertex AI. | [Blog](https://weaviate.io/blog/google-rag-api) |
+| Weaviate on Vertex AI RAG Engine: Building RAG Applications on Google Cloud | Vertex AI の新しい RAG Engine を使用し、Google Cloud 上で RAG アプリケーションを構築する方法を学びます。 | [ブログ](https://weaviate.io/blog/google-rag-api) |
+
+

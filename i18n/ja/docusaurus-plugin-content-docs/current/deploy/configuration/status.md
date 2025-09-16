@@ -1,66 +1,66 @@
 ---
-title: Status
+title: ステータス
 sidebar_position: 70
 image: og/docs/configuration.jpg
 # tags: ['status', 'reference', 'configuration']
 ---
 
-Various cluster statuses are available in Weaviate.
+Weaviate にはさまざまなクラスター ステータスがあります。
 
-## Liveness
+## ライブネス
 
-The `live` endpoint checks if the application is alive. You can use it for a Kubernetes liveness probe.
+`live` エンドポイントは、アプリケーションが稼働しているかどうかを確認します。Kubernetes の liveness プローブとして利用できます。
 
-#### Usage
+#### 使い方
 
-The endpoint accepts a `GET` request:
+エンドポイントは `GET` リクエストを受け付けます。
 
 ```js
 GET /v1/.well-known/live
 ```
 
-The endpoint returns HTTP status code `200` if the application is able to respond to HTTP requests.
+アプリケーションが HTTP リクエストに応答できる場合、エンドポイントは HTTP ステータス コード `200` を返します。
 
-#### Example
+#### 例
 
 import WellKnownLive from '/_includes/code/wellknown.live.mdx';
 
 <WellKnownLive/>
 
-The endpoint returns HTTP status code `200` if the application is able to respond to HTTP requests.
+アプリケーションが HTTP リクエストに応答できる場合、エンドポイントは HTTP ステータス コード `200` を返します。
 
-## Readiness
+## レディネス
 
-The `ready` endpoint checks if the application is ready to receive traffic. You can use it for Kubernetes readiness probe.
+`ready` エンドポイントは、アプリケーションがトラフィックを受信できる状態かどうかを確認します。Kubernetes の readiness プローブとして利用できます。
 
-#### Usage
+#### 使い方
 
-The discovery endpoint accepts a `GET` request:
+このディスカバリー エンドポイントは `GET` リクエストを受け付けます。
 
 ```js
 GET /v1/.well-known/ready
 ```
 
-The endpoint returns HTTP status code `200` if the application is able to respond to HTTP requests. If the application is currently unable to serve traffic, the endpoint returns HTTP status code `503`.
+アプリケーションが HTTP リクエストに応答できる場合、エンドポイントは HTTP ステータス コード `200` を返します。現在トラフィックを処理できない場合は、HTTP ステータス コード `503` を返します。
 
-If the application is unavailable and you have horizontal replicas of Weaviate that can receive traffic, redirect traffic to one of the replicas.
+アプリケーションが利用できず、トラフィックを受信可能な水平方向の Weaviate レプリカがある場合は、トラフィックをそのレプリカのいずれかにリダイレクトしてください。
 
-#### Example
+#### 例
 
 import WellknownReady from '/_includes/code/wellknown.ready.mdx';
 
 <WellknownReady/>
 
-## Schema synchronization
+## スキーマ同期
 
-The `v1//schema/cluster-status` endpoint displays the status of the schema synchronization. The endpoint returns the following fields:
+`v1//schema/cluster-status` エンドポイントは、スキーマ同期のステータスを表示します。エンドポイントは次のフィールドを返します。
 
-- `healthy`: The status of the schema synchronization.
-- `hostname`: The hostname of the Weaviate instance.
-- `ignoreSchemaSync`: Whether to ignore the cluster check at startup (for recovery from an out-of-sync situation).
-- `nodeCount`: The number of nodes in the cluster.
+- `healthy`: スキーマ同期のステータス  
+- `hostname`: Weaviate インスタンスのホスト名  
+- `ignoreSchemaSync`: 起動時にクラスター チェックを無視するかどうか（同期ずれからの復旧用）  
+- `nodeCount`: クラスター内のノード数  
 
-Example response:
+例のレスポンス:
 
 ```js
 {
@@ -71,10 +71,9 @@ Example response:
 }
 ```
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
-
 

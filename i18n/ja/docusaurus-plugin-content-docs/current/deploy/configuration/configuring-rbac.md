@@ -1,5 +1,5 @@
 ---
-title: Enable and configure RBAC
+title: RBAC を有効化して設定する
 sidebar_label: RBAC
 image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
@@ -7,26 +7,26 @@ image: og/docs/configuration.jpg
 
 import SkipLink from '/src/components/SkipValidationLink'
 
-:::info Added in `v1.29`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
+:::info `v1.29` で追加
+役割ベースアクセス制御 (RBAC) は、バージョン `v1.29` から Weaviate で一般利用可能になりました。
 :::
 
-Role-based access control (RBAC) is a method of restricting access to resources based on the roles of users. In Weaviate, RBAC allows you to **[define roles and assign permissions](/weaviate/configuration/rbac/manage-roles)** to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
+役割ベースアクセス制御 (RBAC) は、ユーザーの役割に基づいてリソースへのアクセスを制限する方法です。Weaviate では、RBAC を使用して **[ロールを定義し、それらに権限を割り当てる](/weaviate/configuration/rbac/manage-roles)** ことができます。ユーザーをロールに割り当てると、そのロールに関連付けられた権限を継承します。
 
-Weaviate comes with a set of predefined roles. These roles are:
+Weaviate には、あらかじめ定義されたロールが用意されています。これらのロールは次のとおりです。
 
-- `root`: The root role has full access to all resources in Weaviate.
-- `viewer`: The viewer role has read-only access to all resources in Weaviate.
+- `root`: root ロールは Weaviate 内のすべてのリソースに対するフルアクセス権を持ちます。
+- `viewer`: viewer ロールは Weaviate 内のすべてのリソースに対する読み取り専用アクセス権を持ちます。
 
-The `root` role can be assigned through the Weaviate configuration file. A predefined role cannot be modified. The user can, however, be assigned additional roles through the Weaviate API.
+`root` ロールは Weaviate の設定ファイルを通じて割り当てることができます。定義済みロールは変更できませんが、ユーザーには Weaviate API を介して追加のロールを割り当てることができます。
 
-:::tip Root user requirement in older versions
-In Weaviate versions `v1.30.6` and `v1.31.0` or below, if RBAC is enabled, you must configure at least one user with the built-in root role. Otherwise, Weaviate will not start. This requirement was removed in versions `v1.30.7` and `v1.31.1`.
+:::tip 旧バージョンでの root ユーザー要件
+Weaviate バージョン `v1.30.6` および `v1.31.0` 以前では、RBAC が有効な場合、組み込みの root ロールを持つユーザーを少なくとも 1 人設定する必要があります。設定しない場合、Weaviate は起動しません。この要件は `v1.30.7` と `v1.31.1` で削除されました。
 :::
 
 ## Docker <i class="fa-brands fa-docker"></i> {#docker}
 
-RBAC authorization can be configured using environment variables. In Docker Compose, set them in the configuration file (`docker-compose.yml`) such as in the following example:
+RBAC 認可は環境変数で設定できます。Docker Compose では、以下の例のように設定ファイル (`docker-compose.yml`) に記述します。
 
 ```yaml
 services:
@@ -54,25 +54,25 @@ services:
       AUTHENTICATION_DB_USERS_ENABLED: 'true'
 ```
 
-This configuration:
-- Enables RBAC
-- Configures `root-user` as a user with built-in admin permissions
+この設定では、
+- RBAC を有効化
+- `root-user` を組み込みの管理者権限を持つユーザーとして設定
 
-You can connect to your instance with the root user in order to [create new users](/weaviate/configuration/rbac/manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](/weaviate/configuration/rbac/manage-roles.mdx).
+root ユーザーでインスタンスに接続し、<SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> や [クライアントライブラリを利用したプログラム](/weaviate/configuration/rbac/manage-roles.mdx) を使用してカスタムロールと権限を割り当てられる [新しいユーザーを作成](/weaviate/configuration/rbac/manage-users.mdx) できます。
 
 import DynamicUserManagement from '/_includes/configuration/dynamic-user-management.mdx';
 
 <DynamicUserManagement />
 
-:::caution Changes in environment variables
-As of Weaviate version `v1.29` these environment variables have changed:
-- `AUTHORIZATION_VIEWER_USERS` and `AUTHORIZATION_ADMIN_USERS` were removed
-- `AUTHORIZATION_ADMIN_USERS` has been replaced with `AUTHORIZATION_RBAC_ROOT_USERS`
+:::caution 環境変数の変更
+Weaviate バージョン `v1.29` 以降、以下の環境変数が変更されました。
+- `AUTHORIZATION_VIEWER_USERS` と `AUTHORIZATION_ADMIN_USERS` は削除されました
+- `AUTHORIZATION_ADMIN_USERS` は `AUTHORIZATION_RBAC_ROOT_USERS` に置き換えられました
 :::
 
 ## Kubernetes <i class="fa fa-cubes"></i> {#kubernetes}
 
-For Kubernetes deployments using Helm, API key authentication can be configured in the `values.yaml` file under the `authorization` section. Here's an example configuration:
+Helm を使用した Kubernetes デプロイでは、API キー認証を `values.yaml` ファイルの `authorization` セクションで設定します。以下は設定例です。
 
 ```yaml
 # Example authentication configuration using API keys
@@ -99,33 +99,34 @@ authorization:
     - root-user
 ```
 
-This configuration:
-- Enables RBAC
-- Configures `root-user` as a user with built-in admin permissions
+この設定では、
+- RBAC を有効化
+- `root-user` を組み込みの管理者権限を持つユーザーとして設定
 
-You can connect to your instance with the root user in order to [create new users](/weaviate/configuration/rbac/manage-users.mdx) which can be assigned custom roles and permissions using the <SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> or [programmatically using a client library](/weaviate/configuration/rbac/manage-roles.mdx).
+root ユーザーでインスタンスに接続し、<SkipLink href="/weaviate/api/rest#tag/authz">REST API</SkipLink> や [クライアントライブラリを利用したプログラム](/weaviate/configuration/rbac/manage-roles.mdx) を使用してカスタムロールと権限を割り当てられる [新しいユーザーを作成](/weaviate/configuration/rbac/manage-users.mdx) できます。
 
-## RBAC and performance
+## RBAC とパフォーマンス
 
-RBAC is a powerful feature that allows you to define fine-grained access control policies. However, it can also have an impact on performance as each operation must be checked against the user's permissions.
+RBAC はきめ細かなアクセス制御ポリシーを定義できる強力な機能ですが、各操作でユーザーの権限をチェックする必要があるため、パフォーマンスに影響を与える可能性があります。
 
-The exact performance impact will depend on your setup and use case. In our internal testing, the most significant performance impact was seen for object creation operations.
+具体的な影響はセットアップとユースケースによって異なりますが、内部テストではオブジェクト作成操作で最も大きな影響が見られました。
 
-We did not observe additional performance penalties for using custom roles over the built-in roles.
+組み込みロールと比較してカスタムロールを使用しても、追加のパフォーマンス低下は確認されませんでした。
 
-Here are some tips to optimize performance when using RBAC:
-- Monitor object creation performance
-- Use a high availability (i.e. 3+ nodes) setup to distribute the load
+RBAC 使用時のパフォーマンス最適化のヒント:
+- オブジェクト作成時のパフォーマンスを監視する
+- 可用性の高い (3 ノード以上) 構成で負荷を分散する
 
-## Further resources
+## 参考リソース
 
-- [RBAC: Overview](/weaviate/configuration/rbac/index.mdx)
-- [RBAC: Manage roles](/weaviate/configuration/rbac/manage-roles.mdx)
-- [RBAC: Manage users](/weaviate/configuration/rbac/manage-users.mdx)
-- [RBAC: Tutorial](/deploy/tutorials/rbac.mdx)
+- [RBAC: 概要](/weaviate/configuration/rbac/index.mdx)
+- [RBAC: ロールの管理](/weaviate/configuration/rbac/manage-roles.mdx)
+- [RBAC: ユーザーの管理](/weaviate/configuration/rbac/manage-users.mdx)
+- [RBAC: チュートリアル](/deploy/tutorials/rbac.mdx)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

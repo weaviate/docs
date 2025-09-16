@@ -1,6 +1,6 @@
 ---
 sidebar_label: Horizontal scaling
-title: Horizontal Scaling Deployment Strategies
+title: 水平スケーリングのデプロイ戦略
 ---
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
@@ -14,12 +14,12 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go';
 
 
-Weaviate offers two complementary superpowers for scaling your deployment: sharding and replication.
-Sharding divides your data so it can be spread out across multiple nodes, allowing you to handle datasets far larger than a single machine could process.
-Meanwhile, replication creates redundant copies of your data, ensuring high availability even when individual nodes fail or need maintenance.
-While each scaling method shines on its own, the true magic happens when they join forces.
+Weaviate には、デプロイをスケールさせるための 2 つの補完的な強み ― シャーディングとレプリケーション ― があります。  
+シャーディングはデータを分割して複数ノードに分散させることで、単一マシンでは処理できないほど大きなデータセットを扱えるようにします。  
+一方、レプリケーションはデータの冗長コピーを作成し、個々のノードが障害やメンテナンスで停止しても高可用性を維持します。  
+どちらのスケーリング方式も単独で優れていますが、両者を組み合わせることで真の力を発揮します。
 
-Let's explore how you can harness these capabilities to build a deployment that's both massive in scale and rock-solid in reliability!
+これらの機能を活用し、大規模かつ堅牢なデプロイを構築する方法を見ていきましょう!
 
 ## Scaling Methods
 
@@ -27,15 +27,15 @@ Let's explore how you can harness these capabilities to build a deployment that'
 
 ### Replication
 
-Replication creates redundant copies of your data, it is useful when your data needs to be highly available.
+レプリケーションはデータの冗長コピーを作成し、高可用性が必要な場合に役立ちます。
 
-![replication](./img/weaviate-blog-replication.png)
+![レプリケーション](./img/weaviate-blog-replication.png)
 
 ### Sharding
 
-Sharding divides data across nodes, it is useful when your dataset is too large for just a single node.
+シャーディングはデータをノード間で分割し、単一ノードでは扱えない大規模データセットに対応します。
 
-![sharding](./img/weaviate-blog-sharding.png)
+![シャーディング](./img/weaviate-blog-sharding.png)
 
 
 ### Choosing your strategy
@@ -50,36 +50,36 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
   </colgroup>
   <thead>
     <tr>
-      <th>Requirement/Goal</th>
-      <th>Sharding</th>
-      <th>Replication</th>
-      <th>Both Combined</th>
-      <th>Primary Consideration</th>
+      <th>要件 / 目的</th>
+      <th>シャーディング</th>
+      <th>レプリケーション</th>
+      <th>両方併用</th>
+      <th>主な検討事項</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <strong>Handle dataset too large for single node</strong>
+        <strong>単一ノードでは収まらないデータセットを扱う</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">No</div>
+        <div className="access-level">いいえ</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>How much data are you storing?</strong></p>
+          <p><strong>どれくらいのデータを保存しますか？</strong></p>
           <ul>
             <li>
-              Vector dimensions and count determine memory requirements
+              ベクトルの次元数と数がメモリ要件を決定します
             </li>
             <li>
-              Sharding divides this across nodes
+              シャーディングでこれを複数ノードに分散します
             </li>
           </ul>
         </div>
@@ -87,26 +87,26 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
     </tr>
     <tr>
       <td>
-        <strong>Improve query throughput</strong>
+        <strong>クエリスループットを向上させる</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Maybe*</div>
+        <div className="access-level">たぶん*</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>Is your workload read-heavy?</strong></p>
+          <p><strong>読み取り中心のワークロードですか？</strong></p>
           <ul>
             <li>
-              Replication allows distributing read queries across nodes
+              レプリケーションにより読み取りクエリをノード間で分散できます
             </li>
             <li>
-              Sharding may help with certain query patterns
+              シャーディングは特定のクエリパターンで効果を発揮する場合があります
             </li>
           </ul>
         </div>
@@ -114,26 +114,26 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
     </tr>
     <tr>
       <td>
-        <strong>Accelerate data imports</strong>
+        <strong>データインポートを高速化する</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">No</div>
+        <div className="access-level">いいえ</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>Is import speed a priority?</strong></p>
+          <p><strong>インポート速度が優先事項ですか？</strong></p>
           <ul>
             <li>
-              Sharding enables parallel processing of imports
+              シャーディングによりインポートを並列処理できます
             </li>
             <li>
-              Replication adds overhead during imports
+              レプリケーションはインポート時にオーバーヘッドが発生します
             </li>
           </ul>
         </div>
@@ -141,26 +141,26 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
     </tr>
     <tr>
       <td>
-        <strong>Ensure high availability</strong>
+        <strong>高可用性を確保する</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">No</div>
+        <div className="access-level">いいえ</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>Can you tolerate downtime?</strong></p>
+          <p><strong>ダウンタイムを許容できますか？</strong></p>
           <ul>
             <li>
-              Replication provides redundancy if nodes fail
+              レプリケーションはノード障害時の冗長性を提供します
             </li>
             <li>
-              Without replication, shard loss = data loss
+              レプリケーションがない場合、シャード消失 = データ消失
             </li>
           </ul>
         </div>
@@ -168,26 +168,26 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
     </tr>
     <tr>
       <td>
-        <strong>Enable zero-downtime upgrades</strong>
+        <strong>ゼロダウンタイムのアップグレードを実現する</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">No</div>
+        <div className="access-level">いいえ</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>How critical is continuous operation?</strong></p>
+          <p><strong>継続運用はどれほど重要ですか？</strong></p>
           <ul>
             <li>
-              Replication allows rolling updates
+              レプリケーションによりローリングアップデートが可能です
             </li>
             <li>
-              Production systems typically require this capability
+              本番システムでは通常必須の機能です
             </li>
           </ul>
         </div>
@@ -195,26 +195,26 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
     </tr>
     <tr>
       <td>
-        <strong>Optimize resource utilization</strong>
+        <strong>リソース利用を最適化する</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Maybe*</div>
+        <div className="access-level">たぶん*</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Maybe*</div>
+        <div className="access-level">たぶん*</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>Are you resource-constrained?</strong></p>
+          <p><strong>リソースが制約されていますか？</strong></p>
           <ul>
             <li>
-              Sharding distributes load efficiently
+              シャーディングは負荷を効率的に分散します
             </li>
             <li>
-              Replication adds resource overhead
+              レプリケーションはリソースにオーバーヘッドを追加します
             </li>
           </ul>
         </div>
@@ -222,26 +222,26 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
     </tr>
     <tr>
       <td>
-        <strong>Geographic distribution</strong>
+        <strong>地理的分散</strong>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">No</div>
+        <div className="access-level">いいえ</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="access-cell" style={{ textAlign: 'center' }}>
-        <div className="access-level">Yes</div>
+        <div className="access-level">はい</div>
       </td>
       <td className="constraints-cell">
         <div className="constraints-level">
-          <p><strong>Do you need multi-region support?</strong></p>
+          <p><strong>マルチリージョンサポートが必要ですか？</strong></p>
           <ul>
             <li>
-              Replicas can be deployed across regions
+              レプリカを複数リージョンにデプロイできます
             </li>
             <li>
-              Reduces latency for geographically distributed users
+              地理的に分散したユーザーのレイテンシを低減します
             </li>
           </ul>
         </div>
@@ -250,12 +250,11 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
   </tbody>
 </table>
 
-**This may serve as a partial solution and will depend on your configuration.*
+**これは一部の解決策となり得ますが、設定によって異なります。*
 
-### Sharding: Divide and Conquer
+### シャーディング：分割統治
 
-You've made the decision to shard your data, now let's get it configured:
-
+データをシャーディングすることを決めたら、設定を行いましょう:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -287,26 +286,25 @@ You've made the decision to shard your data, now let's get it configured:
 
 </Tabs>
 
-#### Parameters
+#### パラメーター
 
-These parameters are used to configure your collection shards:
+これらのパラメーターでコレクションシャードを設定します。
 
-| Parameter             | Type    | Description                                                                                                                                                                                                                                                                                          |
-| :-------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `desiredCount`        | integer | *Immutable, Optional*. Controls the target number of physical shards for the collection index. Defaults to the number of nodes in the cluster, but can be explicitly set lower. If set higher than the node count, some nodes will host multiple shards.                                                  |
-| `virtualPerPhysical`  | integer | *Immutable, Optional*. Defines how many virtual shards correspond to one physical shard, defaulting to `128`.                                                                                                               |
-| `desiredVirtualCount` | integer | *Read-only*. Shows the target total number of virtual shards, calculated as `desiredCount * virtualPerPhysical`.                                                                                                                                                                                    |
+| Parameter             | Type | Description |
+| :-------------------- | :--- | :---------- |
+| `desiredCount`        | 整数 | *Immutable, Optional*。コレクションインデックスの物理シャード数の目標を制御します。デフォルトではクラスタ内のノード数と同じですが、明示的に少なく設定することも可能です。ノード数より大きく設定した場合、一部のノードが複数のシャードを保持します。 |
+| `virtualPerPhysical`  | 整数 | *Immutable, Optional*。１ つの物理シャードに対応する仮想シャード数を定義します。デフォルトは `128` です。 |
+| `desiredVirtualCount` | 整数 | *Read-only*。`desiredCount * virtualPerPhysical` で計算される、仮想シャードの合計目標数を示します。 |
 
+### レプリケーション：無数のクローン
 
-### Replication: An army of clones
-
-Configure your data's replication to ensure it's always available:
+データを常に利用可能に保つためにレプリケーションを設定しましょう。
 
 import RaftRFChangeWarning from '/_includes/1-25-replication-factor.mdx';
 
 <RaftRFChangeWarning/>
 
-Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](/weaviate/concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
+[非同期レプリケーション](/deploy/configuration/replication.md#async-replication-settings) や [削除解決戦略](/weaviate/concepts/replication-architecture/consistency.md#deletion-resolution-strategies) などのレプリケーション設定を行います。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -367,15 +365,11 @@ http://localhost:8080/v1/schema
 </TabItem>
 </Tabs>
 
+高可用性を実現する環境では、シャーディングとレプリケーションを組み合わせることで、それぞれの機能を活かした強力なタッグとなり、デプロイを高い可用性で維持できます。`ASYNC_REPLICATION` 環境変数（バージョン 1.29 で導入）を活用すれば、水平スケーリングの力を最大限に引き出せます。
 
-In a highly available environment, combining sharding and replication leverages the power and
-capabilities of both methods to be a dynamic duo that keeps your deployment highly available.
-If given the opportunity, those two techniques will be your deployment's dynamic duo.
-Specifically using the [`ASYNC_REPLICATION` environment variables](./async-rep.md) introduced in the 1.29 release
-will allow you to unleash the full power of horizontal scaling!
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

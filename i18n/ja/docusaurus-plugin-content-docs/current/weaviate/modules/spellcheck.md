@@ -1,28 +1,28 @@
 ---
-title: Spell Check
-description: Integrate spellcheck in Weaviate to improve text data quality and search accuracy.
+title: スペルチェック
+description: Weaviate にスペルチェックを統合してテキストデータの品質と検索精度を向上させます。
 sidebar_position: 70
 image: og/docs/modules/text-spellcheck.jpg
 # tags: ['modules', 'other modules', 'spellcheck']
 ---
 
 
-## In short
+## 要点
 
-* The Spell Check module is a Weaviate module for spell checking of raw text in GraphQL queries.
-* The module depends on a Python spellchecking library.
-* The module adds a `spellCheck {}` filter to the GraphQL `nearText {}` search arguments.
-* The module returns the spelling check result in the GraphQL `_additional { spellCheck {} }` field.
+* Spell Check モジュールは、 GraphQL クエリ内の生テキストのスペルをチェックする Weaviate のモジュールです。  
+* このモジュールは Python のスペルチェックライブラリに依存します。  
+* このモジュールは GraphQL の `nearText {}` 検索引数に `spellCheck {}` フィルターを追加します。  
+* このモジュールはスペルチェックの結果を GraphQL の `_additional { spellCheck {} }` フィールドで返します。  
 
-## Introduction
+## 概要
 
-The Spell Check module is a Weaviate module for checking spelling in raw texts in GraphQL query inputs. Using the [Python spellchecker](https://pypi.org/project/pyspellchecker/) library, the module analyzes text, gives a suggestion and can force an autocorrection.
+Spell Check モジュールは、 GraphQL クエリ入力内の生テキストのスペルをチェックする Weaviate のモジュールです。 [Python spellchecker](https://pypi.org/project/pyspellchecker/) ライブラリを使用してテキストを解析し、提案を行い、自動補正を強制できます。  
 
-## How to enable (module configuration)
+## 有効化方法（モジュール設定）
 
 ### Docker Compose
 
-The Spell Check module can be added as a service to the Docker Compose file. You must have a text vectorizer like `text2vec-contextionary` or `text2vec-transformers` running. An example Docker Compose file for using the `text-spellcheck` module with the `text2vec-contextionary` is here:
+Spell Check モジュールは Docker Compose ファイルにサービスとして追加できます。 `text2vec-contextionary` や `text2vec-transformers` などのテキスト ベクトライザーが稼働している必要があります。 `text2vec-contextionary` と併用して `text-spellcheck` モジュールを使うための例として、以下の Docker Compose ファイルがあります:  
 
 ```yaml
 ---
@@ -63,39 +63,39 @@ services:
 ...
 ```
 
-Variable explanations:
-* `SPELLCHECK_INFERENCE_API`: where the spellcheck module is running
+変数の説明:  
+* `SPELLCHECK_INFERENCE_API`: Spell Check モジュールが稼働している場所  
 
-## How to use (GraphQL)
+## 利用方法（GraphQL）
 
-Use the spellchecker module to verify at query time that user-provided search queries are spelled correctly and even suggest alternative, correct spellings. Filters that accept query text include:
+Spell Check モジュールを利用して、クエリ時にユーザー入力の検索クエリが正しく綴られているか確認し、正しい綴りの候補を提案できます。クエリテキストを受け付けるフィルターには以下があります:
 
-* [`nearText`](/weaviate/api/graphql/search-operators.md#neartext), if a `text2vec-*` module is used
-* `ask`, if the [`qna-transformers`](./qna-transformers.md) module is enabled
+* [`nearText`](/weaviate/api/graphql/search-operators.md#neartext) （ `text2vec-*` モジュールを使用している場合）  
+* `ask` （ [`qna-transformers`](./qna-transformers.md) モジュールが有効な場合）  
 
-There are two ways to use this module: spell checking, and autocorrection.
+このモジュールには、スペルチェックと自動補正の 2 つの使い方があります。
 
-### Spell checking
+### スペルチェック
 
-The module provides a new GraphQL `_additional` property which can be used to check (but not alter) the provided queries.
+このモジュールは、提供されたクエリをチェック（変更はしない）するために使用できる新しい GraphQL `_additional` プロパティを提供します。
 
-#### Example query
+#### クエリ例
 
 import SpellCheckModule from '/_includes/code/spellcheck-module.mdx';
 
 <SpellCheckModule/>
 
-#### GraphQL response
+#### GraphQL レスポンス
 
-The result is contained in a new GraphQL `_additional` property called `spellCheck`. It contains the following fields:
-* `changes`: a list with the following fields:
-  * `corrected` (`string`): the corrected spelling if a correction is found
-  * `original` (`string`): the original word in the query
-* `didYouMean`: the corrected full text in the query
-* `originalText`: the original full text in the query
-* `location`: the location of the misspelled string in the query
+結果は `spellCheck` という新しい GraphQL `_additional` プロパティに含まれます。含まれるフィールドは次のとおりです:  
+* `changes`: 以下のフィールドを持つリスト  
+  * `corrected` (`string`): 修正された綴り（修正が見つかった場合）  
+  * `original` (`string`): クエリ内の元の単語  
+* `didYouMean`: クエリ内の修正済み全文  
+* `originalText`: クエリ内の元の全文  
+* `location`: クエリ内で誤綴りがあった位置  
 
-#### Example response
+#### レスポンス例
 
 ```json
 {
@@ -127,11 +127,11 @@ The result is contained in a new GraphQL `_additional` property called `spellChe
 }
 ```
 
-### Autocorrect
+### 自動補正
 
-The module extends existing `text2vec-*` modules with an `autoCorrect` flag, which can be used to automatically correct the query if it was misspelled:
+このモジュールは既存の `text2vec-*` モジュールを拡張し、 `autoCorrect` フラグを追加します。これを使用すると、クエリの綴りが間違っている場合に自動的に修正できます。
 
-#### Example query
+#### クエリ例
 
 ```graphql
 {
@@ -158,8 +158,9 @@ The module extends existing `text2vec-*` modules with an `autoCorrect` flag, whi
 ```
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

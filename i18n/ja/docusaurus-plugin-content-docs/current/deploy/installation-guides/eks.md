@@ -1,22 +1,24 @@
 ---
-title: Self-Managed EKS
-description: Deploy Weaviate on EKS using the AWS CLI
+title: セルフマネージド EKS
+description: AWS CLI を使用して EKS に Weaviate をデプロイする
 ---
 
-Weaviate can be deployed on an EKS cluster using the `eksctl` command-line tool that creates and manages clusters. By the end of this document, you'll have all the necessary information to create an EKS cluster using the command line, add persistent storage to your cluster and then deploy Weaviate onto the cluster. 
+Weaviate は、クラスターの作成と管理を行う `eksctl` コマンドライン ツールを使用して EKS クラスターにデプロイできます。  
+本ドキュメントを読み終える頃には、コマンドラインから EKS クラスターを作成し、永続ストレージを追加し、そのクラスター上に Weaviate をデプロイするために必要な情報がすべて得られます。
 
 :::info Prerequisites
 
-- Helm installed
-- The AWS CLI installed with the latest version
-- `kubectl` installed
-- `eksctl` installed
+- Helm がインストールされていること
+- 最新版の AWS CLI がインストールされていること
+- `kubectl` がインストールされていること
+- `eksctl` がインストールされていること
 :::
 
 <details>
 <summary> AWS policies needed </summary>
 
-Ensure that you have adequate permissions to create and interact wth an EKS cluster. The following policies should provide you the adequate permissions to create your cluster: 
+EKS クラスターを作成し操作するための十分な権限を持っていることを確認してください。  
+以下のポリシーがあれば、クラスターを作成するための権限が適切に付与されます。 
 
 - eks:CreateCluster
 - eks:DescribeCluster
@@ -63,9 +65,9 @@ Ensure that you have adequate permissions to create and interact wth an EKS clus
   <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="zklzyv5bop"></script>
 </div>
 
-#### Verify your tools
+#### ツールの確認
 
-Before starting, ensure that your tools are installed:
+開始する前に、以下のツールがインストールされていることを確認してください:
 
 ```bash
 helm version
@@ -76,9 +78,9 @@ eksctl version
 
 
 
-### Step 1: Create the Cluster
+### ステップ 1: クラスター作成
 
-To create your cluster, prepare a `yaml` file that with a name of your choosing (e.g. `eks-cluster.yaml`)
+クラスターを作成するには、任意の名前 (例: `eks-cluster.yaml`) で `yaml` ファイルを用意します。
 
 ```yaml
 apiVersion: eksctl.io/v1alpha5
@@ -114,29 +116,33 @@ addons:
       ebsCSIController: true   # Enable EBS CSI driver
 ```
 
-This creates an EKS cluster within your specified region with an autoscaling node group. There are 3 nodes for high availability and having autoscaling enabled allows for the cluster to dynamically adjust resources based on demand.
+これにより、指定したリージョンにオートスケーリング ノードグループを持つ EKS クラスターが作成されます。  
+高可用性のために 3 つのノードが用意されており、オートスケーリングを有効にすることで、需要に応じてリソースを動的に調整できます。
 
-#### Run this command to create your EKS cluster:
+#### 次のコマンドを実行して EKS クラスターを作成します:
 
 ```bash
 eksctl create cluster -f <your-file-name.yaml>
 ```
 
-#### Enable `kubectl` to interact with the newly created cluster:
+#### 新しく作成したクラスターとやり取りできるよう `kubectl` を有効化します:
 
 ```bash
 aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
 ```
 
-#### Verify that the cluster has been created and that you are able to interact with it:
+#### クラスターが作成され、操作できることを確認します:
 
 ```bash
 kubectl get nodes
 ```
 
-### Step 2: Add Storage Class
 
-After creating your cluster and verifying that you can interact with it , you'll need to create a `storageclass.yaml` file:
+
+### ステップ 2: ストレージクラスの追加
+
+クラスターを作成し操作可能であることを確認した後、`storageclass.yaml` ファイルを作成します:
+
 ```yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -151,42 +157,44 @@ volumeBindingMode: Immediate
 allowVolumeExpansion: true
 ```
 
-After creating the storage class, apply it: 
+ストレージクラスを作成したら、適用します:  
 ```bash
 kubectl apply -f <your-storageclass-name>.yaml
 ```
 
 
-#### Verify your storage class and has been created and applied
+#### ストレージクラスが作成され適用されていることを確認します
 
 ```bash
 kubectl get sc
 ```
 
-### Step 3: Add Weaviate to EKS
 
-After adding persistent storage to your cluster, you can now deploy Weaviate into it.  
 
-#### Create a Weaviate namespace:
+### ステップ 3: EKS へ Weaviate を追加
+
+クラスターに永続ストレージを追加したら、Weaviate をデプロイできます。  
+
+#### Weaviate 用の namespace を作成します:
 
 ```bash
 kubectl create namespace weaviate
 ```
 
-#### Add the Weaviate Helm chart:
+#### Weaviate Helm チャートを追加します:
 
 ```bash
 helm repo add weaviate https://weaviate.github.io/weaviate-helm
 helm repo update
 ```
 
-After you've added the Weaviate Helm chart, configure the `values.yaml` file before you deploy Weaviate on the cluster. 
+Weaviate Helm チャートを追加したら、クラスターへデプロイする前に `values.yaml` ファイルを設定してください。
 
 ```bash
 helm show values weaviate/weaviate > values.yaml
 ```
 
-Before deploying Weaviate, change the `storgeclass` and ensure that you have replicas specified in your `values.yaml` file. 
+Weaviate をデプロイする前に、`storgeclass` を変更し、`values.yaml` ファイルで Replica 数が指定されていることを確認します。
 
 ```yaml
 storage:
@@ -198,7 +206,7 @@ storage:
 replicas: 3
 ```
 
-#### Deploy Weaviate on your cluster:
+#### クラスターへの Weaviate のデプロイ:
 
 ```bash
 helm upgrade --install weaviate weaviate/weaviate \
@@ -206,19 +214,20 @@ helm upgrade --install weaviate weaviate/weaviate \
   --values values.yaml \
 ```
 
-#### Verify your deployment
+#### デプロイの確認
 
 ```bash
 kubectl get pods -n weaviate
 ```
 
 
-## Further Resources
+## 追加リソース
 
-- [Persistent storage for Kubernetes](https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/)
+- [Kubernetes の永続ストレージ](https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

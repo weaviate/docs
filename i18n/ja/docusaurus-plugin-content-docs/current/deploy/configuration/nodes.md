@@ -1,32 +1,32 @@
 ---
-title: Cluster node data
+title: クラスタ ノード データ
 image: og/docs/configuration.jpg
 # tags: ['nodes', 'reference', 'configuration']
 ---
 
-You can retrieve information about individual nodes in a Weaviate cluster. The query can be for the entire cluster, or for a particular collection.
+Weaviate クラスタ内の各ノードに関する情報を取得できます。クエリはクラスタ全体、または特定のコレクションを対象に実行できます。
 
-### Parameters
+### パラメーター
 
 | Name | Location | Type | Description |
 | ---- | -------- | ---- | ----------- |
-| `output` | body | string | How much information to include in the output. Options:  `minimal` (default) and `verbose` (includes shard information). |
+| `output` | body | string | 出力に含める情報量を指定します。オプション: `minimal` （デフォルト） および `verbose` （シャード情報を含む）。 |
 
-### Returned data:
+### 返却データ:
 
 import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
 
 <APIOutputs />
 
-## Example
+## 例
 
-The following command will retrieve summary information about all nodes in the cluster:
+次のコマンドはクラスタ内のすべてのノードについて概要情報を取得します。
 
 import Nodes from '/_includes/code/nodes.mdx';
 
 <Nodes/>
 
-Example output:
+出力例:
 
 ```json
 {
@@ -74,8 +74,9 @@ Example output:
 }
 ```
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

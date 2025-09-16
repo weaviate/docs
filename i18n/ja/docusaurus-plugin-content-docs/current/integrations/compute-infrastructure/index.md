@@ -1,12 +1,13 @@
 ---
-title: Compute Infrastructure
+title: コンピュート インフラストラクチャ
 sidebar_position: 2
 image: og/integrations/home.jpg
 ---
 
-Compute Infrastructure solutions provide managed platforms for computationally intensive workloads. Use these platforms to develop, deploy, and scale your application.
+コンピュート インフラストラクチャ ソリューションは、計算集約型のワークロード向けにマネージド プラットフォームを提供します。これらのプラットフォームを活用してアプリケーションを開発、デプロイ、スケールしてください。
 
-Learn about how Weaviate integrates with these solutions:
+Weaviate がこれらのソリューションとどのように連携するかをご覧ください:
 * [Modal](/integrations/compute-infrastructure/modal)
 * [Replicate](/integrations/compute-infrastructure/replicate)
 * [Replicated](/integrations/compute-infrastructure/replicated)
+

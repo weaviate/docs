@@ -1,35 +1,35 @@
 ---
-title: OIDC Configuration
+title: OIDC 設定
 sidebar_position: 95
 image: og/docs/configuration.jpg
 # tags: ['metadata', 'reference', 'configuration']
 ---
 
-If [OpenID Connect (OIDC)](./authentication.md) authentication is enabled, its details will be available through the `/v1/.well-known/openid-configuration` endpoint.
+もし OpenID Connect（ OIDC ）認証が有効になっている場合、その詳細は `/v1/.well-known/openid-configuration` エンドポイントから取得できます。
 
-If a token is configured, the endpoint redirects to it.
+トークンが設定されている場合、このエンドポイントはそのトークンにリダイレクトします。
 
-#### Usage
+#### 使用方法
 
-The discovery endpoint accepts a `GET` request:
+ディスカバリーエンドポイントは `GET` リクエストを受け付けます:
 
 ```js
 GET /v1/.well-known/openid-configuration
 ```
 
-If there is an OIDC provider, the endpoint returns the following fields:
-- `href`: The reference to the client.
-- `cliendID`: The ID of the client.
+OIDC プロバイダーが存在する場合、エンドポイントは以下のフィールドを返します:
+- `href`: クライアントへの参照です。
+- `cliendID`: クライアントの ID です。
 
-If there is no OIDC provider, the endpoint returns a `404` HTTP status code.
+OIDC プロバイダーが存在しない場合、エンドポイントは `404` HTTP ステータスコードを返します。
 
-#### Example
+#### 例
 
 import WellknownOpenIDConfig from '/_includes/code/wellknown.openid-configuration.mdx';
 
 <WellknownOpenIDConfig/>
 
-If OIDC is configured, the endpoint returns a document like this:
+OIDC が設定されている場合、エンドポイントは次のようなドキュメントを返します:
 
 ```json
 {
@@ -38,8 +38,10 @@ If OIDC is configured, the endpoint returns a document like this:
 }
 ```
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
+

@@ -1,6 +1,6 @@
 ---
-title: Collection definition
-description: Reference for Weaviate collection parameters.
+title: コレクション定義
+description: Weaviate のコレクションパラメータのリファレンス。
 ---
 
 import SkipLink from "/src/components/SkipValidationLink";
@@ -17,34 +17,34 @@ import TSCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/manage-data.m
 import JavaCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import GoCodeMultiTenancy from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 
-A **collection definition** specifies how to store and index a set of data objects in Weaviate. This page discusses the available parameters for configuring a collection.
+**コレクション定義** とは、 Weaviate でデータオブジェクトの集合をどのように保存し、インデックス化するかを指定するものです。このページでは、コレクションを設定するために利用できるパラメータについて説明します。
 
-## Collection definition parameters
+## コレクション定義のパラメータ
 
-These are the top-level parameters you can set when creating a collection.
+コレクションを作成する際に設定できるトップレベルのパラメータです。
 
-| Parameter                                    | Type   | Description                                                                                                           | Default                                                                                                                                                                                               | Mutable       |
-| :------------------------------------------- | :----- | :-------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| [`class`](#class)                            | String | The name of the collection.                                                                                           | (Required)                                                                                                                                                                                            | No            |
-| [`description`](#description)                | String | A description of the collection.                                                                                      | `""`                                                                                                                                                                                                  | Yes           |
-| [`properties`](#properties)                  | Array  | An array of property objects defining the data schema.                                                                | `[]`                                                                                                                                                                                                  | Partially\*   |
-| [`invertedIndexConfig`](#inverted-index)     | Object | Configuration for the inverted index, affecting filtering and keyword search.                                         | See [Inverted Index reference](./indexing/inverted-index.mdx#inverted-index-parameters)                                                                                                               | Yes           |
-| [`vectorConfig`](#vector-configuration)      | Object | Configure multiple named vectors each with their own `vectorizer`, `vectorIndexType`, and `vectorIndexConfig` fields. | `null`                                                                                                                                                                                                | Partially\*\* |
-| [`vectorizer`](#vector-configuration)        | String | The vectorizer module to use.                                                                                         | Default vectorizer defined by [environment variable](/deploy/configuration/env-vars#DEFAULT_VECTORIZER_MODULE). See [Model provider](../model-providers/index.md) for module-specific config defaults | No            |
-| [`vectorIndexType`](#vector-configuration)   | String | The type of vector index to use (`hnsw`, `flat`, `dynamic`).                                                          | `hnsw`                                                                                                                                                                                                | No            |
-| [`moduleConfig`](#module-configuration)      | Object | Module-specific configuration settings.                                                                               | See [Module configuration](#module-configuration)                                                                                                                                                     | Partially     |
-| [`vectorIndexConfig`](#vector-configuration) | Object | Configuration settings specific to the chosen `vectorIndexType`.                                                      | See [Vector index reference](./indexing/vector-index.mdx)                                                                                                                                             | Partially     |
-| [`shardingConfig`](#sharding)                | Object | Controls sharding behavior in a multi-node cluster.                                                                   | See [Sharding section](#sharding)                                                                                                                                                                     | No            |
-| [`replicationConfig`](#replication)          | Object | Controls data replication settings for fault tolerance.                                                               | See [Replication section](#replication)                                                                                                                                                               | Partially     |
-| [`multiTenancyConfig`](#multi-tenancy)       | Object | Configuration to enable multi-tenancy for the collection.                                                             | See [Multi-tenancy section](#multi-tenancy)                                                                                                                                                           | Partially     |
+| Parameter                                    | Type   | Description                                                                                                                | Default                                                                                                                                                                                               | Mutable       |
+| :------------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| [`class`](#class)                            | String | コレクションの名前。                                                                                                       | (Required)                                                                                                                                                                                            | No            |
+| [`description`](#description)                | String | コレクションの説明。                                                                                                       | `""`                                                                                                                                                                                                  | Yes           |
+| [`properties`](#properties)                  | Array  | データスキーマを定義するプロパティオブジェクトの配列。                                                                      | `[]`                                                                                                                                                                                                  | Partially\*   |
+| [`invertedIndexConfig`](#inverted-index)     | Object | 転置インデックスの設定。フィルタリングとキーワード検索に影響します。                                                        | [Inverted Index reference](./indexing/inverted-index.mdx#inverted-index-parameters) を参照                                                                                                              | Yes           |
+| [`vectorConfig`](#vector-configuration)      | Object | 複数の名前付き ベクトル を設定でき、それぞれに `vectorizer`、`vectorIndexType`、`vectorIndexConfig` を持たせます。             | `null`                                                                                                                                                                                                | Partially\*\* |
+| [`vectorizer`](#vector-configuration)        | String | 使用するベクトライザーモジュール。                                                                                           | [環境変数](/deploy/configuration/env-vars#DEFAULT_VECTORIZER_MODULE) で定義されたデフォルトベクトライザー。モジュール固有のデフォルト設定は [Model provider](../model-providers/index.md) を参照 | No            |
+| [`vectorIndexType`](#vector-configuration)   | String | 使用する ベクトル インデックスのタイプ（`hnsw`、`flat`、`dynamic`）。                                                       | `hnsw`                                                                                                                                                                                                | No            |
+| [`moduleConfig`](#module-configuration)      | Object | モジュール固有の設定。                                                                                                     | [Module configuration](#module-configuration) を参照                                                                                                                                                  | Partially     |
+| [`vectorIndexConfig`](#vector-configuration) | Object | 選択した `vectorIndexType` に固有の設定。                                                                                   | [Vector index reference](./indexing/vector-index.mdx) を参照                                                                                                                                            | Partially     |
+| [`shardingConfig`](#sharding)                | Object | マルチノードクラスタでのシャーディング動作を制御します。                                                                    | [Sharding section](#sharding) を参照                                                                                                                                                                   | No            |
+| [`replicationConfig`](#replication)          | Object | 障害耐性のためのデータレプリケーション設定を制御します。                                                                    | [Replication section](#replication) を参照                                                                                                                                                             | Partially     |
+| [`multiTenancyConfig`](#multi-tenancy)       | Object | コレクションでマルチテナンシーを有効にするための設定。                                                                       | [Multi-tenancy section](#multi-tenancy) を参照                                                                                                                                                         | Partially     |
 
-\* [New properties can be added](../manage-collections/collection-operations.mdx#add-a-property); existing properties cannot be modified<br/>
-\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors); some vector index settings are mutable<br/>
+\* [新しいプロパティを追加できます](../manage-collections/collection-operations.mdx#add-a-property)。既存のプロパティは変更できません。  
+\*\* [新しい名前付き ベクトル を追加できます](../manage-collections/vector-config.mdx#add-new-named-vectors)。一部の ベクトル インデックス設定は変更可能です。  
 
 <details>
-  <summary>Example collection configuration -  JSON object</summary>
+  <summary>例: コレクション設定 - JSON オブジェクト</summary>
 
-An example of a complete collection object including properties:
+プロパティを含む完全なコレクションオブジェクトの例:
 
 ```json
 {
@@ -107,12 +107,12 @@ An example of a complete collection object including properties:
 
 </details>
 
-#### Code example - How to create a collection
+#### コード例 - コレクションの作成方法
 
-This code example shows how to configure the collection parameters through a client library:
+次のコード例は、クライアントライブラリを通じてコレクションパラメータを設定する方法を示しています。
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python クライアント v4">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicCreateCollection"
@@ -146,26 +146,26 @@ This code example shows how to configure the collection parameters through a cli
   </TabItem> -->
 </Tabs>
 
-:::tip Further resources
+:::tip 参考リソース
 
-For more code examples and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+より多くのコード例や設定ガイドについては、[How-to: コレクションの管理](../manage-collections/index.mdx) を参照してください。
 
 :::
 
 #### `class`
 
-The `class` is the name of the collection.
+`class` はコレクションの名前です。
 
-The collection name starts with an upper case letter. The upper case letter distinguishes collection names from primitive data types when the name is used as a property value.
+コレクション名は大文字から始めます。これは、名前がプロパティ値として使用される際にプリミティブデータ型と区別するためです。
 
-Consider these examples that use the `dataType` property:
+`dataType` プロパティを使用した次の例を考えてみましょう:
 
-- `dataType: ["text"]` is a `text` data type.
-- `dataType: ["Text"]` is a cross-reference type to a collection named `Text`.
+- `dataType: ["text"]` は `text` データ型です。
+- `dataType: ["Text"]` は `Text` という名前のコレクションへのクロスリファレンスタイプです。
 
-After the first letter, collection names may use any GraphQL-compatible characters.
+最初の文字以降は、 GraphQL 互換の任意の文字を使用できます。
 
-The collection name validation regex is `/^[A-Z][_0-9A-Za-z]*$/`.
+コレクション名を検証する正規表現は `/^[A-Z][_0-9A-Za-z]*$/` です。
 
 import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
@@ -173,29 +173,29 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
 #### `description`
 
-A description of the collection. This is for your reference and can also provide additional information to [Weaviate Agents](/docs/agents/index.md).
+コレクションの説明です。これは参照用であり、[ Weaviate Agents](/docs/agents/index.md) に追加情報を提供することもできます。
 
 ---
 
-### Properties
+### プロパティ
 
-| Parameter                                | Type    | Description                                                                                                                  | Default    | Mutable |
-| :--------------------------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------- | :--------- | :------ |
-| [`name`](#name)                          | String  | The name of the property.                                                                                                    | (Required) | No      |
-| [`dataType`](./datatypes.md)             | Array   | An array containing one or more data types. For cross-references, use the capitalized collection name (e.g., `["Article"]`). | (Required) | No      |
-| `description`                            | String  | A description of the property for your reference.                                                                            | `null`     | Yes     |
-| [`tokenization`](#tokenization)          | String  | For `text` properties, specifies how the text is split into tokens for inverted indexing.                                    | `word`     | No      |
-| [`indexInverted`](#inverted-index)       | Boolean | If `true`, inverted index is enabled for this property.                                                                      | `true`     | No      |
-| [`indexFilterable`](#inverted-index)     | Boolean | If `true`, builds a roaring bitmap index for this property to allow for efficient filtering.                                 | `true`     | No      |
-| [`indexSearchable`](#inverted-index)     | Boolean | If `true`, builds a searchable map index for this property, suitable for BM25 or hybrid search.                              | `true`     | No      |
-| [`indexRangeFilters`](#inverted-index)   | Boolean | If `true`, builds a roaring bitmap index for numerical range-based filtering.                                                | `false`    | No      |
-| [`invertedIndexConfig`](#inverted-index) | Object  | Property-level overrides for inverted index settings, such as `bm25` parameters.                                             | `{}`       | No      |
-| `moduleConfig`                           | Object  | Module-specific settings, such as skipping vectorization for this property.                                                  | `{}`       | No      |
+| Parameter                                | 型      | 説明                                                                                                                                                           | デフォルト    | 変更可 |
+| :--------------------------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------- | :---- |
+| [`name`](#name)                          | String  | プロパティの名前です。                                                                                                                                        | (必須)       | いいえ |
+| [`dataType`](./datatypes.md)             | Array   | 1 つ以上のデータタイプを含む配列です。クロスリファレンスには、コレクション名を大文字で指定します (例: `["Article"]`)。                                          | (必須)       | いいえ |
+| `description`                            | String  | 参照用のプロパティの説明です。                                                                                                                                  | `null`      | はい   |
+| [`tokenization`](#tokenization)          | String  | `text` プロパティに対して、転置インデックス用にテキストをトークンに分割する方法を指定します。                                                                   | `word`      | いいえ |
+| [`indexInverted`](#inverted-index)       | Boolean | `true` の場合、このプロパティに転置インデックスを有効にします。                                                                                                 | `true`      | いいえ |
+| [`indexFilterable`](#inverted-index)     | Boolean | `true` の場合、高速フィルタリングを可能にする Roaring Bitmap インデックスを構築します。                                                                         | `true`      | いいえ |
+| [`indexSearchable`](#inverted-index)     | Boolean | `true` の場合、BM25 やハイブリッド検索に適した検索可能な map インデックスを構築します。                                                                          | `true`      | いいえ |
+| [`indexRangeFilters`](#inverted-index)   | Boolean | `true` の場合、数値の範囲フィルタリング用に Roaring Bitmap インデックスを構築します。                                                                           | `false`     | いいえ |
+| [`invertedIndexConfig`](#inverted-index) | Object  | `bm25` パラメーターなど、転置インデックス設定をプロパティ単位で上書きします。                                                                                   | `{}`        | いいえ |
+| `moduleConfig`                           | Object  | このプロパティのベクトル化をスキップするなど、モジュール固有の設定です。                                                                                        | `{}`        | いいえ |
 
 <details>
-  <summary>Example property configuration -  JSON object</summary>
+  <summary>プロパティ構成例 - JSON オブジェクト</summary>
 
-An example of a complete property object:
+完全なプロパティオブジェクトの例:
 
 ```json
 {
@@ -220,9 +220,9 @@ An example of a complete property object:
 
 </details>
 
-#### Code example - How to configure collection properties
+#### コード例 - コレクションプロパティ設定方法
 
-This code example shows how to configure the property parameters through a client library:
+次のコード例は、クライアントライブラリを使用してプロパティパラメーターを設定する方法を示しています。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -259,37 +259,37 @@ This code example shows how to configure the property parameters through a clien
   </TabItem> -->
 </Tabs>
 
-:::tip Further resources
+:::tip さらに学ぶ
 
-For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+その他のコード例や設定ガイドについては、[How-to: Manage collections](../manage-collections/index.mdx) セクションをご覧ください。
 
 :::
 
 #### `name`
 
-Property names can contain the following characters: `/[_A-Za-z][_0-9A-Za-z]*/`.
+プロパティ名には次の文字が使用できます: `/[_A-Za-z][_0-9A-Za-z]*/`.
 
-##### Reserved words
+##### 予約語
 
-The following words are reserved and cannot be used as property names:
+以下の語は予約されているため、プロパティ名として使用できません。
 
 - `_additional`
 - `id`
 - `_id`
 
-Additionally, we strongly recommend that you do not use the following words as property names, due to potential conflicts with future reserved words:
+また、将来の予約語と衝突する可能性があるため、次の語をプロパティ名として使用しないことを強く推奨します。
 
 - `vector`
 - `_vector`
 
 #### `tokenization`
 
-You can customize how `text` data is tokenized and indexed in the inverted index. Tokenization influences the results returned by the [`bm25`](../api/graphql/search-operators.md#bm25) and [`hybrid`](../api/graphql/search-operators.md#hybrid) operators, and [`where` filters](../api/graphql/filters.md).
+`text` データのトークナイゼーションと転置インデックスへの登録方法をカスタマイズできます。トークナイゼーションは、[`bm25`](../api/graphql/search-operators.md#bm25) や [`hybrid`](../api/graphql/search-operators.md#hybrid) オペレーター、[`where` フィルター](../api/graphql/filters.md) の結果に影響します。
 
-Tokenization is a property-level configuration for `text` properties. [See how to set the tokenization option using a client library](../manage-collections/vector-config.mdx#property-level-settings)
+トークナイゼーションは `text` プロパティのプロパティレベル設定です。[クライアントライブラリを使用して tokenization オプションを設定する方法](../manage-collections/vector-config.mdx#property-level-settings) を参照してください。
 
 <details>
-  <summary>Example property configuration -  JSON object</summary>
+  <summary>プロパティ構成例 - JSON オブジェクト</summary>
 
 ```json
 {
@@ -314,20 +314,20 @@ Tokenization is a property-level configuration for `text` properties. [See how t
 
 </details>
 
-Each token will be indexed separately in the inverted index. For example, if you have a `text` property with the value `Hello, (beautiful) world`, the following table shows how the tokens would be indexed for each tokenization method:
+各トークンは転置インデックスに個別に登録されます。例えば、`text` プロパティの値が `Hello, (beautiful) world` の場合、トークナイゼーション方法ごとに次のように登録されます。
 
 import TokenizationDefinition from "/_includes/tokenization_definition.mdx";
 
 <TokenizationDefinition />
 
-##### Tokenization and search / filtering
+##### トークナイゼーションと検索／フィルタリング
 
-Tokenization impacts how filters or keywords searches behave. The filter or keyword search query is also tokenized before being matched against the inverted index.
+トークナイゼーションはフィルターやキーワード検索の挙動にも影響します。フィルターやキーワード検索クエリも、インデックスと照合される前に同じトークナイゼーションが適用されます。
 
-The following table shows an example scenario showing whether a filter or keyword search would identify a `text` property with value `Hello, (beautiful) world` as a hit.
+次の表は、`text` プロパティの値が `Hello, (beautiful) world` のとき、フィルターやキーワード検索でヒットするかどうかを示した例です。
 
-- **Row**: Various tokenization methods.
-- **Column**: Various search strings.
+- **行**: さまざまなトークナイゼーション方法  
+- **列**: さまざまな検索文字列  
 
 |                  | `Beautiful` | `(Beautiful)` | `(beautiful)` | `Hello, (beautiful) world` |
 | ---------------- | ----------- | ------------- | ------------- | -------------------------- |
@@ -337,16 +337,16 @@ The following table shows an example scenario showing whether a filter or keywor
 | `field`          | ❌          | ❌            | ❌            | ✅                         |
 
 <details>
-  <summary>`gse` and `trigram` tokenization methods</summary>
+  <summary>`gse` と `trigram` トークナイゼーション方法</summary>
 
-:::info Added in `1.24`
+:::info `1.24` で追加
 :::
 
-For Japanese and Chinese text, we recommend use of `gse` or `trigram` tokenization methods. These methods work better with these languages than the other methods as these languages are not easily able to be tokenized using whitespaces.
+日本語および中国語のテキストには、`gse` または `trigram` トークナイゼーション方法の使用を推奨します。これらの言語は空白で簡単に区切れないため、他の方法よりも適切に動作します。
 
-The `gse` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_GSE` to `true` on the Weaviate instance.
+`gse` トークナイザーはリソース節約のためデフォルトではロードされません。使用するには、Weaviate インスタンスで環境変数 `ENABLE_TOKENIZER_GSE` を `true` に設定してください。
 
-`gse` tokenization examples:
+`gse` トークナイゼーション例:
 
 - `"素早い茶色の狐が怠けた犬を飛び越えた"`: `["素早", "素早い", "早い", "茶色", "の", "狐", "が", "怠け", "けた", "犬", "を", "飛び", "飛び越え", "越え", "た", "素早い茶色の狐が怠けた犬を飛び越えた"]`
 - `"すばやいちゃいろのきつねがなまけたいぬをとびこえた"`: `["すばや", "すばやい", "やい", "いち", "ちゃ", "ちゃい", "ちゃいろ", "いろ", "のき", "きつ", "きつね", "つね", "ねが", "がな", "なま", "なまけ", "まけ", "けた", "けたい", "たい", "いぬ", "を", "とび", "とびこえ", "こえ", "た", "すばやいちゃいろのきつねがなまけたいぬをとびこえた"]`
@@ -354,17 +354,17 @@ The `gse` tokenizer is not loaded by default to save resources. To use it, set t
 </details>
 
 <details>
-  <summary>`kagome_ja` tokenization method</summary>
+  <summary>`kagome_ja` トークナイゼーション方法</summary>
 
-:::caution Experimental feature
-Available starting in `v1.28.0`. This is an experimental feature. Use with caution.
+:::caution 実験的機能  
+`v1.28.0` 以降で利用可能です。慎重にご利用ください。  
 :::
 
-For Japanese text, `kagome_ja` tokenization method is also available. This uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Japanese [MeCab IPA](https://github.com/ikawaha/kagome-dict/) dictionary to split the property text.
+日本語テキストには `kagome_ja` トークナイゼーション方法も利用できます。これは日本語 [MeCab IPA](https://github.com/ikawaha/kagome-dict/) 辞書を使用した [`Kagome` トークナイザー](https://github.com/ikawaha/kagome?tab=readme-ov-file) でテキストを分割します。
 
-The `kagome_ja` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_KAGOME_JA` to `true` on the Weaviate instance.
+`kagome_ja` トークナイザーもリソース節約のためデフォルトではロードされません。使用するには、Weaviate インスタンスで環境変数 `ENABLE_TOKENIZER_KAGOME_JA` を `true` に設定してください。
 
-`kagome_ja` tokenization examples:
+`kagome_ja` トークナイゼーション例:
 
 - `"春の夜の夢はうつつよりもかなしき 夏の夜の夢はうつつに似たり 秋の夜の夢はうつつを超え 冬の夜の夢は心に響く 山のあなたに小さな村が見える 川の音が静かに耳に届く 風が木々を通り抜ける音 星空の下、すべてが平和である"`:
   - [`"春", "の", "夜", "の", "夢", "は", "うつつ", "より", "も", "かなしき", "\n\t", "夏", "の", "夜", "の", "夢", "は", "うつつ", "に", "似", "たり", "\n\t", "秋", "の", "夜", "の", "夢", "は", "うつつ", "を", "超え", "\n\t", "冬", "の", "夜", "の", "夢", "は", "心", "に", "響く", "\n\n\t", "山", "の", "あなた", "に", "小さな", "村", "が", "見える", "\n\t", "川", "の", "音", "が", "静か", "に", "耳", "に", "届く", "\n\t", "風", "が", "木々", "を", "通り抜ける", "音", "\n\t", "星空", "の", "下", "、", "すべて", "が", "平和", "で", "ある"`]
@@ -376,17 +376,17 @@ The `kagome_ja` tokenizer is not loaded by default to save resources. To use it,
 </details>
 
 <details>
-  <summary>`kagome_kr` tokenization method</summary>
+  <summary>`kagome_kr` トークナイゼーション方法</summary>
 
-:::caution Experimental feature
-Available starting in `v1.25.7`. This is an experimental feature. Use with caution.
+:::caution 実験的機能  
+`v1.25.7` 以降で利用可能です。慎重にご利用ください。  
 :::
 
-For Korean text, we recommend use of the `kagome_kr` tokenization method. This uses the [`Kagome` tokenizer](https://github.com/ikawaha/kagome?tab=readme-ov-file) with a Korean MeCab ([mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)) dictionary to split the property text.
+韓国語テキストには `kagome_kr` トークナイゼーション方法の使用を推奨します。これは Korean MeCab ([mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/)) 辞書を使用した [`Kagome` トークナイザー](https://github.com/ikawaha/kagome?tab=readme-ov-file) でテキストを分割します。
 
-The `kagome_kr` tokenizer is not loaded by default to save resources. To use it, set the environment variable `ENABLE_TOKENIZER_KAGOME_KR` to `true` on the Weaviate instance.
+`kagome_kr` トークナイザーもリソース節約のためデフォルトではロードされません。使用するには、Weaviate インスタンスで環境変数 `ENABLE_TOKENIZER_KAGOME_KR` を `true` に設定してください。
 
-`kagome_kr` tokenization examples:
+`kagome_kr` トークナイゼーション例:
 
 - `"아버지가방에들어가신다"`:
   - `["아버지", "가", "방", "에", "들어가", "신다"]`
@@ -398,63 +398,60 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 </details>
 
 <details>
-  <summary>Limit the number of `gse` and `Kagome` tokenizers</summary>
+  <summary>`gse` と `Kagome` トークナイザーの数を制限する</summary>
 
-The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
-You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](/deploy/configuration/env-vars/index.md).
+`gse` および `Kagome` トークナイザーはリソースを多く消費し、Weaviate のパフォーマンスに影響を与える可能性があります。  
+[`TOKENIZER_CONCURRENCY_COUNT` 環境変数](/deploy/configuration/env-vars/index.md) を使用して、同時に実行できる `gse` と `Kagome` トークナイザーの合計数を制限できます。
 
 </details>
 
 ---
 
-### Inverted index {#inverted-index}
+### 転置インデックス {#inverted-index}
 
-Weaviate uses **inverted indexes** to enable fast and efficient filtering and searching. The inverted index maps values (like words or numbers) to the objects that contain them in order to speed-up all attribute-based filtering (`where` filters) and keyword searching (`bm25`, `hybrid`).
-Disabling indexing for properties you will never query can speed up data imports and reduce disk usage.
+ Weaviate は、高速かつ効率的なフィルタリングと検索を実現するために **転置インデックス** を使用します。転置インデックスは値 (単語や数値など) をそれを含むオブジェクトにマッピングすることで、属性ベースのフィルタリング ( `where` フィルター) やキーワード検索 ( `bm25`、`hybrid` ) を高速化します。クエリを行わないプロパティのインデックス作成を無効にすると、データインポートが高速化され、ディスク使用量を削減できます。
 
-More details about the `indexFilterable`, `indexSearchable`, `indexRangeFilters` and `invertedIndexConfig` parameters can be found in [Reference: Inverted index](./indexing/inverted-index.mdx).
+ `indexFilterable`、`indexSearchable`、`indexRangeFilters`、`invertedIndexConfig` パラメーターの詳細については、[リファレンス: 転置インデックス](./indexing/inverted-index.mdx) を参照してください。
 
 ---
 
-### Vector configuration
+### ベクトル設定
 
-Weaviate supports two approaches for vector configuration:
+ Weaviate では、ベクトル設定に 2 つのアプローチをサポートしています:
 
-- **Single vector collections**: One vector space per object using top-level parameters (`vectorizer`, `vectorIndexType`, `vectorIndexConfig`)
-- **Multiple named vectors**: Multiple vector spaces per object using the `vectorConfig` parameter (**recommended**)
+- **単一ベクトルコレクション**: 上位レベルのパラメーター ( `vectorizer`、`vectorIndexType`、`vectorIndexConfig` ) を使用し、オブジェクトごとに 1 つのベクトル空間
+- **複数の名前付きベクトル**: `vectorConfig` パラメーターを使用し、オブジェクトごとに複数のベクトル空間 (**推奨**)
 
-You cannot combine both approaches in the same collection.
+同じコレクション内で両方のアプローチを併用することはできません。
 
-:::tip We recommend using `vectorConfig`
+:::tip `vectorConfig` の使用を推奨します
 
-Using the `vectorConfig` parameter allows you to start with one vector per collection and adding [new named vectors](../manage-collections/vector-config.mdx#add-new-named-vectors) afterward.
+`vectorConfig` パラメーターを使用すると、まずコレクションあたり 1 つのベクトルから始め、後から[新しい名前付きベクトル](../manage-collections/vector-config.mdx#add-new-named-vectors) を追加できます。
 
 :::
 
-#### Vector configuration parameters
+#### ベクトル設定パラメーター
 
-| Parameter                                                                | Type   | Description                                                                                                                                                   | Default                 | Mutable       |
-| :----------------------------------------------------------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------- | :------------ |
-| `vectorizer`                                                             | String | The vectorizer module to use (e.g., `text2vec-cohere`). Set to `none` to disable auto-vectorization. [Available model providers](../model-providers/index.md) | Module-specific default | No            |
-| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | Vector index type: `hnsw` (default), `flat`, or `dynamic`                                                                                                     | `hnsw`                  | No            |
-| [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | Configuration settings for your chosen `vectorIndexType`                                                                                                      | Index-specific defaults | Partially\*   |
-| `vectorConfig`                                                           | Object | **Alternative to above**: Define multiple named vector spaces                                                                                                 | `null`                  | Partially\*\* |
-| ↪ `vectorConfig.<name>.vectorizer`                                       | Object | Vectorizer config for this named vector (e.g., `{"text2vec-openai": {"properties": ["title"]}}`)                                                              | (Required)              | No            |
-| [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | Index type for this named vector                                                                                                                              | `hnsw`                  | No            |
-| [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | Index configuration for this named vector                                                                                                                     | Index-specific defaults | Partially\*   |
+| パラメーター                                                               | 型     | 説明                                                                                                                                                                   | デフォルト               | 変更可        |
+| :----------------------------------------------------------------------- | :----- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :------------ |
+| `vectorizer`                                                             | String | 使用するベクトライザーモジュール (例: `text2vec-cohere`)。自動ベクトル化を無効にするには `none` を設定します。 [利用可能なモデルプロバイダー](../model-providers/index.md) | モジュール固有のデフォルト | No            |
+| [`vectorIndexType`](./indexing/vector-index.mdx)                         | String | ベクトルインデックスタイプ: `hnsw` (デフォルト)、`flat`、`dynamic`                                                                                                   | `hnsw`                  | No            |
+| [`vectorIndexConfig`](./indexing/vector-index.mdx)                       | Object | 選択した `vectorIndexType` 用の設定                                                                                                                                   | インデックス固有のデフォルト | 一部\*        |
+| `vectorConfig`                                                           | Object | **上記の代替**: 複数の名前付きベクトル空間を定義します                                                                                                                 | `null`                  | 一部\*\*      |
+| ↪ `vectorConfig.<name>.vectorizer`                                       | Object | この名前付きベクトル用のベクトライザー設定 (例: `{"text2vec-openai": {"properties": ["title"]}}`)                                                                      | (必須)                  | No            |
+| [↪ `vectorConfig.<name>.vectorIndexType`](./indexing/vector-index.mdx)   | String | この名前付きベクトル用のインデックスタイプ                                                                                                                             | `hnsw`                  | No            |
+| [↪ `vectorConfig.<name>.vectorIndexConfig`](./indexing/vector-index.mdx) | Object | この名前付きベクトル用のインデックス設定                                                                                                                               | インデックス固有のデフォルト | 一部\*        |
 
-\* See [vector index mutable parameters](./indexing/vector-index.mdx)  
-\*\* [New named vectors can be added](../manage-collections/vector-config.mdx#add-new-named-vectors) after collection creation
+\* [ベクトルインデックスの変更可能パラメーター](./indexing/vector-index.mdx) を参照  
+\*\* コレクション作成後に[新しい名前付きベクトルを追加](../manage-collections/vector-config.mdx#add-new-named-vectors)できます
 
-#### Single vector collections
+#### 単一ベクトルコレクション
 
-If you don't explicitly define a [named vector](#named-vectors) in your collection definition, Weaviate automatically creates what's known as a _single vector_ collection. These vectors are stored internally under the named vector `default` (which is a reserved vector name).
+コレクション定義で [名前付きベクトル](#named-vectors) を明示的に定義しない場合、 Weaviate は自動的に _単一ベクトル_ コレクションを作成します。これらのベクトルは内部的に予約済みベクトル名 `default` の下に保存されます。
 
-To learn which properties of your data are vectorized, refer to the [Configure semantic indexing](./indexing/vector-index.mdx#configure-semantic-indexing) section.
+データのどのプロパティがベクトル化されるかを確認するには、[セマンティックインデックスの設定](./indexing/vector-index.mdx#configure-semantic-indexing) セクションを参照してください。
 
-##### Code example - How to create single vector collection
-
-This code example shows how to configure the vectorizer parameters for a single vector collection through a client library:
+##### コード例 - 単一ベクトルコレクションを作成する方法
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -491,21 +488,19 @@ This code example shows how to configure the vectorizer parameters for a single 
   </TabItem>
 </Tabs>
 
-:::tip Further resources
+:::tip 参考資料
 
-For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) guide.
+より多くのコード例や設定ガイドについては、[How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) ガイドを参照してください。
 
 :::
 
-#### Multiple vector embeddings (named vectors) {#named-vectors}
+#### 複数ベクトル埋め込み (名前付きベクトル) {#named-vectors}
 
 import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
 
-##### Code example - How to create multiple named vectors
-
-This code example shows how to configure multiple named vectors through a client library:
+##### コード例 - 複数の名前付きベクトルを作成する方法
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -542,23 +537,22 @@ This code example shows how to configure multiple named vectors through a client
   </TabItem>
 </Tabs>
 
-:::tip Further resources
+:::tip 参考資料
 
-For more code example and configuration guides visit the [How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) guide.
+より多くのコード例や設定ガイドについては、[How-to: Vectorizer and vector index config](../manage-collections/vector-config.mdx) ガイドを参照してください。
 
 :::
 
 ---
 
-### Module configuration
+### モジュール設定
 
-The `moduleConfig` parameter allows you to specify if the vectorizers will include or exclude the collection name in vector calculations (default `true`).
-It is also used to specify reranker and generative [model providers](../model-providers/index.md) at a collection level.
+`moduleConfig` パラメーターでは、ベクトライザーがベクトル計算にコレクション名を含めるか除外するかを指定できます（デフォルト `true`）。また、コレクション単位でリランカーおよび生成 [モデルプロバイダー](../model-providers/index.md) を指定する際にも使用します。
 
 <details>
-  <summary>Example module configuration -  JSON object</summary>
+  <summary>モジュール設定の例 - JSON オブジェクト</summary>
 
-An example of a complete `moduleConfig` object:
+完全な `moduleConfig` オブジェクトの例:
 
 ```json
   "moduleConfig": {
@@ -572,30 +566,30 @@ An example of a complete `moduleConfig` object:
 
 ---
 
-### Vector index {#vector-index}
+### ベクトル インデックス {#vector-index}
 
-Vector indexing organizes vector data to make similarity searches fast and efficient. Instead of comparing a query to every vector, an index builds a structure that rapidly narrows the search to the most relevant candidates.
+ベクトル インデックスは、ベクトル データを整理し、類似検索を高速かつ効率的に行えるようにします。クエリをすべてのベクトルと比較する代わりに、インデックスは検索対象を最も関連性の高い候補へ迅速に絞り込みます。
 
-More details about the `vectorIndexType` and `vectorIndexConfig` parameters can be found in [Reference: Vector index](./indexing/vector-index.mdx).
+`vectorIndexType` と `vectorIndexConfig` パラメーターの詳細については、[リファレンス: ベクトル インデックス](./indexing/vector-index.mdx) を参照してください。
 
 ---
 
-### Replication
+### レプリケーション
 
 <RaftRFChangeWarning />
 
-[Replication](/deploy/configuration/replication.md) configurations can be set using the definition, through the `replicationConfig` parameter.
+[レプリケーション](/deploy/configuration/replication.md) の設定は、`replicationConfig` パラメーターを通じて定義で指定できます。
 
-| Parameter          | Type    | Description                                                                                                                                   | Default                   | Mutable                                 |
-| :----------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------ | :-------------------------------------- |
-| `factor`           | Integer | The number of copies (replicas) to maintain for each shard. A factor of `3` means one primary and two replicas.                               | `1`                       | No in `v1.25+`, Yes in earlier versions |
-| `asyncEnabled`     | Boolean | Enable asynchronous replication. Added in `v1.26`                                                                                             | `false`                   | Yes                                     |
-| `deletionStrategy` | String  | Strategy for handling deletions in replication. Can be `NoAutomatedResolution`, `DeleteOnConflict` or `TimeBasedResolution`. Added in `v1.27` | `"NoAutomatedResolution"` | Yes                                     |
+| パラメーター          | 型      | 説明                                                                                                                                                           | デフォルト                   | 変更可能                                 |
+| :------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------- | :-------------------------------------- |
+| `factor`           | Integer | 各シャードで保持するコピー（レプリカ）の数。`3` の場合はプライマリ 1 つとレプリカ 2 つになります。                                                               | `1`                         | `v1.25+` では不可、それ以前のバージョンでは可 |
+| `asyncEnabled`     | Boolean | 非同期レプリケーションを有効にします。`v1.26` で追加されました。                                                                                                 | `false`                     | 可                                       |
+| `deletionStrategy` | String  | レプリケーションでの削除処理戦略。`NoAutomatedResolution`、`DeleteOnConflict`、`TimeBasedResolution` から選択します。`v1.27` で追加されました。                 | `"NoAutomatedResolution"`   | 可                                       |
 
 <details>
-  <summary>Example replication configuration -  JSON object</summary>
+  <summary>レプリケーション設定の例 - JSON オブジェクト</summary>
 
-An example of a complete `replicationConfig` object:
+完全な `replicationConfig` オブジェクトの例:
 
 ```json
 {
@@ -613,9 +607,9 @@ An example of a complete `replicationConfig` object:
 
 </details>
 
-#### Code example - How to configure replication
+#### コード例 - レプリケーション設定
 
-This code example shows how to configure the replication parameters through a client library:
+以下のコード例は、クライアント ライブラリを使用してレプリケーション パラメーターを設定する方法を示しています。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -652,33 +646,33 @@ This code example shows how to configure the replication parameters through a cl
   </TabItem> -->
 </Tabs>
 
-:::tip Further resources
+:::tip 参考リソース
 
-For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+追加のコード例や設定ガイドについては、[How-to: コレクションの管理](../manage-collections/index.mdx) を参照してください。
 
 :::
 
 ---
 
-### Sharding
+### シャーディング
 
-Sharding is configured via the `shardingConfig` object in the collection definition. These parameters are immutable and cannot be changed after the collection is created.
+シャーディングは、コレクション定義の `shardingConfig` オブジェクトを通じて設定します。これらのパラメーターはイミュータブルで、コレクション作成後に変更できません。
 
-| Parameter             | Type    | Description                                                                                                                                               | Default         | Mutable |
-| :-------------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------- | :------ |
-| `desiredCount`        | Integer | The desired number of physical shards for the collection. If this value is larger than the number of cluster nodes, some nodes will host multiple shards. | Number of nodes | No      |
-| `virtualPerPhysical`  | Integer | The number of virtual shards per physical shard. Virtual shards aid in reducing data movement during rebalancing.                                         | `128`           | No      |
-| `strategy`            | String  | The strategy for determining which shard an object belongs to. Only `"hash"` is currently supported. The hash is based on the `key` property.             | `"hash"`        | No      |
-| `key`                 | String  | The property used for hashing to determine the target shard. Currently, only the object's internal UUID (`_id`) can be used.                              | `"_id"`         | No      |
-| `function`            | String  | The hashing function used on the `key`. Only `"murmur3"` is supported, which creates a 64-bit hash, making collisions highly unlikely.                    | `"murmur3"`     | No      |
-| `actualCount`         | Integer | **(Read-only)** The actual number of physical shards created. This typically matches `desiredCount` unless an issue occurred during creation.             | `1`             | No      |
-| `desiredVirtualCount` | Integer | **(Read-only)** A calculated value representing `desiredCount * virtualPerPhysical`.                                                                      | `128`           | No      |
-| `actualVirtualCount`  | Integer | **(Read-only)** The actual number of virtual shards that were created.                                                                                    | `128`           | No      |
+| パラメーター             | 型      | 説明                                                                                                                                                               | デフォルト           | 変更可能 |
+| :----------------------- | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- | :------ |
+| `desiredCount`        | Integer | コレクション用に作成する物理シャードの希望数。この値がクラスターノード数より大きい場合、一部のノードは複数のシャードをホストします。                               | ノード数             | 不可     |
+| `virtualPerPhysical`  | Integer | 物理シャード 1 つあたりの仮想シャード数。仮想シャードはリバランス時のデータ移動を削減するのに役立ちます。                                                             | `128`               | 不可     |
+| `strategy`            | String  | オブジェクトが属するシャードを決定する戦略。現在サポートされているのは `"hash"` のみで、`key` プロパティを基にハッシュを計算します。                                   | `"hash"`            | 不可     |
+| `key`                 | String  | シャード決定のためのハッシュに使用するプロパティ。現在はオブジェクトの内部 UUID (`_id`) のみが使用できます。                                                         | `"_id"`             | 不可     |
+| `function`            | String  | `key` に適用するハッシュ関数。現在サポートされているのは `"murmur3"` のみで、64 ビット ハッシュを生成し、衝突の可能性を極めて低くします。                               | `"murmur3"`         | 不可     |
+| `actualCount`         | Integer | **(読み取り専用)** 実際に作成された物理シャード数。通常は `desiredCount` と一致しますが、作成時に問題が発生した場合は異なる可能性があります。                         | `1`                 | 不可     |
+| `desiredVirtualCount` | Integer | **(読み取り専用)** `desiredCount * virtualPerPhysical` で計算される値です。                                                                                           | `128`               | 不可     |
+| `actualVirtualCount`  | Integer | **(読み取り専用)** 実際に作成された仮想シャード数。                                                                                                                     | `128`               | 不可     |
 
 <details>
-  <summary>Example sharding configuration -  JSON object</summary>
+  <summary>シャーディング設定の例 - JSON オブジェクト</summary>
 
-An example of a complete `shardingConfig` object:
+完全な `shardingConfig` オブジェクトの例:
 
 ```json
   "shardingConfig": {
@@ -695,9 +689,9 @@ An example of a complete `shardingConfig` object:
 
 </details>
 
-#### Code example - How to configure sharding
+#### コード例 - シャーディング設定
 
-This code example shows how to configure the sharding parameters through a client library:
+以下のコード例は、クライアント ライブラリを使用してシャーディング パラメーターを設定する方法を示しています。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -734,35 +728,33 @@ This code example shows how to configure the sharding parameters through a clien
   </TabItem> -->
 </Tabs>
 
-:::tip Further resources
+:::tip 参考リソース
 
-For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+追加のコード例や設定ガイドについては、[How-to: コレクションの管理](../manage-collections/index.mdx) を参照してください。
 
 :::
 
 ---
 
-### Multi-tenancy
+### マルチテナンシー
 
-Multi-tenancy allows you to isolate data within a single collection, where objects are associated with specific tenants. This is a useful feature for building SaaS applications or any system requiring strict data partitioning.
+マルチテナンシーを使用すると、1 つのコレクション内でデータを分離し、オブジェクトを特定のテナントに関連付けることができます。これは SaaS アプリケーションや、厳格なデータ分割が必要なシステムを構築する際に役立つ機能です。
 
-:::note Why use multi-tenancy?
+:::note マルチテナンシーを使用する理由
 
-It provides data isolation at a lower overhead than creating a separate collection for each tenant, making it more scalable when you have a large number of tenants.
+テナントごとに別々のコレクションを作成するよりも低いオーバーヘッドでデータを分離できるため、多数のテナントがある場合でもスケーラブルです。
 
 :::
 
-To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyConfig` object. This parameter is immutable and must be set at creation time.
+マルチテナンシーを有効にするには、`multiTenancyConfig` オブジェクト内の `enabled` キーを `true` に設定します。このパラメーターは不変であり、作成時に設定する必要があります。
 
-| Parameter              | Type    | Description                                                                                                                                                 | Default | Mutable |
-| :--------------------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------ |
-| `enabled`              | Boolean | If `true`, enables multi-tenancy for the collection.                                                                                                        | `false` | No      |
-| `autoTenantCreation`   | Boolean | If `true`, a new tenant is created if you try to insert an object into a non-existent tenant. Added in `v1.25`                                              | `false` | Yes     |
-| `autoTenantActivation` | Boolean | If `true`, automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them. Added in `v1.25.2` | `false` | Yes     |
+| パラメーター              | 型      | 説明                                                                                                                                                                           | デフォルト | 変更可 |
+| :----------------------- | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :----- |
+| `enabled`                | Boolean | `true` の場合、コレクションでマルチテナンシーを有効にします。                                                                                                                   | `false`    | No     |
+| `autoTenantCreation`     | Boolean | `true` の場合、存在しないテナントにオブジェクトを挿入しようとすると新しいテナントが作成されます。`v1.25` で追加                                                                  | `false`    | Yes    |
+| `autoTenantActivation`   | Boolean | `true` の場合、検索・読み取り・更新・削除操作が行われた際に `INACTIVE` または `OFFLOADED` テナントを自動的にアクティブ化します。`v1.25.2` で追加                               | `false`    | Yes    |
 
-#### Code example - How to configure multi-tenancy
-
-This code example shows how to configure the multi-tenancy parameters through a client library:
+#### コード例 - マルチテナンシー設定
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -799,18 +791,18 @@ This code example shows how to configure the multi-tenancy parameters through a 
   </TabItem> -->
 </Tabs>
 
-:::tip Further resources
+:::tip 追加リソース
 
-For more code example and configuration guides visit the [How-to: Manage collections](../manage-collections/index.mdx) section.
+詳細なコード例や設定ガイドについては、[How-to: コレクション管理](../manage-collections/index.mdx) セクションをご覧ください。
 
 :::
 
-## Mutability
+## 変更可否
 
-Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it. Use [collection aliases](../starter-guides/managing-collections/index.mdx#migration-workflow-with-collection-aliases) to perform such a migration with zero downtime.
+コレクションを作成した後でも、一部のパラメーターは変更できますが、すべてではありません。変更できないパラメーターを修正するには、データをエクスポートし、新しいコレクションを作成してデータをインポートしてください。その際、[コレクションエイリアス](../starter-guides/managing-collections/index.mdx#migration-workflow-with-collection-aliases) を使用するとダウンタイムなしで移行できます。
 
 <details>
-  <summary>Mutable parameters</summary>
+  <summary>変更可能なパラメーター</summary>
 
 import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
@@ -824,89 +816,91 @@ import CollectionMutableParameters from "/_includes/collection-mutable-parameter
 
 </details>
 
-After you create a collection, you can [add new properties](../manage-collections/collection-operations.mdx#add-a-property). You cannot modify existing properties after you create the collection. You can also [add new named vectors](../concepts/data.md#adding-a-named-vector-after-collection-creation).
+コレクション作成後に[新しいプロパティを追加](../manage-collections/collection-operations.mdx#add-a-property)することはできますが、既存のプロパティを変更することはできません。また、[新しい名前付きベクトルを追加](../concepts/data.md#adding-a-named-vector-after-collection-creation)することも可能です。
 
-## Auto-schema
+## オートスキーマ
 
-The "Auto-schema" feature generates a collection definition automatically by inferring parameters from data being added. It is enabled by default, and can be disabled (e.g. in `docker-compose.yml`) by setting the environment variable [`AUTOSCHEMA_ENABLED`](/docs/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) to `'false'`.
+「オートスキーマ」機能は、追加されるデータからパラメーターを推測し、コレクション定義を自動生成します。デフォルトで有効になっており、`docker-compose.yml` などで環境変数 [`AUTOSCHEMA_ENABLED`](/docs/deploy/configuration/env-vars/index.md#AUTOSCHEMA_ENABLED) を `'false'` に設定することで無効化できます。
 
-It will:
+この機能は以下を行います。
 
-- Create a collection if an object is added to a non-existent collection.
-- Add any missing property from an object being added.
-- Infer array data types, such as `int[]`, `text[]`, `number[]`, `boolean[]`, `date[]` and `object[]`.
-- Infer nested properties for `object` and `object[]` data types.
-- Throw an error if an object being added contains a property that conflicts with an existing schema type. (e.g. trying to import text into a field that exists in the schema as `int`).
+- 既存しないコレクションにオブジェクトが追加された場合、コレクションを作成します。
+- 追加されるオブジェクトに存在しないプロパティがある場合、それを追加します。
+- `int[]`, `text[]`, `number[]`, `boolean[]`, `date[]`, `object[]` などの配列データ型を推測します。
+- `object` および `object[]` のデータ型に対してネストされたプロパティを推測します。
+- 追加されるオブジェクトに既存スキーマ型と競合するプロパティが含まれる場合、エラーを返します（例: `int` として定義済みのフィールドにテキストをインポートしようとした場合）。
 
-:::tip Define the collection manually for production use
+:::tip 本番環境ではコレクションを手動定義することを推奨
 
-Generally speaking, we recommend that you disable auto-schema for production use.
+一般的に、本番環境ではオートスキーマを無効にし、手動でコレクションを定義することを推奨します。
 
-- A manual collection definition will provide more precise control.
-- There is a performance penalty associated with inferring the data structure at import time. This may be a costly operation in some cases, such as complex nested properties.
+- 手動定義のほうがより細かい制御が可能です。
+- インポート時にデータ構造を推測するためのパフォーマンスコストが発生します。特に複雑なネスト構造の場合、コストが高くなる場合があります。
 
 :::
 
-#### Auto-schema data types
+#### オートスキーマのデータ型
 
-Additional configurations are available to help the auto-schema infer properties to suit your needs.
+オートスキーマがニーズに合ったプロパティを推測できるよう、追加設定が利用できます。
 
-- `AUTOSCHEMA_DEFAULT_NUMBER=number` - create `number` columns for any numerical values (as opposed to `int`, etc).
-- `AUTOSCHEMA_DEFAULT_DATE=date` - create `date` columns for any date-like values.
+- `AUTOSCHEMA_DEFAULT_NUMBER=number` - 数値を見つけた際に `number` 列を作成します（`int` などではなく）。
+- `AUTOSCHEMA_DEFAULT_DATE=date` - 日付らしい値を見つけた際に `date` 列を作成します。
 
-The following are not allowed:
+以下は許可されません。
 
-- Any map type is forbidden, unless it clearly matches one of the two supported types `phoneNumber` or `geoCoordinates`.
-- Any array type is forbidden, unless it is clearly a reference-type. In this case, Weaviate needs to resolve the beacon and see what collection the resolved beacon is from, since it needs the collection name to be able to alter the schema.
+- 2 つのサポート対象である `phoneNumber` または `geoCoordinates` のいずれにも明確に一致しないマップ型は使用できません。
+- 参照型であることが明確でない限り、配列型は使用できません。この場合、Weaviate はビーコンを解決し、そのビーコンが属するコレクション名を取得する必要があります。これはスキーマを変更するために必要です。
 
-## Collections count limit {#collections-count-limit}
+## コレクション数の上限 {#collections-count-limit}
 
-:::info Added in `v1.30`
+:::info `v1.30` で追加
 :::
 
-To ensure optimal performance, Weaviate **limits the number of collections per node**. Each collection adds overhead in terms of indexing, definition management, and storage. This limit aims to ensure Weaviate remains performant.
+最適なパフォーマンスを確保するため、Weaviate は **ノードあたりのコレクション数を制限** します。各コレクションはインデックス作成、定義管理、ストレージの面でオーバーヘッドを追加するため、この制限により高いパフォーマンスを維持します。
 
-- **Default limit**: `1000` collections.
-- **Modify the limit**: Use the [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) environment variable to adjust the collection count limit.
+- **デフォルト上限**: `1000` コレクション
+- **上限の変更方法**: 環境変数 [`MAXIMUM_ALLOWED_COLLECTIONS_COUNT`](/deploy/configuration/env-vars/index.md#MAXIMUM_ALLOWED_COLLECTIONS_COUNT) を使用してコレクション数の上限を調整できます。
 
 :::note
-If your instance already exceeds the limit, Weaviate will not allow the creation of any new collections. Existing collections will not be deleted.
+すでに上限を超えている場合、Weaviate は新しいコレクションの作成を許可しません。既存のコレクションは削除されません。
 :::
 
 :::tip
-**Instead of raising the collections count limit, consider rethinking your architecture**.
-For more details, see [Starter Guides: Scaling limits with collections](../starter-guides/managing-collections/collections-scaling-limits.mdx).
+**コレクション数の上限を引き上げる代わりに、アーキテクチャの再検討をお勧めします**。詳細は [Starter Guides: Scaling limits with collections](../starter-guides/managing-collections/collections-scaling-limits.mdx) をご覧ください。
 :::
 
-## Collection aliases
+
+
+## コレクション エイリアス
 
 :::caution Technical preview
 
-Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+コレクション エイリアスは **`v1.32`** で **テクニカル プレビュー**として追加されました。<br/><br/>
+これは、機能がまだ開発中であり、将来のリリースで破壊的変更を含む変更が行われる可能性があることを意味します。  
+**現時点では本機能を本番環境で使用することは推奨しません。**
 
 :::
 
-Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
+コレクション エイリアスは、 Weaviate コレクションの別名であり、別名を使ってコレクションを参照できます。  
 
-Weaviate automatically routes alias requests to the target collection. This allows you to use aliases wherever collection names are required. This includes [collection management](../manage-collections/index.mdx), [queries](../search/index.mdx), and all other operations requiring a specific collection name with the **exception** of deleting collections. To delete a collection you need to use its name. Deleting a collection does not automatically delete aliases pointing to it.
+Weaviate はエイリアスのリクエストを自動的にターゲット コレクションへルーティングします。これにより、コレクション名が必要な場所であればどこでもエイリアスを使用できます。これには [コレクション管理](../manage-collections/index.mdx)、[クエリ](../search/index.mdx) など、特定のコレクション名を必要とするすべての操作が含まれますが、コレクションの削除だけは例外です。コレクションを削除するには、そのコレクション名を使用する必要があります。コレクションを削除しても、それを指すエイリアスは自動的に削除されません。  
 
-Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>.
+エイリアス名は一意でなければならず（既存のコレクションや他のエイリアスと重複できません）、複数のエイリアスを同じコレクションに割り当てることも可能です。コレクション エイリアスは [クライアント ライブラリからプログラムで](../manage-collections/collection-aliases.mdx)設定するか、<SkipLink href="/weaviate/api/rest#tag/aliases">REST エンドポイント</SkipLink>を使用して設定できます。  
 
-In order to manage collection aliases, you need to posses the right [`Collection aliases`](../configuration/rbac/index.mdx#available-permissions) permissions. To manage the underlying collection the alias references, you also need the [`Collections`](../configuration/rbac/index.mdx#available-permissions) permissions for that specific collection.
+コレクション エイリアスを管理するには、適切な `Collection aliases` 権限が必要です。エイリアスが参照する元のコレクションを管理する場合、そのコレクションに対する `Collections` 権限も必要です。
 
-## Further resources
+## 参考リソース
 
-- [Starter guides: Collection definition](/weaviate/starter-guides/managing-collections)
-- [How to: Manage collections](../manage-collections/index.mdx)
-- [Concepts: Data structure](/weaviate/concepts/data)
+- [スターター ガイド: コレクション定義](/weaviate/starter-guides/managing-collections)
+- [操作方法: コレクションの管理](../manage-collections/index.mdx)
+- [コンセプト: データ構造](/weaviate/concepts/data)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
-    REST API: Collection definition (schema)
+    REST API: コレクション定義（スキーマ）
   </SkipLink>
 
-## Questions and feedback
+## ご質問とフィードバック
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

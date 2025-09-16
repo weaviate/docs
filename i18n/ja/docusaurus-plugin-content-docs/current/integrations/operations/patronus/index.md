@@ -4,19 +4,21 @@ sidebar_position: 3
 image: og/integrations/home.jpg
 ---
 
-[Patronus AI](https://www.patronus.ai/) offers many tools and solutions for observability and evaluations. Access evaluation models designed to score RAG hallucinations, image relevance, context quality, and more across a variety of use cases.
+[Patronus AI](https://www.patronus.ai/) では、オブザーバビリティと評価のための多彩なツールとソリューションを提供しています。さまざまなユースケースにおいて、 RAG 幻覚、画像関連性、コンテキスト品質などをスコアリングする評価モデルにアクセスできます。
 
-## Patronus AI and Weaviate
-Patronus enables you to use trace-based observability when developing RAG systems with Weaviate. 
+## Patronus AI と Weaviate
+Patronus を利用すると、 Weaviate で RAG システムを開発する際に、トレースベースのオブザーバビリティを使用できます。 
 
-Further, Patronus has developed the Lynx model family, custom models for Hallucination Detection, a particularly important issue for RAG systems.
+さらに、 Patronus は Hallucination Detection 向けにカスタム開発された Lynx モデルファミリーを提供しており、これは RAG システムにとって特に重要な課題を解決します。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## 当社のリソース 
+[**ハンズオン学習**](#hands-on-learning): エンドツーエンドのチュートリアルで技術理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Patronus Lynx Hallucination Detection | Learn how to evaluate if the Weaviate Query Agent is hallucinating by connecting the returned sources to Lynx | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/patronus/lynx-query-agent.ipynb) |
+| Patronus Lynx Hallucination Detection | 返されたソースを Lynx に接続し、 Weaviate Query エージェントが幻覚を生成していないかを評価する方法を学びます | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/patronus/lynx-query-agent.ipynb) |
+
+
 

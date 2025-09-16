@@ -3,16 +3,16 @@ title: Replicated
 sidebar_position: 3
 ---
 
-[Replicated](https://www.replicated.com/) is a platform that helps software vendors package, deliver, and manage Kubernetes applications in secure, customer-controlled environments.
+[Replicated](https://www.replicated.com/) は、ソフトウェアベンダーが Kubernetes アプリケーションを安全な顧客管理環境でパッケージ化・配布・管理できるよう支援するプラットフォームです。
 
-## Replicated and Weaviate
-[SecureBuild](https://securebuild.com/), by Replicated, offers a [Weaviate container image](https://securebuild.com/images/weaviate) for developers who want to run production‑ready Weaviate securely in local environments.
-
+## Replicated と Weaviate
+[SecureBuild](https://securebuild.com/) によって提供される [Weaviate コンテナーイメージ](https://securebuild.com/images/weaviate) は、ローカル環境で本番レディな Weaviate を安全に実行したい開発者向けに提供されています。
 
 ## Our Resources 
-[**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+[**Read and Listen**](#read-and-listen): これらのテクノロジーについての概念的理解を深めましょう。
 
 ### Read and Listen 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Introducing SecureBuild | Learn what SecureBuild is and why Weaviate joined as a launch partner. | [Blog](https://securebuild.com/blog/introducing-securebuild) |
+| SecureBuild の紹介 | SecureBuild とは何か、そして Weaviate がローンチパートナーとして参加した理由を学びます。 | [ブログ](https://securebuild.com/blog/introducing-securebuild) |
+

@@ -4,29 +4,29 @@ sidebar_position: 11
 image: og/integrations/home.jpg
 ---
 
-[Unstructured](https://unstructured.io/) offers a platform and tools to work with unstructured data. Ingest and process unstructured data to use in retrieval augmented generation (RAG) applications.
+[Unstructured](https://unstructured.io/) は、非構造化データを扱うためのプラットフォームとツールを提供します。検索拡張生成 ( RAG ) アプリケーションで利用するために、非構造化データを取り込み、処理できます。
 
-Unstructured has two offerings:
-1. [Unstructured Platform](https://docs.unstructured.io/platform/overview): No-code user interface
-2. [Serverless API](https://docs.unstructured.io/api-reference/api-services/overview): Run scripts or code to call the Unstructured Ingest CLI
+Unstructured には 2 つの提供形態があります:  
+1. [Unstructured Platform](https://docs.unstructured.io/platform/overview): ノーコードユーザーインターフェース  
+2. [Serverless API](https://docs.unstructured.io/api-reference/api-services/overview): スクリプトやコードから Unstructured Ingest CLI を呼び出して実行  
 
-## Unstructured and Weaviate
-You can ingest and process data from a variety of sources into your Weaviate cluster. Weaviate is a destination connector in the [Platform](https://docs.unstructured.io/platform/platform-destination-connectors/weaviate) and [API](https://docs.unstructured.io/api-reference/ingest/destination-connector/weaviate). 
-
+## Unstructured と Weaviate
+多様なソースからデータを取り込み、 Weaviate クラスターへ処理結果を保存できます。 Weaviate は [Platform](https://docs.unstructured.io/platform/platform-destination-connectors/weaviate) および [API](https://docs.unstructured.io/api-reference/ingest/destination-connector/weaviate) のデスティネーションコネクターです。 
 
 ## Our Resources 
-The resources are broken into two categories: 
-1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+リソースは 2 つのカテゴリに分かれています:  
+1. [ **Hands on Learning** ](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めます。  
 
-2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+2. [ **Read and Listen** ](#read-and-listen): これらのテクノロジーに関する概念的理解を高めます。  
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Ingest Data from S3 into Weaviate | Learn how to use Unstructured's API to grab data from an S3 bucket and load it into Weaviate | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/unstructured/unstructured_weaviate.ipynb)
+| S3 から Weaviate へデータを取り込む | Unstructured の API を使用して S3 バケットからデータを取得し、 Weaviate にロードする方法を学びます | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/data-platforms/unstructured/unstructured_weaviate.ipynb) |
 
 ### Read and Listen 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Ingesting PDFs into Weaviate | Learn how to load and transform PDF documents into Weaviate. | [Blog](https://weaviate.io/blog/ingesting-pdfs-into-weaviate) |
+| PDF を Weaviate に取り込む | PDF ドキュメントを読み込み、変換して Weaviate に取り込む方法を学びます。 | [Blog](https://weaviate.io/blog/ingesting-pdfs-into-weaviate) |
+

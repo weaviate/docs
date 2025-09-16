@@ -1,12 +1,13 @@
 ---
-title: Data Platforms
+title: データプラットフォーム
 sidebar_position: 3
 image: og/integrations/home.jpg
 ---
 
-Data Platforms offer robust solutions for managing, processing, and analyzing large volumes of data. These platforms provide tools and services that facilitate seamless data ingestion directly into Weaviate. 
+データプラットフォームは、大量のデータを管理・処理・分析するための堅牢なソリューションを提供します。これらのプラットフォームは、データをシームレスに Weaviate に取り込むためのツールとサービスを提供します。
 
-Learn about how Weaviate integrates with these solutions:
+次のソリューションと Weaviate の連携方法をご確認ください:
+
 * [Airbyte](/integrations/data-platforms/airbyte/)
 * [Aryn](/integrations/data-platforms/aryn/)
 * [Astronomer](/integrations/data-platforms/astronomer/)
@@ -18,3 +19,4 @@ Learn about how Weaviate integrates with these solutions:
 * [Firecrawl](/integrations/data-platforms/firecrawl/)
 * [IBM](/integrations/data-platforms/ibm/)
 * [Unstructured](/integrations/data-platforms/unstructured)
+

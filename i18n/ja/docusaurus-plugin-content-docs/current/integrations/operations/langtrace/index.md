@@ -4,16 +4,18 @@ sidebar_position: 2
 image: og/integrations/home.jpg
 ---
 
-[Langtrace](https://langtrace.ai/) is an open-source project that uses [OpenTelemetry](https://opentelemetry.io/) for observability.
+[Langtrace](https://langtrace.ai/) は、オブザーバビリティのために [ OpenTelemetry ](https://opentelemetry.io/) を使用するオープンソース プロジェクトです。
 
-## Langtrace and Weaviate
-This integration allows you to view vector search queries and generative calls that are made to your Weaviate cluster.
+## Langtrace と Weaviate
+このインテグレーションを使用すると、 Weaviate クラスターに対して実行される ベクトル 検索クエリ と 生成 呼び出し を確認できます。
 
-## Our Resources
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース
+[ **Hands on Learning**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### ハンズオン学習
 
-| Topic | Description | Resource |
+| トピック | 説明 | リソース |
 | --- | --- | --- |
-| Weaviate and Langtrace Observability | View the vector and generative calls made to your application. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/langtrace/weaviate_observability.ipynb) |
+| Weaviate と Langtrace のオブザーバビリティ | アプリケーションに対して実行される ベクトル と 生成 呼び出し を確認します。 | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/operations/langtrace/weaviate_observability.ipynb) |
+
+

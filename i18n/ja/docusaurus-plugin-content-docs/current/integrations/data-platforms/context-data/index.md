@@ -1,25 +1,27 @@
 ---
-title: Context Data
+title: コンテキスト データ
 sidebar_position: 8
 image: og/integrations/home.jpg
 ---
 
-VectorETL by [Context Data](https://contextdata.ai/) is a modular no-code Python framework that is designed to help AI and Data Engineers work with data:
+[Context Data](https://contextdata.ai/) による VectorETL は、AI や Data Engineers がデータを扱う際に役立つ、モジュラー式のノーコード Python フレームワークです。
 
-* Quickly extract data from multiple data sources (databases, cloud storage, and local files)
-* Embed using major models (including OpenAI, Cohere, and Google Gemini)
-* Write to vector databases 
+* 複数のデータソース（データベース、クラウド ストレージ、ローカル ファイル）からデータを素早く抽出  
+* OpenAI、Cohere、Google Gemini などの主要モデルを用いて埋め込みを実行  
+* ベクトル データベースへ書き込み  
 
-## Context Data and Weaviate
-Weaviate is a [target connection](https://context-data.gitbook.io/context-data-1/adding-target-connections#add-a-weaviate-target-connection) in Context Data. 
+## Context Data と Weaviate
+Weaviate は Context Data における [ターゲット接続](https://context-data.gitbook.io/context-data-1/adding-target-connections#add-a-weaviate-target-connection) です。 
 
-To connect to Context Data, open the console and input your Weaviate instance's URL and authentication credentials when prompted.
+Context Data に接続するには、コンソールを開き、プロンプトが表示されたら Weaviate インスタンスの URL と認証情報を入力してください。
 
-## Our Resources 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+## リソース 
+[**Hands on Learning**](#hands-on-learning)：エンドツーエンドのチュートリアルで技術的な理解を深めましょう。
 
 ### Hands on Learning
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| VectorETL into Weaviate | Three examples showing you how to ingest data from Google Cloud Storage, Postgres, and S3 into Weaviate. | [Notebook](https://github.com/weaviate/recipes/tree/main/integrations/data-platforms/context-data) |
+| VectorETL を Weaviate へ取り込む | Google Cloud Storage、Postgres、S3 から Weaviate へデータを取り込む 3 つの例を紹介します。 | [ノートブック](https://github.com/weaviate/recipes/tree/main/integrations/data-platforms/context-data) |
+
+

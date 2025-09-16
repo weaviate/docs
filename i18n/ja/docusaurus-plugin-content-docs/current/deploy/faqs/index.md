@@ -1,106 +1,105 @@
 ---
 
-title: Deployment FAQs
+title: デプロイに関する FAQ
 
 ---
 
-Looking for guidance on deploying Weaviate in a production environment? Whether you're scaling up from a proof-of-concept to an enterprise-wide implementation, migrating from another solution, or optimizing for specific workloads, you'll find practical answers to streamline your deployment process. Our goal is to help you achieve reliable performance, maintain data integrity, and minimize operational overhead as you harness the power of vector search for your applications!
+本番環境で Weaviate をデプロイするためのガイダンスをお探しですか？PoC からエンタープライズ規模への拡張、他ソリューションからの移行、または特定のワークロード向けの最適化など、デプロイを円滑に進めるための実践的な回答をまとめました。ベクトル検索の力をアプリケーションで最大限に活用しながら、信頼性の高いパフォーマンスを実現し、データ整合性を維持し、運用コストを最小化できるようサポートします。
 
-
-#### Q1: Why did my cluster suddenly become read-only?
-
-<details>
-
-<summary> Answer </summary>
-
-This almost always means you've run out of disk space. Weaviate protects itself by switching to read-only mode when disk usage exceeds a configured threshold. You'll need to increase the disk size available to Weaviate and then reset the read-only status.
-
-</details>
-
-#### Q2: How do I deploy Weaviate using AWS Marketplace?
+#### Q1: クラスターが突然読み取り専用になったのはなぜですか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-This [page](../installation-guides/aws-marketplace.md) will walk you through all the necessary steps to deploy Weaviate using AWS marketplace. 
+ほとんどの場合、ディスク容量が不足しています。Weaviate は、ディスク使用量が設定した閾値を超えると自動的に読み取り専用モードに切り替えて自己保護を行います。Weaviate が利用できるディスクサイズを増やし、その後読み取り専用ステータスをリセットしてください。
 
 </details>
 
-#### Q3: How do I deploy Weaviate using GCP Marketplace?
+#### Q2: AWS Marketplace で Weaviate をデプロイするにはどうすればよいですか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-This [page](../installation-guides/gcp-marketplace.md) will walk you through all the necessary steps to deploy Weaviate using GCP marketplace. 
+こちらの [ページ](../installation-guides/aws-marketplace.md) で、AWS Marketplace を利用して Weaviate をデプロイするための手順をすべてご確認いただけます。 
 
 </details>
 
-#### Q4: Is there a recommended limit for collections?
+#### Q3: GCP Marketplace で Weaviate をデプロイするにはどうすればよいですか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-If you plan to create more than **20** collections, you may want to consider multi-tenancy instead for better scaling and performance. 
-
-**Additional information:** [Scaling limits with collections](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx)
+こちらの [ページ](../installation-guides/gcp-marketplace.md) で、GCP Marketplace を利用して Weaviate をデプロイするための手順をすべてご確認いただけます。 
 
 </details>
 
-#### Q5: What are some common issues that occur during deployment?
+#### Q4: コレクション数の推奨上限はありますか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-Common issues that occur during deployment include:
+20 以上のコレクションを作成する予定がある場合は、スケーリングとパフォーマンス向上のためにマルチテナンシーを検討することをお勧めします。 
 
-- The cluster becoming `read-only`.
-- Query results being inconsistent.
-- Nodes unable to maintain consensus. 
-- Creating too many collections.
-
-#### Further resources 
-
-For further information, the [troubleshooting page](./troubleshooting.md) will help with some of the common issue encountered. 
+**追加情報:** [コレクションのスケーリング制限](/weaviate/starter-guides/managing-collections/collections-scaling-limits.mdx)
 
 </details>
 
-#### Q6: What's the difference between Weaviate and other databases?
+#### Q5: デプロイ時によく起こる問題は何ですか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-Weaviate has complex processes which means that ingestion and deletion require more steps than other types of databases. Data ingestion tends to take longer than a traditional database because of vectorization and deleting objects can be expensive due to the embedding costs. 
+デプロイ時によく発生する問題には、次のようなものがあります。  
+
+- クラスターが `read-only` になる。  
+- クエリ結果が一貫しない。  
+- ノードがコンセンサスを維持できない。  
+- コレクションを作り過ぎている。  
+
+#### 参考リソース 
+
+詳細については、[トラブルシューティングページ](./troubleshooting.md) をご覧ください。一般的な問題への対処方法を確認できます。 
+
 </details>
 
-#### Q7: Do my resources free up immediately after deleting objects?
+#### Q6: Weaviate と他のデータベースの違いは何ですか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-No, it does not happen instantaneously. When you delete objects a tombstone is created. The data removal and index cleanup occur as background processes. 
-
+Weaviate には複雑な処理があるため、取り込みと削除には他のデータベースより多くのステップが必要です。ベクトル化を行うためデータ取り込みは従来のデータベースより時間がかかり、オブジェクト削除も埋め込みのコストがかかるため高価になります。 
 </details>
 
-#### Q8: What's the difference between client timeouts and module timeouts?
+#### Q7: オブジェクトを削除するとリソースはすぐに解放されますか？
 
 <details>
 
-<summary> Answer </summary>
+<summary> 回答 </summary>
 
-- **Client timeout:** These are timeouts between the client and Weaviate server. 
-
-- **Module timeout:** These are timeouts that occurs when Weaviate interacts with external modules like LLMs and vectorizers. 
+いいえ、即時には解放されません。オブジェクトを削除するとトゥームストーンが作成され、データ削除とインデックスクリーンアップはバックグラウンドプロセスとして行われます。 
 
 </details>
 
-## Questions and feedback
+#### Q8: クライアントタイムアウトとモジュールタイムアウトの違いは何ですか？
+
+<details>
+
+<summary> 回答 </summary>
+
+- **Client timeout:** クライアントと Weaviate サーバー間のタイムアウトです。  
+- **Module timeout:** Weaviate が LLM やベクトライザーなどの外部モジュールと連携する際に発生するタイムアウトです。 
+
+</details>
+
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

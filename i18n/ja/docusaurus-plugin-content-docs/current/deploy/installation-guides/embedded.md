@@ -1,5 +1,5 @@
 ---
-title: Embedded Weaviate
+title: 組み込み Weaviate
 sidebar_position: 4
 image: og/docs/installation.jpg
 # tags: ['installation', 'embedded', 'client']
@@ -8,54 +8,53 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 :::caution Experimental
-Embedded Weaviate is **experimental** software. APIs and parameters may change.
-
+組み込み Weaviate は **実験的** ソフトウェアです。API やパラメーターは変更される可能性があります。
 :::
 
 import EMBDIntro from '/_includes/embedded-intro.mdx';
 
 <EMBDIntro />
 
-## Start an Embedded Weaviate instance
+## Embedded Weaviate インスタンスの起動
 
 import EmbeddedInstantiation from '/_includes/code/embedded.instantiate.mdx';
 
 <EmbeddedInstantiation />
 
-:::tip Set the log level to reduce verbosity
-Embedded Weaviate can emit a lot of log messages. To reduce the amount of logs, set the `LOG_LEVEL` environment variable to `error` or `warning`, as shown in the example above.
+:::tip ログレベルを設定して冗長さを減らす
+組み込み Weaviate は多数のログメッセージを出力する場合があります。ログ量を減らすには、上記の例のように `LOG_LEVEL` 環境変数を `error` または `warning` に設定してください。
 :::
 
-When you exit the client, the Embedded Weaviate instance also exits.
+クライアントを終了すると、Embedded Weaviate インスタンスも終了します。
 
-### Custom connection configuration
+### カスタム接続設定
 
-To pass additional configuration details to your embedded instance, use a custom connection:
+追加の設定情報を組み込みインスタンスに渡す場合は、カスタム接続を使用します。
 
 import EMDBCustom from '/_includes/code/embedded.instantiate.custom.mdx';
 
 <EMDBCustom />
 
-## Configuration options
+## 設定オプション
 
-To configure Embedded Weaviate, set these variables in your instantiation code or pass them as parameters when you invoke your client. You can also pass them as system environment variables. All parameters are optional.
+Embedded Weaviate を設定するには、インスタンス生成コード内で変数を設定するか、クライアント呼び出し時のパラメーターとして渡します。システム環境変数として渡すこともできます。すべてのパラメーターは省略可能です。
 
-| Parameter | Type | Default | Description |
+| パラメーター | 型 | デフォルト | 説明 |
 | :-- | :-- | :-- | :-- |
-| `additional_env_vars` | string | None. | Pass additional environment variables, such as API keys, to the server. |
-| `binary_path` | string | varies | Binary download directory. If the binary is not present, the client downloads the binary. <br/><br/> If `XDG_CACHE_HOME` is set, the default is: `XDG_CACHE_HOME/weaviate-embedded/`<br/><br/>If `XDG_CACHE_HOME` is not set, the default is: `~/.cache/weaviate-embedded` |
-| `hostname` | string | 127.0.0.1 | Hostname or IP address  |
-| `persistence_data_path` | string | varies | Data storage directory.<br/><br/> If `XDG_DATA_HOME` is set, the default is: `XDG_DATA_HOME/weaviate/`<br/><br/>If `XDG_DATA_HOME` is not set, the default is: `~/.local/share/weaviate` |
-| `port` | integer | 8079 | The Weaviate server request port. |
-| `version` | string | Latest stable | Specify the version with one of the following:<br/>-`"latest"`<br/>- The version number as a string: `"1.19.6"`<br/>- The URL of a Weaviate binary ([See below](/deploy/installation-guides/embedded.md#file-url)) |
+| `additional_env_vars` | string | なし | API キーなど追加の環境変数をサーバーに渡します。 |
+| `binary_path` | string | 可変 | バイナリのダウンロードディレクトリ。バイナリが存在しない場合、クライアントがダウンロードします。<br/><br/>`XDG_CACHE_HOME` が設定されている場合のデフォルト: `XDG_CACHE_HOME/weaviate-embedded/`<br/><br/>`XDG_CACHE_HOME` が設定されていない場合のデフォルト: `~/.cache/weaviate-embedded` |
+| `hostname` | string | 127.0.0.1 | ホスト名または IP アドレス |
+| `persistence_data_path` | string | 可変 | データ保存ディレクトリ。<br/><br/>`XDG_DATA_HOME` が設定されている場合のデフォルト: `XDG_DATA_HOME/weaviate/`<br/><br/>`XDG_DATA_HOME` が設定されていない場合のデフォルト: `~/.local/share/weaviate` |
+| `port` | integer | 8079 | Weaviate サーバーのリクエストポート |
+| `version` | string | 最新安定版 | 次のいずれかでバージョンを指定します。<br/>- `"latest"`<br/>- バージョン番号文字列: `"1.19.6"`<br/>- Weaviate バイナリの URL（[下記参照](/deploy/installation-guides/embedded.md#file-url)） |
 
-:::warning Do not modify `XDG_CACHE_HOME` or `XDG_DATA_HOME`
-The `XDG_DATA_HOME` and `XDG_CACHE_HOME` environment variables are widely used system variables. If you modify them, you may break other applications.
+:::warning `XDG_CACHE_HOME` または `XDG_DATA_HOME` を変更しないでください
+`XDG_DATA_HOME` と `XDG_CACHE_HOME` の環境変数は多くのシステムで使用されています。これらを変更すると、他のアプリケーションが正常に動作しなくなる可能性があります。
 :::
 
-## Default modules
+## デフォルトモジュール
 
-The following modules are enabled by default:
+次のモジュールがデフォルトで有効になっています:
 - `generative-openai`
 - `qna-openai`
 - `ref2vec-centroid`
@@ -63,85 +62,86 @@ The following modules are enabled by default:
 - `text2vec-huggingface`
 - `text2vec-openai`
 
-To enabled additional modules, add them to your instantiation code.
+追加のモジュールを有効にするには、インスタンス生成コードにモジュールを追加してください。
 
-For example, to add the `backup-s3` module, instantiate your client like this:
+たとえば、`backup-s3` モジュールを追加する場合は次のようにクライアントを生成します。
 
 import EmbeddedInstantiationModule from '/_includes/code/embedded.instantiate.module.mdx';
 
 <EmbeddedInstantiationModule />
 
-## Binary sources
+## バイナリソース
 
-Weaviate Database releases include executable Linux binaries. When you instantiate an Embedded Weaviate client, the client checks for local copies of the binary packages. If the client finds the binary files, it runs them to create a temporary Weaviate instance. If not, the client downloads the binaries and saves them in your `binary_path` directory.
+Weaviate Database のリリースには Linux 用実行バイナリが含まれています。Embedded Weaviate クライアントを生成すると、クライアントはバイナリパッケージのローカルコピーをチェックします。バイナリファイルが見つかれば、それを実行して一時的な Weaviate インスタンスを起動します。見つからない場合、クライアントはバイナリをダウンロードして `binary_path` ディレクトリに保存します。
 
-The Embedded Weaviate instance goes away when your client exits. However, the client does not delete the binary files. The next time your client runs, it checks for the binaries and uses the saved binaries if they exist.
+Embedded Weaviate インスタンスはクライアント終了時に終了しますが、クライアントはバイナリファイルを削除しません。次回クライアントが実行されると、保存済みバイナリが存在するかを確認し、存在すればそれを使用します。
 
-### File list
-For a list of the files that are included in a release, see the Assets section of the Release Notes page for that release on [GitHub](https://github.com/weaviate/weaviate/releases).
+### ファイル一覧
+リリースに含まれるファイル一覧は、対象リリースの [GitHub](https://github.com/weaviate/weaviate/releases) ページの Assets セクションを参照してください。
 
-### File URL
-To get the URL for a particular binary archive file, follow these steps:
-1. Find the Weaviate Database release you want on the [Release Notes](/weaviate/release-notes/index.md) page.
-1. Click to the release notes for that version. The Assets section includes `linux-amd64` and `linux-arm64` binaries in `tar.gz` format.
-1. Copy the link to the full URL of the `tar.gz` file for your platform.
+### ファイル URL
+特定のバイナリアーカイブファイルの URL を取得する手順:
+1. [リリースノート](/weaviate/release-notes/index.md) ページで目的の Weaviate Database リリースを探します。  
+1. そのバージョンのリリースノートを開きます。Assets セクションに `linux-amd64` と `linux-arm64` の `tar.gz` バイナリがあります。  
+1. ご利用のプラットフォーム用 `tar.gz` ファイルのフル URL をコピーします。  
 
-For example, the URL for the Weaviate `1.19.6` `AMD64` binary is:
+例として、Weaviate `1.19.6` の `AMD64` バイナリの URL は次のとおりです。
 
 `https://github.com/weaviate/weaviate/releases/download/v1.19.6/weaviate-v1.19.6-linux-amd64.tar.gz`.
 
-## Functional overview
+## 機能概要
 
-Weaviate Database usually runs as a stand-alone server that clients connect to in order to access data. An Embedded Weaviate instance is a process that runs in conjunction with a client script or application. Embedded Weaviate instances can access a persistent datastore, but the instances exit when the client exits.
+通常、Weaviate Database はスタンドアロンのサーバーとして実行され、クライアントが接続してデータにアクセスします。Embedded Weaviate インスタンスはクライアントスクリプトやアプリケーションと共に動作するプロセスです。Embedded インスタンスは永続データストアにアクセスできますが、クライアント終了時にインスタンスも終了します。
 
-When your client runs, it checks for a stored Weaviate binary. If it finds one, the client uses that binary to create an Embedded Weaviate instance. If not, the client downloads the binary.
+クライアントが起動すると、保存済みの Weaviate バイナリをチェックし、見つかればそのバイナリで Embedded Weaviate インスタンスを作成します。見つからなければバイナリをダウンロードします。
 
-The instance also checks for an existing data store. Clients reuse the same data store, updates persist between client invocations.
+インスタンスは既存のデータストアもチェックします。クライアントは同じデータストアを再利用し、更新はクライアント起動間で保持されます。
 
-When you exit the client script or application, the Embedded Weaviate instance also exits:
+クライアントスクリプトやアプリケーションを終了すると Embedded Weaviate インスタンスも終了します。
 
-- Scripts: The Embedded Weaviate instance exits when the script exits.
-- Applications: The Embedded Weaviate instance exits when the application exits.
-- Jupyter Notebooks: The Embedded Weaviate instance exits when the Jupyter notebook is no longer active.
+- スクリプト: スクリプト終了時に Embedded Weaviate インスタンスが終了します。  
+- アプリケーション: アプリケーション終了時に Embedded Weaviate インスタンスが終了します。  
+- Jupyter Notebook: ノートブックがアクティブでなくなると Embedded Weaviate インスタンスが終了します。  
 
-## Embedded server output
+## Embedded サーバーの出力
 
-The embedded server pipes `STDOUT` and `STDERR` to the client. To redirect `STDERR` in a command terminal, run your script like this:
+Embedded サーバーは `STDOUT` と `STDERR` をクライアントにパイプします。コマンドラインで `STDERR` をリダイレクトするには、次のようにスクリプトを実行します。
 
 ```bash
 python3 your_embedded_client_script.py 2>/dev/null
 ```
 
-## Supported Environments
+## サポートされる環境
 
-Embedded Weaviate is supported on Linux and macOS.
+Embedded Weaviate は Linux と macOS でサポートされています。
 
-## Client languages
+## クライアント言語
 
-Embedded Weaviate is supported for Python and TypeScript clients.
+Embedded Weaviate は Python と TypeScript クライアントで利用できます。
 
-### Python clients
+### Python クライアント
 
-[Python](docs/weaviate/client-libraries/python/index.mdx) v3 client support is new in `v3.15.4` for Linux and `v3.21.0` for macOS. The Python client v4 requires server version v1.23.7 or higher.
+[Python](docs/weaviate/client-libraries/python/index.mdx) v3 クライアントのサポートは、Linux では `v3.15.4`、macOS では `v3.21.0` から新たに追加されました。Python クライアント v4 では、サーバーバージョン v1.23.7 以上が必要です。
 
-### TypeScript clients
+### TypeScript クライアント
 
-The embedded TypeScript client is no longer a part of the standard TypeScript client.
+組み込み TypeScript クライアントは、標準 TypeScript クライアントの一部ではなくなりました。
 
-The embedded client has additional dependencies that are not included in the standard client. However, the embedded client extends the original TypeScript client so after you instantiate an Embedded Weaviate instance, the embedded TypeScript client works the same way as the standard client.
+組み込みクライアントには、標準クライアントには含まれていない追加の依存関係があります。ただし、組み込みクライアントは元の TypeScript クライアントを拡張しているため、 Embedded Weaviate インスタンスを作成した後は、組み込み TypeScript クライアントを標準クライアントと同じ方法で利用できます。
 
-To install the embedded TypeScript client, run this command:
+組み込み TypeScript クライアントをインストールするには、次のコマンドを実行します。
 
 ```
 npm install weaviate-ts-embedded
 ```
 
-The TypeScript clients are in these GitHub repositories:
-- [Embedded TypeScript client](https://github.com/weaviate/typescript-embedded)
-- [Standard TypeScript client](https://github.com/weaviate/typescript-client)
+TypeScript クライアントは以下の GitHub リポジトリで公開されています:
+- [Embedded TypeScript クライアント](https://github.com/weaviate/typescript-embedded)
+- [Standard TypeScript クライアント](https://github.com/weaviate/typescript-client)
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

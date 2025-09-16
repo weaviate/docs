@@ -1,31 +1,31 @@
 ---
-title: Archive
+title: アーカイブ
 image: og/docs/more-resources.jpg
 sidebar_position: 10
 # tags: ['migration']
 ---
 
-# Migration Guide: Archive
+# 移行ガイド: アーカイブ
 
-This page contains the migration guides for older versions of Weaviate. For the most recent migration guides, please refer to the parent [migration guide](./index.md) page.
+このページでは、古いバージョンの Weaviate の移行ガイドをまとめています。最新の移行ガイドについては、親ページの [移行ガイド](./index.md) を参照してください。
 
-## Migration for version 1.19.0
+## バージョン 1.19.0 への移行
 
-This version introduces `indexFilterable` and `indexSearchable` variables for the new text indexes, whose values will be set based on the value of `indexInverted`.
+このバージョンでは、新しいテキストインデックス向けに `indexFilterable` と `indexSearchable` という変数が導入されました。これらの値は `indexInverted` の値に基づいて設定されます。
 
-Since filterable & searchable are separate indexes, filterable does not exist in Weaviate instances upgraded from pre-`v1.19` to `v1.19`. The missing `filterable` index can be created though on startup for all `text/text[]` properties if env variable `INDEX_MISSING_TEXT_FILTERABLE_AT_STARTUP` is set.
+filterable と searchable は別々のインデックスであるため、`v1.19` 以前から `v1.19` へアップグレードした Weaviate インスタンスには filterable インデックスが存在しません。ただし、環境変数 `INDEX_MISSING_TEXT_FILTERABLE_AT_STARTUP` を設定すると、起動時にすべての `text/text[]` プロパティに対して不足している `filterable` インデックスを作成できます。
 
-## Changelog for version v1.9.0
+## バージョン v1.9.0 の変更ログ
 
-* no breaking changes
+* 破壊的変更なし
 
-* *New Features*
-  * ### First Multi-modal module: CLIP Module (#1756, #1766)
-    This release [introduces the `multi2vec-clip` integration](/weaviate/model-providers/transformers/embeddings-multimodal.md), a module that allows for multi-modal vectorization within a single vector space. A class can have `image` or `text` fields or both. Similarly, the module provides both a `nearText` and a `nearImage` search and allows for various search combinations, such as text-search on image-only content and various other combinations.
+* *新機能*
+  * ### 最初のマルチモーダルモジュール: CLIP モジュール (#1756, #1766)
+    このリリースでは、[ `multi2vec-clip` インテグレーション](/weaviate/model-providers/transformers/embeddings-multimodal.md) を導入しました。これは、単一のベクトル空間内でマルチモーダルベクトル化を可能にするモジュールです。クラスには `image` フィールド、`text` フィールド、またはその両方を持たせることができます。同様に、このモジュールは `nearText` 検索と `nearImage` 検索の両方を提供し、画像のみのコンテンツに対するテキスト検索など、さまざまな検索の組み合わせを実現します。
 
-    #### How to use
+    #### 使い方
 
-    The following is a valid payload for a class that vectorizes both images and text fields:
+    以下は、画像とテキストの両方をベクトル化するクラスの有効なペイロード例です。
     ```json
     {
         "class": "ClipExample",
@@ -62,114 +62,82 @@ Since filterable & searchable are separate indexes, filterable does not exist in
       }
       ```
 
-    Note that:
-       - `imageFields` and `textFields` in `moduleConfig.multi2vec-clip` do not both need to be set. However at least one of both must be set.
-       - `weights` in `moduleConfig.multi2vec-clip` is optional. If only a single property the property takes all the weight. If multiple properties exist and no weights are specified, the properties are equal-weighted.
+    注意:
+       - `moduleConfig.multi2vec-clip` 内の `imageFields` と `textFields` は両方を設定する必要はありません。ただし、少なくともいずれか一方は設定する必要があります。
+       - `moduleConfig.multi2vec-clip` 内の `weights` は省略可能です。プロパティが 1 つだけの場合、そのプロパティがすべての重みを取得します。複数のプロパティが存在し、重みが指定されていない場合は、プロパティが等しい重みで扱われます。
 
-    You can then import data objects for the class as usual. Fill the `text` or `string` fields with text and/or fill the `blob` fields with a base64-encoded image.
+    その後、通常どおりデータオブジェクトをインポートできます。`text` または `string` フィールドにはテキストを、`blob` フィールドには base64 エンコードした画像を設定してください。
 
-    #### Limitations
-    * As of `v1.9.0` the module requires explicit creation of a class. If you rely on auto-schema to create the class for you, it will be missing the required configuration about which fields should be vectorized. This will be addressed in a future release.
+    #### 制限事項
+    * `v1.9.0` 時点では、このモジュールはクラスを明示的に作成する必要があります。auto-schema に依存してクラスを作成すると、どのフィールドをベクトル化するかという設定が欠けてしまいます。これは今後のリリースで改善予定です。
 
-* *Fixes*
-  * fix an error where deleting a class with `geoCoordinates` could lead to a panic due to missing cleanup (#1730)
-  * fix an issue where an error in a module would not be forwarded to the user (#1754)
-  * fix an issue where a class could not be deleted on some file system (e.g. AWS EFS) (#1757)
-
-
-## Migration to version v1.8.0
-
-### Migration Notice
-
-Version `v1.8.0` introduces multi-shard indexes and horizontal scaling. As a
-result the dataset needs to be migrated. This migration is performed automatically -
-without user interaction - when first starting up with Weaviate version
-`v1.8.0`. However, it cannot be reversed. We, therefore, recommend carefully
-reading the following migration notes and making a case-by-case decision about the
-best upgrade path for your needs.
-
-#### Why is a data migration necessary?
-
-Prior to `v1.8.0` Weaviate did not support multi-shard indexes. The feature was
-already planned, therefore data was already contained in a single shard with a
-fixed name. A migration is necessary to move the data from a single fixed shard
-into a multi-shard setup. The amount of shards is not changed. When you run
-`v1.8.0` on a dataset the following steps happen automatically:
-
-* Weaviate discovers the missing sharding configuration for your classes and fills it with the default values
-* When shards start-up and they do not exist on disk, but a shard with a fixed
-  name from `v1.7.x` exists, Weaviate automatically recognizes that a migration
-  is necessary and moves the data on disk
-* When Weaviate is up and running the data has been migrated.
-
-**Important Notice:** As part of the migration Weaviate will assign the shard
-to the (only) node available in the cluster. You need to make sure that this
-node has a stable hostname. If you run on Kubernetes, hostnames are stable
-(e.g. `weaviate-0` for the first node). However with `Docker Compose` hostnames
-default to the id of the container. If you remove your containers (e.g.
-`docker compose down`) and start them up again, the hostname will have changed.
-This will lead to errors where Weaviate mentions that it cannot find the node
-that the shard belongs to. The node sending the error message is the node that
-owns the shard itself, but it cannot recognize it, since its own name has
-changed.
-
-To remedy this, you can set a stable hostname **before starting up with
-v1.8.0** by setting the env var `CLUSTER_HOSTNAME=node1`. The actual name does
-not matter, as long as it's stable.
-
-If you forgot to set a stable hostname and are now running into the error
-mentioned above, you can still explicitly set the hostname that was used before
-which you can derive from the error message.
-
-Example:
-
-If you see the error message `"shard Knuw6a360eCY: resolve node name
-\"5b6030dbf9ea\" to host"`, you can make Weaviate usable again, by setting
-`5b6030dbf9ea` as the host name: `CLUSTER_HOSTNAME=5b6030dbf9ea`.
-
-#### Should you upgrade or reimport?
-
-In addition to new features, `v1.8.0` also contains a large collection of
-bugfixes. Some of the bugs affect how Weaviate writes the HNSW index to disk.
-A pre-1.18.0 index on disk may not be as good a freshly built `v1.8.0` index.
-If you can import using a script, we generally recommend starting with a fresh
-`v1.8.0` instance and reimporting instead of migrating.
-
-#### Is downgrading possible after upgrading?
-
-Note that the data migration which happens at the first startup of v1.8.0 is
-not automatically reversible. If you plan on downgrading to `v1.7.x` again
-after upgrading, you must explicitly create a backup of the state prior to
-upgrading.
-
-### Changelog
+* *修正*
+  * `geoCoordinates` を含むクラスを削除するとパニックが発生する可能性があった問題を修正 (#1730)
+  * モジュール内のエラーがユーザーに転送されない問題を修正 (#1754)
+  * 一部のファイルシステム（例: AWS EFS）でクラスを削除できない問題を修正 (#1757)
 
 
-## Changelog for version v1.7.2
-* No breaking changes
-* New features
-  * ### Array Datatypes (#1691)
-    Added `boolean[]` and `date[]`.
-  * ### Make property names less strict (#1562)
-   Property names in a data schema allows: `/[_A-Za-z][_0-9A-Za-z]*/`. i.e. it will allow for using underscores, will allow numbers and will fix the issue about trailing upper-case characters. But it won't allow for many other special characters, such as dash (-) or language-specific characters like Umlauts, etc, due to GraphQL restrictions.
-* Bug fixes
-  * ### Aggregation on array data type (#1686)
+## バージョン v1.8.0 への移行
+
+### 移行に関する注意
+
+バージョン `v1.8.0` ではマルチシャードインデックスと水平スケーリングが導入されます。その結果、データセットの移行が必要です。この移行は、`v1.8.0` の Weaviate を初めて起動した際にユーザー操作なしで自動的に実行されます。ただし、移行は元に戻せません。そのため、以下の移行メモをよく読み、ニーズに応じて最適なアップグレード方法を検討してください。
+
+#### データ移行が必要な理由
+
+`v1.8.0` より前の Weaviate ではマルチシャードインデックスをサポートしていませんでした。この機能は計画されていたため、データは固定名の単一シャード内に格納されていました。データを固定シャードからマルチシャード構成に移行する必要があります。シャード数は変更されません。`v1.8.0` をデータセットで実行すると、以下の手順が自動的に行われます。
+
+* Weaviate がクラスの欠落しているシャーディング設定を検出し、デフォルト値で補完します
+* シャード起動時、ディスク上に存在しない場合でも `v1.7.x` の固定名シャードが存在すると、Weaviate は自動的に移行が必要であることを認識し、ディスク上のデータを移動します
+* Weaviate が起動完了すると、データは移行されています
+
+**Important Notice:** 移行の一環として、Weaviate はシャードをクラスタ内の（唯一の）ノードに割り当てます。このノードには安定したホスト名が必要です。Kubernetes ではホスト名は安定しています（例: `weaviate-0`）。しかし `Docker Compose` では、ホスト名はコンテナの ID になります。コンテナを削除して（例: `docker compose down`）再起動すると、ホスト名が変わってしまいます。その結果、「シャードを保持するノードが見つからない」というエラーが発生します。エラーメッセージを送信するノード自身がシャードを保持していますが、自身の名前が変わったため認識できません。
+
+これを回避するには、**v1.8.0 を起動する前に** 環境変数 `CLUSTER_HOSTNAME=node1` を設定して安定したホスト名を割り当ててください。名前自体は何でも構いませんが、安定している必要があります。
+
+安定したホスト名を設定し忘れて上記のエラーが発生した場合でも、エラーメッセージから以前使用されていたホスト名を取得し、それを明示的に設定することで復旧できます。
+
+例:
+
+エラーメッセージに `"shard Knuw6a360eCY: resolve node name \"5b6030dbf9ea\" to host"` と表示されている場合、`CLUSTER_HOSTNAME=5b6030dbf9ea` を設定すると Weaviate を再び使用できるようになります。
+
+#### アップグレードするか再インポートするか
+
+`v1.8.0` には新機能に加え、多数のバグ修正が含まれています。いくつかのバグは HNSW インデックスのディスク書き込みに影響します。`v1.8.0` より前に作成されたインデックスは、新たに `v1.8.0` で構築したインデックスほど品質が高くない可能性があります。スクリプトでインポートできる場合は、新しい `v1.8.0` インスタンスを用意し、再インポートすることを推奨します。
+
+#### アップグレード後にダウングレードは可能か
+
+`v1.8.0` の初回起動時に行われるデータ移行は自動的には元に戻せません。アップグレード後に `v1.7.x` へダウングレードする予定がある場合は、アップグレード前の状態を必ずバックアップしてください。
+
+### 変更ログ
 
 
-## Changelog for version v1.7.0
-* No breaking changes
-* New features
-  * ### Array Datatypes (#1611)
-    Starting with this release, primitive object properties are no longer limited to individual properties, but can also include lists of primitives. Array types can be stored, filtered and aggregated in the same way as other primitives.
+## バージョン v1.7.2 の変更ログ
+* 破壊的変更なし
+* 新機能
+  * ### 配列データ型 (#1691)
+    `boolean[]` と `date[]` を追加しました。
+  * ### プロパティ名の制約緩和 (#1562)
+    データスキーマのプロパティ名で `/[_A-Za-z][_0-9A-Za-z]*/` を許可しました。これによりアンダースコアや数字が使用でき、末尾が大文字になる問題が解消されます。ただし、ダッシュ（-）やウムラウトなど GraphQL の制限により多くの特殊文字は引き続き使用できません。
+* バグ修正
+  * ### 配列データ型での集計 (#1686)
 
-    Auto-schema will automatically recognize lists of `string`/`text` and `number`/`int`. You can also explicitly specify lists in the schema by using the following data types `string[]`, `text[]`, `int[]`, `number[]`. A type that is assigned to be an array, must always stay an array, even if it only contains a single element.
 
-  * ### New Module: `text-spellcheck` - Check and autocorrect misspelled search terms (#1606)
-    Use the new spellchecker module to verify user-provided search queries (in existing `nearText` or `ask` functions) are spelled correctly and even suggest alternative, correct spellings. Spell-checking happens at query time.
 
-    There are two ways to use this module:
-    1. It provides a new additional property which can be used to check (but not alter) the provided queries:
-    The following query:
+## バージョン v1.7.0 の変更履歴
+* 破壊的変更なし
+* 新機能
+  * ### 配列データ型 (#1611)
+    今回のリリースから、プリミティブオブジェクトプロパティは単一のプロパティに限定されず、プリミティブのリストも扱えるようになりました。配列型は、他のプリミティブと同様に保存・フィルタリング・集計が可能です。
+
+    オートスキーマは `string`/`text` と `number`/`int` のリストを自動認識します。スキーマで明示的に配列を指定する場合は、`string[]`、`text[]`、`int[]`、`number[]` を使用してください。配列として定義された型は、要素が 1 つだけであっても常に配列のままです。
+
+  * ### 新モジュール: `text-spellcheck` - 誤入力された検索語句をチェックして自動修正 (#1606)
+    新しいスペルチェッカーモジュールを使用すると、ユーザーが入力した検索クエリ（既存の `nearText` または `ask` 関数内）が正しく綴られているかを確認し、代替案となる正しい綴りを提案できます。スペルチェックはクエリ時に実行されます。
+
+    モジュールの利用方法は 2 つあります。  
+    1. 新しい追加プロパティを介して、提供されたクエリを確認（修正はしない）できます。  
+       次のクエリ:
     ```graphql
     {
       Get {
@@ -193,7 +161,7 @@ upgrading.
     }
     ```
 
-    will produce results similar to the following:
+       は次のような結果を返します:
 
     ```
       "_additional": {
@@ -214,12 +182,12 @@ upgrading.
       "content": "..."
     },
     ```
-    2. It extends existing `text2vec-*` modules with an `autoCorrect` flag, which can be used to automatically correct the query if misspelled.
+    2. 既存の `text2vec-*` モジュールに `autoCorrect` フラグを追加し、誤入力があれば自動的に修正します。
 
-  * ### New Module `ner-transformers` - Extract entities from Weaviate using transformers (#1632)
-    Use transformer-based models to extract entities from your existing Weaviate objects on the fly. Entity extraction happens at query time. Note that for maximum performance, transformer-based models should run with GPUs. CPUs can be used, but the throughput will be lower.
+  * ### 新モジュール `ner-transformers` - Transformers で Weaviate からエンティティ抽出 (#1632)
+    変換器 (transformer) ベースのモデルを用いて、既存の Weaviate オブジェクトからエンティティをオンザフライで抽出できます。エンティティ抽出はクエリ時に行われます。最高性能を得るには GPU での実行を推奨しますが、CPU でも動作します（スループットは低下します）。
 
-    To make use of the module's capabilities, simply extend your query with the following new `_additional` property:
+    モジュールの機能を利用するには、クエリに次の新しい `_additional` プロパティを追加してください:
 
     ```graphql
     {
@@ -245,7 +213,7 @@ upgrading.
     }
 
     ```
-    It will return results similar to the following:
+    これにより、次のような結果が返されます:
 
     ```
     "_additional": {
@@ -269,162 +237,164 @@ upgrading.
       ]
     }
     ```
-* Bug fixes
-  * Aggregation can get stuck when aggregating `number` datatypes (#1660)
+* バグ修正
+  * `number` データ型を集計する際に集計処理が停止する可能性がある問題を修正 (#1660)
 
-## Changelog for version 1.6.0
-* No breaking changes
-* No new features
- * **Zero Shot Classification (#1603)** This release adds a new classification type `zeroshot` that works with any `vectorizer` or custom vectors. It picks the label objects that have the lowest distance to the source objects. The link is made using cross-references, similar to existing classifications in Weaviate. To start a `zeroshot` classification use `"type": "zeroshot"` in your `POST /v1/classficiations` request and specify the properties you want classified normally using `"classifyProperties": [...]`. As zero shot involves no training data, you cannot set `trainingSetWhere` filters, but can filter both source (`"sourceWhere"`) and label objects (`"targetWhere"`) directly.
-* Bug fixes
-
-
-## Changelog for version 1.5.2
-
-* No breaking changes
-* No new features
-* Bug fixes:
-* ### Fix possible data races (`short write`) (#1643)
-  This release fixes various possible data races that could in the worst case lead to an unrecoverable error `"short write"`. The possibility for those races was introduced in `v.1.5.0` and we highly recommend anyone running on the `v1.5.x` timeline to upgrade to `v1.5.2` immediately.
-
-## Changelog for version 1.5.1
-
-* No breaking changes
-* No new features
-* Bug fixes:
-* ### Crashloop after unexpected crash in HNSW commit log (#1635)
-  If Weaviate was killed (e.g. OOMKill) while writing the commit log, it could not be parsed after the next restart anymore, thus ending up in a crashloop. This fix removes this. Note that no data will be lost on such a crash: The partially written commit log has not yet been acknowledged to the user, so no write guarantees have been given yet. It is therefore safe to discard.
-
-* ### Chained Like operator not working (#1638)
-  Prior to this fix, when chaining `Like` operators in `where` filters where each `valueString` or `valueText` contained a wildcard (`*`), typically only the first operator's results where reflected. This fix makes sure that the chaining (`And` or `Or`) is reflected correctly. This bug did not affect other operators (e.g. `Equal`, `GreaterThan`, etc) and only affected those `Like` queries where a wildcard was used.
-
-* ### Fix potential data race in Auto Schema features (#1636)
-  This fix improves incorrect synchronization on the auto schema feature which in extreme cases could lead to a data race.
-
-## Migration to version 1.5.0
-
-### Migration Notice
-*This release does not contain any API-level breaking changes, however, it changes the entire storage mechanism inside Weaviate. As a result, an in-place update is not possible. When upgrading from previous versions, a new setup needs to be created and all data reimported. Prior backups are not compatible with this version.*
-
-### Changelog
-* No breaking changes
-* New Features:
-  * *LSM-Tree based Storage*. Previous releases of Weaviate used a B+Tree based storage mechanism. This was not fast enough to keep up with the high write speed requirements of a large-scale import. This release completely rewrites the storage layer of Weaviate to use a custom LSM-tree approach. This leads to considerably faster import times, often more than 100% faster than the previous version.
-  * *Auto-Schema Feature*. Import data objects without creating a schema prior to import. The classes will be created automatically, they can still be adjusted manually. Weaviate will guess the property type based on the first time it sees a property. The defaults can be configured using the environment variables outlined in #1539. The feature is on by default, but entirely non-breaking. You can still create an explicit schema at will.
-* Fixes:
-  * *Improve Aggregation Queries*. Reduces the amount of allocations required for some aggregation queries, speeding them up and reduces the amount of timeouts encountered during aggregations.
+## バージョン 1.6.0 の変更履歴
+* 破壊的変更なし
+* 新機能なし
+ *  **ゼロショット分類 (#1603)** 本リリースでは、新しい分類タイプ `zeroshot` が追加されました。これは任意の ベクトライザー またはカスタムベクトルで動作し、ソースオブジェクトとの距離が最も近いラベルオブジェクトを選択します。リンクは既存の Weaviate における分類と同様にクロスリファレンスで行います。`zeroshot` 分類を開始するには `POST /v1/classficiations` リクエストに `"type": "zeroshot"` を指定し、通常どおり `"classifyProperties": [...]` で分類したいプロパティを設定してください。ゼロショットでは学習データを使用しないため `trainingSetWhere` フィルターは設定できませんが、ソース (`"sourceWhere"`) とラベルオブジェクト (`"targetWhere"`) の両方を直接フィルタリングできます。
+* バグ修正
 
 
-Check [this github page](https://github.com/weaviate/weaviate/releases/tag/v1.5.0) for all the changes.
+## バージョン 1.5.2 の変更履歴
+
+* 破壊的変更なし
+* 新機能なし
+* バグ修正:
+* ### 競合状態による `short write` 可能性を修正 (#1643)
+  本リリースでは、最悪の場合に回復不能なエラー `"short write"` を引き起こす可能性があった複数の競合状態を修正しました。この問題は `v.1.5.0` で導入されたため、`v1.5.x` 系を使用している方は直ちに `v1.5.2` へのアップグレードを強く推奨します。
+
+## バージョン 1.5.1 の変更履歴
+
+* 破壊的変更なし
+* 新機能なし
+* バグ修正:
+* ### HNSW コミットログでの予期しないクラッシュ後にクラッシュループが発生する問題を修正 (#1635)
+  コミットログ書き込み中に Weaviate が終了（例: OOMKill）した場合、次回の再起動時にパースできずクラッシュループに陥る可能性がありました。この修正により問題を解消しました。なお、このようなクラッシュでもデータ損失はありません。部分的に書き込まれたコミットログはユーザーにまだアクノリッジされていないため、安全に破棄できます。
+
+* ### `Like` 演算子のチェーンが機能しない問題を修正 (#1638)
+  修正前は、`where` フィルターで `Like` 演算子をチェーンし、それぞれの `valueString` または `valueText` にワイルドカード (`*`) を含めた場合、通常は最初の演算子の結果のみが反映されていました。本修正により、`And` や `Or` のチェーンが正しく反映されます。このバグは他の演算子（`Equal`、`GreaterThan` など）には影響せず、ワイルドカードを使用した `Like` クエリにのみ影響していました。
+
+* ### オートスキーマ機能での潜在的な競合状態を修正 (#1636)
+  オートスキーマ機能における不適切な同期を改善し、極端なケースで競合状態が発生する可能性を解消しました。
+
+## バージョン 1.5.0 への移行
+
+### 移行に関する注意
+*本リリースでは API レベルの破壊的変更はありませんが、Weaviate のストレージメカニズム全体が変更されています。その結果、インプレースアップデートはできません。以前のバージョンからアップグレードする場合は、新しいセットアップを作成し、すべてのデータを再インポートする必要があります。以前のバックアップは本バージョンとは互換性がありません。*
+
+### 変更履歴
+* 破壊的変更なし
+* 新機能:
+  * *LSM-Tree ベースのストレージ*。従来の Weaviate は B+Tree ベースのストレージ機構を使用していましたが、大規模インポート時の高速書き込み要求に追従できませんでした。本リリースではストレージ層を完全に書き換え、独自の LSM-Tree アプローチを採用しています。これにより、インポート時間が大幅に短縮され、従来バージョンより 100% 以上高速になることもあります。
+  * *オートスキーマ機能*。インポート前にスキーマを作成しなくてもデータオブジェクトをインポートできます。クラスは自動的に作成され、手動で調整することも可能です。Weaviate は初めてプロパティを検出した際にプロパティタイプを推測します。デフォルト設定は #1539 に示す環境変数で変更できます。デフォルトで有効ですが完全に非破壊的で、必要に応じて明示的なスキーマを作成できます。
+* 修正:
+  * *集計クエリの改善*。一部の集計クエリで必要なアロケーション数を削減し、高速化とタイムアウトの減少を実現しました。
 
 
-## Changelog for version 1.4.0
-
-* No breaking changes
-* New Features:
-  * Image Module [`img2vec-neural`](/weaviate/modules/img2vec-neural.md)
-  * Add Hardware acceleration for `amd64` CPUs (Intel, AMD)
-  * Support `arm64` technology for entire Weaviate stack
-  * Set `ef` at search time
-  * Introduce new dataType `blob`
-  * Skip vector-indexing a class
-* Fixes:
-  * Various Performance Fixes around the HNSW Vector Index
-  * Make property order consistent when vectorizing
-  * Fix issues around `PATCH` API when using custom vectors
-  * Detect schema settings that will most likely lead to duplicate vectors and print warning
-  * Fix missing schema validation on transformers module
-
-Check [this github page](https://github.com/weaviate/weaviate/releases/tag/v1.4.0) for all the changes.
+すべての変更点は [こちらの GitHub ページ](https://github.com/weaviate/weaviate/releases/tag/v1.5.0) をご覧ください。
 
 
-## Changelog for version 1.3.0
+## バージョン 1.4.0 の変更履歴
 
-* No breaking changes
-* New feature: [Question Answering (Q&A) Module](/weaviate/modules/qna-transformers.md)
-* New feature: New Meta Information for all transformer-based modules
+* 破壊的変更なし
+* 新機能:
+  * 画像モジュール [`img2vec-neural`](/weaviate/modules/img2vec-neural.md)
+  * `amd64` CPU (Intel, AMD) 向けハードウェアアクセラレーション追加
+  * Weaviate スタック全体で `arm64` をサポート
+  * 検索時に `ef` を設定可能
+  * 新しいデータ型 `blob` を導入
+  * クラスの ベクトル インデックス作成をスキップ
+* 修正:
+  * HNSW ベクトルインデックス周辺のパフォーマンスを複数改善
+  * ベクトル化時のプロパティ順序を一貫性のあるものに
+  * カスタムベクトル使用時の `PATCH` API に関する問題を修正
+  * 重複した ベクトル を生成する可能性が高いスキーマ設定を検出し、警告を表示
+  * transformers モジュールでのスキーマ検証漏れを修正
 
-Check [this github page](https://github.com/weaviate/weaviate/releases/tag/v1.3.0) for all the changes.
+すべての変更点は [こちらの GitHub ページ](https://github.com/weaviate/weaviate/releases/tag/v1.4.0) をご覧ください。
 
-## Changelog for version 1.2.0
 
-* No breaking changes
-* New feature: Introduction of the [Transformer Module](/weaviate/modules/qna-transformers.md)
+## バージョン 1.3.0 の変更履歴
 
-Check [this github page](https://github.com/weaviate/weaviate/releases/tag/v1.2.0) for all the changes.
+* 破壊的変更なし
+* 新機能: [質問応答 (Q&A) モジュール](/weaviate/modules/qna-transformers.md)
+* 新機能: すべての transformer ベースモジュール向け新しいメタ情報
 
-## Changelog for version 1.1.0
+すべての変更点は [こちらの GitHub ページ](https://github.com/weaviate/weaviate/releases/tag/v1.3.0) をご覧ください。
 
-* No breaking changes
-* New feature: GraphQL `nearObject` search to get most similar object.
-* Architectural  update: Cross-reference batch import speed improvements.
+## バージョン 1.2.0 の変更履歴
 
-Check [this github page](https://github.com/weaviate/weaviate/releases/tag/v1.1.0) for all the changes.
+* 破壊的変更なし
+* 新機能: [Transformer モジュール](/weaviate/modules/qna-transformers.md) の導入
 
-## Migration to version 1.0.0
+すべての変更点は [こちらの GitHub ページ](https://github.com/weaviate/weaviate/releases/tag/v1.2.0) をご覧ください。
 
-Weaviate version 1.0.0 was released on 12 January 2021, and consists of the major update of modularization. From version 1.0.0, Weaviate is modular, meaning that the underlying structure relies on a *pluggable* vector index, *pluggable* vectorization modules with possibility to extend with *custom* modules.
+## バージョン 1.1.0 の変更履歴
 
-Weaviate release 1.0.0 from 0.23.2 comes with a significant amount of breaking changes in the data schema, API and clients. Here is an overview of all (breaking) changes.
+* 破壊的変更なし
+* 新機能: GraphQL `nearObject` 検索で最も類似したオブジェクトを取得
+* アーキテクチャ変更: クロスリファレンスのバッチインポート速度を改善
 
-For client library specific changes, take a look at the change logs of the specific client ([Go](/weaviate/client-libraries/go.md#releases), [Python](/weaviate/client-libraries/python/index.mdx#releases) and [TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx#releases).
+すべての変更点は [こちらの GitHub ページ](https://github.com/weaviate/weaviate/releases/tag/v1.1.0) をご覧ください。
 
-Moreover, a new version of the Console is released. Visit the Console documentation for more information.
 
-### Summary
-This contains most overall changes, but not all details. Those are documented in ["Changes"](#changes).
 
-#### All RESTful API changes
-* from `/v1/schema/things/{ClassName}` to `/v1/schema/{ClassName}`
-* from `/v1/schema/actions/{ClassName} `to `/v1/schema/{ClassName}`from `/v1/schema/actions/{ClassName} `to `/v1/schema/{ClassName}`
-* from `/v1/things` to `/v1/objects`
-* from `/v1/actions` to `/v1/objects`
-* from `/v1/batching/things` to `/v1/batch/objects`
-* from `/v1/batching/actions` to `/v1/batch/objects`
-* from `/v1/batching/references` to `/v1/batch/references`
-* Additional data object properties are grouped in `?include=...` and the leading underscore of these properties is removed
-* The `/v1/modules/` endpoint is introduced.
-* the `/v1/meta/` endpoint now contains module specific information in `"modules"`
+## バージョン 1.0.0 への移行
 
-#### All GraphQL API changes
-* Removal of Things and Actions layer in query hierarchy
-* Reference properties of data objects are lowercase (previously uppercased)
-* Underscore properties, uuid and certainty are now grouped in the object `_additional`
-* `explore()` filter is renamed to `near<MediaType>` filter
-* `nearVector(vector:[])` filter is introduced in `Get{}` query
-* `Explore (concepts: ["foo"]){}` query is changed to `Explore (near<MediaType>: ... ) {}`.
+Weaviate バージョン 1.0.0 は 2021 年 1 月 12 日にリリースされ、大規模なモジュール化アップデートが含まれています。バージョン 1.0.0 から、Weaviate はモジュール方式となり、基盤構造は *プラグイン可能な* ベクトル インデックス、*プラグイン可能な* ベクトライゼーション モジュール、さらに *カスタム* モジュールでの拡張が可能になりました。
 
-#### All data schema changes
-* Removal of Things and Actions
-* Per class and per property configuration is changed to support modules and vector index type settings.
+0.23.2 から 1.0.0 へのリリースでは、データ スキーマ、API、クライアントに多くの破壊的変更が含まれています。以下は主な（破壊的）変更点の概要です。
 
-#### All data object changes
-* From `schema` to `properties` in the data object.
+クライアント ライブラリ固有の変更については、各クライアントの変更履歴をご覧ください（[Go](/weaviate/client-libraries/go.md#releases)、[Python](/weaviate/client-libraries/python/index.mdx#releases)、[TypeScript/JavaScript](/weaviate/client-libraries/typescript/index.mdx#releases)）。
+
+また、Console の新バージョンもリリースされています。詳細は Console ドキュメントをご参照ください。
+
+### 概要
+ここでは主な変更点をまとめています。詳細は ["Changes"](#changes) をご覧ください。
+
+#### RESTful API の変更点一覧
+* `/v1/schema/things/{ClassName}` から `/v1/schema/{ClassName}` へ
+* `/v1/schema/actions/{ClassName}` から `/v1/schema/{ClassName}` へ
+* `/v1/things` から `/v1/objects` へ
+* `/v1/actions` から `/v1/objects` へ
+* `/v1/batching/things` から `/v1/batch/objects` へ
+* `/v1/batching/actions` から `/v1/batch/objects` へ
+* `/v1/batching/references` から `/v1/batch/references` へ
+* 追加データ オブジェクト プロパティは `?include=...` にまとめられ、先頭のアンダースコアが削除されました
+* `/v1/modules/` エンドポイントが追加されました
+* `/v1/meta/` エンドポイント内に `"modules"` としてモジュール固有情報が含まれます
+
+#### GraphQL API の変更点一覧
+* クエリ階層から Things と Actions レイヤーを削除
+* データ オブジェクトのリファレンス プロパティが小文字化（従来は大文字）
+* アンダースコア プロパティ、uuid、certainty は `_additional` オブジェクトにまとめられました
+* `explore()` フィルターは `near<MediaType>` フィルターに名称変更
+* `Get{}` クエリに `nearVector(vector:[])` フィルターを追加
+* `Explore (concepts: ["foo"]){}` クエリは `Explore (near<MediaType>: ... ){}` に変更
+
+#### データスキーマの変更点一覧
+* Things と Actions の削除
+* クラス単位・プロパティ単位の設定がモジュールおよびベクトル インデックス タイプ設定に対応
+
+#### データオブジェクトの変更点一覧
+* データ オブジェクト内の `schema` を `properties` に置換
 
 #### Contextionary
-* Contextionary is renamed to the module `text2vec-contextionary`
-* `/v1/c11y/concepts` to `/v1/modules/text2vec-contextionary/concepts`
-* `/v1/c11y/extensions` to `/v1/modules/text2vec-contextionary/extensions`
-* `/v1/c11y/corpus` is removed
+* Contextionary はモジュール `text2vec-contextionary` に改名
+* `/v1/c11y/concepts` から `/v1/modules/text2vec-contextionary/concepts` へ
+* `/v1/c11y/extensions` から `/v1/modules/text2vec-contextionary/extensions` へ
+* `/v1/c11y/corpus` は削除
 
-#### Other
-* Removal of `/things` and `/actions` in short and long beacons
-* Classification body is changed to support modularization
-* `DEFAULT_VECTORIZER_MODULE` is a new environment variable
+#### その他
+* 短・長形式のビーカンから `/things` と `/actions` を削除
+* 分類ボディをモジュール化に合わせて変更
+* `DEFAULT_VECTORIZER_MODULE` という新しい環境変数を追加
 
-### Changes
+### 変更点
 
-#### Removal of Things and Actions
-`Things` and `Actions` are removed from the Data Schema. This comes with the following changes in the schema definition and API endpoints:
-1. **Data schema:** The `semantic kind` (`Things` and `Actions`) is removed from the Schema Endpoint. This means the URLs will change:
-  * from `/v1/schema/things/{ClassName}` to `/v1/schema/{ClassName}`
-  * from `/v1/schema/actions/{ClassName} `to `/v1/schema/{ClassName}`
-1. **Data RESTful API endpoint:** The `semantic kind` (`Things` and `Actions`) is removed from the data Endpoint. Instead it will be namespaced as `/objects`. This means the URLs will change:
-  * from `/v1/things` to `/v1/objects`
-  * from `/v1/actions` to `/v1/objects`
-  * from `/v1/batching/things`to `/v1/batch/objects` (see also the [change in batching](#renaming-batching-to-batch))
-  * from `/v1/batching/actions`to `/v1/batch/objects` (see also the [change in batching](#renaming-batching-to-batch))
-1. **GraphQL:** The `Semantic Kind` "level" in the query hierarchy will be removed without replacement (In `Get` and `Aggregate` queries), i.e.
+#### Things と Actions の削除
+`Things` と `Actions` はデータ スキーマから削除されました。これに伴い、スキーマ定義および API エンドポイントは以下のように変更されます。
+1. **データ スキーマ:** `semantic kind`（`Things` と `Actions`）がスキーマ エンドポイントから削除され、URL が以下のように変わります。
+  * `/v1/schema/things/{ClassName}` から `/v1/schema/{ClassName}`
+  * `/v1/schema/actions/{ClassName}` から `/v1/schema/{ClassName}`
+1. **データ RESTful API エンドポイント:** `semantic kind`（`Things` と `Actions`）がデータ エンドポイントから削除され、名前空間が `/objects` になります。URL は以下のように変わります。
+  * `/v1/things` から `/v1/objects`
+  * `/v1/actions` から `/v1/objects`
+  * `/v1/batching/things` から `/v1/batch/objects` へ（[バッチの名称変更](#renaming-batching-to-batch) も参照）
+  * `/v1/batching/actions` から `/v1/batch/objects` へ（[バッチの名称変更](#renaming-batching-to-batch) も参照）
+1. **GraphQL:** クエリ階層の `Semantic Kind` レベルは置き換え無しで削除されます（`Get` および `Aggregate` クエリ）。  
    ```graphql
    {
      Get {
@@ -437,7 +407,7 @@ This contains most overall changes, but not all details. Those are documented in
    }
    ```
 
-   will become
+   は次のようになります  
 
    ```graphql
    {
@@ -448,33 +418,32 @@ This contains most overall changes, but not all details. Those are documented in
      }
    }
    ```
-1. **Data Beacons:** The `Semantic Kind` will be removed from beacons:
-   * **Short-form Beacon:**
+1. **データ ビーカン:** `Semantic Kind` はビーカンから削除されます。
+   * **短形式ビーカン:**
 
      * `weaviate://localhost/things/4fbacd6e-1153-47b1-8cb5-f787a7f01718`
 
-     to
+     から
 
      * `weaviate://localhost/4fbacd6e-1153-47b1-8cb5-f787a7f01718`
 
-   * **Long-form Beacon:**
+   * **長形式ビーカン:**
 
      * `weaviate://localhost/things/ClassName/4fbacd6e-1153-47b1-8cb5-f787a7f01718/propName`
 
-     to
+     から
 
      * `weaviate://localhost/ClassName/4fbacd6e-1153-47b1-8cb5-f787a7f01718/propName`
 
-#### Renaming /batching/ to /batch/
+#### /batching/ から /batch/ への名称変更
 
-* `/v1/batching/things` to `/v1/batch/objects`
-* `/v1/batching/actions` to `/v1/batch/objects`
-* `/v1/batching/references` to `/v1/batch/references`
+* `/v1/batching/things` から `/v1/batch/objects`
+* `/v1/batching/actions` から `/v1/batch/objects`
+* `/v1/batching/references` から `/v1/batch/references`
 
+#### データオブジェクトの「schema」から「properties」への変更
 
-#### From "schema" to "properties" in data object
-
-The name "schema" on the data object is not intuitive and is replaced by "properties". The change looks like:
+データ オブジェクト上の "schema" は直感的ではないため "properties" に置き換えられました。変更例は以下の通りです。
 
 ```json
 {
@@ -485,7 +454,7 @@ The name "schema" on the data object is not intuitive and is replaced by "proper
 }
 ```
 
-to
+から
 
 ```json
 {
@@ -496,13 +465,13 @@ to
 }
 ```
 
-#### Consistent casing in GraphQL properties
+#### GraphQL プロパティの大文字小文字の一貫性
 
-Previously, reference properties in the schema definitions are always lowercase, yet in graphQL they needed to be uppercased. E.g.: `Article { OfAuthor { … on Author { name } } } }`, even though the property is defined as ofAuthor. New is that the casing in GraphQL reflects exactly the casing in the schema definition, thus the above example would become: `Article { ofAuthor { … on Author { name } } } }`
+以前は、スキーマ定義のリファレンス プロパティは常に小文字でしたが、GraphQL では大文字にする必要がありました。例：`Article { OfAuthor { … on Author { name } } }`（プロパティ定義は ofAuthor）。新バージョンでは GraphQL の大文字小文字がスキーマ定義と完全に一致します。上記の例は `Article { ofAuthor { … on Author { name } } }` となります。
 
-#### Additional data properties in GraphQL and RESTful API
-Since modularization, a module can contribute to the additional properties of a data object (thus are not fixed), which should be retrievable by the GraphQL and/or RESTful API.
-1. **REST**: `additional` properties (formerly named `"underscore"` properties) can be included in RESTful query calls like `?include=...`, e.g. `?include=classification`. The underscores will thus be removed from the names (e.g. `?include=_classification` is deprecated). In the Open API specifications, all additional properties will be grouped in the object `additional`. For example:
+#### GraphQL と RESTful API における追加データプロパティ
+モジュール化により、モジュールはデータ オブジェクトの追加プロパティを提供できるようになりました（固定ではありません）。これらは GraphQL や RESTful API で取得できます。
+1. **REST:** 追加プロパティ（旧 `"underscore"` プロパティ）は `?include=...` で指定して取得します。例：`?include=classification`。アンダースコア付き（例：`?include=_classification`）は非推奨です。Open API 仕様では、すべての追加プロパティが `additional` オブジェクトにまとめられます。例：
     ```json
     {
       "class": "Article",
@@ -511,7 +480,7 @@ Since modularization, a module can contribute to the additional properties of a 
     }
     ```
 
-    to
+    から
 
     ```json
     {
@@ -522,12 +491,12 @@ Since modularization, a module can contribute to the additional properties of a 
       }
     }
     ```
-2. **GraphQL**: `"underscore"` properties are renamed to `additional` properties in GraphQL queries.
-   1. All former `"underscore"` properties of a data object (e.g. `_certainty`) are now grouped in the `_additional {}` object (e.g. `_additional { certainty } `).
-   2. The `uuid` property is now also placed in the `_additional {}` object and renamed to `id` (e.g. `_additional { id } `).
-   This example covers both changes:
+2. **GraphQL:** `"underscore"` プロパティは GraphQL クエリ内で `additional` プロパティに名称変更されます。
+   1. すべての `"underscore"` プロパティ（例：`_certainty`）は `_additional {}` オブジェクトにまとめられます（例：`_additional { certainty }`）。
+   2. `uuid` プロパティも `_additional {}` に配置され `id` に改名されます（例：`_additional { id }`）。
+   以下の例は両方の変更を示します。
 
-   From
+   変更前
 
    ```graphql
     {
@@ -544,7 +513,7 @@ Since modularization, a module can contribute to the additional properties of a 
     }
    ```
 
-   to
+   変更後
 
    ```graphql
    {
@@ -561,16 +530,15 @@ Since modularization, a module can contribute to the additional properties of a 
    }
    ```
 
-#### Modules RESTful endpoint
-With the modularization of Weaviate, the `v1/modules/` endpoint is introduced.
+#### モジュール RESTful エンドポイント
+Weaviate のモジュール化に伴い、`v1/modules/` エンドポイントが導入されました。
 
-#### GraphQL semantic search
+#### GraphQL セマンティック検索
+モジュール化により、非テキストオブジェクトをベクトル化できるようになりました。検索は、Contextionary によるテキストおよびデータオブジェクトのベクトル化に限定されず、非テキストオブジェクトや生の ベクトル に対しても適用可能になります。以前は Get クエリの 'explore' フィルターと GraphQL の 'Explore' クエリはテキストに紐付いていましたが、新しい Weaviate バージョンでは次の変更が加えられました。
 
-With the modularization, it becomes possible to vectorize non-text objects. Search is no longer restricted to use the Contextionary's vectorization of text and data objects, but could also be applied to non-text objects or raw vectors. The formerly 'explore' filter in Get queries and 'Explore' queries in GraphQL were tied to text, but the following changes are made to this filter with the new version of Weaviate:
-
-1. The filter `Get ( explore: {} ) {}` is renamed to `Get ( near<MediaType>: {} ) {}`.
-   1. New: `Get ( nearVector: { vector: [.., .., ..] } ) {}` is module independent and will thus always be available.
-   2. `Get ( explore { concepts: ["foo"] } ) {}` will become `Get ( nearText: { concepts: ["foo"] } ) {}` and is only available if the `text2vec-contextionary` module is attached.
+1. フィルター `Get ( explore: {} ) {}` は `Get ( near<MediaType>: {} ) {}` にリネームされました。  
+   1. 新機能: `Get ( nearVector: { vector: [.., .., ..] } ) {}` はモジュールに依存せず、常に利用できます。  
+   2. `Get ( explore { concepts: ["foo"] } ) {}` は `Get ( nearText: { concepts: ["foo"] } ) {}` となり、`text2vec-contextionary` モジュールがアタッチされている場合にのみ使用できます。  
 
     From
 
@@ -598,7 +566,7 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
     }
     ```
 
-2. Similarly to the explore sorter that is used in the `Get {}` API, the `Explore {}` API also assumes text. The following change is applied:
+2. `Get {}` API で使用される explore ソーターと同様に、`Explore {}` API もテキストを前提としています。次の変更が適用されます。  
 
    From
 
@@ -620,17 +588,17 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
     }
    ```
 
-#### Data schema configuration
-1. **Per-class configuration**
+#### データスキーマ設定
+1. **クラス単位の設定**
 
-    With modularization, it is possible to configure per class the vectorizer module, module-specific configuration for the overall class, vector index type, and vector index type specific configuration:
-    * The `vectorizer` indicates which module (if any) are responsible for vectorization.
-    * The `moduleConfig` allows configuration per module (by name).
-      * See [here](#text2vec-contextionary) for Contextionary specific property configuration.
-    * The `vectorIndexType` allows the choosing the vector index (defaults to [HNSW](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index))
-    * The `vectorIndexConfig` is an arbitrary object passed to the index for config (defaults can be found [here](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) )
+    モジュール化により、クラスごとにベクトライザー モジュール、モジュール固有のクラス設定、ベクトルインデックスタイプ、およびベクトルインデックスタイプ固有の設定を行えます。  
+    * `vectorizer` はベクトル化を担当するモジュール（存在する場合）を示します。  
+    * `moduleConfig` はモジュール名ごとの設定を可能にします。  
+      * Contextionary 固有のプロパティ設定については [こちら](#text2vec-contextionary) を参照してください。  
+    * `vectorIndexType` では使用するベクトルインデックスを選択できます（デフォルトは [HNSW](/weaviate/concepts/indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index)）。  
+    * `vectorIndexConfig` はインデックスに渡される任意の設定オブジェクトです（デフォルト値は [こちら](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) を参照）。  
 
-    All changes are in this example:
+    変更はすべて次の例に示します。  
 
     ```json
     {
@@ -641,7 +609,7 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
     }
     ```
 
-    will become
+    は次のようになります。  
 
     ```json
     {
@@ -662,14 +630,14 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
     }
     ```
 
-2. **Per-property configuration**
+2. **プロパティ単位の設定**
 
-  With modularization, it is possible to configure per property module-specific configuration per property if available and it can be specified if a property should be included in the inverted index.
-  * The `moduleConfig` allows configuration per module (by name).
-    * See [here](#text2vec-contextionary) for Contextionary specific property configuration.
-  * `index` will become `indexInverted`: a boolean that indicates whether a property should be indexed in the inverted index.
+  モジュール化により、プロパティごとにモジュール固有の設定を行えるようになり、また、そのプロパティを転置インデックスに含めるかどうかを指定できます。  
+  * `moduleConfig` はモジュール名ごとの設定を可能にします。  
+    * Contextionary 固有のプロパティ設定については [こちら](#text2vec-contextionary) を参照してください。  
+  * `index` は `indexInverted` に変更されます。これは、そのプロパティを転置インデックスに登録するかどうかを示すブール値です。  
 
-  All changes are in this example:
+  変更はすべて次の例に示します。  
 
   ```json
   {
@@ -683,7 +651,7 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
   }
   ```
 
-  will become
+  は次のようになります。  
 
   ```json
   {
@@ -700,9 +668,8 @@ With the modularization, it becomes possible to vectorize non-text objects. Sear
   }
   ```
 
-#### RESTful /meta endpoint
-
-The `/v1/meta` object now contains module specific information at in the newly introduced namespaced `modules.<moduleName>` property:
+#### RESTful /meta エンドポイント
+`/v1/meta` オブジェクトには、新しく導入された名前空間 `modules.<moduleName>` プロパティにモジュール固有の情報が含まれるようになりました。
 
 From
 
@@ -730,9 +697,8 @@ to
 }
 ```
 
-#### Modular classification
-
-Some classification types are tied to modules (e.g. the former "contextual" classification is tied to the `text2vec-contextionary` module. We make a distinction between fields which are always present and those which are type dependent. Additionally the API is improved by grouping `settings` and `filters` in separate properties. kNN classification is the only type of classification that is present with Weaviate Database without dependency on modules. The former "contextual" classification is tied to the `text2vec-contextionary` module, see [here](#text2vec-contextionary). An example of how the change looks like in the classification API POST body:
+#### モジュール分類
+一部の分類タイプはモジュールに紐付いています（例: 以前の "contextual" 分類は `text2vec-contextionary` モジュールに紐付いています）。常に存在するフィールドと、タイプに依存するフィールドを区別しました。さらに、API では `settings` と `filters` を個別のプロパティにまとめて改善しています。kNN 分類はモジュールに依存せず Weaviate Database で利用できる唯一の分類タイプです。以前の "contextual" 分類は `text2vec-contextionary` モジュールに紐付いており、詳細は [こちら](#text2vec-contextionary) を参照してください。以下は分類 API の POST 本文での変更例です。
 
 From
 
@@ -769,7 +735,7 @@ To
 }
 ```
 
-And the API GET body:
+そして API GET 本文:
 
 From
 
@@ -812,13 +778,15 @@ To
 ```
 
 #### text2vec-contextionary
-The Contextionary becomes the first vectorization module of Weaviate, renamed to `text2vec-contextionary` in formal use. This brings the following changes:
-1. **RESTful** endpoint `/v1/c11y` changes to `v1/modules/text2vec-contextionary`:
-   * `/v1/c11y/concepts` to `/v1/modules/text2vec-contextionary/concepts`
-   * `/v1/c11y/extensions` to `/v1/modules/text2vec-contextionary/extensions`
-   * `/v1/c11y/corpus` is removed
-2. **Data schema:** `text2vec-contextionary`-specific module configuration options in the schema definition
-   1. **Per-class**. `"vectorizeClassName"` indicates whether the class name should be taken into the vector calculation of data objects.
+Contextionary は Weaviate における最初のベクトル化モジュールとなり、正式名称は `text2vec-contextionary` になりました。これに伴い、次の変更があります。
+
+1. **RESTful** エンドポイント `/v1/c11y` は `v1/modules/text2vec-contextionary` に変更されました。  
+   * `/v1/c11y/concepts` → `/v1/modules/text2vec-contextionary/concepts`  
+   * `/v1/c11y/extensions` → `/v1/modules/text2vec-contextionary/extensions`  
+   * `/v1/c11y/corpus` は削除されました  
+
+2. **データスキーマ:** スキーマ定義に `text2vec-contextionary` 固有のモジュール設定オプションが追加されました  
+   1. **クラス単位** `"vectorizeClassName"` はデータオブジェクトのベクトル計算にクラス名を含めるかどうかを示します。  
 
     ```json
     {
@@ -834,7 +802,7 @@ The Contextionary becomes the first vectorization module of Weaviate, renamed to
     }
     ```
 
-   2. **Per-property.** `skip` tells whether to skip the entire property (including value) from the vector position of the data object. `vectorizePropertyName` indicates whether the property name should be taken into the vector calculation of data objects.
+   2. **プロパティ単位** `skip` はそのプロパティ（値を含む）をデータオブジェクトのベクトル位置から完全に除外するかどうかを示します。`vectorizePropertyName` はプロパティ名をデータオブジェクトのベクトル計算に含めるかどうかを示します。  
 
     ```json
     {
@@ -850,7 +818,8 @@ The Contextionary becomes the first vectorization module of Weaviate, renamed to
       "indexInverted": true
     }
     ```
-3. **Contextual classification**. Contextual classification is dependent on the module `text2vec-contextionary`. It can be activated in `/v1/classifications/` the following with the classification name `text2vec-contextionary-contextual`:
+
+3. **コンテキスト分類** コンテキスト分類は `text2vec-contextionary` モジュールに依存します。`/v1/classifications/` で、分類名 `text2vec-contextionary-contextual` を用いて次のように有効化できます。  
 
 From
 
@@ -892,15 +861,16 @@ To
 }
 ```
 
-#### Default vectorizer module
-The default vectorizer module can be specified in a new environment variable so that this doesn't have to be specified on every data class in the schema. The environment variable is `DEFAULT_VECTORIZER_MODULE`, which can be set to for example `DEFAULT_VECTORIZER_MODULE="text2vec-contextionary"`.
+#### デフォルト ベクトライザー モジュール
+スキーマの各データ クラスに毎回指定する必要がないよう、新しい環境変数でデフォルト ベクトライザー モジュールを指定できます。  
+その環境変数は `DEFAULT_VECTORIZER_MODULE` で、例えば `DEFAULT_VECTORIZER_MODULE="text2vec-contextionary"` のように設定できます。
 
+### 公式リリースノート
+公式リリースノートは [GitHub](https://github.com/weaviate/weaviate/releases/tag/0.23.0) でご覧いただけます。
 
-### Official release notes
-Official release notes can be found on [GitHub](https://github.com/weaviate/weaviate/releases/tag/0.23.0).
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

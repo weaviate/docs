@@ -2,22 +2,24 @@
 title: Astronomer
 sidebar_position: 3
 ---
-[Astronomer’s Astro](https://www.astronomer.io/) is a fully managed platform built on top of Apache Airflow. It simplifies the management of Airflow at scale and data ingestion into Weaviate.
+[ Astronomer の Astro](https://www.astronomer.io/) は、 Apache Airflow の上に構築されたフルマネージド プラットフォームです。大規模な Airflow の運用管理と Weaviate へのデータ取り込みを簡素化します。
 
 
-## Astronomer and Weaviate
-The [Weaviate Airflow provider](https://www.astronomer.io/docs/learn/airflow-weaviate) offers modules to easily integrate Weaviate with Airflow.
+## Astronomer と Weaviate
+[ Weaviate Airflow プロバイダー](https://www.astronomer.io/docs/learn/airflow-weaviate) は、 Weaviate と Airflow を簡単に統合できるモジュールを提供します。
 
-Create and run a DAG to ingest data into Weaviate.
+Weaviate へデータを取り込む DAG を作成して実行します。
 
-## Our Resources 
-The resources are broken into two categories: 
+## リソース 
+これらのリソースは 2 つのカテゴリに分かれています: 
 
-[**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+[**実践学習**](#hands-on-learning): エンドツーエンドのチュートリアルで技術的理解を深めましょう。
 
-### Hands on Learning
+### 実践学習
 
-| Topic | Description | Resource | 
+| トピック | 説明 | リソース | 
 | --- | --- | --- |
-| Orchestrate Weaviate operations with Apache Airflow | Use Airflow to ingest movie descriptions into Weaviate and query the collection. | [Tutorial](https://www.astronomer.io/docs/learn/airflow-weaviate) |
+| Apache Airflow で Weaviate の操作をオーケストレーションする | Airflow を使用して映画の説明を Weaviate に取り込み、コレクションをクエリします。 | [チュートリアル](https://www.astronomer.io/docs/learn/airflow-weaviate) |
  
+
+

@@ -1,14 +1,14 @@
 ---
-title: Operations
+title: 運用
 sidebar_position: 5
 image: og/integrations/home.jpg
 ---
 
-These operational integrations make it easier to monitor and evaluate AI Native applications. 
+これらの運用インテグレーションにより、AI Native アプリケーションの監視と評価がより簡単になります。  
 
-For example, Vector Databases are typically paired with Large Language Models in Retrieval-Augmented Generation systems. To help monitor these applications in productions, several tools have emerged with user interface and logging services.
+たとえば、ベクトル データベースは通常、検索拡張生成システムで Large Language Models (LLM) と組み合わせて利用されます。これらのアプリケーションを本番環境で監視するために、ユーザー インターフェースやログ サービスを提供する複数のツールが登場しています。
 
-Learn about how Weaviate integrates with these solutions:
+Weaviate がこれらのソリューションとどのように統合されるかをご覧ください:
 * [AIMon](/integrations/operations/aimon/)
 * [Arize](/integrations/operations/arize/)
 * [Cleanlab](/integrations/operations/cleanlab/)
@@ -21,3 +21,5 @@ Learn about how Weaviate integrates with these solutions:
 * [Ragas](/integrations/operations/ragas/)
 * [TruLens](/integrations/operations/trulens/)
 * [Weights and Biases](/integrations/operations/wandb/)
+
+

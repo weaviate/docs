@@ -1,6 +1,6 @@
 ---
-title: Overview
-description: Deployment overview page
+title: 概要
+description: デプロイ概要ページ
 sidebar_position: 0
 ---
 
@@ -8,132 +8,132 @@ import CardsSection from "/src/components/CardsSection";
 import DeploymentCards from "/src/components/DeploymentCards";
 import styles from "/src/components/CardsSection/styles.module.scss";
 
-# Deploying Weaviate
+# Weaviate のデプロイ
 
-:::info[Section under construction!]
+:::info[作成中のセクションです！]
 
-This is a new section being created, please bear with us as we add in new content!
+こちらは新しく作成中のセクションです。順次コンテンツを追加していきますので、しばらくお待ちください。
 
 :::
 
-Weaviate is available as a hosted service, [Weaviate Cloud (WCD)](https://console.weaviate.cloud/), or as a self managed instance. If you manage your own instance, you can host it locally or with a cloud provider. Self-managed instances use the same Weaviate Database as WCD.
+Weaviate はホステッド サービスである [Weaviate Cloud ( WCD )](https://console.weaviate.cloud/) と、セルフ マネージドの 2 つの形態でご利用いただけます。セルフ マネージドの場合、ローカル環境またはクラウド プロバイダー上でホストできます。セルフ マネージド インスタンスは WCD と同じ Weaviate Database を使用します。
 
-If you are upgrading from a previous version of Weaviate, see the [Migration Guide](docs/deploy/migration/index.md) for any changes that may affect your installation.
+以前のバージョンからアップグレードする場合は、インストールに影響する変更点について [Migration Guide](docs/deploy/migration/index.md) をご覧ください。
 
-Weaviate offers multiple deployment options to satisfy your specific use case in production. 
+Weaviate では、プロダクション環境でのユース ケースに合わせて複数のデプロイ オプションを提供しています。 
 
-This section hosts common deployment topics, including Kubernetes, cloud providers, and best practices, along with detailed tutorials and how-to guides.
-Weaviate is designed for:
+このセクションでは、Kubernetes やクラウド プロバイダー、ベスト プラクティスなどの共通トピックに加え、詳細なチュートリアルやハウツー ガイドを掲載しています。  
+Weaviate は以下の特徴を備えています:
 
-- **Scalability** – Handle billions of vector data points efficiently.
-- **High-Performance Search** – Power AI applications with real-time vector retrieval.
-- **Flexible Integrations** – Connect with various machine learning models and data sources.
-- **Cloud & On-Prem Deployment** – Deploy on Weaviate Cloud, Kubernetes, or managed cloud services.
+- **スケーラビリティ** – 数十億件のベクトル データを効率的に処理  
+- **高パフォーマンス検索** – リアルタイム ベクトル検索で AI アプリケーションを強化  
+- **柔軟な統合** – さまざまな機械学習モデルやデータ ソースと接続  
+- **クラウド & オンプレミス デプロイ** – Weaviate Cloud、Kubernetes、マネージド クラウド サービスに対応  
 
 
-## Deployment Options
+## デプロイ オプション
 
-Choose the best deployment method based on your needs:
+ニーズに合わせて最適なデプロイ方法をお選びください:
 
 export const deploymentCardsData = [
   {
     tabs: [
-      { label: "Evaluation", active: true },
-      { label: "Development", active: true },
-      { label: "Production", active: true },
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
     ],
     header: "Weaviate Cloud",
     bgImage: "/img/site/hex-weaviate.svg",
     bgImageLight: "/img/site/hex-weaviate-light.svg",
     listItems: [
-      "From evaluation (sandbox) to production",
-      "Serverless (infrastructure managed by Weaviate)",
-      "(Optional) Data replication (high-availability)",
-      "(Optional) Zero-downtime updates",
+      "評価 ( サンドボックス ) から本番まで対応",
+      "サーバーレス ( インフラストラクチャは Weaviate が管理 )",
+      " (オプション) データ レプリケーション ( 高可用性 )",
+      " (オプション) ゼロダウンタイム アップデート",
     ],
     button: {
-      text: "Set up a WCD instance",
+      text: "WCD インスタンスをセットアップ",
       link: "/cloud/manage-clusters/create",
     },
   },
   {
     tabs: [
-      { label: "Evaluation", active: true },
-      { label: "Development", active: true },
-      { label: "Production", active: false },
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: false },
     ],
     header: "Docker",
     bgImage: "/img/site/docker-doc-icon.svg",
     bgImageLight: "/img/site/docker-doc-icon-light.svg",
     listItems: [
-      "For local evaluation & development",
-      "Local inference containers",
-      "Multi-modal models",
-      "Customizable configurations",
+      "ローカルでの評価 & 開発向け",
+      "ローカル推論コンテナ",
+      "マルチモーダル モデル",
+      "カスタマイズ可能な構成",
     ],
     button: {
-      text: "Deploy Weaviate with Docker",
+      text: "Docker で Weaviate をデプロイ",
       link: "/deploy/installation-guides/docker-installation",
     },
   },
     {
     tabs: [
-      { label: "Evaluation", active: false },
-      { label: "Development", active: true },
-      { label: "Production", active: true },
+      { label: "評価", active: false },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
     ],
     header: "Kubernetes",
     bgImage: "/img/site/kubernetes-doc-icon.svg",
     bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
     listItems: [
-      "From development to production",
-      "Local inference containers",
-      "Multi-modal models",
-      "Customizable configurations",
-      "Self-deploy or Marketplace deployment",
-      "(Optional) Zero-downtime updates",
+      "開発から本番まで対応",
+      "ローカル推論コンテナ",
+      "マルチモーダル モデル",
+      "カスタマイズ可能な構成",
+      "セルフ デプロイまたは Marketplace でのデプロイ",
+      " (オプション) ゼロダウンタイム アップデート",
     ],
     button: {
-      text: "Deploy Weaviate with Kubernetes",
+      text: "Kubernetes で Weaviate をデプロイ",
       link: "/deploy/installation-guides/k8s-installation",
     },
   },
   {
     tabs: [
-      { label: "Evaluation", active: true },
-      { label: "Development", active: true },
-      { label: "Production", active: true },
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
     ],
     header: "AWS",
     bgImage: "/img/site/aws-marketplace-2.svg",
     bgImageLight: "/img/site/aws-marketplace-2.svg", 
     listItems: [
-      "From evaluation (sandbox) to production",
-      "Serverless (bill through AWS)",
-      "Kubernetes (billed through AWS)",
-      "Self-hosted on EKS",
+      "評価 ( サンドボックス ) から本番まで対応",
+      "サーバーレス ( AWS での課金 )",
+      "Kubernetes ( AWS での課金 )",
+      "EKS へのセルフ ホスト",
     ],
     button: {
-      text: "Deploy Weaviate on AWS",
+      text: "AWS で Weaviate をデプロイ",
       link: "/deploy/installation-guides/aws-marketplace",
     },
   },
   {
     tabs: [
-      { label: "Evaluation", active: true },
-      { label: "Development", active: true },
-      { label: "Production", active: true },
+      { label: "評価", active: true },
+      { label: "開発", active: true },
+      { label: "本番", active: true },
     ],
     header: "GCP Marketplace",
     bgImage: "/img/site/gcp-marketplace.svg",
     bgImageLight: "/img/site/gcp-marketplace.svg",
     listItems: [
-      "From evaluation (sandbox) to production",
-      "Serverless (bill through GCP)",
-      "Kubernetes (billed through GCP)",
+      "評価 ( サンドボックス ) から本番まで対応",
+      "サーバーレス ( GCP での課金 )",
+      "Kubernetes ( GCP での課金 )",
     ],
     button: {
-      text: "Deploy Weaviate with GCP",
+      text: "GCP で Weaviate をデプロイ",
       link: "/deploy/installation-guides/gcp-marketplace",
     },
   },
@@ -141,33 +141,33 @@ export const deploymentCardsData = [
 
 <DeploymentCards items={deploymentCardsData} />
 
-### Methods
 
-In addition to the above deployment methods, we also have the following:
 
-- **[Weaviate Cloud](docs/cloud/quickstart.mdx)**: Managed services for development and production environments.
-- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Deploy Weaviate in Snowflake's Snowpark environment.
-- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: Experimental. Embedded Weaviate is a client based tool.
+### 方法
 
-:::caution Native Windows support
+上記のデプロイ方法に加えて、次のオプションもあります:
 
-Although Weaviate can be used on Windows via containerized environments like [Docker](docs/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/), we don't offer native Windows support at this time.
+- **[Weaviate Cloud](docs/cloud/quickstart.mdx)**: 開発および本番環境向けのマネージドサービスです。
+- **[Snowpark Container Services](docs/deploy/installation-guides/spcs-integration.mdx)** Snowflake の Snowpark 環境に Weaviate をデプロイします。
+- **[Embedded Weaviate](docs/deploy/installation-guides/embedded.md)**: 実験的機能です。Embedded Weaviate はクライアントベースのツールです。
+
+:::caution Windows のネイティブサポート
+
+Weaviate は [Docker](docs/deploy/installation-guides/docker-installation.md) や [WSL](https://learn.microsoft.com/en-us/windows/wsl/) などのコンテナ化された環境を介して Windows でも利用できますが、現時点では Windows 向けのネイティブサポートは提供していません。
 
 :::
 
-## Configuration files
+## 設定ファイル
 
-Docker Compose and Kubernetes use `yaml` files to configure Weaviate instances. Docker uses the [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) file. Kubernetes relies on [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) and the `values.yaml` file. The Weaviate documentation also calls these files `configuration yaml files`.
+Docker Compose と Kubernetes は `yaml` ファイルを使用して Weaviate インスタンスを構成します。Docker は [`docker-compose.yml`](docs/deploy/installation-guides/docker-installation.md) ファイルを使用し、Kubernetes は [Helm charts](docs/deploy/installation-guides/k8s-installation.md#weaviate-helm-chart) と `values.yaml` ファイルに依存します。Weaviate のドキュメントでは、これらのファイルを `configuration yaml files` とも呼びます。
 
-If you are self-hosting, consider experimenting on a small scale with Docker and then transferring your configuration to Kubernetes Helm charts when you are more familiar with Weaviate.
+セルフホストの場合は、まず小規模に Docker で試し、その後 Weaviate に慣れてきたら設定を Kubernetes の Helm chart に移行することを検討してください。
 
+## バージョン
 
-## Versions
+:::tip デプロイオプションごとのバージョン提供状況:
 
-
-:::tip Version availability across deployment options:
-
-Weaviate version availability may differ across deployment options, Weaviate Cloud generally has the latest versions of all deployment methods. 
+Weaviate のバージョン提供状況はデプロイオプションによって異なる場合がありますが、一般的に Weaviate Cloud がすべてのデプロイ方法の中で最新バージョンを提供しています。
 
 :::
 
@@ -175,17 +175,17 @@ import RunUnreleasedImages from '/_includes/configuration/run-unreleased.mdx'
 
 <RunUnreleasedImages />
 
-When you try upcoming features, please provide [feedback](https://github.com/weaviate/weaviate/issues/new/choose). Your comments are appreciated and help us to make Weaviate more useful for you.
+今後の機能をお試しいただいた際には、ぜひ [フィードバック](https://github.com/weaviate/weaviate/issues/new/choose) をお寄せください。皆さまのご意見は Weaviate をより便利にするうえで大変参考になります。
 
+## 関連ページ
+- [Weaviate への接続](docs/weaviate/connections/index.mdx)
+- [Weaviate クイックスタート](docs/weaviate/quickstart/index.md)
+- [Weaviate Cloud クイックスタート](docs/cloud/quickstart.mdx)
+- [リファレンス: 設定](docs/weaviate/configuration/index.mdx)
 
-## Related pages
-- [Connect to Weaviate](docs/weaviate/connections/index.mdx)
-- [Weaviate Quickstart](docs/weaviate/quickstart/index.md)
-- [Weaviate Cloud Quickstart](docs/cloud/quickstart.mdx)
-- [References: Configuration](docs/weaviate/configuration/index.mdx)
-
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

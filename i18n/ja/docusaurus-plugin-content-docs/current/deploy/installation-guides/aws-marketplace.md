@@ -1,6 +1,6 @@
 ---
-title: Marketplace - Weaviate Serverless Cloud
-description: Install a Weaviate serverless instance through the AWS Marketplace for quick cloud deployment.
+title: Marketplace - Weaviate サーバーレス Cloud
+description: AWS Marketplace 経由で Weaviate のサーバーレスインスタンスをインストールし、迅速にクラウドへデプロイできます。
 image: og/docs/installation.jpg
 # tags: ['installation', 'AWS Marketplace']
 ---
@@ -9,14 +9,14 @@ import ReactPlayer from 'react-player/lazy'
 
 <!-- NOTE: To show this page on the sidebar, remove the `sidebar_class_name: hidden` line above. -->
 
-Through the AWS Marketplace you can launch a Weaviate serverless instance billed directly from AWS. 
+AWS Marketplace を通じて、AWS から直接課金される Weaviate のサーバーレスインスタンスを起動できます。 
 
-:::info Prerequisites
-- An AWS account with sufficient credit / payment method.
-- (Recommended) Familiarity with AWS and the AWS console.
+:::info 前提条件
+- 十分なクレジットまたは支払い方法が設定された AWS アカウント  
+- （推奨）AWS および AWS コンソールに精通していること
 :::
 
-You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) to launch a Weaviate serverless instance.
+[AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) を使用して Weaviate のサーバーレスインスタンスを起動できます。
 
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
@@ -36,50 +36,51 @@ You can use [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ng2
   <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="zpe5o7jh3p"></script>
 </div>
 
-## Installation instructions
+## インストール手順
 
-1. Go to Weaviate's [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa).
-1. Subscribe to the product by following the instructions on the page. 
-    1. Click <kbd>View Purchase Options</kbd>, then go to the next page.
-    2. Review the pricing, terms and conditions, and click <kbd>Subscribe</kbd>. 
-From there you will be prompted to set up your account on  [Weaviate Cloud](/cloud/index.mdx).
+1. Weaviate の [AWS Marketplace リスティング](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-3&ref_=beagle&applicationId=AWSMPContessa) にアクセスします。  
+1. ページの指示に従って製品を購読します。  
+    1. <kbd>View Purchase Options</kbd> をクリックし、次のページに進みます。  
+    2. 価格と利用規約を確認し、<kbd>Subscribe</kbd> をクリックします。  
+その後、Weaviate Cloud でアカウントを設定するように求められます。 
 
 :::info
 <details>
 
-<summary> A little background information </summary>
+<summary>補足情報</summary>
 
-- When you deploy Weaviate Serverless Cloud through the AWS Marketplace, you're subscribing to a Software as a Service (SaaS) solution that is specifically built for AWS customers. 
+- AWS Marketplace から Weaviate Serverless Cloud をデプロイすると、AWS 顧客向けに特別に構築された Software as a Service (SaaS) ソリューションにサブスクライブしたことになります。  
 
-- AWS will notify you once your Weaviate serverless cluster is available. 
+- Weaviate のサーバーレスクラスターが利用可能になると、AWS から通知が届きます。  
 
-**This solution is ideal for:**
+**このソリューションが最適なケース:**  
 
-- Organizations requiring AWS billing integration. 
-- Organizations with regulatory requirements who need specific regional deployments. 
+- AWS 請求統合が必要な組織  
+- リージョンを指定したデプロイが必要な規制要件を持つ組織  
 
 </details>
 
 :::
 
-### Billing
+### 課金
 
-You will be charged for Weaviate directly by AWS.
+Weaviate の料金は AWS から直接請求されます。
 
 :::warning
 
-If you cancel your Weaviate AWS marketplace subscription, your Weaviate organization and its clusters will be deleted by Weaviate.
+Weaviate AWS Marketplace サブスクリプションをキャンセルすると、Weaviate の組織とそのクラスターは Weaviate によって削除されます。
 
 :::
 
-### Other marketplace offerings
+### その他の Marketplace 製品
 
 - [Weaviate serverless cloud](https://aws.amazon.com/marketplace/pp/prodview-ng2dfhb4yjoic?sr=0-2&ref_=beagle&applicationId=AWSMPContessa)
 - [Weaviate enterprise cloud](https://aws.amazon.com/marketplace/pp/prodview-27nbweprm7hha?sr=0-3&ref_=beagle&applicationId=AWSMPContessa)
 
 
-## Questions and feedback
+## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+
