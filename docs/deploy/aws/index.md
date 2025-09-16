@@ -21,7 +21,7 @@ Weaviate has multiple pathways to deploy on AWS, each suited to different use ca
 
 ### Marketplace offerings
 
-#### [AWS marketplace - serverless cloud](../installation-guides/aws-marketplace.md)
+#### [AWS marketplace - Serverless Cloud](../installation-guides/aws-marketplace.md)
 
 Deploy Weaviate Serverless Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration. 
 
@@ -30,11 +30,6 @@ This SaaS solution is specifically built for AWS customers who need:
 - AWS billing integration
 - Regulatory requirements with specific regional deployments
 - Quick setup without infrastructure management
-
-
-:::tip
-If you're interested in learning more about Weaviate Serverless Cloud, [our sales team would love to help!](https://weaviate.io/pricing#contact)
-:::
 
 #### [AWS marketplace - Kubernetes cluster](../installation-guides/eks-marketplace.md)
 
