@@ -10,7 +10,9 @@ image: og/docs/integrations/provider_integrations_gpt4all.jpg
 :::caution Deprecated integration
 This integration is deprecated and will be removed in a future release. We recommend using alternative model providers for new projects.
 
+
 For local AI model integrations, consider using [Ollama](../ollama/index.md) or the [local HuggingFace](../huggingface/index.md) model integrations.
+
 :::
 
 The GPT4All library allows you to easily run a wide range of models on your own device. Weaviate seamlessly integrates with the GPT4All library, allowing users to leverage compatible models directly from the Weaviate Database.
