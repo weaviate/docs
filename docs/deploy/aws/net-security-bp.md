@@ -10,24 +10,23 @@ This page serves as a reference for AWS-specific networking best practices for y
 
 :::tip 
 
-If you are looking for general best practices, you can find them [here](/docs/weaviate/best-practices/index.md). 
+- If you need general best practices, you can find them [here](/docs/weaviate/best-practices/index.md).
 
-If you are looking for deployment-specific best practices, you can find them [here](/docs/deploy/faqs/index.md)
+- If you need deployment-specific best practices, you can find them [here](/docs/deploy/faqs/index.md).
+
 :::
 
-### Key objectives
+### A robust network security architecture will: 
 
-- Minimizing the attack surface through network segmentation and access controls.
+- Minimize the attack surface through network segmentation and access controls.
 - Enable automated scaling while maintaining security boundaries.
 - Ensure high availability with comprehensive disaster recovery.
 - Provide end-to-end observability and threat detection.
 - Establish secure administrative access patterns.
 
-## Access control
+### Access control
 
-Access control is the cornerstone of this network security strategy. It implements a zero-trust model where no resource is inherently trusted. Continuous verification of all access requests.
-
-### Private network infrastructure
+Access control is the cornerstone of this network security strategy. It implements a zero-trust model where no resource is inherently trusted with continuous verification of all access requests.
 
 #### Private subnet strategy
 
@@ -47,9 +46,22 @@ Network isolation is the foundation of our this strategy. Critical infrastructur
 - Administrative access requiring a VPN and strong authentication.
 - RBAC aligned with organizational structure.
 
-## Network architecture with defense-in-depth
+#### VPN strategy for secure administrative access
 
-### Network segmentation
+- Site-to-site VPN for corporate office connectivity.
+- Client VPN with individual certificates for administrative access.
+- Multi-AZ VPN gateways ensuring high availability.
+
+### Kubernetes access control
+
+#### Administrative controls
+
+- All `kubectl` access requires an established VPN connection.
+- Integration with corporate IDPs.
+- MFA for all administrative operations.
+- Session timeout and activity monitoring.
+
+### Network architecture with defense-in-depth
 
 Security boundaries are created with network segmentation, this limits the potential impact of security breaches. This defense-in-depth strategy implements both horizontal and vertical segmentation.
 
@@ -96,7 +108,7 @@ Implementing CloudWatch VPC endpoint eliminates internet routing for monitoring 
 - Network-level access controls for monitoring data transmission.
 - Compliance with data residency requirements.
 
-### S3 VPC endpoint for secure data operations
+#### S3 VPC endpoint for secure data operations
 
 Data transfer for backups and application data can be secured, this is what is needed for configuration:
 
@@ -112,13 +124,9 @@ Data transfer for backups and application data can be secured, this is what is n
 - Network-level protection prevents data exfiltration through the internet.
 - Integration with AWS Config for compliance monitoring.
 
-## Scaling and performance
-
-### Load balancing strategies
+### Scaling and performance strategies
 
 #### Application load balancer (ALB) configuration
-
-Using a modern ALB with integrated security features:
 
 #### SSL/TLS management
 
@@ -142,8 +150,6 @@ Using a modern ALB with integrated security features:
 
 ### Autoscaling security considerations
 
-#### Application auto-scaling
-
 Secure scaling policies maintains security posture during capacity changes.
 
 #### Scaling triggers
@@ -160,9 +166,9 @@ Secure scaling policies maintains security posture during capacity changes.
 - Configuration management to ensure consistent security baselines.
 - Monitoring integration providing immediate visibility into new instances.
 
-## High availability and disaster recovery
+### High availability and disaster recovery
 
-### Multi-AZ architecture
+#### Multi-AZ architecture
 
 #### Weaviate configuration
 
@@ -170,9 +176,7 @@ Secure scaling policies maintains security posture during capacity changes.
 - Automatic failover and cross-AZ replication.
 - Automated backups to S3 with cross-region replication.
 
-## Observability and monitoring
-
-### Comprehensive monitoring
+### Observability and monitoring
 
 #### Grafana infrastructure
 
@@ -192,9 +196,9 @@ Secure scaling policies maintains security posture during capacity changes.
 - Automated incident creation and response workflows.
 - Forensic data collection and preservation capabilities.
 
-## Service mesh security
+### Service mesh security
 
-### Istio implementation
+#### Istio implementation
 
 Istio is a service mesh that provides comprehensive security and observability for service communications.
 
@@ -216,9 +220,7 @@ Istio also has a zero-trust model which has these features:
 - Centralized policy enforcement across all services.
 - Detailed traffic analytics and security monitoring.
 
-## Kubernetes network policies
-
-### Policy enforcement engines
+### Kubernetes network policies
 
 #### Calico or Cilium implementation
 
@@ -233,37 +235,26 @@ Istio also has a zero-trust model which has these features:
 - **Selective allow:** Explicit rules for required communications.
 - **GitOps management:** Version-controlled policy deployment and testing.
 
-### Implementation
+#### Implementation
 
 - Network policies should prevent lateral movement between pods.
 - Integration with service mesh for consistent enforcement.
 - Regular policy auditing and optimization.
 - Automated testing to ensure policy effectiveness.
 
-## Secure administrative access
-
-### VPN strategy
-
-- Site-to-site VPN for corporate office connectivity.
-- Client VPN with individual certificates for administrative access.
-- Multi-AZ VPN gateways ensuring high availability.
-
-### Kubernetes access control
-
-#### Administrative controls
-
-- All `kubectl` access requires an established VPN connection.
-- Integration with corporate IDPs.
-- MFA for all administrative operations.
-- Session timeout and activity monitoring.
-
-## Framework alignment
+### Framework alignment
 
 Our AWS-specific best practices are aligned with the following security frameworks:
 
 - **NIST Cybersecurity framework:** Complete identify, protect, detect, respond, and recover capabilities.
 - **ISO 27001:** Information security management system implementation.
 - **SOC 2:** Trust services criteria compliance for security, availability, and confidentiality.
+
+### Additional resources and information
+
+- [Monitoring documentation](../configuration/monitoring.md)
+- [Replication documentation](../configuration/replication.md)
+- [Backups documentation](../configuration/backups.md)
 
 ## Questions and feedback
 
