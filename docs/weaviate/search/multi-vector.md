@@ -48,7 +48,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiBasic"
@@ -88,7 +88,7 @@ You can specify multiple query vectors in the search query with a `nearVector` s
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetNearVector"
@@ -123,7 +123,7 @@ The target vectors can be specified as an array as shown here.
 />
 </TabItem>
 
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetMultipleNearVectorsV1"
@@ -147,7 +147,7 @@ If you want to provide weights for each target vector you can do it as shown her
 />
 </TabItem>
 
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetMultipleNearVectorsV2"
@@ -172,7 +172,7 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetWithSimpleJoin"
@@ -202,7 +202,7 @@ Each distance between the query vector and the target vector is multiplied by th
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetManualWeights"
@@ -233,7 +233,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetRelativeScore"

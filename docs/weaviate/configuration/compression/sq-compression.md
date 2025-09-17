@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression-v4.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression-v3.ts';
 import TSCodeSQOptions from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression.options-v3.ts';
-import TSCodeLegacy from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression-v2.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.sq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/sq-compression.java';
 

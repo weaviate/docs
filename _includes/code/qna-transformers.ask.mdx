@@ -13,35 +13,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
     language="py"
   />
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'edu-demo.weaviate.network',
-  apiKey: new weaviate.ApiKey('learn-weaviate'),
-  headers: {
-    'X-OpenAI-Api-Key': process.env['OPENAI_API_KEY'],
-  },
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withAsk({
-    question: 'Who is the king of the Netherlands?',
-    properties: ['summary'],
-  })
-  .withFields('title _additional { answer { hasAnswer property result startPosition endPosition } }')
-  .withLimit(1)
-  .do();
-console.log(response);
-
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

@@ -11,11 +11,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.rerank.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.rerank-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.rerank.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.rerank-v2.ts';
 import SimilarityPyCode from '!!raw-loader!/_includes/code/howto/search.similarity.py';
 import SimilarityPyCodeV3 from '!!raw-loader!/_includes/code/howto/search.similarity-v3.py';
 import SimilarityTSCode from '!!raw-loader!/_includes/code/howto/search.similarity.ts';
-import SimilarityTSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.similarity-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-rerank_test.go';
 
 
@@ -53,7 +51,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={SimilarityTSCode}
       startMarker="// NamedVectorNearText"
@@ -62,14 +60,6 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={SimilarityTSCodeLegacy}
-      startMarker="// NamedVectorNearText"
-      endMarker="// END NamedVectorNearText"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -105,7 +95,7 @@ To rerank the results of a vector search, configure the object properties to sor
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankNearText"
@@ -114,14 +104,6 @@ To rerank the results of a vector search, configure the object properties to sor
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START RerankNearText"
-      endMarker="// END RerankNearText"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -171,7 +153,7 @@ To rerank the results of a keyword search, configure the object properties to so
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START bm25Rerank"
@@ -180,14 +162,6 @@ To rerank the results of a keyword search, configure the object properties to so
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START bm25Rerank"
-      endMarker="// END bm25Rerank"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

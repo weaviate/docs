@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.basics.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.basics-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.basics.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.basics-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
 
@@ -34,7 +33,7 @@ You can get objects without specifying any parameters. This returns objects in a
     />
   </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -45,16 +44,6 @@ You can get objects without specifying any parameters. This returns objects in a
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// BasicGetJS"
-  endMarker="// END BasicGetJS"
-  language="tsv2"
-/>
-
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -121,7 +110,7 @@ Use `limit` to set a fixed maximum number of objects to return.
 />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -132,15 +121,6 @@ Use `limit` to set a fixed maximum number of objects to return.
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetWithLimitJS"
-  endMarker="// END GetWithLimitJS"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -200,7 +180,7 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
 />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -211,15 +191,6 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetWithLimitOffsetJS"
-  endMarker="// END GetWithLimitOffsetJS"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -283,7 +254,7 @@ You can specify which object properties to return.
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -294,16 +265,6 @@ You can specify which object properties to return.
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetPropertiesJS"
-  endMarker="// END GetPropertiesJS"
-  language="tsv2"
-/>
-
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -363,7 +324,7 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
 />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -374,16 +335,6 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetObjectVectorJS"
-  endMarker="// END GetObjectVectorJS"
-  language="tsv2"
-/>
-
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -444,7 +395,7 @@ You can retrieve the object `id` (uuid).
 />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -455,16 +406,6 @@ You can retrieve the object `id` (uuid).
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetObjectIdJS"
-  endMarker="// END GetObjectIdJS"
-  language="tsv2"
-/>
-
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -532,7 +473,7 @@ To retrieve properties from cross-referenced objects, specify:
 />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -543,16 +484,6 @@ To retrieve properties from cross-referenced objects, specify:
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetWithCrossRefs"
-  endMarker="// END GetWithCrossRefs"
-  language="tsv2"
-/>
-
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -603,7 +534,7 @@ You can specify metadata fields to be returned.
 />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 <FilteredTextBlock
   text={TSCode}
@@ -614,16 +545,6 @@ You can specify metadata fields to be returned.
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// GetWithMetadataJS"
-  endMarker="// END GetWithMetadataJS"
-  language="tsv2"
-/>
-
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -673,7 +594,7 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// MultiTenancy"
@@ -682,14 +603,6 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
 />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={TSCodeLegacy}
-  startMarker="// MultiTenancy"
-  endMarker="// END MultiTenancy"
-  language="tsv2"
-/>
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock

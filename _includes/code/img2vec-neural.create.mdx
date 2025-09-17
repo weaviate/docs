@@ -20,29 +20,6 @@ print(result)
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const object = await client.data
-  .creator()
-  .withClassName('FashionItem')
-  .withProperties({
-    labelName: 'Mickey Mouse T-shirt'
-    image: 'iVBORw0KGgoAAAANS...'
-  })
-.do();
-
-console.log(JSON.stringify(object, null, 2));
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

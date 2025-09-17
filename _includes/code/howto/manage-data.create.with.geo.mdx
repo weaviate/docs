@@ -15,7 +15,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
   />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
 const publication = client.collections.use('Publication')
@@ -32,25 +32,6 @@ uuid = await publication.data.insert({
 })
 
 console.log('UUID: ', uuid)
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-const response = await client.data
-  .creator()
-  .withClassName('Publication')
-  .withId('df48b9f6-ba48-470c-bf6a-57657cb07390')
-  .withProperties({
-    'name': 'Elsevier',
-    'headquartersGeoLocation': {
-      'latitude': 52.3932696,
-      'longitude': 4.8374263,
-    },
-  })
-  .do();
-console.log(JSON.stringify(response, null, 2));
 ```
 
 </TabItem>

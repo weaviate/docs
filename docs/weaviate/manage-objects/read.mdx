@@ -9,7 +9,6 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.read.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
@@ -39,7 +38,7 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// ReadObject START"
@@ -48,14 +47,6 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// ReadObject START"
-      endMarker="// ReadObject END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -92,7 +83,7 @@ Object vectors can be retrieved by specifying its return.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// ReadObjectWithVector START"
@@ -101,14 +92,6 @@ Object vectors can be retrieved by specifying its return.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// ReadObjectWithVector START"
-      endMarker="// ReadObjectWithVector END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -144,7 +127,7 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// ReadObjectNamedVectors START"
@@ -153,14 +136,6 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// ReadObjectNamedVectors START"
-      endMarker="// ReadObjectNamedVectors END"
-      language="tsv2"
-    />
-  </TabItem>
 
 </Tabs>
 

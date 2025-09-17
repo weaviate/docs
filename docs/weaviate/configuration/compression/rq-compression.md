@@ -40,7 +40,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START EnableRQ"
@@ -114,7 +114,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START RQWithOptions"

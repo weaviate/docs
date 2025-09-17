@@ -14,52 +14,6 @@ import PyCode from '!!raw-loader!/_includes/code/starter-guides/schema.py';
 />
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate endpoint
-});
-
-// Define the 'Question' class
-const classObj = {
-  class: 'Question',
-  description: 'Information from a Jeopardy! question',  // description of the class
-  properties: [
-    {
-      name: 'question',
-      dataType: ['text'],
-      description: 'The question',
-    },
-    {
-      name: 'answer',
-      dataType: ['text'],
-      description: 'The answer',
-    },
-    {
-      name: 'category',
-      dataType: ['text'],
-      description: 'The question category',
-    },
-  ],
-  vectorizer: 'text2vec-openai',
-  moduleConfig: {
-      generative-openai: {}  // Set `generative-openai` as the generative module
-  }
-};
-
-// Add the class to the schema
-await client
-  .schema
-  .classCreator()
-  .withClass(classObj)
-  .do();
-```
-
-</TabItem>
 {/* <TabItem value="go" label="Go">
 
 ```go
