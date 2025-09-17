@@ -109,21 +109,6 @@ const secondaryNavbarItems = {
       },
     ],
   },
-  academy: {
-    title: "Academy",
-    icon: "fa fa-graduation-cap",
-    isSmall: true,
-    description:
-      "Learn about vector search and Weaviate through structured courses",
-    link: "/academy",
-    links: [
-      {
-        label: "Get Started",
-        link: "/academy",
-        sidebar: "academySidebar",
-      },
-    ],
-  },
   integrations: {
     title: "Integrations",
     icon: "fa fa-puzzle-piece",
