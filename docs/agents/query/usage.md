@@ -160,6 +160,12 @@ You can provide a custom system prompt to guide the Query Agent's behavior:
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SystemPromptExample"
+            endMarker="// END SystemPromptExample"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -178,6 +184,12 @@ You can apply persistent filters that will always be combined with any agent-gen
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START UserDefinedFilters"
+            endMarker="// END UserDefinedFilters"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -209,8 +221,8 @@ The Query Agent supports two query types:
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
         <FilteredTextBlock
             text={TSCode}
-            startMarker="// START BasicQuery"
-            endMarker="// END BasicQuery"
+            startMarker="// START BasicSearchQuery"
+            endMarker="// END BasicSearchQuery"
             language="ts"
         />
     </TabItem>
@@ -229,6 +241,12 @@ The Query Agent supports two query types:
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+     <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SearchModeResponseStructure"
+            endMarker="// END SearchModeResponseStructure"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -269,6 +287,12 @@ Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'c
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START SearchPagination"
+            endMarker="// END SearchPagination"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -313,6 +337,12 @@ The Query Agent will formulate its strategy based on your query. So, aim to be u
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicAskQuery"
+            endMarker="// END BasicAskQuery"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -335,6 +365,12 @@ This example overrides the configured Query Agent collections for this query onl
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START QueryAgentAskBasicCollectionSelection"
+            endMarker="// END QueryAgentAskBasicCollectionSelection"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -358,6 +394,12 @@ This example overrides the configured Query Agent collections for this query onl
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START QueryAgentAskCollectionConfig"
+            endMarker="// END QueryAgentAskCollectionConfig"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -383,6 +425,12 @@ The conversation history helps the Query Agent understand context from previous 
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START ConversationalQuery"
+            endMarker="// END ConversationalQuery"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -437,6 +485,12 @@ Try the provided helper functions (e.g. `.display()` method) to display the resp
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+        <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicAskQuery"
+            endMarker="// END BasicAskQuery"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
