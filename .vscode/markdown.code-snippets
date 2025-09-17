@@ -110,7 +110,7 @@
 			"```",
 			"",
 			"</TabItem>",
-			"<TabItem value=\"js\" label=\"JavaScript\">",
+			"<TabItem value=\"js\" label=\"JS/TS\">",
 			"",
 			"```js",
 			"<!-- JavaScript code goes here -->",
