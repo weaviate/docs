@@ -134,14 +134,16 @@ import ReleaseHistory from "/_includes/release-history.md";
 <VectorsAutoSchemaError />
 
 Starting with the Weaviate Python client `v4.16.0`, there are multiple changes to the vectorizer configuration API when creating collections:
+
 - `.vectorizer_config` has been replaced with `.vector_config`
 - `Configure.NamedVectors` has been replaced with `Configure.Vectors` and `Configure.MultiVectors`
-- `Configure.NamedVectors.none` and `Configure.Vectorizer.none` have been replaced with  `Configure.Vectors.self_provided` and `Configure.MultiVectors.self_provided`
+- `Configure.NamedVectors.none` and `Configure.Vectorizer.none` have been replaced with `Configure.Vectors.self_provided` and `Configure.MultiVectors.self_provided`
 
-#### Weaviate Python Client `v3` deprecation
+#### Python client `v3` deprecation
 
 <!-- TODO[g-despot]: Add link to archive -->
-The Weaviate Python Client `v3` has been deprecated and should no longer be used. If you need documentation for the `v3` client, see the [documentation archive](). If you are migrating from the Python `v3` client to the `v4` client, see this dedicated guide.
+
+The Weaviate Python client `v3` has been deprecated and should no longer be used. If you need documentation for the `v3` client, see the [documentation archive](https://docs-archive-weaviate-io.netlify.app/weaviate/client-libraries/python/python_v3). If you are migrating from the Python `v3` client to the `v4` client, see this [migration guide](https://docs-archive-weaviate-io.netlify.app/weaviate/client-libraries/python/v3_v4_migration).
 
 #### Beta releases
 
