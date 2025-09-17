@@ -106,6 +106,12 @@ Then, provide a natural language query input. The Query Agent will process the q
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicSearchQuery"
+            endMarker="// END BasicSearchQuery"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -122,6 +128,12 @@ The Query Agent can even handle follow-up queries, using the previous response a
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START FollowUpQuery"
+            endMarker="// END FollowUpQuery"
+            language="ts"
+        />
     </TabItem>
 
 </Tabs>
@@ -138,6 +150,12 @@ The Query Agent can even handle follow-up queries, using the previous response a
         />
     </TabItem>
     <TabItem value="ts_agents" label="JavaScript/TypeScript">
+     <FilteredTextBlock
+            text={TSCode}
+            startMarker="// START BasicAskQuery"
+            endMarker="// END BasicAskQuery"
+            language="ts"
+        />
     </TabItem>
 </Tabs>
 
