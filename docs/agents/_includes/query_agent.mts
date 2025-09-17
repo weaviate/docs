@@ -318,6 +318,7 @@ responseWithFilter.display()
 const runtimeConfig = {
     name: "ECommerce",
     additionalFilters: eCommerceCollection.filter.byProperty("category").equal("Footwear"),
+    targetVector:["name_description_brand_vector"]
 }
 
 const responseWithRuntimeFilter = await queryAgent.ask("What products are available?", {
@@ -432,7 +433,7 @@ const responsePage2 = await responsePage1.next({
 // Continue paginating
 const responsePage3 = await responsePage2.next({
     limit: 3, 
-    offset: 3, 
+    offset: 6, 
 })
 
 const pages = [responsePage1, responsePage2, responsePage3];
