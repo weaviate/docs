@@ -221,7 +221,7 @@ async function populateWeaviate(client: WeaviateClient, overwriteExisting: boole
 
 // START InstantiateQueryAgent
 import weaviate, { WeaviateClient, vectors, dataType, configure } from 'weaviate-client';
-import { QueryAgent, QueryAgentError, ChatMessage, QueryAgentCollectionConfig, type AskModeResponse } from 'weaviate-agents';
+import { QueryAgent, ChatMessage } from 'weaviate-agents';
 
 // END InstantiateQueryAgent
 
@@ -246,7 +246,6 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as
 await populateWeaviate(client);
 
 // START InstantiateQueryAgent
-
 // Instantiate a new agent object
 const queryAgent = new QueryAgent(
     client, {
@@ -256,13 +255,11 @@ const queryAgent = new QueryAgent(
 // END InstantiateQueryAgent
 
 // START SystemPromptExample
-
 // Define a custom system prompt to guide the agent's behavior
-const systemPrompt = `You are a helpful assistant that can answer questions about 
-                      the products and users in the database. When you write your 
-                      response use standard markdown formatting for lists, tables, 
-                      and other structures. Emphasize key insights and provide 
-                      actionable recommendations when relevant.`
+const systemPrompt = `You are a helpful assistant that can answer questions about the products and 
+                      users in the database. When you write your response use standard markdown 
+                      formatting for lists, tables, and other structures. Emphasize key insights 
+                      and provide actionable recommendations when relevant.`
 
 const qaWithPrompt = new QueryAgent(
     client, {
@@ -276,8 +273,8 @@ const qaWithPrompt = new QueryAgent(
 })
 
 const responseWithPrompt = await qaWithPrompt.ask("What are the most expensive items in the store?")
-responseWithPrompt.display()
 
+responseWithPrompt.display()
 // END SystemPromptExample
 
 // START QueryAgentCollectionConfiguration
@@ -296,7 +293,6 @@ const qaWithConfig = new QueryAgent(client, {
 // END QueryAgentCollectionConfiguration
 
 // START UserDefinedFilters
-
 // Apply persistent filters that will always be combined with agent-generated filters
 
 const eCommerceCollection = client.collections.use("ECommerce")
@@ -315,6 +311,7 @@ const qaWithFilter = new QueryAgent(
 
 // The agent will automatically combine these filters with any it generates
 const responseWithFilter = await qaWithFilter.ask("Find me some affordable clothing items")
+
 responseWithFilter.display()
 
 // You can also apply filters dynamically at runtime
@@ -347,37 +344,48 @@ const qa = new QueryAgent(
 
 // START QueryAgentAskBasicCollectionSelection
 const contractResponse = await qa.ask(
-    "What kinds of contracts are listed? What's the most common type of contract?",
-    { collections: ['FinancialContracts'] }
-);
+    "What kinds of contracts are listed? What's the most common type of contract?", { 
+    collections: ['FinancialContracts'] 
+});
 
 contractResponse.display();
 // END QueryAgentAskBasicCollectionSelection
 
 // START QueryAgentAskCollectionConfig
 const clothingResponse = await qaWithConfig.ask(
-    "I like vintage clothes and nice shoes. Recommend some of each below $60.",
-    {
-        collections: [
-            {
-                name: 'ECommerce',
-                targetVector: ['name_description_brand_vector'],
-                viewProperties: ['name', 'description', 'category', 'brand']
-            },
-            {
-                name: 'FinancialContracts'
-            }
-        ]
+    "I like vintage clothes and nice shoes. Recommend some of each below $60.", {
+    collections: [
+        {
+            name: 'ECommerce',
+            targetVector: ['name_description_brand_vector'],
+            viewProperties: ['name', 'description', 'category', 'brand']
+        },
+        {
+            name: 'FinancialContracts'
+        }
+    ]
 });
 
 clothingResponse.display();
 // END QueryAgentAskCollectionConfig
 
+// START BasicSearchQuery
+// Perform a search using Search Mode (retrieval only, no answer generation)
+const basicSearchResponse = await qa.search("Find me some vintage shoes under $70", {
+    limit: 10
+} )
+
+// Access the search results
+for (const obj of basicSearchResponse.searchResults.objects) {
+    console.log(`Product: ${obj.properties['name']} - ${obj.properties['price']}`)
+}
+// END BasicSearchQuery
+
+
 // START BasicAskQuery
 // Perform a query
-const basicResponse = await qaWithConfig.ask(
-    "I like vintage clothes and nice shoes. Recommend some of each below $60."
-);
+const basicQuery = "I like vintage clothes and nice shoes. Recommend some of each below $60."
+const basicResponse = await qaWithConfig.ask(basicQuery);
 
 basicResponse.display();
 // END BasicAskQuery
@@ -389,7 +397,7 @@ const searchResponse = await qa.search("winter boots for under $100", {
 })
 
 // Access different parts of the response
-console.log("Original query:", searchResponse.originalQuery)
+console.log("Original query:", basicQuery)
 console.log("Total time:", searchResponse.totalTime)
 
 // Access usage statistics
@@ -427,7 +435,6 @@ const responsePage3 = await responsePage2.next({
     offset: 3, 
 })
 
-
 const pages = [responsePage1, responsePage2, responsePage3];
 
 pages.forEach((pageResponse, index) => {
@@ -448,7 +455,7 @@ pages.forEach((pageResponse, index) => {
 // Perform a follow-up query and include the answer from the previous query
 
 const basicConversation: ChatMessage[] = [
-    {role: "assistant", content: basicResponse.finalAnswer },
+    {   role: "assistant", content: basicResponse.finalAnswer },
     {
         role: "user",
         content: "I like the vintage clothes options, can you do the same again but above $200?",
@@ -462,11 +469,10 @@ followingResponse.display()
 // END FollowUpQuery
 
 // START ConversationalQuery
-
 // Create a conversation with multiple turns
 const conversation: ChatMessage[] = [
-    { role: "user", content: "Hi!"},
-    { role: "assistant", content: "Hello! How can I assist you today?"},
+    {   role: "user", content: "Hi!"},
+    {   role: "assistant", content: "Hello! How can I assist you today?"},
     {
         role: "user",
         content:  "I have some questions about the weather data. You can assume the temperature is in Fahrenheit and the wind speed is in mph.",
@@ -513,7 +519,7 @@ for await (const event of qa.askStream(query, {
         // The delta is a string containing the next chunk of the final answer
         process.stdout.write(event.delta);
     } else {
-        // This is the final response, as returned by QueryAgent.ask()
+        // This is the final response, as returned by queryAgent.ask()
         event.display();
     }
 }
@@ -521,7 +527,7 @@ for await (const event of qa.askStream(query, {
 
 // START InspectResponseExample
 console.log('\n=== Query Agent Response ===');
-console.log(`Original Query: ${basicResponse.originalQuery}\n`);
+console.log(`Original Query: ${basicQuery}\n`); // Pre-defined by user
 
 console.log('🔍 Final Answer Found:');
 console.log(`${basicResponse.finalAnswer}\n`);
