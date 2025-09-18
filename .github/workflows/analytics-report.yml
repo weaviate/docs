@@ -1,0 +1,47 @@
+name: Monthly Docs Performance Report
+
+on:
+  # schedule:
+  #   # Runs at 08:00 UTC on the 1st day of every month
+  #   - cron: "0 8 1 * *"
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-analytics-data google-generativeai pandas
+
+      - name: Generate Report
+        id: generate_report
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GA_CREDENTIALS }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
+        run: |
+          # The output of the python script will be captured
+          report_content=$(python ./.github/scripts/generate_analytics_report.py)
+          # This sets the output for use in the next step
+          echo "report_body<<EOF" >> $GITHUB_OUTPUT
+          echo "$report_content" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Issue
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "🤖 Monthly Docs Performance Report: $(date +'%B %Y')"
+          body: ${{ steps.generate_report.outputs.report_body }}
+          labels: |
+            analytics-report
+            automation
