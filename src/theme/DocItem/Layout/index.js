@@ -14,7 +14,7 @@ import ContentVisibility from "@theme/ContentVisibility";
 import styles from "./styles.module.css";
 
 /* ---- START: Customizations ---- */
-import ExpertCallCTA from "@site/src/components/ExpertCallCTA";
+import FeedbackComponent from "@site/src/components/Feedback";
 /* ---- END: Customizations ---- */
 
 /**
@@ -40,34 +40,44 @@ function useDocTOC() {
 export default function DocItemLayout({ children }) {
   const docTOC = useDocTOC();
   const { frontMatter, metadata } = useDoc();
-  return (
-    <div className="row">
-      <div className={clsx("col", !docTOC.hidden && styles.docItemCol)}>
-        <ContentVisibility metadata={metadata} />
-        <DocVersionBanner />
-        <div className={styles.docItemContainer}>
-          <article>
-            <DocBreadcrumbs />
-            <DocVersionBadge />
-            {docTOC.mobile}
-            <DocItemContent>{children}</DocItemContent>
-            <DocItemFooter />
-          </article>
-          <DocItemPaginator />
-        </div>
-      </div>
-      {docTOC.desktop && (
-        <div className="col col--3">
-          {/* ---- START: Customizations ---- */}
-          {/* Add a wrapper div to make the whole block sticky */}
-          <div className={styles.tocStickyContainer}>
-            <DocItemTOCDesktop toc={docTOC.desktop.value} />
+  const windowSize = useWindowSize();
+  const isMobile = windowSize === "mobile";
 
-            {frontMatter.show_expert_call_cta && <ExpertCallCTA />}
+  return (
+    <>
+      <div className="row">
+        <div className={clsx("col", !docTOC.hidden && styles.docItemCol)}>
+          <ContentVisibility metadata={metadata} />
+          <DocVersionBanner />
+          <div className={styles.docItemContainer}>
+            <article>
+              <DocBreadcrumbs />
+              <DocVersionBadge />
+              {docTOC.mobile}
+              <DocItemContent>{children}</DocItemContent>
+              <DocItemFooter />
+            </article>
+            <DocItemPaginator />
           </div>
-          {/* ---- END: Customizations ---- */}
         </div>
-      )}
-    </div>
+        {docTOC.desktop && (
+          <div className="col col--3">
+            {/* ---- START: Customizations ---- */}
+            {/* TOC in sticky container */}
+            <div className={styles.tocStickyContainer}>{docTOC.desktop}</div>
+            {/* Feedback component aligned with TOC column */}
+            <div className={styles.feedbackWrapper}>
+              <FeedbackComponent />
+            </div>
+            {/* ---- END: Customizations ---- */}
+          </div>
+        )}
+      </div>
+
+      {/* ---- START: Mobile Feedback Component ---- */}
+      {/* Show feedback component on mobile when TOC is not visible */}
+      {isMobile && <FeedbackComponent />}
+      {/* ---- END: Mobile Feedback Component ---- */}
+    </>
   );
 }

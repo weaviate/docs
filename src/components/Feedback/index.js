@@ -15,7 +15,7 @@ const getCountryFromNetlify = async () => {
   }
 };
 
-export default function ExpertCallCTA() {
+export default function FeedbackComponent() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -48,6 +48,23 @@ export default function ExpertCallCTA() {
     checkVisibility();
   }, []); // Empty array ensures this runs only once on mount
 
+  const openGithubFeedback = () => {
+    const currentUrl =
+      typeof window !== "undefined" ? window.location.href : "";
+
+    // Use the doc_feedback.yml template with pre-filled page URL
+    const params = new URLSearchParams({
+      template: "doc_feedback.yml",
+      title: "[Documentation Feedback]: ",
+      labels: "user-feedback",
+      "page-url": currentUrl,
+    });
+
+    const githubUrl = `https://github.com/weaviate/docs/issues/new?${params.toString()}`;
+
+    window.open(githubUrl, "_blank", "noopener,noreferrer");
+  };
+
   // If not visible, render nothing.
   if (!isVisible) {
     return null;
@@ -55,19 +72,9 @@ export default function ExpertCallCTA() {
 
   return (
     <div className={styles.container}>
-      <p className={styles.text}>
-        Ready for production? Book a call with a Weaviate expert to get help.
-      </p>
+      <p className={styles.text}>Need help or want to improve this page?</p>
 
       <div className={styles.buttonContainer}>
-        <a
-          href="https://calendly.com/your-company/expert-call"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`button button--primary ${styles.ctaButton}`}
-        >
-          Book call
-        </a>
         <a
           className={`button button--primary ${styles.askAiButton}`}
           onClick={() => {
@@ -84,6 +91,13 @@ export default function ExpertCallCTA() {
         >
           Ask AI
         </a>
+        <button
+          onClick={openGithubFeedback}
+          className={`button button--outline button--primary ${styles.feedbackButton}`}
+          aria-label="Provide documentation feedback"
+        >
+          Give Feedback
+        </button>
       </div>
     </div>
   );

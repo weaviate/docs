@@ -1,0 +1,66 @@
+.container {
+  background-color: var(--ifm-background-surface-color);
+  padding: 1rem;
+  border-radius: var(--ifm-card-border-radius);
+  text-align: left;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+  width: 100%;
+
+  // Add hover effect for the entire container
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+    transform: translateY(-2px);
+  }
+
+  // Show fixed position on mobile
+  @media (max-width: 996px) {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    z-index: 100;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.text {
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem !important;
+  line-height: 1.4;
+  color: var(--ifm-toc-link-color);
+}
+
+.askAiButton {
+  background-color: var(--site-primary);
+  border-color: var(--site-primary);
+  color: white;
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(95%);
+    color: white;
+  }
+}
+
+.feedbackButton {
+  background-color: transparent;
+  border-color: var(--ifm-color-emphasis-600);
+  color: var(--ifm-color-emphasis-800);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--ifm-hover-overlay);
+    transform: translateY(-2px);
+    color: var(--ifm-color-emphasis-800);
+  }
+}

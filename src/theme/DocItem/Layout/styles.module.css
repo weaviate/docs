@@ -14,12 +14,18 @@
   top: var(--ifm-navbar-height);
   position: sticky;
 
-  /* ---- START: Use Grid instead of Flexbox ---- */
-  /* Use Grid to create a strict two-row layout */
-  display: grid;
-  grid-template-rows: 1fr auto;
-  /* ---- END: Use Grid instead of Flexbox ---- */
-
   /* Scrolling behavior */
-  max-height: calc(100vh - var(--ifm-navbar-height));
+  max-height: calc(100vh - var(--ifm-navbar-height) - 200px);
+  overflow-y: auto;
+}
+
+.feedbackWrapper {
+  position: fixed;
+  bottom: 2rem;
+  width: inherit;
+  padding-right: 1rem;
+
+  @media (max-width: 996px) {
+    display: none;
+  }
 }
