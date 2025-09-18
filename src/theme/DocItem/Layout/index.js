@@ -41,7 +41,8 @@ export default function DocItemLayout({ children }) {
   const docTOC = useDocTOC();
   const { frontMatter, metadata } = useDoc();
   const windowSize = useWindowSize();
-  const isMobile = windowSize === "mobile";
+  // Only show feedback if TOC is not hidden and has content
+  const showFeedback = !docTOC.hidden && docTOC.desktop;
 
   return (
     <>
@@ -66,18 +67,22 @@ export default function DocItemLayout({ children }) {
             {/* TOC in sticky container */}
             <div className={styles.tocStickyContainer}>{docTOC.desktop}</div>
             {/* Feedback component aligned with TOC column */}
-            <div className={styles.feedbackWrapper}>
-              <FeedbackComponent />
-            </div>
+            {showFeedback && (
+              <div className={styles.feedbackWrapper}>
+                <FeedbackComponent />
+              </div>
+            )}
             {/* ---- END: Customizations ---- */}
           </div>
         )}
       </div>
 
-      {/* ---- START: Mobile Feedback Component ---- */}
-      {/* Show feedback component on mobile when TOC is not visible */}
-      {isMobile && <FeedbackComponent />}
-      {/* ---- END: Mobile Feedback Component ---- */}
+      {/* ---- START: Mobile/Tablet Feedback Component ---- */}
+      {/* Only show mobile feedback when TOC exists but isn't shown on desktop */}
+      {!docTOC.hidden && !docTOC.desktop && docTOC.mobile && (
+        <FeedbackComponent />
+      )}
+      {/* ---- END: Mobile/Tablet Feedback Component ---- */}
     </>
   );
 }

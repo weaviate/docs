@@ -72,11 +72,11 @@ export default function FeedbackComponent() {
 
   return (
     <div className={styles.container}>
-      <p className={styles.text}>Need help or want to improve this page?</p>
+      <p className={styles.text}>Need help or you have feedback?</p>
 
       <div className={styles.buttonContainer}>
         <a
-          className={`button button--primary ${styles.askAiButton}`}
+          className={`button button--primary button--sm ${styles.askAiButton}`}
           onClick={() => {
             if (window.Kapa && typeof window.Kapa.open === "function") {
               window.Kapa.open({
@@ -93,10 +93,10 @@ export default function FeedbackComponent() {
         </a>
         <button
           onClick={openGithubFeedback}
-          className={`button button--outline button--primary ${styles.feedbackButton}`}
+          className={`button button--outline button--primary button--sm ${styles.feedbackButton}`}
           aria-label="Provide documentation feedback"
         >
-          Give Feedback
+          Feedback
         </button>
       </div>
     </div>

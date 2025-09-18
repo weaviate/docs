@@ -14,17 +14,33 @@
   top: var(--ifm-navbar-height);
   position: sticky;
 
-  /* Scrolling behavior */
-  max-height: calc(100vh - var(--ifm-navbar-height) - 200px);
+  /* Scrolling behavior - leave space for feedback component */
+  max-height: calc(100vh - var(--ifm-navbar-height) - 160px);
   overflow-y: auto;
+
+  /* Add some margin at the bottom to separate from feedback */
+  margin-bottom: 1rem;
 }
 
 .feedbackWrapper {
   position: fixed;
-  bottom: 2rem;
+  bottom: 1.5rem;
   width: inherit;
-  padding-right: 1rem;
+  max-width: 100%;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
 
+  /* Handle tablet and smaller desktop screens */
+  @media (min-width: 997px) and (max-width: 1320px) {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: auto;
+    max-width: 260px;
+    padding: 0;
+  }
+
+  /* Hide on mobile - mobile version renders separately */
   @media (max-width: 996px) {
     display: none;
   }
