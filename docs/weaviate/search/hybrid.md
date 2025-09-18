@@ -857,6 +857,14 @@ Optionally, use `offset` to paginate the results.
 
 To limit results to groups with similar distances from the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter. Specify the `Relative Score Fusion` ranking method when you use autocut with hybrid search.
 
+:::info
+
+Autocut requires `Relative Score Fusion` method because it uses actual similarity scores to detect cutoff points. Autocut shouldn't be used with `Ranked Fusion` as this fusion method relies on ranking positions, not similarity scores.
+
+To learn more about the different fusion algorithms, visit the [search operators reference page](/weaviate/api/graphql/search-operators#fusion-algorithms).
+
+:::
+
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
     <FilteredTextBlock
