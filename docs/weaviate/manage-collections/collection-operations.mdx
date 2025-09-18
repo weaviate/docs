@@ -1,7 +1,6 @@
 ---
 title: Basic collection operations
 sidebar_label: Collection operations (CRUD)
-sidebar_position: 1
 image: og/docs/howto.jpg
 ---
 
@@ -655,66 +654,6 @@ We are working on a re-indexing API to allow you to re-index the data after addi
 import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.add.mdx";
 
 <CodeSchemaAddProperties />
-
-## Set inverted index parameters
-
-Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
-
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START SetInvertedIndexParams"
-      endMarker="# END SetInvertedIndexParams"
-      language="py"
-    />
-  </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetInvertedIndexParams"
-    endMarker="# END SetInvertedIndexParams"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="tsv2"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="java"
-  />
-</TabItem>
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START SetInvertedIndexParams"
-      endMarker="// END SetInvertedIndexParams"
-      language="gonew"
-    />
-  </TabItem>
-</Tabs>
 
 ## Further resources
 

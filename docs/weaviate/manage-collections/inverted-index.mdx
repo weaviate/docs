@@ -1,0 +1,126 @@
+---
+title: Inverted index
+description: Learn how-to configure the inverted index parameters and set the tokenization type for properties.
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+## Set inverted index parameters
+
+Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetInvertedIndexParams"
+    endMarker="# END SetInvertedIndexParams"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Set tokenization type for property
+
+Configure a [tokenization type](../config-refs/collections.mdx#tokenization) for each property individually.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START PropertyTokenization"
+      endMarker="# END PropertyTokenization"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START PropertyTokenization"
+      endMarker="// END PropertyTokenization"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START PropertyTokenization"
+      endMarker="// END PropertyTokenization"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START PropertyTokenization"
+      endMarker="// END PropertyTokenization"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Further resources
+
+- [References: Collection definition](/weaviate/config-refs/collections.mdx)
+- [Concepts: Inverted index](../config-refs/indexing/inverted-index.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

@@ -465,6 +465,7 @@ const sidebars = {
         "weaviate/manage-collections/collection-operations",
         "weaviate/manage-collections/vector-config",
         "weaviate/manage-collections/generative-reranker-models",
+        "weaviate/manage-collections/inverted-index",
         {
           type: "category",
           label: "Multi-tenancy",

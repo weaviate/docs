@@ -174,7 +174,9 @@ from weaviate.collections.classes.config import _VectorIndexConfigHNSW
 collection = client.collections.use("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
-assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
+assert isinstance(
+    config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
+)
 
 # ===========================
 # ===== SET VECTOR INDEX PARAMETERS =====
@@ -211,7 +213,9 @@ client.collections.create(
 collection = client.collections.use("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
-assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
+assert isinstance(
+    config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
+)
 
 
 # ===================================================================
@@ -527,7 +531,10 @@ client.collections.create(
 collection = client.collections.use("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
-assert config.vector_config["default"].vectorizer.model["model"] == "embed-multilingual-v2.0"
+assert (
+    config.vector_config["default"].vectorizer.model["model"]
+    == "embed-multilingual-v2.0"
+)
 
 # ====================================
 # ===== MODULE SETTINGS PROPERTY =====
@@ -548,7 +555,7 @@ client.collections.create(
             data_type=DataType.TEXT,
             # highlight-start
             vectorize_property_name=True,  # Use "title" as part of the value to vectorize
-            tokenization=Tokenization.LOWERCASE,  # Use "lowecase" tokenization
+            tokenization=Tokenization.LOWERCASE,  # Use "lowercase" tokenization
             description="The title of the article.",  # Optional description
             # highlight-end
         ),
@@ -563,6 +570,51 @@ client.collections.create(
     ],
 )
 # END PropModuleSettings
+
+# Test
+collection = client.collections.use("Article")
+config = collection.config.get()
+
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
+for p in config.properties:
+    if p.name == "title":
+        assert p.tokenization.name == "LOWERCASE"
+    elif p.name == "body":
+        assert p.tokenization.name == "WHITESPACE"
+
+
+# ====================================
+# ===== MODULE SETTINGS PROPERTY =====
+# ====================================
+
+# Clean slate
+client.collections.delete("Article")
+
+# START PropertyTokenization
+from weaviate.classes.config import Configure, Property, DataType, Tokenization
+
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_cohere(),
+    properties=[
+        Property(
+            name="title",
+            data_type=DataType.TEXT,
+            # highlight-start
+            tokenization=Tokenization.LOWERCASE,  # Use "lowercase" tokenization
+            description="The title of the article.",  # Optional description
+            # highlight-end
+        ),
+        Property(
+            name="body",
+            data_type=DataType.TEXT,
+            # highlight-start
+            tokenization=Tokenization.WHITESPACE,  # Use "whitespace" tokenization
+            # highlight-end
+        ),
+    ],
+)
+# END PropertyTokenization
 
 # Test
 collection = client.collections.use("Article")
@@ -645,14 +697,17 @@ client.collections.create(
             distance_metric=VectorDistances.COSINE
         ),
         # highlight-end
-    )
+    ),
 )
 # END DistanceMetric
 
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.vector_config["default"].vector_index_config.distance_metric.value == "cosine"
+assert (
+    config.vector_config["default"].vector_index_config.distance_metric.value
+    == "cosine"
+)
 
 client.close()
 
