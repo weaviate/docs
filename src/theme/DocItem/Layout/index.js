@@ -41,8 +41,15 @@ export default function DocItemLayout({ children }) {
   const docTOC = useDocTOC();
   const { frontMatter, metadata } = useDoc();
   const windowSize = useWindowSize();
-  // Only show feedback if TOC is not hidden and has content
-  const showFeedback = !docTOC.hidden && docTOC.desktop;
+
+  // Check if feedback widget should be shown
+  // Default to true if not specified, false if explicitly set to false
+  const feedbackEnabled = frontMatter.show_feedback_widget !== false;
+
+  // Only show feedback if TOC is not hidden, has content, and is not disabled
+  const showFeedback = !docTOC.hidden && docTOC.desktop && feedbackEnabled;
+  const showMobileFeedback =
+    !docTOC.hidden && !docTOC.desktop && docTOC.mobile && feedbackEnabled;
 
   return (
     <>
@@ -79,9 +86,7 @@ export default function DocItemLayout({ children }) {
 
       {/* ---- START: Mobile/Tablet Feedback Component ---- */}
       {/* Only show mobile feedback when TOC exists but isn't shown on desktop */}
-      {!docTOC.hidden && !docTOC.desktop && docTOC.mobile && (
-        <FeedbackComponent />
-      )}
+      {showMobileFeedback && <FeedbackComponent />}
       {/* ---- END: Mobile/Tablet Feedback Component ---- */}
     </>
   );
