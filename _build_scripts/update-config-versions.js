@@ -12,6 +12,10 @@ const getRepoVersion = async (repoName) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'User-Agent': 'request',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    'If-None-Match': '', // Bypass ETag caching
                     'authorization': // Use the github token if available
                         (process.env.GH_API_TOKEN) ?
                             `Bearer ${ process.env.GH_API_TOKEN }` : ''
