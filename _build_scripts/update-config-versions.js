@@ -2,6 +2,8 @@
 
 const getRepoVersion = async (repoName) => {
     try {
+        console.log(`\n=== Fetching ${repoName} at ${new Date().toISOString()} ===`);
+
         (process.env.GH_API_TOKEN)
 
         const fetch = (await import('node-fetch')).default;
@@ -37,6 +39,17 @@ const getRepoVersion = async (repoName) => {
             console.error(`Unexpected response format for ${repoName}:`, releases);
             throw new Error(`Expected array of releases but got ${typeof releases}`);
         }
+
+        console.log(`Total releases found: ${releases.length}`);
+
+        // Log ALL raw releases with their prerelease status
+        const allReleaseInfo = releases.map(item => ({
+            tag: item.tag_name,
+            prerelease: item.prerelease,
+            published_at: item.published_at,
+            draft: item.draft
+        }));
+        console.log(`${repoName} - ALL raw releases:`, JSON.stringify(allReleaseInfo, null, 2));
 
         if (releases.length === 0) {
             throw new Error(`No releases found for ${repoName}`);
