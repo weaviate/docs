@@ -1373,6 +1373,7 @@ const sidebars = {
         "integrations/data-platforms/astronomer/index",
         "integrations/data-platforms/boomi/index",
         "integrations/data-platforms/box/index",
+        "integrations/data-platforms/cardinal/index",
         "integrations/data-platforms/confluent/index",
         "integrations/data-platforms/context-data/index",
         "integrations/data-platforms/databricks/index",
