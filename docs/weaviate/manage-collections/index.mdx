@@ -23,7 +23,14 @@ export const specificGuidesData = [
     icon: "fas fa-project-diagram", // Icon representing vector relationships/structure
   },
   {
-    title: "Model provider integrations",
+    title: "Inverted index",
+    description:
+      "Configure the inverted index for efficient keyword searches and filtering.",
+    link: "/weaviate/manage-collections/inverted-index",
+    icon: "fas fa-sitemap", // Icon representing index structure
+  },
+  {
+    title: "Generative and reranker models",
     description:
       "Integrate Weaviate with various model providers like OpenAI, Hugging Face, Cohere, etc.",
     link: "/weaviate/manage-collections/generative-reranker-models",
@@ -42,6 +49,13 @@ export const specificGuidesData = [
       "Set up and configure Weaviate for high availability and scalability across multiple nodes.",
     link: "/weaviate/manage-collections/multi-node-setup",
     icon: "fas fa-network-wired", // Icon representing clustering/networking
+  },
+  {
+    title: "Collection aliases",
+    description:
+      "Use aliases to switch between collections without changing your application code.",
+    link: "/weaviate/manage-collections/collection-aliases",
+    icon: "fas fa-directions", // Icon representing re-routing/aliasing
   },
   {
     title: "Migrate collections",
@@ -64,7 +78,7 @@ export const specificGuidesData = [
 
 ## How collections work
 
-A Weaviate collection is defined by several core components and settings that enable data storage and vector search.  
+A Weaviate collection is defined by several core components and settings that enable data storage and vector search.
 Key elements include:
 
 import CollectionsSimplified from "/docs/weaviate/manage-collections/img/weaviate-collections-simplified.png";
@@ -120,11 +134,18 @@ export const textColumnContent = (
     </li>
     <li>
       <b>Configuration Settings</b>:{" "}
-      {/* Changed heading from "Other settings" */}
       <ul>
         <li>
           <b>
-            <Link to="/weaviate/manage-collections/collection-operations#set-inverted-index-parameters">
+            <Link to="/weaviate/manage-collections/vector-config#set-vector-index-type">
+              Vector index
+            </Link>
+          </b>
+          : The vector index is used to speed up vector searches.
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/inverted-index">
               Inverted index
             </Link>
           </b>
@@ -139,6 +160,15 @@ export const textColumnContent = (
           </b>
           : Enables securely storing data for multiple distinct tenants (users or
           groups) within the same collection instance.
+        </li>
+        <li>
+          <b>
+            <Link to="/weaviate/manage-collections/collection-aliases">
+              Aliases
+            </Link>
+          </b>
+          : Use aliases to re-point to different collections without changing your
+          application code.
         </li>
       </ul>
     </li>
