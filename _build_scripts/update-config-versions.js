@@ -38,9 +38,14 @@ const getRepoVersion = async (repoName) => {
             throw new Error(`No releases found for ${repoName}`);
         }
 
+        const filteredReleases = releases
+            .filter(item => !item.prerelease) // remove pre-release items
+            .map(item => item.tag_name);       // keep only the tag_name
+
+        console.log(`${repoName} - All non-prerelease versions:`, filteredReleases);
+
         const highestVersion = releases
             .filter(item => !item.prerelease) // remove pre-release items
-            .filter(item => !item.tag_name.match(/-rc\.|-(alpha|beta|pre|dev)/i)) // exclude RC and other pre-release patterns
             .map(item => item.tag_name)       // keep only the tag_name
             .sort()                           // sort items alphabetically – ascending
             .pop()                            // the last item contains the highest version (what we need)
