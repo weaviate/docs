@@ -9,6 +9,7 @@
   width: 100%;
   max-width: 260px;
   min-width: 200px;
+  position: relative; // Added for positioning the close button
 
   // Add hover effect for the entire container
   &:hover {
@@ -34,6 +35,93 @@
   }
 }
 
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ifm-color-emphasis-600);
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1;
+
+  &:hover {
+    color: var(--ifm-color-emphasis-800);
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: 2px solid var(--ifm-color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.collapsedButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--site-primary, var(--ifm-color-primary));
+  border: 2px solid var(--ifm-background-surface-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  animation: slideIn 0.3s ease-out;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  &:focus {
+    outline: 3px solid var(--ifm-color-primary-lighter);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    display: block;
+    width: 28px;
+    height: 28px;
+  }
+
+  // Mobile positioning
+  @media (max-width: 996px) {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+  }
+}
+
+// Animation for the collapsed button appearing
+@keyframes slideIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .buttonContainer {
   display: flex;
   gap: 0.625rem;
@@ -56,6 +144,7 @@
   font-size: 0.875rem !important;
   line-height: 1.3;
   color: var(--ifm-toc-link-color);
+  padding-right: 1.5rem; // Add padding to prevent text overlapping with close button
 
   // Even smaller text on very small screens
   @media (max-width: 360px) {
