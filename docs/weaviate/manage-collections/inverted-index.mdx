@@ -26,16 +26,14 @@ You can configure how the inverted index behaves for each collection and propert
 
 </details>
 
-## Set inverted index parameters
+## Enable inverted index for keyword searches and filtering
 
-Various [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) are configurable for each collection. Some parameters are set at the collection level, while others are set at the property level.
+Property-level [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control how individual properties are indexed for search and filtering operations. These parameters determine whether specific properties can be searched, filtered, or used in range queries.
 
 <details>
-<summary>Inverted index parameters</summary>
+<summary>Enabling inverted index</summary>
 
-The inverted index in Weaviate can be configured through various parameters at both the property and collection levels:
-
-#### Property-level parameters
+The inverted index in Weaviate can be enabled through parameters at the property level:
 
 **`index_filterable`** - Controls whether a property can be used in where filters. When set to `true`, the property values are indexed for efficient filtering operations. Disable this for properties that don't need filtering to save storage space.
 
@@ -43,7 +41,72 @@ The inverted index in Weaviate can be configured through various parameters at b
 
 **`index_range_filters`** - Enables range filtering capabilities (greater than, less than, etc.) for numerical and date properties. When enabled, additional indexing structures are created to support efficient range queries.
 
-#### Collection-level parameters
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+
+<TabItem value="py3" label="Python Client v3">
+  <FilteredTextBlock
+    text={PyCodeV3}
+    startMarker="# START SetInvertedIndexParams"
+    endMarker="# END SetInvertedIndexParams"
+    language="pyv3"
+  />
+</TabItem>
+
+<TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={TSCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="ts"
+  />
+</TabItem>
+
+<TabItem value="js2" label="JS/TS Client v2">
+  <FilteredTextBlock
+    text={TSCodeLegacy}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="tsv2"
+  />
+</TabItem>
+
+<TabItem value="java" label="Java">
+  <FilteredTextBlock
+    text={JavaCode}
+    startMarker="// START SetInvertedIndexParams"
+    endMarker="// END SetInvertedIndexParams"
+    language="java"
+  />
+</TabItem>
+
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Set inverted index parameters
+
+Collection-level [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control the overall behavior of the inverted index for an entire collection. These parameters affect ranking algorithms, null value handling, and timestamp indexing across all properties in the collection.
+
+<details>
+<summary>Inverted index parameters</summary>
+
+The inverted index in Weaviate can be configured through various parameters at the collection level:
 
 **`bm25_b`** - Controls the degree of normalization by document length in the BM25 ranking algorithm. Values range from 0 to 1, where 0 means no length normalization and 1 means full normalization. Higher values favor shorter documents.
 
