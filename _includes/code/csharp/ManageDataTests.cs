@@ -173,7 +173,7 @@ public class ManageDataTests : IAsyncLifetime
         // CreateObjectNamedVectors END
 
         // Test
-        var result = await reviews.Query.FetchObjectByID(uuid, metadata: MetadataOptions.Vector);
+        var result = await reviews.Query.FetchObjectByID(uuid, returnMetadata: MetadataOptions.Vector);
         Assert.NotNull(result?.Vectors);
         Assert.Equal(3, result.Vectors.Count);
         Assert.True(result.Vectors.ContainsKey("title"));
@@ -206,7 +206,7 @@ public class ManageDataTests : IAsyncLifetime
 
         // Test
         Assert.Equal(GenerateUuid5(dataObject), uuid);
-        await jeopardy.Data.Delete(uuid); // Clean up
+        await jeopardy.Data.DeleteByID(uuid); // Clean up
     }
 
     [Fact]
@@ -251,7 +251,7 @@ public class ManageDataTests : IAsyncLifetime
         );
         // END WithGeoCoordinates
 
-        var response = await publications.Query.List(
+        var response = await publications.Query.FetchObjects(
             filter: Filter.Property("headquartersGeoLocation")
                 .WithinGeoRange(
                     new GeoCoordinateConstraint(52.39f, 4.84f, 1000)
@@ -260,7 +260,7 @@ public class ManageDataTests : IAsyncLifetime
 
         Assert.Single(response.Objects);
         var objUuid = response.Objects.First().ID;
-        await publications.Data.Delete((Guid)objUuid);
+        await publications.Data.DeleteByID((Guid)objUuid);
     }
 
     [Fact]
@@ -290,7 +290,7 @@ public class ManageDataTests : IAsyncLifetime
         // END CheckForAnObject
 
         Assert.True(authorExists);
-        await authorsCollection.Data.Delete(objectUuid);
+        await authorsCollection.Data.DeleteByID(objectUuid);
         var deletedAuthor = await authorsCollection.Query.FetchObjectByID(objectUuid);
         Assert.Null(deletedAuthor);
     }

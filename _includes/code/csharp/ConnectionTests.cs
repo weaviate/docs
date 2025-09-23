@@ -53,7 +53,7 @@ public class ConnectionSnippetsTest
             UseSsl: true,                 // Whether to use https (secure) for the HTTP API connection
             GrpcAddress: grpcHost,        // Hostname for the gRPC API connection
             GrpcPort: 443,                // Default is 50051, WCD uses 443
-            ApiKey: weaviateApiKey        // API key for authentication
+            Credentials: Auth.ApiKey(weaviateApiKey)        // API key for authentication
         );
         var client = new WeaviateClient(config);
         // END CustomConnect
@@ -134,7 +134,7 @@ public class ConnectionSnippetsTest
             restPort: 8099,
             grpcPort: 50052,
             useSsl: true,
-            apiKey: localApiKey
+            credentials: localApiKey
         );
         // END LocalAuth
 

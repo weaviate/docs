@@ -292,7 +292,7 @@ public class BatchImportTests : IAsyncLifetime
         // END BatchImportWithNamedVectors
 
         // Test
-        var response = await collection.Query.List();
+        var response = await collection.Query.FetchObjects();
         Assert.Equal(5, response.Objects.Count());
         foreach (var obj in response.Objects)
         {
@@ -319,10 +319,7 @@ public class BatchImportTests : IAsyncLifetime
             Name = "Author",
             Properties = new List<Property> { Property.Text("name") },
             // TODO[g-despot]: Why is description required?
-            References = new List<ReferenceProperty>
-            {
-                new ReferenceProperty { Name = "writesFor", TargetCollection = "Publication", Description = "The publication this author writes for." }
-            }
+            References = [new Reference("writesFor", "Publication", "The publication this author writes for.")]
         });
 
         var authors = weaviate.Collections.Use<dynamic>("Author");
@@ -331,7 +328,7 @@ public class BatchImportTests : IAsyncLifetime
         var fromUuid = await authors.Data.Insert(new { name = "Jane Austen" });
         await publications.Data.Insert(new { title = "Ye Olde Times" });
 
-        var pubResult = await publications.Query.List(limit: 1);
+        var pubResult = await publications.Query.FetchObjects(limit: 1);
         var targetUuid = pubResult.Objects.First().ID;
 
         // BatchImportWithRefExample
@@ -353,7 +350,7 @@ public class BatchImportTests : IAsyncLifetime
         var response = await collection.Query.FetchObjectByID(
             fromUuid,
             // TODO[g-despot]: Should this also accept a single QueryReference object?
-            references: [new QueryReference(linkOn: "writesFor", fields: new[] { "title" })]
+            returnReferences: [new QueryReference(linkOn: "writesFor", fields: new[] { "title" })]
         );
 
         Assert.Equal("Ye Olde Times", response.References["writesFor"][0].Properties["title"]);
@@ -413,7 +410,7 @@ public class BatchImportTests : IAsyncLifetime
 
         // Test - Note: Count() method may not exist, using FetchObjects instead
         var questions = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
-        var testBatch = await questions.Query.List(limit: 10);
+        var testBatch = await questions.Query.FetchObjects(limit: 10);
         Assert.True(testBatch.Objects.Any());
 
         // Cleanup
@@ -487,7 +484,7 @@ public class BatchImportTests : IAsyncLifetime
 
         // Test
         var questions = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
-        var testBatch = await questions.Query.List(limit: 10);
+        var testBatch = await questions.Query.FetchObjects(limit: 10);
         Assert.True(testBatch.Objects.Any());
 
         // Cleanup
