@@ -89,6 +89,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="py"
       />
   </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START UpdateSchema"
+        endMarker="// END UpdateSchema"
+        language="ts"
+      />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -170,6 +178,14 @@ RQ can also be enabled for an existing collection by updating the collection def
         startMarker="# START 1BitUpdateSchema"
         endMarker="# END 1BitUpdateSchema"
         language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START 1BitUpdateSchema"
+        endMarker="// END 1BitUpdateSchema"
+        language="ts"
       />
   </TabItem>
   <TabItem value="java" label="Java">

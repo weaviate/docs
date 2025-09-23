@@ -122,10 +122,18 @@ To filter with two or more conditions, use `And`, `Or` and `Not` to define the r
 
   </TabItem>
 
+  <TabItem value="py3" label="Python Client v3">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# MultipleFiltersAndPython"
+      endMarker="# END MultipleFiltersAndPython"
+      language="pyv3"
+    />
+  </TabItem>
 
-  <TabItem value="ts" label="JavaScript/TypeScript">
+  <TabItem value="js" label="JS/TS Client v3">
 
-  Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API.
+  Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API. `Filters.not` is used to negate a filter using the logical NOT operator.
   <br/>
 
   These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To pass an array (e.g. `fs`) as an argument, provide it like so: `Filters.and(...fs)` which will spread the array into its elements.
@@ -432,12 +440,13 @@ The `ContainsNone` operator works on text properties and take an array of values
       language="python"
     />
   </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={JavaScriptCode}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
 
