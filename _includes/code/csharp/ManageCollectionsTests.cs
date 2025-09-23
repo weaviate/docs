@@ -356,7 +356,7 @@ public class ManageCollectionsTests : IAsyncLifetime
         // START AddNamedVectors
         CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
         // TODO[g-despot]: AddVector throws error: vectorizer config of vector \"default\" is immutable
-        await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", properties: "body"));
+        await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", sourceProperties: "body"));
         // TODO[g-despot]: Missing sourceProperties
         // Configure.Vectors.Text2VecCohere(sourceProperties: new[] { "body" }).New("body_vector")
         //    Configure.Vectors.Text2VecCohere().New("body_vector")
@@ -516,7 +516,7 @@ public class ManageCollectionsTests : IAsyncLifetime
             c.Description = "An updated collection description.";
             // TODO[g-despot]: Updating property descriptions is missing
             c.InvertedIndexConfig.Bm25.K1 = 1.5f;
-            
+
             VectorConfigUpdate vectorConfig = c.VectorConfig["default"];
             vectorConfig.VectorIndexConfig.UpdateHNSW(vic =>
             {
