@@ -89,6 +89,12 @@ Permissions for these resource types can be assigned to roles:
 
 1. [**Node Data Access**](#nodes-permissions)
 
+1. [**Collection alias**](#aliases-permissions)
+
+1. [**Replications**](#replications-permissions)
+
+1. [**Groups**](#groups-permissions)
+
 #### Create a role with `Role Management` permissions {#role-management-permissions}
 
 This example creates a role called `testRole` with permissions to:
@@ -405,7 +411,7 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
 </Tabs>
 
-#### Create a role with `Collection Aliases` permissions {#aliases-permissions}
+#### Create a role with `Collection Alias` permissions {#aliases-permissions}
 
 This example creates a role called `testRole` with permissions to:
 
@@ -456,6 +462,44 @@ This example creates a role called `testRole` with permissions to:
       text={RolePyCode}
       startMarker="# START AddReplicationsPermission"
       endMarker="# END AddReplicationsPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### Create a role with `Groups` permissions {#groups-permissions}
+
+This example creates a role called `testRole` with permissions to:
+
+- Read information about and assign/revoke group membership for OIDC groups starting with `TargetGroup`.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddGroupsPermission"
+      endMarker="# END AddGroupsPermission"
       language="py"
     />
   </TabItem>

@@ -94,7 +94,7 @@ The output is like this:
 
 ## Filter with multiple conditions
 
-To filter with two or more conditions, use `And` or `Or` to define the relationship between the conditions.
+To filter with two or more conditions, use `And`, `Or` and `Not` to define the relationship between the conditions.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -515,9 +515,91 @@ The output is like this:
 
 </details>
 
-## `ContainsAny` and `ContainsAll` with batch delete
+## `ContainsNone` Filter
 
-If you want to do a batch delete, see [Delete objects](../manage-objects/delete.mdx#containsany--containsall).
+The `ContainsNone` operator works on text properties and take an array of values as input. It will match objects where the property **contains none** of the values in the array.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ContainsNoneFilter"
+      endMarker="# END ContainsNoneFilter"
+      language="python"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+<details>
+  <summary>Example response</summary>
+
+The output is like this:
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "Frank Lloyd Wright",
+          "hasCategory": [
+            {
+              "title": "PEOPLE"
+            }
+          ],
+          "question": "In 1939 this famous architect polished off his Johnson Wax Building in Racine, Wisconsin"
+        },
+        {
+          "answer": "a luffa",
+          "hasCategory": [
+            {
+              "title": "FOOD"
+            }
+          ],
+          "question": "When it's young & tender, this gourd used in the bathtub can be eaten like a squash"
+        },
+        {
+          "answer": "a snail",
+          "hasCategory": [
+            {
+              "title": "SCIENCE & NATURE"
+            }
+          ],
+          "question": "Like an escargot, the abalone is an edible one of these gastropods"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+## `ContainsAny`, `ContainsAll` and `ContainsNone` with batch delete
+
+If you want to do a batch delete, see [Delete objects](../manage-objects/delete.mdx#containsany--containsall--containsnone).
 
 ## Filter text on partial matches
 
