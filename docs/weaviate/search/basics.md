@@ -14,7 +14,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.basics.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchTests.cs";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchBasicsTests.cs";
 
 With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#specify-object-properties) and [metadata](#retrieve-metadata-values) to return.
 
