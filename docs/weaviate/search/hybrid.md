@@ -414,6 +414,14 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="python"
     />
   </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={GQLCode}
@@ -435,6 +443,14 @@ With the `and` operator, the search returns objects that contain all tokens in t
       startMarker="# START HybridWithBM25OperatorAnd"
       endMarker="# END HybridWithBM25OperatorAnd"
       language="python"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="ts"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
