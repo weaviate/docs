@@ -466,8 +466,7 @@ public class ManageCollectionsTests : IAsyncLifetime
 
         // START AddProperty
         CollectionClient<object> articles = weaviate.Collections.Use<object>(collectionName);
-        // TODO[g-despot]: AddProperty is internal
-        // await articles.Config.AddProperty(Property.Text("body"));
+        await articles.Config.AddProperty(Property.Text("body"));
         // END AddProperty
 
         config = await weaviate.Collections.Export(collectionName);
@@ -514,7 +513,6 @@ public class ManageCollectionsTests : IAsyncLifetime
         await articles.Config.Update(c =>
         {
             c.Description = "An updated collection description.";
-            // TODO[g-despot]: Updating property descriptions is missing
             c.InvertedIndexConfig.Bm25.K1 = 1.5f;
 
             VectorConfigUpdate vectorConfig = c.VectorConfig["default"];
@@ -554,7 +552,6 @@ public class ManageCollectionsTests : IAsyncLifetime
         Assert.Equal(collectionName, articlesConfig.Name);
 
         // START ReadAllCollections
-        // TODO[g-despot]: Strange error: System.ArgumentException : Unsupported vectorizer type: text2colbert-jinaai (Parameter 'type')
         await foreach (Collection collection in weaviate.Collections.List())
         {
             Console.WriteLine(collection.Name);

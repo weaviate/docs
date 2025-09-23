@@ -129,14 +129,16 @@ public class SearchBasicsTests : IAsyncLifetime
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            returnMetadata: MetadataOptions.Vector,
+            returnMetadata: (MetadataOptions.Vector, ["default"]),
             // highlight-end
             limit: 1
         );
 
         // Note: The C# client returns a dictionary of named vectors.
         // We assume the default vector name is 'default'.
-        Console.WriteLine(JsonSerializer.Serialize(response.Objects.First().Vectors["default"]));
+        //TODO[g-despot]: Why is vector not returned?
+        Console.WriteLine("Vector for 'default':");
+        Console.WriteLine(JsonSerializer.Serialize(response.Objects.First()));
         // END GetObjectVectorPython
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
@@ -173,17 +175,16 @@ public class SearchBasicsTests : IAsyncLifetime
         // ==============================
         // ===== GET WITH CROSS-REF EXAMPLES =====
         // ==============================
-        //TODO
         // GetWithCrossRefsPython
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
-            returnReferences: new[] {
+            returnReferences: [
                 new QueryReference(
-                    linkOn: "hasCategory"
-                    //returnProperties: "title"
+                    linkOn: "hasCategory",
+                    fields: ["title"]
                 )
-            },
+            ],
             // highlight-end
             limit: 2
         );
