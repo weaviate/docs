@@ -1,12 +1,3 @@
-import os
-import weaviate
-import weaviate.classes as wvc
-from weaviate.auth import Auth
-from weaviate.classes.config import Configure
-import time
-from typing import List, Dict, Any
-from datasets import load_dataset
-
 # START ImportEcommerceData
 from datasets import load_dataset
 
@@ -62,31 +53,32 @@ client = weaviate.connect_to_weaviate_cloud(
 print(client.is_ready())  # Should print: `True`
 # END Method1Connect
 
-# START Method1CreateCollection
-# Create collection with original vector configuration
 client.collections.delete("ECommerceProducts")  # Clean up if exists
 
+# START Method1CreateCollection
+from weaviate.classes.config import Configure, DataType, Property
+
+# Create collection with original vector configuration
 products = client.collections.create(
     name="ECommerceProducts",
     vector_config=[
         Configure.Vectors.self_provided(
             name="original_vector",  # Name for existing vectors
-            vector_dimensions=768,  # Dimension of the HuggingFace embeddings
         )
     ],
     properties=[
-        wvc.config.Property(name="collection", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="category", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="tags", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="subcategory", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="name", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="description", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="brand", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="product_id", data_type=wvc.config.DataType.UUID),
-        wvc.config.Property(name="colors", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="reviews", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="image_url", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="price", data_type=wvc.config.DataType.NUMBER),
+        Property(name="collection", data_type=DataType.TEXT),
+        Property(name="category", data_type=DataType.TEXT),
+        Property(name="tags", data_type=DataType.TEXT_ARRAY),
+        Property(name="subcategory", data_type=DataType.TEXT),
+        Property(name="name", data_type=DataType.TEXT),
+        Property(name="description", data_type=DataType.TEXT),
+        Property(name="brand", data_type=DataType.TEXT),
+        Property(name="product_id", data_type=DataType.UUID),
+        Property(name="colors", data_type=DataType.TEXT_ARRAY),
+        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
+        Property(name="image_url", data_type=DataType.TEXT),
+        Property(name="price", data_type=DataType.NUMBER),
     ],
 )
 # END Method1CreateCollection
@@ -139,15 +131,13 @@ for obj in results.objects:
 
 # START Method1AddNewVector
 # Add a new named vector with Weaviate Embeddings
-from weaviate.classes.config import Reconfigure
+from weaviate.classes.config import Configure
 
 # Add new vector configuration to existing collection
 products.config.add_vector(
     vector_config=Configure.Vectors.text2vec_weaviate(  # Add new Weaviate Embeddings vector
-        name="weaviate_vector",
-        dimensions=768,  # Weaviate Embeddings dimension
+        name="new_vector",
         source_properties=["name", "description"],  # Properties to vectorize
-        model_name="snowflake-arctic-embed-xs",  # Or another Weaviate model
     ),
 )
 
@@ -174,11 +164,6 @@ for obj in all_objects:
     )
     update_count += 1
 
-    # Optional: Add delay to avoid rate limiting
-    if update_count % 100 == 0:
-        print(f"Updated {update_count} objects...")
-        time.sleep(0.1)
-
 print(f"Triggered vectorization for {update_count} objects")
 # END Method1TriggerVectorization
 
@@ -189,7 +174,7 @@ products = client.collections.use("ECommerceProducts")
 # Now we can use text search with the new vector
 results = products.query.near_text(
     query="comfortable athletic wear",
-    target_vector="weaviate_vector",  # Use the new vector
+    target_vector="new_vector",  # Use the new vector
     limit=3,
     return_properties=["name", "description", "price", "category"],
 )
@@ -220,99 +205,60 @@ for obj in results_original.objects:
 # ============================================
 
 # For Method 2, we start with the same collection from Steps 1-4
-# but rename it to v1 for clarity
-
-# START Method2CreateOriginal
-# Rename/recreate as v1 for clarity in the alias method
-client.collections.delete("ECommerce_v1")  # Clean up if exists
-
-products_v1 = client.collections.create(
-    name="ECommerce_v1",
-    vectorizer_config=Configure.Vectorizer.none(
-        vector_dimensions=768  # HuggingFace embedding dimensions
-    ),
-    properties=[
-        wvc.config.Property(name="collection", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="category", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="tags", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="subcategory", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="name", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="description", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="brand", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="product_id", data_type=wvc.config.DataType.UUID),
-        wvc.config.Property(name="colors", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="reviews", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="image_url", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="price", data_type=wvc.config.DataType.NUMBER),
-    ],
-)
-
-# Import data with existing vectors
-products_v1 = client.collections.use("ECommerce_v1")
-
-with products_v1.batch.fixed_size(batch_size=200) as batch:
-    for item in ecommerce_data:
-        batch.add_object(
-            properties=item["properties"], vector=item["vector"]  # Use existing vectors
-        )
-
-failed_objects = products_v1.batch.failed_objects
-if failed_objects:
-    print(f"Number of failed imports: {len(failed_objects)}")
-else:
-    print(f"Imported {len(ecommerce_data)} products to ECommerce_v1")
-# END Method2CreateOriginal
+client.alias.delete(alias_name="ECommerceProduction")  # Clean up if exists
 
 # START Method2CreateAlias
 # Create an alias pointing to the current production collection
-client.alias.create(alias_name="ECommerceProduction", target_collection="ECommerce_v1")
-
-print("Created alias 'ECommerceProduction' -> 'ECommerce_v1'")
+client.alias.create(
+    alias_name="ECommerceProduction", target_collection="ECommerceProducts"
+)
 # END Method2CreateAlias
 
 # START Method2QueryAlias
 # Your application always uses the alias name
 products = client.collections.use("ECommerceProduction")
 
-# Query using the alias (currently points to ECommerce_v1)
+# Query using the alias (currently points to ECommerceProducts)
 # Use a vector from our dataset as query
 query_vector = ecommerce_data[0]["vector"]
 
 results = products.query.near_vector(
-    near_vector=query_vector, limit=3, return_properties=["name", "price", "category"]
+    near_vector=query_vector,
+    target_vector=["original_vector"],
+    limit=3,
+    return_properties=["name", "price"],
 )
 
 print("Query results via alias:")
 for obj in results.objects:
-    print(
-        f"- {obj.properties['name']} ({obj.properties['category']}): ${obj.properties['price']}"
-    )
+    print(f"{obj.properties['name']}: ${obj.properties['price']}")
 # END Method2QueryAlias
 
 # START Method2CreateNew
+from weaviate.classes.config import Configure, DataType, Property
+
 # Create new collection with Weaviate Embeddings vectorizer
 client.collections.delete("ECommerce_v2")  # Clean up if exists
 
 products_v2 = client.collections.create(
     name="ECommerce_v2",
     vector_config=Configure.Vectors.text2vec_weaviate(
-        dimensions=768,  # Weaviate Embeddings dimension
+        name="new_vector",
         source_properties=["name", "description"],  # Properties to vectorize
-        model_name="snowflake-arctic-embed-xs",  # Or another Weaviate model
     ),
     properties=[
-        wvc.config.Property(name="collection", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="category", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="tags", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="subcategory", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="name", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="description", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="brand", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="product_id", data_type=wvc.config.DataType.UUID),
-        wvc.config.Property(name="colors", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="reviews", data_type=wvc.config.DataType.TEXT_ARRAY),
-        wvc.config.Property(name="image_url", data_type=wvc.config.DataType.TEXT),
-        wvc.config.Property(name="price", data_type=wvc.config.DataType.NUMBER),
+        Property(name="collection", data_type=DataType.TEXT),
+        Property(name="category", data_type=DataType.TEXT),
+        Property(name="tags", data_type=DataType.TEXT_ARRAY),
+        Property(name="subcategory", data_type=DataType.TEXT),
+        Property(name="name", data_type=DataType.TEXT),
+        Property(name="description", data_type=DataType.TEXT),
+        Property(name="brand", data_type=DataType.TEXT),
+        Property(name="product_id", data_type=DataType.UUID),
+        Property(name="colors", data_type=DataType.TEXT_ARRAY),
+        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
+        Property(name="image_url", data_type=DataType.TEXT),
+        Property(name="price", data_type=DataType.NUMBER),
     ],
 )
 
@@ -321,7 +267,7 @@ print("Created ECommerce_v2 with Weaviate Embeddings")
 
 # START Method2MigrateData
 # Migrate data to new collection (vectors will be auto-generated)
-products_v1 = client.collections.use("ECommerce_v1")
+products_v1 = client.collections.use("ECommerceProducts")
 products_v2 = client.collections.use("ECommerce_v2")
 
 # Fetch all data from v1
@@ -356,6 +302,7 @@ products = client.collections.use("ECommerceProduction")
 # Can now use text search (wasn't possible with self-provided vectors)
 results = products.query.near_text(
     query="comfortable athletic wear",
+    target_vector="new_vector",
     limit=3,
     return_properties=["name", "price", "category"],
 )
@@ -366,182 +313,6 @@ for obj in results.objects:
         f"- {obj.properties['name']} ({obj.properties['category']}): ${obj.properties['price']}"
     )
 # END Method2SwitchAlias
-
-# START Method2Cleanup
-# After verification, delete the old collection
-# Always verify everything works before cleanup!
-
-# Optional: Keep old collection for a rollback period
-print("Keeping ECommerce_v1 for 7 days as rollback option...")
-
-# When ready to clean up:
-# client.collections.delete("ECommerce_v1")
-# print("Deleted old collection ECommerce_v1")
-# END Method2Cleanup
-
-# ============================================
-# PRODUCTION EXAMPLE
-# ============================================
-
-
-# START ProductionExample
-class VectorizerMigration:
-    """Production-ready vectorizer migration with monitoring and rollback"""
-
-    def __init__(self, client: weaviate.Client):
-        self.client = client
-
-    def migrate_with_validation(
-        self,
-        source_collection: str,
-        target_collection: str,
-        alias_name: str,
-        test_queries: List[str],
-        rollback_threshold: float = 0.8,
-    ):
-        """
-        Migrate with quality validation and automatic rollback
-
-        Args:
-            source_collection: Original collection name
-            target_collection: New collection name
-            alias_name: Production alias name
-            test_queries: Queries to test quality
-            rollback_threshold: Min quality score to proceed
-        """
-        print(f"Starting migration from {source_collection} to {target_collection}")
-
-        # Step 1: Create new collection with new vectorizer
-        self._create_new_collection(target_collection)
-
-        # Step 2: Migrate data
-        migrated_count = self._migrate_data(source_collection, target_collection)
-        print(f"Migrated {migrated_count} objects")
-
-        # Step 3: Validate quality
-        quality_score = self._validate_quality(
-            source_collection, target_collection, test_queries
-        )
-        print(f"Quality score: {quality_score:.2%}")
-
-        # Step 4: Decision point
-        if quality_score >= rollback_threshold:
-            # Switch alias to new collection
-            self.client.alias.update(
-                alias_name=alias_name, new_target_collection=target_collection
-            )
-            print(f"✅ Migration successful! Alias now points to {target_collection}")
-            return True
-        else:
-            # Quality too low, don't switch
-            print(f"❌ Quality below threshold. Keeping {source_collection}")
-            # Optionally delete the new collection
-            self.client.collections.delete(target_collection)
-            return False
-
-    def _create_new_collection(self, collection_name: str):
-        """Create collection with Weaviate Embeddings"""
-        self.client.collections.create(
-            name=collection_name,
-            vector_config=Configure.Vectors.text2vec_weaviate(
-                dimensions=768,
-                source_properties=["name", "description"],
-                model_name="snowflake-arctic-embed-xs",
-            ),
-            properties=[
-                wvc.config.Property(
-                    name="collection", data_type=wvc.config.DataType.TEXT
-                ),
-                wvc.config.Property(
-                    name="category", data_type=wvc.config.DataType.TEXT
-                ),
-                wvc.config.Property(
-                    name="tags", data_type=wvc.config.DataType.TEXT_ARRAY
-                ),
-                wvc.config.Property(
-                    name="subcategory", data_type=wvc.config.DataType.TEXT
-                ),
-                wvc.config.Property(name="name", data_type=wvc.config.DataType.TEXT),
-                wvc.config.Property(
-                    name="description", data_type=wvc.config.DataType.TEXT
-                ),
-                wvc.config.Property(name="brand", data_type=wvc.config.DataType.TEXT),
-                wvc.config.Property(
-                    name="product_id", data_type=wvc.config.DataType.UUID
-                ),
-                wvc.config.Property(
-                    name="colors", data_type=wvc.config.DataType.TEXT_ARRAY
-                ),
-                wvc.config.Property(
-                    name="reviews", data_type=wvc.config.DataType.TEXT_ARRAY
-                ),
-                wvc.config.Property(
-                    name="image_url", data_type=wvc.config.DataType.TEXT
-                ),
-                wvc.config.Property(name="price", data_type=wvc.config.DataType.NUMBER),
-            ],
-        )
-
-    def _migrate_data(self, source: str, target: str) -> int:
-        """Copy data from source to target collection"""
-        source_col = self.client.collections.use(source)
-        target_col = self.client.collections.use(target)
-
-        all_objects = source_col.query.fetch_objects(limit=10000).objects
-
-        with target_col.batch.fixed_size(batch_size=200) as batch:
-            for obj in all_objects:
-                batch.add_object(properties=obj.properties)
-
-        return len(all_objects)
-
-    def _validate_quality(
-        self, source: str, target: str, test_queries: List[str]
-    ) -> float:
-        """Compare search quality between collections"""
-        source_col = self.client.collections.use(source)
-        target_col = self.client.collections.use(target)
-
-        overlap_scores = []
-
-        for query in test_queries:
-            # Get results from both collections
-            # For source, we need to convert text to vector first
-            # (in production, you'd use your existing encoder)
-            # For demo, we'll skip this comparison
-
-            target_results = target_col.query.near_text(query=query, limit=10).objects
-
-            # Simple validation: check if we get results
-            if len(target_results) > 0:
-                overlap_scores.append(1.0)
-            else:
-                overlap_scores.append(0.0)
-
-        return sum(overlap_scores) / len(overlap_scores) if overlap_scores else 0.0
-
-
-# Usage example
-migration = VectorizerMigration(client)
-
-success = migration.migrate_with_validation(
-    source_collection="ECommerce_v1",
-    target_collection="ECommerce_v3",
-    alias_name="ECommerceProduction",
-    test_queries=[
-        "denim jeans",
-        "comfortable athletic wear",
-        "business casual outfit",
-        "summer dress",
-    ],
-    rollback_threshold=0.7,
-)
-
-if success:
-    print("Migration completed successfully!")
-else:
-    print("Migration rolled back due to quality issues")
-# END ProductionExample
 
 # Cleanup
 client.close()
