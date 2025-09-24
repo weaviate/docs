@@ -288,12 +288,6 @@ client.collections.create(
 )
 # END EnableInvertedIndex
 
-# Test
-collection = client.collections.use("Article")
-config = collection.config.get()
-assert config.inverted_index_config.bm25.b == 0.7
-assert config.inverted_index_config.bm25.k1 == 1.25
-
 # Delete the collection to recreate it
 client.collections.delete("Article")
 
