@@ -15,7 +15,7 @@ import PyCode from "!!raw-loader!/docs/weaviate/tutorials/_includes/vectorizer-m
 
 In this tutorial, we'll explore two powerful approaches to migrate from one vectorizer (embedding model) to another in Weaviate without service interruption. Whether you're upgrading to a better model, reducing costs, or switching providers, these methods ensure smooth transitions.
 
-## prerequisites
+## Prerequisites
 
 Before starting this tutorial, ensure you have:
 
@@ -33,10 +33,12 @@ Before starting this tutorial, ensure you have:
 - Basic familiarity with Weaviate collections and vector search
 
 :::tip Get Started with Weaviate Cloud
+
 Sign up for a free Weaviate Cloud sandbox at [console.weaviate.cloud](https://console.weaviate.cloud)
+
 :::
 
-## introduction
+## Introduction
 
 When working with vector databases in production, you may need to change your embedding model for various reasons:
 
@@ -47,46 +49,12 @@ When working with vector databases in production, you may need to change your em
 
 This tutorial demonstrates two approaches:
 
-### method 1: named vectors (in-place migration)
+- **Adding new vectors**
+  This method allows multiple vectors per data object within a single collection. It's ideal for testing new models alongside existing ones and keeping all the data in one collection.
+- **Collection aliases**
+  This approach uses aliases to instantly switch between separate collections. It's perfect for a complete model replacement, minimizing risk and providing an immediate rollback option.
 
-Named vectors allow multiple vector representations within the same collection. This method is ideal when you want to:
-
-- Test new models alongside existing ones
-- Gradually transition between models
-- Keep all data in one collection
-
-### method 2: collection aliases (blue-green deployment)
-
-Collection aliases enable instant switching between collections. This method is perfect when you want to:
-
-- Completely replace the vectorizer
-- Ensure rollback capability
-- Minimize risk during migration
-
-## setup: ecommerce dataset
-
-We'll use the Weaviate ECommerce dataset from Hugging Face, which contains clothing items with pre-computed embeddings. This dataset represents a real-world scenario where you have existing vector embeddings that need migration.
-
-First, install the required dependencies:
-
-```bash
-pip install weaviate-client datasets
-```
-
-The dataset includes:
-
-- Product information (name, description, category, price, brand, etc.)
-- Pre-computed 768-dimensional vectors
-- Over 1000 clothing items with detailed metadata
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# START ImportEcommerceData"
-  endMarker="# END ImportEcommerceData"
-  language="py"
-/>
-
-## step 1: connect to weaviate cloud
+## Step 1: Connect to Weaviate Cloud
 
 First, establish a connection to your Weaviate Cloud instance:
 
@@ -97,7 +65,7 @@ First, establish a connection to your Weaviate Cloud instance:
   language="py"
 />
 
-## step 2: create a collection
+## Step 2: Create a collection
 
 Create a collection that accepts self-provided vectors (your existing embeddings from the HuggingFace dataset):
 
@@ -108,9 +76,23 @@ Create a collection that accepts self-provided vectors (your existing embeddings
   language="py"
 />
 
-## step 3: import data
+## Step 3: Import data
 
-Import your ecommerce data along with the pre-computed vectors:
+We'll use the Weaviate ECommerce dataset from Hugging Face, which contains clothing items with pre-computed embeddings. This dataset represents a real-world scenario where you have existing vector embeddings that need migration.
+
+The dataset includes:
+
+- Product information (name, description, category, price, brand, etc.)
+- Pre-computed 768-dimensional vectors
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# START ImportEcommerceData"
+  endMarker="# END ImportEcommerceData"
+  language="py"
+/>
+
+Import your e-commerce data along with the pre-computed vectors:
 
 <FilteredTextBlock
   text={PyCode}
@@ -119,7 +101,7 @@ Import your ecommerce data along with the pre-computed vectors:
   language="py"
 />
 
-## step 4: query with original vectors
+## Step 4: Query with original vectors
 
 Verify that searches work with your original vectors:
 
@@ -130,11 +112,11 @@ Verify that searches work with your original vectors:
   language="py"
 />
 
-## method 1: add new vector
+## Method 1: Add new vector
 
 Named vectors allow you to have multiple vector representations in the same collection. This enables gradual migration and A/B testing of different models.
 
-### step 5: add new vector with Weaviate Embeddings
+### Step 5: Add new vector with Weaviate Embeddings
 
 Add a second named vector using Weaviate's built-in embeddings model:
 
@@ -145,7 +127,7 @@ Add a second named vector using Weaviate's built-in embeddings model:
   language="py"
 />
 
-### step 6: trigger vectorization
+### Step 6: Trigger vectorization
 
 Update all objects to generate embeddings with the new vectorizer. We use a minimal update that doesn't change properties:
 
@@ -156,7 +138,7 @@ Update all objects to generate embeddings with the new vectorizer. We use a mini
   language="py"
 />
 
-### step 7: query with new vector
+### Step 7: Query with new vector
 
 Now you can query using either vector:
 
@@ -167,18 +149,11 @@ Now you can query using either vector:
   language="py"
 />
 
-### advantages of named vectors method
-
-- **Gradual migration**: Test new embeddings without affecting existing functionality
-- **A/B testing**: Compare search quality between models
-- **Single collection**: All data remains in one place
-- **Flexible queries**: Choose which vector to use at query time
-
-## method 2: collection aliases migration
+## Method 2: Collection aliases migration
 
 Collection aliases provide a blue-green deployment approach, allowing instant switching between collections with different vectorizers.
 
-### step 5: create collection alias and query using alias
+### Step 5: Create collection alias and query using alias
 
 Create an alias that your application will use:
 
@@ -198,7 +173,7 @@ Your application should always use the alias:
   language="py"
 />
 
-### step 6: create new collection with Weaviate Embeddings
+### Step 6: Create new collection with Weaviate Embeddings
 
 Create a new collection using the Weaviate Embeddings vectorizer:
 
@@ -209,7 +184,7 @@ Create a new collection using the Weaviate Embeddings vectorizer:
   language="py"
 />
 
-### step 7: migrate data to new collection
+### Step 7: Migrate data to new collection
 
 Copy data to the new collection (vectors will be auto-generated):
 
@@ -220,7 +195,7 @@ Copy data to the new collection (vectors will be auto-generated):
   language="py"
 />
 
-### step 8: switch the alias and query using alias
+### Step 8: Switch the alias and query using alias
 
 Update the alias to point to the new collection (instant switch):
 
@@ -240,36 +215,21 @@ After verification, remove the old collection:
   language="py"
 />
 
-### advantages of collection aliases method
+## Choosing the right method
 
-- **Instant switching**: Zero-downtime migration
-- **Easy rollback**: Switch back to old collection if issues arise
-- **Clean separation**: Old and new data are completely isolated
-- **No code changes**: Application continues using the same alias
-
-## choosing the right method and performance considerations
-
-### use named vectors when:
+Use **new vectors** when:
 
 - You want to **test multiple models** simultaneously
-- You need **gradual migration** with side-by-side comparison
 - You prefer keeping **all data in one collection**
 - You want to **experiment** with different search strategies
-- **Storage**: Each additional vector increases storage requirements
-- **Query performance**: Minimal overhead when selecting specific vectors
-- **Migration time**: Depends on update speed for triggering vectorization
 
-### use collection aliases when:
+Use **collection aliases** when:
 
-- You need **instant, atomic switches** between models
-- You want **guaranteed rollback** capability
+- You want **rollback** capability
 - You prefer **complete isolation** between old and new setups
 - You're doing a **one-time migration** to a new model
-- **Storage**: Temporary duplication during migration
-- **Query performance**: No overhead - aliases are simple pointers
-- **Migration time**: Depends on data copy speed
 
-## best practices
+## Best practices
 
 1. **Test thoroughly**: Always test the new vectorizer with a subset of data first
 2. **Monitor quality**: Compare search results between old and new models
@@ -277,7 +237,7 @@ After verification, remove the old collection:
 4. **Consider costs**: Different vectorizers have different pricing models
 5. **Document changes**: Track which model versions you're using
 
-## complete example: production migration
+## Production migration example
 
 Here's a complete example showing a production-ready migration workflow:
 
@@ -288,20 +248,7 @@ Here's a complete example showing a production-ready migration workflow:
   language="py"
 />
 
-## troubleshooting
-
-### common issues and solutions
-
-**Issue**: Vectorization fails for some objects
-**Solution**: Check for empty or invalid text fields, ensure the vectorizer supports your data format
-
-**Issue**: Search quality degrades after migration
-**Solution**: Compare embedding dimensions, consider fine-tuning or trying different models
-
-**Issue**: Migration is too slow
-**Solution**: Use batch operations, parallelize updates, consider off-peak migration
-
-## summary
+## Summary
 
 This tutorial demonstrated two powerful approaches for migrating vectorizers in Weaviate:
 
@@ -310,32 +257,11 @@ This tutorial demonstrated two powerful approaches for migrating vectorizers in 
 
 Both methods ensure zero downtime and provide rollback capabilities, making them suitable for production environments.
 
-## running the code
-
-To run this tutorial:
-
-1. Set up your environment variables:
-
-   ```bash
-   export WEAVIATE_URL="your-weaviate-cloud-url"
-   export WEAVIATE_API_KEY="your-api-key"
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   pip install weaviate-client datasets
-   ```
-
-3. Run either migration method from the Python scripts provided
-
-The code will automatically load the ECommerce dataset from Hugging Face and demonstrate both migration approaches.
-
-## further resources
+## Further resources
 
 - [Collection Aliases Reference](../manage-collections/collection-aliases.mdx)
 
-## questions and feedback
+## Questions and feedback
 
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
