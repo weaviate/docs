@@ -25,6 +25,7 @@ jobs:
         run: |
           pip install litellm
           python tools/translate_docs.py $(cat changed_files.txt)
+          rm changed_files.txt
 
       - name: Get current commit hash
         id: get_hash
