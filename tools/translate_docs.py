@@ -182,6 +182,7 @@ def translate_lists(filelist: list[str]) -> None:
                     for lang_code in languages:
                         target_dir = target_dir_template.format(lang=lang_code)
                         target_path = os.path.join(target_dir, relative_path)
+                        os.makedirs(os.path.dirname(target_path), exist_ok=True)
                         shutil.copy(file_path, target_path)
                         print(f"Copied: {file_path} -> {target_path}")
     print("Translation and copy completed")
