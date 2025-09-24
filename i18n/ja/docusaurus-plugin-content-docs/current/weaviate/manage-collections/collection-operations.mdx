@@ -17,10 +17,10 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
-  Weaviate のすべてのオブジェクトは、必ず 1 つのコレクションに属します。 このページの例を参考に、コレクションを管理してください。
+Weaviate のすべてのオブジェクトは、必ず 1 つのコレクションに属します。ここに示す例を参考に、コレクションを管理してください。
 
 :::note Terminology
-最新の Weaviate ドキュメントでは「collections」という用語を使用していますが、以前のドキュメントでは「classes」と表記されていました。 ドキュメント全体で両方の用語が登場することがありますのでご注意ください。
+新しい Weaviate のドキュメントでは「コレクション」と呼称しますが、古いドキュメントでは「クラス」と表記されています。両方の用語がドキュメント中に登場することがあります。
 :::
 
 import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
@@ -29,7 +29,7 @@ import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
 ## コレクションの作成
 
-コレクションを作成するには、少なくともコレクション名を指定します。 プロパティを指定しない場合、[`auto-schema`](../config-refs/collections.mdx#auto-schema) が自動でプロパティを生成します。
+コレクションを作成するには、少なくともコレクション名を指定します。プロパティを指定しない場合、[`auto-schema`](../config-refs/collections.mdx#auto-schema) が自動でプロパティを作成します。
 
 import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
@@ -91,12 +91,12 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
   </TabItem>
 </Tabs>
 
-:::tip 本番環境向けコレクション
+:::tip Production ready collections
 
-- **データスキーマを手動で定義する**:  
-  [`auto-schema`](../config-refs/collections.mdx#auto-schema) 機能の使用は避け、代わりに [コレクションのプロパティを手動で定義](#create-a-collection-and-define-properties) してください。  
-- **コレクションの作成数を増やし過ぎない**:  
-  コレクションが多過ぎると、メモリ使用量の増加やクエリ性能の低下などスケーラビリティの問題を引き起こす可能性があります。 代わりに、1 つのコレクションを複数のテナントに分割する [マルチテナンシー](/weaviate/manage-collections/multi-tenancy) の利用を検討してください。 詳細は [Starter Guides: コレクションのスケーリング制限](/weaviate/starter-guides/managing-collections/collections-scaling-limits) をご覧ください。
+-  **データスキーマを手動で定義**:  
+  [`auto-schema`](../config-refs/collections.mdx#auto-schema) 機能を使用せず、[コレクションのプロパティを手動で定義](#create-a-collection-and-define-properties)してください。
+-  **コレクションを作り過ぎない**:  
+  コレクションが多すぎると、メモリ使用量の増加やクエリ性能の低下など、スケーラビリティの問題が発生する可能性があります。代わりに、1 つのコレクションを複数のテナントに分割する [マルチテナンシー](/weaviate/manage-collections/multi-tenancy) の利用を検討してください。詳細は [スターターガイド: コレクションのスケーリング制限](/weaviate/starter-guides/managing-collections/collections-scaling-limits) を参照してください。
 :::
 
 <!--
@@ -105,22 +105,22 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 <CollectionsCountLimit />
 -->
 
-## コレクションを作成し、プロパティを定義する
+## コレクションの作成とプロパティの定義
 
-プロパティとはコレクション内のデータフィールドです。 各プロパティには名前とデータ型があります。
+プロパティとは、コレクション内のデータフィールドです。各プロパティには名前とデータ型があります。
 
 <details>
   <summary>
     追加情報
   </summary>
 
-プロパティを使用して、データ型・インデックス特性・トークナイゼーションなどの追加パラメーターを設定できます。
+プロパティを使用して、データ型、インデックス特性、トークナイゼーションなどの追加パラメーターを設定できます。
 
 詳細は以下を参照してください。
 
-- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
+- [リファレンス: 設定: スキーマ](/weaviate/config-refs/collections.mdx)
 - <SkipLink href="/weaviate/api/rest#tag/schema">
-    API References: REST: Schema
+    API リファレンス: REST: スキーマ
   </SkipLink>
 - [利用可能なデータ型](../config-refs/datatypes.md)
 
@@ -185,9 +185,9 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 
 
 
-## ベクトライザーを使用したコレクションの作成
+## ベクトライザー付きコレクションの作成
 
-オブジェクトの作成時およびベクトル検索クエリの実行時にベクトル埋め込みを生成するよう、コレクションに `vectorizer` を指定します。
+オブジェクトを作成したり ベクトル 検索クエリを実行したりする際に ベクトル 埋め込みを生成するため、コレクションに `vectorizer` を指定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -246,19 +246,42 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 
 </Tabs>
 
-:::info Vectorizer configuration
+:::info ベクトライザー設定
 
-ベクトライザーおよびベクトルインデックスの設定については、[コレクションの管理: ベクトライザーとベクトルインデックス](./vector-config.mdx) を参照してください。
+ベクトライザーおよび ベクトル インデックス設定の詳細は、[コレクションの管理: Vectorizer and vector index](./vector-config.mdx) をご覧ください。
 
 :::
 
-## auto-schema の無効化
+## Auto-schema の無効化
 
-デフォルトでは、Weaviate は存在しないコレクションやプロパティを自動で作成します。コレクションを手動で設定すると、より詳細にコレクション設定を制御できます。
+デフォルトでは、Weaviate は存在しないコレクションやプロパティを自動で作成します。コレクションを手動で設定すると、設定をより細かく制御できます。
 
-[`auto-schema`](../config-refs/collections.mdx#auto-schema) を無効にするには、システム設定ファイルで `AUTOSCHEMA_ENABLED: 'false'` を設定してください。
+[`auto-schema`](../config-refs/collections.mdx#auto-schema) を無効化するには、システム設定ファイルで `AUTOSCHEMA_ENABLED: 'false'` を設定してください。
 
-## 単一コレクション定義の読み取り
+## コレクションが存在するかの確認
+
+指定したコレクションが存在するかどうかを示す boolean 値を取得します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START CheckIfExists"
+      endMarker="# END CheckIfExists"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START CheckIfExists"
+      endMarker="// END CheckIfExists"
+      language="ts"
+    />
+  </TabItem>
+</Tabs>
+
+## 単一コレクション定義の取得
 
 スキーマからコレクション定義を取得します。
 
@@ -318,13 +341,13 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 </Tabs>
 
 <details>
-  <summary>サンプル設定: テキストオブジェクト</summary>
+  <summary>サンプル設定: Text objects</summary>
 
-このテキストオブジェクト用設定では、以下を定義しています。
+この Text objects 向け設定では、以下を定義しています。
 
-- コレクション名 (`Article`)
-- ベクトライザーモジュール (`text2vec-cohere`) とモデル (`embed-multilingual-v2.0`)
-- プロパティ (`title`, `body`) のデータ型は `text`
+- コレクション名 ( `Article` )
+- ベクトライザー モジュール ( `text2vec-cohere` ) とモデル ( `embed-multilingual-v2.0` )
+- プロパティ セット ( `title` 、 `body` ) のデータ型は `text`
 
 ```json
 {
@@ -351,19 +374,19 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 </details>
 
 <details>
-  <summary>サンプル設定: ネストオブジェクト</summary>
+  <summary>サンプル設定: Nested objects</summary>
 
-:::info Added in `v1.22`
+:::info `v1.22` で追加
 :::
 
-このネストオブジェクト用設定では、以下を定義しています。
+この Nested objects 向け設定では、以下を定義しています。
 
-- コレクション名 (`Person`)
-- ベクトライザーモジュール (`text2vec-huggingface`)
-- プロパティ (`last_name`, `address`)
-  - `last_name` のデータ型は `text`
-  - `address` のデータ型は `object`
-- `address` プロパティには 2 つのネストプロパティ (`street` と `city`) がある
+- コレクション名 ( `Person` )
+- ベクトライザー モジュール ( `text2vec-huggingface` )
+- プロパティ セット ( `last_name` 、 `address` )
+  - `last_name` は `text` データ型
+  - `address` は `object` データ型
+- `address` プロパティには 2 つのネストされたプロパティ ( `street` と `city` ) がある
 
 ```json
 {
@@ -389,16 +412,16 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 </details>
 
 <details>
-  <summary>サンプル設定: 生成検索</summary>
+  <summary>サンプル設定: Generative search</summary>
 
-この [検索拡張生成](../search/generative.md) 用設定では、以下を定義しています。
+この [検索拡張生成](../search/generative.md) 向け設定では、以下を定義しています。
 
-- コレクション名 (`Article`)
-- デフォルトベクトライザーモジュール (`text2vec-openai`)
-- 生成モジュール (`generative-openai`)
-- プロパティ (`title`, `chunk`, `chunk_no`, `url`)
-- `url` プロパティのトークナイズオプション
-- `url` プロパティのベクトル化オプション（ベクトル化を `skip`）
+- コレクション名 ( `Article` )
+- デフォルト ベクトライザー モジュール ( `text2vec-openai` )
+- 生成モジュール ( `generative-openai` )
+- プロパティ セット ( `title` 、 `chunk` 、 `chunk_no` 、 `url` )
+- `url` プロパティのトークナイズ オプション
+- `url` プロパティの ベクトル 化オプション (skip ベクトル 化)
 
 ```json
 {
@@ -440,17 +463,17 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 </details>
 
 <details>
-  <summary>サンプル設定: 画像</summary>
+  <summary>サンプル設定: Images</summary>
 
-この画像検索用設定では、以下を定義しています。
+この Image search 向け設定では、以下を定義しています。
 
-- コレクション名 (`Image`)
-- ベクトライザーモジュール (`img2vec-neural`)
-  - `image` プロパティに画像データを保存
-- ベクトルインデックスの距離メトリクス (`cosine`)
-- プロパティ (`image`)。`image` プロパティは `blob` として設定
+- コレクション名 ( `Image` )
+- ベクトライザー モジュール ( `img2vec-neural` )
+  - `image` プロパティで画像データを保存するようコレクションを設定
+- ベクトル インデックス距離指標 ( `cosine` )
+- プロパティ セット ( `image` ) で、 `image` プロパティを `blob` に設定
 
-画像検索については [Image search](../search/image.md) を参照してください。
+画像検索については、[Image search](../search/image.md) を参照してください。
 
 ```json
 {
@@ -475,9 +498,11 @@ import CollectionsCountLimit from '/_includes/collections-count-limit.mdx'
 
 </details>
 
-## すべてのコレクション定義の取得
 
-データベーススキーマを取得し、すべてのコレクション定義を取得します。
+
+## すべてのコレクション定義の読み取り
+
+データベースのスキーマを取得して、すべてのコレクション定義を取得します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -541,7 +566,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 <RaftRFChangeWarning />
 
-[可変コレクション設定](../config-refs/collections.mdx#mutability) を変更するために、コレクション定義を更新できます。
+コレクション定義を更新して、[変更可能なコレクション設定](../config-refs/collections.mdx#mutability) を変更できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -600,7 +625,6 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 </Tabs>
 
 
-
 ## コレクションの削除
 
 import CautionSchemaDeleteClass from "/_includes/schema-delete-class.mdx";
@@ -614,18 +638,18 @@ import CautionSchemaDeleteClass from "/_includes/schema-delete-class.mdx";
     データインポート後のインデックス制限
   </summary>
 
-データをインポートする前にコレクションのプロパティを追加する場合、インデックスに関する制限はありません。
+データをインポートする前にコレクションのプロパティを追加する場合、インデックスの制限はありません。<br/><br/>
 
-データをインポートした後に新しいプロパティを追加すると、インデックス作成に影響があります。<br/><br/>
+新しいプロパティをデータ インポート後に追加すると、インデックスに影響があります。<br/><br/>
 
-プロパティのインデックスはインポート時に作成されます。データをインポートした後に新しいプロパティを追加しても、既存オブジェクトのインデックスは自動的に更新されません。つまり、既存オブジェクトは新しいプロパティのインデックスに追加されません。インデックスには新しいオブジェクトのみが含まれるため、クエリ結果が予期しないものになる可能性があります。<br/><br/>
+プロパティ インデックスはインポート時に構築されます。データをインポートした後に新しいプロパティを追加した場合、既存オブジェクトのインデックスは自動的に更新されず、新しいプロパティ インデックスに追加されません。つまり、インデックスには新しいオブジェクトしか含まれないため、クエリ結果が期待どおりにならない可能性があります。<br/><br/>
 
 コレクション内のすべてのオブジェクトを含むインデックスを作成するには、次のいずれかを行ってください。
 
-- 新規コレクション: オブジェクトをインポートする前に、そのコレクションのすべてのプロパティを追加します。
-- 既存コレクション: コレクションから既存データをエクスポートし、新しいプロパティを含めて再作成します。その後、データを更新済みのコレクションへインポートします。
+- 新規コレクション: オブジェクトをインポートする前に、コレクションのすべてのプロパティを追加します。
+- 既存コレクション: コレクションから既存データをエクスポートし、新しいプロパティを含めて再作成し、データを更新済みコレクションにインポートします。
 
-プロパティ追加後にデータを再インデックスできる Re-indexing API を開発中です。将来のリリースで提供予定です。
+現在、プロパティ追加後にデータを再インデックスできるようにする再インデックス API を開発中です。今後のリリースで利用可能になる予定です。
 
 </details>
 
@@ -635,7 +659,7 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
 
 ## 転置インデックスパラメーターの設定
 
-各コレクションごとに、さまざまな 転置 インデックス パラメーターを設定できます。パラメーターによってはコレクション レベルで設定するものと、プロパティ レベルで設定するものがあります。
+各コレクションでは、さまざまな [転置インデックスパラメーター](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) を設定できます。パラメーターにはコレクション レベルで設定するものと、プロパティ レベルで設定するものがあります。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -693,11 +717,11 @@ import CodeSchemaAddProperties from "/_includes/code/schema.things.properties.ad
   </TabItem>
 </Tabs>
 
-## 参考資料
+## 追加リソース
 
-- [コレクションの管理: ベクトライザーとベクトル インデックス](./vector-config.mdx)
-- [リファレンス: コレクション定義](/weaviate/config-refs/collections.mdx)
-- [概念: データ構造](../concepts/data.md)
+- [コレクション管理: ベクトライザーとベクトルインデックス](./vector-config.mdx)
+- [参照: コレクション定義](/weaviate/config-refs/collections.mdx)
+- [コンセプト: データ構造](../concepts/data.md)
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
     API リファレンス: REST: スキーマ
   </SkipLink>

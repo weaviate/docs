@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/query-agent-get-started.ipynb
 toc: True
-title: "Weaviate Query Agent を構築する - EC アシスタント"
+title: "Weaviate Query Agent を構築する – E コマースアシスタント"
 featured: True
 integration: False
 agent: True
@@ -12,28 +12,28 @@ tags: ['Query Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-このレシピでは、[Weaviate Query Agent](https://docs.weaviate.io/agents) を使用してシンプルな EC アシスタント エージェントを構築します。このエージェントは複数の Weaviate コレクションへアクセスし、それぞれのコレクションから情報を取得してブランドや衣類に関する複雑な質問に回答できます。
+このレシピでは、[Weaviate Query Agent](https://docs.weaviate.io/agents) を使ってシンプルな E コマースアシスタント エージェントを構築します。エージェントは複数の Weaviate コレクションへアクセスでき、各コレクションの情報を利用してブランドや衣類アイテムに関する複雑な質問に回答します。
 
-> 📚 本サービスの詳細については、ブログ記事「[Introducing the Weaviate Query Agent](https://weaviate.io/blog/query-agent)」をご覧ください。
+> 📚 本サービスの詳細はブログ「[Introducing the Weaviate Query Agent](https://weaviate.io/blog/query-agent)」をご覧ください。
 
-まずは Hugging Face で公開されているいくつかのオープンデータセットを用意しました。最初のステップでは、Weaviate Cloud のコレクションへデータを投入する方法を解説します。
+まず、Hugging Face で公開されているオープンデータセットを用意しています。最初のステップとして、Weaviate Cloud のコレクションにデータを投入する方法を説明します。
 
-- [**E-commerce:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) 衣類アイテム、価格、ブランド、レビューなどを含むデータセット  
-- [**Brands:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) 親ブランド、子ブランド、平均顧客評価などブランド情報を含むデータセット
+- [**E-commerce**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce): 衣類アイテム、価格、ブランド、レビューなどを含むデータセット
+- [**Brands**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands): 親ブランド・子ブランド、平均カスタマーレーティングなどブランド情報を含むデータセット
 
-さらに、このレシピの後半で他のエージェントに機能を追加する際に使える、関連性の低い別データセットも用意しています。
+加えて、今回のレシピ内で他のエージェントに機能や多様性を持たせる際に使用できる、無関係なデータセットも用意しています。
 
-- [**Financial Contracts:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-financial-contracts) 個人・企業間の金融契約と、その契約種別や著者情報を含むデータセット  
-- [**Weather:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-weather) 気温、風速、降水量、気圧など日次の気象情報を含むデータセット
+- [**Financial Contracts**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-financial-contracts): 個人または企業間の金融契約、契約タイプや作成者情報を含むデータセット
+- [**Weather**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-weather): 気温、風速、降水量、気圧などの日次気象情報
 
 ## 1. Weaviate のセットアップとデータのインポート
 
-Weaviate Query Agent を利用するには、まず [Weaviate Cloud](https://weaviate.io/deployment/serverless) のアカウントを作成します👇  
-1. [Serverless Weaviate Cloud アカウントを作成](https://weaviate.io/deployment/serverless)し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters) クラスターを作成します。  
-2. 「Embedding」タブで埋め込みを有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして使用されます。  
-3. クラスターへ接続するために `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておきます。  
+Weaviate Query Agent を使用するには、まず [Weaviate Cloud](https://weaviate.io/deployment/serverless) アカウントを作成します👇  
+1. [Serverless Weaviate Cloud アカウントを作成](https://weaviate.io/deployment/serverless)し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters) をセットアップ  
+2. 「Embedding」セクションで有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして使用されます。  
+3. クラスター接続用に `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておきます。  
 
-> Info: 外部の埋め込みプロバイダー用の追加キーを用意する必要がないため、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) の利用を推奨します。
+> Info: 外部埋め込みプロバイダーのキーを追加する必要がないため、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) の利用を推奨します。
 
 ```python
 !pip install weaviate-client[agents] datasets
@@ -61,9 +61,9 @@ client = weaviate.connect_to_weaviate_cloud(
 
 ### コレクションの準備
 
-以下のコードブロックでは、Hugging Face からデモデータセットを取得し、Weaviate Serverless クラスターに新しいコレクションとして書き込みます。
+以下のコードでは、デモデータセットを Hugging Face から取得し、Weaviate Serverless クラスターに新しいコレクションとして書き込みます。
 
-> ❗️ `QueryAgent` は、クエリ解決に使用するコレクションやプロパティを決定する際に、それらの説明文を参照します。説明文に詳細を追加するなど、さまざまな実験が可能です。プロパティの説明も用意するのが良い習慣です。例えば、下記では価格がすべて USD であることを `QueryAgent` に知らせています。これは説明がなければ得られない情報です。
+> ❗️ `QueryAgent` は、クエリを解決する際に使用するコレクションやプロパティを決定するため、またプロパティの詳細情報にアクセスするために、コレクションおよびプロパティの説明を利用します。説明を変更したり、詳細を追加したりといった実験を行うと良いでしょう。例えば下記では、価格がすべて USD であることを `QueryAgent` に伝えています。これは説明がなければ得られない情報です。
 
 ```python
 from weaviate.classes.config import Configure, Property, DataType
@@ -129,10 +129,10 @@ ecommerce_dataset = load_dataset("weaviate/agents", "query-agent-ecommerce", spl
 weather_dataset = load_dataset("weaviate/agents", "query-agent-weather", split="train", streaming=True)
 financial_dataset = load_dataset("weaviate/agents", "query-agent-financial-contracts", split="train", streaming=True)
 
-brands_collection = client.collections.get("Brands")
-ecommerce_collection = client.collections.get("Ecommerce")
-weather_collection = client.collections.get("Weather")
-financial_collection = client.collections.get("Financial_contracts")
+brands_collection = client.collections.use("Brands")
+ecommerce_collection = client.collections.use("Ecommerce")
+weather_collection = client.collections.use("Weather")
+financial_collection = client.collections.use("Financial_contracts")
 
 with brands_collection.batch.dynamic() as batch:
     for item in brands_dataset:
@@ -151,15 +151,15 @@ with financial_collection.batch.dynamic() as batch:
         batch.add_object(properties=item["properties"])
 ```
 
-## 2. Query Agent の設定
+## 2. Query Agent のセットアップ
 
-Query Agent を設定する際には、以下を指定します。  
+Query Agent を設定する際には、以下を渡す必要があります。  
 - `client`  
 - エージェントにアクセスさせたい `collection`  
-- （任意）エージェントの振る舞いを説明する `system_prompt`  
-- （任意）タイムアウト。デフォルトは 60 s です。  
+- （オプション）エージェントの振る舞いを説明する `system_prompt`  
+- （オプション）タイムアウト（デフォルトは 60 秒）
 
-まずはシンプルなエージェントから始めましょう。ここでは `Brands` と `Ecommerce` の両データセットへアクセスできる `agent` を作成します。
+まずはシンプルなエージェントを作成しましょう。ここでは `Brands` と `Ecommerce` の両データセットにアクセスできる `agent` を作成しています。
 
 ```python
 from weaviate.agents.query import QueryAgent
@@ -169,18 +169,18 @@ agent = QueryAgent(
 )
 ```
 
-## 3. Query Agent の実行
+## 3. Query Agent を実行する
 
-エージェントを実行すると、クエリに応じて次のような判断を行います。
+エージェントを実行すると、クエリに応じて以下の判断を行います。
 
-1. どのコレクション（複数の場合もあり）を参照するかを決定  
-2. 通常の ***検索クエリ*** を行うか、どの ***フィルター*** を使うか、***集約クエリ*** を行うか、あるいはそれらを組み合わせるかを決定  
-3. そして **`QueryAgentResponse`** 形式でレスポンスを返します。`print_query_agent_response` 関数を用いて、レスポンスオブジェクトの各種情報を見やすく表示します。  
+1. どのコレクションを参照するか  
+2. 通常の ***検索クエリ***、使用する ***フィルター***、***集約クエリ*** を行うかどうか、またはそれらを組み合わせるか  
+3. その後、**`QueryAgentResponse`** 内で応答を返します。`print_query_agent_response` 関数を用いて、レスポンスオブジェクトに含まれる各情報をわかりやすく表示します。
 
-### 質問する
-**まずは簡単な質問から： “I like the vintage clothes, can you list me some options that are less than &#36;200?”**
+### 質問してみる
+**まずはシンプルな質問から始めましょう: 「ヴィンテージの服が好きです。200ドル未満のアイテムをいくつか教えてくれますか？」**
 
-エージェントがどのように応答したか、どのコレクションでどのような検索を実行したか、最終回答に不足があるかどうかなどを確認できます👇
+エージェントがどのように回答し、どのコレクションでどのような検索を行ったか、最終回答に不足情報があるかどうかなどを確認できます👇
 
 ```python
 from weaviate.agents.utils import print_query_agent_response
@@ -267,10 +267,10 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics   
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬──────┐
 │ LLM Requests:  │ 3    │
 │ Input Tokens:  │ 7774 │
@@ -280,9 +280,11 @@ print_query_agent_response(response)
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>Total Time Taken: 16.93s</pre>
 
-### フォローアップ質問の実行
 
-エージェントには追加のコンテキストを渡すこともできます。たとえば、前回のレスポンスをコンテキストとして渡し、`new_response` を取得できます。  
+
+### フォローアップ質問
+
+エージェントには追加のコンテキストを渡すこともできます。たとえば、前回の応答をコンテキストとして渡し、`new_response` を取得できます。
 
 ```python
 new_response = agent.run("What about some nice shoes, same budget as before?", context=response)
@@ -356,10 +358,10 @@ print_query_agent_response(new_response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics    
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬───────┐
 │ LLM Requests:  │ 4     │
 │ Input Tokens:  │ 9783  │
@@ -369,7 +371,7 @@ print_query_agent_response(new_response)
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>Total Time Taken: 18.02s</pre>
 
-次は集約が必要な質問を試してみましょう。どのブランドが最も多くの靴を掲載しているかを調べます。  
+次に、集計が必要となる質問を試してみましょう。どのブランドが最も多くの靴を掲載しているかを見てみます。
 
 ```python
 response = agent.run("What is the the name of the brand that lists the most shoes?")
@@ -408,10 +410,10 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics   
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬──────┐
 │ LLM Requests:  │ 3    │
 │ Input Tokens:  │ 3976 │
@@ -421,11 +423,13 @@ print_query_agent_response(response)
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>Total Time Taken: 5.33s</pre>
 
-### 複数コレクションの検索
 
-場合によっては、複数のコレクションに対する検索結果を組み合わせる必要があります。上記の結果から、" Loom & Aura " が最も多くの靴を掲載していることがわかります。
 
-ここでは、ユーザーがこの会社について _および_ その商品についてさらに詳しく知りたいと考えているシナリオを想定してみましょう。
+### 複数コレクションでの検索
+
+場合によっては、複数のコレクションに対する検索結果を組み合わせる必要があります。上記の結果から、 ' Loom & Aura ' が最も多くの靴を掲載していることが分かります。
+
+ここでは、ユーザーがこの会社について _さらに_ 、そして彼らが販売しているアイテムについても詳しく知りたいと想定してみましょう。
 
 ```python
 response = agent.run("Does the brand 'Loom & Aura' have a parent brand or child brands and what countries do they operate from? "
@@ -513,10 +517,10 @@ print_query_agent_response(response)
 │                                                                                                                 │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯</pre>
 
-    
-    
 
-<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics    
+
+
+<pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>   📊 Usage Statistics
 ┌────────────────┬───────┐
 │ LLM Requests:  │ 5     │
 │ Input Tokens:  │ 9728  │
@@ -526,11 +530,11 @@ print_query_agent_response(response)
 
 <pre style={{whiteSpace: 'pre', overflowX: 'auto', lineHeight: 'normal', fontFamily: 'Menlo,\'DejaVu Sans Mono\',consolas,\'Courier New\',monospace'}}>Total Time Taken: 11.38s</pre>
 
-### System Prompt の変更
+### システムプロンプトの変更
 
-場合によっては、エージェント用のカスタム `system_prompt` を定義したいことがあります。これにより、エージェントにデフォルトの指示を与えて振る舞いをコントロールできます。たとえば、常にユーザーの言語で回答するエージェントを作成してみましょう。
+場合によっては、エージェントに対してカスタムの `system_prompt` を定義したいことがあります。これにより、エージェントにデフォルトの指示を与え、どのように振る舞うかを指定できます。たとえば、常にユーザーの言語でクエリに回答するエージェントを作成してみましょう。
 
-さらに、` QueryAgent ` に ` Financial_contracts ` と ` Weather ` の 2 つのコレクションへのアクセス権を付与します。次に、ご自身でもさまざまなクエリを試してみてください。
+さらに、`QueryAgent` に `Financial_contracts` と `Weather` という 2 つのコレクションへのアクセス権を持たせます。次に、ぜひ自分でもクエリを試してみてください！
 
 ```python
 multi_lingual_agent = QueryAgent(
@@ -540,7 +544,7 @@ multi_lingual_agent = QueryAgent(
 )
 ```
 
-今回は例として天気に関する質問をしてみましょう。
+今回は、天気に関する質問をしてみましょう！
 
 ```python
 response = multi_lingual_agent.run("Quelles sont les vitesses minimales, maximales et moyennes du vent?")
@@ -552,9 +556,9 @@ Python 出力:
 Les vitesses de vent minimales, maximales et moyennes sont respectivement de 8,40 km/h, 94,88 km/h et 49,37 km/h. Ces données offrent une vue d'ensemble des conditions de vent typiques mesurées dans une période ou un lieu donné.
 ```
 
-### さらに質問してみる
+### さらに質問を試す
 
-たとえば、ブランド " Eko & Stitch " についてもっと詳しく調べてみましょう。
+たとえば、 ' Eko & Stitch ' というブランドについてもっと調べてみましょう。
 
 ```python
 response = multi_lingual_agent.run("Does Eko & Stitch have a branch in the UK? Or if not, does it have parent or child company in the UK?")
@@ -567,7 +571,7 @@ Python 出力:
 Yes, Eko & Stitch has a branch in the UK. The brand is part of the broader company Nova Nest, which serves as Eko & Stitch's parent brand. Eko & Stitch itself operates in the UK and has its child brands, Eko & Stitch Active and Eko & Stitch Kids, also within the UK.
 ```
 
-` multi_lingual_agent ` には " Financial_contracts " というコレクションへのアクセス権もあります。このデータセットについてさらに情報を取得してみましょう。
+`multi_lingual_agent` には "Financial_contracts" というコレクションにもアクセス権があります。このデータセットについてさらに情報を探してみましょう。
 
 ```python
 response = multi_lingual_agent.run("What kinds of contracts are listed? What's the most common type of contract?")
@@ -579,3 +583,4 @@ Python 出力:
 ```text
 The query seeks to identify the types of contracts listed and determine the most common type. Among the types of contracts provided in the results, the following were identified: employment contracts, sales agreements, invoice contracts, service agreements, and lease agreements. The most common type of contract found in the search results is the employment contract. However, when considering data from both search and aggregation results, the aggregation reveals that the invoice contract is the most common, followed by service agreements and lease agreements. While employment contracts appear frequently in the search results, they rank fourth in the aggregation data in terms of overall occurrences.
 ```
+

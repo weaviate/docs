@@ -1,99 +1,93 @@
 ---
-title: Runtime configurations
+title: ランタイム設定
 image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
 
-:::caution Technical preview
-
-Runtime configuration management was added in **`v1.30`** as a **technical preview**.
-<br/>
-
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
+:::info `v1.30` で追加
 :::
 
-Weaviate supports runtime configuration management, allowing certain environment variables to be updated and read by Weaviate on the fly without the need for restarts. This feature helps you adapt settings in real time and fine-tune your instance based on evolving needs.
+Weaviate はランタイム設定管理をサポートしており、特定の環境変数を再起動せずに動的に更新・読み取りできます。この機能により、リアルタイムで設定を調整し、変化するニーズに合わせてインスタンスを最適化できます。
 
-For more information on how to **use runtime configuration**, look at the [user guide](/deploy/configuration/env-vars/runtime-config.md). This document talks about how to add support to the configs to be changed dynamically during runtime.
+**ランタイム設定の使い方** については、[ユーザーガイド](/deploy/configuration/env-vars/runtime-config.md) をご覧ください。本ドキュメントでは、実行中に設定を動的に変更できるようにサポートを追加する方法を説明します。
 
-## Add support for configuration changes during runtime
+## ランタイム設定変更サポートの追加
 
-We have two core types used to manage your configs dynamically: `runtime.DynamicType` and `runtime.DynamicValue`. These look roughly like this:
+設定を動的に管理するために、`runtime.DynamicType` と `runtime.DynamicValue` の 2 つのコア型を使用します。概要は次のとおりです。
 
 ```go
 // DynamicType represents different types that is supported in runtime configs
 type DynamicType interface {
-	~int | ~float64 | ~bool | time.Duration | ~string
+    ~int | ~float64 | ~bool | time.Duration | ~string | []string
 }
 
 // DynamicValue represents any runtime config value. Its zero value is fully usable.
 // If you want zero value with different `default`, use `NewDynamicValue` constructor.
 type DynamicValue[T DynamicType] struct {
-	...[private fields]
+    ...[private fields]
 }
 ```
 
-This means `DynamicType` currently supports the types: `~int`, `~float64`, `~bool`, `~string`, `time.Duration`.
+つまり、`DynamicType` は現在 `~int`、`~float64`、`~bool`、`~string`、`time.Duration`、`[]string` の型をサポートしています。
 
-If you want a config option to support dynamic updates, follow these high-level steps. For example, suppose you have a config called `MaxLimit` of type `int`.
+設定オプションを動的更新に対応させるには、以下の高レベル手順に従ってください。例として、`int` 型の `MaxLimit` という設定があるとします。
 
 ```go
 type Config struct {
-	....
-	MaxLimit int
+    ....
+    MaxLimit int
 }
 ```
 
-### 1. Convert `int` -> `DynamicValue[int]` (or the appropriate type)
+### 1. 型変換: `int` から `DynamicValue[int]`（または適切な型）へ
 
 ```go
 type Config struct {
-	MaxLimit *runtime.DynamicValue[int]
+    MaxLimit *runtime.DynamicValue[int]
 }
 ```
 
-Also update the config parsing code (usually `FromEnv()` in `weaviate/usecases/config/environment.go`).
+設定解析コード（通常は `weaviate/usecases/config/environment.go` の `FromEnv()`）も更新します。
 
 ```go
-	config.MaxLimit = runtime.NewDynamicValue(12) // default value for your config is `12` now
+    config.MaxLimit = runtime.NewDynamicValue(12) // default value for your config is `12` now
 ```
 
-### 2. Add it to `config.WeaviateRuntimeConfig`
+### 2. `config.WeaviateRuntimeConfig` へ追加
 
 ```go
 type WeaviateRuntimeConfig struct {
-	...
-	MaxLimit *runtime.DynamicValue[int] `json:"max_limit" yaml:"max_limit"`
+    ...
+    MaxLimit *runtime.DynamicValue[int] `json:"max_limit" yaml:"max_limit"`
 }
 ```
 
-### 3. Register your config in `runtime.ConfigManager`
+### 3. `runtime.ConfigManager` で設定を登録
 
-This usually happens in `initRuntimeOverrides()` in `adaptors/handlers/rest/configure_api.go`.
+通常は `adaptors/handlers/rest/configure_api.go` の `initRuntimeOverrides()` で行います。
 
 ```go
-	registered := &config.WeaviateRuntimeConfig{}
-	...
-	registered.MaxLimit = appState.ServerConfig.Config.MaxLimit
+    registered := &config.WeaviateRuntimeConfig{}
+    ...
+    registered.MaxLimit = appState.ServerConfig.Config.MaxLimit
 ```
 
-### 4. Consume the dynamic value via `value.Get()`
+### 4. `value.Get()` で動的値を取得
 
-To access the current value of the config, use `config.MaxLimit.Get()` instead of referencing `config.MaxLimit` directly. This ensures you get the updated value dynamically.
+現在の設定値にアクセスする際は、`config.MaxLimit` を直接参照するのではなく `config.MaxLimit.Get()` を使用してください。これにより、更新された値を動的に取得できます。
 
 :::info
-When `RUNTIME_OVERRIDES_ENABLED=false`, your config still behaves as a static config and uses the default value (`12` in this example) provided via `NewDynamicValue(12)`.
+`RUNTIME_OVERRIDES_ENABLED=false` の場合、この設定は静的設定として動作し、`NewDynamicValue(12)` で指定したデフォルト値（この例では 12）が使用されます。
 :::
 
-## Further resources
+## 参考資料
 
-- [Configuration: Runtime configuration management](/deploy/configuration/env-vars/runtime-config.md)
-- [Weaviate GitHub repository](https://github.com/weaviate/weaviate/)
+- [設定: ランタイム設定管理](/deploy/configuration/env-vars/runtime-config.md)
+- [Weaviate GitHub リポジトリ](https://github.com/weaviate/weaviate/)
 
-## Questions and feedback
+## 質問とフィードバック
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

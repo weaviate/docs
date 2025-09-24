@@ -1,7 +1,7 @@
 ---
 title: 非同期 API
 sidebar_position: 40
-description: "高性能でノンブロッキングな Weaviate 操作のための非同期 Python クライアントのドキュメント。"
+description: "高パフォーマンスでノンブロッキングな Weaviate 操作を実現する非同期 Python クライアントのドキュメント。"
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library']
 ---
@@ -12,39 +12,39 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PythonCode from '!!raw-loader!/_includes/code/client-libraries/python_v4.py';
 import FastAPIExample from '!!raw-loader!/_includes/code/client-libraries/minimal_fastapi.py';
 
-:::info `weaviate-client` `v4.7.0` で追加されました
-非同期 Python クライアントは `weaviate-client` の `4.7.0` 以降で利用できます。
+:::info `weaviate-client` `v4.7.0` で追加
+非同期 Python クライアントは、`weaviate-client` バージョン `4.7.0` 以降で利用できます。
 :::
 
-Python クライアント ライブラリはデフォルトで [同期 API](./index.mdx) を提供しますが、並列アプリケーション向けに非同期 API も利用できます。
+Python クライアントライブラリはデフォルトで [同期 API](./index.mdx) を提供しますが、並列アプリケーション向けに非同期 API も利用できます。
 
-非同期操作を行う場合は、`weaviate-client` `v4.7.0` 以降で利用可能な `WeaviateAsyncClient` を使用してください。
+非同期処理を行う場合は、`weaviate-client` `v4.7.0` 以降で利用可能な `WeaviateAsyncClient` async クライアントを使用してください。
 
-`WeaviateAsyncClient` は [同期クライアント](./index.mdx) である `WeaviateClient` とほぼ同じ関数とメソッドをサポートしていますが、`asyncio` イベントループで動作する `async` 関数内で使用するよう設計されている点が主な違いです。
+`WeaviateAsyncClient` async クライアントは、`WeaviateClient` [同期クライアント](./index.mdx) とほぼ同じ関数およびメソッドをサポートしていますが、async クライアントは [`asyncio` イベントループ](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop) で実行される `async` 関数内で使用するよう設計されています。
 
 ## インストール
 
-非同期クライアントはすでに `weaviate-client` パッケージに含まれています。[Python クライアント ライブラリのドキュメント](./index.mdx#installation) に従ってインストールしてください。
+async クライアントはすでに `weaviate-client` パッケージに含まれています。[Python クライアントライブラリのドキュメント](./index.mdx#installation) に従ってインストールしてください。
 
 ## インスタンス化
 
-非同期クライアント `WeaviateAsyncClient` オブジェクトは、[ヘルパー関数を使用](#instantiation-helper-functions)するか、[クラスを直接インスタンス化](#explicit-instantiation)して生成できます。
+async クライアント `WeaviateAsyncClient` オブジェクトは、[ヘルパー関数を使用して](#instantiation-helper-functions) あるいは [クラスのインスタンスを明示的に生成して](#explicit-instantiation) 作成できます。
 
 ### インスタンス化ヘルパー関数
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "synchronous client helper functions" -->
-これらのヘルパー関数は同期クライアントのヘルパー関数と似ており、同等の非同期クライアント オブジェクトを返します。
+これらのインスタンス化ヘルパー関数は同期クライアントのヘルパー関数と似ており、同等の async クライアントオブジェクトを返します。
 
 - `use_async_with_local`
 - `use_async_with_weaviate_cloud`
 - `use_async_with_custom`
 
-ただし、同期版とは異なり、非同期ヘルパー関数はサーバーへ接続を行いません。
+ただし、async ヘルパー関数は同期版と異なり、サーバーへ接続しません。
 
-非同期ヘルパー関数を使用する場合は、サーバーへ接続するために `async` メソッドである `.connect()` を呼び出し、終了前に `.close()` を呼び出してクリーンアップしてください。（[コンテキストマネージャ](#context-manager)を利用する場合を除く。）
+async ヘルパー関数を使用する場合は、サーバーに接続するために async メソッド `.connect()` を呼び出し、終了前に `.close()` を呼び出してクリーンアップしてください（[コンテキストマネージャ](#context-manager) を使用する場合を除く）。
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "external API keys", "connection timeout values" and "authentication details" -->
-非同期ヘルパー関数は、外部 API キー、接続タイムアウト値、認証情報に対して同期版と同じ引数を受け取ります。
+async ヘルパー関数は、外部 API キー、接続タイムアウト値、および認証情報に関して同期版と同じパラメーターを受け取ります。
 
 <Tabs groupId="languages">
 <TabItem value="wcd" label="WCD">
@@ -84,7 +84,7 @@ Python クライアント ライブラリはデフォルトで [同期 API](./in
 
 ### 明示的なインスタンス化
 
-カスタムパラメーターを渡す必要がある場合は、`weaviate.WeaviateAsyncClient` クラスを使用してクライアントをインスタンス化してください。これはクライアント オブジェクトを生成する最も柔軟な方法です。
+カスタムパラメーターを渡す必要がある場合は、`weaviate.WeaviateAsyncClient` クラスを使用してクライアントをインスタンス化します。これはクライアントオブジェクトを生成する最も柔軟な方法です。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -93,7 +93,7 @@ Python クライアント ライブラリはデフォルトで [同期 API](./in
   language="py"
 />
 
-接続を直接インスタンス化した場合は、サーバーへ接続するために（非同期となった）`.connect()` メソッドを呼び出す必要があります。
+接続を直接インスタンス化した場合、サーバーへ接続するには（非同期化された）`.connect()` メソッドを呼び出す必要があります。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -104,38 +104,38 @@ Python クライアント ライブラリはデフォルトで [同期 API](./in
 
 ## 同期メソッドと非同期メソッド
 
-非同期クライアント オブジェクトは、[`asyncio` イベントループ](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop) で動作する `async` 関数内で使用するよう設計されています。
+async クライアントオブジェクトは、[`asyncio` イベントループ](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop) で実行される `async` 関数内で使用するよう設計されています。
 
-そのため、クライアント メソッドの大部分は `async` 関数であり、戻り値として [`Coroutine` オブジェクト](https://docs.python.org/3/library/asyncio-task.html#coroutine) を返します。しかし、一部のメソッドは同期的であり、同期コンテキストでも使用できます。
+そのため、クライアントメソッドの大半は `Coroutine` オブジェクトを返す `async` 関数ですが、一部のメソッドは同期的であり同期コンテキストで使用できます。
 
-一般的な目安として、Weaviate へのリクエストを伴うメソッドは `async` 関数であり、ローカルコンテキストで完結するメソッドは同期関数です。
+一般的な目安として、Weaviate へリクエストを送信するメソッドは async 関数であり、ローカルコンテキストで完結するメソッドは同期関数です。
 
 ### 非同期メソッドの識別方法
 
-非同期メソッドはシグネチャで判別できます。非同期メソッドは `async` キーワードで定義され、`Coroutine` オブジェクトを返します。
+非同期メソッドはメソッドシグネチャで識別できます。async メソッドは `async` キーワードで定義され、`Coroutine` オブジェクトを返します。
 
-メソッド シグネチャを確認するには、Python の `help()` 関数を使用するか、[Visual Studio Code](https://code.visualstudio.com/docs) や [PyCharm](https://www.jetbrains.com/help/pycharm/viewing-reference-information.html) のようにコード補完をサポートする IDE を利用してください。
+メソッドシグネチャを確認するには、Python の `help()` 関数を使用するか、[Visual Studio Code](https://code.visualstudio.com/docs) や [PyCharm](https://www.jetbrains.com/help/pycharm/viewing-reference-information.html) などのコード補完をサポートする IDE を利用してください。
 
 ### 非同期メソッドの例
 
-Weaviate へリクエストを送信する操作は非同期関数となります。例えば、次の操作はいずれも `async` 関数です。
+Weaviate にリクエストを送信する操作はすべて async 関数です。例えば、次の各操作は async 関数です。
 
 - `async_client.connect()`: Weaviate サーバーへ接続
 - `async_client.collections.create()`: 新しいコレクションを作成
-- `<collection_object>.data.insert_many()`: オブジェクトのリストをコレクションに挿入
+- `<collection_object>.data.insert_many()`: オブジェクトのリストをコレクションに追加
 
 
 
 ### 同期メソッドの例
 
-ローカルコンテキストで実行されるメソッドは、同期処理である場合が多いです。たとえば、次の各操作は同期関数です。
+ローカルコンテキストで実行されるメソッドは同期である場合が多いです。例えば、次の操作はいずれも同期関数です。
 
-- `async_client.collections.get("<COLLECTION_NAME>")`：既存のコレクションと対話するための Python オブジェクトを作成します（コレクションを新規作成するわけではありません）
-- `async_client.is_connected()`：Weaviate サーバーへの直近の接続状態を確認します
+- `async_client.collections.use("<COLLECTION_NAME>")`: 既存のコレクションと対話するための Python オブジェクトを作成します（コレクションを作成するわけではありません）
+- `async_client.is_connected()`: Weaviate サーバーへの最新の接続状況を確認します
 
 ## コンテキストマネージャー
 
-非同期クライアントは、次のような非同期コンテキストマネージャー内で使用できます。
+async クライアントは、非同期コンテキストマネージャー内で次のようなパターンで使用できます。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -144,13 +144,13 @@ Weaviate へリクエストを送信する操作は非同期関数となりま�
   language="py"
 />
 
-コンテキストマネージャーで非同期クライアントを使用する場合、`.connect()` や `.close()` を明示的に呼び出す必要はありません。クライアントが接続と切断を自動的に処理します。
+コンテキストマネージャーで async クライアントを使用する場合、`.connect()` や `.close()` を明示的に呼び出す必要はありません。クライアントが接続と切断を自動的に処理します。
 
 ## 非同期使用例
 
-非同期クライアントオブジェクトは、基本的には [同期 Python クライアント](./index.mdx) と同等の機能を提供しますが、いくつか重要な違いがあります。まず、非同期クライアントは [`asyncio` イベントループ](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop) 内で実行される `async` 関数で使用するよう設計されています。そのため、多くのクライアントメソッドは `async` 関数であり、[`Coroutine` オブジェクト](https://docs.python.org/3/library/asyncio-task.html#coroutine) を返します。
+async クライアントオブジェクトは、[同期版 Python クライアント](./index.mdx) とほぼ同じ機能を提供しますが、いくつかの重要な違いがあります。まず、async クライアントは [`asyncio` イベントループ](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio-event-loop) で動作する `async` 関数内での使用を前提としています。そのため、多くのメソッドは `async` 関数であり、[`Coroutine` オブジェクト](https://docs.python.org/3/library/asyncio-task.html#coroutine) を返します。
 
-非同期クライアントのメソッドを実行するには、別の `async` 関数内で `await` する必要があります。Python スクリプトで `async` 関数を実行するには、`asyncio.run(my_async_function)` を使用するか、イベントループを直接操作します。
+async クライアントのメソッドを実行するには、別の `async` 関数内で `await` する必要があります。Python スクリプトで `async` 関数を実行するには、`asyncio.run(my_async_function)` またはイベントループを直接使用できます。
 
 ```python
 loop = asyncio.new_event_loop()
@@ -159,9 +159,9 @@ loop.run_until_complete(my_async_function())
 
 ### データ挿入
 
-この例では、新しいコレクションを作成し、オブジェクトのリストを非同期クライアントを使ってコレクションに挿入します。
+この例では、新しいコレクションを作成し、async クライアントを使用してオブジェクトのリストを挿入します。
 
-非同期関数内でコンテキストマネージャーを使用している点に注目してください。コンテキストマネージャーは、データ挿入処理の間、クライアントがサーバーに接続されていることを保証します。
+async 関数内でコンテキストマネージャーを使用している点に注目してください。これはデータ挿入中にクライアントがサーバーに接続されていることを保証するためです。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -170,11 +170,11 @@ loop.run_until_complete(my_async_function())
   language="py"
 />
 
-### 検索と RAG
+### 検索 & RAG
 
-この例では、非同期クライアントを使用してハイブリッド検索結果に対し、検索拡張生成 (RAG) を実行します。
+この例では、async クライアントを使用してハイブリッド検索結果に対して検索拡張生成 (RAG) を実行します。
 
-非同期関数内でコンテキストマネージャーを使用している点に注目してください。コンテキストマネージャーは、データ挿入処理の間、クライアントがサーバーに接続されていることを保証します。
+async 関数内でコンテキストマネージャーを使用している点に注目してください。これはデータ挿入中にクライアントがサーバーに接続されていることを保証するためです。
 
 <FilteredTextBlock
   text={PythonCode}
@@ -185,13 +185,13 @@ loop.run_until_complete(my_async_function())
 
 ### 大量データ挿入
 
-サーバーサイドのバッチ操作には、同期クライアントとその [`batch` 操作](../../manage-objects/import.mdx) の使用を推奨します。`batch` 操作は、並列リクエストにより大量データを効率的に処理できるよう設計されています。
+サーバーサイドのバッチ操作には、同期クライアントの [`batch` 操作](../../manage-objects/import.mdx) を使用することを推奨します。`batch` 操作は、すでに並行リクエストによって大量データを効率的に処理できるよう設計されています。
 
-非同期クライアントにも `insert` と `insert_many` メソッドがあり、非同期コンテキストでデータ挿入に使用できます。
+async クライアントでも `insert` と `insert_many` メソッドを提供しており、非同期コンテキストで使用できます。
 
 ### アプリケーションレベルの例
 
-非同期クライアントの一般的なユースケースとして、複数のリクエストを同時に処理する Web アプリケーションがあります。以下は、モジュール型 Web API マイクロサービスを作成できる人気フレームワーク [FastAPI](https://fastapi.tiangolo.com/) と非同期クライアントを統合した、簡潔なサンプルです。
+async クライアントの一般的なユースケースに、複数のリクエストを同時に処理する Web アプリケーションがあります。以下は、モジュラーな Web API マイクロサービスを作成するための人気フレームワーク FastAPI と async クライアントを統合した最小限の例です。
 
 <FilteredTextBlock
   text={FastAPIExample}
@@ -203,7 +203,7 @@ loop.run_until_complete(my_async_function())
 この例を実行すると、FastAPI サーバーが `http://localhost:8000` で起動します。`/` と `/search` エンドポイントを使用してサーバーと対話できます。
 
 :::note データ挿入は表示していません
-この例は最小構成であり、コレクションの作成やオブジェクトの挿入は含んでいません。`Movie` コレクションが既に存在することを前提としています。
+この例は最小構成であり、コレクションの作成やオブジェクトの挿入は含まれていません。`Movie` というコレクションが既に存在していることを前提としています。
 :::
 
 ## 質問とフィードバック

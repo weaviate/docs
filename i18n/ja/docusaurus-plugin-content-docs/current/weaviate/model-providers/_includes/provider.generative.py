@@ -107,7 +107,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -144,7 +144,7 @@ prompt = GenerativeParameters.grouped_task(
     # highlight-end
 )
 
-jeopardy = client.collections.get("DemoCollection")
+jeopardy = client.collections.use("DemoCollection")
 response = jeopardy.generate.near_text(
     query="Movies",
     limit=5,
@@ -221,7 +221,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -282,7 +282,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -314,7 +314,7 @@ prompt = GenerativeParameters.grouped_task(
     # highlight-end
 )
 
-jeopardy = client.collections.get("DemoCollection")
+jeopardy = client.collections.use("DemoCollection")
 response = jeopardy.generate.near_text(
     query="Movies",
     limit=5,
@@ -398,7 +398,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -465,7 +465,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -539,7 +539,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -637,7 +637,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -674,7 +674,7 @@ prompt = GenerativeParameters.grouped_task(
     # highlight-end
 )
 
-jeopardy = client.collections.get("DemoCollection")
+jeopardy = client.collections.use("DemoCollection")
 response = jeopardy.generate.near_text(
     query="Movies",
     limit=5,
@@ -751,7 +751,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -827,7 +827,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -955,7 +955,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -992,7 +992,7 @@ prompt = GenerativeParameters.grouped_task(
     # highlight-end
 )
 
-jeopardy = client.collections.get("DemoCollection")
+jeopardy = client.collections.use("DemoCollection")
 response = jeopardy.generate.near_text(
     query="Movies",
     limit=5,
@@ -1077,7 +1077,7 @@ client.collections.delete("DemoCollection")
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -1125,7 +1125,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -1180,7 +1180,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -1243,7 +1243,7 @@ import_data()
 from weaviate.classes.config import Configure
 from weaviate.classes.generate import GenerativeConfig
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 response = collection.generate.near_text(
     query="A holiday film",
     limit=2,
@@ -1274,7 +1274,7 @@ prompt = GenerativeParameters.grouped_task(
     # highlight-end
 )
 
-jeopardy = client.collections.get("DemoCollection")
+jeopardy = client.collections.use("DemoCollection")
 response = jeopardy.generate.near_text(
     query="Movies",
     limit=5,
@@ -1294,7 +1294,7 @@ client.collections.delete("DemoCollection")
 import_data()
 
 # START SinglePromptExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 response = collection.generate.near_text(
     query="A holiday film",  # The model provider integration will automatically vectorize the query
@@ -1310,7 +1310,7 @@ for obj in response.objects:
 # END SinglePromptExample
 
 # START GroupedTaskExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 response = collection.generate.near_text(
     query="A holiday film",  # The model provider integration will automatically vectorize the query
@@ -1320,7 +1320,7 @@ response = collection.generate.near_text(
     # highlight-end
 )
 
-print(f"Generated output: {response.generated}")  # Note that the generated output is per query
+print(f"Generated output: {response.generative.text}")  # Note that the generated output is per query
 for obj in response.objects:
     print(obj.properties["title"])
 # END GroupedTaskExample

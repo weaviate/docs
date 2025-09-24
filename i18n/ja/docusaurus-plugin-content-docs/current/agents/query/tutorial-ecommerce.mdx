@@ -1,82 +1,73 @@
 ---
-title: Query エージェントで E-Commerce アシスタントを作成する
-sidebar_label: 'チュートリアル: E-Commerce アシスタント'
-description: "Query エージェントを使用して、製品やブランドの質問に答える e-commerce アシスタントを作成するチュートリアルです"
+title: Query Agent で E-Commerce アシスタントを構築する
+sidebar_label: "Tutorial: E-Commerce assistant"
+description: "Query Agent を使用して、商品およびブランドの質問に回答する e-commerce アシスタントを作成するチュートリアル。"
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent_tutorial_ecommerce.py';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/docs/agents/_includes/query_agent_tutorial_ecommerce.py";
 
-:::caution Technical Preview
+このチュートリアルでは、 **[Weaviate Query Agent](./index.md)** を使ってシンプルな e-commerce アシスタント エージェントを構築します。このエージェントは複数の Weaviate コレクションにアクセスでき、各コレクションの情報を利用してブランドや衣料品に関する複雑な問い合わせに回答できます。
 
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
+Query Agent を試せるように、いくつかの公開データセットを用意しました。  
+HuggingFace で公開されています。
 
-[こちらから登録](https://events.weaviate.io/weaviate-agents) して Weaviate エージェントの最新情報を受け取るか、[このページ](https://weaviateagents.featurebase.app/) で最新アップデートの確認とフィードバックをお願いします。
+- [**E-Commerce：**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) 衣料品、価格、ブランド、レビューなどをまとめたデータセットです。
+- [**Brands：**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) 親ブランド、子ブランド、平均評価など、衣料品ブランドに関する情報をまとめたデータセットです。
 
-:::
+## 導入： Query エージェントとは
 
-このチュートリアルでは、**[Weaviate Query エージェント](./index.md)** を使用してシンプルな e-commerce アシスタント エージェントを構築します。エージェントは複数の Weaviate コレクションにアクセスし、各コレクションの情報を使ってブランドや衣料品に関する複雑な質問に回答できるようになります。
+Weaviate Query Agent は、Weaviate Cloud に保存されたデータにもとづいて自然言語の質問に回答するためにあらかじめ構築されたエージェント サービスです。ユーザーは自然言語でプロンプトや質問を入力するだけで、Query Agent が途中の処理をすべて担い、回答を返します。
 
-Query エージェントを試せる公開データセットを用意しました。  
-HuggingFace で利用できます。
-
-- [**E-Commerce:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) 衣料品、価格、ブランド、レビューなどを掲載したデータセット  
-- [**Brands:**](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) ブランドの親ブランドや子ブランド、平均顧客評価などの情報を掲載したデータセット
-
-## Query エージェントとは
-
-Weaviate Query エージェントは、Weaviate Cloud に保存されたデータを基に自然言語クエリに回答するために設計された、あらかじめ構築済みのエージェント サービスです。ユーザーは自然言語でプロンプト／質問を渡すだけで、Query エージェントが回答までのすべての手順を処理します。
-
-import WeaviateAgentsECommerceFlowchart from '/docs/agents/_includes/query_agent_tutorial_ecommerce_flowchart.png';
+import WeaviateAgentsECommerceFlowchart from "/docs/agents/_includes/query_agent_tutorial_ecommerce_flowchart.png";
 
 <div class="row">
   <div class="card">
     <div class="card__image">
       <img
         src={WeaviateAgentsECommerceFlowchart}
-        alt="Weaviate Query エージェント フローチャート"
+        alt="Weaviate Query Agent flowchart"
       />
     </div>
   </div>
 </div>
 <br />
 
-Query エージェントは次のように動作します。
+Query Agent の流れは次のとおりです。
 
-1. **タスクを受け取る** — 質問や instructions の形で渡されます。  
-2. **適切な生成モデル**（例: 大規模言語モデル）を使用してタスクを解析し、実行すべき正確なクエリを決定します。  
-3. **Weaviate にクエリを送信** — 指定されたベクトライザー統合（ここでは Weaviate Embeddings）を使用して必要に応じてクエリをベクトル化します。  
-4. **Weaviate から結果を受け取り**、適切な生成モデルを用いてユーザーのプロンプト／クエリに対する最終的な回答を生成します。  
+1. 質問や instructions という形で **タスクを受け取る**  
+2. **適切な生成モデル**（例：大規模言語モデル）を使ってタスクを解析し、実行すべき正確なクエリを決定する  
+3. **Weaviate へクエリを送信**。必要に応じて指定されたベクトライザー統合（ここでは Weaviate Embeddings）でクエリをベクトル化する  
+4. **Weaviate から結果を受け取り**、適切な生成モデルを使ってユーザーのプロンプト／質問に対する最終的な回答を生成する  
 
 <hr />
 
 ## 前提条件
 
-Weaviate エージェントおよび Weaviate Embedding サービスを利用するには、**[Weaviate Cloud](https://console.weaviate.cloud)** のアカウントが必要です。
+Weaviate Agents と Weaviate Embedding サービスを利用するには、 **[Weaviate Cloud](https://console.weaviate.cloud)** アカウントが必要です。
 
-## Step 1: Weaviate をセットアップする
+## ステップ 1: Weaviate のセットアップ
 
-ここからは、チュートリアルで使用する Weaviate Cloud インスタンスをセットアップし、Python クライアントから接続します。
+ここからは、本チュートリアルで使用する Weaviate Cloud インスタンスを作成し、Python クライアントと接続していきます。
 
 ### 1.1 Weaviate Cloud クラスターの作成
 
-1. Weaviate Cloud で [無料の Sandbox クラスター](/cloud/manage-clusters/create#sandbox-clusters) を作成します。  
-2. クラスターへ接続するために `REST Endpoint` と `Admin` API キーを控えます。（詳細は [クイックスタート](/cloud/manage-clusters/connect.mdx) を参照）
+1. Weaviate Cloud で [無料の Sandbox クラスターを作成](/cloud/manage-clusters/create#sandbox-clusters) します。  
+1. クラスターへ接続するために `REST Endpoint` と `Admin` API キーをメモします。（詳細は [クイックスタート](/cloud/manage-clusters/connect.mdx) をご覧ください）
 
 :::tip
-本チュートリアルではベクトライザーとして [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) サービスを使用するため、外部の埋め込みプロバイダー用キーを追加する必要はありません。Weaviate Embeddings はデフォルトで `Snowflake/snowflake-arctic-embed-l-v2.0` モデルを使用します。<br/><br/>
-他のベクトライザーを使用したい場合は、サポートされている [モデル プロバイダー](../../weaviate/model-providers/index.md) の一覧をご覧ください。
+このチュートリアルではベクトライザーとして [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) サービスを使用するため、外部エンベディング プロバイダー用の追加キーは不要です。Weaviate Embeddings はデフォルトで `Snowflake/snowflake-arctic-embed-l-v2.0` モデルを利用します。<br/><br/>
+別のベクトライザーを使用したい場合は、サポートされている [model providers](../../weaviate/model-providers/index.md) をご確認ください。
 :::
 
 ### 1.2 Python ライブラリのインストール
 
-Weaviate Python クライアントを `agents` コンポーネントと共にインストールするには、次のコマンドを実行します。
+Weaviate Python クライアントと `agents` コンポーネントをインストールするには、次を実行します。
 
 <Tabs groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -88,7 +79,7 @@ pip install "weaviate-client[agents]"
 </TabItem>
 </Tabs>
 
-公開データセットにアクセスするため、軽量ライブラリ `datasets` も必要です。
+また、HuggingFace にホストされている公開データセットへアクセスするために軽量ライブラリ `datasets` も必要です。
 
 <Tabs groupId="languages">
 <TabItem value="py_agents" label="Python">
@@ -100,13 +91,13 @@ pip install datasets
 </TabItem>
 </Tabs>
 
-import ForcePipInstall from '../_includes/_force_pip_install.mdx';
+import ForcePipInstall from "../_includes/_force_pip_install.mdx";
 
 <ForcePipInstall />
 
 ### 1.3 インスタンスへの接続
 
-次に、最初のステップで取得したパラメータを使用して Weaviate Cloud インスタンスへ接続します。
+それでは、最初のステップで取得したパラメーターを使って Weaviate Cloud インスタンスへ接続してみましょう。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -119,16 +110,17 @@ import ForcePipInstall from '../_includes/_force_pip_install.mdx';
   </TabItem>
 </Tabs>
 
-このスニペットを実行し、`True` が表示されればインスタンスへの接続は成功です。
+スニペットを実行すると `True` が表示され、インスタンスへの接続が成功したことを確認できます。
 
-## Step 2: コレクションを準備する
+## ステップ 2: コレクションの準備
 
-以下のコードブロックでは、Hugging Face からデモ データセットを取得し、Weaviate Sandbox クラスターの新しいコレクションに書き込みます。データを Weaviate にインポートする前に **コレクションを定義** し、データ スキーマを設定してベクトライザー／埋め込みサービスを選択する必要があります。
+以下のコード ブロックでは、Hugging Face からデモ データセットを取得し、Weaviate Sandbox クラスターに新しいコレクションとして書き込みます。データを Weaviate にインポートする前に **コレクションを定義** し、データ スキーマを設定し、ベクトライザー／エンベディング サービスを選択する必要があります。
+
 ### 2.1 コレクションの定義
 
-以下に、 `E-Commerce` と `Brands` データセット内のオブジェクト例を示します。  
+下記は `E-Commerce` と `Brands` データセット内のオブジェクト例です。
 
-import WeaviateAgentsEcommerceDataset from '/docs/agents/_includes/query_agent_tutorial_ecommerce_dataset.png';
+import WeaviateAgentsEcommerceDataset from "/docs/agents/_includes/query_agent_tutorial_ecommerce_dataset.png";
 
 <div class="row">
   <div class="card">
@@ -142,13 +134,13 @@ import WeaviateAgentsEcommerceDataset from '/docs/agents/_includes/query_agent_t
 </div>
 <br />
 
-`Brands` コレクションでは、インポートしたデータを基にプロパティを自動生成する [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) オプションを使用します。  
-ただし、これは最適なインポート方法ではありません。
+`Brands` コレクションでは、インポートされたデータにもとづいてプロパティを自動生成する [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) オプションを使用します。  
+ただし、これは最適なインポート方法とは言えません。
 
-Query Agent は、クエリを解決する際に **コレクションとプロパティの説明** を参照して使用対象を決定します。説明を変更して詳細を追加し、挙動を確かめてみてください。  
-そのため、データスキーマを手動で定義し、プロパティの説明を追加することを推奨します。
+Query Agent は **コレクションとプロパティの説明** を参照して、クエリを解決する際にどれを使用するか判断します。説明を変更して詳細を追加し、挙動を試してみると良いでしょう。  
+そのため、データ スキーマを手動で定義し、プロパティ説明を追加することを推奨します。
 
-たとえば、下記では価格がすべて USD であることを Query Agent に知らせています。これは通常は取得できない情報です。
+たとえば、以下の例では価格がすべて USD であることを Query Agent に明示しています。これは自動では取得できない情報です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -161,9 +153,11 @@ Query Agent は、クエリを解決する際に **コレクションとプロ�
   </TabItem>
 </Tabs>
 
-### 2.2 データベースへのデータ投入
 
-事前にベクトル化されたデータ（ [E-Commerce](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) と [Brands](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands) ）を Weaviate Cloud インスタンスへインポートします。
+
+### 2.2 データベースの入力
+
+ここでは、あらかじめベクトル化されたデータ（[E-Commerce](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) と [Brands](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands)）を Weaviate Cloud インスタンスにインポートできます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -176,25 +170,25 @@ Query Agent は、クエリを解決する際に **コレクションとプロ�
   </TabItem>
 </Tabs>
 
-コレクションに対して `len()` を呼び出すことで、インポートが完了したかどうかとコレクションのサイズを確認できます。
+コレクションに対して `len()` を呼び出すことで、インポートが正常に完了したか、またコレクションのサイズを確認できます。
 
 ```
 Size of the E-Commerce dataset: 448
 Size of the Brands dataset: 104
 ```
 
-## ステップ 3: Query Agent のセットアップ
+## Step 3: Query エージェントの設定
 
-### 3.1 基本的な Query Agent
+### 3.1 基本的な Query エージェント
 
-Query Agent を設定する際には、以下を指定します。
+Query エージェントをセットアップする際には、次の項目を指定する必要があります:
 
 - `client`
-- エージェントがアクセスできる `collection`
-- （任意）エージェントの振る舞いを記述する `system_prompt`
-- （任意）タイムアウト（デフォルトは 60s）
+- エージェントにアクセスさせたい `collections`
+- （任意）エージェントの振る舞いを説明する `system_prompt`
+- （任意）タイムアウト - 既定値は 60 s
 
-まずはシンプルなエージェントを作成します。ここでは `Brands` と `ECommerce` データセットにアクセスできる `agent` を生成しています。
+まずはシンプルなエージェントから始めます。`Brands` と `ECommerce` データセットにアクセスできる `qa` エージェントを作成します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -207,12 +201,11 @@ Query Agent を設定する際には、以下を指定します。
   </TabItem>
 </Tabs>
 
-これで準備完了です。さっそく Query Agent を使ってみましょう。
+これだけで完了です。すぐに Query エージェントを使用できます。
 
-### 3.2 カスタマイズした Query Agent（system prompt 付き） {#system-prompt-agent}
+### 3.2 カスタム Query エージェント（system prompt 付き） {#system-prompt-agent}
 
-場合によっては、エージェント用に独自の `system_prompt` を定義したいことがあります。  
-これにより、エージェントへデフォルトの指示を与えることができます。たとえば、常にユーザーの言語で回答するエージェントを作ってみましょう。
+場合によっては、エージェント用にカスタムの `system_prompt` を定義したいことがあります。これにより、エージェントのデフォルトの振る舞いを指示できます。例として、常にユーザーの言語で回答するエージェントを作成してみましょう。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -225,21 +218,21 @@ Query Agent を設定する際には、以下を指定します。
   </TabItem>
 </Tabs>
 
-このカスタムエージェント `multi_lingual_agent` は、 [ステップ 4.5](#use-system-prompt-agent) で使用します。
+このカスタム エージェント `multi_lingual_qa` は [step 4.5](#use-system-prompt-agent) で使用します。
 
-## ステップ 4: Query Agent を実行する
+## Step 4: Query エージェントの実行
 
-エージェントを実行すると、クエリに応じてまず次の決定を行います。
+エージェントを実行すると、クエリに応じて次のような判断を行います:
 
-1. どのコレクション（複数の場合もあり）を検索するかを決定します。  
-2. **_検索クエリ_** を行うか、どの **_フィルター_** を使うか、**_集計クエリ_** を行うか、またはそれらすべてを組み合わせるかを判断します。  
-3. その後、 **`QueryAgentResponse`** として応答を返します。
+1. どのコレクション（複数可）を参照して回答を検索するかを判断します。  
+2. 通常の **検索クエリ** を行うか、どの **フィルター** を使うか、**集約クエリ** を実行するか、あるいはそれらを組み合わせるかを判断します。  
+3. その後、`QueryAgentResponse` 内にレスポンスを返します。  
 
 ### 4.1 質問をする
 
-まずは簡単な質問から始めましょう。
+まずは簡単な質問から始めましょう:
 
-- 「ヴィンテージの洋服が好きです。 200 ドル未満でいくつか提案してもらえますか？」
+- 「ビンテージの服が好きなのですが、200 ドル以下でいくつか候補を挙げてもらえますか？」
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -252,13 +245,13 @@ Query Agent を設定する際には、以下を指定します。
   </TabItem>
 </Tabs>
 
-エージェントからの応答は次のとおりです。
+エージェントからのレスポンス:
 
 ```
 original_query='I like vintage clothes, can you list me some options that are less than $200?' collection_names=['ECommerce'] searches=[[QueryResultWithCollection(queries=['vintage clothes'], filters=[[IntegerPropertyFilter(property_name='price', operator=<ComparisonOperator.LESS_THAN: '<'>, value=200.0)]], filter_operators='AND', collection='ECommerce')]] aggregations=[] usage=Usage(requests=3, request_tokens=7681, response_tokens=428, total_tokens=8109, details=None) total_time=11.588264226913452 aggregation_answer=None has_aggregation_answer=False has_search_answer=True is_partial_answer=False missing_information=[] final_answer='Here are some vintage-inspired clothing options under $200:\n\n1. **Vintage Philosopher Midi Dress ($125.00)** - A deep green velvet fabric dress with antique gold button detailing, perfect for an academic or sophisticated setting. [Echo & Stitch]\n\n2. **Vintage Gale Pleated Dress ($120.00)** - A burgundy pleated dress capturing the Dark Academia aesthetic, great for poetry readings or contemplative afternoons. [Solemn Chic]\n\n3. **Retro Groove Flared Pants ($59.00)** - Electric blue flared pants capturing early 2000s millennial pop culture chic. [Vivid Verse]\n\n4. **Vintage Scholar Tote ($90.00)** - A deep green canvas tote with brown leather accents, ideal for carrying scholarly essentials. [Echo & Stitch]\n\n5. **Retro Futura Tee ($29.98)** - A bold graphic tee with early 2000s pop culture references, perfect for a nostalgic throwback. [Vivid Verse]\n\n6. **Electric Velvet Trousers ($60.00)** - Neon green velvet trousers with a flared leg, inspired by turn-of-the-century fashion icons. [Vivid Verse]\n\n7. **Vintage Ivy Loafers ($120.00)** - Burgundy leather loafers offering timeless sophistication, suitable for academic settings. [Solemn Chic]' sources=[Source(object_id='6040c373-9cce-421d-8f4e-e01346cbf29f', collection='ECommerce'), Source(object_id='06a83da4-92ff-4cbc-9cc6-c55fc6ed49b9', collection='ECommerce'), Source(object_id='a5a0927d-2859-47e6-8455-d77e0190aa53', collection='ECommerce'), Source(object_id='a5f3c394-d207-4064-a2bc-b9f655d09ddc', collection='ECommerce'), Source(object_id='5d7bb719-2df5-4a7c-9bbc-275450ab29c6', collection='ECommerce'), Source(object_id='50f4c89c-faf9-4430-b393-c39ede5d511d', collection='ECommerce'), Source(object_id='5b6d5a1f-e218-4400-ac9f-df59466f3c97', collection='ECommerce')]
 ```
 
-しかし、この出力は少し情報が多すぎるため、 `final_answer` フィールドだけを返してみます。
+しかし、この出力は情報量が多すぎるため、`final_answer` フィールドだけを返すようにしてみましょう:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -271,7 +264,7 @@ original_query='I like vintage clothes, can you list me some options that are le
   </TabItem>
 </Tabs>
 
-出力は次のとおりです。
+出力は次のとおりです:
 
 ```
 Here are some vintage-inspired clothing options under $200:
@@ -291,12 +284,12 @@ Here are some vintage-inspired clothing options under $200:
 7. **Vintage Ivy Loafers ($120.00)** - Burgundy leather loafers offering timeless sophistication, suitable for academic settings. [Solemn Chic]
 ```
 
-`QueryAgentResponse` の `display()` メソッドを使うと、以下の情報を分かりやすく表示できます。
+`QueryAgentResponse` に対して `display()` メソッドを使用すると、次の情報をユーザーフレンドリーな形式で確認できます:
 
-- 🔍 オリジナルクエリ - `original_query`
+- 🔍 元のクエリ - `original_query`
 - 📝 最終回答 - `final_answer`
 - 🔭 実行された検索 - `searches`
-- 📊 実行された集計 - `aggregations`
+- 📊 実行された集約 - `aggregations`
 - 📚 参照元 - `sources`
 - ⚠️ 不足している情報 - `missing_information`
 - 📊 使用状況統計 - `usage`
@@ -314,7 +307,7 @@ Here are some vintage-inspired clothing options under $200:
 </Tabs>
 
 <details>
-  <summary>応答内容:</summary>
+  <summary>The response is:</summary>
 
 ```
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────── 🔍 Original Query ────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
@@ -376,9 +369,10 @@ Total Time Taken: 11.59s
 ```
 
 </details>
-### 4.2 追加質問
 
-エージェントには追加のコンテキストを与えることもできます。例えば、前回の応答をコンテキストとして渡し、`new_response` を取得できます。
+### 4.2 フォローアップ質問
+
+エージェントには追加のコンテキストを与えることもできます。たとえば、`ChatMessage` オブジェクトを使って前回の応答をコンテキストとして会話を構築し、`new_response` を取得できます:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -392,7 +386,7 @@ Total Time Taken: 11.59s
 </Tabs>
 
 <details>
-  <summary>レスポンス:</summary>
+  <summary>応答は次のとおりです:</summary>
 
 ```
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────── 🔍 Original Query ────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
@@ -467,9 +461,9 @@ Total Time Taken: 22.77s
 
 </details>
 
-### 4.3 集計実行
+### 4.3 集約の実行
 
-次に、集計が必要な質問を試してみましょう。どのブランドが最も多くの靴を掲載しているかを確認します。
+ここでは、集約が必要な質問を試してみましょう。どのブランドが最も多くのシューズを掲載しているかを確認します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -483,7 +477,7 @@ Total Time Taken: 22.77s
 </Tabs>
 
 <details>
-  <summary>レスポンス:</summary>
+  <summary>応答は次のとおりです:</summary>
 
 ```
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────── 🔍 Original Query ────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
@@ -527,11 +521,11 @@ Total Time Taken: 7.52s
 
 </details>
 
-### 4.4 複数コレクション検索
+### 4.4 複数コレクションの検索
 
-場合によっては、複数のコレクションにわたる検索結果を結合する必要があります。上記の結果から、「Loom & Aura」が最も多くの靴を掲載していることがわかります。
+場合によっては、複数のコレクションにわたる検索結果を組み合わせる必要があります。上記の結果から、「Loom & Aura」が最も多くのシューズを掲載していることがわかります。
 
-ここで、ユーザーがこの会社について _さらに_ 詳しく知りたいと同時に、同社が販売している商品も調べたいというシナリオを想定してみましょう。
+次に、ユーザーがこの企業について、_さらに_ その販売商品について詳しく知りたいというシナリオを想定してみましょう。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -545,7 +539,7 @@ Total Time Taken: 7.52s
 </Tabs>
 
 <details>
-  <summary>レスポンス:</summary>
+  <summary>応答は次のとおりです:</summary>
 
 ```
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────── 🔍 Original Query ────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
@@ -602,16 +596,16 @@ Total Time Taken: 16.12s
 
 </details>
 
-### 4.5 システムプロンプトの使用 {#use-system-prompt-agent}
+### 4.5 システムプロンプトの利用 {#use-system-prompt-agent}
 
-[ステップ 3.2](#system-prompt-agent) で作成したカスタムエージェントを、次のシステムプロンプトと共に使用します:
+ここでは、[ステップ 3.2](#system-prompt-agent) で作成したカスタム エージェントを、次のシステムプロンプトと共に使用します:
 
 ```
 "You are a helpful assistant that always generates the final response in the user's language."
 "You may have to translate the user query to perform searches. But you must always respond to the user in their own language."
 ```
 
-例えば、ブランド「Eko & Stitch」に英国で支店または関連会社があるかどうかを、英語ではなく日本語で尋ねてみてください:
+たとえば、ブランド「Eko & Stitch」が英国に支店や関連会社を持っているかどうかを、日本語で質問してみてください（英語ではなく）:
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -625,13 +619,13 @@ Total Time Taken: 16.12s
 </Tabs>
 
 <details>
-  <summary>レスポンス:</summary>
+  <summary>応答は次のとおりです:</summary>
 
 ```
 Eko & Stitchは、英国に拠点があります。1974年に設立され、品質の高いクラフトマンシップとタイムレスなエレガンスで知られています。関連ブランドとして「Eko & Stitch Active」と「Eko & Stitch Kids」があります。また、Eko & Stitchの親会社はNova Nestです。
 ```
 
-英訳すると次のようになります:
+英訳すると:
 
 ```
 Eko & Stitch is based in the UK. It was established in 1974 and is known for its high-quality craftsmanship and timeless elegance. It has associated brands, "Eko & Stitch Active" and "Eko & Stitch Kids." Additionally, the parent company of Eko & Stitch is Nova Nest.
@@ -639,22 +633,19 @@ Eko & Stitch is based in the UK. It was established in 1974 and is known for its
 
 </details>
 
-## Summary
+## 概要
 
-本ガイドでは、Weaviate のエージェントサービスを使用してエンドツーエンドの EC アシスタントを構築する方法を説明しました。これには、Weaviate Cloud インスタンスのセットアップ、データセットのインポート、自然言語クエリをインテリジェントに処理する Query Agent の設定が含まれます。
+このガイドでは、Weaviate のエージェントサービスを活用して、エンドツーエンドの e-commerce アシスタントを構築する方法を説明しました。具体的には、Weaviate Cloud インスタンスのセットアップやデータセットのインポートから、自然言語クエリをインテリジェントに処理する Query Agent の設定までを扱いました。
 
-Query Agent はクエリを自動的に解釈し、通常の検索・フィルター・集計のいずれを実行するかを判断します。また、複数のコレクションに接続し、クエリに基づいて適切なソースを選択します。さらに、過去の対話を利用してより関連性の高いフォローアップ回答を行い、システムプロンプトを定義することで、ユーザーの希望する言語やスタイルで常に応答させることができます。
+Query Agent はクエリを自動的に解釈し、標準検索・フィルター・集約のどれを実行するかを判断します。また、複数のコレクションに接続し、クエリに応じて適切なソースを選択します。さらに、過去のやり取りを利用して関連性の高いフォローアップ回答を提供でき、システムプロンプトを定義することで、常にユーザーの好む言語やスタイルで応答させることも可能です。
 
-## 参考資料
+## 関連リソース
 
-- [Weaviate エージェント - Query Agent](./index.md)
+- [Weaviate Agents ‐ Query Agent](./index.md)
 
-## 質問とフィードバック
+## ご質問とフィードバック
 
-:::info Changelog and feedback
-Weaviate Agents の公式変更履歴は [こちら](https://weaviateagents.featurebase.app/changelog) でご覧いただけます。機能追加の要望、バグ報告、質問などのフィードバックがありましたら、[こちら](https://weaviateagents.featurebase.app/) からご提出ください。フィードバックのステータスを確認したり、他のフィードバックに投票したりできます。
-:::
-
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
+

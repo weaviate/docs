@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/personalization-agent-get-started-movies.ipynb
 toc: True
-title: "Weaviate パーソナライゼーション エージェントを構築する - 映画レコメンダー"
+title: "Weaviate パーソナライズ エージェントの構築 - 映画レコメンダー"
 featured: True
 integration: False
 agent: True
@@ -12,16 +12,16 @@ tags: ['Personalization Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-このレシピでは、新しい Weaviate `PersonalizationAgent` を使用して、Weaviate コレクションからユーザーにパーソナライズされた方法でオブジェクトを取得します。このエージェントベースの取得方法は、ユーザーのペルソナ プロファイルとコレクションとの過去のインタラクションに基づいています。
+このレシピでは、新しい Weaviate `PersonalizationAgent` を使用して、 Weaviate コレクションからユーザーごとにパーソナライズされたオブジェクトを取得します。この新しいエージェントによる取得方法は、ユーザーのペルソナプロファイルとコレクションとの過去のインタラクションに基づいています。
 
-> 📚 `PersonalizationAgent` の詳しい使い方は、弊社ブログ「[Introducing the Weaviate Personalization Agent](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents)」と[ドキュメント](https://docs.weaviate.io/agents/personalization)をご覧ください。
+> 📚 `PersonalizationAgent` の詳細な使い方については、当社ブログ「[Introducing the Weaviate Personalization Agent](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents)」および[ドキュメント](https://docs.weaviate.io/agents/personalization)をご覧ください。
 
-すぐに試せるように、いくつかのデモ データセットを Hugging Face datasets 🤗 で提供しています。
+すぐに試せるように、 Hugging Face datasets 🤗 上にいくつかのデモデータセットを用意しています。
 
-- [Movies](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-movies): 映画、評価、オリジナル言語などを一覧化したデータセット  
-- [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes): 料理名、短い説明、料理の種類を一覧化したデータセット
+- [Movies](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-movies)：映画、評価、オリジナル言語などを掲載したデータセット
+- [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes)：料理名、短い説明、料理の種類を掲載したデータセット
 
-この例では、Movies データセットを使用して映画レコメンダー サービスを作成します。
+本例では、 Movies データセットを使用して映画レコメンダーサービスを作成します。
 
 ```python
 !pip install weaviate-client[agents] datasets
@@ -29,12 +29,12 @@ tags: ['Personalization Agent']
 
 ## Weaviate のセットアップとデータのインポート
 
-Weaviate パーソナライゼーション エージェントを使用するには、まず [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) アカウントを作成してください👇  
-1. [Serverless Weaviate Cloud アカウント](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents)を作成し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents) をセットアップします。  
-2. 「Embedding」を開いて有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして利用されます。  
-3. クラスターに接続するために `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておきます。  
+Weaviate Personalization Agent を利用するには、まず [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) アカウントを作成してください👇  
+1. [Serverless Weaviate Cloud アカウントを作成](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents)し、無料の[Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents)をセットアップします。  
+2. 「Embedding」を開き、有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして使用されます。  
+3. 下記でクラスターに接続するため、 `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておいてください。
 
-> Info: 外部の埋め込みプロバイダー用の追加キーを用意する必要がないため、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) のご利用を推奨します。
+> Info: 外部の埋め込みプロバイダー用の追加キーを用意する必要がないため、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) の利用を推奨します。
 
 ```python
 import os
@@ -56,7 +56,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 ### 新しいコレクションの作成
 
-次に、Weaviate に "Movies" という新しいコレクションを作成します。Weaviate のエージェント サービスでは、コレクションのプロパティに説明を付けておくと便利です。これらの説明がエージェントで利用されます。
+次に、 Weaviate に "Movies" という新しいコレクションを作成します。エージェント機能を利用する場合、コレクションのプロパティに説明文を付けておくと便利です。これらの説明はエージェントによって利用されます。
 
 ```python
 from weaviate.classes.config import Configure, DataType, Property
@@ -128,20 +128,20 @@ from datasets import load_dataset
 
 dataset = load_dataset("weaviate/agents", "personalization-agent-movies", split="train", streaming=True)
 
-movies_collection = client.collections.get("Movies")
+movies_collection = client.collections.use("Movies")
 
 with movies_collection.batch.dynamic() as batch:
     for item in dataset:
         batch.add_object(properties=item["properties"])
 ```
 
-## パーソナライゼーション エージェントの作成
+## Personalization Agent の作成
 
-以下では、`"Movies"` コレクション用に `PersonalizationAgent` を作成します。すでにこのコレクション用のエージェントが存在する場合は、接続するだけで問題ありません。
+以下では、 `"Movies"` コレクション用の `PersonalizationAgent` を作成します。すでにこのコレクション用のエージェントが存在する場合は、接続するだけで構いません。
 
-新しい `PersonalizationAgent` を作成する際、任意で `user_properties` を定義できます。
+新しい `PersonalizationAgent` を作成する際には、 `user_properties` を任意で定義できます。
 
-ユーザー プロパティは、エージェントに追加するユーザーに関する有用な情報であれば何でもかまいません。この映画レコメンダー サービスでは、各ペルソナに `age`、`favorite_genres`、`languages` を追加することにします。
+`user_properties` には、エージェントに追加するユーザーに関する有用な情報を指定できます。映画レコメンダーサービスを作成する本例では、各ペルソナに `age`、`favorite_genres`、`languages` を登録することにします。
 
 ```python
 from weaviate.agents.personalization import PersonalizationAgent
@@ -164,9 +164,9 @@ else:
 
 ```
 
-### 新しいペルソナを追加する
+### 新しいペルソナの追加
 
-`add_persona` を使って新しいユーザーを追加できます。追加時に必要なユーザー プロパティを列挙してください。下のコード ブロックを変更して、ご自身を表すようにしてみてもかまいません👇
+`add_persona` を使用して新しいユーザーを追加できます。追加時に先ほど指定したユーザープロパティを設定します。下のコードを変更してご自身を表現してみても構いません👇
 
 ```python
 from uuid import uuid4
@@ -187,15 +187,15 @@ agent.add_persona(
 
 ### インタラクションの追加
 
-少なくとも 1 つのペルソナができたら、そのペルソナのインタラクションを追加できます。映画レコメンダー サービスの場合、ペルソナの映画レビューを追加するのが自然でしょう。
+少なくとも 1 つのペルソナを作成したら、そのペルソナに対するインタラクションを追加できます。映画レコメンダーサービスの場合、ペルソナによる映画レビューを追加するのが自然でしょう。
 
-各インタラクションには  -1.0 （ネガティブ）から  1.0 （ポジティブ）の重みを付けられます。以下では、複数の映画に対するレビューを追加してみます。
+各インタラクションには -1.0（ネガティブ）から 1.0（ポジティブ）までの重みを設定できます。以下ではいくつかの映画に対するレビューを追加してみます。
 
-最終的なアプリケーションがどのようにインタラクションを渡してくるかを想定し、各重みが何を表すかのルールを決めておくと良いでしょう。例:  
--  1.0: お気に入りの映画  
--  0.8: 映画が気に入った  
--  0.5: 視聴したがレビューはしていない  
-- -0.5: 映画が好きではなかった  
+エンドアプリケーションがどのようにインタラクションを転送するかを考え、各重みが何を意味するかのルールを決めておくと良いでしょう。例:  
+- 1.0: お気に入りの映画  
+- 0.8: 映画を気に入った  
+- 0.5: 映画を視聴したがレビューはなし  
+- -0.5: 映画が気に入らなかった  
 - -1.0: 映画が大嫌い 👎  
 
 ```python
@@ -254,9 +254,9 @@ agent.add_interactions(interactions=interactions)
 
 ## レコメンデーションと根拠の取得
 
-ペルソナとそのインタラクションがそろったので、`get_objects` でレコメンド オブジェクトを取得できます。ここでは `use_agent_ranking` を設定するかどうかを選べます。
+ペルソナとそのインタラクションを追加したので、 `get_objects` でエージェントからおすすめオブジェクトを取得できます。ここでは `use_agent_ranking` を設定するかどうかを選べます。
 
-`use_agent_ranking` を使用しない場合、返されるオブジェクトは従来の ML クラスタリングでランク付けされます。使用すると、LLM による追加の再ランク付けが行われ、必要に応じて `instruction` を渡せます。
+`use_agent_ranking` を使用しない場合、返されるオブジェクトは従来の ML クラスタリングによってランク付けされます。使用する場合は、追加で LLM による再ランキングが行われ、任意の `instruction` を指定できます。
 
 `use_agent_ranking` を有効にすると、下記のように `ranking_rationale` でランク付けの根拠も確認できます👇
 
@@ -426,13 +426,13 @@ Hodja is a dreamer. He wants to experience the world, but his father insists he 
 ['Animation', 'Family', 'Comedy']
 vote_average: 6.2
 https://image.tmdb.org/t/p/original/1WRK69soLEfVFRW1WwE0vWGz1mq.jpg
-```
+```  
 
-### インストラクション付きでレコメンデーションを取得する
+### instruction を用いたレコメンデーションの取得
 
-オプションとして、エージェントにインストラクションを渡すこともできます。これにより、どのようなレコメンデーションを行うべきか LLM に追加のコンテキストを与えられます。
+任意でエージェントに instruction を与えることもできます。これにより、エージェント LLM にどのような推薦を行うべきかについて追加のコンテキストを提供できます。
 
-また、最初のランク付けの `limit` を大きくし、その後のエージェント ランク付けで少数に絞り込むのも有効です。以下ではその方法を示しています👇
+また、初期ランク付けの上限を高めに設定し、その後エージェントランク付けでより小さなグループに絞り込むといった使い方も可能です👇
 
 ```python
 response = agent.get_objects(persona_id,
@@ -577,3 +577,4 @@ An ancient myth of a massive creature sparks the curiosity of Tinker Bell and he
 vote_average: 7.1
 https://image.tmdb.org/t/p/original/bUGX7duQWSm04yAA1rBBfNRe4kY.jpg
 ```
+

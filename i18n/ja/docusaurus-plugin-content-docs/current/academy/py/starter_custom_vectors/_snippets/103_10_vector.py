@@ -54,7 +54,7 @@ query_vector = vectorize(co, [query_text])[0]
 
 # MetadataSemanticSearch
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Perform query
 response = movies.query.near_vector(

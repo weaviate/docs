@@ -15,13 +15,13 @@ import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.hybrid-v2.ts
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
 import GQLCode from '!!raw-loader!/_includes/code/howto/search.hybrid.gql.py';
 
-`Hybrid` 検索は、ベクトル検索とキーワード（ BM25F ）検索の結果セットを融合し、両方の結果を組み合わせます。
+`Hybrid` 検索は、ベクトル 検索とキーワード ( BM25F ) 検索の結果セットを融合し、両方の結果を組み合わせます。
 
-[融合手法](#change-the-fusion-method) と [相対ウェイト](#balance-keyword-and-vector-search) は設定で調整できます。
+[融合方法](#change-the-fusion-method)と[相対的な重み](#balance-keyword-and-vector-search)は設定可能です。
 
 ## 基本的なハイブリッド検索
 
-ベクトル検索とキーワード検索の結果を結合します。検索には 1 つのクエリ文字列を使用します。
+ベクトル 検索とキーワード検索の結果を組み合わせます。検索には 1 つのクエリ文字列を使用します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -80,7 +80,7 @@ import GQLCode from '!!raw-loader!/_includes/code/howto/search.hybrid.gql.py';
 </Tabs>
 
 <details>
-  <summary>例: レスポンス</summary>
+  <summary>レスポンス例</summary>
 
 The output is like this:
 
@@ -98,7 +98,7 @@ The output is like this:
 :::info `v1.24` で追加
 :::
 
-[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を持つコレクションでハイブリッド検索を行う場合は、`target` ベクトルを指定する必要があります。Weaviate はクエリベクトルを使用して、指定されたターゲットベクトル空間を検索します。
+[名前付きベクトル](../config-refs/collections.mdx#named-vectors) を持つコレクションでハイブリッド検索を行う場合、`target` ベクトル を指定する必要があります。 Weaviate はクエリ ベクトル を使用してターゲット ベクトル 空間を検索します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -144,7 +144,7 @@ The output is like this:
 </Tabs>
 
 <details>
-  <summary>例: レスポンス</summary>
+  <summary>レスポンス例</summary>
 
 The output is like this:
 
@@ -156,9 +156,12 @@ The output is like this:
 />
 
 </details>
+
+
+
 ## 検索結果の説明
 
-オブジェクトのランキングを確認するには、クエリで `explain score` フィールドを設定します。検索ランキングはオブジェクトのメタデータの一部です。 Weaviate はこのスコアを利用して検索結果を並べ替えます。
+オブジェクトのランキングを確認するには、クエリで `explain score` フィールドを設定します。検索ランキングはオブジェクトのメタデータの一部です。 Weaviate はこのスコアを使用して検索結果を並べ替えます。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -219,7 +222,7 @@ The output is like this:
 <details>
   <summary>例のレスポンス</summary>
 
-出力例は次のとおりです:
+The output is like this:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -232,9 +235,9 @@ The output is like this:
 
 ## キーワード検索とベクトル検索のバランス
 
-ハイブリッド検索の結果は、キーワード成分またはベクトル成分のいずれかを優先できます。キーワード成分とベクトル成分の相対的な重みを変更するには、クエリで `alpha` 値を設定します。
+ハイブリッド検索の結果は、キーワード成分またはベクトル成分をより重視することができます。キーワード成分とベクトル成分の相対的な重みを変更するには、クエリで `alpha` 値を設定します。
 
-- `alpha` が `1` の場合、純粋なベクトル検索になります。
+- `alpha` が `1` の場合、純粋なベクトル検索になります。  
 - `alpha` が `0` の場合、純粋なキーワード検索になります。
 
 <Tabs groupId="languages">
@@ -296,7 +299,7 @@ The output is like this:
 <details>
   <summary>例のレスポンス</summary>
 
-出力例は次のとおりです:
+The output is like this:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -306,12 +309,15 @@ The output is like this:
 />
 
 </details>
-## 融合手法の変更
 
-`Relative Score Fusion` は `v1.24` からデフォルトの融合手法です。
 
-- 検索ランキングではなく、キーワード検索と ベクトル 検索の相対スコアを使用する場合は `Relative Score Fusion` を使用してください。  
-- `hybrid` 演算子と [`autocut`](../api/graphql/additional-operators.md#autocut) を併用する場合も `Relative Score Fusion` を使用してください。
+
+## 融合方法の変更
+
+`Relative Score Fusion` は `v1.24` からのデフォルトの融合方法です。
+
+- 検索ランキングの代わりにキーワード と ベクトル 検索の相対スコアを利用するには、 `Relative Score Fusion` を使用してください。
+- `hybrid` 演算子で [`autocut`](../api/graphql/additional-operators.md#autocut) を利用する場合は、 `Relative Score Fusion` を使用してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -370,7 +376,7 @@ The output is like this:
 </Tabs>
 
 <details>
-  <summary>例: レスポンス</summary>
+  <summary>例のレスポンス</summary>
 
 出力例は次のとおりです:
 
@@ -384,24 +390,22 @@ The output is like this:
 </details>
 
 <details>
-  <summary>
-    追加情報
-  </summary>
+  <summary>追加情報</summary>
 
-融合手法の詳細な解説については、[このブログ記事](https://weaviate.io/blog/hybrid-search-fusion-algorithms) と [このリファレンスページ](../api/graphql/search-operators.md#variables-2) を参照してください。
+融合方法の詳細については、[このブログ記事](https://weaviate.io/blog/hybrid-search-fusion-algorithms) と [このリファレンスページ](../api/graphql/search-operators.md#variables-2) をご覧ください。
 
 </details>
 
-## キーワード検索演算子
+## キーワード検索オペレーター
 
-:::info `v1.31` で追加
+:::info Added in `v1.31`
 :::
 
-Keyword (BM25) 検索演算子では、オブジェクトが返されるために含まれている必要があるクエリ [トークン](#tokenization) の最小数を指定します。選択肢は `and` または `or`（デフォルト）です。
+キーワード （ BM25 ） 検索オペレーターは、返却対象のオブジェクトに含まれている必要があるクエリ [トークン](#tokenization) の最小数を定義します。選択肢は `and` と `or`（デフォルト）です。
 
 ### `or`
 
-`or` 演算子では、検索語のトークンのうち `minimumOrTokensMatch` 以上を含むオブジェクトが返されます。
+`or` オペレーターを使用すると、検索語のトークンのうち少なくとも `minimumOrTokensMatch` が含まれるオブジェクトが返されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -424,7 +428,7 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 
 ### `and`
 
-`and` 演算子では、検索語のすべてのトークンを含むオブジェクトが返されます。
+`and` オペレーターを使用すると、検索語のすべてのトークンが含まれるオブジェクトのみが返されます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -444,12 +448,14 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
     />
   </TabItem>
 </Tabs>
+
+
 ## キーワード検索プロパティの指定
 
-:::info `v1.19.0` で追加
+:::info Added in `v1.19.0`
 :::
 
-ハイブリッド検索におけるキーワード検索部分では、オブジェクトのプロパティの一部だけを検索対象にできます。これは ベクトル 検索部分には影響しません。
+ハイブリッド検索のキーワード検索部分は、オブジェクトのプロパティのサブセットのみを検索するように指定できます。これは ベクトル 検索部分には影響しません。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -508,9 +514,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 </Tabs>
 
 <details>
-  <summary>例: レスポンス</summary>
+  <summary>レスポンス例</summary>
 
-以下のような出力になります:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -521,9 +527,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 
 </details>
 
-## プロパティ値の重み付け設定
+## プロパティ値の重み付け
 
-オブジェクトの `properties` に対して、キーワード検索時の相対的な重要度を指定できます。値が大きいほど、そのプロパティの検索スコアへの寄与が高まります。
+キーワード検索でオブジェクトの `properties` の相対的な値を指定します。値が高いほど、そのプロパティが検索スコアに寄与する度合いが大きくなります。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -582,9 +588,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 </Tabs>
 
 <details>
-  <summary>例: レスポンス</summary>
+  <summary>レスポンス例</summary>
 
-以下のような出力になります:
+出力例は次のとおりです:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -594,9 +600,10 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 />
 
 </details>
+
 ## 検索ベクトルの指定
 
-ハイブリッド検索のベクトル要素は、クエリ 文字列またはクエリ ベクトルを使用できます。クエリ 文字列の代わりにクエリ ベクトルを指定する場合は、クエリ内でベクトル検索用のクエリ ベクトルと、キーワード検索用のクエリ 文字列の両方を渡してください。
+ハイブリッド検索のベクトル コンポーネントは、 query string または query vector を使用できます。 query string の代わりに query vector を指定するには、クエリ内でベクトル検索用の query vector とキーワード検索用の query string の両方を渡してください。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -657,7 +664,7 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 <details>
   <summary>レスポンス例</summary>
 
-出力例は次のとおりです:
+出力例は次のようになります。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -671,10 +678,10 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 ## ベクトル検索パラメーター
 
 :::info `v1.25` で追加
-ハイブリッド閾値（`max_vector_distance`）は後の `v1.26.3` で導入されました。
+ハイブリッドのしきい値 (`max_vector_distance`) は、後に `v1.26.3` で導入されました。
 :::
 
-[ベクトル類似検索](/weaviate/search/similarity) では、`group by` や `move to` / `move away` など、[near text](/weaviate/search/similarity.md#search-with-text) や [near vector](/weaviate/search/similarity.md#search-with-a-vector) と同様のパラメーターを指定できます。ベクトル検索における同等の距離しきい値は、`max vector distance` パラメーターで設定できます。
+[ベクトル類似度検索](/weaviate/search/similarity) パラメーターは、 [near text](/weaviate/search/similarity.md#search-with-text) や [near vector](/weaviate/search/similarity.md#search-with-a-vector) 検索と同様に `group by` 及び `move to` / `move away` などを指定できます。ベクトル検索の同等の `distance` [しきい値](./similarity.md#set-a-similarity-threshold) は、 `max vector distance` パラメーターで設定可能です。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -707,7 +714,7 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 <details>
   <summary>レスポンス例</summary>
 
-出力例は次のとおりです:
+出力例は次のようになります。
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -718,12 +725,14 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 
 </details>
 
-## ハイブリッド検索のしきい値
 
-:::info Added in `v1.25`
+
+## ハイブリッド検索の閾値
+
+:::info `v1.25` で追加
 :::
 
-利用可能なしきい値は `max vector distance` のみで、これはベクトル検索コンポーネントに許容される最大距離を設定します。
+利用できる検索閾値は `max vector distance` のみです。これは、ベクトル検索コンポーネントに許容される最大距離を設定します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -750,10 +759,10 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 
 ## 結果のグループ化
 
-:::info Added in `v1.25`
+:::info `v1.25` で追加
 :::
 
-検索結果をグループ化するための条件を定義します。
+検索結果をグループ化するための基準を定義します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -776,9 +785,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 </Tabs>
 
 <details>
-  <summary>例のレスポンス</summary>
+  <summary>レスポンス例</summary>
 
-レスポンスは次のようになります。
+このようなレスポンスになります:
 
 ```
 'Jeopardy!'
@@ -789,9 +798,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 
 ## `limit` と `offset`
 
-`limit` を使用して、返されるオブジェクト数の上限を固定します。
+`limit` を使用して、返されるオブジェクトの最大数を固定できます。
 
-必要に応じて `offset` を使用して結果をページネーションできます。
+任意で `offset` を使用すると、結果をページネートできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -848,9 +857,20 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
     />
   </TabItem>
 </Tabs>
+
+
+
 ## 結果グループの制限
 
-クエリからの距離が類似しているグループに結果を制限するには、[`autocut`](../api/graphql/additional-operators.md#autocut) フィルターを使用します。`autocut` をハイブリッド検索と併用する場合は、ランキング手法として `Relative Score Fusion` を指定してください。
+クエリからの距離が近いグループに結果を限定するには、[`autocut`](../api/graphql/additional-operators.md#autocut) フィルターを使用します。ハイブリッド検索で autocut を使う際は、`Relative Score Fusion` ランキング方式を指定してください。
+
+:::info
+
+Autocut は実際の類似度スコアを使用してカットオフポイントを検出するため、`Relative Score Fusion` 方式が必要です。`Ranked Fusion` は類似度スコアではなく順位に基づく方式のため、Autocut とは併用しないでください。
+
+さまざまな融合アルゴリズムの詳細については、[検索オペレーターのリファレンスページ](/weaviate/api/graphql/search-operators#fusion-algorithms)をご覧ください。
+
+:::
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python Client v4">
@@ -909,9 +929,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 </Tabs>
 
 <details>
-  <summary>レスポンス例</summary>
+  <summary>Example response</summary>
 
-出力例:
+次のような出力になります:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -924,7 +944,7 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 
 ## 結果のフィルタリング
 
-検索結果をさらに絞り込むには、[`filter`](../api/graphql/filters.md) を使用します。
+検索結果を絞り込むには、[`filter`](../api/graphql/filters.md) を使用します。
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python Client v4">
@@ -983,9 +1003,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 </Tabs>
 
 <details>
-  <summary>レスポンス例</summary>
+  <summary>Example response</summary>
 
-出力例:
+次のような出力になります:
 
 <FilteredTextBlock
   text={PyCodeV3}
@@ -995,7 +1015,9 @@ Keyword (BM25) 検索演算子では、オブジェクトが返されるため�
 />
 
 </details>
-### トークナイゼーション
+
+
+### トークン化
 
 import TokenizationNote from '/_includes/tokenization.mdx'
 
@@ -1004,14 +1026,15 @@ import TokenizationNote from '/_includes/tokenization.mdx'
 ## 関連ページ
 
 - [Weaviate への接続](/weaviate/connections/index.mdx)
-- [API リファレンス: 検索オペレーター # Hybrid](../api/graphql/search-operators.md#hybrid)
-- [Weaviate Academy: トークナイゼーション](../../academy/py/tokenization/index.md)
-- [ハイブリッド フュージョン アルゴリズム](https://weaviate.io/blog/hybrid-search-fusion-algorithms) について
+- [ API リファレンス: 検索オペレーター # Hybrid](../api/graphql/search-operators.md#hybrid)
+- [Weaviate Academy: トークン化](../../academy/py/tokenization/index.md)
+- [ハイブリッド融合アルゴリズム](https://weaviate.io/blog/hybrid-search-fusion-algorithms) について
 - チュートリアルについては [クエリ](/weaviate/tutorials/query.md) を参照してください
-- GraphQL API を使用した検索については [GraphQL API](../api/graphql/get.md) を参照してください。
+- GraphQL API を利用した検索については [GraphQL API](../api/graphql/get.md) を参照してください
 
 ## 質問とフィードバック
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
+

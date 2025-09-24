@@ -1,7 +1,7 @@
 ---
 title: v2 から v3 への移行
 sidebar_position: 70
-description: "TypeScript アプリケーションを v2 から最新の v3 クライアントライブラリーへ移行するためのアップグレードガイド。"
+description: TypeScript アプリケーションを v2 から最新の v3 クライアントライブラリへ移行するためのアップグレードガイド。
 image: og/docs/client-libraries.jpg
 # tags: ['typescript', 'client library']
 ---
@@ -22,28 +22,28 @@ import TSClientIntro from '/_includes/clients/ts-client-intro.mdx';
 
 TypeScript クライアント v3 をインストールするには、次の手順に従ってください。
 
-1. **Node.js を更新する**
+1. **Node.js を更新**
 
-   v3 クライアントは `Node v18` 以上が必要です。
+   v3 クライアントには `Node v18` 以上が必要です。
 
-1. **新しいクライアントパッケージをインストールする**
+1. **新しいクライアントパッケージをインストール**
 
   ```bash
   npm install weaviate-client
   ```
 
-1. **Weaviate をアップグレードする**
+1. **Weaviate をアップグレード**
 
-   v3 クライアントは Weaviate Database `1.23.7` 以上が必要です。可能な限り、Weaviate Database と Weaviate クライアントは最新バージョンを使用してください。
+   v3 クライアントには Weaviate Database `1.23.7` 以上が必要です。可能な限り、Weaviate Database と Weaviate クライアントの最新バージョンを使用してください。
 
-1. **gRPC ポートを開放する**
+1. **gRPC ポートを開放**
 
    デフォルトの gRPC ポートは 50051 です。
 
     <details>
       <summary>docker-compose.yml</summary>
 
-    あなたの Docker コンテナ内の Weaviate gRPC ポートをローカルポートへマッピングするには、`docker-compose.yml` ファイルに次のコードを追加してください:
+    Docker コンテナ内の Weaviate gRPC ポートをローカルポートにマッピングするには、`docker-compose.yml` ファイルに次のコードを追加します。
 
     ```yaml
         ports:
@@ -54,9 +54,9 @@ TypeScript クライアント v3 をインストールするには、次の手�
 
 ## クライアントの生成
 
-weaviate オブジェクトはすべての API 操作のエントリポイントです。v3 クライアントは weaviate オブジェクトを生成し、あなたの Weaviate インスタンスへ [接続を作成](/weaviate/connections) します。
+`weaviate` オブジェクトは、すべての API 操作のメインエントリーポイントです。v3 クライアントは `weaviate` オブジェクトを生成し、あなたの Weaviate インスタンスへ [接続を作成](/weaviate/connections) します。
 
-通常は、以下の接続ヘルパー関数のいずれかを使用して Weaviate インスタンスへ接続します。
+ほとんどの場合、接続ヘルパー関数のいずれかを使用して Weaviate インスタンスへ接続することを推奨します。
 
 - `connectToWCD`
 - `connectToLocal`
@@ -91,39 +91,39 @@ weaviate オブジェクトはすべての API 操作のエントリポイント
 </TabItem>
 </Tabs>
 
-## v3 での変更点
+## v3 の変更点
 
-このセクションでは、TypeScript クライアント v3 の主な機能を紹介します。
+このセクションでは、TypeScript クライアント v3 の主な特徴を紹介します。
 
-### 設計思想
+### 設計方針
 
-v3 クライアントは、Weaviate データベース内のオブジェクトを操作する際に、コレクションを主要な操作単位として扱います。
+v3 クライアントは、コレクションを通じて Weaviate データベース内のオブジェクトを操作することを中心に設計されています。
 
-アプリケーションコードでは、コレクションを表すオブジェクトを作成します。このオブジェクトを通じて、検索や CRUD 操作を実行できます。
+アプリケーションコードはコレクションを表すオブジェクトを作成し、そのオブジェクトを通じて検索や CRUD 操作を実行します。
 
-次の例は、`JeopardyQuestion` コレクションからオブジェクトを取得します。
+次の例は `JeopardyQuestion` コレクションからオブジェクトを取得します。
 
 ```js
-const myCollection = client.collections.get('JeopardyQuestion');
+const myCollection = client.collections.use('JeopardyQuestion');
 
 const result = await myCollection.query.fetchObjects()
 
 console.log(JSON.stringify(result, null, 2));
 ```
 
-### Node のみのサポート
+### Node のみ対応
 
 gRPC プロトコルは高速で、内部的にも多くの利点があります。しかし残念ながら、gRPC はブラウザベースのクライアント開発をサポートしていません。
 
-v3 クライアントは gRPC を使用して Weaviate インスタンスへ接続します。クライアントは Node.js を用いたサーバーサイド開発をサポートしますが、ブラウザベースの Web クライアント開発はサポートしていません。
+v3 クライアントは gRPC を使用して Weaviate インスタンスへ接続します。そのため、クライアントは Node.js を用いたサーバーサイド開発をサポートし、ブラウザベースの Web クライアント開発はサポートしていません。
 
-ブラウザベースのアプリケーションを開発する場合は、[v2 クライアント](/weaviate/client-libraries/typescript/typescript-v2) を使用してください。
+ブラウザベースのアプリケーションを開発する場合は、[v2 クライアント](/weaviate/client-libraries/typescript/typescript-v2) をご利用ください。
 
-### コレクションの利用
+### コレクションの操作
 
-v2 クライアントでは CRUD と検索操作に `client` オブジェクトを使用します。v3 クライアントでは、この `client` オブジェクトが `collection` オブジェクトに置き換わりました。
+v2 クライアントでは CRUD や検索操作に `client` オブジェクトを使用します。v3 クライアントでは、`client` オブジェクトの代わりに `collection` オブジェクトを使用します。
 
-接続を作成した後は、各操作で毎回コレクションを指定する必要はありません。これによりエラーが減ります。
+接続を作成した後は、各操作でコレクションを指定する必要がありません。これによりミスを減らせます。
 
 <Tabs groupId="collections">
 <TabItem value="three" label="Client v3">
@@ -144,13 +144,15 @@ v2 クライアントでは CRUD と検索操作に `client` オブジェクト�
 </TabItem>
 </Tabs>
 
-コレクションオブジェクトはコードベース全体で再利用できます。
+`collection` オブジェクトはコードベース全体で再利用できます。
 
-### ビルダーパターンの廃止
 
-v2 クライアントはビルダーパターンを使用してクエリを構築します。ビルダーパターンはわかりにくく、無効なクエリにつながる可能性があります。  
 
-v3 クライアントはビルダーパターンを使用しません。その代わり、v3 クライアントは特定のメソッドとメソッドパラメーターを使用します。
+### ビルダー パターンの廃止
+
+v2 クライアントはビルダー パターンを使用してクエリを構築します。ビルダー パターンはわかりにくく、無効なクエリを引き起こす可能性があります。
+
+v3 クライアントではビルダー パターンを使用しません。その代わり、特定のメソッドとメソッド パラメーターを使用します。
 
 <Tabs groupId="builderEx">
 <TabItem value="three" label="Client v3">
@@ -173,9 +175,9 @@ v3 クライアントはビルダーパターンを使用しません。その�
 
 ### バッチ挿入
 
-`insertMany()` メソッドは `objectBatcher()` に代わり、バッチ挿入を容易にします。  
+`insertMany()` メソッドは `objectBatcher()` を置き換え、バッチ挿入を簡単にします。
 
-5,000 件を超えるオブジェクトを挿入する場合は、バッチプロセスの一部として `insertMany()` を使用してください。  
+5,000 件を超えるオブジェクトを挿入する場合は、バッチ処理の一部として `insertMany()` を使用してください。
 
 バッチ処理の詳細については、[バッチ挿入](../../manage-objects/import.mdx) を参照してください。
 
@@ -198,15 +200,15 @@ v3 クライアントはビルダーパターンを使用しません。その�
 </TabItem>
 </Tabs>
 
-### クライアントのクローズメソッド
+### クライアントの Close メソッド
 
 import TSClientClose from '/_includes/clients/ts-client-close.mdx';
 
 <TSClientClose />
 
-### データフィルター
+### データのフィルタリング
 
-`Filter` ヘルパークラスにより、条件付きフィルターの利用が簡単になります。v3 クライアントでは `Filter` の使用方法が簡素化され、コードがよりクリーンで簡潔になります。
+`Filter` ヘルパー クラスにより、条件付きフィルターの利用が容易になります。v3 クライアントでは `Filter` の使用方法が簡素化され、コードがよりクリーンで簡潔になります。
 
 <Tabs groupId="filterDataEx">
 <TabItem value="three" label="Client v3">
@@ -227,9 +229,9 @@ import TSClientClose from '/_includes/clients/ts-client-close.mdx';
 </TabItem>
 </Tabs>
 
-### generate ネームスペース
+### generate 名前空間
 
-v3 クライアントでは、生成クエリ用の新しいネームスペース `generate` が追加されました。これにより、生成クエリと ベクトル 検索を区別しやすくなります。
+v3 クライアントでは生成クエリ用に新しい名前空間 `generate` が追加されました。これにより、生成クエリとベクトル検索を区別しやすくなります。
 
 <Tabs groupId="generateNameEx">
 <TabItem value="three" label="Client v3">
@@ -250,9 +252,9 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
 </TabItem>
 </Tabs>
 
-### 戻りオブジェクト
+### 返却オブジェクト
 
-新しいクライアントでは、戻りオブジェクトがよりシンプルになりました。オブジェクトの UUID 、オブジェクトメタデータ、生成クエリの結果などの重要な情報へ容易にアクセスできます。
+新しいクライアントでは返却オブジェクトがよりシンプルになりました。オブジェクトの UUID、メタデータ、生成クエリの結果などの重要な情報に簡単にアクセスできます。
 
 <Tabs groupId="returnObjEx">
 <TabItem value="three" label="Client v3">
@@ -277,9 +279,9 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
 
 ## コード比較
 
-これらのサンプルは v2 クライアントコードと v3 クライアントコードを比較したものです。
+これらのサンプルでは、クライアント v2 コードと v3 コードを比較します。
 
-比較用サンプルでは、両クライアントで共通するコード部分を省略しています。完全版の v2 および v3 クライアントスクリプトは [こちら](#sample-scripts) です。
+比較用サンプルでは、両クライアントで共通するコード部分を省略しています。完全な v2 と v3 のクライアントスクリプトは[こちら](#sample-scripts)にあります。
 
 ### インポート
 
@@ -365,7 +367,7 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
 </TabItem>
 </Tabs>
 
-### データのクエリー
+### データのクエリ実行
 
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
@@ -388,7 +390,6 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
 
 ### コレクションの削除
 
-
 <Tabs groupId="languages">
 <TabItem value="jsv3" label="Client v3">
 <FilteredTextBlock
@@ -409,13 +410,12 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
 </Tabs>
 
 
-
 ### サンプルスクリプト
 
-これらのスクリプトは、このセクションのクライアント比較コードの完全版です。
+このセクションのクライアント比較コードを、完全な形で示したスクリプトです。
 
 <Tabs groupId="languages">
-<TabItem value="jsv3" label="クライアント v3">
+<TabItem value="jsv3" label="Client v3">
 <FilteredTextBlock
   text={TSv3Code}
   startMarker="// CompleteScript"
@@ -423,7 +423,7 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
   language="js"
 />
 </TabItem>
-<TabItem value="jsv2" label="クライアント v2">
+<TabItem value="jsv2" label="Client v2">
 <FilteredTextBlock
   text={TSv2Code}
   startMarker="// CompleteScript"
@@ -433,26 +433,26 @@ v3 クライアントでは、生成クエリ用の新しいネームスペー�
 </TabItem>
 </Tabs>
 
-追加のコード例については、以下をご覧ください。
+その他のコード例については、以下を参照してください。
 
 - [検索](/weaviate/search)
 - [コレクション管理](/weaviate/manage-collections)
-- [Weaviate へ接続](/weaviate/connections)
+- [Weaviate への接続](/weaviate/connections)
 
-## コード移行方法
+## コードの移行方法
 
-v2 クライアントコードを v3 に更新するには、次の手順に従ってください。
+v2 クライアントコードを v3 に更新するには、次の手順を行います。
 
-1. [v3 クライアントパッケージ](https://www.npmjs.com/package/weaviate-client) をインストールします。  
-1. v2 のコードを編集して、v3 クライアントパッケージを [import](/weaviate/client-libraries/typescript#import-the-client) します。  
-1. v2 の [クライアントのインスタンス化](/weaviate/client-libraries/typescript) コードを編集します。  
-1. コードを編集し、[コレクション優先](#design-philosophy) のクライアント指向に合わせます。  
+1. [ v3 クライアントパッケージ](https://www.npmjs.com/package/weaviate-client) をインストールします。  
+1. v2 コードを編集し、v3 クライアントパッケージを [インポート](/weaviate/client-libraries/typescript#import-the-client) します。  
+1. v2 の [クライアント生成](/weaviate/client-libraries/typescript) コードを編集します。  
+1. コードを編集し、[ collection first](#design-philosophy) のクライアント指向を反映させます。  
 
-すべての古いコードが v3 相当のコードに置き換えられるまで、v2 コードの更新を続けてください。
+v2 のコードを v3 相当へすべて置き換えるまで、順次更新してください。
 
-## クライアント変更ログ
+## クライアントの変更ログ
 
-各リリースのクライアント [change logs](https://github.com/weaviate/typescript-client/releases) は GitHub でご覧いただけます。
+各リリースのクライアント [変更ログ](https://github.com/weaviate/typescript-client/releases) は GitHub で確認できます。
 
 ## 質問とフィードバック
 

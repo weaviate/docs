@@ -1,215 +1,223 @@
 ---
 title: ベストプラクティス
 sidebar_position: 10
-description: " Weaviate のパフォーマンスを最大化するための専門的な推奨事項と最適化戦略。"
+description: Weaviate のパフォーマンスを最大化するための専門的な推奨事項と最適化戦略。
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---
 
 # ベストプラクティスとヒント
 
-このページでは、 Weaviate を使用する際の一般的なベストプラクティスをご紹介します。これらは私たちの経験とユーザーの皆さまからいただいたフィードバックに基づいています。
+このページでは、Weaviate を利用する際の一般的なベストプラクティスを紹介します。これらは私たちの経験とユーザーからのフィードバックに基づいています。
 
-:::info これはベストプラクティスのハブとお考えください
- Weaviate が進化し、ユーザーの利用方法についてさらに学ぶにつれて、このページを随時更新します。定期的にご確認ください。
+:::info Consider this a hub for best practices
+Weaviate が進化し、ユーザーの利用方法についてさらに学ぶにつれて、このページを随時更新します。定期的にご確認ください。
 :::
 
 ## アップグレードとメンテナンス
 
-### Weaviate とクライアントライブラリーの最新状態維持
+### Weaviate とクライアントライブラリーを最新に保つ
 
- Weaviate は急速に進化しているプロダクトで、新機能の追加、パフォーマンスの向上、バグ修正を継続的に行っています。最新の機能と改善を享受するために、 Weaviate 本体とご利用のクライアントライブラリーを常に最新に保つことを推奨します。
+Weaviate は急速に進化しており、新機能の追加、パフォーマンス向上、バグ修正が絶えず行われています。最新の機能と改善点を享受するために、Weaviate と使用するクライアントライブラリーを常に最新に保つことを推奨します。
 
-最新リリースを把握する方法:
+最新リリースを把握するには、以下を行ってください。
 
-- [ Weaviate ニュースレター](https://newsletter.weaviate.io/)を購読する
-- 関連する Weaviate GitHub リポジトリを [Watch](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/managing-subscriptions-for-activity-on-github/viewing-your-subscriptions#reviewing-repositories-that-youre-watching) する  
+- [Weaviate newsletter](https://newsletter.weaviate.io/) に登録する  
+- 関連する Weaviate の GitHub リポジトリを [Watch](https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/managing-subscriptions-for-activity-on-github/viewing-your-subscriptions#reviewing-repositories-that-youre-watching) する  
     - [Weaviate](https://github.com/weaviate/weaviate)  
-    - [ Weaviate Python client](https://github.com/weaviate/weaviate-python-client)  
-    - [ Weaviate TS/JS client](https://github.com/weaviate/typescript-client)  
-    - [ Weaviate Go client](https://github.com/weaviate/weaviate-go-client)  
-    - [ Weaviate Java client](https://github.com/weaviate/java-client)
+    - [Weaviate Python client](https://github.com/weaviate/weaviate-python-client)  
+    - [Weaviate TS/JS client](https://github.com/weaviate/typescript-client)  
+    - [Weaviate Go client](https://github.com/weaviate/weaviate-go-client)  
+    - [Weaviate Java client](https://github.com/weaviate/java-client)  
 
-:::info 新バージョンはどのくらいの頻度でリリースされますか？
-一般的に、 Weaviate の新しいマイナーバージョンは 6〜10 週間ごとに、パッチバージョンは定期的にリリースされます。
+:::info How often are new versions released?
+一般的に、Weaviate のマイナーバージョンは 6〜10 週間ごとにリリースされ、パッチバージョンは随時リリースされます。
 :::
 
 <!-- ### Plan for upgrades -->
 
 ## リソース管理
 
-### 高可用性クラスターで速度と信頼性を向上
+### 高可用性クラスタで速度と信頼性を向上
 
-高い信頼性要件、クエリ負荷、レイテンシー要件がある環境では、 Weaviate を高可用性 (HA) 構成でデプロイすることをご検討ください。複数ノードによる HA 構成には以下の利点があります。
+高い信頼性要求、高いクエリ負荷、または低レイテンシが求められる環境では、複数ノードによる高可用性 (HA) 構成で Weaviate をデプロイすることを検討してください。HA 構成は次の利点を提供します。
 
-- **優れたフォールトトレランス**: 個々のノードに問題が発生してもリクエストを処理し続けられます  
-- **ローリングアップグレード**: クラスター全体のダウンタイムなしに個別ノードをアップグレード可能  
-- **クエリ性能の向上**: 複数ノードにクエリ負荷を分散し、レイテンシーを削減  
-- **スループットの増加**: 同時クエリおよびデータ操作をより多く処理可能  
+- **優れたフォールトトレランス**: 個々のノードに問題が発生してもリクエスト処理を継続  
+- **ローリングアップグレード**: クラスタ全体を停止せずにノード単位でアップグレード可能  
+- **クエリ性能の向上**: クエリ負荷を複数ノードに分散しレイテンシを削減  
+- **スループットの増加**: 同時クエリやデータ操作をより多く処理  
 
-:::tip 参考リソース
-- [コンセプト: クラスターアーキテクチャ](../concepts/cluster.md)
-- [設定: レプリケーション](/deploy/configuration/replication.md)
+:::tip Further resources
+- [Concepts: Cluster architecture](../concepts/cluster.md)
+- [Configuration: Replication](/deploy/configuration/replication.md)
 :::
 
-### マルチテナンシーでデータサブセットを管理
+#### レプリケーション設定
 
-以下のすべてを満たす複数のデータサブセットを扱う場合:
+HA 構成を使用する場合、次のレプリケーション設定を検討してください。
+
+- **Replication factor**: クォーラム (クラスタサイズの過半数) を得られるよう奇数に設定し、過度なレプリケーションを避けます。注意: ノード数が replication factor 未満の場合、Weaviate は起動しません。  
+- **Deletion strategy**: ユースケースに合った削除戦略を選択します。一般的には `NoAutomatedResolution` 戦略を推奨します。  
+
+### データサブセットにマルチテナンシーを使用
+
+次のすべての条件を満たす複数のデータサブセットを扱う場合は、マルチテナンシーの有効化を検討してください。
 
 - 同一のデータ構造 (スキーマ) を持つ  
-- ベクトルインデックス、転置インデックス、ベクトライザーのモデルなど同じ設定を共有できる  
-- 互いに一緒にクエリする必要がない  
+- ベクトルインデックス、転置インデックス、ベクトライザーモデルなど同一設定を共有できる  
+- 互いに同時検索する必要がない  
 
-このような場合はマルチテナンシーを有効化し、各サブセットを別々のテナントに割り当てることを検討してください。 Weaviate のリソースオーバーヘッドを削減し、より効率的なスケールが可能になります。
+それぞれのデータサブセットを別々のテナントに割り当てることで、Weaviate のリソースオーバーヘッドを削減し、より効果的にスケールできます。
 
 <p align="center"><img src="/img/docs/system/collections_with_without_mt.png" alt="Replication Factor" width="100%"/></p>
 
-:::tip 参考リソース
-- [ハウツー: マルチテナンシー操作を行う](../manage-collections/multi-tenancy.mdx)
-- [ハウツー: テナント状態を管理する](../manage-collections/tenant-states.mdx)
-- [コンセプト: マルチテナンシー](../concepts/data.md#multi-tenancy)
+:::tip Further resources
+- [How-to: Perform multi-tenancy operations](../manage-collections/multi-tenancy.mdx)
+- [How to: Manage tenant states](../manage-collections/tenant-states.mdx)
+- [Concepts: Multi-tenancy](../concepts/data.md#multi-tenancy)
 :::
 
 ### データ規模に合わせたベクトルインデックスタイプの設定
 
-多くのケースではデフォルトの `hnsw` インデックスタイプが適切な出発点ですが、場合によっては `flat` インデックスや `dynamic` インデックスの方が適していることがあります。
+多くの場合、デフォルトの `hnsw` インデックスタイプが良い出発点ですが、場合によっては `flat` インデックスや `dynamic` インデックスの方が適していることもあります。
 
-- `flat` インデックスは、コレクションに含まれるベクトル数が少数 (例: 100,000 未満) とわかっている場合に有効です。  
-    - メモリ使用量は非常に少ないものの、大規模データセットでは遅くなる可能性があります。  
-- `dynamic` インデックスは `flat` インデックスで開始し、コレクション内のベクトル数が一定の閾値を超えると自動で `hnsw` インデックスに切り替わります。  
-    - メモリ使用量とクエリ性能のバランスを取る良い妥協点です。  
+- `flat` インデックスは、各コレクションが少数 (例: 100,000 未満) のベクトルしか保持しないと分かっている場合に有用です。  
+    - メモリ消費が非常に少ない一方、大規模データセットでは検索が遅くなります。  
+- `dynamic` インデックスは `flat` で始まり、コレクション内のベクトル数が閾値を超えると自動的に `hnsw` に切り替わります。  
+    - メモリ使用量とクエリ性能のバランスに優れています。  
 
-特にマルチテナント構成では、テナント内のベクトル数が閾値を超えた際に自動で `hnsw` に切り替わる `dynamic` インデックスの恩恵を受けやすいです。
+特にマルチテナント環境では、テナント内のベクトル数が閾値を超えた際に自動で `hnsw` に切り替わる `dynamic` インデックスが有益です。
 
-:::tip 参考リソース
-- [ハウツー: ベクトルインデックスタイプを設定する](../manage-collections/vector-config.mdx#set-vector-index-type)
-- [コンセプト: ベクトルインデックス](../concepts/indexing/vector-index.md)
+:::tip Further resources
+- [How-to: Set the vector index type](../manage-collections/vector-config.mdx#set-vector-index-type)
+- [Concepts: Vector indexes](../concepts/indexing/vector-index.md)
 :::
 
-### ベクトル量子化でメモリフットプリントを削減
+### ベクトル量子化でメモリ使用量を削減
 
-データセットが大きくなると、ベクトルインデックスにより高いメモリ要件が発生し、コストが増大します。特に `hnsw` インデックスタイプを使用している場合は顕著です。
+データセットが大きくなるにつれ、対応するベクトルインデックスは高いメモリ要求を招き、コスト増大につながります。特に `hnsw` インデックスを使用している場合は顕著です。
 
-大量のベクトルを扱う場合は、ベクトル量子化を使用してベクトルインデックスのメモリフットプリントを削減することをご検討ください。必要メモリを抑えることで、低コストで効率的にスケールできます。
+大量のベクトルを扱う場合は、ベクトル量子化を使用してインデックスのメモリフットプリントを削減することを検討してください。メモリ要件を抑え、より低コストでスケールできます。
 
 ![Overview of quantization schemes](@site/_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
 ![Overview of quantization schemes](@site/_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
 
-HNSW インデックスでは、まず直積量子化 (PQ) を有効にすることを推奨します。これはメモリ使用量とクエリ性能の間で良好なトレードオフを提供し、ユースケースに合わせたパラメータ調整も可能です。
+HNSW インデックスの場合、まず 直積量子化 (PQ) を有効にすることを推奨します。メモリ使用量とクエリ性能のバランスが良好で、ユースケースに合わせてパラメーター調整も可能です。
 
-:::tip 参考リソース
-- [ハウツー: ベクトル量子化を設定する](../configuration/compression/index.md)
-- [コンセプト: ベクトル量子化](../concepts/vector-quantization.md)
+:::tip Further resources
+- [How-to: Configure vector quantization](../configuration/compression/index.md)
+- [Concepts: Vector quantization](../concepts/vector-quantization.md)
 :::
 
-### システム閾値を調整してダウンタイムを防止
+### システムしきい値を調整してダウンタイムを防止
 
- Weaviate はメモリやディスク使用率が特定の閾値 (パーセンテージ) を超えると警告を出したり、リードオンリー モードに移行したりするように設定されています。
+Weaviate では、メモリまたはディスク使用率が一定の割合を超えると警告を発し、さらに高くなるとリードオンリーモードに移行するよう設定されています。
 
-これらの閾値はユースケースに合わせて調整可能です。たとえば、大量のメモリを搭載したマシンで Weaviate を実行している場合、リードオンリー モードへ移行するメモリ閾値を高めに設定したいことがあります。メモリ量が多いほど、同じパーセンテージでも実際のメモリ容量は大きくなるためです。
+これらのしきい値はユースケースに合わせて調整可能です。たとえば、大量メモリのマシンで Weaviate を稼働させる場合、同じ割合でも実際のメモリ量が多いため、リードオンリーに移行する前のメモリしきい値を上げたいことがあります。
 
-ディスク使用率の閾値は `DISK_USE_WARNING_PERCENTAGE` と `DISK_USE_READONLY_PERCENTAGE`、メモリ使用率の閾値は `MEMORY_WARNING_PERCENTAGE` と `MEMORY_READONLY_PERCENTAGE` で設定します。
+ディスク使用率のしきい値は `DISK_USE_WARNING_PERCENTAGE` と `DISK_USE_READONLY_PERCENTAGE`、メモリ使用率のしきい値は `MEMORY_WARNING_PERCENTAGE` と `MEMORY_READONLY_PERCENTAGE` で設定します。
 
-:::tip 参考リソース
-- [リファレンス: 環境変数](/deploy/configuration/env-vars/index.md#general)
+:::tip Further resources
+- [References: Environment variables](/deploy/configuration/env-vars/index.md#general)
+
 :::
 
-### メモリ割り当てを計画する
 
- Weaviate を実行する際、メモリフットプリントがボトルネックになることがよくあります。経験則として、以下のメモリが必要になるとお考えください。
 
-- 1,000,000 件の 1,024 次元ベクトルで 6 GB  
-- 1,000,000 件の 256 次元ベクトルで 1.5 GB  
-- 量子化を有効にした 1,000,000 件の 1,024 次元ベクトルで 2 GB  
+### メモリ割り当て計画
+
+Weaviate を実行する際、メモリ使用量はよくボトルネックになります。経験則として、以下のメモリが必要になります。
+
+- 1 million 件・1024 次元 ベクトル: 6 GB のメモリ
+- 1 million 件・256 次元 ベクトル: 1.5 GB のメモリ
+- 量子化を有効にした 1 million 件・1024 次元 ベクトル: 2 GB のメモリ
 
 <details>
-  <summary>この数字の根拠</summary>
+  <summary>この数値はどのように算出したのか？</summary>
 
-量子化なしの場合、各ベクトルは n 次元の float として保存されます。1,024 次元ベクトルの場合:
+量子化を使用しない場合、各ベクトルは n 次元の float として保存されます。1024 次元ベクトルの場合は次のとおりです。
 
-- 4 バイト × 1,024 次元 × 1M ベクトル = 4 GB
+- 4 byte / float × 1024 次元 × 1 M ベクトル = 4 GB
 
-インデックス構造や追加オーバーヘッドを考慮して、概算で 6 GB となります。
+インデックス構造や追加のオーバーヘッドを加味すると、おおよそ 6 GB になります。
 
 </details>
 
 :::tip 参考リソース
-- [コンセプト: リソース計画](../concepts/resources.md)
+- [概念: リソース計画](../concepts/resources.md)
 :::
-
-
 
 ### メモリ使用量を素早く確認する方法
 
-本番環境では、Grafana と Prometheus などのツールを用いてクラスタ [モニタリング](/deploy/configuration/monitoring.md) を設定することを推奨します。
+本番環境では、Grafana や Prometheus などを用いたクラスタ[監視](/deploy/configuration/monitoring.md)を設定することを推奨します。
 
-ただし、Weaviate のメモリ使用量を素早く確認する他の方法もあります。
+しかし、Weaviate のメモリ使用量を素早く確認する別の方法もあります。
 
-:::note すでに Prometheus でモニタリングしている場合
-コンテンツに依存しない全体的なメモリ使用量だけを把握したい場合、かつすでに Prometheus を使用している場合は、`go_memstats_heap_inuse_bytes` メトリクスを確認してください。これが常に実際のメモリフットプリントを示します。
+:::note すでに Prometheus 監視を設定済みの場合
+内容に依存せず全体の使用量だけを確認したい場合、既存の Prometheus 監視で `go_memstats_heap_inuse_bytes` メトリクスを確認すると、常に完全なメモリフットプリントが得られます。
 :::
 
-#### `pprof` を使用する
+#### `pprof` 経由
 
-`go` がシステムにインストールされていれば、golang の `pprof` ツールでヒーププロファイルを確認できます。
+システムに `go` がインストールされている場合、Golang の `pprof` ツールでヒーププロファイルを確認できます。
 
-- Go ランタイムをインストールするか、Go ベースの Docker コンテナを起動します  
-- Docker/Kubernetes で実行している場合はポート 6060 を公開します
+- Go ランタイムをインストールするか、Go ベースの Docker コンテナを起動します。
+- Docker/K8s で実行している場合はポート 6060 を公開します。
 
-プロファイルをビジュアルで確認するには:
+プロファイルを可視化するには:
 
 ```bash
 go tool pprof -png http://{host}:6060/debug/pprof/heap
 ```
 
-テキスト形式で確認するには:
+テキスト出力を表示するには:
 
 ```bash
 go tool pprof -top http://{host}:6060/debug/pprof/heap
 ```
 
-#### コンテナ使用量を確認する
+#### コンテナ使用量の確認
 
-Kubernetes 上で Weaviate を実行している場合、`kubectl` でコンテナ全体のメモリ使用量を確認できます:
+Kubernetes で Weaviate を実行している場合、`kubectl` でコンテナ全体のメモリ使用量を確認できます。
 
 ```bash
 kubectl exec weaviate-0 -- /usr/bin/free
 ```
 
-ここで `weaviate-0` は Pod 名です。
+`weaviate-0` はポッド名です。
 
-外部（OS／コンテナレベル）から見たメモリ消費は、実際よりかなり高く見える点に注意してください。Go ランタイムは非常に機会主義的で、しばしば [MADV_FREE](https://www.man7.org/linux/man-pages/man2/madvise.2.html) を使用します。これは必要に応じてメモリの一部を容易に解放できることを意味します。そのため、コンテナで Weaviate だけが動作している場合、実際に必要な量以上のメモリを保持しますが、他プロセスが必要としたときには迅速に解放できます。
+外部（OS/コンテナレベル）から見ると、表面的なメモリ消費ははるかに大きく見える点に注意してください。Go ランタイムは非常にオポチュニスティックで、しばしば [MADV_FREE](https://www.man7.org/linux/man-pages/man2/madvise.2.html) を使用します。これは、必要に応じてメモリの一部を容易に解放できることを意味します。その結果、Weaviate がコンテナ内で唯一のアプリケーションの場合、実際に必要な量より多くのメモリを保持しますが、他プロセスが必要とした際には迅速に解放可能です。
 
-したがって、この方法はメモリ使用量の上限を把握するのに有用です。一方、`pprof` を見ると Weaviate の具体的なヒーププロファイルをより正確に把握できます。
+したがって、この方法はメモリ使用量の上限を把握するのに有用ですが、`pprof` を用いた方が Weaviate のヒーププロファイルをより正確に把握できます。
 
-### システムとデータの可用性を両立させるシャード読み込み設定
+### シャード読み込み動作の設定によるシステムとデータ可用性のバランス
 
-Weaviate は起動時にデプロイ内のすべてのシャードからデータを読み込みます。既定ではレイジーシャード読み込みが有効で、シャードをバックグラウンドで読み込みながら、すでに読み込まれたシャードに対しては即座にクエリを受け付けるため、起動が高速化されます。
+Weaviate は起動時に、デプロイ内のすべてのシャードからデータを読み込みます。デフォルトでは、遅延シャード読み込みにより、バックグラウンドでシャードを読み込みつつ、すでに読み込まれたシャードへ即座にクエリを実行できるため、起動が速くなります。
 
-しかし、単一テナントのコレクションで高負荷の状況では、レイジー読み込みによりインポート操作が遅くなったり部分的に失敗したりする場合があります。このような場合は、以下の環境変数を設定し、[レイジー読み込みを無効化](../concepts/storage.md#lazy-shard-loading)することを検討してください。
+しかし、単一テナントのコレクションで高負荷がかかる場合、遅延読み込みはインポート操作を遅延させたり、部分的に失敗させたりすることがあります。このようなシナリオでは、以下の環境変数を設定して[遅延読み込みを無効化](../concepts/storage.md#lazy-shard-loading)することを検討してください。
 
 ```
 DISABLE_LAZY_LOAD_SHARDS: "true"
 ```
 
-これにより、Weaviate が Ready と報告する前にすべてのシャードが完全に読み込まれます。
+これにより、Weaviate が Ready と報告する前に、すべてのシャードが完全に読み込まれます。
 
 :::caution 重要
-レイジーシャード読み込みを無効化するのは単一テナントのコレクションに限ってください。マルチテナント環境では、起動時間を大幅に短縮できるため、レイジー読み込みを有効のままにしておくことを推奨します。
+遅延シャード読み込みを無効化するのは単一テナントのコレクションに限ってください。マルチテナント環境では、遅延読み込みを有効にしておくことで起動時間を大幅に短縮できます。
 :::
 
 ## データ構造
 
-### クロスリファレンスとフラット化プロパティの比較
+### クロスリファレンスと平坦化プロパティ
 
-データスキーマ設計時には、クロスリファレンスを使用するかフラット化プロパティを使用するかを検討してください。リレーショナルデータベースの経験があると、データを正規化しクロスリファレンスを使いたくなるかもしれません。
+データスキーマを設計する際、クロスリファレンスを使用するか、プロパティを平坦化するかを検討してください。リレーショナルデータベースの経験がある場合、データを正規化してクロスリファレンスを使いたくなるかもしれません。
 
-しかし、Weaviate ではクロスリファレンスには以下のような欠点があります。
+しかし、Weaviate ではクロスリファレンスにはいくつかの欠点があります。
 
-- ベクトライズされないため、その情報がオブジェクトのベクトル表現に組み込まれません。
-- 参照先オブジェクトを取得する追加クエリが必要なため、クエリが遅くなる可能性があります。Weaviate はグラフのようなクエリやジョインを想定していません。
+- ベクトル化されないため、その情報がオブジェクトのベクトル表現に含まれません。
+- 参照先オブジェクトの取得に追加クエリが必要となるため、クエリが遅くなる可能性があります。Weaviate はグラフ的なクエリやジョインを前提として設計されていません。
 
-代わりに、情報を別のプロパティとして各オブジェクトに直接埋め込むことを検討してください。これにより情報がベクトライズされ、より効率的にクエリできます。
+代わりに、各オブジェクトに情報を別のプロパティとして直接埋め込むことを検討してください。これにより情報がベクトル化され、より効率的にクエリできます。
 
 <!-- ### Choose the right property data type -->
 
@@ -219,13 +227,13 @@ DISABLE_LAZY_LOAD_SHARDS: "true"
 
 ## データ操作
 
-### データスキーマの明示的な定義
+### データスキーマの明示的定義
 
-Weaviate には、データのスキーマを自動推論する便利な ["auto-schema" 機能](../config-refs/collections.mdx#auto-schema) があります。
+Weaviate には便利な["オートスキーマ"機能](../config-refs/collections.mdx#auto-schema)があり、データのスキーマを自動的に推測できます。
 
-しかし、本番環境ではスキーマを明示的に定義し、auto-schema 機能を無効化する（`AUTOSCHEMA_ENABLED: 'false'` と設定）ことを推奨します。これにより、データが Weaviate に正しく解釈され、不正なデータがシステムに取り込まれて予期せぬプロパティが作成されるのを防げます。
+しかし、本番環境ではスキーマを明示的に定義し、オートスキーマ機能を無効化（`AUTOSCHEMA_ENABLED: 'false'` に設定）することを推奨します。これにより、データが Weaviate に正しく解釈され、不正なデータがシステムに取り込まれるのを防げます。
 
-例として、次の 2 つのオブジェクトをインポートする場合を考えます。
+例として、次の 2 件のオブジェクトをインポートする場合を考えます。
 
 ```json
 [
@@ -235,11 +243,11 @@ Weaviate には、データのスキーマを自動推論する便利な ["auto-
 ]
 ```
 
-この例では、2 つ目と 3 つ目のオブジェクトが不正です。2 つ目はプロパティ名 `cattegory` にタイプミスがあり、3 つ目は `category` が文字列ではなく数値です。
+この例では、2 件目と 3 件目のオブジェクトが不正です。2 件目は `cattegory` というプロパティ名のタイプミスがあり、3 件目は `category` が数値であるべきでないにもかかわらず数値です。
 
-auto-schema が有効だと、Weaviate はコレクションにプロパティ `cattegory` を作成し、クエリ時に想定外の挙動を引き起こす可能性があります。また、3 つ目のオブジェクトにより `category` プロパティが `INT` 型で作成され、意図しない結果となります。
+オートスキーマが有効だと、Weaviate はコレクションに `cattegory` プロパティを作成してしまい、データクエリ時に予期せぬ動作を招く可能性があります。また 3 件目では、`category` プロパティが `INT` 型で作成されてしまうかもしれません。
 
-代わりに auto-schema を無効化し、スキーマを明示的に定義します。
+オートスキーマを無効にし、スキーマを明示的に定義しましょう。
 
 ```python
 from weaviate.classes.config import Property, DataType
@@ -253,19 +261,21 @@ client.collections.create(
 )
 ```
 
-これにより、正しいスキーマを持つオブジェクトのみが Weaviate に取り込まれ、不正なスキーマのオブジェクトを取り込もうとした場合にはユーザーに通知されます。
+これにより、正しいスキーマを持つオブジェクトのみが Weaviate に取り込まれ、不正なスキーマのオブジェクトをインポートしようとした際にはユーザーに通知されます。
 
-:::tip さらなるリソース
+:::tip 参考リソース
 - [概念: データスキーマ](../concepts/data.md#data-schema)
-- [リファレンス: コレクション定義 - Auto-schema](../config-refs/collections.mdx#auto-schema)
+- [リファレンス: コレクション定義 - オートスキーマ](../config-refs/collections.mdx#auto-schema)
 :::
+
+
 
 ### バッチインポートによるデータ取り込みの高速化
 
-10 件を超えるデータをインポートする場合は、必ずバッチインポートを使用してください。これにより、インポート速度が大幅に向上します。その理由は次の 2 点です。
+10 個を超えるオブジェクトなど、一定量以上のデータを取り込む場合はバッチインポートを使用してください。これにより、以下 2 つの理由からインポート速度が大幅に向上します。
 
-- Weaviate へのリクエスト回数が減り、ネットワークのオーバーヘッドが減少します。
-- Weaviate がデータのベクトライズを調整する場合、ベクトライズもバッチで送信でき、特に GPU で推論を行う場合に大幅な高速化が期待できます。
+- 送信する  Weaviate へのリクエスト数が減り、ネットワークのオーバーヘッドが削減されます。  
+-  Weaviate でデータのベクトル化をオーケストレーションしている場合、ベクトル化リクエストもバッチで送信できるため高速化されます。特に推論を  GPU で行う場合に効果的です。
 
 ```python
 # ⬇️ Don't do this
@@ -278,54 +288,54 @@ with collection.batch.fixed_size(batch_size=200) as batch:
         batch.add_object(properties=obj)
 ```
 
-:::tip さらなるリソース
-- [How-to: データのバッチインポート](../manage-objects/import.mdx)
+:::tip さらに詳しく
+- [How-to: バッチインポートでデータを取り込む](../manage-objects/import.mdx)
 :::
 
-### 非アクティブテナントのオフロードによるコスト削減
+### 非アクティブテナントのオフロードによるコスト最小化
 
-マルチテナンシーを利用しており、頻繁にクエリされないテナントがある場合は、それらをコールド（クラウド）ストレージへオフロードすることを検討してください。
+マルチテナンシーを使用しており、頻繁にクエリされないテナントがある場合は、それらをコールド（クラウド）ストレージへオフロードすることをご検討ください。
 
 ![Storage Tiers](../starter-guides/managing-resources/img/storage-tiers.jpg)
 
-オフロードされたテナントはクラウドストレージバケットに保存され、必要に応じて Weaviate に再ロードできます。これにより Weaviate のメモリおよびディスク使用量を大幅に削減でき、コスト削減につながります。
+オフロードされたテナントはクラウドストレージバケットに保存され、必要に応じて  Weaviate へリロードできます。これにより  Weaviate のメモリおよびディスク使用量を大幅に削減でき、コスト削減につながります。
 
-テナントが再度使用される可能性がある場合（例: ユーザーがログインしたとき）には、Weaviate に再ロードすることで再度クエリ可能になります。
+再び使用される可能性がある場合（例: ユーザーがログインしたときなど）は、テナントを  Weaviate へリロードし、再びクエリ可能にできます。
 
 :::info オープンソース版 Weaviate のみで利用可能
-現時点ではテナントのオフロードはオープンソース版 Weaviate のみで利用可能です。将来的には Weaviate Cloud でも提供予定です。
+現時点では、テナントのオフロード機能はオープンソース版  Weaviate のみで利用可能です。 Weaviate Cloud でも提供予定です。
 :::
 
-:::tip さらなるリソース
+:::tip さらに詳しく
 - [スターターガイド: リソース管理](../starter-guides/managing-resources/index.md)
-- [How-to: テナント状態の管理](../manage-collections/tenant-states.mdx)
+- [How-to: テナント状態を管理する](../manage-collections/tenant-states.mdx)
 :::
 
 <!-- ### Data validation strategies -->
 
-<!-- ## Queries -->
+<!-- ## Queries
 
-### リランカーの使用検討
+### Consider using a reranker
 
-### 効果的なハイブリッド検索戦略 -->
+### Effective hybrid search strategies -->
 
 ## アプリケーション設計と統合
 
-### クライアントのインスタンス生成の最小化
+### クライアント生成の最小化
 
- Weaviate クライアントオブジェクトをインスタンス化する際には、接続の確立やヘルスチェックを行うための I/O 操作によりパフォーマンスのオーバーヘッドが発生します。
+ Weaviate クライアントオブジェクトを生成する際には、接続確立やヘルスチェックを行う I/O 処理のためパフォーマンスのオーバーヘッドが発生します。
 
-可能な限り、同じクライアントオブジェクトを再利用してできるだけ多くの操作を行ってください。一般的に、クライアントオブジェクトはスレッドセーフで、複数スレッド間で並列に使用できます。
+可能な限り、同じクライアントオブジェクトを再利用して多くの操作を実行してください。一般にクライアントオブジェクトはスレッドセーフであり、複数スレッド間で並行して使用できます。
 
-どうしても複数のクライアントオブジェクトが必要な場合は、初期チェックをスキップすることをご検討ください（例: [Python](../client-libraries/python/notes-best-practices.mdx#initial-connection-checks)）。これにより、複数のクライアントをインスタンス化する際のオーバーヘッドを大幅に削減できます。
+どうしても複数のクライアントオブジェクトが必要な場合は、初期チェックをスキップすることをご検討ください（例: [ Python ](../client-libraries/python/notes-best-practices.mdx#initial-connection-checks)）。これにより複数クライアント生成時のオーバーヘッドを大幅に削減できます。
 
-なお、クライアントライブラリ固有の制限が存在する場合があります。たとえば、 Weaviate Python クライアントは、[クライアントオブジェクトにつき 1 つのバッチインポートスレッド](../client-libraries/python/notes-best-practices.mdx#thread-safety)のみで使用する必要があります。
+クライアントライブラリごとの制限にもご注意ください。たとえば  Weaviate Python クライアントは、[クライアントオブジェクト 1 つにつきバッチインポートスレッドは 1 つ](../client-libraries/python/notes-best-practices.mdx#thread-safety)の使用に限定されています。
 
-さらに、非同期環境でのパフォーマンス向上のために、[非同期クライアント API の利用](#use-the-relevant-async-client-as-needed)をご検討ください。
+加えて、非同期環境でのパフォーマンス向上のために[非同期クライアント API](#use-the-relevant-async-client-as-needed)の利用をご検討ください。
 
-### 必要に応じた Async Client の使用
+### 必要に応じた Async Client の利用
 
-非同期環境で Weaviate を使用する場合は、非同期クライアント API の利用を検討してください。特に複数のクエリを並列に実行する場合、アプリケーションのパフォーマンスを大幅に向上させることができます。
+非同期環境で  Weaviate を使用する場合は、非同期クライアント API の使用を検討してください。特に複数クエリを並行して実行する際、アプリケーションの性能を大幅に向上させられます。
 
 #### Python
 

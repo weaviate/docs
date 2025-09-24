@@ -1,33 +1,32 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb
 toc: True
-title: "Weaviate Embedding Service の使い方"
+title: "Weaviate 埋め込みサービスの使用方法"
 featured: True
 integration: False
 agent: False
 tags: ['Weaviate Embeddings', 'Weaviate Cloud']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb)
+
+# Weaviate 埋め込みサービス
 
 [Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) を使用すると、[Weaviate Cloud](https://console.weaviate.cloud/) データベース インスタンスから直接埋め込みを生成できます。 
 
-*本サービスは Weaviate Cloud の一部であり、オープンソース版からは利用できません。また現在はテクニカルプレビュー中です。アクセスを希望される場合は [こちら](https://events.weaviate.io/embeddings-preview) からリクエストしてください。*
+*このサービスは Weaviate Cloud の一部であり、オープンソースからはアクセスできません。また、現在はテクニカル プレビュー段階です。アクセスを希望される場合は [こちら](https://events.weaviate.io/embeddings-preview) からリクエストしてください。*
 
-このノートブックでは次のことを行います:
-1. Weaviate コレクションを定義
-1. ベクトル検索クエリを実行
-1. ハイブリッド検索クエリを実行
-1. メタデータフィルターを用いたハイブリッド検索クエリを実行
-1. 生成検索 (RAG) クエリを実行
+このノートブックでは、次の方法を説明します。
+1. Weaviate コレクションを定義する
+1. ベクトル検索クエリを実行する
+1. ハイブリッド検索クエリを実行する
+1. メタデータ フィルター付きハイブリッド検索クエリを実行する
+1. 生成検索 (RAG) クエリを実行する
 
 ## 要件
 
-1. Weaviate Cloud (WCD) アカウント: [こちら](https://console.weaviate.cloud/) で登録できます  
-1. WCD でクラスターを作成: サンドボックスまたはサーバーレス クラスターで問題ありません。クラスター URL と管理者 API キーを取得してください  
-1. `GPT-4o mini` にアクセスできる OpenAI キー  
+1. Weaviate Cloud (WCD) アカウント: [こちら](https://console.weaviate.cloud/) から登録できます  
+1. WCD でクラスターを作成: サンドボックスまたはサーバーレス クラスターで問題ありません。クラスター URL と admin API キーが必要です  
+1. `GPT-4o mini` にアクセスするための OpenAI キー  
 
 ```python
 !pip install --q weaviate-client
@@ -57,7 +56,7 @@ WCD_CLUSTER_KEY = os.getenv("WCD_CLUSTER_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ```
 
-## Weaviate への接続
+## Weaviate に接続
 
 ```python
 client = weaviate.connect_to_weaviate_cloud(
@@ -114,7 +113,7 @@ Successfully created collection: JeopardyQuestion.
 ```
 ## データのインポート
 
-例として小規模な Jeopardy データセットを使用します。1,000 オブジェクトが含まれています。
+例として、小規模な jeopardy データセットを使用します。1,000 件のオブジェクトが含まれています。
 
 ```python
 url = 'https://raw.githubusercontent.com/weaviate/weaviate-examples/main/jeopardy_small_dataset/jeopardy_small.csv'
@@ -125,7 +124,7 @@ df = pd.read_csv(StringIO(resp.text))
 
 ```python
 # Get a collection object for "JeopardyQuestion"
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 # Insert data objects with batch import
 with collection.batch.dynamic() as batch:
@@ -152,7 +151,7 @@ Insert complete.
 ```python
 # count the number of objects
 
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 response = collection.aggregate.over_all(total_count=True)
 
 print(response.total_count)
@@ -167,7 +166,7 @@ Python 出力:
 ### ベクトル検索
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.near_text(
     query="marine mamal with tusk", 
@@ -196,14 +195,14 @@ Data: {
 ```
 ### ハイブリッド検索
 
-このノートブックの目的はエンベディングサービスの使用方法を示すことです。ハイブリッド検索の詳細は [このフォルダー](https://github.com/weaviate/recipes/tree/main/weaviate-features/hybrid-search) または [ドキュメント](https://docs.weaviate.io/weaviate/search/hybrid) をご覧ください。
+このノートブックの目的は埋め込みサービスの使い方を示すことです。ハイブリッド検索の詳細については [このフォルダー](https://github.com/weaviate/recipes/tree/main/weaviate-features/hybrid-search) または [ドキュメント](https://docs.weaviate.io/weaviate/search/hybrid) を参照してください。
 
-`alpha` パラメーターはスパース検索とデンス検索の重み付けを決定します。`alpha = 0` は純粋なスパース (bm25) 検索、`alpha = 1` は純粋なデンス (ベクトル) 検索となります。 
+`alpha` パラメーターは、スパース検索とディープ検索 (ベクトル検索) に与える重みを決定します。`alpha = 0` は純粋なスパース (bm25) 検索、`alpha = 1` は純粋なディープ (ベクトル) 検索です。 
 
-`alpha` は任意パラメーターで、既定値は `0.75` です。
+`alpha` はオプション パラメーターで、デフォルトは `0.75` に設定されています。
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.hybrid(
     query="unicorn-like artic animal",
@@ -231,12 +230,12 @@ Data: {
   "category": "MAMMALS"
 } 
 ```
-### メタデータフィルターでオブジェクトを取得
+### メタデータ フィルター付きオブジェクト取得
 
-さまざまなフィルター演算子については [こちら](https://docs.weaviate.io/weaviate/search/filters) をご覧ください。
+さまざまなフィルター演算子の詳細は [こちら](https://docs.weaviate.io/weaviate/search/filters) を参照してください。
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.fetch_objects(
     limit=2,
@@ -266,7 +265,7 @@ Data: {
 ### 生成検索 (RAG)
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.generate.hybrid(
     query="unicorn-like artic animal",

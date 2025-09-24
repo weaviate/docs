@@ -2,7 +2,7 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/transformation-agent-retrieval-benchmark.ipynb
 toc: True
-title: "Arctic 2.0 と Arctic 1.5 の合成 RAG 評価ベンチマーク"
+title: "Synthetic RAG 評価による Arctic 2.0 対 Arctic 1.5 のベンチマーク"
 featured: True
 integration: False
 agent: True
@@ -12,20 +12,20 @@ tags: ['Transformation Agent']
   <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-従来、AI システムの評価は人手で作成された評価セットに大きく依存していました。特にこのプロセスは多大な時間とリソースを必要とするため、ほとんどの開発者は自分の AI システムを作成し適切に評価することができませんでした。
+従来、AI システムの評価は人間が作成した評価セットに大きく依存していました。特に、このプロセスには多大な時間とリソースが必要となり、ほとんどの開発者が AI システムを作成して適切に評価することを妨げていました。
 
-Weaviate Transformation エージェントは、合成評価データセットを迅速に生成し、AI 評価を大きく前進させます。
+Weaviate Transformation エージェントは、合成評価データセットを迅速に生成できることで、AI 評価に革新をもたらします。
 
-このノートブックでは、**Weaviate ブログの記事ごとに 1 件、合計 2,100 件の合成質問を 63 秒で生成**します。
+このノートブックでは、Weaviate ブログの記事それぞれに対して ** 2,100 ** 件の合成質問をわずか 63 秒で生成します！
 
-次に、このデータセットを用いて Snowflake の [Arctic 2.0](https://arxiv.org/abs/2412.04506) と [Arctic 1.5](https://arxiv.org/abs/2405.05374) の埋め込みモデルについて、埋め込みリコール（ハイスタック内からソースドキュメントを見つける能力）を比較します。結果は以下のとおりです。
+続いて、このデータセットを用いて Snowflake の [ Arctic 2.0 ](https://arxiv.org/abs/2412.04506) と [ Arctic 1.5 ](https://arxiv.org/abs/2405.05374) の埋め込みモデル間で、埋め込みリコール（干し草の山からソースドキュメントを見つける）を報告します。結果は次のとおりです。
 
 | Model      | Recall@1 | Recall@5 | Recall@100 |
 |------------|----------|----------|------------|
 | Arctic 1.5 | 0.7995   | 0.9245   | 0.9995     |
 | Arctic 2.0 | 0.8412   | 0.9546   | 0.9995     |
 
-Arctic 2.0 は特に Recall@1 で 4.17% 、Recall@5 で 3.01% の向上を示し、優れた性能を発揮しています。
+Arctic 2.0 モデルは優れた性能を示し、特に Recall@1 で 4.17 %、Recall@5 で 3.01 % の向上が見られました。
 
 ## ノートブックの概要
 
@@ -61,7 +61,7 @@ True
 ```
 ## Weaviate Named ベクトル
 
-Weaviate で同じプロパティから 2 つの HSNW インデックスを作成できます。
+Weaviate で *同じ* プロパティから 2 つの HSNW インデックスを作成できます！
 
 さらに、それぞれに異なる埋め込みモデルを設定することも可能です。
 
@@ -88,7 +88,7 @@ blogs_collection = weaviate_client.collections.create(
 )
 ```
 
-## Markdown 形式で保存された Weaviate ブログをメモリに読み込むシンプルなディレクトリパーサー
+## ディレクトリパーサーによるブログのロード
 
 ```python
 def chunk_list(lst, chunk_size):
@@ -121,7 +121,7 @@ main_folder_path = "blog"
 blog_chunks = read_and_chunk_index_files(main_folder_path)
 ```
 
-## Weaviate ブログから 2,160 件のチャンクを取得！
+## Weaviate ブログ投稿の 2,160 チャンク
 
 ```python
 len(blog_chunks)
@@ -131,7 +131,7 @@ Python output:
 ```text
 2160
 ```
-### ブログチャンクの一例
+### ブログチャンクの例
 
 ```python
 print(blog_chunks[0])
@@ -154,10 +154,10 @@ description: 'Boosting Weaviate using SIMD-AVX512, Loop Unrolling and Compiler O
 **Overview of Key Sections:**
 - [**Vector Distance Calculations**](#vector-distance-calculations) Different vector distance metrics popularly used in Weaviate. - [**Implementations of Distance Calculations in Weaviate**](#vector-distance-implementations) Improvements under the hood for implementation of Dot product and L2 distance metrics. - [**Intel’s 5th Gen Intel Xeon Processor, Emerald Rapids**](#enter-intel-emerald-rapids)  More on Intel's new 5th Gen Xeon processor. - [**Benchmarking Performance**](#lets-talk-numbers) Performance numbers on microbenchmarks along with simulated real-world usage scenarios. What’s the most important calculation a vector database needs to do over and over again?
 ```
-## ブログを Weaviate へバッチインポート
+## ブログのバッチインポート
 
 ```python
-blogs_collection = weaviate_client.collections.get("WeaviateBlogChunks")
+blogs_collection = weaviate_client.collections.use("WeaviateBlogChunks")
 
 import time
 
@@ -225,13 +225,13 @@ Python output:
 Attempting to retry failed objects...
 Retry complete. Successfully uploaded 0 previously failed objects. 0 objects still failed.
 ```
-## Transformation エージェントで模擬ユーザークエリを生成
+## Transformation エージェントによるシミュレートクエリの生成
 
-Weaviate ユーザーは、自身のドキュメントにどの埋め込みモデルを使うべきか知りたいはずです。
+Weaviate ユーザーは、自分のドキュメントにどの埋め込みモデルを使用すべきか知りたいと考えるかもしれません。
 
-そのためには、ナレッジベースが受け取りそうな質問のデータセットが必要です。
+これを知るには、ナレッジベースが受け取るであろう質問のデータセットが必要です。
 
-これが Transformation エージェントによって、**2.1K 件の質問を 63 秒** という高速で大規模に生成できるようになりました。
+Transformation エージェントを使えば、これを大規模に、しかも超高速（ ** 2.1K ** 件の質問を ** 63 秒 **）で実現できます！
 
 ```python
 from weaviate.agents.transformation import TransformationAgent
@@ -283,10 +283,10 @@ Python output:
 ```text
 [TransformationResponse(operation_name='predicted_user_query', workflow_id='TransformationWorkflow-e979d5f69b91575e7289ab61d559cafa')]
 ```
-### 生成された合成クエリを確認
+### 生成されたシンセティッククエリの確認
 
 ```python
-blogs_collection = weaviate_client.collections.get("WeaviateBlogChunks")
+blogs_collection = weaviate_client.collections.use("WeaviateBlogChunks")
 ```
 
 ```python
@@ -324,7 +324,7 @@ description: "Learn about the Query Agent, our new agentic search service that r
 
 We’re incredibly excited to announce that we’ve released a brand new service for our [Serverless Weaviate Cloud](https://weaviate.io/deployment/serverless) users (including free Sandbox users) to preview, currently in Alpha: the _**Weaviate Query Agent!**_ Ready to use now, this new feature provides a simple interface for users to ask complex multi-stage questions about your data in Weaviate, using powerful foundation LLMs. In this blog, learn more about what the Weaviate Query Agent is, and discover how you can build your own!
 
-Let’s get started. :::note 
+Let’s get started. :::note
 This blog comes with an accompanying [recipe](https://github.com/weaviate/recipes/tree/main/weaviate-services/agents/query-agent-get-started.ipynb) for those of you who’d like to get started. :::
 
 ## What is the Weaviate Query Agent
@@ -337,7 +337,7 @@ How can I integrate the Weaviate Query Agent with my existing application to acc
 Example #2
 Blog Content:
 
-:::note 
+:::note
 To learn more about what AI Agents are, read our blog [”Agents Simplified: What we mean in the context of AI”](https://weaviate.io/blog/ai-agents). :::
 
 **With the Query Agent, we aim to provide an agent that is inherently capable of handling complex queries over multiple Weaviate collections.** The agent understands the structure of all of your collections, so knows when to run searches, aggregations or even both at the same time for you. Often, AI agents are described as LLMs that have access to various tools (adding more to its capabilities), which are also able to make a plan, and reason about the response. Our Query Agent is an AI agent that is provided access to multiple Weaviate collections within a cluster. Depending on the user’s query, it will be able to decide which collection or collections to perform searches on.
@@ -391,9 +391,9 @@ Predicted User Query:
 
 How can I customize the behavior of the Query Agent through system prompts?
 ```
-### 生成したデータセットは HuggingFace の [こちら](https://huggingface.co/datasets/weaviate/weaviate-blogs-with-synthetic-questions) で公開しています！
+生成されたデータセットは HuggingFace の [こちら](https://huggingface.co/datasets/weaviate/weaviate-blogs-with-synthetic-questions) でご覧いただけます！
 
-## Recall@1, 5, 100 のベンチマーク（Arctic 1.5 vs. Arctic 2.0）
+## Recall@1, 5, 100 のベンチマーク (Arctic 1.5 対 Arctic 2.0)
 
 ```python
 recall_at_1_arctic_1_5, recall_at_1_arctic_2_0 = [], []
@@ -495,14 +495,15 @@ Arctic 1.5 - Recall@1: 0.7995, Recall@5: 0.9245, Recall@100: 0.9995
 Arctic 2.0 - Recall@1: 0.8412, Recall@5: 0.9546, Recall@100: 0.9995
 ```
 ## Arctic Embed
+Snowflake Arctic 埋め込みモデルについて学ぶための追加リソースはこちらです！
 
-Snowflake Arctic 埋め込みモデルについてのリソースはこちらです。
+• [GitHub で Arctic Embed を見る](https://github.com/Snowflake-Labs/arctic-embed) <br />
+• [Arctic Embed 2.0 リサーチレポート](https://arxiv.org/abs/2412.04506) <br />
+• [Arctic Embed リサーチレポート](https://arxiv.org/abs/2405.05374) <br />
+• [Weaviate Podcast #110（Luke Merrick、Puxuan Yu、Charles Pierse）](https://www.youtube.com/watch?v=Kjqv4uk3RCs)
 
-• [Arctic Embed on GitHub](https://github.com/Snowflake-Labs/arctic-embed) <br />
-• [Arctic Embed 2.0 Research Report](https://arxiv.org/abs/2412.04506) <br />
-• [Arctic Embed Research Report](https://arxiv.org/abs/2405.05374) <br />
-• [Weaviate Podcast #110 with Luke Merrick, Puxuan Yu, and Charles Pierse!](https://www.youtube.com/watch?v=Kjqv4uk3RCs)
-
-## このノートブックのレビューにご協力いただいた Luke と Puxuan に感謝します！
+## Luke さんと Puxuan さん、このノートブックのレビューに大きな感謝を！
 
 ![Arctic Embed on the Weaviate Podcast](https://raw.githubusercontent.com/weaviate/recipes/refs/heads/main/weaviate-services/agents/images/pod-110-thumbnail.png "Arctic Embed on the Weaviate Podcast!")
+
+

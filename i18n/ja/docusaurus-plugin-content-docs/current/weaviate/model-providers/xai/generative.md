@@ -5,7 +5,7 @@ sidebar_position: 51
 # tags: ['model providers', 'xAI', 'generative', 'rag']
 ---
 
-# Weaviate での xAI 生成 AI
+# Weaviate による xAI 生成 AI
 
 :::info `v1.30.0` で追加
 :::
@@ -18,43 +18,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate と xAI の API の統合により、xAI のモデル機能へ Weaviate から直接アクセスできます。
+Weaviate の xAI API との統合により、xAI のモデル機能に Weaviate から直接アクセスできます。
 
-[Weaviate コレクションを設定](#configure-collection)して、xAI の生成 AI モデルを使用してください。Weaviate は指定したモデルを用いて 検索拡張生成 (RAG) を実行し、xAI API キーを使用します。
+xAI の生成 AI モデルを使用するために、[Weaviate コレクションを設定](#configure-collection) してください。Weaviate は、指定したモデルとお客様の xAI API Key を用いて 検索拡張生成 (RAG) を実行します。
 
-より具体的には、Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得した後、それらを xAI 上の生成モデルへ渡して出力を生成します。
+より具体的には、Weaviate は検索を実行して最も関連性の高いオブジェクトを取得し、それらを xAI 上の生成モデルに渡して出力を生成します。
 
-![RAG integration illustration](../_includes/integration_xai_rag.png)
+![RAG 統合の図](../_includes/integration_xai_rag.png)
 
 ## 要件
 
-### Weaviate の設定
+### Weaviate の構成
 
-ご利用の Weaviate インスタンスには、xAI 生成 (`generative-xai`) モジュールが設定されている必要があります。
+ご利用の Weaviate インスタンスには xAI 生成 (`generative-xai`) モジュールを構成する必要があります。
 
 <details>
-  <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
+  <summary>Weaviate Cloud (WCD) 利用者向け</summary>
 
-この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
+この統合は Weaviate Cloud (WCD) の serverless インスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
-  <summary>セルフホストユーザー向け</summary>
+  <summary>セルフホスト環境向け</summary>
 
-- モジュールが有効かどうかを確認するには、[クラスターメタデータ](/deploy/configuration/meta.md)をチェックしてください。  
-- Weaviate でモジュールを有効にするには、[モジュール設定方法](../../configuration/modules.md)ガイドに従ってください。
+- モジュールが有効になっているか確認するには、[クラスターメタデータ](/deploy/configuration/meta.md) を確認してください。  
+- モジュールを有効化するには、[モジュール設定方法](../../configuration/modules.md) ガイドに従ってください。
 
 </details>
 
 ### API 認証情報
 
-この統合を利用するには、有効な API キーを Weaviate に提供する必要があります。サインアップし API キーを取得するには [xAI](https://console.x.ai/) にアクセスしてください。
+この統合を使用するには、有効な API Key を Weaviate に提供する必要があります。[xAI](https://console.x.ai/) にアクセスしてサインアップし、API Key を取得してください。
 
-以下のいずれかの方法で API キーを Weaviate に渡します。
+次のいずれかの方法で API Key を Weaviate に渡してください。
 
-- Weaviate から参照可能な `XAI_APIKEY` 環境変数を設定する  
-- 以下の例のように、実行時に API キーを渡す  
+- Weaviate から参照可能な `XAI_APIKEY` 環境変数を設定します。  
+- 以下の例のように、実行時に API Key を渡します。
 
 <Tabs groupId="languages">
 
@@ -84,7 +84,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)して、xAI の生成 AI モデルを使用するには次のようにします。
+xAI 生成 AI モデルを使用するには、次のように [Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) します。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -107,9 +107,9 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### モデルを選択
+### モデルの選択
 
-Weaviate で使用する [利用可能なモデル](#available-models) のいずれかを、次の設定例のように指定できます。
+以下の設定例のように、Weaviate が使用する [利用可能なモデル](#available-models) のいずれかを指定できます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -132,11 +132,11 @@ Weaviate で使用する [利用可能なモデル](#available-models) のいず
 
 </Tabs>
 
-[利用可能なモデル](#available-models) のいずれかを[指定](#generative-parameters)できます。モデルを指定しない場合は [デフォルトモデル](#available-models) が使用されます。
+Weaviate が使用するモデルとして、[利用可能なモデル](#available-models) のいずれかを[指定](#generative-parameters)できます。モデルを指定しない場合は、[デフォルトモデル](#available-models) が使用されます。
 
 ### 生成パラメーター
 
-モデルの挙動をカスタマイズするために、以下の生成パラメーターを設定します。
+以下の生成パラメーターを設定して、モデルの動作をカスタマイズします。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -159,11 +159,11 @@ Weaviate で使用する [利用可能なモデル](#available-models) のいず
 
 </Tabs>
 
-モデルパラメーターの詳細については、[xAI API ドキュメント](https://docs.x.ai/docs/guides/chat#parameters)を参照してください。
+モデルパラメーターの詳細については、[xAI API ドキュメント](https://docs.x.ai/docs/guides/chat#parameters)をご覧ください。
 
 ## 実行時のモデル選択
 
-コレクションを作成する際にデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることもできます。
+コレクションを作成するときにデフォルトのモデルプロバイダーを設定するだけでなく、クエリ実行時に上書きすることもできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -175,27 +175,28 @@ Weaviate で使用する [利用可能なモデル](#available-models) のいず
     />
   </TabItem>
   <TabItem value="js" label="JS/TS Client v3">
-
-```ts
-// TS support coming soon
-```
-
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START RuntimeModelSelectionxAI"
+      endMarker="// END RuntimeModelSelectionxAI"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 
 ## 検索拡張生成
 
-生成 AI 連携を設定した後、[シングルプロンプト](#single-prompt) または [グループタスク](#grouped-task) の方法で RAG 操作を実行します。
+生成 AI との統合を設定した後、[単一プロンプト](#single-prompt) または [グループタスク](#grouped-task) の方法で RAG 操作を実行します。
 
-### シングルプロンプト
+### 単一プロンプト
 
-![シングルプロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_xai_rag.png)
+![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_xai_rag.png)
 
-検索結果内の各オブジェクトに対してテキストを生成するには、シングルプロンプト方式を使用します。
+検索結果の各オブジェクトに対してテキストを生成するには、単一プロンプト方式を使用します。
 
-以下の例では、`limit` パラメーターで指定された `n` 件の検索結果それぞれに対して出力を生成します。
+次の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-シングルプロンプトクエリを作成する際、`{}` を使用して、言語モデルに渡したいオブジェクトのプロパティを補完します。たとえば、オブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
+単一プロンプトクエリを作成するときは、波かっこ `{}` を使用して、Weaviate が言語モデルに渡すオブジェクトのプロパティを補間します。たとえば、オブジェクトの `title` プロパティを渡すには、クエリに `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -221,11 +222,11 @@ Weaviate で使用する [利用可能なモデル](#available-models) のいず
 
 ### グループタスク
 
-![グループタスク RAG 統合は検索結果セットに対して 1 つの出力を生成します](../_includes/integration_xai_rag.png)
+![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_xai_rag.png)
 
 検索結果全体に対して 1 つのテキストを生成するには、グループタスク方式を使用します。
 
-言い換えると、`n` 件の検索結果がある場合、生成モデルはそのグループ全体に対して 1 つの出力を生成します。
+言い換えれば、`n` 件の検索結果がある場合でも、生成モデルはそのグループ全体に対して 1 つの出力を返します。
 
 <Tabs groupId="languages">
 
@@ -249,11 +250,11 @@ Weaviate で使用する [利用可能なモデル](#available-models) のいず
 
 </Tabs>
 
-## 参考資料
+## 参考情報
 
 ### 利用可能なモデル
 
-Weaviate では [xAI の API](https://docs.x.ai/docs/models) 上の任意の生成モデルを使用できます。
+Weaviate では、[xAI の API](https://docs.x.ai/docs/models) 上の任意の生成モデルを使用できます。
 
 デフォルトモデルは `grok-2-latest` です。
 
@@ -261,14 +262,14 @@ Weaviate では [xAI の API](https://docs.x.ai/docs/models) 上の任意の生�
 
 ### コード例
 
-コレクションでインテグレーションを設定すると、Weaviateでのデータ管理および検索操作は他のコレクションと同様に動作します。モデルに依存しない次の例をご覧ください:
+インテグレーションをコレクションで設定すると、 Weaviate でのデータ管理および検索操作は他のコレクションとまったく同じ方法で動作します。次の model-agnostic な例を参照してください。
 
-- [How-to: コレクションの管理](../../manage-collections/index.mdx) と [How-to: オブジェクトの管理](../../manage-objects/index.mdx) の各ガイドでは、コレクションおよびその中のオブジェクトに対する作成・読み取り・更新・削除といったデータ操作の方法を説明しています。
-- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、ベクトル、キーワード、ハイブリッド検索に加えて 検索拡張生成 を実行する方法を示しています。
+- [How-to: コレクションを管理する](../../manage-collections/index.mdx) および [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) ガイドでは、データ操作（すなわちコレクションおよびその中のオブジェクトの作成、読み取り、更新、削除）の方法を示します。
+- [How-to: クエリ & 検索](../../search/index.mdx) ガイドでは、ベクトル、キーワード、ハイブリッド検索に加えて 検索拡張生成 の実行方法を示します。
 
 ### 参考資料
 
-- [xAI API ドキュメント](https://docs.x.ai/docs/introduction)
+- [ xAI API ドキュメント ](https://docs.x.ai/docs/introduction)
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
 

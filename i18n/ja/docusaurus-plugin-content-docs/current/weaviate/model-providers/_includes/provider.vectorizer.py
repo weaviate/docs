@@ -278,7 +278,7 @@ client.collections.create(
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
-            model_id="embedding-001"
+            model_id="gemini-embedding-001"
         )
     ],
     # highlight-end
@@ -1656,7 +1656,7 @@ source_objects = [
     {"title": "A Christmas Carol", "description": "A miserly old man is transformed after being visited by three ghosts on Christmas Eve in this timeless tale of redemption."}
 ]
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 with collection.batch.fixed_size(batch_size=200) as batch:
     for src_obj in source_objects:
@@ -1699,7 +1699,7 @@ for i in range(len(source_objects)):
     source_objects[i]["poster_path"] = src_img_path
 
 # START MMBatchImportExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 with collection.batch.fixed_size(batch_size=200) as batch:
     for src_obj in source_objects:
@@ -1719,7 +1719,7 @@ with collection.batch.fixed_size(batch_size=200) as batch:
 # END MMBatchImportExample
 
 # START NearTextExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 response = collection.query.near_text(
@@ -1734,7 +1734,7 @@ for obj in response.objects:
 
 
 # START HybridExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 response = collection.query.hybrid(
@@ -1749,7 +1749,7 @@ for obj in response.objects:
 
 
 # START NearImageExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 query_b64 = url_to_base64(src_img_path)

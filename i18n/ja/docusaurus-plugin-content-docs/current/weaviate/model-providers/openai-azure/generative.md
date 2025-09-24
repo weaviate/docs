@@ -6,7 +6,7 @@ image: og/docs/integrations/provider_integrations_openai_azure.jpg
 # tags: ['model providers', 'azure', 'openai', 'generative', 'rag']
 ---
 
-# Weaviate での Azure OpenAI 生成 AI
+# Weaviate を用いた Azure OpenAI 生成 AI
 
 
 import Tabs from '@theme/Tabs';
@@ -17,43 +17,43 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate の Azure OpenAI の API との統合により、モデルの機能に Weaviate から直接アクセスできます。
+Weaviate と Azure OpenAI の API を統合することで、モデルの機能に Weaviate から直接アクセスできます。
 
-[Weaviate コレクションを設定](#configure-collection)して、Azure OpenAI で生成 AI モデルを利用します。Weaviate は、指定したモデルと Azure OpenAI API キーを使用して 検索拡張生成 (RAG) を実行します。
+[コレクションを設定](#configure-collection)して Azure OpenAI の 生成 AI モデルを使用すると、Weaviate は指定したモデルとお持ちの Azure OpenAI API キーを用いて 検索拡張生成 (RAG) を実行します。
 
-より具体的には、Weaviate が検索を実行し、最も関連性の高いオブジェクトを取得してから、それらを Azure OpenAI の生成モデルに渡して出力を生成します。
+具体的には、Weaviate が検索を行い、最も関連性の高いオブジェクトを取得し、それらを Azure OpenAI の 生成モデルに渡して出力を生成します。
 
-![RAG 統合のイラスト](../_includes/integration_openai_azure_rag.png)
+![RAG 統合のイメージ](../_includes/integration_openai_azure_rag.png)
 
-## 必要条件
+## 要件
 
 ### Weaviate の設定
 
-ご使用の Weaviate インスタンスは、Azure OpenAI 生成 AI 統合 (`generative-openai`) モジュールが有効化されている必要があります。
+お使いの Weaviate インスタンスは、Azure OpenAI 生成 AI 統合モジュール（`generative-openai`）が有効になっている必要があります。
 
 <details>
   <summary>Weaviate Cloud (WCD) ユーザー向け</summary>
 
-この統合は、Weaviate Cloud (WCD) の serverless インスタンスではデフォルトで有効です。
+この統合は Weaviate Cloud (WCD) のサーバーレスインスタンスではデフォルトで有効になっています。
 
 </details>
 
 <details>
   <summary>セルフホストユーザー向け</summary>
 
-- [cluster metadata](/deploy/configuration/meta.md) を確認し、モジュールが有効になっているかどうかを確認します。  
-- Weaviate でモジュールを有効化するには、[モジュールの設定方法](../../configuration/modules.md) ガイドに従ってください。
+- [クラスターメタデータ](/deploy/configuration/meta.md)を確認して、モジュールが有効かどうか検証してください。  
+- Weaviate でモジュールを有効化する方法は、[モジュール設定方法](../../configuration/modules.md)をご覧ください。
 
 </details>
 
 ### API 資格情報
 
-この統合を利用するには、有効な Azure OpenAI API キーを Weaviate に提供する必要があります。サインアップと API キーの取得は [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) で行ってください。
+この統合を使用するには、有効な Azure OpenAI API キーを Weaviate に提供する必要があります。API キーの取得については [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-foundry/models/openai/) にアクセスしてください。
 
-次のいずれかの方法で API キーを Weaviate に渡します。
+以下のいずれかの方法で API キーを Weaviate に渡します。
 
-- `AZURE_APIKEY` 環境変数を設定し、Weaviate から参照できるようにします。  
-- 以下の例のように、実行時に API キーを指定します。
+- Weaviate から参照可能な `AZURE_APIKEY` 環境変数を設定する  
+- 例に示すように、実行時に API キーを渡す
 
 <Tabs groupId="languages">
 
@@ -83,7 +83,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 <MutableGenerativeConfig />
 
-[Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)して、OpenAI Azure の生成モデルを使用します。
+OpenAI Azure の 生成モデルを使用するには、以下のように [Weaviate インデックスを設定](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration)してください。
 
 モデルを選択するには、Azure のリソース名を指定します。
 
@@ -110,7 +110,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 ### 生成パラメーター
 
-以下の生成パラメーターを設定して、モデルの動作をカスタマイズします。
+以下の生成パラメーターを設定して、モデルの動作をカスタマイズできます。
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -133,34 +133,33 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-詳細については、[Azure OpenAI API のドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/) を参照してください。
+これらのパラメーターの詳細については、[Azure OpenAI API ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/)を参照してください。
 
 ## ヘッダー パラメーター
 
-リクエストの追加ヘッダーを使用して、API キーおよびいくつかのオプションパラメーターを実行時に指定できます。  
-利用可能なヘッダーは次のとおりです:
+実行時にリクエストの追加ヘッダーを通じて、API キーといくつかのオプションパラメーターを指定できます。利用可能なヘッダーは次のとおりです。
 
-- `X-Azure-Api-Key`: Azure API キー。  
-- `X-Azure-Deployment-Id`: Azure デプロイメント ID。  
-- `X-Azure-Resource-Name`: Azure リソース名。
+- `X-Azure-Api-Key`: Azure API キー  
+- `X-Azure-Deployment-Id`: Azure デプロイメント ID  
+- `X-Azure-Resource-Name`: Azure リソース名  
 
-実行時に指定した追加ヘッダーは、既存の Weaviate 設定を上書きします。
+実行時に指定された追加ヘッダーは、既存の Weaviate 設定を上書きします。
 
-上記の [API 認証情報の例](#api-credentials) に示すとおりにヘッダーを指定してください。
+ヘッダーは上記の [API 資格情報の例](#api-credentials) のとおりに指定してください。
 
 ## 検索拡張生成
 
-生成 AI 統合を設定したら、[単一プロンプト](#single-prompt) または [グループタスク](#grouped-task) の方法で RAG 操作を実行します。
+生成 AI 連携を設定した後、[シングル プロンプト](#single-prompt) または [グループ化タスク](#grouped-task) のいずれかの方法で RAG 操作を実行します。
 
-### 単一プロンプト
+### シングル プロンプト
 
-![単一プロンプト RAG 統合は検索結果ごとに個別の出力を生成します](../_includes/integration_openai_azure_rag_single.png)
+![シングル プロンプトの RAG 連携は検索結果ごとに個別の出力を生成します](../_includes/integration_openai_azure_rag_single.png)
 
-検索結果内の各オブジェクトに対してテキストを生成するには、単一プロンプト方式を使用します。
+検索結果に含まれる各オブジェクトごとにテキストを生成するには、シングル プロンプト方式を使用します。
 
-以下の例では、`n` 件の検索結果それぞれに対して出力を生成します。ここで `n` は `limit` パラメーターで指定します。
+以下の例では、`limit` パラメーターで指定した `n` 件の検索結果それぞれに対して出力を生成します。
 
-単一プロンプト クエリを作成するときは、`{}` を使って言語モデルに渡したいオブジェクトプロパティを埋め込みます。たとえば、オブジェクトの `title` プロパティを渡す場合は、クエリ内に `{title}` を含めます。
+シングル プロンプト クエリを作成する際は、Weaviate が言語モデルに渡すオブジェクトのプロパティを波かっこ `{}` でインターポレートします。たとえば、オブジェクトの `title` プロパティを渡すには、クエリ内に `{title}` を含めます。
 
 <Tabs groupId="languages">
 
@@ -184,13 +183,13 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-### グループタスク
+### グループ化タスク
 
-![グループタスク RAG 統合は検索結果のセットに対して 1 つの出力を生成します](../_includes/integration_openai_azure_rag_grouped.png)
+![グループ化タスクの RAG 連携は検索結果の集合に対して 1 つの出力を生成します](../_includes/integration_openai_azure_rag_grouped.png)
 
-検索結果のセット全体に対して 1 つのテキストを生成するには、グループタスク方式を使用します。
+検索結果全体に対して 1 つのテキストを生成するには、グループ化タスク方式を使用します。
 
-つまり、`n` 件の検索結果がある場合でも、生成モデルはグループ全体に対して 1 つの出力を生成します。
+言い換えると、`n` 件の検索結果がある場合でも、生成モデルはその集合に対して 1 つの出力のみを生成します。
 
 <Tabs groupId="languages">
 
@@ -214,29 +213,29 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 </Tabs>
 
-## 参照
+## 参考資料
 
 ### 利用可能なモデル
 
-利用可能なモデルとリージョン別の提供状況については、[Azure OpenAI ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models) を参照してください。
+利用可能なモデルとリージョンごとの提供状況については、[Azure OpenAI ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models) を参照してください。
 
 ## 追加リソース
 
-### その他の統合
+### そのほかのインテグレーション
 
 - [Azure OpenAI 埋め込みモデル + Weaviate](./embeddings.md)
 
 ### コード例
 
-コレクションで統合を設定すると、Weaviate におけるデータ管理および検索操作は他のコレクションと同じように動作します。以下のモデル非依存の例をご覧ください:
+インテグレーションがコレクションに対して設定されると、Weaviate におけるデータ管理および検索操作は他のコレクションとまったく同じ方法で動作します。モデルに依存しない次の例をご覧ください。
 
-- [How-to: コレクションを管理する](../../manage-collections/index.mdx) と [How-to: オブジェクトを管理する](../../manage-objects/index.mdx) では、データ操作 (コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除) の方法を説明しています。
-- [How-to: クエリ & 検索](../../search/index.mdx) では、ベクトル、キーワード、ハイブリッド検索などの検索操作および検索拡張生成の実行方法を説明しています。
+- [How-to: Manage collections](../../manage-collections/index.mdx) と [How-to: Manage objects](../../manage-objects/index.mdx) のガイドでは、データ操作（コレクションおよびその内部のオブジェクトの作成、読み取り、更新、削除）の方法を説明しています。  
+- [How-to: Query & Search](../../search/index.mdx) のガイドでは、ベクトル、キーワード、ハイブリッドなどの検索操作および検索拡張生成の実行方法を説明しています。
 
-### 参考文献
+### 参考リンク
 
-- Azure OpenAI [API ドキュメント](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
-- Azure OpenAI [モデルと提供状況](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models)
+- Azure OpenAI [API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/)  
+- Azure OpenAI [models and availability](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models)
 
 ## 質問とフィードバック
 

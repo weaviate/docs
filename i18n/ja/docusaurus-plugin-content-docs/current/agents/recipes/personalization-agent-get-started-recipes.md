@@ -2,25 +2,25 @@
 layout: recipe
 colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/personalization-agent-get-started-recipes.ipynb
 toc: True
-title: "Weaviate パーソナライゼーション エージェントの構築 - フードレコメンダー"
+title: "Weaviate パーソナライズ エージェントの構築 - フードレコメンダー"
 featured: False
 integration: False
 agent: True
 tags: ['Personalization Agent']
 ---
 <a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/agents/personalization-agent-get-started-recipes.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Google Colab で開く" width="130"/>
+  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
 </a>
 
-このレシピでは、新しい Weaviate `PersonalizationAgent` を使用して、Weaviate コレクションからユーザーにパーソナライズされたオブジェクトを取得します。この新しいエージェントベースの取得方法は、ユーザーのペルソナ プロフィールとこれまでのコレクションとのやり取りに基づいています。
+このレシピでは、Weaviate の新しい `PersonalizationAgent` を使用し、ユーザーごとにパーソナライズされた方法で Weaviate コレクションからオブジェクトを取得します。この新しいエージェント方式の取得は、ユーザーのペルソナ プロファイルとこれまでのコレクションとのやり取りに基づいて行われます。
 
-> 📚 `PersonalizationAgent` の詳細な使い方については、弊社ブログ「[Introducing the Weaviate Personalization Agent](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents)」および[ドキュメント](https://docs.weaviate.io/agents/personalization)をご覧ください。
+> 📚 `PersonalizationAgent` の使い方の詳細は、弊社ブログ「[Introducing the Weaviate Personalization Agent](https://weaviate.io/blog/personalization-agent?utm_source=recipe&utm_campaign=agents)」および[ドキュメント](https://docs.weaviate.io/agents/personalization)をご覧ください。
 
-開始をサポートするために、 Hugging Face datasets 🤗 で利用できるいくつかのデモデータセットを提供しています:  
-- [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes): 料理の名前、短い説明、料理の種類を一覧にしたデータセットです。  
-- [Movies](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-movies): 映画、評価、オリジナル言語などを一覧にしたデータセットです。
+すぐに試せるように、Hugging Face datasets 🤗 にいくつかのデモデータセットを用意しました。  
+- [Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes): 料理名、短い説明、料理の種類を含むデータセット  
+- [Movies](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-movies): 映画、評価、オリジナル言語などを含むデータセット  
 
-この例では、 Recipes データセットを使用してフードレコメンダー サービスを作成します。
+本例では、Recipes データセットを使用してフード レコメンダー サービスを作成します。
 
 ```python
 !pip install 'weaviate-client[agents]' datasets
@@ -28,12 +28,12 @@ tags: ['Personalization Agent']
 
 ## Weaviate のセットアップとデータのインポート
 
-Weaviate Personalization Agent を使用するには、まず [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) アカウントを作成してください👇  
-1. [Serverless Weaviate Cloud アカウントを作成](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents)し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents) をセットアップします。  
-2. 「Embedding」に移動して有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして使用されます。  
-3. クラスターへ接続するための `WEAVIATE_URL` と `WEAVIATE_API_KEY` をメモしてください。
+Weaviate Personalization Agent を使うには、まず [Weaviate Cloud](tps://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents) アカウントを作成してください👇  
+1. [Serverless Weaviate Cloud アカウント](https://weaviate.io/deployment/serverless?utm_source=recipe&utm_campaign=agents)を作成し、無料の [Sandbox](https://docs.weaviate.io/cloud/manage-clusters/create#sandbox-clusters?utm_source=recipe&utm_campaign=agents) をセットアップします  
+2. 「Embedding」に移動して有効化します。デフォルトでは `Snowflake/snowflake-arctic-embed-l-v2.0` が埋め込みモデルとして使用されます  
+3. クラスターに接続するため `WEAVIATE_URL` と `WEAVIATE_API_KEY` を控えておきます  
 
-> Info: 外部の埋め込みプロバイダー用の追加キーを用意せずに済むよう、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) の使用を推奨します。
+> Info: 外部埋め込みプロバイダー用の追加キーを用意する必要がないため、[Weaviate Embeddings](https://docs.weaviate.io/weaviate/model-providers/weaviate) の使用を推奨します。
 
 ```python
 import os
@@ -55,7 +55,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 ### 新しいコレクションの作成
 
-次に、 Weaviate に "Recipes" という新しいコレクションを作成します。 Weaviate のエージェントサービスを利用する場合、コレクションのプロパティに説明を追加しておくと便利です。これらの説明はエージェントが利用できます。
+次に、Weaviate に "Recipes" という名前の新しいコレクションを作成します。Weaviate のエージェントサービスでは、コレクション内プロパティの説明を含めることが推奨されます。これらの説明はエージェントによって利用されます。
 
 ```python
 from weaviate.classes.config import Configure, DataType, Property
@@ -90,7 +90,7 @@ from datasets import load_dataset
 
 dataset = load_dataset("weaviate/agents", "personalization-agent-recipes", split="train", streaming=True)
 
-recipes_collection = client.collections.get("Recipes")
+recipes_collection = client.collections.use("Recipes")
 
 with recipes_collection.batch.dynamic() as batch:
     for item in dataset:
@@ -98,13 +98,13 @@ with recipes_collection.batch.dynamic() as batch:
 
 ```
 
-## パーソナライゼーション エージェントの作成
+## パーソナライズ エージェントの作成
 
-以下では `"Recipes"` コレクション用に `PersonalizationAgent` を作成します。すでにこのコレクション用のエージェントが存在する場合は、単に接続するだけでかまいません。
+以下では `"Recipes"` コレクションの `PersonalizationAgent` を作成します。すでにこのコレクション用のエージェントが存在する場合は、単に接続するだけです。
 
-新しい `PeresonalizationAgent` を作成する際、任意で `user_properties` を定義できます。
+新しく `PersonalizationAgent` を作成する際、任意で `user_properties` を定義できます。
 
-ユーザープロパティは、エージェントに追加されるユーザーに関する有用な情報であれば何でも構いません。今回はフードレコメンダー サービスなので、各ペルソナに `favorite_cuisines`、`likes`、`dislikes` を追加すると良いでしょう。
+ユーザープロパティは、エージェントに追加されるユーザーに関する有用な情報なら何でも構いません。今回はフード レコメンダー サービスを作成するため、各ペルソナに `favorite_cuisines`、`likes`、`dislikes` を追加することにします。
 
 ```python
 from weaviate.agents.personalization import PersonalizationAgent
@@ -127,9 +127,9 @@ else:
 
 ```
 
-### 新しいペルソナの追加
+### 新規ペルソナの追加
 
-`add_persona` を使用して新しいユーザーを追加できます。追加する際に必要なユーザープロパティを指定します。よろしければ、下のコードブロックを変更してご自身を表現してみてください👇
+`add_persona` を使って新しいユーザーを追加でき、その際に先ほど定義したユーザープロパティを指定します。お好みで下のコードブロックを自身の情報に変更して試してみてください👇
 
 ```python
 from uuid import uuid4
@@ -153,23 +153,23 @@ agent.get_persona(persona_id)
 
 ```
 
-Python 出力:
+Python output:  
 ```text
 Persona(persona_id=UUID('df987437-4d10-44d6-b613-dfff31f715fb'), properties={'favorite_cuisines': ['Italian', 'Thai'], 'dislikes': ['okra', 'mushroom'], 'allergies': None, 'likes': ['chocolate', 'salmon', 'pasta', 'most veggies']})
 ```
 
 ### インタラクションの追加
 
-少なくとも 1 つのペルソナができたら、そのペルソナに対するインタラクションを追加できます。たとえばフードレコメンダー サービスでは、ペルソナの料理レビューを追加するのが自然です。
+少なくとも 1 つのペルソナを作成したら、そのペルソナに対するインタラクションを追加できます。フード レコメンダー サービスの場合、ペルソナの食事レビューを追加するのが理にかなっています。
 
-各インタラクションには -1.0（ネガティブ）から 1.0（ポジティブ）の重みを付けられます。以下では、いくつかの料理に対するレビューを追加してみましょう。
+各インタラクションには -1.0（ネガティブ）から 1.0（ポジティブ）までの重みを設定できます。以下では、いくつかの料理に対するレビューを追加してみましょう。
 
-これらのインタラクションをどのようなエンドアプリケーションが送ってくるのか、そして各重みが何を表すのかというルールを事前に考えておくと良いでしょう。たとえばレシピサイトを想定すると、次のように決められます。  
+どのようなエンドアプリケーションがこれらのインタラクションを送信するか、また各重みが何を表すのかをルール化しておくと良いでしょう。例えばレシピサイトを想定すると:  
 - 1.0: お気に入りの料理  
 - 0.8: 料理を気に入った  
 - 0.5: レシピページを閲覧した  
-- -0.5: 料理が口に合わなかった  
-- -1.0: 料理が大嫌い 👎
+- -0.5: 料理が好みではない  
+- -1.0: 料理を完全に嫌った 👎  
 
 ```python
 from uuid import UUID
@@ -226,13 +226,13 @@ interactions = [
 agent.add_interactions(interactions=interactions)
 ```
 
-## 推薦と根拠の取得
+## レコメンデーションと根拠の取得
 
-ペルソナとそのインタラクションがそろったので、`get_objects` を使ってエージェントから推薦されたオブジェクトを取得できます。ここでは `use_agent_ranking` を設定するかどうかの 2 つの選択肢があります。
+ペルソナとそのインタラクションを用意できたので、`get_objects` でエージェントからオブジェクトを推薦してもらいましょう。ここでは `use_agent_ranking` を設定するかどうかの 2 通りがあります。
 
-エージェントランキングを使用しない場合、返されるオブジェクトは従来の ML クラスタリングでランク付けされます。一方、使用する場合は追加で LLM による再ランキングが行われ、任意の `instruction` を指定できます。
+`use_agent_ranking` を使用しない場合、返却されたオブジェクトは従来の機械学習クラスタリングでランク付けされます。一方、使用する場合は、LLM による追加の再ランキングが行われ、任意の `instruction` も渡せます。
 
-エージェントランキングを使用すると、`ranking_rationale` で順位付けの根拠も確認できます👇
+エージェント ランキングを使用すると、下記のように `ranking_rationale` でランキングの根拠も確認できます👇
 
 ```python
 response = agent.get_objects(persona_id, limit=25, use_agent_ranking=True)
@@ -245,7 +245,7 @@ for i, obj in enumerate(response.objects):
     print(obj.properties["labels"])
 ```
 
-Python 出力:
+Python output:  
 ```text
 Based on your love for Italian cuisine and positive interactions with dishes like Gnocchi alla Sorrentina and Fiorentina Steak, Italian dishes like Frittata di Zucca e Pancetta and Classic Italian Margherita Pizza are highlighted. Your fondness for Chicken Tikka Masala also brought Indian dishes such as Spicy Indian Tikka Masala forward. Although you enjoyed Coq au Vin, the included mushrooms might not be to your liking, which is reflected in a balanced way within French dishes.
 *****0*****
@@ -350,11 +350,11 @@ Thick wide ribbons of pasta served with a creamy porcini mushroom sauce and grat
 Italian
 ```
 
-### Instruction 付きでの推薦取得
+### instructions 付きレコメンデーションの取得
 
-オプションとして、エージェントに instruction を与えることもできます。これにより、エージェントの LLM はどのような推薦を行うべきかについて、より多くのコンテキストを得られます。
+オプションとして、エージェントに instruction を与えることもできます。これにより、エージェント LLM がどのような推薦を行うべきかについて、より多くの文脈を得られます。
 
-また、最初のランキングで高めの limit を設定し、その後エージェントランキングで小さなグループに絞り込むという手法も有効です👇
+また、初期ランキングの件数を多めに設定し、その後エージェント ランキングで絞り込むと良い場合もあります。以下ではその例を示します👇
 
 ```python
 response = agent.get_objects(persona_id,
@@ -372,7 +372,7 @@ for i, obj in enumerate(response.objects[:10]):
     print(obj.properties["labels"])
 ```
 
-Python 出力:
+Python output:  
 ```text
 As you love Italian cuisine and have a special liking for foods like pasta and salmon, while disliking mushrooms, we've focused on offering you a variety of Italian and other delightful dishes without mushroom content. We've also incorporated a touch of diversity with dishes from other cuisines you enjoy, while carefully avoiding those with ingredients you dislike.
 *****0*****
@@ -416,3 +416,4 @@ Paneer Tikka
 Small cubes of paneer marinated in spices and yogurt, then grilled and served in a spicy tomato sauce.
 Indian
 ```
+

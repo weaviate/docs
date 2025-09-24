@@ -12,9 +12,9 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
 
-[ Python Client v4 ](/weaviate/client-libraries/python) と [ TypeScript Client v3 ](../client-libraries/typescript/index.mdx) には、一般的な接続タイプ向けのヘルパーメソッドが用意されています。さらに、追加の接続設定が必要な場合のためにカスタムメソッドも提供しています。
+[Python クライアント v4](/weaviate/client-libraries/python) と [TypeScript クライアント v3](../client-libraries/typescript/index.mdx) では、一般的な接続タイプ向けのヘルパーメソッドを提供しています。さらに、追加の接続設定が必要な場合に使用できるカスタムメソッドも用意されています。
 
-その他のクライアントをお使いの場合でも、標準の接続メソッドはすべての接続で設定可能です。
+他のクライアントを使用している場合でも、標準の接続メソッドはすべての接続で設定可能です。
 
 <Tabs groupId="languages">
 <TabItem value="py4" label="Python Client v4">
@@ -53,7 +53,7 @@ import GRPCTimeouts from '/_includes/code/connections/timeouts-custom.mdx';
 
 ## サードパーティ API キー
 
-外部 API を使用する統合では、API キーが必要になることがよくあります。サードパーティ API キーを追加するには、次の例を参考にしてください。
+外部 API を利用するインテグレーションでは、API キーが必要になることがよくあります。サードパーティの API キーを追加するには、次の例を参考にしてください:
 
 <Tabs groupId="languages">
 <TabItem value="py4" label="Python Client v4">
@@ -75,6 +75,10 @@ import GRPCTimeouts from '/_includes/code/connections/timeouts-custom.mdx';
 </Tabs>
 
 ## OIDC 認証
+
+import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+
+<WCDOIDCWarning/>
 
 import OIDCConnect from '/_includes/connect/oidc-connect-ref.mdx';
 

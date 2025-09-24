@@ -1,7 +1,7 @@
 ---
-title: Python クライアント
+title: Python
 sidebar_position: 10
-description: "Weaviate を Python アプリケーションやサービスに統合するための公式 Python クライアントライブラリのドキュメントです。"
+description: "Weaviate を Python アプリケーションやサービスに統合するための公式 Python クライアントライブラリのドキュメント。"
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library', 'experimental']
 ---
@@ -25,24 +25,24 @@ export const pythonCardsData = [
 
 :::note Python client (SDK)
 
-最新の Python クライアントは `v||site.python_client_version||` です。
+最新の Python クライアントはバージョン `v||site.python_client_version||` です。
 
 <QuickLinks items={pythonCardsData} />
 
 :::
 
-このページでは Weaviate Python クライアント（ `v4` リリース）について広く説明します。Python クライアントに特化しないコード例などの使用方法については、[How-to マニュアル & ガイド](../../guides.mdx) の関連ページをご覧ください。
+このページでは Weaviate Python クライアント（`v4` リリース）について概説します。Python クライアントに特化しない使用例などは、[How-to マニュアル & Guides](../../guides.mdx) をご覧ください。
 
 ## インストール
 
-Python クライアントライブラリは Python 3.8 以上で開発・テストされています。[PyPI.org](https://pypi.org/project/weaviate-client/) から入手でき、次のコマンドでインストール可能です。
+Python クライアントライブラリは Python 3.8+ で開発・テストされています。[PyPI.org](https://pypi.org/project/weaviate-client/) から入手でき、次のコマンドでインストール可能です。
 
 ```bash
 pip install -U weaviate-client
 ```
 
 <details>
-  <summary>ベータ版をインストールする場合</summary>
+  <summary>ベータ版のインストール方法</summary>
 
 ```bash
 pip install --pre -U "weaviate-client==4.*"`
@@ -55,18 +55,18 @@ pip install --pre -U "weaviate-client==4.*"`
 
 #### Weaviate バージョン互換性
 
-`v4` Python クライアントは Weaviate `1.23.7` 以降が必要です。一般的に、最新バージョンの Python クライアントと Weaviate データベースを併用することを推奨します。
+`v4` Python クライアントは Weaviate `1.23.7` 以上が必要です。一般的に、Python クライアントと Weaviate データベースは最新バージョンのご利用を推奨します。
 
-Weaviate Cloud では、2024 年 1 月 31 日以降に作成された Sandbox が `v4` クライアントと互換性があります。この日以前に作成された Sandbox は `v4` クライアントと互換性がありません。
+Weaviate Cloud では、2024-01-31 以降に作成された Sandbox は `v4` クライアントと互換性があります。この日付以前に作成された Sandbox は `v4` クライアントと互換性がありません。
 
 #### gRPC
 
-`v4` クライアントは内部でリモートプロシージャコール (RPC) を使用します。そのため、Weaviate サーバーに対して gRPC 用のポートを開放しておく必要があります。
+`v4` クライアントは内部で RPC を使用します。そのため、Weaviate サーバーへの gRPC 用ポートを開放しておく必要があります。
 
 <details>
   <summary>docker-compose.yml の例</summary>
 
-Docker で Weaviate を実行している場合、デフォルトポート（ `50051` ）を次のように `docker-compose.yml` でマッピングできます。
+Docker で Weaviate を実行している場合、デフォルトポート（`50051`）を次のように `docker-compose.yml` にマッピングできます。
 
 ```yaml
 ports:
@@ -80,24 +80,24 @@ ports:
 
 #### Weaviate エージェント
 
-[Weaviate エージェント](../../../agents/index.md) を利用するために、オプションの agents エクストラ付きで Weaviate クライアントライブラリをインストールできます。次のコマンドを実行してください。
+[Weaviate Agents](../../../agents/index.md) を使用するために、オプションの agents エクストラ付きで Weaviate クライアントライブラリをインストールできます。以下のコマンドを実行してください。
 
 ```bash
 pip install -U weaviate-client[agents]
 ```
 
-## はじめに
+## はじめる
 
 import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
 
 <BasicPrereqs />
 
-以下の Python 例で Weaviate を使い始めましょう。コードでは次の主要ステップを順に実行します。
+以下の Python 例では、Weaviate を使い始めるための主要な手順を順に説明しています。
 
-1. **[Weaviate へ接続](docs/weaviate/connections/index.mdx)**: ローカル（または Cloud）環境の Weaviate インスタンスへ接続します。  
-1. **[コレクションの作成](../../manage-collections/index.mdx)**: `Question` コレクションのデータスキーマを定義し、Ollama モデルでデータをベクトライズします。  
-1. **[データのインポート](../../manage-objects/import.mdx)**: サンプルの Jeopardy 質問を取得し、Weaviate のバッチインポートを使って効率的に取り込み、ベクトル埋め込みを自動生成します。  
-1. **[データベースの検索／クエリ](../../search/index.mdx)**: ベクトル検索を実行し、クエリ `biology` に意味的に類似した質問を見つけます。
+1. **[Weaviate に接続](docs/weaviate/connections/index.mdx)**: ローカル（または Cloud）環境の Weaviate インスタンスへ接続します。  
+1. **[コレクションを作成](../../manage-collections/index.mdx)**: `Question` コレクションのデータスキーマを定義し、Ollama モデルでデータをベクトル化します。  
+1. **[データをインポート](../../manage-objects/import.mdx)**: サンプルの Jeopardy 問題を取得し、Weaviate のバッチインポートで効率的に取り込み、ベクトル埋め込みを自動生成します。  
+1. **[データベースを検索/クエリ](../../search/index.mdx)**: ベクトル検索を実行し、`biology` と意味的に類似した質問を検索します。  
 
 import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
 
@@ -110,15 +110,15 @@ import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx
   language="py"
 />
 
-さらに多くのコード例については、[How-to マニュアル & ガイド](../../guides.mdx) セクションをご確認ください。
+より多くのコード例については、[How-to マニュアル & Guides](../../guides.mdx) をご確認ください。
 
-## 非同期での利用
+## 非同期使用
 
-Python クライアントライブラリはデフォルトで `WeaviateClient` クラスを通じた同期 API を提供します（本ページで説明）。`weaviate-client` `v4.7.0` 以降では、`WeaviateAsyncClient` クラスによる非同期 API も利用可能です。詳細は [非同期クライアント API ページ](./async.md) を参照してください。
+Python クライアントライブラリはデフォルトで `WeaviateClient` クラスによる同期 API を提供します（本ページで説明）。`weaviate-client` `v4.7.0` 以降では、`WeaviateAsyncClient` クラスによる非同期 API も利用可能です。詳細は [async クライアント API ページ](./async.md) を参照してください。
 
 ## リリース
 
-Python クライアントライブラリのリリース履歴と変更ログについては、[GitHub のリリースページ](https://github.com/weaviate/weaviate-python-client/releases) をご覧ください。
+Python クライアントライブラリのリリース履歴と変更ログは、[GitHub のリリースページ](https://github.com/weaviate/weaviate-python-client/releases) をご覧ください。
 
 <details>
   <summary>Weaviate と対応クライアントバージョンの表はこちらをクリック</summary>
@@ -131,11 +131,11 @@ import ReleaseHistory from "/_includes/release-history.md";
 
 
 
-#### ベクトライザー API の変更点 `v4.16.0`
+#### ベクトライザー API 変更 `v4.16.0`
 
 <VectorsAutoSchemaError />
 
-Weaviate Python クライアント `v4.16.0` 以降、コレクション作成時のベクトライザー設定 API に複数の変更があります:
+Weaviate Python クライアント `v4.16.0` から、コレクションを作成する際の ベクトライザー 設定 API に複数の変更があります:
 - `.vectorizer_config` は `.vector_config` に置き換えられました
 - `Configure.NamedVectors` は `Configure.Vectors` と `Configure.MultiVectors` に置き換えられました
 - `Configure.NamedVectors.none` と `Configure.Vectorizer.none` は `Configure.Vectors.self_provided` と `Configure.MultiVectors.self_provided` に置き換えられました
@@ -144,32 +144,32 @@ Weaviate Python クライアント `v4.16.0` 以降、コレクション作成�
 
 Python `v3` クライアントから `v4` クライアントへ移行する場合は、この [専用ガイド](./v3_v4_migration.md) を参照してください。
 
-#### ベータ版リリース
+#### ベータリリース
 
 <details>
-  <summary>移行ガイド - ベータ版リリース</summary>
+  <summary>移行ガイド - ベータリリース</summary>
 
-#### `v4.4b9` の変更点
+#### `v4.4b9` における変更点
 
 ##### `weaviate.connect_to_x` メソッド
 
-`timeout` 引数は `additional_config` 引数の一部になりました。クラス `weaviate.config.AdditionalConfig` を入力として受け取ります。
+`timeout` 引数は `additional_config` 引数の一部になりました。入力として `weaviate.config.AdditionalConfig` クラスを受け取ります。
 
 ##### クエリ
 
-`query` 名前空間のメソッドに対するすべてのオプション引数は、キーワード引数としてのみ指定する必要があります。
+`query` 名前空間内のすべてのオプション引数は、キーワード引数としてのみ指定する必要があります。
 
-クエリ引数の型を強制するランタイム解析ロジックが追加されました。
+クエリ引数を解析する実行時ロジックが追加され、正しい型が強制されます。
 
 ##### バッチ処理
 
-内部的に異なるバッチング方式を用いる 3 つのアルゴリズムが導入されました:
+バックグラウンドで異なるバッチ方式を用いる 3 種類のアルゴリズムが導入されました:
 
 - `client.batch.dynamic()`
 - `client.batch.fixed_size()`
 - `client.batch.rate_limit()`
 
-`client.batch.dynamic() as batch` は、以前の `client.batch as batch` のドロップイン置換です。後者は非推奨となり、正式リリース時に削除されます。
+`client.batch.dynamic() as batch` は、以前の `client.batch as batch`（非推奨、正式リリース時に削除予定）のドロップインリプレースメントです。
 
 ```python
 with client.batch.dynamic() as batch:
@@ -183,7 +183,7 @@ with client.batch as batch:
   ...
 ```
 
-`client.batch.fixed_size() as batch` は、固定サイズのみを使用するバッチング アルゴリズムを設定する方法です。
+`client.batch.fixed_size() as batch` は、固定サイズのみを使用するバッチングアルゴリズムを設定する方法です。
 
 ```python
 with client.batch.dynamic() as batch:
@@ -198,39 +198,39 @@ with client.batch as batch:
   ...
 ```
 
-`client.batch.rate_limit() as batch` は、サードパーティのベクトル化 API のレート制限に抵触しないよう支援する新しい方法です。`rate_limit()` メソッドで `request_per_minute` を指定することで、サードパーティ API が処理可能な速度で Weaviate へオブジェクトを送信するようバッチング アルゴリズムを制御できます。
+`client.batch.rate_limit() as batch` は、サードパーティ ベクトル化 API のレートリミットに達するのを回避する新しい方法です。`rate_limit()` メソッドで `request_per_minute` を指定することで、サードパーティ API が処理可能な速度でオブジェクトを Weaviate に送信するようバッチングアルゴリズムを制御できます。
 
-これらのメソッドは完全にローカライズされたコンテキストマネージャを返します。つまり、一度のバッチでの `failed_objects` や `failed_references` は、後続の呼び出しには含まれません。
+これらのメソッドは完全にローカライズされたコンテキストマネージャを返します。つまり、あるバッチの `failed_objects` や `failed_references` は後続の呼び出しには含まれません。
 
-最後に、バッチ送信を担当するバックグラウンド スレッドで例外が発生した場合、静かに失敗するのではなくメイン スレッドで再スローされます。
+最後に、バッチ送信を担当するバックグラウンドスレッドで例外が発生した場合、メインスレッドで再スローされ、静かに失敗することはありません。
 
 ##### フィルター
 
-`Filter.by_property` の引数 `prop` は `name` にリネームされました。
+`Filter.by_property` の引数 `prop` は `name` に改名されました。
 
-参照カウントは `Filter([ref])` ではなく `Filter.by_ref_count(ref)` を使用して実現します。
+参照カウントは `Filter([ref])` ではなく `Filter.by_ref_count(ref)` で実現できます。
 
-#### `v4.4b8` の変更点
+#### `v4.4b8` における変更点
 
 ##### 参照フィルター
 
-参照フィルターの構文が簡素化されました。新しい構文は次のとおりです:
+参照フィルターの構文が簡略化されました。新しい構文は次のとおりです:
 
 ```python
 Filter.by_ref("ref").by_property("target_property")
 ```
 
-#### `v4.4b7` の変更点
+#### `v4.4b7` における変更点
 
-##### ライブラリの import
+##### ライブラリのインポート
 
-`weaviate` から直接 import する方法は非推奨です。代わりに `import weaviate.classes as wvc` を使用してください。
+`weaviate` から直接インポートする方法は非推奨になりました。代わりに `import weaviate.classes as wvc` を使用してください。
 
 ##### クライアント接続のクローズ
 
-v4.4b7 からはクライアント接続を明示的にクローズする必要があります。接続をクローズする方法は 2 つあります。
+v4.4b7 以降、クライアント接続を明示的にクローズする必要があります。クローズする方法は 2 つあります。
 
-`client.close()` を使って明示的にクローズする。
+`client.close()` を使用してクライアント接続を明示的にクローズします。
 
 ```python
 import weaviate
@@ -241,7 +241,7 @@ print(client.is_ready())
 client.close()
 ```
 
-コンテキストマネージャを使用して自動でクローズさせる。
+コンテキストマネージャを使用して接続を自動でクローズさせることもできます。
 
 ```python
 import weaviate
@@ -256,36 +256,36 @@ with weaviate.connect_to_local() as client:
 
 v4.4b7 クライアントでは `client.batch` に変更があります。
 
-- `client.batch` はコンテキストマネージャが必須です。
-- マニュアル モードは削除され、`.create_objects` でバッチを送信することはできません。
+- `client.batch` ではコンテキストマネージャが必須になりました。
+- マニュアルモードは削除され、`.create_objects` でバッチを送信できなくなりました。
 - バッチサイズと同時リクエスト数は動的に割り当てられます。値を指定するには `batch.configure_fixed_size` を使用してください。
 - `add_reference` メソッドが更新されました。
 - `to_object_collection` メソッドは削除されました。
 
-更新後の `client.batch` パラメーター
+更新後の `client.batch` パラメータ
 
-| 旧値                                    | v4.4b7 での値                           |
-| :-------------------------------------- | :-------------------------------------- |
-| from_object_uuid: UUID                  | from_uuid: UUID                         |
-| from_object_collection: str             | from_collection: str                    |
-| from_property_name: str                 | from_property: str                      |
-| to_object_uuid: UUID                    | to: Union[WeaviateReference, List[UUID]]|
-| to_object_collection: Optional[str] = None |                                         |
-| tenant: Optional[str] = None            | tenant: Optional[str] = None            |
+| 旧値                                     | v4.4b7 の値                                  |
+| :--------------------------------------- | :------------------------------------------- |
+| from_object_uuid: UUID                   | from_uuid: UUID                              |
+| from_object_collection: str              | from_collection: str                         |
+| from_property_name: str                  | from_property: str                           |
+| to_object_uuid: UUID                     | to: Union[WeaviateReference, List[UUID]]     |
+| to_object_collection: Optional[str] = None |                                               |
+| tenant: Optional[str] = None             | tenant: Optional[str] = None                 |
 
 ##### フィルター構文
 
-v4.4b7 でフィルター構文が更新されました。
+フィルター構文は v4.4b7 で更新されました。
 
-**NOTE**: [参照フィルター構文](#reference-filters) は 4.4b8 で簡素化されています。
+**注意**: [参照フィルター構文](#reference-filters) は 4.4b8 で簡略化されています。
 
-| 旧構文                                                 | v4.4b7 の新構文                                                             |
-| :---------------------------------------------------- | :-------------------------------------------------------------------------- |
-| Filter(path=property)                                 | Filter.by_property(property)                                                |
-| Filter(path=["ref", "target_class", "target_property"])| Filter.by_ref().link_on("ref").by_property("target_property")               |
-| FilterMetadata.ByXX                                   | Filter.by_id()<br/> Filter.by_creation_time()<br/> Filter.by_update_time()  |
+| 旧構文                                                | v4.4b7 の新構文                                                                    |
+| :---------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| Filter(path=property)                                 | Filter.by_property(property)                                                     |
+| Filter(path=["ref", "target_class", "target_property"]) | Filter.by_ref().link_on("ref").by_property("target_property")                    |
+| FilterMetadata.ByXX                                   | Filter.by_id()<br/> Filter.by_creation_time()<br/> Filter.by_update_time()       |
 
-v4.4b7 以前のフィルター構文は非推奨です。新しい v4.4b7 の構文は次のようになります。
+pre-4.4b7 のフィルター構文は非推奨です。新しい v4.4b7 構文は次のようになります。
 
 ```python
 import weaviate
@@ -294,7 +294,7 @@ import weaviate.classes as wvc
 
 client = weaviate.connect_to_local()
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     filters=wvc.query.Filter.by_property("round").equal("Double Jeopardy!") &
             wvc.query.Filter.by_creation_time().greater_or_equal(datetime.datetime(2005, 1, 1)) |
@@ -306,10 +306,11 @@ response = jeopardy.query.fetch_objects(
 client.close()
 ```
 
+</details>
 
 ##### `reference_add_many` の更新
 
-`reference_add_many` の構文が更新され、`DataReferenceOneToMany` は `DataReference` になりました。
+`reference_add_many` の構文が更新され、 `DataReferenceOneToMany` は `DataReference` になりました。
 
 ```python
 collection.data.reference_add_many(
@@ -325,29 +326,29 @@ collection.data.reference_add_many(
 
 ##### 参照
 
-マルチターゲット参照が更新されました。新しい関数は次のとおりです:
+複数ターゲット参照が更新されました。新しい関数は次のとおりです:
 
 - `ReferenceProperty.MultiTarget`
 - `DataReference.MultiTarget`
 - `QueryReference.MultiTarget`
 
-マルチターゲット参照には `ReferenceToMulti` を使用してください。
+複数ターゲット参照には `ReferenceToMulti` を使用してください。
 
 #### 旧クライアントの変更点
 
 ##### 参照
 
-- 参照は、コレクション作成・オブジェクト挿入・クエリ実行時に `references` パラメーターを通じて追加されるようになりました。
+- コレクションの作成、オブジェクトの挿入、およびクエリーの際に、参照は `references` パラメーターを通じて追加されるようになりました。  
 - `FromReference` クラスは `QueryReference` と呼ばれるようになりました。
 
 ##### クラス／パラメーターの再編成
 
-- `weaviate.classes` サブモジュールがさらに分割されました:
+- `weaviate.classes` サブモジュールはさらに以下に分割されました:
   - `weaviate.classes.config`
   - `weaviate.classes.data`
   - `weaviate.classes.query`
   - `weaviate.classes.generic`
-- `wvc.config.Configure` および `wvc.config.Reconfigure` の `vector_index_config` パラメーター向けファクトリー関数が変更されました。例:
+- `wvc.config.Configure` および `wvc.config.Reconfigure` の `vector_index_config` パラメーターのファクトリー関数は、例えば次のように変更されました:
   ```python
   client.collections.create(
       name="MyCollection",
@@ -361,23 +362,23 @@ collection.data.reference_add_many(
   )
   ```
   - `vector_index_type` パラメーターは削除されました。
-- `Property` コンストラクターの `vectorize_class_name` パラメーターは `vectorize_collection_name` になりました。
+- `Property` コンストラクター メソッドの `vectorize_class_name` パラメーターは `vectorize_collection_name` に変更されました。
 - `[collection].data.update()` / `.replace()` の *args の順序が変更され、更新時にプロパティを省略できるようになりました。
-- `[collection].data.reference_add` / `.reference_delete` / `.reference_replace` のキーワード `ref` は `to` に改名されました。
-- `collections.create()` / `get()` のジェネリクスを指定するキーワード `data_model` は `data_model_properties` に改名されました。
+- `[collection].data.reference_add` / `.reference_delete` / `.reference_replace` で、 `ref` キーワードは `to` に改名されました。
+- `collections.create()` / `get()` において、ジェネリックを指定するための `data_model` キーワード引数は `data_model_properties` に変更されました。
 - `[object].metadata.uuid` は `[object].uuid` になりました。
 - `[object].metadata.creation_time_unix` は `[object].metadata.creation_time` になりました。
 - `[object].metadata.last_update_time_unix` は `[object].metadata.last_update` になりました。
 - `quantitizer` は `quantizer` に改名されました。
-- 返却データにベクトルを含めるには `include_vector` パラメーターを使用してください。
+- 返却データに ベクトル を含めるには、 `include_vector` パラメーターを使用してください。
 <!-- TODO[g-despot]: Add link to external Python references once created for "include_vector" -->
 
 ##### データ型
 
-- 作成日時および最終更新日時のメタデータは `datetime` オブジェクトを返すようになり、`MetadataQuery` ではそれぞれ `creation_time` と `last_update_time` に改名されました。
-  - `metadata.creation_time.timestamp() * 1000` は以前と同じ値を返します。
-- `query.fetch_object_by_id()` は内部で REST ではなく gRPC を使用し、他のクエリと同じフォーマットでオブジェクトを返します。
-- `UUID` および `DATE` プロパティは型付きオブジェクトとして返されます。
+- 作成日時および最終更新日時のメタデータは `datetime` オブジェクトを返すようになり、 `MetadataQuery` ではパラメーター名が `creation_time` と `last_update_time` に変更されました。  
+  - `metadata.creation_time.timestamp() * 1000` は従来と同じ値を返します。
+- `query.fetch_object_by_id()` は内部で REST ではなく gRPC を使用するようになり、他のクエリーと同じ形式でオブジェクトを返します。
+- `UUID` と `DATE` プロパティは型付きオブジェクトとして返されます。
 
 </details>
 
@@ -392,5 +393,4 @@ import CodeExamples from "/_includes/clients/code-examples.mdx";
 import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
-
 
