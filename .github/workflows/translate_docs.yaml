@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Get changed files in docs
         run: |
           git fetch origin main
-          git diff --name-only origin/main -- docs/ > changed_files.txt
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- docs/ > changed_files.txt
+          cat changed_files.txt
 
       - name: Run translate_docs.py
         env:
