@@ -21,7 +21,7 @@ jobs:
 
       - name: Run translate_docs.py
         env:
-          OPEN_API: ${{ secrets.OPEN_API }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           pip install litellm
           python tools/translate_docs.py $(cat changed_files.txt)
