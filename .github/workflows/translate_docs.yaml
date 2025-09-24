@@ -25,7 +25,6 @@ jobs:
         run: |
           pip install litellm
           python tools/translate_docs.py $(cat changed_files.txt)
-          rm changed_files.txt
 
       - name: Get current commit hash
         id: get_hash
@@ -35,7 +34,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add .
+          git add . ':!changed_files.txt'
           if [ -n "$(git diff --cached --name-only)" ]; then
             git commit -m "Translate docs and copy files"
             git push origin HEAD:translate-output-${{ steps.get_hash.outputs.hash }}
