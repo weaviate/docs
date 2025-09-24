@@ -9,9 +9,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
-import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
@@ -44,51 +42,30 @@ The inverted index in Weaviate can be enabled through parameters at the property
 </details>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
-      startMarker="# START SetInvertedIndexParams"
-      endMarker="# END SetInvertedIndexParams"
+      startMarker="# START EnableInvertedIndex"
+      endMarker="# END EnableInvertedIndex"
       language="py"
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetInvertedIndexParams"
-    endMarker="# END SetInvertedIndexParams"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="tsv2"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START EnableInvertedIndex"
+      endMarker="// END EnableInvertedIndex"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -121,7 +98,7 @@ The inverted index in Weaviate can be configured through various parameters at t
 </details>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetInvertedIndexParams"
@@ -129,43 +106,22 @@ The inverted index in Weaviate can be configured through various parameters at t
       language="py"
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetInvertedIndexParams"
-    endMarker="# END SetInvertedIndexParams"
-    language="pyv3"
-  />
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="ts"
-  />
-</TabItem>
-
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="tsv2"
-  />
-</TabItem>
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START SetInvertedIndexParams"
-    endMarker="// END SetInvertedIndexParams"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -219,16 +175,16 @@ Tokenization determines how text content is broken down into individual terms th
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
-      startMarker="// START PropertyTokenization"
-      endMarker="// END PropertyTokenization"
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
       language="java"
     />
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
-      startMarker="// START PropertyTokenization"
-      endMarker="// END PropertyTokenization"
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
       language="gonew"
     />
   </TabItem>

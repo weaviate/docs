@@ -70,7 +70,7 @@ client.collections.create(
     # highlight-start
     vector_config=Configure.Vectors.text2vec_openai(),
     # highlight-end
-    properties=[  # properties configuration is optional
+    properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
@@ -230,7 +230,37 @@ from weaviate.classes.config import Configure, Property, DataType
 client.collections.create(
     "Article",
     # Additional settings not shown
-    properties=[  # properties configuration is optional
+    # highlight-start
+    inverted_index_config=Configure.inverted_index(
+        bm25_b=0.7,
+        bm25_k1=1.25,
+        index_null_state=True,
+        index_property_length=True,
+        index_timestamps=True,
+    ),
+    # highlight-end
+)
+# END SetInvertedIndexParams
+
+# Test
+collection = client.collections.use("Article")
+config = collection.config.get()
+assert config.inverted_index_config.bm25.b == 0.7
+assert config.inverted_index_config.bm25.k1 == 1.25
+
+# ===================================================================
+# ===== CREATE A COLLECTION WITH CUSTOM INVERTED INDEX SETTINGS =====
+# ===================================================================
+
+client.collections.delete("Article")
+
+# START EnableInvertedIndex
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    "Article",
+    # Additional settings not shown
+    properties=[
         Property(
             name="title",
             data_type=DataType.TEXT,
@@ -255,17 +285,8 @@ client.collections.create(
             # highlight-end
         ),
     ],
-    # highlight-start
-    inverted_index_config=Configure.inverted_index(  # Optional
-        bm25_b=0.7,
-        bm25_k1=1.25,
-        index_null_state=True,
-        index_property_length=True,
-        index_timestamps=True,
-    ),
-    # highlight-end
 )
-# END SetInvertedIndexParams
+# END EnableInvertedIndex
 
 # Test
 collection = client.collections.use("Article")
