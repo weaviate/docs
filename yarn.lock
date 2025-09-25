@@ -3433,12 +3433,12 @@
     estree-walker "^2.0.2"
     picomatch "^4.0.2"
 
-"@scalar/docusaurus@^0.7.11":
-  version "0.7.11"
-  resolved "https://registry.yarnpkg.com/@scalar/docusaurus/-/docusaurus-0.7.11.tgz#8115717f4d7348a4de120aba4b44fe0cc5746680"
-  integrity sha512-vMCCAcb12voKbYK+lQ8Mc2qvHj0A0QNRwdaXeAbjLwt0XfwQ1YMmjM9RSFsfONwc+kV7BjL/1cmAkg1g6em9WA==
+"@scalar/docusaurus@^0.7.16":
+  version "0.7.16"
+  resolved "https://registry.yarnpkg.com/@scalar/docusaurus/-/docusaurus-0.7.16.tgz#fe9bba787c2c5ec8d026ee3d740aab0148f7d317"
+  integrity sha512-DEzRXfH/0L3UeUXAzT7PsY2tEleWxIINw2/XNbnOl4d2nrXs+CvYeMqfsfRFFbXbJnR03UIxepTPPVVYeQVWMQ==
   dependencies:
-    "@scalar/types" "0.2.11"
+    "@scalar/types" "0.2.16"
 
 "@scalar/openapi-types@0.3.7":
   version "0.3.7"
@@ -3447,10 +3447,10 @@
   dependencies:
     zod "3.24.1"
 
-"@scalar/types@0.2.11":
-  version "0.2.11"
-  resolved "https://registry.yarnpkg.com/@scalar/types/-/types-0.2.11.tgz#da976606a3cef3bef942c59bf53df70c6972694c"
-  integrity sha512-SUZzGmoisWsYv33LmmT/ajvSlcl9ZDj9d5RncJ+wB9ZQ2l018xlfpDIH9Kdfo+6KCKQOe3LYLXfH4Lzm891Mag==
+"@scalar/types@0.2.16":
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/@scalar/types/-/types-0.2.16.tgz#2467a98a83208b09be5b79d9add252b8496c4726"
+  integrity sha512-XWff9jWfYaj6q3ww94x66S6Q58u/3kA1sDOUhLAwb9va7r58bzk3NRwLOkEEdJmyEns1MEJAM53mY8KRWX6elA==
   dependencies:
     "@scalar/openapi-types" "0.3.7"
     nanoid "5.1.5"

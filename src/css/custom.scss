@@ -907,14 +907,10 @@ button.close {
 }
 
 /*
- * SCALAR OPENAPI DOCS - FINAL FIX
+ * SCALAR OPENAPI DOCS
  * -------------------------------
- * Fixes visibility of sidebar icons.
+ * Hide specific sections from the Scalar OpenAPI docs homepage
  */
-
-.scalar-api-reference .sidebar-heading-chevron svg {
-  color: var(--ifm-font-color-base);
-}
 
 // Target the wrapper for the authentication section
 .scalar-reference-intro-auth {
