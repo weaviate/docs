@@ -174,12 +174,13 @@ Aside from setting the default model provider when creating the collection, you 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
-
-```ts
-// TS support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START RuntimeModelSelectionxAI"
+      endMarker="// END RuntimeModelSelectionxAI"
+      language="ts"
+    />
   </TabItem>
 </Tabs>
 

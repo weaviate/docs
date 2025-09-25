@@ -1,5 +1,5 @@
 ---
-title: Set up RBAC in Weaviate
+title: Setting up RBAC in Weaviate
 description: Learn how to set up RBAC (Role Based Access Control) in Weaviate
 image: og/docs/tutorials.jpg
 # tags: ['basics']
@@ -15,18 +15,16 @@ import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac
 import UserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.users.py';
 import RoleTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts';
 
-**Role-Based Access Control (RBAC)** is a powerful security mechanism that lets you manage who can access and modify your Weaviate instance. In this tutorial, you'll learn how to set up RBAC in Weaviate by defining roles with tailored permissions and assigning them to users. This enables granular control over operations—from reading and writing data to managing collections and tenants—ensuring that only authorized users can perform specific actions.
-
-## Introduction
+**Role-Based Access Control (RBAC)** is a powerful security mechanism that allows you to manage who can access and modify your Weaviate instance. In this tutorial, you'll learn how to set up RBAC in Weaviate by defining roles with tailored permissions and assigning them to users. This enables granular control over operations—from reading and writing data to managing collections and tenants—ensuring that only authorized users can perform specific actions.
 
 In the steps that follow, we’ll cover:
 
-- **Step 1: Connecting to Weaviate**  
+1. **Connecting to Weaviate**  
   Ensure you're authenticated with a user who has the necessary role management permissions.
-- **Step 2: Creating custom roles**  
+1. **Creating custom roles**  
   Define roles with specific permissions, such as read, write, tenant management, etc.
-- **Step 3: Assigning roles to new users**  
-  Apply these roles to a new user, limiting their access across different resources.
+1. **Assigning roles to new users**  
+  Apply these roles to a new user and limit their access across different resources.
 
 ![RBAC Tutorial Diagram](./imgs/rbac-tutorial-diagram.png)
 
@@ -45,16 +43,23 @@ We are going to create the following roles:
 
 ## Prerequisites
 
-Before starting this tutorial, ensure you have the following:
+Before starting this tutorial, ensure you have:
 
-- Docker for running a Weaviate instance locally.
-- Your preferred Weaviate [client library](/weaviate/client-libraries/index.mdx) installed.
+- Docker for running a local Weaviate instance.
+- A preferred Weaviate [client library](/weaviate/client-libraries/index.mdx) installed.
 
 ### Local instance - `root` user
 
 In order to follow the rest of the tutorial we will need to connect to Weaviate with a user who has the `root` role assigned. This will allow us to manage roles and permissions.
 
 Create a Docker Compose file (`docker-compose.yml`) and copy the following configuration:
+
+:::info The environment variables in this configuration will:
+
+- Enable RBAC.
+- Configure `root-user` as a user with built-in root/admin permissions.
+
+:::
 
 ```yaml
 ---
@@ -80,26 +85,40 @@ services:
       ENABLE_API_BASED_MODULES: 'true'
       CLUSTER_HOSTNAME: 'node1'
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'false'
-      AUTHENTICATION_DB_USERS_ENABLED: 'true'
-      AUTHENTICATION_APIKEY_ENABLED: 'true'
-      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'root-user-key'
-      AUTHENTICATION_APIKEY_USERS: 'root-user'
       AUTHORIZATION_ENABLE_RBAC: 'true'
       AUTHORIZATION_RBAC_ROOT_USERS: 'root-user'
+      AUTHENTICATION_DB_USERS_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_USERS: 'root-user'
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'root-user-key'
+ 
 volumes:
   weaviate_data:
 ```
+:::info
+<details>
+  <summary> RBAC specific environment variables </summary>
 
-The environment variables in this configuration:
+- `AUTHORIZATION_ENABLE_RBAC`: Enable RBAC to be used.
+- `AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED`: Enable/disable anonymous users from accessing your Weaviate instance.
+- `AUTHENTICATION_DB_USERS_ENABLED`: Enable/disable runtime user management. 
+- `AUTHENTICATION_APIKEY_ENABLED`: Enable API key-based authentication. 
+- `AUTHENTICATION_APIKEY_USERS`: The API-key based identities that correspond to the `AUTHENTICATION_APIKEY_ENABLED` variable.
+- `AUTHENTICATION_APIKEY_ALLOWED_KEYS`: The allowed API keys, they correspond to a specific user identity. 
+- `AUTHORIZATION_RBAC_ROOT_USERS`: Define your root/admin user(s).
 
-- Enable RBAC.
-- Configure `root-user` as a user with built-in root/admin permissions.
+More environment variables can be found [here](../configuration/env-vars/index.md).
+</details>
+
+:::
+
+
 
 We will connect to Weaviate with `root-user`, and once we create a new role, we will also create a new user `custom-user` and assign the role to it.
 
 ## Read and write permissions
 
-### Step 1: Connect to Weaviate
+### Step 1: Connecting to Weaviate
 
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
@@ -136,7 +155,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
   </TabItem>
 </Tabs>
 
-### Step 2: Create new role with custom permissions
+### Step 2: Creating a new role with custom permissions
 
 This grants read and write permissions for collections starting with `TargetCollection`, and read permissions to nodes and cluster metadata.
 
@@ -173,7 +192,7 @@ This grants read and write permissions for collections starting with `TargetColl
   </TabItem>
 </Tabs>
 
-### Step 3: Assign the role to a new user
+### Step 3: Assigning the role to a new user
 
 First, let's create the new user `custom-user`:
 
@@ -246,7 +265,7 @@ Now, you can assign the role `rw_role` to `custom-user`:
 
 ## Viewer permissions
 
-### Step 1: Connect to Weaviate
+### Step 1: Connecing to Weaviate
 
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
 You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac) 
@@ -285,7 +304,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
   </TabItem>
 </Tabs>
 
-### Step 2: Create new role with custom permissions
+### Step 2: Creating a new role with custom permissions
 
 This grants viewer permissions for collections starting with `TargetCollection`.
 
@@ -322,7 +341,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
   </TabItem>
 </Tabs>
 
-### Step 3: Assign the role to a new user
+### Step 3: Assigning the role to a new user
 
 First, let's create the new user `custom-user`:
 
@@ -395,7 +414,7 @@ Now, you can assign the role `viewer_role` to `custom-user`:
 
 ## Tenant permissions
 
-### Step 1: Connect to Weaviate
+### Step 1: Connecting to Weaviate
 
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. 
 You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) 
@@ -434,7 +453,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
   </TabItem>
 </Tabs>
 
-### Step 2: Create new role with custom permissions
+### Step 2: Creating a new role with custom permissions
 
 This grants permissions to:
 - Completely manage tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
@@ -473,7 +492,7 @@ This grants permissions to:
   </TabItem>
 </Tabs>
 
-### Step 3: Assign the role to a new user
+### Step 3: Assigning the role to a new user
 
 First, let's create the new user `custom-user`:
 
