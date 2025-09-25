@@ -20,13 +20,13 @@ An **inverted index** is a data structure in Weaviate that enables efficient tex
 
 In Weaviate, the inverted index supports search capabilities such as keyword search, filtering, and range queries. An inverted index maps from terms (_tokens_) back to the objects that contain them. This mapping allows Weaviate to quickly identify which objects contain specific terms or match certain criteria during search queries.
 
-You can configure how the inverted index behaves for each collection and property through various parameters that control [indexing behavior](#set-inverted-index-parameters) and [tokenization strategies](#set-tokenization-type-for-property). Proper configuration of these parameters is crucial for optimizing both search performance and storage efficiency.
+You can [enable inverted indexes](#enable-inverted-index-for-keyword-searches-and-filtering) on properties and adjust various parameters that control [indexing behavior](#set-inverted-index-parameters) and [tokenization strategies](#set-tokenization-type-for-property). Proper configuration of these parameters is crucial for optimizing both search performance and storage efficiency.
 
 </details>
 
 ## Enable inverted index for keyword searches and filtering
 
-Property-level [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control how individual properties are indexed for search and filtering operations. These parameters determine whether specific properties can be searched, filtered, or used in range queries.
+[Inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control how individual properties are indexed for search and filtering operations. These parameters determine whether specific properties can be searched, filtered, or used in range queries.
 
 <details>
 <summary>Enabling inverted index</summary>
@@ -78,7 +78,7 @@ The inverted index in Weaviate can be enabled through parameters at the property
 
 ## Set inverted index parameters
 
-Collection-level [inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control the overall behavior of the inverted index for an entire collection. These parameters affect ranking algorithms, null value handling, and timestamp indexing across all properties in the collection.
+[Inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control the overall behavior of the inverted index for an entire collection. These parameters affect ranking algorithms, null value handling, and timestamp indexing across all properties in the collection.
 
 <details>
 <summary>Inverted index parameters</summary>
