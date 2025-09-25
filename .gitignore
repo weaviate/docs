@@ -52,6 +52,9 @@ yarn.lock
 .python-version
 __pycache__
 
+# Local Netlify folder
+.netlify
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -256,7 +259,6 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-_includes/code/csharp/bin/
-_includes/code/csharp/obj/
-
-.netlify/
+# C# code
+_includes/code/csharp/bin
+_includes/code/csharp/obj
