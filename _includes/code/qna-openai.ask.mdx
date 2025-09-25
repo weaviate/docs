@@ -59,31 +59,6 @@ print(result)
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-  headers: { 'X-OpenAI-Api-Key': 'YOUR-OPENAI-API-KEY' },
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withAsk({
-    question: 'Who is Stanley Kubrick?',
-    properties: ['summary'],
-  })
-  .withFields('title _additional { answer { hasAnswer property result startPosition endPosition } }')
-  .withLimit(1)
-  .do();
-console.log(response);
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

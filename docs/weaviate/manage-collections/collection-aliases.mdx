@@ -29,7 +29,7 @@ Collection aliases allow you to create alternative names for your collections. T
 To create an alias, specify the alias name and the target collection it should point to.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateAlias"
@@ -37,7 +37,7 @@ To create an alias, specify the alias name and the target collection it should p
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateAlias"
@@ -75,7 +75,7 @@ To create an alias, specify the alias name and the target collection it should p
 Retrieve all aliases in your Weaviate instance.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ListAllAliases"
@@ -83,7 +83,7 @@ Retrieve all aliases in your Weaviate instance.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ListAllAliases"
@@ -114,7 +114,7 @@ Retrieve all aliases in your Weaviate instance.
 Get all aliases that point to a specific collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ListCollectionAliases"
@@ -122,7 +122,7 @@ Get all aliases that point to a specific collection.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ListCollectionAliases"
@@ -153,7 +153,7 @@ Get all aliases that point to a specific collection.
 Retrieve information about a specific alias.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GetAlias"
@@ -161,7 +161,7 @@ Retrieve information about a specific alias.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GetAlias"
@@ -192,7 +192,7 @@ Retrieve information about a specific alias.
 Change the target collection that an alias points to. This operation is atomic and provides instant switching between collections.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateAlias"
@@ -200,7 +200,7 @@ Change the target collection that an alias points to. This operation is atomic a
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START UpdateAlias"
@@ -243,7 +243,7 @@ For a code example on how to perform migrations, visit the [Starter guide: Manag
 Remove an alias. This only deletes the alias pointer, not the underlying collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DeleteAlias"
@@ -251,7 +251,7 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeleteAlias"
@@ -288,7 +288,7 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
 Once created, aliases can be used instead of collection names in most operations (except when deleting collections):
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UseAlias"
@@ -296,7 +296,7 @@ Once created, aliases can be used instead of collection names in most operations
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START UseAlias"

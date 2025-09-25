@@ -40,7 +40,7 @@ There are multiple ways to specify the target vectors and query vectors, such as
 As a minimum, specify the target vector names as an array of named vectors. This will use the [default join strategy](#available-join-strategies).
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiBasic"
@@ -48,7 +48,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiBasic"
@@ -80,7 +80,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
 You can specify multiple query vectors in the search query with a `nearVector` search. This allows use of a different query vector for each corresponding target vector.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiTargetNearVector"
@@ -88,7 +88,7 @@ You can specify multiple query vectors in the search query with a `nearVector` s
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetNearVector"
@@ -114,7 +114,7 @@ The query vectors in this case are specified as an array of vectors. There are m
 The target vectors can be specified as an array as shown here.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiTargetMultipleNearVectorsV1"
@@ -123,7 +123,7 @@ The target vectors can be specified as an array as shown here.
 />
 </TabItem>
 
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetMultipleNearVectorsV1"
@@ -138,7 +138,7 @@ The target vectors can be specified as an array as shown here.
 If you want to provide weights for each target vector you can do it as shown here.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiTargetMultipleNearVectorsV2"
@@ -147,7 +147,7 @@ If you want to provide weights for each target vector you can do it as shown her
 />
 </TabItem>
 
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetMultipleNearVectorsV2"
@@ -164,7 +164,7 @@ Specify target vectors as an array of named vectors and how to join the result s
 The `sum`, `average`, `minimum` join strategies only require the name of the strategy and the target vectors.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiTargetWithSimpleJoin"
@@ -172,7 +172,7 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetWithSimpleJoin"
@@ -194,7 +194,7 @@ Each distance between the query vector and the target vector is multiplied by th
 </details>
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiTargetManualWeights"
@@ -202,7 +202,7 @@ Each distance between the query vector and the target vector is multiplied by th
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetManualWeights"
@@ -225,7 +225,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
 </details>
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
   startMarker="# START MultiTargetRelativeScore"
@@ -233,7 +233,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetRelativeScore"

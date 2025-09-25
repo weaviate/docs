@@ -111,7 +111,7 @@ As this integration runs a local container with the transformers model, no addit
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START BasicInstantiation"
@@ -120,7 +120,7 @@ As this integration runs a local container with the transformers model, no addit
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -140,7 +140,7 @@ import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 Configure a Weaviate collection to use a Transformer reranker model as follows:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RerankerTransformersBasic"
@@ -149,7 +149,7 @@ Configure a Weaviate collection to use a Transformer reranker model as follows:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerTransformersBasic"
@@ -176,7 +176,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RerankerQueryExample"
@@ -185,7 +185,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerQueryExample"

@@ -8,10 +8,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.import.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.import-v3.py';
 import PySuppCode from '!!raw-loader!/_includes/code/howto/sample-data.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.import-v2.ts';
 import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.import.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
@@ -35,7 +33,7 @@ To create a bulk import job, follow these steps:
 The following example adds objects to the `MyCollection` collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicBatchImportExample"
@@ -54,16 +52,8 @@ Find out more about error handling on the Python client [reference page](/weavia
 
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START BasicBatchImportExample"
-      endMarker="# END BasicBatchImportExample"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicBatchImportExample"
@@ -72,14 +62,6 @@ Find out more about error handling on the Python client [reference page](/weavia
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START BasicBatchImportExample"
-      endMarker="// END BasicBatchImportExample"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -108,7 +90,7 @@ Find out more about error handling on the Python client [reference page](/weavia
 The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "batch import configuration options" -->
 <!-- See the client page for additional batch import [configuration options](/weaviate/client-libraries/python#batch-imports). -->
@@ -117,7 +99,7 @@ The Python client uses gRPC by default.
 <br/>The legacy Python client does not support gRPC.
 
 </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 The TypeScript client v3 uses gRPC by default.
 
@@ -185,7 +167,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
 - `generateUuid5` (TypeScript)
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportWithIDExample"
@@ -194,16 +176,8 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START BatchImportWithIDExample"
-      endMarker="# END BatchImportWithIDExample"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportWithIDExample"
@@ -212,14 +186,6 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START BatchImportWithIDExample"
-      endMarker="// END BatchImportWithIDExample"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -245,7 +211,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
 Use the `vector` property to specify a vector for each object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportWithVectorExample"
@@ -254,16 +220,8 @@ Use the `vector` property to specify a vector for each object.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START BatchImportWithVectorExample"
-      endMarker="# END BatchImportWithVectorExample"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportWithVectorExample"
@@ -272,14 +230,6 @@ Use the `vector` property to specify a vector for each object.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START BatchImportWithVectorExample"
-      endMarker="// END BatchImportWithVectorExample"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -308,7 +258,7 @@ Use the `vector` property to specify a vector for each object.
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportWithNamedVectors"
@@ -317,16 +267,8 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START BatchImportWithNamedVectors"
-      endMarker="# END BatchImportWithNamedVectors"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportWithNamedVectors"
@@ -335,14 +277,6 @@ When you create an object, you can specify named vectors (if [configured in your
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START BatchImportWithNamedVectors"
-      endMarker="// END BatchImportWithNamedVectors"
-      language="tsv2"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -351,28 +285,12 @@ When you create an object, you can specify named vectors (if [configured in your
 You can batch create links from an object to another other object through cross-references.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# BatchImportWithRefExample"
       endMarker="# END BatchImportWithRefExample"
       language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# BatchImportWithRefExample"
-      endMarker="# END BatchImportWithRefExample"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// BatchImportWithRefExample"
-      endMarker="// END BatchImportWithRefExample"
-      language="tsv2"
     />
   </TabItem>
 </Tabs>
@@ -382,7 +300,7 @@ You can batch create links from an object to another other object through cross-
 The Python clients have built-in batching methods to help you optimize import speed. For details, see the client documentation:
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "Python client `v4`" -->
-- [Python client `v4`](../client-libraries/python/index.mdx)
+- [Python client](../client-libraries/python/notes-best-practices.mdx)
 
 ### Async Python client and batching
 
@@ -422,20 +340,12 @@ To try the example code, download the sample data and create the sample input fi
   <summary>Stream JSON files example code</summary>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="# START JSON streaming"
     endMarker="# END JSON streaming"
     language="py"
-  />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START JSON streaming"
-    endMarker="# END JSON streaming"
-    language="pyv3"
   />
   </TabItem>
   <TabItem value="ts" label="TypeScript">
@@ -455,20 +365,12 @@ To try the example code, download the sample data and create the sample input fi
   <summary>Stream CSV files example code</summary>
 
 <Tabs groupId="languages">
-  <TabItem value="pycsv" label="Python Client v4">
+  <TabItem value="pycsv" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="# START CSV streaming"
     endMarker="# END CSV streaming"
     language="py"
-  />
-  </TabItem>
-  <TabItem value="py3csv" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START CSV streaming"
-    endMarker="# END CSV streaming"
-    language="pyv3"
   />
   </TabItem>
   <TabItem value="ts" label="TypeScript">
@@ -499,7 +401,7 @@ You can configure the batch vectorization settings for each model provider, such
 Note that each provider exposes different configuration options.
 
  <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchVectorizationClientModify"

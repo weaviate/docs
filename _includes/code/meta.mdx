@@ -6,26 +6,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/rest.meta.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GetServerMeta"
     endMarker="END GetServerMeta"
     language="py"
   />
-</TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-meta_info = client.get_meta()
-print(meta_info)
-```
-
 </TabItem>
 <TabItem value="js" label="JS/TS Client (v3)">
 
