@@ -6,24 +6,26 @@ image: og/docs/configuration.jpg
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
 ---
 
-import Link from '@docusaurus/Link';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py';
-import TSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts';
-import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py';
-import RoleTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts';
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts";
+import RolePyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py";
+import RoleTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-roles.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.roles_test.go";
 
 :::info Added in `v1.29`
 Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
 :::
 
-In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles. 
+In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
 
 On this page, you will find examples of how to **manage roles and permissions** with Weaviate client libraries.
 
-import ConfigureRbac from '/_includes/configuration/configure-rbac.mdx';
+import ConfigureRbac from "/_includes/configuration/configure-rbac.mdx";
 
 <ConfigureRbac />
 
@@ -52,18 +54,20 @@ Role management requires appropriate `role` resource permissions that can be obt
     />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -73,21 +77,27 @@ Role management requires appropriate `role` resource permissions that can be obt
 
 Permissions for these resource types can be assigned to roles:
 
-1. [**Role Management**](#role-management-permissions)
+1.  [**Role Management**](#role-management-permissions)
 
-1. [**User Management**](#user-management-permissions)
+2.  [**User Management**](#user-management-permissions)
 
-1. [**Collections**](#collections-permissions) (collection definitions only, data object permissions are separate)
+3.  [**Collections**](#collections-permissions) (collection definitions only, data object permissions are separate)
 
-1. [**Tenants**](#tenants-permissions)
+4.  [**Tenants**](#tenants-permissions)
 
-1. [**Data Objects**](#data-permissions)
+5.  [**Data Objects**](#data-permissions)
 
-1. [**Backup**](#backups-permissions)
+6.  [**Backup**](#backups-permissions)
 
-1. [**Cluster Data Access**](#clusters-permissions)
+7.  [**Cluster Data Access**](#clusters-permissions)
 
-1. [**Node Data Access**](#nodes-permissions)
+8.  [**Node Data Access**](#nodes-permissions)
+
+9.  [**Collection alias**](#aliases-permissions)
+
+10. [**Replications**](#replications-permissions)
+
+11. [**Groups**](#groups-permissions)
 
 #### Create a role with `Role Management` permissions {#role-management-permissions}
 
@@ -106,25 +116,27 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddManageRolesPermission"
-          endMarker="// END AddManageRolesPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddManageRolesPermission"
+      endMarker="// END AddManageRolesPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddManageRolesPermission"
+      endMarker="// END AddManageRolesPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddManageRolesPermission"
+      endMarker="// END AddManageRolesPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -150,21 +162,23 @@ This example creates a role called `testRole` with permissions to:
 // TS/JS support coming soon
 ```
 
-  </TabItem>
-  <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
-  </TabItem>
-  <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-  </TabItem>
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+text={GoCode}
+startMarker="// START AddManageUsersPermission"
+endMarker="// END AddManageUsersPermission"
+language="go"
+/>
+</TabItem>
+<TabItem value="java" label="Java">
+<FilteredTextBlock
+text={JavaCode}
+startMarker="// START AddManageUsersPermission"
+endMarker="// END AddManageUsersPermission"
+language="java"
+/>
+</TabItem>
 </Tabs>
 
 #### Create a role with `Collections` permissions {#collections-permissions}
@@ -184,25 +198,27 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddCollectionsPermission"
-          endMarker="// END AddCollectionsPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddCollectionsPermission"
+      endMarker="// END AddCollectionsPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddCollectionsPermission"
+      endMarker="// END AddCollectionsPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddCollectionsPermission"
+      endMarker="// END AddCollectionsPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -225,25 +241,27 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddTenantPermission"
-          endMarker="// END AddTenantPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddTenantPermission"
+      endMarker="// END AddTenantPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddTenantPermission"
+      endMarker="// END AddTenantPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddTenantPermission"
+      endMarker="// END AddTenantPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -265,25 +283,27 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddDataObjectPermission"
-          endMarker="// END AddDataObjectPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddDataObjectPermission"
+      endMarker="// END AddDataObjectPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddDataObjectPermission"
+      endMarker="// END AddDataObjectPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddDataObjectPermission"
+      endMarker="// END AddDataObjectPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -304,25 +324,27 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddBackupPermission"
-          endMarker="// END AddBackupPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddBackupPermission"
+      endMarker="// END AddBackupPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddBackupPermission"
+      endMarker="// END AddBackupPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddBackupPermission"
+      endMarker="// END AddBackupPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -343,25 +365,27 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddClusterPermission"
-          endMarker="// END AddClusterPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddClusterPermission"
+      endMarker="// END AddClusterPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddClusterPermission"
+      endMarker="// END AddClusterPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddClusterPermission"
+      endMarker="// END AddClusterPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -382,29 +406,31 @@ This example creates a role called `testRole` with permissions to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddNodesPermission"
-          endMarker="// END AddNodesPermission"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddNodesPermission"
+      endMarker="// END AddNodesPermission"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddNodesPermission"
+      endMarker="// END AddNodesPermission"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddNodesPermission"
+      endMarker="// END AddNodesPermission"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
-#### Create a role with `Collection Aliases` permissions {#aliases-permissions}
+#### Create a role with `Collection Alias` permissions {#aliases-permissions}
 
 This example creates a role called `testRole` with permissions to:
 
@@ -425,21 +451,23 @@ This example creates a role called `testRole` with permissions to:
 // TS/JS support coming soon
 ```
 
-  </TabItem>
-  <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
-  </TabItem>
-  <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-  </TabItem>
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+text={GoCode}
+startMarker="// START AddAliasPermission"
+endMarker="// END AddAliasPermission"
+language="go"
+/>
+</TabItem>
+<TabItem value="java" label="Java">
+<FilteredTextBlock
+text={JavaCode}
+startMarker="// START AddAliasPermission"
+endMarker="// END AddAliasPermission"
+language="java"
+/>
+</TabItem>
 </Tabs>
 
 #### Create a role with `Replications` permissions {#replications-permissions}
@@ -463,21 +491,63 @@ This example creates a role called `testRole` with permissions to:
 // TS/JS support coming soon
 ```
 
-  </TabItem>
-  <TabItem value="go" label="Go">
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+text={GoCode}
+startMarker="// START AddReplicationsPermission"
+endMarker="// END AddReplicationsPermission"
+language="go"
+/>
+</TabItem>
+<TabItem value="java" label="Java">
+<FilteredTextBlock
+text={JavaCode}
+startMarker="// START AddReplicationsPermission"
+endMarker="// END AddReplicationsPermission"
+language="java"
+/>
+</TabItem>
+</Tabs>
 
-```go
-// Go support coming soon
+#### Create a role with `Groups` permissions {#groups-permissions}
+
+This example creates a role called `testRole` with permissions to:
+
+- Read information about and assign/revoke group membership for OIDC groups starting with `TargetGroup`.
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python Client v4">
+<FilteredTextBlock
+text={RolePyCode}
+startMarker="# START AddGroupsPermission"
+endMarker="# END AddGroupsPermission"
+language="py"
+/>
+</TabItem>
+<TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
 ```
 
-  </TabItem>
-  <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-  </TabItem>
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+text={GoCode}
+startMarker="// START AddGroupsPermission"
+endMarker="// END AddGroupsPermission"
+language="go"
+/>
+</TabItem>
+<TabItem value="java" label="Java">
+<FilteredTextBlock
+text={JavaCode}
+startMarker="// START AddGroupsPermission"
+endMarker="// END AddGroupsPermission"
+language="java"
+/>
+</TabItem>
 </Tabs>
 
 ### Grant additional permissions
@@ -499,25 +569,27 @@ This example grants additional permissions to the role `testRole` to:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START AddRoles"
-          endMarker="// END AddRoles"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START AddRoles"
+      endMarker="// END AddRoles"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AddRoles"
+      endMarker="// END AddRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AddRoles"
+      endMarker="// END AddRoles"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -548,18 +620,20 @@ This example removes the following permissions from the role `testRole`:
       />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START RemovePermissions"
+      endMarker="// END RemovePermissions"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START RemovePermissions"
+      endMarker="// END RemovePermissions"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -578,25 +652,27 @@ Check if the role `testRole` exists:
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START CheckRoleExists"
-          endMarker="// END CheckRoleExists"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START CheckRoleExists"
+      endMarker="// END CheckRoleExists"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CheckRoleExists"
+      endMarker="// END CheckRoleExists"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CheckRoleExists"
+      endMarker="// END CheckRoleExists"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -615,25 +691,27 @@ View the permissions assigned to a role.
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START InspectRole"
-          endMarker="// END InspectRole"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START InspectRole"
+      endMarker="// END InspectRole"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START InspectRole"
+      endMarker="// END InspectRole"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START InspectRole"
+      endMarker="// END InspectRole"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -652,25 +730,27 @@ View all roles in the system and their permissions.
   </TabItem>
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-          text={RoleTSCode}
-          startMarker="// START ListAllRoles"
-          endMarker="// END ListAllRoles"
-          language="ts"
-        />
+      text={RoleTSCode}
+      startMarker="// START ListAllRoles"
+      endMarker="// END ListAllRoles"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ListAllRoles"
+      endMarker="// END ListAllRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListAllRoles"
+      endMarker="// END ListAllRoles"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -696,18 +776,20 @@ List all users who have the role `testRole`.
       />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AssignedUsers"
+      endMarker="// END AssignedUsers"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AssignedUsers"
+      endMarker="// END AssignedUsers"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -733,18 +815,20 @@ Deleting a role will remove it from the system, and revoke the associated permis
       />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START DeleteRole"
+      endMarker="// END DeleteRole"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START DeleteRole"
+      endMarker="// END DeleteRole"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -760,6 +844,6 @@ Visit the [Manage users](./manage-users.mdx) page to learn more about assigning 
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

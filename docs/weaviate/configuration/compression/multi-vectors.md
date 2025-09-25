@@ -1,6 +1,5 @@
 ---
 title: Multi-vector encodings
-sidebar_position: 30
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression']
 ---
