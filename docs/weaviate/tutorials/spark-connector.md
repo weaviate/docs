@@ -49,7 +49,7 @@ Often a Spark Session will be created as part of your Spark environment (such as
 If you want to create a local Spark Session manually, use the following code to create a session with the connector:
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START InitiateSparkSession"
@@ -76,7 +76,7 @@ You can download this dataset from [here](https://storage.googleapis.com/sphere-
 The following line of code can be used to read the dataset into your Spark Session:
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadDataIntoSpark"
@@ -89,7 +89,7 @@ The following line of code can be used to read the dataset into your Spark Sessi
 To verify this is done correctly we can have a look at the first few records:
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START VerifyDataRead"
@@ -145,7 +145,7 @@ docker compose up -d
 The Spark Connector assumes that a schema has already been created in Weaviate. For this reason we will use the Python client to create this schema. For more information on how we create the schema see this [tutorial](../starter-guides/managing-collections/index.mdx).
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollection"
@@ -158,7 +158,7 @@ The Spark Connector assumes that a schema has already been created in Weaviate. 
 Next we will write the Spark `dataframe` to Weaviate. The `.limit(1500)` could be removed to load the full dataset.
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START WriteToWeaviate"
@@ -171,7 +171,7 @@ Next we will write the Spark `dataframe` to Weaviate. The `.limit(1500)` could b
 And don't forget to close the connection to Weaviate after you are done.
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CloseConnection"
@@ -240,7 +240,7 @@ For example, let's create a `BringYourOwnVectors` collection with two named vect
 - `colbert` - multi vector embedding (example: `[[0.1, 0.2], [0.3, 0.4]]`)
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateNamedVectorCollection"
@@ -253,7 +253,7 @@ For example, let's create a `BringYourOwnVectors` collection with two named vect
 The corresponding Spark code that will insert `regularVector` and `multiVector` data into `regular` and `colbert` named vectors looks like this:
 
 <Tabs groupId="languages">
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadNamedVectorDataIntoSpark"

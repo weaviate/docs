@@ -8,10 +8,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.py';
-import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/configure.bq-compression-v3.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.ts';
 import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
-import TSCodeLegacy from '!!raw-loader!/\_includes/code/howto/configure.bq-compression-v2.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
@@ -35,7 +33,7 @@ To use BQ, enable it as shown below and add data to the collection.
 BQ can be enabled at collection creation time through the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START EnableBQ"
@@ -44,16 +42,8 @@ BQ can be enabled at collection creation time through the collection definition:
       />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-      <FilteredTextBlock
-        text={PyCodeV3}
-        startMarker="# START EnableBQ"
-        endMarker="# END EnableBQ"
-        language="pyv3"
-      />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START EnableBQ"
@@ -62,14 +52,6 @@ BQ can be enabled at collection creation time through the collection definition:
       />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-      <FilteredTextBlock
-        text={TSCodeLegacy}
-        startMarker="// START EnableBQ"
-        endMarker="// END EnableBQ"
-        language="tsv2"
-      />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -99,7 +81,7 @@ The ability to enable BQ compression after collection creation was added in Weav
 BQ can also be enabled for an existing collection by updating the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START UpdateSchema"
@@ -136,7 +118,7 @@ import BQParameters from '/\_includes/configuration/bq-compression-parameters.md
 For example:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START BQWithOptions"
@@ -145,16 +127,8 @@ For example:
       />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-      <FilteredTextBlock
-        text={PyCodeV3}
-        startMarker="# START BQWithOptions"
-        endMarker="# END BQWithOptions"
-        language="pyv3"
-      />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
       <FilteredTextBlock
         text={TSCodeBQOptions}
         startMarker="// START BQWithOptions"
@@ -163,14 +137,6 @@ For example:
       />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-      <FilteredTextBlock
-        text={TSCodeLegacy}
-        startMarker="// START BQWithOptions"
-        endMarker="// END BQWithOptions"
-        language="tsv2"
-      />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

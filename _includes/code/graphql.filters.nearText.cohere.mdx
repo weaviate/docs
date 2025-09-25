@@ -4,82 +4,13 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.filters.nearText.py';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START NearTextCohere"
       endMarker="# END NearTextCohere"
       language="py"
     />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client(
-    url="http://localhost:8080",
-    additional_headers={
-        "X-Cohere-Api-Key": "YOUR-COHERE-API-KEY"
-    }
-)
-
-nearText = {
-  "concepts": ["fashion"],
-  "distance": 0.6, # prior to v1.14 use "certainty" instead of "distance"
-  "moveAwayFrom": {
-    "concepts": ["finance"],
-    "force": 0.45
-  },
-  "moveTo": {
-    "concepts": ["haute couture"],
-    "force": 0.85
-  }
-}
-
-result = (
-  client.query
-  .get("Publication", "name")
-  .with_additional(["certainty OR distance"]) # note that certainty is only supported if distance==cosine
-  .with_near_text(nearText)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-  headers: { 'X-Cohere-Api-Key': 'YOUR-COHERE-API-KEY' },
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Publication')
-  .withFields('name _additional{certainty distance}') // note that certainty is only supported if distance==cosine
-  .withNearText({
-    concepts: ['fashion'],
-    distance: 0.6,  // prior to v1.14 use certainty instead of distance
-    moveAwayFrom: {
-      concepts: ['finance'],
-      force: 0.45,
-    },
-    moveTo: {
-      concepts: ['haute couture'],
-      force: 0.85,
-    },
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

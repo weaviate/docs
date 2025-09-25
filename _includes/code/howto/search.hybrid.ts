@@ -308,7 +308,7 @@ const jeopardy = client.collections.use('JeopardyQuestion');
   // START autocut
 
   const result = await jeopardy.query.hybrid('safety', {
-    fusionType: 'Ranked',
+    fusionType: 'RelativeScore',
     // highlight-start
     autoLimit: 1
     // highlight-end

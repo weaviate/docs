@@ -8,10 +8,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.py';
-import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/configure.pq-compression-v3.py';
 import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.autopq.ts';
 import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
-import TSCodeLegacy from '!!raw-loader!/\_includes/code/howto/configure.pq-compression-v2.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
@@ -55,7 +53,7 @@ AutoPQ requires asynchronous indexing.
 To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START CollectionWithAutoPQ"
@@ -64,16 +62,8 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START CollectionWithAutoPQ"
-       endMarker="# END CollectionWithAutoPQ"
-       language="pyv3"
-     />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeAutoPQ}
        startMarker="// START CollectionWithAutoPQ"
@@ -82,14 +72,6 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START CollectionWithAutoPQ"
-       endMarker="// END CollectionWithAutoPQ"
-       language="tsv2"
-     />
-  </TabItem>
 
 </Tabs>
 
@@ -128,7 +110,7 @@ Follow these steps to manually enable PQ.
 [Create a collection](../../manage-collections/collection-operations.mdx#create-a-collection) without specifying a quantizer.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START InitialSchema"
@@ -137,16 +119,8 @@ Follow these steps to manually enable PQ.
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START InitialSchema"
-       endMarker="# END InitialSchema"
-       language="pyv3"
-     />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START InitClassDef"
@@ -155,14 +129,6 @@ Follow these steps to manually enable PQ.
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START InitClassDef"
-       endMarker="// END InitClassDef"
-       language="tsv2"
-     />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -202,7 +168,7 @@ import PQMakesCodebook from '/\_includes/configuration/pq-compression/makes-a-co
 To enable PQ, update your collection definition as shown below. For additional configuration options, see the [PQ parameter table](./pq-compression.md#pq-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START UpdateSchema"
@@ -211,16 +177,8 @@ To enable PQ, update your collection definition as shown below. For additional c
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START UpdateSchema"
-       endMarker="# END UpdateSchema"
-       language="pyv3"
-     />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START UpdateSchema"
@@ -229,14 +187,6 @@ To enable PQ, update your collection definition as shown below. For additional c
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START UpdateSchema"
-       endMarker="// END UpdateSchema"
-       language="tsv2"
-     />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -306,7 +256,7 @@ docker inspect --format='{{.LogPath}}' <your-weaviate-container-id>
 To review the current `pq` configuration, you can retrieve it as shown below.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GetSchema"
@@ -315,16 +265,8 @@ To review the current `pq` configuration, you can retrieve it as shown below.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START GetSchema"
-      endMarker="# END GetSchema"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeManualPQ}
       startMarker="// START ViewConfig"
@@ -333,14 +275,6 @@ To review the current `pq` configuration, you can retrieve it as shown below.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START GetSchema"
-      endMarker="// END GetSchema"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
