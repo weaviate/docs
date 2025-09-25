@@ -13,9 +13,9 @@ import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-com
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
-:::note
-Starting in v1.23, AutoPQ simplifies configuring PQ on new collections.
-:::
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
+
+<CompressionByDefault/>
 
 import PQOverview from '/\_includes/configuration/pq-compression/overview-text.mdx' ;
 

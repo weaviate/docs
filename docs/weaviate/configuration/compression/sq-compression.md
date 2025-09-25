@@ -13,11 +13,11 @@ import TSCodeSQOptions from '!!raw-loader!/\_includes/code/howto/configure-sq/sq
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.sq_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/sq-compression.java';
 
-:::info Added in v1.26.0
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
-:::
+<CompressionByDefault/>
 
-[Scalar quantization (SQ)](/weaviate/concepts/vector-quantization#scalar-quantization) is a vector compression technique that can reduce the size of a vector.
+[**Scalar quantization (SQ)**](/weaviate/concepts/vector-quantization#scalar-quantization) is a vector compression technique that can reduce the size of a vector.
 
 To use SQ, enable it in the collection definition, then add data to the collection.
 

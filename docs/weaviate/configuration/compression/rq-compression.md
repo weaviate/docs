@@ -12,20 +12,9 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
-:::info Added in `v1.32`
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
-**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
-
-:::
-
-:::caution Preview
-
-**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
-
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
-:::
+<CompressionByDefault/>
 
 [**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast vector compression technique that offers significant performance benefits. Two RQ variants are available in Weaviate:
 
@@ -33,10 +22,18 @@ This means that the feature is still under development and may change in future 
 - **1-bit RQ**: Close to 32x compression as dimensionality increases with moderate recall across various datasets.
 
 :::note HNSW only
+
 RQ is currently not supported for the flat index type.
+
 :::
 
 ## 8-bit RQ
+
+:::info Added in `v1.32`
+
+**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+
+:::
 
 [8-bit RQ](../../concepts/vector-quantization.md#8-bit-rq) provides up-to 4x compression while maintaining 98-99% recall in internal testing. It is generally recommended for most use cases as the default quantization techniques.
 
@@ -111,6 +108,15 @@ RQ can also be enabled for an existing collection by updating the collection def
 </Tabs>
 
 ## 1-bit RQ
+
+:::caution Preview
+
+**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
+
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
 
 [1-bit RQ](../../concepts/vector-quantization.md#1-bit-rq) is an quantization technique that provides close to 32x compression as dimensionality increases. 1-bit RQ serves as a more robust and accurate alternative to [BQ](./bq-compression.md) with only a slight performance trade-off. While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned [PQ](./pq-compression.md).
 

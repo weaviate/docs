@@ -18,11 +18,9 @@ To balance resource costs and system performance, consider one of these options:
 
 You can also [disable quantization](uncompressed.md) for a collection.
 
-:::info Compression by Default
+import CompressionByDefault from '/_includes/compression-by-default.mdx';
 
-Starting with `v1.33`, Weaviate enables **8-bit RQ quantization by default** when creating new collections to ensure efficient resource utilization and faster performance. This behavior can be changed through the [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) environment variable.
-
-:::
+<CompressionByDefault/>
 
 ## Multi-vector encoding
 
