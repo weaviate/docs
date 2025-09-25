@@ -614,6 +614,8 @@ const sidebars = {
           items: [
             "weaviate/client-libraries/python/async",
             "weaviate/client-libraries/python/notes-best-practices",
+            "weaviate/client-libraries/python/python_v3",
+            "weaviate/client-libraries/python/v3_v4_migration",
             {
               type: "link",
               label: "Reference manual",
@@ -631,6 +633,8 @@ const sidebars = {
           },
           items: [
             "weaviate/client-libraries/typescript/notes-best-practices",
+            "weaviate/client-libraries/typescript/typescript-v2",
+            "weaviate/client-libraries/typescript/v2_v3_migration",
             {
               type: "link",
               label: "Reference manual",

@@ -22,7 +22,7 @@ const config = {
   favicon: "img/favicon.ico",
   staticDirectories: ["static"],
   // url: "https://weaviate.io",
-  url: "https://docs.weaviate.io",
+  url: "https://archive.docs.weaviate.io",
   baseUrl: "/",
   trailingSlash: false,
   onBrokenLinks: "warn",
