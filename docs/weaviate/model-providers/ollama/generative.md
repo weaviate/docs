@@ -64,7 +64,7 @@ As this integration connects to a local Ollama container, no additional credenti
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START BasicInstantiation"
@@ -73,7 +73,7 @@ As this integration connects to a local Ollama container, no additional credenti
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -93,7 +93,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an Ollama generative model:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeOllama"
@@ -102,7 +102,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeOllama"
@@ -124,7 +124,7 @@ The [default model](#available-models) is used if no model is specified.
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RuntimeModelSelectionOllama"
@@ -158,7 +158,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SinglePromptExample"
@@ -167,7 +167,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -188,7 +188,7 @@ In other words, when you have `n` search results, the generative model generates
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GroupedTaskExample"
@@ -197,7 +197,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"
@@ -214,7 +214,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START WorkingWithImagesOllama"
@@ -222,7 +222,7 @@ You can also supply images as a part of the input when performing retrieval augm
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
         text={TSCode}
         startMarker="// START WorkingWithImagesOllama"
@@ -236,7 +236,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 <!-- Hiding "full" examples as no other parameters exist than shown above -->
 <!-- <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullGenerativeOllama"
@@ -245,7 +245,7 @@ You can also supply images as a part of the input when performing retrieval augm
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeOllama"

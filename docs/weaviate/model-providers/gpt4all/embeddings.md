@@ -114,7 +114,7 @@ As this integration connects to a local GPT4All container, no additional credent
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START BasicInstantiation"
@@ -123,7 +123,7 @@ As this integration connects to a local GPT4All container, no additional credent
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -139,7 +139,7 @@ As this integration connects to a local GPT4All container, no additional credent
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a GPT4All embedding model:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicVectorizerGPT4All"
@@ -148,7 +148,7 @@ As this integration connects to a local GPT4All container, no additional credent
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicVectorizerGPT4All"
@@ -176,7 +176,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportExample"
@@ -185,7 +185,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportExample"
@@ -214,7 +214,7 @@ The query below returns the `n` most similar objects from the database, set by `
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START NearTextExample"
@@ -223,7 +223,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -246,7 +246,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridExample"
@@ -255,7 +255,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
@@ -273,7 +273,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 <!-- Hiding "full" examples as no other parameters exist than shown above -->
 
 <!-- <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullVectorizerGPT4All"
@@ -282,7 +282,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullVectorizerGPT4All"

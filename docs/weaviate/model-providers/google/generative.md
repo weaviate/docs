@@ -98,7 +98,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START GoogleInstantiation"
@@ -107,7 +107,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START GoogleInstantiation"
@@ -135,7 +135,7 @@ You can [specify](#generative-parameters) one of the [available models](#availab
 Vertex AI users must provide the Google Cloud project ID in the collection configuration.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeGoogleVertex"
@@ -144,7 +144,7 @@ Vertex AI users must provide the Google Cloud project ID in the collection confi
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeGoogleVertex"
@@ -158,7 +158,7 @@ Vertex AI users must provide the Google Cloud project ID in the collection confi
 ### Gemini API
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeGoogleStudio"
@@ -167,7 +167,7 @@ Vertex AI users must provide the Google Cloud project ID in the collection confi
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeGoogleStudio"
@@ -183,7 +183,7 @@ Vertex AI users must provide the Google Cloud project ID in the collection confi
 Configure the following generative parameters to customize the model behavior.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullGenerativeGoogle"
@@ -192,7 +192,7 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeGoogle"
@@ -208,7 +208,7 @@ Configure the following generative parameters to customize the model behavior.
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RuntimeModelSelectionGoogle"
@@ -242,7 +242,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SinglePromptExample"
@@ -251,7 +251,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -272,7 +272,7 @@ In other words, when you have `n` search results, the generative model generates
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GroupedTaskExample"
@@ -281,7 +281,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"
@@ -298,7 +298,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START WorkingWithImagesGoogle"
@@ -306,7 +306,7 @@ You can also supply images as a part of the input when performing retrieval augm
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
         text={TSCode}
         startMarker="// START WorkingWithImagesGoogle"

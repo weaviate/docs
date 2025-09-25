@@ -57,7 +57,7 @@ Provide the API credentials to Weaviate using one of the following methods:
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START AWSInstantiation"
@@ -66,7 +66,7 @@ Provide the API credentials to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START AWSInstantiation"
@@ -102,7 +102,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 For Bedrock, you must provide the model name in the generative AI configuration.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeAWSBedrock"
@@ -111,7 +111,7 @@ For Bedrock, you must provide the model name in the generative AI configuration.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeAWSBedrock"
@@ -127,7 +127,7 @@ For Bedrock, you must provide the model name in the generative AI configuration.
 For SageMaker, you must provide the endpoint address in the generative AI configuration.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeAWSSagemaker"
@@ -136,7 +136,7 @@ For SageMaker, you must provide the endpoint address in the generative AI config
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeAWSSagemaker"
@@ -158,7 +158,7 @@ For further details on model parameters, see the [relevant AWS documentation](#f
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RuntimeModelSelectionAWS"
@@ -192,7 +192,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SinglePromptExample"
@@ -201,7 +201,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -222,7 +222,7 @@ In other words, when you have `n` search results, the generative model generates
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GroupedTaskExample"
@@ -231,7 +231,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"
@@ -248,7 +248,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START WorkingWithImagesAWS"
@@ -256,7 +256,7 @@ You can also supply images as a part of the input when performing retrieval augm
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START WorkingWithImagesAWS"

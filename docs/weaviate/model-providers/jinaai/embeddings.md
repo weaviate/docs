@@ -58,7 +58,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START JinaAIInstantiation"
@@ -67,7 +67,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START JinaAIInstantiation"
@@ -92,7 +92,7 @@ Provide the API key to Weaviate using one of the following methods:
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Jina AI embedding model:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicVectorizerJinaAI"
@@ -101,7 +101,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicVectorizerJinaAI"
@@ -126,7 +126,7 @@ Provide the API key to Weaviate using one of the following methods:
 You can specify one of the [available models](#available-models) for the vectorizer to use, as shown in the following configuration example.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START VectorizerJinaCustomModel"
@@ -135,7 +135,7 @@ You can specify one of the [available models](#available-models) for the vectori
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START VectorizerJinaCustomModel"
@@ -173,7 +173,7 @@ The following examples show how to configure Jina AI-specific options.
 Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullVectorizerJinaAI"
@@ -182,7 +182,7 @@ Note that `dimensions` is not applicable for the `jina-embeddings-v2` models.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullVectorizerJinaAI"
@@ -208,7 +208,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportExample"
@@ -217,7 +217,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportExample"
@@ -255,7 +255,7 @@ The query below returns the `n` most similar objects from the database, set by `
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START NearTextExample"
@@ -264,7 +264,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -296,7 +296,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridExample"
@@ -305,7 +305,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
