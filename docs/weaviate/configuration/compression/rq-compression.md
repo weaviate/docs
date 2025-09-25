@@ -125,7 +125,7 @@ This means that the feature is still under development and may change in future 
 RQ can be enabled at collection creation time through the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START 1BitEnableRQ"
@@ -133,7 +133,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START 1BitEnableRQ"
@@ -164,7 +164,7 @@ RQ can be enabled at collection creation time through the collection definition:
 RQ can also be enabled for an existing collection by updating the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START 1BitUpdateSchema"

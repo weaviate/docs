@@ -424,7 +424,7 @@ The output is like this:
 The `ContainsNone` operator works on text properties and take an array of values as input. It will match objects where the property **contains none** of the values in the array.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ContainsNoneFilter"
@@ -432,7 +432,7 @@ The `ContainsNone` operator works on text properties and take an array of values
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 ```typescript
 // TypeScript/JavaScript support coming soon
