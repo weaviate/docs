@@ -19,7 +19,7 @@ import TSCode from '!!raw-loader!../_includes/provider.vectorizer.ts';
 :::caution Deprecated integration
 This integration is deprecated and will be removed in a future release. We recommend using alternative model providers for new projects.
 
-For local AI model integrations, consider using [Ollama](../ollama/index.md) or the [local HuggingFace](../transformers/) model integrations.
+For local AI model integrations, consider using [Ollama](../ollama/index.md) or the [local HuggingFace](../huggingface/index.md) model integrations.
 :::
 
 Weaviate's integration with GPT4All's models allows you to access their models' capabilities directly from Weaviate.
