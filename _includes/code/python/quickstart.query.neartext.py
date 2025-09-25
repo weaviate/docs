@@ -12,7 +12,7 @@ client = weaviate.connect_to_weaviate_cloud(
     auth_credentials=Auth.api_key(weaviate_api_key),             # Replace with your Weaviate Cloud key
 )
 
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 
 # highlight-start
 response = questions.query.near_text(

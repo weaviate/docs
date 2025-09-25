@@ -31,7 +31,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # NamedVectorNearTextPython
 from weaviate.classes.query import MetadataQuery
 
-reviews = client.collections.get("WineReviewNV")
+reviews = client.collections.use("WineReviewNV")
 response = reviews.query.near_text(
     query="a sweet German white wine",
     limit=2,
@@ -63,7 +63,7 @@ assert response.objects[0].metadata.distance is not None
 # GetNearTextPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.near_text(
     query="animals in movies",
@@ -91,13 +91,13 @@ assert response.objects[0].metadata.distance is not None
 
 # https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearobject
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 uuid = jeopardy.query.fetch_objects(limit=1).objects[0].uuid
 
 # GetNearObjectPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.near_object(
     near_object=uuid,  # A UUID of an object (e.g. "56b9449e-65db-5df4-887b-0a4773f52aa7")
@@ -125,14 +125,14 @@ assert response.objects[0].metadata.distance is not None
 
 # https://docs.weaviate.io/weaviate/api/graphql/search-operators#nearvector
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(limit=1, include_vector=True)
 query_vector = response.objects[0].vector["default"]
 
 # GetNearVectorPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.near_vector(
     near_vector=query_vector, # your query vector goes here
@@ -164,7 +164,7 @@ assert response.objects[0].metadata.distance is not None
 # GetLimitOffsetPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start
@@ -203,7 +203,7 @@ assert no_offset_response.objects[1].properties["question"] == response.objects[
 # GetWithDistancePython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start
@@ -235,7 +235,7 @@ for o in response.objects:
 # START Autocut Python
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start
@@ -266,7 +266,7 @@ assert response.objects[0].metadata.distance is not None
 # GetWithGroupbyPython
 from weaviate.classes.query import MetadataQuery, GroupBy
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 
 group_by = GroupBy(
@@ -319,7 +319,7 @@ for grp, grp_items in response.groups.items():
 # GetWithWherePython
 from weaviate.classes.query import MetadataQuery, Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="animals in movies",
     # highlight-start

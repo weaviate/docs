@@ -18,7 +18,7 @@ client = weaviate.connect_to_weaviate_cloud(
 
 # START robustnessExampleWords
 for query in ["cat", "kitten"]:
-    questions = client.collections.get("JeopardyQuestion")
+    questions = client.collections.use("JeopardyQuestion")
     response = questions.query.near_text(
         query=query,
         limit=1,
@@ -58,7 +58,7 @@ Distance: 0.150
 
 # START robustnessExampleSpelling
 for query in ["cat", "catt", "caat"]:
-    questions = client.collections.get("JeopardyQuestion")
+    questions = client.collections.use("JeopardyQuestion")
     response = questions.query.near_text(
         query=query,
         limit=1,
@@ -103,7 +103,7 @@ Distance: 0.184
 
 
 # START bm25Example
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.bm25(
     query="imaging",  # Your query string
     return_properties=["question", "answer"],
@@ -129,7 +129,7 @@ assert "question" in response.objects[0].properties.keys()
 
 
 # START hybridExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.hybrid(
     query="imaging",  # Your query string
     return_properties=["question", "answer"],

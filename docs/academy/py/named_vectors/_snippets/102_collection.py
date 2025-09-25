@@ -33,18 +33,18 @@ client.collections.create(
         wc.Property(name="poster", data_type=wc.DataType.BLOB),
     ],
     # Define & configure the vectorizer module
-    vectorizer_config=[
+    vector_config=[
         # NamedVectorConfig  # CreateMovieCollection
         # Vectorize the movie title
-        wc.Configure.NamedVectors.text2vec_openai(
+        wc.Configure.Vectors.text2vec_openai(
             name="title", source_properties=["title"]
         ),
         # Vectorize the movie overview (summary)
-        wc.Configure.NamedVectors.text2vec_openai(
+        wc.Configure.Vectors.text2vec_openai(
             name="overview", source_properties=["overview"]
         ),
         # Vectorize the movie poster & title
-        wc.Configure.NamedVectors.multi2vec_clip(
+        wc.Configure.Vectors.multi2vec_clip(
             name="poster_title",
             image_fields=[
                 wc.Multi2VecField(name="poster", weight=0.9)
@@ -105,7 +105,7 @@ with zipfile.ZipFile(posters_path, "r") as zip_ref:
     zip_ref.extractall(img_dir)
 
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # END BatchImportData
 

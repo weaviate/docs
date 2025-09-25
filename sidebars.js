@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "link",
       label: "Installation",
-      href: "https://docs.weaviate.io/deploy/installation-guides",
+      href: "https://docs.weaviate.io/deploy",
     },
     {
       type: "category",
@@ -81,8 +81,17 @@ const sidebars = {
         type: "doc",
         id: "weaviate/best-practices/index",
       },
-      items: ["weaviate/best-practices/code-generation"],
+      items: []
     },
+    {
+      type: "category",
+      label: "AI-based code generation",
+      link: {
+        type: "doc",
+        id: "weaviate/best-practices/code-generation",
+      },
+      items: []
+    }
   ],
   modelProvidersSidebar: [
     {
@@ -369,6 +378,16 @@ const sidebars = {
         },
         {
           type: "category",
+          label: "Model2Vec",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/model-providers/model2vec/index",
+          },
+          items: ["weaviate/model-providers/model2vec/embeddings"],
+        },
+        {
+          type: "category",
           label: "Ollama",
           className: "sidebar-item",
           link: {
@@ -412,9 +431,11 @@ const sidebars = {
             id: "weaviate/configuration/compression/index",
           },
           items: [
+            "weaviate/configuration/compression/rq-compression",
             "weaviate/configuration/compression/pq-compression",
             "weaviate/configuration/compression/bq-compression",
             "weaviate/configuration/compression/sq-compression",
+            "weaviate/configuration/compression/uncompressed",
             "weaviate/configuration/compression/multi-vectors",
           ],
         },
@@ -430,6 +451,7 @@ const sidebars = {
           items: [
             "weaviate/configuration/rbac/manage-roles",
             "weaviate/configuration/rbac/manage-users",
+            "weaviate/configuration/rbac/manage-groups",
           ],
         },
       ],
@@ -445,6 +467,7 @@ const sidebars = {
         "weaviate/manage-collections/collection-operations",
         "weaviate/manage-collections/vector-config",
         "weaviate/manage-collections/generative-reranker-models",
+        "weaviate/manage-collections/inverted-index",
         {
           type: "category",
           label: "Multi-tenancy",
@@ -454,6 +477,7 @@ const sidebars = {
           },
           items: ["weaviate/manage-collections/tenant-states"],
         },
+        "weaviate/manage-collections/collection-aliases",
         "weaviate/manage-collections/multi-node-setup",
         "weaviate/manage-collections/migrate",
         "weaviate/manage-collections/cross-references",
@@ -504,12 +528,13 @@ const sidebars = {
       },
       items: [
         "weaviate/tutorials/multi-vector-embeddings",
-        //"weaviate/tutorials/import",
+        "weaviate/tutorials/import",
+        "weaviate/tutorials/collection-aliases",
         "weaviate/tutorials/cross-references",
+        "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/vector-provision-options",
         //"weaviate/tutorials/query",
         //"weaviate/tutorials/wikipedia",
-        "weaviate/tutorials/spark-connector",
         //"weaviate/tutorials/modules",
       ],
     },
@@ -529,13 +554,22 @@ const sidebars = {
           type: "category",
           label: "Collection definition",
           className: "sidebar-item",
+          collapsed: false,
           link: {
             type: "doc",
-            id: "weaviate/config-refs/schema/index",
+            id: "weaviate/config-refs/collections",
           },
           items: [
-            "weaviate/config-refs/schema/multi-vector",
-            "weaviate/config-refs/schema/vector-index",
+            {
+              type: "doc",
+              id: "weaviate/config-refs/indexing/vector-index",
+              className: "sidebar-item",
+            },
+            {
+              type: "doc",
+              id: "weaviate/config-refs/indexing/inverted-index",
+              className: "sidebar-item",
+            },
           ],
         },
         {
@@ -546,6 +580,12 @@ const sidebars = {
         {
           type: "doc",
           id: "weaviate/config-refs/distances",
+          className: "sidebar-item",
+        },
+        {
+          type: "link",
+          label: "Environment variables",
+          href: "https://docs.weaviate.io/deploy/configuration/env-vars",
           className: "sidebar-item",
         },
       ],
@@ -715,6 +755,7 @@ const sidebars = {
         "weaviate/modules/spellcheck",
         "weaviate/modules/sum-transformers",
         "weaviate/modules/custom-modules",
+        "weaviate/modules/usage-modules",
       ],
     },
     "weaviate/more-resources/faq",
@@ -735,6 +776,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "deploy/installation-guides/weaviate-cloud",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "deploy/installation-guides/docker-installation",
           className: "sidebar-item",
         },
@@ -749,20 +795,10 @@ const sidebars = {
           className: "sidebar-item",
         },
         {
-          type: "doc",
-          id: "deploy/installation-guides/spcs-integration",
-          className: "sidebar-item",
-        },
-        {
-          type: "doc",
-          id: "deploy/installation-guides/weaviate-cloud",
-          className: "sidebar-item",
-        },
-        {
           type: "html",
           value: "<hr class='sidebar-divider' />",
         },
-      ]
+      ],
     },
     {
       type: "category",
@@ -863,7 +899,7 @@ const sidebars = {
           id: "deploy/configuration/tenant-offloading",
           className: "sidebar-item",
         },
-      ]
+      ],
     },
     {
       type: "html",
@@ -915,6 +951,11 @@ const sidebars = {
           id: "deploy/configuration/async-rep",
           className: "sidebar-item",
         },
+        {
+          type: "doc",
+          id: "deploy/configuration/replica-movement",
+          className: "sidebar-item",
+        },
       ],
     },
     {
@@ -964,6 +1005,12 @@ const sidebars = {
     {
       type: "autogenerated",
       dirName: "deploy/production",
+    },
+  ],
+  deployAwsSidebar: [
+    {
+      type: "autogenerated",
+      dirName: "deploy/aws",
     },
   ],
   deployTutorialSidebar: [
@@ -1098,49 +1145,67 @@ const sidebars = {
   ],
   contributorSidebar: [
     {
-      type: "doc",
-      id: "contributor-guide/index",
-      label: "Open-source at Weaviate",
-    },
-    {
       type: "category",
-      label: "Getting started",
+      label: "Contributor guide",
       link: {
         type: "doc",
-        id: "contributor-guide/getting-started/index",
+        id: "contributor-guide/index",
       },
+      collapsed: false,
       items: [
         "contributor-guide/getting-started/suggesting-enhancements",
         "contributor-guide/getting-started/reporting-bugs",
-        "contributor-guide/getting-started/improving-docs",
-        "contributor-guide/getting-started/writing-blogs",
-        "contributor-guide/getting-started/git-and-github",
-        "contributor-guide/getting-started/commit-guidelines",
       ],
     },
-  ],
-  contributorCoreSidebar: [
     {
-      type: "autogenerated",
-      dirName: "contributor-guide/weaviate-core",
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
     },
-  ],
-  contributorModulesSidebar: [
     {
-      type: "autogenerated",
-      dirName: "contributor-guide/weaviate-modules",
+      type: "category",
+      label: "Weaviate Database",
+      link: {
+        type: "doc",
+        id: "contributor-guide/weaviate-core/index",
+      },
+      items: [
+        "contributor-guide/weaviate-core/structure",
+        "contributor-guide/weaviate-core/cicd",
+        "contributor-guide/weaviate-core/tests",
+        "contributor-guide/weaviate-core/setup",
+        "contributor-guide/weaviate-core/parsing-cross-refs",
+        "contributor-guide/weaviate-core/support-new-runtime-configs",
+      ],
     },
-  ],
-  contributorContextionarySidebar: [
     {
-      type: "autogenerated",
-      dirName: "contributor-guide/contextionary",
+      type: "category",
+      label: "Weaviate Docs",
+      link: {
+        type: "doc",
+        id: "contributor-guide/weaviate-docs/index",
+      },
+      items: [
+        "contributor-guide/weaviate-docs/development",
+        "contributor-guide/weaviate-docs/style-guide",
+        "contributor-guide/weaviate-docs/llms",
+      ],
     },
-  ],
-  contributorClientsSidebar: [
     {
-      type: "autogenerated",
-      dirName: "contributor-guide/weaviate-clients",
+      type: "doc",
+      id: "contributor-guide/weaviate-clients/index",
+      label: "Weaviate Clients",
+    },
+    {
+      type: "category",
+      label: "Weaviate Modules",
+      link: {
+        type: "doc",
+        id: "contributor-guide/weaviate-modules/index",
+      },
+      items: [
+        "contributor-guide/weaviate-modules/architecture",
+        "contributor-guide/weaviate-modules/how-to-build-a-new-module",
+      ],
     },
   ],
   cloudSidebar: [
@@ -1193,6 +1258,24 @@ const sidebars = {
         {
           type: "doc",
           id: "cloud/manage-clusters/authorization",
+          className: "sidebar-item",
+        },
+      ],
+    },
+    {
+      type: "html",
+      value: "<hr class='sidebar-divider' />",
+    },
+    {
+      type: "category",
+      label: "Agents",
+      className: "sidebar-main-category",
+      collapsible: false,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "cloud/tools/query-agent",
           className: "sidebar-item",
         },
       ],
@@ -1278,6 +1361,7 @@ const sidebars = {
       items: [
         "integrations/compute-infrastructure/modal/index",
         "integrations/compute-infrastructure/replicate/index",
+        "integrations/compute-infrastructure/replicated/index"
       ],
     },
     {
@@ -1293,6 +1377,7 @@ const sidebars = {
         "integrations/data-platforms/astronomer/index",
         "integrations/data-platforms/boomi/index",
         "integrations/data-platforms/box/index",
+        "integrations/data-platforms/cardinal/index",
         "integrations/data-platforms/confluent/index",
         "integrations/data-platforms/context-data/index",
         "integrations/data-platforms/databricks/index",
@@ -1317,6 +1402,7 @@ const sidebars = {
         "integrations/llm-agent-frameworks/haystack/index",
         "integrations/llm-agent-frameworks/langchain/index",
         "integrations/llm-agent-frameworks/llamaindex/index",
+        "integrations/llm-agent-frameworks/n8n/index",
         "integrations/llm-agent-frameworks/semantic-kernel/index",
       ],
     },

@@ -10,7 +10,7 @@ client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as strin
     headers: {
       'X-VoyageAI-Api-Key': process.env.VOYAGEAI_API_KEY as string,   // Replace with your inference API key
       'X-Cohere-Api-Key': process.env.COHERE_API_KEY as string,  // Replace with your inference API key
-     
+
     }
   }
 )
@@ -33,7 +33,7 @@ async function urlToBase64(imageUrl: string) {
 // MetadataMultimodalSearch // SinglePromptGeneration // MetadataSemanticSearch // MetadataBM25Search // MetadataHybridSearch // FilteredSemanticSearch
 
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Perform query
 const srcImgPath = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img/International_Space_Station_after_undocking_of_STS-132.jpg?raw=true"

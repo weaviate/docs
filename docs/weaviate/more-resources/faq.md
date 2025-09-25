@@ -122,7 +122,7 @@ image: og/docs/more-resources.jpg
 <details>
   <summary>Answer</summary>
 
-> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/schema/index.md#tokenization) on the differences.
+> The `text` and `string` datatypes differ in tokenization behavior. Note that `string` is now deprecated. Read more in [this section](../config-refs/collections.mdx#tokenization) on the differences.
 
 </details>
 
@@ -415,7 +415,7 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 <details>
   <summary>Answer</summary>
 
-> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/schema/vector-index.md#asynchronous-indexing), which separates data ingestion from vectorization.
+> HNSW is super fast at query time, but slower on vectorization. This means that adding and updating data objects costs relatively more time. You could try [asynchronous indexing](../config-refs/indexing/vector-index.mdx#asynchronous-indexing), which separates data ingestion from vectorization.
 
 </details>
 
@@ -476,6 +476,59 @@ More concretely: If you had to pick between a machine that has 16 GB of RAM and 
 You can do this by sending a `SIGQUIT` signal to the process. This will print a stack trace to the console. The logging level and debugging variables can be set with `LOG_LEVEL` and `DEBUG` [environment variables](/deploy/configuration/env-vars/index.md).
 
 Read more on SIGQUIT [here](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) and this [StackOverflow answer](https://stackoverflow.com/questions/19094099/how-to-dump-goroutine-stacktraces/35290196#35290196).
+
+</details>
+
+#### Q: 'invalid properties' error when creating a collection (Python client versions 4.16.0 to 4.16.3)
+
+<details>
+  <summary>Answer</summary>
+
+In Weaviate Python client versions `4.16.0` to `4.16.3`, the following pattern when creating a collection with a text2vec_xxx vectorizer will result in an error:
+
+```python
+client.collections.create(
+    "CollectionName",
+    vector_config=Configure.Vectorizer.text2vec_cohere(),  # also applies to other vectorizers
+)
+```
+
+The error message will look like this:
+
+```text
+UnexpectedStatusCodeError: Collection may not have been created properly.! Unexpected status code: 422, with response body: {'error': [{'message': "module 'text2vec-cohere': invalid properties: didn't find a single property which is of type string or text and is not excluded from indexing....
+```
+
+This is a known issue, which will occur when setting a vectorizer definition without defining any `TEXT` or `TEXT_ARRAY` properties in the collection, in order to rely on AutoSchema to create the data schema for you.
+
+**This issue is addressed in Weaviate Python client patch release `4.16.4`. So, we recommend updating to the version `4.16.4` of the Weaviate Python client, or later.**
+
+If you are unable to change your Weaviate Python client version from the affected ones, you can work around this issue in one of two ways:
+
+1. By explicitly defining at least one `TEXT` or `TEXT_ARRAY` property in the collection schema, like this:
+
+```python
+client.collections.create(
+    "CollectionName",
+    properties=[
+        Property(name="<property_name>", data_type=DataType.TEXT),
+    ],
+    vector_config=Configure.Vectorizer.text2vec_cohere(),
+    # Additional configuration not shown
+)
+```
+
+2. By setting `vectorize_collection_name` to `True` in the vectorizer definition, like this:
+
+```python
+client.collections.create(
+    "CollectionName",
+    vector_config=Configure.Vectorizer.text2vec_cohere(
+        vectorize_collection_name=True
+    ),
+    # Additional configuration not shown
+)
+```
 
 </details>
 
@@ -562,7 +615,7 @@ docker compose up
 <details>
   <summary>Answer</summary>
 
-Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/), 
+Weaviate can be used on Windows via containerized environments like [Docker](/deploy/installation-guides/docker-installation.md) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/),
 
 Keep in mind that we don't offer native Windows support at this time and deployment options like [Weaviate Embedded](/docs/deploy/installation-guides/embedded.md) should be avoided.
 

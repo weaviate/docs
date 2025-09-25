@@ -7,8 +7,8 @@ toolchain go1.24.3
 require (
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/stretchr/testify v1.10.0
-	github.com/weaviate/weaviate v1.31.0
-	github.com/weaviate/weaviate-go-client/v5 v5.2.0
+	github.com/weaviate/weaviate v1.32.5-0.20250822170836-4c48597f18c9
+	github.com/weaviate/weaviate-go-client/v5 v5.4.2-0.20250827170908-f2205767afe8
 )
 
 require (
@@ -32,12 +32,12 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	go.mongodb.org/mongo-driver v1.14.0 // indirect
-	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250505200425-f936aa4a68b2 // indirect
-	google.golang.org/grpc v1.72.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/text v0.27.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250728155136-f173205681a0 // indirect
+	google.golang.org/grpc v1.74.2 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

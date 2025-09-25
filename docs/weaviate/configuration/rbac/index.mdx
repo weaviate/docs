@@ -350,6 +350,81 @@ Permissions can be defined with the following resources, access levels and optio
         </div>
       </td>
     </tr>
+    <tr>
+      <td>
+        <Link to="/weaviate/configuration/rbac/manage-roles#aliases-permissions">
+          <strong>Collection aliases</strong>
+        </Link>
+      </td>
+      <td>
+        <div class="access-level">Create aliases</div>
+        <div class="access-level">Read aliases</div>
+        <div class="access-level">Update aliases</div>
+        <div class="access-level">Delete aliases</div>
+      </td>
+      <td>
+        <p>Alias name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which aliases
+            can be managed
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <Link to="/weaviate/configuration/rbac/manage-roles#replications-permissions">
+          <strong>Replications</strong>
+        </Link>
+      </td>
+      <td>
+        <div class="access-level">Create replications</div>
+        <div class="access-level">Read replications</div>
+        <div class="access-level">Update replications</div>
+        <div class="access-level">Delete replications</div>
+      </td>
+      <td>
+        <p>Collection name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which collections' objects
+            can be managed
+          </li>
+        </ul>
+        <p>Shard name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which shards can be managed
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <Link to="/weaviate/configuration/rbac/manage-roles#groups-permissions">
+          <strong>Groups</strong>
+        </Link>
+      </td>
+      <td>
+        <div class="access-level">Read groups</div>
+        <div class="access-level">Assign and revoke group membership</div>
+      </td>
+      <td>
+        <p>Group name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which groups can be managed
+          </li>
+        </ul>
+        <p>Group type filter:</p>
+        <ul>
+          <li>
+            <code>oidc</code> (only OIDC user groups are supported at the moment)
+          </li>
+        </ul>
+      </td>
+    </tr>
   </tbody>
 </table>
 

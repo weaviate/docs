@@ -1,0 +1,59 @@
+---
+title: Weaviate Documentation
+description: Complete guide for contributing to Weaviate's documentation
+image: og/contributor-guide/getting-started.jpg
+# tags: ['contributor-guide', 'docs']
+---
+
+import CardsSection from "/src/components/CardsSection";
+
+Welcome to the Weaviate documentation contributor guide! Whether you're fixing typos, adding new tutorials, or improving existing content, this section provides everything you need to contribute effectively to our documentation.
+
+Our documentation is built with Docusaurus and includes comprehensive guides, API references, tutorials, and examples. Your contributions help thousands of developers understand and use Weaviate more effectively.
+
+## Quickstart
+
+1. **Use the [docs repository](https://github.com/weaviate/docs)** on GitHub
+   - Users should fork the repository
+   - Weaviate employees don't need to fork the repo and should create a new branch
+2. **Set up your local environment** following our [development guide](./development.mdx)
+3. **Make your changes** in accordance with our [style guidelines](./style-guide.mdx)
+4. **Test locally** with `yarn build` to ensure everything works
+5. **Submit a pull request** with a clear description of your changes
+
+## Documentation guides
+
+export const docsGuidesData = [
+  {
+    id: "development",
+    title: "Setup and editing guide",
+    description:
+      "Learn how to build docs locally, use components like CardsSection, handle linking, and work with our Docusaurus setup.",
+    link: "/contributor-guide/weaviate-docs/development",
+    icon: "fas fa-code",
+  },
+  {
+    id: "style-guide",
+    title: "Style guidelines",
+    description:
+      "Writing guidelines, tone, formatting standards, and content conventions to ensure consistency across all Weaviate documentation.",
+    link: "/contributor-guide/weaviate-docs/style-guide",
+    icon: "fas fa-pen-fancy",
+  },
+  {
+    id: "llms",
+    title: "Optimizing docs for LLMs",
+    description:
+      "Best practices for making documentation AI-friendly, including content structure, llms.txt implementation, and writing effective frontmatter.",
+    link: "/contributor-guide/weaviate-docs/llms",
+    icon: "fas fa-robot",
+  },
+];
+
+<CardsSection items={docsGuidesData} />
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

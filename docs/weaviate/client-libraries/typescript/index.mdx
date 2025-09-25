@@ -1,6 +1,7 @@
 ---
 title: JavaScript and TypeScript
 sidebar_position: 10
+description: "Official TypeScript/JavaScript client library documentation for integrating Weaviate with web applications."
 image: og/docs/client-libraries.jpg
 # tags: ['TypeScript', 'client library']
 ---
@@ -124,7 +125,6 @@ All client v3 methods, with the exception of `collection.use()`, use ES6 Promise
 
 When there is an asynchronous code error, a promise returns the specific error message. If you use `async` and `await`, a rejected promises acts like a thrown exception
 
-
 ## Releases
 
 Go to the [GitHub releases page](https://github.com/weaviate/typescript-client/releases) to see the history of the TypeScript client library releases and change logs.
@@ -138,9 +138,19 @@ import ReleaseHistory from "/_includes/release-history.md";
 
 </details>
 
-#### Migrating from `v2` to `v3`
+#### Vectorizer API changes `v3.8.0`
 
-If you are migrating a project from the Weaviate TypeScript client v2 to the v3 client, see the [migration page](/weaviate/client-libraries/typescript/v2_v3_migration) for additional details.
+Starting with the Weaviate JS/TS client `v3.8.0`, there are multiple changes to the vectorizer configuration API when creating collections:
+
+- `configure.vectorizer` has been replaced with `configure.vectors`
+- `configure.multiVectors` has been added to enable users work with [Multi-vectors](../../manage-collections/vector-config.mdx#define-multi-vector-embeddings-eg-colbert-colpali)
+- `configure.vectorizer.none` have been replaced with `configure.vectors.selfProvided`
+
+#### JavaScript/TypeScript client `v2` deprecation
+
+<!-- TODO[g-despot]: Add link to archive -->
+
+The Weaviate JavaScript/TypeScript client `v2` has been deprecated and should no longer be used. If you need documentation for the `v2` client, see the [documentation archive](https://archive.docs.weaviate.io/weaviate/client-libraries/typescript/typescript-v2). If you are migrating from the JavaScript/TypeScript `v2` client to the `v3` client, see this [migration guide](https://archive.docs.weaviate.io/weaviate/client-libraries/typescript/v2_v3_migration).
 
 ## Code examples & further resources
 

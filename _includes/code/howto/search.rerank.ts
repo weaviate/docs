@@ -16,7 +16,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 
 
 // START RerankNearText // START bm25Rerank
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 // END RerankNearText // END bm25Rerank
 
 // =================================

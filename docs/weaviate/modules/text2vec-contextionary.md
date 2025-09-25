@@ -8,18 +8,20 @@ image: og/docs/modules/text2vec-contextionary.jpg
 
 The `text2vec-contextionary` module enables Weaviate to obtain vectors locally using a lightweight model.
 
+:::caution Deprecated module
+The `Contextionary` model is old, and not recommended for any use cases. Instead, we recommend using other modules.
+
+If you are looking for a local, lightweight model for testing or development purposes, try [the `text2vec-model2vec` module](../model-providers/model2vec/embeddings.md).
+
+For cases where the vector quality is important, such as in production, we recommend using [other model integrations](../model-providers/index.md) that use a more modern, transformer-based architecture.
+:::
+
 Key notes:
 
 - This module is not available on Weaviate Cloud (WCD).
 - Enabling this module will enable the [`nearText` search operator](/weaviate/api/graphql/search-operators.md#neartext).
 - This module is based on FastText and uses a weighted mean of word embeddings (WMOWE) to produce the vector.
 - Available for multiple languages
-
-:::tip When to use `text2vec-contextionary`
-As a lightweight model, it is well suited for testing purposes.
-
-For production use cases, we recommend using other modules that use a more modern, transformer-based architecture.
-:::
 
 ## Weaviate instance configuration
 

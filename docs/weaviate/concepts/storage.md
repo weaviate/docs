@@ -1,6 +1,7 @@
 ---
 title: Storage
 sidebar_position: 18
+description: "Persistent, fault-tolerant storage architecture for objects, vectors, and inverted index management."
 image: og/docs/concepts.jpg
 # tags: ['architecture', 'storage']
 ---
@@ -24,7 +25,7 @@ Each shard houses three main components:
 
 * An object store, essentially a key-value store
 * An [inverted index](https://en.wikipedia.org/wiki/Inverted_index)
-* A vector index store (plugable, currently a [custom implementation of HNSW](/weaviate/config-refs/schema/vector-index#hnsw-indexes))
+* A vector index store (plugable, currently a [custom implementation of HNSW](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index))
 
 #### Object and Inverted Index Store
 

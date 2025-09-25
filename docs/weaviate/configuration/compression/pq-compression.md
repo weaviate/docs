@@ -1,6 +1,5 @@
 ---
 title: Product Quantization (PQ)
-sidebar_position: 5
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'pq']
 ---
@@ -8,27 +7,25 @@ image: og/docs/configuration.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/configure.pq-compression.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/configure.pq-compression-v3.py';
-import TSCodeAutoPQ from '!!raw-loader!/_includes/code/howto/configure.pq-compression.autopq.ts';
-import TSCodeManualPQ from '!!raw-loader!/_includes/code/howto/configure.pq-compression.manual.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure.pq-compression-v2.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/configure.pq-compression.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
+import PyCode from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.py';
+import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.autopq.ts';
+import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
+import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
+import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
-:::note
-Starting in v1.23, AutoPQ simplifies configuring PQ on new collections.
-:::
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
-import PQOverview from '/_includes/pq-compression/overview-text.mdx' ;
+<CompressionByDefault/>
+
+import PQOverview from '/\_includes/configuration/pq-compression/overview-text.mdx' ;
 
 <PQOverview />
 
-import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
+import PQTradeoffs from '/\_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
-To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md) .
+To configure HNSW, see [Configuration: Vector index](/weaviate/config-refs/indexing/vector-index.mdx).
 
 ## Enable PQ compression
 
@@ -51,13 +48,12 @@ AutoPQ requires asynchronous indexing.
 - **Open-source Weaviate users**: To enable AutoPQ, set the environment variable `ASYNC_INDEXING=true` and restart your Weaviate instance.
 - [**Weaviate Cloud (WCD)**](https://console.weaviate.cloud/) users: Enable async indexing through the WCD Console and restart your Weaviate instance.
 
-
 ### 2. Configure PQ
 
 To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START CollectionWithAutoPQ"
@@ -66,16 +62,8 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START CollectionWithAutoPQ"
-       endMarker="# END CollectionWithAutoPQ"
-       language="pyv3"
-     />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeAutoPQ}
        startMarker="// START CollectionWithAutoPQ"
@@ -84,14 +72,6 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START CollectionWithAutoPQ"
-       endMarker="// END CollectionWithAutoPQ"
-       language="tsv2"
-     />
-  </TabItem>
 
 </Tabs>
 
@@ -109,13 +89,13 @@ To manually enable PQ, follow these steps:
 
 - Phase One: Create a codebook
 
-    - [Define a collection without PQ](./pq-compression.md#1-define-a-collection-without-pq)
-    - [Load some training data](./pq-compression.md#2-load-training-data)
-    - [Enable and train PQ](./pq-compression.md#3-enable-pq-and-create-the-codebook)
+  - [Define a collection without PQ](./pq-compression.md#1-define-a-collection-without-pq)
+  - [Load some training data](./pq-compression.md#2-load-training-data)
+  - [Enable and train PQ](./pq-compression.md#3-enable-pq-and-create-the-codebook)
 
 - Phase Two: Load the rest of your data
 
-    - [Load the rest of your data](./pq-compression.md#4-load-the-rest-of-your-data)
+  - [Load the rest of your data](./pq-compression.md#4-load-the-rest-of-your-data)
 
 :::tip How large should the training set be?
 We suggest 10,000 to 100,000 objects per shard.
@@ -130,7 +110,7 @@ Follow these steps to manually enable PQ.
 [Create a collection](../../manage-collections/collection-operations.mdx#create-a-collection) without specifying a quantizer.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START InitialSchema"
@@ -139,16 +119,8 @@ Follow these steps to manually enable PQ.
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START InitialSchema"
-       endMarker="# END InitialSchema"
-       language="pyv3"
-     />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START InitClassDef"
@@ -157,14 +129,6 @@ Follow these steps to manually enable PQ.
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START InitClassDef"
-       endMarker="// END InitClassDef"
-       language="tsv2"
-     />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -197,14 +161,14 @@ From `v1.27.0`, Weaviate uses a sparse [Fisher-Yates algorithm](https://en.wikip
 
 Update your collection definition to enable PQ. Once PQ is enabled, Weaviate trains the codebook using the training data.
 
-import PQMakesCodebook from '/_includes/pq-compression/makes-a-codebook.mdx' ;
+import PQMakesCodebook from '/\_includes/configuration/pq-compression/makes-a-codebook.mdx' ;
 
 <PQMakesCodebook />
 
 To enable PQ, update your collection definition as shown below. For additional configuration options, see the [PQ parameter table](./pq-compression.md#pq-parameters).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
        startMarker="# START UpdateSchema"
@@ -213,16 +177,8 @@ To enable PQ, update your collection definition as shown below. For additional c
      />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-     <FilteredTextBlock
-       text={PyCodeV3}
-       startMarker="# START UpdateSchema"
-       endMarker="# END UpdateSchema"
-       language="pyv3"
-     />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START UpdateSchema"
@@ -231,14 +187,6 @@ To enable PQ, update your collection definition as shown below. For additional c
      />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-     <FilteredTextBlock
-       text={TSCodeLegacy}
-       startMarker="// START UpdateSchema"
-       endMarker="// END UpdateSchema"
-       language="tsv2"
-     />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -265,14 +213,13 @@ Once the [codebook has been trained](#3-enable-pq-and-create-the-codebook), you 
 
 If you already have data in your Weaviate instance when you create the codebook, Weaviate automatically compresses the remaining objects (the ones after the initial training set).
 
-## PQ Parameters
+## PQ parameters
 
 You can configure PQ compression by setting the following parameters at the collection level.
 
-import PQParameters from '/_includes/pq-compression/parameters.mdx' ;
+import PQParameters from '/\_includes/configuration/pq-compression/parameters.mdx' ;
 
 <PQParameters />
-
 
 ## Additional tools and considerations
 
@@ -309,7 +256,7 @@ docker inspect --format='{{.LogPath}}' <your-weaviate-container-id>
 To review the current `pq` configuration, you can retrieve it as shown below.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GetSchema"
@@ -318,16 +265,8 @@ To review the current `pq` configuration, you can retrieve it as shown below.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START GetSchema"
-      endMarker="# END GetSchema"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeManualPQ}
       startMarker="// START ViewConfig"
@@ -336,14 +275,6 @@ To review the current `pq` configuration, you can retrieve it as shown below.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START GetSchema"
-      endMarker="// END GetSchema"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -364,26 +295,27 @@ To review the current `pq` configuration, you can retrieve it as shown below.
   </TabItem>
 </Tabs>
 
-## Multiple vector embeddings (named vectors)
+### Multiple vector embeddings (named vectors)
 
-import NamedVectorCompress from '/_includes/named-vector-compress.mdx';
+import NamedVectorCompress from '/\_includes/named-vector-compress.mdx';
 
 <NamedVectorCompress />
 
-## Multi-vector embeddings (ColBERT, ColPali, etc.)
+### Multi-vector embeddings (ColBERT, ColPali, etc.)
 
-import MultiVectorCompress from '/_includes/multi-vector-compress.mdx';
+import MultiVectorCompress from '/\_includes/multi-vector-compress.mdx';
 
 <MultiVectorCompress />
 
-## Related pages
-- [Configuration: Vector index](/weaviate/config-refs/schema/vector-index.md)
+## Further resources
+
+- [Starter guides: Compression](/docs/weaviate/starter-guides/managing-resources/compression.mdx)
+- [Reference: Vector index](/weaviate/config-refs/indexing/vector-index.mdx)
+- [Concepts: Vector quantization](/docs/weaviate/concepts/vector-quantization.md)
 - [Concepts: Vector index](/weaviate/concepts/indexing/vector-index.md)
-- [Concepts: Vector quantization](/weaviate/concepts/vector-quantization.md)
-- [Guide: Schemas and collection definitions](/weaviate/starter-guides/managing-collections/index.mdx)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

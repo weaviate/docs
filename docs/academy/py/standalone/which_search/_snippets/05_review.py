@@ -18,7 +18,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # END connectionCode
 
 # START nearTextExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.near_text(
     query="space travel",  # Your query string
     limit=2
@@ -42,7 +42,7 @@ vector_input = response.objects[0].vector
 object_input = response.objects[0].uuid
 
 # START nearVectorExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.near_vector(
     near_vector=vector_input,  # Your vector object
     limit=2
@@ -58,7 +58,7 @@ assert "question" in response.objects[0].properties.keys()
 
 
 # START nearObjectExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.near_object(
     near_object=object_input,  # Your object UUID
     limit=2
@@ -74,7 +74,7 @@ assert "question" in response.objects[0].properties.keys()
 
 
 # START bm25Example
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.bm25(
     query="space travel",  # Your query string
     limit=2
@@ -90,7 +90,7 @@ assert "question" in response.objects[0].properties.keys()
 
 
 # START hybridExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.hybrid(
     query="space travel",  # Your query string
     limit=2

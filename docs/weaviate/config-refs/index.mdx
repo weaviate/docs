@@ -1,5 +1,6 @@
 ---
 title: Configuration
+description: "Configuration reference guides covering collections, data types, distances, and optimization settings."
 image: og/docs/configuration.jpg
 hide_table_of_contents: true
 ---
@@ -12,37 +13,44 @@ export const mainReferencesData = [
   {
     title: "Collection definition",
     description:
-      "Learn about the structure and properties of Weaviate collections.",
-    link: "/weaviate/config-refs/schema",
+      "An overview of all top-level collection parameters and concepts.",
+    link: "/weaviate/config-refs/collections",
     icon: "fas fa-cube",
   },
   {
-    title: "Multiple vector embeddings",
+    title: "Vector Index",
     description:
-      "Configure and manage multiple vectors per object for specialized search capabilities.",
-    link: "/weaviate/config-refs/schema/multi-vector",
-    icon: "fas fa-layer-group",
-  },
-  {
-    title: "Vector indexes",
-    description:
-      "Understand vector indexing options to optimize search performance and accuracy.",
-    link: "/weaviate/config-refs/schema/vector-index",
+      "Tune HNSW, Flat, or Dynamic indexes to balance search speed and recall.",
+    link: "/weaviate/config-refs/indexing/vector-index",
     icon: "fas fa-sitemap",
   },
   {
-    title: "Data types",
+    title: "Inverted Index",
+    description:
+      "Optimize filtering and keyword search with BM25, stopwords, and other settings.",
+    link: "/weaviate/config-refs/indexing/inverted-index",
+    icon: "fas fa-filter",
+  },
+  {
+    title: "Data Types",
     description:
       "Reference for supported data types and their handling in Weaviate.",
     link: "/weaviate/config-refs/datatypes",
     icon: "fas fa-list-ul",
   },
   {
-    title: "Distance metrics",
+    title: "Distance Metrics",
     description:
       "Learn about the distance metrics used for similarity calculations.",
     link: "/weaviate/config-refs/distances",
     icon: "fas fa-ruler",
+  },
+  {
+    title: "Environment Variables",
+    description:
+      "Learn about the environment variables used for configuration.",
+    link: "/deploy/configuration/env-vars",
+    icon: "fas fa-gear",
   },
 
 ];

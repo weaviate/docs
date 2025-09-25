@@ -7,7 +7,7 @@ import weaviate from 'weaviate-client';
 
 async function main() {
 
-  
+
 const client = await weaviate.connectToLocal({
   headers: {
     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY || '',
@@ -26,7 +26,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecAWS({
+    weaviate.configure.vectors.text2VecAWS({
       name: 'title_vector',
       sourceProperties: ['title'],
       region: 'us-east-1',
@@ -53,7 +53,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecAWS({
+    weaviate.configure.vectors.text2VecAWS({
       name: 'title_vector',
       sourceProperties: ['title'],
       region: 'us-east-1',
@@ -80,7 +80,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecAWS({
+    weaviate.configure.vectors.text2VecAWS({
       name: 'title_vector',
       sourceProperties: ['title'],
       region: 'us-east-1',
@@ -109,7 +109,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecCohere({
+    weaviate.configure.vectors.text2VecCohere({
       name: 'title_vector',
       sourceProperties: ['title'],
     }),
@@ -132,7 +132,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecCohere({
+    weaviate.configure.vectors.text2VecCohere({
       name: 'title_vector',
       sourceProperties: ['title'],
       // highlight-start
@@ -158,7 +158,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecCohere({
+    weaviate.configure.vectors.text2VecCohere({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
@@ -191,7 +191,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecCohere({
+    weaviate.configure.vectors.multi2VecCohere({
       name: "title_vector",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
@@ -226,7 +226,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecCohere({
+    weaviate.configure.vectors.multi2VecCohere({
       name: "title_vector",
       model: "embed-multilingual-v3.0",
       // Define the fields to be used for the vectorization - using imageFields, textFields
@@ -262,7 +262,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecCohere({
+    weaviate.configure.vectors.multi2VecCohere({
       name: "title_vector",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
@@ -299,7 +299,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecDatabricks({
+    weaviate.configure.vectors.text2VecDatabricks({
       endpoint: databricksVectorizerEndpoint,  // Required for Databricks
       name: 'title_vector',
       sourceProperties: ['title'],
@@ -324,12 +324,12 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecGoogle({
+    weaviate.configure.vectors.text2VecGoogle({
       name: 'title_vector',
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>',
       // (Optional) To manually set the model ID
-      modelId: 'textembedding-gecko@latest'
+      modelId: 'gemini-embedding-001'
     }),
   ],
   // highlight-end
@@ -351,11 +351,11 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecGoogle({
+    weaviate.configure.vectors.text2VecGoogle({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID
-      modelId: 'text-embedding-004'
+      modelId: 'gemini-embedding-001'
     }),
   ],
   // highlight-end
@@ -377,11 +377,10 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecGoogle({
+    weaviate.configure.vectors.text2VecGoogle({
       name: 'title_vector',
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>', // Required for Vertex AI
-      modelId: '<google-model-id>',
       // modelId: '<google-model-id>',
       // apiEndpoint: '<google-api_endpoint>',
       // vectorizeClassName: false,
@@ -407,7 +406,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecGoogle({
+    weaviate.configure.vectors.multi2VecGoogle({
       name: 'title_vector',
       location: '<google-cloud-location>',
       projectId: '<google-cloud-project-id>',
@@ -452,7 +451,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecGoogle({
+    weaviate.configure.vectors.multi2VecGoogle({
       name: 'title_vector',
       projectId: '<google-cloud-project-id>',
       modelId: '<google-model-id>',
@@ -493,7 +492,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecHuggingFace({
+    weaviate.configure.vectors.text2VecHuggingFace({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'sentence-transformers/all-MiniLM-L6-v2',
@@ -518,7 +517,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecHuggingFace({
+    weaviate.configure.vectors.text2VecHuggingFace({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'sentence-transformers/all-MiniLM-L6-v2',
@@ -549,7 +548,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecJinaAI({
+    weaviate.configure.vectors.text2VecJinaAI({
       name: 'title_vector',
       sourceProperties: ['title'],
     }),
@@ -573,7 +572,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecJinaAI({
+    weaviate.configure.vectors.text2VecJinaAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'jina-embeddings-v3'
@@ -597,7 +596,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecJinaAI({
+    weaviate.configure.vectors.text2VecJinaAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       // model: 'jina-embeddings-v3-small-en'
@@ -628,7 +627,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecJinaAI({
+    weaviate.configure.vectors.multi2VecJinaAI({
       name: 'title_vector',
       imageFields: [{
         name: "poster",
@@ -664,7 +663,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecJinaAI({
+    weaviate.configure.vectors.multi2VecJinaAI({
       name: 'title_vector',
       imageFields: [{
         name: "poster",
@@ -701,7 +700,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecJinaAI({
+    weaviate.configure.vectors.multi2VecJinaAI({
       name: 'title_vector',
       imageFields: [{
         name: "poster",
@@ -726,21 +725,49 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicColBERTVectorizerJinaAI
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.multiVectors.text2VecJinaAI({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    })
+  ]
+})
 // END BasicColBERTVectorizerJinaAI
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START ColBERTVectorizerJinaCustomModel
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.multiVectors.text2VecJinaAI({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: "jina-colbert-v2",
+    })
+  ]
+})
 // END ColBERTVectorizerJinaCustomModel
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START FullColBERTVectorizerJinaAI
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.multiVectors.text2VecJinaAI({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      // Further options
+      // model: "jina-colbert-v2",
+      // dimensions: 64,  // e.g. 128, 64 (only applicable for some models)
+    })
+  ]
+})
 // END FullColBERTVectorizerJinaAI
 
 // Clean up
@@ -757,7 +784,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecMistral({
+    weaviate.configure.vectors.text2VecMistral({
       name: 'title_vector',
       sourceProperties: ['title'],
     }),
@@ -781,7 +808,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecMistral({
+    weaviate.configure.vectors.text2VecMistral({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'mistral-embed'
@@ -796,42 +823,123 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.text2VecNvidia({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+    })
+  ],
+  // Additional parameters not shown
+})
 // END BasicVectorizerNVIDIA
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START VectorizerNVIDIACustomModel
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.text2VecNvidia({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: "nvidia/nv-embed-v1"
+    })
+  ],
+  // Additional parameters not shown
+})
 // END VectorizerNVIDIACustomModel
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START FullVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.text2VecNvidia({
+      name: 'title_vector',
+      sourceProperties: ['title'],
+      model: "nvidia/nv-embed-v1",
+      baseURL: "https://integrate.api.nvidia.com/v1"
+    })
+  ],
+  // Additional parameters not shown
+})
 // END FullVectorizerNVIDIA
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START BasicMMVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.multi2VecNvidia({
+      name: 'title_vector',
+      imageFields: [{
+        name: "poster",
+        weight: 0.9
+      }],
+      textFields: [{
+        name: "title",
+        weight: 0.1
+      }],
+    })
+  ],
+  // Additional parameters not shown
+})
 // END BasicMMVectorizerNVIDIA
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START MMVectorizerNVIDIACustomModel
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.multi2VecNvidia({
+      name: 'title_vector',
+      model: "nvidia/nv-embed-v1",
+      imageFields: [{
+        name: "poster",
+        weight: 0.9
+      }],
+      textFields: [{
+        name: "title",
+        weight: 0.1
+      }],
+    })
+  ],
+  // Additional parameters not shown
+})
 // END MMVectorizerNVIDIACustomModel
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START FullMMVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.multi2VecNvidia({
+      name: 'title_vector',
+      model: "nvidia/nv-embed-v1",
+      imageFields: [{
+        name: "poster",
+        weight: 0.9
+      }],
+      textFields: [{
+        name: "title",
+        weight: 0.1
+      }],
+      // Further options
+    })
+  ],
+  // Additional parameters not shown
+})
 // END FullMMVectorizerNVIDIA
 
 // Clean up
@@ -848,7 +956,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOctoAI({
+    weaviate.configure.vectors.text2VecOctoAI({
       name: 'title_vector',
       sourceProperties: ['title'],
     },
@@ -872,7 +980,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOctoAI({
+    weaviate.configure.vectors.text2VecOctoAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: "thenlper/gte-large",
@@ -898,7 +1006,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOctoAI({
+    weaviate.configure.vectors.text2VecOctoAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       // model: "thenlper/gte-large",
@@ -926,7 +1034,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOpenAI({
+    weaviate.configure.vectors.text2VecOpenAI({
       name: 'title_vector',
       sourceProperties: ['title'],
     },
@@ -951,7 +1059,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOpenAI({
+    weaviate.configure.vectors.text2VecOpenAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'text-embedding-3-large',
@@ -978,7 +1086,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOpenAI({
+    weaviate.configure.vectors.text2VecOpenAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'ada',
@@ -1006,7 +1114,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOpenAI(
+    weaviate.configure.vectors.text2VecOpenAI(
       {
         name: 'title_vector',
         sourceProperties: ['title'],
@@ -1038,7 +1146,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOpenAI(
+    weaviate.configure.vectors.text2VecOpenAI(
       {
         name: 'title_vector',
         sourceProperties: ['title'],
@@ -1067,7 +1175,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecAzureOpenAI({
+    weaviate.configure.vectors.text2VecAzureOpenAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       resourceName: '<azure-resource-name>',
@@ -1094,7 +1202,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecAzureOpenAI({
+    weaviate.configure.vectors.text2VecAzureOpenAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       resourceName: '<azure-resource-name>',
@@ -1123,7 +1231,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecVoyageAI({
+    weaviate.configure.vectors.text2VecVoyageAI({
       name: 'title_vector',
       sourceProperties: ['title'],
     },
@@ -1148,7 +1256,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecVoyageAI({
+    weaviate.configure.vectors.text2VecVoyageAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'voyage-3-lite',
@@ -1173,7 +1281,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecVoyageAI({
+    weaviate.configure.vectors.text2VecVoyageAI({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
@@ -1206,7 +1314,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecVoyageAI({
+    weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
@@ -1241,7 +1349,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecVoyageAI({
+    weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
@@ -1278,7 +1386,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecVoyageAI({
+    weaviate.configure.vectors.multi2VecVoyageAI({
       name: "title_vector",
       // Define the fields to be used for the vectorization - using imageFields, textFields
       imageFields: [{
@@ -1314,7 +1422,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecWeaviate({
+    weaviate.configure.vectors.text2VecWeaviate({
         name: 'title_vector',
         sourceProperties: ['title'],
       },
@@ -1339,7 +1447,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecWeaviate({
+    weaviate.configure.vectors.text2VecWeaviate({
       name: 'title_vector',
       sourceProperties: ['title'],
       model: 'Snowflake/snowflake-arctic-embed-l-v2.0',
@@ -1364,7 +1472,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecWeaviate({
+    weaviate.configure.vectors.text2VecWeaviate({
         name: 'title_vector',
         sourceProperties: ['title'],
         model: 'Snowflake/snowflake-arctic-embed-m-v1.5',
@@ -1393,7 +1501,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecWeaviate({
+    weaviate.configure.vectors.text2VecWeaviate({
         name: 'title_vector',
         sourceProperties: ['title'],
         model: 'Snowflake/snowflake-arctic-embed-l-v2.0',
@@ -1422,7 +1530,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecTransformers({
+    weaviate.configure.vectors.text2VecTransformers({
       name: 'title_vector',
       sourceProperties: ['title'],
     },
@@ -1446,7 +1554,7 @@ await client.collections.create({
     },
   ],
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecTransformers({
+    weaviate.configure.vectors.text2VecTransformers({
       name: 'title_vector',
       sourceProperties: ['title'],
       // Further options
@@ -1467,7 +1575,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecOllama({
+    weaviate.configure.vectors.text2VecOllama({
       name: 'title_vector',
       sourceProperties: ['title'],
       apiEndpoint: 'http://host.docker.internal:11434',  // If using Docker, use this to contact your local Ollama instance
@@ -1492,7 +1600,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecGPT4All({
+    weaviate.configure.vectors.text2VecGPT4All({
       name: 'title_vector',
       sourceProperties: ['title'],
     }),
@@ -1515,7 +1623,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.text2VecGPT4All({
+    weaviate.configure.vectors.text2VecGPT4All({
       name: 'title_vector',
       sourceProperties: ['title'],
     }),
@@ -1529,6 +1637,17 @@ await client.collections.create({
   // Additional parameters not shown
 });
 // END FullVectorizerGPT4All
+
+// START BasicVectorizerModel2Vec
+// Coming soon
+// END BasicVectorizerModel2Vec
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START FullVectorizerModel2Vec
+// Coming soon
+// END FullVectorizerModel2Vec
 
 // START BasicMMVectorizerCLIP
 await client.collections.create({
@@ -1545,7 +1664,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecClip({
+    weaviate.configure.vectors.multi2VecClip({
       name: 'title_vector',
       imageFields: [
         {
@@ -1581,7 +1700,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecClip({
+    weaviate.configure.vectors.multi2VecClip({
       name: 'title_vector',
       imageFields: [
         {
@@ -1617,7 +1736,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecClip({
+    weaviate.configure.vectors.multi2VecClip({
       name: 'title_vector',
       imageFields: [
         {
@@ -1661,7 +1780,7 @@ await client.collections.create({
   ],
   // highlight-start
   vectorizers: [
-    weaviate.configure.vectorizer.multi2VecBind({
+    weaviate.configure.vectors.multi2VecBind({
       name: 'title_vector',
       imageFields: [
         {
@@ -1715,7 +1834,7 @@ const myCollection = client.collections.use(collectionName)
 // END BatchImportExample  // END NearTextExample  // END HybridExample  // END MMBatchImportExample
 
 // START BatchImportExample
-let dataObjects = []
+let dataObjects = new Array();
 
 for (let srcObject of srcObjects) {
   dataObjects.push({
@@ -1738,7 +1857,7 @@ let mmSrcObjects = [
 ];
 
 // START MMBatchImportExample
-let multiModalObjects = []
+let multiModalObjects = new Array();
 
 for (let mmSrcObject of mmSrcObjects) {
   multiModalObjects.push({

@@ -1,7 +1,7 @@
 ---
 title: Best practices
-description: Best practices for using Weaviate
 sidebar_position: 10
+description: "Expert recommendations and optimization strategies for maximizing Weaviate performance."
 image: og/docs/howto.jpg
 # tags: ['best practices', 'how-to']
 ---
@@ -52,6 +52,13 @@ For environments with high reliability requirements, high query loads or latency
 - [Configuration: Replication](/deploy/configuration/replication.md)
 :::
 
+#### Replication settings
+
+If using high availability (HA) configurations, consider the following replication settings:
+
+- **Replication factor**: Set the replication factor to an odd number to ensure quorum (majority of cluster size) is possible without excessive replication. Note: If the number of nodes is fewer than the replication factor, Weaviate will not start.
+- **Deletion strategy**: Use a deletion strategy that fits your use case. The `NoAutomatedResolution` strategy is generally recommended.
+
 ### Use multi-tenancy for data subsets
 
 If your use cases involves multiple subsets of data which meet all of the following criteria:
@@ -95,7 +102,11 @@ If you have a large number of vectors, consider using vector quantization to red
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_light.png#gh-light-mode-only "Overview of quantization schemes")
 ![Overview of quantization schemes](../../../_includes/images/concepts/quantization_overview_dark.png#gh-dark-mode-only "Overview of quantization schemes")
 
-For HNSW indexes, we suggest enabling product quantization (PQ) as a starting point. It provides a good set of default trade-offs between memory usage and query performance, as well as tunable parameters to optimize for your specific use case.
+For HNSW indexes, we suggest enabling [rotational quantization (RQ)](../configuration/compression/rq-compression.md) as a starting point. It provides significant memory usage benefits and almost no loss in query accuracy. 
+
+import CompressionByDefault from '/_includes/compression-by-default.mdx';
+
+<CompressionByDefault/>
 
 :::tip Further resources
 - [How-to: Configure vector quantization](../configuration/compression/index.md)
@@ -220,7 +231,7 @@ Instead, consider directly embedding the information in each object as another p
 
 ### Explicitly define your data schema
 
-Weaviate includes a convenient ["auto-schema" functionality](../config-refs/schema/index.md#auto-schema) that can automatically infer the schema of your data.
+Weaviate includes a convenient ["auto-schema" functionality](../config-refs/collections.mdx#auto-schema) that can automatically infer the schema of your data.
 
 However, for production use cases, we recommend explicitly defining your schema, and disabling the auto-schema functionality (set `AUTOSCHEMA_ENABLED: 'false'`). This will ensure that your data is correctly interpreted by Weaviate, and that malformed data is not ingested into the system, rather than to potentially create unexpected properties.
 
@@ -256,7 +267,7 @@ This will ensure that only objects with the correct schema are ingested into Wea
 
 :::tip Further resources
 - [Concepts: Data schema](../concepts/data.md#data-schema)
-- [References: Collection definition - Auto-schema](../config-refs/schema/index.md#auto-schema)
+- [References: Collection definition - Auto-schema](../config-refs/collections.mdx#auto-schema)
 :::
 
 ### Accelerate data ingestion with batch imports

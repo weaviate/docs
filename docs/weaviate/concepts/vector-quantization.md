@@ -1,17 +1,23 @@
 ---
 title: Compression (Vector Quantization)
 sidebar_position: 19
+description: "Vector compression techniques reducing memory footprint and costs while improving search speed performance."
 image: og/docs/concepts.jpg
 # tags: ['vector compression', 'quantization']
 ---
 
 **Vector quantization** reduces the memory footprint of the [vector index](./indexing/vector-index.md) by compressing the vector embeddings, and thus reduces deployment costs and improves the speed of the vector similarity search process.
 
-Weaviate currently offers two vector quantization techniques:
+Weaviate currently offers four vector quantization techniques:
 
 - [Binary quantization (BQ)](#binary-quantization)
 - [Product quantization (PQ)](#product-quantization)
 - [Scalar quantization (SQ)](#scalar-quantization)
+- [Rotational quantization (RQ)](#rotational-quantization)
+
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
+
+<CompressionByDefault/>
 
 ## What is quantization?
 
@@ -23,11 +29,11 @@ Vector quantization is a technique that reduces the memory footprint of vector e
 
 ## Product quantization
 
-[Product quantization](https://ieeexplore.ieee.org/document/5432202) is a multi-step quantization technique that is available for use with `hnsw` indexes in Weaivate.
+[Product quantization](https://ieeexplore.ieee.org/document/5432202) is a multi-step quantization technique that is available for use with `hnsw` indexes in Weaviate.
 
 PQ reduces the size of each vector embedding in two steps. First, it reduces the number of vector dimensions to a smaller number of "segments", and then each segment is quantized to a smaller number of bits from the original number of bits (typically a 32-bit float).
 
-import PQTradeoffs from '/_includes/pq-compression/tradeoffs.mdx' ;
+import PQTradeoffs from '/\_includes/configuration/pq-compression/tradeoffs.mdx' ;
 
 <PQTradeoffs />
 
@@ -48,7 +54,7 @@ The PQ `segments` controls the tradeoff between memory and recall. A larger `seg
 Below is a list segment values for common vectorizer modules:
 
 | Module      | Model                                   | Dimensions | Segments               |
-|-------------|-----------------------------------------|------------|------------------------|
+| ----------- | --------------------------------------- | ---------- | ---------------------- |
 | openai      | text-embedding-ada-002                  | 1536       | 512, 384, 256, 192, 96 |
 | cohere      | multilingual-22-12                      | 768        | 384, 256, 192, 96      |
 | huggingface | sentence-transformers/all-MiniLM-L12-v2 | 384        | 192, 128, 96           |
@@ -64,16 +70,18 @@ Weaviate uses a maximum of `trainingLimit` objects (per shard) for training, eve
 After the PQ conversion completes, query and write to the index as normal. Distances may be slightly different due to the effects of quantization.
 
 :::info Which objects are used for training?
+
 - (`v1.27` and later) If the collection has more objects than the training limit, Weaviate randomly selects objects from the collection to train the codebook.
-    - (`v1.26` and earlier) Weaviate uses the first `trainingLimit` objects in the collection to train the codebook.
+- (`v1.26` and earlier) Weaviate uses the first `trainingLimit` objects in the collection to train the codebook.
 - If the collection has fewer objects than the training limit, Weaviate uses all objects in the collection to train the codebook.
+
 :::
 
 ### Encoders
 
-In the configuration above you can see that you can set the `encoder` object to specify how the codebook centroids are generated. Weaviate’s PQ supports using two different encoders. The default is `kmeans` which maps to the traditional approach used for creating centroid.
+In the configuration above you can see that you can set the `encoder` object to specify how the codebook centroids are generated. Weaviate's PQ supports using two different encoders. The default is `kmeans` which maps to the traditional approach used for creating centroid.
 
-Alternatively, there is also the `tile` encoder. This encoder is currently experimental but does have faster import times and better recall on datasets like SIFT and GIST. The `tile` encoder has an additional `distribution` parameter that controls what distribution to use when generating centroids. You can configure the encoder by setting `type` to `tile` or `kmeans` the encoder creates the codebook for product quantization. For configuration details, see [Configuration: Vector index](../config-refs/schema/vector-index.md).
+Alternatively, there is also the `tile` encoder. This encoder is currently experimental but does have faster import times and better recall on datasets like SIFT and GIST. The `tile` encoder has an additional `distribution` parameter that controls what distribution to use when generating centroids. You can configure the encoder by setting `type` to `tile` or `kmeans` the encoder creates the codebook for product quantization. For configuration details, see [Configuration: Vector index](../config-refs/indexing/vector-index.mdx).
 
 ### Distance calculation
 
@@ -108,9 +116,70 @@ The size of the training set is configurable. The default is 100,000 objects per
 
 When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. After Weaviate retrieves the compressed results, it compares the original, uncompressed vectors that correspond to the compressed result against the query. The second search is very fast because it only searches a small number of vectors rather than the whole database.
 
+## Rotational quantization
+
+:::info Added in `v1.32`
+
+**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+
+:::
+
+:::caution Preview
+
+**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
+
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+**Rotational quantization (RQ)** is a quantization technique that provides significant compression while maintaining high recall in internal testing. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in two variants: **8-bit RQ** and **1-bit RQ**.
+
+### 8-bit RQ
+
+8-bit RQ provides 4x compression while maintaining 98-99% recall in internal testing. The method works as follows:
+
+1. **Fast pseudorandom rotation**: The input vector is transformed using a fast rotation based on the Walsh Hadamard Transform. This rotation takes approximately 7-10 microseconds for a 1536-dimensional vector. The output dimension is rounded up to the nearest multiple of 64.
+
+2. **Scalar quantization**: Each entry of the rotated vector is quantized to an 8-bit integer. The minimum and maximum values of each individual rotated vector define the quantization interval.
+
+### 1-bit RQ
+
+1-bit RQ is an asymmetric quantization method that provides close to 32x compression as dimensionality increases. **1-bit RQ serves as a more robust and accurate alternative to BQ** with only a slight performance trade-off (approximately 10% decrease in throughput in internal testing compared to BQ). While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned PQ.
+
+The method works as follows:
+
+1. **Fast pseudorandom rotation**: The same rotation process as 8-bit RQ is applied to the input vector. For 1-bit RQ, the output dimension is always padded to at least 256 bits to improve performance on low-dimensional data.
+
+2. **Asymmetric quantization**:
+   - **Data vectors**: Quantized using 1 bit per dimension by storing only the sign of each entry
+   - **Query vectors**: Scalar quantized using 5 bits per dimension during search
+
+<!-- TODO[g-despot]: Clarify how 5 bit search vectors are compared to 1 bit -->
+
+This asymmetric approach improves recall compared to symmetric 1-bit schemes (such as BQ) by using more precision for query vectors during distance calculation. On datasets well-suited for BQ (like OpenAI embeddings), 1-bit RQ essentially matches BQ recall. It also works well on datasets where BQ performs poorly (such as [SIFT](https://arxiv.org/abs/2504.09081)).
+
+### RQ characteristics
+
+The rotation step provides multiple benefits. It tends to reduce the quantization interval and decrease quantization error by distributing values more uniformly. It also distributes the distance information more evenly across all dimensions, providing a better starting point for distance estimation.
+
+Both RQ variants round up the number of dimensions to multiples of 64, which means that low-dimensional data (< 64 or 128 dimensions) might result in less than optimal compression. Additionally, several factors affect the actual compression rates:
+
+- **Auxiliary data storage**: 16 bytes for 8-bit RQ and 8 bytes for 1-bit RQ are stored with the compressed codes
+- **Dimension rounding**: Dimensionality is rounded up to the nearest multiple of 64 and 1-bit RQ is also padded to at least 256 bits
+
+Due to these factors, the 4x and 32x compression rates are only approached as dimensionality increases. These effects are more pronounced for low-dimensional vectors.
+
+While inspired by extended [RaBitQ](https://arxiv.org/abs/2405.12497), this implementation differs significantly for performance reasons. It uses fast pseudorandom rotations instead of truly random rotations.
+:::tip
+
+Learn more about how to [configure rotational quantization](../configuration/compression/rq-compression.md) in Weaviate or dive deer into the [implementation details and theoretical background](https://weaviate.io/blog/8-bit-rotational-quantization).
+
+:::
+
 ## Over-fetching / re-scoring
 
-Weaviate over-fetches results and then re-scores them when you use SQ or BQ. This is because the distance calculation on the compressed vectors is not as accurate as the same calculation on the original vector embedding.
+Weaviate over-fetches results and then re-scores them when you use SQ, RQ, or BQ. This is because the distance calculation on the compressed vectors is not as accurate as the same calculation on the original vector embedding.
 
 When you run a query, Weaviate compares the query limit against a configurable `rescoreLimit` parameter.
 
@@ -118,16 +187,15 @@ The query retrieves compressed objects until the object count reaches whichever 
 
 For example, if a query is made with a limit of 10, and a rescore limit of 200, Weaviate fetches 200 objects. After rescoring, the query returns top 10 objects. This process offsets the loss in search quality (recall) that is caused by compression.
 
-:::tip
-Learn more about how to [configure binary quantization](../configuration/compression/bq-compression.md) in Weaviate.<br/><br/>
-You might be also interested in our blog post [32x Reduced Memory Usage With Binary Quantization](https://weaviate.io/blog/binary-quantization).
+:::note RQ optimization
+With RQ's high native recall of 98-99%, you can often disable rescoring (set `rescoreLimit` to 0) for maximum query performance with minimal impact on search quality.
 :::
 
 ## Vector compression with vector indexing
 
 ### With an HNSW index
 
-An HNSW index can be configured using [PQ](#product-quantization) or [BQ](#binary-quantization). Since HNSW is in memory, compression can reduce your memory footprint or allow you to store more data in the same amount of memory.
+An [HNSW index](./indexing/vector-index.md#hierarchical-navigable-small-world-hnsw-index) can be configured using [PQ](#product-quantization), [SQ](#scalar-quantization), [RQ](#rotational-quantization), or [BQ](#binary-quantization). Since HNSW is in memory, compression can reduce your memory footprint or allow you to store more data in the same amount of memory.
 
 :::tip
 You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithms Part 2.1](https://weaviate.io/blog/ann-algorithms-hnsw-pq).
@@ -135,7 +203,7 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 ### With a flat index
 
-[BQ](#binary-quantization) can use a flat index. A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
+[BQ](#binary-quantization) can use a [flat index](./indexing/inverted-index.md). A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
 
 ## Rescoring
 
@@ -146,17 +214,21 @@ In some cases, rescoring also includes over-fetching, whereby additional candida
 ## Further resources
 
 :::info Related pages
+
 - [Concepts: Indexing](./indexing/index.md)
 - [Concepts: Vector Indexing](./indexing/vector-index.md)
-- [Configuration: Vector index](../config-refs/schema/vector-index.md)
-- [Configuration: Schema (Configure semantic indexing)](../config-refs/schema/index.md#configure-semantic-indexing)
+- [Configuration: Vector index](../config-refs/indexing/vector-index.mdx)
+- [Configuration: Schema (Configure semantic indexing)](../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
 - [How to configure: Binary quantization (compression)](../configuration/compression/bq-compression.md)
 - [How to configure: Product quantization (compression)](../configuration/compression/pq-compression.md)
+- [How to configure: Scalar quantization (compression)](../configuration/compression/sq-compression.md)
+- [How to configure: Rotational quantization (compression)](../configuration/compression/rq-compression.md)
 - [Weaviate Academy: 250 Vector Compression](../../academy/py/compression/index.md)
+
 :::
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

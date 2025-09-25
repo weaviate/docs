@@ -17,7 +17,7 @@ client.collections.delete("Product")
 # START skipVectorizationExample
 products = client.collections.create(
     name="Product",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(
+    vector_config=wvc.Configure.Vectors.text2vec_openai(
         # highlight-start
         vectorize_collection_name=True
         # highlight-end
@@ -94,7 +94,7 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 
 # START selectAndBoostExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 response = questions.query.bm25(
     "animal",
@@ -108,7 +108,7 @@ for o in response.objects:
 
 
 # START adjustAlpha
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 response = questions.query.hybrid(
     "imaging",
@@ -122,7 +122,7 @@ for o in response.objects:
 
 
 # START changeFusionType
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 response = questions.query.hybrid(
     "imaging",

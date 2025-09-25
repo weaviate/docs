@@ -7,15 +7,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go';
 
 
-Weaviate offers two complementary superpowers for scaling your deployment: sharding and replication. 
-Sharding divides your data across multiple nodes, allowing you to handle datasets far larger than a single machine could process. 
+Weaviate offers two complementary superpowers for scaling your deployment: sharding and replication.
+Sharding divides your data so it can be spread out across multiple nodes, allowing you to handle datasets far larger than a single machine could process.
 Meanwhile, replication creates redundant copies of your data, ensuring high availability even when individual nodes fail or need maintenance.
 While each scaling method shines on its own, the true magic happens when they join forces.
 
@@ -23,17 +21,19 @@ Let's explore how you can harness these capabilities to build a deployment that'
 
 ## Scaling Methods
 
-![Sharding vs Replication](./img/horiz-scaling.png)
 
 
+### Replication
 
-### Replication 
+Replication creates redundant copies of your data, it is useful when your data needs to be highly available.
 
-Replication creates redundant copies of your data, it is useful when your data needs to be highly available. 
+![replication](./img/weaviate-blog-replication.png)
 
 ### Sharding
 
-Sharding divides data across nodes, it is useful when your dataset is too large for just a single node. 
+Sharding divides data across nodes, it is useful when your dataset is too large for just a single node.
+
+![sharding](./img/weaviate-blog-sharding.png)
 
 
 ### Choosing your strategy
@@ -252,11 +252,11 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
 
 ### Sharding: Divide and Conquer
 
-You've made the decision to shard your data, now let's get it configured: 
+You've made the decision to shard your data, now let's get it configured:
 
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ShardingSettings"
@@ -265,7 +265,7 @@ You've made the decision to shard your data, now let's get it configured:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ShardingSettings"
@@ -274,14 +274,6 @@ You've made the decision to shard your data, now let's get it configured:
     />
   </TabItem>
 
-    <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ShardingSettings"
-      endMarker="// END ShardingSettings"
-      language="tsv2"
-    />
-  </TabItem>
 
 </Tabs>
 
@@ -292,7 +284,7 @@ These parameters are used to configure your collection shards:
 | Parameter             | Type    | Description                                                                                                                                                                                                                                                                                          |
 | :-------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `desiredCount`        | integer | *Immutable, Optional*. Controls the target number of physical shards for the collection index. Defaults to the number of nodes in the cluster, but can be explicitly set lower. If set higher than the node count, some nodes will host multiple shards.                                                  |
-| `virtualPerPhysical`  | integer | *Immutable, Optional*. Defines how many virtual shards correspond to one physical shard, defaulting to `128`. Using virtual shards aids in reducing data movement during resharding.                                                                                                               |
+| `virtualPerPhysical`  | integer | *Immutable, Optional*. Defines how many virtual shards correspond to one physical shard, defaulting to `128`.                                                                                                               |
 | `desiredVirtualCount` | integer | *Read-only*. Shows the target total number of virtual shards, calculated as `desiredCount * virtualPerPhysical`.                                                                                                                                                                                    |
 
 
@@ -307,7 +299,7 @@ import RaftRFChangeWarning from '/_includes/1-25-replication-factor.mdx';
 Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](/weaviate/concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AllReplicationSettings"
@@ -319,7 +311,7 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AllReplicationSettings"
@@ -328,14 +320,6 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START AllReplicationSettings"
-      endMarker="// END AllReplicationSettings"
-      language="tsv2"
-    />
-  </TabItem>
   <TabItem value="curl" label="cURL">
 
 ```bash
@@ -366,10 +350,10 @@ http://localhost:8080/v1/schema
 </Tabs>
 
 
-In a highly available environment, combining sharding and replication leverages the power and 
-capabilities of both methods to be a dynamic duo that keeps your deployment highly available. 
-If given the opportunity, those two techniques will be your deployment's dynamic duo. 
-Specifically using the [`ASYNC_REPLICATION` environment variables](./async-rep.md) introduced in the 1.29 release 
+In a highly available environment, combining sharding and replication leverages the power and
+capabilities of both methods to be a dynamic duo that keeps your deployment highly available.
+If given the opportunity, those two techniques will be your deployment's dynamic duo.
+Specifically using the [`ASYNC_REPLICATION` environment variables](./async-rep.md) introduced in the 1.29 release
 will allow you to unleash the full power of horizontal scaling!
 
 ## Questions and feedback

@@ -67,15 +67,15 @@ services:
     # Other Weaviate configuration
     environment:
       ENABLE_MODULES: text2vec-transformers # Enable this module
-      TRANSFORMERS_INFERENCE_API: http://t2v-transformers:8080  # Set the inference API endpoint
-  t2v-transformers:  # Set the name of the inference container
+      TRANSFORMERS_INFERENCE_API: http://text2vec-transformers:8080  # Set the inference API endpoint
+  text2vec-transformers:  # Set the name of the inference container
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
     environment:
       ENABLE_CUDA: 0  # Set to 1 to enable
 ```
 
 - `TRANSFORMERS_INFERENCE_API` environment variable sets the inference API endpoint
-- `t2v-transformers` is the name of the inference container
+- `text2vec-transformers` is the name of the inference container
 - `image` is the container image
 - `ENABLE_CUDA` environment variable enables GPU usage
 
@@ -114,7 +114,7 @@ As this integration runs a local container with the Transformers model, no addit
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START BasicInstantiation"
@@ -123,7 +123,7 @@ As this integration runs a local container with the Transformers model, no addit
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -139,7 +139,7 @@ As this integration runs a local container with the Transformers model, no addit
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use the Transformer inference container:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicVectorizerTransformers"
@@ -148,7 +148,7 @@ As this integration runs a local container with the Transformers model, no addit
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicVectorizerTransformers"
@@ -192,7 +192,7 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
   - Default: `masked_mean`. Allowed values: `masked_mean` or `cls`. ([Read more on this topic.](https://arxiv.org/abs/1908.10084))
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullVectorizerTransformers"
@@ -201,7 +201,7 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullVectorizerTransformers"
@@ -218,7 +218,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BatchImportExample"
@@ -227,7 +227,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportExample"
@@ -256,7 +256,7 @@ The query below returns the `n` most similar objects from the database, set by `
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START NearTextExample"
@@ -265,7 +265,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -288,7 +288,7 @@ The query below returns the `n` best scoring objects from the database, set by `
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridExample"
@@ -297,7 +297,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
@@ -423,7 +423,7 @@ We add new model support over time. For the latest list of available models, see
 
 As an alternative, you can run the inference container independently from Weaviate. To do so, follow these steps:
 
-- Enable `text2vec-transformers` and omit `t2v-transformers` container parameters in your [Weaviate configuration](#weaviate-configuration)
+- Enable `text2vec-transformers` and omit `text2vec-transformers` container parameters in your [Weaviate configuration](#weaviate-configuration)
 - Run the inference container separately, e.g. using Docker, and
 - Use `TRANSFORMERS_INFERENCE_API` or [`inferenceUrl`](#configure-the-vectorizer) to set the URL of the inference container.
 
@@ -433,7 +433,7 @@ For example, run the container with Docker:
 docker run -itp "8000:8080" semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
 ```
 
-Then, set `TRANSFORMERS_INFERENCE_API="http://localhost:8000"`. If Weaviate is part of the same Docker network, as a part of the same `docker-compose.yml` file, you can use the Docker networking/DNS, such as `TRANSFORMERS_INFERENCE_API=http://t2v-transformers:8080`.
+Then, set `TRANSFORMERS_INFERENCE_API="http://localhost:8000"`. If Weaviate is part of the same Docker network, as a part of the same `docker-compose.yml` file, you can use the Docker networking/DNS, such as `TRANSFORMERS_INFERENCE_API=http://text2vec-transformers:8080`.
 
 ## Further resources
 
@@ -446,7 +446,7 @@ Then, set `TRANSFORMERS_INFERENCE_API="http://localhost:8000"`. If Weaviate is p
 
 This integration automatically chunks text if it exceeds the model's maximum token length before it is passed to the model. It will then return the pooled vectors.
 
-See [HuggingFaceVectorizer.vectorizer()](https://github.com/weaviate/t2v-transformers-models/blob/main/vectorizer.py) for the exact implementation.
+See [HuggingFaceVectorizer.vectorizer()](https://github.com/weaviate/text2vec-transformers-models/blob/main/vectorizer.py) for the exact implementation.
 
 ### Code examples
 

@@ -40,7 +40,7 @@ client.collections.create(
         wc.Property(name="tmdb_id", data_type=wc.DataType.INT),
     ],
     # Define the vectorizer module (none, as we will add our own vectors)
-    vectorizer_config=wc.Configure.Vectorizer.none(),
+    vector_config=wc.Configure.Vectors.self_provided(),
     # Define the generative module
     generative_config=wc.Configure.Generative.cohere()
     # END generativeDefinition  # CreateMovieCollection
@@ -154,7 +154,7 @@ embs_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/m
 emb_df = pd.read_csv(embs_path)
 
 # Get the collection
-movies = client.collections.get("MovieCustomVector")
+movies = client.collections.use("MovieCustomVector")
 
 # Enter context manager
 with movies.batch.fixed_size(batch_size=200) as batch:

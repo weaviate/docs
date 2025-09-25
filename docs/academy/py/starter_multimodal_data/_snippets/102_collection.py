@@ -36,7 +36,7 @@ client.collections.create(
         wc.Property(name="poster", data_type=wc.DataType.BLOB),
     ],
     # Define & configure the vectorizer module
-    vectorizer_config=wc.Configure.Vectorizer.multi2vec_clip(
+    vector_config=wc.Configure.Vectors.multi2vec_clip(
         image_fields=[wc.Multi2VecField(name="poster", weight=0.9)],    # 90% of the vector is from the poster
         text_fields=[wc.Multi2VecField(name="title", weight=0.1)],      # 10% of the vector is from the title
     ),
@@ -95,7 +95,7 @@ with zipfile.ZipFile(posters_path, 'r') as zip_ref:
     zip_ref.extractall(img_dir)
 
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # END BatchImportData
 

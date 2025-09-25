@@ -46,14 +46,14 @@ services:
     - 50051:50051
     restart: on-failure:0
     environment:
-      TRANSFORMERS_INFERENCE_API: 'http://t2v-transformers:8080'
+      TRANSFORMERS_INFERENCE_API: 'http://text2vec-transformers:8080'
       QNA_INFERENCE_API: "http://qna-transformers:8080"
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ENABLE_MODULES: 'text2vec-transformers,qna-transformers'
       CLUSTER_HOSTNAME: 'node1'
-  t2v-transformers:
+  text2vec-transformers:
     image: cr.weaviate.io/semitechnologies/transformers-inference:sentence-transformers-msmarco-distilbert-base-v2
     environment:
       ENABLE_CUDA: '1'

@@ -68,7 +68,7 @@ const secondaryNavbarItems = {
       /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
       { label: "Production Guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
       { label: "Tutorials", link: "/deploy/tutorials/rbac", sidebar: "deployTutorialSidebar"},
-      /*{ label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },*/
+      { label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },
       /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
       { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
@@ -151,31 +151,19 @@ const secondaryNavbarItems = {
     link: "/contributor-guide",
     links: [
       {
-        label: "Get Started",
+        label: "Documentation",
         link: "/contributor-guide",
         sidebar: "contributorSidebar",
       },
-      {
-        label: "Weaviate Database",
-        link: "/contributor-guide/weaviate-core",
-        sidebar: "contributorCoreSidebar",
-      },
-      {
-        label: "Weaviate Modules",
-        link: "/contributor-guide/weaviate-modules",
-        sidebar: "contributorModulesSidebar",
-      },
-      {
-        label: "Weaviate Clients",
-        link: "/contributor-guide/weaviate-clients",
-        sidebar: "contributorClientsSidebar",
-      },
-      {
-        label: "Contextionary",
-        link: "/contributor-guide/contextionary",
-        sidebar: "contributorContextionarySidebar",
-      },
     ],
+  },
+  events: {
+    title: "Events & Workshops",
+    icon: "fa fa-calendar-days",
+    isSmall: true,
+    description: "",
+    href: "https://weaviate.io/community/events",
+    links: [],
   },
 };
 

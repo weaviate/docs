@@ -1,6 +1,7 @@
 ---
 title: Notes and best practices
 sidebar_position: 2
+description: "Python client best practices, optimization tips, and recommended implementation patterns for Weaviate."
 image: og/docs/client-libraries.jpg
 ---
 
@@ -125,6 +126,10 @@ Some of the `connect` helper functions take authentication credentials. For exam
   language="py"
 />
 
+import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+
+<WCDOIDCWarning/>
+
 </TabItem>
 </Tabs>
 
@@ -147,6 +152,25 @@ When you instantiate a connection directly, you have to call the `.connect()` me
   language="py"
 />
 
+### Using Custom SSL Certificates
+
+The Python client doesn't directly support passing SSL certificates. If you need to work with self-signed certificates (e.g. for enterprise environments), you have two options:
+
+#### Option 1: Add the certificate to the underlying libraries
+
+You can add the custom SSL certificates to the underlying libraries such as `certifi` that the Weaviate client library uses.
+
+#### Option 2: Set the environment variables
+
+Alternatively, you can set the environment variables `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` and `SSL_CERT_FILE` to the path of the certificate file. At instantiation, also set `additional_config=AdditionalConfig(trust_env=True)`. Otherwise, the client library will not use the environment variables.
+
+<FilteredTextBlock
+  text={PythonCode}
+  startMarker="# START CustomSSLExample"
+  endMarker="# END CustomSSLExample"
+  language="py"
+/>
+
 ## Initial connection checks
 
 When establishing a connection to the Weaviate server, the client performs a series of checks. These includes checks for the server version, and to make sure that the REST and gRPC ports are available.
@@ -164,6 +188,13 @@ In most cases, you should use the default `False` setting for `skip_init_checks`
 
 For additional connection configuration, see [Timeout values](#timeout-values).
 
+## `client.collections.use()` vs `client.collections.get()`
+
+The idiomatic way to create a collection object is `client.collections.use(<COLLECTION_NAME>)`. While identical to `client.collections.get()`, `use()` is more clearly indicative of the fact that it does not perform any network requests.
+
+We made this change as `client.collections.get()` may be misinterpreted as fetching the collection schema from the server, which it does not.
+
+In the future, `client.collections.get()` may be deprecated.
 
 ## Batch imports
 

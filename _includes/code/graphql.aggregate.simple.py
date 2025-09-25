@@ -39,7 +39,7 @@ try:
 # END-ANY
 
     # START GraphQLAggregateSimple
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     response = collection.aggregate.over_all(
         total_count=True,
         return_metrics=wvc.query.Metrics("wordCount").integer(
@@ -67,7 +67,7 @@ try:
     # ========================================
 
     # START GraphQLMetaCount
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     response = collection.aggregate.over_all(total_count=True)
 
     print(response.total_count)
@@ -76,37 +76,37 @@ try:
     # TEST
     assert response.total_count > 0
 
-
+    # TODO[g-despot]: Update once fixed client
+    # START GraphQLSimpleAggregateGroupby
+    # Coming soon
+    # END GraphQLSimpleAggregateGroupby
     # ========================================
     # GraphQLSimpleAggregateGroupby
     # ========================================
 
-    # START GraphQLSimpleAggregateGroupby
-    collection = client.collections.get("Article")
-    response = collection.aggregate.over_all(
-        group_by=GroupByAggregate(prop="inPublication"),
-        total_count=True,
-        return_metrics=wvc.query.Metrics("wordCount").integer(mean=True)
-    )
+    # collection = client.collections.use("Article")
+    # response = collection.aggregate.over_all(
+    #     group_by=GroupByAggregate(prop="title"),
+    #     total_count=True,
+    #     return_metrics=wvc.query.Metrics("wordCount").integer(mean=True)
+    # )
 
-    for g in response.groups:
-        print(g.total_count)
-        print(g.properties)
-        print(g.grouped_by)
-    # END GraphQLSimpleAggregateGroupby
+    # for g in response.groups:
+    #     print(g.total_count)
+    #     print(g.properties)
+    #     print(g.grouped_by)
 
-        # TEST
-        assert g.total_count > 0
-        assert "wordCount" in g.properties.keys()
-        assert "inPublication" == g.grouped_by.prop
-
+    #     # TEST
+    #     assert g.total_count > 0
+    #     assert "wordCount" in g.properties.keys()
+    #     assert "title" == g.grouped_by.prop
 
     # ========================================
     # GraphQLnearObjectAggregate
     # ========================================
 
     # START GraphQLnearObjectAggregate
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     response = collection.aggregate.near_object(
         near_object="00037775-1432-35e5-bc59-443baaef7d80",
         distance=0.6,
@@ -145,12 +145,12 @@ try:
     # GraphQLnearVectorAggregate
     # ========================================
 
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     rand_obj = collection.query.fetch_objects(limit=1, include_vector=True)
     some_vector = rand_obj.objects[0].vector["default"]
 
     # START GraphQLnearVectorAggregate
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     response = collection.aggregate.near_vector(
         near_vector=some_vector,
         distance=0.7,
@@ -189,15 +189,14 @@ try:
     # GraphQLnearTextAggregate
     # ========================================
 
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     rand_obj = collection.query.fetch_objects(limit=1, include_vector=True)
     some_vector = rand_obj.objects[0].vector
 
     # START GraphQLnearTextAggregate
-    collection = client.collections.get("Article")
+    collection = client.collections.use("Article")
     response = collection.aggregate.near_text(
         query="apple iphone",
-        distance=0.7,
         object_limit=200,
         total_count=True,
         return_metrics=[

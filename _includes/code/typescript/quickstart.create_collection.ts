@@ -1,5 +1,5 @@
 // CreateCollection
-import weaviate, { WeaviateClient, vectorizer, generative } from 'weaviate-client';
+import weaviate, { WeaviateClient, vectors, generative } from 'weaviate-client';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL as string;
@@ -20,7 +20,7 @@ await client.collections.delete('Question');
 // highlight-start
 await client.collections.create({
   name: 'Question',
-  vectorizers: vectorizer.text2VecWeaviate(),
+  vectorizers: vectors.text2VecWeaviate(),
   generative: generative.cohere(),
 });
 // highlight-end

@@ -174,7 +174,7 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "ArxivPapers",
     description="A dataset that lists research paper titles and abstracts",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate()
+    vector_config=Configure.Vectors.text2vec_weaviate()
 )
 
 ```
@@ -188,7 +188,7 @@ from datasets import load_dataset
 
 dataset = load_dataset("weaviate/agents", "transformation-agent-papers", split="train", streaming=True)
 
-papers_collection = client.collections.get("ArxivPapers")
+papers_collection = client.collections.use("ArxivPapers")
 
 with papers_collection.batch.dynamic() as batch:
     for i, item in enumerate(dataset):

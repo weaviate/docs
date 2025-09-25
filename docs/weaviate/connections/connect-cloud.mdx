@@ -9,10 +9,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
-import PyCodeV3 from '!!raw-loader!/_includes/code/connections/connect-python-v3.py';
 import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
-import TsCodeV2 from '!!raw-loader!/_includes/code/connections/connect-ts-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
@@ -34,7 +32,7 @@ To connect, use the `REST Endpoint` and the `Admin` API key stored as [environme
 import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START APIKeyWCD"
@@ -42,28 +40,12 @@ import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-   <FilteredTextBlock
-     text={PyCodeV3}
-     startMarker="# START APIKeyWCD"
-     endMarker="# END APIKeyWCD"
-     language="pyv3"
-   />
-</TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START APIKeyWCD"
      endMarker="// END APIKeyWCD"
      language="js"
-   />
-</TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
-   <FilteredTextBlock
-     text={TsCodeV2}
-     startMarker="// START APIKeyWCD"
-     endMarker="// END APIKeyWCD"
-     language="tsv2"
    />
 </TabItem>
 <TabItem value="go" label="Go">
@@ -99,7 +81,7 @@ import HostnameWarning from '/_includes/wcs/hostname-warning.mdx';
 If you use API-based models for vectorization or RAG, you must provide an API key for the service. To add third party API keys, follow these examples:
 
 <Tabs groupId="languages">
-  <TabItem value="py4" label="Python Client v4">
+  <TabItem value="py4" label="Python">
     <FilteredTextBlock
       text={PyCodeV4}
       startMarker="# START ThirdPartyAPIKeys"
@@ -107,28 +89,12 @@ If you use API-based models for vectorization or RAG, you must provide an API ke
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ThirdPartyAPIKeys"
-      endMarker="# END ThirdPartyAPIKeys"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts3" label="JS/TS Client v3">
+  <TabItem value="ts3" label="JS/TS">
     <FilteredTextBlock
       text={TsCodeV3}
       startMarker="// START ThirdPartyAPIKeys"
       endMarker="// END ThirdPartyAPIKeys"
       language="js"
-    />
-  </TabItem>
-  <TabItem value="ts2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TsCodeV2}
-      startMarker="// START ThirdPartyAPIKeys"
-      endMarker="// END ThirdPartyAPIKeys"
-      language="tsv2"
     />
   </TabItem>
   <TabItem value="go" label="Go">

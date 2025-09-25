@@ -10,6 +10,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.py';
+import TSCode from '!!raw-loader!/docs/weaviate/tutorials/_includes/multi-vector-embeddings.ts';
+
 
 In this section, we will explore how to use multi-vector embeddings in Weaviate. Multi-vector embeddings (implemented through models like ColBERT, ColPali, or ColQwen) represent each object or query using multiple vectors instead of a single vector. This approach enables more precise searching through "late interaction" - a technique that matches individual parts of texts rather than comparing them as whole units.
 
@@ -124,12 +126,20 @@ First, connect to your Weaviate instance using your preferred client library. In
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ConnectToWeaviate"
       endMarker="# END ConnectToWeaviate"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ConnectToWeaviate"
+      endMarker="// END ConnectToWeaviate"
+      language="js"
     />
   </TabItem>
 
@@ -141,12 +151,20 @@ Here, we define a collection called `"DemoCollection"`. It has a named vector co
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTCollectionConfig"
       endMarker="# END ColBERTCollectionConfig"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTCollectionConfig"
+      endMarker="// END ColBERTCollectionConfig"
+      language="js"
     />
   </TabItem>
 
@@ -162,12 +180,20 @@ Recall that we configured the model integration (for `text2colbert-jinaai`) abov
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTImport"
       endMarker="# END ColBERTImport"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTImport"
+      endMarker="// END ColBERTImport"
+      language="js"
     />
   </TabItem>
 
@@ -179,12 +205,20 @@ Let's retrieve an object and inspect the shape of its embeddings.
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTCheckEmbeddings"
       endMarker="# END ColBERTCheckEmbeddings"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTCheckEmbeddings"
+      endMarker="// END ColBERTCheckEmbeddings"
+      language="js"
     />
   </TabItem>
 
@@ -212,12 +246,20 @@ Performing a near text, or semantic, search with a ColBERT embedding model integ
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTNearText"
       endMarker="# END ColBERTNearText"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTNearText"
+      endMarker="// END ColBERTNearText"
+      language="js"
     />
   </TabItem>
 
@@ -229,12 +271,20 @@ Similarly to the near text search, a hybrid search with a ColBERT embedding mode
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTHybrid"
       endMarker="# END ColBERTHybrid"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTHybrid"
+      endMarker="// END ColBERTHybrid"
+      language="js"
     />
   </TabItem>
 
@@ -251,12 +301,20 @@ Since we use JinaAI's `jina-colbert-v2` model in the integration, we obtain the 
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ObtainColBERTEmbedding"
       endMarker="# END ObtainColBERTEmbedding"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ObtainColBERTEmbedding"
+      endMarker="// END ObtainColBERTEmbedding"
+      language="js"
     />
   </TabItem>
 
@@ -266,12 +324,20 @@ Since we use JinaAI's `jina-colbert-v2` model in the integration, we obtain the 
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTVector"
       endMarker="# END ColBERTVector"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTVector"
+      endMarker="// END ColBERTVector"
+      language="js"
     />
   </TabItem>
 
@@ -283,12 +349,20 @@ In all other searches where a vector embedding is to be specifically provided, i
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTHybrid"
       endMarker="# END ColBERTHybrid"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTHybrid"
+      endMarker="// END ColBERTHybrid"
+      language="js"
     />
   </TabItem>
 
@@ -311,12 +385,20 @@ First, connect to your Weaviate instance using your preferred client library. In
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ConnectToWeaviate"
       endMarker="# END ConnectToWeaviate"
       language="py"
+    />
+  </TabItem>
+ <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ConnectToWeaviate"
+      endMarker="// END ConnectToWeaviate"
+      language="js"
     />
   </TabItem>
 
@@ -330,12 +412,20 @@ The collection configuration explicitly enables the `multi-vector` index option.
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UserEmbeddingCollectionConfig"
       endMarker="# END UserEmbeddingCollectionConfig"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UserEmbeddingCollectionConfig"
+      endMarker="// END UserEmbeddingCollectionConfig"
+      language="js"
     />
   </TabItem>
 
@@ -352,12 +442,20 @@ Note that in this example, each object is sent to Weaviate along with the corres
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ObtainColBERTEmbedding"
       endMarker="# END ObtainColBERTEmbedding"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ObtainColBERTEmbedding"
+      endMarker="// END ObtainColBERTEmbedding"
+      language="js"
     />
   </TabItem>
 
@@ -367,12 +465,20 @@ Note that in this example, each object is sent to Weaviate along with the corres
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UserEmbeddingImport"
       endMarker="# END UserEmbeddingImport"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UserEmbeddingImport"
+      endMarker="// END UserEmbeddingImport"
+      language="js"
     />
   </TabItem>
 
@@ -395,12 +501,20 @@ This ensures that the query embedding is compatible with the object embeddings.
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ObtainColBERTEmbedding"
       endMarker="# END ObtainColBERTEmbedding"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ObtainColBERTEmbedding"
+      endMarker="// END ObtainColBERTEmbedding"
+      language="js"
     />
   </TabItem>
 
@@ -410,12 +524,20 @@ This ensures that the query embedding is compatible with the object embeddings.
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTVector"
       endMarker="# END ColBERTVector"
       language="py"
+    />
+  </TabItem>
+   <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTVector"
+      endMarker="// END ColBERTVector"
+      language="js"
     />
   </TabItem>
 
@@ -427,12 +549,20 @@ To perform a hybrid search with user-provided embeddings, provide the query vect
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python Client v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ColBERTHybrid"
       endMarker="# END ColBERTHybrid"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ColBERTHybrid"
+      endMarker="// END ColBERTHybrid"
+      language="js"
     />
   </TabItem>
 

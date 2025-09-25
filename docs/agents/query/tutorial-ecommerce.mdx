@@ -1,25 +1,16 @@
 ---
 title: Build an E-Commerce assistant with Query Agents
-sidebar_label: 'Tutorial: E-Commerce assistant'
-description: Learn how to build a simple e-commerce assistant agent with the Weaviate Query Agent.
+sidebar_label: "Tutorial: E-Commerce assistant"
+description: "Tutorial for creating an e-commerce assistant that answers product and brand queries using the Query Agent."
 sidebar_position: 40
 image: og/docs/tutorials.jpg
 # tags: ['basics']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent_tutorial_ecommerce.py';
-
-:::caution Technical Preview
-
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")
-![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_dark.png#gh-dark-mode-only "This Weaviate Agent is in technical preview.")
-
-[Sign up here](https://events.weaviate.io/weaviate-agents) for notifications on Weaviate Agents, or visit [this page](https://weaviateagents.featurebase.app/) to see the latest updates and provide feedback.
-
-:::
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/docs/agents/_includes/query_agent_tutorial_ecommerce.py";
 
 In this tutorial, we will be building a simple e-commerce assistant agent with the **[Weaviate Query Agent](./index.md)**. This agent will have access to multiple Weaviate collections, and will be capable of answering complex queries about brands and clothing items, accessing information from each collection.
 
@@ -33,7 +24,7 @@ They are available on HuggingFace:
 
 The Weaviate Query Agent is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud. The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
 
-import WeaviateAgentsECommerceFlowchart from '/docs/agents/_includes/query_agent_tutorial_ecommerce_flowchart.png';
+import WeaviateAgentsECommerceFlowchart from "/docs/agents/_includes/query_agent_tutorial_ecommerce_flowchart.png";
 
 <div class="row">
   <div class="card">
@@ -100,7 +91,7 @@ pip install datasets
 </TabItem>
 </Tabs>
 
-import ForcePipInstall from '../_includes/_force_pip_install.mdx';
+import ForcePipInstall from "../_includes/_force_pip_install.mdx";
 
 <ForcePipInstall />
 
@@ -109,7 +100,7 @@ import ForcePipInstall from '../_includes/_force_pip_install.mdx';
 Now, you can finally connect to your Weaviate Cloud instance with the parameters from the first step:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ConnectToWeaviate"
@@ -129,7 +120,7 @@ In the following code blocks, we are pulling our demo datasets from Hugging Face
 
 Below you can see what the objects in the datasets `E-Commerce` and `Brands` look like.
 
-import WeaviateAgentsEcommerceDataset from '/docs/agents/_includes/query_agent_tutorial_ecommerce_dataset.png';
+import WeaviateAgentsEcommerceDataset from "/docs/agents/_includes/query_agent_tutorial_ecommerce_dataset.png";
 
 <div class="row">
   <div class="card">
@@ -143,7 +134,7 @@ import WeaviateAgentsEcommerceDataset from '/docs/agents/_includes/query_agent_t
 </div>
 <br />
 
-For the collection `Brands`, we are going to use the [`auto-schema`](../../weaviate/config-refs/schema/index.md#auto-schema) option which creates properties automatically based on the imported data.
+For the collection `Brands`, we are going to use the [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) option which creates properties automatically based on the imported data.
 However, this is not the best way of importing the data.
 
 The Query Agent uses the **descriptions of collections and properties** to decide which ones to use when solving queries. You can experiment by changing these descriptions and providing more details.
@@ -152,7 +143,7 @@ This is why it's recommended to manually define the data schema and add the prop
 For example, below we make sure that the Query Agent knows that prices are all in USD, which is information that would otherwise be unavailable.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DefineCollections"
@@ -167,7 +158,7 @@ For example, below we make sure that the Query Agent knows that prices are all i
 Now, we can import the pre-vectorized data ([E-Commerce](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) and [Brands](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands)) into our Weaviate Cloud instance:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START PopulateDatabase"
@@ -191,14 +182,14 @@ Size of the Brands dataset: 104
 When setting up the query agent, we have to provide a few things:
 
 - The `client`
-- The `collection` which we want the agent to have access to.
+- The `collections` which we want the agent to have access to.
 - (Optionally) A `system_prompt` that describes how our agent should behave
 - (Optionally) Timeout - which for now defaults to 60s.
 
-Let's start with a simple agent. Here, we're creating an `agent` that has access to our `Brands` and `ECommerce` datasets.
+Let's start with a simple agent. Here, we're creating a `qa` agent that has access to our `Brands` and `ECommerce` datasets.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicQueryAgent"
@@ -215,7 +206,7 @@ And that's about it! Now, you can start using the Query Agent.
 In some cases, you may want to define a custom `system_prompt` for your agent. This can help you provide the agent with some default instructions for how to behave. For example, let's create an agent that will always answer the query in the user's language.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CustomizedQueryAgent"
@@ -225,7 +216,7 @@ In some cases, you may want to define a custom `system_prompt` for your agent. T
   </TabItem>
 </Tabs>
 
-We will use this custom agent `multi_lingual_agent` in [step 4.5](#use-system-prompt-agent).
+We will use this custom agent `multi_lingual_qa` in [step 4.5](#use-system-prompt-agent).
 
 ## Step 4: Run the Query Agent
 
@@ -242,7 +233,7 @@ Let's start with a simple question:
 - "I like vintage clothes, can you list me some options that are less than $200?"
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AskQuestions"
@@ -261,7 +252,7 @@ original_query='I like vintage clothes, can you list me some options that are le
 But this output is a bit too much, so let's just return the field `final_answer`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FinalAnswerAskQuestions"
@@ -303,7 +294,7 @@ By using the `display()` method on a `QueryAgentResponse`, you can get a user-fr
 - Total Time Taken - `total_time`
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START PrintQueryAgentResponseAskQuestions"
@@ -379,10 +370,10 @@ Total Time Taken: 11.59s
 
 ### 4.2 Ask a follow-up question
 
-The agent can also be provided with additional context. For example, we can provide the previous response as context and get a `new_response`
+The agent can also be provided with additional context. For example, we can provide the previous response as context using `ChatMessage` objects to create a conversation and get a `new_response`:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FollowUpAskQuestions"
@@ -473,7 +464,7 @@ Total Time Taken: 22.77s
 Now, let's try a question that requires an aggregation. Let's see which brand lists the most shoes.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Aggregation"
@@ -535,7 +526,7 @@ In some cases, we need to combine the results of searches across multiple collec
 Let's imagine a scenario where the user would now want to find out more about this company, _as well_ as the items that they sell.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SearchOverMultipleCollections"
@@ -615,7 +606,7 @@ We are going to use the custom agent from [step 3.2](#system-prompt-agent) with 
 For example, try to ask if the brand "Eko & Stitch" has a branch or associated company in the UK but using Japanese instead of English:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MoreQuestions"
@@ -644,7 +635,7 @@ Eko & Stitch is based in the UK. It was established in 1974 and is known for its
 
 This guide shows you how to build an end-to-end e-commerce assistant using Weaviate's agentic services — from setting up your Weaviate Cloud instance and importing datasets to configuring a Query Agent that intelligently handles natural language queries.
 
-The Query Agent automatically interprets queries to decide whether to run standard searches, filters, or aggregations. It connects to multiple collections and selects the right source based on your query. The agent can also use previous interactions to provide more relevant follow-up answers and you can define system prompts to ensure the agent always responds in the user’s preferred language or style.
+The Query Agent automatically interprets queries to decide whether to run standard searches, filters, or aggregations. It connects to multiple collections and selects the right source based on your query. The agent can also use previous interactions to provide more relevant follow-up answers and you can define system prompts to ensure the agent always responds in the user's preferred language or style.
 
 ## Further resources
 
@@ -652,10 +643,6 @@ The Query Agent automatically interprets queries to decide whether to run standa
 
 ## Questions and feedback
 
-:::info Changelog and feedback
-The official changelog for Weaviate Agents can be [found here](https://weaviateagents.featurebase.app/changelog). If you have feedback, such as feature requests, bug reports or questions, please [submit them here](https://weaviateagents.featurebase.app/), where you will be able to see the status of your feedback and vote on others' feedback.
-:::
-
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

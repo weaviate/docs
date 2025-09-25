@@ -1,6 +1,7 @@
 ---
 title: Additional operators
 sidebar_position: 40
+description: "Syntax reference for additional operators that extend query functionality (limits, sorting, grouping, etc.)."
 image: og/docs/api.jpg
 # tags: ['graphql', 'additional operators']
 ---
@@ -162,7 +163,7 @@ For more `autocut` examples and to learn about the motivation behind this filter
 Sample client code:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={AutocutPyCode}
       startMarker="# START Autocut Python"
@@ -171,23 +172,7 @@ Sample client code:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={AutocutPyCodeV3}
-      startMarker="# START Autocut Python"
-      endMarker="# END Autocut Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={AutocutTSCode}
-      startMarker="// START Autocut"
-      endMarker="// END Autocut"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
@@ -322,7 +307,7 @@ The sort function takes either an object, or an array of objects, that describe 
 
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Sorting Python"
@@ -331,23 +316,7 @@ The sort function takes either an object, or an array of objects, that describe 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START Sorting Python"
-      endMarker="# END Sorting Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START Sorting"
-      endMarker="// END Sorting"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -423,7 +392,7 @@ The sort function takes either an object, or an array of objects, that describe 
 To sort by more than one property, pass an array of { `path`, `order` } objects to the sort function:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MultiplePropSorting Python"
@@ -432,23 +401,7 @@ To sort by more than one property, pass an array of { `path`, `order` } objects 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START MultiplePropSorting Python"
-      endMarker="# END MultiplePropSorting Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START MultiplePropSorting"
-      endMarker="// END MultiplePropSorting"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -499,7 +452,7 @@ To sort with metadata, add an underscore to the property name.
 | `lastUpdateTimeUnix` | `_lastUpdateTimeUnix` |
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AdditionalPropSorting Python"
@@ -508,23 +461,7 @@ To sort with metadata, add an underscore to the property name.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START AdditionalPropSorting Python"
-      endMarker="# END AdditionalPropSorting Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START AdditionalPropSorting"
-      endMarker="// END AdditionalPropSorting"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

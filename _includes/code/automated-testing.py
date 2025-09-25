@@ -4,8 +4,8 @@ import weaviate_datasets as wd
 from weaviate.classes.init import Auth
 
 # Get credentials from environment variables
-wcd_url = os.environ["WCD_DEMO_URL"]
-wcd_api_key = os.environ["WCD_DEMO_ADMIN_KEY"]
+wcd_url = os.environ["WEAVIATE_HOST"]
+wcd_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api = os.environ["OPENAI_APIKEY"]
 
 headers = {"X-OpenAI-Api-Key": openai_api}
@@ -16,6 +16,11 @@ client = weaviate.connect_to_weaviate_cloud(
     auth_credentials=Auth.api_key(wcd_api_key),
     headers=headers,
 )
+
+# Instantiate the v4 Weaviate client using the local helper.
+# client = weaviate.connect_to_local(
+#     headers=headers,
+# )
 
 client.collections.delete("JeopardyQuestion")
 client.collections.delete("JeopardyCategory")

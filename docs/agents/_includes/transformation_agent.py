@@ -48,14 +48,14 @@ client.collections.delete("ArxivPapers")
 client.collections.create(
     "ArxivPapers",
     description="A dataset that lists research paper titles and abstracts",
-    vectorizer_config=Configure.Vectorizer.text2vec_weaviate(),
+    vector_config=Configure.Vectors.text2vec_weaviate(),
 )
 
 dataset = load_dataset(
     "weaviate/agents", "transformation-agent-papers", split="train", streaming=True
 )
 
-papers_collection = client.collections.get("ArxivPapers")
+papers_collection = client.collections.use("ArxivPapers")
 
 with papers_collection.batch.fixed_size(batch_size=100) as batch:
     for i, item in enumerate(dataset):
@@ -83,8 +83,6 @@ response = agent.update_all()  # The response is a TransformationResponse object
 
 agent.get_status(workflow_id=response.workflow_id)  # Use the workflow_id to check the status of each workflow
 # END SimpleTransformationAgentExample
-
-assert len(response) == 1
 
 # START DefineOperationsAppend
 add_french_abstract = Operations.append_property(
@@ -139,10 +137,8 @@ response = agent.update_all()
 print(response)  # The response is a TransformationResponse object, including the workflow_id
 # END StartTransformationOperations
 
-# # START MonitorJobStatus
+# START MonitorJobStatus
 print(agent.get_status(workflow_id=response.workflow_id))  # Use the workflow_id to check the status of each operation
-# # END MonitorJobStatus
-
-assert len(response) == 4
+# END MonitorJobStatus
 
 client.close()

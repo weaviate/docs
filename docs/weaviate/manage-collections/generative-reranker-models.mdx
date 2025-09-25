@@ -1,6 +1,5 @@
 ---
 title: Generative and reranker models
-sidebar_position: 3
 image: og/docs/howto.jpg
 ---
 
@@ -9,9 +8,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
-import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
@@ -31,7 +28,7 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
   :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetReranker"
@@ -40,16 +37,8 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetReranker"
-    endMarker="# END SetReranker"
-    language="pyv3"
-  />
-</TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetReranker"
@@ -58,14 +47,6 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetReranker"
-    endMarker="// END SetReranker"
-    language="tsv2"
-  />
-</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -86,7 +67,7 @@ The `reranker` and `generative` configurations are mutable from `v1.25.23`, `v1.
 Update the [`reranker`](../concepts/search/index.md#rerank) model integration for [reranking retrieved results](../search/rerank.md).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateReranker"
@@ -95,16 +76,8 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START UpdateReranker"
-    endMarker="# END UpdateReranker"
-    language="pyv3"
-  />
-</TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START UpdateReranker"
@@ -113,14 +86,6 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START UpdateReranker"
-    endMarker="// END UpdateReranker"
-    language="tsv2"
-  />
-</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -142,7 +107,7 @@ Specify a `generative` model integration for a collection (for RAG).
   :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SetGenerative"
@@ -151,16 +116,8 @@ Specify a `generative` model integration for a collection (for RAG).
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START SetGenerative"
-    endMarker="# END SetGenerative"
-    language="pyv3"
-  />
-</TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetGenerative"
@@ -169,14 +126,6 @@ Specify a `generative` model integration for a collection (for RAG).
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START SetGenerative"
-    endMarker="// END SetGenerative"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="go" label="Go">
   <FilteredTextBlock
@@ -206,7 +155,7 @@ The `reranker` and `generative` configurations are mutable from `v1.25.23`, `v1.
 Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generation-rag) model integration.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START UpdateGenerative"
@@ -215,16 +164,8 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START UpdateGenerative"
-    endMarker="# END UpdateGenerative"
-    language="pyv3"
-  />
-</TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START UpdateGenerative"
@@ -233,14 +174,6 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START UpdateGenerative"
-    endMarker="// END UpdateGenerative"
-    language="tsv2"
-  />
-</TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -261,7 +194,7 @@ import RuntimeGenerative from "/_includes/runtime-generative.mdx";
 - <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
     API References: REST: Schema
   </SkipLink>
-- [References: Configuration: Schema](/weaviate/config-refs/schema)
+- [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 
 ## Questions and feedback

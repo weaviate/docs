@@ -19,13 +19,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_aws(
+    vector_config=[
+        Configure.Vectors.text2vec_aws(
             name="title_vector",
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",
-            model="cohere.embed-multilingual-v3",
+            model="titan-embed-text-v2:0",
         )
     ],
     # highlight-end
@@ -42,13 +42,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_aws(
+    vector_config=[
+        Configure.Vectors.text2vec_aws(
             name="title_vector",
             region="us-east-1",
             source_properties=["title"],
             service="sagemaker",
-            endpoint="<custom_sagemaker_url>",
+            endpoint="<custom_sagemaker_name>", # e.g., "tei-xxx"
         )
     ],
     # highlight-end
@@ -65,13 +65,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_aws(
+    vector_config=[
+        Configure.Vectors.text2vec_aws(
             name="title_vector",
             region="us-east-1",
             source_properties=["title"],
             service="bedrock",                      # `bedrock` or `sagemaker`
-            model="cohere.embed-multilingual-v3",   # If using `bedrock`, this is required
+            model="titan-embed-text-v2:0",          # If using `bedrock`, this is required
             # endpoint="<sagemaker_endpoint>",        # If using `sagemaker`, this is required
         )
     ],
@@ -89,8 +89,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_cohere(
+    vector_config=[
+        Configure.Vectors.text2vec_cohere(
             name="title_vector",
             source_properties=["title"]
         )
@@ -109,8 +109,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_cohere(
+    vector_config=[
+        Configure.Vectors.text2vec_cohere(
             name="title_vector",
             source_properties=["title"],
             model="embed-multilingual-light-v3.0"
@@ -130,8 +130,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_cohere(
+    vector_config=[
+        Configure.Vectors.text2vec_cohere(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -158,8 +158,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_cohere(
+    vector_config=[
+        Configure.Vectors.multi2vec_cohere(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -188,8 +188,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_cohere(
+    vector_config=[
+        Configure.Vectors.multi2vec_cohere(
             name="title_vector",
             model="embed-multilingual-v3.0",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
@@ -219,8 +219,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_cohere(
+    vector_config=[
+        Configure.Vectors.multi2vec_cohere(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -249,13 +249,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_palm(
+    vector_config=[
+        Configure.Vectors.text2vec_palm(
             name="title_vector",
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
-            model_id="textembedding-gecko@latest"
+            model_id="gemini-embedding-001"
         )
     ],
     # highlight-end
@@ -272,13 +272,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_palm(
+    vector_config=[
+        Configure.Vectors.text2vec_palm(
             name="title_vector",
             source_properties=["title"],
             project_id="<google-cloud-project-id>",
             # (Optional) To manually set the model ID
-            model_id="text-embedding-004"
+            model_id="gemini-embedding-001"
         )
     ],
     # highlight-end
@@ -295,8 +295,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_palm(
+    vector_config=[
+        Configure.Vectors.text2vec_palm(
             name="title_vector",
             source_properties=["title"],
             project_id="<google-cloud-project-id>",  # Required for Vertex AI
@@ -323,8 +323,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_palm(
+    vector_config=[
+        Configure.Vectors.multi2vec_palm(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
@@ -357,8 +357,8 @@ client.collections.create(
         Property(name="description", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_palm(
+    vector_config=[
+        Configure.Vectors.multi2vec_palm(
             name="title_vector",
             project_id="<google-cloud-project-id>",  # Required for Vertex AI
             location="us-central1",
@@ -388,8 +388,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_huggingface(
+    vector_config=[
+        Configure.Vectors.text2vec_huggingface(
             name="title_vector",
             source_properties=["title"],
             model="sentence-transformers/all-MiniLM-L6-v2",
@@ -409,8 +409,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_huggingface(
+    vector_config=[
+        Configure.Vectors.text2vec_huggingface(
             name="title_vector",
             source_properties=["title"],
             # NOTE: Use only one of (`model`), (`passage_model` and `query_model`), or (`endpoint_url`)
@@ -438,8 +438,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_jinaai(
+    vector_config=[
+        Configure.Vectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"]
         )
@@ -458,8 +458,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_jinaai(
+    vector_config=[
+        Configure.Vectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"],
             model="jina-embeddings-v3",
@@ -478,8 +478,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_jinaai(
+    vector_config=[
+        Configure.Vectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -505,8 +505,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_jinaai(
+    vector_config=[
+        Configure.Vectors.multi2vec_jinaai(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -535,8 +535,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_jinaai(
+    vector_config=[
+        Configure.Vectors.multi2vec_jinaai(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -565,8 +565,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_jinaai(
+    vector_config=[
+        Configure.Vectors.multi2vec_jinaai(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -594,8 +594,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2colbert_jinaai(
+    vector_config=[
+        Configure.MultiVectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"]
         )
@@ -614,8 +614,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2colbert_jinaai(
+    vector_config=[
+        Configure.MultiVectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"],
             model="jina-colbert-v2",
@@ -634,8 +634,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2colbert_jinaai(
+    vector_config=[
+        Configure.MultiVectors.text2vec_jinaai(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -657,8 +657,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_mistral(
+    vector_config=[
+        Configure.Vectors.text2vec_mistral(
             name="title_vector",
             source_properties=["title"],
         )
@@ -677,8 +677,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_mistral(
+    vector_config=[
+        Configure.Vectors.text2vec_mistral(
             name="title_vector",
             source_properties=["title"],
             model="mistral-embed"
@@ -698,8 +698,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_nvidia(
+    vector_config=[
+        Configure.Vectors.text2vec_nvidia(
             name="title_vector",
             source_properties=["title"],
         )
@@ -718,8 +718,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_nvidia(
+    vector_config=[
+        Configure.Vectors.text2vec_nvidia(
             name="title_vector",
             source_properties=["title"],
             model="nvidia/nv-embed-v1"
@@ -739,8 +739,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_nvidia(
+    vector_config=[
+        Configure.Vectors.text2vec_nvidia(
             name="title_vector",
             source_properties=["title"],
             model="nvidia/nv-embed-v1",
@@ -765,8 +765,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_nvidia(
+    vector_config=[
+        Configure.Vectors.multi2vec_nvidia(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -795,8 +795,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_nvidia(
+    vector_config=[
+        Configure.Vectors.multi2vec_nvidia(
             name="title_vector",
             model="nvidia/nvclip",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
@@ -826,8 +826,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_nvidia(
+    vector_config=[
+        Configure.Vectors.multi2vec_nvidia(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -853,8 +853,8 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "DemoCollection",
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_octoai(
+    vector_config=[
+        Configure.Vectors.text2vec_octoai(
             name="title_vector",
             source_properties=["title"]
         )
@@ -871,8 +871,8 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "DemoCollection",
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_octoai(
+    vector_config=[
+        Configure.Vectors.text2vec_octoai(
             name="title_vector",
             source_properties=["title"],
             model="thenlper/gte-large"
@@ -890,8 +890,8 @@ from weaviate.classes.config import Configure
 
 client.collections.create(
     "DemoCollection",
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_octoai(
+    vector_config=[
+        Configure.Vectors.text2vec_octoai(
             name="title_vector",
             source_properties=["title"],
             # # Further options
@@ -912,8 +912,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title_vector",
             source_properties=["title"]
         )
@@ -935,8 +935,8 @@ databricks_vectorizer_endpoint = os.getenv("DATABRICKS_VECTORIZER_ENDPOINT")  # 
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_databricks(
+    vector_config=[
+        Configure.Vectors.text2vec_databricks(
             endpoint=databricks_vectorizer_endpoint,  # Required for Databricks
             name="title_vector",
             source_properties=["title"],
@@ -956,8 +956,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title_vector",
             source_properties=["title"],
             # If using `text-embedding-3` model family
@@ -979,8 +979,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title_vector",
             source_properties=["title"],
             # If using older model family e.g. `ada`
@@ -1003,8 +1003,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title_vector",
             source_properties=["title"],
             # # Further options
@@ -1029,8 +1029,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_openai(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -1053,8 +1053,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_azure_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_azure_openai(
             name="title_vector",
             source_properties=["title"],
             resource_name="<azure-resource-name>",
@@ -1075,8 +1075,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_azure_openai(
+    vector_config=[
+        Configure.Vectors.text2vec_azure_openai(
             name="title_vector",
             source_properties=["title"],
             resource_name="<azure-resource-name>",
@@ -1099,8 +1099,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_voyageai(
+    vector_config=[
+        Configure.Vectors.text2vec_voyageai(
             name="title_vector",
             source_properties=["title"]
         )
@@ -1119,8 +1119,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_voyageai(
+    vector_config=[
+        Configure.Vectors.text2vec_voyageai(
             name="title_vector",
             source_properties=["title"],
             model="voyage-3-lite"
@@ -1140,8 +1140,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_voyageai(
+    vector_config=[
+        Configure.Vectors.text2vec_voyageai(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -1168,8 +1168,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_voyageai(
+    vector_config=[
+        Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -1198,8 +1198,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_voyageai(
+    vector_config=[
+        Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
             model="voyage-multimodal-3",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
@@ -1229,8 +1229,8 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="poster", data_type=DataType.BLOB),
     ],
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_voyageai(
+    vector_config=[
+        Configure.Vectors.multi2vec_voyageai(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields
             image_fields=[
@@ -1260,8 +1260,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_weaviate(
+    vector_config=[
+        Configure.Vectors.text2vec_weaviate(
             name="title_vector",
             source_properties=["title"]
         )
@@ -1280,8 +1280,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_weaviate(
+    vector_config=[
+        Configure.Vectors.text2vec_weaviate(
             name="title_vector",
             source_properties=["title"],
             model="Snowflake/snowflake-arctic-embed-l-v2.0"
@@ -1301,8 +1301,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_weaviate(
+    vector_config=[
+        Configure.Vectors.text2vec_weaviate(
             name="title_vector",
             source_properties=["title"],
             model="Snowflake/snowflake-arctic-embed-m-v1.5",
@@ -1320,13 +1320,16 @@ client.collections.create(
 client.collections.delete("DemoCollection")
 
 # START SnowflakeArcticEmbedLV20
-from weaviate.classes.config import Configure
+from weaviate.classes.config import Configure, Property, DataType
 
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_weaviate(
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+    ],
+    vector_config=[
+        Configure.Vectors.text2vec_weaviate(
             name="title_vector",
             source_properties=["title"],
             model="Snowflake/snowflake-arctic-embed-l-v2.0",
@@ -1349,8 +1352,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_transformers(
+    vector_config=[
+        Configure.Vectors.text2vec_transformers(
             name="title_vector",
             source_properties=["title"]
         )
@@ -1369,8 +1372,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_transformers(
+    vector_config=[
+        Configure.Vectors.text2vec_transformers(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -1394,8 +1397,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_ollama(
+    vector_config=[
+        Configure.Vectors.text2vec_ollama(
             name="title_vector",
             source_properties=["title"],
             api_endpoint="http://host.docker.internal:11434",  # If using Docker, use this to contact your local Ollama instance
@@ -1416,8 +1419,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_ollama(
+    vector_config=[
+        Configure.Vectors.text2vec_ollama(
             name="title_vector",
             source_properties=["title"],
             # Further options
@@ -1439,8 +1442,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_gpt4all(
+    vector_config=[
+        Configure.Vectors.text2vec_gpt4all(
             name="title_vector",
             source_properties=["title"],
         )
@@ -1459,8 +1462,8 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_gpt4all(
+    vector_config=[
+        Configure.Vectors.text2vec_gpt4all(
             name="title_vector",
             source_properties=["title"],
         )
@@ -1469,6 +1472,47 @@ client.collections.create(
     # Additional parameters not shown
 )
 # END FullVectorizerGPT4All
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START BasicVectorizerModel2Vec
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_model2vec(
+            name="title_vector",
+            source_properties=["title"],
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicVectorizerModel2Vec
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullVectorizerModel2Vec
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    vector_config=[
+        Configure.Vectors.text2vec_model2vec(
+            name="title_vector",
+            source_properties=["title"],
+            inference_url="<custom-inference-url>",  # Default - configuration defined through container, e.g. Docker compose file
+        )
+    ],
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullVectorizerModel2Vec
 
 # clean up
 client.collections.delete("DemoCollection")
@@ -1483,8 +1527,8 @@ client.collections.create(
         Property(name="poster", data_type=DataType.BLOB),
     ],
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_clip(
+    vector_config=[
+        Configure.Vectors.multi2vec_clip(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
@@ -1513,8 +1557,8 @@ client.collections.create(
         Property(name="poster", data_type=DataType.BLOB),
     ],
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_clip(
+    vector_config=[
+        Configure.Vectors.multi2vec_clip(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
@@ -1544,8 +1588,8 @@ client.collections.create(
         Property(name="poster", data_type=DataType.BLOB),
     ],
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_bind(
+    vector_config=[
+        Configure.Vectors.multi2vec_bind(
             name="title_vector",
             # Define the fields to be used for the vectorization - using image_fields, text_fields, video_fields
             image_fields=[
@@ -1576,8 +1620,8 @@ client.collections.create(
         Property(name="video", data_type=DataType.BLOB),
     ],
     # highlight-start
-    vectorizer_config=[
-        Configure.NamedVectors.multi2vec_bind(
+    vector_config=[
+        Configure.Vectors.multi2vec_bind(
             name="title_vector",
             # Define the fields to be used for the vectorization
             image_fields=[
@@ -1612,7 +1656,7 @@ source_objects = [
     {"title": "A Christmas Carol", "description": "A miserly old man is transformed after being visited by three ghosts on Christmas Eve in this timeless tale of redemption."}
 ]
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 with collection.batch.fixed_size(batch_size=200) as batch:
     for src_obj in source_objects:
@@ -1655,7 +1699,7 @@ for i in range(len(source_objects)):
     source_objects[i]["poster_path"] = src_img_path
 
 # START MMBatchImportExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 with collection.batch.fixed_size(batch_size=200) as batch:
     for src_obj in source_objects:
@@ -1675,7 +1719,7 @@ with collection.batch.fixed_size(batch_size=200) as batch:
 # END MMBatchImportExample
 
 # START NearTextExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 response = collection.query.near_text(
@@ -1690,7 +1734,7 @@ for obj in response.objects:
 
 
 # START HybridExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 response = collection.query.hybrid(
@@ -1705,7 +1749,7 @@ for obj in response.objects:
 
 
 # START NearImageExample
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 query_b64 = url_to_base64(src_img_path)

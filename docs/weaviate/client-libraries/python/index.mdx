@@ -1,7 +1,7 @@
 ---
 title: Python
-description: Utilize the Python client library to access Weaviate and streamline data processes.
 sidebar_position: 10
+description: "Official Python client library documentation for integrating Weaviate with Python applications and services."
 image: og/docs/client-libraries.jpg
 # tags: ['python', 'client library', 'experimental']
 ---
@@ -57,7 +57,7 @@ pip install --pre -U "weaviate-client==4.*"`
 
 The `v4` Python client requires Weaviate `1.23.7` or higher. Generally, we encourage you to use the latest version of the Python client and the Weaviate Database.
 
-In Weaviate Cloud, the Sandoxes are compatible with the `v4` client as of 31 January, 2024. Sandboxes created before this date will not be compatible with the `v4` client.
+In Weaviate Cloud, the Sandboxes are compatible with the `v4` client as of 31 January, 2024. Sandboxes created before this date will not be compatible with the `v4` client.
 
 #### gRPC
 
@@ -99,6 +99,10 @@ Get started with Weaviate using this Python example. The code walks you through 
 1. **[Import data](../../manage-objects/import.mdx)**: Fetch sample Jeopardy questions and use Weaviate's batch import for efficient ingestion and automatic vector embedding generation.
 1. **[Search/query the database](../../search/index.mdx)**: Execute a vector search to find questions semantically similar to the query `biology`.
 
+import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
+
+<VectorsAutoSchemaError />
+
 <FilteredTextBlock
   text={PythonCode}
   startMarker="# START GetStarted"
@@ -106,7 +110,7 @@ Get started with Weaviate using this Python example. The code walks you through 
   language="py"
 />
 
-For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section. 
+For more code examples, check out the [How-to manuals & Guides](../../guides.mdx) section.
 
 ## Asynchronous usage
 
@@ -125,9 +129,21 @@ import ReleaseHistory from "/_includes/release-history.md";
 
 </details>
 
-#### Migrating from `v3` to `v4`
+#### Vectorizer API changes `v4.16.0`
 
-If you are migrating from the Python `v3` client to the `v4` client, see this [dedicated guide](./v3_v4_migration.md).
+<VectorsAutoSchemaError />
+
+Starting with the Weaviate Python client `v4.16.0`, there are multiple changes to the vectorizer configuration API when creating collections:
+
+- `.vectorizer_config` has been replaced with `.vector_config`
+- `Configure.NamedVectors` has been replaced with `Configure.Vectors` and `Configure.MultiVectors`
+- `Configure.NamedVectors.none` and `Configure.Vectorizer.none` have been replaced with `Configure.Vectors.self_provided` and `Configure.MultiVectors.self_provided`
+
+#### Python client `v3` deprecation
+
+<!-- TODO[g-despot]: Add link to archive -->
+
+The Weaviate Python client `v3` has been deprecated and should no longer be used. If you need documentation for the `v3` client, see the [documentation archive](https://archive.docs.weaviate.io/weaviate/client-libraries/python/python_v3). If you are migrating from the Python `v3` client to the `v4` client, see this [migration guide](https://archive.docs.weaviate.io/weaviate/client-libraries/python/v3_v4_migration).
 
 #### Beta releases
 
@@ -281,7 +297,7 @@ import weaviate.classes as wvc
 
 client = weaviate.connect_to_local()
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     filters=wvc.query.Filter.by_property("round").equal("Double Jeopardy!") &
             wvc.query.Filter.by_creation_time().greater_or_equal(datetime.datetime(2005, 1, 1)) |
@@ -323,7 +339,7 @@ Use `ReferenceToMulti` for multi-target references.
 
 ##### References
 
-- References are now added through a `references` parameter during collection creation, object insertion and queries. 
+- References are now added through a `references` parameter during collection creation, object insertion and queries.
 - The `FromReference` class is now called `QueryReference`.
 
 ##### Reorganization of classes/parameters

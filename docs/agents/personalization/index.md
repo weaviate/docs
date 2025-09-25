@@ -1,6 +1,7 @@
 ---
 title: Personalization Agent
 sidebar_position: 10
+description: "Overview of the AI agent that provides personalized recommendations based on user profiles and interaction history."
 image: og/docs/agents.jpg
 # tags: ['agents', 'getting started', 'personalization agent']
 ---

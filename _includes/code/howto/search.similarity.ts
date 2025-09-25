@@ -20,7 +20,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 
 // add let result later
 // GetNearText  // GetNearVector  // GetNearObject  // GetLimitOffset  // GetWithDistance  // START Autocut  // GetWithGroupBy  // GetWithFilter 
-const jeopardy = client.collections.get('JeopardyQuestion');
+const jeopardy = client.collections.use('JeopardyQuestion');
 // END GetNearText  // END GetNearVector  // END GetNearObject  // END GetLimitOffset  // END GetWithDistance  // END Autocut  // END GetWithGroupBy  // END GetWithFilter 
 
 
@@ -29,7 +29,7 @@ const jeopardy = client.collections.get('JeopardyQuestion');
 // ===============================================
 {
 // NamedVectorNearText
-const myNVCollection = client.collections.get('WineReviewNV');
+const myNVCollection = client.collections.use('WineReviewNV');
 
 const result = await myNVCollection.query.nearText('a sweet German white wine', {
   // highlight-start
