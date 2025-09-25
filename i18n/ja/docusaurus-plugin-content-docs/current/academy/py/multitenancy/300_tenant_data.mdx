@@ -1,0 +1,169 @@
+---
+title: テナントとデータの操作
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!./_snippets/100_config.py';
+
+`MyPrivateJournal` のチームは、現在 Weaviate インスタンスにマルチテナント コレクションを構築しました。このセクションでは、テナントとそのデータの操作方法を学びます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> テナントとデータの追加
+
+マルチテナント コレクションを作成したら、 `.tenant` 名前空間を通じてテナントを管理できます。
+
+`MyPrivateJournal` の各エンドユーザーは、自身の日記エントリを専用のテナントに保存します。つまり、ユーザーがオンボーディングされるとテナントが作成され、オフボーディングされるとそのテナントは削除されます。
+
+### <i class="fa-solid fa-code"></i> テナントの作成
+
+ユーザーをオンボーディングする際には、次のコードをオンボーディング ロジックに組み込めます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BasicTenantCreation"
+  endMarker="# END BasicTenantCreation"
+  language="py"
+/>
+
+テナントは一括で作成することも可能です。
+
+たとえば、 `MyPrivateJournal` が `AcmeCorp` という組織から複数の新しいユーザーをオンボーディングする場合、1 回の操作で複数ユーザー用のテナントを作成できます:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MultiTenantCreation"
+  endMarker="# END MultiTenantCreation"
+  language="py"
+/>
+
+:::caution Tenant names are case-sensitive
+テナント名は大文字と小文字を区別します。したがって、 `steve` 、 `Steve` 、 `STEVE` は別々のテナントとして扱われます。
+:::
+
+### <i class="fa-solid fa-code"></i> データオブジェクトの追加
+
+マルチテナント コレクション内のテナントを操作する手順は、シングルテナント コレクションの場合とほぼ同じです。
+
+ここでは、 `MyPrivateJournal` がテナント内のデータ オブジェクトをどのように扱うかを見ていきます。
+
+#### 単一オブジェクトの挿入
+
+エンドユーザー（例: Steve または `steve85` ）が新しい日記エントリを書き込むと、 `MyPrivateJournal` はそれを Steve のテナントに挿入できます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# SingleObjectInsertion"
+  endMarker="# END SingleObjectInsertion"
+  language="py"
+/>
+
+#### バッチデータの挿入
+
+また、 Steve が別のシステムから自身の日記エントリをインポートしたい場合、 `MyPrivateJournal` はバッチで挿入できます。
+
+<details>
+  <summary>挿入されるデータ</summary>
+
+追加するオブジェクトは、ここに示すように辞書のリストとして指定できます。 `DATE` 型プロパティには、タイムゾーン付きの `datetime` オブジェクトを使用している点にご注意ください。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BatchDataToInsert"
+  endMarker="# END BatchDataToInsert"
+  language="py"
+/>
+
+</details>
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# BasicBatchInsertion"
+  endMarker="# END BasicBatchInsertion"
+  language="py"
+/>
+
+#### 追加機能: 自動テナント作成
+
+`MyPrivateJournal` で自動テナント作成を有効にしている場合、テナントを明示的に作成しなくてもデータを挿入できます。この例では、指定したテナントは存在しませんが、 Weaviate が自動的に作成します。
+
+これにより、 `MyPrivateJournal` はユーザーが最初の日記エントリを書くまでテナントの作成を遅らせることができます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# AutoTenantCreationAtInsert"
+  endMarker="# END AutoTenantCreationAtInsert"
+  language="py"
+/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> テナントデータのクエリ
+
+Steve のテナントが作成されてデータが格納されると、 `MyPrivateJournal` は Steve が自身のデータを操作できるようにします。
+
+このようなアプリケーションでは、 `MyPrivateJournal` は Steve に次の機能を提供するかもしれません:
+
+- 指定した日付範囲の日記エントリを取得する  
+- エントリを検索する
+
+嬉しいことに、データ操作と同様に、テナント内での取得や検索もシングルテナント コレクションの場合とほとんど同じです。
+
+### <i class="fa-solid fa-code"></i> 日付範囲でのエントリ取得
+
+特定の日付範囲の Steve の日記エントリを取得するには、 `MyPrivateJournal` は次のようなクエリを実行できます:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DateRangeQuery"
+  endMarker="# END DateRangeQuery"
+  language="py"
+/>
+
+<details>
+  <summary>例: レスポンス</summary>
+
+このクエリは次のようなレスポンスを返します:
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# ExampleResponseDateRange"
+  endMarker="# END ExampleResponseDateRange"
+  language="py"
+/>
+</details>
+### <i class="fa-solid fa-code"></i> エントリーの検索
+
+さらに、 Steve はエントリーを検索したいことがあるかもしれません。例えば、彼が体験した食べ物に関連するエントリーを探したい場合などです。
+
+`MyPrivateJournal` は Weaviate の `hybrid` 検索を活用して、 Steve が最も関連性の高いエントリーを見つけられるようにできます。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# UserQuery"
+  endMarker="# END UserQuery"
+  language="py"
+/>
+
+<details>
+  <summary>レスポンス例</summary>
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# ExampleResponseUserQuery"
+  endMarker="# END ExampleResponseUserQuery"
+  language="json"
+/>
+</details>
+
+検索構文は基本的に single-tenant コレクションの場合と同一であることがわかります。そのため、 single-tenant コレクションで利用できるすべての検索方法は multi-tenant コレクションにも適用できます。
+
+### <i class="fa-solid fa-chalkboard"></i> 要約
+
+このセクションでは、マルチテナントコレクションにおいてテナントとそのデータを操作する方法を学びました。テナントの作成、データオブジェクトの追加、およびテナントデータのクエリ方法を確認しました。
+
+次のセクションでは、 `MyPrivateJournal` がテナントを管理することで、アプリケーションをスムーズかつ効率的に動作させ続ける方法を学びます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

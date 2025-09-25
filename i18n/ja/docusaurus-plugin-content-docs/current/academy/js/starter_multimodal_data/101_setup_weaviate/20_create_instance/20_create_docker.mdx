@@ -1,0 +1,93 @@
+---
+title: "オプション 2: ローカル Docker インスタンス"
+description: "素早くカスタマイズ可能なローカル環境として Docker で Weaviate をセットアップします。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../../_snippets/101_connect.mts';
+
+:::note すでに Weaviate インスタンスを作成しましたか？
+Weaviate の [クラウドインスタンスを作成済み](./10_create_wcs.mdx) の場合は、このページをスキップして [Weaviate との通信](../30_communicate.mdx) に進んでください。
+:::
+
+ここでは、Docker を使用して Weaviate インスタンスを作成します。
+
+### <i class="fa-solid fa-chalkboard"></i> docker-compose ファイルのダウンロードと実行
+
+お使いのマシンに Docker をインストールしてください。インストールには [公式 Docker インストールガイド](https://docs.docker.com/get-docker/) を参照することをお勧めします。
+
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。そして `docker-compose.yml` というファイルを作成し、次の内容を追加します：
+
+```yaml
+---
+version: '3.4'
+services:
+  weaviate_anon:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    ports:
+    - 8080:8080
+    - 50051:50051
+    restart: on-failure:0
+    environment:
+      COHERE_APIKEY: $COHERE_APIKEY
+      VOYAGEAI_APIKEY: $VOYAGEAI_APIKEY
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      ENABLE_MODULES: 'text2vec-cohere,multi2vec-voyageai,generative-cohere'
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      CLUSTER_HOSTNAME: 'node1'
+...
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
+
+次のコマンドを実行して Weaviate を起動します：
+
+```bash
+docker compose up -d
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
+
+インスタンスが作成されると、`http://localhost:8080` でアクセスできます。
+
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへの接続
+
+Weaviate インスタンスに接続するには、`connectToLocal()` 関数を使用します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// DockerInstantiation"
+  endMarker="// END DockerInstantiation"
+  language="ts"
+/>
+
+#### 推論 API キーの指定
+
+一部の Weaviate モジュールは、データのベクトル化や大規模言語モデルとの統合に推論 API を利用できます。これらのサービスの API キーは、Weaviate のインスタンス化時に渡すことができます。
+
+このコースでは VoyageAI を使用します。以下のように `headers: {"X-VoyageAI-Api-Key": <YOUR_KEY>}` を設定して VoyageAI の API キーを Weaviate に渡してください：
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// DockerAPIKeyInstantiation"
+  endMarker="// END DockerAPIKeyInstantiation"
+  language="ts"
+/>
+
+## 質問・フィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,171 @@
+---
+title: マルチノードセットアップ
+---
+
+Minikube で Kubernetes クラスター内の単一ノードに Weaviate をデプロイしました。ここでは、それをマルチノード構成へスケールアップしてみましょう。
+
+これを行うには、複数ノードを持つ Kubernetes クラスターが必要です。そのうえで、Weaviate がそれらのノードを利用できるように設定します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate クラスターにノードを追加する
+
+現在の Weaviate デプロイメントを停止し、[Minikube で複数ノード](https://minikube.sigs.k8s.io/docs/tutorials/multi_node/)を持つ新しいデプロイメントを行います。
+
+:::note Minikube limitations
+これは学習用途として同一ホストデバイス上で複数コンテナを実行します。実運用環境では、通常は複数の独立した物理または仮想ノードを持つマネージド Kubernetes クラスターを利用します。
+:::
+
+### <i class="fa-solid fa-code"></i> 現在の Weaviate デプロイメントを停止する
+
+まず、`minikube tunnel` を実行していたターミナルで `Ctrl+C` を押してトンネルを停止します。
+
+続いて Minikube を停止します。
+
+```bash
+minikube stop
+```
+
+既に minikube クラスターが存在しているため、マルチノードで新たに開始する前に削除する必要があります。
+
+:::note Alternatively...
+既存の Minikube クラスターにノードを追加することも可能です。しかし、ここではシンプルに現在のクラスターを削除して新しく開始します。
+:::
+
+```bash
+minikube delete
+```
+
+### <i class="fa-solid fa-code"></i> マルチノード Kubernetes クラスターを開始する
+
+Minikube でマルチノード Kubernetes クラスターを開始するには、次を実行します。
+
+```bash
+minikube start --nodes <n>
+```
+
+`<n>` をクラスター内で使用したいノード数に置き換えてください。ここでは 6 ノードのクラスターを立ち上げてみます。
+
+```bash
+minikube start --nodes 6
+```
+
+完了したら、次を実行してノードの状態を確認できます。
+
+```bash
+kubectl get nodes
+```
+
+すると、次のような出力が得られるはずです。
+
+```bash
+NAME           STATUS   ROLES           AGE   VERSION
+minikube       Ready    control-plane   78s   v1.28.3
+minikube-m02   Ready    <none>          60s   v1.28.3
+minikube-m03   Ready    <none>          50s   v1.28.3
+minikube-m04   Ready    <none>          39s   v1.28.3
+minikube-m05   Ready    <none>          29s   v1.28.3
+minikube-m06   Ready    <none>          18s   v1.28.3
+```
+
+次に、Weaviate デプロイメントをこれらのノードで動作するよう更新します。そのために `values.yaml` ファイルの `replicas` フィールドをクラスターのノード数に合わせます。リソース要求と制限を減らした設定と合わせると、以下のようになります。
+
+```yaml
+replicas: 6
+updateStrategy:
+  type: RollingUpdate
+resources: {}
+requests:
+  cpu: '300m'
+  memory: '150Mi'
+limits:
+  cpu: '500m'
+  memory: '300Mi'
+```
+
+Weaviate を再起動するには次を実行します。
+
+```bash
+helm upgrade --install \
+  "weaviate" \
+  weaviate/weaviate \
+  --namespace "weaviate" \
+  --values ./values.yaml
+```
+
+すると、クラスターの各ノードで Weaviate Pod が起動するはずです。次を実行して確認できます。
+
+```bash
+kubectl get pods -n weaviate
+```
+
+そして Pod が順番に作成されると、以下のような出力が表示されます。
+
+```bash
+NAME         READY   STATUS            RESTARTS   AGE
+weaviate-0   1/1     Running           0          31s
+weaviate-1   0/1     PodInitializing   0          9s
+```
+
+最終的には次のようになります。
+
+```bash
+NAME         READY   STATUS    RESTARTS   AGE
+weaviate-0   1/1     Running   0          113s
+weaviate-1   1/1     Running   0          91s
+weaviate-2   1/1     Running   0          79s
+weaviate-3   1/1     Running   0          57s
+weaviate-4   1/1     Running   0          35s
+weaviate-5   1/1     Running   0          13s
+```
+
+新しいターミナルを開き、以前と同様に `minikube tunnel` を実行して Weaviate サービスをローカルマシンへ公開してください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> マルチノード構成の活用
+
+マルチノード構成を活用する主な方法は **レプリケーション** と **水平スケーリング** の 2 つです。それぞれを見ていきましょう。
+
+### <i class="fa-solid fa-chalkboard"></i> レプリケーション
+
+レプリケーションは、同一データの複数コピーを複数ノードに作成するプロセスです。
+
+これはデータ可用性と障害耐性を確保するのに有用です。マルチノード構成では、Weaviate データを複数ノードにレプリケートすることで、あるノードが障害を起こしても他ノードでデータが利用可能な状態を保てます。レプリケートされた構成は負荷を複数ノードに分散して性能を向上させたり、ダウンタイムなしのアップグレードやメンテナンスを可能にしたりします。
+
+Weaviate ではデータベースコレクション定義でレプリケーションファクターを設定することでレプリケーションを扱えます。これはクラスターのノード間でデータをいくつコピーするかを Weaviate に伝えるものです。
+
+コード例ではレプリケーションの設定方法を示しています。コード内に示されるポートは、ご利用環境では（例: `80` など）異なる場合があります。
+
+import SchemaReplication from '/_includes/code/schema.things.create.replication.mdx';
+
+<SchemaReplication/>
+
+### <i class="fa-solid fa-chalkboard"></i> データベースシャーディング
+
+一方、シャーディングは Weaviate を水平スケールさせるために使用できます。シャーディングはデータベースをより小さな部分（シャード）に分割し、それらを複数ノードへ分散するプロセスです。
+
+例えば 200 万件のレコードを保持するデータベースが、そのすべてを 1 つのノードに保存する必要はありません。代わりにレコードを小さな単位に分割し、異なるノードに保存できます。これにより、ノードを追加して水平方向にスケールさせることが可能になります。
+
+### <i class="fa-solid fa-chalkboard"></i> レプリケーション付きシャーディング
+
+シャーディングとレプリケーションを併用することで、水平スケールと障害耐性の両方を Weaviate に持たせることができます。
+
+今回の 6 ノード構成では、レプリケーションファクターを 3 にし、データを 2 ノードずつにシャーディングするといった構成が考えられます。この方法では、6 ノード全体に 3 コピーのデータが分散され、障害耐性と高可用性が確保されます。
+
+本番環境では、このアプローチが一般的であり、高負荷を処理し、ノード障害が起こっても可用性を維持できます。また、必要に応じてノード数を追加して水平スケールし、より多くのデータとリクエストを処理できるようにできます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> クリーンアップ
+
+以上でガイドは終了です。マルチノード Kubernetes クラスターに Weaviate をデプロイし、レプリケーションとシャーディングについて学びました。
+
+必要であれば、前述の方法で Weaviate にアクセスし、操作してみてください。[次のページでは追加のリソース](./90_next_steps.mdx) を用意していますので、ぜひご覧ください。
+
+作業が完了したら、`minikube tunnel` を実行しているターミナルで `Ctrl+C` を押してトンネルを停止し、その後 Minikube を停止してクラスターを削除します。
+
+```bash
+minikube stop
+minikube delete
+```
+
+## 質問やフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

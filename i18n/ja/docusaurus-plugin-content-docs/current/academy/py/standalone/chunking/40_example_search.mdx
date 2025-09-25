@@ -1,0 +1,321 @@
+---
+title: 例 パート 2 - 検索
+description: Weaviate でチャンク化されたデータを効率的に検索する方法を学びます。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import CodePracticalExample from '!!raw-loader!./_snippets/30_example.py';
+
+<!-- import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+<img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+import PreviewUnit from '../../../_snippets/preview.mdx'
+
+<PreviewUnit />
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+[前のセクション](./30_example_chunking.mdx) では、異なるチャンク化手法を用いて本の複数章を Weaviate にインポートしました。使用した方法は次のとおりです。
+
+- 固定長チャンク (20% のオーバーラップ)
+    - チャンク 1 件あたり 25 語
+    - チャンク 1 件あたり 100 語
+- 段落マーカーを利用した可変長チャンク
+- 段落マーカーと最小長 25 語を組み合わせた混合戦略チャンク
+
+今回は Weaviate を使って本を検索し、チャンク化手法の影響を評価します。
+
+データは Git についての本の最初の 2 章から取得したものなので、さまざまな Git 関連の概念を検索し、各チャンク化戦略のパフォーマンスを確認します。
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> 検索 / リコール
+
+まず、さまざまな検索語を用いて Weaviate インスタンスから情報を取得します。意味検索 (`nearText`) を使い、最も関連性の高いチャンクを取得することを目指します。
+
+### <i class="fa-solid fa-code"></i> 検索構文
+
+次のように検索を実行し、データセットをフィルタリングして各チャンク化戦略を順番に処理します。各検索語について、上位数件の結果を取得します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START vector_search"
+  endMarker="# END vector_search"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+使用する検索語:
+- `"history of git"`
+- `"how to add the url of a remote repository"`
+
+### <i class="fa-solid fa-chalkboard"></i> 結果と考察
+
+得られた結果は次のとおりです。
+
+#### Example 1
+
+:::info `"history of git"` の検索結果  
+:::
+
+<Tabs groupId="chunking">
+<TabItem value="fixed_size_25" label="25 word chunks">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_25 vector_search_history"
+  endMarker="# END fixed_size_25 vector_search_history"
+  language="text"
+/>
+</TabItem>
+<TabItem value="fixed_size_100" label="100 word chunks">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_100 vector_search_history"
+  endMarker="# END fixed_size_100 vector_search_history"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks" label="Paragraph chunks">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks vector_search_history"
+  endMarker="# END para_chunks vector_search_history"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks_min_25" label="Paragraph chunks with minimum length">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks_min_25 vector_search_history"
+  endMarker="# END para_chunks_min_25 vector_search_history"
+  language="text"
+/>
+</TabItem>
+</Tabs>
+
+このクエリは `history of git` という包括的な内容です。その結果、長めのチャンクのほうが良いパフォーマンスを示しています。
+
+25 語チャンクはクエリと意味的には近いものの、トピックの理解を深めるのに十分な文脈情報を含んでいません。
+
+一方、取得された段落チャンク、特に最小長 25 語のチャンクは Git の歴史について体系的な情報を含んでおり、読者の学習に適しています。
+
+#### Example 2
+
+:::info `"how to add the url of a remote repository"` の検索結果  
+:::
+
+<Tabs groupId="chunking">
+<TabItem value="fixed_size_25" label="25 word chunks">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_25 vector_search_remote_repo"
+  endMarker="# END fixed_size_25 vector_search_remote_repo"
+  language="text"
+/>
+</TabItem>
+<TabItem value="fixed_size_100" label="100 word chunks">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_100 vector_search_remote_repo"
+  endMarker="# END fixed_size_100 vector_search_remote_repo"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks" label="Paragraph chunks">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks vector_search_remote_repo"
+  endMarker="# END para_chunks vector_search_remote_repo"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks_min_25" label="Paragraph chunks with minimum length">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks_min_25 vector_search_remote_repo"
+  endMarker="# END para_chunks_min_25 vector_search_remote_repo"
+  language="text"
+/>
+</TabItem>
+</Tabs>
+
+このクエリはユーザーがリモートリポジトリの URL を追加する方法を知りたい場合のような、より具体的なものです。
+
+先ほどとは対照的に、25 語チャンクのほうが有用でした。質問が非常に具体的だったため Weaviate は最も適切な一節、すなわちリモートリポジトリを追加する方法 (`git remote add <shortname> <url>`) を含むチャンクを特定できました。
+
+ほかの結果にも同じ情報が含まれてはいますが、結果をどのように利用・表示するかを考慮する価値があります。結果が長くなるほど、ユーザーが必要な情報を見つけるのに要する認知的負荷は大きくなるかもしれません。
+## <i class="fa-solid fa-square-chevron-right"></i> 検索拡張生成 (RAG)
+
+次に、チャンク化が RAG に与える影響を見てみましょう。
+
+[チャンクサイズと RAG の関係については前に説明しました](./10_introduction.mdx#-for-optimal-retrieval-augmented-generation-rag)。短いチャンクを使うと、より多くのソースオブジェクトから情報を取り込めますが、各オブジェクトに含まれる文脈情報は少なくなります。反対に、長いチャンクを使うと各チャンクにより多くの文脈情報が含まれますが、取得できるソースオブジェクトは少なくなります。
+
+これがどのように現れるか、いくつか RAG の例で試してみましょう。
+
+### <i class="fa-solid fa-code"></i> クエリ構文
+
+以下にクエリ構文を示します。基本的には先ほどと同じですが、2 つの点で異なります。
+
+1. チャンクサイズが小さい場合は、より多くのチャンクを取得するようにしています。  
+2. 単なる検索ではなく RAG を行うようにクエリを変更しています。クエリでは、対象 LLM に結果を箇条書きで要約するよう依頼しています。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START generative_search"
+  endMarker="# END generative_search"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> 結果と考察
+
+#### 例 1
+
+:::info 「`history of git`」の検索結果。
+:::
+
+<Tabs groupId="chunking">
+<TabItem value="fixed_size_25" label="25 ワードチャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_25 generative_search_git_history"
+  endMarker="# END fixed_size_25 generative_search_git_history"
+  language="text"
+/>
+</TabItem>
+<TabItem value="fixed_size_100" label="100 ワードチャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_100 generative_search_git_history"
+  endMarker="# END fixed_size_100 generative_search_git_history"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks" label="段落チャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks generative_search_git_history"
+  endMarker="# END para_chunks generative_search_git_history"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks_min_25" label="最小長の段落チャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks_min_25 generative_search_git_history"
+  endMarker="# END para_chunks_min_25 generative_search_git_history"
+  language="text"
+/>
+</TabItem>
+</Tabs>
+
+ここでの結果はセマンティック検索と同様でした。長いチャンクのほうが情報量が多く、git の歴史のような幅広いトピックには有用です。
+
+#### 例 2
+
+:::info 「`available git remote commands`」の検索結果。
+:::
+
+<Tabs groupId="chunking">
+<TabItem value="fixed_size_25" label="25 ワードチャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_25 generative_search_git_remote"
+  endMarker="# END fixed_size_25 generative_search_git_remote"
+  language="text"
+/>
+</TabItem>
+<TabItem value="fixed_size_100" label="100 ワードチャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START fixed_size_100 generative_search_git_remote"
+  endMarker="# END fixed_size_100 generative_search_git_remote"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks" label="段落チャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks generative_search_git_remote"
+  endMarker="# END para_chunks generative_search_git_remote"
+  language="text"
+/>
+</TabItem>
+<TabItem value="para_chunks_min_25" label="最小長の段落チャンク">
+<FilteredTextBlock
+  text={CodePracticalExample}
+  startMarker="# START para_chunks_min_25 generative_search_git_remote"
+  endMarker="# END para_chunks_min_25 generative_search_git_remote"
+  language="text"
+/>
+</TabItem>
+</Tabs>
+
+`available git remote commands` に対する生成検索の結果は、先ほどよりもさらに示唆的です。
+
+ここでは、最も短いチャンクが書籍から最も多くの `git remote` コマンドを取得できました。これは、コーパス（書籍）内のさまざまな場所から多くのチャンクを取り出せたためです。
+
+一方、長いチャンクを使った場合は、取得したチャンクが少なくなったため、`git remote` コマンドは 1 つしか取り出せませんでした。
+
+#### 考察
+
+ここでは短いチャンクと長いチャンクのトレードオフが見て取れます。
+
+短いチャンクを使うと、より多くのオブジェクトから多くの情報を取得できますが、各オブジェクトの文脈情報は少なくなります。長いチャンクを使うと、取得できるオブジェクトは少なくなりますが、各オブジェクトに含まれる文脈情報は多くなります。
+
+たとえ非常に大きなコンテキストウィンドウを持つ LLM を使う場合でも、この点は忘れないでください。入力テキストが長いほど API 料金や推論時間が増えるため、長いチャンクにはコストが伴います。
+
+しばしば、これは RAG のチャンク化戦略を決める際に検討すべき *唯一の* トレードオフです。
+
+<!-- ## <i class="fa-solid fa-square-chevron-right"></i> Review
+
+<Quiz questions={varName} />
+
+Any quiz questions
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
+
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+試してみてください…
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+:::info
+要約を追加してください
+::: -->
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+<!-- import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}]; -->

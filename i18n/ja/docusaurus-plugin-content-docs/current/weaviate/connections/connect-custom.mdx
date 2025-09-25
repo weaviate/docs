@@ -1,0 +1,97 @@
+---
+title: カスタム接続
+sidebar_position: 30
+image: og/docs/connect.jpg
+# tags: ['getting started', 'connect']
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+
+import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
+import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
+
+[Python クライアント v4](/weaviate/client-libraries/python) と [TypeScript クライアント v3](../client-libraries/typescript/index.mdx) では、一般的な接続タイプ向けのヘルパーメソッドを提供しています。さらに、追加の接続設定が必要な場合に使用できるカスタムメソッドも用意されています。
+
+他のクライアントを使用している場合でも、標準の接続メソッドはすべての接続で設定可能です。
+
+<Tabs groupId="languages">
+<TabItem value="py4" label="Python Client v4">
+   <FilteredTextBlock
+     text={PyCodeV4}
+     startMarker="# START CustomConnect"
+     endMarker="# END CustomConnect"
+     language="py"
+   />
+</TabItem>
+<TabItem value="ts3" label="JS/TS Client v3">
+   <FilteredTextBlock
+     text={TsCodeV3}
+     startMarker="// START CustomConnect"
+     endMarker="// END CustomConnect"
+     language="js"
+   />
+</TabItem>
+</Tabs>
+
+## 環境変数
+
+import EnvVarsHowto from '/_includes/environment-variables.mdx';
+
+<EnvVarsHowto/>
+
+## gRPC タイムアウト
+
+import GRPCTimeoutIntro from '/_includes/connect/timeouts-intro.mdx';
+
+<GRPCTimeoutIntro/>
+
+import GRPCTimeouts from '/_includes/code/connections/timeouts-custom.mdx';
+
+<GRPCTimeouts/>
+
+## サードパーティ API キー
+
+外部 API を利用するインテグレーションでは、API キーが必要になることがよくあります。サードパーティの API キーを追加するには、次の例を参考にしてください:
+
+<Tabs groupId="languages">
+<TabItem value="py4" label="Python Client v4">
+   <FilteredTextBlock
+     text={PyCodeV4}
+     startMarker="# START ConnectWithApiKeyExample"
+     endMarker="# END ConnectWithApiKeyExample"
+     language="py"
+   />
+</TabItem>
+<TabItem value="ts3" label="JS/TS Client v3">
+   <FilteredTextBlock
+     text={TsCodeV3}
+     startMarker="// START ConnectWithApiKeyExample"
+     endMarker="// END ConnectWithApiKeyExample"
+     language="js"
+   />
+</TabItem>
+</Tabs>
+
+## OIDC 認証
+
+import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+
+<WCDOIDCWarning/>
+
+import OIDCConnect from '/_includes/connect/oidc-connect-ref.mdx';
+
+<OIDCConnect/>
+
+import OIDCExamples from '/_includes/code/connections/oidc-connect.mdx';
+
+<OIDCExamples/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+
+

@@ -1,0 +1,191 @@
+---
+title: Weaviate データベース
+sidebar_position: 0
+description: "オープンソースの AI ネイティブ ベクトル データベース、 Weaviate の完全なドキュメント。"
+image: og/docs/home.jpg
+hide_table_of_contents: false
+# tags: []
+---
+
+import CardsSection from "/src/components/CardsSection";
+import DeploymentCards from "/src/components/DeploymentCards";
+import styles from "/src/components/CardsSection/styles.module.scss";
+import secondaryNavbarItems from "/secondaryNavbar.js";
+
+export const welcomeCardsData = [
+  {
+    id: "new",
+    title: " Weaviate を初めてお使いですか？",
+    description: (
+      <>
+        まずは{" "}
+        <span className={styles.highlight}>クイックスタート チュートリアル</span> から始めましょう。15〜30 分で完了するエンドツーエンドのデモです。
+      </>
+    ),
+    link: "/weaviate/quickstart",
+    icon: "fas fa-star", // use Font Awesome CSS class
+  },
+];
+
+ Weaviate _(we-vee-eight)_ はオープンソースの AI ネイティブ ベクトル データベースです。ここでは Weaviate を使い始める方法と、 Weaviate の機能を最大限に活用する方法をご案内します。
+
+<CardsSection items={welcomeCardsData} className={styles.smallCards} />
+
+<br />
+
+## 適切なドキュメントとリソースを見つける
+
+ Weaviate のドキュメントは、サービスと機能ごとに複数のユニットに分かれています。
+
+{/* Filter out items where isSmall is true */}
+{(() => {
+  const regularItems = Object.fromEntries(
+    Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
+  );
+  
+  <br />
+  return <CardsSection items={regularItems} />;
+  <br />
+})()}
+
+## Weaviate とは
+
+ Weaviate は **オープンソースのベクトル データベース** で、データオブジェクトとそのベクトル埋め込みの両方を保存・インデックス化します。このアーキテクチャにより、キーワード一致のみに依存せず、ベクトルにエンコードされた意味を比較する高度なセマンティック検索が可能になります。主な機能は次のとおりです。
+
+- **[セマンティック検索とハイブリッド検索](./search/basics.md)**  
+   ベクトルでデータをインデックス化することで、セマンティック類似度とキーワードの両方に基づく検索をサポートします。検索語が保存されたデータと完全に一致しない場合でも、より関連性の高い結果を返します。
+
+- **[検索拡張生成 (RAG)](./search/generative.md)**  
+   Weaviate は RAG ワークフローの堅牢なバックエンドとして機能します。ベクトル検索で取得したコンテキストを生成モデルに提供し、正確でコンテキストに沿った回答生成を容易にします。
+
+- **[エージェント駆動型ワークフロー](../agents/index.md)**  
+   柔軟な API と最新 AI モデルとの統合により、インテリジェント エージェントに依存するアプリケーションの基盤としても適しています。これらのエージェントは Weaviate に保存されたデータのセマンティックな洞察を活用して意思決定やアクションのトリガーを行えます。
+
+## Weaviate エコシステム
+
+ Weaviate エコシステムは、クラウドネイティブな AI 搭載アプリケーション構築を中心とした複数のツールとサービスで構成されています。
+
+import WeaviateEcosystem from "@site/static/img/weaviate-ecosystem.png";
+
+<DocsImage
+  image={WeaviateEcosystem}
+  alt="Weaviate エコシステム"
+  layout="below"
+/>
+<br />
+
+上図のハイレベルな概要のとおり、エコシステムは次の要素から成ります。
+
+- **[Weaviate Database](#what-is-weaviate)**: オブジェクトとベクトルの両方を保存するオープンソースのベクトル データベース。
+- **[Weaviate Cloud](/cloud)**: Weaviate ベクトル データベースのフルマネージド クラウド デプロイ。
+- **[Weaviate Agents](/agents)**: Weaviate Cloud ユーザー向けのプリビルド エージェント サービス。
+- **[Weaviate Embeddings](/cloud/embeddings)**: Weaviate Cloud ユーザー向けのマネージド埋め込み推論サービス。
+- **[外部モデルプロバイダー](/weaviate/model-providers)**: Weaviate と統合できるサードパーティーモデル。
+
+## デプロイ方法を選ぶ
+
+export const deploymentCardsData = [
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "デプロイ", active: true },
+      { label: "本番", active: true },
+    ],
+    header: "Weaviate Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "評価 (サンドボックス) から本番まで",
+      "サーバーレス (インフラは Weaviate が管理)",
+      " (オプション) データ レプリケーション (高可用性)",
+      " (オプション) ゼロダウンタイム アップデート",
+    ],
+    button: {
+      text: "WCD インスタンスを設定",
+      link: "/cloud/manage-clusters/create",
+    },
+  },
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "デプロイ", active: true },
+      { label: "本番", active: false },
+    ],
+    header: "Docker",
+    bgImage: "/img/site/docker-doc-icon.svg",
+    bgImageLight: "/img/site/docker-doc-icon-light.svg",
+    listItems: [
+      "ローカルでの評価 & 開発向け",
+      "ローカル推論コンテナ",
+      "マルチモーダル モデル",
+      "カスタマイズ可能な構成",
+    ],
+    button: {
+      text: "Docker で Weaviate を実行",
+      link: "/deploy/installation-guides/docker-installation",
+    },
+  },
+  {
+    tabs: [
+      { label: "評価", active: false },
+      { label: "デプロイ", active: true },
+      { label: "本番", active: true },
+    ],
+    header: "Kubernetes",
+    bgImage: "/img/site/kubernetes-doc-icon.svg",
+    bgImageLight: "/img/site/kubernetes-doc-icon-light.svg",
+    listItems: [
+      "開発から本番まで対応",
+      "ローカル推論コンテナ",
+      "マルチモーダル モデル",
+      "カスタマイズ可能な構成",
+      "セルフデプロイまたは Marketplace デプロイ",
+      " (オプション) ゼロダウンタイム アップデート",
+    ],
+    button: {
+      text: "Kubernetes で Weaviate を実行",
+      link: "/deploy/installation-guides/k8s-installation",
+    },
+  },
+  {
+    tabs: [
+      { label: "評価", active: true },
+      { label: "デプロイ", active: false },
+      { label: "本番", active: false },
+    ],
+    header: "Embedded Weaviate",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "ベーシックかつ迅速な評価向け",
+      "Python や JS/TS から手軽に Weaviate を起動",
+    ],
+    button: {
+      text: "Embedded Weaviate を実行",
+      link: "/deploy/installation-guides/embedded",
+    },
+  },
+];
+
+<DeploymentCards items={deploymentCardsData} />
+## コミュニティとサポート
+
+export const communityCardsData = [
+  {
+    id: "questions",
+    title: "Questions",
+    description:
+      "Please visit our forum. The Weaviate team and our awesome community can help.",
+    link: "https://forum.weaviate.io/c/support/",
+    icon: "fas fa-comments",
+  },
+  {
+    id: "github",
+    title: "Open-source on GitHub",
+    description: "Give us a star on GitHub to support our work.",
+    link: "https://github.com/weaviate/weaviate",
+    icon: "fab fa-github", // note: brand icons use "fab"
+  },
+];
+
+<CardsSection items={communityCardsData} />

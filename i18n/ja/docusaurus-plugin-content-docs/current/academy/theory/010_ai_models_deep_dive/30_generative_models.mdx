@@ -1,0 +1,133 @@
+---
+title: 生成 AI モデル
+description: 生成 AI モデルの内部を探る
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+:::info 生成モデルと Weaviate
+
+Weaviate は多くの生成モデルと統合されており、例えば検索結果から要約を生成するなど、保存されたデータと組み合わせて便利に利用できます。実際には、このモジュールで説明する多くの詳細は Weaviate を使うことで抽象化されています。
+
+:::
+
+多くの人は `Claude.ai`、`ChatGPT`、`Meta AI` といったチャット型アプリケーション経由で AI モデルを利用しているかもしれません。これらのアプリケーションも深層学習モデルによって動作しています。具体的には `claude-3.5`、`gpt-4`、`llama-3` といったモデルです。
+
+この種のモデルは一般に「生成 AI」または「生成モデル」と呼ばれます。
+
+## <i class="fa-solid fa-chalkboard-user"></i> 生成 AI モデルの仕組み
+
+前節では深層学習モデルの動作を見ました。ここで簡単におさらいします。
+
+import NNInputsOutputsLight from './_img/nn_explained_10_inputs_and_outputs.png';
+import NNInputsOutputsDark from './_img/nn_explained_10_inputs_and_outputs_dark.png';
+
+<ThemedImage
+  alt="Neural Network Inputs and Outputs"
+  sources={{
+    light: NNInputsOutputsLight,
+    dark: NNInputsOutputsDark,
+  }}
+  width="700"
+/>
+
+深層学習モデルは数値入力を受け取り、「隠れ層」を通して変換し、数値出力を生成します。しかし生成モデルはテキスト入力をテキスト出力に変換します ― 一見まったく異なるタスクです。
+
+生成モデルがこれを実現できるのは、トークナイゼーションと自己回帰生成という 2 つの重要な要素があるからです。
+
+### <i class="fa-solid fa-chalkboard"></i> トークナイゼーション
+
+深層学習モデルへの入力は数値ですが、生成モデルはテキスト入力を受け取ります。トークナイゼーションはテキストを数値列へ変換する最初のステップです。
+
+例えば `Explain tokenization like I am five.` という入力を考えます。生成モデルはこの入力を次のように「トークン化」するかもしれません。
+
+import Tokenization from './_img/tokenization.png';
+
+<img
+  alt="Neural Network Node Calculations"
+  src={Tokenization}
+  width="400"
+/>
+
+各部分が一意の「トークン」であり、モデルにとっての最小理解単位と考えられます。モデルはそれぞれのトークンを一意の整数に置き換えます。さらに入力の最初と最後に特殊トークンを追加すると、その列がモデルへの入力となります。入力例は以下のようになります。
+
+`[200264, 176289, 6602, 2860, 1299, 357, 939, 6468, 13, 200265]`
+
+各モデルには独自のトークナイザーがあり、挙動が異なる点に注意してください。
+
+### <i class="fa-solid fa-chalkboard"></i> 自己回帰生成
+
+反対側では、生成モデルは 1 トークンを出力するように構成されています。生成モデルのアーキテクチャは次のようになります。
+
+import NNGenerativeModels from './_img/nn_explained_40_generative_models.png';
+import NNGenerativeModelsDark from './_img/nn_explained_40_generative_models_dark.png';
+
+<ThemedImage
+  alt="Generative models"
+  sources={{
+    light: NNGenerativeModels,
+    dark: NNGenerativeModelsDark,
+  }}
+  width="450"
+/>
+
+しかし実際に私たちが対話するとき、生成モデルは可変長のテキストを出力します。
+
+生成モデルはどのようにして 1 度に 1 トークンずつ生成しながら、まとまりのあるテキスト列を作り出すのでしょうか。ほとんどの（テキスト）生成モデルは、多くの人が難しい作業を行うときと同じように ― つまり「一歩一歩」トークンを積み重ねていくことで実現しています。次の図をご覧ください。
+
+import NNAutoRegressiveModels from './_img/nn_explained_45_auto_regressive.png';
+import NNAutoRegressiveModelsDark from './_img/nn_explained_45_auto_regressive_dark.png';
+
+<ThemedImage
+  alt="Autoregressive models"
+  sources={{
+    light: NNAutoRegressiveModels,
+    dark: NNAutoRegressiveModelsDark,
+  }}
+  width="600"
+/>
+
+生成モデルでは、生成された各トークンが入力列の一部となり、前の入力列は 1 つ下へスライド（最後尾は削除）します。これを繰り返し、モデルが生成終了を示す特殊トークンを出力するまで続きます。
+
+この仕組みによって `gpt-4` のようなモデルは質問に対して一貫した回答を生成できます。各トークンはユーザー入力と、それまでに生成されたすべてのトークンを基に生成されるのです。
+
+したがって、モデルに「コンテキスト長」の上限があると言われる場合、それは入力トークン `[x1, x2, …, xn]` の最大長を指します。また多くの場合、出力長にも制限が設けられています。これは自己回帰により入力が膨らむにつれ、出力トークンが初期入力を「忘れて」しまわないようにするためです。
+
+### <i class="fa-solid fa-chalkboard"></i> 生成モデルを使用する理由
+
+この「一歩先に 1 トークンを生成する」というシンプルなタスクを通じて、生成モデルは非常に高度な多くのタスクをこなします。
+
+生成モデルは以下のような分野横断的能力を示しています。
+
+- 複数のプログラミング言語でコードを作成・デバッグ
+- ニュアンスを理解した会話
+- 複雑な文書の要約や多言語翻訳
+- 難しい概念をさまざまな難易度で説明
+- 物語からマーケティングコピーまでコンテンツを生成
+
+さらに生成モデルは "zero-shot" や "few-shot" 学習を行えます。つまり、明示的に訓練されていないタスクでも、ほとんどまたはまったく例を示さずに取り組めます。
+
+これにより、生成モデルが特定用途向けモデルの代替となり、長いモデル開発プロセスを短縮できる場合があります。
+
+驚くべきことに、これらすべての能力は生成モデルが持つたった 1 つの目標 ― 次のトークンを予測する ― から派生しています。
+
+生成モデルを利用する際は、どれだけ印象的で複雑に見えても、モデルは膨大なパラメータを用いたパターンマッチングを行っているにすぎないことを忘れないようにしましょう。そうすることで、モデルに不適切な魔法的性質を付与せず、その出力を健全な懐疑心を持って扱えます。
+
+これが生成モデルの基本です。後ほど具体的なモデル例やモデルの評価・選択などを学びます。今は別の種類のモデルであるエンベディングモデルについて学びましょう。
+
+:::tip 高度なトピック
+
+本節では主に、テキスト入力からテキスト出力を生成する大規模言語モデルについて話しました。
+<br/>
+
+しかし多くの最新生成モデルはマルチモーダルです。テキストだけでなく画像も入力に含められる「ビジョン・ランゲージモデル」が存在します。また Stable Diffusion や Sora のように、画像や動画といった視覚的出力を生成するモデルもあります。
+<br/>
+
+これらのモデルも基本的な動作は前述と同様ですが、モダリティ固有の要素を持つことでさらに多彩な表現が可能になっています。
+
+:::
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

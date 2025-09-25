@@ -1,0 +1,440 @@
+---
+title: JS/TS クライアント v2
+sidebar_position: 20
+description: "既存のアプリケーションの保守および互換性のためのレガシー TypeScript クライアント v2 のドキュメント."
+image: og/docs/client-libraries.jpg
+# tags: ['TypeScript', 'client library']
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::note TypeScript client version
+TypeScript クライアントのバージョンは `v||site.typescript_client_version||` です。新しいプロジェクトでは [TypeScript v3 クライアント](./index.mdx) をご利用ください。
+:::
+
+TypeScript クライアントは、 JavaScript および TypeScript のスクリプトの両方で使用できます。
+
+## インストールとセットアップ
+
+TypeScript クライアントライブラリをインストールするには、 [npm](https://www.npmjs.com/) を使用します。
+
+```bash
+npm install weaviate-ts-client
+```
+
+## 使い方と型定義
+
+インストール後、以下の例のように TypeScript と JavaScript のスクリプトでクライアントを使用できます。
+
+### 使い方
+
+<Tabs groupId="languages">
+<TabItem value="js" label="JavaScript">
+
+```js
+const { default: weaviate } = require('weaviate-ts-client');
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate endpoint
+});
+
+client
+  .schema
+  .getter()
+  .do()
+  .then(res => {
+    console.log(res);
+  })
+  .catch(err => {
+    console.error(err)
+  });
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts
+import weaviate from 'weaviate-ts-client';
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate endpoint
+});
+
+const response = await client
+  .schema
+  .getter()
+  .do();
+console.log(response);
+```
+
+</TabItem>
+</Tabs>
+
+:::tip Troubleshooting imports with TypeScript
+TypeScript で import 文に問題がある場合 (例: `weaviate` が `undefined` になるなど)、 `tsconfig.json` の `"compilerOptions"` に `"esModuleInterop": true` を追加してみてください。
+:::
+
+### 型定義
+
+型定義はパッケージの `types` サブディレクトリにある `*.d.ts` ファイルに含まれています。例としては [npm パッケージページ](https://www.npmjs.com/package/weaviate-ts-client?activeTab=code) をご参照ください。
+
+## 認証
+
+import ClientAuthIntro from '/docs/weaviate/client-libraries/_components/client.auth.introduction.mdx'
+
+<ClientAuthIntro clientName="TypeScript"/>
+
+
+### API キー認証
+
+import ClientAuthApiKey from '/docs/weaviate/client-libraries/_components/client.auth.api.key.mdx'
+
+<ClientAuthApiKey />
+
+<Tabs groupId="languages">
+<TabItem value="js" label="JavaScript">
+
+```js
+const { default: weaviate } = require('weaviate-ts-client');
+
+// Instantiate the client with the auth config
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'edu-demo.weaviate.network',  // Replace with your Weaviate endpoint
+  apiKey: new weaviate.ApiKey('learn-weaviate'),  // Replace with your Weaviate instance API key
+});
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts
+import weaviate, { WeaviateClient, ApiKey } from 'weaviate-ts-client';
+
+// Instantiate the client with the auth config
+const client: WeaviateClient = weaviate.client({
+  scheme: 'https',
+  host: 'edu-demo.weaviate.network',  // Replace with your Weaviate endpoint
+  apiKey: new ApiKey('learn-weaviate'),  // Replace with your Weaviate instance API key
+});
+```
+
+</TabItem>
+</Tabs>
+
+### OIDC 認証
+
+import ClientAuthOIDCIntro from '/docs/weaviate/client-libraries/_components/client.auth.oidc.introduction.mdx'
+
+<ClientAuthOIDCIntro />
+
+:::info Background refresh processes with TS
+TypeScript クライアントで OIDC を使用する場合、バックグラウンドでのトークンリフレッシュ処理がスクリプトの終了をブロックすることがあります。不要な場合は、次のいずれかをお試しください。  
+1. OIDC 設定で `silentRefresh` パラメーターを `false` に設定する。  
+1. スクリプトが終了するタイミングやトークンリフレッシュが不要になったタイミングで `client.oidcAuth?.stopTokenRefresh()` を実行してプロセスを停止する。
+:::
+
+#### <i class="fa-solid fa-key"></i> Resource Owner Password フロー
+
+import ClientAuthFlowResourceOwnerPassword from '/docs/weaviate/client-libraries/_components/client.auth.flow.resource.owner.password.mdx'
+
+<ClientAuthFlowResourceOwnerPassword />
+
+<Tabs groupId="languages">
+<TabItem value="js" label="JavaScript">
+
+```js
+const { default: weaviate } = require('weaviate-ts-client');
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
+  authClientSecret: new weaviate.AuthUserPasswordCredentials({
+    username: 'user123',
+    password: 'password',
+    silentRefresh: true, // Default: true - if false, you must refresh the token manually; if true, this background process will prevent a script from exiting.
+    scopes: ['offline_access']  // optional, depends on the configuration of your identity provider (not required with WCD)
+  })
+});
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts
+import weaviate, { WeaviateClient, AuthUserPasswordCredentials } from 'weaviate-ts-client';
+
+const client: WeaviateClient = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
+  authClientSecret: new AuthUserPasswordCredentials({
+    username: 'user123',
+    password: 'password',
+    silentRefresh: true, // Default: true - if false, you must refresh the token manually; if true, this background process will prevent a script from exiting.
+    scopes: ['offline_access']  // optional, depends on the configuration of your identity provider (not required with WCD)
+  })
+});
+```
+
+</TabItem>
+</Tabs>
+
+#### <i class="fa-solid fa-key"></i> Client Credentials フロー
+
+import ClientAuthFlowClientCredentials from '/docs/weaviate/client-libraries/_components/client.auth.flow.client.credentials.mdx'
+
+<ClientAuthFlowClientCredentials />
+
+<Tabs groupId="languages">
+<TabItem value="js" label="JavaScript">
+
+```js
+const { default: weaviate } = require('weaviate-ts-client');
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL', // Replace with your instance URL
+  authClientSecret: new weaviate.AuthClientCredentials({
+    clientSecret: 'supersecuresecret',
+    silentRefresh: true, // Default: true - if false, you must refresh the token manually; if true, this background process will prevent a script from exiting.
+    scopes: ['scope1', 'scope2']  // optional, depends on the configuration of your identity provider
+  })
+});
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts
+import weaviate, { WeaviateClient, AuthClientCredentials } from 'weaviate-ts-client';
+
+const client: WeaviateClient = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL', // Replace with your instance URL
+  authClientSecret: new AuthClientCredentials({
+    clientSecret: 'supersecuresecret',
+    silentRefresh: true, // Default: true - if false, you must refresh the token manually; if true, this background process will prevent a script from exiting.
+    scopes: ['scope1', 'scope2']  // optional, depends on the configuration of your identity provider
+  })
+});
+```
+
+</TabItem>
+</Tabs>
+
+
+#### <i class="fa-solid fa-key"></i> リフレッシュトークンフロー
+
+import ClientAuthBearerToken from '/docs/weaviate/client-libraries/_components/client.auth.bearer.token.mdx'
+
+<ClientAuthBearerToken />
+
+<Tabs groupId="languages">
+<TabItem value="js" label="JavaScript">
+
+```js
+const { default: weaviate } = require('weaviate-ts-client');
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
+  authClientSecret: new weaviate.AuthAccessTokenCredentials({
+    accessToken: 'abcd1234',
+    expiresIn: 900,
+    refreshToken: 'efgh5678',
+    silentRefresh: true, // Default: true - if false, you must refresh the token manually; if true, this background process will prevent a script from exiting.
+  })
+});
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts
+import weaviate, { WeaviateClient, AuthAccessTokenCredentials } from 'weaviate-ts-client';
+
+const client: WeaviateClient = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
+  authClientSecret: new AuthAccessTokenCredentials({
+    accessToken: 'abcd1234',
+    expiresIn: 900,
+    refreshToken: 'efgh5678',
+    silentRefresh: true, // Default: true - if false, you must refresh the token manually; if true, this background process will prevent a script from exiting.
+  })
+});
+```
+
+</TabItem>
+</Tabs>
+
+## カスタムヘッダー
+
+クライアントにはカスタムヘッダーを渡すことができ、初期化時に追加されます。
+
+<Tabs groupId="languages">
+<TabItem value="js" label="JavaScript">
+
+```js
+const { default: weaviate } = require('weaviate-ts-client');
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
+  headers: { headerName: 'HeaderValue' }
+});
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```ts
+import weaviate, { WeaviateClient } from 'weaviate-ts-client';
+
+const client: WeaviateClient = weaviate.client({
+  scheme: 'https',
+  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your instance URL
+  headers: { headerName: 'HeaderValue' }
+});
+```
+
+</TabItem>
+</Tabs>
+
+これらのヘッダーは、クライアントが行うすべてのリクエストに含まれます。
+
+## 参照
+
+:::note JS to TS migration
+一部の古いコード例は JavaScript で書かれており、まだ更新されていません。新しいコード例は TypeScript を使用しています。
+:::
+
+TypeScript クライアントで扱われる [RESTful エンドポイント](/weaviate/api/rest) と [GraphQL 機能](/weaviate/api) のコードブロックは、現在 JavaScript の例が掲載されています。
+
+## 設計
+
+### ビルダーパターン
+
+TypeScript クライアントは [Builder パターン](https://en.wikipedia.org/wiki/Builder_pattern) に従って設計されています。このパターンは複雑なクエリオブジェクトを構築するために使用されます。つまり、（RESTful の GET リクエストでデータを取得したり、より複雑な GraphQL クエリを実行したりする際に）呼び出しをチェーンさせることで複雑さを軽減します。ビルダーオブジェクトには任意のものと、特定の機能を実行するために必須のものがあります。ビルダーの例は [RESTful API リファレンス](/weaviate/api/rest) と [GraphQL リファレンス](/weaviate/api) に掲載されています。
+
+このページ冒頭のコードスニペットは、RESTful リクエスト `GET /v1/schema` に対応するシンプルなクエリを示しています。パッケージを読み込みローカルインスタンスへ接続してクライアントを初期化します。その後 `.schema` を `.getter()` で取得してクエリを構築します。クエリは `.do()` 呼び出しで送信されます。`do()` は構築して実行したいあらゆる関数で必須です。
+
+### 一般的な注意事項
+- すべてのメソッドは ES6 Promise を使用して非同期コードを扱います。そのため、関数呼び出し後に `.then()` を使用するか、`async` / `await` をサポートする必要があります。
+- エラーが発生した場合、Promise はそのエラーメッセージで reject されます。（`async` / `await` を使用している場合、reject された Promise は throw された例外と同様に扱われます）
+- クライアント内部では `isomorphic-fetch` を使用して REST 呼び出しを行いますので、ブラウザと NodeJS アプリケーションのどちらでも変更なしで動作します。
+
+## JavaScript ユーザーのための TypeScript
+
+TypeScript は JavaScript のスーパーセットです。しかし、いくつかの違いがあります。このセクションでは、 TypeScript を初めて使用する JavaScript ユーザー向けにヒントを紹介します。
+
+### TypeScript ファイルの実行
+
+TypeScript ファイルを実行するには、まず JavaScript に変換します。`npm` の `typescript` パッケージには `tsc` ユーティリティが含まれています。`tsc` を使用して TypeScript ファイルを変換（トランスパイル）します。
+
+`typescript` パッケージをインストールします。グローバルに利用したい場合は `-g` フラグを追加してください。
+
+```bash
+npm install typescript
+```
+
+Weaviate TypeScript クライアントのように、追加の設定が必要なパッケージもあります。TypeScript プロジェクトのルートディレクトリには `tsconfig.json` ファイルがあります。以下を `tsconfig.json` に追加してください。
+
+- コンパイラオプション
+  - `"target": "esnext"`
+  - `"module": "esnext"`
+  - `"moduleResolution": "node"`
+- `"include": ["*.ts"]`（または特定のファイル）
+- `"lib": [ "es2018" ]`
+
+`tsconfig.json` を使用する場合、コマンドラインでファイル名を指定しないでください。TypeScript ファイルは `tsconfig.json` に指定します。`tsc` は単体で実行したときのみ `tsconfig.json` を読み込みます。
+
+```bash
+tsc
+```
+
+`node` はモジュール内でのみ `import` 文を許可します。`import` 文を使用できるように、`package.json` に以下を追加してください。
+
+```json
+{
+   "type": "module"
+}
+```
+
+### 例
+
+この例を実行するには、次の手順を完了してください。
+
+- `typescript` パッケージをインストールする。
+- `tsconfig.json` と `package.json` を前述のとおり更新する。
+- サンプルコードをコピーする。
+- コードを `sample.ts` として `tsconfig.json` と `package.json` と同じディレクトリに保存する。
+- コードを変換し、実行する。
+
+`sample.ts` を作成するために次のコードを使用します。
+
+<details>
+  <summary>サンプル TypeScript コード</summary>
+
+```ts
+import weaviate from 'weaviate-ts-client';
+
+const client = weaviate.client({
+  scheme: 'https',
+  host: 'edu-demo.weaviate.network',
+  apiKey: new weaviate.ApiKey('learn-weaviate'),
+});
+
+console.log(client.misc)
+```
+</details>
+
+`sample.ts` を変換します。
+
+```bash
+tsc
+```
+
+変換されたファイルを実行します。
+
+```bash
+node sample.js
+```
+
+出力は次のようになります。
+
+<details>
+  <summary>サンプル出力</summary>
+
+```json
+{
+  "clientId": "wcs",
+  "href": "https://auth.wcs.api.weaviate.io/auth/realms/SeMI/.well-known/openid-configuration"
+}
+```
+</details>
+
+## クライアントリリース
+
+<details>
+  <summary> Weaviate と対応するクライアントバージョンの表を表示するにはここをクリック</summary>
+
+import ReleaseHistory from '/_includes/release-history.md';
+
+<ReleaseHistory />
+
+</details>
+
+## クライアント変更履歴
+
+クライアントの変更履歴は各リリースごとに GitHub で確認できます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
+

@@ -1,0 +1,96 @@
+---
+title: 例 1 - クエリ
+description: Hello Weaviate Theory - 例 パート 1
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルの活用
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/zC0CpBiLC3g' controls='true' />
+<br/>
+
+ここでは、Weaviate でできることをいくつか例示します。
+
+まず、デモデータベースを使ってベクトル検索を試してみましょう。入力テキスト・ベクトル・オブジェクトなど、さまざまなクエリ方法で類似オブジェクトを取得する方法を学びます。
+
+さらに、ベクトル検索とキーワード検索を比較し、両者の違いを確認したうえで、フィルターを使って両方を組み合わせる方法も紹介します。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル検索デモ
+
+最初の例として、デモデータセットを検索してみます。これはクイズ番組 *Jeopardy!* から抜粋した少量の質問を含んでいます。
+
+たとえばクイズナイトを開催するとして、「映画に登場する動物」に関する問題が欲しいとします。従来のデータベースなら、次のように単語一致で探すことになるでしょう。
+
+```sql
+SELECT question, answer
+FROM jeopardy_questions
+WHERE (
+         question LIKE '%animal%'
+         OR question LIKE '%creature%'
+         OR question LIKE '%beast%'
+      )
+AND (
+       question LIKE '%movie%'
+       OR question LIKE '%film%'
+       OR question LIKE '%picture%'
+       OR question LIKE '%cinema%'
+    )
+
+```
+
+このクエリを書くのは大変です。しかも特定の動物名まで条件に追加する必要があるかもしれません。
+
+Weaviate のクエリはもっと直感的です。次のクエリを実行するとどうなるか見てみましょう。
+
+:::note We searched Weaviate for:
+animals in movies
+:::
+
+Weaviate は次の回答を上位に返しました。
+
+:::note Weaviate retrieved:
+- **meerkats**: *The Lion King* に登場するティモンのような哺乳類のグループ
+- **dogs**: スクービー・ドゥー、グーフィー、プルートは漫画版
+- **The Call of the Wild Thornberrys**: 犬のバックを描いたジャック・ロンドンの物語が、動物と話せるエリザが主人公のニックのカートゥーンと合体
+:::
+
+どの結果にも「animal」や「movie」という語がまったく含まれていないのに、関連性が高いことに注目してください。
+
+これこそがベクトル検索の強みです。完全一致せずとも関連オブジェクトを見つけられます。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトルの類似度
+
+ベクトル検索では、クエリと返却オブジェクト間の定量的な類似度を取得できます。これは `distance` と呼ばれます。
+
+`distance` は、返却オブジェクトとクエリの類似度合いを示します。
+
+「それは具体的にどういう意味なのか」「誰が類似度を決めるのか」と疑問に思われるかもしれません。良い質問です！　詳しくは後ほど説明します。
+
+ここでは、「値が小さいほど 2 つのオブジェクトが互いに似ている」と覚えておいてください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> まとめ
+
+<!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+<!-- ### <i class="fa-solid fa-pen-to-square"></i> Review exercise
+
+Can you describe, in your own sentence, XXX?
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+??
+::: -->
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+- ベクトル検索は、テキストを完全一致させなくても関連オブジェクトを見つけられます。
+- ベクトル検索では、distance 値がクエリと返却オブジェクトの類似度を示します。
+- distance が小さいほど類似度が高くなります。
+- ベクトル検索は、キーワード検索やフィルターと組み合わせて、より精緻な検索結果を得ることができます。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
