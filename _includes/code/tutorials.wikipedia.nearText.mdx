@@ -46,21 +46,6 @@ print(json.dumps(result, indent=4))
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-const nearTextResult = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title content')
-  .withNearText({ concepts: ['modern art in Europe'] })
-  .withLimit(1)
-  .do();
-
-console.log('nearText: modern art in Europe = ', JSON.stringify(nearTextResult.data['Get']['Article'], null, 2));
-```
-
-</TabItem>
 {/* <TabItem value="go" label="Go">
 
 ```go

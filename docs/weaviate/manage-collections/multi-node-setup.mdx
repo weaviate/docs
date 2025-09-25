@@ -8,9 +8,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
-import PyCodeV3 from "!!raw-loader!/_includes/code/howto/manage-data.collections-v3.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
-import TSCodeLegacy from "!!raw-loader!/_includes/code/howto/manage-data.collections-v2.ts";
 import JavaReplicationCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java';
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
@@ -23,7 +21,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](../concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AllReplicationSettings"
@@ -35,16 +33,8 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START AllReplicationSettings"
-    endMarker="# END AllReplicationSettings"
-    language="pyv3"
-  />
-</TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START AllReplicationSettings"
@@ -118,7 +108,7 @@ For details on the configuration parameters, see the following:
 Configure sharding per collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ShardingSettings"
@@ -127,16 +117,8 @@ Configure sharding per collection.
     />
   </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-  <FilteredTextBlock
-    text={PyCodeV3}
-    startMarker="# START ShardingSettings"
-    endMarker="# END ShardingSettings"
-    language="pyv3"
-  />
-</TabItem>
 
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START ShardingSettings"
@@ -145,14 +127,6 @@ Configure sharding per collection.
   />
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-  <FilteredTextBlock
-    text={TSCodeLegacy}
-    startMarker="// START ShardingSettings"
-    endMarker="// END ShardingSettings"
-    language="tsv2"
-  />
-</TabItem>
 
 <TabItem value="java" label="Java">
   <FilteredTextBlock

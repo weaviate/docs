@@ -10,7 +10,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v4.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.ts';
 
 
@@ -46,7 +45,7 @@ During restoration, restore the cross-referenced (i.e. "to") object first, then 
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionCollectionToCollection"
@@ -54,15 +53,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateCollectionCollectionToCollection"
-      endMarker="# END CreateCollectionCollectionToCollection"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionCollectionToCollection"
@@ -79,7 +70,7 @@ Migrate:
 - to `target collection` in the `client_tgt` instance
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CollectionToCollection"
@@ -87,19 +78,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <p><small>
-        The <code>migrate_data_from_weaviate_to_weaviate</code> function is called to migrate the data.
-        <br/><br/>
-    </small></p>
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CollectionToCollection"
-      endMarker="# END CollectionToCollection"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CollectionToCollection"
@@ -116,7 +95,7 @@ Migrate:
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance, and enable multi-tenancy for the target collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionCollectionToTenant"
@@ -124,15 +103,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateCollectionCollectionToTenant"
-      endMarker="# END CreateCollectionCollectionToTenant"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionCollectionToTenant"
@@ -147,7 +118,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
 Add tenants at the target instance before adding data objects.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateTenants"
@@ -155,15 +126,7 @@ Add tenants at the target instance before adding data objects.
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateTenants"
-      endMarker="# END CreateTenants"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateTenants"
@@ -180,7 +143,7 @@ Migrate:
 - to `target tenant` data from `target collection` in the `client_tgt` instance
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CollectionToTenant"
@@ -188,19 +151,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <p><small>
-        The <code>migrate_data_from_weaviate_to_weaviate</code> function is called to migrate the data.
-        <br/><br/>
-    </small></p>
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CollectionToTenant"
-      endMarker="# END CollectionToTenant"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CollectionToTenant"
@@ -217,7 +168,7 @@ Migrate:
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance, and enable multi-tenancy for the target collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionTenantToCollection"
@@ -225,15 +176,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateCollectionTenantToCollection"
-      endMarker="# END CreateCollectionTenantToCollection"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionTenantToCollection"
@@ -250,7 +193,7 @@ Migrate:
 - to `target collection` in the `client_tgt` instance
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START TenantToCollection"
@@ -258,19 +201,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <p><small>
-        The <code>migrate_data_from_weaviate_to_weaviate</code> function is called to migrate the data.
-        <br/><br/>
-    </small></p>
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START TenantToCollection"
-      endMarker="# END TenantToCollection"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START TenantToCollection"
@@ -287,7 +218,7 @@ Migrate:
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance including enabling multi-tenancy.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionTenantToTenant"
@@ -295,16 +226,8 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateCollectionTenantToTenant"
-      endMarker="# END CreateCollectionTenantToTenant"
-      language="pyv3"
-    />
-  </TabItem>
 
-<TabItem value="ts" label="JS/TS Client v3">
+<TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionTenantToTenant"
@@ -319,7 +242,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
 Add tenants at the target instance before adding data objects.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateTenants"
@@ -327,15 +250,7 @@ Add tenants at the target instance before adding data objects.
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateTenants"
-      endMarker="# END CreateTenants"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateTenants"
@@ -352,7 +267,7 @@ Migrate:
 - to `target tenant` data from `target collection` in the `client_tgt` instance
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START TenantToTenant"
@@ -360,19 +275,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <p><small>
-        The <code>migrate_data_from_weaviate_to_weaviate</code> function is called to migrate the data.
-        <br/><br/>
-    </small></p>
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START TenantToTenant"
-      endMarker="# END TenantToTenant"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START TenantToTenant"

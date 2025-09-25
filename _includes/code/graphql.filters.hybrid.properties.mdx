@@ -7,55 +7,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLHybridWithPropertiesSpecified"
     endMarker="END GraphQLHybridWithPropertiesSpecified"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-result = (
-  client.query
-  .get("JeopardyQuestion", ["question", "answer"])
-  .with_additional(["score"])
-  .with_hybrid(
-    "Venus",
-    alpha=0.25,  # closer to pure keyword search
-# highlight-start
-    properties=["question"]  # changing to "answer" will yield a different result set
-# highlight-end
-  )
-  .with_limit(3)do()
-)
-
-print(json.dumps(result, indent=4))
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-const response = await client.graphql
-  .get()
-  .withClassName('JeopardyQuestion')
-  .withFields('question answer _additional{ score }')
-  .withHybrid({
-    query: 'Venus',
-    alpha: 0.25,  // closer to pure keyword search
-// highlight-start
-    properties: ['question'],  // changing to "answer" will yield a different set of results
-// highlight-end
-  })
-  withLimit(3)
-  .do();
-
-console.log(response['data']['Get']['JeopardyQuestion']);
-```
-
 </TabItem>
 <TabItem value="java" label="Java">
 

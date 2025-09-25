@@ -62,7 +62,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START OpenAIInstantiation"
@@ -71,7 +71,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START OpenAIInstantiation"
@@ -91,7 +91,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an OpenAI generative AI model:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeOpenAI"
@@ -100,7 +100,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeOpenAI"
@@ -116,7 +116,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GenerativeOpenAICustomModel"
@@ -125,7 +125,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GenerativeOpenAICustomModel"
@@ -143,7 +143,7 @@ You can [specify](#generative-parameters) one of the [available models](#availab
 Configure the following generative parameters to customize the model behavior.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullGenerativeOpenAI"
@@ -152,7 +152,7 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeOpenAI"
@@ -170,7 +170,7 @@ For further details on model parameters, see the [OpenAI API documentation](http
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RuntimeModelSelectionOpenAI"
@@ -178,7 +178,7 @@ Aside from setting the default model provider when creating the collection, you 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RuntimeModelSelectionOpenAI"
@@ -216,7 +216,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SinglePromptExample"
@@ -225,7 +225,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -246,7 +246,7 @@ In other words, when you have `n` search results, the generative model generates
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GroupedTaskExample"
@@ -255,7 +255,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"
@@ -272,7 +272,7 @@ You can also supply images as a part of the input when performing retrieval augm
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START WorkingWithImagesOpenAI"
@@ -280,7 +280,7 @@ You can also supply images as a part of the input when performing retrieval augm
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
   <FilteredTextBlock
       text={TSCode}
       startMarker="// START WorkingWithImagesOpenAI"

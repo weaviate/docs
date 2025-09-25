@@ -400,6 +400,31 @@ Permissions can be defined with the following resources, access levels and optio
         </ul>
       </td>
     </tr>
+    <tr>
+      <td>
+        <Link to="/weaviate/configuration/rbac/manage-roles#groups-permissions">
+          <strong>Groups</strong>
+        </Link>
+      </td>
+      <td>
+        <div class="access-level">Read groups</div>
+        <div class="access-level">Assign and revoke group membership</div>
+      </td>
+      <td>
+        <p>Group name filter:</p>
+        <ul>
+          <li>
+            <code>string or regex</code>: specifies which groups can be managed
+          </li>
+        </ul>
+        <p>Group type filter:</p>
+        <ul>
+          <li>
+            <code>oidc</code> (only OIDC user groups are supported at the moment)
+          </li>
+        </ul>
+      </td>
+    </tr>
   </tbody>
 </table>
 

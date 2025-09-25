@@ -5,64 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START FilterByTimestamps"
     endMarker="END FilterByTimestamps"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-where_filter = {
-  "path": ["_creationTimeUnix"],
-  "operator": "GreaterThan",
-  # "valueDate": "2022-03-18T20:26:34.586-05:00",  # Can use either `valueDate` with a `RFC3339` datetime or `valueText` as Unix epoch milliseconds
-  "valueText": "1647653359063"
-}
-
-response = (
-  client.query
-  .get("Article", "title")
-  .with_where(where_filter)
-  .do()
-)
-
-print(response)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title')
-  .withWhere({
-    operator: 'GreaterThan',
-    path: ['_creationTimeUnix'],
-    // valueDate: '2022-03-18T20:26:34.586-05:00',
-    // Can use either `valueDate` with a `RFC3339` datetime or `valueText` as Unix epoch milliseconds
-    valueText: '1647653359063',
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

@@ -5,59 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLBM25Basic"
     endMarker="END GraphQLBM25Basic"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-bm25 = {
-  "query": "fox",
-  "properties": ["title"],  # by default, all properties are searched
-}
-
-result = (
-  client.query
-  .get("Article", ["title", "_additional {score} "])
-  .with_bm25(**bm25)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title _additional {score}')
-  .withBm25({
-    query: 'fox',
-    properties: ['title'],
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 
