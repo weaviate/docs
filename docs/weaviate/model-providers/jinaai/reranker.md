@@ -58,7 +58,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START JinaAIInstantiation"
@@ -67,7 +67,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START JinaAIInstantiation"
@@ -87,7 +87,7 @@ import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 Configure a Weaviate collection to use a Jina AI reranker model as follows:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RerankerJinaAIBasic"
@@ -96,7 +96,7 @@ Configure a Weaviate collection to use a Jina AI reranker model as follows:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerJinaAIBasic"
@@ -112,7 +112,7 @@ Configure a Weaviate collection to use a Jina AI reranker model as follows:
 You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RerankerJinaAICustomModel"
@@ -121,7 +121,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerJinaAICustomModel"
@@ -146,7 +146,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RerankerQueryExample"
@@ -155,7 +155,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerQueryExample"

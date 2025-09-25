@@ -5,10 +5,10 @@ import assert from 'assert';
 // ================================
 import weaviate from 'weaviate-client';
 
-// START RuntimeModelSelectionAnthropic  // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama
+// START RuntimeModelSelectionAnthropic  // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama // START RuntimeModelSelectionxAI 
 import { generativeParameters } from 'weaviate-client';
 
-// END RuntimeModelSelectionAnthropic  // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama
+// END RuntimeModelSelectionAnthropic  // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama // END RuntimeModelSelectionxAI 
 
 // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
@@ -89,11 +89,11 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 
-// START RuntimeModelSelectionAnthropic  // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama // START SinglePromptExample  // START GroupedTaskExample
+// START RuntimeModelSelectionAnthropic // START RuntimeModelSelectionxAI // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama // START SinglePromptExample  // START GroupedTaskExample
 let response;
 const myCollection = client.collections.use("DemoCollection");
 
-// END RuntimeModelSelectionAnthropic  // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama // END SinglePromptExample  // END GroupedTaskExample
+// END RuntimeModelSelectionAnthropic // END RuntimeModelSelectionxAI // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama // END SinglePromptExample  // END GroupedTaskExample
 
 
 // START RuntimeModelSelectionAnthropic
@@ -1105,6 +1105,29 @@ await client.collections.create({
   // Additional parameters not shown
 });
 // END FullGenerativexAI
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START RuntimeModelSelectionxAI
+response = await myCollection.generate.nearText("A holiday film", {
+  // highlight-start
+  groupedTask: "Write a tweet promoting these two movies",
+  config: generativeParameters.xai({
+    // These parameters are optional
+    // baseURL: 'https://api.x.ai/v1',
+    // model: 'grok-2-latest',
+    // maxTokens: 512,
+    // temperature: 0.7,
+  }),
+  // highlight-end
+}, {
+  limit: 2,
+}
+  // Additional parameters not shown
+);
+
+// END RuntimeModelSelectionxAI
 
 // Clean up
 await client.collections.delete('DemoCollection');

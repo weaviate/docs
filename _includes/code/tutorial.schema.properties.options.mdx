@@ -4,7 +4,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/starter-guides/schema.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
@@ -14,55 +14,8 @@ import PyCode from '!!raw-loader!/_includes/code/starter-guides/schema.py';
 />
 
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
 
-```python
-import weaviate
-import json
-
-client = weaviate.Client("https://WEAVIATE_INSTANCE_URL/")  # Replace with your Weaviate endpoint
-
-# we will create the class "Question"
-class_obj = {
-    "class": "Question",
-    "description": "Information from a Jeopardy! question",  # description of the class
-    "vectorizer": "text2vec-openai",
-    "moduleConfig": {
-        "generative-openai": {}  # Set `generative-openai` as the generative module
-    },
-    "properties": [
-        {
-            "name": "question",
-            "dataType": ["text"],
-            "description": "The question",
-            "moduleConfig": {
-                "text2vec-openai": {  # this must match the vectorizer used
-                    "vectorizePropertyName": True,
-                    "tokenization": "lowercase"
-                }
-            }
-        },
-        {
-            "name": "answer",
-            "dataType": ["text"],
-            "description": "The answer",
-            "moduleConfig": {
-                "text2vec-openai": {  # this must match the vectorizer used
-                    "vectorizePropertyName": False,
-                    "tokenization": "whitespace"
-                }
-            }
-        },
-    ],
-}
-
-# add the schema
-client.schema.create_class(class_obj)
-```
-
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
 import weaviate from 'weaviate-client';
@@ -103,59 +56,6 @@ const newCollection = await client.collections.create(collectionObj)
 
 </TabItem>
 
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'WEAVIATE_INSTANCE_URL',  // Replace with your Weaviate endpoint
-});
-
-// Define the 'Question' class
-const classObj = {
-  class: 'Question',
-  description: 'Information from a Jeopardy! question',  // description of the class
-  vectorizer: 'text2vec-openai',
-  moduleConfig: {
-      generative-openai: {}  // Set `generative-openai` as the generative module
-  },
-  properties: [
-    {
-      name: 'question',
-      dataType: ['text'],
-      description: 'The question',
-      moduleConfig: {
-        'text2vec-openai': {  // this must match the vectorizer used
-          vectorizePropertyName: true,
-          tokenization: 'lowercase'  // Use "lowercase" tokenization
-        },
-      }
-    },
-    {
-      name: 'answer',
-      dataType: ['text'],
-      description: 'The answer',
-      moduleConfig: {
-        'text2vec-openai': {  // this must match the vectorizer used
-          vectorizePropertyName: false,
-          tokenization: 'whitespace'  // Use "whitespace" tokenization
-        },
-      }
-    },
-  ]
-};
-
-// Add the class to the schema
-await client
-  .schema
-  .classCreator()
-  .withClass(classObj)
-  .do();
-```
-
-</TabItem>
 {/* <TabItem value="go" label="Go">
 
 ```go

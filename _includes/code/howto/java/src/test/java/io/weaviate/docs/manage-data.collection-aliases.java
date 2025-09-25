@@ -30,12 +30,15 @@ class AliasesTest {
 
   @BeforeAll
   public static void beforeAll() {
+    // START ConnectToWeaviate
+    // Connect to local Weaviate instance
     String scheme = "http";
     String host = "localhost";
     String port = "8080";
 
     Config config = new Config(scheme, host + ":" + port);
     client = new WeaviateClient(config);
+    // END ConnectToWeaviate
   }
 
   @BeforeEach
@@ -95,14 +98,10 @@ class AliasesTest {
     Result<Map<String, Alias>> allAliasesResult = client.alias().allGetter().run();
     Map<String, Alias> allAliases = allAliasesResult.getResult();
 
-    // Filter to show only aliases from this example
     for (Map.Entry<String, Alias> entry : allAliases.entrySet()) {
       Alias aliasInfo = entry.getValue();
-      if (aliasInfo.getClassName().equals("Articles") ||
-          aliasInfo.getClassName().equals("ArticlesV2")) {
-        System.out.println("Alias: " + aliasInfo.getAlias() +
-            " -> Collection: " + aliasInfo.getClassName());
-      }
+      System.out.println("Alias: " + aliasInfo.getAlias() +
+          " -> Collection: " + aliasInfo.getClassName());
     }
     // END ListAllAliases
 
@@ -271,23 +270,11 @@ class AliasesTest {
         System.out.println("Found: " + obj.get("title"));
       }
     }
-
-    // Add a new property using the alias
-    Result<Boolean> addPropertyResult = client.schema()
-        .propertyCreator()
-        .withClassName("MyArticles") // Using alias
-        .withProperty(Property.builder()
-            .name("author")
-            .dataType(Arrays.asList(DataType.TEXT))
-            .build())
-        .run();
     // END UseAlias
 
     assertThat(insertResult).isNotNull()
         .returns(false, Result::hasErrors);
     assertThat(queryResult).isNotNull()
-        .returns(false, Result::hasErrors);
-    assertThat(addPropertyResult).isNotNull()
         .returns(false, Result::hasErrors);
   }
 
@@ -312,8 +299,8 @@ class AliasesTest {
 
   @Test
   public void shouldPerformMigration() {
-    // START MigrationExample
-    // Step 1: Create original collection with data
+    // START Step1CreateOriginal
+    // Create original collection with data
     WeaviateClass productsV1 = WeaviateClass.builder()
         .className("Products_v1")
         .build();
@@ -346,14 +333,41 @@ class AliasesTest {
     client.batch().objectsBatcher()
         .withObjects(products.toArray(new WeaviateObject[0]))
         .run();
+    // END Step1CreateOriginal
 
-    // Step 2: Create alias pointing to current collection
+    // START Step2CreateAlias
+    // Create alias pointing to current collection
     client.alias().creator()
         .withClassName("Products_v1")
         .withAlias("Products")
         .run();
+    // END Step2CreateAlias
 
-    // Step 3: Create new collection with updated schema
+    // START MigrationUseAlias
+    // Your application always uses the alias name "Products"
+    // Insert data through the alias
+    Result<WeaviateObject> insertResult = client.data().creator()
+        .withClassName("Products")
+        .withProperties(new HashMap<String, Object>() {{
+            put("name", "Product C");
+            put("price", 300);
+        }})
+        .run();
+
+    // Query through the alias
+    Result<List<WeaviateObject>> queryResult = client.data().objectsGetter()
+        .withClassName("Products")
+        .withLimit(5)
+        .run();
+    List<WeaviateObject> results = queryResult.getResult();
+    for (WeaviateObject obj : results) {
+        Map<String, Object> props = obj.getProperties();
+        System.out.println("Product: " + props.get("name") + ", Price: $" + props.get("price"));
+    }
+    // END MigrationUseAlias
+
+    // START Step3NewCollection
+    // Create new collection with updated schema
     WeaviateClass productsV2 = WeaviateClass.builder()
         .className("Products_v2")
         .properties(Arrays.asList(
@@ -375,8 +389,10 @@ class AliasesTest {
     client.schema().classCreator()
         .withClass(productsV2)
         .run();
+    // END Step3NewCollection
 
-    // Step 4: Migrate data to new collection
+    // START Step4MigrateData
+    // Migrate data to new collection
     Result<GraphQLResponse> oldDataResult = client.graphQL()
         .get()
         .withClassName("Products_v1")
@@ -411,8 +427,10 @@ class AliasesTest {
           .withObjects(newProducts.toArray(new WeaviateObject[0]))
           .run();
     }
+    // END Step4MigrateData
 
-    // Step 5: Switch alias to new collection (instant switch!)
+    // START Step5UpdateAlias
+    // Switch alias to new collection (instant switch!)
     client.alias().updater()
         .withAlias("Products")
         .withNewClassName("Products_v2")
@@ -435,12 +453,14 @@ class AliasesTest {
       List<Map<String, Object>> products_data = (List<Map<String, Object>>) get.get("Products");
       System.out.println(products_data.get(0)); // Will include the new "category" field
     }
+    // END Step5UpdateAlias
 
-    // Step 6: Clean up old collection after verification
+    // START Step6Cleanup
+    // Clean up old collection after verification
     client.schema().classDeleter()
         .withClassName("Products_v1")
         .run();
-    // END MigrationExample
+    // END Step6Cleanup
 
     assertThat(result).isNotNull()
         .returns(false, Result::hasErrors);

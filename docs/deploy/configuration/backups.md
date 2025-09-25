@@ -9,11 +9,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/configure.backups.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/configure.backups-v3.py';
 import TSCodeBackup from '!!raw-loader!/_includes/code/howto/configure.backups.backup.ts';
 import TSCodeRestore from '!!raw-loader!/_includes/code/howto/configure.backups.restore.ts';
 import TSCodeStatus from '!!raw-loader!/_includes/code/howto/configure.backups.status.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/configure.backups-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/deploy/backups_test.go';
 import JavaCode from '!!raw-loader!/_includes/code/howto/configure.backups.java';
 import CurlCode from '!!raw-loader!/_includes/code/howto/configure.backups.sh';
@@ -53,7 +51,7 @@ BACKUP_FILESYSTEM_PATH=/var/lib/weaviate/backups
 Restart Weaviate to apply the new configuration. Then, you are ready to start a backup:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateBackup"
@@ -62,16 +60,7 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
     />
   </TabItem>
 
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateBackup"
-      endMarker="# END CreateBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeBackup}
       startMarker="// START CreateBackup"
@@ -80,14 +69,6 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START CreateBackup"
-      endMarker="// END CreateBackup"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -337,7 +318,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateBackup"
@@ -346,16 +327,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
     />
   </TabItem>
 
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START CreateBackup"
-      endMarker="# END CreateBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeBackup}
       startMarker="// START CreateBackup"
@@ -364,14 +336,6 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START CreateBackup"
-      endMarker="// END CreateBackup"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -427,7 +391,7 @@ GET /v1/backups/{backend}/{backup_id}
 The response contains a `"status"` field. If the status is `SUCCESS`, the backup is complete. If the status is `FAILED`, an additional error is provided.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START StatusCreateBackup"
@@ -435,16 +399,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       language="py"
     />
   </TabItem>
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START StatusCreateBackup"
-      endMarker="# END StatusCreateBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeStatus}
       startMarker="// START StatusCreateBackup"
@@ -453,14 +408,6 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START StatusCreateBackup"
-      endMarker="// END StatusCreateBackup"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -495,7 +442,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
 An ongoing backup can be cancelled at any time. The backup process will be stopped, and the backup will be marked as `CANCELLED`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CancelBackup"
@@ -503,7 +450,7 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeStatus}
       startMarker="// START CancelBackup"
@@ -546,7 +493,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START RestoreBackup"
@@ -554,16 +501,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       language="py"
     />
   </TabItem>
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START RestoreBackup"
-      endMarker="# END RestoreBackup"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeRestore}
       startMarker="// START RestoreBackup"
@@ -572,14 +510,6 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START RestoreBackup"
-      endMarker="// END RestoreBackup"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -619,7 +549,7 @@ If you set the "wait for completion" option to false, you can also check the sta
 The response contains a `"status"` field. If the status is `SUCCESS`, the restore is complete. If the status is `FAILED`, an additional error is provided.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START StatusRestoreBackup"
@@ -627,16 +557,8 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
       language="py"
     />
   </TabItem>
-  <TabItem value="pyv3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START StatusRestoreBackup"
-      endMarker="# END StatusRestoreBackup"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeStatus}
       startMarker="// START StatusRestoreBackup"
@@ -645,14 +567,6 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START StatusRestoreBackup"
-      endMarker="// END StatusRestoreBackup"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
