@@ -905,3 +905,23 @@ button.close {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+/*
+ * SCALAR OPENAPI DOCS - FINAL FIX
+ * -------------------------------
+ * Fixes visibility of sidebar icons.
+ */
+
+.scalar-api-reference .sidebar-heading-chevron svg {
+  color: var(--ifm-font-color-base);
+}
+
+// Target the wrapper for the authentication section
+.scalar-reference-intro-auth {
+    display: none !important;
+}
+
+// Target the wrapper for the client libraries section
+.scalar-reference-intro-clients {
+    display: none !important;
+}
