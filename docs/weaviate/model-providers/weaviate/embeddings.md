@@ -3,7 +3,6 @@ title: Text Embeddings
 description: "Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance."
 sidebar_position: 20
 image: og/docs/integrations/provider_integrations_wes.jpg
-show_expert_call_cta: true
 # tags: ['model providers', 'weaviate', 'wes', 'weaviate embeddings']
 ---
 

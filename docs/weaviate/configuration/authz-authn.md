@@ -2,7 +2,6 @@
 title: Authentication and authorization
 sidebar_position: 30
 image: og/docs/configuration.jpg
-show_expert_call_cta: true
 # tags: ['authentication']
 ---
 

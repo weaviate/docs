@@ -3,7 +3,6 @@ title: Administration
 sidebar_position: 3
 description: "Configuration and management settings for Weaviate Embeddings service at the organization level."
 image: og/wcd/user_guides.jpg
-show_expert_call_cta: true
 ---
 
 import Link from '@docusaurus/Link';

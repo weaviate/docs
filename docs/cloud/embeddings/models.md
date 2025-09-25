@@ -4,7 +4,6 @@ sidebar_label: Choose a model
 sidebar_position: 2
 description: "List of pre-trained embedding models optimized for enterprise retrieval tasks in multiple languages."
 image: og/wcd/user_guides.jpg
-show_expert_call_cta: true
 ---
 
 On this page, you can find a list of pre-trained models designed specifically for enterprise retrieval tasks in English and other languages. Additional models and features will be added in the future, so please check back regularly for updates.

@@ -3,7 +3,6 @@ title: Horizontal Scaling
 sidebar_position: 30
 description: "Multi-node cluster architecture and horizontal scaling strategies for high-availability Weaviate deployments."
 image: og/docs/concepts.jpg
-show_expert_call_cta: true
 # tags: ['architecture', 'horizontal scaling', 'cluster', 'replication', 'sharding']
 ---
 

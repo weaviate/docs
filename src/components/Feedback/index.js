@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles.module.scss";
 
-// This function now calls your internal Netlify function
-const getCountryFromNetlify = async () => {
-  try {
-    const response = await fetch("/.netlify/functions/geolocation");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return data.country;
-  } catch (error) {
-    return null;
-  }
-};
-
 export default function FeedbackComponent() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() => {
+    // 1. Initialize state synchronously from localStorage to prevent flicker.
+    if (typeof window === "undefined") {
+      return false;
+    }
+    const saved = localStorage.getItem("feedbackWidgetVisible");
+    // Default to visible unless explicitly set to 'false'.
+    return saved !== "false";
+  });
+
   const [isExpanded, setIsExpanded] = useState(() => {
-    // Initialize from localStorage if available, default to true if not set
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("feedbackWidgetExpanded");
       return saved !== null ? saved === "true" : true;
@@ -26,46 +20,16 @@ export default function FeedbackComponent() {
     return true;
   });
 
-  // Save expanded state to localStorage whenever it changes
+  // This effect now only saves the expanded/collapsed state.
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("feedbackWidgetExpanded", isExpanded.toString());
     }
   }, [isExpanded]);
 
-  useEffect(() => {
-    // A sample list of countries to exclude.
-    // ❗ IMPORTANT: This list is an example and should be reviewed and
-    // customized for your specific needs.
-    const excludedCountries = [
-      "RU", // Russia
-      "VN", // Vietnam
-      "IN", // India
-      "IR", // Iran
-      "PK", // Pakistan
-    ];
-
-    const checkVisibility = async () => {
-      const userCountry = await getCountryFromNetlify();
-      // If the location lookup fails for any reason, default to showing the component.
-      // This ensures that users with privacy tools aren't blocked.
-      if (!userCountry) {
-        setIsVisible(true);
-        return;
-      }
-      // If the user's country is NOT in the exclusion list, show the component.
-      if (!excludedCountries.includes(userCountry)) {
-        setIsVisible(true);
-      }
-    };
-
-    checkVisibility();
-  }, []); // Empty array ensures this runs only once on mount
-
   const openGithubFeedback = () => {
     const currentUrl =
       typeof window !== "undefined" ? window.location.href : "";
-    // Use the doc_feedback.yml template with pre-filled page URL
     const params = new URLSearchParams({
       template: "doc_feedback.yml",
       title: "[Documentation Feedback]: ",
@@ -76,12 +40,12 @@ export default function FeedbackComponent() {
     window.open(githubUrl, "_blank", "noopener,noreferrer");
   };
 
-  // If not visible, render nothing.
+  // If not visible (based on localStorage), render nothing.
   if (!isVisible) {
     return null;
   }
 
-  // Render collapsed state - circular button with question mark
+  // Render collapsed state
   if (!isExpanded) {
     return (
       <button
@@ -136,11 +100,7 @@ export default function FeedbackComponent() {
           className={`button button--primary button--sm ${styles.askAiButton}`}
           onClick={() => {
             if (window.Kapa && typeof window.Kapa.open === "function") {
-              window.Kapa.open({
-                mode: "ai",
-                query: "",
-                submit: false,
-              });
+              window.Kapa.open({ mode: "ai", query: "", submit: false });
             } else {
               console.warn("Kapa.ai is not available");
             }

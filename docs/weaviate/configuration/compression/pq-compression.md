@@ -2,7 +2,6 @@
 title: Product Quantization (PQ)
 sidebar_position: 5
 image: og/docs/configuration.jpg
-show_expert_call_cta: true
 # tags: ['configuration', 'compression', 'pq']
 ---
 

@@ -3,7 +3,6 @@ title: Weaviate Embeddings
 sidebar_position: 0
 description: "Managed embedding inference service that generates embeddings for data and queries directly from Weaviate Cloud."
 image: og/wcd/user_guides.jpg
-show_expert_call_cta: true
 ---
 
 Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud users. It helps generate embeddings for your data and queries conveniently and directly from a Weaviate Cloud database instance.

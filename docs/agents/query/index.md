@@ -2,8 +2,7 @@
 title: Query Agent
 sidebar_position: 10
 description: "Overview of the AI agent that handles complex queries across multiple Weaviate collections with natural language understanding."
-image: og/docs/agents.jpg
-show_expert_call_cta: true 
+image: og/docs/agents.jpg 
 # tags: ['agents', 'getting started', 'query agent']
 ---
 
