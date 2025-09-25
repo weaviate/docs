@@ -44,7 +44,7 @@ Let's walk through importing data using both approaches. We'll create a collecti
 First, connect to your Weaviate instance.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ConnectToWeaviate"
@@ -63,7 +63,7 @@ This is what our data looks like:
 Create a collection to store the Jeopardy questions. 
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollection"
@@ -78,7 +78,7 @@ Create a collection to store the Jeopardy questions.
 Load the data from the JSON file.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START LoadData"
@@ -108,7 +108,7 @@ Server-side batching automatically manages the import flow using a feedback loop
 - Errors are streamed back asynchronously without interrupting the flow
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ServerSideBatch"
@@ -130,7 +130,7 @@ The benefits of server-side batching are:
 Client-side batching gives you direct control over batch size and timing. You configure parameters like batch size and manage the import flow manually.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ClientSideBatch"
@@ -152,7 +152,7 @@ Use the following tips for configuring client-side batching:
 Proper error handling is crucial for batch imports. A `200` HTTP status only means the request was received - individual objects may still fail.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ErrorHandling"
@@ -167,7 +167,7 @@ Proper error handling is crucial for batch imports. A `200` HTTP status only mea
 After importing, verify the data was successfully added.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START VerifyImport"
@@ -182,7 +182,7 @@ After importing, verify the data was successfully added.
 If you have pre-computed vectors, you can include them in the import.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CustomVectors"
@@ -226,7 +226,7 @@ When importing millions of objects:
 Example of chunked import with progress tracking:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ChunkedImport"
