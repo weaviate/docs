@@ -27,6 +27,8 @@ There are multiple ways to specify the target vectors and query vectors, such as
 
 <!-- TODO: Move most of the description/prose to a new "vector.md" page under concepts/search. -->
 
+Multi-target vector search is available for `near_xxx` queries (from `v1.26`), as well as `hybrid` queries (from `v1.27`).
+
 ### Available join strategies.
 
 - **minimum** (*default*) Use the minimum of all vector distances.
