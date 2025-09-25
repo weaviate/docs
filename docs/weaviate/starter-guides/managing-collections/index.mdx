@@ -232,15 +232,32 @@ Sharding settings determine how each collection is sharded and distributed acros
 
 ## Collection aliases
 
+### What are collection aliases?
+
+Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. Think of an alias as a stable reference that can point to different collections over time, similar to how a domain name points to an IP address.
+
+When you query using an alias, Weaviate automatically routes the request to the target collection. This means your application code can reference the stable alias name while the underlying collection can be changed, migrated, or updated without any code changes.
+
+**Example**: If you have a collection named "Articles_v2" and create an alias "Articles" pointing to it, you can query using either name:
+- Query "Articles" → routes to "Articles_v2"
+- Query "Articles_v2" → directly accesses "Articles_v2"
+
+**Key Benefits:**
+- Zero-downtime collection migrations
+- Stable application interfaces during schema changes
+- Support for multiple environments (dev/staging/prod)
+- Easy rollback capabilities
+- A/B testing with different collection versions
+
 :::caution Technical preview
 
 Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
+This means the feature is still under development and may change in future releases, including potential breaking changes. The API and behavior may be modified based on user feedback and testing.
 **We do not recommend using this feature in production environments at this time.**
 
 :::
 
-Collection aliases are alternative names (pointers) for Weaviate collections that allow you to reference a collection by multiple names. When you query using an alias, Weaviate automatically routes the request to the target collection. You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>.
+You can set up collection aliases [programmatically through client libraries](../../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>.
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -252,9 +269,15 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 
 ### Migration workflow with collection aliases
 
-Collection aliases enable collection migrations with zero downtime. Previously, migrating to a new collection required creating the new collection, pausing your application, updating all collection references in your code, then restarting the application, resulting in service interruption.
+Collection aliases enable collection migrations with zero downtime, solving a critical operational challenge. Previously, migrating to a new collection required creating the new collection, pausing your application, updating all collection references in your code, then restarting the application, resulting in service interruption and potential data loss.
 
-Now with aliases, simply create a new collection with your updated collection definition, migrate your data, then instantly [switch the alias](../../manage-collections/collection-aliases.mdx#update-an-alias) to point to the new collection. All your existing queries will continue running uninterrupted. Your application code remains unchanged, as it references the stable alias name rather than the underlying collection.
+With aliases, this process becomes seamless: simply create a new collection with your updated collection definition, migrate your data, then instantly [switch the alias](../../manage-collections/collection-aliases.mdx#update-an-alias) to point to the new collection. All your existing queries will continue running uninterrupted because your application code remains unchanged - it references the stable alias name rather than the underlying collection.
+
+This approach is particularly valuable for:
+- **Schema migrations**: Update collection definitions without downtime
+- **Performance optimizations**: Switch to collections with better index configurations
+- **Environment management**: Seamlessly promote collections from staging to production
+- **Rollback scenarios**: Instantly revert to previous collection versions if issues arise
 
 Here's a complete example showing how to use aliases for a collection migration:
 
