@@ -5,56 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLHybridWithFilter"
     endMarker="END GraphQLHybridWithFilter"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-# highlight-start
-where_filter = {
-  "path": ["wordCount"],
-  "operator": "LessThan",
-  "valueInt": "1000"
-}
-# highlight-end
-query_result = (
-  client.query
-  .get("Article", ["title", "summary"])
-  .with_where(where_filter)
-  .with_hybrid(query= "How to catch an Alaskan Pollock",alpha=0.5)
-  .do()
-)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title summary')
-  .withHybrid({
-    query: 'How to catch Alaskan Pollock',
-    alpha: 0.5,
-  })
-  // highlight-start
-  .withWhere({
-    operator: 'LessThan',
-    path: ['wordCount'],
-    valueInt: 1000,
-  })
-  // highlight-end
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

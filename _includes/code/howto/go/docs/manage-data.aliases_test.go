@@ -19,12 +19,15 @@ func Test_ManageAliases(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
+	// START ConnectToWeaviate
+	// Connect to local Weaviate instance
 	config := weaviate.Config{
 		Scheme: "http",
 		Host:   "localhost:8080",
 	}
 	client, err := weaviate.NewClient(config)
 	require.NoError(t, err)
+	// END ConnectToWeaviate
 
 	// Check if Weaviate is ready
 	ready, err := client.Misc().ReadyChecker().Do(ctx)
@@ -40,7 +43,7 @@ func Test_ManageAliases(t *testing.T) {
 		}
 
 		// Clean up collections
-		collectionsToDelete := []string{"Articles", "ArticlesV2", "Products_v1", "Products_v2"}
+		collectionsToDelete := []string{"Articles", "ArticlesV2", "Products_v1", "Products_v2", "MyArticles"}
 		for _, className := range collectionsToDelete {
 			_ = client.Schema().ClassDeleter().WithClassName(className).Do(ctx)
 		}
@@ -215,16 +218,6 @@ func Test_ManageAliases(t *testing.T) {
 				fmt.Printf("Found: %v\n", title)
 			}
 		}
-
-		// Add a new property using the alias
-		property := &models.Property{
-			Name:     "author",
-			DataType: schema.DataTypeText.PropString(),
-		}
-		err = client.Schema().PropertyCreator().
-			WithClassName("MyArticles").
-			WithProperty(property).
-			Do(ctx)
 		// UseAlias END
 
 		require.NoError(t, err)
@@ -233,8 +226,8 @@ func Test_ManageAliases(t *testing.T) {
 	})
 
 	t.Run("migration example", func(t *testing.T) {
-		// MigrationExample START
-		// Step 1: Create original collection with data
+		// START Step1CreateOriginal
+		// Create original collection with data
 		err := client.Schema().ClassCreator().WithClass(&models.Class{
 			Class:      "Products_v1",
 			Vectorizer: "none",
@@ -265,16 +258,38 @@ func Test_ManageAliases(t *testing.T) {
 			Do(ctx)
 
 		require.NoError(t, err)
+		// END Step1CreateOriginal
 
-		// Step 2: Create alias pointing to current collection
+		// START Step2CreateAlias
+		// Create alias pointing to current collection
 		err = client.Alias().AliasCreator().WithAlias(&alias.Alias{
 			Alias: "Products",
 			Class: "Products_v1",
 		}).Do(ctx)
 
 		require.NoError(t, err)
+		// END Step2CreateAlias
 
-		// Step 3: Create new collection with updated schema
+		// START MigrationUseAlias
+		// Your application always uses the alias name "Products"
+		// Insert data through the alias
+		_, err = client.Data().Creator().WithClassName("Products").WithProperties(map[string]interface{}{
+			"name":  "Product C",
+			"price": 300,
+		}).Do(ctx)
+		require.NoError(t, err)
+
+		// Query through the alias
+		resp, err := client.Data().ObjectsGetter().WithClassName("Products").WithLimit(5).Do(ctx)
+		require.NoError(t, err)
+		for _, obj := range resp {
+			props := obj.Properties.(map[string]interface{})
+			t.Logf("Product: %v, Price: $%v", props["name"], props["price"])
+		}
+		// END MigrationUseAlias
+
+		// START Step3NewCollection
+		// Create new collection with updated schema
 		err = client.Schema().ClassCreator().WithClass(&models.Class{
 			Class:      "Products_v2",
 			Vectorizer: "none",
@@ -286,8 +301,10 @@ func Test_ManageAliases(t *testing.T) {
 		}).Do(ctx)
 
 		require.NoError(t, err)
+		// END Step3NewCollection
 
-		// Step 4: Migrate data to new collection
+		// START Step4MigrateData
+		// Migrate data to new collection
 		oldData, err := client.Data().ObjectsGetter().
 			WithClassName("Products_v1").
 			Do(ctx)
@@ -306,8 +323,10 @@ func Test_ManageAliases(t *testing.T) {
 
 			require.NoError(t, err)
 		}
+		// END Step4MigrateData
 
-		// Step 5: Switch alias to new collection (instant switch!)
+		// START Step5UpdateAlias
+		// Switch alias to new collection (instant switch!)
 		err = client.Alias().AliasUpdater().WithAlias(&alias.Alias{
 			Alias: "Products",
 			Class: "Products_v2",
@@ -326,10 +345,12 @@ func Test_ManageAliases(t *testing.T) {
 		if len(result) > 0 {
 			fmt.Printf("%v\n", result[0].Properties) // Will include the new "category" field
 		}
+		// END Step5UpdateAlias
 
-		// Step 6: Clean up old collection after verification
+		// START Step6Cleanup
+		// Clean up old collection after verification
 		err = client.Schema().ClassDeleter().WithClassName("Products_v1").Do(ctx)
-		// MigrationExample END
+		// END Step6Cleanup
 
 		// Error is expected if collection has data or other dependencies
 		// In production, you'd want to ensure the collection is empty first

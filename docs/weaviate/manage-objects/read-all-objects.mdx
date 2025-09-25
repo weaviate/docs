@@ -10,9 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.read-all-objects-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read-all-objects.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go';
 
@@ -30,7 +28,7 @@ The following code iterates through all objects, providing the properties and id
 
 <Tabs groupId="languages">
 
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadAllProps"
@@ -39,16 +37,8 @@ The following code iterates through all objects, providing the properties and id
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllProps"
-      endMarker="# END ReadAllProps"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadAllProps"
@@ -57,14 +47,6 @@ The following code iterates through all objects, providing the properties and id
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ReadAllProps"
-      endMarker="// END ReadAllProps"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -91,7 +73,7 @@ Read through all data including the vectors. (Also applicable where [named vecto
 
 <Tabs groupId="languages">
 
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadAllVectors"
@@ -100,16 +82,8 @@ Read through all data including the vectors. (Also applicable where [named vecto
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllVectors"
-      endMarker="# END ReadAllVectors"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadAllVectors"
@@ -118,14 +92,6 @@ Read through all data including the vectors. (Also applicable where [named vecto
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ReadAllVectors"
-      endMarker="// END ReadAllVectors"
-      language="tsv2"
-    />
-  </TabItem>
 </Tabs>
 
 ## Read all objects - Multi-tenant collections
@@ -138,7 +104,7 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
 
 <Tabs groupId="languages">
 
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ReadAllTenants"
@@ -147,16 +113,8 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START ReadAllTenants"
-      endMarker="# END ReadAllTenants"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadAllTenants"
@@ -165,14 +123,6 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START ReadAllTenants"
-      endMarker="// END ReadAllTenants"
-      language="tsv2"
-    />
-  </TabItem>
 </Tabs>
 
 ## Related pages
