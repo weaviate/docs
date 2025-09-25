@@ -1,0 +1,252 @@
+---
+title: Manage groups
+sidebar_label: Manage groups
+image: og/docs/configuration.jpg
+# tags: ['rbac', 'groups', 'configuration', 'authorization', 'oidc']
+---
+
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import OidcGroupPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.groups.py";
+
+
+:::info Added in `v1.33`
+:::
+
+When using [OIDC](/deploy/configuration/oidc.md) for authentication, you can leverage user groups defined in your identity provider (like Keycloak, Okta, or Auth0) to manage permissions in Weaviate. The user's group memberships are passed to Weaviate in the OIDC token.
+
+You can then assign Weaviate roles directly to these **OIDC groups**. Any user who is a member of that group will automatically inherit the permissions of the assigned roles. This is a powerful way to manage access for large teams without assigning roles to each user individually.
+
+On this page, you will find examples of how to programmatically **manage OIDC groups** and their associated roles.
+
+## Group management <i class="fas fa-users-cog"></i> {#group-management}
+
+### Assign roles to an OIDC group
+
+You can assign one or more Weaviate roles to an OIDC group. Any user belonging to this group will inherit the roles' permissions.
+
+This example assigns the `testRole` and `viewer` roles to the `/admin-group`.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={OidcGroupPyCode}
+    startMarker="# START AssignOidcGroupRoles"
+    endMarker="# END AssignOidcGroupRoles"
+    language="py"
+  />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### Revoke roles from an OIDC group
+
+You can revoke one or more roles from a specific OIDC group.
+
+This example removes the `testRole` and `viewer` roles from the `/admin-group`.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={OidcGroupPyCode}
+      startMarker="# START RevokeOidcGroupRoles"
+      endMarker="# END RevokeOidcGroupRoles"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+    
+```java 
+// Java support coming soon 
+```
+
+  </TabItem>
+</Tabs>
+
+### List roles assigned to an OIDC group
+
+Retrieve a list of all roles that have been assigned to a specific OIDC group.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={OidcGroupPyCode}
+      startMarker="# START GetOidcGroupRoles"
+      endMarker="# END GetOidcGroupRoles"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+    
+```java 
+// Java support coming soon 
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>Example results</summary>
+
+```text
+Roles assigned to '/admin-group': ['testRole', 'viewer']
+```
+
+</details>
+
+### List all known OIDC groups
+
+This example shows how to get a list of all OIDC groups that Weaviate is aware of. Weaviate learns about a group when a role is first assigned to it.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={OidcGroupPyCode}
+      startMarker="# START GetKnownOidcGroups"
+      endMarker="# END GetKnownOidcGroups"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+    
+```java 
+// Java support coming soon 
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>Example results</summary>
+
+```text
+Known OIDC groups (3): ['/viewer-group', '/admin-group', '/my-test-group']
+```
+
+</details>
+
+### List groups assigned to a role
+
+Retrieve a list of all groups that have been assigned a specific role.
+
+This example shows which groups have the `testRole` assigned to them.
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={OidcGroupPyCode}
+      startMarker="# START GetGroupAssignments"
+      endMarker="# END GetGroupAssignments"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+
+```typescript
+// TypeScript/JavaScript support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+    
+```java 
+// Java support coming soon 
+```
+
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>Example results</summary>
+
+```text
+Groups assigned to role 'testRole':
+  - Group ID: /admin-group, Type: oidc
+```
+
+</details>
+
+## Further resources
+
+- [RBAC: Overview](https://www.google.com/search?q=./index.mdx)
+- [RBAC: Configuration](https://www.google.com/search?q=/deploy/configuration/configuring-rbac.md)
+- [RBAC: Manage roles](https://www.google.com/search?q=./manage-roles.mdx)
+- [RBAC: Manage users](https://www.google.com/search?q=./manage-users.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
+````

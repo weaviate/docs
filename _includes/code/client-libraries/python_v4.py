@@ -128,6 +128,7 @@ try:
 finally:
     client.close()
 
+"""No longer possible to connect via OIDC to Weaviate Cloud
 # WCDwOIDCInstantiation
 import weaviate
 
@@ -144,6 +145,7 @@ try:
     assert client.is_ready()
 finally:
     client.close()
+"""
 
 # CustomInstantiationBasic
 import weaviate
@@ -350,7 +352,7 @@ client = weaviate.connect_to_local()
 try:
 # START BatchBasic
     # Option 1: Collection-level batching
-    questions = client.collections.get('JeopardyQuestion')
+    questions = client.collections.use('JeopardyQuestion')
 
     with questions.batch.dynamic() as batch:
         pass  # Batch import objects/references
@@ -517,7 +519,7 @@ try:
     # END CreateCollectionExample
 
     assert client.collections.exists("TestArticle")
-    testarticles = client.collections.get("TestArticle")
+    testarticles = client.collections.use("TestArticle")
     articles_config = testarticles.config.get()
     assert articles_config.name == "TestArticle"
     assert len(articles_config.properties) == 1
@@ -581,7 +583,7 @@ try:
 
     for cname in ["TestArticle", "TestAuthor"]:
         assert client.collections.exists(cname)
-        collection = client.collections.get(cname)
+        collection = client.collections.use(cname)
         collection_config = collection.config.get()
         assert collection_config.name == cname
 
@@ -596,7 +598,7 @@ import weaviate
 client = weaviate.connect_to_local()
 
 try:
-    collection = client.collections.get("TestArticle")
+    collection = client.collections.use("TestArticle")
 finally:
     client.close()
 # END GetCollectionExample
@@ -703,14 +705,14 @@ client = weaviate.connect_to_local(
 d = wd.JeopardyQuestions1k()
 d.upload_dataset(client, overwrite=True)
 
-categories = client.collections.get("JeopardyCategory")
+categories = client.collections.use("JeopardyCategory")
 response = categories.query.fetch_objects(limit=1)
 target_uuid = response.objects[0].uuid
 
 print(response)
 
 # START CreateObjectExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 new_uuid = questions.data.insert(
     properties={
@@ -727,7 +729,7 @@ from uuid import UUID
 assert type(new_uuid) == UUID
 
 # START InsertManyExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 properties = [{"question": f"Test Question {i+1}"} for i in range(5)]
 response = questions.data.insert_many(properties)
@@ -736,7 +738,7 @@ response = questions.data.insert_many(properties)
 # START InsertManyDataObjectExample
 from weaviate.util import generate_uuid5
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 data_objects = list()
 for i in range(5):
@@ -753,7 +755,7 @@ response = questions.data.insert_many(data_objects)
 # START InsertManyDataObjectReferenceExample
 from weaviate.util import generate_uuid5
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 data_objects = list()
 for i in range(5):
@@ -773,7 +775,7 @@ response = questions.data.insert_many(data_objects)
 # END InsertManyDataObjectReferenceExample
 
 # START InsertManyBasic
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 # Build data objects - e.g. with properties, references, and UUIDs
 data_objects = list()
@@ -792,7 +794,7 @@ response = questions.data.insert_many(data_objects)
 # END InsertManyBasic
 
 # START DeleteObjectExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 deleted = questions.data.delete_by_id(uuid=new_uuid)
 # END DeleteObjectExample
@@ -803,7 +805,7 @@ assert deleted == True
 # START DeleteManyExample
 from weaviate.classes.query import Filter
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 response = questions.data.delete_many(
     where=Filter.by_property(name="question").equal("Test Question")
@@ -834,7 +836,7 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 
 # START BM25QueryExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.bm25(
     query="animal",
     limit=2
@@ -845,7 +847,7 @@ for o in response.objects:
 # END BM25QueryExample
 
 # START HybridQueryExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.hybrid(
     query="animal",
     limit=2
@@ -856,7 +858,7 @@ for o in response.objects:
 # END HybridQueryExample
 
 # START NearTextQueryExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.near_text(
     query="animal",
     limit=2
@@ -867,7 +869,7 @@ for o in response.objects:
 # END NearTextQueryExample
 
 # START BM25QueryDefaultReturnsExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.bm25(
     query="animal",
     limit=2
@@ -889,7 +891,7 @@ for o in response.objects:
 # END BM25QueryDefaultReturnsExample
 
 # START BM25QueryCustomReturnsExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.bm25(
     query="animal",
     include_vector=True,
@@ -923,7 +925,7 @@ for o in response.objects:
 # =====================================================================================
 
 # START BM25GenerateExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.generate.bm25(
     query="animal",
     limit=2,
@@ -938,7 +940,7 @@ for o in response.objects:
 # END BM25GenerateExample
 
 # START NearTextGenerateExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.generate.near_text(
     query="animal",
     limit=2,
@@ -959,7 +961,7 @@ for o in response.objects:
 # START AggregateCountExample
 from weaviate.classes.query import Filter
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.over_all(
     filters=Filter.by_property(name="question").like("*animal*"),
     total_count=True
@@ -969,7 +971,7 @@ print(response.total_count)
 # END AggregateCountExample
 
 # START AggregateMetricExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.near_text(
     query="animal",
     object_limit=5,
@@ -984,7 +986,7 @@ print(response.properties)
 # =====================================================================================
 
 # START QueryGroupbyExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.query.near_text(
     query="animal",
     distance=0.2,
@@ -1009,7 +1011,7 @@ for o in response.objects:  # View by object
 # START AggregateGroupbyExample
 from weaviate.classes.aggregate import GroupByAggregate
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.aggregate.near_text(
     query="animal",
     distance=0.2,
@@ -1026,7 +1028,7 @@ for o in response.groups:
 # =====================================================================================
 
 # START ResultDisplayExample
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 response = questions.generate.near_text(
     query="history",
     limit=2,
@@ -1061,7 +1063,7 @@ _GenerativeReturn(objects=[_GenerativeObject(uuid=UUID('61e29275-8f53-5e28-a355-
 # # START ResultJSONDisplayExample
 # import json
 
-# questions = client.collections.get("JeopardyQuestion")
+# questions = client.collections.use("JeopardyQuestion")
 # response = questions.query.fetch_objects(limit=1)
 
 # # Print result object properties
@@ -1095,18 +1097,18 @@ all_object_ids = [question for question in questions.iterator(return_metadata=wv
 
 
 # START LenCollectionExample
-articles = client.collections.get("Article")
+articles = client.collections.use("Article")
 print(len(articles))
 # END LenCollectionExample
 
 # START SkipValidationExample
 # Configure the `performant_articles` to skip argument validation on its methods
-performant_articles = client.collections.get("Article", skip_argument_validation=True)
+performant_articles = client.collections.use("Article", skip_argument_validation=True)
 # END SkipValidationExample
 
 # START BrokenQueryExample
 try:
-    collection = client.collections.get("NonExistentCollection")
+    collection = client.collections.use("NonExistentCollection")
     collection.query.fetch_objects(limit=2)
 except weaviate.exceptions.WeaviateBaseError as e:
     print(f"Caught a Weaviate error: {e.message}")
@@ -1116,7 +1118,7 @@ except weaviate.exceptions.WeaviateBaseError as e:
 # GenericsExample
 from typing import TypedDict
 
-questions = client.collections.get("JeopardyQuestion")
+questions = client.collections.use("JeopardyQuestion")
 
 class Question(TypedDict):
     question: str
@@ -1135,7 +1137,7 @@ collection_name = "JeopardyQuestion"
 # START CollectionInteractionExample
 from weaviate.collections import Collection
 
-my_collection = client.collections.get(collection_name)
+my_collection = client.collections.use(collection_name)
 
 def work_with_collection(collection: Collection):
     # Do something with the collection, e.g.:
@@ -1352,6 +1354,16 @@ finally:
 
 # END AsyncInsertionExample
 
+# Wait for collection to be populated - async indexing is on
+client = weaviate.connect_to_local()
+
+import time; 
+
+collection = client.collections.use(name="Movie")
+while len(collection) != 5: time.sleep(0.1)
+
+client.close()
+
 # START AsyncSearchExample
 import weaviate
 from weaviate.collections.classes.internal import GenerativeSearchReturnType
@@ -1368,12 +1380,12 @@ async_client = weaviate.use_async_with_local(
 )
 
 
-async def async_query(async_client) -> GenerativeSearchReturnType:
+async def async_query(async_client: WeaviateAsyncClient) -> GenerativeSearchReturnType:
     async with async_client:
-        # Note `collections.get()` is not an async method
-        collection = async_client.collections.get(name="Movie")
+        # Note `collections.use()` is not an async method
+        movies = async_client.collections.use(name="Movie")
 
-        response = await collection.generate.hybrid(
+        response = await movies.generate.hybrid(
             "romantic comedy set in Europe",
             target_vector="overview_vector",
             grouped_task="Write an ad, selling a bundle of these movies together",
@@ -1388,8 +1400,7 @@ try:
 finally:
     loop.close()
 
-
-print(response.generated)
+print(response.generative.text)
 for o in response.objects:
     print(o.properties["title"])
 # END AsyncSearchExample

@@ -112,7 +112,7 @@ An example of a complete collection object including properties:
 This code example shows how to configure the collection parameters through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicCreateCollection"
@@ -120,7 +120,7 @@ This code example shows how to configure the collection parameters through a cli
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicCreateCollection"
@@ -225,7 +225,7 @@ An example of a complete property object:
 This code example shows how to configure the property parameters through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START CreateCollectionWithProperties"
@@ -233,7 +233,7 @@ This code example shows how to configure the property parameters through a clien
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionWithProperties"
@@ -351,6 +351,12 @@ The `gse` tokenizer is not loaded by default to save resources. To use it, set t
 - `"素早い茶色の狐が怠けた犬を飛び越えた"`: `["素早", "素早い", "早い", "茶色", "の", "狐", "が", "怠け", "けた", "犬", "を", "飛び", "飛び越え", "越え", "た", "素早い茶色の狐が怠けた犬を飛び越えた"]`
 - `"すばやいちゃいろのきつねがなまけたいぬをとびこえた"`: `["すばや", "すばやい", "やい", "いち", "ちゃ", "ちゃい", "ちゃいろ", "いろ", "のき", "きつ", "きつね", "つね", "ねが", "がな", "なま", "なまけ", "まけ", "けた", "けたい", "たい", "いぬ", "を", "とび", "とびこえ", "こえ", "た", "すばやいちゃいろのきつねがなまけたいぬをとびこえた"]`
 
+:::note `trigram` for fuzzy matching
+
+While originally designed for Asian languages, `trigram` tokenization is also highly effective for fuzzy matching and typo tolerance in other languages.
+
+:::
+
 </details>
 
 <details>
@@ -402,6 +408,43 @@ The `kagome_kr` tokenizer is not loaded by default to save resources. To use it,
 
 The `gse` and `Kagome` tokenizers can be resource intensive and affect Weaviate's performance.
 You can limit the combined number of `gse` and `Kagome` tokenizers running at the same time using the [`TOKENIZER_CONCURRENCY_COUNT` environment variable](/deploy/configuration/env-vars/index.md).
+
+</details>
+
+<details>
+  <summary>Fuzzy matching with `trigram` tokenization</summary>
+
+The `trigram` tokenization method provides fuzzy matching capabilities by breaking text into overlapping 3-character sequences. This enables BM25 searches to find matches even with spelling errors or variations.
+
+**Use cases for trigram fuzzy matching:**
+
+- **Typo tolerance**: Find matches despite spelling errors (e.g., "Reliace" matches "Reliance")
+- **Name reconciliation**: Match entity names with variations across datasets
+- **Search-as-you-type**: Build autocomplete functionality
+- **Partial matching**: Find objects with partial string matches
+
+**How it works:**
+
+When text is tokenized with `trigram`, it's broken into all possible 3-character sequences:
+
+- `"hello"` → `["hel", "ell", "llo"]`
+- `"world"` → `["wor", "orl", "rld"]`
+
+Similar strings share many trigrams, enabling fuzzy matching:
+
+- `"Morgan Stanley"` and `"Stanley Morgn"` share trigrams like `"sta", "tan", "anl", "nle", "ley"`
+
+**Performance considerations:**
+
+- Filtering behavior will change significantly, as text filtering will be done based on trigram-tokenized text, instead of whole words
+- Creates larger inverted indexes due to more tokens
+- May impact query performance for large datasets
+
+:::tip
+
+Use trigram tokenization selectively on fields where fuzzy matching is preferred. Keep exact-match fields with `word` or `field` tokenization for precision.
+
+:::
 
 </details>
 
@@ -457,7 +500,7 @@ To learn which properties of your data are vectorized, refer to the [Configure s
 This code example shows how to configure the vectorizer parameters for a single vector collection through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START Vectorizer"
@@ -465,7 +508,7 @@ This code example shows how to configure the vectorizer parameters for a single 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Vectorizer"
@@ -508,7 +551,7 @@ import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 This code example shows how to configure multiple named vectors through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MultipleVectors"
@@ -516,7 +559,7 @@ This code example shows how to configure multiple named vectors through a client
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicNamedVectors"
@@ -618,7 +661,7 @@ An example of a complete `replicationConfig` object:
 This code example shows how to configure the replication parameters through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START AllReplicationSettings"
@@ -626,7 +669,7 @@ This code example shows how to configure the replication parameters through a cl
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AllReplicationSettings"
@@ -700,7 +743,7 @@ An example of a complete `shardingConfig` object:
 This code example shows how to configure the sharding parameters through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ShardingSettings"
@@ -708,7 +751,7 @@ This code example shows how to configure the sharding parameters through a clien
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ShardingSettings"
@@ -765,7 +808,7 @@ To enable multi-tenancy, set the `enabled` key to `true` in the `multiTenancyCon
 This code example shows how to configure the multi-tenancy parameters through a client library:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeMultiTenancy}
       startMarker="# START EnableMultiTenancy"
@@ -773,7 +816,7 @@ This code example shows how to configure the multi-tenancy parameters through a 
       language="py"
     />
   </TabItem>
-  <!-- <TabItem value="js" label="JS/TS Client v3">
+  <!-- <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeMultiTenancy}
       startMarker="// START EnableMultiTenancy"
@@ -807,7 +850,7 @@ For more code example and configuration guides visit the [How-to: Manage collect
 
 ## Mutability
 
-Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it. Use [collection aliases](../starter-guides/managing-collections/index.mdx#migration-workflow-with-collection-aliases) to perform such a migration with zero downtime.
+Some, but not all, parameters are mutable after you create your collection. To modify immutable parameters, export your data, create a new collection, and import your data into it.
 
 <details>
   <summary>Mutable parameters</summary>
@@ -880,21 +923,24 @@ For more details, see [Starter Guides: Scaling limits with collections](../start
 
 ## Collection aliases
 
-:::caution Technical preview
-
-Collection aliases were added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
+:::info Added in `v1.32`
 :::
 
 Collection aliases are alternative names for Weaviate collections that allow you to reference a collection by an alternative name.
 
-Weaviate automatically routes alias requests to the target collection. This allows you to use aliases wherever collection names are required. This includes [collection management](../manage-collections/index.mdx), [queries](../search/index.mdx), and all other operations requiring a specific collection name with the **exception** of deleting collections. To delete a collection you need to use its name. Deleting a collection does not automatically delete aliases pointing to it.
-
 Alias names must be unique (can't match existing collections or other aliases) and multiple aliases can point to the same collection. You can set up collection aliases [programmatically through client libraries](../manage-collections/collection-aliases.mdx) or by using the <SkipLink href="/weaviate/api/rest#tag/aliases">REST endpoints</SkipLink>.
 
 In order to manage collection aliases, you need to posses the right [`Collection aliases`](../configuration/rbac/index.mdx#available-permissions) permissions. To manage the underlying collection the alias references, you also need the [`Collections`](../configuration/rbac/index.mdx#available-permissions) permissions for that specific collection.
+
+**Collection aliases cannot be used to update collection definitions**, including:
+- Updating and adding properties
+- Updating vector and inverted indexes
+- Configuring sharding and multi-tenancy
+- Modifying vectorizer, generative and reranker configurations
+
+import CollectionAliasUsage from "/_includes/collection-alias-usage.mdx";
+
+<CollectionAliasUsage />
 
 ## Further resources
 

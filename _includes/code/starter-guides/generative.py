@@ -17,7 +17,7 @@ assert client.is_ready()
 # DataRetrieval
 collection_name = "GitBookChunk"
 
-chunks = client.collections.get(collection_name)
+chunks = client.collections.use(collection_name)
 response = chunks.query.near_text(query="history of git", limit=3)
 # END DataRetrieval
 
@@ -26,7 +26,7 @@ assert len(response.objects) == 3
 # TransformResultSets
 collection_name = "GitBookChunk"
 
-chunks = client.collections.get(collection_name)
+chunks = client.collections.use(collection_name)
 response = chunks.generate.near_text(
     query="history of git",
     limit=3,
@@ -35,15 +35,15 @@ response = chunks.generate.near_text(
     # highlight-end
 )
 
-print(response.generated)
+print(response.generative.text)
 # END TransformResultSets
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 
 # TransformIndividualObjects
 collection_name = "WineReview"
 
-reviews = client.collections.get(collection_name)
+reviews = client.collections.use(collection_name)
 response = reviews.generate.near_text(
     query="fruity white wine",
     limit=3,
@@ -184,10 +184,10 @@ response = chunks.generate.fetch_objects(
     grouped_task="Write a trivia tweet based on this text. Use emojis and make it succinct and cute."
 )
 
-print(response.generated)
+print(response.generative.text)
 # END GroupedTask
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 
 
 # NearTextGroupedTask
@@ -197,10 +197,10 @@ response = chunks.generate.near_text(
     grouped_task="Write a trivia tweet based on this text. Use emojis and make it succinct and cute."
 )
 
-print(response.generated)
+print(response.generative.text)
 # END NearTextGroupedTask
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 
 
 # SecondNearTextGroupedTask
@@ -210,8 +210,8 @@ response = chunks.generate.near_text(
     grouped_task="Write a trivia tweet based on this text. Use emojis and make it succinct and cute."
 )
 
-print(response.generated)
+print(response.generative.text)
 # END SecondNearTextGroupedTask
 
-assert len(response.generated) > 10
+assert len(response.generative.text) > 10
 client.close()

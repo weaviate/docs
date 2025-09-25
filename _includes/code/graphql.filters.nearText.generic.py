@@ -31,7 +31,7 @@ try:
 # END-ANY
 
 # START-ANY
-    publications = client.collections.get("Publication")
+    publications = client.collections.use("Publication")
 
     response = publications.query.near_text(
         query="fashion",

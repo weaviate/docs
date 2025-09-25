@@ -31,7 +31,7 @@ client = weaviate.connect_to_local(
 
 # NVTitleSearch
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 response = movies.query.near_text(
@@ -64,7 +64,7 @@ client.connect()
 
 # NVOverviewSearch
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 response = movies.query.near_text(
@@ -97,7 +97,7 @@ client.connect()
 
 # NVPosterSearch
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 response = movies.query.near_text(
@@ -140,7 +140,7 @@ def url_to_base64(url):
 
 
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 src_img_path = "https://github.com/weaviate-tutorials/edu-datasets/blob/main/img/International_Space_Station_after_undocking_of_STS-132.jpg?raw=true"
@@ -174,7 +174,7 @@ client.connect()
 
 # MetadataHybridSearch
 # Get the collection
-movies = client.collections.get("MovieNVDemo")
+movies = client.collections.use("MovieNVDemo")
 
 # Perform query
 response = movies.query.hybrid(

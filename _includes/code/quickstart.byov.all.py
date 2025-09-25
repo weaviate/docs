@@ -40,7 +40,7 @@ for i, d in enumerate(data):
         vector=d["vector"]
     ))
 
-questions = client.collections.get("Question")
+questions = client.collections.use("Question")
 questions.data.insert_many(question_objs)
 
 # ===== Query =====

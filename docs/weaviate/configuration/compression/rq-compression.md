@@ -1,6 +1,5 @@
 ---
 title: Rotational Quantization (RQ)
-sidebar_position: 25
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression', 'rq']
 ---
@@ -13,26 +12,37 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
-:::caution Technical preview
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
-Rotational quantization (RQ) was added in **`v1.32`** as a **technical preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+<CompressionByDefault/>
 
-:::
+[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast vector compression technique that offers significant performance benefits. Two RQ variants are available in Weaviate:
 
-[**Rotational quantization (RQ)**](../../concepts/vector-quantization.md#rotational-quantization) is a fast untrained vector compression technique that offers 4x compression while retaining almost perfect recall (98-99% on most datasets).
+- **8-bit RQ**: Up to 4x compression while retaining almost perfect recall (98-99% on most datasets). **Recommended** for most use cases.
+- **1-bit RQ**: Close to 32x compression as dimensionality increases with moderate recall across various datasets.
 
 :::note HNSW only
+
 RQ is currently not supported for the flat index type.
+
 :::
 
-## Enable compression for new collection
+## 8-bit RQ
+
+:::info Added in `v1.32`
+
+**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+
+:::
+
+[8-bit RQ](../../concepts/vector-quantization.md#8-bit-rq) provides up-to 4x compression while maintaining 98-99% recall in internal testing. It is generally recommended for most use cases as the default quantization techniques.
+
+### Enable compression for new collection
 
 RQ can be enabled at collection creation time through the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START EnableRQ"
@@ -40,7 +50,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START EnableRQ"
@@ -66,12 +76,12 @@ RQ can be enabled at collection creation time through the collection definition:
   </TabItem>
 </Tabs>
 
-## Enable compression for existing collection
+### Enable compression for existing collection
 
 RQ can also be enabled for an existing collection by updating the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START UpdateSchema"
@@ -97,6 +107,89 @@ RQ can also be enabled for an existing collection by updating the collection def
   </TabItem>
 </Tabs>
 
+## 1-bit RQ
+
+:::caution Preview
+
+**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
+
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+[1-bit RQ](../../concepts/vector-quantization.md#1-bit-rq) is an quantization technique that provides close to 32x compression as dimensionality increases. 1-bit RQ serves as a more robust and accurate alternative to [BQ](./bq-compression.md) with only a slight performance trade-off. While more performant than PQ in terms of encoding time and distance calculations, 1-bit RQ typically offers slightly lower recall than well-tuned [PQ](./pq-compression.md).
+
+### Enable compression for new collection
+
+RQ can be enabled at collection creation time through the collection definition:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START 1BitEnableRQ"
+        endMarker="# END 1BitEnableRQ"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START 1BitEnableRQ"
+        endMarker="// END 1BitEnableRQ"
+        language="ts"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START 1BitEnableRQ"
+        endMarker="// END 1BitEnableRQ"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START 1BitEnableRQ"
+      endMarker="// END 1BitEnableRQ"
+      language="java"
+    />
+  </TabItem>
+</Tabs>
+
+### Enable compression for existing collection
+
+RQ can also be enabled for an existing collection by updating the collection definition:
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+      <FilteredTextBlock
+        text={PyCode}
+        startMarker="# START 1BitUpdateSchema"
+        endMarker="# END 1BitUpdateSchema"
+        language="py"
+      />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START 1BitUpdateSchema"
+      endMarker="// END 1BitUpdateSchema"
+      language="java"
+    />
+  </TabItem>
+    <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START 1BitUpdateSchema"
+        endMarker="// END 1BitUpdateSchema"
+        language="go"
+      />
+  </TabItem>
+</Tabs>
+
 ## RQ parameters
 
 To tune RQ, use these quantization and vector index parameters:
@@ -106,7 +199,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
 <RQParameters />
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START RQWithOptions"
@@ -114,7 +207,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START RQWithOptions"

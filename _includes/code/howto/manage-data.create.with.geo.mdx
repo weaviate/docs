@@ -6,7 +6,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START WithGeoCoordinates"
@@ -15,29 +15,10 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
   />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-```python
-data_obj = {
-  "name": "Elsevier",
-  "headquartersGeoLocation": {
-    "latitude": 52.3932696,
-    "longitude": 4.8374263
-  }
-}
-
-data_uuid = client.data_object.create(
-  data_obj,
-  "Publication",
-  uuid="df48b9f6-ba48-470c-bf6a-57657cb07390", # optional, if not provided, one is going to be generated
-)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
-const publication = client.collections.get('Publication')
+const publication = client.collections.use('Publication')
 
 uuid = await publication.data.insert({
   properties: {
@@ -51,25 +32,6 @@ uuid = await publication.data.insert({
 })
 
 console.log('UUID: ', uuid)
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-const response = await client.data
-  .creator()
-  .withClassName('Publication')
-  .withId('df48b9f6-ba48-470c-bf6a-57657cb07390')
-  .withProperties({
-    'name': 'Elsevier',
-    'headquartersGeoLocation': {
-      'latitude': 52.3932696,
-      'longitude': 4.8374263,
-    },
-  })
-  .do();
-console.log(JSON.stringify(response, null, 2));
 ```
 
 </TabItem>

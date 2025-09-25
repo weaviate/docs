@@ -84,7 +84,7 @@ documents = [
     {"id": "doc3", "text": "For people building AI driven products, Weaviate is a good database for their tech stack."},
 ]
 
-collection = client.collections.get(collection_name)
+collection = client.collections.use(collection_name)
 
 with collection.batch.fixed_size(batch_size=10) as batch:
     for doc in documents:
@@ -184,7 +184,7 @@ documents = [
     {"id": "doc3", "text": "For people building AI driven products, Weaviate is a good database for their tech stack."},
 ]
 
-collection = client.collections.get(collection_name)
+collection = client.collections.use(collection_name)
 
 with collection.batch.fixed_size(batch_size=10) as batch:
     for doc in documents:

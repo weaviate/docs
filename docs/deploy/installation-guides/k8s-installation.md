@@ -87,7 +87,13 @@ grpcService:
 
 #### Authentication and authorization
 
-An example configuration for authentication is shown below.
+:::tip
+
+Weaviate Helm charts automatically generate random username/password values each time Weaviate is deployed to Kubernetes, this means that when Weaviate is deployed with Helm charts internode communication is always secured.
+
+:::
+
+An example configuration for authentication:
 
 ```yaml
 authentication:
@@ -117,9 +123,14 @@ authorization:
       - readonly@example.com
 ```
 
+
 In this example, the key `readonly-key` will authenticate a user as the `readonly@example.com` identity, and `secr3tk3y` will authenticate a user as `admin@example.com`.
 
 OIDC authentication is also enabled, with WCD as the token issuer/identity provider. Thus, users with WCD accounts could be authenticated. This configuration sets `someuser@weaviate.io` as an admin user, so if `someuser@weaviate.io` were to authenticate, they will be given full (read and write) privileges.
+
+import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
+
+<WCDOIDCWarning/>
 
 For further, general documentation on authentication and authorization configuration, see:
 - [Authentication](../configuration/authentication.md)

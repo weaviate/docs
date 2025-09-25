@@ -5,83 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START FilterByGeoCoordinates"
     endMarker="END FilterByGeoCoordinates"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-get_articles_where = """
-  {
-    Get {
-      Publication(where: {
-        operator: WithinGeoRange,
-        valueGeoRange: {
-          geoCoordinates: {
-            latitude: 51.51,    # latitude
-            longitude: -0.09    # longitude
-          },
-          distance: {
-            max: 2000           # distance in meters
-          }
-        },
-        path: ["headquartersGeoLocation"] # property needs to be of geoLocation type.
-      }) {
-        name
-        headquartersGeoLocation {
-          latitude
-          longitude
-        }
-      }
-    }
-  }
-"""
-
-query_result = client.query.raw(get_articles_where)
-print(query_result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Publication')
-  .withFields('name headquartersGeoLocation {latitude longitude}')
-  .withWhere({
-    operator: 'WithinGeoRange',
-    path: ['headquartersGeoLocation'],
-    valueGeoRange: {
-      geoCoordinates: {
-        latitude: 51.51,
-        longitude: -0.09,
-      },
-      distance: {
-        max: 2000,
-      },
-    },
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

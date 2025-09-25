@@ -4,7 +4,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START LimitWithAfter"
@@ -12,36 +12,6 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.additional.py';
       language="py"
     />
   </TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-
-```py
-response = (
-    client.query.get("Article", ["title"])
-    .with_additional(["id"])
-    .with_limit(5)
-    .with_after("002d5cb3-298b-380d-addb-2e026b76c8ed")
-    .do()
-)
-
-print(response)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title _additional { id }')
-  .withAfter('002d5cb3-298b-380d-addb-2e026b76c8ed')
-  .withLimit(5)
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
-</TabItem>
 <TabItem value="graphql" label="GraphQL">
 
 ```graphql

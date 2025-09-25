@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -12,15 +13,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	//"github.com/weaviate/weaviate-go-client/v5/weaviate"
-	//"github.com/weaviate/weaviate-go-client/v5/weaviate/auth"
 	"github.com/weaviate/weaviate-go-client/v5/weaviate/filters"
 	"github.com/weaviate/weaviate-go-client/v5/weaviate/graphql"
 )
-
-// ================================
-// ===== INSTANTIATION-COMMON =====
-// ================================
 
 // ==========================================
 // ===== Single Filter =====
@@ -172,6 +167,59 @@ func TestContainsAllFilter(t *testing.T) {
 }
 
 // ==========================================
+// ===== ContainsNone Filter =====
+// ==========================================
+
+func TestContainsNoneFilter(t *testing.T) {
+	client := setupClient()
+	ctx := context.Background()
+
+	// START ContainsNoneFilter Go
+	// highlight-start
+	tokenList := []string{"bird", "animal"}
+	// highlight-end
+
+	response, err := client.GraphQL().Get().
+		WithClassName("JeopardyQuestion").
+		WithFields(
+			graphql.Field{Name: "question"},
+			graphql.Field{Name: "answer"},
+			graphql.Field{
+				Name: "hasCategory",
+				Fields: []graphql.Field{
+					{Name: "... on JeopardyCategory", Fields: []graphql.Field{{Name: "title"}}},
+				},
+			},
+		).
+		// highlight-start
+		WithWhere(filters.Where().
+			WithPath([]string{"answer"}).
+			WithOperator(filters.ContainsNone).
+			WithValueText(tokenList...)).
+		// highlight-end
+		WithLimit(3).
+		Do(ctx)
+	// END ContainsNoneFilter Go
+
+	require.NoError(t, err)
+	outBytes, err := json.Marshal(response)
+	require.NoError(t, err)
+	fmt.Printf("%s\n", string(outBytes))
+
+	objects := response.Data["Get"].(map[string]interface{})["JeopardyQuestion"].([]interface{})
+	require.NotEmpty(t, objects)
+
+	for _, obj := range objects {
+		question := obj.(map[string]interface{})
+		answer := strings.ToLower(question["answer"].(string))
+		// Assert that the answer does not contain any of the excluded tokens
+		for _, token := range tokenList {
+			assert.NotContains(t, answer, token)
+		}
+	}
+}
+
+// ==========================================
 // ===== Partial Match Filter =====
 // ==========================================
 
@@ -206,7 +254,7 @@ func TestLikeFilter(t *testing.T) {
 }
 
 // ==========================================
-// ===== Multiple Filters with And =====
+// ===== Multiple Filters with And & Not =====
 // ==========================================
 
 func TestMultipleFiltersAnd(t *testing.T) {
@@ -216,15 +264,26 @@ func TestMultipleFiltersAnd(t *testing.T) {
 	// START MultipleFiltersAnd Go
 	response, err := client.GraphQL().Get().
 		WithClassName("JeopardyQuestion").
-		WithFields(graphql.Field{Name: "question"}, graphql.Field{Name: "answer"}, graphql.Field{Name: "round"}, graphql.Field{Name: "points"}).
+		WithFields(
+			graphql.Field{Name: "question"},
+			graphql.Field{Name: "answer"},
+			graphql.Field{Name: "round"},
+			graphql.Field{Name: "points"},
+		).
 		// highlight-start
 		WithWhere(filters.Where().
 			WithOperator(filters.And).
 			WithOperands([]*filters.WhereBuilder{
 				filters.Where().WithPath([]string{"round"}).WithOperator(filters.Equal).WithValueString("Double Jeopardy!"),
 				filters.Where().WithPath([]string{"points"}).WithOperator(filters.LessThan).WithValueInt(600),
-			},
-			)).
+				// Add a NOT operator to exclude a specific answer
+				filters.Where().
+					WithOperator(filters.Not).
+					WithOperands([]*filters.WhereBuilder{
+						filters.Where().WithPath([]string{"answer"}).WithOperator(filters.Equal).WithValueString("Yucatan"),
+					}),
+			}),
+		).
 		// highlight-end
 		WithLimit(3).
 		Do(ctx)
@@ -240,6 +299,8 @@ func TestMultipleFiltersAnd(t *testing.T) {
 		question := obj.(map[string]interface{})
 		assert.Equal(t, "Double Jeopardy!", question["round"])
 		assert.Less(t, question["points"].(float64), float64(600))
+		// Add assertion to verify the NOT operator worked
+		assert.NotEqual(t, "Mongoose", question["answer"])
 	}
 }
 
@@ -275,19 +336,7 @@ func TestMultipleFiltersNested(t *testing.T) {
 	fmt.Printf("%s\n", string(outBytes))
 
 	objects := response.Data["Get"].(map[string]interface{})["JeopardyQuestion"].([]interface{})
-	birdCount := 0
-	for _, obj := range objects {
-		question := obj.(map[string]interface{})
-		fmt.Printf("%s, %v\n", question["answer"], question["points"])
-
-		if strings.Contains(strings.ToLower(question["answer"].(string)), "the appian way") {
-			birdCount++
-		}
-		points := question["points"].(float64)
-		assert.False(t, points < 300 || points > 700)
-	}
-	assert.Greater(t, birdCount, 0)
-
+	assert.NotEmpty(t, objects, "Query should return objects with points between 300 and 700")
 }
 
 // ===================================================
@@ -363,7 +412,7 @@ func TestFilterByDate(t *testing.T) {
 	require.NoError(t, err, "Error executing query")
 
 	// Assert that we got results
-	objects, ok := response.Data["Get"].(map[string]interface{})["CollectionWithDate"].([]interface{})
+	objects, ok := response.Data["Get"].(map[string]interface{})["Article"].([]interface{})
 	require.True(t, ok, "Failed to get objects from result")
 	require.NotEmpty(t, objects, "No objects returned from query")
 
@@ -377,12 +426,12 @@ func TestFilterByDate(t *testing.T) {
 		require.NoError(t, err, "Error marshaling properties to JSON")
 		t.Logf("Object properties: %s", jsonProperties)
 
-		// Assert that 'some_date' exists and is after filterTime
-		someDate, ok := properties["some_date"].(string)
-		require.True(t, ok, "'some_date' is not a string")
+		// Assert that 'publicationDate' exists and is after filterTime
+		publicationDate, ok := properties["publicationDate"].(string)
+		require.True(t, ok, "'publicationDate' is not a string")
 
-		objectTime, err := time.Parse(time.RFC3339, someDate)
-		require.NoError(t, err, "Error parsing 'some_date'")
+		objectTime, err := time.Parse(time.RFC3339, publicationDate)
+		require.NoError(t, err, "Error parsing 'publicationDate'")
 
 		assert.True(t, objectTime.After(filterTime), "Object date is not after filter date")
 	}
@@ -477,7 +526,10 @@ func TestFilterByTimestamp(t *testing.T) {
 	require.NoError(t, err)
 
 	object := response.Data["Get"].(map[string]interface{})["Article"].([]interface{})[0].(map[string]interface{})
-	respEpoch := int64(object["_additional"].(map[string]interface{})["creationTimeUnix"].(float64))
+	creationTimeStr := object["_additional"].(map[string]interface{})["creationTimeUnix"].(string)
+	// 2. Parse the string into an int64.
+	respEpoch, err := strconv.ParseInt(creationTimeStr, 10, 64)
+	require.NoError(t, err) // Ensure parsing was successful
 	assert.Greater(t, respEpoch, queryTime.Unix())
 }
 

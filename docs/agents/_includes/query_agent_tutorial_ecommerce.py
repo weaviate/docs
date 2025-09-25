@@ -93,8 +93,8 @@ ecommerce_dataset = load_dataset(
     "weaviate/agents", "query-agent-ecommerce", split="train", streaming=True
 )
 
-brands_collection = client.collections.get("Brands")
-ecommerce_collection = client.collections.get("ECommerce")
+brands_collection = client.collections.use("Brands")
+ecommerce_collection = client.collections.use("ECommerce")
 
 with brands_collection.batch.fixed_size(batch_size=200) as batch:
     for item in brands_dataset:
@@ -116,14 +116,14 @@ print(f"Size of the Brands dataset: {len(brands_collection)}")
 # START BasicQueryAgent
 from weaviate.agents.query import QueryAgent
 
-agent = QueryAgent(
+qa = QueryAgent(
     client=client,
     collections=["ECommerce", "Brands"],
 )
 # END BasicQueryAgent
 
 # START CustomizedQueryAgent
-multi_lingual_agent = QueryAgent(
+multi_lingual_qa = QueryAgent(
     client=client,
     collections=["ECommerce", "Brands"],
     system_prompt="You are a helpful assistant that always generates the final response in the user's language."
@@ -132,7 +132,7 @@ multi_lingual_agent = QueryAgent(
 # END CustomizedQueryAgent
 
 # START AskQuestions
-response = agent.run(
+response = qa.ask(
     "I like vintage clothes, can you list me some options that are less than $200?"
 )
 
@@ -150,21 +150,33 @@ response.display()
 # END PrintQueryAgentResponseAskQuestions
 
 # START FollowUpAskQuestions
-new_response = agent.run(
-    "What about some nice shoes, same budget as before?", context=response
-)
+from weaviate.agents.classes import ChatMessage
+
+# Create a conversation with the previous response
+conversation = [
+    ChatMessage(
+        role="user",
+        content="I like vintage clothes, can you list me some options that are less than $200?",
+    ),
+    ChatMessage(role="assistant", content=response.final_answer),
+    ChatMessage(
+        role="user", content="What about some nice shoes, same budget as before?"
+    ),
+]
+
+new_response = qa.ask(conversation)
 
 new_response.display()
 # END FollowUpAskQuestions
 
 # START Aggregation
-response = agent.run("What is the the name of the brand that lists the most shoes?")
+response = qa.ask("What is the the name of the brand that lists the most shoes?")
 
 response.display()
 # END Aggregation
 
 # START SearchOverMultipleCollections
-response = agent.run(
+response = qa.ask(
     "Does the brand 'Loom & Aura' have a parent brand or child brands and what countries do they operate from? "
     "Also, what's the average price of a shoe from 'Loom & Aura'?"
 )
@@ -173,7 +185,9 @@ response.display()
 # END SearchOverMultipleCollections
 
 # START MoreQuestions
-response = multi_lingual_agent.run('"Eko & Stitch"は英国に支店または関連会社がありますか？')
+response = multi_lingual_qa.ask(
+    '"Eko & Stitch"は英国に支店または関連会社がありますか？'
+)
 
 print(response.final_answer)
 # END MoreQuestions

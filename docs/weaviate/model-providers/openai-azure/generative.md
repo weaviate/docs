@@ -48,7 +48,7 @@ This integration is enabled by default on Weaviate Cloud (WCD) serverless instan
 
 ### API credentials
 
-You must provide a valid Azure OpenAI API key to Weaviate for this integration. Go to [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) to sign up and obtain an API key.
+You must provide a valid Azure OpenAI API key to Weaviate for this integration. Go to [Azure OpenAI](https://ai.azure.com/) to sign up and obtain an API key.
 
 Provide the API key to Weaviate using one of the following methods:
 
@@ -57,7 +57,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
       startMarker="# START AzureOpenAIInstantiation"
@@ -66,7 +66,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START AzureOpenAIInstantiation"
@@ -88,7 +88,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 To select the model, specify the Azure resource name.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START BasicGenerativeAzureOpenAI"
@@ -97,7 +97,7 @@ To select the model, specify the Azure resource name.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeAzureOpenAI"
@@ -113,7 +113,7 @@ To select the model, specify the Azure resource name.
 Configure the following generative parameters to customize the model behavior.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python API v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START FullGenerativeAzureOpenAI"
@@ -122,7 +122,7 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS API v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeAzureOpenAI"
@@ -163,7 +163,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START SinglePromptExample"
@@ -172,7 +172,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -193,7 +193,7 @@ In other words, when you have `n` search results, the generative model generates
 
 <Tabs groupId="languages">
 
- <TabItem value="py" label="Python API v4">
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GroupedTaskExample"
@@ -202,7 +202,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS API v3">
+ <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"

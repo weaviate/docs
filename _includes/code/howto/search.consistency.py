@@ -25,14 +25,14 @@ client = weaviate.connect_to_weaviate_cloud(
 )
 
 collection_name = "JeopardyQuestion"
-collection = client.collections.get(collection_name)
+collection = client.collections.use(collection_name)
 
 # ========================================
 # ConsistencyExample
 # ========================================
 
 # START QueryWithReplication
-questions = client.collections.get(collection_name).with_consistency_level(
+questions = client.collections.use(collection_name).with_consistency_level(
     # highlight-start
     consistency_level=ConsistencyLevel.QUORUM
     # highlight-end

@@ -95,7 +95,7 @@ with zipfile.ZipFile(posters_path, 'r') as zip_ref:
     zip_ref.extractall(img_dir)
 
 # Get the collection
-movies = client.collections.get("MovieMM")
+movies = client.collections.use("MovieMM")
 
 # END BatchImportData
 

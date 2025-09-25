@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb
 toc: True
 title: "Similarity Search with Cohere"
 featured: False
@@ -8,9 +7,7 @@ integration: False
 agent: False
 tags: ['Similarity Search', 'Cohere']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/similarity-search/similarity_search_cohere.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/cohere/similarity_search_embed_multilingual_v2.0.ipynb)
 
 ## Dependencies
 
@@ -81,7 +78,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)
@@ -112,7 +109,7 @@ Find a `JeopardyQuestion` about "animals in movies". Limit it to only 4 response
 ```python
 # note, you can reuse the collection object from the previous cell.
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 response = jeopardy.query.near_text(
     query="african beasts",

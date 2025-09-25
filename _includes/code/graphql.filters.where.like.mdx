@@ -5,61 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START FilterWithLike"
     endMarker="END FilterWithLike"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-where_filter = {
-    "path": ["name"],
-    "operator": "Like",
-    "valueText": "New *"
-}
-
-query_result = (
-  client.query
-  .get("Publication", "name")
-  .with_where(where_filter)
-  .do()
-)
-
-print(query_result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Publication')
-  .withFields('name')
-  .withWhere({
-    path: ['name'],
-    operator: 'Like',
-    valueText: 'New *',
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

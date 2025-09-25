@@ -32,7 +32,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # ============================
 
 # BM25BasicPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.query.bm25(
 # highlight-end
@@ -60,7 +60,7 @@ assert "food" in str(response.objects[0].properties).lower()
 from weaviate.classes.query import BM25Operator
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
     query="Australian mammal cute",
@@ -88,7 +88,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 from weaviate.classes.query import BM25Operator
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
     query="Australian mammal cute",
@@ -114,7 +114,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 # BM25WithScorePython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="food",
     return_metadata=MetadataQuery(score=True),
@@ -140,7 +140,7 @@ assert response.objects[0].metadata.score is not None
 # =================================
 
 # START limit Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="safety",
     # highlight-start
@@ -165,7 +165,7 @@ assert len(response.objects) == 3
 # ===================================
 
 # START autocut Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="safety",
     # highlight-start
@@ -190,7 +190,7 @@ assert "safety" in str(response.objects[0].properties).lower()
 # BM25WithPropertiesPython
 from weaviate.classes.query import MetadataQuery
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="safety",
     # highlight-start
@@ -217,7 +217,7 @@ assert "safety" in response.objects[0].properties["question"].lower()
 
 
 # BM25WithBoostedPropertiesPython
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="food",
     # highlight-start
@@ -241,7 +241,7 @@ assert "food" in str(response.objects[0].properties).lower()
 # ==================================
 
 # START MultipleKeywords Python
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     # highlight-start
     query="food wine", # search for food or wine
@@ -270,7 +270,7 @@ assert (
 # BM25WithFilterPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.bm25(
     query="food",
     # highlight-start
@@ -297,7 +297,7 @@ assert response.objects[0].properties["round"] == "Double Jeopardy!"
 # START BM25GroupByPy4
 from weaviate.classes.query import GroupBy
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # Grouping parameters
 group_by = GroupBy(
