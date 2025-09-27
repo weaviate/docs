@@ -16,6 +16,7 @@ import WCDAuthAndInferenceKeys from '/_includes/code/wcs.authentication.api.key.
 import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
 import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
 
@@ -59,6 +60,14 @@ To connect to a local instance without authentication, follow these examples.
 <TabItem value="java" label="Java">
    <FilteredTextBlock
      text={JavaCode}
+     startMarker="// START LocalNoAuth"
+     endMarker="// END LocalNoAuth"
+     language="java"
+   />
+</TabItem>
+<TabItem value="java6" label="Java Client v6">
+   <FilteredTextBlock
+     text={JavaV6Code}
      startMarker="// START LocalNoAuth"
      endMarker="// END LocalNoAuth"
      language="java"

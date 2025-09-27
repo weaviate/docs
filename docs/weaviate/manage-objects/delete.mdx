@@ -13,6 +13,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.delete.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.delete-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.delete.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.delete.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.delete-v6.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.delete_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
@@ -61,6 +62,15 @@ To delete by id, specify the collection name and the object id.
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
+      startMarker="// START DeleteObject"
+      endMarker="// END DeleteObject"
+      language="java"
+    />
+  </TabItem>
+
+  <TabItem value="java6" label="Java Client V6">
+    <FilteredTextBlock
+      text={JavaV6Code}
       startMarker="// START DeleteObject"
       endMarker="// END DeleteObject"
       language="java"
