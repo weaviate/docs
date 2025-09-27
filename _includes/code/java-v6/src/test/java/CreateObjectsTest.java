@@ -1,6 +1,6 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.Property;
-import io.weaviate.client6.v1.api.collections.Vectorizers;
+import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import org.junit.jupiter.api.AfterAll;
@@ -30,15 +30,16 @@ class CreateObjectsTest {
   @BeforeAll
   public static void beforeAll() throws IOException {
     // START INSTANTIATION-COMMON
-    client = WeaviateClient.local();
+    client = WeaviateClient.connectToLocal();
     // END INSTANTIATION-COMMON
 
-    //TODO[g-despot]: Wasn't able to create collection with vectorizer but without properties
+    // TODO[g-despot]: Wasn't able to create collection with vectorizer but without
+    // properties
     // START Define the class
     client.collections.create("JeopardyQuestion", col -> col
-    .properties(
+        .properties(
             Property.text("title", p -> p.description("Name of the wine")))
-        .vectors(Vectorizers.text2vecContextionary()));
+        .vectorConfig(VectorConfig.text2vecContextionary()));
 
     // TODO[g-despot]: Add source properties
     client.collections.create("WineReviewNV", col -> col
@@ -46,10 +47,10 @@ class CreateObjectsTest {
             Property.text("review_body", p -> p.description("Review body")),
             Property.text("title", p -> p.description("Name of the wine")),
             Property.text("country", p -> p.description("Originating country")))
-        .vectors(
-            Vectorizers.text2vecContextionary("title"),
-            Vectorizers.text2vecContextionary("review_body"),
-            Vectorizers.text2vecContextionary("title_country")));
+        .vectorConfig(
+            VectorConfig.text2vecContextionary("title"),
+            VectorConfig.text2vecContextionary("review_body"),
+            VectorConfig.text2vecContextionary("title_country")));
     // END Define the class
 
     // Additional collections for other tests
@@ -57,7 +58,7 @@ class CreateObjectsTest {
     // client.collections.create("Publication", col -> col
     // .properties(Property.geo("headquartersGeoLocation")));
     client.collections.create("Author", col -> col
-        .vectors(Vectorizers.none()));
+        .vectorConfig(VectorConfig.selfProvided()));
   }
 
   @AfterAll
@@ -184,7 +185,7 @@ class CreateObjectsTest {
   }
 
   // TODO[g-despot]: Uncomment once GEO type added
-  //@Test
+  // @Test
   void testWithGeoCoordinates() throws IOException {
     // START WithGeoCoordinates
     var publications = client.collections.use("Publication");

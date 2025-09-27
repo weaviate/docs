@@ -1,5 +1,6 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.Property;
+import io.weaviate.client6.v1.api.collections.ReferenceProperty;
 import io.weaviate.client6.v1.api.collections.data.Reference;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
@@ -23,7 +24,7 @@ public class CrossReferencesTest {
   public static void beforeAll() {
     // Instantiate the client anonymously
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient.local(config -> config
+    client = WeaviateClient.connectToLocal(config -> config
         .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
   }
 
@@ -57,7 +58,7 @@ public class CrossReferencesTest {
             Property.text("answer"))
         // highlight-start
         .references(
-            Property.reference("hasCategory", "JeopardyCategory"))
+            ReferenceProperty.to("hasCategory", "JeopardyCategory"))
     // highlight-end
     );
     // END CrossRefDefinition
@@ -138,8 +139,7 @@ public class CrossReferencesTest {
     var result = questions.query.byId(
         questionObjId,
         opt -> opt.returnReferences(
-            QueryReference.single("hasCategory",
-                ref -> ref.returnMetadata(Metadata.UUID))));
+            QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references()).containsKey("hasCategory");
@@ -166,7 +166,7 @@ public class CrossReferencesTest {
             Property.text("answer"))
         // highlight-start
         .references(
-            Property.reference("hasCategory", "JeopardyCategory"))
+            ReferenceProperty.to("hasCategory", "JeopardyCategory"))
     // highlight-end
     );
     // END TwoWayQuestionCrossReferences
@@ -218,8 +218,7 @@ public class CrossReferencesTest {
     var result = categories.query.byId(
         categoryObjId,
         opt -> opt.returnReferences(
-            QueryReference.single("hasQuestion",
-                ref -> ref.returnMetadata(Metadata.UUID))));
+            QueryReference.single("hasQuestion")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references()).containsKey("hasQuestion");
@@ -263,8 +262,7 @@ public class CrossReferencesTest {
     var result = questions.query.byId(
         questionObjId,
         opt -> opt.returnReferences(
-            QueryReference.single("hasCategory",
-                ref -> ref.returnMetadata(Metadata.UUID))));
+            QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references()).containsKey("hasCategory");
@@ -396,8 +394,7 @@ public class CrossReferencesTest {
     var result = questions.query.byId(
         questionObjId,
         opt -> opt.returnReferences(
-            QueryReference.single("hasCategory",
-                ref -> ref.returnMetadata(Metadata.UUID))));
+            QueryReference.single("hasCategory")));
 
     assertThat(result).isPresent();
     List<Object> refs = result.get().references().get("hasCategory");
@@ -420,6 +417,6 @@ public class CrossReferencesTest {
             Property.text("question"),
             Property.text("answer"))
         .references(
-            Property.reference("hasCategory", "JeopardyCategory")));
+            ReferenceProperty.to("hasCategory", "JeopardyCategory")));
   }
 }

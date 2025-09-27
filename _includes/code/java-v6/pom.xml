@@ -22,7 +22,7 @@
         <dependency>
             <groupId>io.weaviate</groupId>
             <artifactId>client6</artifactId>
-            <version>6.0.0-beta4</version>
+            <version>6.0.0-M1</version>
         </dependency>
 
         <!-- JUnit 5 for testing -->

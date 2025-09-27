@@ -4,8 +4,7 @@ import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.Replication;
 import io.weaviate.client6.v1.api.collections.Sharding;
 import io.weaviate.client6.v1.api.collections.vectorindex.Distance;
-import io.weaviate.client6.v1.api.collections.Vectorizer;
-import io.weaviate.client6.v1.api.collections.Vectorizers;
+import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Replication.DeletionStrategy;
 import io.weaviate.client6.v1.api.collections.config.Shard;
 import io.weaviate.client6.v1.api.collections.config.ShardStatus;
@@ -34,7 +33,7 @@ class ManageCollectionsTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient.local(config -> config
+    client = WeaviateClient.connectToLocal(config -> config
         .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
   }
 
@@ -70,7 +69,7 @@ class ManageCollectionsTest {
   void testCreateCollectionWithVectorizer() throws IOException {
     // START Vectorizer
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary())
+        .vectorConfig(VectorConfig.text2vecContextionary())
         .properties(
             Property.text("title"),
             Property.text("body")));
@@ -85,13 +84,13 @@ class ManageCollectionsTest {
   @Test
   void testCreateCollectionWithNamedVectors() throws IOException {
     // START BasicNamedVectors
-    // TODO[g-despot]: Missing source properties and other vectorizers beside
+    // TODO[g-despot]: Missing source properties and other VectorConfig beside
     // Weaviate
     client.collections.create("ArticleNV", col -> col
-        .vectors(
-            Vectorizers.text2vecContextionary("title"),
-            Vectorizers.text2vecContextionary("title_country"),
-            Vectorizers.none("custom_vector"))
+        .vectorConfig(
+            VectorConfig.text2vecContextionary("title"),
+            VectorConfig.text2vecContextionary("title_country"),
+            VectorConfig.selfProvided("custom_vector"))
         .properties(
             Property.text("title"),
             Property.text("country")));
@@ -109,7 +108,7 @@ class ManageCollectionsTest {
   void testSetVectorIndexType() throws IOException {
     // START SetVectorIndexType
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary(vec -> vec
+        .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
             .vectorIndex(Hnsw.of())))
         .properties(
             Property.text("title"),
@@ -117,7 +116,7 @@ class ManageCollectionsTest {
     // END SetVectorIndexType
 
     var config = client.collections.getConfig("Article").get();
-    Vectorizer defaultVector = config.vectors().get("default");
+    VectorConfig defaultVector = config.vectors().get("default");
     assertThat(defaultVector.vectorIndex()).isInstanceOf(Hnsw.class);
   }
 
@@ -125,7 +124,7 @@ class ManageCollectionsTest {
   void testSetVectorIndexParams() throws IOException {
     // START SetVectorIndexParams
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary(vec -> vec
+        .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
             .vectorIndex(Hnsw.of(hnsw -> hnsw
                 .efConstruction(300)
                 .distance(Distance.COSINE))))));
@@ -161,7 +160,7 @@ class ManageCollectionsTest {
   void testSetReranker() throws IOException {
     // START SetReranker
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary())
+        .vectorConfig(VectorConfig.text2vecContextionary())
         .rerankerModules(Reranker.cohere()));
     // END SetReranker
 
@@ -175,7 +174,7 @@ class ManageCollectionsTest {
   void testSetGenerative() throws IOException {
     // START SetGenerative
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary())
+        .vectorConfig(VectorConfig.text2vecContextionary())
         .generativeModule(Generative.cohere()));
     // END SetGenerative
 
@@ -188,9 +187,9 @@ class ManageCollectionsTest {
   @Test
   void testModuleSettings() throws IOException {
     // START ModuleSettings
-    // TODO[g-despot]: Add model once other vectorizers are available
+    // TODO[g-despot]: Add model once other VectorConfig are available
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary()));
+        .vectorConfig(VectorConfig.text2vecContextionary()));
     // vec -> vec.model("Snowflake/snowflake-arctic-embed-m-v1.5"))));
     // .vectorizeClassName(true))));
     // END ModuleSettings
@@ -204,7 +203,7 @@ class ManageCollectionsTest {
   void testDistanceMetric() throws IOException {
     // START DistanceMetric
     client.collections.create("Article", col -> col
-        .vectors(Vectorizers.text2vecContextionary(vec -> vec
+        .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
             .vectorIndex(Hnsw.of(hnsw -> hnsw
                 .distance(Distance.COSINE))))));
     // END DistanceMetric
@@ -275,8 +274,8 @@ class ManageCollectionsTest {
     // TODO[g-despot]: Why isn't there an enabled parameter, also
     // auto_tenant_creation
     client.collections.create("Article", col -> col
-        .multiTenancy(mt -> mt.createAutomatically(true)
-            .activateAutomatically(true)));
+        .multiTenancy(mt -> mt.autoTenantCreation(true)
+            .autoTenantActivation(true)));
     // END Multi-tenancy
 
     var config = client.collections.getConfig("Article").get();

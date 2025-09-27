@@ -25,7 +25,7 @@ class MultiTenancyTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient.local(config -> config
+    client = WeaviateClient.connectToLocal(config -> config
         .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
   }
 
@@ -40,7 +40,7 @@ class MultiTenancyTest {
     // TODO[g-despot]: It's not possible to enable MT without specifying additional
     // config
     client.collections.create("MultiTenancyCollection", col -> col
-        .multiTenancy(mt -> mt.createAutomatically(true)));
+        .multiTenancy(mt -> mt.autoTenantCreation(true)));
     // END EnableMultiTenancy
 
     var config = client.collections.getConfig("MultiTenancyCollection").get();
@@ -52,7 +52,7 @@ class MultiTenancyTest {
     // START EnableAutoMT
     client.collections.create("CollectionWithAutoMTEnabled", col -> col
         .multiTenancy(mt -> mt
-            .createAutomatically(true)));
+            .autoTenantCreation(true)));
     // END EnableAutoMT
 
     var config = client.collections.getConfig("CollectionWithAutoMTEnabled").get();
@@ -64,7 +64,7 @@ class MultiTenancyTest {
     String collectionName = "MTCollectionNoAutoMT";
     client.collections.create(collectionName, col -> col
         .multiTenancy(mt -> mt
-            .createAutomatically(false)));
+            .autoTenantActivation(false)));
 
     // START UpdateAutoMT
     // TODO[g-despot]: Should be possible to update MT createAutomatically
@@ -81,7 +81,7 @@ class MultiTenancyTest {
   void testAddTenantsToClass() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.createAutomatically(true)));
+        .multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     CollectionHandle collection = client.collections.use(collectionName);
 
@@ -103,7 +103,7 @@ class MultiTenancyTest {
   void testListTenants() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.createAutomatically(true)));
+        .multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     CollectionHandle collection = client.collections.use(collectionName);
     // TODO[g-despot]: Uncomment when tenant support added
@@ -124,7 +124,7 @@ class MultiTenancyTest {
   void testGetTenantsByName() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.createAutomatically(true)));
+        .multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     CollectionHandle collection = client.collections.use(collectionName);
     // TODO[g-despot]: Uncomment when tenant support added
@@ -147,7 +147,7 @@ class MultiTenancyTest {
   void testRemoveTenants() throws IOException {
     String collectionName = "MultiTenancyCollection";
     client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.createAutomatically(true)));
+        .multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     CollectionHandle collection = client.collections.use(collectionName);
     // TODO[g-despot]: Uncomment when tenant support added

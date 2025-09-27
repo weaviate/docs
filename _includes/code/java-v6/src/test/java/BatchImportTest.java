@@ -2,8 +2,8 @@ import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.ObjectMetadata;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.ReferenceProperty;
+import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
-import io.weaviate.client6.v1.api.collections.Vectorizers;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.data.BatchReference;
 import io.weaviate.client6.v1.api.collections.data.Reference;
@@ -52,7 +52,7 @@ class BatchImportTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient.local(config -> config
+    client = WeaviateClient.connectToLocal(config -> config
         .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
 
@@ -72,7 +72,7 @@ class BatchImportTest {
   @Test
   void testBasicBatchImport() throws IOException {
     // Define and create the class
-    client.collections.create("MyCollection", col -> col.vectors(Vectorizers.none()));
+    client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BasicBatchImportExample
     List<Map<String, Object>> dataRows = new ArrayList<>();
@@ -100,7 +100,7 @@ class BatchImportTest {
 
   @Test
   void testBatchImportWithID() throws IOException {
-    client.collections.create("MyCollection", col -> col.vectors(Vectorizers.none()));
+    client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithIDExample
     // highlight-start
@@ -136,7 +136,7 @@ class BatchImportTest {
 
   @Test
   void testBatchImportWithVector() throws IOException {
-    client.collections.create("MyCollection", col -> col.vectors(Vectorizers.none()));
+    client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithVectorExample
     List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects = new ArrayList<>();
@@ -190,8 +190,7 @@ class BatchImportTest {
     // END BatchImportWithRefExample
 
     var result = collection.query.byId(fromUuid, q -> q
-        .returnReferences(QueryReference.single("writesFor",
-            airport -> airport.returnMetadata(Metadata.UUID))));
+        .returnReferences(QueryReference.single("writesFor")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references().get("writesFor")).isNotNull();
