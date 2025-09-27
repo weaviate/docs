@@ -7,32 +7,19 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START AddProperty"
     endMarker="END AddProperty"
     language="py"
   />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
+</TabItem>
 
-```python
-add_prop = {
-  "dataType": [
-      "boolean"
-  ],
-  "name": "onHomepage"
-}
-
-client.schema.property.create("Article", add_prop)
-```
-
-  </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
-let articles = client.collections.get("Article");
+let articles = client.collections.use('Article')
 
 // highlight-start
 articles.config.addProperty({
@@ -42,26 +29,8 @@ articles.config.addProperty({
 // highlight-end
 ```
 
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-
-```js
-const className = "Article";
-const prop = {
-  dataType: ["boolean"],
-  name: "onHomepage",
-};
-
-const response = await client.schema
-  .propertyCreator()
-  .withClassName(className)
-  .withProperty(prop)
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
-  </TabItem>
-  <TabItem value="go" label="Go">
+</TabItem>
+<TabItem value="go" label="Go">
 
 ```go
 package main

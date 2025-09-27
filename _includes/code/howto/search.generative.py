@@ -29,7 +29,7 @@ client = weaviate.connect_to_weaviate_cloud(
 from weaviate.classes.generate import GenerativeConfig
 from weaviate.classes.query import MetadataQuery
 
-reviews = client.collections.get("WineReviewNV")
+reviews = client.collections.use("WineReviewNV")
 response = reviews.generate.near_text(
     query="a sweet German white wine",
     limit=2,
@@ -61,7 +61,7 @@ assert "title" in response.objects[0].properties.keys()
 # NamedVectorNearTextPython
 from weaviate.classes.query import MetadataQuery
 
-reviews = client.collections.get("WineReviewNV")
+reviews = client.collections.use("WineReviewNV")
 response = reviews.generate.near_text(
     query="a sweet German white wine",
     limit=2,
@@ -95,7 +95,7 @@ assert response.objects[0].metadata.distance is not None
 prompt = "Convert the following into a question for twitter. Include emojis for fun, but do not include the answer: {question}."
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 # highlight-start
 response = jeopardy.generate.near_text(
     # highlight-end
@@ -130,7 +130,7 @@ prompt = (
 )
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="World history", limit=2, single_prompt=prompt
 )
@@ -161,10 +161,10 @@ prompt = GenerativeParameters.single_prompt(
 )
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
-    query="World history", 
-    limit=2, 
+    query="World history",
+    limit=2,
     # highlight-start
     single_prompt=prompt,
     # highlight-end
@@ -193,7 +193,7 @@ assert len(response.objects[0].generative.text) > 0
 task = "What do these animals have in common, if anything?"
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Cute animals",
     limit=3,
@@ -225,7 +225,7 @@ grouped_task = GenerativeParameters.grouped_task(
 )
 # highlight-end
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Cute animals",
     limit=3,
@@ -252,7 +252,7 @@ assert len(response.generative.text) > 0
 # GroupedGenerativeProperties Python
 task = "What do these animals have in common, if anything?"
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
     query="Australian animals",
     limit=3,
@@ -284,7 +284,7 @@ import base64
 import requests
 from weaviate.classes.generate import GenerativeConfig, GenerativeParameters
 
-src_img_path = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/500px-Koala_climbing_tree.jpg"
+src_img_path = "https://images.unsplash.com/photo-1459262838948-3e2de6c1ec80?w=500&h=500&fit=crop"
 base64_image = base64.b64encode(requests.get(src_img_path).content).decode('utf-8')
 
 prompt = GenerativeParameters.grouped_task(
@@ -295,10 +295,10 @@ prompt = GenerativeParameters.grouped_task(
     # highlight-end
 )
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.generate.near_text(
-    query="Australian animals", 
-    limit=3, 
+    query="Australian animals",
+    limit=3,
     # highlight-start
     grouped_task=prompt,
     # highlight-end

@@ -16,7 +16,7 @@ client = weaviate.connect_to_local()
 # END FilterExampleBasic
 
 # FilterExampleBasic
-collection = client.collections.get("TokenizationDemo")
+collection = client.collections.use("TokenizationDemo")
 
 # END FilterExampleBasic
 

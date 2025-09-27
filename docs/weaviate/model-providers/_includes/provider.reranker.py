@@ -146,7 +146,7 @@ source_objects = [
     {"title": "A Christmas Carol"},
 ]
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 with collection.batch.fixed_size(batch_size=200) as batch:
     for src_obj in source_objects:
@@ -171,7 +171,7 @@ if len(collection.batch.failed_objects) > 0:
 # START RerankerQueryExample
 from weaviate.classes.query import Rerank
 
-collection = client.collections.get("DemoCollection")
+collection = client.collections.use("DemoCollection")
 
 # highlight-start
 response = collection.query.near_text(

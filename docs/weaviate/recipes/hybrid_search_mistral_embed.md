@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/hybrid-search/hybrid_search_mistral.ipynb
 toc: True
 title: "Hybrid Search with Mistral"
 featured: False
@@ -8,9 +7,9 @@ integration: False
 agent: False
 tags: ['Hybrid Search', 'Mistral']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/hybrid-search/hybrid_search_mistral.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-features/model-providers/mistral/hybrid_search_mistral_embed.ipynb)
+
+# Hybrid Search with Mistral
 
 This recipe will show you how to run hybrid search with embeddings from Mistral.
 
@@ -19,8 +18,8 @@ This recipe will show you how to run hybrid search with embeddings from Mistral.
 1. Weaviate cluster
     1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
     2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
-    3. [Local deployment]((https://docs.weaviate.io/deploy/installation-guides/docker-installation#starter-docker-compose-file)
-    4. [Other options](https://docs.weaviate.io/deploy/installation-guides)
+    3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
+    4. [Other options](https://docs.weaviate.io/deploy)
 
 2. Mistral API key. Grab one [here](https://docs.mistral.ai/api/).
 
@@ -122,7 +121,7 @@ resp = requests.get(url)
 data = json.loads(resp.text)
 
 # Get a collection object for "JeopardyQuestion"
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # Insert data objects
 response = jeopardy.data.insert_many(data)

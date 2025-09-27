@@ -4,14 +4,7 @@ image: og/contributor-guide/weaviate-core.jpg
 # tags: ['contributor-guide']
 ---
 
-:::caution Technical preview
-
-Runtime configuration management was added in **`v1.30`** as a **technical preview**.
-<br/>
-
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
-
+:::info Added in `v1.30`
 :::
 
 Weaviate supports runtime configuration management, allowing certain environment variables to be updated and read by Weaviate on the fly without the need for restarts. This feature helps you adapt settings in real time and fine-tune your instance based on evolving needs.
@@ -25,24 +18,24 @@ We have two core types used to manage your configs dynamically: `runtime.Dynamic
 ```go
 // DynamicType represents different types that is supported in runtime configs
 type DynamicType interface {
-	~int | ~float64 | ~bool | time.Duration | ~string
+    ~int | ~float64 | ~bool | time.Duration | ~string | []string
 }
 
 // DynamicValue represents any runtime config value. Its zero value is fully usable.
 // If you want zero value with different `default`, use `NewDynamicValue` constructor.
 type DynamicValue[T DynamicType] struct {
-	...[private fields]
+    ...[private fields]
 }
 ```
 
-This means `DynamicType` currently supports the types: `~int`, `~float64`, `~bool`, `~string`, `time.Duration`.
+This means `DynamicType` currently supports the types: `~int`, `~float64`, `~bool`, `~string`, `time.Duration`, and `[]string`.
 
 If you want a config option to support dynamic updates, follow these high-level steps. For example, suppose you have a config called `MaxLimit` of type `int`.
 
 ```go
 type Config struct {
-	....
-	MaxLimit int
+    ....
+    MaxLimit int
 }
 ```
 
@@ -50,22 +43,22 @@ type Config struct {
 
 ```go
 type Config struct {
-	MaxLimit *runtime.DynamicValue[int]
+    MaxLimit *runtime.DynamicValue[int]
 }
 ```
 
 Also update the config parsing code (usually `FromEnv()` in `weaviate/usecases/config/environment.go`).
 
 ```go
-	config.MaxLimit = runtime.NewDynamicValue(12) // default value for your config is `12` now
+    config.MaxLimit = runtime.NewDynamicValue(12) // default value for your config is `12` now
 ```
 
 ### 2. Add it to `config.WeaviateRuntimeConfig`
 
 ```go
 type WeaviateRuntimeConfig struct {
-	...
-	MaxLimit *runtime.DynamicValue[int] `json:"max_limit" yaml:"max_limit"`
+    ...
+    MaxLimit *runtime.DynamicValue[int] `json:"max_limit" yaml:"max_limit"`
 }
 ```
 
@@ -74,9 +67,9 @@ type WeaviateRuntimeConfig struct {
 This usually happens in `initRuntimeOverrides()` in `adaptors/handlers/rest/configure_api.go`.
 
 ```go
-	registered := &config.WeaviateRuntimeConfig{}
-	...
-	registered.MaxLimit = appState.ServerConfig.Config.MaxLimit
+    registered := &config.WeaviateRuntimeConfig{}
+    ...
+    registered.MaxLimit = appState.ServerConfig.Config.MaxLimit
 ```
 
 ### 4. Consume the dynamic value via `value.Get()`
@@ -94,6 +87,6 @@ When `RUNTIME_OVERRIDES_ENABLED=false`, your config still behaves as a static co
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

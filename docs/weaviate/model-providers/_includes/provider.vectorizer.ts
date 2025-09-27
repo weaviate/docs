@@ -329,7 +329,7 @@ await client.collections.create({
       sourceProperties: ['title'],
       projectId: '<google-cloud-project-id>',
       // (Optional) To manually set the model ID
-      modelId: 'textembedding-gecko@latest'
+      modelId: 'gemini-embedding-001'
     }),
   ],
   // highlight-end
@@ -355,7 +355,7 @@ await client.collections.create({
       name: 'title_vector',
       sourceProperties: ['title'],
       // (Optional) To manually set the model ID
-      modelId: 'text-embedding-004'
+      modelId: 'gemini-embedding-001'
     }),
   ],
   // highlight-end
@@ -874,21 +874,72 @@ await client.collections.create({
 await client.collections.delete('DemoCollection');
 
 // START BasicMMVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.multi2VecNvidia({
+      name: 'title_vector',
+      imageFields: [{
+        name: "poster",
+        weight: 0.9
+      }],
+      textFields: [{
+        name: "title",
+        weight: 0.1
+      }],
+    })
+  ],
+  // Additional parameters not shown
+})
 // END BasicMMVectorizerNVIDIA
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START MMVectorizerNVIDIACustomModel
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.multi2VecNvidia({
+      name: 'title_vector',
+      model: "nvidia/nv-embed-v1",
+      imageFields: [{
+        name: "poster",
+        weight: 0.9
+      }],
+      textFields: [{
+        name: "title",
+        weight: 0.1
+      }],
+    })
+  ],
+  // Additional parameters not shown
+})
 // END MMVectorizerNVIDIACustomModel
 
 // Clean up
 await client.collections.delete('DemoCollection');
 
 // START FullMMVectorizerNVIDIA
-// Coming soon
+await client.collections.create({
+  name: 'DemoCollection',
+  vectorizers: [
+    weaviate.configure.vectors.multi2VecNvidia({
+      name: 'title_vector',
+      model: "nvidia/nv-embed-v1",
+      imageFields: [{
+        name: "poster",
+        weight: 0.9
+      }],
+      textFields: [{
+        name: "title",
+        weight: 0.1
+      }],
+      // Further options
+    })
+  ],
+  // Additional parameters not shown
+})
 // END FullMMVectorizerNVIDIA
 
 // Clean up

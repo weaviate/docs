@@ -18,7 +18,7 @@ for dataset in [wd.WineReviews, wd.WineReviewsMT]:
 # ============================
 
 # START ReadAllProps
-collection = client.collections.get("WineReview")
+collection = client.collections.use("WineReview")
 
 # highlight-start
 for item in collection.iterator():
@@ -31,7 +31,7 @@ for item in collection.iterator():
 # =========================================
 
 # START ReadAllVectors
-collection = client.collections.get("WineReview")
+collection = client.collections.use("WineReview")
 
 for item in collection.iterator(
     # highlight-start
@@ -49,7 +49,7 @@ for item in collection.iterator(
 # =========================================
 
 # START ReadAllTenants
-multi_collection = client.collections.get("WineReviewMT")
+multi_collection = client.collections.use("WineReviewMT")
 
 # Get a list of tenants
 # highlight-start

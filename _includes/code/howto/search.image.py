@@ -36,7 +36,7 @@ base64_string="SOME_BASE_64_REPRESENTATION"
 # highlight-end
 
 # Get the collection containing images
-dogs = client.collections.get("Dog")
+dogs = client.collections.use("Dog")
 
 # Perform query
 # highlight-start
@@ -86,7 +86,7 @@ expected_results = """
 from pathlib import Path
 # highlight-end
 
-dogs = client.collections.get("Dog")
+dogs = client.collections.use("Dog")
 response = dogs.query.near_image(
     # highlight-start
     near_image=Path("./images/search-image.jpg"),  # Provide a `Path` object
@@ -111,7 +111,7 @@ print(response.objects[0])
 from pathlib import Path
 from weaviate.classes.query import MetadataQuery
 
-dogs = client.collections.get("Dog")
+dogs = client.collections.use("Dog")
 response = dogs.query.near_image(
     near_image=Path("./images/search-image.jpg"),
     # highlight-start

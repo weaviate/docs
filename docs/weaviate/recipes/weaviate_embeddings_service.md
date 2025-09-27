@@ -1,6 +1,5 @@
 ---
 layout: recipe
-colab: https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb
 toc: True
 title: "How to Use Weaviate Embedding Service"
 featured: True
@@ -8,9 +7,9 @@ integration: False
 agent: False
 tags: ['Weaviate Embeddings', 'Weaviate Cloud']
 ---
-<a href="https://colab.research.google.com/github/weaviate/recipes/blob/main/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb" target="_blank">
-  <img src="https://img.shields.io/badge/Open%20in-Colab-4285F4?style=flat&logo=googlecolab&logoColor=white" alt="Open In Google Colab" width="130"/>
-</a>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/weaviate/recipes/weaviate-services/embedding-service/weaviate_embeddings_service.ipynb)
+
+# Weaviate Embedding Service
 
 [Weaviate Embeddings](https://docs.weaviate.io/cloud/embeddings) enables you to generate embeddings directly from a [Weaviate Cloud](https://console.weaviate.cloud/) database instance. 
 
@@ -125,7 +124,7 @@ df = pd.read_csv(StringIO(resp.text))
 
 ```python
 # Get a collection object for "JeopardyQuestion"
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 # Insert data objects with batch import
 with collection.batch.dynamic() as batch:
@@ -152,7 +151,7 @@ Insert complete.
 ```python
 # count the number of objects
 
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 response = collection.aggregate.over_all(total_count=True)
 
 print(response.total_count)
@@ -167,7 +166,7 @@ Python output:
 ### Vector Search
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.near_text(
     query="marine mamal with tusk", 
@@ -203,7 +202,7 @@ The `alpha` parameter determines the weight given to the sparse and dense search
 Alpha is an optional parameter. The default is set to `0.75`.
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.hybrid(
     query="unicorn-like artic animal",
@@ -236,7 +235,7 @@ Data: {
 Learn more about the different filter operators [here](https://docs.weaviate.io/weaviate/search/filters).
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.fetch_objects(
     limit=2,
@@ -266,7 +265,7 @@ Data: {
 ### Generative Search (RAG)
 
 ```python
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.generate.hybrid(
     query="unicorn-like artic animal",

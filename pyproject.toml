@@ -10,6 +10,7 @@ dependencies = [
     "cohere>=5.16.1",
     "datasets>=4.0.0",
     "fastapi>=0.116.1",
+    "ijson>=3.4.0",
     "jupyter>=1.1.1",
     "pandas>=2.3.1",
     "pytest>=8.4.1",

@@ -4,18 +4,15 @@ sidebar_position: 10
 image: og/docs/howto.jpg
 ---
 
-import SkipLink from '/src/components/SkipValidationLink'
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.create-v3.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.create.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.create-v2.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java';
-import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/CreateObjectsTest.java';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go';
-
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.create.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/CreateObjectsTest.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
 
 The examples on this page demonstrate how to create individual objects in Weaviate.
 
@@ -28,7 +25,7 @@ For creating multiple objects at once, see [How-to: Batch Import](./import.mdx).
 This example creates an object in the `JeopardyQuestion` collection.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObject START"
@@ -36,17 +33,7 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObject START"
-      endMarker="# CreateObject END"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObject START"
@@ -54,16 +41,6 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="ts"
     />
   </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObject START"
-      endMarker="// CreateObject END"
-      language="tsv2"
-    />
-  </TabItem>
-
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -72,7 +49,6 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="java"
     />
   </TabItem>
-
   <TabItem value="java6" label="Java Client V6">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -81,7 +57,6 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="java"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -101,7 +76,7 @@ To create an object, specify the following:
 
 - The object data you want to add
 - The target collection
-- If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant]( ../manage-collections/multi-tenancy.mdx)
+- If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, [specify the tenant](../manage-collections/multi-tenancy.mdx)
 
 By default, [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) creates new collections and adds new properties.
 
@@ -112,7 +87,7 @@ By default, [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) cre
 When you create an object, you can provide a vector. (For specifying multiple, named vectors, see [below](#create-an-object-with-named-vectors).)
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithVector START"
@@ -120,17 +95,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectWithVector START"
-      endMarker="# CreateObjectWithVector END"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithVector START"
@@ -138,16 +103,6 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="ts"
     />
   </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectWithVector START"
-      endMarker="// CreateObjectWithVector END"
-      language="tsv2"
-    />
-  </TabItem>
-
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -156,7 +111,6 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="java"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -175,7 +129,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectNamedVectors START"
@@ -183,31 +137,12 @@ When you create an object, you can specify named vectors (if [configured in your
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectNamedVectors START"
-      endMarker="# CreateObjectNamedVectors END"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectNamedVectors START"
       endMarker="// CreateObjectNamedVectors END"
       language="ts"
-    />
-  </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectNamedVectors START"
-      endMarker="// CreateObjectNamedVectors END"
-      language="tsv2"
     />
   </TabItem>
 </Tabs>
@@ -221,7 +156,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithId START"
@@ -229,17 +164,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectWithId START"
-      endMarker="# CreateObjectWithId END"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithId START"
@@ -247,16 +172,6 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="ts"
     />
   </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectWithId START"
-      endMarker="// CreateObjectWithId END"
-      language="tsv2"
-    />
-  </TabItem>
-
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -265,7 +180,6 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="java"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -285,7 +199,7 @@ Object IDs are not randomly generated. The same value always generates the same 
 :::
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# CreateObjectWithDeterministicId START"
@@ -293,17 +207,7 @@ Object IDs are not randomly generated. The same value always generates the same 
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# CreateObjectWithDeterministicId START"
-      endMarker="# CreateObjectWithDeterministicId END"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithDeterministicId START"
@@ -311,16 +215,6 @@ Object IDs are not randomly generated. The same value always generates the same 
       language="ts"
     />
   </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// CreateObjectWithDeterministicId START"
-      endMarker="// CreateObjectWithDeterministicId END"
-      language="tsv2"
-    />
-  </TabItem>
-
   <TabItem value="java" label="Java">
 
 ```java
@@ -328,7 +222,6 @@ Object IDs are not randomly generated. The same value always generates the same 
 ```
 
   </TabItem>
-
   <TabItem value="go" label="Go">
 
 ```go
@@ -337,7 +230,6 @@ Object IDs are not randomly generated. The same value always generates the same 
 
   </TabItem>
 </Tabs>
-
 
 <details>
   <summary>
@@ -352,19 +244,17 @@ To generate deterministic IDs, use one of these methods:
 
 ## Create an object with cross-references
 
-import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+import CrossReferencePerformanceNote from "/_includes/cross-reference-performance-note.mdx";
 
 <CrossReferencePerformanceNote />
 
-import XrefPyCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py';
-import XrefPyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v3.py';
-import XrefTSCode from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs';
-import XrefTSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.cross-refs-v2';
+import XrefPyCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs.py";
+import XrefTSCode from "!!raw-loader!/_includes/code/howto/manage-data.cross-refs";
 
 You can create an object with cross-references to other objects.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={XrefPyCode}
       startMarker="# START ObjectWithCrossRef"
@@ -372,17 +262,7 @@ You can create an object with cross-references to other objects.
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={XrefPyCodeV3}
-      startMarker="# START ObjectWithCrossRef"
-      endMarker="# END ObjectWithCrossRef"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={XrefTSCode}
       startMarker="// START ObjectWithCrossRef"
@@ -390,16 +270,6 @@ You can create an object with cross-references to other objects.
       language="ts"
     />
   </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={XrefTSCodeLegacy}
-      startMarker="// START ObjectWithCrossRef"
-      endMarker="// END ObjectWithCrossRef"
-      language="tsv2"
-    />
-  </TabItem>
-
   <TabItem value="java6" label="Java Client V6">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -416,22 +286,22 @@ See [How-to: Cross-references](../manage-collections/cross-references.mdx) for m
 
 ## Create an object with `geoCoordinates`
 
-import GeoLimitations from '/_includes/geo-limitations.mdx';
+import GeoLimitations from "/_includes/geo-limitations.mdx";
 
-<GeoLimitations/>
+<GeoLimitations />
 
 If you want to supply a [`geoCoordinates`](/weaviate/config-refs/datatypes.md#geocoordinates) property, you need to specify the `latitude` and `longitude` as floating point decimal degrees:
 
-import CreateWithGeo from '/_includes/code/howto/manage-data.create.with.geo.mdx';
+import CreateWithGeo from "/_includes/code/howto/manage-data.create.with.geo.mdx";
 
-<CreateWithGeo/>
+<CreateWithGeo />
 
 ## Validate objects before creation
 
 Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# ValidateObject START"
@@ -439,17 +309,7 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       language="py"
     />
   </TabItem>
-
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# ValidateObject START"
-      endMarker="# ValidateObject END"
-      language="pyv3"
-    />
-  </TabItem>
-
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// ValidateObject START"
@@ -457,16 +317,6 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       language="ts"
     />
   </TabItem>
-
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// ValidateObject START"
-      endMarker="// ValidateObject END"
-      language="tsv2"
-    />
-  </TabItem>
-
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -475,7 +325,6 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       language="java"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -488,7 +337,7 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
 
 ## Multiple vector embeddings (named vectors)
 
-import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
+import MultiVectorSupport from "/_includes/multi-vector-support.mdx";
 
 <MultiVectorSupport />
 
@@ -496,10 +345,12 @@ import MultiVectorSupport from '/_includes/multi-vector-support.mdx';
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [How-to: (Batch) Import items](./import.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects">References: REST - /v1/objects</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/objects">
+    References: REST - /v1/objects
+  </SkipLink>
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

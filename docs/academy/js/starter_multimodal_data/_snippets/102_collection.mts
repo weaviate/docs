@@ -43,7 +43,7 @@ const voyageApiKey = process.env.VOYAGEAI_API_KEY as string;
 
 // END CreateMovieCollection
 
-const requestHeaders = {  'X-VoyageAI-Api-Key': voyageApiKey, 
+const requestHeaders = {  'X-VoyageAI-Api-Key': voyageApiKey,
                           'X-Cohere-Api-Key': cohereApiKey
                         }
 
@@ -111,7 +111,7 @@ const dataUrl = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datase
 const textResponse = await fetch(dataUrl)
 const data = await textResponse.json()
 
-// Get current file's directory 
+// Get current file's directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const imgDir = join(__dirname, "images");
@@ -139,7 +139,7 @@ const zip = new AdmZip(postersPath);
 zip.extractAllTo(imgDir, true);
 
 // Get the collection
-const movies = client.collections.get("Movie")
+const movies = client.collections.use("Movie")
 
 // Set a counter and initialize Weaviate Object
 let itemsToInsert: Object[] = []
@@ -147,7 +147,7 @@ let counter = 0;
 
 // Iterate through data
 for (const key of Object.keys(data['title'])) {
-  
+
   counter++;
   if (counter % 20 == 0)
     console.log(`Import: ${counter}`)

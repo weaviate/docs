@@ -79,7 +79,24 @@ finally:
 Creating, configuring, and managing collections
 """
 
-from weaviate.classes.config import Configure, Property, DataType
+from weaviate.classes.config import Configure, Property, DataType, Tokenization
+
+# Note - these are the commonly used data types
+commonly_used_types = [
+    DataType.TEXT,
+    DataType.TEXT_ARRAY,
+    DataType.INT,
+    DataType.INT_ARRAY,
+    DataType.NUMBER,  # NUMBER is a floating point number
+    DataType.NUMBER_ARRAY,
+    DataType.BOOL,
+    DataType.BOOL_ARRAY,
+    DataType.DATE,
+    DataType.DATE_ARRAY,
+    DataType.UUID,
+    DataType.UUID_ARRAY,
+    DataType.BLOB,  # BLOB can be used to store images for example
+]
 
 # Basic collection creation
 client.collections.create("Article")
@@ -93,10 +110,99 @@ client.collections.create(
     ]
 )
 
-# Collection with vectorizer
+# Collection with properties and additional configurations
+# e.g.:
+# Set tokenization to be used for BM25 searches and filtering
+# Enable or disable specific inverted index types for each property
+client.collections.create(
+    "Article",
+    properties=[
+        Property(
+            name="title",
+            data_type=DataType.TEXT,
+            tokenization=Tokenization.WHITESPACE,  # Split the text on whitespace. Searches/filters become case-sensitive.
+        ),
+        Property(
+            name="body",
+            data_type=DataType.TEXT,
+            tokenization=Tokenization.WORD,  # Keep only alpha-numeric characters, lowercase them, and split by whitespace.
+        ),
+        Property(
+            name="url",
+            data_type=DataType.TEXT,
+            tokenization=Tokenization.FIELD,  # Index the whole field after trimming whitespace characters.
+            # Set based on whether you want to include or exclude from filtering or searching
+            index_searchable=False,
+            index_filterable=True,
+        ),
+        Property(
+            name="popularity",
+            data_type=DataType.NUMBER,
+            # If a property is numeric, you can enable range filters
+            # This is particularly useful for ordinal data like prices, ratings, or scores, to enable fast filtering at scale
+            index_range_filters=True  # False by default
+        )
+    ]
+)
+# Collection with one vectorizer - if provided this way, a name is not required
+commonly_used_vectorizers = [
+    # Weaviate provides a large number of pre-configured vectorizers
+    # If generating code snippets from these, provide examples to raise awareness of options to users
+    # Each integrated vectorizer may have its own set of parameters to correspond to the provider
+    # Text models
+    Configure.Vectors.text2vec_aws(),
+    Configure.Vectors.text2vec_google(),
+    Configure.Vectors.text2vec_cohere(),
+    Configure.Vectors.text2vec_openai(),
+    Configure.Vectors.text2vec_weaviate(), # Recommended for Weaviate Cloud, no third party API key required,
+    # Multi-modal models
+    Configure.Vectors.multi2vec_cohere(),
+    Configure.Vectors.multi2vec_google(),
+    Configure.Vectors.multi2vec_jinaai(),
+    # Self-hosted models
+    Configure.Vectors.text2vec_ollama(),
+    Configure.Vectors.text2vec_transformers(),
+    # User-provided vectors
+    Configure.Vectors.self_provided(),
+    # Multi-vector (ColBERT, ColPali type) models
+    Configure.MultiVectors.text2vec_jinaai(),
+    Configure.MultiVectors.multi2vec_jinaai(),
+    Configure.MultiVectors.self_provided(),
+]
+
 client.collections.create(
     "Article",
     vector_config=Configure.Vectors.text2vec_openai(),
+    properties=[
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="body", data_type=DataType.TEXT),
+        Property(name="categories", data_type=DataType.TEXT_ARRAY),
+        Property(name="is_published", data_type=DataType.BOOL),
+        Property(name="word_count", data_type=DataType.INT),
+    ]
+)
+
+# Collection with vectorizer & quantization
+# Quantization can reduce the size of the vectors. For HNSW indexes, this reduces memory usage. For flat indexes, this improves search speed.
+# In most cases, we recommend using quantization. In particular, we suggest using rotational quantization (RQ) for its balance of performance and efficiency.
+available_quantizers = [
+    # All quantization methods are available for the HNSW index type
+    # Only BQ is available for the flat index type
+    # Rotational quantization (recommended generally)
+    Configure.VectorIndex.Quantizer.rq(),
+    # Product quantization
+    Configure.VectorIndex.Quantizer.pq(),
+    # Scalar quantization
+    Configure.VectorIndex.Quantizer.sq(),
+    # Binary quantization
+    Configure.VectorIndex.Quantizer.bq(),
+]
+
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_openai(
+        quantizer=Configure.VectorIndex.Quantizer.rq()
+    ),
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
@@ -131,6 +237,8 @@ client.collections.create(
 client.collections.create(
     "Article",
     vector_config=Configure.Vectors.text2vec_openai(),
+    # This sets the default generative model for the collection
+    # This setting is mutable. This setting can also be overridden at query time
     generative_config=Configure.Generative.openai(
         model="gpt-4"  # Optional specific model
     ),
@@ -140,7 +248,36 @@ client.collections.create(
     ]
 )
 
+# Collection with custom inverted index configuration
+# This configuration allows for fine-tuning the keyword search, and filtering behavior
+client.collections.create(
+    "Article",
+    inverted_index_config=Configure.inverted_index(
+        # Configure BM25 parameters
+        bm25_k1=1.5,
+        bm25_b=0.75,
+        # Index metadata, if you expect to filter by any of these
+        index_null_state=True,
+        index_property_length=True,
+        index_timestamps=True
+    )
+)
+
+# Collection with high availability
+# Used to create collections with multiple replicas on multi-node clusters
+from weaviate.classes.config import ReplicationDeletionStrategy
+
+client.collections.create(
+    "Article",
+    replication_config=Configure.replication(
+        factor=3,  # Use odd numbers to allow quorum without excessive replication; Note: If (number of nodes < replication factor): Weaviate will not start
+        strategy=ReplicationDeletionStrategy.NO_AUTOMATED_RESOLUTION  # Generally recommended
+    )
+)
+
 # Collection with references (cross-references)
+# Cross references are generally not recommended unless absolutely necessary for performance reasons. Preferably, embed the data directly similar to what is done in other NoSQL databases.
+# If necessary, keep them very shallow
 client.collections.create(
     "Author",
     properties=[
@@ -157,7 +294,10 @@ client.collections.create(
 )
 
 # Get a collection
-collection = client.collections.get("Article")
+# Note - a collection has this type:
+from weaviate.collections import Collection
+
+collection: Collection = client.collections.use("Article")
 
 # Check if collection exists
 exists = client.collections.exists("Article")
@@ -168,7 +308,7 @@ collections = client.collections.list_all()
 # Update a collection
 from weaviate.classes.config import Reconfigure
 
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 collection.config.update(
     inverted_index_config=Reconfigure.inverted_index(
         bm25_k1=1.5
@@ -194,7 +334,7 @@ Creating, updating, and retrieving objects
 """
 
 # Insert a single object
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 uuid = collection.data.insert({
     "title": "My first article",
     "body": "This is the body of my first article.",
@@ -222,7 +362,7 @@ collection.data.insert(
 )
 
 # Insert with named vectors
-collection = client.collections.get("ArticleNV")
+collection = client.collections.use("ArticleNV")
 collection.data.insert(
     properties={
         "title": "Named vector article",
@@ -264,7 +404,7 @@ collection.data.delete_by_id(uuid)
 
 # Working with references
 article_uuid = collection.data.insert({"title": "Referenced Article"})
-author_collection = client.collections.get("Author")
+author_collection = client.collections.use("Author")
 author_uuid = author_collection.data.insert({"name": "John Doe"})
 
 # Add a reference
@@ -286,7 +426,7 @@ Batch import for better performance
 """
 
 # Fixed size batch (Recommended option)
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 with collection.batch.fixed_size(batch_size=50) as batch:
     for i in range(100):
         batch.add_object(
@@ -358,7 +498,7 @@ Various search methods (semantic, keyword, hybrid)
 """
 
 # Basic search (fetch objects)
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 response = collection.query.fetch_objects(
     limit=10,
     return_properties=["title", "body"]
@@ -386,12 +526,39 @@ response = collection.query.near_object(
     limit=5
 )
 
+# Semantic search with near_text & vector distance
+from weaviate.classes.query import MetadataQuery
+
+response = collection.query.near_text(
+    query="artificial intelligence applications",
+    limit=5,
+    return_metadata=MetadataQuery(distance=True)  # Same for near_vector or near_object
+)
+
+for o in response.objects:
+    print(o.properties)
+    print(f"Distance: {o.metadata.distance}")
+
 # BM25 keyword search
 response = collection.query.bm25(
     query="artificial intelligence",
     query_properties=["title", "body"],
     limit=5
 )
+
+# BM25 keyword search with score
+from weaviate.classes.query import MetadataQuery
+
+response = collection.query.bm25(
+    query="artificial intelligence applications",
+    query_properties=["title", "body"],
+    limit=5,
+    return_metadata=MetadataQuery(score=True)
+)
+
+for o in response.objects:
+    print(o.properties)
+    print(f"Score: {o.metadata.score}")
 
 # Hybrid search (combines semantic and keyword)
 from weaviate.classes.query import HybridFusion
@@ -402,6 +569,22 @@ response = collection.query.hybrid(
     fusion_type=HybridFusion.RELATIVE_SCORE,
     limit=5
 )
+
+# Hybrid search with score
+from weaviate.classes.query import MetadataQuery
+
+response = collection.query.hybrid(
+    query="artificial intelligence applications",
+    alpha=0.5,  # Balance between keyword and vector search
+    fusion_type=HybridFusion.RELATIVE_SCORE,
+    limit=5,
+    return_metadata=MetadataQuery(score=True, explain_score=True)
+)
+
+for o in response.objects:
+    print(o.properties)
+    print(f"Score: {o.metadata.score}")
+    print(f"Explanation: {o.metadata.explain_score}")  # Hybrid search only; shows how the score was derived
 
 # Search with filters
 from weaviate.classes.query import Filter
@@ -422,6 +605,41 @@ response = collection.query.near_text(
     ),
     limit=5
 )
+
+from datetime import datetime, timezone
+
+common_filter_patterns = [
+    # Text comparison (for TEXT or TEXT_ARRAY)
+    Filter.by_property("title").equal("Artificial Intelligence"),  # Requires the tokenized inputs to match exactly (note - if tokenized, the word order may be irrelevant)
+    Filter.by_property("title").contains_any(["AI", "Machine Learning", "Deep Learning"]),  # Requires at least one of the inputs to match
+    Filter.by_property("title").contains_all(["AI", "Machine Learning", "Deep Learning"]),  # Requires all of the inputs to match
+    Filter.by_property("title").like("*AI*"),  # Uses wildcard substring matches
+    # Numeric comparison (for INT, NUMBER or DATE)
+    Filter.by_property("length").equal(100),
+    Filter.by_property("length").greater_than(100),
+    Filter.by_property("length").greater_or_equal(100),
+    Filter.by_property("length").less_than(200),
+    Filter.by_property("length").less_or_equal(200),
+    # Filter by metadata
+    # These require indexing creation / update time at collection creation
+    Filter.by_creation_time().greater_than(datetime(2025, 1, 1, tzinfo=timezone.utc)),  # Matches objects created after a specific date, can use numeric comparisons
+    Filter.by_update_time().less_than(datetime(2025, 1, 1, tzinfo=timezone.utc)),  # Matches objects updated after a specific date, can use numeric comparisons
+    # Others
+    Filter.by_id().like("36ddd591-2dee-4e7e-a3cc-eb86d30a4303"),  # Matches a specific UUID
+    # Combine filters with & or |, or with `all_of` or `any_of`
+    Filter.all_of(
+        filters=[
+            Filter.by_property("length").equal(100),
+            Filter.by_property("length").greater_or_equal(100),
+        ]
+    ),
+    Filter.any_of(
+        filters=[
+            Filter.by_property("length").equal(100),
+            Filter.by_property("length").greater_or_equal(100),
+        ]
+    ),
+]
 
 # Search with groupBy
 from weaviate.classes.query import GroupBy
@@ -469,13 +687,23 @@ for obj in response.objects:
 
 """
 Using generative models with Weaviate
+
+To use these integrated RAG capabilities, Weaviate must be able to determine which generative integration to use.
+This can be configured at the collection configuration with the `generative_config` parameter, like `generative_config=Configure.Generative.anthropic()` for the desired provider and model.
+Alternatively, it can be provided at query time using the `generative_provider` parameter, like `generative_provider=GenerativeConfig.openai()` for the desired provider and model.
+
+A "single prompt" generates a response for each object in the collection. It performs a RAG query for each object.
+A "single prompt" query requires names of the properties to include in the prompt in curly braces. Note this is not an f-string. If using an f-string, escape the curly braces.
+A "grouped prompt" generates a single response for a group of objects.
 """
 
 # Basic generation
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
+query = "artificial intelligence"
 response = collection.generate.near_text(
-    query="artificial intelligence",
-    single_prompt="Summarize this article in one sentence: {title} - {body}",
+    query=query,
+    # Note - `query` here is a Python variable, and `{title}` and `{body}` indicate Weaviate properties to include in the prompt
+    single_prompt=f"Summarize this article about {query} in one sentence: {{title}} - {{body}}",
     limit=3
 )
 
@@ -544,10 +772,26 @@ client.collections.create(
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
-    vector_config=Configure.Vectors.text2vec_openai()
+    # Generally, if multi-tenancy is used, a "dynamic" vector index type is recommended
+    # A dynamic vector index starts as an efficient, disk-based index, and switches to an in-memory HNSW index when it grows past a threshold size
+    vector_config=Configure.Vectors.text2vec_openai(
+        vector_index_config=Configure.VectorIndex.dynamic(
+            # Configure the threshold for switching to an in-memory (HNSW) index
+            threshold=100000,
+            # Configure the flat index settings to use when the dynamic index starts as a flat index
+            flat=Configure.VectorIndex.flat(
+                quantizer=Configure.VectorIndex.Quantizer.bq()
+            ),
+            # Configure the HNSW index settings to use when the dynamic index is switched to HNSW
+            hnsw=Configure.VectorIndex.hnsw(
+                max_connections=32,
+                quantizer=Configure.VectorIndex.Quantizer.rq()
+            )
+        )
+    )
 )
 
-mt_collection = client.collections.get("MultiTenantArticle")
+mt_collection: Collection = client.collections.use("MultiTenantArticle")
 
 # Add tenants
 from weaviate.classes.tenants import Tenant
@@ -564,6 +808,9 @@ tenants = mt_collection.tenants.get()
 
 # Get specific tenant
 tenant = mt_collection.tenants.get_by_name("tenant1")
+
+# Check that a tenant exists
+tenant_exists = mt_collection.tenants.exists("tenant1")
 
 # Use a specific tenant
 tenant1_collection = mt_collection.with_tenant("tenant1")
@@ -591,7 +838,7 @@ Iterating over large datasets
 """
 
 # Basic iteration
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 for article in collection.iterator():
     print(article.properties)
 

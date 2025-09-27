@@ -5,62 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.filters.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START FilterById"
     endMarker="END FilterById"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-import json
-
-client = weaviate.Client("http://localhost:8080")
-
-where_filter = {
-  "path": ["id"],
-  "operator": "Equal",
-  "valueText": "00037775-1432-35e5-bc59-443baaef7d80"
-}
-
-response = (
-  client.query
-  .get("Article", "title")
-  .with_where(where_filter)
-  .do()
-)
-
-print(json.dumps(response, indent=2))
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title')
-  .withWhere({
-    operator: 'Equal',
-    path: ['id'],
-    valueText: '00037775-1432-35e5-bc59-443baaef7d80',
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

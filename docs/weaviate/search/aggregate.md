@@ -11,7 +11,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.aggregate.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.aggregate-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.aggregate.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/search.aggregate-v2.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
 
 `Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
@@ -41,7 +40,7 @@ For details, see [Aggregate](/weaviate/api/graphql/aggregate).
 Return the number  of objects matched by the query.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# MetaCount Python"
@@ -50,16 +49,8 @@ Return the number  of objects matched by the query.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# MetaCount Python"
-      endMarker="# END MetaCount Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// MetaCount TS"
@@ -68,14 +59,6 @@ Return the number  of objects matched by the query.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// MetaCount TS"
-      endMarker="// END MetaCount TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -114,7 +97,7 @@ Return the number  of objects matched by the query.
 This example counts occurrence frequencies:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# TextProp Python"
@@ -123,16 +106,8 @@ This example counts occurrence frequencies:
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# TextProp Python"
-      endMarker="# END TextProp Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// TextProp TS"
@@ -141,14 +116,6 @@ This example counts occurrence frequencies:
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// TextProp TS"
-      endMarker="// END TextProp TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -187,7 +154,7 @@ This example counts occurrence frequencies:
 This example shows aggregation with integers. 
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# IntProp Python"
@@ -196,16 +163,8 @@ This example shows aggregation with integers.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# IntProp Python"
-      endMarker="# END IntProp Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// IntProp TS"
@@ -214,14 +173,6 @@ This example shows aggregation with integers.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// IntProp TS"
-      endMarker="// END IntProp TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -262,7 +213,7 @@ To group your results, use `groupBy` in the query.
 To retrieve aggregate data for each group, use the `groupedBy` properties.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# groupBy Python"
@@ -271,16 +222,8 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# groupBy Python"
-      endMarker="# END groupBy Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// groupBy TS"
@@ -289,14 +232,6 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// groupBy TS"
-      endMarker="// END groupBy TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -343,7 +278,7 @@ You can use `Aggregate` with a [similarity search](./similarity.md) operator (on
 Use `objectLimit` to specify the maximum number of objects to aggregate.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# nearTextWithLimit Python"
@@ -352,16 +287,8 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# nearTextWithLimit Python"
-      endMarker="# END nearTextWithLimit Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// nearTextWithLimit TS"
@@ -370,14 +297,6 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// nearTextWithLimit TS"
-      endMarker="// END nearTextWithLimit TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -421,7 +340,7 @@ Use `distance` to specify how similar the objects should be.
 <!-- If you use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `nearXXX` operators), [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space). To specify how similar the objects should be, use the `distance` operator. -->
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# nearTextWithDistance Python"
@@ -430,16 +349,8 @@ Use `distance` to specify how similar the objects should be.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# nearTextWithDistance Python"
-      endMarker="# END nearTextWithDistance Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// nearTextWithDistance TS"
@@ -448,14 +359,6 @@ Use `distance` to specify how similar the objects should be.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// nearTextWithDistance TS"
-      endMarker="// END nearTextWithDistance TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -494,7 +397,7 @@ Use `distance` to specify how similar the objects should be.
 You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# HybridExample"
@@ -503,16 +406,8 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# HybridExample"
-      endMarker="# END HybridExample"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// HybridExample"
@@ -521,14 +416,6 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// nearTextWithLimit TS"
-      endMarker="// END nearTextWithLimit TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock
@@ -567,7 +454,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
 For more specific results, use a `filter` to narrow your search.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# whereFilter Python"
@@ -576,16 +463,8 @@ For more specific results, use a `filter` to narrow your search.
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# whereFilter Python"
-      endMarker="# END whereFilter Python"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// whereFilter TS"
@@ -594,14 +473,6 @@ For more specific results, use a `filter` to narrow your search.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// whereFilter TS"
-      endMarker="// END whereFilter TS"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="go" label="Go">
     <FilteredTextBlock

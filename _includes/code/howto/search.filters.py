@@ -28,7 +28,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # SingleFilterPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     filters=Filter.by_property("round").equal("Double Jeopardy!"),
@@ -54,7 +54,7 @@ assert response.objects[0].properties["round"] == "Double Jeopardy!"
 # SingleFilterNearTextPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.near_text(
     query="fashion icons",
     # highlight-start
@@ -81,7 +81,7 @@ assert response.objects[0].properties["points"] > 200
 # ContainsAnyFilter
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # highlight-start
 token_list = ["australia", "india"]
@@ -112,7 +112,7 @@ assert (token_list[0] in response.objects[0].properties["answer"].lower() or tok
 # ContainsAllFilter
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 
 # highlight-start
 token_list = ["blue", "red"]
@@ -137,6 +137,37 @@ assert (token_list[0] in response.objects[0].properties["question"].lower() and 
 
 
 # ==========================================
+# ===== ContainsNoneFilter =====
+# ==========================================
+
+# START ContainsNoneFilter
+from weaviate.classes.query import Filter
+
+jeopardy = client.collections.get("JeopardyQuestion")
+
+# highlight-start
+token_list = ["bird", "animal"]
+# highlight-end
+
+response = jeopardy.query.fetch_objects(
+    # highlight-start
+    # Find objects where the `question` property contains none of the strings in `token_list`
+    filters=Filter.by_property("question").contains_none(token_list),
+    # highlight-end
+    limit=3
+)
+
+for o in response.objects:
+    print(o.properties)
+# END ContainsNoneFilter
+
+# Test results
+assert response.objects[0].collection == "JeopardyQuestion"
+assert (token_list[0] not in response.objects[0].properties["question"].lower() and token_list[1] not in response.objects[0].properties["question"].lower())
+# End test
+
+
+# ==========================================
 # ===== Partial Match Filter =====
 # ==========================================
 
@@ -144,10 +175,10 @@ assert (token_list[0] in response.objects[0].properties["question"].lower() and 
 # LikeFilterPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
-    filters=Filter.by_property("answer").like("*inter*"),
+    filters=Filter.by_property("answer").like("*ala*"),
     # highlight-end
     limit=3
 )
@@ -159,7 +190,7 @@ for o in response.objects:
 
 # Test results
 assert response.objects[0].collection == "JeopardyQuestion"
-assert "inter" in response.objects[0].properties["answer"].lower()
+assert "ala" in response.objects[0].properties["answer"].lower()
 # End test
 
 
@@ -170,14 +201,15 @@ assert "inter" in response.objects[0].properties["answer"].lower()
 # MultipleFiltersAndPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     # Use & as AND
     #     | as OR
     filters=(
         Filter.by_property("round").equal("Double Jeopardy!") &
-        Filter.by_property("points").less_than(600)
+        Filter.by_property("points").less_than(600) &
+        Filter.not_(Filter.by_property("answer").equal("Yucatan"))
     ),
     # highlight-end
     limit=3
@@ -202,7 +234,7 @@ assert response.objects[0].properties["points"] < 600
 # MultipleFiltersAnyOfPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     filters=(
@@ -237,7 +269,7 @@ assert (
 # MultipleFiltersAllOfPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     filters=(
@@ -272,7 +304,7 @@ assert (
 # MultipleFiltersNestedPython
 from weaviate.classes.query import Filter
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     filters=Filter.by_property("answer").like("*bird*") &
@@ -304,7 +336,7 @@ assert (
 # CrossReferencePython
 from weaviate.classes.query import Filter, QueryReference
 
-jeopardy = client.collections.get("JeopardyQuestion")
+jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
     filters=Filter.by_ref(link_on="hasCategory").by_property("title").like("*Sport*"),
@@ -331,7 +363,7 @@ assert "sport" in response.objects[0].references["hasCategory"].objects[0].prope
 # START FilterById
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 
 target_id = "00037775-1432-35e5-bc59-443baaef7d80"
 response = collection.query.fetch_objects(
@@ -357,7 +389,7 @@ assert str(response.objects[0].uuid) == target_id
 from datetime import datetime, timezone
 from weaviate.classes.query import Filter, MetadataQuery
 
-collection = client.collections.get("Article")
+collection = client.collections.use("Article")
 
 # highlight-start
 # Set the timezone for avoidance of doubt (otherwise the client will emit a warning)
@@ -476,7 +508,7 @@ length_threshold = 20
 # START FilterByPropertyLength
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("JeopardyQuestion")
+collection = client.collections.use("JeopardyQuestion")
 
 response = collection.query.fetch_objects(
     limit=3,
@@ -504,7 +536,7 @@ for o in response.objects:
 # START FilterByPropertyNullState
 from weaviate.classes.query import Filter
 
-collection = client.collections.get("WineReview")
+collection = client.collections.use("WineReview")
 
 response = collection.query.fetch_objects(
     limit=3,

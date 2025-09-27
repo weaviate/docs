@@ -314,10 +314,9 @@
   color: white;
   font-weight: 600; /* Medium weight looks more refined */
   letter-spacing: 0.01em; /* Subtle letter spacing for clarity */
-  border: 2px solid var(--site-primary-dark); /* Border with the original green */
   border-radius: 8px; /* More rounded corners */
   background-color: var(
-    --site-primary-dark
+    --site-primary
   ); /* Original green background on hover */
   cursor: pointer; /* Pointer on hover */
   transition: all 0.2s ease; /* Smooth transition for all properties */
@@ -904,4 +903,20 @@ button.close {
   display: inline !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/*
+ * SCALAR OPENAPI DOCS
+ * -------------------------------
+ * Hide specific sections from the Scalar OpenAPI docs homepage
+ */
+
+// Target the wrapper for the authentication section
+.scalar-reference-intro-auth {
+    display: none !important;
+}
+
+// Target the wrapper for the client libraries section
+.scalar-reference-intro-clients {
+    display: none !important;
 }

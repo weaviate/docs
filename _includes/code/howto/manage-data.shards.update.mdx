@@ -8,32 +8,19 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="START UpdateCollectionShards"
-      endMarker="END UpdateCollectionShards"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="py3" label="Python Client v3">
+<TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="START UpdateCollectionShards"
+    endMarker="END UpdateCollectionShards"
+    language="py"
+  />
+</TabItem>
 
-```python
-# highlight-start
-article_shards = client.schema.update_class_shard(
-  "Article",
-  status="READY",
-  shard_name="shard-1234"
-)
-# highlight-end
-print(article_shards)
-```
-
-  </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
-let articles = client.collections.get('Article')
+let articles = client.collections.use('Article')
 
 // highlight-start
 const shards = await articles.config.updateShards('READY', 'shard-1234')
@@ -42,36 +29,16 @@ console.log(JSON.stringify(shards, null, 2));
 ```
 
 </TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
+<TabItem value="go" label="Go">
+  <FilteredTextBlock
+    text={GoCode}
+    startMarker="// UpdateShardStatus START"
+    endMarker="// UpdateShardStatus END"
+    language="go"
+  />
+</TabItem>
 
-```js
-const shards = await client.schema.shardUpdater()
-  .withClassName('Article')
-  .withShardName('shard-1234')
-  .withStatus('READY')
-  .do()
-
-console.log(JSON.stringify(shards, null, 2));
-```
-
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// UpdateShardStatus START"
-      endMarker="// UpdateShardStatus END"
-      language="go"
-    />
-  </TabItem>
-  <TabItem value="java6" label="Java Client V6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START UpdateCollectionShards"
-      endMarker="// END UpdateCollectionShards"
-      language="java"
-    />
-  </TabItem>
-  <TabItem value="java" label="Java">
+ <TabItem value="java" label="Java">
      <FilteredTextBlock
        text={JavaCode}
        startMarker="// UpdateShardStatus START"
