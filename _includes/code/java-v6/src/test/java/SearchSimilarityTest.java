@@ -1,0 +1,242 @@
+import io.weaviate.client6.v1.api.WeaviateClient;
+import io.weaviate.client6.v1.api.collections.CollectionHandle;
+import io.weaviate.client6.v1.api.collections.query.GroupBy;
+import io.weaviate.client6.v1.api.collections.query.Metadata;
+import io.weaviate.client6.v1.api.collections.query.Where;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.Map;
+
+class SearchSimilarityTest {
+
+  private static WeaviateClient client;
+
+  @BeforeAll
+  public static void beforeAll() throws IOException {
+    // START INSTANTIATION-COMMON
+    // Best practice: store your credentials in environment variables
+    String weaviateUrl = System.getenv("WEAVIATE_URL");
+    String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+    String openaiApiKey = System.getenv("OPENAI_APIKEY");
+    String cohereApiKey = System.getenv("COHERE_APIKEY");
+
+    client = WeaviateClient.connectToWeaviateCloud(
+        weaviateUrl,
+        weaviateApiKey,
+        config -> config.setHeaders(Map.of(
+            "X-OpenAI-Api-Key", openaiApiKey,
+            "X-Cohere-Api-Key", cohereApiKey)));
+    // END INSTANTIATION-COMMON
+  }
+
+  @AfterAll
+  public static void afterAll() throws Exception {
+    client.collections.deleteAll();
+    client.close();
+  }
+
+  @Test
+  void testNamedVectorNearText() {
+    // START NamedVectorNearTextPython
+    CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
+    var response = reviews.query.nearText(
+        "a sweet German white wine",
+        q -> q
+            .limit(2)
+            // highlight-start
+            // TODO[g-despot] Why isn't targetVector available?
+            // .targetVector("title_country") // Specify the target vector for named vector collections
+            // highlight-end
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END NamedVectorNearTextPython
+  }
+
+  @Test
+  void testGetNearText() {
+    // START GetNearTextPython
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.nearText(
+        // highlight-start
+        "animals in movies",
+        // highlight-end
+        q -> q
+            .limit(2)
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END GetNearTextPython
+  }
+
+  @Test
+  void testGetNearObject() {
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var initialResponse = jeopardy.query.fetchObjects(q -> q.limit(1));
+    if (initialResponse.objects().isEmpty())
+      return; // Skip test if no data
+    var uuid = initialResponse.objects().get(0).uuid();
+
+    // START GetNearObjectPython
+    // highlight-start
+    var response = jeopardy.query.nearObject(
+        uuid, // A UUID of an object (e.g. "56b9449e-65db-5df4-887b-0a4773f52aa7")
+        // highlight-end
+        q -> q
+            .limit(2)
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END GetNearObjectPython
+  }
+
+  @Test
+  void testGetNearVector() {
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var initialResponse = jeopardy.query.fetchObjects(q -> q.limit(1).returnMetadata(Metadata.VECTOR));
+    if (initialResponse.objects().isEmpty())
+      return; // Skip test if no data
+    var queryVector = initialResponse.objects().get(0).metadata().vectors().getSingle("default");
+
+    // START GetNearVectorPython
+    // highlight-start
+    var response = jeopardy.query.nearVector(
+        queryVector, // your query vector goes here
+        // highlight-end
+        q -> q
+            .limit(2)
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END GetNearVectorPython
+  }
+
+  @Test
+  void testGetLimitOffset() {
+    // START GetLimitOffsetPython
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.nearText(
+        "animals in movies",
+        q -> q
+            // highlight-start
+            .limit(2) // return 2 objects
+            .offset(1) // With an offset of 1
+            // highlight-end
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END GetLimitOffsetPython
+  }
+
+  @Test
+  void testGetWithDistance() {
+    // START GetWithDistancePython
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.nearText(
+        "animals in movies",
+        q -> q
+            // highlight-start
+            .distance(0.25f) // max accepted distance
+            // highlight-end
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END GetWithDistancePython
+  }
+
+  @Test
+  void testAutocut() {
+    // START Autocut Python
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.nearText(
+        "animals in movies",
+        q -> q
+            // highlight-start
+            // TODO[g-despot] Should autocut be autolimit?
+            .autocut(1) // number of close groups
+            // highlight-end
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END Autocut Python
+  }
+
+  @Test
+  void testGetWithGroupby() {
+    // START GetWithGroupbyPython
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    // highlight-start
+    var response = jeopardy.query.nearText(
+        "animals in movies", // find object based on this query
+        q -> q
+            .limit(10) // maximum total objects
+            .returnMetadata(Metadata.DISTANCE),
+        GroupBy.property(
+            "round", // group by this property
+            2, // maximum number of groups
+            2 // maximum objects per group
+        ));
+    // highlight-end
+
+    for (var o : response.objects()) {
+      // TODO[g-despot] Why isn't UUID available on top-level?
+      System.out.println(o.metadata().uuid());
+      System.out.println(o.belongsToGroup());
+      System.out.println(o.metadata().distance());
+    }
+
+    response.groups().forEach((groupName, group) -> {
+      System.out.println("=" + "=".repeat(10) + group.name() + "=" + "=".repeat(10));
+      System.out.println(group.numberOfObjects());
+      for (var o : group.objects()) {
+        System.out.println(o.properties());
+        System.out.println(o.metadata());
+      }
+    });
+    // END GetWithGroupbyPython
+  }
+
+  @Test
+  void testGetWithWhere() {
+    // START GetWithWherePython
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+    var response = jeopardy.query.nearText(
+        "animals in movies",
+        q -> q
+            // highlight-start
+            .where(Where.property("round").eq("Double Jeopardy!"))
+            // highlight-end
+            .limit(2)
+            .returnMetadata(Metadata.DISTANCE));
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+      System.out.println(o.metadata().distance());
+    }
+    // END GetWithWherePython
+  }
+}
