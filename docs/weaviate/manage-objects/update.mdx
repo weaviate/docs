@@ -4,31 +4,31 @@ sidebar_position: 30
 image: og/docs/howto.jpg
 ---
 
-
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.update.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.update.ts';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go';
-import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
-import SkipLink from '/src/components/SkipValidationLink'
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.update.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.update.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsUpdateTest.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go";
+import RestObjectsCRUDClassnameNote from "/_includes/rest-objects-crud-classname-note.md";
+import SkipLink from "/src/components/SkipValidationLink";
 
 Weaviate allows partial or complete object updates.
 
 <details>
   <summary>Additional information</summary>
 
-  - Partial updates use <SkipLink href="/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D">`PATCH` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
-  - Complete updates use <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">`PUT` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
-  - Updates that include a `vector` property will recalculate the vector embedding (unless all updated `text` properties are [skipped](../manage-collections/vector-config.mdx#property-level-settings)).
-  - To update objects, you must provide the collection name, id and properties to update.
-  - For [multi-tenancy](../concepts/data.md#multi-tenancy) collections, you will also need to specify the tenant name. See [Manage data: multi-tenancy operations]( ../manage-collections/multi-tenancy.mdx) for details on how.
-  <br/>
+- Partial updates use <SkipLink href="/weaviate/api/rest#tag/objects/patch/objects/%7BclassName%7D/%7Bid%7D">`PATCH` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
+- Complete updates use <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">`PUT` requests to the `/v1/objects` REST API endpoint</SkipLink> under the hood.
+- Updates that include a `vector` property will recalculate the vector embedding (unless all updated `text` properties are [skipped](../manage-collections/vector-config.mdx#property-level-settings)).
+- To update objects, you must provide the collection name, id and properties to update.
+- For [multi-tenancy](../concepts/data.md#multi-tenancy) collections, you will also need to specify the tenant name. See [Manage data: multi-tenancy operations](../manage-collections/multi-tenancy.mdx) for details on how.
+  <br />
 
-  <RestObjectsCRUDClassnameNote/>
+{" "}
+<RestObjectsCRUDClassnameNote />
 
 </details>
 
@@ -36,9 +36,9 @@ Weaviate allows partial or complete object updates.
 
 This operation replaces the entire value of the specified properties only, leaving the unspecified properties. Provide the collection name, the object id, and the properties to update.
 
-If you update the value of a *previously vectorized* property, Weaviate re-vectorizes the object automatically. This also reindexes the updated object.
+If you update the value of a _previously vectorized_ property, Weaviate re-vectorizes the object automatically. This also reindexes the updated object.
 
-However, if you add a *new* property to your collection definition, Weaviate only vectorizes the new objects. Weaviate doesn't re-vectorize and re-index existing objects when a new property is defined, only when an existing property is updated.
+However, if you add a _new_ property to your collection definition, Weaviate only vectorizes the new objects. Weaviate doesn't re-vectorize and re-index existing objects when a new property is defined, only when an existing property is updated.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -57,20 +57,28 @@ However, if you add a *new* property to your collection definition, Weaviate onl
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// UpdateProps START"
-      endMarker="// UpdateProps END"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// UpdateProps START"
       endMarker="// UpdateProps END"
       language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateProps"
+      endMarker="// END UpdateProps"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// UpdateProps START"
+      endMarker="// UpdateProps END"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -88,7 +96,6 @@ The object vector can also be updated similarly to properties. For [named vector
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
@@ -97,21 +104,25 @@ The object vector can also be updated similarly to properties. For [named vector
       language="ts"
     />
   </TabItem>
-
-
-  <TabItem value="java" label="Java">
-
-  >  Coming soon
-
-  </TabItem>
-
   <TabItem value="go" label="Go">
 
-  >  Coming soon
+> Coming soon
+
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateVector"
+      endMarker="// END UpdateVector"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+> Coming soon
 
   </TabItem>
 </Tabs>
-
 
 ## Replace an entire object
 
@@ -126,7 +137,6 @@ The entire object can be replaced by providing the collection name, id and the n
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
@@ -135,17 +145,6 @@ The entire object can be replaced by providing the collection name, id and the n
       language="ts"
     />
   </TabItem>
-
-
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// Replace START"
-      endMarker="// Replace END"
-      language="java"
-    />
-  </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -154,8 +153,23 @@ The entire object can be replaced by providing the collection name, id and the n
       language="go"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START Replace"
+      endMarker="// END Replace"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// Replace START"
+      endMarker="// Replace END"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
-
 
 ## Delete a property
 
@@ -172,7 +186,6 @@ At object level, you can replace the object with a copy that has those propertie
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
@@ -181,17 +194,6 @@ At object level, you can replace the object with a copy that has those propertie
       language="ts"
     />
   </TabItem>
-
-
-  <TabItem value="java" label="Java">
-    <FilteredTextBlock
-      text={JavaCode}
-      startMarker="// DelProps START"
-      endMarker="// DelProps END"
-      language="java"
-    />
-  </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -200,17 +202,33 @@ At object level, you can replace the object with a copy that has those propertie
       language="go"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DelProps"
+      endMarker="// END DelProps"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// DelProps START"
+      endMarker="// DelProps END"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
-
 
 ## Related pages
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
-- <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">References: REST - /v1/objects</SkipLink>
-
+- <SkipLink href="/weaviate/api/rest#tag/objects/put/objects/%7BclassName%7D/%7Bid%7D">
+    References: REST - /v1/objects
+  </SkipLink>
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CreateObjectsTest {
+class ManageObjectsCreateTest {
 
   private static WeaviateClient client;
 
@@ -68,7 +68,7 @@ class CreateObjectsTest {
 
   @Test
   void testCreateObject() throws IOException {
-    // START CreateObject
+    // START CreateSimpleObject
     var jeopardy = client.collections.use("JeopardyQuestion");
 
     // highlight-start
@@ -80,7 +80,7 @@ class CreateObjectsTest {
     )).metadata().uuid();
 
     System.out.println(uuid); // the return value is the object's UUID
-    // END CreateObject
+    // END CreateSimpleObject
 
     var result = jeopardy.query.byId(uuid);
     assertThat(result).isPresent();
@@ -119,10 +119,9 @@ class CreateObjectsTest {
         // highlight-start
         // Specify the named vectors, following the collection definition
         meta -> meta.vectors(
-            Vectors.of("title", new float[1536]))
-    // TODO[g-despot]: How to insert multiple vectors?
-    // Vectors.of("review_body", new float[1536]),
-    // Vectors.of("title_country", new float[1536]))
+            Vectors.of("title", new float[1536]),
+            Vectors.of("review_body", new float[1536]),
+            Vectors.of("title_country", new float[1536]))
     // highlight-end
     ).metadata().uuid();
 
