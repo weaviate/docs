@@ -10,6 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v4.py';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.rq_test.go';
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
+import Java6Code from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -66,6 +67,14 @@ RQ can be enabled at collection creation time through the collection definition:
         language="go"
       />
   </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START EnableRQ"
+      endMarker="// END EnableRQ"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -97,7 +106,15 @@ RQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
-    <TabItem value="go" label="Go">
+    <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
       <FilteredTextBlock
         text={GoCode}
         startMarker="// START UpdateSchema"
@@ -157,6 +174,14 @@ RQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START 1BitEnableRQ"
+      endMarker="// END 1BitEnableRQ"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ### Enable compression for existing collection
@@ -172,6 +197,22 @@ RQ can also be enabled for an existing collection by updating the collection def
         language="py"
       />
   </TabItem>
+      <TabItem value="go" label="Go">
+      <FilteredTextBlock
+        text={GoCode}
+        startMarker="// START 1BitUpdateSchema"
+        endMarker="// END 1BitUpdateSchema"
+        language="go"
+      />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START 1BitUpdateSchema"
+      endMarker="// END 1BitUpdateSchema"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -179,14 +220,6 @@ RQ can also be enabled for an existing collection by updating the collection def
       endMarker="// END 1BitUpdateSchema"
       language="java"
     />
-  </TabItem>
-    <TabItem value="go" label="Go">
-      <FilteredTextBlock
-        text={GoCode}
-        startMarker="// START 1BitUpdateSchema"
-        endMarker="// END 1BitUpdateSchema"
-        language="go"
-      />
   </TabItem>
 </Tabs>
 
@@ -222,6 +255,14 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         endMarker="// END RQWithOptions"
         language="go"
       />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={Java6Code}
+      startMarker="// START RQWithOptions"
+      endMarker="// END RQWithOptions"
+      language="java"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock

@@ -49,7 +49,15 @@ Collection level settings override default values and general configuration para
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START Vectorizer"
@@ -63,14 +71,6 @@ Collection level settings override default values and general configuration para
       startMarker="// START CreateCollectionWithVectorizer"
       endMarker="// END CreateCollectionWithVectorizer"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START CreateCollectionWithVectorizer"
-      endMarker="// END CreateCollectionWithVectorizer"
-      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -100,7 +100,15 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ModuleSettings"
+      endMarker="// END ModuleSettings"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ModuleSettings"
@@ -114,14 +122,6 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
       startMarker="// START ModuleSettings"
       endMarker="// END ModuleSettings"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START ModuleSettings"
-      endMarker="// END ModuleSettings"
-      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -152,7 +152,15 @@ As such, each named vector configuration can include its own vectorizer and vect
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START BasicNamedVectors"
@@ -166,14 +174,6 @@ As such, each named vector configuration can include its own vectorizer and vect
       startMarker="// START CreateCollectionWithNamedVectors"
       endMarker="// END CreateCollectionWithNamedVectors"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START CreateCollectionWithNamedVectors"
-      endMarker="// END CreateCollectionWithNamedVectors"
-      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -202,20 +202,20 @@ Named vectors can be added to existing collection definitions with named vectors
       language="js"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
-    <FilteredTextBlock
-      text={JavaV6Code}
-      startMarker="// START AddNamedVectors"
-      endMarker="// END AddNamedVectors"
-      language="java"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
 
 ```go
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddNamedVectors"
+      endMarker="// END AddNamedVectors"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -247,7 +247,7 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       language="js"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MultiValueVectorCollection"
@@ -290,7 +290,15 @@ The vector index type can be set for each collection at creation time, between `
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SetVectorIndexType"
@@ -304,14 +312,6 @@ The vector index type can be set for each collection at creation time, between `
       startMarker="// START SetVectorIndexType"
       endMarker="// END SetVectorIndexType"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START SetVectorIndexType"
-      endMarker="// END SetVectorIndexType"
-      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -348,7 +348,15 @@ Was added in `v1.27`
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START SetVectorIndexParams"
@@ -362,14 +370,6 @@ Was added in `v1.27`
       startMarker="// START SetVectorIndexParams"
       endMarker="// END SetVectorIndexParams"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START SetVectorIndexParams"
-      endMarker="// END SetVectorIndexParams"
-      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -406,7 +406,15 @@ Configure individual properties in a collection. Each property can have it's own
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START PropModuleSettings"
@@ -420,14 +428,6 @@ Configure individual properties in a collection. Each property can have it's own
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START PropModuleSettings"
-      endMarker="// END PropModuleSettings"
-      language="gonew"
     />
   </TabItem>
 </Tabs>
@@ -453,7 +453,15 @@ If you choose to bring your own vectors, you should specify the `distance metric
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java Client V6">
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START DistanceMetric"
@@ -467,14 +475,6 @@ If you choose to bring your own vectors, you should specify the `distance metric
       startMarker="// START DistanceMetric"
       endMarker="// END DistanceMetric"
       language="java"
-    />
-  </TabItem>
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
-      text={GoCode}
-      startMarker="// START DistanceMetric"
-      endMarker="// END DistanceMetric"
-      language="gonew"
     />
   </TabItem>
 </Tabs>

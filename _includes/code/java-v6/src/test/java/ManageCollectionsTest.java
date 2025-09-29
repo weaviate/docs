@@ -3,6 +3,7 @@ import io.weaviate.client6.v1.api.collections.CollectionConfig;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.Replication;
 import io.weaviate.client6.v1.api.collections.Sharding;
+import io.weaviate.client6.v1.api.collections.Tokenization;
 import io.weaviate.client6.v1.api.collections.vectorindex.Distance;
 import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.Replication.DeletionStrategy;
@@ -170,6 +171,22 @@ class ManageCollectionsTest {
     // assertThat(config.rerankerModules().get(0).name()).isEqualTo("reranker-cohere");
   }
 
+  // TODO[g-despot] Update when more rerankers available
+  // TODO[g-despot] Why does update need collection name?
+  @Test
+  void testUpdateReranker() throws IOException {
+    // START UpdateReranker
+    var collection = client.collections.use("Article");
+    collection.config.update("Article", col -> col
+        .rerankerModules(Reranker.cohere()));
+    // END UpdateReranker
+
+    var config = client.collections.getConfig("Article").get();
+    assertThat(config.rerankerModules()).hasSize(1);
+    System.out.println("second:" + config.rerankerModules().get(0));
+    // assertThat(config.rerankerModules().get(0).name()).isEqualTo("reranker-cohere");
+  }
+
   @Test
   void testSetGenerative() throws IOException {
     // START SetGenerative
@@ -180,6 +197,22 @@ class ManageCollectionsTest {
 
     var config = client.collections.getConfig("Article").get();
     System.out.println("third: " + config);
+    // assertThat(config.generativeModule().name()).isEqualTo("generative-cohere");
+    // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
+  }
+
+  // TODO[g-despot] Update when more generative modules available
+  @Test
+  void testUpdateGenerative() throws IOException {
+    // START UpdateGenerative
+    var collection = client.collections.use("Article");
+    collection.config.update("Article", col -> col
+        .generativeModule(Generative.cohere()));
+    // END UpdateGenerative
+
+    var config = client.collections.getConfig("Article").get();
+    assertThat(config.generativeModule()).isNotNull();
+    System.out.println("third: " + config.generativeModule());
     // assertThat(config.generativeModule().name()).isEqualTo("generative-cohere");
     // assertThat(config.generativeModule().model()).isEqualTo("gpt-4o");
   }
@@ -197,6 +230,21 @@ class ManageCollectionsTest {
     var config = client.collections.getConfig("Article").get();
     System.out.println("fourth: " + config);
     // assertThat(config.model()).isEqualTo("Snowflake/snowflake-arctic-embed-m-v1.5");
+  }
+
+  @Test
+  void testCreateCollectionWithPropertyConfig() throws IOException {
+    // START PropModuleSettings
+    client.collections.create("Article", col -> col
+        .properties(
+            Property.text("title",
+                p -> p.description("The title of the article.").tokenization(Tokenization.LOWERCASE)
+                    .vectorizePropertyName(false)),
+            Property.text("body", p -> p.skipVectorization(true).tokenization(Tokenization.WHITESPACE))));
+    // END PropModuleSettings
+
+    var config = client.collections.getConfig("Article").get();
+    assertThat(config.properties()).hasSize(2);
   }
 
   @Test
@@ -321,16 +369,15 @@ class ManageCollectionsTest {
 
     // START UpdateCollection
     var articles = client.collections.use("Article");
-    // TODO[g-despot]: Why can't k1 be a float?
     articles.config.update("Article", col -> col
         .description("An updated collection description.")
         .invertedIndex(idx -> idx.bm25(bm25Builder -> bm25Builder
-            .k1(15))));
+            .k1(1.5f))));
     // END UpdateCollection
 
     var config = articles.config.get().get();
     assertThat(config.description()).isEqualTo("An updated collection description.");
-    assertThat(config.invertedIndex().bm25().k1()).isEqualTo(15);
+    assertThat(config.invertedIndex().bm25().k1()).isEqualTo(1.5f);
   }
 
   @Test

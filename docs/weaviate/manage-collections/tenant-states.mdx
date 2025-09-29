@@ -9,6 +9,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMultiTenancyTest.java";
 
 ![Storage Tiers](./img/storage-tiers.jpg)
 
@@ -104,13 +105,20 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ActivateTenants"
       endMarker="// END ActivateTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ActivateTenants"
+      endMarker="// END ActivateTenants"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -131,13 +139,20 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeactivateTenants"
       endMarker="// END DeactivateTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DeactivateTenants"
+      endMarker="// END DeactivateTenants"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -158,13 +173,20 @@ To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START OffloadTenants"
       endMarker="// END OffloadTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START OffloadTenants"
+      endMarker="// END OffloadTenants"
+      language="java"
     />
   </TabItem>
 </Tabs>
@@ -191,7 +213,6 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="py"
     />
   </TabItem>
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
@@ -200,7 +221,14 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="ts"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableAutoActivation"
+      endMarker="// END EnableAutoActivation"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ## Questions and feedback
