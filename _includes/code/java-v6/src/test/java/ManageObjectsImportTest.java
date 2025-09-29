@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BatchImportTest {
+class ManageObjectsImportTest {
 
   private static WeaviateClient client;
 

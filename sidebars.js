@@ -640,9 +640,16 @@ const sidebars = {
           ],
         },
         {
-          type: "doc",
-          id: "weaviate/client-libraries/java",
+          type: "category",
+          label: "Java",
           className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/java/index",
+          },
+          items: [
+            "weaviate/client-libraries/java/java-v6",
+          ],
         },
         {
           type: "doc",
