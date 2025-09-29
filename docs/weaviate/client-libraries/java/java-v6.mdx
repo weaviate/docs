@@ -26,7 +26,7 @@ export const javaCardsData = [
 
 :::note Java v6 client (SDK)
 
-The latest Java v6 client is version `v||site.java_v6_client_version||`.
+The latest Java client is version `v||site.java_client_version||`.
 
 <QuickLinks items={javaCardsData} />
 
@@ -99,10 +99,6 @@ Get started with Weaviate using this Java example. The code walks you through th
 1. **[Create a collection](../../manage-collections/index.mdx)**: Define the data schema for a `Question` collection, using an Ollama model to vectorize the data.
 1. **[Import data](../../manage-objects/import.mdx)**: Fetch sample Jeopardy questions and use Weaviate's batch import for efficient ingestion and automatic vector embedding generation.
 1. **[Search/query the database](../../search/index.mdx)**: Execute a vector search to find questions semantically similar to the query `biology`.
-
-import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
-
-<VectorsAutoSchemaError />
 
 <Tabs groupId="languages">
   <TabItem value="java6" label="Java v6">
