@@ -45,7 +45,7 @@ class SearchFilterTest {
 
   @Test
   void testSingleFilter() {
-    // START SingleFilterPython
+    // START SingleFilter
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -57,12 +57,12 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END SingleFilterPython
+    // END SingleFilter
   }
 
   @Test
   void testSingleFilterNearText() {
-    // START SingleFilterNearTextPython
+    // START NearTextSingleFilter
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         "fashion icons",
@@ -75,7 +75,7 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END SingleFilterNearTextPython
+    // END NearTextSingleFilter
   }
 
   @Test
@@ -154,7 +154,7 @@ class SearchFilterTest {
 
   @Test
   void testLikeFilter() {
-    // START LikeFilterPython
+    // START LikeFilter
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -166,12 +166,12 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END LikeFilterPython
+    // END LikeFilter
   }
 
   @Test
   void testMultipleFiltersAnd() {
-    // START MultipleFiltersAndPython
+    // START MultipleFiltersAnd
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -187,12 +187,12 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END MultipleFiltersAndPython
+    // END MultipleFiltersAnd
   }
 
   @Test
   void testMultipleFiltersAnyOf() {
-    // START MultipleFiltersAnyOfPython
+    // START MultipleFiltersAnyOf
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -207,12 +207,12 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END MultipleFiltersAnyOfPython
+    // END MultipleFiltersAnyOf
   }
 
   @Test
   void testMultipleFiltersAllOf() {
-    // START MultipleFiltersAllOfPython
+    // START MultipleFiltersAllOf
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -227,12 +227,12 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END MultipleFiltersAllOfPython
+    // END MultipleFiltersAllOf
   }
 
   @Test
   void testMultipleFiltersNested() {
-    // START MultipleFiltersNestedPython
+    // START MultipleFiltersNested
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -248,12 +248,12 @@ class SearchFilterTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END MultipleFiltersNestedPython
+    // END MultipleFiltersNested
   }
 
   @Test
   void testCrossReference() {
-    // START CrossReferencePython
+    // START CrossReference
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -270,7 +270,7 @@ class SearchFilterTest {
         System.out.println(o.references().get("hasCategory").get(0));
       }
     }
-    // END CrossReferencePython
+    // END CrossReference
   }
 
   @Test

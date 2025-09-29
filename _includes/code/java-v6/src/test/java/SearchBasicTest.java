@@ -1,18 +1,17 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
 import io.weaviate.client6.v1.api.collections.CollectionHandle;
-import io.weaviate.client6.v1.api.collections.ReferenceProperty;
+import io.weaviate.client6.v1.api.collections.query.ConsistencyLevel;
 import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
-import io.weaviate.client6.v1.api.collections.tenants.Tenant;
+import io.weaviate.client6.v1.api.collections.query.Where;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-class BasicSearchTest {
+class SearchBasicTest {
 
   private static WeaviateClient client;
 
@@ -37,24 +36,24 @@ class BasicSearchTest {
     client.close();
   }
 
+  // TODO[g-despot] Why doesn't standalone fetachObjects work?
   @Test
   void testBasicGet() {
-    // START BasicGetPython
+    // START BasicGet
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     // highlight-start
-    // TODO[g-despot] Why doesn't standalone fetachObjects work?
     var response = jeopardy.query.fetchObjects(config -> config.limit(1));
     // highlight-end
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END BasicGetPython
+    // END BasicGet
   }
 
   @Test
   void testGetWithLimit() {
-    // START GetWithLimitPython
+    // START GetWithLimit
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // highlight-start
@@ -65,12 +64,12 @@ class BasicSearchTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END GetWithLimitPython
+    // END GetWithLimit
   }
 
   @Test
   void testGetWithLimitOffset() {
-    // START GetWithLimitOffsetPython
+    // START GetWithOffset
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // highlight-start
@@ -81,12 +80,12 @@ class BasicSearchTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END GetWithLimitOffsetPython
+    // END GetWithOffset
   }
 
   @Test
   void testGetProperties() {
-    // START GetPropertiesPython
+    // START GetProperties
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // highlight-start
@@ -98,12 +97,13 @@ class BasicSearchTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END GetPropertiesPython
+    // END GetProperties
   }
 
+  // TODO[g-despot] Vector shoudn't be in metadata
   @Test
   void testGetObjectVector() {
-    // START GetObjectVectorPython
+    // START GetObjectVector
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -112,17 +112,15 @@ class BasicSearchTest {
             // highlight-end
             .limit(1));
 
-    // For collections with a single, unnamed vector, the vector is returned
-    // directly
     if (!response.objects().isEmpty()) {
       System.out.println(response.objects().get(0).metadata().vectors());
     }
-    // END GetObjectVectorPython
+    // END GetObjectVector
   }
 
   @Test
   void testGetObjectId() {
-    // START GetObjectIdPython
+    // START GetObjectId
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         // Object IDs are included by default with the v6 client! :)
@@ -131,12 +129,12 @@ class BasicSearchTest {
     for (var o : response.objects()) {
       System.out.println(o.uuid());
     }
-    // END GetObjectIdPython
+    // END GetObjectId
   }
 
   @Test
   void testGetWithCrossRefs() {
-    // START GetWithCrossRefsPython
+    // START GetWithCrossRefs
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -155,12 +153,12 @@ class BasicSearchTest {
         }
       }
     }
-    // END GetWithCrossRefsPython
+    // END GetWithCrossRefs
   }
 
   @Test
   void testGetWithMetadata() {
-    // START GetWithMetadataPython
+    // START GetWithMetadata
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -174,7 +172,7 @@ class BasicSearchTest {
       System.out.println(o.properties()); // View the returned properties
       System.out.println(o.metadata().creationTimeUnix()); // View the returned creation time
     }
-    // END GetWithMetadataPython
+    // END GetWithMetadata
   }
 
   @Test
@@ -198,5 +196,21 @@ class BasicSearchTest {
       System.out.println(response.objects().get(0).properties());
     }
     // END MultiTenancy
+  }
+
+  // TODO[g-despot] fetchObjectsById missing
+  @Test
+  void testGetWithConsistencyLevel() {
+    // START QueryWithReplication
+    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion")
+        .withConsistencyLevel(ConsistencyLevel.QUORUM);
+    // highlight-start
+    var response = jeopardy.query.fetchObjects(c -> c.where(Where.uuid().eq("36ddd591-2dee-4e7e-a3cc-eb86d30a4303")));
+    // highlight-end
+
+    for (var o : response.objects()) {
+      System.out.println(o.properties());
+    }
+    // END QueryWithReplication
   }
 }

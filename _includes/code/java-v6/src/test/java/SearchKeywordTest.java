@@ -39,7 +39,7 @@ class SearchKeywordTest {
 
   @Test
   void testBM25Basic() {
-    // START BM25BasicPython
+    // START BM25Basic
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         // highlight-start
@@ -50,7 +50,7 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END BM25BasicPython
+    // END BM25Basic
   }
 
   @Test
@@ -70,6 +70,7 @@ class SearchKeywordTest {
     // END BM25OperatorOrWithMin
   }
 
+  // TODO[g-espot] Why isn't operator available?
   @Test
   void testBM25OperatorAnd() {
     // START BM25OperatorAnd
@@ -77,7 +78,6 @@ class SearchKeywordTest {
     var response = jeopardy.query.bm25(
         // highlight-start
         "Australian mammal cute"
-    // TODO[g-espot] What about operator?
     // q -> q.operator(Operator.OPERATOR_AND) // Each result must include all tokens
     // (e.g. "australian", "mammal", "cute")
     // highlight-end
@@ -92,7 +92,7 @@ class SearchKeywordTest {
 
   @Test
   void testBM25WithScore() {
-    // START BM25WithScorePython
+    // START BM25WithScore
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         "food",
@@ -106,12 +106,12 @@ class SearchKeywordTest {
       System.out.println(o.metadata().score());
       // highlight-end
     }
-    // END BM25WithScorePython
+    // END BM25WithScore
   }
 
   @Test
   void testLimit() {
-    // START limit Python
+    // START limit
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         "safety",
@@ -125,12 +125,12 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END limit Python
+    // END limit
   }
 
   @Test
   void testAutocut() {
-    // START autocut Python
+    // START autocut
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         "safety",
@@ -143,12 +143,12 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END autocut Python
+    // END autocut
   }
 
   @Test
   void testBM25WithProperties() {
-    // START BM25WithPropertiesPython
+    // START BM25WithProperties
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         "safety",
@@ -163,12 +163,12 @@ class SearchKeywordTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().score());
     }
-    // END BM25WithPropertiesPython
+    // END BM25WithProperties
   }
 
   @Test
   void testBM25WithBoostedProperties() {
-    // START BM25WithBoostedPropertiesPython
+    // START BM25WithBoostedProperties
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         "food",
@@ -181,12 +181,12 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END BM25WithBoostedPropertiesPython
+    // END BM25WithBoostedProperties
   }
 
   @Test
   void testMultipleKeywords() {
-    // START MultipleKeywords Python
+    // START MultipleKeywords
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         // highlight-start
@@ -199,12 +199,12 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties().get("question"));
     }
-    // END MultipleKeywords Python
+    // END MultipleKeywords
   }
 
   @Test
   void testBM25WithFilter() {
-    // START BM25WithFilterPython
+    // START BM25WithFilter
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.bm25(
         "food",
@@ -218,7 +218,7 @@ class SearchKeywordTest {
     for (var o : response.objects()) {
       System.out.println(o.properties());
     }
-    // END BM25WithFilterPython
+    // END BM25WithFilter
   }
 
   @Test

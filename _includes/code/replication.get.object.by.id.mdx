@@ -1,8 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/search.consistency.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.consistency.ts';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -68,6 +69,14 @@ func main() {
 ```
 
 </TabItem>
+<TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START QueryWithReplication"
+      endMarker="// END QueryWithReplication"
+      language="java"
+    />
+  </TabItem>
 <TabItem value="java" label="Java">
 
 ```java

@@ -79,20 +79,6 @@ class SearchImageTest {
       System.out.println(response.objects().get(0));
     }
     // END search with base64
-
-    // START Expected base64 results
-    // {
-    // "data": {
-    // "Get": {
-    // "Dog": [
-    // {
-    // "breed": "Corgi"
-    // }
-    // ]
-    // }
-    // }
-    // }
-    // END Expected base64 results
   }
 
   @Test
@@ -150,23 +136,5 @@ class SearchImageTest {
     // }
     // }
     // END Expected Distance results
-  }
-
-  @Test
-  void miscellaneousMarkers() {
-    // START HelperFunction
-    // weaviate.util.image_encoder_b64 has questionable utility, since
-    // .with_near_image has `encode=True` by default
-    // String encoded_image = ...; // encode file to base64
-    // response = client.query()
-    // .get("Dog", "breed")
-    // .withNearImage(Map.of("image", encodedImage), false)
-    // .withLimit(1)
-    // .run();
-    // END HelperFunction
-
-    // START-ANY
-    // client.close() is handled in @AfterAll
-    // END-ANY
   }
 }

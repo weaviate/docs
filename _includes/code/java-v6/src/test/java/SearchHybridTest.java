@@ -36,12 +36,12 @@ class SearchHybridTest {
     client.close();
   }
 
+  // TODO[g-despot] Why isn't targetVector available?
   @Test
   void testNamedVectorHybrid() {
     // START NamedVectorHybridPython
     CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
     var response = reviews.query.hybrid(
-        // TODO[g-despot] Why isn't targetVector available?
         // highlight-start
         "A French Riesling",
         q -> q
@@ -170,6 +170,7 @@ class SearchHybridTest {
     // END HybridWithFusionTypePython
   }
 
+  // TODO Why isn't bm25Operator available?
   @Test
   void testHybridWithBM25OperatorOrWithMin() {
     // START HybridWithBM25OperatorOrWithMin
@@ -177,7 +178,6 @@ class SearchHybridTest {
     var response = jeopardy.query.hybrid(
         // highlight-start
         "Australian mammal cute"
-    // TODO what about bm25Operator?
     // .bm25Operator(BM25Operator.or(2))
     // highlight-end
     // .limit(3)
@@ -189,6 +189,7 @@ class SearchHybridTest {
     // END HybridWithBM25OperatorOrWithMin
   }
 
+  // TODO Why isn't bm25Operator available?
   @Test
   void testHybridWithBM25OperatorAnd() {
     // START HybridWithBM25OperatorAnd
@@ -196,7 +197,6 @@ class SearchHybridTest {
     var response = jeopardy.query.hybrid(
         // highlight-start
         "Australian mammal cute"
-    // TODO what about bm25Operator?
     // .bm25Operator(BM25Operator.and()) // Each result must include all tokens
     // (e.g. "australian", "mammal", "cute")
     // highlight-end

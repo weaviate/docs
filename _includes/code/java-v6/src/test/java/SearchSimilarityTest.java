@@ -38,17 +38,18 @@ class SearchSimilarityTest {
     client.close();
   }
 
+  // TODO[g-despot] Why isn't targetVector available?
   @Test
   void testNamedVectorNearText() {
-    // START NamedVectorNearTextPython
+    // START NamedVectorNearText
     CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
     var response = reviews.query.nearText(
         "a sweet German white wine",
         q -> q
             .limit(2)
             // highlight-start
-            // TODO[g-despot] Why isn't targetVector available?
-            // .targetVector("title_country") // Specify the target vector for named vector collections
+            // .targetVector("title_country") // Specify the target vector for named vector
+            // collections
             // highlight-end
             .returnMetadata(Metadata.DISTANCE));
 
@@ -56,12 +57,12 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END NamedVectorNearTextPython
+    // END NamedVectorNearText
   }
 
   @Test
   void testGetNearText() {
-    // START GetNearTextPython
+    // START GetNearText
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         // highlight-start
@@ -75,7 +76,7 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END GetNearTextPython
+    // END GetNearText
   }
 
   @Test
@@ -86,7 +87,7 @@ class SearchSimilarityTest {
       return; // Skip test if no data
     var uuid = initialResponse.objects().get(0).uuid();
 
-    // START GetNearObjectPython
+    // START GetNearObject
     // highlight-start
     var response = jeopardy.query.nearObject(
         uuid, // A UUID of an object (e.g. "56b9449e-65db-5df4-887b-0a4773f52aa7")
@@ -99,9 +100,10 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END GetNearObjectPython
+    // END GetNearObject
   }
 
+  // TODO[g-despot] Why do some argument accept Vector.of while other float[]?
   @Test
   void testGetNearVector() {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
@@ -110,7 +112,7 @@ class SearchSimilarityTest {
       return; // Skip test if no data
     var queryVector = initialResponse.objects().get(0).metadata().vectors().getSingle("default");
 
-    // START GetNearVectorPython
+    // START GetNearVector
     // highlight-start
     var response = jeopardy.query.nearVector(
         queryVector, // your query vector goes here
@@ -123,12 +125,12 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END GetNearVectorPython
+    // END GetNearVector
   }
 
   @Test
   void testGetLimitOffset() {
-    // START GetLimitOffsetPython
+    // START GetLimitOffset
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         "animals in movies",
@@ -143,12 +145,12 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END GetLimitOffsetPython
+    // END GetLimitOffset
   }
 
   @Test
   void testGetWithDistance() {
-    // START GetWithDistancePython
+    // START GetWithDistance
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         "animals in movies",
@@ -162,18 +164,18 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END GetWithDistancePython
+    // END GetWithDistance
   }
 
+  // TODO[g-despot] Should autocut be autolimit?
   @Test
   void testAutocut() {
-    // START Autocut Python
+    // START Autocut
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         "animals in movies",
         q -> q
             // highlight-start
-            // TODO[g-despot] Should autocut be autolimit?
             .autocut(1) // number of close groups
             // highlight-end
             .returnMetadata(Metadata.DISTANCE));
@@ -182,12 +184,12 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END Autocut Python
+    // END Autocut
   }
 
   @Test
   void testGetWithGroupby() {
-    // START GetWithGroupbyPython
+    // START GetWithGroupby
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     // highlight-start
     var response = jeopardy.query.nearText(
@@ -217,12 +219,12 @@ class SearchSimilarityTest {
         System.out.println(o.metadata());
       }
     });
-    // END GetWithGroupbyPython
+    // END GetWithGroupby
   }
 
   @Test
   void testGetWithWhere() {
-    // START GetWithWherePython
+    // START GetWithFilter
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.nearText(
         "animals in movies",
@@ -237,6 +239,6 @@ class SearchSimilarityTest {
       System.out.println(o.properties());
       System.out.println(o.metadata().distance());
     }
-    // END GetWithWherePython
+    // END GetWithFilter
   }
 }

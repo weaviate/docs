@@ -248,6 +248,20 @@ class ManageCollectionsTest {
   }
 
   @Test
+  void testCreateCollectionWithTrigramTokenization() throws IOException {
+    // START TrigramTokenization
+    client.collections.create("Article", col -> col
+        .vectorConfig(VectorConfig.text2vecContextionary())
+        .properties(
+            Property.text("title",
+                p -> p.tokenization(Tokenization.TRIGRAM))));
+    // END TrigramTokenization
+
+    var config = client.collections.getConfig("Article").get();
+    assertThat(config.properties()).hasSize(2);
+  }
+
+  @Test
   void testDistanceMetric() throws IOException {
     // START DistanceMetric
     client.collections.create("Article", col -> col

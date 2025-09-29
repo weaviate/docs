@@ -36,7 +36,7 @@ class SearchAggregateTest {
 
   @Test
   void testMetaCount() {
-    // START MetaCount Python
+    // START MetaCount
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(
         // highlight-start
@@ -45,12 +45,12 @@ class SearchAggregateTest {
     );
 
     System.out.println(response.totalCount());
-    // END MetaCount Python
+    // END MetaCount
   }
 
   @Test
   void testTextProp() {
-    // START TextProp Python
+    // START TextProp
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(
         // TODO[g-despot] Count, value and min occurences?
@@ -64,12 +64,12 @@ class SearchAggregateTest {
     );
     // TODOπ[g-despot] How to get topOccurences here
     System.out.println(response.properties().get("answer"));
-    // END TextProp Python
+    // END TextProp
   }
 
   @Test
   void testIntProp() {
-    // START IntProp Python
+    // START IntProp
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(
         // highlight-start
@@ -86,12 +86,12 @@ class SearchAggregateTest {
     System.out.println(response.properties().get("points"));
     System.out.println(response.properties().get("points"));
     System.out.println(response.properties().get("points"));
-    // END IntProp Python
+    // END IntProp
   }
 
   @Test
   void testGroupBy() {
-    // START groupBy Python
+    // START groupBy
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(
         // TODO[g-despot] Why is metrics needed here?
@@ -105,12 +105,12 @@ class SearchAggregateTest {
     for (var group : response.groups()) {
       System.out.printf("Value: %s Count: %d\n", group.groupedBy().value(), group.totalCount());
     }
-    // END groupBy Python
+    // END groupBy
   }
 
   @Test
   void testNearTextWithLimit() {
-    // START nearTextWithLimit Python
+    // START nearTextWithLimit
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.nearText(
         "animals in space",
@@ -121,7 +121,7 @@ class SearchAggregateTest {
             .metrics(Aggregate.number("points", m -> m.sum())));
 
     System.out.println(response.properties().get("points"));
-    // END nearTextWithLimit Python
+    // END nearTextWithLimit
   }
 
   @Test
@@ -145,7 +145,7 @@ class SearchAggregateTest {
 
   @Test
   void testNearTextWithDistance() {
-    // START nearTextWithDistance Python
+    // START nearTextWithDistance
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.nearText(
       // TODO[g-despot] Should be distance instead of objectLimit
@@ -157,12 +157,12 @@ class SearchAggregateTest {
             .metrics(Aggregate.number("points", m -> m.sum())));
 
     System.out.println(response.properties().get("points"));
-    // END nearTextWithDistance Python
+    // END nearTextWithDistance
   }
 
   @Test
   void testWhereFilter() {
-    // START whereFilter Python
+    // START whereFilter
     // TODO[g-despot] Why is where not available on overAll()?
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(
@@ -173,6 +173,6 @@ class SearchAggregateTest {
             .includeTotalCount(true));
 
     System.out.println(response.totalCount());
-    // END whereFilter Python
+    // END whereFilter
   }
 }
