@@ -38,6 +38,56 @@ async function main() {
   // Clean up
   await client.collections.delete('DemoCollection');
 
+// START BasicGenerativeContextualAI
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  generative: weaviate.configure.generative.contextualai(),
+  // highlight-end
+  // Additional parameters not shown
+});
+// END BasicGenerativeContextualAI
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START GenerativeContextualAICustomModel
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  generative: weaviate.configure.generative.contextualai({
+    model: 'v2'
+  }),
+  // highlight-end
+  // Additional parameters not shown
+});
+// END GenerativeContextualAICustomModel
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START FullGenerativeContextualAI
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  generative: weaviate.configure.generative.contextualai({
+    // These parameters are optional
+    // baseURL: 'https://api.contextual.ai',
+    // model: 'v2',
+    // maxTokens: 1024,
+    // temperature: 0.7,
+    // topP: 0.9,
+    // systemPrompt: 'You are a helpful assistant',
+    // avoidCommentary: true,
+  }),
+  // highlight-end
+  // Additional parameters not shown
+});
+// END FullGenerativeContextualAI
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
 // START BasicGenerativeAnthropic
 await client.collections.create({
   name: 'DemoCollection',
@@ -117,6 +167,28 @@ response = await myCollection.generate.nearText("A holiday film", {
   // Additional parameters not shown
 );
 // END RuntimeModelSelectionAnthropic
+
+// START RuntimeModelSelectionContextualAI
+response = await myCollection.generate.nearText('A holiday film', {
+  // highlight-start
+  groupedTask: 'Write a tweet promoting these two movies',
+  config: generativeParameters.contextualai({
+    // These parameters are optional
+    // baseURL: 'https://api.contextual.ai',
+    // model: 'v2',
+    // maxTokens: 1024,
+    // temperature: 0.7,
+    // topP: 0.9,
+    // systemPrompt: 'You are a helpful assistant',
+    // avoidCommentary: true,
+  }),
+  // highlight-end
+}, {
+  limit: 2,
+}
+  // Additional parameters not shown
+);
+// END RuntimeModelSelectionContextualAI
 (async () => {
 // START WorkingWithImagesAnthropic
 const srcImgPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Winter_forest_silver.jpg/960px-Winter_forest_silver.jpg"

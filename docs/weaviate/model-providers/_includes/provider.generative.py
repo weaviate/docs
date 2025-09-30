@@ -46,6 +46,88 @@ client = weaviate.connect_to_local(
 # clean up
 client.collections.delete("DemoCollection")
 
+# START BasicGenerativeContextualAI
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.contextualai()
+    # highlight-end
+    # Additional parameters not shown
+)
+# END BasicGenerativeContextualAI
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START GenerativeContextualAICustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.contextualai(
+        model="v2"
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END GenerativeContextualAICustomModel
+
+# clean up
+client.collections.delete("DemoCollection")
+
+# START FullGenerativeContextualAI
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    generative_config=Configure.Generative.contextualai(
+        # # These parameters are optional
+        # base_url="https://api.contextual.ai",
+        # model="v2",
+        # max_tokens=1024,
+        # temperature=0.7,
+        # top_p=0.9,
+        # system_prompt="You are a helpful assistant",
+        # avoid_commentary=True,
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END FullGenerativeContextualAI
+
+# clean up
+client.collections.delete("DemoCollection")
+import_data()
+
+# START RuntimeModelSelectionContextualAI
+from weaviate.classes.config import Configure
+from weaviate.classes.generate import GenerativeConfig
+
+collection = client.collections.use("DemoCollection")
+response = collection.generate.near_text(
+    query="A holiday film",
+    limit=2,
+    grouped_task="Write a tweet promoting these two movies",
+    # highlight-start
+    generative_provider=GenerativeConfig.contextualai(
+        # # These parameters are optional
+        # base_url="https://api.contextual.ai",
+        # model="v2",
+        # max_tokens=1024,
+        # temperature=0.7,
+        # top_p=0.9,
+        # system_prompt="You are a helpful assistant",
+        # avoid_commentary=True,
+    ),
+    # Additional parameters not shown
+    # highlight-end
+)
+# END RuntimeModelSelectionContextualAI
+
 # START BasicGenerativeAnthropic
 from weaviate.classes.config import Configure
 
