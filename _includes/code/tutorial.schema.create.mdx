@@ -2,6 +2,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/starter-guides/schema.py';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/StarterGuidesCollectionsTest.java";
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -13,6 +14,14 @@ import PyCode from '!!raw-loader!/_includes/code/starter-guides/schema.py';
   language="py"
 />
 
+</TabItem>
+<TabItem value="java6" label="Java v6">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START BasicSchema"
+    endMarker="// END BasicSchema"
+    language="java"
+  />
 </TabItem>
 {/* <TabItem value="go" label="Go">
 

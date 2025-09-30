@@ -4,6 +4,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/local.quickstart.is_ready.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/local.quickstart.is_ready.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart_local/1_is_ready/main.go';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartLocalTest.java";
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart_local/IsReady.java';
 
 
@@ -39,6 +40,15 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
   endMarker="// END InstantiationExample"
   language="goraw"
   title="quickstart/1_check_readiness/main.go"
+/>
+</TabItem>
+
+<TabItem value="java6" label="Java v6">
+<FilteredTextBlock
+  text={JavaV6Code}
+  startMarker="// START InstantiationExample"
+  endMarker="// END InstantiationExample"
+  language="java"
 />
 </TabItem>
 

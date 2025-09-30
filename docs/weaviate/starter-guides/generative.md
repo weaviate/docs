@@ -11,9 +11,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/starter-guides/generative.py';
 import TSCodeEduDemo from '!!raw-loader!/_includes/code/starter-guides/generative_edudemo.ts';
-import TSCodeEduDemoLegacy from '!!raw-loader!/_includes/code/starter-guides/generative_edudemo-v2.ts';
 import TSCodeLocal from '!!raw-loader!/_includes/code/starter-guides/generative_local.ts';
-import TSCodeLocalLegacy from '!!raw-loader!/_includes/code/starter-guides/generative_local-v2.ts';
 
 :::info Related pages
 - [Which Weaviate is right for me?](./which-weaviate.md)

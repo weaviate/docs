@@ -5,9 +5,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.py';
 import TSCode from '!!raw-loader!/docs/weaviate/model-providers/_includes/provider.vectorizer.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/model-providers/2-usage-text/main.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddings.java';
-import JavaCode2 from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java';
-import JavaImportQueries from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java';
 
 - `model` (optional): The name of the model to use for embedding generation.
 - `dimensions` (optional): The number of dimensions to use for the generated embeddings.
@@ -40,6 +39,14 @@ The following examples show how to configure Weaviate Embeddings-specific option
     language="goraw"
   />
 </TabItem>
+<TabItem value="java6" label="Java v6">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SnowflakeArcticEmbedMV15"
+      endMarker="// END SnowflakeArcticEmbedMV15"
+      language="java"
+    />
+  </TabItem>
 <TabItem value="java" label="Java">
   <FilteredTextBlock
     text={JavaCode}

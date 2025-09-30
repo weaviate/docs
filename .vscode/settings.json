@@ -9,7 +9,11 @@
             "other": "on",
             "comments": "inline",
             "strings": "inline"
-        }
+        },
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[mdx]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "files.associations": {
         "*.mdx": "markdown"

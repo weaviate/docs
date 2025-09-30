@@ -4,6 +4,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/local.quickstart.import_objects.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/local.quickstart.import_objects.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart_local/2_2_add_objects/main.go';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartLocalTest.java";
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart_local/Import.java';
 
 
@@ -41,6 +42,15 @@ During a batch import, any failed objects can be obtained through `batch.failed_
   endMarker="// END Import"
   language="goraw"
   title="quickstart/2_2_import/main.go"
+/>
+</TabItem>
+
+<TabItem value="java6" label="Java v6">
+<FilteredTextBlock
+  text={JavaV6Code}
+  startMarker="// START Import"
+  endMarker="// END Import"
+  language="java"
 />
 </TabItem>
 

@@ -36,9 +36,9 @@ class GetStartedTest {
       // Create a collection with
       client.collections.create(
           collectionName,
-          col -> col.properties(Property.text("Answer"),
-              Property.text("Question"),
-              Property.text("Category"))
+          col -> col.properties(Property.text("answer"),
+              Property.text("question"),
+              Property.text("category"))
               .vectorConfig(VectorConfig.text2vecContextionary()) // Configure the Contextionary embedding model
       );
       CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);
@@ -78,13 +78,16 @@ class GetStartedTest {
       }
       // highlight-end
 
+      // END GetStarted
+      Thread.sleep(2000);
+      // START GetStarted
       // highlight-start
       // Perform a vector similarity search
       var queryResponse = questions.query.nearText("biology", q -> q.limit(2));
       // highlight-end
 
       for (var obj : queryResponse.objects()) {
-        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj.properties()));
+        System.out.println(obj.properties());
       }
       // END GetStarted
     } finally {

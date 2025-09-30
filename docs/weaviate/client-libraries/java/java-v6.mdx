@@ -1,5 +1,6 @@
 ---
-title: Java v6 (beta)
+title: Java v6 - Beta release
+sidebar_label: Java v6 🚧
 description: "Official Java v6 client library documentation for integrating Weaviate with Java applications and services."
 image: og/docs/client-libraries.jpg
 # tags: ['java', 'client library', 'experimental']
@@ -11,6 +12,15 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/GetStartedTest.java";
 import QuickLinks from "/src/components/QuickLinks";
 
+:::caution Preview
+
+The `Java v6` client is available as a beta release.<br/>
+
+This means that the library is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this client library in production environments at this time.**
+
+:::
+
 export const javaCardsData = [
   {
     title: "weaviate/java-client",
@@ -18,7 +28,7 @@ export const javaCardsData = [
     icon: "fa-brands fa-github",
   },
   {
-    title: "Reference manual (docstrings)",
+    title: "Reference manual",
     link: "https://javadoc.io/doc/io.weaviate/client/latest/index.html",
     icon: "fa-solid fa-book",
   },
@@ -26,13 +36,13 @@ export const javaCardsData = [
 
 :::note Java v6 client (SDK)
 
-The latest Java client is version `v||site.java_client_version||`.
+The latest Java v6 client is version `v||site.java_new_client_version||`.
 
 <QuickLinks items={javaCardsData} />
 
 :::
 
-This page broadly covers the Weaviate Java client (`v6` release). For usage information not specific to the Java client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
+This page broadly covers the Weaviate Java client (`v6` beta release). For usage information not specific to the Java client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../../guides.mdx).
 
 ## Installation
 
