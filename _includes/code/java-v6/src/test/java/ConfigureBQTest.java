@@ -46,9 +46,7 @@ class ConfigureBQTest {
     // END EnableBQ
   }
 
-  // TODO[g-despot] Errors on collection update: TYPE_UPDATE_CLASS: bad request
-  // :parse class update: invalid update for vector "default":
-  // skipDefaultQuantization is immutable: attempted change from "true" to "false"
+  // TODO[g-despot] Errors on collection update: TYPE_UPDATE_CLASS: bad request :parse class update: invalid update for vector "default": skipDefaultQuantization is immutable: attempted change from "true" to "false"
   @Test
   void testUpdateSchema() throws IOException {
     String collectionName = "MyCollection";
@@ -80,9 +78,8 @@ class ConfigureBQTest {
     client.collections.create("MyCollection",
         col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
             // highlight-start
-            .quantization(Quantization.bq(q -> q.cache(true) 
-                .rescoreLimit(200)
-            )).vectorIndex(Hnsw.of(c -> c.vectorCacheMaxObjects(100000)))
+            .quantization(Quantization.bq(q -> q.cache(true).rescoreLimit(200)))
+            .vectorIndex(Hnsw.of(c -> c.vectorCacheMaxObjects(100000)))
         // highlight-end
         )).properties(Property.text("title")));
     // END BQWithOptions
