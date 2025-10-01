@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ManageCollectionsMultiTenancyTest {
+class _ManageCollectionsMultiTenancyTest {
 
   private static WeaviateClient client;
 
@@ -33,11 +33,12 @@ class ManageCollectionsMultiTenancyTest {
     client.close();
   }
 
+  //TODO[g.-despot] A lot of strange errors: IllegalState Connection pool shut down
   @Test
   void testEnableMultiTenancy() throws IOException {
     // START EnableMultiTenancy
     client.collections.create("MultiTenancyCollection", col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+        .multiTenancy(mt -> mt.enabled(true)));
     // END EnableMultiTenancy
 
     var config = client.collections.getConfig("MultiTenancyCollection").get();

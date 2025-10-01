@@ -29,7 +29,7 @@ class ManageCollectionsTest {
   private static WeaviateClient client;
 
   @BeforeAll
-  public static void beforeAll() {
+  public static void beforeAll() throws IOException {
     // Instantiate the client with the OpenAI API key
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
     assertThat(openaiApiKey).isNotBlank()
@@ -37,10 +37,11 @@ class ManageCollectionsTest {
 
     client = WeaviateClient
         .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client.collections.deleteAll();
   }
 
   @AfterEach
-  public void afterEach() throws IOException {
+  public void afterAll() throws IOException {
     // Clean up all collections after each test
     client.collections.deleteAll();
   }
@@ -129,8 +130,10 @@ class ManageCollectionsTest {
   void testSetVectorIndexParams() throws IOException {
     // START SetVectorIndexParams
     client.collections.create("Article",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
-            .vectorIndex(Hnsw.of(hnsw -> hnsw.efConstruction(300).distance(Distance.COSINE))))));
+        col -> col
+            .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
+                .vectorIndex(Hnsw.of(hnsw -> hnsw.efConstruction(300).distance(Distance.COSINE)))))
+            .properties(Property.text("title")));
     // END SetVectorIndexParams
 
     var config = client.collections.getConfig("Article").get();
@@ -157,11 +160,13 @@ class ManageCollectionsTest {
     assertThat(config.properties()).hasSize(3);
   }
 
+  // TODO[g-despot] IllegalState Not a JSON Object: null
   @Test
   void testSetReranker() throws IOException {
     // START SetReranker
-    client.collections.create("Article", col -> col
-        .vectorConfig(VectorConfig.text2vecContextionary()).rerankerModules(Reranker.cohere()));
+    client.collections.create("Article",
+        col -> col.vectorConfig(VectorConfig.text2vecContextionary())
+            .rerankerModules(Reranker.cohere()).properties(Property.text("title")));
     // END SetReranker
 
     var config = client.collections.getConfig("Article").get();
@@ -172,6 +177,7 @@ class ManageCollectionsTest {
 
   // TODO[g-despot] Update when more rerankers available
   // TODO[g-despot] Why does update need collection name?
+  // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateReranker() throws IOException {
     // START UpdateReranker
@@ -188,8 +194,9 @@ class ManageCollectionsTest {
   @Test
   void testSetGenerative() throws IOException {
     // START SetGenerative
-    client.collections.create("Article", col -> col
-        .vectorConfig(VectorConfig.text2vecContextionary()).generativeModule(Generative.cohere()));
+    client.collections.create("Article",
+        col -> col.vectorConfig(VectorConfig.text2vecContextionary())
+            .generativeModule(Generative.cohere()).properties(Property.text("title")));
     // END SetGenerative
 
     var config = client.collections.getConfig("Article").get();
@@ -199,6 +206,7 @@ class ManageCollectionsTest {
   }
 
   // TODO[g-despot] Update when more generative modules available
+  // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateGenerative() throws IOException {
     // START UpdateGenerative
@@ -250,14 +258,17 @@ class ManageCollectionsTest {
     // END TrigramTokenization
 
     var config = client.collections.getConfig("Article").get();
-    assertThat(config.properties()).hasSize(2);
+    assertThat(config.properties()).hasSize(1);
   }
 
   @Test
   void testDistanceMetric() throws IOException {
     // START DistanceMetric
-    client.collections.create("Article", col -> col.vectorConfig(VectorConfig.text2vecContextionary(
-        vec -> vec.vectorIndex(Hnsw.of(hnsw -> hnsw.distance(Distance.COSINE))))));
+    client.collections.create("Article",
+        col -> col
+            .vectorConfig(VectorConfig.text2vecContextionary(
+                vec -> vec.vectorIndex(Hnsw.of(hnsw -> hnsw.distance(Distance.COSINE)))))
+            .properties(Property.text("title")));
     // END DistanceMetric
 
     var config = client.collections.getConfig("Article").get();

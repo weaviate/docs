@@ -26,6 +26,14 @@ class ManageCollectionsAliasTest {
     // Connect to local Weaviate instance
     client = WeaviateClient.connectToLocal();
     // END ConnectToWeaviate
+    if (client.alias.list().stream().anyMatch(a -> a.alias().equals("ArticlesAlias")))
+      client.alias.delete("ArticlesAlias");
+    if (client.alias.list().stream().anyMatch(a -> a.alias().equals("ProductsAlias")))
+      client.alias.delete("ProductsAlias");
+    client.collections.delete("Articles");
+    client.collections.delete("ArticlesV2");
+    client.collections.delete("Products_v1");
+    client.collections.delete("Products_v2");
   }
 
   @AfterAll
@@ -36,8 +44,10 @@ class ManageCollectionsAliasTest {
   @AfterEach
   public void cleanup() throws IOException {
     // Cleanup collections and aliases after each test
-    client.alias.delete("ArticlesAlias");
-    client.alias.delete("ProductsAlias");
+    if (client.alias.list().stream().anyMatch(a -> a.alias().equals("ArticlesAlias")))
+      client.alias.delete("ArticlesAlias");
+    if (client.alias.list().stream().anyMatch(a -> a.alias().equals("ProductsAlias")))
+      client.alias.delete("ProductsAlias");
     client.collections.delete("Articles");
     client.collections.delete("ArticlesV2");
     client.collections.delete("Products_v1");
@@ -48,11 +58,8 @@ class ManageCollectionsAliasTest {
   void testCreateAlias() throws IOException {
     // START CreateAlias
     // Create a collection first
-    client.collections.create("Articles", col -> col
-        .vectorConfig(VectorConfig.selfProvided())
-        .properties(
-            Property.text("title"),
-            Property.text("content")));
+    client.collections.create("Articles", col -> col.vectorConfig(VectorConfig.selfProvided())
+        .properties(Property.text("title"), Property.text("content")));
 
     // Create an alias pointing to the collection
     client.alias.create("Articles", "ArticlesAlias");
@@ -107,12 +114,8 @@ class ManageCollectionsAliasTest {
 
     // START UpdateAlias
     // Create a new collection for migration
-    client.collections.create("ArticlesV2", col -> col
-        .vectorConfig(VectorConfig.selfProvided())
-        .properties(
-            Property.text("title"),
-            Property.text("content"),
-            Property.text("author") // New field
+    client.collections.create("ArticlesV2", col -> col.vectorConfig(VectorConfig.selfProvided())
+        .properties(Property.text("title"), Property.text("content"), Property.text("author") // New field
         ));
 
     // Update the alias to point to the new collection
@@ -122,8 +125,7 @@ class ManageCollectionsAliasTest {
 
   @Test
   void testUseAlias() throws IOException {
-    client.collections.create("Articles", col -> col
-        .vectorConfig(VectorConfig.selfProvided())
+    client.collections.create("Articles", col -> col.vectorConfig(VectorConfig.selfProvided())
         .properties(Property.text("title"), Property.text("content")));
     client.alias.create("Articles", "ArticlesAlias");
 
@@ -132,9 +134,8 @@ class ManageCollectionsAliasTest {
     CollectionHandle<Map<String, Object>> articles = client.collections.use("ArticlesAlias");
 
     // Insert data using the alias
-    articles.data.insert(Map.of(
-        "title", "Using Aliases in Weaviate",
-        "content", "Aliases make collection management easier..."));
+    articles.data.insert(Map.of("title", "Using Aliases in Weaviate", "content",
+        "Aliases make collection management easier..."));
 
     // Query using the alias
     var results = articles.query.fetchObjects(q -> q.limit(5));
@@ -155,15 +156,11 @@ class ManageCollectionsAliasTest {
   void testMigrationWorkflow() throws IOException {
     // START Step1CreateOriginal
     // Create original collection with data
-    client.collections.create("Products_v1", col -> col
-        .vectorConfig(VectorConfig.selfProvided())
-        .properties(
-            Property.text("name"),
-            Property.number("price")));
+    client.collections.create("Products_v1", col -> col.vectorConfig(VectorConfig.selfProvided())
+        .properties(Property.text("name"), Property.number("price")));
 
     var productsV1 = client.collections.use("Products_v1");
-    productsV1.data.insertMany(
-        Map.of("name", "Product A", "price", 100.0),
+    productsV1.data.insertMany(Map.of("name", "Product A", "price", 100.0),
         Map.of("name", "Product B", "price", 200.0));
     // END Step1CreateOriginal
 
@@ -182,18 +179,15 @@ class ManageCollectionsAliasTest {
     // Query through the alias
     var results = products.query.fetchObjects(q -> q.limit(5));
     for (var obj : results.objects()) {
-      System.out.printf("Product: %s, Price: $%.2f\n", obj.properties().get("name"), obj.properties().get("price"));
+      System.out.printf("Product: %s, Price: $%.2f\n", obj.properties().get("name"),
+          obj.properties().get("price"));
     }
     // END MigrationUseAlias
 
     // START Step3NewCollection
     // Create new collection with updated schema
-    client.collections.create("Products_v2", col -> col
-        .vectorConfig(VectorConfig.selfProvided())
-        .properties(
-            Property.text("name"),
-            Property.number("price"),
-            Property.text("category") // New field
+    client.collections.create("Products_v2", col -> col.vectorConfig(VectorConfig.selfProvided())
+        .properties(Property.text("name"), Property.number("price"), Property.text("category") // New field
         ));
     // END Step3NewCollection
 
@@ -204,10 +198,8 @@ class ManageCollectionsAliasTest {
 
     List<Map<String, Object>> migratedObjects = new ArrayList<>();
     for (var obj : oldData) {
-      migratedObjects.add(Map.of(
-          "name", obj.properties().get("name"),
-          "price", obj.properties().get("price"),
-          "category", "General" // Default value for new field
+      migratedObjects.add(Map.of("name", obj.properties().get("name"), "price",
+          obj.properties().get("price"), "category", "General" // Default value for new field
       ));
     }
     productsV2.data.insertMany(migratedObjects.toArray(new Map[0]));
