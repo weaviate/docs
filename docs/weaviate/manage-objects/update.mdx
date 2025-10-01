@@ -10,9 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.update.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.update-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.update.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.update-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go';
 import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname-note.md';
@@ -43,7 +41,7 @@ If you update the value of a *previously vectorized* property, Weaviate re-vecto
 However, if you add a *new* property to your collection definition, Weaviate only vectorizes the new objects. Weaviate doesn't re-vectorize and re-index existing objects when a new property is defined, only when an existing property is updated.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# UpdateProps START"
@@ -51,28 +49,12 @@ However, if you add a *new* property to your collection definition, Weaviate onl
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# UpdateProps START"
-      endMarker="# UpdateProps END"
-      language="pyv3"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// UpdateProps START"
       endMarker="// UpdateProps END"
       language="ts"
-    />
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// UpdateProps START"
-      endMarker="// UpdateProps END"
-      language="tsv2"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -98,7 +80,7 @@ However, if you add a *new* property to your collection definition, Weaviate onl
 The object vector can also be updated similarly to properties. For [named vectors](../config-refs/collections.mdx#named-vectors), provide the data as a dictionary/map similarly to the [object creation](./create.mdx#create-an-object-with-named-vectors).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# UpdateVector START"
@@ -106,16 +88,8 @@ The object vector can also be updated similarly to properties. For [named vector
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# UpdateVector START"
-      endMarker="# UpdateVector END"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// UpdateVector START"
@@ -124,11 +98,6 @@ The object vector can also be updated similarly to properties. For [named vector
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-
-  >  Coming soon (vote for the [feature request](https://github.com/weaviate/typescript-client/issues/64))
-
-  </TabItem>
 
   <TabItem value="java" label="Java">
 
@@ -149,7 +118,7 @@ The object vector can also be updated similarly to properties. For [named vector
 The entire object can be replaced by providing the collection name, id and the new object.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# Replace START"
@@ -157,16 +126,8 @@ The entire object can be replaced by providing the collection name, id and the n
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# Replace START"
-      endMarker="# Replace END"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// Replace START"
@@ -175,14 +136,6 @@ The entire object can be replaced by providing the collection name, id and the n
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// Replace START"
-      endMarker="// Replace END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -211,7 +164,7 @@ Deleting or updating properties in the collection definition is [not yet support
 At object level, you can replace the object with a copy that has those properties deleted, or set to `""` for text properties.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# DelProps START"
@@ -219,16 +172,8 @@ At object level, you can replace the object with a copy that has those propertie
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# DelProps START"
-      endMarker="# DelProps END"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// DelProps START"
@@ -237,14 +182,6 @@ At object level, you can replace the object with a copy that has those propertie
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// DelProps START"
-      endMarker="// DelProps END"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock

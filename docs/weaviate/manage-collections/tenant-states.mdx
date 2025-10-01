@@ -1,7 +1,6 @@
 ---
 title: Manage tenant states & temperature
 description: Manage tenant states in Weaviate to support multitenancy and secure data separation.
-sidebar_position: 61
 image: og/docs/configuration.jpg
 ---
 
@@ -97,7 +96,7 @@ The tenant's object data, vector index and inverted index are stored on the clou
 To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOADED` tenant from cloud, call:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START ActivateTenants"
@@ -106,7 +105,7 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ActivateTenants"
@@ -124,7 +123,7 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
 To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud (without activating it), call:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DeactivateTenants"
@@ -133,7 +132,7 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeactivateTenants"
@@ -151,7 +150,7 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
 To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START OffloadTenants"
@@ -160,7 +159,7 @@ To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START OffloadTenants"
@@ -184,7 +183,7 @@ To enable tenant offloading, see the [modules page](../configuration/modules.md#
 Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a search, read, update, or delete operation is performed on them.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START EnableAutoActivation"
@@ -193,7 +192,7 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableAutoActivation"

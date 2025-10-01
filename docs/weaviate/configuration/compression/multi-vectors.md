@@ -1,6 +1,5 @@
 ---
 title: Multi-vector encodings
-sidebar_position: 30
 image: og/docs/configuration.jpg
 # tags: ['configuration', 'compression']
 ---
@@ -23,7 +22,7 @@ Compression techniques become especially crucial for multi-vector systems to man
 <!-- TODO[g-despot]: Add link to blog post: Read more about it in this blog post. -->
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START MultiValueVectorMuvera"
@@ -31,7 +30,7 @@ Compression techniques become especially crucial for multi-vector systems to man
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MultiValueVectorMuvera"

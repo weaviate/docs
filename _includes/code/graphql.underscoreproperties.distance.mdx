@@ -5,57 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.metadata.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START MetadataUUIDDistance"
     endMarker="END MetadataUUIDDistance"
     language="py"
   />
-</TabItem>
-
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-near_text_filter = {
-  "concepts": ["fashion"]
-}
-
-query_result = (
-  client.query
-  .get("Article", "title")
-  .with_additional(["id", "distance"])
-  .with_near_text(near_text_filter)
-  .do()
-)
-
-print(query_result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withNearText({ concepts: ['fashion'] })
-  .withFields('title _additional { id distance }')
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

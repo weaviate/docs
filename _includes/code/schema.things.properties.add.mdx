@@ -6,7 +6,7 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START AddProperty"
@@ -15,21 +15,7 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
   />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-```python
-add_prop = {
-  "dataType": [
-      "boolean"
-  ],
-  "name": "onHomepage"
-}
-
-client.schema.property.create("Article", add_prop)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
 let articles = client.collections.use('Article')
@@ -40,24 +26,6 @@ articles.config.addProperty({
   dataType: 'boolean'
 })
 // highlight-end
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-const className = 'Article';
-const prop = {
-  dataType: ['boolean'],
-  name: 'onHomepage',
-};
-
-const response = await client.schema
-  .propertyCreator()
-  .withClassName(className)
-  .withProperty(prop)
-  .do();
-console.log(JSON.stringify(response, null, 2));
 ```
 
 </TabItem>

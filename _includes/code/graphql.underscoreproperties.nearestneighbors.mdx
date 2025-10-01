@@ -62,32 +62,6 @@ print(query_result)
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Publication')
-  .withFields('name _additional { nearestNeighbors { neighbors { concept distance } } }')
-  .withNearText({
-    concepts:['music'],
-    moveTo: {
-      concepts: ['beatles'],
-      force: 0.5,
-    },
-  })
-  .do();
-console.log(response);
-```
-
-</TabItem>
 <TabItem value="go" label="Go">
 
 ```go

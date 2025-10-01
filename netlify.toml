@@ -5,6 +5,9 @@
   [headers.values]
     access-control-allow-origin = "*"
 
+[functions]
+  directory = ".netlify/functions/"
+
 ## Remove /current from the path 
 [[redirects]]
 from = "/weaviate/current/*"
