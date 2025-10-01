@@ -20,8 +20,8 @@ class ManageObjectsReadAllTest {
   public static void beforeAll() throws IOException {
     // Instantiate the client
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient.connectToLocal(
-        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient
+        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
 
     // Simulate weaviate-datasets by creating and populating collections
     // Create WineReview collection
@@ -32,15 +32,14 @@ class ManageObjectsReadAllTest {
     // TODO[g-despot] Collection create doesn't return handle
     client.collections.create("WineReview");
     var wineReview = client.collections.use("WineReview");
-    wineReview.data.insertMany(
-        Map.of("title", "Review A"),
-        Map.of("title", "Review B"));
+    wineReview.data.insertMany(Map.of("title", "Review A"), Map.of("title", "Review B"));
 
     // Create WineReviewMT collection
     if (client.collections.exists("WineReviewMT")) {
       client.collections.delete("WineReviewMT");
     }
-    client.collections.create("WineReviewMT", col -> col.multiTenancy(c -> c.autoTenantCreation(true)));
+    client.collections.create("WineReviewMT",
+        col -> col.multiTenancy(c -> c.autoTenantCreation(true)));
     var wineReviewMT = client.collections.use("WineReviewMT");
 
     // Create and populate tenants
@@ -103,8 +102,8 @@ class ManageObjectsReadAllTest {
     for (Tenant tenant : tenants) {
       // Iterate through objects within each tenant
       // highlight-start
-      for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : multiCollection.withTenant(tenant.name())
-          .paginate()) {
+      for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : multiCollection
+          .withTenant(tenant.name()).paginate()) {
         // highlight-end
         System.out.printf("%s: %s\n", tenant.name(), item.properties());
       }

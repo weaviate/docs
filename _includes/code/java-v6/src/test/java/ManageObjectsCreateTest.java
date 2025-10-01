@@ -36,29 +36,26 @@ class ManageObjectsCreateTest {
     // TODO[g-despot]: Wasn't able to create collection with vectorizer but without
     // properties
     // START Define the class
-    client.collections.create("JeopardyQuestion", col -> col
-        .properties(
-            Property.text("title", p -> p.description("Name of the wine")))
-        .vectorConfig(VectorConfig.text2vecContextionary()));
+    client.collections.create("JeopardyQuestion",
+        col -> col.properties(Property.text("title", p -> p.description("Name of the wine")))
+            .vectorConfig(VectorConfig.text2vecContextionary()));
 
     // TODO[g-despot]: Add source properties
-    client.collections.create("WineReviewNV", col -> col
-        .properties(
-            Property.text("review_body", p -> p.description("Review body")),
-            Property.text("title", p -> p.description("Name of the wine")),
-            Property.text("country", p -> p.description("Originating country")))
-        .vectorConfig(
-            VectorConfig.text2vecContextionary("title"),
-            VectorConfig.text2vecContextionary("review_body"),
-            VectorConfig.text2vecContextionary("title_country")));
+    client.collections.create("WineReviewNV",
+        col -> col
+            .properties(Property.text("review_body", p -> p.description("Review body")),
+                Property.text("title", p -> p.description("Name of the wine")),
+                Property.text("country", p -> p.description("Originating country")))
+            .vectorConfig(VectorConfig.text2vecContextionary("title"),
+                VectorConfig.text2vecContextionary("review_body"),
+                VectorConfig.text2vecContextionary("title_country")));
     // END Define the class
 
     // Additional collections for other tests
     // TODO[g-despot]: Uncomment once GEO type added
     // client.collections.create("Publication", col -> col
     // .properties(Property.geo("headquartersGeoLocation")));
-    client.collections.create("Author", col -> col
-        .vectorConfig(VectorConfig.selfProvided()));
+    client.collections.create("Author", col -> col.vectorConfig(VectorConfig.selfProvided()));
   }
 
   @AfterAll
@@ -92,8 +89,8 @@ class ManageObjectsCreateTest {
     // START CreateObjectWithVector
     var jeopardy = client.collections.use("JeopardyQuestion");
     var uuid = jeopardy.data.insert(
-        Map.of(
-            "question", "This vector DB is OSS and supports automatic property type inference on import",
+        Map.of("question",
+            "This vector DB is OSS and supports automatic property type inference on import",
             "answer", "Weaviate"),
         // highlight-start
         meta -> meta.vectors(Vectors.of(new float[300])) // Using a zero vector for demonstration
@@ -111,15 +108,11 @@ class ManageObjectsCreateTest {
   void testCreateObjectNamedVectors() throws IOException {
     // START CreateObjectNamedVectors
     var reviews = client.collections.use("WineReviewNV"); // This collection must have named vectors configured
-    var uuid = reviews.data.insert(
-        Map.of(
-            "title", "A delicious Riesling",
-            "review_body", "This wine is a delicious Riesling which pairs well with seafood.",
-            "country", "Germany"),
+    var uuid = reviews.data.insert(Map.of("title", "A delicious Riesling", "review_body",
+        "This wine is a delicious Riesling which pairs well with seafood.", "country", "Germany"),
         // highlight-start
         // Specify the named vectors, following the collection definition
-        meta -> meta.vectors(
-            Vectors.of("title", new float[1536]),
+        meta -> meta.vectors(Vectors.of("title", new float[1536]),
             Vectors.of("review_body", new float[1536]),
             Vectors.of("title_country", new float[1536]))
     // highlight-end
@@ -144,12 +137,12 @@ class ManageObjectsCreateTest {
     // highlight-end
 
     Map<String, Object> dataObject = new HashMap<>();
-    dataObject.put("question", "This vector DB is OSS and supports automatic property type inference on import");
+    dataObject.put("question",
+        "This vector DB is OSS and supports automatic property type inference on import");
     dataObject.put("answer", "Weaviate");
 
     var jeopardy = client.collections.use("JeopardyQuestion");
-    var uuid = jeopardy.data.insert(
-        dataObject,
+    var uuid = jeopardy.data.insert(dataObject,
         // highlight-start
         meta -> meta.uuid(generateUuid5(dataObject.toString()).toString())
     // highlight-end
@@ -164,12 +157,12 @@ class ManageObjectsCreateTest {
   void testCreateObjectWithId() throws IOException {
     // START CreateObjectWithId
     Map<String, Object> properties = new HashMap<>();
-    properties.put("question", "This vector DB is OSS and supports automatic property type inference on import");
+    properties.put("question",
+        "This vector DB is OSS and supports automatic property type inference on import");
     properties.put("answer", "Weaviate");
 
     var jeopardy = client.collections.use("JeopardyQuestion");
-    var uuid = jeopardy.data.insert(
-        properties,
+    var uuid = jeopardy.data.insert(properties,
         // highlight-start
         meta -> meta.uuid("12345678-e64f-5d94-90db-c8cfa3fc1234")
     // highlight-end
@@ -190,10 +183,7 @@ class ManageObjectsCreateTest {
     var publications = client.collections.use("Publication");
 
     var uuid = publications.data.insert(
-        Map.of(
-            "headquartersGeoLocation", Map.of(
-                "latitude", 52.3932696,
-                "longitude", 4.8374263)))
+        Map.of("headquartersGeoLocation", Map.of("latitude", 52.3932696, "longitude", 4.8374263)))
         .metadata().uuid();
     // END WithGeoCoordinates
 
@@ -209,8 +199,7 @@ class ManageObjectsCreateTest {
     // END CheckForAnObject
 
     var authors = client.collections.use("Author");
-    authors.data.insert(
-        Map.of("name", "Author to fetch"),
+    authors.data.insert(Map.of("name", "Author to fetch"),
         meta -> meta.uuid(objectUuid).vectors(Vectors.of(new float[1536])));
 
     // START CheckForAnObject
@@ -225,4 +214,8 @@ class ManageObjectsCreateTest {
     authors.data.delete(objectUuid);
     assertThat(authors.data.exists(objectUuid)).isFalse();
   }
+
+  // START ValidateObject
+  // Coming soon
+  // END ValidateObject
 }

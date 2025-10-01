@@ -11,6 +11,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure.pq-compression
 import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.autopq.ts';
 import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigurePQTest.java";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -61,8 +62,6 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
        language="py"
      />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeAutoPQ}
@@ -71,8 +70,14 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
        language="ts"
      />
   </TabItem>
-
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CollectionWithAutoPQ"
+      endMarker="// END CollectionWithAutoPQ"
+      language="java"
+    />
+  </TabItem>
 </Tabs>
 
 ### 3. Load your data
@@ -118,8 +123,6 @@ Follow these steps to manually enable PQ.
        language="py"
      />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
@@ -128,8 +131,6 @@ Follow these steps to manually enable PQ.
        language="ts"
      />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -138,7 +139,14 @@ Follow these steps to manually enable PQ.
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START InitialSchema"
+      endMarker="// END InitialSchema"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -176,8 +184,6 @@ To enable PQ, update your collection definition as shown below. For additional c
        language="py"
      />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
      <FilteredTextBlock
        text={TSCodeManualPQ}
@@ -186,8 +192,6 @@ To enable PQ, update your collection definition as shown below. For additional c
        language="ts"
      />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -196,7 +200,14 @@ To enable PQ, update your collection definition as shown below. For additional c
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -264,8 +275,6 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCodeManualPQ}
@@ -274,8 +283,6 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -284,7 +291,14 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetSchema"
+      endMarker="// END GetSchema"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}

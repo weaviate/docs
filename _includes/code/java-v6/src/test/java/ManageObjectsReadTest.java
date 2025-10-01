@@ -22,9 +22,7 @@ class ManageObjectsReadTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
 
-    client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl,
-        weaviateApiKey,
+    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
   }
@@ -52,36 +50,34 @@ class ManageObjectsReadTest {
     // START ReadObjectWithVector
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
-    var dataObjectOpt = jeopardy.query.byId(
-        "00ff6900-e64f-5d94-90db-c8cfa3fc851b",
+    var dataObjectOpt = jeopardy.query.byId("00ff6900-e64f-5d94-90db-c8cfa3fc851b",
         // highlight-start
         q -> q.returnMetadata(Metadata.VECTOR)
     // highlight-end
     );
 
-    dataObjectOpt.ifPresent(
-        dataObject -> System.out.println(Arrays.toString(dataObject.metadata().vectors().getSingle("default"))));
+    dataObjectOpt.ifPresent(dataObject -> System.out
+        .println(Arrays.toString(dataObject.metadata().vectors().getSingle("default"))));
     // END ReadObjectWithVector
   }
 
   @Test
+  // TODO[g-despot] Should be able to specify which vectors to return
   void testReadObjectNamedVectors() {
     // START ReadObjectNamedVectors
     CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV"); // Collection with named
-                                                                                            // vectors
+
+    // END ReadObjectNamedVectors                                                                            // vectors
 
     var someObjResponse = reviews.query.fetchObjects(q -> q.limit(1));
     if (someObjResponse.objects().isEmpty()) {
       return; // Skip if no data
     }
     String objUuid = someObjResponse.objects().get(0).uuid();
-
-    // highlight-start
     List<String> vectorNames = List.of("title", "review_body");
-    // highlight-end
 
-    var dataObjectOpt = reviews.query.byId(
-        objUuid, // Object UUID
+    // START ReadObjectNamedVectors
+    var dataObjectOpt = reviews.query.byId(objUuid, // Object UUID
         // highlight-start
         q -> q.returnMetadata(Metadata.VECTOR) // Specify to include vectors
     // highlight-end

@@ -18,8 +18,8 @@ class ConfigureRQTest {
   public static void beforeAll() {
     // START ConnectCode
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient.connectToLocal(
-        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient
+        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END ConnectCode
   }
 
@@ -36,16 +36,12 @@ class ConfigureRQTest {
     }
 
     // START EnableRQ
-    client.collections.create(
-        "MyCollection",
-        col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(
-                vc -> vc
-                    // highlight-start
-                    .quantization(Quantization.rq())
-            // highlight-end
-            ))
-            .properties(Property.text("title")));
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+            // highlight-start
+            .quantization(Quantization.rq())
+        // highlight-end
+        )).properties(Property.text("title")));
     // END EnableRQ
   }
 
@@ -57,16 +53,12 @@ class ConfigureRQTest {
     }
 
     // START 1BitEnableRQ
-    client.collections.create(
-        "MyCollection",
-        col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(
-                vc -> vc
-                    // highlight-start
-                    .quantization(Quantization.rq(q -> q.bits(1)))
-            // highlight-end
-            ))
-            .properties(Property.text("title")));
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+            // highlight-start
+            .quantization(Quantization.rq(q -> q.bits(1)))
+        // highlight-end
+        )).properties(Property.text("title")));
     // END 1BitEnableRQ
   }
 
@@ -78,16 +70,12 @@ class ConfigureRQTest {
     }
 
     // START Uncompressed
-    client.collections.create(
-        "MyCollection",
-        col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(
-                vc -> vc
-                    // highlight-start
-                    .quantization(Quantization.uncompressed())
-            // highlight-end
-            ))
-            .properties(Property.text("title")));
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+            // highlight-start
+            .quantization(Quantization.uncompressed())
+        // highlight-end
+        )).properties(Property.text("title")));
     // END Uncompressed
   }
 
@@ -99,19 +87,14 @@ class ConfigureRQTest {
     }
 
     // START RQWithOptions
-    client.collections.create(
-        "MyCollection",
-        col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(
-                vc -> vc
-                    // highlight-start
-                    .quantization(Quantization.rq(q -> q
-                        .bits(8) // Optional: Number of bits
-                        .rescoreLimit(20) // Optional: Number of candidates to fetch before rescoring
-                    ))
-            // highlight-end
+    client.collections.create("MyCollection",
+        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+            // highlight-start
+            .quantization(Quantization.rq(q -> q.bits(8) // Optional: Number of bits
+                .rescoreLimit(20) // Optional: Number of candidates to fetch before rescoring
             ))
-            .properties(Property.text("title")));
+        // highlight-end
+        )).properties(Property.text("title")));
     // END RQWithOptions
   }
 
@@ -124,15 +107,16 @@ class ConfigureRQTest {
     if (client.collections.exists(collectionName)) {
       client.collections.delete(collectionName);
     }
-    client.collections.create(collectionName, col -> col
-        .vectorConfig(VectorConfig.text2vecContextionary(
-            vc -> vc.quantization(Quantization.uncompressed())))
-        .properties(Property.text("title")));
+    client.collections.create(collectionName,
+        col -> col
+            .vectorConfig(VectorConfig
+                .text2vecContextionary(vc -> vc.quantization(Quantization.uncompressed())))
+            .properties(Property.text("title")));
 
     // START UpdateSchema
     CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
-    collection.config.update(collectionName,
-        c -> c.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc.quantization(Quantization.rq()))));
+    collection.config.update(collectionName, c -> c.vectorConfig(
+        VectorConfig.text2vecContextionary(vc -> vc.quantization(Quantization.rq()))));
     // END UpdateSchema
     // TODO[g-despot]: Verify the update
   }
@@ -143,16 +127,16 @@ class ConfigureRQTest {
     if (client.collections.exists(collectionName)) {
       client.collections.delete(collectionName);
     }
-    client.collections.create(collectionName, col -> col
-        .vectorConfig(VectorConfig.text2vecContextionary(
-            vc -> vc.quantization(Quantization.uncompressed())))
-        .properties(Property.text("title")));
+    client.collections.create(collectionName,
+        col -> col
+            .vectorConfig(VectorConfig
+                .text2vecContextionary(vc -> vc.quantization(Quantization.uncompressed())))
+            .properties(Property.text("title")));
 
     // START 1BitUpdateSchema
     CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
-    collection.config.update(collectionName,
-        c -> c
-            .vectorConfig(VectorConfig.text2vecContextionary(vc -> vc.quantization(Quantization.rq(q -> q.bits(1))))));
+    collection.config.update(collectionName, c -> c.vectorConfig(VectorConfig
+        .text2vecContextionary(vc -> vc.quantization(Quantization.rq(q -> q.bits(1))))));
     // END 1BitUpdateSchema
   }
 }

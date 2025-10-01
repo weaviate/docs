@@ -65,7 +65,7 @@ Return the number of objects matched by the query.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START MetaCount"
@@ -126,7 +126,7 @@ This example counts occurrence frequencies:
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START TextProp"
@@ -187,7 +187,7 @@ This example shows aggregation with integers.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START IntProp"
@@ -250,7 +250,7 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START groupBy"
@@ -319,7 +319,7 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START nearTextWithLimit"
@@ -386,7 +386,7 @@ Use `distance` to specify how similar the objects should be.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START nearTextWithDistance"
@@ -447,7 +447,7 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridExample"
@@ -508,7 +508,7 @@ For more specific results, use a `filter` to narrow your search.
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START whereFilter"

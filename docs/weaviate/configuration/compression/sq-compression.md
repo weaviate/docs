@@ -11,6 +11,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compress
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression-v3.ts';
 import TSCodeSQOptions from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression.options-v3.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.sq_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureSQTest.java";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/sq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -41,6 +42,14 @@ SQ can be enabled at collection creation time through the collection definition:
         endMarker="// END EnableSQ"
         language="go"
       />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableSQ"
+      endMarker="// END EnableSQ"
+      language="java"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -77,6 +86,14 @@ SQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -111,6 +128,14 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
         endMarker="// END SQWithOptions"
         language="go"
       />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SQWithOptions"
+      endMarker="// END SQWithOptions"
+      language="java"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock

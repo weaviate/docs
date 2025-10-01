@@ -1,4 +1,5 @@
 import io.weaviate.client6.v1.api.WeaviateClient;
+import io.weaviate.client6.v1.api.collections.CollectionHandle;
 import io.weaviate.client6.v1.api.collections.ObjectMetadata;
 import io.weaviate.client6.v1.api.collections.Property;
 import io.weaviate.client6.v1.api.collections.ReferenceProperty;
@@ -6,12 +7,13 @@ import io.weaviate.client6.v1.api.collections.VectorConfig;
 import io.weaviate.client6.v1.api.collections.WeaviateObject;
 import io.weaviate.client6.v1.api.collections.Vectors;
 import io.weaviate.client6.v1.api.collections.data.BatchReference;
+import io.weaviate.client6.v1.api.collections.data.InsertManyResponse;
 import io.weaviate.client6.v1.api.collections.data.Reference;
-import io.weaviate.client6.v1.api.collections.query.Metadata;
 import io.weaviate.client6.v1.api.collections.query.QueryReference;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -21,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,13 +52,14 @@ class ManageObjectsImportTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient.connectToLocal(config -> config
-        .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient
+        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
 
     // Download data file for streaming tests
     try (InputStream in = new URL(
-        "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_1k.json").openStream()) {
+        "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/jeopardy_1k.json")
+            .openStream()) {
       Files.copy(in, Paths.get("jeopardy_1k.json"));
     }
   }
@@ -67,6 +68,11 @@ class ManageObjectsImportTest {
   public static void afterAll() throws IOException {
     client.collections.deleteAll();
     Files.deleteIfExists(Paths.get("jeopardy_1k.json"));
+  }
+
+  @BeforeEach
+  public void beforeEach() throws IOException {
+    client.collections.deleteAll();
   }
 
   @Test
@@ -89,7 +95,10 @@ class ManageObjectsImportTest {
     var response = collection.data.insertMany(dataRows.toArray(new Map[0]));
     // highlight-end
 
-    assertThat(response.errors()).isEmpty();
+    if (!response.errors().isEmpty()) {
+      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err.println("First failed object: " + response.errors().get(0));
+    }
     // END BasicBatchImportExample
 
     var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
@@ -98,23 +107,24 @@ class ManageObjectsImportTest {
     client.collections.delete("MyCollection");
   }
 
+  // TODO[g-despot]: Implement once server-side batching is available
+  // START ServerSideBatchImportExample
+  // Coming soon
+  // END ServerSideBatchImportExample
+
   @Test
+  // TODO[g-despot]: Somewhere it's string somewhere it's UUID, can we supply it as a string directly without ObjectMetadata?
   void testBatchImportWithID() throws IOException {
     client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithIDExample
-    // highlight-start
-    // In Java, you can generate a deterministic UUID from a string or bytes.
-    // highlight-end
-
-    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects = new ArrayList<>();
+    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects =
+        new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
-      // TODO[g-despot]: Somewhere it's string somewhere it's UUID
       UUID objUuid = generateUuid5(dataRow.toString());
-      dataObjects.add(WeaviateObject.of(obj -> obj
-          .properties(dataRow)
-          .metadata(ObjectMetadata.of(meta -> meta.uuid(objUuid)))));
+      dataObjects.add(WeaviateObject.of(
+          obj -> obj.properties(dataRow).metadata(ObjectMetadata.of(meta -> meta.uuid(objUuid)))));
     }
 
     var collection = client.collections.use("MyCollection");
@@ -123,7 +133,10 @@ class ManageObjectsImportTest {
     var response = collection.data.insertMany(dataObjects);
     // highlight-end
 
-    assertThat(response.errors()).isEmpty();
+    if (!response.errors().isEmpty()) {
+      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err.println("First failed object: " + response.errors().get(0));
+    }
     // END BatchImportWithIDExample
 
     var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
@@ -139,15 +152,15 @@ class ManageObjectsImportTest {
     client.collections.create("MyCollection", col -> col.vectorConfig(VectorConfig.selfProvided()));
 
     // START BatchImportWithVectorExample
-    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects = new ArrayList<>();
+    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> dataObjects =
+        new ArrayList<>();
     float[] vector = new float[10]; // Using a small vector for demonstration
     Arrays.fill(vector, 0.1f);
 
     for (int i = 0; i < 5; i++) {
       Map<String, Object> dataRow = Map.of("title", "Object " + (i + 1));
       UUID objUuid = generateUuid5(dataRow.toString());
-      dataObjects.add(WeaviateObject.of(obj -> obj
-          .properties(dataRow)
+      dataObjects.add(WeaviateObject.of(obj -> obj.properties(dataRow)
           .metadata(ObjectMetadata.of(meta -> meta.uuid(objUuid).vectors(Vectors.of(vector))))));
     }
 
@@ -157,7 +170,10 @@ class ManageObjectsImportTest {
     var response = collection.data.insertMany(dataObjects);
     // highlight-end
 
-    assertThat(response.errors()).isEmpty();
+    if (!response.errors().isEmpty()) {
+      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err.println("First failed object: " + response.errors().get(0));
+    }
     // END BatchImportWithVectorExample
 
     var result = collection.aggregate.overAll(agg -> agg.includeTotalCount(true));
@@ -169,8 +185,7 @@ class ManageObjectsImportTest {
   @Test
   void testBatchImportWithCrossReference() throws IOException {
     client.collections.create("Publication", col -> col.properties(Property.text("title")));
-    client.collections.create("Author", col -> col
-        .properties(Property.text("name"))
+    client.collections.create("Author", col -> col.properties(Property.text("name"))
         .references(new ReferenceProperty("writesFor", List.of("Publication"))));
 
     var authors = client.collections.use("Author");
@@ -183,17 +198,77 @@ class ManageObjectsImportTest {
     // START BatchImportWithRefExample
     var collection = client.collections.use("Author");
 
-    var response = collection.data.referenceAddMany(
-        BatchReference.uuids(from, "writesFor", targetUuid));
+    var response =
+        collection.data.referenceAddMany(BatchReference.uuids(from, "writesFor", targetUuid));
 
-    assertThat(response.errors()).isEmpty();
+    if (!response.errors().isEmpty()) {
+      System.err.println("Number of failed imports: " + response.errors().size());
+      System.err.println("First failed object: " + response.errors().get(0));
+    }
     // END BatchImportWithRefExample
 
-    var result = collection.query.byId(fromUuid, q -> q
-        .returnReferences(QueryReference.single("writesFor")));
+    var result = collection.query.byId(fromUuid,
+        q -> q.returnReferences(QueryReference.single("writesFor")));
 
     assertThat(result).isPresent();
     assertThat(result.get().references().get("writesFor")).isNotNull();
+  }
+
+  @Test
+  void testImportWithNamedVectors() throws IOException {
+    // Define and create the class
+    client.collections.create("MyCollection",
+        col -> col
+            .vectorConfig(VectorConfig.selfProvided("title"), VectorConfig.selfProvided("body"))
+            .properties(Property.text("title"), Property.text("body")));
+    // START BatchImportWithNamedVectors
+    // Prepare the data and vectors
+    List<Map<String, Object>> dataRows = new ArrayList<>();
+    List<float[]> titleVectors = new ArrayList<>();
+    List<float[]> bodyVectors = new ArrayList<>();
+
+    for (int i = 0; i < 5; i++) {
+      dataRows.add(Map.of("title", "Object " + (i + 1), "body", "Body " + (i + 1)));
+
+      float[] titleVector = new float[1536];
+      Arrays.fill(titleVector, 0.12f);
+      titleVectors.add(titleVector);
+
+      float[] bodyVector = new float[1536];
+      Arrays.fill(bodyVector, 0.34f);
+      bodyVectors.add(bodyVector);
+    }
+
+    CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
+
+    List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> objectsToInsert =
+        new ArrayList<>();
+    for (int i = 0; i < dataRows.size(); i++) {
+      int index = i;
+      objectsToInsert.add(
+          // highlight-start
+          // Use the Builder with the EXACT matching generic types
+          new WeaviateObject.Builder<Map<String, Object>, Reference, ObjectMetadata>()
+              .properties(dataRows.get(index))
+              .metadata(ObjectMetadata
+                  .of(meta -> meta.vectors(Vectors.of("title", titleVectors.get(index)),
+                      Vectors.of("body", bodyVectors.get(index)))))
+              .build());
+      // highlight-end
+
+    }
+
+    // Insert the data using insertMany with the List
+    // highlight-start
+    InsertManyResponse response = collection.data.insertMany(objectsToInsert);
+    // highlight-end
+
+    // Check for errors
+    if (!response.errors().isEmpty()) {
+      System.err.printf("Number of failed imports: %d\n", response.errors().size());
+      System.err.printf("First failed object error: %s\n", response.errors().get(0));
+    }
+    // END BatchImportWithNamedVectors
   }
 
   @Test

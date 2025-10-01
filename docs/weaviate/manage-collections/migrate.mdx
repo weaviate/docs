@@ -5,13 +5,12 @@ image: og/docs/howto.jpg
 # tags: ['how-to', 'cursor']
 ---
 
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v4.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.migrate.data.ts';
-
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v4.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.migrate.data.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMigrateDataTest.java";
 
 Follow these examples to migrate data manually when using a backup is not possible. They cover all permutations between:
 
@@ -21,9 +20,9 @@ Follow these examples to migrate data manually when using a backup is not possib
 <details>
   <summary>Additional information</summary>
 
-  The examples use two different Weaviate instances, exposed through different ports. The same process can be used for two different instances as well.
+The examples use two different Weaviate instances, exposed through different ports. The same process can be used for two different instances as well.
 
-  Cross-references in Weaviate are properties. As such, you can [retrieve cross-reference](./cross-references.mdx#read-cross-references) as a part of the object.
+Cross-references in Weaviate are properties. As such, you can [retrieve cross-reference](./cross-references.mdx#read-cross-references) as a part of the object.
 
 </details>
 
@@ -31,7 +30,8 @@ Follow these examples to migrate data manually when using a backup is not possib
   <summary>What about cross-references?</summary>
 
 These scripts should migrate cross-references as well.
-<br/>
+
+<br />
 
 Cross-references are properties. As such, these cursor-based exports will include them.
 During restoration, restore the cross-referenced (i.e. "to") object first, then the object that contains the cross-reference (i.e. "from" object).
@@ -61,11 +61,20 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateCollectionCollectionToCollection"
+      endMarker="// END CreateCollectionCollectionToCollection"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 2: Migrate the data
 
 Migrate:
+
 - The `source collection` data in the `client_src` instance
 - to `target collection` in the `client_tgt` instance
 
@@ -84,6 +93,14 @@ Migrate:
       startMarker="// START CollectionToCollection"
       endMarker="// END CollectionToCollection"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CollectionToCollection"
+      endMarker="// END CollectionToCollection"
+      language="javaraw"
     />
   </TabItem>
 </Tabs>
@@ -111,6 +128,14 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateCollectionCollectionToTenant"
+      endMarker="// END CreateCollectionCollectionToTenant"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 2: Create the tenant(s)
@@ -134,11 +159,20 @@ Add tenants at the target instance before adding data objects.
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateTenants"
+      endMarker="// END CreateTenants"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 3: Migrate the data
 
 Migrate:
+
 - The `source collection` data in the `client_src` instance
 - to `target tenant` data from `target collection` in the `client_tgt` instance
 
@@ -157,6 +191,14 @@ Migrate:
       startMarker="// START CollectionToTenant"
       endMarker="// END CollectionToTenant"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CollectionToTenant"
+      endMarker="// END CollectionToTenant"
+      language="javaraw"
     />
   </TabItem>
 </Tabs>
@@ -184,11 +226,20 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateCollectionTenantToCollection"
+      endMarker="// END CreateCollectionTenantToCollection"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 2: Migrate the data
 
 Migrate:
+
 - The `source tenant` data from `source collection` in the `client_src` instance
 - to `target collection` in the `client_tgt` instance
 
@@ -209,6 +260,14 @@ Migrate:
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TenantToCollection"
+      endMarker="// END TenantToCollection"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 ## Tenant → Tenant
@@ -226,13 +285,20 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-
-<TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionTenantToTenant"
       endMarker="// END CreateCollectionTenantToTenant"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateCollectionTenantToTenant"
+      endMarker="// END CreateCollectionTenantToTenant"
+      language="javaraw"
     />
   </TabItem>
 </Tabs>
@@ -258,11 +324,20 @@ Add tenants at the target instance before adding data objects.
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateTenants"
+      endMarker="// END CreateTenants"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 3: Migrate the data
 
 Migrate:
+
 - The `source tenant` data from `source collection` in the `client_src` instance
 - to `target tenant` data from `target collection` in the `client_tgt` instance
 
@@ -283,6 +358,14 @@ Migrate:
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START TenantToTenant"
+      endMarker="// END TenantToTenant"
+      language="javaraw"
+    />
+  </TabItem>
 </Tabs>
 
 ## Related pages
@@ -293,6 +376,6 @@ Migrate:
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
-<DocsFeedback/>
+<DocsFeedback />

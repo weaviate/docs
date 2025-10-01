@@ -1,11 +1,11 @@
 <!-- Quickstart - Bring Your Own Vectors - Import data with vectors - /docs/weaviate/quickstart/custom-vectors#import-data-with-vectors -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
-import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
-
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import ByovAllPyCode from "!!raw-loader!/_includes/code/quickstart.byov.all.py";
+import ByovAllTsCode from "!!raw-loader!/_includes/code/quickstart.byov.all.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/StarterGuidesCustomVectorsTest.java";
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -17,12 +17,19 @@ import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
     />
   </TabItem>
   <TabItem value="js" label="JS/TS">
-
- <FilteredTextBlock
-   text={ByovAllTsCode}
-   startMarker="// Import data"
-   endMarker="// Query using nearVector"
-   language="ts"
- />
+    <FilteredTextBlock
+      text={ByovAllTsCode}
+      startMarker="// Import data"
+      endMarker="// Query using nearVector"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ImportData"
+      endMarker="// END ImportData"
+      language="java"
+    />
   </TabItem>
 </Tabs>

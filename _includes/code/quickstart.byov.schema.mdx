@@ -5,6 +5,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
 import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/StarterGuidesCustomVectorsTest.java";
 import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
 
 <Tabs groupId="languages">
@@ -23,6 +24,14 @@ import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
        endMarker="// Import data"
        language="ts"
      />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateCollection"
+      endMarker="// END CreateCollection"
+      language="java"
+    />
   </TabItem>
   <TabItem value="curl" label="Curl">
     <FilteredTextBlock

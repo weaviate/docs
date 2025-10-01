@@ -48,7 +48,7 @@ Combine the results of a vector search and a keyword search. The search uses a s
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridBasic"
@@ -104,7 +104,7 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START NamedVectorHybrid"
@@ -165,7 +165,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithScore"
@@ -229,7 +229,7 @@ Hybrid search results can favor the keyword component or the vector component. T
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithAlpha"
@@ -293,7 +293,7 @@ The output is like this:
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithFusionType"
@@ -354,7 +354,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="python"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithBM25OperatorOrWithMin"
@@ -385,7 +385,7 @@ With the `and` operator, the search returns objects that contain all tokens in t
       language="python"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithBM25OperatorAnd"
@@ -435,7 +435,7 @@ The keyword search portion of hybrid search can be directed to only search a sub
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithProperties"
@@ -496,7 +496,7 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithPropertyWeighting"
@@ -557,7 +557,7 @@ The vector component of hybrid search can use a query string or a query vector. 
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithVector"
@@ -614,7 +614,7 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
       language="js"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START VectorParameters"
@@ -662,7 +662,7 @@ The only available search threshold is `max vector distance`, which will set the
       language="ts"
     />
   </TabItem>
-   <TabItem value="java6" label="Java v6">
+   <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START VectorSimilarity"
@@ -696,7 +696,7 @@ Define criteria to group search results.
       language="ts"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridGroupBy"
@@ -749,7 +749,7 @@ Optionally, use `offset` to paginate the results.
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START limit"
@@ -804,7 +804,7 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START autocut"
@@ -865,7 +865,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       language="go"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START HybridWithFilter"

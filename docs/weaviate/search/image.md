@@ -64,7 +64,7 @@ If your query image is stored in a file, you can use the client library to searc
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START ImageFileSearch"
@@ -123,7 +123,7 @@ You can search by a base64 representation of an image:
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START search with base64"
@@ -153,7 +153,7 @@ You can search by a base64 representation of an image:
 
 </details>
 
-## Create a base64 representation of an online image.
+## Create a base64 representation of an online image
 
 You can create a base64 representation of an online image, and use it as input for similarity search [as shown above](#by-the-base64-representation).
 
@@ -182,12 +182,12 @@ You can create a base64 representation of an online image, and use it as input f
       language="gonew"
     />
   </TabItem>
-  <TabItem value="java6" label="Java v6">
+  <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
       startMarker="// START helper base64 functions"
       endMarker="// END helper base64 functions"
-      language="java"
+      language="javaraw"
     />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SearchHybridTest {
 
@@ -24,9 +25,7 @@ class SearchHybridTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
 
-    client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl,
-        weaviateApiKey,
+    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
   }
@@ -37,25 +36,26 @@ class SearchHybridTest {
   }
 
   // TODO[g-despot] Why isn't targetVector available?
-  @Test
-  void testNamedVectorHybrid() {
-    // START NamedVectorHybridPython
-    CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
-    var response = reviews.query.hybrid(
-        // highlight-start
-        "A French Riesling",
-        q -> q
-            // .targetVector("title_country")
-            .limit(3)
+  // @Test
+  // void testNamedVectorHybrid() {
+  //   CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV");
+  //   var response = reviews.query.hybrid(
+  //       // highlight-start
+  //       "A French Riesling", q -> q
+  //           // .targetVector("title_country")
+  //           .limit(3)
 
-    // highlight-end
-    );
+  //   // highlight-end
+  //   );
 
-    for (var o : response.objects()) {
-      System.out.println(o.properties());
-    }
-    // END NamedVectorHybridPython
-  }
+  //   for (var o : response.objects()) {
+  //     System.out.println(o.properties());
+  //   }
+  // }
+  // START NamedVectorHybridPython
+  // Coming soon
+  // END NamedVectorHybridPython
+
 
   @Test
   void testHybridBasic() {
@@ -63,8 +63,7 @@ class SearchHybridTest {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.query.hybrid(
         // highlight-start
-        "food",
-        q -> q.limit(3)
+        "food", q -> q.limit(3)
     // highlight-end
     );
 
@@ -78,14 +77,11 @@ class SearchHybridTest {
   void testHybridWithScore() {
     // START HybridWithScorePython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            .alpha(0.5f)
-            // highlight-start
-            .returnMetadata(Metadata.SCORE, Metadata.EXPLAIN_SCORE)
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q.alpha(0.5f)
+        // highlight-start
+        .returnMetadata(Metadata.SCORE, Metadata.EXPLAIN_SCORE)
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -100,12 +96,9 @@ class SearchHybridTest {
   void testLimit() {
     // START limit Python
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .limit(3)
-            .offset(1)
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .limit(3).offset(1)
     // highlight-end
     );
 
@@ -119,12 +112,9 @@ class SearchHybridTest {
   void testAutocut() {
     // START autocut Python
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .fusionType(FusionType.RELATIVE_SCORE)
-            .autocut(1)
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .fusionType(FusionType.RELATIVE_SCORE).autocut(1)
     // highlight-end
     );
 
@@ -138,13 +128,11 @@ class SearchHybridTest {
   void testHybridWithAlpha() {
     // START HybridWithAlphaPython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .alpha(0.25f)
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .alpha(0.25f)
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -156,13 +144,11 @@ class SearchHybridTest {
   void testHybridWithFusionType() {
     // START HybridWithFusionTypePython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .fusionType(FusionType.RELATIVE_SCORE)
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .fusionType(FusionType.RELATIVE_SCORE)
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -213,14 +199,11 @@ class SearchHybridTest {
   void testHybridWithProperties() {
     // START HybridWithPropertiesPython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .queryProperties("question")
-            // highlight-end
-            .alpha(0.25f)
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .queryProperties("question")
+        // highlight-end
+        .alpha(0.25f).limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -232,14 +215,11 @@ class SearchHybridTest {
   void testHybridWithPropertyWeighting() {
     // START HybridWithPropertyWeightingPython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .queryProperties("question^2", "answer")
-            // highlight-end
-            .alpha(0.25f)
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .queryProperties("question^2", "answer")
+        // highlight-end
+        .alpha(0.25f).limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -256,14 +236,11 @@ class SearchHybridTest {
     }
 
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .nearVector(NearVector.of(queryVector))
-            // highlight-end
-            .alpha(0.25f)
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .nearVector(NearVector.of(queryVector))
+        // highlight-end
+        .alpha(0.25f).limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -275,13 +252,11 @@ class SearchHybridTest {
   void testHybridWithFilter() {
     // START HybridWithFilterPython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "food",
-        q -> q
-            // highlight-start
-            .where(Where.property("round").eq("Double Jeopardy!"))
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.hybrid("food", q -> q
+        // highlight-start
+        .where(Where.property("round").eq("Double Jeopardy!"))
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -293,36 +268,30 @@ class SearchHybridTest {
   void testVectorParameters() {
     // START VectorParametersPython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "California",
-        q -> q
-            // highlight-start
-            // TODO[g-despot] Why is distance not available?
-            // TODO[g-despot] Is there a simpler syntax?
-            // .distance(0.4f) // Maximum threshold for the vector search component
-            .nearVector(NearVector.of(jeopardy.query.nearText("large animal", c -> c
-                .moveAway(0.5f, from -> from.concepts("mammal", "terrestrial")))
-                .objects().get(0).vectors().getDefaultSingle()))
-            // highlight-end
-            .alpha(0.75f)
-            .limit(5));
+    var response = jeopardy.query.hybrid("California", q -> q
+        // highlight-start
+        .maxVectorDistance(0.4f)
+        .nearVector(NearVector.of(jeopardy.query
+            .nearText("large animal",
+                c -> c.moveAway(0.5f, from -> from.concepts("mammal", "terrestrial")))
+            .objects().get(0).vectors().getDefaultSingle()))
+        // highlight-end
+        .alpha(0.75f).limit(5));
     // END VectorParametersPython
+    assertThat(response.objects().size() <= 5 && response.objects().size() > 0);
   }
 
   @Test
   void testVectorSimilarity() {
     // START VectorSimilarityPython
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "California",
-        q -> q
-            // highlight-start
-            // TODO[g-despot] Why is distance not available?
-            // .distance(0.4f) // Maximum threshold for the vector search component
-            // highlight-end
-            .alpha(0.75f)
-            .limit(5));
+    var response = jeopardy.query.hybrid("California", q -> q
+        // highlight-start
+        .maxVectorDistance(0.4f) // Maximum threshold for the vector search component
+        // highlight-end
+        .alpha(0.75f).limit(5));
     // END VectorSimilarityPython
+    assertThat(response.objects().size() <= 5 && response.objects().size() > 0);
   }
 
   @Test
@@ -330,11 +299,8 @@ class SearchHybridTest {
     // START HybridGroupByPy4
     // Query
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.hybrid(
-        "California",
-        q -> q.alpha(0.75f),
-        GroupBy.property(
-            "round", // group by this property
+    var response = jeopardy.query.hybrid("California", q -> q.alpha(0.75f),
+        GroupBy.property("round", // group by this property
             2, // maximum number of groups
             3 // maximum objects per group
         ));

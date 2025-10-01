@@ -11,6 +11,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.ts';
 import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureBQTest.java";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -41,8 +42,6 @@ BQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
@@ -51,8 +50,6 @@ BQ can be enabled at collection creation time through the collection definition:
         language="ts"
       />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -61,7 +58,14 @@ BQ can be enabled at collection creation time through the collection definition:
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableBQ"
+      endMarker="// END EnableBQ"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -97,6 +101,14 @@ BQ can also be enabled for an existing collection by updating the collection def
         language="go"
       />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -126,8 +138,6 @@ For example:
         language="py"
       />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
       <FilteredTextBlock
         text={TSCodeBQOptions}
@@ -136,8 +146,6 @@ For example:
         language="ts"
       />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -146,7 +154,14 @@ For example:
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BQWithOptions"
+      endMarker="// END BQWithOptions"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}

@@ -25,9 +25,7 @@ class SearchKeywordTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String openaiApiKey = System.getenv("OPENAI_APIKEY");
 
-    client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl,
-        weaviateApiKey,
+    client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, weaviateApiKey,
         config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END INSTANTIATION-COMMON
   }
@@ -53,52 +51,53 @@ class SearchKeywordTest {
     // END BM25Basic
   }
 
-  @Test
-  void testBM25OperatorOrWithMin() {
-    // START BM25OperatorOrWithMin
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        // highlight-start
-        "Australian mammal cute"
-    // q -> q.operator(Operator.OPERATOR_OR_VALUE, 1)
-    // highlight-end
-    // .limit(3));
-    );
-    for (var o : response.objects()) {
-      System.out.println(o.properties());
-    }
-    // END BM25OperatorOrWithMin
-  }
+  // TODO[g-espot] Why isn't operator available?
+  // @Test
+  // void testBM25OperatorOrWithMin() {
+  //   CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+  //   var response = jeopardy.query.bm25(
+  //       // highlight-start
+  //       "Australian mammal cute"
+  //   // q -> q.operator(Operator.OPERATOR_OR_VALUE, 1)
+  //   // highlight-end
+  //   // .limit(3));
+  //   );
+  //   for (var o : response.objects()) {
+  //     System.out.println(o.properties());
+  //   }
+  // }
+  // START BM25OperatorOrWithMin
+  // Coming soon
+  // END BM25OperatorOrWithMin
+
 
   // TODO[g-espot] Why isn't operator available?
-  @Test
-  void testBM25OperatorAnd() {
-    // START BM25OperatorAnd
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        // highlight-start
-        "Australian mammal cute"
-    // q -> q.operator(Operator.OPERATOR_AND) // Each result must include all tokens
-    // (e.g. "australian", "mammal", "cute")
-    // highlight-end
-    // .limit(3)
-    );
+  // @Test
+  // void testBM25OperatorAnd() {
+  //   CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
+  //   var response = jeopardy.query.bm25(
+  //       // highlight-start
+  //       "Australian mammal cute"
+  //   // q -> q.operator(Operator.OPERATOR_AND) // Each result must include all tokens
+  //   // (e.g. "australian", "mammal", "cute")
+  //   // highlight-end
+  //   // .limit(3)
+  //   );
 
-    for (var o : response.objects()) {
-      System.out.println(o.properties());
-    }
-    // END BM25OperatorAnd
-  }
+  //   for (var o : response.objects()) {
+  //     System.out.println(o.properties());
+  //   }
+  // }
+  // START BM25OperatorAnd
+  // Coming soon
+  // END BM25OperatorAnd
+
 
   @Test
   void testBM25WithScore() {
     // START BM25WithScore
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        "food",
-        q -> q
-            .returnMetadata(Metadata.SCORE)
-            .limit(3));
+    var response = jeopardy.query.bm25("food", q -> q.returnMetadata(Metadata.SCORE).limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -113,12 +112,9 @@ class SearchKeywordTest {
   void testLimit() {
     // START limit
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        "safety",
-        q -> q
-            // highlight-start
-            .limit(3)
-            .offset(1)
+    var response = jeopardy.query.bm25("safety", q -> q
+        // highlight-start
+        .limit(3).offset(1)
     // highlight-end
     );
 
@@ -132,11 +128,9 @@ class SearchKeywordTest {
   void testAutocut() {
     // START autocut
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        "safety",
-        q -> q
-            // highlight-start
-            .autocut(1)
+    var response = jeopardy.query.bm25("safety", q -> q
+        // highlight-start
+        .autocut(1)
     // highlight-end
     );
 
@@ -150,14 +144,11 @@ class SearchKeywordTest {
   void testBM25WithProperties() {
     // START BM25WithProperties
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        "safety",
-        q -> q
-            // highlight-start
-            .queryProperties("question")
-            // highlight-end
-            .returnMetadata(Metadata.SCORE)
-            .limit(3));
+    var response = jeopardy.query.bm25("safety", q -> q
+        // highlight-start
+        .queryProperties("question")
+        // highlight-end
+        .returnMetadata(Metadata.SCORE).limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -170,13 +161,11 @@ class SearchKeywordTest {
   void testBM25WithBoostedProperties() {
     // START BM25WithBoostedProperties
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        "food",
-        q -> q
-            // highlight-start
-            .queryProperties("question^2", "answer")
-            // highlight-end
-            .limit(3));
+    var response = jeopardy.query.bm25("food", q -> q
+        // highlight-start
+        .queryProperties("question^2", "answer")
+        // highlight-end
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -192,9 +181,7 @@ class SearchKeywordTest {
         // highlight-start
         "food wine", // search for food or wine
         // highlight-end
-        q -> q
-            .queryProperties("question")
-            .limit(5));
+        q -> q.queryProperties("question").limit(5));
 
     for (var o : response.objects()) {
       System.out.println(o.properties().get("question"));
@@ -206,14 +193,12 @@ class SearchKeywordTest {
   void testBM25WithFilter() {
     // START BM25WithFilter
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
-    var response = jeopardy.query.bm25(
-        "food",
-        q -> q
-            // highlight-start
-            .where(Where.property("round").eq("Double Jeopardy!"))
-            // highlight-end
-            .returnProperties("answer", "question", "round") // return these properties
-            .limit(3));
+    var response = jeopardy.query.bm25("food", q -> q
+        // highlight-start
+        .where(Where.property("round").eq("Double Jeopardy!"))
+        // highlight-end
+        .returnProperties("answer", "question", "round") // return these properties
+        .limit(3));
 
     for (var o : response.objects()) {
       System.out.println(o.properties());
@@ -226,12 +211,8 @@ class SearchKeywordTest {
     // START BM25GroupByPy4
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
-    // Query
-    var response = jeopardy.query.bm25(
-        "California",
-        q -> q, // No query options needed for this example
-        GroupBy.property(
-            "round", // group by this property
+    var response = jeopardy.query.bm25("California", q -> q, // No query options needed for this example
+        GroupBy.property("round", // group by this property
             2, // maximum number of groups
             3 // maximum objects per group
         ));
