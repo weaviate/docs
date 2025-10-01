@@ -1,0 +1,20 @@
+[
+  {
+    "id": "quick-tour-of-weaviate",
+    "title": "A Quick Tour of Weaviate",
+    "description": "Become familiar with Weaviate's architecture, core concepts, and key capabilities. Understand how its features and integrations map to AI builders' needs.",
+    "url": "https://academy.weaviate.io/courses/wa050-py"
+  },
+  {
+    "id": "fast-api-weaviate-rag",
+    "title": "Your First AI App (Search and RAG)",
+    "description": "A hands-on course where you will build a movie recommendation API with Weaviate and FastAPI.",
+    "url": "https://academy.weaviate.io/courses/wa180-py"
+  },
+  {
+    "id": "ai-models-deep-dive",
+    "title": "A Gentle Deep Dive into AI Models",
+    "description": "A detailed overview of AI models from the perspective of application builders and developers. Learn how to distinguish between models and why model selection matters.",
+    "url": "https://academy.weaviate.io/courses/wa150-py"
+  }
+]
