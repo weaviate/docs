@@ -6,7 +6,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START CheckForAnObject"
@@ -15,19 +15,8 @@ import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
   />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
 
-```python
-exists = client.data_object.exists(
-  "36ddd591-2dee-4e7e-a3cc-eb86d30a4303",
-  class_name="Author",
-)
-print(exists)
-```
-
-</TabItem>
-
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
 import { generateUuid5 } from 'weaviate-client';
@@ -45,18 +34,6 @@ const authorExists = await authors.data.exists(object_uuid)
 // highlight-end
 
 console.log('Author exists: ' + authorExists)
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-const response = await client.data
-  .checker()
-  .withClassName('Author')
-  .withId('df48b9f6-ba48-470c-bf6a-57657cb07390')
-  .do();
-console.log(response);
 ```
 
 </TabItem>

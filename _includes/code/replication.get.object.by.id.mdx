@@ -5,7 +5,7 @@ import TSCode from '!!raw-loader!/_includes/code/howto/search.consistency.ts';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START QueryWithReplication"
@@ -14,65 +14,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
     />
   </TabItem>
 
-<TabItem value="pyv3" label="Python Client v3">
-
-```python
-import weaviate
-from weaviate.data.replication import ConsistencyLevel
-
-client = weaviate.Client("http://localhost:8080")
-
-data_object = (
-  client.data_object.get_by_id(
-    uuid="36ddd591-2dee-4e7e-a3cc-eb86d30a4303",
-    class_name="MyClass",
-    consistency_level=ConsistencyLevel.ONE,
-  )
-)
-
-# The parameter "consistency_level" can be one of ConsistencyLevel.ALL,
-# ConsistencyLevel.QUORUM (default), or ConsistencyLevel.ONE. Determines how many
-# replicas must acknowledge a request before it is considered successful.
-
-print(data_object)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={TSCode}
     startMarker="START QueryWithReplication"
     endMarker="END QueryWithReplication"
     language="ts"
   />
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.data
-  .getterById()
-  .withClassName('MyClass')
-  .withId('36ddd591-2dee-4e7e-a3cc-eb86d30a4303')
-  .withConsistencyLevel('ONE')  // default QUORUM
-  .do();
-console.log(JSON.stringify(response, null, 2));
-
-// The parameter passed to `withConsistencyLevel` can be one of:
-// * 'ALL',
-// * 'QUORUM' (default), or
-// * 'ONE'.
-//
-// It determines how many replicas must acknowledge a request
-// before it is considered successful.
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

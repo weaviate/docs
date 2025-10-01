@@ -135,7 +135,7 @@ jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.hybrid(
     query="food",
     # highlight-start
-    fusion_type=HybridFusion.RANKED,
+    fusion_type=HybridFusion.RELATIVE_SCORE,
     auto_limit=1
     # highlight-end
 )
