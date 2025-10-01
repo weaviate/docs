@@ -732,6 +732,15 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Known issues",
+      link: {
+        type: "doc",
+        id: "weaviate/release-notes/known-issues",
+      },
+      items: [],
+    },
+    {
+      type: "category",
       label: "Benchmarks",
       link: {
         type: "doc",
