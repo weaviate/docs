@@ -16,5 +16,17 @@
     "title": "A Gentle Deep Dive into AI Models",
     "description": "A detailed overview of AI models from the perspective of application builders and developers. Learn how to distinguish between models and why model selection matters.",
     "url": "https://academy.weaviate.io/courses/wa150-py"
+  },
+  {
+    "id": "embedding-model-evaluation",
+    "title": "Embedding Model Evaluation & Selection",
+    "description": "Embedding models are the heart of vector search. Learn how to evaluate and select appropriate embedding models for your use case.",
+    "url": "https://academy.weaviate.io/courses/wa150-py"
+  },
+  {
+    "id": "async-python-client-usage",
+    "title": "Async Python Client Usage",
+    "description": "Learn how to use Weaviate’s async capabilities to handle concurrent operations and large-scale data processing efficiently.",
+    "url": "https://academy.weaviate.io/courses/wa280-py"
   }
 ]
