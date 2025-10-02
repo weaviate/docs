@@ -4,7 +4,7 @@ sidebar_position: 50
 image: og/docs/integrations/provider_integrations_generic.jpg
 ---
 
-# Contextual AI Generative with Weaviate
+# Contextual AI's Generative AI with Weaviate
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -124,7 +124,17 @@ You can specify a model version (defaults to `v2`): `v1` or `v2`.
 
 ### Generative parameters
 
-Supported parameters include: `model`, `temperature`, `topP`, `maxTokens`, `systemPrompt`, `avoidCommentary`, and optional `knowledge` array at runtime.
+Supported parameters include:
+
+- `model`: The version of Contextual's GLM to use. Currently, we have `v1` and `v2` (defaults to `v2`)
+- `temperature`: The sampling temperature, which affects the randomness in the response. Note that higher temperature values can reduce groundedness. Range: 0 ≤ x ≤ 1 (defaults to 0)
+- `topP`: A parameter for nucleus sampling, an alternative to temperature which also affects the randomness of the response. Note that higher top_p values can reduce groundedness. Range: 0 < x ≤ 1 (defaults to 0.9)
+- `maxTokens`: The maximum number of tokens that the model can generate in the response. Range: 1 ≤ x ≤ 2048 (defaults to 1024)
+- `systemPrompt`: Instructions that the model follows when generating responses. Note that we do not guarantee that the model follows these instructions exactly (optional)
+- `avoidCommentary`: Flag to indicate whether the model should avoid providing additional commentary in responses. Commentary is conversational in nature and does not contain verifiable claims; therefore, commentary is not strictly grounded in available context. However, commentary may provide useful context which improves the helpfulness of responses (defaults to `false`)
+- `baseURL`: Custom API endpoint URL (optional)
+
+Additional `knowledge` array can be provided at runtime for RAG scenarios. The knowledge sources the model can use when generating a response are required for proper grounded generation.
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -172,7 +182,7 @@ You can override the default provider at query time.
 
 ## Header parameters
 
-You can provide runtime headers:
+Runtime headers:
 
 - `X-Contextual-Api-Key`: Contextual AI API key.
 - `X-Contextual-Baseurl`: Optional base URL (e.g., a proxy).
@@ -224,6 +234,7 @@ Use either the single prompt or grouped task method.
 ## Further resources
 
 - Contextual AI API docs: `https://docs.contextual.ai/user-guides/beginner-guide`
+- [Contextual AI Reranker Models + Weaviate](./reranker.md)
 
 ## Questions and feedback
 
