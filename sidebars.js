@@ -642,6 +642,7 @@ const sidebars = {
         {
           type: "category",
           label: "Java",
+          collapsed: false,
           className: "sidebar-item",
           link: {
             type: "doc",

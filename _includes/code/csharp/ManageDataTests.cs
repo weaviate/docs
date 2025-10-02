@@ -103,7 +103,7 @@ public class ManageDataTests : IAsyncLifetime
     [Fact]
     public async Task CreateObject()
     {
-        // CreateObject START
+        // START CreateSimpleObject
         var jeopardy = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
 
         // highlight-start
@@ -116,7 +116,7 @@ public class ManageDataTests : IAsyncLifetime
         });
 
         Console.WriteLine(uuid); // the return value is the object's UUID
-        // CreateObject END
+        // END CreateSimpleObject
 
         // Test
         var result = await jeopardy.Query.FetchObjectByID(uuid);

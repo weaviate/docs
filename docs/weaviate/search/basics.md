@@ -101,7 +101,7 @@ Specify the information that you want your query to return. You can return objec
 Fetch an object by its UUID:
 
 <Tabs groupId="languages">
-  <TabItem value="csharp" label="C#">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START FetchById"

@@ -71,7 +71,7 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       language="graphql"
     />
   </TabItem>
-  <TabItem value="csharp" label="C#">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
       text={CSharpCode}
       startMarker="// START GetNearText"
