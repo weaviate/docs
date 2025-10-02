@@ -344,7 +344,7 @@ public class HybridSearchTests : IAsyncLifetime
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            vectors: VectorData.Create("default", queryVector),
+            vectors: Vectors.Create("default", queryVector),
             // highlight-end
             alpha: 0.25f,
             limit: 3

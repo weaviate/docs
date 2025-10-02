@@ -252,7 +252,7 @@ public class ManageDataTests : IAsyncLifetime
         // END WithGeoCoordinates
 
         var response = await publications.Query.FetchObjects(
-            filter: Filter.Property("headquartersGeoLocation")
+            filters: Filter.Property("headquartersGeoLocation")
                 .WithinGeoRange(
                     new GeoCoordinateConstraint(52.39f, 4.84f, 1000)
                 )
