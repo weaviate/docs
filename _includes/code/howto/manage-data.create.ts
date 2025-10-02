@@ -193,7 +193,7 @@ console.log('UUID: ', uuid)
 // jeopardy = client.collections.use(wineRewiews)
 
 result = await reviews.query.fetchObjectById('12345678-e64f-5d94-90db-c8cfa3fc1234')
-assert.deepEqual(result?.properties, {
+assert.equal(result?.properties, {
   'question': 'This vector DB is OSS and supports automatic property type inference on import',
   'answer': 'Weaviate',
 });

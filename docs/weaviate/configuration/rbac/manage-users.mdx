@@ -1,37 +1,41 @@
 ---
+
 title: Manage users
 sidebar_label: Manage users
 sidebar_position: 1
 image: og/docs/configuration.jpg
+
 # tags: ['rbac', 'roles', 'configuration', 'authorization']
+
 ---
 
-import Link from '@docusaurus/Link';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py';
-import TSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts';
-import UserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.users.py';
-import UserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.users.ts';
-import OidcUserPyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.users.py';
-import OidcUserTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.users.ts';
-
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts";
+import UserPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.users.py";
+import UserTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.users.ts";
+import OidcUserPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.users.py";
+import OidcUserTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.users.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-users.java";
+import OidcUserJavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/rbac-oidc-users.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.users_test.go";
+import OidcUserGoCode from "!!raw-loader!/_includes/code/howto/go/docs/configure/rbac.oidc.users_test.go";
 
 :::info Added in `v1.29` and `v1.30`
-Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.  
+Role-based access control (RBAC) is generally available in Weaviate from version `v1.29`.
 User management is available from version `v1.30`.
 :::
 
 In Weaviate, Role-based access control (RBAC) allows you to define roles and assign permissions to those roles. Users can then be assigned to roles and inherit the permissions associated with those roles.
 
-Weaviate differentiates multiple types of users. **Database users** are fully managed by the Weaviate instance, while **OIDC** users are managed by an external identity provider. Both types can be used together with RBAC. 
+Weaviate differentiates multiple types of users. **Database users** are fully managed by the Weaviate instance, while **OIDC** users are managed by an external identity provider. Both types can be used together with RBAC.
 
 On this page, you will find examples of how to programmatically **manage users** and their associated roles with Weaviate client libraries.
 
 :::note User types in Weaviate
-
-<!-- NOTE: left out AUTHORIZATION_ADMINLIST_USERS to dissuade usage -->
 
 Under the hood, Weaviate differentiates three types of users:
 
@@ -48,7 +52,7 @@ Under the hood, Weaviate differentiates three types of users:
 This example shows how to get a list of all the users (`db_user`, `db_env_user` and `oidc`) in Weaviate.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START ListAllUsers"
@@ -56,32 +60,34 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={UserTSCode}
-    startMarker="// START ListAllUsers"
-    endMarker="// END ListAllUsers"
-    language="ts"
-  />
+      text={UserTSCode}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListAllUsers"
+      endMarker="// END ListAllUsers"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+<summary>Example results</summary>
 
 ```text
 [
@@ -97,7 +103,7 @@ This example shows how to get a list of all the users (`db_user`, `db_env_user` 
 This example creates a user called `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START CreateUser"
@@ -105,32 +111,34 @@ This example creates a user called `custom-user`.
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={UserTSCode}
-    startMarker="// START CreateUser"
-    endMarker="// END CreateUser"
-    language="ts"
-  />
+      text={UserTSCode}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateUser"
+      endMarker="// END CreateUser"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+<summary>Example results</summary>
 
 ```text
 RXF1dU1VcWM1Q3hvVndYT0F1OTBOTDZLZWx0ME5kbWVJRVdPL25EVW12QT1fMXlDUEhUNjhSMlNtazdHcV92MjAw
@@ -143,7 +151,7 @@ RXF1dU1VcWM1Q3hvVndYT0F1OTBOTDZLZWx0ME5kbWVJRVdPL25EVW12QT1fMXlDUEhUNjhSMlNtazdH
 This example deletes a user called `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START DeleteUser"
@@ -151,7 +159,7 @@ This example deletes a user called `custom-user`.
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={UserTSCode}
     startMarker="// START DeleteUser"
@@ -160,18 +168,20 @@ This example deletes a user called `custom-user`.
   />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START DeleteUser"
+      endMarker="// END DeleteUser"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START DeleteUser"
+      endMarker="// END DeleteUser"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -180,7 +190,7 @@ This example deletes a user called `custom-user`.
 This example updates (rotates) the API key for `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START RotateApiKey"
@@ -188,32 +198,34 @@ This example updates (rotates) the API key for `custom-user`.
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={UserTSCode}
-    startMarker="// START RotateApiKey"
-    endMarker="// END RotateApiKey"
-    language="ts"
-  />
+      text={UserTSCode}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START RotateApiKey"
+      endMarker="// END RotateApiKey"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+<summary>Example results</summary>
 
 ```text
 SSs3WGVFbUxMVFhlOEsxVVMrQVBzM1VhQTJIM2xXWngwY01HaXFYVnM1az1fMXlDUEhUNjhSMlNtazdHcV92MjAw
@@ -230,7 +242,7 @@ A custom user can have any number of roles assigned to them (including none). Th
 This example assigns the custom `testRole` role and predefined `viewer` role to `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START AssignRole"
@@ -238,7 +250,7 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
   <FilteredTextBlock
     text={UserTSCode}
     startMarker="// START AssignRole"
@@ -247,18 +259,20 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
   />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START AssignRole"
+      endMarker="// END AssignRole"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START AssignRole"
+      endMarker="// END AssignRole"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -269,7 +283,7 @@ You can revoke one or more roles from a specific user.
 This example removes the role `testRole` from the user `custom-user`.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START RevokeRoles"
@@ -277,27 +291,29 @@ This example removes the role `testRole` from the user `custom-user`.
     language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
   <FilteredTextBlock
       text={UserTSCode}
       startMarker="// START RevokeRoles"
       endMarker="// END RevokeRoles"
       language="ts"
-      />
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START RevokeRoles"
+      endMarker="// END RevokeRoles"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -306,7 +322,7 @@ This example removes the role `testRole` from the user `custom-user`.
 Retrieve the role information for any user.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={UserPyCode}
     startMarker="# START ListUserRoles"
@@ -314,32 +330,34 @@ Retrieve the role information for any user.
     language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={UserTSCode}
-    startMarker="// START ListUserRoles"
-    endMarker="// END ListUserRoles"
-    language="ts"
+      text={UserTSCode}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ListUserRoles"
+      endMarker="// END ListUserRoles"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+<summary>Example results</summary>
 
 ```text
 testRole
@@ -350,7 +368,7 @@ viewer
 
 ## OIDC users: Permissions management <i class="fas fa-user-lock"></i> {#oidc-user-permissions-management}
 
-When using [OIDC](/deploy/configuration/oidc.md), an identity provider authenticates the user and issues tokens, which are then validated by Weaviate. These users can be assigned roles with custom permissions using RBAC.
+When using [OIDC](https://www.google.com/search?q=/deploy/configuration/oidc.md), an identity provider authenticates the user and issues tokens, which are then validated by Weaviate. These users can be assigned roles with custom permissions using RBAC.
 
 ### Assign a role to an OIDC user
 
@@ -359,7 +377,7 @@ An OIDC user can have any number of roles assigned to them (including none). The
 This example assigns the custom `testRole` role and predefined `viewer` role to `custom-user`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcUserPyCode}
     startMarker="# START AssignOidcUserRole"
@@ -367,27 +385,29 @@ This example assigns the custom `testRole` role and predefined `viewer` role to 
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={OidcUserTSCode}
-    startMarker="// START AssignOidcUserRole"
-    endMarker="// END AssignOidcUserRole"
-    language="ts"
-  />
+      text={OidcUserTSCode}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={OidcUserGoCode}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={OidcUserJavaCode}
+      startMarker="// START AssignOidcUserRole"
+      endMarker="// END AssignOidcUserRole"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -398,7 +418,7 @@ You can revoke one or more roles from a specific OIDC user.
 This example removes the role `testRole` from the user `custom-user`.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcUserPyCode}
     startMarker="# START RevokeOidcUserRoles"
@@ -406,27 +426,29 @@ This example removes the role `testRole` from the user `custom-user`.
     language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={OidcUserTSCode}
-    startMarker="// START RevokeOidcUserRoles"
-    endMarker="// END RevokeOidcUserRoles"
-    language="ts"
+      text={OidcUserTSCode}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={OidcUserGoCode}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={OidcUserJavaCode}
+      startMarker="// START RevokeOidcUserRoles"
+      endMarker="// END RevokeOidcUserRoles"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
@@ -435,7 +457,7 @@ This example removes the role `testRole` from the user `custom-user`.
 Retrieve the role information for an OIDC user.
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcUserPyCode}
     startMarker="# START ListOidcUserRoles"
@@ -443,32 +465,34 @@ Retrieve the role information for an OIDC user.
     language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
-    text={OidcUserTSCode}
-    startMarker="// START ListOidcUserRoles"
-    endMarker="// END ListOidcUserRoles"
-    language="ts"
+      text={OidcUserTSCode}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+    <FilteredTextBlock
+      text={OidcUserGoCode}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="go"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
+    <FilteredTextBlock
+      text={OidcUserJavaCode}
+      startMarker="// START ListOidcUserRoles"
+      endMarker="// END ListOidcUserRoles"
+      language="java"
+    />
   </TabItem>
 </Tabs>
 
 <details>
-  <summary>Example results</summary>
+<summary>Example results</summary>
 
 ```text
 testRole
@@ -479,12 +503,12 @@ viewer
 
 ## Further resources
 
-- [RBAC: Overview](./index.mdx)
-- [RBAC: Configuration](/deploy/configuration/configuring-rbac.md)
-- [RBAC: Manage roles](./manage-roles.mdx)
+- [RBAC: Overview](https://www.google.com/search?q=./index.mdx)
+- [RBAC: Configuration](https://www.google.com/search?q=/deploy/configuration/configuring-rbac.md)
+- [RBAC: Manage roles](https://www.google.com/search?q=./manage-roles.mdx)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />

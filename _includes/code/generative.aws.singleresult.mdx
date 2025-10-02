@@ -4,83 +4,13 @@ import PyCode from '!!raw-loader!/_includes/code/generative.singleprompt.example
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START GenerativeAWS"
       endMarker="# END GenerativeAWS"
       language="py"
     />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client(
-  url="https://WEAVIATE_INSTANCE_URL/",  # Replace WEAVIATE_INSTANCE_URL with your instance URL
-  additional_headers={
-        "X-AWS-Access-Key": "YOUR_ACCESS_KEY",
-        "X-AWS-Secret-Key": "YOUR_SECRET_KEY",
-  }
-)
-
-# highlight-start
-# instruction for the generative module
-generatePrompt = "Describe the following as a Facebook Ad: {summary}"
-# highlight-end
-
-result = (
-  client.query
-  .get("Article", ["title", "summary"])
-  # highlight-start
-  .with_generate(single_prompt=generatePrompt)
-  # highlight-end
-  .with_near_text({
-    "concepts": ["Italian food"]
-  })
-  .with_limit(5)
-).do()
-
-print(result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```ts
-import weaviate, { ApiKey } from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'https',
-  host: 'edu-demo.weaviate.network',
-  apiKey: new ApiKey('learn-weaviate'),
-  headers: {
-    'X-AWS-Access-Key': 'YOUR_ACCESS_KEY',
-    'X-AWS-Secret-Key': 'YOUR_SECRET_KEY'
-  },
-});
-
-// highlight-start
-// instruction for the generative module
-const generatePrompt = 'Describe the following as a Facebook Ad: {summary}';
-// highlight-end
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title summary')
-  .withNearText({
-    concepts: ['Italian food'],
-  })
-  .withGenerate({
-    singlePrompt: generatePrompt,
-  })
-  .withLimit(5)
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

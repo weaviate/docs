@@ -5,68 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLnearText2"
     endMarker="END GraphQLnearText2"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-nearText = {
-  "concepts": ["travelling in Asia"],
-  "certainty": 0.7,
-  "moveTo": {
-    "objects": [{"id": "c4209549-7981-3699-9648-61a78c2124b9"}],
-    "force": 0.85
-  }
-}
-
-result = (
-  client.query
-  .get("Article", ["title", "summary", "_additional { certainty }"])
-  .with_near_text(nearText)
-  .do()
-)
-
-print(result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title summary _additional { certainty }')
-  .withNearText({
-    concepts: ['travelling in Asia'],
-    certainty: 0.7,
-    moveTo: {
-      // this ID is of the article: "Tohoku: A Japan destination for all seasons."
-      objects: [{ id: 'c4209549-7981-3699-9648-61a78c2124b9' }],
-      force: 0.85,
-    },
-  })
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

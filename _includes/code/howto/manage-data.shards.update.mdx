@@ -7,7 +7,7 @@ import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.shard
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START UpdateCollectionShards"
@@ -16,21 +16,7 @@ import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
   />
 </TabItem>
 
-<TabItem value="py3" label="Python Client v3">
-
-```python
-# highlight-start
-article_shards = client.schema.update_class_shard(
-  "Article",
-  status="READY",
-  shard_name="shard-1234"
-)
-# highlight-end
-print(article_shards)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```js
 let articles = client.collections.use('Article')
@@ -38,19 +24,6 @@ let articles = client.collections.use('Article')
 // highlight-start
 const shards = await articles.config.updateShards('READY', 'shard-1234')
 // highlight-end
-console.log(JSON.stringify(shards, null, 2));
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```js
-const shards = await client.schema.shardUpdater()
-  .withClassName('Article')
-  .withShardName('shard-1234')
-  .withStatus('READY')
-  .do()
-
 console.log(JSON.stringify(shards, null, 2));
 ```
 

@@ -5,51 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.aggregate.simple.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLAggregateSimple"
     endMarker="END GraphQLAggregateSimple"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-response = (
-    client.query
-    .aggregate("Article")
-    .with_meta_count()
-    .with_fields("wordCount {count maximum mean median minimum mode sum type}")
-    .do()
-)
-
-print(response)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .aggregate()
-  .withClassName('Article')
-  .withFields('meta { count } wordCount {count maximum mean median minimum mode sum type}')
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

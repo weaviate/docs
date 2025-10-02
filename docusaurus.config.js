@@ -46,11 +46,13 @@ const config = {
         configuration: {
           spec: {
             // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
-            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi_docs_v1-30/openapi-specs/schema.json",
+            url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
           // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
           // hiddenClients: [...],
+          showAuthentication: false,
+          showRequestSamples: false,
         },
       },
     ],
@@ -113,8 +115,8 @@ const config = {
     ({
       image: "og/default.jpg",
       announcementBar: {
-        id: "announcement-bar-march-2025",
-        content: `<a href="https://weaviate.io/blog/weaviate-agents">Product Update: Meet Weaviate Agents — Read the blog</a>`,
+        id: "announcement-bar-september-2025",
+        content: `<a href="https://docs.weaviate.io/agents/query">Product update: The Weaviate Query Agent has been released!</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,

@@ -1,0 +1,202 @@
+---
+title: Inverted index
+description: Learn how-to configure the inverted index parameters and set the tokenization type for properties.
+image: og/docs/howto.jpg
+---
+
+import SkipLink from "/src/components/SkipValidationLink";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
+import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+
+An **inverted index** is a data structure in Weaviate that enables efficient text search and filtering operations.
+
+<details>
+<summary>Additional information</summary>
+
+In Weaviate, the inverted index supports search capabilities such as keyword search, filtering, and range queries. An inverted index maps from terms (_tokens_) back to the objects that contain them. This mapping allows Weaviate to quickly identify which objects contain specific terms or match certain criteria during search queries.
+
+You can [enable inverted indexes](#enable-inverted-index-for-keyword-searches-and-filtering) on properties and adjust various parameters that control [indexing behavior](#set-inverted-index-parameters) and [tokenization strategies](#set-tokenization-type-for-property). Proper configuration of these parameters is crucial for optimizing both search performance and storage efficiency.
+
+</details>
+
+## Enable inverted index for keyword searches and filtering
+
+[Inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control how individual properties are indexed for search and filtering operations. These parameters determine whether specific properties can be searched, filtered, or used in range queries.
+
+<details>
+<summary>Enabling inverted index</summary>
+
+The inverted index in Weaviate can be enabled through parameters at the property level:
+
+**`index_filterable`** - Controls whether a property can be used in where filters. When set to `true`, the property values are indexed for efficient filtering operations. Disable this for properties that don't need filtering to save storage space.
+
+**`index_searchable`** - Determines whether a property participates in keyword search queries. When `true`, the property's text content is tokenized and indexed for search. Set to `false` for properties that shouldn't be searchable to improve performance.
+
+**`index_range_filters`** - Enables range filtering capabilities (greater than, less than, etc.) for numerical and date properties. When enabled, additional indexing structures are created to support efficient range queries.
+
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START EnableInvertedIndex"
+      endMarker="# END EnableInvertedIndex"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START EnableInvertedIndex"
+      endMarker="// END EnableInvertedIndex"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Set inverted index parameters
+
+[Inverted index parameters](../config-refs/indexing/inverted-index.mdx#inverted-index-parameters) control the overall behavior of the inverted index for an entire collection. These parameters affect ranking algorithms, null value handling, and timestamp indexing across all properties in the collection.
+
+<details>
+<summary>Inverted index parameters</summary>
+
+The inverted index in Weaviate can be configured through various parameters at the collection level:
+
+**`bm25_b`** - Controls the degree of normalization by document length in the BM25 ranking algorithm. Values range from 0 to 1, where 0 means no length normalization and 1 means full normalization. Higher values favor shorter documents.
+
+**`bm25_k1`** - Controls term frequency saturation in BM25. Higher values make term frequency more important, while lower values reduce the impact of term frequency on scoring.
+
+**`index_null_state`** - Determines whether null values are indexed. When enabled, you can filter for objects that have null values in specific properties.
+
+**`index_property_length`** - Controls whether the length of text properties is indexed. When enabled, allows filtering based on text length and can improve certain ranking algorithms.
+
+**`index_timestamps`** - Enables indexing of creation and update timestamps for objects, allowing filtering and sorting operations.
+
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START SetInvertedIndexParams"
+      endMarker="# END SetInvertedIndexParams"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Set tokenization type for property
+
+Configure a [tokenization method](../config-refs/collections.mdx#tokenization) for each property individually.
+
+<details>
+<summary>Tokenization methods</summary>
+
+Tokenization determines how text content is broken down into individual terms that can be indexed and searched. Weaviate supports several tokenization strategies:
+
+**`word`** - The default tokenization that splits text on whitespace and punctuation, converting to lowercase. Best for general text search where you want to match individual words.
+
+**`lowercase`** - Converts the entire property value to lowercase but treats it as a single token. Useful for exact matching of short strings like categories or tags while being case-insensitive.
+
+**`whitespace`** - Splits text only on whitespace characters, preserving punctuation and case. Good when punctuation is meaningful for search.
+
+**`field`** - Treats the entire property value as a single token without any processing. Use for exact matching of complete field values like IDs, email addresses, or URLs.
+
+**`trigram`** - Breaks text into overlapping 3-character sequences. Enables fuzzy matching and is useful for handling typos or partial matches.
+
+**`gse`** - Google Search Engine tokenization, optimized for Chinese, Japanese, and Korean text. Provides language-aware tokenization for CJK languages.
+
+</details>
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START PropertyTokenization"
+      endMarker="# END PropertyTokenization"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START PropertyTokenization"
+      endMarker="// END PropertyTokenization"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="gonew"
+    />
+  </TabItem>
+</Tabs>
+
+## Further resources
+
+- [References: Collection definition](/weaviate/config-refs/collections.mdx)
+- [Concepts: Inverted index](../config-refs/indexing/inverted-index.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

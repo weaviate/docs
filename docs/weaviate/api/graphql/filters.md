@@ -59,6 +59,7 @@ The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebr
 - `Operator` (which takes one of the following values)
   - `And`
   - `Or`
+  - `Not`
   - `Equal`
   - `NotEqual`
   - `GreaterThan`
@@ -70,6 +71,7 @@ The `where` filter is an [algebraic object](https://en.wikipedia.org/wiki/Algebr
   - `IsNull`
   - `ContainsAny`  (*Only for array and text properties)
   - `ContainsAll`  (*Only for array and text properties)
+  - `ContainsNone` (*Only for array and text properties)
 - `Path`: Is a list of strings in [XPath](https://en.wikipedia.org/wiki/XPath#Abbreviated_syntax) style, indicating the property name of the collection.
   - If the property is a cross-reference, the path should be followed as a list of strings. For a `inPublication` reference property that refers to `Publication` collection, the path selector for `name` will be `["inPublication", "Publication", "name"]`.
 - `valueType`
@@ -132,10 +134,6 @@ If the operator is `And` or `Or`, the operands are a list of `where` filters.
 ```
 
 </details>
-
-:::note `Not` operator
-Weaviate doesn't have an operator to invert a filter (e.g. `Not Like ...` ). If you would like us to add one, please [upvote the issue](https://github.com/weaviate/weaviate/issues/3683).
-:::
 
 ### Filter behaviors
 
@@ -239,15 +237,15 @@ Each `Like` filter iterates over the entire inverted index for that property. Th
 Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters. For example, it is currently not possible to only match the string `car*` and not `car`, `care` or `carpet`. This is a known limitation and may be addressed in future versions of Weaviate.
 
 
-### `ContainsAny` / `ContainsAll`
+### `ContainsAny` / `ContainsAll` / `ContainsNone`
 
-The `ContainsAny` and `ContainsAll` operators filter objects using values of an array as criteria.
+The `ContainsAny`, `ContainsAll` and `ContainsNone` operators filter objects using values of an array as criteria.
 
 Both operators expect an array of values and return objects that match based on the input values.
 
-:::note `ContainsAny` and `ContainsAll` notes:
-- The `ContainsAny` and `ContainsAll` operators treat texts as an array. The text is split into an array of tokens based on the chosen tokenization scheme, and the search is performed on that array.
-- When using `ContainsAny` or `ContainsAll` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the text array must be specified with the `valueTextArray` argument. This is different from the usage in search, where the `valueText` argument that can be used.
+:::note `ContainsAny`/`ContainsAll`/`ContainsNone` notes:
+- The `ContainsAny`, `ContainsAll` and `ContainsNone` operators treat texts as an array. The text is split into an array of tokens based on the chosen tokenization scheme, and the search is performed on that array.
+- When using `ContainsAny`, `ContainsAll` and `ContainsNone` with the REST api for [batch deletion](../../manage-objects/delete.mdx#delete-multiple-objects), the text array must be specified with the `valueTextArray` argument. This is different from the usage in search, where the `valueText` argument that can be used.
 :::
 
 
@@ -264,6 +262,12 @@ A `ContainsAny` query on a path of `["languages_spoken"]` with a value of `["Chi
 `ContainsAll` returns objects where all the values from the input array are present.
 
 Using the same dataset of `Person` objects as above, a `ContainsAll` query on a path of `["languages_spoken"]` with a value of `["Chinese", "French", "English"]` will return objects where all three of those languages are present in the `languages_spoken` array.
+
+#### `ContainsNone`
+
+`ContainsNone` returns objects where none of the values from the input array are present.
+
+Using the same dataset of `Person` objects as above, a `ContainsNone` query on a path of `["languages_spoken"]` with a value of `["Chinese", "French", "English"]` will return objects where **none** of those languages are present in the `languages_spoken` array. For example, a person who speaks only Spanish would be returned, but a person who speaks English would be excluded.
 
 ## Filter performance
 
