@@ -156,7 +156,7 @@ public class SemanticSearchTests : IAsyncLifetime
         // GetNearVector
         // highlight-start
         var response = await jeopardy.Query.NearVector(
-            VectorData.Create("default", queryVector), // your query vector goes here
+            Vectors.Create(("default", queryVector)), // your query vector goes here
         // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
@@ -310,7 +310,7 @@ public class SemanticSearchTests : IAsyncLifetime
             "animals in movies",
             // highlight-start
             // TODO[g-despot]: Uncomment when filters becomes available
-            filter: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").Equal("Double Jeopardy!"),
             // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance

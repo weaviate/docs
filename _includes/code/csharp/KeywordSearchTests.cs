@@ -242,7 +242,7 @@ public class KeywordSearchTests : IAsyncLifetime
         var response = await jeopardy.Query.BM25(
             "food",
             // highlight-start
-            filter: Filter.Property("round").Equal("Double Jeopardy!"),
+            filters: Filter.Property("round").Equal("Double Jeopardy!"),
             // highlight-end
             returnProperties: new[] { "answer", "question", "round" }, // return these properties
             limit: 3

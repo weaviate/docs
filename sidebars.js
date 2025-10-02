@@ -653,6 +653,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "weaviate/client-libraries/csharp",
+          className: "sidebar-item",
+        },
+        {
+          type: "doc",
           id: "weaviate/client-libraries/go",
           className: "sidebar-item",
         },
