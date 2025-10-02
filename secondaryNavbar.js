@@ -150,6 +150,14 @@ const secondaryNavbarItems = {
     href: "https://weaviate.io/community/events",
     links: [],
   },
+  academy: {
+    title: "Weaviate Academy",
+    icon: "fa-solid fa-graduation-cap",
+    isSmall: true,
+    description: "",
+    href: "https://academy.weaviate.io/",
+    links: [],
+  },
 };
 
 export default secondaryNavbarItems;
