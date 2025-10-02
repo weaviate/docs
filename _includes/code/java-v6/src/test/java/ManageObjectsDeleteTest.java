@@ -64,22 +64,6 @@ class ManageObjectsDeleteTest {
   }
 
   @Test
-  void testDeleteErrorHandling() {
-    // START DeleteError
-    // try {
-    // String nonExistentUuid = "00000000-0000-0000-0000-000000000000";
-    // CollectionHandle<Map<String, Object>> collection =
-    // client.collections.use(COLLECTION_NAME);
-    // collection.data.deleteById(nonExistentUuid);
-    // } catch (WeaviateApiException e) {
-    // // 404 error if the id was not found
-    // System.out.println(e);
-    // // assertThat(e.getStatusCode()).isEqualTo(404);
-    // }
-    // END DeleteError
-  }
-
-  @Test
   void testBatchDelete() {
     CollectionHandle<Map<String, Object>> collection = client.collections.use(COLLECTION_NAME);
     List<Map<String, Object>> objects = IntStream.range(0, 5)

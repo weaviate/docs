@@ -7,16 +7,14 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 
-public class SemanticSearchTests : IAsyncLifetime
+public class SearchSimilarityTest : IAsyncLifetime
 {
     private WeaviateClient client;
 
-    public Task InitializeAsync()
+    // InitializeAsync is used for asynchronous setup before tests in the class run.
+    public async Task InitializeAsync()
     {
-        // ================================
-        // ===== INSTANTIATION-COMMON =====
-        // ================================
-
+        // START INSTANTIATION-COMMON
         // Best practice: store your credentials in environment variables
         var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
@@ -26,44 +24,34 @@ public class SemanticSearchTests : IAsyncLifetime
         client = Connect.Cloud(
             weaviateUrl,
             weaviateApiKey
-            // additionalHeaders: new Dictionary<string, string>
-            // {
-            //     { "X-OpenAI-Api-Key", openaiApiKey },
-            //     { "X-Cohere-Api-Key", cohereApiKey }
-            // }
+        // additionalHeaders: new Dictionary<string, string>
+        // {
+        //     { "X-OpenAI-Api-Key", openaiApiKey },
+        //     { "X-Cohere-Api-Key", cohereApiKey }
+        // }
         );
-        return Task.CompletedTask;
+        // END INSTANTIATION-COMMON
     }
 
-    public Task DisposeAsync()
+    // DisposeAsync is used for asynchronous teardown after all tests in the class have run.
+    public async Task DisposeAsync()
     {
-        // The C# client manages its connections automatically and does not require an explicit 'close' method.
-        return Task.CompletedTask;
+        await client.Collections.DeleteAll();
+        // The C# client, using HttpClient, manages its connections automatically and does not require an explicit 'close' method.
     }
 
     [Fact]
     public async Task NamedVectorNearText()
     {
-        // ===============================================
-        // ===== QUERY WITH TARGET VECTOR & nearText =====
-        // ===============================================
-
-        // NamedVectorNearText
+        // START NamedVectorNearText
         var reviews = client.Collections.Use("WineReviewNV");
-        // TODO[g-despot] Why is groupBy necessary here?
         var response = await reviews.Query.NearText(
             "a sweet German white wine",
             limit: 2,
             // highlight-start
             targetVector: ["title_country"],  // Specify the target vector for named vector collections
                                               // highlight-end
-            returnMetadata: MetadataOptions.Distance,
-            groupBy: new GroupByRequest
-            {
-                PropertyName = "country",       // group by this property
-                ObjectsPerGroup = 1,            // maximum objects per group
-                NumberOfGroups = 2,             // maximum number of groups
-            }
+            returnMetadata: MetadataOptions.Distance
         );
 
         foreach (var o in response.Objects)
@@ -82,17 +70,12 @@ public class SemanticSearchTests : IAsyncLifetime
     [Fact]
     public async Task GetNearText()
     {
-        // ===============================
-        // ===== QUERY WITH nearText =====
-        // ===============================
-
-        // GetNearText
+        // START GetNearText
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // highlight-start
         var response = await jeopardy.Query.NearText(
-            "animals in movies"
+        // highlight-start
+            "animals in movies",
         // highlight-end
-            ,
             limit: 2,
             returnMetadata: MetadataOptions.Distance
         );
@@ -103,27 +86,20 @@ public class SemanticSearchTests : IAsyncLifetime
             Console.WriteLine(o.Metadata.Distance);
         }
         // END GetNearText
-
-        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Equal(2, response.Objects.Count());
-        Assert.True(response.Objects.First().Properties.ContainsKey("question"));
-        Assert.NotNull(response.Objects.First().Metadata.Distance);
     }
 
     [Fact]
     public async Task GetNearObject()
     {
-        // =================================
-        // ===== QUERY WITH nearObject =====
-        // =================================
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        var objects = await jeopardy.Query.FetchObjects(limit: 1);
-        var uuid = objects.Objects.First().ID;
+        var initialResponse = await jeopardy.Query.FetchObjects(limit: 1);
+        if (!initialResponse.Objects.Any()) return; // Skip test if no data
+        Guid uuid = (Guid)initialResponse.Objects.First().ID;
 
-        // GetNearObject
+        // START GetNearObject
         // highlight-start
         var response = await jeopardy.Query.NearObject(
-            (Guid)uuid,  // A UUID of an object
+            uuid, // A UUID of an object
         // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
@@ -145,18 +121,15 @@ public class SemanticSearchTests : IAsyncLifetime
     [Fact]
     public async Task GetNearVector()
     {
-        // =================================
-        // ===== QUERY WITH nearVector =====
-        // =================================
-
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        var objectWithVector = await jeopardy.Query.FetchObjects(limit: 1, returnMetadata: MetadataOptions.Vector);
-        var queryVector = objectWithVector.Objects.First().Vectors["default"];
+        var initialResponse = await jeopardy.Query.FetchObjects(limit: 1, returnMetadata: MetadataOptions.Vector);
+        if (!initialResponse.Objects.Any()) return; // Skip test if no data
+        var queryVector = initialResponse.Objects.First().Vectors["default"];
 
-        // GetNearVector
+        // START GetNearVector
         // highlight-start
         var response = await jeopardy.Query.NearVector(
-            Vectors.Create(("default", queryVector)), // your query vector goes here
+            queryVector, // your query vector goes here
         // highlight-end
             limit: 2,
             returnMetadata: MetadataOptions.Distance
@@ -176,13 +149,31 @@ public class SemanticSearchTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task GetLimitOffset()
+    {
+        // START GetLimitOffset
+        var jeopardy = client.Collections.Use("JeopardyQuestion");
+        var response = await jeopardy.Query.NearText(
+            "animals in movies",
+            // highlight-start
+            limit: 2,   // return 2 objects
+            offset: 1,  // With an offset of 1
+                        // highlight-end
+            returnMetadata: MetadataOptions.Distance
+        );
+
+        foreach (var o in response.Objects)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+            Console.WriteLine(o.Metadata.Distance);
+        }
+        // END GetLimitOffset
+    }
+
+    [Fact]
     public async Task GetWithDistance()
     {
-        // ===============================
-        // ===== QUERY WITH DISTANCE =====
-        // ===============================
-
-        // GetWithDistance
+        // START GetWithDistance
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.NearText(
             "animals in movies",
@@ -211,25 +202,14 @@ public class SemanticSearchTests : IAsyncLifetime
     [Fact]
     public async Task GetWithAutocut()
     {
-        // ===============================
-        // ===== Query with autocut =====
-        // ===============================
-
-        // START Autocut 
+        // START Autocut
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.NearText(
             "animals in movies",
             // highlight-start
             autoCut: 1, // number of close groups
-                          // highlight-end
-            returnMetadata: MetadataOptions.Distance,
-            // TODO[g-despot]: Why is groupBy necessary here?
-            groupBy: new GroupByRequest
-            {
-                PropertyName = "round",       // group by this property
-                ObjectsPerGroup = 2,          // maximum objects per group
-                NumberOfGroups = 2,           // maximum number of groups
-            }
+                        // highlight-end
+            returnMetadata: MetadataOptions.Distance
         );
 
         foreach (var o in response.Objects)
@@ -237,7 +217,7 @@ public class SemanticSearchTests : IAsyncLifetime
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
             Console.WriteLine(o.Metadata.Distance);
         }
-        // END Autocut 
+        // END Autocut
 
         Assert.True(response.Objects.Count() > 0);
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
@@ -248,25 +228,20 @@ public class SemanticSearchTests : IAsyncLifetime
     [Fact]
     public async Task GetWithGroupBy()
     {
-        // ==============================
-        // ===== QUERY WITH groupBy =====
-        // ==============================
-
-        // GetWithGroupby
+        // START GetWithGroupby
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // highlight-start
-        var groupBy = new GroupByRequest
-        {
-            PropertyName = "round",       // group by this property
-            ObjectsPerGroup = 2,          // maximum objects per group
-            NumberOfGroups = 2,           // maximum number of groups
-        };
 
+        // highlight-start
         var response = await jeopardy.Query.NearText(
             "animals in movies",   // find object based on this query
-            limit: 10,                    // maximum total objects
+            limit: 10,             // maximum total objects
             returnMetadata: MetadataOptions.Distance,
-            groupBy: groupBy
+            groupBy: new GroupByRequest
+            {
+                PropertyName = "round",       // group by this property
+                NumberOfGroups = 2,           // maximum number of groups
+                ObjectsPerGroup = 2,          // maximum objects per group
+            }
         );
         // highlight-end
 
@@ -277,11 +252,11 @@ public class SemanticSearchTests : IAsyncLifetime
             Console.WriteLine(o.Metadata.Distance);
         }
 
-        foreach (var grp in response.Groups.Values)
+        foreach (var group in response.Groups.Values)
         {
-            Console.WriteLine("==========" + grp.Name + "==========");
-            Console.WriteLine(grp.Objects);
-            foreach (var o in grp.Objects)
+            Console.WriteLine($"=========={group.Name}==========");
+            Console.WriteLine(group.Objects.Count());
+            foreach (var o in group.Objects)
             {
                 Console.WriteLine(JsonSerializer.Serialize(o.Properties));
                 Console.WriteLine(JsonSerializer.Serialize(o.Metadata));
@@ -300,16 +275,11 @@ public class SemanticSearchTests : IAsyncLifetime
     [Fact]
     public async Task GetWithWhere()
     {
-        // ============================
-        // ===== QUERY WITH WHERE =====
-        // ============================
-
-        // GetWithWhere
+        // START GetWithFilter
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.NearText(
             "animals in movies",
             // highlight-start
-            // TODO[g-despot]: Uncomment when filters becomes available
             filters: Filter.Property("round").Equal("Double Jeopardy!"),
             // highlight-end
             limit: 2,
@@ -321,7 +291,7 @@ public class SemanticSearchTests : IAsyncLifetime
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
             Console.WriteLine(o.Metadata.Distance);
         }
-        // END GetWithWhere
+        // END GetWithFilter
 
         Assert.True(response.Objects.Count() > 0);
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);

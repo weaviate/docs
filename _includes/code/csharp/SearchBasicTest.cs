@@ -9,7 +9,7 @@ using System.Linq;
 
 // Note: This code assumes the existence of a Weaviate instance populated
 // with 'JeopardyQuestion' and 'WineReviewMT' collections as per the Python examples.
-public class SearchBasicsTests : IAsyncLifetime
+public class SearchBasicTest : IAsyncLifetime
 {
     private WeaviateClient client;
 

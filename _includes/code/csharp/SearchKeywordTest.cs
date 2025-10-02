@@ -3,52 +3,56 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 
-public class KeywordSearchTests : IAsyncLifetime
+namespace WeaviateProject.Tests;
+
+public class SearchKeywordTest : IDisposable
 {
-    private WeaviateClient client;
+    private static readonly WeaviateClient client;
 
-    public Task InitializeAsync()
+    // Static constructor for one-time setup (like @BeforeAll)
+    static SearchKeywordTest()
     {
-        // ================================
-        // ===== INSTANTIATION-COMMON =====
-        // ================================
-
+        // START INSTANTIATION-COMMON
         // Best practice: store your credentials in environment variables
-        var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
-        var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        client = Connect.Cloud(
-            weaviateUrl,
-            weaviateApiKey
-            //additionalHeaders: new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey } }
-        );
-        return Task.CompletedTask;
+        // The C# client uses a configuration object.
+        var config = new ClientConfiguration
+        {
+            // For Weaviate Cloud, the URL is the full gRPC address
+            GrpcAddress = weaviateUrl,
+            // Headers are added to the configuration
+            // Headers = new()
+            // {
+            //     { "Authorization", $"Bearer {weaviateApiKey}" },
+            //     { "X-OpenAI-Api-Key", openaiApiKey }
+            // }
+        };
+        client = new WeaviateClient(config);
+        // END INSTANTIATION-COMMON
     }
 
-    public Task DisposeAsync()
+    // Dispose is called once after all tests in the class are finished (like @AfterAll)
+    public void Dispose()
     {
-        // The C# client manages its connections automatically and does not require an explicit 'close' method.
-        return Task.CompletedTask;
+        // The C# client manages connections automatically and does not require an explicit 'close' method.
+        GC.SuppressFinalize(this);
     }
 
     [Fact]
-    public async Task BasicBM25()
+    public async Task TestBM25Basic()
     {
-        // ============================
-        // ===== Basic BM25 Query =====
-        // ============================
-
-        // BM25Basic
+        // START BM25Basic
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // highlight-start
         var response = await jeopardy.Query.BM25(
-        // highlight-end
+            // highlight-start
             "food",
+            // highlight-end
             limit: 3
         );
 
@@ -62,14 +66,18 @@ public class KeywordSearchTests : IAsyncLifetime
         Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
     }
 
-    [Fact]
-    public async Task BM25WithScore()
-    {
-        // ================================================
-        // ===== BM25 Query with score / explainScore =====
-        // ================================================
+    // START BM25OperatorOrWithMin
+    // Coming soon
+    // END BM25OperatorOrWithMin
 
-        // BM25WithScore
+    // START BM25OperatorAnd
+    // Coming soon
+    // END BM25OperatorAnd
+
+    [Fact]
+    public async Task TestBM25WithScore()
+    {
+        // START BM25WithScore
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.BM25(
             "food",
@@ -85,20 +93,15 @@ public class KeywordSearchTests : IAsyncLifetime
             // highlight-end
         }
         // END BM25WithScore
-
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.Contains("food", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
         Assert.NotNull(response.Objects.First().Metadata.Score);
     }
 
     [Fact]
-    public async Task BM25WithLimit()
+    public async Task TestLimit()
     {
-        // =================================
-        // ===== BM25 Query with limit =====
-        // =================================
-
-        // START limit 
+        // START limit
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.BM25(
             "safety",
@@ -112,7 +115,7 @@ public class KeywordSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END limit 
+        // END limit
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.Contains("safety", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
@@ -120,13 +123,9 @@ public class KeywordSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task BM25WithAutocut()
+    public async Task TestAutocut()
     {
-        // ===================================
-        // ===== BM25 Query with autocut =====
-        // ===================================
-
-        // START autocut 
+        // START autocut
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.BM25(
             "safety",
@@ -139,25 +138,21 @@ public class KeywordSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END autocut 
+        // END autocut
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.Contains("safety", JsonSerializer.Serialize(response.Objects.First().Properties).ToLower());
     }
 
     [Fact]
-    public async Task BM25WithProperties()
+    public async Task TestBM25WithProperties()
     {
-        // ===============================================
-        // ===== BM25 Query with Selected Properties =====
-        // ===============================================
-
-        // BM25WithProperties
+        // START BM25WithProperties
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.BM25(
             "safety",
             // highlight-start
-            searchFields: new[] { "question" },
+            searchFields: ["question"],
             // highlight-end
             returnMetadata: MetadataOptions.Score,
             limit: 3
@@ -175,18 +170,14 @@ public class KeywordSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task BM25WithBoostedProperties()
+    public async Task TestBM25WithBoostedProperties()
     {
-        // ==============================================
-        // ===== BM25 Query with Boosted Properties =====
-        // ==============================================
-
-        // BM25WithBoostedProperties
+        // START BM25WithBoostedProperties
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.BM25(
             "food",
             // highlight-start
-            searchFields: new[] { "question^2", "answer" },
+            searchFields: ["question^2", "answer"],
             // highlight-end
             limit: 3
         );
@@ -202,19 +193,15 @@ public class KeywordSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task BM25MultipleKeywords()
+    public async Task TestMultipleKeywords()
     {
-        // ==================================
-        // ===== BM25 multiple keywords =====
-        // ==================================
-
-        // START MultipleKeywords 
+        // START MultipleKeywords
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.BM25(
             // highlight-start
             "food wine", // search for food or wine
                          // highlight-end
-            searchFields: new[] { "question" },
+            searchFields: ["question"],
             limit: 5
         );
 
@@ -222,7 +209,7 @@ public class KeywordSearchTests : IAsyncLifetime
         {
             Console.WriteLine(o.Properties["question"]);
         }
-        // END MultipleKeywords 
+        // END MultipleKeywords
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         var propertiesJson = JsonSerializer.Serialize(response.Objects.First().Properties).ToLower();
@@ -230,21 +217,16 @@ public class KeywordSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task BM25WithFilter()
+    public async Task TestBM25WithFilter()
     {
-        // ==================================
-        // ===== Basic BM25 With Filter =====
-        // ==================================
-
-        // BM25WithFilter
+        // START BM25WithFilter
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // TODO[g-despot]: Filters missing?
         var response = await jeopardy.Query.BM25(
             "food",
             // highlight-start
             filters: Filter.Property("round").Equal("Double Jeopardy!"),
             // highlight-end
-            returnProperties: new[] { "answer", "question", "round" }, // return these properties
+            returnProperties: ["answer", "question", "round"], // return these properties
             limit: 3
         );
 
@@ -260,32 +242,24 @@ public class KeywordSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task BM25WithGroupBy()
+    public async Task TestBM25GroupBy()
     {
-        // ==================================
-        // ===== BM25 groupBy  =====
-        // ==================================
-
         // START BM25GroupByPy4
         var jeopardy = client.Collections.Use("JeopardyQuestion");
 
-        // Grouping parameters
-        var groupBy = new GroupByRequest
-        {
-            PropertyName = "round",       // group by this property
-            ObjectsPerGroup = 3,          // maximum objects per group
-            NumberOfGroups = 2,           // maximum number of groups
-        };
-
-        // Query
         var response = await jeopardy.Query.BM25(
             "California",
-            groupBy: groupBy
+            groupBy: new GroupByRequest
+            {
+                PropertyName = "round",       // group by this property
+                NumberOfGroups = 2,           // maximum number of groups
+                ObjectsPerGroup = 3,          // maximum objects per group
+            }
         );
 
-        foreach (var grp in response.Groups.Values)
+        foreach (var group in response.Groups.Values)
         {
-            Console.WriteLine($"{grp.Name} {JsonSerializer.Serialize(grp.Objects)}");
+            Console.WriteLine($"{group.Name} {JsonSerializer.Serialize(group.Objects)}");
         }
         // END BM25GroupByPy4
 
