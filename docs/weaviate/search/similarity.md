@@ -14,7 +14,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.similarity.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-similarity_test.go';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/VectorSearchTest.java';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchSimilarityTest.java";
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchBasicsTests.cs";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchBasicTest.cs";
 
 Vector search returns the objects with most similar vectors to that of the query.
 
@@ -138,6 +138,14 @@ This example uses a base64 representation of an image.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START search with base64"
+      endMarker="// END search with base64"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 See [Image search](./image.md) for more information.
@@ -185,6 +193,14 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       startMarker="// START GetNearObject"
       endMarker="// END GetNearObject"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetNearObject"
+      endMarker="// END GetNearObject"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -261,6 +277,14 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetNearVector"
+      endMarker="// END GetNearVector"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -317,6 +341,14 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       startMarker="// START NamedVectorNearText"
       endMarker="// END NamedVectorNearText"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NamedVectorNearText"
+      endMarker="// END NamedVectorNearText"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -388,6 +420,14 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithDistance"
+      endMarker="// END GetWithDistance"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -454,6 +494,14 @@ Optionally, use `offset` to paginate the results.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetLimitOffset"
+      endMarker="// END GetLimitOffset"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -507,6 +555,14 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       startMarker="// START Autocut"
       endMarker="// END Autocut"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START Autocut"
+      endMarker="// END Autocut"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -578,6 +634,14 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithGroupby"
+      endMarker="// END GetWithGroupby"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -645,6 +709,14 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       startMarker="// START GetWithFilter"
       endMarker="// END GetWithFilter"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithFilter"
+      endMarker="// END GetWithFilter"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">

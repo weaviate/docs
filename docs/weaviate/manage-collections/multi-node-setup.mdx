@@ -10,6 +10,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import JavaReplicationCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.replication.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
@@ -63,6 +64,14 @@ Configure replication settings, such as [async replication](/deploy/configuratio
       startMarker="// START AllReplicationSettings"
       endMarker="// END AllReplicationSettings"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AllReplicationSettings"
+      endMarker="// END AllReplicationSettings"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="cURL">
@@ -150,6 +159,14 @@ Configure sharding per collection.
       startMarker="// START ShardingSettings"
       endMarker="// END ShardingSettings"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ShardingSettings"
+      endMarker="// END ShardingSettings"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

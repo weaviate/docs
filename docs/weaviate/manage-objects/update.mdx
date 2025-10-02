@@ -11,6 +11,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.update.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.update.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.update.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsUpdateTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsUpdateTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.update_test.go";
 import RestObjectsCRUDClassnameNote from "/_includes/rest-objects-crud-classname-note.md";
 import SkipLink from "/src/components/SkipValidationLink";
@@ -81,6 +82,14 @@ However, if you add a _new_ property to your collection definition, Weaviate onl
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateProps"
+      endMarker="// END UpdateProps"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Update object vector
@@ -121,6 +130,14 @@ The object vector can also be updated similarly to properties. For [named vector
 
 > Coming soon
 
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateVector"
+      endMarker="// END UpdateVector"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -167,6 +184,14 @@ The entire object can be replaced by providing the collection name, id and the n
       startMarker="// Replace START"
       endMarker="// Replace END"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START Replace"
+      endMarker="// END Replace"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -216,6 +241,14 @@ At object level, you can replace the object with a copy that has those propertie
       startMarker="// DelProps START"
       endMarker="// DelProps END"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DelProps"
+      endMarker="// END DelProps"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

@@ -6,6 +6,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.shards_test.go";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -52,5 +53,13 @@ console.log(JSON.stringify(shards, null, 2));
        endMarker="// UpdateShardStatus END"
        language="java"
      />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateCollectionShards"
+      endMarker="// END UpdateCollectionShards"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>

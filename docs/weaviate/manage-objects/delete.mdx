@@ -13,7 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.delete.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.delete.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsDeleteTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.delete_test.go";
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageDataTests.cs";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsDeleteTest.cs";
 import SkipLink from "/src/components/SkipValidationLink";
 
 Weaviate allows object deletion by id or by a set of criteria.
@@ -150,6 +150,14 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteBatch"
+      endMarker="// END DeleteBatch"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -221,6 +229,14 @@ client.batch().objectsBatchDeleter()
   .run();
 ```
 
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteContains"
+      endMarker="// END DeleteContains"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -303,6 +319,14 @@ client.batch().objectsBatchDeleter()
 ```
 
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteByIDBatch"
+      endMarker="// END DeleteByIDBatch"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Delete all objects
@@ -353,6 +377,14 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
       startMarker="// START DryRun"
       endMarker="// END DryRun"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DryRun"
+      endMarker="// END DryRun"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

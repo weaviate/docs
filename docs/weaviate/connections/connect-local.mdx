@@ -17,7 +17,7 @@ import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaCode from "!!raw-loader!/_includes/code/connections/connect.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
-import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTest.cs';
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
 import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
 
@@ -269,6 +269,14 @@ Integrations that use external APIs often need API keys. To add third party API 
       startMarker="// START LocalThirdPartyAPIKeys"
       endMarker="// END LocalThirdPartyAPIKeys"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START LocalThirdPartyAPIKeys"
+      endMarker="// END LocalThirdPartyAPIKeys"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="shell" label="cURL">

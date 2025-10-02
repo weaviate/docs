@@ -15,7 +15,7 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Conne
 import JavaCode from "!!raw-loader!/_includes/code/connections/connect.java";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
 import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
-import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTest.cs';
 
 Follow these steps to connect to a [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) instance.
 
@@ -163,6 +163,14 @@ If you use API-based models for vectorization or RAG, you must provide an API ke
       startMarker="// START ThirdPartyAPIKeys"
       endMarker="// END ThirdPartyAPIKeys"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ThirdPartyAPIKeys"
+      endMarker="// END ThirdPartyAPIKeys"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="shell" label="cURL">

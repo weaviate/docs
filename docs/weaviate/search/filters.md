@@ -13,6 +13,7 @@ import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.filters-v3.py';
 import JavaScriptCode from '!!raw-loader!/\_includes/code/howto/search.filters.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchFiltersTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchFiltersTest.cs";
 
 Filters let you include, or exclude, particular objects from your result set based on provided conditions.<br/>
 For a list of filter operators, see the [API reference page](../api/graphql/filters.md#filter-structure).
@@ -52,6 +53,14 @@ Add a `filter` to your query, to limit the result set.
       startMarker="// START SingleFilter"
       endMarker="// END SingleFilter"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SingleFilter"
+      endMarker="// END SingleFilter"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -154,6 +163,14 @@ These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To 
       language="java"
     />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultipleFiltersAnd"
+      endMarker="// END MultipleFiltersAnd"
+      language="csharp"
+    />
+  </TabItem>
 <TabItem value="graphql" label="GraphQL">
 <FilteredTextBlock
       text={PyCodeV3}
@@ -213,6 +230,14 @@ You can group and nest filters.
       startMarker="// START MultipleFiltersNested"
       endMarker="// END MultipleFiltersNested"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultipleFiltersNested"
+      endMarker="// END MultipleFiltersNested"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -290,6 +315,14 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearTextSingleFilter"
+      endMarker="// END NearTextSingleFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -351,6 +384,14 @@ The `ContainsAny` operator works on text properties and take an array of values 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ContainsAnyFilter"
+      endMarker="// END ContainsAnyFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -410,6 +451,14 @@ The `ContainsAll` operator works on text properties and take an array of values 
       startMarker="// START ContainsAllFilter"
       endMarker="// END ContainsAllFilter"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ContainsAllFilter"
+      endMarker="// END ContainsAllFilter"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -478,6 +527,14 @@ The `ContainsNone` operator works on text properties and take an array of values
 // Java support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -567,6 +624,14 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START LikeFilter"
+      endMarker="// END LikeFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -644,6 +709,14 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CrossReference"
+      endMarker="// END CrossReference"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -707,6 +780,14 @@ import GeoLimitations from '/\_includes/geo-limitations.mdx';
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterbyGeolocation"
+      endMarker="// END FilterbyGeolocation"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -754,6 +835,14 @@ To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByDateDatatype"
+      endMarker="// END FilterByDateDatatype"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Filter by metadata
@@ -795,6 +884,14 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
       startMarker="// START FilterById"
       endMarker="// END FilterById"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterById"
+      endMarker="// END FilterById"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -844,6 +941,14 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByTimestamp"
+      endMarker="// END FilterByTimestamp"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -891,6 +996,14 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByPropertyLength"
+      endMarker="// END FilterByPropertyLength"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -936,6 +1049,14 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
       startMarker="// START FilterByPropertyNullState"
       endMarker="// END FilterByPropertyNullState"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByPropertyNullState"
+      endMarker="// END FilterByPropertyNullState"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">

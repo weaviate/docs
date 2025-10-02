@@ -22,6 +22,7 @@ import PyCode from "!!raw-loader!../\_includes/provider.vectorizer.py";
 import TSCode from "!!raw-loader!../\_includes/provider.vectorizer.ts";
 import GoCode from "!!raw-loader!/\_includes/code/howto/go/docs/model-providers/2-usage-text/main.go";
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ModelProvidersTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.cs";
 import JavaCode from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java";
 import JavaImportQueries from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java";
 
@@ -89,6 +90,14 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="javaraw"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START WeaviateInstantiation"
+      endMarker="// END WeaviateInstantiation"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Configure the vectorizer
@@ -136,6 +145,14 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BasicVectorizerWeaviate"
+      endMarker="// END BasicVectorizerWeaviate"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Select a model
@@ -181,6 +198,14 @@ You can specify one of the [available models](#available-models) for the vectori
       startMarker="// START VectorizerWeaviateCustomModel"
       endMarker="// END VectorizerWeaviateCustomModel"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START VectorizerWeaviateCustomModel"
+      endMarker="// END VectorizerWeaviateCustomModel"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -246,6 +271,14 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportExample"
+      endMarker="// END BatchImportExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::tip Re-use existing vectors
@@ -305,6 +338,14 @@ The query below returns the `n` most similar objects from the database, set by `
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearTextExample"
+      endMarker="// END NearTextExample"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Hybrid search
@@ -357,6 +398,14 @@ The query below returns the `n` best scoring objects from the database, set by `
       startMarker="// START HybridExample"
       endMarker="// END HybridExample"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridExample"
+      endMarker="// END HybridExample"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

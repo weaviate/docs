@@ -11,6 +11,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.p
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 :::tip Embedding models / Vectorizers
@@ -61,6 +62,14 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Update the reranker model integration
@@ -102,6 +111,14 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
       startMarker="// START UpdateReranker"
       endMarker="// END UpdateReranker"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateReranker"
+      endMarker="// END UpdateReranker"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -156,6 +173,14 @@ Specify a `generative` model integration for a collection (for RAG).
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Update the generative model integration
@@ -197,6 +222,14 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
       startMarker="// START UpdateGenerative"
       endMarker="// END UpdateGenerative"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateGenerative"
+      endMarker="// END UpdateGenerative"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

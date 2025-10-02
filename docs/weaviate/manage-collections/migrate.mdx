@@ -11,6 +11,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.migrate.data.v4.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.migrate.data.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsMigrateDataTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsMigrateDataTest.cs";
 
 Follow these examples to migrate data manually when using a backup is not possible. They cover all permutations between:
 
@@ -69,6 +70,14 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="javaraw"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollectionCollectionToCollection"
+      endMarker="// END CreateCollectionCollectionToCollection"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 2: Migrate the data
@@ -101,6 +110,14 @@ Migrate:
       startMarker="// START CollectionToCollection"
       endMarker="// END CollectionToCollection"
       language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CollectionToCollection"
+      endMarker="// END CollectionToCollection"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -136,6 +153,14 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="javaraw"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollectionCollectionToTenant"
+      endMarker="// END CreateCollectionCollectionToTenant"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 2: Create the tenant(s)
@@ -165,6 +190,14 @@ Add tenants at the target instance before adding data objects.
       startMarker="// START CreateTenants"
       endMarker="// END CreateTenants"
       language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateTenants"
+      endMarker="// END CreateTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -201,6 +234,14 @@ Migrate:
       language="javaraw"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CollectionToTenant"
+      endMarker="// END CollectionToTenant"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Tenant → Collection
@@ -232,6 +273,14 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       startMarker="// START CreateCollectionTenantToCollection"
       endMarker="// END CreateCollectionTenantToCollection"
       language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollectionTenantToCollection"
+      endMarker="// END CreateCollectionTenantToCollection"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -268,6 +317,14 @@ Migrate:
       language="javaraw"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TenantToCollection"
+      endMarker="// END TenantToCollection"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Tenant → Tenant
@@ -301,6 +358,14 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="javaraw"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateCollectionTenantToTenant"
+      endMarker="// END CreateCollectionTenantToTenant"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 #### Step 2: Create the tenant(s)
@@ -330,6 +395,14 @@ Add tenants at the target instance before adding data objects.
       startMarker="// START CreateTenants"
       endMarker="// END CreateTenants"
       language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateTenants"
+      endMarker="// END CreateTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -364,6 +437,14 @@ Migrate:
       startMarker="// START TenantToTenant"
       endMarker="// END TenantToTenant"
       language="javaraw"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TenantToTenant"
+      endMarker="// END TenantToTenant"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

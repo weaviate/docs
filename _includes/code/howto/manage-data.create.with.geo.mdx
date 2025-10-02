@@ -3,6 +3,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.create.py';
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
 
 <Tabs groupId="languages">
 <TabItem value="py" label="Python">
@@ -124,6 +125,14 @@ public class App {
       startMarker="// START WithGeoCoordinates"
       endMarker="// END WithGeoCoordinates"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START WithGeoCoordinates"
+      endMarker="// END WithGeoCoordinates"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

@@ -4,6 +4,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/search.consistency.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/search.consistency.ts';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchBasicTest.cs";
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -119,6 +120,14 @@ public class App {
 ```
 
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START QueryWithReplication"
+      endMarker="// END QueryWithReplication"
+      language="csharp"
+    />
+  </TabItem>
 <TabItem value="curl" label="Curl">
 
 ```bash

@@ -12,7 +12,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
-import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTests.cs';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTest.cs';
 
 The [Python Client v4](/weaviate/client-libraries/python) and the [TypeScript Client v3](../client-libraries/typescript/index.mdx) provide helper methods for common connection types. They also provide custom methods for when you need additional connection configuration.
 
@@ -96,6 +96,14 @@ Integrations that use external APIs often need API keys. To add third party API 
       startMarker="// START ConnectWithApiKeyExample"
       endMarker="// END ConnectWithApiKeyExample"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ConnectWithApiKeyExample"
+      endMarker="// END ConnectWithApiKeyExample"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

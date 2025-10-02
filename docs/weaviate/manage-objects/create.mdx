@@ -13,7 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.create.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.create.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsCreateTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_test.go";
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageDataTests.cs";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsCreateTest.cs";
 
 The examples on this page demonstrate how to create individual objects in Weaviate.
 
@@ -136,6 +136,14 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateObjectWithVector"
+      endMarker="// END CreateObjectWithVector"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Create an object with named vectors
@@ -168,6 +176,14 @@ When you create an object, you can specify named vectors (if [configured in your
       startMarker="// START CreateObjectNamedVectors"
       endMarker="// END CreateObjectNamedVectors"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateObjectNamedVectors"
+      endMarker="// END CreateObjectNamedVectors"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -221,6 +237,14 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateObjectWithId"
+      endMarker="// END CreateObjectWithId"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Generate deterministic IDs
@@ -261,6 +285,14 @@ Object IDs are not randomly generated. The same value always generates the same 
       startMarker="// START CreateObjectWithDeterministicId"
       endMarker="// END CreateObjectWithDeterministicId"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateObjectWithDeterministicId"
+      endMarker="// END CreateObjectWithDeterministicId"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -311,6 +343,14 @@ You can create an object with cross-references to other objects.
       startMarker="// START ObjectWithCrossRef"
       endMarker="// END ObjectWithCrossRef"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ObjectWithCrossRef"
+      endMarker="// END ObjectWithCrossRef"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -374,6 +414,14 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       startMarker="// ValidateObject START"
       endMarker="// ValidateObject END"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ValidateObject"
+      endMarker="// END ValidateObject"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

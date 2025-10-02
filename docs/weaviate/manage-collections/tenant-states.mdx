@@ -10,6 +10,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/_ManageCollectionsMultiTenancyTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/_ManageCollectionsMultiTenancyTest.cs";
 
 ![Storage Tiers](./img/storage-tiers.jpg)
 
@@ -121,6 +122,14 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ActivateTenants"
+      endMarker="// END ActivateTenants"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Deactivate tenant
@@ -155,6 +164,14 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeactivateTenants"
+      endMarker="// END DeactivateTenants"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Offload tenant
@@ -187,6 +204,14 @@ To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
       startMarker="// START OffloadTenants"
       endMarker="// END OffloadTenants"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START OffloadTenants"
+      endMarker="// END OffloadTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -227,6 +252,14 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       startMarker="// START EnableAutoActivation"
       endMarker="// END EnableAutoActivation"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableAutoActivation"
+      endMarker="// END EnableAutoActivation"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

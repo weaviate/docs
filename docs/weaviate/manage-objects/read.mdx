@@ -11,6 +11,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.read.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read_test.go";
 import SkipLink from "/src/components/SkipValidationLink";
 
@@ -68,6 +69,14 @@ Use an ID to retrieve an object. If the id doesn't exist, Weaviate returns a 404
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ReadSimpleObject"
+      endMarker="// END ReadSimpleObject"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Retrieve the object's vector
@@ -115,6 +124,14 @@ Object vectors can be retrieved by specifying its return.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ReadObjectWithVector"
+      endMarker="// END ReadObjectWithVector"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Retrieve named vectors
@@ -144,6 +161,14 @@ Where [named vectors](../config-refs/collections.mdx#named-vectors) are used, yo
       startMarker="// START ReadObjectNamedVectors"
       endMarker="// END ReadObjectNamedVectors"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ReadObjectNamedVectors"
+      endMarker="// END ReadObjectNamedVectors"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
