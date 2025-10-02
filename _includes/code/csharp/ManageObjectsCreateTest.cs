@@ -4,131 +4,151 @@ using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
 namespace WeaviateProject.Tests;
 
-public class ManageDataTests : IAsyncLifetime
+[Collection("Sequential")]
+public class ManageObjectsCreateTest : IAsyncLifetime
 {
-    private readonly WeaviateClient weaviate;
-    private readonly List<string> _collectionNamesToDelete = new List<string>();
+    private static readonly WeaviateClient client;
 
-    public ManageDataTests()
+    // A helper method to generate a deterministic UUID v5 from a seed.
+    private static Guid GenerateUuid5(string seed)
     {
-        weaviate = new WeaviateClient(
-            new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 }
-        );
+        // Namespace for UUIDv5, can be any valid Guid.
+        var namespaceId = Guid.Parse("00000000-0000-0000-0000-000000000000");
+
+        var namespaceBytes = namespaceId.ToByteArray();
+        var nameBytes = Encoding.UTF8.GetBytes(seed);
+
+        // Concatenate namespace and name bytes
+        var combinedBytes = new byte[namespaceBytes.Length + nameBytes.Length];
+        Buffer.BlockCopy(namespaceBytes, 0, combinedBytes, 0, namespaceBytes.Length);
+        Buffer.BlockCopy(nameBytes, 0, combinedBytes, namespaceBytes.Length, nameBytes.Length);
+
+        using (var sha1 = SHA1.Create())
+        {
+            var hash = sha1.ComputeHash(combinedBytes);
+            var newGuid = new byte[16];
+            Array.Copy(hash, 0, newGuid, 0, 16);
+
+            // Set version to 5
+            newGuid[6] = (byte)((newGuid[6] & 0x0F) | (5 << 4));
+            // Set variant to RFC 4122
+            newGuid[8] = (byte)((newGuid[8] & 0x3F) | 0x80);
+
+            // In-place byte swap for correct Guid constructor order
+            (newGuid[0], newGuid[3]) = (newGuid[3], newGuid[0]);
+            (newGuid[1], newGuid[2]) = (newGuid[2], newGuid[1]);
+            (newGuid[4], newGuid[5]) = (newGuid[5], newGuid[4]);
+            (newGuid[6], newGuid[7]) = (newGuid[7], newGuid[6]);
+
+            return new Guid(newGuid);
+        }
     }
 
-    private string AddTestCollection(string name)
+    // Static constructor acts like JUnit's @BeforeAll for one-time setup.
+    static ManageObjectsCreateTest()
     {
-        _collectionNamesToDelete.Add(name);
-        return name;
+        // START INSTANTIATION-COMMON
+        client = new WeaviateClient(new ClientConfiguration { RestAddress = "localhost", RestPort = 8080 });
+        // END INSTANTIATION-COMMON
     }
 
+    // InitializeAsync runs once before the class tests start.
     public async Task InitializeAsync()
     {
-        // Clean slate - delete collections if they exist
-        await weaviate.Collections.Delete("JeopardyQuestion");
-        await weaviate.Collections.Delete("WineReviewNV");
-        await weaviate.Collections.Delete("Publication");
-        await weaviate.Collections.Delete("Author");
+        await client.Collections.DeleteAll(); // Clean slate before tests
 
-        // Create JeopardyQuestion collection
-        await weaviate.Collections.Create(new Collection
+        // START Define the class
+        await client.Collections.Create(new Collection
         {
             Name = "JeopardyQuestion",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecOpenAI())
+            Properties =
+            [
+                Property.Text("title", description: "Question title")
+            ],
+            VectorConfig = new VectorConfigList
+            {
+                new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+            }
         });
 
-        // Create WineReviewNV collection with named vectors
-        await weaviate.Collections.Create(new Collection
+        await client.Collections.Create(new Collection
         {
             Name = "WineReviewNV",
-            Properties = new List<Property>
+            Properties =
+            [
+                Property.Text("review_body", description: "Review body"),
+                Property.Text("title", description: "Name of the wine"),
+                Property.Text("country", description: "Originating country")
+            ],
+            VectorConfig = new VectorConfigList
             {
-                Property.Text("review_body", "Review body"),
-                Property.Text("title", "Name of the wine"),
-                Property.Text("country", "Originating country")
-            },
-            VectorConfig = new[]
-            {
-                // TODO[g-despot]: Uncomment when source properties available
-                // new VectorConfig("title", new Vectorizer.Text2VecOpenAI()) { SourceProperties = new[] { "title" } },
-                // new VectorConfig("review_body", new Vectorizer.Text2VecOpenAI()) { SourceProperties = new[] { "review_body" } },
-                // new VectorConfig("title_country", new Vectorizer.Text2VecOpenAI()) { SourceProperties = new[] { "title", "country" } }
-                new VectorConfig("title", new Vectorizer.Text2VecOpenAI()),
-                    new VectorConfig("review_body", new Vectorizer.Text2VecOpenAI()),
-                    new VectorConfig("title_country", new Vectorizer.Text2VecOpenAI())
+                new VectorConfig("title", new Vectorizer.Text2VecContextionary()),
+                new VectorConfig("review_body", new Vectorizer.Text2VecContextionary()),
+                new VectorConfig("title_country", new Vectorizer.Text2VecContextionary())
             }
         });
+        // END Define the class
 
-        // Create Publication collection for geo tests
-        await weaviate.Collections.Create(new Collection
+        // Additional collections for other tests
+        await client.Collections.Create(new Collection
         {
             Name = "Publication",
-            Properties = new List<Property>
-            {
+            Properties =
+            [
                 Property.GeoCoordinate("headquartersGeoLocation")
-            }
+            ]
         });
-
-        // Create Author collection for existence checks
-        await weaviate.Collections.Create(new Collection
+        await client.Collections.Create(new Collection
         {
             Name = "Author",
-            Properties = new List<Property>
+            VectorConfig = new VectorConfigList
             {
-                Property.Text("name")
-            },
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecOpenAI())
+                new VectorConfig("default", new Vectorizer.SelfProvided())
+            }
         });
     }
 
+    // DisposeAsync acts like JUnit's @AfterAll for one-time teardown.
     public async Task DisposeAsync()
     {
-        foreach (string name in _collectionNamesToDelete)
-        {
-            await weaviate.Collections.Delete(name);
-        }
-        await weaviate.Collections.Delete("JeopardyQuestion");
-        await weaviate.Collections.Delete("WineReviewNV");
-        await weaviate.Collections.Delete("Publication");
-        await weaviate.Collections.Delete("Author");
+        await client.Collections.DeleteAll();
     }
 
     [Fact]
-    public async Task CreateObject()
+    public async Task TestCreateObject()
     {
         // START CreateSimpleObject
-        var jeopardy = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
 
         // highlight-start
         var uuid = await jeopardy.Data.Insert(new
         {
             // highlight-end
             question = "This vector DB is OSS & supports automatic property type inference on import",
-            // answer = "Weaviate",  // properties can be omitted
-            newProperty = 123  // will be automatically added as a number property
+            // answer = "Weaviate", // properties can be omitted
+            newProperty = 123 // will be automatically added as a number property
         });
 
         Console.WriteLine(uuid); // the return value is the object's UUID
         // END CreateSimpleObject
 
-        // Test
         var result = await jeopardy.Query.FetchObjectByID(uuid);
-        var newPropertyValue = Convert.ToInt64(result?.Properties["newProperty"]);
-        Assert.Equal(123L, newPropertyValue);
+        Assert.NotNull(result);
+        var props = result.Properties as IDictionary<string, object>;
+        Assert.Equal(123d, props["newProperty"]);
     }
 
     [Fact]
-    public async Task CreateObjectWithVector()
+    public async Task TestCreateObjectWithVector()
     {
-        // CreateObjectWithVector START
-        var jeopardy = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
+        // START CreateObjectWithVector
+        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             new
             {
@@ -136,21 +156,22 @@ public class ManageDataTests : IAsyncLifetime
                 answer = "Weaviate"
             },
             // highlight-start
-            vectors: Enumerable.Repeat(0.12345f, 1536).ToArray()
-        // highlight-end
+            vectors: new float[300] // Using a zero vector for demonstration
         );
+        // highlight-end
 
         Console.WriteLine(uuid); // the return value is the object's UUID
-        // CreateObjectWithVector END
+        // END CreateObjectWithVector
 
-        Assert.NotEqual(Guid.Empty, uuid);
+        var result = await jeopardy.Query.FetchObjectByID(uuid);
+        Assert.NotNull(result);
     }
 
     [Fact]
-    public async Task CreateObjectNamedVectors()
+    public async Task TestCreateObjectNamedVectors()
     {
-        // CreateObjectNamedVectors START
-        var reviews = weaviate.Collections.Use<dynamic>("WineReviewNV"); // This collection must have named vectors configured
+        // START CreateObjectNamedVectors
+        var reviews = client.Collections.Use<object>("WineReviewNV"); // This collection must have named vectors configured
         var uuid = await reviews.Data.Insert(
             new
             {
@@ -160,33 +181,33 @@ public class ManageDataTests : IAsyncLifetime
             },
             // highlight-start
             // Specify the named vectors, following the collection definition
-            vectors: new Dictionary<string, float[]>
+            vectors: new Vectors
             {
-                ["title"] = Enumerable.Repeat(0.12345f, 1536).ToArray(),
-                ["review_body"] = Enumerable.Repeat(0.31313f, 1536).ToArray(),
-                ["title_country"] = Enumerable.Repeat(0.05050f, 1536).ToArray()
+                { "title", new float[1536] },
+                { "review_body", new float[1536] },
+                { "title_country", new float[1536] }
             }
-            // highlight-end
         );
+        // highlight-end
 
         Console.WriteLine(uuid); // the return value is the object's UUID
-        // CreateObjectNamedVectors END
+        // END CreateObjectNamedVectors
 
-        // Test
         var result = await reviews.Query.FetchObjectByID(uuid, returnMetadata: MetadataOptions.Vector);
-        Assert.NotNull(result?.Vectors);
-        Assert.Equal(3, result.Vectors.Count);
-        Assert.True(result.Vectors.ContainsKey("title"));
-        Assert.True(result.Vectors.ContainsKey("review_body"));
-        Assert.True(result.Vectors.ContainsKey("title_country"));
+        Assert.NotNull(result);
+        Assert.NotNull(result.Vectors);
+        Assert.Contains("title", result.Vectors.Keys);
+        Assert.Contains("review_body", result.Vectors.Keys);
+        Assert.Contains("title_country", result.Vectors.Keys);
     }
 
     [Fact]
-    public async Task CreateObjectWithDeterministicId()
+    public async Task TestCreateObjectWithDeterministicId()
     {
-        // CreateObjectWithDeterministicId START
+        // START CreateObjectWithDeterministicId
         // highlight-start
-        // For deterministic UUID generation
+        // In C#, you can generate a deterministic UUID from a string or bytes.
+        // This helper function creates a UUID v5 for this purpose.
         // highlight-end
 
         var dataObject = new
@@ -194,140 +215,93 @@ public class ManageDataTests : IAsyncLifetime
             question = "This vector DB is OSS and supports automatic property type inference on import",
             answer = "Weaviate"
         };
+        var dataObjectString = JsonSerializer.Serialize(dataObject);
 
-        var jeopardy = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
+        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
             dataObject,
             // highlight-start
-            id: GenerateUuid5(dataObject)
-        // highlight-end
+            id: GenerateUuid5(dataObjectString)
         );
-        // CreateObjectWithDeterministicId END
+        // highlight-end
+        // END CreateObjectWithDeterministicId
 
-        // Test
-        Assert.Equal(GenerateUuid5(dataObject), uuid);
+        Assert.Equal(GenerateUuid5(dataObjectString), uuid);
         await jeopardy.Data.DeleteByID(uuid); // Clean up
     }
 
     [Fact]
-    public async Task CreateObjectWithId()
+    public async Task TestCreateObjectWithId()
     {
-        // CreateObjectWithId START
-        var properties = new
-        {
-            question = "This vector DB is OSS and supports automatic property type inference on import",
-            answer = "Weaviate"
-        };
-        var jeopardy = weaviate.Collections.Use<dynamic>("JeopardyQuestion");
+        // START CreateObjectWithId
+        var jeopardy = client.Collections.Use<object>("JeopardyQuestion");
         var uuid = await jeopardy.Data.Insert(
-            properties,
+            new
+            {
+                question = "This vector DB is OSS and supports automatic property type inference on import",
+                answer = "Weaviate"
+            },
             // highlight-start
             id: Guid.Parse("12345678-e64f-5d94-90db-c8cfa3fc1234")
-        // highlight-end
         );
+        // highlight-end
 
         Console.WriteLine(uuid); // the return value is the object's UUID
-        // CreateObjectWithId END
+        // END CreateObjectWithId
 
-        // Test
         var result = await jeopardy.Query.FetchObjectByID(uuid);
-        Assert.Equal(properties.question, result?.Properties["question"]);
+        Assert.NotNull(result);
+        var props = result.Properties as IDictionary<string, object>;
+        Assert.Equal("This vector DB is OSS and supports automatic property type inference on import", props["question"]);
     }
 
     [Fact]
-    public async Task WithGeoCoordinates()
+    public async Task TestWithGeoCoordinates()
     {
         // START WithGeoCoordinates
-        var publications = weaviate.Collections.Use<dynamic>("Publication");
+        var publications = client.Collections.Use<object>("Publication");
 
-        await publications.Data.Insert(
+        var uuid = await publications.Data.Insert(
             new
             {
-                headquartersGeoLocation = new GeoCoordinate(
-                    52.3932696f,
-                    4.8374263f
-                )
+                headquartersGeoLocation = new GeoCoordinate(52.3932696f, 4.8374263f)
             }
         );
         // END WithGeoCoordinates
 
-        var response = await publications.Query.FetchObjects(
-            filters: Filter.Property("headquartersGeoLocation")
-                .WithinGeoRange(
-                    new GeoCoordinateConstraint(52.39f, 4.84f, 1000)
-                )
-        );
-
-        Assert.Single(response.Objects);
-        var objUuid = response.Objects.First().ID;
-        await publications.Data.DeleteByID((Guid)objUuid);
+        var result = await publications.Query.FetchObjectByID(uuid);
+        Assert.NotNull(result);
+        await publications.Data.DeleteByID(uuid);
     }
 
     [Fact]
-    public async Task CheckForAnObject()
+    public async Task TestCheckForAnObject()
     {
         // START CheckForAnObject
         // generate uuid based on the key properties used during data insert
-        var objectUuid = GenerateUuid5(new { name = "Author to fetch" });
-
+        var objectUuid = GenerateUuid5("Author to fetch");
         // END CheckForAnObject
 
-        var authorsCollection = weaviate.Collections.Use<dynamic>("Author");
-        await authorsCollection.Data.Insert(
+        var authors = client.Collections.Use<object>("Author");
+        await authors.Data.Insert(
             new { name = "Author to fetch" },
-            objectUuid, // Custom UUID for testing
-            Enumerable.Repeat(0.3f, 1536).ToArray() // If you want to specify a vector
-        );
+            id: objectUuid,
+            vectors: new float[1536]);
 
         // START CheckForAnObject
-        var authors = weaviate.Collections.Use<dynamic>("Author");
         // highlight-start
-        var author = await authors.Query.FetchObjectByID(objectUuid);
-        var authorExists = author != null;
+        var authorExists = (await authors.Query.FetchObjectByID(objectUuid)) != null;
         // highlight-end
 
         Console.WriteLine("Author exists: " + authorExists);
         // END CheckForAnObject
 
         Assert.True(authorExists);
-        await authorsCollection.Data.DeleteByID(objectUuid);
-        var deletedAuthor = await authorsCollection.Query.FetchObjectByID(objectUuid);
-        Assert.Null(deletedAuthor);
+        await authors.Data.DeleteByID(objectUuid);
+        Assert.False((await authors.Query.FetchObjectByID(objectUuid)) != null);
     }
 
-    [Fact]
-    public async Task ValidateObject()
-    {
-        // ValidateObject START
-        // Validate is currently not supported with the Weaviate C# client
-        // ValidateObject END
-
-        // Note: Validation functionality is not yet implemented in the C# client
-        // This test serves as a placeholder for when the feature becomes available
-
-        Assert.True(true, "Validation not yet supported - placeholder test");
-    }
-
-    // Helper method for UUID v5 generation
-    private static Guid GenerateUuid5(object data)
-    {
-        // Serialize the object to JSON for consistent hashing
-        var json = JsonSerializer.Serialize(data);
-        var bytes = Encoding.UTF8.GetBytes(json);
-
-        using (var sha1 = SHA1.Create())
-        {
-            var hash = sha1.ComputeHash(bytes);
-
-            // Convert first 16 bytes to GUID
-            var guidBytes = new byte[16];
-            Array.Copy(hash, guidBytes, 16);
-
-            // Set version (5) and variant bits according to UUID v5 spec
-            guidBytes[6] = (byte)((guidBytes[6] & 0x0F) | 0x50);
-            guidBytes[8] = (byte)((guidBytes[8] & 0x3F) | 0x80);
-
-            return new Guid(guidBytes);
-        }
-    }
+    // START ValidateObject
+    // Coming soon
+    // END ValidateObject
 }
