@@ -221,7 +221,7 @@ jobs:
           # Wait a bit more to ensure Keycloak is fully ready
           sleep 5
           
-          python /docs/_includes/code/python/keycloak_helper_script.py
+          python _includes/code/python/keycloak_helper_script.py
           
           echo "✅ Keycloak configuration completed"
 

@@ -374,7 +374,7 @@ for obj in search_response.search_results.objects:
 search_response = qa.search("winter boots for under $100", limit=5)
 
 # Access different parts of the response
-print(f"Original query: {search_response.original_query}")
+print(f"Original query: {search_response.searches[0].query}")
 print(f"Total time: {search_response.total_time}")
 
 # Access usage statistics
