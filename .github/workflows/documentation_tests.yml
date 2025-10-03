@@ -19,6 +19,7 @@ env:
   WEAVIATE_VERSION: "1.33.0"
   OLLAMA_VERSION: "0.9.6"
   CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
+  KEYCLOAK_VERSION: "24.0.3"
 
 jobs:
   test:
@@ -92,6 +93,7 @@ jobs:
             /tmp/weaviate-base.tar
             /tmp/clip-image.tar
             /tmp/ollama-base.tar
+            /tmp/keycloak-image.tar
           key: ${{ runner.os }}-docker-images-${{ env.WEAVIATE_VERSION }}-${{ env.CLIP_MODEL_TAG }}-${{ env.OLLAMA_VERSION }}
           restore-keys: |
             ${{ runner.os }}-docker-images-
@@ -130,6 +132,10 @@ jobs:
           load_or_pull_image "ollama/ollama:${{ env.OLLAMA_VERSION }}" \
             "/tmp/ollama-base.tar" \
             "${{ steps.cache-docker-images.outputs.cache-hit }}"
+
+          load_or_pull_image "quay.io/keycloak/keycloak:${{ env.KEYCLOAK_VERSION }}" \
+          "/tmp/keycloak-image.tar" \
+          "${{ steps.cache-docker-images.outputs.cache-hit }}"
 
           echo "✅ All Docker images ready"
           echo "Final disk space:"
@@ -185,7 +191,7 @@ jobs:
           # Define services with their health check endpoints
           declare -A services=(
             ["8099"]="Weaviate Main"
-            ["8580"]="Weaviate GRPC"
+            ["8580"]="Weaviate RBAC"
             ["8080"]="Weaviate Instance 1"
             ["8090"]="Weaviate Instance 2"
             ["8280"]="Weaviate Instance 3"
@@ -206,6 +212,18 @@ jobs:
           done
 
           echo "✅ Service check completed"
+
+      - name: Configure Keycloak
+        run: |
+          echo "🔧 Configuring Keycloak..."
+          source .venv/bin/activate
+          
+          # Wait a bit more to ensure Keycloak is fully ready
+          sleep 5
+          
+          python /docs/_includes/code/python/keycloak_helper_script.py
+          
+          echo "✅ Keycloak configuration completed"
 
       # Record test start time - NEW
       - name: Record test start time
