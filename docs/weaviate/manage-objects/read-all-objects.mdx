@@ -12,6 +12,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-obje
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.read-all-objects.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.read-all-objects.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsReadAllTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageObjectsReadAllTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.read-all-objects_test.go";
 
 Weaviate provides the necessary APIs to iterate through all your data. This is useful when you want to manually copy/migrate your data (and vector embeddings) from one place to another.
@@ -67,6 +68,14 @@ The following code iterates through all objects, providing the properties and id
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ReadAllProps"
+      endMarker="// END ReadAllProps"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Read all objects including vectors
@@ -112,6 +121,14 @@ Read through all data including the vectors. (Also applicable where [named vecto
       startMarker="// START ReadAllVectors"
       endMarker="// END ReadAllVectors"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ReadAllVectors"
+      endMarker="// END ReadAllVectors"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -163,6 +180,14 @@ For classes where [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled,
       startMarker="// START ReadAllTenants"
       endMarker="// END ReadAllTenants"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ReadAllTenants"
+      endMarker="// END ReadAllTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

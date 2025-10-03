@@ -12,6 +12,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import ByovAllPyCode from "!!raw-loader!/_includes/code/quickstart.byov.all.py";
 import ByovAllTsCode from "!!raw-loader!/_includes/code/quickstart.byov.all.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/StarterGuidesCustomVectorsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/StarterGuidesCustomVectorsTest.cs";
 import ByovAllShCode from "!!raw-loader!/_includes/code/quickstart.byov.all.sh";
 
 Weaviate is a vector database. [Vector databases](https://weaviate.io/blog/what-is-a-vector-database) store data objects and vectors that represent those objects. The vector embedding is also called an "embedding."
@@ -177,6 +178,14 @@ This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supp
       startMarker="// START NearVector"
       endMarker="// END NearVector"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearVector"
+      endMarker="// END NearVector"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="curl" label="Curl">

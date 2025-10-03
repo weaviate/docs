@@ -14,6 +14,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.basics.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchBasicTest.cs";
 
 With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#specify-object-properties) and [metadata](#retrieve-metadata-values) to return.
 
@@ -64,6 +65,14 @@ You can get objects without specifying any parameters. This returns objects in a
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BasicGet"
+      endMarker="// END BasicGet"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -94,6 +103,21 @@ The output is like this:
 Specify the information that you want your query to return. You can return object properties, object IDs, and object metadata.
 
 </details>
+
+## Fetch objects by ID
+
+Fetch an object by its UUID:
+
+<Tabs groupId="languages">
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FetchById"
+      endMarker="// END FetchById"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
 
 ## `limit` returned objects
 
@@ -140,6 +164,14 @@ Use `limit` to set a fixed maximum number of objects to return.
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithLimit"
+      endMarker="// END GetWithLimit"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -209,6 +241,14 @@ To start in the middle of your result set, define an `offset`. Set a `limit` to 
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithOffset"
+      endMarker="// END GetWithOffset"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -280,6 +320,14 @@ You can specify which object properties to return.
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetProperties"
+      endMarker="// END GetProperties"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -349,6 +397,14 @@ You can retrieve the object vector. (Also applicable where [named vectors](../co
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetObjectVector"
+      endMarker="// END GetObjectVector"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -418,6 +474,14 @@ You can retrieve the object `id` (uuid).
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetObjectId"
+      endMarker="// END GetObjectId"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -485,6 +549,14 @@ To retrieve properties from cross-referenced objects, specify:
       startMarker="// START GetWithCrossRefs"
       endMarker="// END GetWithCrossRefs"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithCrossRefs"
+      endMarker="// END GetWithCrossRefs"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -556,6 +628,14 @@ You can specify metadata fields to be returned.
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetWithMetadata"
+      endMarker="// END GetWithMetadata"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -613,6 +693,14 @@ If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the te
     language="java"
   />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiTenancy"
+      endMarker="// END MultiTenancy"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Replication

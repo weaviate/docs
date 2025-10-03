@@ -5,6 +5,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 import JavaCode from "!!raw-loader!/_includes/code/connections/connect.java";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
 import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
@@ -55,6 +56,14 @@ import HostnameWarning from "/_includes/wcs/hostname-warning.mdx";
       language="py"
     />
     <HostnameWarning />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START APIKeyWCD"
+      endMarker="// END APIKeyWCD"
+      language="csharp"
+    />
   </TabItem>
   <TabItem value="shell" label="cURL">
     <FilteredTextBlock

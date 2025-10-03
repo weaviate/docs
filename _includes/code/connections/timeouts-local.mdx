@@ -5,6 +5,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyV4Code from "!!raw-loader!/_includes/code/connections/connect-python-v4.py";
 import TsV3Code from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 
 <Tabs groupId="languages">
   <TabItem value="py4" label="Python">
@@ -29,6 +30,14 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Conne
       startMarker="// START TimeoutLocal"
       endMarker="// END TimeoutLocal"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TimeoutLocal"
+      endMarker="// END TimeoutLocal"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

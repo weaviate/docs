@@ -13,6 +13,7 @@ import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsAliasTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsAliasTest.cs";
 
 :::info Added in `v1.32`
 :::
@@ -66,6 +67,14 @@ To create an alias, specify the alias name and the target collection it should p
       startMarker="// START CreateAlias"
       endMarker="// END CreateAlias"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -123,6 +132,14 @@ Retrieve all aliases in your Weaviate instance.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## List aliases for a specific collection
@@ -168,6 +185,14 @@ Get all aliases that point to a specific collection.
       startMarker="// START ListCollectionAliases"
       endMarker="// END ListCollectionAliases"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -217,6 +242,14 @@ Retrieve information about a specific alias.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Update an alias
@@ -262,6 +295,14 @@ Change the target collection that an alias points to. This operation is atomic a
       startMarker="// START UpdateAlias"
       endMarker="// END UpdateAlias"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -324,6 +365,14 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 :::note
@@ -375,6 +424,14 @@ Once created, aliases can be used instead of collection names in all object-rela
       startMarker="// START UseAlias"
       endMarker="// END UseAlias"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

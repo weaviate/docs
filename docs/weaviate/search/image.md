@@ -12,6 +12,7 @@ import PyCode from '!!raw-loader!/\_includes/code/howto/search.image.py';
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.image.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-image_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchImageTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchImageTest.cs";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/ImageSearchTest.java';
 
 `Image` search uses an **image as a search input** to perform vector similarity search.
@@ -80,6 +81,14 @@ If your query image is stored in a file, you can use the client library to searc
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ImageFileSearch"
+      endMarker="// END ImageFileSearch"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -139,6 +148,14 @@ You can search by a base64 representation of an image:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START search with base64"
+      endMarker="// END search with base64"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -196,6 +213,14 @@ You can create a base64 representation of an online image, and use it as input f
       startMarker="// START helper base64 functions"
       endMarker="// END helper base64 functions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START helper base64 functions"
+      endMarker="// END helper base64 functions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

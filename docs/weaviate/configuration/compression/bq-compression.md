@@ -12,6 +12,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/configure.bq-compression
 import TSCodeBQOptions from '!!raw-loader!/\_includes/code/howto/configure.bq-compression.options.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.bq_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureBQTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureBQTest.cs";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/bq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -74,6 +75,14 @@ BQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableBQ"
+      endMarker="// END EnableBQ"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Enable compression for existing collection
@@ -115,6 +124,14 @@ BQ can also be enabled for an existing collection by updating the collection def
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -168,6 +185,14 @@ For example:
       startMarker="// START BQWithOptions"
       endMarker="// END BQWithOptions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BQWithOptions"
+      endMarker="// END BQWithOptions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

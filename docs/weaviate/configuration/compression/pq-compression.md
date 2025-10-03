@@ -12,6 +12,7 @@ import TSCodeAutoPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compr
 import TSCodeManualPQ from '!!raw-loader!/\_includes/code/howto/configure.pq-compression.manual.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.pq_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigurePQTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigurePQTest.cs";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/pq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -76,6 +77,14 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
       startMarker="// START CollectionWithAutoPQ"
       endMarker="// END CollectionWithAutoPQ"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CollectionWithAutoPQ"
+      endMarker="// END CollectionWithAutoPQ"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -155,6 +164,14 @@ Follow these steps to manually enable PQ.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START InitialSchema"
+      endMarker="// END InitialSchema"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### 2. Load training data
@@ -214,6 +231,14 @@ To enable PQ, update your collection definition as shown below. For additional c
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -305,6 +330,14 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       startMarker="// START GetSchema"
       endMarker="// END GetSchema"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetSchema"
+      endMarker="// END GetSchema"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

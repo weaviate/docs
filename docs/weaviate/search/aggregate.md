@@ -13,6 +13,7 @@ import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.aggregate-v3.py
 import TSCode from '!!raw-loader!/\_includes/code/howto/search.aggregate.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-aggregation_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchAggregateTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchAggregateTest.cs";
 
 `Aggregate` queries process the result set to return calculated results. Use `aggregate` queries for groups of objects or the entire result set.
 
@@ -71,6 +72,14 @@ Return the number of objects matched by the query.
       startMarker="// START MetaCount"
       endMarker="// END MetaCount"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MetaCount"
+      endMarker="// END MetaCount"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -134,6 +143,14 @@ This example counts occurrence frequencies:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START TextProp"
+      endMarker="// END TextProp"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -193,6 +210,14 @@ This example shows aggregation with integers.
       startMarker="// START IntProp"
       endMarker="// END IntProp"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START IntProp"
+      endMarker="// END IntProp"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -256,6 +281,14 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       startMarker="// START groupBy"
       endMarker="// END groupBy"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START groupBy"
+      endMarker="// END groupBy"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -327,6 +360,14 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START nearTextWithLimit"
+      endMarker="// END nearTextWithLimit"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -394,6 +435,14 @@ Use `distance` to specify how similar the objects should be.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START nearTextWithDistance"
+      endMarker="// END nearTextWithDistance"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -455,6 +504,14 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridExample"
+      endMarker="// END HybridExample"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -514,6 +571,14 @@ For more specific results, use a `filter` to narrow your search.
       startMarker="// START whereFilter"
       endMarker="// END whereFilter"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START whereFilter"
+      endMarker="// END whereFilter"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">

@@ -10,6 +10,7 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.multi-tenancy.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/_ManageCollectionsMultiTenancyTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/_ManageCollectionsMultiTenancyTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.multi-tenancy_test.go";
 import GoCodeAuto from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.create_auto-multitenancy.go";
 import CurlCode from "!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy-curl.sh";
@@ -79,6 +80,14 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableMultiTenancy"
+      endMarker="// END EnableMultiTenancy"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Automatically add new tenants
@@ -120,6 +129,14 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       startMarker="// START EnableAutoMT"
       endMarker="// END EnableAutoMT"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableAutoMT"
+      endMarker="// END EnableAutoMT"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="cURL" label="cURL">
@@ -167,6 +184,14 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       startMarker="// START UpdateAutoMT"
       endMarker="// END UpdateAutoMT"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateAutoMT"
+      endMarker="// END UpdateAutoMT"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -233,6 +258,14 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddTenantsToClass"
+      endMarker="// END AddTenantsToClass"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## List all tenants
@@ -282,6 +315,14 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ListTenants"
+      endMarker="// END ListTenants"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Get tenants by name
@@ -315,6 +356,14 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetTenantsByName"
+      endMarker="// END GetTenantsByName"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Get one tenant
@@ -346,6 +395,14 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
       startMarker="// START GetOneTenant"
       endMarker="// END GetOneTenant"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetOneTenant"
+      endMarker="// END GetOneTenant"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -397,6 +454,14 @@ Deleting a tenant deletes all associated objects.
       startMarker="// START RemoveTenants"
       endMarker="// END RemoveTenants"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RemoveTenants"
+      endMarker="// END RemoveTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

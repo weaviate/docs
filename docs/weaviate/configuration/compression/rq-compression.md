@@ -12,6 +12,7 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import Java6Code from '!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureRQTest.java';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureRQTest.cs";
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
@@ -83,6 +84,14 @@ RQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableRQ"
+      endMarker="// END EnableRQ"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Enable compression for existing collection
@@ -112,6 +121,14 @@ RQ can also be enabled for an existing collection by updating the collection def
       startMarker="// START UpdateSchema"
       endMarker="// END UpdateSchema"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="csharp"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -182,6 +199,14 @@ RQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START 1BitEnableRQ"
+      endMarker="// END 1BitEnableRQ"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ### Enable compression for existing collection
@@ -219,6 +244,14 @@ RQ can also be enabled for an existing collection by updating the collection def
       startMarker="// START 1BitUpdateSchema"
       endMarker="// END 1BitUpdateSchema"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START 1BitUpdateSchema"
+      endMarker="// END 1BitUpdateSchema"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -270,6 +303,14 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
       startMarker="// START RQWithOptions"
       endMarker="// END RQWithOptions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RQWithOptions"
+      endMarker="// END RQWithOptions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

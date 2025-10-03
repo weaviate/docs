@@ -12,6 +12,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compress
 import TSCodeSQOptions from '!!raw-loader!/\_includes/code/howto/configure-sq/sq-compression.options-v3.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compression.sq_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/ConfigureSQTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ConfigureSQTest.cs";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/sq-compression.java';
 
 import CompressionByDefault from '/\_includes/compression-by-default.mdx';
@@ -59,6 +60,14 @@ SQ can be enabled at collection creation time through the collection definition:
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableSQ"
+      endMarker="// END EnableSQ"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Enable compression for existing collection
@@ -102,6 +111,14 @@ SQ can also be enabled for an existing collection by updating the collection def
       language="java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateSchema"
+      endMarker="// END UpdateSchema"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## SQ parameters
@@ -143,6 +160,14 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
       startMarker="// START SQWithOptions"
       endMarker="// END SQWithOptions"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SQWithOptions"
+      endMarker="// END SQWithOptions"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

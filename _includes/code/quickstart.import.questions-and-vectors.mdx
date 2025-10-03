@@ -6,6 +6,7 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import ByovAllPyCode from "!!raw-loader!/_includes/code/quickstart.byov.all.py";
 import ByovAllTsCode from "!!raw-loader!/_includes/code/quickstart.byov.all.ts";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/StarterGuidesCustomVectorsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/StarterGuidesCustomVectorsTest.cs";
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -30,6 +31,14 @@ import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/Start
       startMarker="// START ImportData"
       endMarker="// END ImportData"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ImportData"
+      endMarker="// END ImportData"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
