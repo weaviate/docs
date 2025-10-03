@@ -1,0 +1,44 @@
+[
+  {
+    "id": "quick-tour-of-weaviate",
+    "title": "A Quick Tour of Weaviate",
+    "description": "Become familiar with Weaviate's architecture, core concepts, and key capabilities. Understand how its features and integrations map to AI builders' needs.",
+    "url": "https://academy.weaviate.io/courses/wa050-py"
+  },
+  {
+    "id": "weaviate-with-python",
+    "title": "Hands-on Weaviate with Python",
+    "description": "Build your first Weaviate project to store and search data, and perform retrieval-augmented generation (RAG) with generative AI models.",
+    "url": "https://academy.weaviate.io/courses/wa101t-py"
+  },
+  {
+    "id": "ai-models-deep-dive",
+    "title": "A Gentle Deep Dive into AI Models",
+    "description": "A detailed overview of AI models from the perspective of application builders and developers. Learn how to distinguish between models and why model selection matters.",
+    "url": "https://academy.weaviate.io/courses/wa150-py"
+  },
+  {
+    "id": "fast-api-weaviate-rag",
+    "title": "Your First AI App (Search and RAG)",
+    "description": "A hands-on course where you will build a movie recommendation API with Weaviate and FastAPI.",
+    "url": "https://academy.weaviate.io/courses/wa180-py"
+  },
+  {
+    "id": "architectural-decisions-guide",
+    "title": "Architectural Decisions Guide",
+    "description": "Learn what the most important architectural decisions are when building applications with Weaviate, and how to make the right choices for your use case.",
+    "url": "https://academy.weaviate.io/courses/wa210-py"
+  },
+  {
+    "id": "embedding-model-evaluation",
+    "title": "Embedding Model Evaluation & Selection",
+    "description": "Embedding models are the heart of vector search. Learn how to evaluate and select appropriate embedding models for your use case.",
+    "url": "https://academy.weaviate.io/courses/wa150-py"
+  },
+  {
+    "id": "async-python-client-usage",
+    "title": "Async Python Client Usage",
+    "description": "Learn how to use Weaviate's async capabilities to handle concurrent operations and large-scale data processing efficiently.",
+    "url": "https://academy.weaviate.io/courses/wa280-py"
+  }
+]

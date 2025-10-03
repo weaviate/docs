@@ -24,7 +24,19 @@ export const welcomeCardsData = [
       </>
     ),
     link: "/weaviate/quickstart",
-    icon: "fas fa-star", // use Font Awesome CSS class
+    icon: "fas fa-star",
+  },
+  {
+    id: "academy",
+    title: "Weaviate Academy",
+    description: (
+      <>
+        Check out <span className={styles.highlight}>Weaviate Academy</span> – a
+        learning platform entered around AI-native development.
+      </>
+    ),
+    link: "https://academy.weaviate.io/",
+    icon: "fa-solid fa-graduation-cap",
   },
 ];
 
@@ -42,13 +54,14 @@ The Weaviate documentation is structured into multiple units based on the servic
 
 {/* Filter out items where isSmall is true */}
 {(() => {
-  const regularItems = Object.fromEntries(
-    Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
-  );
-  
-  <br />
-  return <CardsSection items={regularItems} />;
-  <br />
+const regularItems = Object.fromEntries(
+Object.entries(secondaryNavbarItems).filter(([, value]) => !value.isSmall)
+);
+
+{" "}
+<br />
+return <CardsSection items={regularItems} className={styles.smallCards} />;
+<br />
 })()}
 
 ## What is Weaviate?
@@ -63,6 +76,12 @@ Weaviate is an **open-source vector database** designed to store and index both 
 
 - **[Agent-driven workflows](../agents/index.md)**  
   Its flexible API and integration with modern AI models make Weaviate suitable for powering applications that rely on intelligent agents. These agents can leverage semantic insights to make decisions or trigger actions based on the data stored in Weaviate.
+
+import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+
+<AcademyAdmonition 
+  courseId="quick-tour-of-weaviate"
+/>
 
 ## The Weaviate Ecosystem
 

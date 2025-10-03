@@ -223,8 +223,6 @@ In some cases, rescoring also includes over-fetching, whereby additional candida
 - [How to configure: Product quantization (compression)](../configuration/compression/pq-compression.md)
 - [How to configure: Scalar quantization (compression)](../configuration/compression/sq-compression.md)
 - [How to configure: Rotational quantization (compression)](../configuration/compression/rq-compression.md)
-- [Weaviate Academy: 250 Vector Compression](../../academy/py/compression/index.md)
-
 :::
 
 ## Questions and feedback
