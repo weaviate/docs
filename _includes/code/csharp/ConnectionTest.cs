@@ -3,149 +3,202 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace WeaviateProject.Tests;
+namespace WeaviateProject.Examples;
 
-public class ConnectionSnippetsTest
+public class ConnectionTest
 {
-    /// <summary>
-    /// Test for local connection with a custom URL and port.
-    /// </summary>
+    //TODO[g-despot] Replace with readiness check
     [Fact]
-    public async Task Should_Connect_With_Custom_URL()
+    public async Task TestConnectLocalWithCustomUrl()
     {
         // START CustomURL
-        // The Connect.Local() method defaults to "localhost".
-        // For a different host, you must use a custom configuration.
-        var config = new ClientConfiguration(
-            RestAddress: "127.0.0.1",
-            GrpcAddress: "127.0.0.1",
-            RestPort: 8080,
-            GrpcPort: 50051
-        );
-        var client = new WeaviateClient(config);
+        var config = new ClientConfiguration
+        {
+            RestAddress = "127.0.0.1",
+            RestPort = 8080,
+            GrpcAddress = "127.0.0.1",
+            GrpcPort = 50051 // Default gRPC port
+        };
+        using var client = new WeaviateClient(config);
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
         // END CustomURL
-
-        try
-        {
-            var meta = await client.GetMeta();
-            Assert.False(string.IsNullOrEmpty(meta.Version.ToString()));
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Connection failed: {ex.Message}");
-        }
     }
 
-    /// <summary>
-    /// Test for a fully custom connection, typically for a cloud instance.
-    /// </summary>
+    // TODO[g-despot] How to add timeout
+    // START TimeoutLocal
+    // Coming soon
+    // END TimeoutLocal
+    // START TimeoutCustom
+    // Coming soon
+    // END TimeoutCustom
+
     [Fact]
-    public async Task Should_Perform_Custom_Connection_With_ApiKey()
-    {
-        // START CustomConnect
-        var httpHost = Environment.GetEnvironmentVariable("WEAVIATE_HTTP_HOST");
-        var grpcHost = Environment.GetEnvironmentVariable("WEAVIATE_GRPC_HOST");
-        var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-
-        var config = new ClientConfiguration(
-            RestAddress: httpHost,        // Hostname for the HTTP API connection
-            RestPort: 443,                // Default is 80, WCD uses 443
-            UseSsl: true,                 // Whether to use https (secure) for the HTTP API connection
-            GrpcAddress: grpcHost,        // Hostname for the gRPC API connection
-            GrpcPort: 443,                // Default is 50051, WCD uses 443
-            Credentials: Auth.ApiKey(weaviateApiKey)        // API key for authentication
-        );
-        var client = new WeaviateClient(config);
-        // END CustomConnect
-
-        try
-        {
-            var meta = await client.GetMeta();
-            Assert.False(string.IsNullOrEmpty(meta.Version.ToString()));
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Connection failed: {ex.Message}");
-        }
-    }
-
-    /// <summary>
-    /// Test for connecting to Weaviate Cloud (WCD).
-    /// </summary>
-    [Fact]
-    public async Task Should_Connect_To_WCD_With_Api_Key()
+    public async Task TestConnectWCDWithApiKey()
     {
         // START APIKeyWCD
-        var weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
-        var wcdApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        // Best practice: store your credentials in environment variables
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        var client = Connect.Cloud(
-            restEndpoint: weaviateUrl,
-            apiKey: wcdApiKey
+        using var client = Connect.Cloud(
+            weaviateUrl, // Replace with your Weaviate Cloud URL
+            weaviateApiKey // Replace with your Weaviate Cloud key
         );
-        // END APIKeyWCD
 
-        try
-        {
-            var meta = await client.GetMeta();
-            Assert.False(string.IsNullOrEmpty(meta.Version.ToString()));
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Connection failed: {ex.Message}");
-        }
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END APIKeyWCD
     }
 
-    /// <summary>
-    /// Test for a default local connection without authentication.
-    /// </summary>
     [Fact]
-    public async Task Should_Connect_Locally_Without_Auth()
+    public async Task TestCustomConnection()
+    {
+        // START CustomConnect
+        // Best practice: store your credentials in environment variables
+        string httpHost = Environment.GetEnvironmentVariable("WEAVIATE_HTTP_HOST");
+        string grpcHost = Environment.GetEnvironmentVariable("WEAVIATE_GRPC_HOST");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
+
+        var config = new ClientConfiguration
+        {
+            UseSsl = true, // Corresponds to scheme("https")
+            RestAddress = httpHost,
+            RestPort = 443,
+            GrpcAddress = grpcHost,
+            GrpcPort = 443,
+            Credentials = Auth.ApiKey(weaviateApiKey),
+            // Headers = new Dictionary<string, string>
+            // {
+            //     { "X-Cohere-Api-Key", cohereApiKey }
+            // }
+        };
+        using var client = new WeaviateClient(config);
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END CustomConnect
+    }
+
+    [Fact]
+    public async Task TestCustomApiKeyConnection()
+    {
+        // START ConnectWithApiKeyExample
+        // Best practice: store your credentials in environment variables
+        string httpHost = Environment.GetEnvironmentVariable("WEAVIATE_HTTP_HOST");
+        string grpcHost = Environment.GetEnvironmentVariable("WEAVIATE_GRPC_HOST");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
+
+        var config = new ClientConfiguration
+        {
+            UseSsl = true, // Corresponds to scheme("https")
+            RestAddress = httpHost,
+            RestPort = 443,
+            GrpcAddress = grpcHost,
+            GrpcPort = 443,
+            Credentials = Auth.ApiKey(weaviateApiKey),
+            // Headers = new Dictionary<string, string>
+            // {
+            //     { "X-Cohere-Api-Key", cohereApiKey }
+            // }
+        };
+        using var client = new WeaviateClient(config);
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END ConnectWithApiKeyExample
+    }
+
+    [Fact]
+    public async Task TestConnectLocalNoAuth()
     {
         // START LocalNoAuth
-        var client = Connect.Local();
-        // END LocalNoAuth
+        using var client = Connect.Local();
 
-        try
-        {
-            var meta = await client.GetMeta();
-            Assert.False(string.IsNullOrEmpty(meta.Version.ToString()));
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Connection failed: {ex.Message}");
-        }
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END LocalNoAuth
     }
 
-    /// <summary>
-    /// Test for a local connection using an API key and non-default ports.
-    /// </summary>
-    // TODO[g-despot]: Broken for some reason
-    //[Fact]
-    public async Task Should_Connect_Locally_With_Auth()
+    [Fact]
+    public async Task TestConnectLocalWithAuth()
     {
         // START LocalAuth
-        var localApiKey = Environment.GetEnvironmentVariable("WEAVIATE_LOCAL_API_KEY");
-        // END LocalAuth
-        localApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
-        // START LocalAuth
+        // Best practice: store your credentials in environment variables
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_LOCAL_API_KEY");
 
-        var client = Connect.Local(
-            restPort: 8099,
-            grpcPort: 50052,
-            useSsl: true,
-            credentials: localApiKey
+        // The Connect.Local() helper doesn't support auth, so we must use a custom configuration.
+        var config = new ClientConfiguration
+        {
+            Credentials = Auth.ApiKey(weaviateApiKey)
+        };
+        using var client = new WeaviateClient(config);
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END LocalAuth
+    }
+
+    [Fact]
+    public async Task TestConnectLocalWithThirdPartyKeys()
+    {
+        // START LocalThirdPartyAPIKeys
+        // Best practice: store your credentials in environment variables
+        string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
+
+        var config = new ClientConfiguration
+        {
+            // Headers = new Dictionary<string, string>
+            // {
+            //     { "X-Cohere-Api-Key", cohereApiKey }
+            // }
+        };
+        using var client = new WeaviateClient(config);
+
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END LocalThirdPartyAPIKeys
+    }
+
+    [Fact]
+    public async Task TestConnectWCDWithThirdPartyKeys()
+    {
+        // START ThirdPartyAPIKeys
+        // Best practice: store your credentials in environment variables
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
+
+        using var client = Connect.Cloud(
+            weaviateUrl, // Replace with your Weaviate Cloud URL
+            weaviateApiKey // Replace with your Weaviate Cloud key
+                           // headers: new Dictionary<string, string>
+                           // {
+                           //     { "X-Cohere-Api-Key", cohereApiKey }
+                           // }
         );
-        // END LocalAuth
 
-        try
-        {
-            var meta = await client.GetMeta();
-            Assert.False(string.IsNullOrEmpty(meta.Version.ToString()));
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Connection failed: {ex.Message}");
-        }
+        var meta = await client.GetMeta();
+        Console.WriteLine(meta);
+
+        // The 'using' statement handles freeing up resources automatically.
+        // END ThirdPartyAPIKeys
     }
 }

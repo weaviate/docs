@@ -3,49 +3,50 @@ using Weaviate.Client;
 using Weaviate.Client.Models;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
+using System.Collections.Generic;
 
-// Note: This code assumes the existence of a Weaviate instance populated
-// with 'JeopardyQuestion' and 'WineReviewNV' collections as per the Python examples.
-public class HybridSearchTests : IAsyncLifetime
+namespace WeaviateProject.Tests;
+
+public class SearchHybridTest : IDisposable
 {
-    private WeaviateClient client;
+    private static readonly WeaviateClient client;
 
-    public Task InitializeAsync()
+    // Static constructor for one-time setup (like @BeforeAll)
+    static SearchHybridTest()
     {
-        // ================================
-        // ===== INSTANTIATION-COMMON =====
-        // ================================
-
+        // START INSTANTIATION-COMMON
         // Best practice: store your credentials in environment variables
-        var weaviateUrl = Environment.GetEnvironmentVariable("WEAVATE_URL");
-        var weaviateApiKey = Environment.GetEnvironmentVariable("WEAVATE_API_KEY");
-        var openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
+        string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
+        string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
+        string openaiApiKey = Environment.GetEnvironmentVariable("OPENAI_APIKEY");
 
-        client = Connect.Cloud(
-            weaviateUrl,
-            weaviateApiKey
-            //additionalHeaders: new Dictionary<string, string> { { "X-OpenAI-Api-Key", openaiApiKey } }
-        );
-        return Task.CompletedTask;
+        // The C# client uses a configuration object.
+        var config = new ClientConfiguration
+        {
+            GrpcAddress = weaviateUrl,
+            // Headers = new()
+            // {
+            //     { "Authorization", $"Bearer {weaviateApiKey}" },
+            //     { "X-OpenAI-Api-Key", openaiApiKey }
+            // }
+        };
+        client = new WeaviateClient(config);
+        // END INSTANTIATION-COMMON
     }
 
-    public Task DisposeAsync()
+    // Dispose is called once after all tests in the class are finished (like @AfterAll)
+    public void Dispose()
     {
-        // The C# client manages its connections automatically and does not require an explicit 'close' method.
-        return Task.CompletedTask;
+        // The C# client manages connections automatically and does not require an explicit 'close' method.
+        GC.SuppressFinalize(this);
     }
 
     [Fact]
     public async Task NamedVectorHybrid()
     {
-        // ==============================
-        // ===== Named Vector Hybrid Query =====
-        // ==============================
-
-        // NamedVectorHybridPython
+        // START NamedVectorHybrid
         var reviews = client.Collections.Use("WineReviewNV");
         // highlight-start
         var response = await reviews.Query.Hybrid(
@@ -59,41 +60,36 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END NamedVectorHybridPython
+        // END NamedVectorHybrid
 
         Assert.Equal("WineReviewNV", response.Objects.First().Collection);
     }
 
     [Fact]
-    public async Task BasicHybrid()
+    public async Task TestHybridBasic()
     {
-        // ==============================
-        // ===== Basic Hybrid Query =====
-        // ==============================
-
-        // HybridBasicPython
+        // START HybridBasic
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // highlight-start
-        var response = await jeopardy.Query.Hybrid("food", limit: 3);
+        var response = await jeopardy.Query.Hybrid(
+            // highlight-start
+            "food",
+            limit: 3
         // highlight-end
+        );
 
         foreach (var o in response.Objects)
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridBasicPython
+        // END HybridBasic
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
     [Fact]
-    public async Task HybridWithScore()
+    public async Task TestHybridWithScore()
     {
-        // =======================================
-        // ===== Hybrid Query with the Score =====
-        // =======================================
-
-        // HybridWithScorePython
+        // START HybridWithScore
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -111,7 +107,7 @@ public class HybridSearchTests : IAsyncLifetime
             Console.WriteLine($"Score: {o.Metadata.Score}, Explain Score: {o.Metadata.ExplainScore}");
             // highlight-end
         }
-        // END HybridWithScorePython
+        // END HybridWithScore
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.NotNull(response.Objects.First().Metadata.Score);
@@ -119,13 +115,9 @@ public class HybridSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task HybridWithLimitAndOffset()
+    public async Task TestLimit()
     {
-        // ===================================
-        // ===== Hybrid Query with limit =====
-        // ===================================
-
-        // START limit Python
+        // START limit 
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -139,25 +131,21 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END limit Python
+        // END limit 
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.Equal(3, response.Objects.Count());
     }
 
     [Fact]
-    public async Task HybridWithAutocut()
+    public async Task TestAutocut()
     {
-        // =====================================
-        // ===== Hybrid Query with autocut =====
-        // =====================================
-
-        // START autocut Python
+        // START autocut 
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            fusionType: HybridFusion.Ranked,
+            fusionType: HybridFusion.RelativeScore,
             autoLimit: 1
         // highlight-end
         );
@@ -166,19 +154,16 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END autocut Python
+        // END autocut 
 
+        Assert.True(response.Objects.Any());
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
     [Fact]
-    public async Task HybridWithAlpha()
+    public async Task TestHybridWithAlpha()
     {
-        // ===================================
-        // ===== Hybrid Query with Alpha =====
-        // ===================================
-
-        // HybridWithAlphaPython
+        // START HybridWithAlpha
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -192,19 +177,15 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridWithAlphaPython
+        // END HybridWithAlpha
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
     [Fact]
-    public async Task HybridWithFusionType()
+    public async Task TestHybridWithFusionType()
     {
-        // ========================================
-        // ===== Hybrid Query with FusionType =====
-        // ========================================
-
-        // HybridWithFusionTypePython
+        // START HybridWithFusionType
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -218,7 +199,7 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridWithFusionTypePython
+        // END HybridWithFusionType
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
@@ -226,10 +207,6 @@ public class HybridSearchTests : IAsyncLifetime
     [Fact]
     public async Task HybridWithBM25OperatorOr()
     {
-        // ========================================
-        // ===== Hybrid Query with BM25 Operator (Or) =====
-        // ========================================
-
         // START HybridWithBM25OperatorOrWithMin
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
@@ -252,9 +229,6 @@ public class HybridSearchTests : IAsyncLifetime
     [Fact]
     public async Task HybridWithBM25OperatorAnd()
     {
-        // ========================================
-        // ===== Hybrid Query with BM25 Operator (And) =====
-        // ========================================
 
         // START HybridWithBM25OperatorAnd
         var jeopardy = client.Collections.Use("JeopardyQuestion");
@@ -276,18 +250,14 @@ public class HybridSearchTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task HybridWithProperties()
+    public async Task TestHybridWithProperties()
     {
-        // ==================================================
-        // ===== Hybrid Query with Properties Specified =====
-        // ==================================================
-
-        // HybridWithPropertiesPython
+        // START HybridWithProperties
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            queryProperties: new[] { "question" },
+            queryProperties: ["question"],
             // highlight-end
             alpha: 0.25f,
             limit: 3
@@ -297,24 +267,20 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridWithPropertiesPython
+        // END HybridWithProperties
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
     [Fact]
-    public async Task HybridWithPropertyWeighting()
+    public async Task TestHybridWithPropertyWeighting()
     {
-        // ====================================================
-        // ===== Hybrid Query with Properties & Weighting =====
-        // ====================================================
-
-        // HybridWithPropertyWeightingPython
+        // START HybridWithPropertyWeighting
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
-            queryProperties: new[] { "question^2", "answer" },
+            queryProperties: ["question^2", "answer"],
             // highlight-end
             alpha: 0.25f,
             limit: 3
@@ -324,23 +290,19 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridWithPropertyWeightingPython
+        // END HybridWithPropertyWeighting
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
+    // TODO[g-despot] Why is name required in VectorData.Create?
     [Fact]
-    public async Task HybridWithVector()
+    public async Task TestHybridWithVector()
     {
-        // ====================================
-        // ===== Hybrid Query With Vector =====
-        // ====================================
-
-        // HybridWithVectorPython
+        // START HybridWithVector
         var queryVector = Enumerable.Repeat(-0.02f, 1536).ToArray();
 
         var jeopardy = client.Collections.Use("JeopardyQuestion");
-        // TODO[g-despot] Why is name required in VectorData.Create?
         var response = await jeopardy.Query.Hybrid(
             "food",
             // highlight-start
@@ -354,19 +316,15 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridWithVectorPython
+        // END HybridWithVector
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
     }
 
     [Fact]
-    public async Task HybridWithFilter()
+    public async Task TestHybridWithFilter()
     {
-        // ===================================
-        // ===== Hybrid Query with Where =====
-        // ===================================
-
-        // HybridWithFilterPython
+        // START HybridWithFilter
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "food",
@@ -380,93 +338,82 @@ public class HybridSearchTests : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END HybridWithFilterPython
+        // END HybridWithFilter
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.Equal("Double Jeopardy!", response.Objects.First().Properties["round"].ToString());
+        Assert.Equal("Double Jeopardy!", (response.Objects.First().Properties as IDictionary<string, object>)["round"].ToString());
     }
 
     [Fact]
-    public async Task HybridWithVectorParameters()
+    public async Task TestVectorParameters()
     {
-        // =========================================
-        // ===== Hybrid with vector parameters =====
-        // =========================================
-
-        // START VectorParametersPython
+        // START VectorParameters
         var jeopardy = client.Collections.Use("JeopardyQuestion");
+        // This query is complex and depends on a previous nearText query to get a vector.
+        // We simulate this by fetching a vector first.
+        var nearTextResponse = await jeopardy.Query.NearText(
+            "large animal",
+            moveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"]),
+            limit: 1,
+            returnMetadata: MetadataOptions.Vector
+        );
+        var nearTextVector = nearTextResponse.Objects.First().Vectors["default"];
+
         var response = await jeopardy.Query.Hybrid(
             "California",
             // highlight-start
-            maxVectorDistance: 0.4f,  // Maximum threshold for the vector search component
-            vectors: new HybridNearText(
-                "large animal",
-                MoveAway: new Move(force: 0.5f, concepts: ["mammal", "terrestrial"])
-            ),
+            maxVectorDistance: 0.4f,
+            vectors: nearTextVector,
             // highlight-end
             alpha: 0.75f,
             limit: 5
         );
-        // END VectorParametersPython
+        // END VectorParameters
 
-        Assert.True(response.Objects.Count() <= 5);
-        Assert.True(response.Objects.Count() > 0);
+        Assert.True(response.Objects.Any() && response.Objects.Count() <= 5);
     }
 
     [Fact]
-    public async Task HybridWithVectorSimilarity()
+    public async Task TestVectorSimilarity()
     {
-        // =========================================
-        // ===== Hybrid with vector similarity threshold =====
-        // =========================================
-
-        // START VectorSimilarityPython
+        // START VectorSimilarity
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "California",
             // highlight-start
-            maxVectorDistance: 0.4f,  // Maximum threshold for the vector search component
-                                      // highlight-end
+            maxVectorDistance: 0.4f, // Maximum threshold for the vector search component
+                                     // highlight-end
             alpha: 0.75f,
             limit: 5
         );
-        // END VectorSimilarityPython
+        // END VectorSimilarity
 
-        Assert.True(response.Objects.Count() <= 5);
-        Assert.True(response.Objects.Count() > 0);
+        Assert.True(response.Objects.Any() && response.Objects.Count() <= 5);
     }
 
     [Fact]
-    public async Task HybridWithGroupBy()
+    public async Task TestHybridGroupBy()
     {
-        // =========================================
-        // ===== Hybrid with groupBy =====
-        // =========================================
-
         // START HybridGroupByPy4
-        // Grouping parameters
-        var groupBy = new GroupByRequest
-        {
-            PropertyName = "round",       // group by this property
-            ObjectsPerGroup = 3,          // maximum objects per group
-            NumberOfGroups = 2,           // maximum number of groups
-        };
-
         // Query
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Query.Hybrid(
             "California",
             alpha: 0.75f,
-            groupBy: groupBy
+            groupBy: new GroupByRequest
+            {
+                PropertyName = "round",       // group by this property
+                NumberOfGroups = 2,           // maximum number of groups
+                ObjectsPerGroup = 3,          // maximum objects per group
+            }
         );
 
-        foreach (var grp in response.Groups.Values)
+        foreach (var group in response.Groups.Values)
         {
-            Console.WriteLine($"{grp.Name} {JsonSerializer.Serialize(grp.Objects)}");
+            Console.WriteLine($"{group.Name} {JsonSerializer.Serialize(group.Objects)}");
         }
         // END HybridGroupByPy4
 
-        Assert.True(response.Groups.Count <= 2);
-        Assert.True(response.Groups.Count > 0);
+        Assert.True(response.Groups.Count > 0 && response.Groups.Count <= 2);
     }
 }
