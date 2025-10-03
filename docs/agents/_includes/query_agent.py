@@ -208,6 +208,7 @@ qa = QueryAgent(
 
 # START SystemPromptExample
 from weaviate.agents.query import QueryAgent
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 # Define a custom system prompt to guide the agent's behavior
 system_prompt = """You are a helpful assistant that can answer questions about the products and users in the database.
@@ -216,7 +217,16 @@ Emphasize key insights and provide actionable recommendations when relevant."""
 
 qa = QueryAgent(
     client=client,
-    collections=["ECommerce", "FinancialContracts", "Weather"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",  # The name of the collection to query
+            target_vector=[
+                "name_description_brand_vector"
+            ],  # Target vector name(s) for collections with multiple vectors
+        ),
+        "FinancialContracts",
+        "Weather",
+    ],
     system_prompt=system_prompt,
 )
 
@@ -278,6 +288,9 @@ response.display()
 runtime_config = QueryAgentCollectionConfig(
     name="ECommerce",
     additional_filters=Filter.by_property("category").equal("Footwear"),
+    target_vector=[
+        "name_description_brand_vector"
+    ],  # Required target vector name(s) for collections with named vectors
 )
 
 response = qa.ask("What products are available?", collections=[runtime_config])
