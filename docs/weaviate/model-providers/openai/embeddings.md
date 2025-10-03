@@ -272,6 +272,10 @@ Any additional headers provided at runtime will override the existing Weaviate c
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
+> Note: by passing the `X-OpenAI-Baseurl` you can use an OpenAI API Compatible endpoint. Weaviate appends `/v1/embeddings` to this baseurl.
+> If this isn't supported you can run your own proxy to do path rewriting (e.g. your.domain.com/v1/embeddings -> api.deepinfra.com/v1/openai/embeddings)
+
+
 ## Data import
 
 After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
