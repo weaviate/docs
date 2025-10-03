@@ -1,11 +1,11 @@
-weaviate_version = "1.23.10"
+weaviate_version = "1.33.0"
 
 # START SimpleInstantiationEmbedded
 import weaviate
 import os
 
 client = weaviate.connect_to_embedded(
-    version=weaviate_version,  # e.g. version="1.26.5"
+    version=weaviate_version,  # e.g. version="1.33.0"
     headers={
         "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")  # Replace with your API key
     },
