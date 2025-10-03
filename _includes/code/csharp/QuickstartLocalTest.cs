@@ -22,7 +22,7 @@ public class QuickstartLocalTest
         // highlight-start
         // GetMeta returns server info. A successful call indicates readiness.
         var meta = await client.GetMeta();
-        Console.WriteLine(meta); // Should print: `True`
+        Console.WriteLine(meta);
         // highlight-end
 
         // The 'using' statement handles freeing up resources automatically.

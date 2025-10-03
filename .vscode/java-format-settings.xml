@@ -87,7 +87,7 @@
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_type_parameters" value="do not insert"/>
 <setting id="org.eclipse.jdt.core.formatter.comment.clear_blank_lines_in_block_comment" value="false"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_new_line_in_empty_type_declaration" value="insert"/>
-<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="100"/>
+<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="80"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_if" value="insert"/>
 <setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation.count_dependent" value="16|4|48"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_between_brackets_in_array_type_reference" value="do not insert"/>
@@ -228,7 +228,7 @@
 <setting id="org.eclipse.jdt.core.formatter.alignment_for_binary_expression" value="16"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_while" value="do not insert"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_type" value="insert"/>
-<setting id="org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode" value="enabled"/>
+<setting id="org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode" value="disabled"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_try" value="insert"/>
 <setting id="org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line" value="false"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_label" value="do not insert"/>
@@ -333,5 +333,46 @@
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_type_arguments" value="do not insert"/>
 <setting id="org.eclipse.jdt.core.formatter.never_indent_block_comments_on_first_column" value="false"/>
 <setting id="org.eclipse.jdt.core.formatter.keep_then_statement_on_same_line" value="false"/>
+<!-- Optimized Java Lambda Formatting Settings for Human Readability -->
+
+<!-- Lambda Body Alignment & Wrapping -->
+<!-- 80 = wrap where necessary, indent on column, wrap all elements -->
+<!-- 16 = wrap where necessary, indent by one -->
+<setting id="org.eclipse.jdt.core.formatter.alignment_for_lambda_expression_body" value="16"/>
+
+<!-- Parenthesis Positioning in Lambda Declaration -->
+<!-- separate_lines_if_wrapped = better readability for multi-param lambdas -->
+<setting id="org.eclipse.jdt.core.formatter.parenthesis_positions_in_lambda_declaration" value="separate_lines_if_wrapped"/>
+
+<!-- Brace Position for Lambda Body -->
+<!-- Options: end_of_line, next_line, next_line_shifted -->
+<!-- end_of_line is most common and compact -->
+<setting id="org.eclipse.jdt.core.formatter.brace_position_for_lambda_body" value="end_of_line"/>
+
+<!-- Spacing Around Lambda Arrow -->
+<setting id="org.eclipse.jdt.core.formatter.insert_space_before_lambda_arrow" value="insert"/>
+<setting id="org.eclipse.jdt.core.formatter.insert_space_after_lambda_arrow" value="insert"/>
+
+<!-- Keep Simple Lambda Bodies on One Line -->
+<!-- one_line_never = always break, one_line_if_empty = only for empty blocks -->
+<!-- one_line_if_single_item = keep simple single statements on one line -->
+<setting id="org.eclipse.jdt.core.formatter.keep_lambda_body_block_on_one_line" value="one_line_if_single_item"/>
+
+<!-- Additional Recommended Lambda Settings -->
+
+<!-- Wrap Lambda Parameters When Necessary -->
+<setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_lambda_declaration" value="16"/>
+
+<!-- Indent Lambda Body -->
+<setting id="org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_lambda_header" value="true"/>
+
+<!-- Insert New Line Before Lambda Body Opening Brace (if multiline) -->
+<setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_lambda_body_opening_brace" value="do not insert"/>
+
+<!-- Compact Simple Lambdas, Expand Complex Ones -->
+<setting id="org.eclipse.jdt.core.formatter.format_guardian_clause_on_one_line" value="false"/>
+
+<!-- Line Wrapping for Chained Lambda Calls -->
+<setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation" value="80"/>
 </profile>
 </profiles>

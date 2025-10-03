@@ -35,8 +35,8 @@ class ManageCollectionsTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     client.collections.deleteAll();
   }
 
@@ -84,20 +84,24 @@ class ManageCollectionsTest {
   void testCreateCollectionWithNamedVectors() throws IOException {
     // START BasicNamedVectors
     // Weaviate
-    client.collections.create("ArticleNV",
-        col -> col
-            .vectorConfig(
-                VectorConfig.text2vecContextionary("title",
-                    c -> c.sourceProperties("title").vectorIndex(Hnsw.of())),
-                VectorConfig.text2vecContextionary("title_country",
-                    c -> c.sourceProperties("title", "country").vectorIndex(Hnsw.of())),
-                VectorConfig.selfProvided("custom_vector",
-                    c -> c.vectorIndex(Hnsw.of()).vectorIndex(Hnsw.of())))
-            .properties(Property.text("title"), Property.text("country")));
+    client.collections
+        .create("ArticleNV",
+            col -> col
+                .vectorConfig(
+                    VectorConfig.text2vecContextionary("title",
+                        c -> c.sourceProperties("title")
+                            .vectorIndex(Hnsw.of())),
+                    VectorConfig.text2vecContextionary("title_country",
+                        c -> c.sourceProperties("title", "country")
+                            .vectorIndex(Hnsw.of())),
+                    VectorConfig.selfProvided("custom_vector",
+                        c -> c.vectorIndex(Hnsw.of()).vectorIndex(Hnsw.of())))
+                .properties(Property.text("title"), Property.text("country")));
     // END BasicNamedVectors
 
     var config = client.collections.getConfig("ArticleNV").get();
-    assertThat(config.vectors()).hasSize(3).containsKeys("title", "title_country", "custom_vector");
+    assertThat(config.vectors()).hasSize(3)
+        .containsKeys("title", "title_country", "custom_vector");
     assertThat(config.properties().get(0).propertyName().contains("title"));
     assertThat(config.properties().get(1).propertyName().contains("country"));
   }
@@ -117,7 +121,8 @@ class ManageCollectionsTest {
     // START SetVectorIndexType
     client.collections.create("Article",
         col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec.vectorIndex(Hnsw.of())))
+            .vectorConfig(VectorConfig
+                .text2vecContextionary(vec -> vec.vectorIndex(Hnsw.of())))
             .properties(Property.text("title"), Property.text("body")));
     // END SetVectorIndexType
 
@@ -129,11 +134,11 @@ class ManageCollectionsTest {
   @Test
   void testSetVectorIndexParams() throws IOException {
     // START SetVectorIndexParams
-    client.collections.create("Article",
-        col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
-                .vectorIndex(Hnsw.of(hnsw -> hnsw.efConstruction(300).distance(Distance.COSINE)))))
-            .properties(Property.text("title")));
+    client.collections.create("Article", col -> col
+        .vectorConfig(
+            VectorConfig.text2vecContextionary(vec -> vec.vectorIndex(Hnsw.of(
+                hnsw -> hnsw.efConstruction(300).distance(Distance.COSINE)))))
+        .properties(Property.text("title")));
     // END SetVectorIndexParams
 
     var config = client.collections.getConfig("Article").get();
@@ -145,13 +150,17 @@ class ManageCollectionsTest {
   @Test
   void testSetInvertedIndexParams() throws IOException {
     // START SetInvertedIndexParams
-    client.collections.create("Article",
-        col -> col
-            .properties(Property.text("title", p -> p.indexFilterable(true).indexSearchable(true)),
-                Property.text("chunk", p -> p.indexFilterable(true).indexSearchable(true)),
-                Property.integer("chunk_number", p -> p.indexRangeFilters(true)))
-            .invertedIndex(idx -> idx.bm25(b -> b.b(1).k1(2)).indexNulls(true)
-                .indexPropertyLength(true).indexTimestamps(true)));
+    client.collections.create("Article", col -> col
+        .properties(
+            Property.text("title",
+                p -> p.indexFilterable(true).indexSearchable(true)),
+            Property.text("chunk",
+                p -> p.indexFilterable(true).indexSearchable(true)),
+            Property.integer("chunk_number", p -> p.indexRangeFilters(true)))
+        .invertedIndex(idx -> idx.bm25(b -> b.b(1).k1(2))
+            .indexNulls(true)
+            .indexPropertyLength(true)
+            .indexTimestamps(true)));
     // END SetInvertedIndexParams
 
     var config = client.collections.getConfig("Article").get();
@@ -166,7 +175,8 @@ class ManageCollectionsTest {
     // START SetReranker
     client.collections.create("Article",
         col -> col.vectorConfig(VectorConfig.text2vecContextionary())
-            .rerankerModules(Reranker.cohere()).properties(Property.text("title")));
+            .rerankerModules(Reranker.cohere())
+            .properties(Property.text("title")));
     // END SetReranker
 
     var config = client.collections.getConfig("Article").get();
@@ -182,7 +192,8 @@ class ManageCollectionsTest {
   void testUpdateReranker() throws IOException {
     // START UpdateReranker
     var collection = client.collections.use("Article");
-    collection.config.update("Article", col -> col.rerankerModules(Reranker.cohere()));
+    collection.config.update("Article",
+        col -> col.rerankerModules(Reranker.cohere()));
     // END UpdateReranker
 
     var config = client.collections.getConfig("Article").get();
@@ -196,7 +207,8 @@ class ManageCollectionsTest {
     // START SetGenerative
     client.collections.create("Article",
         col -> col.vectorConfig(VectorConfig.text2vecContextionary())
-            .generativeModule(Generative.cohere()).properties(Property.text("title")));
+            .generativeModule(Generative.cohere())
+            .properties(Property.text("title")));
     // END SetGenerative
 
     var config = client.collections.getConfig("Article").get();
@@ -211,7 +223,8 @@ class ManageCollectionsTest {
   void testUpdateGenerative() throws IOException {
     // START UpdateGenerative
     var collection = client.collections.use("Article");
-    collection.config.update("Article", col -> col.generativeModule(Generative.cohere()));
+    collection.config.update("Article",
+        col -> col.generativeModule(Generative.cohere()));
     // END UpdateGenerative
 
     var config = client.collections.getConfig("Article").get();
@@ -239,10 +252,11 @@ class ManageCollectionsTest {
     client.collections.create("Article",
         col -> col.properties(
             Property.text("title",
-                p -> p.description("The title of the article.").tokenization(Tokenization.LOWERCASE)
+                p -> p.description("The title of the article.")
+                    .tokenization(Tokenization.LOWERCASE)
                     .vectorizePropertyName(false)),
-            Property.text("body",
-                p -> p.skipVectorization(true).tokenization(Tokenization.WHITESPACE))));
+            Property.text("body", p -> p.skipVectorization(true)
+                .tokenization(Tokenization.WHITESPACE))));
     // END PropModuleSettings
 
     var config = client.collections.getConfig("Article").get();
@@ -252,9 +266,10 @@ class ManageCollectionsTest {
   @Test
   void testCreateCollectionWithTrigramTokenization() throws IOException {
     // START TrigramTokenization
-    client.collections.create("Article",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary())
-            .properties(Property.text("title", p -> p.tokenization(Tokenization.TRIGRAM))));
+    client.collections.create("Article", col -> col
+        .vectorConfig(VectorConfig.text2vecContextionary())
+        .properties(
+            Property.text("title", p -> p.tokenization(Tokenization.TRIGRAM))));
     // END TrigramTokenization
 
     var config = client.collections.getConfig("Article").get();
@@ -266,8 +281,8 @@ class ManageCollectionsTest {
     // START DistanceMetric
     client.collections.create("Article",
         col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(
-                vec -> vec.vectorIndex(Hnsw.of(hnsw -> hnsw.distance(Distance.COSINE)))))
+            .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
+                .vectorIndex(Hnsw.of(hnsw -> hnsw.distance(Distance.COSINE)))))
             .properties(Property.text("title")));
     // END DistanceMetric
 
@@ -279,8 +294,8 @@ class ManageCollectionsTest {
   @Test
   void testReplicationSettings() throws IOException {
     // START ReplicationSettings
-    client.collections.create("Article",
-        col -> col.replication(Replication.of(rep -> rep.replicationFactor(1))));
+    client.collections.create("Article", col -> col
+        .replication(Replication.of(rep -> rep.replicationFactor(1))));
     // END ReplicationSettings
 
     var config = client.collections.getConfig("Article").get();
@@ -290,8 +305,8 @@ class ManageCollectionsTest {
   @Test
   void testAsyncRepair() throws IOException {
     // START AsyncRepair
-    client.collections.create("Article",
-        col -> col.replication(Replication.of(rep -> rep.replicationFactor(1).asyncEnabled(true))));
+    client.collections.create("Article", col -> col.replication(
+        Replication.of(rep -> rep.replicationFactor(1).asyncEnabled(true))));
     // END AsyncRepair
 
     var config = client.collections.getConfig("Article").get();
@@ -302,7 +317,8 @@ class ManageCollectionsTest {
   void testAllReplicationSettings() throws IOException {
     // START AllReplicationSettings
     client.collections.create("Article",
-        col -> col.replication(Replication.of(rep -> rep.replicationFactor(1).asyncEnabled(true)
+        col -> col.replication(Replication.of(rep -> rep.replicationFactor(1)
+            .asyncEnabled(true)
             .deletionStrategy(DeletionStrategy.TIME_BASED_RESOLUTION))));
     // END AllReplicationSettings
 
@@ -314,8 +330,10 @@ class ManageCollectionsTest {
   @Test
   void testShardingSettings() throws IOException {
     // START ShardingSettings
-    client.collections.create("Article", col -> col.sharding(
-        Sharding.of(s -> s.virtualPerPhysical(128).desiredCount(1).desiredVirtualCount(128))));
+    client.collections.create("Article",
+        col -> col.sharding(Sharding.of(s -> s.virtualPerPhysical(128)
+            .desiredCount(1)
+            .desiredVirtualCount(128))));
     // END ShardingSettings
 
     var config = client.collections.getConfig("Article").get();
@@ -327,8 +345,8 @@ class ManageCollectionsTest {
   @Test
   void testMultiTenancy() throws IOException {
     // START Multi-tenancy
-    client.collections.create("Article",
-        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true).autoTenantActivation(true)));
+    client.collections.create("Article", col -> col.multiTenancy(
+        mt -> mt.autoTenantCreation(true).autoTenantActivation(true)));
     // END Multi-tenancy
 
     var config = client.collections.getConfig("Article").get();
@@ -340,7 +358,8 @@ class ManageCollectionsTest {
     client.collections.create("Article");
 
     // START ReadOneCollection
-    CollectionHandle<Map<String, Object>> articles = client.collections.use("Article");
+    CollectionHandle<Map<String, Object>> articles =
+        client.collections.use("Article");
     Optional<CollectionConfig> articlesConfig = articles.config.get();
 
     System.out.println(articlesConfig);
@@ -361,24 +380,29 @@ class ManageCollectionsTest {
     System.out.println(response);
     // END ReadAllCollections
 
-    assertThat(response).hasSize(2).extracting(CollectionConfig::collectionName).contains("Article",
-        "Publication");
+    assertThat(response).hasSize(2)
+        .extracting(CollectionConfig::collectionName)
+        .contains("Article", "Publication");
   }
 
   @Test
   void testUpdateCollection() throws IOException {
-    client.collections.create("Article",
-        col -> col.invertedIndex(idx -> idx.bm25(bm25Builder -> bm25Builder.k1(10))));
+    client.collections.create("Article", col -> col
+        .invertedIndex(idx -> idx.bm25(bm25Builder -> bm25Builder.k1(10))));
 
     // START UpdateCollection
-    CollectionHandle<Map<String, Object>> articles = client.collections.use("Article");
+    CollectionHandle<Map<String, Object>> articles =
+        client.collections.use("Article");
 
-    articles.config.update("Article", col -> col.description("An updated collection description.")
-        .invertedIndex(idx -> idx.bm25(bm25Builder -> bm25Builder.k1(1.5f))));
+    articles.config.update("Article",
+        col -> col.description("An updated collection description.")
+            .invertedIndex(
+                idx -> idx.bm25(bm25Builder -> bm25Builder.k1(1.5f))));
     // END UpdateCollection
 
     var config = articles.config.get().get();
-    assertThat(config.description()).isEqualTo("An updated collection description.");
+    assertThat(config.description())
+        .isEqualTo("An updated collection description.");
     assertThat(config.invertedIndex().bm25().k1()).isEqualTo(1.5f);
   }
 
@@ -405,7 +429,8 @@ class ManageCollectionsTest {
     client.collections.create("Article");
 
     // START InspectCollectionShards
-    CollectionHandle<Map<String, Object>> articles = client.collections.use("Article");
+    CollectionHandle<Map<String, Object>> articles =
+        client.collections.use("Article");
 
     List<Shard> articleShards = articles.config.getShards();
     System.out.println(articleShards);
@@ -417,16 +442,20 @@ class ManageCollectionsTest {
   @Test
   void testUpdateCollectionShards() throws IOException {
     client.collections.create("Article");
-    String shardName = client.collections.use("Article").config.getShards().get(0).name();
+    String shardName =
+        client.collections.use("Article").config.getShards().get(0).name();
 
     // START UpdateCollectionShards
-    CollectionHandle<Map<String, Object>> articles = client.collections.use("Article");
+    CollectionHandle<Map<String, Object>> articles =
+        client.collections.use("Article");
 
-    List<Shard> articleShards = articles.config.updateShards(ShardStatus.READONLY, shardName);
+    List<Shard> articleShards =
+        articles.config.updateShards(ShardStatus.READONLY, shardName);
     System.out.println(articleShards);
     // END UpdateCollectionShards
 
     assertThat(articleShards).isNotNull().hasSize(1);
-    assertThat(articleShards.get(0).status()).isEqualTo(ShardStatus.READONLY.name());
+    assertThat(articleShards.get(0).status())
+        .isEqualTo(ShardStatus.READONLY.name());
   }
 }

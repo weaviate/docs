@@ -201,4 +201,8 @@ public class ConnectionTest
         // The 'using' statement handles freeing up resources automatically.
         // END ThirdPartyAPIKeys
     }
+
+    // START TimeoutWCD
+    // Coming soon
+    // END TimeoutWCD
 }

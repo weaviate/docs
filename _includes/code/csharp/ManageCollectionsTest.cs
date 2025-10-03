@@ -633,10 +633,6 @@ public class ManageCollectionsTest : IAsyncLifetime
         Assert.Equal(1.5f, config.InvertedIndexConfig.Bm25.K1);
     }
 
-    // START AddProperty
-    // Coming soon
-    // END AddProperty
-
     [Fact]
     public async Task TestDeleteCollection()
     {

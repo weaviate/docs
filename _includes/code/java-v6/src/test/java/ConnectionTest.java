@@ -11,9 +11,8 @@ class ConnectionTest {
   @Test
   void testConnectLocalWithCustomUrl() throws Exception {
     // START CustomURL
-    WeaviateClient client = WeaviateClient.connectToLocal(config -> config
-        .host("127.0.0.1")
-        .port(8080));
+    WeaviateClient client = WeaviateClient
+        .connectToLocal(config -> config.host("127.0.0.1").port(8080));
 
     System.out.println(client.isReady()); // Should print: `True`
 
@@ -45,8 +44,7 @@ class ConnectionTest {
     String weaviateUrl = System.getenv("WEAVIATE_URL");
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
 
-    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl, // Replace with your Weaviate Cloud URL
+    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, // Replace with your Weaviate Cloud URL
         weaviateApiKey // Replace with your Weaviate Cloud key
     );
 
@@ -65,14 +63,14 @@ class ConnectionTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String cohereApiKey = System.getenv("COHERE_API_KEY");
 
-    WeaviateClient client = WeaviateClient.connectToCustom(config -> config
-        .scheme("https") // Corresponds to http_secure=True and grpc_secure=True
-        .httpHost(httpHost)
-        .httpPort(443)
-        .grpcHost(grpcHost)
-        .grpcPort(443)
-        .authentication(Authentication.apiKey(weaviateApiKey))
-        .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
+    WeaviateClient client =
+        WeaviateClient.connectToCustom(config -> config.scheme("https") // Corresponds to http_secure=True and grpc_secure=True
+            .httpHost(httpHost)
+            .httpPort(443)
+            .grpcHost(grpcHost)
+            .grpcPort(443)
+            .authentication(Authentication.apiKey(weaviateApiKey))
+            .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
 
     System.out.println(client.isReady()); // Should print: `True`
 
@@ -89,14 +87,14 @@ class ConnectionTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String cohereApiKey = System.getenv("COHERE_API_KEY");
 
-    WeaviateClient client = WeaviateClient.connectToCustom(config -> config
-        .scheme("https") // Corresponds to http_secure=True and grpc_secure=True
-        .httpHost(httpHost)
-        .httpPort(443)
-        .grpcHost(grpcHost)
-        .grpcPort(443)
-        .authentication(Authentication.apiKey(weaviateApiKey))
-        .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
+    WeaviateClient client =
+        WeaviateClient.connectToCustom(config -> config.scheme("https") // Corresponds to http_secure=True and grpc_secure=True
+            .httpHost(httpHost)
+            .httpPort(443)
+            .grpcHost(grpcHost)
+            .grpcPort(443)
+            .authentication(Authentication.apiKey(weaviateApiKey))
+            .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
 
     System.out.println(client.isReady()); // Should print: `True`
 
@@ -122,8 +120,8 @@ class ConnectionTest {
     final String weaviateApiKey = System.getenv("WEAVIATE_LOCAL_API_KEY");
 
     // The local() factory doesn't support auth, so we must use custom().
-    WeaviateClient client = WeaviateClient.connectToCustom(config -> config
-        .authentication(Authentication.apiKey(weaviateApiKey)));
+    WeaviateClient client = WeaviateClient.connectToCustom(
+        config -> config.authentication(Authentication.apiKey(weaviateApiKey)));
 
     System.out.println(client.isReady()); // Should print: `True`
 
@@ -137,8 +135,8 @@ class ConnectionTest {
     // Best practice: store your credentials in environment variables
     final String cohereApiKey = System.getenv("COHERE_API_KEY");
 
-    WeaviateClient client = WeaviateClient.connectToLocal(config -> config
-        .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
+    WeaviateClient client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
 
     System.out.println(client.isReady()); // Should print: `True`
 
@@ -154,15 +152,17 @@ class ConnectionTest {
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
     String cohereApiKey = System.getenv("COHERE_API_KEY");
 
-    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(
-        weaviateUrl, // Replace with your Weaviate Cloud URL
+    WeaviateClient client = WeaviateClient.connectToWeaviateCloud(weaviateUrl, // Replace with your Weaviate Cloud URL
         weaviateApiKey, // Replace with your Weaviate Cloud key
-        config -> config
-            .setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
+        config -> config.setHeaders(Map.of("X-Cohere-Api-Key", cohereApiKey)));
 
     System.out.println(client.isReady()); // Should print: `True`
 
     client.close(); // Free up resources
     // END ThirdPartyAPIKeys
   }
+
+  // START TimeoutWCD
+  // Coming soon
+  // END TimeoutWCD
 }
