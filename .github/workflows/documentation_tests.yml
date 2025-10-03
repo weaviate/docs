@@ -16,7 +16,7 @@ on:
 env:
   # Centralize versions for easier maintenance
   PYTHON_VERSION: "3.10"
-  WEAVIATE_VERSION: "1.32.0"
+  WEAVIATE_VERSION: "1.33.0"
   OLLAMA_VERSION: "0.9.6"
   CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
 
