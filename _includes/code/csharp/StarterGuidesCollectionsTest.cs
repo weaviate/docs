@@ -39,7 +39,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Set the vectorizer
-            GenerativeConfig = new GenerativeConfig.Cohere(), // Set the generative module
+            GenerativeConfig = new Generative.CohereConfig(), // Set the generative module
             Properties = new()
             {
                 Property.Text("question"),
@@ -61,7 +61,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
+            GenerativeConfig = new Generative.CohereConfig(),
             Properties = new()
             {
                 Property.Text(
@@ -87,7 +87,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
+            GenerativeConfig = new Generative.CohereConfig(),
             Properties = new()
             {
                 Property.Text("question"),
@@ -118,7 +118,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                 }
                 // highlight-end
             ),
-            GenerativeConfig = new GenerativeConfig.Cohere(),
+            GenerativeConfig = new Generative.CohereConfig(),
             Properties = new()
             {
                 Property.Text("question"),
