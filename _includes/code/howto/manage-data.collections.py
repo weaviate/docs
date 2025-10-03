@@ -70,7 +70,7 @@ client.collections.create(
     # highlight-start
     vector_config=Configure.Vectors.text2vec_openai(),
     # highlight-end
-    properties=[  # properties configuration is optional
+    properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="body", data_type=DataType.TEXT),
     ],
@@ -174,7 +174,9 @@ from weaviate.collections.classes.config import _VectorIndexConfigHNSW
 collection = client.collections.use("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-openai"
-assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
+assert isinstance(
+    config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
+)
 
 # ===========================
 # ===== SET VECTOR INDEX PARAMETERS =====
@@ -211,7 +213,9 @@ client.collections.create(
 collection = client.collections.use("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
-assert isinstance(config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW)
+assert isinstance(
+    config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
+)
 
 
 # ===================================================================
@@ -226,7 +230,37 @@ from weaviate.classes.config import Configure, Property, DataType
 client.collections.create(
     "Article",
     # Additional settings not shown
-    properties=[  # properties configuration is optional
+    # highlight-start
+    inverted_index_config=Configure.inverted_index(
+        bm25_b=0.7,
+        bm25_k1=1.25,
+        index_null_state=True,
+        index_property_length=True,
+        index_timestamps=True,
+    ),
+    # highlight-end
+)
+# END SetInvertedIndexParams
+
+# Test
+collection = client.collections.use("Article")
+config = collection.config.get()
+assert config.inverted_index_config.bm25.b == 0.7
+assert config.inverted_index_config.bm25.k1 == 1.25
+
+# ===================================================================
+# ===== CREATE A COLLECTION WITH CUSTOM INVERTED INDEX SETTINGS =====
+# ===================================================================
+
+client.collections.delete("Article")
+
+# START EnableInvertedIndex
+from weaviate.classes.config import Configure, Property, DataType
+
+client.collections.create(
+    "Article",
+    # Additional settings not shown
+    properties=[
         Property(
             name="title",
             data_type=DataType.TEXT,
@@ -251,23 +285,8 @@ client.collections.create(
             # highlight-end
         ),
     ],
-    # highlight-start
-    inverted_index_config=Configure.inverted_index(  # Optional
-        bm25_b=0.7,
-        bm25_k1=1.25,
-        index_null_state=True,
-        index_property_length=True,
-        index_timestamps=True,
-    ),
-    # highlight-end
 )
-# END SetInvertedIndexParams
-
-# Test
-collection = client.collections.use("Article")
-config = collection.config.get()
-assert config.inverted_index_config.bm25.b == 0.7
-assert config.inverted_index_config.bm25.k1 == 1.25
+# END EnableInvertedIndex
 
 # Delete the collection to recreate it
 client.collections.delete("Article")
@@ -527,7 +546,10 @@ client.collections.create(
 collection = client.collections.use("Article")
 config = collection.config.get()
 assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
-assert config.vector_config["default"].vectorizer.model["model"] == "embed-multilingual-v2.0"
+assert (
+    config.vector_config["default"].vectorizer.model["model"]
+    == "embed-multilingual-v2.0"
+)
 
 # ====================================
 # ===== MODULE SETTINGS PROPERTY =====
@@ -548,7 +570,7 @@ client.collections.create(
             data_type=DataType.TEXT,
             # highlight-start
             vectorize_property_name=True,  # Use "title" as part of the value to vectorize
-            tokenization=Tokenization.LOWERCASE,  # Use "lowecase" tokenization
+            tokenization=Tokenization.LOWERCASE,  # Use "lowercase" tokenization
             description="The title of the article.",  # Optional description
             # highlight-end
         ),
@@ -563,6 +585,51 @@ client.collections.create(
     ],
 )
 # END PropModuleSettings
+
+# Test
+collection = client.collections.use("Article")
+config = collection.config.get()
+
+assert config.vector_config["default"].vectorizer.vectorizer == "text2vec-cohere"
+for p in config.properties:
+    if p.name == "title":
+        assert p.tokenization.name == "LOWERCASE"
+    elif p.name == "body":
+        assert p.tokenization.name == "WHITESPACE"
+
+
+# ====================================
+# ===== MODULE SETTINGS PROPERTY =====
+# ====================================
+
+# Clean slate
+client.collections.delete("Article")
+
+# START PropertyTokenization
+from weaviate.classes.config import Configure, Property, DataType, Tokenization
+
+client.collections.create(
+    "Article",
+    vector_config=Configure.Vectors.text2vec_cohere(),
+    properties=[
+        Property(
+            name="title",
+            data_type=DataType.TEXT,
+            # highlight-start
+            tokenization=Tokenization.LOWERCASE,  # Use "lowercase" tokenization
+            description="The title of the article.",  # Optional description
+            # highlight-end
+        ),
+        Property(
+            name="body",
+            data_type=DataType.TEXT,
+            # highlight-start
+            tokenization=Tokenization.WHITESPACE,  # Use "whitespace" tokenization
+            # highlight-end
+        ),
+    ],
+)
+# END PropertyTokenization
 
 # Test
 collection = client.collections.use("Article")
@@ -645,14 +712,17 @@ client.collections.create(
             distance_metric=VectorDistances.COSINE
         ),
         # highlight-end
-    )
+    ),
 )
 # END DistanceMetric
 
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.vector_config["default"].vector_index_config.distance_metric.value == "cosine"
+assert (
+    config.vector_config["default"].vector_index_config.distance_metric.value
+    == "cosine"
+)
 
 client.close()
 

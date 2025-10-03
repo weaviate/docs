@@ -467,6 +467,7 @@ const sidebars = {
         "weaviate/manage-collections/collection-operations",
         "weaviate/manage-collections/vector-config",
         "weaviate/manage-collections/generative-reranker-models",
+        "weaviate/manage-collections/inverted-index",
         {
           type: "category",
           label: "Multi-tenancy",
@@ -1376,6 +1377,7 @@ const sidebars = {
         "integrations/data-platforms/astronomer/index",
         "integrations/data-platforms/boomi/index",
         "integrations/data-platforms/box/index",
+        "integrations/data-platforms/cardinal/index",
         "integrations/data-platforms/confluent/index",
         "integrations/data-platforms/context-data/index",
         "integrations/data-platforms/databricks/index",
