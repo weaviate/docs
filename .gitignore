@@ -44,7 +44,7 @@ jeopardy_1k.csv
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+# package-lock.json
 yarn.lock
 .yarnrc.yml
 .yarn/**
@@ -107,6 +107,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+pytest-results.xml
 
 # Translations
 *.mo
