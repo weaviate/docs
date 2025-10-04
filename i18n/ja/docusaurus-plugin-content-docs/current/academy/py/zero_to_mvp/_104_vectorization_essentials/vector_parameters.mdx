@@ -1,0 +1,120 @@
+---
+title: 効果的な ベクトル 検索
+sidebar_position: 40
+---
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル 検索 の 理論
+
+<img src={imageUrl} alt="画像の alt" width="75%"/>
+
+### <i class="fa-solid fa-chalkboard"></i> 距離 指標
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトライザー の 概要
+
+<img src={imageUrl} alt="画像の alt" width="75%"/>
+
+### <i class="fa-solid fa-chalkboard"></i> 経験則
+
+### <i class="fa-solid fa-code"></i> ベクトライザー の 設定
+
+## <i class="fa-solid fa-square-chevron-right"></i> 追加 の 検索 手法
+
+### 検索 オペレーター
+
+語彙 検索 を 行う とき に 検索 語 を 指定 する の と 同様 に、 Weaviate で ベクトル 検索 を 実行 する には、検索 元 と なる ベクトル を 提供 する 必要 が あります。  
+
+これら は 例 として `nearVector`、`nearObject`、`nearText` を 使用 し、 GraphQL の 引数 として 渡す こと が できます。  
+
+これら は GraphQL クエリ 内 で クラス（例: `Get`）への 引数 として Weaviate に 提供 され ます。  
+
+例えば、次 の クエリ は `Question` クラス で 類似 オブジェクト を 検索 する ため に `nearVector` オペレーター を 追加 して います。
+
+```graphql
+{
+  Get {
+    Question (
+      limit: 1,
+      nearVector: {vector: <VECTOR>}
+      ) {
+      question
+      answer
+    }
+  }
+}
+
+print(json.dumps(response, indent=2))
+```
+
+「unusual animals」 の ベクトル を 入力 と した 場合、クエリ は 次 の よう に 返却 します。
+
+```json
+{
+  "data": {
+    "Get": {
+      "Question": [
+        {
+          "answer": "raccoons",
+          "question": "The crab-eating one of these masked animals eats fish, fruit & frogs, too"
+        }
+      ]
+    }
+  }
+}
+```
+
+検索 オペレーター は `Aggregate` や `Explore` 関数 と 共 に も 使用 できます。これら は ベクトル 空間 を どの よう に 探索 する か を 指定 する 重要 な 入力 です。詳細 は この ユニット の 後半 で 取り上げ ます。
+
+<img src={imageUrl} alt="画像の alt" width="75%"/>
+
+### <i class="fa-solid fa-code"></i> `NearObject`
+
+### <i class="fa-solid fa-code"></i> `NearVector`
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル 検索 の 理論
+
+<img src={imageUrl} alt="画像の alt" width="75%"/>
+
+### <i class="fa-solid fa-chalkboard"></i> 距離 指標
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+<img src={imageUrl} alt="画像の alt" width="75%"/>
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習 エクササイズ
+
+あなた 自身 の 言葉 で XXX を 説明 できます か？
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+??
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要 な ポイント
+
+:::info
+概要 を 追加
+:::
+
+import Quiz from '/src/components/Academy/quiz.js'
+const varName = [{
+  questionText: 'questionText',
+  answerOptions: [
+    {
+      answerText: 'answerOne',
+      isCorrect: false,
+      feedback: 'feedbackOne',
+    },
+    {
+      answerText: 'answerTwo',
+      isCorrect: false,
+      feedback: 'feedbackTwo',
+    },
+    {
+      answerText: 'answerThree',
+      isCorrect: false,
+      feedback: 'feedbackThree',
+    },
+  ]
+}];

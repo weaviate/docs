@@ -1,0 +1,40 @@
+---
+title: "RAG：概要"
+description: マルチモーダル RAG の設定
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../_snippets/102_collection.mts';
+
+### <i class="fa-solid fa-chalkboard"></i> 目的
+
+検索拡張生成 ( RAG ) は、セマンティック検索の検索能力と、大規模言語モデルなどの AI モデルの生成能力を組み合わせる方法です。これにより、Weaviate インスタンスからオブジェクトを検索し、その結果に基づいて出力を生成できます。
+
+### <i class="fa-solid fa-chalkboard"></i> セットアップ
+
+コレクションを作成するときに、次のように `generative` パラメーターを指定しました。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Define the generative module"
+  endMarker="// END generativeDefinition"
+  language="ts"
+/>
+
+これは、検索で取得したオブジェクトを基に出力を生成するための生成モジュールを選択します。ここでは `cohere` モジュールと、`command` ファミリーの大規模言語モデルを使用しています。
+
+以前にベクトライザー モジュールで行ったように、生成モジュールの提供元から API キーを取得する必要があります。今回は Cohere の API キーが必要です。
+
+### <i class="fa-solid fa-code"></i> RAG クエリ
+
+ RAG クエリは、Weaviate では「generative クエリ」とも呼ばれます。これらの機能には、コレクションオブジェクトの `generate` サブモジュールからアクセスできます。
+
+各 generative クエリは通常の検索クエリに加えて動作し、取得された各オブジェクトに対して RAG クエリを実行します。
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

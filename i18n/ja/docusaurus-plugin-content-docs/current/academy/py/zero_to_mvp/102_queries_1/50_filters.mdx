@@ -1,0 +1,363 @@
+---
+title: フィルター
+description: Weaviate でフィルターを適用して検索結果を精密に絞り込みます。
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/2ouOpwdbMQg' controls='true'/>
+<br/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> 利用可能な演算子
+
+これまでに、`Get` や `Aggregate` といったクエリ関数、`nearVector`、`nearObject`、`nearText` といった検索オペレーターを見てきました。  
+では、フィルターについて見ていきましょう。
+
+フィルターとは、結果に対して追加の条件を指定する方法です。Weaviate には複数のフィルターが用意されています。
+
+### <i class="fa-solid fa-chalkboard"></i> 利用可能なフィルター
+
+利用可能なフィルターは多数ありますが、今はすべてを扱う必要はありません。ここでは、よく使われるフィルターをいくつか紹介します。
+
+- `where`: ブール条件を適用してデータをフィルターします。  
+- `limit`: 取得するオブジェクトの最大数を制限します。  
+- `offset`: 検索結果のページネーションに使用します。  
+
+## <i class="fa-solid fa-square-chevron-right"></i> `where` でのデータフィルター
+
+`where` フィルターは、 SQL の `WHERE` 句に相当します。 SQL の `WHERE` 句と同様に、`where` フィルターを使ってデータにブール条件を適用できます。
+
+### <i class="fa-solid fa-code"></i> 単一オペランドの例
+
+以前に次のようなサンプルクエリを実行しました。
+
+import GetWithAdditional from './_snippets/academy.queries.get.with.additional.mdx';
+
+<GetWithAdditional/>
+
+その結果、次のような回答が返ってきました。
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.1791926,
+            "id": "b1645a32-0c22-5814-8f35-58f142eadf7e"
+          },
+          "answer": "escaping the Earth's gravity (and go off into outer space, on your way to the moon, for instance)",
+          "question": "It takes approximately 24,840 MPH to achieve this"
+        },
+        {
+          "_additional": {
+            "distance": 0.18123823,
+            "id": "ef263438-b152-5540-97f7-99f4076bd124"
+          },
+          "answer": "the Milky Way",
+          "question": "This is the name of our own galaxy"
+        }
+      ]
+    }
+  }
+}
+```
+
+ここで、`Like` オペレーターを使った `where` 引数を追加してクエリを拡張してみましょう。
+
+import FilterWhereLike from './_snippets/academy.queries.filter.where.like.mdx';
+
+<FilterWhereLike/>
+
+これにより、先ほどのレスポンスがどのように変化するか予想できますか。
+
+実際のレスポンスはこちらです。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.18400955,
+            "id": "ddcc3f06-5410-5944-85c4-3cb56ab27088"
+          },
+          "answer": "space shuttles",
+          "question": "These transports, first sent up in 1981, lift off like a rocket & land like a plane"
+        },
+        {
+          "_additional": {
+            "distance": 0.2267003,
+            "id": "36ffe6ca-9b73-5a54-80eb-a93f01822956"
+          },
+          "answer": "Robert Goddard",
+          "question": "He's been called the \"Father of Modern Rocketry\""
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
+
+結果が変化していることがわかります。先ほどの結果は、`question` プロパティに `rocket` という文字列が含まれていないため除外されました。
+
+このように ベクトル 検索とフィルターを組み合わせる方法は、入力に類似しているだけでなく、追加の条件も満たすオブジェクトを見つける強力な手段です。フィルターによって、クエリ ベクトル に対して「より近い」オブジェクトが除外される場合もありますが、誤検出を排除して本当に関連性の高いオブジェクトを得る有効な戦略となります。
+
+</details>
+
+クエリを使えばデータをさまざまな方法でフィルターできます。例として次のクエリを見てください。
+
+import FilterWhereGreater from './_snippets/academy.queries.filter.where.greater.mdx';
+
+<FilterWhereGreater/>
+
+このクエリは先ほどのクエリとどのように異なる結果を返すと予想しますか。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.18251508,
+            "id": "15f06117-012c-506d-b5c5-24df2e750f35"
+          },
+          "answer": "the Milky Way",
+          "points": 400,
+          "question": "Into the 20th Century it was thought the universe was one big galaxy--this one"
+        },
+        {
+          "_additional": {
+            "distance": 0.19289112,
+            "id": "584a6c68-0ebe-561f-b32a-3a735eadf02e"
+          },
+          "answer": "Asteroid",
+          "points": 400,
+          "question": "A 1991 photo of Gaspra taken by the Galileo probe was the first close-up of one of these minor planets"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
+
+このクエリは、`points` 値が 200 より大きい `JeopardyQuestion` オブジェクトのみを返すように変更されています。  
+そのため、返されるデータセットは大きく異なります。
+
+</details>
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+`JeopardyQuestion` オブジェクトを以下の条件でフィルタリングしてみてください:
+- `points` 値が 200 と等しい
+- `points` 値が 600 以上
+
+利用できる演算子の一覧は [こちらのページ](/weaviate/api/graphql/filters#filter-structure) にあります。
+:::
+
+### <i class="fa-solid fa-code"></i> 複数オペランドの例
+
+クエリ構文は、単一のオペランドを超えて複数の条件を扱うこともできます。
+
+import FilterMultipleOperands from './_snippets/academy.queries.filter.multiple.operands.mdx';
+
+<FilterMultipleOperands/>
+
+`where` 引数（つまり `.with_where`）に注目してください。結果にはどのような制限がかかると予想されますか。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.2267003,
+            "id": "a488fbe5-c2c6-50ad-8938-4b9f20dc56d1"
+          },
+          "answer": "Robert Goddard",
+          "points": 400,
+          "question": "He's been called the \"Father of Modern Rocketry\""
+        },
+        {
+          "_additional": {
+            "distance": 0.24946856,
+            "id": "c00decd4-4cf1-5b03-a789-a57077e082fb"
+          },
+          "answer": "Huntsville",
+          "points": 1000,
+          "question": "A campus for the University of Alabama is here, nicknamed \"Rocket City, U.S.A.\""
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの解説</summary>
+
+このクエリは、`points` 値が 400 より大きく、かつ `question` フィールドに `rocket` が含まれている `JeopardyQuestion` オブジェクトのみを返すように変更されています。
+
+</details>
+
+これらのフィルターは `Aggregate` クエリにも適用できます。ぜひ試してみてください。
+
+:::note <i class="fa-solid fa-square-terminal"></i> Exercise
+次を試してみましょう:
+- 上記のパターンに従って、`Aggregation` クエリに `where` フィルターを追加する。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> `offset` を使った結果のページネーション
+
+データをクエリするときは、`offset` 演算子を使用して指定した件数の結果をスキップできます。これは 1 ページあたりに表示する件数を制御したいページネーションに便利です。
+
+`offset` 演算子は既存の `limit` 演算子と組み合わせて使用し、`offset+1` から `offset+1+limit` までの結果を取得します。
+
+たとえば最初の 10 件を取得するには `limit`: 10 を指定します。その後「2 ページ目の 10 件」を表示するには `offset`: 10、`limit`: 10 と指定します。以降も同様です。
+
+`offset` を使用する構文は次のとおりです:
+
+import FilterPaginationNeartext from './_snippets/academy.queries.filter.pagination.nearText.mdx';
+
+<FilterPaginationNeartext/>
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "the Milky Way",
+          "question": "Into the 20th Century it was thought the universe was one big galaxy--this one"
+        },
+        {
+          "answer": "space shuttles",
+          "question": "These transports, first sent up in 1981, lift off like a rocket & land like a plane"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+このクエリは、最初の 2 件 (`offset`: 2) の後の次の 2 件 (`limit`: 2) を取得します。
+
+結果制限が異なる 2 つのクエリを比較することでこれを確認できます。以下のクエリは上位 4 件を取得します。そのクエリの最後の 2 件は、ページネーション付きで `limit` を使ったクエリの結果と同じです。
+
+```graphql
+{
+  Get {
+    JeopardyQuestion(limit: 4) {
+      answer
+      question
+    }
+  }
+}
+```
+
+import FilterPaginationRelated from './_snippets/academy.queries.filter.pagination.related.mdx';
+
+<FilterPaginationRelated/>
+
+</details>
+
+:::tip
+したがって、`n` ページ目では `offset`: `n*m`、`limit`: `m` と指定します。ここで `m` は 1 ページあたりの結果数です。
+:::
+
+`offset` 演算子は、`Get` や `Aggregate` を含むすべての ベクトル 検索関数で利用できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> レビュー
+
+<Quiz questions={whereUsage} />
+
+<Quiz questions={offsetExample} />
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- フィルターは結果に追加の条件を適用するために使用します。よく使われるフィルターには `where`、`limit`、`offset` などがあります。  
+- `where` フィルターは、クエリ対象データにブール条件を適用できます。`Like`、`Greater`、`Equal` などさまざまな演算子と組み合わせて使用できます。  
+- `where` フィルター内で複数の条件を組み合わせて、クエリ結果をさらに絞り込むことができます。  
+- `offset` 演算子は `limit` と組み合わせることで、結果をスキップしてページネーションを構築できます。  
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const whereUsage = [{
+  questionText: 'Which filter is used to apply a boolean condition to the data in Weaviate?',
+  answerOptions: [
+    {
+      answerText: 'limit',
+      isCorrect: false,
+      feedback: 'This is used to set the maximum number of objects to retrieve.',
+    },
+    {
+      answerText: 'offset',
+      isCorrect: false,
+      feedback: 'This is used to skip a number of results.',
+    },
+    {
+      answerText: 'where',
+      isCorrect: true,
+      feedback: 'It is similar to the WHERE clause in SQL.',
+    },
+  ]
+}];
+export const offsetExample = [{
+  questionText: 'How can you combine the offset and limit operators to display the second page of results with 10 results per page?',
+  answerOptions: [
+    {
+      answerText: 'Set offset: 10 and limit: 10',
+      isCorrect: true,
+      feedback: 'This would get results 11-20.',
+    },
+    {
+      answerText: 'Set offset: 20 and limit: 10',
+      isCorrect: false,
+      feedback: 'This would get results 21-30.',
+    },
+    {
+      answerText: 'Set offset: 10 and limit: 20',
+      isCorrect: false,
+      feedback: 'This would get results 11-30',
+    },
+  ]
+}];
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

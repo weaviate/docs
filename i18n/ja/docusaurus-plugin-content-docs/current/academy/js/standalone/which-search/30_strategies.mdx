@@ -1,0 +1,162 @@
+---
+title: 検索結果を改善するための戦略
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!./_snippets/30_strategies.ts';
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+適切な検索タイプを選択することに加えて、検索結果の品質を向上させるために活用できる戦略もあります。
+
+ここでは、これらの戦略のいくつかを見ていきます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトル検索を改善する
+
+ベクトル検索を改善する鍵は、検索のニーズに合った目的適合的なベクトル表現を確保することです。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザーの選択
+
+独自のベクトルを持つデータを挿入しない限り、Weaviate ベクトライザー モジュールおよびそのモジュール内のモデルを使用して、データのベクトルを生成します。
+
+どのベクトライザー モジュールとモデルを選ぶかは重要で、データのどの側面がベクトル表現に取り込まれるか、そしてモデルがどれだけデータを「理解」できるかが決まります。
+
+まず第一に、データタイプに最適なベクトライザー モジュールを選択する必要があります。たとえば、テキストデータを扱う場合は `text2vec` モジュールを、画像やマルチモーダルデータを扱う場合は `multi2vec` モジュールを使用するのが適切です。
+
+ベクトライザーの選択については別のユニットで取り上げますが、どこから始めればよいか分からない場合は次を試してみてください。  
+- テキストデータ向け（ API ベース）には `text2vec-cohere` または `text2vec-openai`  
+  - Cohere には 100 以上の言語で使用できる多言語モデルがあります。  
+- 画像または画像とテキストのデータには `multi2vec-clip`
+
+テキストデータを扱い、ローカル推論コンテナを実行したい場合は `text2vec-transformers` として `sentence-transformers/all-MiniLM-L12-v2` のような一般的なモデルを試してください。
+
+### <i class="fa-solid fa-chalkboard"></i> リランカーを試す
+
+リランカー モジュールは検索結果の品質を向上させる優れた方法です。
+
+リランカー モジュールは、ベクトル検索の結果を受け取り、追加の基準や別のモデルに基づいて結果を再ランク付けします。これにより、遅いが高品質なモデルをリランキングに使用しつつ、高速な一次検索の恩恵を受けられます。
+
+たとえば、`text2vec-cohere` モジュールでベクトル検索を行い、その結果を `reranker-cohere` モジュールで別のモデルを用いてリランクすることができます。
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティの選択
+
+ベクトル化はオブジェクトの「意味」を捉えます。そのため、検索に適用する基準と関連のないプロパティは、ベクトル化プロセスから除外すべきです。
+
+例として、商品オブジェクトに製造工程や製造場所などのメタデータが含まれている場合で、ベクトル検索を商品の特徴に基づいて行いたいのであれば、製造工程と製造場所のプロパティはベクトル化から除外する必要があります。
+
+これは、以下のようにプロパティをベクトル化時にスキップするかどうかを指定することで行えます。コレクション名やプロパティ名でも同様に指定可能です。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START skipVectorizationExample"
+      endMarker="// END skipVectorizationExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> チャンク化
+
+チャンク化とは、テキストを小さなチャンクに分割し、それぞれを個別にベクトル化するプロセスを指します。これは、各ベクトルが含む情報量を定義するため非常に重要です。
+
+経験則として、検索の粒度が細かいほど、チャンクサイズは小さくする必要があります。例えば、特定の概念やアイデアを検索する場合は、文や小さなテキストウィンドウのような小さな単位にチャンク化します。一方で、章や本全体のようなより広い概念を検索する場合は、それに合わせてテキストをチャンク化します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索を改善する
+
+### <i class="fa-solid fa-chalkboard"></i> トークナイゼーション
+
+BM25 検索を「キーワード」検索と呼んでいますが、実際には正確に一致するのは「単語」ではなく「トークン」です。これはベクトル埋め込み生成に使用されるトークナイゼーションとは異なり、BM25 検索やフィルタリングのための転置インデックスを構築するために使用されます。
+
+したがって、どのトークンがマッチングに用いられるかを決定するトークナイゼーションプロセスは非常に重要です。
+
+使用可能なオプションは `word`、`lowercase`、`whitespace`、`field` です。デフォルトの `word` は散文には十分かもしれませんが、大文字小文字や記号を含む完全一致が重要なテキストでは `whitespace` などがより適切な場合があります。
+
+利用可能なトークナイゼーションオプション:
+
+import TokenizationDefinition from '/_includes/tokenization_definition.mdx';
+
+<TokenizationDefinition/>
+
+コレクションの設定でトークナイゼーションを指定できます。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START tokenizationExample"
+      endMarker="// END tokenizationExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティの選択とブースト
+
+特定のプロパティでのマッチが結果に過度に影響している場合、そのプロパティを検索から除外する、または特定のプロパティの重要度をブーストすることができます。
+
+たとえば、`description` プロパティでの一致は `notes` プロパティでの一致よりも重要かもしれません。これはクエリ時に指定できます。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START selectAndBoostExample"
+      endMarker="// END selectAndBoostExample"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索の改善
+
+### <i class="fa-solid fa-chalkboard"></i> alpha パラメーター
+
+`alpha` パラメーターは、ベクトル検索結果とキーワード検索結果のバランスを決定します。  
+
+検索をよりベクトルベースにしたい場合は `alpha` 値を大きくしてください。  
+反対に、検索をよりキーワードベースにしたい場合は `alpha` 値を小さくしてください。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START adjustAlpha"
+      endMarker="// END adjustAlpha"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> フュージョンアルゴリズム
+
+フュージョンアルゴリズムは、ベクトル検索とキーワード検索から得られた結果をどのように統合するかを決定します。
+
+既定では、各結果セットのランクの逆数を合計する「ランクドフュージョン」アルゴリズムが使用されます。  
+ただし、各結果セットのスコアを正規化して合計する「相対スコアフュージョン」アルゴリズムを使用することもできます。
+
+一般的に「相対スコアフュージョン」のほうが精度が高いことが多いですが、ユースケースに応じて両方を試してみることをおすすめします。
+
+<Tabs groupId="languages">
+
+ <TabItem value="ts" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START changeFusionType"
+      endMarker="// END changeFusionType"
+      language="ts"
+    />
+  </TabItem>
+
+</Tabs>

@@ -1,0 +1,180 @@
+---
+title: 検索
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/103_searches.py';
+
+named vectors を持つコレクションには複数の ベクトル 埋め込みを含めることができるため、あらゆる ベクトル 検索または類似度検索では「target」 ベクトル を指定する必要があります。
+
+これは `near_text` と `near_vector` 検索だけでなく、`near_image` などのマルチモーダル検索にも適用されます。ここではいくつかの例を見てみましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> テキスト検索
+
+### <i class="fa-solid fa-code"></i> コード
+
+ここでは "MovieNVDemo" 内から、フレーズ `"A joyful holiday film"` と意味的に近いエントリーを検索します。ただし、同じクエリでも `target_vector` パラメーターを変えた複数バージョンを示しています。
+
+<Tabs groupId="targetVector">
+  <TabItem value="title" label="Title">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# NVTitleSearch"
+      endMarker="# END NVTitleSearch"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="overview" label="Overview">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# NVOverviewSearch"
+      endMarker="# END NVOverviewSearch"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="poster" label="Poster">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# NVPosterSearch"
+      endMarker="# END NVPosterSearch"
+      language="py"
+    />
+  </TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+ここで使用している各 named vector は、映画データの異なるプロパティに基づいています。
+
+最初の検索は映画の **タイトル** の意味をクエリと比較し、2 番目の検索は映画の **全文サマリー**（overview）を比較し、3 番目は **ポスター（およびタイトル）** を比較します。
+
+Weaviate では、各 named vector に異なる ベクトライザー を設定することもできます。ご存じのとおり `poster_title` ベクトルは CLIP モデルによって作成され、`title` と `overview` プロパティは OpenAI モデルによって作成されています。
+
+その結果、適切なプロパティに対して適切なモデルを使用することで、各 named vector をさらに特化させることができます。
+
+### <i class="fa-solid fa-chalkboard"></i> 結果の説明
+
+検索はそれぞれ異なるプロパティを基にしているため、結果も異なります。
+
+#### `title` vs `overview`
+
+`overview` ターゲット ベクトルでの検索結果には、「Home Alone」や「Home Alone 2: Lost in New York」など、他の検索には含まれていないタイトルが表示されています。
+
+これは、これらの映画のストーリーがホリデーをテーマにしている一方で、タイトル自体は明らかに楽しい休日やホリデーを示唆していないためです。
+
+#### `poster`
+
+`poster_title` ターゲット ベクトルでの検索結果には興味深いことにスティーヴン・キング原作のホラー映画「Misery」が含まれています。これは映画のポスターが雪景色であり、CLIP ベクトライザーが画像の要素を認識するよう訓練されているためと考えられます。この恐ろしい映画でも、ポスターだけを見れば検索結果として「間違い」とは言い切れません。本や映画を知っている人なら同意するでしょうが。
+
+<Tabs groupId="targetVector">
+  <TabItem value="title" label="Title">
+
+```text
+How the Grinch Stole Christmas 2000 8871
+Distance to query: 0.162
+
+The Nightmare Before Christmas 1993 9479
+Distance to query: 0.177
+
+The Pursuit of Happyness 2006 1402
+Distance to query: 0.182
+
+Jingle All the Way 1996 9279
+Distance to query: 0.184
+
+Mrs. Doubtfire 1993 788
+Distance to query: 0.189
+```
+
+  </TabItem>
+  <TabItem value="overview" label="Overview">
+
+```text
+How the Grinch Stole Christmas 2000 8871
+Distance to query: 0.148
+
+Home Alone 1990 771
+Distance to query: 0.164
+
+Onward 2020 508439
+Distance to query: 0.172
+
+Home Alone 2: Lost in New York 1992 772
+Distance to query: 0.175
+
+Little Miss Sunshine 2006 773
+Distance to query: 0.176
+```
+
+  </TabItem>
+  <TabItem value="poster" label="Poster">
+
+上位 5 件のポスター：
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/637_poster.jpg" alt="Life Is Beautiful" width="200" />
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/137_poster.jpg" alt="Groundhog Day" width="200" />
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/9279_poster.jpg" alt="Jingle All the Way" width="200" />
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/2034_poster.jpg" alt="Training Day" width="200" />
+<img src="https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/posters/1700_poster.jpg" alt="Misery" width="200" />
+
+```text
+Life Is Beautiful 1997 637
+Distance to query: 0.621
+
+Groundhog Day 1993 137
+Distance to query: 0.623
+
+Jingle All the Way 1996 9279
+Distance to query: 0.625
+
+Training Day 2001 2034
+Distance to query: 0.627
+
+Misery 1990 1700
+Distance to query: 0.632
+```
+
+  </TabItem>
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> ハイブリッド検索
+
+### <i class="fa-solid fa-code"></i> コード
+
+次の例では "MovieNVDemo" 内から "history" という語のハイブリッド検索スコアが最も高いエントリーを探し、上位 5 件のタイトルと公開年を表示します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MetadataHybridSearch"
+  endMarker="# END MetadataHybridSearch"
+  language="py"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+named vectors でのハイブリッド検索は、他の named vector を使った ベクトル 検索と同じ仕組みで動作します。ハイブリッド検索の ベクトル 検索部分で使用する named vector を指定するために、`target_vector` パラメーターを必ず渡してください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> キーワード検索
+
+named vectors はオブジェクトの ベクトル 表現に影響を与えますが、キーワード検索には影響しません。named vector コレクションでも、他のコレクションと同じ構文でキーワード検索を実行できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 検索における名前付き ベクトル
+
+named vectors を使用すると、ニーズに合わせて柔軟な検索オプションを設定できます。
+
+各オブジェクトには、任意のプロパティと ベクトライザー の組み合わせ、あるいは独自モデルで作成した複数のカスタム ベクトル など、必要なだけ多くの named vectors を持たせることができます。
+
+この柔軟性により、特定のユースケースに最適化された ベクトル 表現を持つデータベースを構築し、任意のプロパティの組み合わせに基づいて類似アイテムを検索できます。
+## <i class="fa-solid fa-square-chevron-right"></i> RAG について
+
+ RAG （検索拡張生成）クエリで名前付き ベクトル を使用する場合も、他の名前付き ベクトル を使った ベクトル 検索と同じ方法で動作します。 RAG クエリの ベクトル 検索コンポーネントで使用する名前付き ベクトル を指定するには、`target_vector` パラメーターを必ず指定してください。
+
+これにより、生成結果の品質を向上させられる可能性があります。いくつかの例を [次のセクション](./20_use_cases.mdx) で見ていきましょう。
+
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

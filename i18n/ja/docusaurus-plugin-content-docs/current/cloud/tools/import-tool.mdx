@@ -1,0 +1,218 @@
+---
+title: インポート ツール
+sidebar_position: 10
+description: "CSV ファイルをアップロードし、新しい Weaviate Cloud コレクションへのデータ取り込みをガイドするツールです。"
+image: og/wcd/user_guides.jpg
+---
+
+import WCDImportStart from '/docs/cloud/img/weaviate-cloud-import-tool-start.png';
+import WCDImportConfirm from '/docs/cloud/img/weaviate-cloud-import-tool-confirm.png';
+import WCDImportCollectionSettings from '/docs/cloud/img/weaviate-cloud-import-tool-collection-settings.png';
+import WCDImportPropertySettings from '/docs/cloud/img/weaviate-cloud-import-tool-property-settings.png';
+import WCDImportExplorer from '/docs/cloud/img/weaviate-cloud-import-tool-explorer.png';
+
+Weaviate Cloud (WCD) の *Import tool* を使用すると、CSV ファイルから新しい Weaviate コレクションへデータを簡単にアップロードできます。クラスタの選択、コレクションの設定、CSV 列と Weaviate プロパティのマッピングを順に案内し、最後にデータを自動でインポートします。
+
+このガイドでは、次の `import.csv` ファイルを使用します。
+
+```csv title="import.csv"
+id,product_name,price,description
+1,"Laptop",1200.00,"High-performance laptop with 16GB RAM and 512GB SSD."
+2,"Mouse",25.00,"Wireless optical mouse with ergonomic design."
+3,"Keyboard",75.00,"Mechanical keyboard with RGB backlighting."
+```
+
+## ステップ 1: インポート プロセスの開始
+
+Import tool には Weaviate Cloud コンソールからアクセスできます。
+
+<div class="row">
+  <div class="col col--3">
+    <ol>
+      <li>
+        まず、左サイドバーの <code>Import</code> ツール
+        (<span class="callout">1</span>) を選択します。
+      </li>
+      <li>
+        <code>Clusters</code> パネルには利用可能なクラスタが一覧表示されます。
+        データをインポートしたいクラスタをリストから選択します
+        (<span class="callout">2</span>)。
+      </li>
+      <li>
+        <code>Browse CSV files</code> ボタン
+        (<span class="callout">3</span>) をクリックし、インポートしたい CSV ファイルを選択します。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--9">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={WCDImportStart}
+          alt="Start the import process in Weaviate Cloud"
+        />
+      </div>
+      <div class="card__body">
+        <p>Weaviate Cloud でインポート プロセスを開始します。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+
+CSV ファイルを選択すると、ツールにファイル名とサイズが表示されます。
+
+<div class="row">
+  <div class="col col--6">
+    <ol start="4">
+      <li>
+        正しいファイルが表示されていることを確認し、<code>Next</code>{' '}
+        ボタン (<span class="callout">1</span>) をクリックしてコレクション設定へ進みます。
+        ファイルを誤って選択した場合は、赤い <code>x</code> アイコンをクリックして削除し、別のファイルを選択できます。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img src={WCDImportConfirm} alt="Confirm CSV file for import" />
+      </div>
+      <div class="card__body">
+        <p>インポートする CSV ファイルを確認します。</p>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+## ステップ 2: コレクション設定
+
+このステップでは、インポートしたデータを保存する新しいコレクションの設定を行います。
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        新しいコレクションの<strong>名前</strong>を入力します
+        (<span class="callout">1</span>)。例: <code>Product</code>。
+        コレクション名は大文字で始まり、英字・数字・アンダースコアのみ使用できます。
+        スペースは使用できません。
+      </li>
+      <li>
+        必要に応じて、<strong>マルチテナンシー</strong>、<strong>ベクトライザー</strong>、<strong>モデル</strong>、<strong>dimensions</strong>、<strong>base URL</strong>、および
+        <strong>コレクション名をベクトル化するか</strong>どうかを設定します。
+        本例ではデフォルト設定を使用します。
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={WCDImportCollectionSettings}
+          alt="Configure collection settings for import"
+        />
+      </div>
+      <div class="card__body">
+        <p>新しいコレクションの設定を行います。</p>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+
+
+## ステップ 3: プロパティのマッピング
+
+これはインポートを開始する前の最後のステップです。ここでは、CSV ファイルの列を新しい Weaviate コレクションのプロパティにマッピングします。
+
+<div class="row">
+  <div class="col col--6">
+    <ol>
+      <li>
+        ツールは CSV ファイルで検出された列を表示します (
+        <span class="callout">1</span>)。
+      </li>
+      <li>
+        各列に対して、Weaviate コレクションで表示されるとおりの <code>Property Name</code> を指定できます (
+        <span class="callout">2</span>)。プロパティ名は小文字で始まり、英字・数字・アンダースコアのみを使用できます。
+      </li>
+      <li>
+        各列の <code>Property Type</code> をプルダウンメニューから選択します (<span class="callout">3</span>)。今回の <code>import.csv</code> では:
+        <ul>
+          <li>
+            <code>id</code> は <code>Int</code>
+          </li>
+          <li>
+            <code>product_name</code> は <code>Text</code>
+          </li>
+          <li>
+            <code>price</code> は <code>Number</code>
+          </li>
+          <li>
+            <code>description</code> は <code>Text</code>
+          </li>
+        </ul>
+      </li>
+      <li>
+        トグルスイッチで各プロパティを<strong>ベクトル化</strong>するかどうかを設定します (<span class="callout">4</span>)。意味検索を行いたいテキストフィールドでは、有効にしてください。
+      </li>
+      <li>
+        インポート対象からプロパティを除外したい場合は、隣のゴミ箱アイコンをクリックします (<span class="callout">5</span>)。
+      </li>
+      <li>
+        プロパティのマッピングに問題がなければ、<code>Submit</code> ボタン (<span class="callout">6</span>) をクリックしてインポートを開始します
+        import process. The tool will create the collection and import the data.
+      </li>
+    </ol>
+  </div>
+  <div class="col col--6">
+    <div class="card">
+      <div class="card__image">
+        <img
+          src={WCDImportPropertySettings}
+          alt="CSV 列をコレクションのプロパティにマッピング"
+        />
+      </div>
+      <div class="card__body">
+        <p>CSV 列をコレクションのプロパティにマッピングしてインポートを開始します。</p>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+画面下部の `Product Preview` セクションでは、データがどのようにマッピングされるかを確認できます。すべてが正しいことを確認してください。
+
+## ステップ 4: インポート済みデータの確認
+
+インポートが完了すると、自動的に [Explorer tool](./explorer-tool.mdx) が開き、新しく作成されたコレクションとそのオブジェクトを表示します。
+
+<div class="row">
+  <div class="card">
+    <div class="card__image">
+      <img src={WCDImportExplorer} alt="Explorer でインポート済みデータを表示" />
+    </div>
+    <div class="card__body">
+      <p>Explorer tool を使用してインポートされたデータを確認します。</p>
+    </div>
+  </div>
+</div>
+<br />
+
+CSV ファイルのデータと一致するインポート済みオブジェクトが一覧表示されます。各オブジェクトを展開して、プロパティ、メタデータ、ベクトルを確認できます。
+
+## 追加リソース
+
+- [リファレンス: コレクション定義](/weaviate/config-refs/collections.mdx)
+- [スターターガイド: コレクション定義 (スキーマ)](/weaviate/starter-guides/managing-collections)
+- [ハウツー: データのインポート](/weaviate/manage-objects/import)
+
+## サポート
+
+import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+
+<SupportAndTrouble />
+

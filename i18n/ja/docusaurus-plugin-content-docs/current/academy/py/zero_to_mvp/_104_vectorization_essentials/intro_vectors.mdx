@@ -1,0 +1,153 @@
+---
+title: ベクトルと意味
+sidebar_position: 10
+---
+
+import imageUrl from '../../tmp_images/academy_placeholder.jpg';
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルとベクトル検索
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+これまで「ベクトル検索」という言葉を、その動作 ― 類似度にもとづく検索 ― に着目して説明してきました。また、この文脈では「セマンティック検索」とほぼ同じ意味で用いてきました。ここで少し立ち止まり、詳しく見ていきましょう。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトルとベクトル検索
+
+![](https://mlabonne.github.io/blog/images/tensor/scalar.png)
+
+「ベクトル検索」という名前は、類似度検索を行う際に「ベクトル」を用いることに由来します。つまり、ベクトル検索は類似度検索の実装方法のひとつです。
+
+では、ベクトルとは具体的に何でしょうか。
+
+この文脈でのベクトルとは数の集合です。正確には、`1, 5, 5`、`0.591, -0.132, 0, 0.105`、`0, 0, 0, 0, 0, 0` のような **一次元の数値配列** です。
+
+:::note ベクトル表記
+ベクトルは通常、要素を角括弧で囲んで表します。したがって、上記のベクトルはそれぞれ `[1, 5, 5]`、`[0.591, -0.132, 0, 0.105]`、`[0, 0, 0, 0, 0, 0]` のように表記されます。
+:::
+
+ベクトル自体は比較的小さな概念で、単なる数の集合 ― 一次元配列 ― にすぎません。一見すると大したことがないように思えますが、ベクトルの真価は「意味」を表現できる点にあります。では、数の列がどのように意味を持つのでしょうか。
+
+これはベクトル検索の核心となる大きなアイデアであり、初めて触れる方にとっては最も理解に時間がかかる部分かもしれません。ぜひ一緒に学んでいきましょう。
+
+:::info ベクトル / テンソル / 配列
+「テンソル」や「配列」という言葉を見たことがあるかもしれません。文脈によって多少の違いはありますが、多くの場合同じものを指しており、ソフトウェアライブラリや次元数などによって呼称が変わる程度です。
+:::
+
+:::tip 重要なポイント
+ベクトルの真価は、それが「意味」を表現できることにあります。この洞察と深層学習の発展が、ベクトル検索を支えています。
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトルの日常的な例
+
+![](../../tmp_images/a_isometric_view_of_a_world_map_with_a_pin_on_it_0.jpg)
+![](https://i.stack.imgur.com/ikf0N.jpg)
+
+考え方のひとつとして、ベクトルの各要素は意味の特定の側面を表します。そして、ベクトル全体でそれらの側面を組み合わせたものが「意味」になります。
+
+実際、みなさんも既に意味を表すベクトルを使った経験があるかもしれません。たとえば、  
+- 位置情報を誰かに送って物体の位置を示したことがある場合、それは緯度と経度（場合によっては高度）を含むベクトルです。  
+- 色を表す際に、赤・緑・青（場合によっては透明度）の値を持つベクトルを使ったことがあるかもしれません。
+
+これらの例では、ベクトルの各数値が物体の経度や「どれだけ緑か」といった側面を表し、ベクトル全体で「位置」や「色」という意味を表現しています。
+
+さらに発展させると、上記 2 つのベクトルを結合して、緯度・経度・赤・緑・青・透明度を含む 1 つのベクトルにすることもできます。すると、そのベクトルは物体の「位置」と「色」の両方を表すことになります。
+
+つまり、ベクトルは「どれだけ北か」「どれだけ西か」「どれだけ赤いか」「どれだけ緑か」「どれだけ青いか」「どれだけ透明か」といった属性を列挙することで、物体のあらゆる性質を表現できます。
+
+<Quiz questions={vectorDefinition} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> ベクトルで意味を表現する
+
+<img src={imageUrl} alt="Image alt" width="75%"/>
+
+### <i class="fa-solid fa-chalkboard"></i> なぜベクトルで意味を表すのか
+
+![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*SYiW1MUZul1NvL1kc1RxwQ.png)
+
+意味を表現するためのベクトル利用は、単語や文、さらにはドキュメント全体の意味を表すところまで拡張されています。
+
+ここでも、ベクトルの各要素は意味の側面を表します。たとえば "lion"、"grapefruit"、"cat"、"cow" という単語を表したい場合、各要素で次のような側面を捉えるかもしれません。  
+- どれだけ「毛がふさふさ」しているか  
+- どれだけ「大きい」か  
+- どれだけ「危険」か  
+- どれだけ「食用」か  
+
+などです。
+
+すると、ベクトル全体はそれらの側面を組み合わせた意味を表します。たとえば "lion" を表すベクトルは `[0.8, 0.9, 0.9, 0.1]`、"grapefruit" を表すベクトルは `[0.1, 0.3, 0.1, 0.9]` のようになります。
+
+実際のモデルが生成するベクトルはもっと長く、数百から数千次元になることもありますが、考え方は同じです。各数値が意味の一側面を表し、ベクトル全体で単語の意味を表現します。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトルはどのように生成されるのか
+
+![](../../tmp_images/a_machine_with_a_conveyer_belt_producing_many_long_numbers_0.jpg)
+
+ベクトルは機械学習モデルによって生成されます。これらのモデルは大量のデータで訓練され、単語とその意味の関係性を学習します。
+
+たとえば、モデルは "lion" と "tiger" がどちらも大型のネコ科動物であるため類似していることを学習します。同時に "lion" と "cow" がどちらも動物であるという共通点も学びます。そして、この知識を使って各ベクトルの要素を調整し、単語の意味を最もよく表すように最適化します。
+
+そのため、適切なモデル選びは非常に重要です。選んだモデルはベクトルの品質、ひいては「どの単語が類似しているか」の判断に大きな影響を与えます。
+
+日常英語の用例で学習したモデルと、科学論文あるいは医学や法律といった特定ドメインで学習したモデルとでは、生成されるベクトルが異なるのは当然です。
+
+具体的なユースケースに合ったモデル選定については、別の章で詳しく解説します。
+
+<Quiz questions={vectorsAndMeaning} />
+
+<Quiz questions={vectorGeneration} />
+
+## <i class="fa-solid fa-square-chevron-right"></i> まとめ
+
+:::warning TODO
+Video here
+:::
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
+
+あなた自身の文章で XXX を説明してみましょう。
+
+:::warning TODO
+Input box for user to put answer in and get back a similarity score & our definition?
+??
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要ポイント
+
+:::info
+Add summary
+:::
+
+import Quiz from '/src/components/Academy/quiz.js'
+const vectorDefinition = [
+  {
+    questionText: 'What is a vector in the context of data science?',
+    answerOptions: [
+      { answerText: 'An array of letters.', isCorrect: false, feedback: 'It is not an array of letters.'},
+      { answerText: 'An array of numbers.', isCorrect: true, feedback: 'Note: Typically they are floating point numbers.'},
+      { answerText: 'An array of symbols.', isCorrect: false, feedback: 'It is not an array of symbols.'},
+      { answerText: 'A number with direction and magnitude.', isCorrect: false, feedback: 'This is a definition in science or mathematics, but not so much in the data science context.'},
+    ],
+  },
+];
+const vectorsAndMeaning = [
+  {
+    questionText: 'Which of these is not a good example of vectors representing meaning?',
+    answerOptions: [
+      { answerText: 'An RGB value representing color.', isCorrect: false, feedback: 'Actually, this is a good example. An RGB value uses three numbers for (R)ed, (G)reen and (B)lue to represent color.'},
+      { answerText: 'A location coordinate representing longitude, latitude and altitude.', isCorrect: false, feedback: 'Actually, this is a good example. These three numbers would accurately and precisely describe the location.'},
+      { answerText: 'A 1024-dimensional vector generated by a language model to represent the word "butterfly".', isCorrect: false, feedback: 'Actually, this is a good example. This is in fact a typical way in which modern vector would be generated.'},
+      { answerText: 'None, these are all good examples.', isCorrect: true, feedback: 'All of these are perfectly reasonable examples of vectors representing meaning.'},
+    ],
+  },
+];
+const vectorGeneration = [
+  {
+    questionText: 'How are vectors generated?',
+    answerOptions: [
+      { answerText: 'Manually inputting numbers into an array.', isCorrect: false, feedback: 'This might be theoretically possible, but highly impractical.'},
+      { answerText: 'Training machine learning models on large amounts of data.', isCorrect: true, feedback: 'This is typically how they are generated.'},
+      { answerText: 'Automatically generating random numbers.', isCorrect: false, feedback: 'While this would work, these vectors would not be "meaningful". Interestingly, this is how they are typically "initialized" during training.'},
+      { answerText: 'Copying numbers from other vectors.', isCorrect: false, feedback: 'This would work, but would not produce unique vectors.'},
+    ],
+  },
+];

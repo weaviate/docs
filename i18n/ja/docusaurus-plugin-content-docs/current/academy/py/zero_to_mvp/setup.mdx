@@ -1,0 +1,192 @@
+---
+title: P3_101A Weaviate Academy 事前準備
+description: Weaviate をゼロからセットアップし、最初のプロジェクトを構築しましょう。
+sidebar_position: 101.5
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PythonCodeExample from '!!raw-loader!./_snippets/setup.py';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+
+import ZeroToMvpDeprecationNote from '/docs/academy/py/zero_to_mvp/_snippets/deprecation.md';
+
+<ZeroToMvpDeprecationNote/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+この短いガイドに従って、Python クライアントで Weaviate を使用するための環境を整えましょう。
+
+<!-- <img src={imageUrl} alt="Image alt" width="75%"/> -->
+
+## <i class="fa-solid fa-square-chevron-right"></i> Python と Python クライアント
+
+まだ Python と Weaviate Python クライアントをセットアップしていない場合は、以下の手順に従ってください。
+
+### <i class="fa-solid fa-code"></i> Python のインストール
+
+Python 3 はさまざまな方法でインストールできます。簡単な方法の一つは、[Python.org](https://www.python.org/downloads/) の手順に従ってお使いのシステム向けインストーラーを利用することです。
+
+### <i class="fa-solid fa-code"></i> Weaviate クライアントのインストール
+
+:::tip 仮想環境
+プロジェクトを分離するために仮想環境を使用することがベストプラクティスです。
+
+仮想環境に馴染みがない場合は、ぜひ学習してください。概要をつかむには [FreeCodeCamp](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/) のチュートリアル、より詳しく学ぶには [RealPython](https://realpython.com/python-virtual-environments-a-primer/) の記事がおすすめです。
+:::
+
+次のライブラリも必要です。
+
+```
+weaviate-client
+```
+
+仮想環境をアクティベートし、以下のコマンドで Weaviate クライアントをインストールします。
+
+```shell
+pip install weaviate-client
+```
+
+### <i class="fa-solid fa-code"></i> Python コードの実行
+
+Python コードは Jupyter Notebook で実行することを推奨します。ライブラリは次のコマンドでインストールできます。
+
+```shell
+pip install notebook
+```
+
+その後、表示されているコードを Jupyter Notebook で実行してください。もちろん、お好みの方法で実行しても構いません。
+
+:::tip Jupyter が初めてですか？
+Jupyter Notebook の使い方を学ぶには、[こちらのチュートリアル](https://realpython.com/jupyter-notebook-introduction/) をご覧ください。
+:::
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate
+
+### <i class="fa-solid fa-code"></i> インスタンスへのアクセス
+
+本コースでは、`https://edu-demo.weaviate.network` に用意された Weaviate インスタンスを使用します。
+
+読み取り専用の Weaviate API キーでこのインスタンスに接続できます。
+
+以下のコードを Python 環境で実行できることを確認してください。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Basic instantiation ====="
+  endMarker="# ===== END Basic instantiation ====="
+  language="py"
+/>
+
+すべてが正しく設定されていれば、`True` が返されます。
+
+### <i class="fa-solid fa-code"></i> 推論 API キー
+
+OpenAI の API を利用するため、API キーが必要です。
+
+まだお持ちでない場合は OpenAI アカウントを作成し、[こちら](https://platform.openai.com/api-keys) から無料の API キーを作成してください。
+
+続いて、下記のようにクライアントをインスタンス化します。`YOUR-OPENAI-API-KEY` をご自身の OpenAI API キーに置き換えてください。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Instantiate to edu-demo with OpenAI ====="
+  endMarker="# ===== END Instantiate to edu-demo with OpenAI ====="
+  language="py"
+/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> コード例
+
+### <i class="fa-solid fa-code"></i> クライアントのインスタンス化
+
+簡潔さのため、Weaviate Academy の多くのコード例ではクライアントのインスタンス化を省略しています。そのため、次のような例が表示された場合:
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Arbitrary code example ====="
+  endMarker="# ===== END Arbitrary code example ====="
+  language="py"
+/>
+
+前セクションで示した方法でクライアントをインスタンス化する必要があります。つまり、上記のコードは次のようになります。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Fuller arbitrary code example ====="
+  endMarker="# ===== END Fuller arbitrary code example ====="
+  language="py"
+/>
+
+### <i class="fa-solid fa-code"></i> GraphQL
+
+Weaviate Academy のユニットは Python などのクライアントライブラリで使用することを前提としています。そのため、GraphQL や REST クエリを直接実行する必要はありません。
+
+ただし、基礎となるクエリ構造を学べるよう、必要に応じて生の GraphQL/REST クエリと対応する Python コードの両方を示します。
+
+したがって、次のようなクエリを示す場合:
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Arbitrary code example ====="
+  endMarker="# ===== END Arbitrary code example ====="
+  language="py"
+/>
+
+実際には裏側で以下が実行されています。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Equivalent GraphQL example ====="
+  endMarker="# ===== END Equivalent GraphQL example ====="
+  language="graphql"
+/>
+
+今後は、必要に応じて次のようにタブで分けて表示します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+This tab will show Python code.
+```
+
+</TabItem>
+<TabItem value="graphql" label="GraphQL">
+
+```graphql
+This tab will show GraphQL code.
+```
+
+</TabItem>
+</Tabs>
+### <i class="fa-solid fa-code"></i> 生の GraphQL クエリ
+
+Weaviate Python クライアントは、生の GraphQL クエリを実行できます。  
+さらに、[Weaviate Query app](/cloud/tools/query-tool) も利用できます。
+
+Python では、次のようにして GraphQL クエリを直接実行できます。
+
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== GraphQL example with Python execution ====="
+  endMarker="# ===== END GraphQL example with Python execution ====="
+  language="py"
+/>
+
+<!-- Or, the Weaviate Console provides a graphical interface that you can connect to your Weaviate instance and run queries. -->
+
+<!-- TODO - show specific steps to do this when WCD launches -->
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- ご利用の環境に Weaviate クライアント ライブラリをインストール済みです。  
+- OpenAI 推論キーをお持ちです。  
+- Python コードを実行できる環境があること。  
+- Weaviate Python クライアントをインスタンス化し、例のコードを実行する方法を理解しています。  
+- Academy の各ユニットでは Python コードに加えて、必要に応じて生の GraphQL や REST スニペットも示します。  
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

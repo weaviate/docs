@@ -1,0 +1,37 @@
+---
+title: まとめ / 次のステップ
+---
+
+おめでとうございます！これで ベクトル インデックスに関する本コースを修了しました。お役に立ち、有益だったことを願っています。
+
+## インデックス選択
+
+インデックス タイプを選択する際は、次を目安にしてください。
+
+- **Flat index** : サイズが既知の小規模コレクション向け。  
+- **HNSW index** : サイズが既知の大規模コレクション向け。  
+- **Dynamic index** : サイズが不明、または時間とともに増加する可能性があるコレクション向け。
+
+また、マルチテナント環境では、`dynamic` インデックスをデフォルトにすると便利です。これにより、一部のテナントは `flat` インデックスのままにし、成長したテナントは自動で `hnsw` に変換できます。
+
+## さらなるリソース
+
+学習を継続する際に役立つリソースはこちらです。
+
+- [概念: ベクトル インデックス](/weaviate/concepts/indexing/vector-index.md)
+- [リファレンス: ベクトル インデックスのパラメーター](/weaviate/config-refs/indexing/vector-index.mdx)
+- [コレクションの管理方法](../../../weaviate/manage-collections/index.mdx)
+- [Weaviate Academy: 圧縮](../compression/index.md)
+- [Weaviate Academy: 名前付き ベクトル](../named_vectors/index.md)
+
+import CTASocials from '../_snippets/cta_socials.mdx';
+
+<CTASocials />
+
+またお会いしましょう！ 👋
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>
