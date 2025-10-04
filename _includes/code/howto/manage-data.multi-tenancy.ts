@@ -91,12 +91,11 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 
   // Tests
   let tenants = await multiCollection.tenants.get()
-
-  assert.ok(['tenantA', 'tenantB'].includes(tenants[0].name));
-  assert.ok(['tenantA', 'tenantB'].includes(tenants[1].name));
-// what does this do?
-// const theCollection = await client.schema.classGetter().withClassName(className).do();
-// assert.deepEqual(theCollection['multiTenancyConfig'], { enabled: true });
+  assert.ok(['tenantA', 'tenantB'].includes(tenants.tenantA.name));
+  assert.ok(['tenantA', 'tenantB'].includes(tenants.tenantB.name));
+  // what does this do?
+  // const theCollection = await client.schema.classGetter().withClassName(className).do();
+  // assert.deepEqual(theCollection['multiTenancyConfig'], { enabled: true });
 
 }
 // ===================================
@@ -114,8 +113,8 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
   // END ListTenants
 
   // Test - tenants are returned in nondeterministic order
-  assert.ok(['tenantA', 'tenantB'].includes(tenants[0].name));
-  assert.ok(['tenantA', 'tenantB'].includes(tenants[1].name));
+  assert.ok(['tenantA', 'tenantB'].includes(tenants.tenantA.name));
+  assert.ok(['tenantA', 'tenantB'].includes(tenants.tenantB.name));
 }
 
 // =======================================
@@ -164,7 +163,7 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 
   // Test
   let tenants = await multiCollection.tenants.get()
-  assert.deepEqual(tenants.length, 1);
+  assert.deepEqual(Object.keys(tenants).length, 1);
 }
 
 // =======================================
@@ -215,10 +214,11 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
   // END ChangeTenantState
 }
 
+//TODO[g-despot] Enable offload module
 // ==========================
 // ===== Offload tenant =====
 // ==========================
-{
+/*{
   // START OffloadTenants
   const multiCollection = client.collections.use(collectionName)
 
@@ -230,7 +230,7 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
   // highlight-end
   // END OffloadTenants
 }
-
+*/
 // =====================
 // ===== Enable Auto Tenant Activation =====
 // =====================
@@ -268,8 +268,8 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
   })
   // highlight-end
   // END CreateMtObject
-// Test
-// assert.equal(object['tenant'], 'tenantA');
+  // Test
+  // assert.equal(object['tenant'], 'tenantA');
 }
 // =====================
 // ===== Search MT =====
@@ -290,8 +290,8 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 
   console.log(objectA.objects)
   // END Search
-// Test
-// assert('question' in result['data']['Get'][className][0]);
+  // Test
+  // assert('question' in result['data']['Get'][className][0]);
 }
 
 // ===============================
@@ -304,8 +304,32 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 //   })
 //   .do();
 {
-  const categoryId = '...'
-  const objectId = '...'
+  await client.collections.delete(
+    'JeopardyCategory'
+  )
+  await client.collections.create({
+    name: 'JeopardyCategory',
+    properties: [
+      {
+        name: 'title',
+        dataType: 'text'
+      }
+    ]
+  })
+  // Create the category object that we'll reference
+  await client.collections.get('JeopardyCategory').data.insert({
+    title: 'Science',
+    id: '12345678-e64f-5d94-90db-c8cfa3fc1234'  
+  })
+
+  // Create the multi-tenant object
+  await client.collections.use(collectionName).withTenant('tenantA').data.insert({
+    title: 'Something',
+    id: '12345678-e64f-5d94-90db-c8cfa3fc1235'  
+  })
+
+  const categoryId = '12345678-e64f-5d94-90db-c8cfa3fc1234'
+  const objectId = '12345678-e64f-5d94-90db-c8cfa3fc1235'
   // START AddCrossRef
   const multiCollection = client.collections.use(collectionName);
   // Add the cross-reference property to the multi-tenancy class
@@ -328,7 +352,7 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
   })
   // END AddCrossRef
 
-// Test
-// object = await client.data.getterById().withId(object.id).withClassName(className).withTenant('tenantA').do();
-// assert.equal(object['properties']['hasCategory'][0]['href'], `/v1/objects/JeopardyCategory/${category.id}`);
+  // Test
+  // object = await client.data.getterById().withId(object.id).withClassName(className).withTenant('tenantA').do();
+  // assert.equal(object['properties']['hasCategory'][0]['href'], `/v1/objects/JeopardyCategory/${category.id}`);
 }
