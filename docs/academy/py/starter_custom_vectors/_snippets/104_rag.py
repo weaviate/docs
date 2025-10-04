@@ -25,13 +25,13 @@ def vectorize(cohere_client: CohereClient, texts: List[str]) -> List[List[float]
 # START-ANY
 import os
 import weaviate
-import os
+from weaviate.classes.generate import GenerativeConfig
 
 # END-ANY
 
 from weaviate.classes.init import Auth
 
-headers = {"X-Cohere-Api-Key": os.getenv("COHERE_APIKEY")}
+headers = {"X-OpenAI-Api-Key":  os.environ["OPENAI_APIKEY"]}
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=os.getenv("WEAVIATE_URL"),  # Replace with your WCD URL
@@ -61,8 +61,9 @@ response = movies.generate.near_vector(
     near_vector=query_vector,
     limit=5,
     # highlight-start
-    single_prompt="Translate this into French: {title}"
+    single_prompt="Translate this into French: {title}",
     # highlight-end
+    generative_provider=GenerativeConfig.openai()
 )
 
 # Inspect the response
@@ -93,6 +94,7 @@ response = movies.generate.near_vector(
     grouped_task="What do these movies have in common?",
     # grouped_properties=["title", "overview"]  # Optional parameter; for reducing prompt length
     # highlight-end
+    generative_provider=GenerativeConfig.openai()
 )
 
 # Inspect the response
