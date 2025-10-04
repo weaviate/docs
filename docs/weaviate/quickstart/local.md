@@ -361,8 +361,6 @@ flowchart LR
 ```
 
 The following example combines the same search (for `biology`) with a prompt to generate a tweet. 
-<!--We are using the Ollama [generative AI integrations](../model-providers/ollama/generative.md) for retrieval augmented generation (RAG), specifically the `llama3.2` model.-->
-
 
 import QueryRAG from '/_includes/code/quickstart/local.quickstart.query.rag.mdx'
 
