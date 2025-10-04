@@ -608,7 +608,7 @@ However, based on the available information, no shoes under $60 were found. If y
 - No recommendations were provided for nice shoes under $60, though the user specifically requested shoes as well as vintage clothes.
 ```
 
-<details>
+</details>
 
 ## Usage - Async Python client
 
