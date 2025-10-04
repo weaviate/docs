@@ -162,7 +162,6 @@ A collection is a set of objects that share the same data structure, like a tabl
 
 The following example creates a *collection* called `Question` with:
   - Ollama [embedding model integration](../model-providers/ollama/embeddings.md) to create vectors during ingestion & queries, using the `nomic-embed-text` model, and
-  - Ollama [generative AI integrations](../model-providers/ollama/generative.md) for retrieval augmented generation (RAG), using the `llama3.2` model.
 
 import CreateCollection from '/_includes/code/quickstart/local.quickstart.create_collection.mdx'
 
@@ -361,7 +360,9 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-The following example combines the same search (for `biology`) with a prompt to generate a tweet.
+The following example combines the same search (for `biology`) with a prompt to generate a tweet. 
+<!--We are using the Ollama [generative AI integrations](../model-providers/ollama/generative.md) for retrieval augmented generation (RAG), specifically the `llama3.2` model.-->
+
 
 import QueryRAG from '/_includes/code/quickstart/local.quickstart.query.rag.mdx'
 
