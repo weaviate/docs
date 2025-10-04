@@ -58,9 +58,8 @@ def test_pyv3(empty_weaviates, script_loc):
 def test_ts(empty_weaviates, script_loc):
     temp_proc_script_loc = utils.load_and_prep_temp_file(script_loc, lang="ts")
     command = ["npx", "tsx", temp_proc_script_loc]
-
+    
     try:
-        # If the script throws an error, this will raise a CalledProcessError
-        subprocess.check_call(command)
-    except subprocess.CalledProcessError as error:
-        pytest.fail(f"Script {temp_proc_script_loc} failed with error: {error}")
+        utils.run_script(command, script_loc)
+    except Exception as e:
+        pytest.fail(str(e))

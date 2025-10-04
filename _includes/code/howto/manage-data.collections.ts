@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 import weaviate, { WeaviateClient, vectorIndex } from 'weaviate-client';
-import { reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
+import { configure, reranker, vectors, generative, dataType, tokenization, reconfigure, vectorDistances } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -808,6 +808,7 @@ await client.collections.create({
     // highlight-end
 })
 
+{
 // START UpdateReranker
 const collection = client.collections.use('Article')
 
@@ -824,6 +825,7 @@ assert.equal(config.reranker?.name,"reranker-cohere")
 
 // Delete the collection to recreate it
 client.collections.delete("Article")
+}
 
 // ==========================================
 // ===== MULTI-VECTOR EMBEDDINGS MUVERA
@@ -832,8 +834,12 @@ client.collections.delete("Article")
 // Clean slate
 await client.collections.delete("DemoCollection")
 
+/*
 // START MultiValueVectorMuvera
 import { configure } from 'weaviate-client';
+// END MultiValueVectorMuvera
+// START MultiValueVectorMuvera
+*/
 
 await client.collections.create({
     name: "DemoCollection",
@@ -924,3 +930,5 @@ await client.collections.create({
     // Additional parameters not shown
 })
 // END MultiValueVectorCollection
+}
+}
