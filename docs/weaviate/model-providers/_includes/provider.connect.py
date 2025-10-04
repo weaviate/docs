@@ -27,6 +27,10 @@ cohere_key = os.getenv("COHERE_APIKEY")
 # END CohereInstantiation
 # START DatabricksInstantiation
 # Recommended: save sensitive data as environment variables
+# START ContextualAIInstantiation
+# Recommended: save sensitive data as environment variables
+contextualai_key = os.getenv("CONTEXTUAL_API_KEY")
+# END ContextualAIInstantiation
 databricks_token = os.getenv("DATABRICKS_TOKEN")
 # END DatabricksInstantiation
 # START FriendliInstantiation
@@ -142,6 +146,12 @@ headers = {
 # START XaiInstantiation
     "X-Xai-Api-Key": xai_key,
 # END XaiInstantiation
+
+# START ContextualAIInstantiation
+    "X-Contextual-Api-Key": contextualai_key,
+    # Optional custom base URL
+    # "X-Contextual-Baseurl": "https://api.contextual.ai",
+# END ContextualAIInstantiation
 
 # START-ANY
 }
