@@ -360,6 +360,35 @@ response = qa.ask(
 response.display()
 # END BasicAskQuery
 
+# START InspectResponseExample
+print("\n=== Query Agent Response ===")
+print(f"Original Query: {response.searches[0].query}\n")
+
+print("🔍 Final Answer Found:")
+print(f"{response.final_answer}\n")
+
+print("🔍 Searches Executed:")
+for collection_searches in response.searches:
+    for result in collection_searches:
+        print(f"- {result}\n")
+
+if len(response.aggregations) > 0:
+    print("📊 Aggregation Results:")
+    for collection_aggs in response.aggregations:
+        for agg in collection_aggs:
+            print(f"- {agg}\n")
+
+if response.missing_information:
+    if response.is_partial_answer:
+        print("⚠️ Answer is Partial - Missing Information:")
+    else:
+        print("⚠️ Missing Information:")
+    for missing in response.missing_information:
+        print(f"- {missing}")
+# END InspectResponseExample
+
+assert response.final_answer != "" and response.final_answer is not None
+
 # START BasicSearchQuery
 # Perform a search using Search Mode (retrieval only, no answer generation)
 search_response = qa.search("Find me some vintage shoes under $70", limit=10)
@@ -494,35 +523,6 @@ for output in qa.ask_stream(
         # This is the final response, as returned by QueryAgent.ask()
         output.display()
 # END StreamResponse
-
-# START InspectResponseExample
-print("\n=== Query Agent Response ===")
-print(f"Original Query: {response.original_query}\n")
-
-print("🔍 Final Answer Found:")
-print(f"{response.final_answer}\n")
-
-print("🔍 Searches Executed:")
-for collection_searches in response.searches:
-    for result in collection_searches:
-        print(f"- {result}\n")
-
-if len(response.aggregations) > 0:
-    print("📊 Aggregation Results:")
-    for collection_aggs in response.aggregations:
-        for agg in collection_aggs:
-            print(f"- {agg}\n")
-
-if response.missing_information:
-    if response.is_partial_answer:
-        print("⚠️ Answer is Partial - Missing Information:")
-    else:
-        print("⚠️ Missing Information:")
-    for missing in response.missing_information:
-        print(f"- {missing}")
-# END InspectResponseExample
-
-assert response.final_answer != "" and response.final_answer is not None
 
 client.close()
 

@@ -577,8 +577,38 @@ This example outputs:
             language="ts"
         />
     </TabItem>
-
 </Tabs>
+
+<details>
+  <summary>Example output</summary>
+
+```
+=== Query Agent Response ===
+Original Query: vintage style clothing
+
+🔍 Final Answer Found:
+For vintage-style clothing under $60, I recommend the Vintage Scholar Turtleneck priced at $55. It features a soft, stretchable fabric with timeless pleated details, perfect for a Dark Academia-inspired intellectual and moody look, whether layered or worn solo.
+
+However, based on the available information, no shoes under $60 were found. If you want, I can help search further for nice shoes within your budget. Let me know!
+
+🔍 Searches Executed:
+- ('query', 'vintage style clothing')
+
+- ('filters', IntegerPropertyFilter(property_name='price', operator=<ComparisonOperator.LESS_THAN: '<'>, value=60.0))
+
+- ('collection', 'ECommerce')
+
+- ('query', 'nice shoes')
+
+- ('filters', IntegerPropertyFilter(property_name='price', operator=<ComparisonOperator.LESS_THAN: '<'>, value=60.0))
+
+- ('collection', 'ECommerce')
+
+⚠️ Answer is Partial - Missing Information:
+- No recommendations were provided for nice shoes under $60, though the user specifically requested shoes as well as vintage clothes.
+```
+
+<details>
 
 ## Usage - Async Python client
 
