@@ -85,6 +85,19 @@ jobs:
           echo "✅ Python environment ready. Installed packages:"
           pip list | head -20
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install Node.js dependencies
+        run: |
+          echo "📦 Installing Node.js dependencies..."
+          npm ci
+          echo "✅ Node.js environment ready"
+
       # Separate cache for each image with compression
       - name: Cache Weaviate image
         uses: actions/cache@v4
@@ -180,7 +193,7 @@ jobs:
           echo "✅ All Docker images ready"
           echo "Final disk space:"
           df -h | grep -E "^/dev|Filesystem"
-
+          
           echo "📊 Cache file sizes:"
           ls -lh /tmp/*.tar.gz 2>/dev/null || echo "No cache files found"
 
@@ -206,6 +219,7 @@ jobs:
 
           # Wait for Ollama to be ready before pulling models
           sleep 5  # Wait for Ollama service to be ready
+          echo "✅ Services started:"
           echo "✅ Services started:"
           docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
@@ -260,12 +274,11 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
           source .venv/bin/activate
-
-          # Wait a bit more to ensure Keycloak is fully ready
+          
           sleep 5
-
+          
           python _includes/code/python/keycloak_helper_script.py
-
+          
           echo "✅ Keycloak configuration completed"
 
       - name: Record test start time
@@ -273,7 +286,7 @@ jobs:
 
       - name: Run tests
         id: run-tests
-        continue-on-error: true  # NEW: Don't fail workflow on test failure
+        continue-on-error: true  # Don't fail workflow on test failure
         env:
           DOCS_GITHUB_ENV: "true"
           # Weaviate connection settings
@@ -298,7 +311,8 @@ jobs:
           echo "🧪 Running tests..."
           source .venv/bin/activate
 
-          pytest -m pyv4 -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          # Run both Python and TypeScript tests
+          pytest -m "pyv4 or ts" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
 
           echo "✅ Tests completed"
 
