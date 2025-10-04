@@ -19,18 +19,18 @@ import java.util.Map;
 // Set these environment variables
 // WEAVIATE_HOSTNAME     Your Weaviate instance hostname
 // WEAVIATE_API_KEY      Your Weaviate instance API key
-// COHERE_APIKEY    Your Cohere API key
+// OPENAI_APIKEY         Your OpenAI API key
 
 public class RAG {
   public static void main(String[] args) throws Exception {
 
     String host = System.getenv("WEAVIATE_HOSTNAME");
     String apiKey = System.getenv("WEAVIATE_API_KEY");
-    String cohereKey = System.getenv("COHERE_APIKEY");
+    String openAiKey = System.getenv("OPENAI_APIKEY");
 
     // highlight-start
     Map<String, String> headers = new HashMap<String, String>() { {
-      put("X-Cohere-Api-Key", cohereKey);
+      put("X-OpenAI-Api-Key", openAiKey);
     } };
 
     Config config = new Config("https", host, headers);

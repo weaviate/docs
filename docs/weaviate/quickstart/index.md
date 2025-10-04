@@ -406,7 +406,6 @@ flowchart LR
 ```
 
 The following example combines the same search (for `biology`) with a prompt to generate a tweet. 
-<!--We are using the OpenAI [generative AI integrations](../model-providers/cohere/generative.md) for retrieval augmented generation (RAG).-->
 
 import QueryRAG from '/\_includes/code/quickstart/quickstart.query.rag.mdx'
 
