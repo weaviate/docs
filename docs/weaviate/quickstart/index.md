@@ -193,7 +193,6 @@ A collection is a set of objects that share the same data structure, like a tabl
 The following example creates a _collection_ called `Question` with:
 
 - The [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for creating vectors during ingestion & queries.
-- Cohere [generative AI integrations](/weaviate/model-providers/cohere/generative.md) for retrieval augmented generation (RAG).
 
 import CreateCollection from '/\_includes/code/quickstart/quickstart.create_collection.mdx'
 
@@ -406,7 +405,8 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-The following example combines the same search (for `biology`) with a prompt to generate a tweet.
+The following example combines the same search (for `biology`) with a prompt to generate a tweet. 
+<!--We are using the OpenAI [generative AI integrations](../model-providers/cohere/generative.md) for retrieval augmented generation (RAG).-->
 
 import QueryRAG from '/\_includes/code/quickstart/quickstart.query.rag.mdx'
 

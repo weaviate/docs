@@ -9,8 +9,8 @@ weaviate_url = os.environ["WEAVIATE_URL"]
 weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 
 client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=weaviate_url,                                    # Replace with your Weaviate Cloud URL
-    auth_credentials=Auth.api_key(weaviate_api_key),             # Replace with your Weaviate Cloud key
+    cluster_url=weaviate_url,  # Replace with your Weaviate Cloud URL
+    auth_credentials=Auth.api_key(weaviate_api_key),  # Replace with your Weaviate Cloud key
 )
 
 # END CreateCollection
@@ -22,13 +22,10 @@ client.collections.delete("Question")
 # highlight-start
 questions = client.collections.create(
     name="Question",
-    vector_config=Configure.Vectors.text2vec_weaviate(), # Configure the Weaviate Embeddings integration
-    generative_config=Configure.Generative.cohere()             # Configure the Cohere generative AI integration
+    vector_config=Configure.Vectors.text2vec_weaviate(),  # Configure the Weaviate Embeddings integration
 )
 # highlight-end
 # CreateCollection
 
 client.close()  # Free up resources
 # END CreateCollection
-
-
