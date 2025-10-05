@@ -15,6 +15,8 @@ const client: WeaviateClient = await weaviate.connectToLocal({
 )
 
 // START DeleteObject // START DryRun // START DeleteBatch // START DeleteByIDBatch // START DeleteContain
+await client.collections.delete('EphemeralObject')
+await client.collections.create({ name: 'EphemeralObject'})
 const myCollection = client.collections.use('EphemeralObject')
 
 // END DeleteObject // END DryRun // END DeleteBatch // END DeleteByIDBatch // END DeleteContain
