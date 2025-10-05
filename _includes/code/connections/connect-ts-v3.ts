@@ -1,16 +1,16 @@
-// THIS FILE HASN'T BEEN TESTED TO RUN END-TO-END
+// START-ANY
+import weaviate, { WeaviateClient } from 'weaviate-client';
+
+// END-ANY
 
 ////////////////////////
 /// Connect to cloud ///
 ////////////////////////
-
+{
 // START APIKeyWCD
 // Set these environment variables
 // WEAVIATE_URL      your WCD instance URL
 // WEAVIATE_API_KEY  your WCD instance API key
-
-
-import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -20,17 +20,16 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
   }
 )
 // END APIKeyWCD
-
+client.close();
+}
 //////////////////////////
 /// WCD with a timeout ///
 //////////////////////////
-
+{
 // START TimeoutWCD
 // Set these environment variables
 // WEAVIATE_URL       your Weaviate instance URL
 // WEAVIATE_API_KEY   your Weaviate instance API key
-
-import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -43,47 +42,49 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 
 console.log(client)
 // END TimeoutWCD
-
+client.close();
+}
 /////////////////////
 /// Local no auth ///
 /////////////////////
-
+{
 // START LocalNoAuth
-import weaviate from 'weaviate-client'
 
 const client = await weaviate.connectToLocal()
 
 console.log(client)
 // END LocalNoAuth
-
+client.close();
+}
 //////////////////
 /// Local auth ///
 //////////////////
-
+{
 // START LocalAuth
 // Set this environment variable
-// WEAVIATE_API_KEY   your Weaviate instance API key
+// WEAVIATE_LOCAL_API_KEY   your Weaviate instance API key
 
-import weaviate from 'weaviate-client'
-
-const weaviateKey = process.env.WEAVIATE_API_KEY as string
+const weaviateKey = process.env.WEAVIATE_LOCAL_API_KEY as string
 
 const client = await weaviate.connectToLocal(
-   {  authCredentials: new weaviate.ApiKey(weaviateKey),}
+   { 
+    port:8099,
+    grpcPort:50052, 
+    authCredentials: new weaviate.ApiKey(weaviateKey)
+  }
 )
 
 console.log(client)
 // END LocalAuth
-
+client.close();
+}
 //////////////////////
 /// Local 3d party ///
 //////////////////////
-
+{
 // START LocalThirdPartyAPIKeys
 // Set this environment variable
 // COHERE_API_KEY    your Cohere API key
-
-import weaviate from 'weaviate-client'
 
 const cohereKey = process.env.COHERE_API_KEY as string
 
@@ -97,15 +98,14 @@ const client = await weaviate.connectToLocal(
 
 console.log(client)
 // END LocalThirdPartyAPIKeys
-
+client.close();
+}
 
 //////////////////////////
 /// Local with a timeout ///
 //////////////////////////
-
+{
 // START TimeoutLocal
-
-import weaviate from 'weaviate-client'
 
 const client = await weaviate.connectToLocal(
    {  timeout: { init: 30, query: 60, insert: 120 }, } // Values in seconds
@@ -113,19 +113,18 @@ const client = await weaviate.connectToLocal(
 
 console.log(client)
 // END TimeoutLocal
-
+client.close();
+}
 
 //////////////////////
 /// Cloud 3d party ///
 //////////////////////
-
+{
 // START ThirdPartyAPIKeys
 // Set these environment variables
 // WEAVIATE_URL      your Weaviate instance URL
 // WEAVIATE_API_KEY  your Weaviate instance API key
 // COHERE_API_KEY    your Cohere API key
-
-import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const weaviateURL = process.env.WEAVIATE_URL as string
 const weaviateKey = process.env.WEAVIATE_API_KEY as string
@@ -139,25 +138,23 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
   }
 )
 // END ThirdPartyAPIKeys
-
+client.close();
+}
 //////////////////////
 /// Custom connect ///
 //////////////////////
-
+{
 // START CustomConnect  // START ConnectWithApiKeyExample
 // Set these environment variables
-// WEAVIATE_URL       your Weaviate instance URL
-// WEAVIATE_GPC_URL   your Weaviate instance GPC URL
+// WEAVIATE_HTTP_HOST       your Weaviate instance URL
+// WEAVIATE_GRPC_HOST   your Weaviate instance GPC URL
 // WEAVIATE_API_KEY   your Weaviate instance API key
-
-import weaviate, { WeaviateClient } from 'weaviate-client';
-
 
 const client = await weaviate.connectToCustom(
  {
-    httpHost: process.env.WEAVIATE_URL,  // URL only, no http prefix
+    httpHost: process.env.WEAVIATE_HTTP_HOST,  // URL only, no http prefix
     httpPort: 443,
-    grpcHost: process.env.WEAVIATE_GPC_URL,
+    grpcHost: process.env.WEAVIATE_GRPC_HOST,
     grpcPort: 443,        // Default is 50051, WCD uses 443
     grpcSecure: true,
     httpSecure: true,
@@ -171,14 +168,14 @@ const client = await weaviate.connectToCustom(
 
 console.log(client)
 // END CustomConnect  // END ConnectWithApiKeyExample
-
+client.close();
+}
 
 //////////////////////
 /// Custom URL///
 //////////////////////
-
+{
 // START CustomURL
-import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const client = await weaviate.connectToLocal(
  {
@@ -189,29 +186,28 @@ const client = await weaviate.connectToLocal(
 
 async function main() {
   console.log(await client.isReady())
+  client.close();
 }
 
 main()
 // END CustomURL
-
+}
 
 /////////////////////////////
 /// Custom with a timeout ///
 /////////////////////////////
-
+{
 // START TimeoutCustom
 // Set these environment variables
-// WEAVIATE_URL       your Weaviate instance URL
+// WEAVIATE_HTTP_HOST       your Weaviate instance URL
+// WEAVIATE_GRPC_HOST   your Weaviate instance GPC URL
 // WEAVIATE_API_KEY   your Weaviate instance API key
 
-import weaviate, { WeaviateClient } from 'weaviate-client';
-
 const client: WeaviateClient = await weaviate.connectToCustom(
-  process.env.WEAVIATE_URL,
   {
-   httpHost: process.env.WEAVIATE_URL,  // URL only, no http prefix
+   httpHost: process.env.WEAVIATE_HTTP_HOST,  // URL only, no http prefix
    httpPort: 443,
-   grpcHost: process.env.WEAVIATE_GPC_URL,
+   grpcHost: process.env.WEAVIATE_GRPC_HOST,
    grpcPort: 443,        // Default is 50051, WCD uses 443
    grpcSecure: true,
    httpSecure: true,
@@ -222,36 +218,40 @@ const client: WeaviateClient = await weaviate.connectToCustom(
 
 console.log(client)
 // END TimeoutCustom
-
+client.close();
+}
 ////////////
 /// OIDC ///
 ////////////
-
+{
 // START OIDCConnect
 // Set these environment variables
-// WEAVIATE_USER    your Weaviate OIDC username
-// WEAVIATE_PWD     your Weaviate OIDC password
-// WEAVIATE_URL     your Weaviate instance
-
-import weaviate, { WeaviateClient } from 'weaviate-client';
+// WCD_USERNAME    your Weaviate OIDC username
+// WCD_PASSWORD     your Weaviate OIDC password
+// WEAVIATE_HTTP_HOST     your Weaviate instance
+// WEAVIATE_GRPC_HOST   your Weaviate instance GPC URL
 
 const client = await weaviate.connectToCustom(
  {
-    httpHost: process.env.WEAVIATE_URL,  // URL only, no http prefix
-    httpPort: 8080,
-    grpcHost: process.env.WEAVIATE_GPC_URL,
-    grpcPort: 50051,
-    grpcSecure: false,
-    httpSecure: false,
+    httpHost: process.env.WEAVIATE_HTTP_HOST,  // URL only, no http prefix
+    httpPort: 443,
+    grpcHost: process.env.WEAVIATE_GRPC_HOST,
+    grpcPort: 443,
+    grpcSecure: true,
+    httpSecure: true,
     authCredentials: new weaviate.AuthUserPasswordCredentials({
-     username: process.env.WEAVIATE_USER,
-     password: process.env.WEAVIATE_PWD,
+     username: process.env.WCD_USERNAME,
+     password: process.env.WCD_PASSWORD,
     }),
     headers: {
       'X-Cohere-Api-Key': process.env.COHERE_API_KEY || ''
     }
   })
-
-console.log(client)
-
 // END OIDCConnect
+/*
+// START OIDCConnect
+console.log(client)
+// END OIDCConnect
+*/
+client.close();
+}

@@ -101,7 +101,7 @@ client = weaviate.connect_to_custom(
     auth_credentials=Auth.api_key(weaviate_api_key),    # API key for authentication
     # END CustomConnect  # END TimeoutCustom  # START ConnectWithApiKeyExample
     headers={"X-Cohere-Api-Key": cohere_api_key},       # Third party API key (e.g. Cohere)
-    # END CustomConnect  # START TimeoutCustom  # END ConnectWithApiKeyExample
+    # START TimeoutCustom  # END ConnectWithApiKeyExample
     additional_config=AdditionalConfig(
         timeout=Timeout(init=30, query=60, insert=120)  # Values in seconds
     )
@@ -290,3 +290,31 @@ client = weaviate.connect_to_weaviate_cloud(
 assert client.is_ready()
 
 client.close()
+
+# START GetServerMeta
+import weaviate
+
+client = weaviate.connect_to_local()
+
+meta_info = client.get_meta()
+print(meta_info)
+
+client.close()
+# END GetServerMeta
+
+# START GetNodes
+import weaviate
+
+client = weaviate.connect_to_local()
+# END GetNodes
+client.collections.create("JeopardyQuestion")
+# START GetNodes
+
+nodes_info = client.cluster.nodes(
+    collection="JeopardyQuestion",  # If omitted, all collections will be returned
+    output="verbose",  #  If omitted, will be "minimal"
+)
+print(nodes_info)
+
+client.close()
+# END GetNodes

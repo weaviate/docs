@@ -27,8 +27,10 @@
   "include": [
     "_includes/**/*.ts",
     "_includes/**/*.tsx",
+    "_includes/**/*.mts",
     "docs/**/*.ts",
-    "docs/**/*.tsx"
+    "docs/**/*.tsx",
+    "docs/**/*.mts"
   ],
   "exclude": [
     "node_modules",
