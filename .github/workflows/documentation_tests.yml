@@ -255,7 +255,7 @@ jobs:
           # Define services with their health check endpoints
           declare -A services=(
             ["8099"]="Weaviate Main"
-            # ["8580"]="Weaviate RBAC"
+            ["8580"]="Weaviate RBAC"
             ["8080"]="Weaviate Instance 1"
             ["8090"]="Weaviate Instance 2"
             ["8280"]="Weaviate Instance 3"
