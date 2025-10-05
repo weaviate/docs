@@ -40,6 +40,7 @@ const DOC_SYSTEMS = {
 };
 
 DOC_SYSTEMS.python = DOC_SYSTEMS.py;
+DOC_SYSTEMS.tsindent = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
 DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;
@@ -82,6 +83,10 @@ const FilteredTextBlock = ({
     let withinMarkers = false;
     let format;
     switch (language) {
+        case 'tsindent':
+            // remove leading indent of 4 spaces
+            format = (input) => input.replace(/^  /, '');
+            break;
         case 'java':
             // remove leading indent of 4 spaces
             format = (input) => input.replace(/^    /, '');
@@ -137,6 +142,9 @@ const FilteredTextBlock = ({
             language2 = 'py';
             break;
         case 'tsv2':
+            language2 = 'ts';
+            break;
+        case 'tsindent':
             language2 = 'ts';
             break;
         case 'gonew':
