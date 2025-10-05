@@ -307,7 +307,8 @@ import weaviate
 
 client = weaviate.connect_to_local()
 # END GetNodes
-client.collections.create("JeopardyQuestion")
+if not client.collections.exists("JeopardyQuestion"):
+    client.collections.create("JeopardyQuestion")
 # START GetNodes
 
 nodes_info = client.cluster.nodes(
