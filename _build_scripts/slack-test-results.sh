@@ -4,6 +4,8 @@ set -e
 # Get test status and duration from environment
 TEST_STATUS=${TEST_STATUS:-"unknown"}
 TEST_DURATION=${TEST_DURATION:-"unknown"}
+LANGUAGES_TESTED=${LANGUAGES_TESTED:-"Unknown"}
+AUTHOR_NAME=${AUTHOR_NAME:-"Unknown"}
 
 # Set emoji and message based on test status
 if [ "$TEST_STATUS" = "success" ]; then
@@ -20,9 +22,9 @@ fi
 WORKFLOW_URL="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 branch_name=${GITHUB_REF##*/}
 
-# Simple message format
+# Message with author mention and languages tested
 MESSAGE="{
-  'text': '$EMOJI *Documentation Code Tests - Weekly $STATUS_TEXT*',
+  'text': '$EMOJI *Documentation Code Tests - $STATUS_TEXT* - $AUTHOR_NAME',
   'channel': '#docs-workflow-updates',
   'attachments': [
     {
@@ -39,10 +41,15 @@ MESSAGE="{
           'short': true
         },
         {
+          'title': 'Languages Tested',
+          'value': '$LANGUAGES_TESTED',
+          'short': true
+        },
+        {
           'title': 'Duration',
           'value': '$TEST_DURATION',
           'short': true
-        },
+        }
       ],
       'actions': [
         {
