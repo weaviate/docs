@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Fetch enough history to get commit author
 
       - name: Free disk space
         run: |
@@ -253,7 +255,7 @@ jobs:
           # Define services with their health check endpoints
           declare -A services=(
             ["8099"]="Weaviate Main"
-            ["8580"]="Weaviate RBAC"
+            # ["8580"]="Weaviate RBAC"
             ["8080"]="Weaviate Instance 1"
             ["8090"]="Weaviate Instance 2"
             ["8280"]="Weaviate Instance 3"
@@ -353,6 +355,15 @@ jobs:
           else
             echo "TEST_STATUS=failure" >> $GITHUB_ENV
           fi
+
+          # Set languages tested
+          echo "LANGUAGES_TESTED=Python, TypeScript" >> $GITHUB_ENV
+
+      - name: Get commit author
+        if: always()
+        run: |
+          # Source the script to get the author's Slack handle
+          source _build_scripts/slack-find-author.sh
 
       - name: Send Slack notification
         if: always()
