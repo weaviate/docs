@@ -2,16 +2,20 @@
 import os
 import weaviate
 from weaviate.classes.init import Auth
+
 # END ConnectToWeaviate
 # START InstantiatePersonalizationAgent  # START CreateOrConnectToAgent
 from weaviate.agents.personalization import PersonalizationAgent
 from weaviate.classes.config import DataType
+
 # END InstantiatePersonalizationAgent  # END CreateOrConnectToAgent
 # START AddUserPersona
 from weaviate.agents.classes import Persona
+
 # END AddUserPersona
 # START AddUserInteractions
 from weaviate.agents.classes import PersonaInteraction
+
 # END AddUserInteractions
 
 # Additional helpers (not shown in the docs)
@@ -33,7 +37,7 @@ headers = {
 
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=os.environ.get("WEAVIATE_URL"),
-    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_ADMIN_API_KEY")),
+    auth_credentials=Auth.api_key(os.environ.get("WEAVIATE_API_KEY")),
     headers=headers,
 )
 
@@ -104,6 +108,7 @@ movies_dataset = load_dataset("Pablinho/movies-dataset", split="train", streamin
 # Get the Movies collection
 movies_collection = client.collections.use("Movie")
 
+
 def load_movie_row(item: Dict[str, Any]) -> Dict[str, Any]:
     """
     Load movie data to output matching Weaviate object
@@ -160,23 +165,28 @@ def load_movie_row(item: Dict[str, Any]) -> Dict[str, Any]:
         "original_language": original_language,
     }
 
+
 # Batch import the appropriate data
 with movies_collection.batch.fixed_size(batch_size=200) as batch:
     for i, item in tqdm(enumerate(movies_dataset)):
         data_object = load_movie_row(item)
         batch.add_object(properties=data_object)
 
+# TODO[g-despot] Why is vector_name="default" needed here?
 # START CreateOrConnectToAgent
 
 if PersonalizationAgent.exists(client, "Movie"):
     # Connect to an existing agent
-    pa = PersonalizationAgent.connect(client=client, reference_collection="Movie")
+    pa = PersonalizationAgent.connect(
+        client=client, reference_collection="Movie", vector_name="default"
+    )
 else:
     # Instantiate a new agent, and specify the collection to query
     # The Personalization Agent will automatically also connect to the user data collection
     pa = PersonalizationAgent.create(
         client=client,
         reference_collection="Movie",
+        vector_name="default",
         user_properties={
             "age": DataType.NUMBER,
             "favorite_genres": DataType.TEXT_ARRAY,
@@ -233,7 +243,8 @@ pa.update_persona(
             "favorite_years": [1999, 2005, 2010, 2014, 2016],
             "language": "English",
         },
-    ))
+    )
+)
 # END UpdatePersona
 
 # START CheckPersonaExists
@@ -354,11 +365,11 @@ for i, obj in enumerate(response.objects):
 
 # START ParamsPersonalizedWeaviateQuery
 personalized_query = pa.query(
-    persona_id=persona_id,          # The ID of the persona to use for personalization
-    strength=0.95,                  # The strength of the personalization (0.0 = none, 1.0 = full)
-    overfetch_factor=2,             # The number of objects to fetch before personalization
-    recent_interactions_count=50,   # The number of recent interactions to consider
-    decay_rate=0.2                  # The decay rate for the interactions
+    persona_id=persona_id,  # The ID of the persona to use for personalization
+    strength=0.95,  # The strength of the personalization (0.0 = none, 1.0 = full)
+    overfetch_factor=2,  # The number of objects to fetch before personalization
+    recent_interactions_count=50,  # The number of recent interactions to consider
+    decay_rate=0.2,  # The decay rate for the interactions
 )
 
 response = personalized_query.hybrid(  # Or .near_text / .bm25
