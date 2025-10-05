@@ -111,14 +111,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-weaviate-
 
-      - name: Cache CLIP image
-        uses: actions/cache@v4
-        id: cache-clip
-        with:
-          path: /tmp/clip.tar.gz
-          key: ${{ runner.os }}-clip-${{ env.CLIP_MODEL_TAG }}-v2
-          restore-keys: |
-            ${{ runner.os }}-clip-
+      # - name: Cache CLIP image
+      #   uses: actions/cache@v4
+      #   id: cache-clip
+      #   with:
+      #     path: /tmp/clip.tar.gz
+      #     key: ${{ runner.os }}-clip-${{ env.CLIP_MODEL_TAG }}-v2
+      #     restore-keys: |
+      #       ${{ runner.os }}-clip-
 
       - name: Cache Ollama image
         uses: actions/cache@v4
@@ -172,16 +172,19 @@ jobs:
             fi
           }
 
+          echo "⬇️ Pulling CLIP (no cache due to size)..."
+          docker pull "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}"
+
           # Process images with their individual cache status
           load_or_pull_image \
             "cr.weaviate.io/semitechnologies/weaviate:${{ env.WEAVIATE_VERSION }}" \
             "/tmp/weaviate.tar.gz" \
             "${{ steps.cache-weaviate.outputs.cache-hit }}"
 
-          load_or_pull_image \
-            "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}" \
-            "/tmp/clip.tar.gz" \
-            "${{ steps.cache-clip.outputs.cache-hit }}"
+          # load_or_pull_image \
+          #   "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}" \
+          #   "/tmp/clip.tar.gz" \
+          #   "${{ steps.cache-clip.outputs.cache-hit }}"
 
           load_or_pull_image \
             "ollama/ollama:${{ env.OLLAMA_VERSION }}" \
