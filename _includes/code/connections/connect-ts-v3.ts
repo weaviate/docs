@@ -20,7 +20,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
   }
 )
 // END APIKeyWCD
-client.close();
+await client.close()
 }
 //////////////////////////
 /// WCD with a timeout ///
@@ -42,7 +42,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
 
 console.log(client)
 // END TimeoutWCD
-client.close();
+await client.close()
 }
 /////////////////////
 /// Local no auth ///
@@ -54,7 +54,7 @@ const client = await weaviate.connectToLocal()
 
 console.log(client)
 // END LocalNoAuth
-client.close();
+await client.close()
 }
 //////////////////
 /// Local auth ///
@@ -76,7 +76,7 @@ const client = await weaviate.connectToLocal(
 
 console.log(client)
 // END LocalAuth
-client.close();
+await client.close()
 }
 //////////////////////
 /// Local 3d party ///
@@ -98,7 +98,7 @@ const client = await weaviate.connectToLocal(
 
 console.log(client)
 // END LocalThirdPartyAPIKeys
-client.close();
+await client.close()
 }
 
 //////////////////////////
@@ -113,7 +113,7 @@ const client = await weaviate.connectToLocal(
 
 console.log(client)
 // END TimeoutLocal
-client.close();
+await client.close()
 }
 
 //////////////////////
@@ -138,7 +138,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL
   }
 )
 // END ThirdPartyAPIKeys
-client.close();
+await client.close()
 }
 //////////////////////
 /// Custom connect ///
@@ -168,7 +168,7 @@ const client = await weaviate.connectToCustom(
 
 console.log(client)
 // END CustomConnect  // END ConnectWithApiKeyExample
-client.close();
+await client.close()
 }
 
 //////////////////////
@@ -186,7 +186,7 @@ const client = await weaviate.connectToLocal(
 
 async function main() {
   console.log(await client.isReady())
-  client.close();
+  await client.close()
 }
 
 main()
@@ -218,7 +218,7 @@ const client: WeaviateClient = await weaviate.connectToCustom(
 
 console.log(client)
 // END TimeoutCustom
-client.close();
+await client.close()
 }
 ////////////
 /// OIDC ///
@@ -253,5 +253,7 @@ const client = await weaviate.connectToCustom(
 console.log(client)
 // END OIDCConnect
 */
-client.close();
+await client.close()
 }
+
+process.exit(0);
