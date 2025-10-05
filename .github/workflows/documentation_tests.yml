@@ -318,7 +318,7 @@ jobs:
           source .venv/bin/activate
 
           # Run both Python and TypeScript tests
-          pytest -m "ts" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          pytest -m "pyv4 and ts" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
 
           echo "✅ Tests completed"
 
