@@ -36,20 +36,23 @@ jobs:
           echo "=== Initial disk usage ==="
           df -h
 
-          echo "=== Removing unnecessary software ==="
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          sudo rm -rf /opt/hostedtoolcache
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/lib/node_modules
+          # Run deletions in parallel with background jobs
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
+          sudo rm -rf /opt/hostedtoolcache &
+          sudo rm -rf /usr/local/lib/android &
+          sudo rm -rf /usr/local/share/powershell &
+          sudo rm -rf /usr/local/share/chromium &
+          sudo rm -rf /usr/local/lib/node_modules &
+          
+          # Wait for all background deletions to complete
+          wait
 
-          echo "=== Docker cleanup ==="
-          docker system prune -af --volumes || true
-          docker builder prune -af || true
+          # echo "=== Docker cleanup ==="
+          # docker system prune -af --volumes || true
+          # docker builder prune -af || true
 
           echo "=== Final disk usage ==="
           df -h
@@ -220,7 +223,6 @@ jobs:
           # Wait for Ollama to be ready before pulling models
           sleep 5  # Wait for Ollama service to be ready
           echo "✅ Services started:"
-          echo "✅ Services started:"
           docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
       - name: Ensure Ollama models are available
@@ -274,7 +276,8 @@ jobs:
         run: |
           echo "🔧 Configuring Keycloak..."
           source .venv/bin/activate
-          
+
+          # Wait a bit more to ensure Keycloak is fully ready
           sleep 5
           
           python _includes/code/python/keycloak_helper_script.py

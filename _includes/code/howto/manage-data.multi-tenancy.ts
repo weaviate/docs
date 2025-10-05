@@ -25,7 +25,7 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 // =====================
 {
   // Delete the collection if it exists to ensure a clean start
-  await client.collections.delete(collectionName).catch(() => { });
+  await client.collections.delete(collectionName)
 
   // START EnableMultiTenancy
   const result = await client.collections.create({
@@ -42,7 +42,7 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 // =====================
 {
   // Delete the collection if it exists to ensure a clean start
-  await client.collections.delete(collectionName).catch(() => { });
+  await client.collections.delete(collectionName)
 
   // START EnableAutoMT
   const result = await client.collections.create({
@@ -236,7 +236,7 @@ const collectionName = 'MultiTenancyCollection';  // aka JeopardyQuestion
 // =====================
 {
   // Delete the collection if it exists to ensure a clean start
-  await client.collections.delete('CollectionWithAutoTenantActivation').catch(() => { });
+  await client.collections.delete('CollectionWithAutoTenantActivation')
 
   // START EnableAutoActivation
   const result = await client.collections.create({

@@ -43,8 +43,6 @@ try {
   result = await myCollection.query.fetchObjectById(idToDelete)
   assert.equal(result, null);  // execution should not reach this point
 } catch (e) {
-  // This 404 error is EXPECTED, because the object was deleted
-  // TODO: this behavior is inconsistent with the Python client, which returns None
   console.log(e);
   assert(e.message.includes(undefined));  // TODO: this should be a proper code - https://github.com/weaviate/weaviate/issues/2708#issuecomment-1582430931
 }
