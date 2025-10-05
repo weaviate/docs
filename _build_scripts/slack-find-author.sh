@@ -18,6 +18,7 @@ git_slack_map=(
     ["iamleonie"]="<@U05EG4DEJMC>"
     ["Igor Lamas"]="<@U04MGB80F45>"
     ["Ivan Despot"]="<@U0872JK65FU>"
+    ["g-despot"]="<@U0872JK65FU>"
     ["John Trengrove"]="<@U03KPAE8Y7K>"
     ["JP Hwang"]="<@U0441J6PYGN>"
     ["Leonie"]="<@U05EG4DEJMC>"
