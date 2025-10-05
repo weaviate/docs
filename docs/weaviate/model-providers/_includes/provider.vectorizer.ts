@@ -1578,7 +1578,7 @@ await client.collections.create({
     weaviate.configure.vectors.text2VecOllama({
       name: 'title_vector',
       sourceProperties: ['title'],
-      apiEndpoint: 'http://host.docker.internal:11434',  // If using Docker, use this to contact your local Ollama instance
+      apiEndpoint: 'http://ollama:11434',  // If using Docker you might need: http://host.docker.internal:11434
       model: 'snowflake-arctic-embed',  // The model to use, e.g. "nomic-embed-text"
     }),
   ],
