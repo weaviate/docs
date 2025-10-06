@@ -26,7 +26,6 @@ runs:
       with:
         path: |
           ~/.cache/pip
-          .venv
         key: ${{ runner.os }}-python-${{ inputs.python-version }}-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-python-${{ inputs.python-version }}-
@@ -35,15 +34,10 @@ runs:
       shell: bash
       run: |
         echo "📦 Setting up Python environment..."
-        if [[ "${{ steps.cache-python.outputs.cache-hit }}" != "true" ]]; then
-          echo "Creating virtual environment and installing dependencies..."
-          python -m venv .venv
-        fi
-
+        python -m venv .venv
         source .venv/bin/activate
         pip install --upgrade pip
         pip install -r tests/requirements.txt
-
         echo "✅ Python environment ready"
 
     - name: Set up Node.js
