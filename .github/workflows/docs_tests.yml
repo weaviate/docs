@@ -28,6 +28,9 @@ jobs:
     timeout-minutes: 30
 
     steps:
+      - name: Checkout code
+          uses: actions/checkout@v4
+
       - name: Set up test environment
         uses: ./.github/actions/setup-test-env
         with:
@@ -75,12 +78,15 @@ jobs:
           artifact-name: 'test-results-agents'
           slack-bot-token: ${{ secrets.SLACK_BOT }}
 
-  test-wcd:
+  test-database-cloud:
     name: Test Database-Cloud
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup test environment
         uses: ./.github/actions/setup-test-env
         with:
@@ -128,12 +134,15 @@ jobs:
           artifact-name: 'test-results-wcd'
           slack-bot-token: ${{ secrets.SLACK_BOT }}
 
-  test-pyv4-ts:
-    name: Test PyV4 & TypeScript
+  test-database-local:
+    name: Test Database-Local
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup test environment
         uses: ./.github/actions/setup-test-env
         with:
