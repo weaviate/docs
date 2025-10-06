@@ -22,6 +22,7 @@ def test_on_blank_instance_pyv4(script_loc):
 
 
 @pytest.mark.ts
+@pytest.mark.agents
 @pytest.mark.parametrize(
     "script_loc",
     ["./docs/agents/_includes/query_agent.mts"],
