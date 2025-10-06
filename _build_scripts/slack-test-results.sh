@@ -4,8 +4,9 @@ set -e
 # Get test status and duration from environment
 TEST_STATUS=${TEST_STATUS:-"unknown"}
 TEST_DURATION=${TEST_DURATION:-"unknown"}
-LANGUAGES_TESTED=${LANGUAGES_TESTED:-"Unknown"}
-AUTHOR_NAME=${AUTHOR_NAME:-"Unknown"}
+TEST_TYPE=${TEST_TYPE:-"unknown"}
+LANGUAGES_TESTED=${LANGUAGES_TESTED:-"unknown"}
+AUTHOR_NAME=${AUTHOR_NAME:-"unknown"}
 
 # Set emoji and message based on test status
 if [ "$TEST_STATUS" = "success" ]; then
@@ -38,6 +39,11 @@ MESSAGE="{
         {
           'title': 'Branch', 
           'value': '<https://github.com/$GITHUB_REPOSITORY/tree/$branch_name|$branch_name>',
+          'short': true
+        },
+                {
+          'title': 'Type',
+          'value': '$TEST_TYPE',
           'short': true
         },
         {
