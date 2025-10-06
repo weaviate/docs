@@ -44,8 +44,7 @@ runs:
         pip install --upgrade pip
         pip install -r tests/requirements.txt
 
-        echo "✅ Python environment ready. Installed packages:"
-        pip list | head -20
+        echo "✅ Python environment ready"
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
