@@ -36,7 +36,7 @@ Role management requires appropriate `role` resource permissions that can be obt
 - A predefined `root` role when [configuring RBAC](/deploy/configuration/configuring-rbac.md).
 - A role with [`Role Management`](#role-management-permissions) permissions granted.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -45,7 +45,7 @@ Role management requires appropriate `role` resource permissions that can be obt
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AdminClient"
@@ -105,7 +105,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Create, read, update and delete all roles starting with `testRole*`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -114,7 +114,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddManageRolesPermission"
@@ -147,7 +147,7 @@ This example creates a role called `testRole` with permissions to:
 - Create, read, update and delete all users starting with `testUser*`.
 - Assign and revoke roles to and from users starting with `testUser*`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -156,7 +156,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // TS/JS support coming soon
@@ -187,7 +187,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Create, read, update and delete all collections starting with `TargetCollection`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -196,7 +196,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddCollectionsPermission"
@@ -230,7 +230,7 @@ This example creates a role called `testRole` with permissions to:
 - Read metadata (like tenant names and status) for tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
 - Update the status of tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -239,7 +239,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddTenantPermission"
@@ -272,7 +272,7 @@ This example creates a role called `testRole` with permissions to:
 - Create, read, update and delete data from collections starting with `TargetCollection`.
 - If multi-tenancy is enabled and the `tenant` filter is set, the permission only applies to tenants starting with `TargetTenant`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -281,7 +281,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddDataObjectPermission"
@@ -313,7 +313,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Manage backups for collections starting with `TargetCollection`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -322,7 +322,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddBackupPermission"
@@ -354,7 +354,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Read cluster metadata.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -363,7 +363,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddClusterPermission"
@@ -395,7 +395,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Read node metadata at the specified verbosity level for collections starting with `TargetCollection`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -404,7 +404,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddNodesPermission"
@@ -436,7 +436,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Create, read, update and delete collection aliases starting with `TargetAlias`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -445,7 +445,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // TS/JS support coming soon
@@ -476,7 +476,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Create, read, update and delete replica movement operations for collections starting with `TargetCollection` and shards starting with `TargetShard`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -485,7 +485,7 @@ This example creates a role called `testRole` with permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // TS/JS support coming soon
@@ -516,7 +516,7 @@ This example creates a role called `testRole` with permissions to:
 
 - Read information about and assign/revoke group membership for OIDC groups starting with `TargetGroup`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={RolePyCode}
@@ -525,7 +525,7 @@ endMarker="# END AddGroupsPermission"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // TS/JS support coming soon
@@ -558,7 +558,7 @@ This example grants additional permissions to the role `testRole` to:
 
 - **Create new data** in collections that start with `TargetCollection`
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -567,7 +567,7 @@ This example grants additional permissions to the role `testRole` to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AddRoles"
@@ -602,7 +602,7 @@ This example removes the following permissions from the role `testRole`:
 - Read the data from collections that start with `TargetCollection`
 - Create and delete collections that start with `TargetCollection`
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -611,7 +611,7 @@ This example removes the following permissions from the role `testRole`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
         text={RoleTSCode}
         startMarker="// START RemovePermissions"
@@ -641,7 +641,7 @@ This example removes the following permissions from the role `testRole`:
 
 Check if the role `testRole` exists:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -650,7 +650,7 @@ Check if the role `testRole` exists:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START CheckRoleExists"
@@ -680,7 +680,7 @@ Check if the role `testRole` exists:
 
 View the permissions assigned to a role.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -689,7 +689,7 @@ View the permissions assigned to a role.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START InspectRole"
@@ -719,7 +719,7 @@ View the permissions assigned to a role.
 
 View all roles in the system and their permissions.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -728,7 +728,7 @@ View all roles in the system and their permissions.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START ListAllRoles"
@@ -758,7 +758,7 @@ View all roles in the system and their permissions.
 
 List all users who have the role `testRole`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -767,7 +767,7 @@ List all users who have the role `testRole`.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
         text={RoleTSCode}
         startMarker="// START AssignedUsers"
@@ -797,7 +797,7 @@ List all users who have the role `testRole`.
 
 Deleting a role will remove it from the system, and revoke the associated permissions from all users who had this role.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -806,7 +806,7 @@ Deleting a role will remove it from the system, and revoke the associated permis
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
         text={RoleTSCode}
         startMarker="// START DeleteRole"

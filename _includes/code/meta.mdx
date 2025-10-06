@@ -5,7 +5,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 
 import PyCode from '!!raw-loader!/_includes/code/rest.meta.py';
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
@@ -14,7 +14,7 @@ import PyCode from '!!raw-loader!/_includes/code/rest.meta.py';
     language="py"
   />
 </TabItem>
-<TabItem value="js" label="JS/TS Client (v3)">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
 import weaviate from 'weaviate-client';

@@ -1,4 +1,4 @@
-/* src/theme/Tabs/styles.module.css */
+/* src/theme/Tabs/styles.module.scss */
 
 .codeDropdownContainer {
   margin: 2rem 0;
@@ -30,6 +30,7 @@
   gap: 1rem;
 }
 
+/* MODIFIED SECTION */
 .rightSection {
   display: flex;
   align-items: center;
@@ -37,6 +38,8 @@
   margin-left: auto;
   position: relative;
   z-index: 10;
+  flex-wrap: wrap; /* Add this */
+  justify-content: flex-end; /* Add this */
 }
 
 .apiDocsLink {
@@ -176,6 +179,25 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.comingSoon {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border: 1px dashed var(--ifm-color-emphasis-400);
+  border-radius: var(--ifm-code-border-radius);
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-emphasis-700);
+
+  p {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+  }
+
+  span {
+    font-size: 0.9rem;
+    color: var(--ifm-color-emphasis-600);
   }
 }
 

@@ -17,7 +17,7 @@ Environment variables keep sensitive details out of your source code. Your appli
 
 In these examples, the environment variable names are in UPPER_CASE.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="bash" label="Bash/Zsh">
 
 ```bash
@@ -49,8 +49,8 @@ set WEAVIATE_API_KEY=sAmPleKEY8FwELJILn0YDRG9gjy4hReqfInz
 <details>
   <summary>Import an environment variable.</summary>
 
-<Tabs groupId="languages">
-<TabItem value="py4" label="Python">
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
 
 ```python
 weaviate_url = os.getenv("WEAVIATE_URL")
@@ -58,7 +58,7 @@ weaviate_key = os.getenv("WEAVIATE_API_KEY")
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
 const weaviateUrl = process.env.WEAVIATE_URL;

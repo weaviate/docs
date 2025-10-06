@@ -101,7 +101,7 @@ To create a cross-reference, Weaviate requires the following information:
 
 An example syntax is shown below:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
 
   <FilteredTextBlock
@@ -147,7 +147,7 @@ For example, where a document chunk includes a cross-reference to its original d
 
 Take a look at the snippet below in which we retrieve objects from the `JeopardyQuestion` class. Here, the `JeopardyQuestion` class contains the `hasCategory` cross-reference property, linking objects to the `JeopardyCategory` class. This query retrieves the `title` property of the target `JeopardyCategory` class, as well as the `question` property of the source `JeopardyQuestion` class.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -178,7 +178,7 @@ For example, you can filter articles based on an attribute of the author, such a
 
 Take a look at the snippet below, This query looks through the `JeopardyQuestion` class, but the results are filtered using the `title` property of its cross-referenced `JeopardyCategory` class. The `title` property must include the substring `Sport`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={FilterPythonCode}
