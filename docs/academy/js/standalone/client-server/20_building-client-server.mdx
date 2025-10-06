@@ -44,12 +44,12 @@ We'll start by creating a free sandbox account on [Weaviate Cloud](https://conso
 You will need your Weaviate cluster URL and API key. If you don't already have one, create a new Cohere [API key](https://dashboard.cohere.com/api-keys), we use Cohere as our [embedding model](../using-ml-models/10_embedding.mdx). When done, add all three to your `.env` file.
 
 
- <TabItem value="js" label=".env">
+ <TabItem value="ts" label=".env">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START .env"
       endMarker="// END .env"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -61,12 +61,12 @@ Follow our recipe on [loading data](https://github.com/weaviate/recipes-ts/blob/
 
 In `config/weaviate.js`, paste the following code. 
 
- <TabItem value="js" label="weaviate.js">
+ <TabItem value="ts" label="weaviate.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START weaviate.js"
       endMarker="// END weaviate.js"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -76,12 +76,12 @@ The code above helps us create a connection to our Weaviate instance hosted on W
 
 In your project root, create a file called `app.js` and paste the following code in it. 
 
- <TabItem value="js" label="app.js">
+ <TabItem value="ts" label="app.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START app.js"
       endMarker="// END app.js"
-      language="js"
+      language="ts"
     />
   </TabItem>
 

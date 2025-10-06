@@ -19,10 +19,7 @@ import Link from "@docusaurus/Link";
 const LANGUAGE_CONFIG = {
   py: { label: "Python", icon: "/img/site/logo-py.svg" },
   python: { label: "Python", icon: "/img/site/logo-py.svg" },
-  js: { label: "JS/TS", icon: "/img/site/logo-ts.svg" },
-  ts: { label: "JS/TS", icon: "/img/site/logo-ts.svg" },
-  typescript: { label: "JS/TS", icon: "/img/site/logo-ts.svg" },
-  javascript: { label: "JS/TS", icon: "/img/site/logo-ts.svg" },
+  ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
   go: { label: "Go", icon: "/img/site/logo-go.svg" },
   golang: { label: "Go", icon: "/img/site/logo-go.svg" },
   java: { label: "Java", icon: "/img/site/logo-java.svg" },
@@ -78,7 +75,11 @@ const LanguageDropdown = ({ value, onChange, options }) => {
             icon: null,
           };
           return (
-            <option key={opt.value} value={opt.value}>
+            <option
+              key={opt.value}
+              value={opt.value}
+              disabled={opt.disabled} // Handle disabled state for unavailable options
+            >
               {optConfig.label}
             </option>
           );
@@ -125,7 +126,6 @@ const CodeDropdownTabs = ({
 
   // State for selected tab
   const [selectedValue, setSelectedValue] = useState(() => {
-    // Check localStorage for this specific group or global code language
     if (typeof window !== "undefined") {
       const savedValue = localStorage.getItem(
         `docusaurus.tab.${groupId || "languages"}`
@@ -133,9 +133,8 @@ const CodeDropdownTabs = ({
       if (savedValue && tabValues.some((t) => t.value === savedValue)) {
         return savedValue;
       }
-      // Fallback to global code language preference
       const globalLang = localStorage.getItem("selectedCodeLanguage");
-      if (globalLang && tabValues.some((t) => t.value === globalLang)) {
+      if (globalLang) {
         return globalLang;
       }
     }
@@ -146,43 +145,52 @@ const CodeDropdownTabs = ({
   useEffect(() => {
     const handleLanguageChange = (event) => {
       const newLang = event.detail;
-      if (tabValues.some((t) => t.value === newLang)) {
-        setSelectedValue(newLang);
-      }
+      setSelectedValue(newLang);
     };
 
     window.addEventListener("codeLanguageChange", handleLanguageChange);
     return () =>
       window.removeEventListener("codeLanguageChange", handleLanguageChange);
-  }, [tabValues]);
+  }, []);
 
   // Handle language change
   const handleChange = (newValue) => {
     setSelectedValue(newValue);
-
-    // Save to localStorage
     if (typeof window !== "undefined") {
-      // Save to tab-specific storage
       if (groupId) {
         localStorage.setItem(`docusaurus.tab.${groupId}`, newValue);
       }
-      // Also update global code language preference
       localStorage.setItem("selectedCodeLanguage", newValue);
-      // Dispatch event to sync other dropdowns
       window.dispatchEvent(
         new CustomEvent("codeLanguageChange", { detail: newValue })
       );
     }
   };
 
-  // Find the selected child
-  const selectedChild = Children.toArray(children).find(
-    (child) => isValidElement(child) && child.props.value === selectedValue
+  const isLanguageAvailable = tabValues.some(
+    (tab) => tab.value === selectedValue
   );
 
-  // Get the doc system for the selected language
-  const docSystem = DOC_SYSTEMS[selectedValue];
+  // If the selected language isn't available, add it to the dropdown list as a disabled option
+  let dropdownOptions = tabValues;
+  if (!isLanguageAvailable) {
+    dropdownOptions = [
+      {
+        value: selectedValue,
+        label: LANGUAGE_CONFIG[selectedValue]?.label || selectedValue,
+        disabled: true,
+      },
+      ...tabValues,
+    ];
+  }
 
+  const selectedChild = isLanguageAvailable
+    ? Children.toArray(children).find(
+        (child) => isValidElement(child) && child.props.value === selectedValue
+      )
+    : null;
+
+  const docSystem = DOC_SYSTEMS[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const params = new URLSearchParams({
     template: "doc_feedback.yml",
@@ -197,9 +205,9 @@ const CodeDropdownTabs = ({
         <div className={styles.leftSection}>
           <span className={styles.languageLabel}>Select Language</span>
           <LanguageDropdown
-            value={selectedValue}
+            value={selectedValue} // Always show the globally selected value
             onChange={handleChange}
-            options={tabValues}
+            options={dropdownOptions} // Pass the potentially modified list of options
           />
         </div>
 
@@ -243,8 +251,8 @@ const CodeDropdownTabs = ({
                 <Tooltip
                   content={
                     <>
-                      Code snippets in the documentation reflect the latest client
-                      library and Weaviate Database version. Check the{" "}
+                      Code snippets in the documentation reflect the latest
+                      client library and Weaviate Database version. Check the{" "}
                       <Link href="/weaviate/release-notes">Release notes</Link>{" "}
                       for specific versions.
                       <br />
@@ -277,7 +285,20 @@ const CodeDropdownTabs = ({
         )}
       </div>
       <div className={styles.codeContent}>
-        {selectedChild || <div>No code available for this language</div>}
+        {isLanguageAvailable && selectedChild ? (
+          selectedChild
+        ) : (
+          <div className={styles.comingSoon}>
+            <p>
+              A code snippet for{" "}
+              <strong>
+                {LANGUAGE_CONFIG[selectedValue]?.label || selectedValue}
+              </strong>{" "}
+              is not yet available here.
+            </p>
+            <span>Please select an available language from the dropdown.</span>
+          </div>
+        )}
       </div>
     </div>
   );

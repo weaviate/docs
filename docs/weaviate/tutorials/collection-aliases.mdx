@@ -74,7 +74,7 @@ Let's walk through a complete migration scenario where we need to add a new fiel
 
 First, connect to your Weaviate instance using your preferred client library.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -83,12 +83,12 @@ First, connect to your Weaviate instance using your preferred client library.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ConnectToWeaviate"
       endMarker="// END ConnectToWeaviate"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -113,7 +113,7 @@ First, connect to your Weaviate instance using your preferred client library.
 
 Let's create our initial products collection and populate it with data.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -122,12 +122,12 @@ Let's create our initial products collection and populate it with data.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Step1CreateOriginal"
       endMarker="// END Step1CreateOriginal"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -152,7 +152,7 @@ Let's create our initial products collection and populate it with data.
 
 Now create an alias that your application will use. This decouples your application code from the specific collection version.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -161,12 +161,12 @@ Now create an alias that your application will use. This decouples your applicat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Step2CreateAlias"
       endMarker="// END Step2CreateAlias"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -191,7 +191,7 @@ Now create an alias that your application will use. This decouples your applicat
 
 Your application code should reference the alias, not the underlying collection. This ensures it continues working regardless of which collection version is active.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -200,12 +200,12 @@ Your application code should reference the alias, not the underlying collection.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MigrationUseAlias"
       endMarker="// END MigrationUseAlias"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -232,7 +232,7 @@ The key point is that your application code doesn't need to know whether it's ac
 
 Now let's create a new version of the collection with an additional field (e.g., adding a `category` property).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -241,12 +241,12 @@ Now let's create a new version of the collection with an additional field (e.g.,
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Step3NewCollection"
       endMarker="// END Step3NewCollection"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -271,7 +271,7 @@ Now let's create a new version of the collection with an additional field (e.g.,
 
 Copy data from the old collection to the new one, adding default values for new fields or transforming data as needed.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -280,12 +280,12 @@ Copy data from the old collection to the new one, adding default values for new 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Step4MigrateData"
       endMarker="// END Step4MigrateData"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -310,7 +310,7 @@ Copy data from the old collection to the new one, adding default values for new 
 
 This is the magic moment - update the alias to point to the new collection. This switch is instantaneous, and all queries using the `ProductsAlias` alias now access the new collection.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -319,12 +319,12 @@ This is the magic moment - update the alias to point to the new collection. This
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Step5UpdateAlias"
       endMarker="// END Step5UpdateAlias"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -349,7 +349,7 @@ This is the magic moment - update the alias to point to the new collection. This
 
 After verifying that everything works correctly with the new collection, you can safely delete the old one.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -358,12 +358,12 @@ After verifying that everything works correctly with the new collection, you can
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Step6Cleanup"
       endMarker="// END Step6Cleanup"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">

@@ -50,7 +50,7 @@ BACKUP_FILESYSTEM_PATH=/var/lib/weaviate/backups
 
 Restart Weaviate to apply the new configuration. Then, you are ready to start a backup:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -60,7 +60,7 @@ Restart Weaviate to apply the new configuration. Then, you are ready to start a 
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeBackup}
       startMarker="// START CreateBackup"
@@ -317,7 +317,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
 | `CompressionLevel`| string | no | `DefaultCompression` | An optional compression level used by compression algorithm from options. (`DefaultCompression`, `BestSpeed`, `BestCompression`) Weaviate uses [gzip compression](https://pkg.go.dev/compress/gzip#pkg-constants) by default. |
 | `Path`            | string | no | `""` | An optional string to manually set the backup location. If not provided, the backup will be stored in the default location. Introduced in Weaviate `v1.27.2`. |
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -327,7 +327,7 @@ The `include` and `exclude` options are mutually exclusive. You can set none or 
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeBackup}
       startMarker="// START CreateBackup"
@@ -390,7 +390,7 @@ GET /v1/backups/{backend}/{backup_id}
 
 The response contains a `"status"` field. If the status is `SUCCESS`, the backup is complete. If the status is `FAILED`, an additional error is provided.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -399,7 +399,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeStatus}
       startMarker="// START StatusCreateBackup"
@@ -441,7 +441,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the backup
 
 An ongoing backup can be cancelled at any time. The backup process will be stopped, and the backup will be marked as `CANCELLED`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -450,7 +450,7 @@ An ongoing backup can be cancelled at any time. The backup process will be stopp
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeStatus}
       startMarker="// START CancelBackup"
@@ -492,7 +492,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
 | `rolesOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC roles will be backed up and restored. Can be either `"noRestore"` for not backing up roles and permissions or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
 | `usersOptions`            | string | no | `"noRestore"` | An optional string to manually set if RBAC users will be backed up. Can be either `"noRestore"` for not backing up users or `"all"` to include all of them. Introduced in Weaviate `v1.32.0`. |
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -501,7 +501,7 @@ Versions prior to `v1.23.13` had a bug that could lead to data not being stored 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeRestore}
       startMarker="// START RestoreBackup"
@@ -548,7 +548,7 @@ If you set the "wait for completion" option to false, you can also check the sta
 
 The response contains a `"status"` field. If the status is `SUCCESS`, the restore is complete. If the status is `FAILED`, an additional error is provided.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -558,7 +558,7 @@ The response contains a `"status"` field. If the status is `SUCCESS`, the restor
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeStatus}
       startMarker="// START StatusRestoreBackup"

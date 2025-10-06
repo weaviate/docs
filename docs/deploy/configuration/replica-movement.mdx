@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.replica.movement.py';
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -28,7 +28,7 @@ import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.replica.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon
@@ -67,7 +67,7 @@ Nodes for shard 'w5OcBGbNvRt4': ['node2', 'node3']
 
 Copy or move a shard replica by specifying the the source node, destination node, collection name, shard ID and operation type (`MOVE` or `COPY`).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={PyCode}
@@ -76,7 +76,7 @@ endMarker="# END ReplicateShard"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon
@@ -112,7 +112,7 @@ Replication initiated, ID: 32536c0e-09e1-4ea1-a2c5-e85af10a9d58
 
 Shard replication operations are asynchronous. An operation status can be queried, with an option to view the full operation history.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={PyCode}
@@ -121,7 +121,7 @@ endMarker="# END CheckOperationStatus"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon
@@ -172,7 +172,7 @@ To learn more about the replication states, check out [Concepts: Replication arc
 
 List all ongoing and completed operations. This can be filtered by node, collection and shard.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={PyCode}
@@ -181,7 +181,7 @@ endMarker="# END ListReplicationOperations"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon
@@ -218,7 +218,7 @@ Filtered operations for collection 'MyReplicatedDocCollection' on 'node3': 1
 
 The operation will be stopped if possible. If successfully cancelled, its state will change to `CANCELLED`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={PyCode}
@@ -227,7 +227,7 @@ endMarker="# END CancelOperation"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon
@@ -254,7 +254,7 @@ language="py"
 
 Remove a replication operation from the logs. If the operation is active, it will be cancelled first.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={PyCode}
@@ -263,7 +263,7 @@ endMarker="# END DeleteOperationRecord"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon
@@ -290,7 +290,7 @@ language="py"
 
 Remove all replication operations from the logs. If any operations are active, they will be cancelled first.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
 text={PyCode}
@@ -299,7 +299,7 @@ endMarker="# END DeleteAllOperationRecords"
 language="py"
 />
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // JS/TS support coming soon

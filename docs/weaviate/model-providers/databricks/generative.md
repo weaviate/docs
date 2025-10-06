@@ -56,7 +56,7 @@ Provide the Dataricks token to Weaviate using one of the following methods:
 - Set the `DATABRICKS_TOKEN` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -66,7 +66,7 @@ Provide the Dataricks token to Weaviate using one of the following methods:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START DatabricksInstantiation"
@@ -85,7 +85,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 [Configure a Weaviate collection](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) to use a Databricks generative AI endpoint as follows:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -95,7 +95,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeDatabricks"
@@ -111,7 +111,7 @@ This will configure Weaviate to use the generative AI model served through the e
 
 Configure the following generative parameters to customize the model behavior.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -121,7 +121,7 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeDatabricks"
@@ -138,7 +138,7 @@ For further details on model parameters, see the [Databricks documentation](http
 
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -147,7 +147,7 @@ Aside from setting the default model provider when creating the collection, you 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
           text={TSCode}
           startMarker="// START RuntimeModelSelectionDatabricks"
@@ -183,7 +183,7 @@ The example below generates outputs for each of the `n` search results, where `n
 
 When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -193,7 +193,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -212,7 +212,7 @@ To generate one text for the entire set of search results, use the grouped task 
 
 In other words, when you have `n` search results, the generative model generates one output for the entire group.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
   <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -223,7 +223,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"

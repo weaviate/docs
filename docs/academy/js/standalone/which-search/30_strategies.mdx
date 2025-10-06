@@ -49,9 +49,9 @@ As an example, if a product object includes metadata such as its manufacturing p
 
 You can do this by specifying whether to skip a property during vectorization, as shown below. Note that you can do the same with the collection name, and the property name.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
- <TabItem value="ts" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START skipVectorizationExample"
@@ -86,9 +86,9 @@ import TokenizationDefinition from '/_includes/tokenization_definition.mdx';
 
 You can set tokenization in the collection configuration.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
- <TabItem value="ts" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START tokenizationExample"
@@ -105,9 +105,9 @@ If you observe that matches in some properties are having too much of an impact,
 
 For example, matches in the `description` property might be more important than matches in the `notes` property. You can specify this at query time.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
- <TabItem value="ts" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START selectAndBoostExample"
@@ -126,9 +126,9 @@ The alpha parameter determines the balance between the vector and keyword search
 
 If you want to configure your search to be more vector-based, you can increase the alpha value. Conversely, if you want to configure your search to be more keyword-based, you can decrease the alpha value.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
- <TabItem value="ts" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START adjustAlpha"
@@ -147,9 +147,9 @@ By default, an inverse of the ranks from each results set are summed, in what is
 
 Generally, we have found that the "relative score fusion" algorithm works better, but you should try both to see which works best for your use case.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
- <TabItem value="ts" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START changeFusionType"

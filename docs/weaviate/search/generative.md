@@ -26,7 +26,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
 - [set a default configuration for the collection](../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) and/or
 - provide the settings as a part of the query:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -36,7 +36,7 @@ To use RAG with a [generative model integration](../model-providers/index.md):
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DynamicRag"
@@ -91,7 +91,7 @@ For more information on the available modeld and their additional options, see t
 
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -102,7 +102,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// NamedVectorNearText"
@@ -147,7 +147,7 @@ Single prompt search returns a generated response for each object in the query r
 Define object `properties` – using `{prop-name}` syntax – to interpolate retrieved content in the prompt.<br/>
 The properties you use in the prompt do not have to be among the properties you retrieve in the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -158,12 +158,12 @@ The properties you use in the prompt do not have to be among the properties you 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SingleGenerativePropertiesTS"
       endMarker="// END SingleGenerativePropertiesTS"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -207,7 +207,7 @@ Single prompt result: Which country in ancient history had more kings than any o
 
 You can use *generative parameters* to specify additional options when performing a single prompt search:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -216,7 +216,7 @@ You can use *generative parameters* to specify additional options when performin
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SingleGenerativeParametersTS"
@@ -275,7 +275,7 @@ Metadata: usage {
 
 Grouped task search returns one response that includes all of the query results. By default grouped task search uses all object `properties` in the prompt.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -286,12 +286,12 @@ Grouped task search returns one response that includes all of the query results.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerativeTS"
       endMarker="// END GroupedGenerativeTS"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -328,7 +328,7 @@ Grouped task result: All of these animals are mammals.
 
 Define object `properties` to use in the prompt. This limits the information in the prompt and reduces prompt length.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -339,7 +339,7 @@ Define object `properties` to use in the prompt. This limits the information in 
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerativeProperties"
@@ -384,7 +384,7 @@ Grouped task result: The commonality among these animals is that they are all na
 
 You can use *generative parameters* to specify additional options when performing grouped tasks:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -393,7 +393,7 @@ You can use *generative parameters* to specify additional options when performin
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerativeParametersTS"
@@ -438,7 +438,7 @@ The following fields are available for generative search with images:
 - `images`: A base64 encoded string of the image bytes.
 - `image_properties`: Names of the properties in Weaviate that store images for additional context.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -447,7 +447,7 @@ The following fields are available for generative search with images:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START WorkingWithImages"

@@ -31,7 +31,7 @@ Collection level settings override default values and general configuration para
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -42,7 +42,7 @@ Collection level settings override default values and general configuration para
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START Vectorizer"
@@ -80,7 +80,7 @@ import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx
 
 To configure how a vectorizer works (i.e. what model to use) with a specific collection, set the vectorizer parameters.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -91,7 +91,7 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START ModuleSettings"
@@ -130,7 +130,7 @@ You can define multiple [named vectors](../concepts/data.md#multiple-vector-embe
 
 As such, each named vector configuration can include its own vectorizer and vector index settings.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -141,7 +141,7 @@ As such, each named vector configuration can include its own vectorizer and vect
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START BasicNamedVectors"
@@ -178,7 +178,7 @@ As such, each named vector configuration can include its own vectorizer and vect
 
 Named vectors can be added to existing collection definitions with named vectors. (This is not possible for collections without named vectors.)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -187,12 +187,12 @@ Named vectors can be added to existing collection definitions with named vectors
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
       text={TSCode}
       startMarker="// START AddNamedVectors"
       endMarker="// END AddNamedVectors"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -222,7 +222,7 @@ Adding a new named vector to the collection definition [won't trigger vectorizat
 
 Multi-vector embeddings, also known as multi-vectors, represent a single object with multiple vectors, i.e. a 2-dimensional matrix. Multi-vectors are currently only available for HNSW indexes for named vectors. To use multi-vectors, enable it for the appropriate named vector.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -231,12 +231,12 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       language="py"
     />
   </TabItem>
-    <TabItem value="js" label="JS/TS">
+    <TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
         text={TSCode}
         startMarker="// START MultiValueVectorCollection"
         endMarker="// END MultiValueVectorCollection"
-        language="js"
+        language="ts"
       />
   </TabItem>
   <TabItem value="java" label="Java">
@@ -257,7 +257,7 @@ Multi-vector embeddings use up more memory than single vector embeddings. You ca
 
 The vector index type can be set for each collection at creation time, between `hnsw`, `flat` and `dynamic` index types.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -268,7 +268,7 @@ The vector index type can be set for each collection at creation time, between `
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetVectorIndexType"
@@ -312,7 +312,7 @@ Set vector index parameters such as [compression](../configuration/compression/i
 Was added in `v1.27`
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -323,7 +323,7 @@ Was added in `v1.27`
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START SetVectorIndexParams"
@@ -367,7 +367,7 @@ Configure individual properties in a collection. Each property can have it's own
 - Vectorize the property name
 - Set a [tokenization type](../config-refs/collections.mdx#tokenization)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -378,7 +378,7 @@ Configure individual properties in a collection. Each property can have it's own
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START PropModuleSettings"
@@ -411,7 +411,7 @@ Configure individual properties in a collection. Each property can have it's own
 
 If you choose to bring your own vectors, you should specify the `distance metric`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -422,7 +422,7 @@ If you choose to bring your own vectors, you should specify the `distance metric
   </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
   <FilteredTextBlock
     text={TSCode}
     startMarker="// START DistanceMetric"

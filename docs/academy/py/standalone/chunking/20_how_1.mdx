@@ -47,7 +47,7 @@ One pseudocode implementation of fixed-size chunking is:
 
 And implementing in Python, it may look like:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}
@@ -60,7 +60,7 @@ And implementing in Python, it may look like:
 
 Which can be modified to include an overlap (in this case, at the beginning of each chunk):
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}
@@ -85,7 +85,7 @@ We'll use an excerpt from the [Pro Git book](https://git-scm.com/book/en/v2)*. M
 
 Here is one example using our chunking function from above:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}
@@ -102,7 +102,7 @@ This will result in outputs like these. Take a look at the first few chunks at e
 Consider which of these chunk sizes would be most appropriate for search. Why do you think so? What are the tradeoffs?
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="5" label="By 5 words">
 <FilteredTextBlock
   text={CodeFixedSizeChunking}

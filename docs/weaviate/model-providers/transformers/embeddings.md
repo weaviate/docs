@@ -49,7 +49,7 @@ To use this integration, configure the container image of the Hugging Face Trans
 
 The following example shows how to configure the Hugging Face Transformers integration in Weaviate:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
@@ -112,7 +112,7 @@ Set `tag` from a [list of available models](#available-models) to specify a part
 
 As this integration runs a local container with the Transformers model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -123,7 +123,7 @@ As this integration runs a local container with the Transformers model, no addit
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -138,7 +138,7 @@ As this integration runs a local container with the Transformers model, no addit
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use the Transformer inference container:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -148,7 +148,7 @@ As this integration runs a local container with the Transformers model, no addit
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicVectorizerTransformers"
@@ -191,7 +191,7 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
 - `poolingStrategy` – the pooling strategy to use when the input exceeds the model's context window.
   - Default: `masked_mean`. Allowed values: `masked_mean` or `cls`. ([Read more on this topic.](https://arxiv.org/abs/1908.10084))
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -201,7 +201,7 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullVectorizerTransformers"
@@ -216,7 +216,7 @@ Specify `passageInferenceUrl` and `queryInferenceUrl` if using a [DPR](https://h
 
 After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -227,7 +227,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportExample"
@@ -254,7 +254,7 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -265,7 +265,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -286,7 +286,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts th
 
 The query below returns the `n` best scoring objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -297,7 +297,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
@@ -316,7 +316,7 @@ Lists of pre-built Docker images for this integration are available in the tabs 
 
 [You can also build your own Docker image](./embeddings-custom-image.md)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="main" label="Single container models">
 
 :::info
