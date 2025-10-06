@@ -1,4 +1,4 @@
-name: Documentation Code Tests
+name: Docs Code Tests
 
 permissions:
   contents: read
@@ -28,132 +28,105 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Cache Python dependencies
-        uses: actions/cache@v4
-        id: cache-python
-        with:
-          path: |
-            ~/.cache/pip
-            .venv
-          key: ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-
-
-      - name: Install Python dependencies
-        run: |
-          echo "📦 Setting up Python environment..."
-          if [[ "${{ steps.cache-python.outputs.cache-hit }}" != "true" ]]; then
-            echo "Creating virtual environment and installing dependencies..."
-            python -m venv .venv
-          fi
-
-          source .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r tests/requirements.txt
-
-          echo "✅ Python environment ready. Installed packages:"
-          pip list | head -20
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-
-      - name: Install Node.js dependencies
-        run: |
-          echo "📦 Installing Node.js dependencies..."
-          npm ci
-          echo "✅ Node.js environment ready"
 
       - name: Record test start time
         run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-      - name: Run agents tests
+      - name: Run tests
         id: run-tests
         continue-on-error: true
         env:
           DOCS_GITHUB_ENV: "true"
-          # API Keys - using consistent naming
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
           COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
           ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
           echo "🧪 Running agents tests..."
           source .venv/bin/activate
-
           pytest -m "agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
-
           echo "✅ Tests completed"
 
-      - name: Calculate test results
+      - name: Handle test results
         if: always()
-        run: |
-          # Calculate duration
-          TEST_END_TIME=$(date +%s)
-          TEST_DURATION=$((TEST_END_TIME - TEST_START_TIME))
-          
-          # Format duration
-          if [ $TEST_DURATION -ge 60 ]; then
-            MINUTES=$((TEST_DURATION / 60))
-            SECONDS=$((TEST_DURATION % 60))
-            DURATION_FORMATTED="${MINUTES}m ${SECONDS}s"
-          else
-            DURATION_FORMATTED="${TEST_DURATION}s"
-          fi
-          
-          echo "TEST_DURATION=$DURATION_FORMATTED" >> $GITHUB_ENV
-          
-          # Set test status
-          if [ "${{ steps.run-tests.outcome }}" = "success" ]; then
-            echo "TEST_STATUS=success" >> $GITHUB_ENV
-          else
-            echo "TEST_STATUS=failure" >> $GITHUB_ENV
-          fi
-
-          # Set test type for notifications
-          echo "TEST_TYPE=Agents" >> $GITHUB_ENV
-          echo "LANGUAGES_TESTED=Python (Agents)" >> $GITHUB_ENV
-
-      - name: Get commit author
-        if: always()
-        run: |
-          source _build_scripts/slack-find-author.sh
-
-      - name: Send Slack notification
-        if: always()
-        env:
-          SLACK_BOT: ${{ secrets.SLACK_BOT }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_REF: ${{ github.ref }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-        run: |
-          source _build_scripts/slack-test-results.sh
-
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/handle-test-results
         with:
-          name: test-results-agents
-          path: |
-            pytest-results.xml
-            .pytest_cache/
-          retention-days: 9
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Agents'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-agents'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+  test-wcd:
+    name: Test Database-Cloud
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+        run: |
+          echo "🧪 Running WCD tests..."
+          source .venv/bin/activate
+          pytest -m "wcd" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Database-Cloud'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-wcd'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
 
   test-pyv4-ts:
     name: Test PyV4 & TypeScript
@@ -161,10 +134,10 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
         with:
-          fetch-depth: 2
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Free disk space
         run: |
@@ -187,50 +160,6 @@ jobs:
 
           echo "=== Final disk usage ==="
           df -h
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Cache Python dependencies
-        uses: actions/cache@v4
-        id: cache-python
-        with:
-          path: |
-            ~/.cache/pip
-            .venv
-          key: ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-
-
-      - name: Install Python dependencies
-        run: |
-          echo "📦 Setting up Python environment..."
-          if [[ "${{ steps.cache-python.outputs.cache-hit }}" != "true" ]]; then
-            echo "Creating virtual environment and installing dependencies..."
-            python -m venv .venv
-          fi
-
-          source .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r tests/requirements.txt
-
-          echo "✅ Python environment ready. Installed packages:"
-          pip list | head -20
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-
-      - name: Install Node.js dependencies
-        run: |
-          echo "📦 Installing Node.js dependencies..."
-          npm ci
-          echo "✅ Node.js environment ready"
 
       - name: Cache Weaviate image
         uses: actions/cache@v4
@@ -418,7 +347,7 @@ jobs:
           WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
           WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
-          # API Keys - using consistent naming
+          # API Keys
           COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
@@ -431,10 +360,7 @@ jobs:
         run: |
           echo "🧪 Running PyV4 and TypeScript tests..."
           source .venv/bin/activate
-
-          # Run both Python and TypeScript tests
           pytest -m "(pyv4 or ts) and not agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
-
           echo "✅ Tests completed"
 
       - name: Stop services
@@ -443,50 +369,15 @@ jobs:
           echo "🛑 Stopping services..."
           ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
 
-      - name: Calculate test results
+      - name: Handle test results
         if: always()
-        run: |
-          # Calculate duration
-          TEST_END_TIME=$(date +%s)
-          TEST_DURATION=$((TEST_END_TIME - TEST_START_TIME))
-          
-          # Format duration
-          if [ $TEST_DURATION -ge 60 ]; then
-            MINUTES=$((TEST_DURATION / 60))
-            SECONDS=$((TEST_DURATION % 60))
-            DURATION_FORMATTED="${MINUTES}m ${SECONDS}s"
-          else
-            DURATION_FORMATTED="${TEST_DURATION}s"
-          fi
-          
-          echo "TEST_DURATION=$DURATION_FORMATTED" >> $GITHUB_ENV
-          
-          # Set test status
-          if [ "${{ steps.run-tests.outcome }}" = "success" ]; then
-            echo "TEST_STATUS=success" >> $GITHUB_ENV
-          else
-            echo "TEST_STATUS=failure" >> $GITHUB_ENV
-          fi
-
-          # Set test type for notifications
-          echo "TEST_TYPE=Database/Cloud" >> $GITHUB_ENV
-          echo "LANGUAGES_TESTED=Python, TypeScript" >> $GITHUB_ENV
-
-      - name: Get commit author
-        if: always()
-        run: |
-          source _build_scripts/slack-find-author.sh
-
-      - name: Send Slack notification
-        if: always()
-        env:
-          SLACK_BOT: ${{ secrets.SLACK_BOT }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_REF: ${{ github.ref }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-        run: |
-          source _build_scripts/slack-test-results.sh
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Database-Local'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-pyv4-ts'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
 
       - name: Verify cache contents
         if: always()
@@ -515,13 +406,3 @@ jobs:
           docker system prune -f --volumes 2>/dev/null || true
 
           echo "✅ Cleanup completed"
-
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-pyv4-ts
-          path: |
-            pytest-results.xml
-            .pytest_cache/
-          retention-days: 9

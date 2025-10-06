@@ -5,6 +5,7 @@ from pathlib import Path
 
 
 @pytest.mark.pyv4
+@pytest.mark.wcd
 @pytest.mark.parametrize(
     "script_loc",
     [
@@ -30,6 +31,7 @@ def test_pyv4(empty_weaviates, script_loc):
 
 
 @pytest.mark.ts
+@pytest.mark.wcd
 @pytest.mark.parametrize(
     "script_loc",
     [

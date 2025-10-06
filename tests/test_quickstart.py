@@ -1,10 +1,10 @@
-import subprocess
 import pytest
 import utils
 from pathlib import Path
 
 
 @pytest.mark.pyv4
+@pytest.mark.wcd
 @pytest.mark.parametrize(
     "script_loc",
     [
@@ -14,6 +14,17 @@ from pathlib import Path
         "_includes/code/python/quickstart.import_objects.py",
         "_includes/code/python/quickstart.query.neartext.py",
         "_includes/code/python/quickstart.query.rag.py",
+    ],
+)
+def test_pyv4(script_loc):
+    proc_script = utils.load_and_prep_script(script_loc)
+    utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
+
+
+@pytest.mark.pyv4
+@pytest.mark.parametrize(
+    "script_loc",
+    [
         "_includes/code/python/local.quickstart.is_ready.py",
         "_includes/code/python/local.quickstart.create_collection.py",
         "_includes/code/python/local.quickstart.import_objects.py",
@@ -21,21 +32,9 @@ from pathlib import Path
         "_includes/code/python/local.quickstart.query.rag.py",
     ],
 )
-def test_pyv4(empty_weaviates, script_loc):
+def test_pyv4_local(empty_weaviates, script_loc):
     proc_script = utils.load_and_prep_script(script_loc)
     utils.execute_py_script_as_module(proc_script, Path(script_loc).stem)
-
-
-@pytest.mark.pyv3
-@pytest.mark.parametrize(
-    "script_loc",
-    [
-        # "./_includes/code/quickstart/endtoend.py3.py",
-    ],
-)
-def test_pyv3(empty_weaviates, script_loc):
-    proc_script = utils.load_and_prep_script(script_loc)
-    exec(proc_script)
 
 
 @pytest.mark.ts
@@ -58,7 +57,7 @@ def test_pyv3(empty_weaviates, script_loc):
 def test_ts(empty_weaviates, script_loc):
     temp_proc_script_loc = utils.load_and_prep_temp_file(script_loc, lang="ts")
     command = ["npx", "tsx", temp_proc_script_loc]
-    
+
     try:
         utils.run_script(command, script_loc)
     except Exception as e:

@@ -1,0 +1,62 @@
+name: 'Setup Test Environment'
+description: 'Sets up Python and Node.js environments with caching'
+
+inputs:
+  python-version:
+    description: 'Python version to use'
+    required: true
+    default: '3.10'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Cache Python dependencies
+      uses: actions/cache@v4
+      id: cache-python
+      with:
+        path: |
+          ~/.cache/pip
+          .venv
+        key: ${{ runner.os }}-python-${{ inputs.python-version }}-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-python-${{ inputs.python-version }}-
+
+    - name: Install Python dependencies
+      shell: bash
+      run: |
+        echo "📦 Setting up Python environment..."
+        if [[ "${{ steps.cache-python.outputs.cache-hit }}" != "true" ]]; then
+          echo "Creating virtual environment and installing dependencies..."
+          python -m venv .venv
+        fi
+
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install -r tests/requirements.txt
+
+        echo "✅ Python environment ready. Installed packages:"
+        pip list | head -20
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'package-lock.json'
+
+    - name: Install Node.js dependencies
+      shell: bash
+      run: |
+        echo "📦 Installing Node.js dependencies..."
+        npm ci
+        echo "✅ Node.js environment ready"
