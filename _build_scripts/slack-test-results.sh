@@ -10,11 +10,9 @@ AUTHOR_NAME=${AUTHOR_NAME:-"unknown"}
 
 # Set emoji and message based on test status
 if [ "$TEST_STATUS" = "success" ]; then
-    EMOJI=":white_check_mark:"
     STATUS_TEXT="✅ PASSED"
     COLOR="good"
 else
-    EMOJI=":x:"
     STATUS_TEXT="❌ FAILED"
     COLOR="danger"
 fi
@@ -25,7 +23,7 @@ branch_name=${GITHUB_REF##*/}
 
 # Message with author mention and languages tested
 MESSAGE="{
-  'text': '$EMOJI *Documentation Code Tests - $STATUS_TEXT* - $AUTHOR_NAME',
+  'text': '*Docs Code Tests - $STATUS_TEXT* - $AUTHOR_NAME',
   'channel': '#docs-workflow-updates',
   'attachments': [
     {
