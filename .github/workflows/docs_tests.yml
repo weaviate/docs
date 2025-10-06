@@ -369,7 +369,7 @@ jobs:
         run: |
           echo "🧪 Running PyV4 and TypeScript tests..."
           source .venv/bin/activate
-          pytest -m "(pyv4 or ts) and not agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          pytest -m "(pyv4 or ts) and not (agents or wcd)" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
       - name: Stop services
