@@ -143,11 +143,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup test environment
-        uses: ./.github/actions/setup-test-env
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
       - name: Free disk space
         run: |
           echo "=== Initial disk usage ==="
@@ -158,7 +153,6 @@ jobs:
           sudo rm -rf /opt/ghc &
           sudo rm -rf /usr/local/share/boost &
           sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
-          sudo rm -rf /opt/hostedtoolcache &
           sudo rm -rf /usr/local/lib/android &
           sudo rm -rf /usr/local/share/powershell &
           sudo rm -rf /usr/local/share/chromium &
@@ -169,6 +163,11 @@ jobs:
 
           echo "=== Final disk usage ==="
           df -h
+          
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache Weaviate image
         uses: actions/cache@v4
