@@ -333,7 +333,7 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="python"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridWithBM25OperatorOrWithMin"
@@ -364,7 +364,7 @@ With the `and` operator, the search returns objects that contain all tokens in t
       language="python"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridWithBM25OperatorAnd"

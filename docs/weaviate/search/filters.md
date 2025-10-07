@@ -432,7 +432,7 @@ The `ContainsNone` operator works on text properties and take an array of values
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
       startMarker="// START ContainsNoneFilter"

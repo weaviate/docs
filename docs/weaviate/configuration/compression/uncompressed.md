@@ -33,7 +33,7 @@ When creating the collection, you can choose not to use quantization through the
       />
   </TabItem>
 
-  <TabItem value="ts" label="JS/TS Client v3">
+  <TabItem value="ts" label="JS/TS">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START Uncompressed"
