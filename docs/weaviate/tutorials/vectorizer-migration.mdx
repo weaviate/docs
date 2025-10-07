@@ -49,7 +49,14 @@ This tutorial demonstrates two approaches for switching vectorizers:
 - **Collection aliases**
   This approach uses aliases to instantly switch between separate collections. It's perfect for a complete model replacement, minimizing risk and providing an immediate rollback option.
 
-## Step 1: Connect to Weaviate Cloud
+## Step 0: Create a demo collection (optional)
+
+If you want to follow this tutorial locally and execute the code snippets, you can check out the collapsible element below for steps on how to create a collection and import a demo dataset with precomputed vector embeddings. 
+
+<details>
+<summary><b>Step 0:</b> Setup a collection and populate it with demo data</summary>
+
+#### Step 0.1: Connect to Weaviate Cloud
 
 First, establish a connection to your Weaviate Cloud instance:
 
@@ -60,7 +67,7 @@ First, establish a connection to your Weaviate Cloud instance:
   language="py"
 />
 
-## Step 2: Create a collection
+#### Step 0.2: Create a collection
 
 Create a collection that accepts self-provided vectors. We will use the existing embeddings from the [HuggingFace e-commerce dataset](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce):
 
@@ -71,7 +78,7 @@ Create a collection that accepts self-provided vectors. We will use the existing
   language="py"
 />
 
-## Step 3: Import data
+#### Step 0.3: Import data
 
 We'll use the Weaviate ECommerce dataset from Hugging Face, which contains clothing items with pre-computed embeddings. This dataset represents a real-world scenario where you have existing vector embeddings that need migration.
 
@@ -96,7 +103,7 @@ Import your e-commerce data along with the pre-computed vectors:
   language="py"
 />
 
-## Step 4: Query with original vectors
+#### Step 0.4: Query with original vectors
 
 Verify that searches work with your original vectors:
 
@@ -107,11 +114,15 @@ Verify that searches work with your original vectors:
   language="py"
 />
 
+</details>
+
 ## Method A: Add new vector
 
 Named vectors allow you to have multiple vector representations in the same collection. Once a new vector is created and all the objects in the database are vectorized, you can use the new vector instead of the original one.
 
-### Step 5: Add new vector with Weaviate Embeddings
+![Add new vector to collection](./_includes/add_new_vector.png)
+
+### Step 1: Add new vector with Weaviate Embeddings
 
 Add a new vector using Weaviate's built-in embedding service [Weaviate Embeddings](/cloud/embeddings):
 
@@ -122,7 +133,14 @@ Add a new vector using Weaviate's built-in embedding service [Weaviate Embedding
   language="py"
 />
 
-### Step 6: Trigger vectorization
+import ModelProvider from '/\_includes/embedding-model-providers.mdx'
+
+<details>
+  <summary>Choose a different embedding model</summary>
+  <ModelProvider />
+</details>
+
+### Step 2: Trigger vectorization
 
 Update all objects to generate embeddings with the new vectorizer. We use a minimal update that doesn't change properties:
 
@@ -133,7 +151,7 @@ Update all objects to generate embeddings with the new vectorizer. We use a mini
   language="py"
 />
 
-### Step 7: Query with new vector
+### Step 3: Query with the new vector
 
 Now you can query using the new vector:
 
@@ -148,7 +166,9 @@ Now you can query using the new vector:
 
 Collection aliases allow instant switching between collections with different vectorizers.
 
-### Step 5: Create collection alias and query using alias
+![Switch vectorizers with collection aliases](./_includes/switch-vectorizer-collection-alias.png)
+
+### Step 1: Create collection alias and query using alias
 
 Create an alias that your application will use:
 
@@ -168,7 +188,7 @@ Your application should always use the alias:
   language="py"
 />
 
-### Step 6: Create new collection with Weaviate Embeddings
+### Step 2: Create new collection with Weaviate Embeddings
 
 Create a new collection using the Weaviate Embeddings vectorizer:
 
@@ -179,7 +199,12 @@ Create a new collection using the Weaviate Embeddings vectorizer:
   language="py"
 />
 
-### Step 7: Migrate data to new collection
+<details>
+  <summary>Choose a different embedding model</summary>
+  <ModelProvider />
+</details>
+
+### Step 3: Migrate data to new collection
 
 Copy data to the new collection (vectors will be auto-generated):
 
@@ -190,7 +215,7 @@ Copy data to the new collection (vectors will be auto-generated):
   language="py"
 />
 
-### Step 8: Switch the alias and query using alias
+### Step 4: Switch the alias and query using alias
 
 Update the alias to point to the new collection:
 

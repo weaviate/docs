@@ -314,5 +314,10 @@ for obj in results.objects:
     )
 # END Method2SwitchAlias
 
+# START Method2Cleanup
+# Optional: delete old collection if no longer needed
+client.collections.delete("ECommerceProducts")
+# END Method2Cleanup
+
 # Cleanup
 client.close()
