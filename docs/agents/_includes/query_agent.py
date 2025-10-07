@@ -208,6 +208,7 @@ qa = QueryAgent(
 
 # START SystemPromptExample
 from weaviate.agents.query import QueryAgent
+from weaviate.agents.classes import QueryAgentCollectionConfig
 
 # Define a custom system prompt to guide the agent's behavior
 system_prompt = """You are a helpful assistant that can answer questions about the products and users in the database.
@@ -216,7 +217,16 @@ Emphasize key insights and provide actionable recommendations when relevant."""
 
 qa = QueryAgent(
     client=client,
-    collections=["ECommerce", "FinancialContracts", "Weather"],
+    collections=[
+        QueryAgentCollectionConfig(
+            name="ECommerce",  # The name of the collection to query
+            target_vector=[
+                "name_description_brand_vector"
+            ],  # Target vector name(s) for collections with multiple vectors
+        ),
+        "FinancialContracts",
+        "Weather",
+    ],
     system_prompt=system_prompt,
 )
 
@@ -278,6 +288,9 @@ response.display()
 runtime_config = QueryAgentCollectionConfig(
     name="ECommerce",
     additional_filters=Filter.by_property("category").equal("Footwear"),
+    target_vector=[
+        "name_description_brand_vector"
+    ],  # Required target vector name(s) for collections with named vectors
 )
 
 response = qa.ask("What products are available?", collections=[runtime_config])
@@ -347,6 +360,35 @@ response = qa.ask(
 response.display()
 # END BasicAskQuery
 
+# START InspectResponseExample
+print("\n=== Query Agent Response ===")
+print(f"Original Query: {response.searches[0].query}\n")
+
+print("🔍 Final Answer Found:")
+print(f"{response.final_answer}\n")
+
+print("🔍 Searches Executed:")
+for collection_searches in response.searches:
+    for result in collection_searches:
+        print(f"- {result}\n")
+
+if len(response.aggregations) > 0:
+    print("📊 Aggregation Results:")
+    for collection_aggs in response.aggregations:
+        for agg in collection_aggs:
+            print(f"- {agg}\n")
+
+if response.missing_information:
+    if response.is_partial_answer:
+        print("⚠️ Answer is Partial - Missing Information:")
+    else:
+        print("⚠️ Missing Information:")
+    for missing in response.missing_information:
+        print(f"- {missing}")
+# END InspectResponseExample
+
+assert response.final_answer != "" and response.final_answer is not None
+
 # START BasicSearchQuery
 # Perform a search using Search Mode (retrieval only, no answer generation)
 search_response = qa.search("Find me some vintage shoes under $70", limit=10)
@@ -361,7 +403,7 @@ for obj in search_response.search_results.objects:
 search_response = qa.search("winter boots for under $100", limit=5)
 
 # Access different parts of the response
-print(f"Original query: {search_response.original_query}")
+print(f"Original query: {search_response.searches[0].query}")
 print(f"Total time: {search_response.total_time}")
 
 # Access usage statistics
@@ -481,35 +523,6 @@ for output in qa.ask_stream(
         # This is the final response, as returned by QueryAgent.ask()
         output.display()
 # END StreamResponse
-
-# START InspectResponseExample
-print("\n=== Query Agent Response ===")
-print(f"Original Query: {response.original_query}\n")
-
-print("🔍 Final Answer Found:")
-print(f"{response.final_answer}\n")
-
-print("🔍 Searches Executed:")
-for collection_searches in response.searches:
-    for result in collection_searches:
-        print(f"- {result}\n")
-
-if len(response.aggregations) > 0:
-    print("📊 Aggregation Results:")
-    for collection_aggs in response.aggregations:
-        for agg in collection_aggs:
-            print(f"- {agg}\n")
-
-if response.missing_information:
-    if response.is_partial_answer:
-        print("⚠️ Answer is Partial - Missing Information:")
-    else:
-        print("⚠️ Missing Information:")
-    for missing in response.missing_information:
-        print(f"- {missing}")
-# END InspectResponseExample
-
-assert response.final_answer != "" and response.final_answer is not None
 
 client.close()
 

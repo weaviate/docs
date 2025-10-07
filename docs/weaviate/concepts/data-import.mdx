@@ -1,0 +1,70 @@
+---
+title: Data import
+sidebar_position: 11
+description: "Theoretical explanation of client-side and server-side batch imports."
+image: og/docs/concepts.jpg
+---
+
+Weaviate offers two flexible methods for importing data in bulk: **client-side batching** and **server-side batching**. This allows you to choose the best strategy based on your specific needs.
+
+- **Client-side batching** <br/>
+  In the client-side approach, **the Weaviate client library is responsible for grouping data into batches**. You define the batching mechanism and parameters, such as the size of each batch (e.g., 100 objects) using the appropriate [client library method](../manage-objects/import.mdx). The client then sends chunks to the Weaviate server accordingly.
+
+  This method gives you direct control over the import process through manual tuning of parameters like the batch size and number of concurrent requests. However, the tuning must be done "blindly" on the client side, without knowledge of the server status.
+
+- **Server-side batching** <br/>
+  Server-side batching, or **automatic mode**, is a more robust and the recommended approach. Here, the client sends data at a rate based on **feedback from the Weaviate server**.
+
+  Using an internal queue and a dynamic _[backpressure](https://en.wikipedia.org/wiki/Backpressure_routing)_ mechanism, the server tells the client how much data to send next based on its current workload. This simplifies your client code, eliminates the need for manual tuning, and results in a more efficient and resilient data import process.
+
+:::tip
+
+For **code examples**, check out the [How-to: Batch import](../manage-objects/import.mdx) guide. Currently, only the Python client supports batch imports.
+
+:::
+
+---
+
+## Server-side batching
+
+:::caution Preview
+
+Server-side batching was added in **`v1.33`** as a **preview** and is **not yet supported in our client libraries**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
+
+:::
+
+Weaviate's server-side batching, also known as **automatic batching**, aims to provide a closed-loop system for simpler, faster, and more robust data ingestion. Instead of manually tuning batch parameters on the client side, you can let the server manage the data flow rate for optimal performance.
+
+<!-- TODO[g-despot]: remove when feature is GA -->
+<!--This mode is a drop-in replacement for `fixed_size` or `dynamic` batching and is the recommended method for importing data.-->
+### How it works
+
+When an automatic batch import is initiated, the client opens a persistent connection to the server for the duration of the batch job.
+
+- **Client sends data**: Your client sends objects to the server in chunks, at a rate that is based on server-provided feedback.
+- **Server manages queues**: The server places incoming objects into an internal. The queue is decoupled the network communication from the actual database ingestion (like vectorization and storage).
+- **Dynamic backpressure**: The server continuously monitors its internal queue size. It calculates an exponential moving average (EMA) of its workload and tells the client the ideal number of objects to send in the next chunk. This feedback loop allows the system to self-regulate, maximizing throughput without overwhelming the server.
+- **Asynchronous errors**: If an error occurs while processing an object (e.g., validation fails), the server sends the error message back to the client over a separate, dedicated stream without interrupting the flow of objects.
+
+This architecture centralizes the complex batching logic on the server, resulting in a more efficient and stable data ingestion pipeline for all connected clients.
+
+:::info Why use automatic (server-side) batching?
+
+- **Simplified client code**: No need to tweak the batch size and the number of concurrent requests manually. The server determines the optimal batch size based on its current workload.
+- **Improved stability**: The system automatically applies **backpressure**. If the server is busy, it will instruct the client to send less data, preventing overloads and request timeouts, which is especially useful during long-running vectorization tasks.
+- **Enhanced resilience**: It's designed to handle cluster events like node scaling more gracefully, reducing the risk of interrupted batches.
+
+:::
+
+## Further resources
+
+- [How-to: Batch import](../manage-objects/import.mdx)
+- [How-to: Create objects](../manage-objects/create.mdx)
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />

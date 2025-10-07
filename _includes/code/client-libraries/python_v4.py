@@ -1355,14 +1355,9 @@ finally:
 # END AsyncInsertionExample
 
 # Wait for collection to be populated - async indexing is on
-client = weaviate.connect_to_local()
-
-import time; 
-
-collection = client.collections.use(name="Movie")
-while len(collection) != 5: time.sleep(0.1)
-
-client.close()
+# TODO[g-despot]: Implement better mechanism
+import time
+time.sleep(1)
 
 # START AsyncSearchExample
 import weaviate

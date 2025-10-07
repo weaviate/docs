@@ -89,8 +89,8 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe 
-    id="xrgwlygc1p" 
-    src="https://app.guideflow.com/embed/xrgwlygc1p" 
+    id="qp7xdo7cjr" 
+    src="https://app.guideflow.com/embed/qp7xdo7cjr" 
     width="100%" 
     height="100%" 
     style={{overflow: "hidden", position: "absolute", border: "none"}} 
@@ -101,7 +101,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
     allowFullScreen 
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="xrgwlygc1p"></script>
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="qp7xdo7cjr"></script>
 </div>
 
 <br/>
@@ -143,8 +143,8 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe 
-    id="mk6zxyws6p" 
-    src="https://app.guideflow.com/embed/mk6zxyws6p" 
+    id="ok8l954sxr" 
+    src="https://app.guideflow.com/embed/ok8l954sxr" 
     width="100%" 
     height="100%" 
     style={{overflow: "hidden", position: "absolute", border: "none"}} 
@@ -155,7 +155,7 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
     allowFullScreen 
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="mk6zxyws6p"></script>
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="ok8l954sxr"></script>
 </div>
 
 <br/>
@@ -193,7 +193,6 @@ A collection is a set of objects that share the same data structure, like a tabl
 The following example creates a _collection_ called `Question` with:
 
 - The [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for creating vectors during ingestion & queries.
-- Cohere [generative AI integrations](/weaviate/model-providers/cohere/generative.md) for retrieval augmented generation (RAG).
 
 import CreateCollection from '/\_includes/code/quickstart/quickstart.create_collection.mdx'
 
@@ -406,7 +405,7 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-The following example combines the same search (for `biology`) with a prompt to generate a tweet.
+The following example combines the same search (for `biology`) with a prompt to generate a tweet. 
 
 import QueryRAG from '/\_includes/code/quickstart/quickstart.query.rag.mdx'
 

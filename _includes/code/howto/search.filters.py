@@ -137,6 +137,38 @@ assert (token_list[0] in response.objects[0].properties["question"].lower() and 
 
 
 # ==========================================
+# ===== ContainsNoneFilter =====
+# ==========================================
+
+"""TODO[g-despot] Uncomment when 1.33 available in WCD
+# START ContainsNoneFilter
+from weaviate.classes.query import Filter
+
+jeopardy = client.collections.get("JeopardyQuestion")
+
+# highlight-start
+token_list = ["bird", "animal"]
+# highlight-end
+
+response = jeopardy.query.fetch_objects(
+    # highlight-start
+    # Find objects where the `question` property contains none of the strings in `token_list`
+    filters=Filter.by_property("question").contains_none(token_list),
+    # highlight-end
+    limit=3
+)
+
+for o in response.objects:
+    print(o.properties)
+# END ContainsNoneFilter
+
+# Test results
+assert response.objects[0].collection == "JeopardyQuestion"
+assert (token_list[0] not in response.objects[0].properties["question"].lower() and token_list[1] not in response.objects[0].properties["question"].lower())
+# End test
+"""
+
+# ==========================================
 # ===== Partial Match Filter =====
 # ==========================================
 
@@ -147,7 +179,7 @@ from weaviate.classes.query import Filter
 jeopardy = client.collections.use("JeopardyQuestion")
 response = jeopardy.query.fetch_objects(
     # highlight-start
-    filters=Filter.by_property("answer").like("*inter*"),
+    filters=Filter.by_property("answer").like("*ala*"),
     # highlight-end
     limit=3
 )
@@ -159,14 +191,14 @@ for o in response.objects:
 
 # Test results
 assert response.objects[0].collection == "JeopardyQuestion"
-assert "inter" in response.objects[0].properties["answer"].lower()
+assert "ala" in response.objects[0].properties["answer"].lower()
 # End test
 
 
 # ==========================================
 # ===== Multiple Filters with And =====
 # ==========================================
-
+"""TODO[g-despot] Uncomment when 1.33 available in WCD
 # MultipleFiltersAndPython
 from weaviate.classes.query import Filter
 
@@ -177,7 +209,8 @@ response = jeopardy.query.fetch_objects(
     #     | as OR
     filters=(
         Filter.by_property("round").equal("Double Jeopardy!") &
-        Filter.by_property("points").less_than(600)
+        Filter.by_property("points").less_than(600) &
+        Filter.not_(Filter.by_property("answer").equal("Yucatan"))
     ),
     # highlight-end
     limit=3
@@ -193,7 +226,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 assert response.objects[0].properties["round"] == "Double Jeopardy!"
 assert response.objects[0].properties["points"] < 600
 # End test
-
+"""
 
 # ==========================================
 # ===== Multiple Filters with Any of =====

@@ -11,6 +11,8 @@ client = weaviate.connect_to_local(
 
 
 def reset_user(user: str, client: WeaviateClient):
+    client.users.db.delete(user_id=user)
+    client.users.db.create(user_id=user)
     # Clean slate
     current_roles = client.users.db.get_assigned_roles(user_id=user)  # check if user exists
     for k in current_roles.keys():
@@ -22,7 +24,6 @@ def reset_user(user: str, client: WeaviateClient):
 # =================================================================
 
 # Clean slate
-client.users.db.create(user_id="custom-user")
 reset_user("custom-user", client=client)
 client.roles.delete("rw_role")  # delete if exists
 

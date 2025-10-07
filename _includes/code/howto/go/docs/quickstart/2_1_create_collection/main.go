@@ -2,7 +2,6 @@
 // Set these environment variables
 // WEAVIATE_HOSTNAME			your Weaviate instance hostname
 // WEAVIATE_API_KEY  		your Weaviate instance API key
-// COHERE_APIKEY   		your Cohere API key
 
 package main
 
@@ -28,6 +27,9 @@ func main() {
 		fmt.Println(err)
 	}
 
+	// END CreateCollection
+	client.Schema().ClassDeleter().WithClassName("Question").Do(context.Background())
+	// START CreateCollection
 	// highlight-start
 	// Define the collection
 	classObj := &models.Class{
@@ -35,7 +37,7 @@ func main() {
 		Vectorizer: "text2vec-weaviate",
 		ModuleConfig: map[string]interface{}{
 			"text2vec-weaviate": map[string]interface{}{},
-			"generative-cohere": map[string]interface{}{},
+			"generative-openai": map[string]interface{}{},
 		},
 	}
 

@@ -5,44 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.search-operators.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLHybridSearch"
     endMarker="END GraphQLHybridSearch"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-
-result = (
-    client.query
-    .get("Article", ["title", "summary"])
-    .with_additional(["score", "explainScore"])
-    .with_hybrid("Fisherman that catches salmon", alpha=0.5)
-    .do()
-  )
-
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title summary _additional { score explainScore }')
-  .withHybrid({
-    query: 'Fisherman that catches salmon',
-    alpha: 0.5,  // optional, defaults to 0.75
-  })
-  .do();
-console.log(JSON.stringify(response, null, 2));
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 
