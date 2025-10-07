@@ -8,12 +8,12 @@ image: og/docs/howto.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/search.filters.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.filters-v3.py';
-import JavaScriptCode from '!!raw-loader!/_includes/code/howto/search.filters.ts';
-import JavaScriptCodeLegacy from '!!raw-loader!/_includes/code/howto/search.filters-v2.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
-
+import PyCode from '!!raw-loader!/\_includes/code/howto/search.filters.py';
+import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.filters-v3.py';
+import JavaScriptCode from '!!raw-loader!/\_includes/code/howto/search.filters.ts';
+import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-filters_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchFiltersTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchFiltersTest.cs";
 
 Filters let you include, or exclude, particular objects from your result set based on provided conditions.<br/>
 For a list of filter operators, see the [API reference page](../api/graphql/filters.md#filter-structure).
@@ -31,8 +31,6 @@ Add a `filter` to your query, to limit the result set.
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -41,8 +39,6 @@ Add a `filter` to your query, to limit the result set.
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -51,7 +47,22 @@ Add a `filter` to your query, to limit the result set.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SingleFilter"
+      endMarker="// END SingleFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SingleFilter"
+      endMarker="// END SingleFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -83,8 +94,8 @@ To filter with two or more conditions, use `And`, `Or` and `Not` to define the r
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
 
-  The `v4` Python client API provides  filtering by `any_of`, or `all_of`, as well as using `&` or `|` operators.
-  <br/>
+The `v4` Python client API provides filtering by `any_of`, or `all_of`, as well as using `&` or `|` operators.
+<br/>
 
   <ul>
     <li>Use <code>any_of</code> or <code>all_of</code> for filtering by any, or all of a list of provided filters.</li>
@@ -93,27 +104,27 @@ To filter with two or more conditions, use `And`, `Or` and `Not` to define the r
 
   <br/>
 
-  #### Filter with `&` or `|`
+#### Filter with `&` or `|`
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCode}
     startMarker="# MultipleFiltersAndPython"
     endMarker="# END MultipleFiltersAndPython"
     language="python"
   />
 
-  #### Filter with `any of`
+#### Filter with `any of`
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCode}
     startMarker="# MultipleFiltersAnyOfPython"
     endMarker="# END MultipleFiltersAnyOfPython"
     language="python"
   />
 
-  #### Filter with `all of`
+#### Filter with `all of`
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={PyCode}
     startMarker="# MultipleFiltersAllOfPython"
     endMarker="# END MultipleFiltersAllOfPython"
@@ -121,42 +132,53 @@ To filter with two or more conditions, use `And`, `Or` and `Not` to define the r
   />
 
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
 
-  Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API.
-  <br/>
+Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API.
+<br/>
 
-  These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To pass an array (e.g. `fs`) as an argument, provide it like so: `Filters.and(...fs)` which will spread the array into its elements.
-  <br/>
+These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To pass an array (e.g. `fs`) as an argument, provide it like so: `Filters.and(...fs)` which will spread the array into its elements.
+<br/>
 
-  <FilteredTextBlock
+<FilteredTextBlock
     text={JavaScriptCode}
     startMarker="// searchMultipleFiltersAnd"
     endMarker="// END searchMultipleFiltersAnd"
     language="js"
   />
-  </TabItem>
-
-
-  <TabItem value="go" label="Go">
-    <FilteredTextBlock
+</TabItem>
+<TabItem value="go" label="Go">
+<FilteredTextBlock
       text={GoCode}
       startMarker="// START MultipleFiltersAnd"
       endMarker="// END MultipleFiltersAnd"
       language="gonew"
     />
-  </TabItem>
-
-  <TabItem value="graphql" label="GraphQL">
+</TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START MultipleFiltersAnd"
+      endMarker="// END MultipleFiltersAnd"
+      language="java"
+    />
+</TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultipleFiltersAnd"
+      endMarker="// END MultipleFiltersAnd"
+      language="csharp"
+    />
+  </TabItem>
+<TabItem value="graphql" label="GraphQL">
+<FilteredTextBlock
       text={PyCodeV3}
       startMarker="# MultipleFiltersAndGraphQL"
       endMarker="# END MultipleFiltersAndGraphQL"
       language="graphql"
     />
-  </TabItem>
+</TabItem>
 </Tabs>
 
 <details>
@@ -186,8 +208,6 @@ You can group and nest filters.
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -196,8 +216,6 @@ You can group and nest filters.
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -206,7 +224,22 @@ You can group and nest filters.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START MultipleFiltersNested"
+      endMarker="// END MultipleFiltersNested"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultipleFiltersNested"
+      endMarker="// END MultipleFiltersNested"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -258,8 +291,6 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -268,8 +299,6 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -278,7 +307,22 @@ Filters work with search operators like `nearXXX`, `hybrid`, and `bm25`.
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START NearTextSingleFilter"
+      endMarker="// END NearTextSingleFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NearTextSingleFilter"
+      endMarker="// END NearTextSingleFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -316,8 +360,6 @@ The `ContainsAny` operator works on text properties and take an array of values 
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -326,8 +368,6 @@ The `ContainsAny` operator works on text properties and take an array of values 
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -336,7 +376,22 @@ The `ContainsAny` operator works on text properties and take an array of values 
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ContainsAnyFilter"
+      endMarker="// END ContainsAnyFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ContainsAnyFilter"
+      endMarker="// END ContainsAnyFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -374,8 +429,6 @@ The `ContainsAll` operator works on text properties and take an array of values 
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -384,8 +437,6 @@ The `ContainsAll` operator works on text properties and take an array of values 
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -394,7 +445,22 @@ The `ContainsAll` operator works on text properties and take an array of values 
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ContainsAllFilter"
+      endMarker="// END ContainsAllFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ContainsAllFilter"
+      endMarker="// END ContainsAllFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -439,6 +505,22 @@ The `ContainsNone` operator works on text properties and take an array of values
 ```
 
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
 
 ```java
@@ -446,12 +528,12 @@ The `ContainsNone` operator works on text properties and take an array of values
 ```
 
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START ContainsNoneFilter"
       endMarker="// END ContainsNoneFilter"
-      language="gonew"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -518,8 +600,6 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -528,8 +608,6 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -538,7 +616,22 @@ If the object property is a `text`, or `text`-like data type such as object ID, 
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START LikeFilter"
+      endMarker="// END LikeFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START LikeFilter"
+      endMarker="// END LikeFilter"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -568,16 +661,16 @@ The output is like this:
     Additional information
   </summary>
 
-  The `*` wildcard operator matches zero or more characters. The `?` operator matches exactly one character.
-  <br/>
+The `*` wildcard operator matches zero or more characters. The `?` operator matches exactly one character.
+<br/>
 
-  Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters ([read more](../api/graphql/filters.md#wildcard-literal-matches-with-like)).
+Currently, the `Like` filter is not able to match wildcard characters (`?` and `*`) as literal characters ([read more](../api/graphql/filters.md#wildcard-literal-matches-with-like)).
 
 </details>
 
 ## Filter using cross-references
 
-import CrossReferencePerformanceNote from '/_includes/cross-reference-performance-note.mdx';
+import CrossReferencePerformanceNote from '/\_includes/cross-reference-performance-note.mdx';
 
 <CrossReferencePerformanceNote />
 
@@ -592,8 +685,6 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="python"
     />
   </TabItem>
-
-
   <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={JavaScriptCode}
@@ -602,9 +693,7 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="js"
     />
   </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START CrossReference"
@@ -612,7 +701,22 @@ To filter on properties from a cross-referenced object, add the collection name 
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CrossReference"
+      endMarker="// END CrossReference"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CrossReference"
+      endMarker="// END CrossReference"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -639,7 +743,7 @@ The output is like this:
 
 ## By geo-coordinates
 
-import GeoLimitations from '/_includes/geo-limitations.mdx';
+import GeoLimitations from '/\_includes/geo-limitations.mdx';
 
 <GeoLimitations/>
 
@@ -660,8 +764,6 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -670,7 +772,22 @@ import GeoLimitations from '/_includes/geo-limitations.mdx';
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START FilterbyGeolocation"
+      endMarker="// END FilterbyGeolocation"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterbyGeolocation"
+      endMarker="// END FilterbyGeolocation"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -710,6 +827,22 @@ To filter by a `DATE` datatype property, specify the date/time as an [RFC 3339](
       language="gonew"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START FilterByDateDatatype"
+      endMarker="// END FilterByDateDatatype"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByDateDatatype"
+      endMarker="// END FilterByDateDatatype"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Filter by metadata
@@ -737,7 +870,6 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
       language="js"
     />
   </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -746,7 +878,22 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START FilterById"
+      endMarker="// END FilterById"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterById"
+      endMarker="// END FilterById"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -759,7 +906,7 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 
 ### By object timestamp
 
-This filter requires the [property timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) to [be indexed](../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -778,16 +925,6 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="js"
     />
   </TabItem>
-
-   <TabItem value="js2" label="JS/TS Client ">
-    <FilteredTextBlock
-      text={JavaScriptCodeLegacy}
-      startMarker="// FilterByTimestamp"
-      endMarker="// END FilterByTimestamp"
-      language="js"
-    />
-  </TabItem>
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -796,7 +933,22 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START FilterByTimestamp"
+      endMarker="// END FilterByTimestamp"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByTimestamp"
+      endMarker="// END FilterByTimestamp"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -809,7 +961,7 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
 
 ### By object property length
 
-This filter requires the [property length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) to [be indexed](../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -828,8 +980,6 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
       language="js"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -838,7 +988,22 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
       language="gonew"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START FilterByPropertyLength"
+      endMarker="// END FilterByPropertyLength"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByPropertyLength"
+      endMarker="// END FilterByPropertyLength"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -851,7 +1016,7 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
 
 ### By object null state
 
-This filter requires the [property null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) to [be indexed](../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python">
@@ -878,6 +1043,22 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
       language="gonew"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START FilterByPropertyNullState"
+      endMarker="// END FilterByPropertyNullState"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START FilterByPropertyNullState"
+      endMarker="// END FilterByPropertyNullState"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -892,7 +1073,7 @@ This filter requires the [property null state](../config-refs/indexing/inverted-
 
 ### Tokenization
 
-import TokenizationNote from '/_includes/tokenization.mdx'
+import TokenizationNote from '/\_includes/tokenization.mdx'
 
 <TokenizationNote />
 
@@ -911,6 +1092,6 @@ For a list of filter operators, see [the reference page](../api/graphql/filters.
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

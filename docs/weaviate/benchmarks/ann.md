@@ -269,7 +269,7 @@ Each language has its own performance characteristics.
 You may get different results if you use a different language to send your queries.
 
 For maximum throughput, we recommend using the [Go](/weaviate/client-libraries/go.md) or
-[Java](/weaviate/client-libraries/java.md) client libraries.
+[Java](/weaviate/client-libraries/java/index.mdx) client libraries.
 
 The complete import and test scripts are available [here](https://github.com/weaviate/weaviate-benchmarking).
 
