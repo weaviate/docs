@@ -359,6 +359,37 @@ const newCollection = await client.collections.create({
 await client.collections.delete(collectionName)
 
 // ====================================
+// ===== TOKENIZATION METHODS =====
+// ====================================
+
+{
+// START PropertyTokenization
+const newCollection = await client.collections.create({
+  name: 'Article',
+  vectorizers: vectors.text2VecHuggingFace(),
+  properties: [
+    {
+      name: 'title',
+      dataType: dataType.TEXT,
+      // highlight-start
+      tokenization: tokenization.LOWERCASE
+      // highlight-end
+    },
+    {
+      name: 'body',
+      dataType: dataType.TEXT,
+      // highlight-start
+      tokenization: tokenization.WHITESPACE
+      // highlight-end
+    },
+  ],
+})
+// END PropertyTokenization
+
+// Delete the class to recreate it
+await client.collections.delete(collectionName)
+
+// ====================================
 // ======= TRIGRAM TOKENIZATION =======
 // ====================================
 
@@ -473,6 +504,26 @@ import { dataType } from 'weaviate-client';
 // START SetInvertedIndexParams
 await client.collections.create({
   name: 'Article',
+  // highlight-start
+  invertedIndex: {
+    bm25: {
+      b: 0.7,
+      k1: 1.25
+    },
+    indexNullState: true,
+    indexPropertyLength: true,
+    indexTimestamps: true
+  }
+  // highlight-end
+})
+// END SetInvertedIndexParams
+
+// Delete the class to recreate it
+await client.collections.delete(collectionName)
+
+// START EnableInvertedIndex
+await client.collections.create({
+  name: 'Article',
   properties: [
     {
       name: 'title',
@@ -498,28 +549,8 @@ await client.collections.create({
       // highlight-end
     },
   ],
-  // highlight-start
-  invertedIndex: {
-    bm25: {
-      b: 0.7,
-      k1: 1.25
-    },
-    indexNullState: true,
-    indexPropertyLength: true,
-    indexTimestamps: true
-  }
-  // highlight-end
 })
-// END SetInvertedIndexParams
-
-// Test
-assert.equal(result.vectorizer, 'text2vec-huggingface');
-assert.equal(
-  result.properties[0].moduleConfig['text2vec-huggingface'][
-    'vectorizePropertyName'
-  ],
-  false
-);
+// END EnableInvertedIndex
 
 // Delete the class to recreate it
 await client.collections.delete(collectionName)

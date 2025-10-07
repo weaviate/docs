@@ -13,10 +13,8 @@ import WCSWithoutAuthentication from '/_includes/code/wcs.without.authentication
 import WCSAuthenticationApiKey from '/_includes/code/wcs.authentication.api.key.mdx';
 import WCDAuthAndInferenceKeys from '/_includes/code/wcs.authentication.api.key.with.inference.key.mdx';
 
-import PyCodeV3 from '!!raw-loader!/_includes/code/connections/connect-python-v3.py';
 import PyCodeV4 from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 import TsCodeV3 from '!!raw-loader!/_includes/code/connections/connect-ts-v3.ts';
-import TsCodeV2 from '!!raw-loader!/_includes/code/connections/connect-ts-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/connections/connect.java';
 import ShellCode from '!!raw-loader!/_includes/code/connections/connect.sh';
 import GoCode from '!!raw-loader!/_includes/code/connections/connect.go';
@@ -34,7 +32,7 @@ If your instance runs on Kubernetes, see the `host` and `port` values in your He
 To connect to a local instance without authentication, follow these examples.
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START LocalNoAuth"
@@ -42,28 +40,12 @@ To connect to a local instance without authentication, follow these examples.
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-   <FilteredTextBlock
-     text={PyCodeV3}
-     startMarker="# START LocalNoAuth"
-     endMarker="# END LocalNoAuth"
-     language="pyv3"
-   />
-</TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START LocalNoAuth"
      endMarker="// END LocalNoAuth"
      language="js"
-   />
-</TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
-   <FilteredTextBlock
-     text={TsCodeV2}
-     startMarker="// START LocalNoAuth"
-     endMarker="// END LocalNoAuth"
-     language="tsv2"
    />
 </TabItem>
 <TabItem value="go" label="Go">
@@ -97,7 +79,7 @@ To connect to a local instance without authentication, follow these examples.
 To change the default URL or port number, follow these examples.
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START CustomURL"
@@ -105,28 +87,12 @@ To change the default URL or port number, follow these examples.
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-   <FilteredTextBlock
-     text={PyCodeV3}
-     startMarker="# START CustomURL"
-     endMarker="# END CustomURL"
-     language="pyv3"
-   />
-</TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START CustomURL"
      endMarker="// END CustomURL"
      language="js"
-   />
-</TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
-   <FilteredTextBlock
-     text={TsCodeV2}
-     startMarker="// START CustomURL"
-     endMarker="// END CustomURL"
-     language="tsv2"
    />
 </TabItem>
 <TabItem value="go" label="Go">
@@ -161,7 +127,7 @@ To change the default URL or port number, follow these examples.
 To authenticate with a Weaviate API key, follow these examples.
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START LocalAuth"
@@ -169,28 +135,12 @@ To authenticate with a Weaviate API key, follow these examples.
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-   <FilteredTextBlock
-     text={PyCodeV3}
-     startMarker="# START LocalAuth"
-     endMarker="# END LocalAuth"
-     language="pyv3"
-   />
-</TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START LocalAuth"
      endMarker="// END LocalAuth"
      language="js"
-   />
-</TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
-   <FilteredTextBlock
-     text={TsCodeV2}
-     startMarker="// START LocalAuth"
-     endMarker="// END LocalAuth"
-     language="tsv2"
    />
 </TabItem>
 <TabItem value="go" label="Go">
@@ -232,7 +182,7 @@ For additional client examples, see [OIDC authentication](/weaviate/connections/
 Integrations that use external APIs often need API keys. To add third party API keys, follow these examples:
 
 <Tabs groupId="languages">
-<TabItem value="py4" label="Python Client v4">
+<TabItem value="py4" label="Python">
    <FilteredTextBlock
      text={PyCodeV4}
      startMarker="# START LocalThirdPartyAPIKeys"
@@ -240,28 +190,12 @@ Integrations that use external APIs often need API keys. To add third party API 
      language="py"
    />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-   <FilteredTextBlock
-     text={PyCodeV3}
-     startMarker="# START LocalThirdPartyAPIKeys"
-     endMarker="# END LocalThirdPartyAPIKeys"
-     language="pyv3"
-   />
-</TabItem>
-<TabItem value="ts3" label="JS/TS Client v3">
+<TabItem value="ts3" label="JS/TS">
    <FilteredTextBlock
      text={TsCodeV3}
      startMarker="// START LocalThirdPartyAPIKeys"
      endMarker="// END LocalThirdPartyAPIKeys"
      language="js"
-   />
-</TabItem>
-<TabItem value="ts2" label="JS/TS Client v2">
-   <FilteredTextBlock
-     text={TsCodeV2}
-     startMarker="// START LocalThirdPartyAPIKeys"
-     endMarker="// END LocalThirdPartyAPIKeys"
-     language="tsv2"
    />
 </TabItem>
 <TabItem value="go" label="Go">

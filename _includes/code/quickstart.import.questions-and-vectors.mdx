@@ -4,13 +4,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
-import ByovAllPy3Code from '!!raw-loader!/_includes/code/quickstart.byov.all_v3.py';
 import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
-import ByovAllTsCodeLegacy from '!!raw-loader!/_includes/code/quickstart.byov.all.legacy.ts';
 
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ByovAllPyCode}
       startMarker="# ===== Import data ====="
@@ -18,32 +16,10 @@ import ByovAllTsCodeLegacy from '!!raw-loader!/_includes/code/quickstart.byov.al
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={ByovAllPy3Code}
-      startMarker="# ===== Import data ====="
-      endMarker="# ===== Query ====="
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
  <FilteredTextBlock
    text={ByovAllTsCode}
-   startMarker="// Import data"
-   endMarker="// Query using nearVector"
-   language="ts"
- />
-  </TabItem>
-  <TabItem value="js2" label="JS/TS Client v2">
-The import uses the `node-fetch` library.<br/><br/>
-
-```bash
-npm install node-fetch
-```
-
- <FilteredTextBlock
-   text={ByovAllTsCodeLegacy}
    startMarker="// Import data"
    endMarker="// Query using nearVector"
    language="ts"

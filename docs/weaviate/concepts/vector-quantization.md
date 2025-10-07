@@ -15,6 +15,10 @@ Weaviate currently offers four vector quantization techniques:
 - [Scalar quantization (SQ)](#scalar-quantization)
 - [Rotational quantization (RQ)](#rotational-quantization)
 
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
+
+<CompressionByDefault/>
+
 ## What is quantization?
 
 In general, quantization techniques reduce the memory footprint by representing numbers with lower precision numbers, like rounding a number to the nearest integer. In neural networks, quantization reduces the values of the weights or activations of the model stored as a 32-bit floating-point number (4 bytes) to a lower precision number, such as an 8-bit integer (1 byte).

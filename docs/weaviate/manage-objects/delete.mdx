@@ -12,7 +12,6 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.delete.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/howto/manage-data.delete-v3.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.delete.ts';
-import TSCodeLegacy from '!!raw-loader!/_includes/code/howto/manage-data.delete-v2.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.delete.java';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.delete_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
@@ -40,7 +39,7 @@ import RestObjectsCRUDClassnameNote from '/_includes/rest-objects-crud-classname
 To delete by id, specify the collection name and the object id.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DeleteObject"
@@ -48,16 +47,8 @@ To delete by id, specify the collection name and the object id.
       language="py"
     />
   </TabItem>
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START DeleteObject"
-      endMarker="# END DeleteObject"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeleteObject"
@@ -66,14 +57,6 @@ To delete by id, specify the collection name and the object id.
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START DeleteObject"
-      endMarker="// END DeleteObject"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -111,14 +94,6 @@ You can handle errors as follows:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// START DeleteError"
-      endMarker="// END DeleteError"
-      language="tsv2"
-    />
-  </TabItem>
 </Tabs> -->
 
 
@@ -127,7 +102,7 @@ You can handle errors as follows:
 To delete objects that match a set of criteria, specify the collection and a [`where` filter](../search/similarity.md).
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DeleteBatch"
@@ -136,16 +111,8 @@ To delete objects that match a set of criteria, specify the collection and a [`w
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START DeleteBatch"
-      endMarker="# END DeleteBatch"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeleteBatch"
@@ -154,14 +121,6 @@ To delete objects that match a set of criteria, specify the collection and a [`w
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START DeleteBatch"
-      endMarker="// END DeleteBatch"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -197,7 +156,7 @@ To delete objects that match a set of criteria, specify the collection and a [`w
 Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects by a set of criteria.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DeleteContains"
@@ -206,16 +165,8 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START DeleteContains"
-      endMarker="# END DeleteContains"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
         text={TSCode}
         startMarker="// START DeleteContain"
@@ -224,24 +175,6 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
       />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-
-```js
-await client.batch
-  .objectsBatchDeleter()
-  .withClassName('EphemeralObject')
-  .withWhere({
-    path: ['name'],
-    // highlight-start
-    operator: 'ContainsAny',
-    valueTextArray: ['asia', 'europe'],  // Note the array syntax
-    // highlight-end
-  })
-  // highlight-end
-  .do();
-```
-
-  </TabItem>
 
   <TabItem value="java" label="Java">
 
@@ -301,7 +234,7 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
 </details>
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DeleteByIDBatch"
@@ -310,16 +243,8 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START DeleteByIDBatch"
-      endMarker="# END DeleteByIDBatch"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
           text={TSCode}
           startMarker="// START DeleteByIDBatch"
@@ -328,24 +253,6 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
         />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-
-```js
-await client.batch
-  .objectsBatchDeleter()
-  .withClassName('EphemeralObject')
-  .withWhere({
-    path: ['id'],
-    // highlight-start
-    operator: 'ContainsAny',
-    valueTextArray: ['12c88739-7a4e-49fd-bf53-d6a829ba0261', '3022b8be-a6dd-4ef4-b213-821f65cee53b', '30de68c1-dd53-4bed-86ea-915f34faea63'],  // Note the array syntax
-    // highlight-end
-  })
-  // highlight-end
-  .do();
-```
-
-  </TabItem>
 
   <TabItem value="java" label="Java">
 
@@ -391,7 +298,7 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
 - Set `output` to `'verbose'` to see more details (ID and deletion status) for each deletion.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START DryRun"
@@ -400,16 +307,8 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
     />
   </TabItem>
 
-  <TabItem value="py3" label="Python Client v3">
-    <FilteredTextBlock
-      text={PyCodeV3}
-      startMarker="# START DryRun"
-      endMarker="# END DryRun"
-      language="pyv3"
-    />
-  </TabItem>
 
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DryRun"
@@ -418,14 +317,6 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
     />
   </TabItem>
 
-  <TabItem value="js2" label="JS/TS Client v2">
-    <FilteredTextBlock
-      text={TSCodeLegacy}
-      startMarker="// START DryRun"
-      endMarker="// END DryRun"
-      language="tsv2"
-    />
-  </TabItem>
 
   <TabItem value="java" label="Java">
     <FilteredTextBlock

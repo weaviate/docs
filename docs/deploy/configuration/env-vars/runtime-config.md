@@ -44,7 +44,7 @@ The following environment variables are used to control runtime configuration ma
 | Variable                          | Description                                                                  | Type                 |
 | :-------------------------------- | :--------------------------------------------------------------------------- | :------------------- |
 | `RUNTIME_OVERRIDES_ENABLED`       | If set, the runtime configuration management is enabled. Default: `false`    | `boolean`            |
-| `RUNTIME_OVERRIDES_PATH`          | Path of the configuration override file. Default: `"/config/overrides.yaml"` | `string - file path` |
+| `RUNTIME_OVERRIDES_PATH`          | Path of the configuration override file.                      | `string - file path` |
 | `RUNTIME_OVERRIDES_LOAD_INTERVAL` | Refresh rate for checking if there are configuration changes. Default: `2m`  | `string - duration`  |
 
 ## Runtime configurable environment variables
