@@ -18,10 +18,10 @@ import Link from "@docusaurus/Link";
 // Language configuration
 const LANGUAGE_CONFIG = {
   py: { label: "Python", icon: "/img/site/logo-py.svg" },
-  python: { label: "Python", icon: "/img/site/logo-py.svg" },
+  py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
   ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
+  ts_agents: { label: "JavaScript/TypeScript (Agents)", icon: "/img/site/logo-ts.svg" },
   go: { label: "Go", icon: "/img/site/logo-go.svg" },
-  golang: { label: "Go", icon: "/img/site/logo-go.svg" },
   java: { label: "Java", icon: "/img/site/logo-java.svg" },
   curl: { label: "Curl", icon: null },
   bash: { label: "Bash", icon: null },
