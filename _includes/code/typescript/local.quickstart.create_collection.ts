@@ -15,10 +15,6 @@ await client.collections.create({
     apiEndpoint: 'http://host.docker.internal:11434',   // Allow Weaviate from within a Docker container to contact your Ollama instance
     model: 'nomic-embed-text',                          // The model to use
   }),
-  generative: generative.ollama({                       // Configure the Ollama generative integration
-    apiEndpoint: 'http://host.docker.internal:11434',   // Allow Weaviate from within a Docker container to contact your Ollama instance
-    model: 'llama3.2',                                  // The model to use
-  }),
 });
 // highlight-end
 
