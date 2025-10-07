@@ -10,6 +10,8 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import OidcGroupPyCode from "!!raw-loader!/_includes/code/python/howto.configure.rbac.oidc.groups.py";
+import OidcGroupTSCode from "!!raw-loader!/_includes/code/typescript/howto.configure.rbac.oidc.groups.ts";
+
 
 
 :::info Added in `v1.33`
@@ -38,12 +40,13 @@ This example assigns the `testRole` and `viewer` roles to the `/admin-group`.
     language="py"
   />
   </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+    text={OidcGroupTSCode}
+    startMarker="// START AssignOidcGroupRoles"
+    endMarker="// END AssignOidcGroupRoles"
+    language="ts"
+  />
   </TabItem>
   <TabItem value="go" label="Go">
 
@@ -76,12 +79,13 @@ This example removes the `testRole` and `viewer` roles from the `/admin-group`.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={OidcGroupTSCode}
+      startMarker="// START RevokeOidcGroupRoles"
+      endMarker="// END RevokeOidcGroupRoles"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
 
@@ -112,12 +116,13 @@ Retrieve a list of all roles that have been assigned to a specific OIDC group.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={OidcGroupTSCode}
+      startMarker="// START GetOidcGroupRoles"
+      endMarker="// END GetOidcGroupRoles"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
 
@@ -157,12 +162,13 @@ This example shows how to get a list of all OIDC groups that Weaviate is aware o
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={OidcGroupTSCode}
+      startMarker="// START GetKnownOidcGroups"
+      endMarker="// END GetKnownOidcGroups"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
 
@@ -204,12 +210,13 @@ This example shows which groups have the `testRole` assigned to them.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={OidcGroupTSCode}
+      startMarker="// START GetGroupAssignments"
+      endMarker="// END GetGroupAssignments"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
 
