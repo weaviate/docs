@@ -354,12 +354,12 @@ const oidcViewerClient = await weaviate.connectToLocal({
 
 // START GetCurrentUserRolesViewer
 const myNewUser = await oidcViewerClient.users.getMyUser();
-const currentRolesList2 = myNewUser ? myNewUser.roles : [];
-const roleNames2 = currentRolesList2?.map(role => role.name);
-console.log(`Viewer user's current roles (${roleNames2?.length}): ${roleNames2}`);
+const currentViewerRolesList = myNewUser ? myNewUser.roles : [];
+const viewerRoleNames = currentViewerRolesList?.map(role => role.name);
+console.log(`Viewer user's current roles (${viewerRoleNames?.length}): ${viewerRoleNames}`);
 // END GetCurrentUserRolesViewer
-assert.strictEqual(roleNames2?.length, 1, 'Viewer should have 1 role');
-assert.strictEqual(roleNames2[0], "viewer", 'Viewer should have viewer role');
+assert.strictEqual(viewerRoleNames?.length, 1, 'Viewer should have 1 role');
+assert.strictEqual(viewerRoleNames[0], "viewer", 'Viewer should have viewer role');
 
 // Viewer should have limited permissions but can still see group names
 try {
