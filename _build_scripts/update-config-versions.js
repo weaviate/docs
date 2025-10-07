@@ -40,6 +40,7 @@ const getRepoVersion = async (repoName) => {
 
         const highestVersion = releases
             .filter(item => !item.prerelease) // remove pre-release items
+            .filter(item => !item.draft)      // remove draft releases
             .map(item => item.tag_name)       // keep only the tag_name
             .sort()                           // sort items alphabetically – ascending
             .pop()                            // the last item contains the highest version (what we need)

@@ -140,6 +140,7 @@ assert (token_list[0] in response.objects[0].properties["question"].lower() and 
 # ===== ContainsNoneFilter =====
 # ==========================================
 
+"""TODO[g-despot] Uncomment when 1.33 available in WCD
 # START ContainsNoneFilter
 from weaviate.classes.query import Filter
 
@@ -165,7 +166,7 @@ for o in response.objects:
 assert response.objects[0].collection == "JeopardyQuestion"
 assert (token_list[0] not in response.objects[0].properties["question"].lower() and token_list[1] not in response.objects[0].properties["question"].lower())
 # End test
-
+"""
 
 # ==========================================
 # ===== Partial Match Filter =====
@@ -197,7 +198,7 @@ assert "ala" in response.objects[0].properties["answer"].lower()
 # ==========================================
 # ===== Multiple Filters with And =====
 # ==========================================
-
+"""TODO[g-despot] Uncomment when 1.33 available in WCD
 # MultipleFiltersAndPython
 from weaviate.classes.query import Filter
 
@@ -225,7 +226,7 @@ assert response.objects[0].collection == "JeopardyQuestion"
 assert response.objects[0].properties["round"] == "Double Jeopardy!"
 assert response.objects[0].properties["points"] < 600
 # End test
-
+"""
 
 # ==========================================
 # ===== Multiple Filters with Any of =====

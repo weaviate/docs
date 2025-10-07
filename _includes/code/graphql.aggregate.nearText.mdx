@@ -5,55 +5,13 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/graphql.aggregate.simple.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
     startMarker="START GraphQLnearTextAggregate"
     endMarker="END GraphQLnearTextAggregate"
     language="py"
   />
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```python
-import weaviate
-
-client = weaviate.Client("http://localhost:8080")
-
-result = (
-  client.query
-  .aggregate("Article")
-  .with_meta_count()
-  .with_fields("wordCount {count maximum mean median minimum mode sum type} inPublication {pointingTo type}")
-  .with_near_text({"concepts": ["apple iphone"], "distance": 0.7})  # prior to v1.14 use "certainty" instead of "distance"
-  .with_object_limit(200)  # at least one of "objectLimit",
-  .do()                    # and/or "distance" must be set
-)                          # when using near media filters
-
-print(result)
-```
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .aggregate()
-  .withClassName('Article')
-  .withFields('meta { count } wordCount {count maximum mean median minimum mode sum type}')
-  .withNearText({ concepts: ['apple iphone'], distance: 0.7 })  // prior to v1.14 use "certainty" instead of "distance"
-  .withObjectLimit(100)  // at least one of "objectLimit", and/or "distance" must be set when using near media filters
-  .do();
-console.log(response);
-```
-
 </TabItem>
 <TabItem value="go" label="Go">
 

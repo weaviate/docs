@@ -10,9 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import ByovAllPyCode from '!!raw-loader!/_includes/code/quickstart.byov.all.py';
-import ByovAllPy3Code from '!!raw-loader!/_includes/code/quickstart.byov.all_v3.py';
 import ByovAllTsCode from '!!raw-loader!/_includes/code/quickstart.byov.all.ts';
-import ByovAllTsCodeLegacy from '!!raw-loader!/_includes/code/quickstart.byov.all.legacy.ts';
 import ByovAllShCode from '!!raw-loader!/_includes/code/quickstart.byov.all.sh';
 
 Weaviate is a vector database. [Vector databases](https://weaviate.io/blog/what-is-a-vector-database) store data objects and vectors that represent those objects. The vector embedding is also called an "embedding."
@@ -72,29 +70,17 @@ Weaviate is open source. You can [run Weaviate](/deploy/index.mdx) locally, in t
 To install a client library, use the installer for the client language:
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 The v4 client requires Weaviate 1.23.7 or higher.<br/><br/>
 
 ```bash
 pip install -U weaviate-client
 ```
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-```bash
-pip install "weaviate-client==3.*"
-```
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 
 ```bash
 npm install weaviate-client
-```
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-
-```bash
-npm install weaviate-ts-client
 ```
 </TabItem>
 </Tabs>
@@ -162,7 +148,7 @@ When you create a query vector, use the same vectorizer that you use to create t
 This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supplies a query vector. The query vector is an embedding of the query string, "biology".
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 <FilteredTextBlock
   text={ByovAllPyCode}
   startMarker="# ===== Query ====="
@@ -170,28 +156,12 @@ This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supp
   language="py"
 />
 </TabItem>
-<TabItem value="py3" label="Python Client v3">
-<FilteredTextBlock
-  text={ByovAllPy3Code}
-  startMarker="# ===== Query ====="
-  endMarker="# ===== Test import ====="
-  language="py"
-/>
-</TabItem>
-<TabItem value="js" label="JS/TS Client v3">
+<TabItem value="js" label="JS/TS">
 <FilteredTextBlock
   text={ByovAllTsCode}
   startMarker="// Query using nearVector"
   endMarker="END-OF-FILE"
   language="ts"
-/>
-</TabItem>
-<TabItem value="js2" label="JS/TS Client v2">
-<FilteredTextBlock
-  text={ByovAllTsCodeLegacy}
-  startMarker="// Query using nearVector"
-  endMarker="END-OF-FILE"
-  language="tsv2"
 />
 </TabItem>
 <TabItem value="curl" label="Curl">

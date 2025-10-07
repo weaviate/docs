@@ -308,7 +308,7 @@ for (let object of result.objects) {
   // START autocut
 
   const result = await jeopardy.query.hybrid('safety', {
-    fusionType: 'Ranked',
+    fusionType: 'RelativeScore',
     // highlight-start
     autoLimit: 1
     // highlight-end

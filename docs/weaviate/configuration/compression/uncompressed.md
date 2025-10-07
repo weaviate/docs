@@ -13,14 +13,18 @@ import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/configure/compre
 import TSCode from '!!raw-loader!/\_includes/code/howto/configure-rq/rq-compression-v3.ts';
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/rq-compression.java';
 
-You can opt-out of using vector quantization to compress your vector data. 
+import CompressionByDefault from '/\_includes/compression-by-default.mdx';
+
+<CompressionByDefault/>
+
+You can opt-out of using vector quantization to compress your vector data.
 
 ## Disable compression for new collection
 
 When creating the collection, you can choose not to use quantization through the collection definition:
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START Uncompressed"

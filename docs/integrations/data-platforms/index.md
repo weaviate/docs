@@ -12,6 +12,7 @@ Learn about how Weaviate integrates with these solutions:
 * [Astronomer](/integrations/data-platforms/astronomer/)
 * [Boomi](/integrations/data-platforms/boomi/)
 * [Box](/integrations/data-platforms/box/)
+* [Cardinal](/integrations/data-platforms/cardinal/)
 * [Confluent](/integrations/data-platforms/confluent)
 * [Context Data](/integrations/data-platforms/context-data/)
 * [Databricks](/integrations/data-platforms/databricks/)

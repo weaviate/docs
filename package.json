@@ -26,7 +26,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mdx-js/react": "^3.0.0",
-    "@scalar/docusaurus": "^0.7.2",
+    "@scalar/docusaurus": "^0.7.16",
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.1",
     "clsx": "^2.0.0",
     "docusaurus-plugin-sass": "^0.2.6",
@@ -37,6 +37,7 @@
     "remark-math": "^6.0.0",
     "sass": "^1.83.4",
     "weaviate-client": "3.9.0-rc.0"
+    "weaviate-agents": "^1.0.0",
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.1",

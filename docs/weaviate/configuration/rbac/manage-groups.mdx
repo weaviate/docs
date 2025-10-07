@@ -30,7 +30,7 @@ You can assign one or more Weaviate roles to an OIDC group. Any user belonging t
 This example assigns the `testRole` and `viewer` roles to the `/admin-group`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={OidcGroupPyCode}
     startMarker="# START AssignOidcGroupRoles"
@@ -38,7 +38,7 @@ This example assigns the `testRole` and `viewer` roles to the `/admin-group`.
     language="py"
   />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 ```typescript
 // TypeScript/JavaScript support coming soon
@@ -68,7 +68,7 @@ You can revoke one or more roles from a specific OIDC group.
 This example removes the `testRole` and `viewer` roles from the `/admin-group`.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={OidcGroupPyCode}
       startMarker="# START RevokeOidcGroupRoles"
@@ -76,7 +76,7 @@ This example removes the `testRole` and `viewer` roles from the `/admin-group`.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 ```typescript
 // TypeScript/JavaScript support coming soon
@@ -104,7 +104,7 @@ This example removes the `testRole` and `viewer` roles from the `/admin-group`.
 Retrieve a list of all roles that have been assigned to a specific OIDC group.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={OidcGroupPyCode}
       startMarker="# START GetOidcGroupRoles"
@@ -112,7 +112,7 @@ Retrieve a list of all roles that have been assigned to a specific OIDC group.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 ```typescript
 // TypeScript/JavaScript support coming soon
@@ -149,7 +149,7 @@ Roles assigned to '/admin-group': ['testRole', 'viewer']
 This example shows how to get a list of all OIDC groups that Weaviate is aware of. Weaviate learns about a group when a role is first assigned to it.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={OidcGroupPyCode}
       startMarker="# START GetKnownOidcGroups"
@@ -157,7 +157,7 @@ This example shows how to get a list of all OIDC groups that Weaviate is aware o
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 ```typescript
 // TypeScript/JavaScript support coming soon
@@ -196,7 +196,7 @@ Retrieve a list of all groups that have been assigned a specific role.
 This example shows which groups have the `testRole` assigned to them.
 
 <Tabs groupId="languages">
-  <TabItem value="py" label="Python Client v4">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={OidcGroupPyCode}
       startMarker="# START GetGroupAssignments"
@@ -204,7 +204,7 @@ This example shows which groups have the `testRole` assigned to them.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS Client v3">
+  <TabItem value="js" label="JS/TS">
 
 ```typescript
 // TypeScript/JavaScript support coming soon

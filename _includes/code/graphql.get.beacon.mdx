@@ -6,7 +6,7 @@ import PyCode from '!!raw-loader!/_includes/code/graphql.get.simple.py';
 import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.beacon.v3.py';
 
 <Tabs groupId="languages">
-<TabItem value="py" label="Python Client v4">
+<TabItem value="py" label="Python">
 
 <FilteredTextBlock
   text={PyCode}
@@ -14,35 +14,6 @@ import PyCodeV3 from '!!raw-loader!/_includes/code/graphql.get.beacon.v3.py';
   endMarker="# END GetCrossRefProp"
   language="py"
 />
-
-</TabItem>
-<TabItem value="py3" label="Python Client v3">
-
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# ===== PYTHON EXAMPLE ====="
-  endMarker="# ===== END PYTHON EXAMPLE ====="
-  language="pyv3"
-/>
-
-</TabItem>
-<TabItem value="js" label="JS/TS Client v2">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.graphql
-  .get()
-  .withClassName('Article')
-  .withFields('title url wordCount inPublication {... on Publication {name}}')
-  .do();
-console.log(response);
-```
 
 </TabItem>
 <TabItem value="go" label="Go">
@@ -167,7 +138,7 @@ echo '{
   text={PyCodeV3}
   startMarker="# ===== GRAPHQL EXAMPLE ====="
   endMarker="# ===== END GRAPHQL EXAMPLE ====="
-  language="pyv3"
+  language="graphql"
 />
 
 </TabItem>
