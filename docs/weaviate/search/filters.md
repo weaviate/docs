@@ -779,7 +779,7 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
     />
   </TabItem>
 
-   <TabItem value="js2" label="JS/TS Client ">
+   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={JavaScriptCodeLegacy}
       startMarker="// FilterByTimestamp"
