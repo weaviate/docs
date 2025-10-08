@@ -1,10 +1,10 @@
 // RAG
-import weaviate, { WeaviateClient } from 'weaviate-client';
+import weaviate, { WeaviateClient, generativeParameters } from 'weaviate-client';
 
 // Best practice: store your credentials in environment variables
 const weaviateUrl = process.env.WEAVIATE_URL as string;
 const weaviateApiKey = process.env.WEAVIATE_API_KEY as string;
-const cohereKey = process.env.COHERE_APIKEY as string;
+const openAiKey = process.env.OPENAI_API_KEY as string;
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
   weaviateUrl, // Replace with your Weaviate Cloud URL
@@ -12,7 +12,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
     authCredentials: new weaviate.ApiKey(weaviateApiKey), // Replace with your Weaviate Cloud API key
     // highlight-start
     headers: {
-      'X-Cohere-Api-Key': cohereKey, // Replace with your Cohere API key
+      'X-OpenAI-Api-Key': openAiKey, // Replace with your OpenAI API key
     },
     // highlight-end
   }
@@ -25,6 +25,7 @@ const result = await questions.generate.nearText(
   'biology',
   {
     groupedTask: 'Write a tweet with emojis about these facts.',
+    config: generativeParameters.openAI(),
   },
   {
     limit: 2,
@@ -32,7 +33,7 @@ const result = await questions.generate.nearText(
 );
 // highlight-end
 
-console.log(result.generated);
+console.log(result.generative);
 
 client.close(); // Close the client connection
 // END RAG

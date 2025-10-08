@@ -7,8 +7,8 @@ toolchain go1.24.3
 require (
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/stretchr/testify v1.10.0
-	github.com/weaviate/weaviate v1.32.5-0.20250822170836-4c48597f18c9
-	github.com/weaviate/weaviate-go-client/v5 v5.4.2-0.20250827170908-f2205767afe8
+	github.com/weaviate/weaviate v1.33.0
+	github.com/weaviate/weaviate-go-client/v5 v5.5.0
 )
 
 require (

@@ -30,11 +30,11 @@ public class CreateCollection {
     // START CreateCollection
     // highlight-start
     Map<String, Object> text2vecWeaviateSettings = new HashMap<>();
-    Map<String, Object> generativeCohereSettings = new HashMap<>();
+    Map<String, Object> generativeOpenAISettings = new HashMap<>();
 
     Map<String, Object> moduleConfig = new HashMap<>();
     moduleConfig.put("text2vec-weaviate", text2vecWeaviateSettings);
-    moduleConfig.put("generative-cohere", generativeCohereSettings);
+    moduleConfig.put("generative-openai", generativeOpenAISettings);
 
     // Create the collection "Question"
     WeaviateClass clazz = WeaviateClass.builder()
