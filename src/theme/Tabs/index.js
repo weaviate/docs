@@ -203,7 +203,7 @@ const CodeDropdownTabs = ({
     <div className={clsx(styles.codeDropdownContainer, className)}>
       <div className={styles.codeDropdownHeader}>
         <div className={styles.leftSection}>
-          <span className={styles.languageLabel}>Select Language</span>
+          <span className={styles.languageLabel}></span>
           <LanguageDropdown
             value={selectedValue} // Always show the globally selected value
             onChange={handleChange}
@@ -296,7 +296,7 @@ const CodeDropdownTabs = ({
               </strong>{" "}
               is not yet available here.
             </p>
-            <span>Please select an available language from the dropdown.</span>
+            <span>Please open a <Link href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}>GitHub issue</Link> so we can prioritize adding support for this language.</span>
           </div>
         )}
       </div>
