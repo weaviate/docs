@@ -728,16 +728,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/release-notes/index",
       },
-      items: [],
-    },
-    {
-      type: "category",
-      label: "Known issues",
-      link: {
-        type: "doc",
-        id: "weaviate/release-notes/known-issues",
-      },
-      items: [],
+      items: ["weaviate/release-notes/known-issues"],
     },
     {
       type: "category",

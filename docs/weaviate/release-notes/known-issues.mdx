@@ -5,33 +5,74 @@ image: og/docs/more-resources.jpg
 # tags: ['release notes', 'known issues']
 ---
 
+:::info Last Updated: October 2025
+:::
+
 # Known Issues
 
-This page documents significant known issues in Weaviate, their symptoms, and recommended resolutions. Use the filters below to find issues relevant to your version.
+This page documents significant known issues in Weaviate, their symptoms, and recommended resolutions. Use the table below to find issues relevant to your version.
 
 ## Quick Reference
 
 | Issue | Affected Versions | Resolution | Fixed In |
 |-------|-------------------|--------|----------|
+| [Multiple vectors with quantization](#multiple-vectors-with-quantization) | 1.25.0-1.33.0 | In progress | - |
+| [Empty Collections Panic](#empty-collections-panic) | 1.28 - 1.31 | In Progress | - |
 | [Database Restoration Blocked](#database-restoration-blocked) | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3 | Fixed | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
-| [Raft Snapshot Compatibility on Downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ | Fixed | 1.27.26 |
+| [Raft Snapshot Compatibility on Downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed | 1.27.26 |
 | [RAFT Bootstrap Timeout](#raft-bootstrap-timeout) | 1.25 - 1.28 | Workaround | - |
 | [RAFT Timeouts Under Heavy Load](#raft-timeouts-under-heavy-load) | 1.25 and later | Configuration | - |
 | [Invalid Port 99999999 Error](#invalid-port-99999999) | 1.25 - 1.28 | By Design | - |
 | [Context Deadline on Tenant Deletion](#context-deadline-tenant-deletion) | 1.26 - 1.28 | Fixed | 1.26.14, 1.27.11, 1.28.5 |
 | [Memory Pressure: Shard Init Failure](#memory-pressure-shard-init-failure) | All | Configuration | - |
-| [Empty Classes Panic](#empty-classes-panic) | 1.28 - 1.31 | In Progress | - |
 | [RAFT Snapshot Cannot Be Created](#raft-snapshot-cannot-be-created) | 1.25 - 1.28 | Workaround | - |
-| [Failed to Decode Incoming Command](#failed-to-decode-incoming-command) | 1.25 - 1.29 | Fixed | - |
+| [Failed to Decode Incoming Command](#failed-to-decode-incoming-command) | 1.25 - 1.29 | Configuration | - |
 
 ---
 
 ## Known Issues in Detail
 
+<!-- TEMPLATE FOR NEW ISSUES -->
+<!-- ## Known Issues in Detail
+
+### Issue name
+
+:::info Impact summary
+- **Affected versions:** MIN_VERSION - MAX_VERSION
+- **Resolution:** RESOLUTION_SUMMARY
+:::
+
+#### Symptoms
+#### Root Cause
+#### Resolution -->
+
+### Multiple Vectors with Quantization
+
+:::info Impact summary
+- **Affected versions:** 1.25.0-1.33.0
+- **Resolution:** Fix in progress
+:::
+
+#### Symptoms
+
+When a collection is using an HNSW index, has multiple vectors configured with quantization enabled, the vector index may not be created correctly.
+
+If the multiple vectors use the same embedding model or models with the same number of dimensions, search quality may be degraded. If the vectors use different models, insertion will fail, due to incompatible vector representations.
+
+#### Root Cause
+
+A bug in the handling of multiple vectors with quantization causes the same vector bucket to be used for all compressed vectors. This leads to incorrect indexing and search results.
+
+#### Resolution
+
+The Weaviate team is actively working on a fix. A patched version will be released as soon as possible.
+
 ### Database Restoration Blocked
 
-**Affected versions:** 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3
-**Resolution:** Fixed in 1.27.27, 1.28.16, 1.29.8, 1.30.4
+:::info Impact summary
+- **Affected versions:** 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3
+- **Resolution:** Fixed in 1.27.27, 1.28.16, 1.29.8, 1.30.4
+:::
 
 #### Symptoms
 - Nodes fail to start and remain indefinitely in initialization
@@ -55,8 +96,10 @@ A regression introduced in schema catch-up handling caused invalid RAFT commands
 
 ### Raft Snapshot Compatibility on Downgrade
 
-**Affected versions:** 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27)
-**Resolution:** Fixed in 1.27.26
+:::info Impact summary
+- **Affected versions:** 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier)
+- **Resolution:** Fixed in 1.27.26
+:::
 
 #### Symptoms
 After downgrading from 1.28+ to older 1.27.x versions:
@@ -77,8 +120,10 @@ When downgrading from 1.28.13+, 1.29.5+, or 1.30.2+:
 
 ### RAFT Bootstrap Timeout
 
-**Affected versions:** 1.25, 1.26, 1.27, 1.28
-**Resolution:** Workaround available
+:::info Impact summary
+- **Affected versions:** 1.25, 1.26, 1.27, 1.28
+- **Resolution:** Workaround available
+:::
 
 #### Symptoms
 - Nodes stuck in crash loop with consistent restart intervals
@@ -123,8 +168,10 @@ startupProbe:
 
 ### RAFT Timeouts Under Heavy Load
 
-**Affected versions:** 1.25 and later
-**Resolution:** Configuration available (default improved in 1.31+)
+:::info Impact summary
+- **Affected versions:** 1.25 and later
+- **Resolution:** Configuration available (default improved in 1.31+)
+:::
 
 #### Symptoms
 - Frequent leader elections and cluster instability
@@ -188,8 +235,10 @@ GOMAXPROCS=<value less than available CPUs>
 
 ### Invalid Port 99999999
 
-**Affected versions:** 1.25, 1.26, 1.27, 1.28
-**Resolution:** By design (not a bug)
+:::info Impact summary
+- **Affected versions:** 1.25, 1.26, 1.27, 1.28
+- **Resolution:** By design (not a bug)
+:::
 
 #### Symptoms
 Error message in logs:
@@ -228,8 +277,10 @@ The underlying cause is typically:
 
 ### Context Deadline on Tenant Deletion
 
-**Affected versions:** 1.26, 1.27, 1.28
-**Resolution:** Fixed in 1.26.14, 1.27.11, 1.28.5
+:::info Impact summary
+- **Affected versions:** 1.26, 1.27, 1.28
+- **Resolution:** Fixed in 1.26.14, 1.27.11, 1.28.5
+:::
 
 #### Symptoms
 Tenant deletion fails with timeout errors:
@@ -270,8 +321,10 @@ Upgrade to fixed version:
 
 ### Memory Pressure: Shard Init Failure
 
-**Affected versions:** All versions
-**Resolution:** Configuration required
+:::info Impact summary
+- **Affected versions:** All versions
+- **Resolution:** Configuration required
+:::
 
 #### Symptoms
 - Shard initialization failures during tenant activation
@@ -309,10 +362,12 @@ echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
 
 ---
 
-### Empty Classes Panic
+### Empty Collections Panic
 
-**Affected versions:** 1.28, 1.29, 1.30, 1.31
-**Resolution:** In progress
+:::info Impact summary
+- **Affected versions:** 1.28, 1.29, 1.30, 1.31
+- **Resolution:** In progress
+:::
 
 #### Symptoms
 Single-node clusters panic on startup with:
@@ -323,7 +378,7 @@ github.com/weaviate/weaviate/cluster/schema.(*schema).addClass
 ```
 
 #### Root Cause
-RAFT snapshots with no classes (i.e. no collections) cause a nil map assignment during restoration due to JSON unmarshaler `omitempty` behavior. This edge case occurs when snapshots are created before any classes are added.
+RAFT snapshots with no collections (previously called classes) cause a nil map assignment during restoration due to JSON unmarshaler `omitempty` behavior. This edge case occurs when snapshots are created before any collections are added.
 
 #### Resolution
 
@@ -362,8 +417,10 @@ This issue should not occur in normal operations. It typically happens only if a
 
 ### RAFT Snapshot Cannot Be Created
 
-**Affected versions:** 1.25, 1.26, 1.27, 1.28
-**Resolution:** Workaround available
+:::info Impact summary
+- **Affected versions:** 1.25, 1.26, 1.27, 1.28
+- **Resolution:** Workaround available
+:::
 
 #### Symptoms
 Node stuck during bootstrap with error messages indicating snapshot threshold reached but unable to create snapshot. This typically occurs only during initial cluster setup with rapid configuration changes.
@@ -398,8 +455,10 @@ This allows the node to apply all RAFT log entries before triggering snapshot cr
 
 ### Failed to Decode Incoming Command
 
-**Affected versions:** 1.25, 1.26, 1.27, 1.28, 1.29
-**Resolution:** Fixed
+:::info Impact summary
+- **Affected versions:** 1.25, 1.26, 1.27, 1.28, 1.29
+- **Resolution:** Configuration
+:::
 
 #### Symptoms
 Log entries showing:
@@ -456,6 +515,3 @@ When reporting issues, include:
 - Impact on your workload
 
 ---
-
-**Last Updated:** October 2025
-**Document Version:** 1.0
