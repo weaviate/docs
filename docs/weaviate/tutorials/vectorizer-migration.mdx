@@ -42,16 +42,27 @@ Sign up for a free Weaviate Cloud sandbox at [console.weaviate.cloud](https://co
 
 In a production environment, you might need to change your embedding model for several reasons. You may want to adopt a newer model for **performance improvements** like better search accuracy, or switch models due to the **deprecation** of your current model.
 
-This tutorial demonstrates two approaches for switching vectorizers:
+There are three basic steps when it comes to switching embedding models:
 
-- **Adding new vectors**
+1. **Baseline performance analysis**  
+   Select a representative subset of the data. Using the existing embedding model, calculate a baseline for query/search accuracy. This metric will serve as the benchmark for comparison.
+
+1. **New model evaluation**  
+   Generate new vector embeddings for the identical data sample using the updated model. Re-calculate the query/search accuracy using these new embeddings.
+
+1. **Decision & deployment**  
+   Compare the accuracy results from the new model against the established baseline. If the new embeddings demonstrate a clear improvement in performance, proceed with deploying the updated model system-wide.
+
+This tutorial demonstrates two approaches for switching vectorizers in you application:
+
+- [**Method A: Adding new vectors**](#method-a-add-new-vector)  
   This method allows multiple vectors per data object within a single collection. It's ideal for testing new models alongside existing ones and keeping all the data in one collection.
-- **Collection aliases**
+- [**Method B: Collection aliases**](#method-b-collection-aliases-migration)  
   This approach uses aliases to instantly switch between separate collections. It's perfect for a complete model replacement, minimizing risk and providing an immediate rollback option.
 
 ## Step 0: Create a demo collection (optional)
 
-If you want to follow this tutorial locally and execute the code snippets, you can check out the collapsible element below for steps on how to create a collection and import a demo dataset with precomputed vector embeddings. 
+If you want to follow this tutorial locally and execute the code snippets, you can check out the collapsible element below for steps on how to create a collection and import a demo dataset with precomputed vector embeddings.
 
 <details>
 <summary><b>Step 0:</b> Setup a collection and populate it with demo data</summary>
@@ -133,7 +144,7 @@ Add a new vector using Weaviate's built-in embedding service [Weaviate Embedding
   language="py"
 />
 
-import ModelProvider from '/\_includes/embedding-model-providers.mdx'
+import ModelProvider from "/_includes/embedding-model-providers.mdx";
 
 <details>
   <summary>Choose a different embedding model</summary>
@@ -255,20 +266,19 @@ Use **collection aliases** when:
 2. **Monitor quality**: Compare search results between old and new models
 3. **Plan for rollback**: Keep the old setup available until you're confident
 4. **Consider costs**: Different vectorizers have different pricing models
-5. **Document changes**: Track which model versions you're using
+5. **Document changes**: Track which model versions and configurations you're using
 
 ## Summary
 
 This tutorial demonstrated two powerful approaches for migrating vectorizers in Weaviate:
 
-- **Named Vectors**: Best for gradual migration and testing multiple models
-- **Collection Aliases**: Best for instant switching and blue-green deployments
-
-Both methods ensure zero downtime and provide rollback capabilities, making them suitable for production environments.
+- **Adding new vectors**: Creating new vector embeddings in an existing collection
+- **Collection aliases**: Best for instant switching between collections with different vectorizers
 
 ## Further resources
 
-- [Collection Aliases Reference](../manage-collections/collection-aliases.mdx)
+- [Manage collections: Collection aliases](../manage-collections/collection-aliases.mdx)
+- [Manage collection: Add new vectors](../manage-collections/vector-config.mdx#add-new-named-vectors)
 
 ## Questions and feedback
 
