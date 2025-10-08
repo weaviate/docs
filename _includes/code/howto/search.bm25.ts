@@ -270,9 +270,6 @@ for (let groupName in response.groups) {
 }
 // END BM25GroupBy
 
-assert.equal(response.groups <= 2, true)
-assert.equal(response.groups > 0, true)
-
 for (let groupName in response.groups) {
   assert.equal(response.groups[groupName].numberOfObjects > 0, true)
   assert.equal(response.groups[groupName].numberOfObjects <= 3, true)

@@ -37,9 +37,7 @@ response = reviews.generate.near_text(
     single_prompt="Translate this into German: {review_body}",
     grouped_task="Summarize these review",
     # highlight-start
-    generative_provider=GenerativeConfig.openai(
-        temperature=0.1,
-    ),
+    generative_provider=GenerativeConfig.openai(),
     # highlight-end
 )
 
