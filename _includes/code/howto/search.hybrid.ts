@@ -6,7 +6,7 @@ import assert from 'assert';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-import weaviate from 'weaviate-client';
+import weaviate, { Bm25Operator } from 'weaviate-client';
 
 const client = await weaviate.connectToWeaviateCloud(
   process.env.WEAVIATE_URL as string,
@@ -18,9 +18,9 @@ const client = await weaviate.connectToWeaviateCloud(
   }
 )
 
-// searchHybridBasic  // searchHybridWithScore  // searchHybridWithAlpha  // searchHybridWithFusionType  // searchHybridWithProperties  // searchHybridWithVector // VectorSimilarity // searchHybridWithFilter  // START limit  // START autocut // searchHybridWithPropertyWeighting
+// START HybridGroupBy // START VectorSimilarityThreshold // START HybridWithBM25OperatorOrWithMin // START HybridWithBM25OperatorAnd // searchHybridBasic  // searchHybridWithScore  // searchHybridWithAlpha  // searchHybridWithFusionType  // searchHybridWithProperties  // searchHybridWithVector // VectorSimilarity // searchHybridWithFilter  // START limit  // START autocut // searchHybridWithPropertyWeighting
 const jeopardy = client.collections.use('JeopardyQuestion');
-// END searchHybridBasic  // END searchHybridWithScore  // END searchHybridWithAlpha  // END searchHybridWithFusionType  // END searchHybridWithProperties  // END searchHybridWithVector  // END searchHybridWithFilter // END VectorSimilarity // END limit  // END autocut // END searchHybridWithPropertyWeighting
+// END HybridGroupBy // END VectorSimilarityThreshold // END HybridWithBM25OperatorOrWithMin // END HybridWithBM25OperatorAnd // END searchHybridBasic  // END searchHybridWithScore  // END searchHybridWithAlpha  // END searchHybridWithFusionType  // END searchHybridWithProperties  // END searchHybridWithVector  // END searchHybridWithFilter // END VectorSimilarity // END limit  // END autocut // END searchHybridWithPropertyWeighting
 
 
 
@@ -28,39 +28,39 @@ const jeopardy = client.collections.use('JeopardyQuestion');
 // ===== QUERY WITH TARGET VECTOR & Hybrid =====
 // ===============================================
 {
-  // NamedVectorHybrid
-  const myNVCollection = client.collections.use('WineReviewNV');
+// NamedVectorHybrid
+const myNVCollection = client.collections.use('WineReviewNV');
 
-  const result = await myNVCollection.query.hybrid('a sweet German white wine', {
-    // highlight-start
-    targetVector: 'title_country',
-    // highlight-end
-    limit: 2,
-  })
+const result = await myNVCollection.query.hybrid('a sweet German white wine', {
+  // highlight-start
+  targetVector: 'title_country',
+  // highlight-end
+  limit: 2,
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END NamedVectorHybrid
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END NamedVectorHybrid
 
-  // Tests
-  // assert.deepEqual(result.objects.length, 2);
+// Tests
+// assert.deepEqual(result.objects.length, 2);
 }
 
 // ==============================
 // ===== Basic Hybrid Query =====
 // ==============================
 {
-  // searchHybridBasic
+// searchHybridBasic
 
-  const result = await jeopardy.query.hybrid('food', {
-    limit: 2,
-  })
+const result = await jeopardy.query.hybrid('food', {
+  limit: 2,
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridBasic
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridBasic
 }
 // Tests
 // let questionKeys = new Set(Object.keys(result.objects[0].properties));
@@ -72,53 +72,53 @@ const jeopardy = client.collections.use('JeopardyQuestion');
 // ===== Hybrid Query with Score =====
 // ===================================
 {
-  // searchHybridWithScore
+// searchHybridWithScore
 
-  const result = await jeopardy.query.hybrid('food', {
-    limit: 2,
-    returnProperties: ['question', 'answer'],
-    // highlight-start
-    returnMetadata: ['score', 'explainScore']
-    // highlight-end
-  })
+const result = await jeopardy.query.hybrid('food', {
+  limit: 2,
+  returnProperties: ['question', 'answer'],
+  // highlight-start
+  returnMetadata: ['score', 'explainScore']
+  // highlight-end
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-    console.log(object.metadata?.score);
-    console.log(object.metadata?.explainScore);
-  }
-  // END searchHybridWithScore
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+  console.log(object.metadata?.score);
+  console.log(object.metadata?.explainScore);
+}
+// END searchHybridWithScore
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // const additionalKeys = new Set(Object.keys(result.objects[0].metadata));
-  // assert.deepEqual(additionalKeys, new Set(['score', 'explainScore']));
-  // assert.equal(result.objects.length, 3);
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// const additionalKeys = new Set(Object.keys(result.objects[0].metadata));
+// assert.deepEqual(additionalKeys, new Set(['score', 'explainScore']));
+// assert.equal(result.objects.length, 3);
 }
 
 // ===================================
 // ===== Hybrid Query with Alpha =====
 // ===================================
 {
-  // searchHybridWithAlpha
+// searchHybridWithAlpha
 
-  const result = await jeopardy.query.hybrid('food', {
-    // highlight-start
-    alpha: 0.25,
-    // highlight-end
-    limit: 3
-  })
+const result = await jeopardy.query.hybrid('food', {
+  // highlight-start
+  alpha: 0.25,
+  // highlight-end
+  limit: 3
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridWithAlpha
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridWithAlpha
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // assert.equal(result.objects.length, 3);
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// assert.equal(result.objects.length, 3);
 }
 
 
@@ -126,99 +126,99 @@ const jeopardy = client.collections.use('JeopardyQuestion');
 // ===== Hybrid Query with Fusion Methods =====
 // ============================================
 {
-  // searchHybridWithFusionType
+// searchHybridWithFusionType
 
-  const result = await jeopardy.query.hybrid('food', {
-    limit: 2,
-    // highlight-start
-    fusionType: 'RelativeScore', // can also be 'Ranked'
-    // highlight-end
-  })
+const result = await jeopardy.query.hybrid('food', {
+  limit: 2,
+  // highlight-start
+  fusionType: 'RelativeScore', // can also be 'Ranked'
+  // highlight-end
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridWithFusionType
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridWithFusionType
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // assert.equal(result.objects.length, 3);
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// assert.equal(result.objects.length, 3);
 }
 
 // ========================================
 // ===== Hybrid Query with Properties =====
 // ========================================
 {
-  // searchHybridWithProperties
+// searchHybridWithProperties
 
-  const result = await jeopardy.query.hybrid('food', {
-    // highlight-start
-    queryProperties: ['question'],
-    // highlight-end
-    alpha: 0.25,
-    limit: 3
-  })
+const result = await jeopardy.query.hybrid('food', {
+  // highlight-start
+  queryProperties: ['question'],
+  // highlight-end
+  alpha: 0.25,
+  limit: 3
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridWithProperties
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridWithProperties
 
-  // Test
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // assert.equal(result.objects.length, 3);
+// Test
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// assert.equal(result.objects.length, 3);
 }
 
 // ================================================
 // ===== Hybrid Query with Property Weighting =====
 // ================================================
 {
-  // searchHybridWithPropertyWeighting
+// searchHybridWithPropertyWeighting
 
-  const result = await jeopardy.query.hybrid('food', {
-    // highlight-start
-    queryProperties: ['question^2', 'answer'],
-    // highlight-end
-    alpha: 0.25,
-    limit: 3
-  })
+const result = await jeopardy.query.hybrid('food', {
+  // highlight-start
+  queryProperties: ['question^2', 'answer'],
+  // highlight-end
+  alpha: 0.25,
+  limit: 3
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridWithPropertyWeighting
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridWithPropertyWeighting
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // assert.equal(result.objects.length, 3);
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// assert.equal(result.objects.length, 3);
 }
 // ====================================
 // ===== Hybrid Query with Vector =====
 // ====================================
 {
-  // searchHybridWithVector
-  let queryVector = Array(1536).fill(0.12345) // Query vector [0.12345, 0.12345, 0.12345...]
+// searchHybridWithVector
+let queryVector = Array(1536).fill(0.12345) // Query vector [0.12345, 0.12345, 0.12345...]
 
-  const result = await jeopardy.query.hybrid('food', {
-    // highlight-start
-    vector: queryVector,
-    // highlight-end
-    alpha: 0.25,
-    limit: 3
-  })
+const result = await jeopardy.query.hybrid('food', {
+  // highlight-start
+  vector: queryVector,
+  // highlight-end
+  alpha: 0.25,
+  limit: 3
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridWithVector
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridWithVector
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // assert.equal(result.objects.length, 3);
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// assert.equal(result.objects.length, 3);
 }
 
 // =========================================
@@ -226,79 +226,79 @@ const jeopardy = client.collections.use('JeopardyQuestion');
 // =========================================
 
 {
-  // VectorSimilarity
+// VectorSimilarity
 
-  const result = await jeopardy.query.hybrid('California', {
-    maxVectorDistance: 0.4, // Maximum threshold for the vector search component
-    vector: {
-      query: 'large animal',
-      moveAway: { force: 0.5, concepts: ['mammal', 'terrestrial'] }
-    },
-    alpha: 0.75,
-    limit: 5,
+const result = await jeopardy.query.hybrid('California', {
+  maxVectorDistance: 0.4, // Maximum threshold for the vector search component
+  vector: {
+    query: 'large animal',
+    moveAway: { force: 0.5, concepts: ['mammal', 'terrestrial'] }
+  },
+  alpha: 0.75,
+  limit: 5,
 
-  })
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END VectorSimilarity
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END VectorSimilarity
 }
 // ====================================
 // ===== Hybrid Query with Filter =====
 // ====================================
 {
-  // searchHybridWithFilter
+// searchHybridWithFilter
 
-  const result = await jeopardy.query.hybrid('food', {
-    // highlight-start
-    filters: jeopardy.filter.byProperty('round').equal('Double Jeopardy!'),
-    // highlight-end
-    limit: 3,
-  })
+const result = await jeopardy.query.hybrid('food', {
+  // highlight-start
+  filters: jeopardy.filter.byProperty('round').equal('Double Jeopardy!'),
+  // highlight-end
+  limit: 3,
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END searchHybridWithFilter
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END searchHybridWithFilter
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer', 'round']));
-  // assert.equal(result.objects.length, 3);
-  // result.objects.map((question) => {
-  //   assert.deepEqual(question.properties.round, 'Double Jeopardy!');
-  //   console.log(question)
-  // })
-  // for (const question of result.objects) {
-  //   assert.deepEqual(question.round, 'Double Jeopardy!');
-  // }
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer', 'round']));
+// assert.equal(result.objects.length, 3);
+// result.objects.map((question) => {
+//   assert.deepEqual(question.properties.round, 'Double Jeopardy!');
+//   console.log(question)
+// })
+// for (const question of result.objects) {
+//   assert.deepEqual(question.round, 'Double Jeopardy!');
+// }
 }
 
 // ===================================
 // ===== Hybrid Query with limit =====
 // ===================================
 {
-  // START limit
+// START limit
 
-  const result = await jeopardy.query.hybrid('safety', {
-    // highlight-start
-    limit: 3,
-    offset: 1
-    // highlight-end
-  })
+const result = await jeopardy.query.hybrid('safety', {
+  // highlight-start
+  limit: 3,
+  offset: 1
+  // highlight-end
+})
 
-  for (let object of result.objects) {
-    console.log(JSON.stringify(object.properties, null, 2));
-  }
-  // END limit
+for (let object of result.objects) {
+  console.log(JSON.stringify(object.properties, null, 2));
+}
+// END limit
 
-  // Tests
-  // questionKeys = new Set(Object.keys(result.objects[0].properties));
-  // assert.deepEqual(questionKeys, new Set(['question', 'answer']));
-  // assert.deepEqual(Object.keys(result.objects[0].metadata), ['score']);
-  // assert.equal(result.objects.length, 3);
-  // assert(result.objects[0].properties['answer'].includes('OSHA'));
+// Tests
+// questionKeys = new Set(Object.keys(result.objects[0].properties));
+// assert.deepEqual(questionKeys, new Set(['question', 'answer']));
+// assert.deepEqual(Object.keys(result.objects[0].metadata), ['score']);
+// assert.equal(result.objects.length, 3);
+// assert(result.objects[0].properties['answer'].includes('OSHA'));
 }
 
 // =====================================
@@ -332,7 +332,6 @@ const jeopardy = client.collections.use('JeopardyQuestion');
 // =========================================
 {
 // START VectorSimilarityThreshold
-const jeopardy = client.collections.use("JeopardyQuestion")
 
 const response = await jeopardy.query.hybrid("California", {
   alpha: 0.75,
@@ -362,8 +361,6 @@ const groupByProperties = {
   // highlight-end
 }
 
-const jeopardy = client.collections.use('JeopardyQuestion');
-
 const response = await jeopardy.query.hybrid('California', {
   alpha: 0.75,
     // highlight-start
@@ -387,4 +384,52 @@ for (let groupName in response.groups) {
   assert.equal(response.groups[groupName].numberOfObjects <= 3, true)
 }
 }
+// ========================================
+// ===== Hybrid Query with BM25 Operator (Or) =====
+// ========================================
+{
+// START HybridWithBM25OperatorOrWithMin
+
+const response = await jeopardy.query.hybrid("Australian mammal cute", {
+    // highlight-start
+    bm25Operator: Bm25Operator.or({
+      minimumMatch: 2
+    }),
+    // highlight-end
+    limit: 3,
+})
+
+for (const object of response.objects) {
+    console.log(object.properties)
+}
+// END HybridWithBM25OperatorOrWithMin
+
+// Tests
+assert.equal(response.objects.length, 3)
+// End test
+}
+
+// ========================================
+// ===== Hybrid Query with BM25 Operator (And) =====
+// ========================================
+
+// START HybridWithBM25OperatorAnd
+
+const response = await jeopardy.query.hybrid(
+    "Australian mammal cute", {
+    // highlight-start
+    bm25Operator: Bm25Operator.and(), // Each result must include all tokens (e.g. "australian", "mammal", "cute")
+    // highlight-end
+    limit: 3,
+})
+
+for (const object of response.objects) {
+    console.log(object.properties)
+}
+// END HybridWithBM25OperatorAnd
+
+// Tests
+assert.equal(response.objects.length, 3)
+// End test
+
 client.close()
