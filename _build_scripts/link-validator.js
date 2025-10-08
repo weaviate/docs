@@ -35,6 +35,7 @@ const domainsToIgnore = [
     'https://dspy.ai/', // TODO[g-despot]: only temporarily added until we can fix the link
     'https://github.com', // TODO[g-despot]: started throwing Too Many Requests 429
     'https://instagram.com/',
+    'https://www.npmjs.com',
     'https://openai.com',
     'https://platform.openai.com',
     'https://www.researchgate.net',
