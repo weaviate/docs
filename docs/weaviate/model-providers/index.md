@@ -16,31 +16,29 @@ This enables an enhanced developed experience, such as the ability to:
 
 ### API-based
 
-| Model provider                           | Embeddings                                                                          | Generative AI                        | Others                             |
-| ---------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------- |
-| [Anthropic](./anthropic/index.md)        | -                                                                                   | [Text](./anthropic/generative.md)    | -                                  |
-| [Anyscale](./anyscale/index.md)          | -                                                                                   | [Text](./anyscale/generative.md)     | -                                  |
-| [AWS](./aws/index.md)                    | [Text](./aws/embeddings.md)                                                         | [Text](./aws/generative.md)          |
-| [Cohere](./cohere/index.md)              | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md)     | [Text](./cohere/generative.md)       | [Reranker](./cohere/reranker.md)   |
-| [Databricks](./databricks/index.md)      | [Text](./databricks/embeddings.md)                                                  | [Text](./databricks/generative.md)   | -                                  |
-| [FriendliAI](./friendliai/index.md)      | -                                                                                   | [Text](./friendliai/generative.md)   | -                                  |
-| [Google](./google/index.md)              | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md)     | [Text](./google/generative.md)       | -                                  |
-| [Hugging Face](./huggingface/index.md)   | [Text](./huggingface/embeddings.md)                                                 | -                                    | -                                  |
-| [Jina AI](./jinaai/index.md)             | [Text](./jinaai/embeddings.md), [Multimodal](./jinaai/embeddings-multimodal.md)     | -                                    | [Reranker](./jinaai/reranker.md)   |
-| [Mistral](./mistral/index.md)            | [Text](./mistral/embeddings.md)                                                     | [Text](./mistral/generative.md)      | -                                  |
-| [NVIDIA](./nvidia/index.md)              | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md)     | [Text](./nvidia/generative.md)       | [Reranker](./nvidia/reranker.md)   |
-| [OctoAI (Deprecated)](./octoai/index.md) | [Text](./octoai/embeddings.md)                                                      | [Text](./octoai/generative.md)       | -                                  |
-| [OpenAI](./openai/index.md)              | [Text](./openai/embeddings.md)                                                      | [Text](./openai/generative.md)       | -                                  |
-| [Azure OpenAI](./openai-azure/index.md)  | [Text](./openai-azure/embeddings.md)                                                | [Text](./openai-azure/generative.md) | -                                  |
-| [Voyage AI](./voyageai/index.md)         | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | -                                    | [Reranker](./voyageai/reranker.md) |
-| [Weaviate](./weaviate/index.md)          | [Text](./weaviate/embeddings.md)                                                    | -                                    | -                                  |
-| [xAI](./xai/index.md)                    | -                                                                                   | [Text](./xai/generative.md)          | -                                  |
+| Model provider | Embeddings | Generative AI | Others |
+| --- | --- | --- | --- |
+| [Anthropic](./anthropic/index.md) | - | [Text](./anthropic/generative.md) | - |
+| [Anyscale](./anyscale/index.md) | - | [Text](./anyscale/generative.md) | - |
+| [AWS](./aws/index.md) | [Text](./aws/embeddings.md) | [Text](./aws/generative.md) |
+| [Cohere](./cohere/index.md) | [Text](./cohere/embeddings.md), [Multimodal](./cohere/embeddings-multimodal.md) | [Text](./cohere/generative.md) | [Reranker](./cohere/reranker.md) |
+| [Databricks](./databricks/index.md) | [Text](./databricks/embeddings.md) | [Text](./databricks/generative.md) | - |
+| [FriendliAI](./friendliai/index.md) | - | [Text](./friendliai/generative.md) | - |
+| [Google](./google/index.md) | [Text](./google/embeddings.md), [Multimodal](./google/embeddings-multimodal.md) | [Text](./google/generative.md) | - |
+| [Hugging Face](./huggingface/index.md) | [Text](./huggingface/embeddings.md) | - | - |
+| [Jina AI](./jinaai/index.md) | [Text](./jinaai/embeddings.md), [Multimodal](./jinaai/embeddings-multimodal.md) | - | [Reranker](./jinaai/reranker.md) |
+| [Mistral](./mistral/index.md) | [Text](./mistral/embeddings.md) | [Text](./mistral/generative.md) | - |
+| [NVIDIA](./nvidia/index.md) | [Text](./nvidia/embeddings.md), [Multimodal](./nvidia/embeddings-multimodal.md) | [Text](./nvidia/generative.md) | [Reranker](./nvidia/reranker.md) |
+| [OctoAI (Deprecated)](./octoai/index.md) | [Text](./octoai/embeddings.md) | [Text](./octoai/generative.md) | - |
+| [OpenAI](./openai/index.md) | [Text](./openai/embeddings.md) | [Text](./openai/generative.md) | - |
+| [Azure OpenAI](./openai-azure/index.md) | [Text](./openai-azure/embeddings.md) | [Text](./openai-azure/generative.md) | - |
+| [Voyage AI](./voyageai/index.md) | [Text](./voyageai/embeddings.md), [Multimodal](./voyageai/embeddings-multimodal.md) | - | [Reranker](./voyageai/reranker.md) |
+| [Weaviate](./weaviate/index.md) | [Text](./weaviate/embeddings.md) | - | - |
+| [xAI](./xai/index.md) | - | [Text](./xai/generative.md) | - |
 
-You can enable all API-based integrations at once by [by setting the `ENABLE_API_BASED_MODULES` environment variable to `true`](../configuration/modules.md#enable-all-api-based-modules).
+#### Enable all API-based modules
 
-This make all API-based model integrations available for use, such as those for Anthropic, Cohere, OpenAI, and so on. These modules are lightweight, so enabling them all will not significantly increase resource usage.
-
-Read more about [enabling all API-based modules](../configuration/modules.md#enable-all-api-based-modules).
+All API-based model integrations are available by default starting with Weaviate `v1.33`. For older versions, you can enable them all by setting the [`ENABLE_API_BASED_MODULES` environment variable](/deploy/configuration/env-vars#ENABLE_API_BASED_MODULES) to `true`. 
 
 ### Locally hosted
 
