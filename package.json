@@ -37,7 +37,7 @@
     "remark-math": "^6.0.0",
     "sass": "^1.83.4",
     "weaviate-agents": "^1.0.0",
-    "weaviate-client": "^3.8.0"
+    "weaviate-client": "^3.9.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.8.1",

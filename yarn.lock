@@ -15294,10 +15294,10 @@ weaviate-agents@^1.0.0:
   resolved "https://registry.yarnpkg.com/weaviate-agents/-/weaviate-agents-1.0.0.tgz#ebb4e277ee46dbec612ebb689613e8c06ee65b22"
   integrity sha512-nBjZtJMA4iJw3W950Lx9Zmb37Rp1Quam5BjWitIAtFG90/pL4Hylo7qHYRIu4f4DOXEonBIYbDIwa89VumJfdg==
 
-weaviate-client@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/weaviate-client/-/weaviate-client-3.8.0.tgz#294216b7142aa235d87bd3e7f583b816fe760fc6"
-  integrity sha512-8yWNY3OIAh1H/W+414o17em/3CSDc5f4/sMjCrFksVppczHC1mB1f0fCFosg9fpQGegLT+Ll6un82sTGYxFhqw==
+weaviate-client@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/weaviate-client/-/weaviate-client-3.9.0.tgz#e597c596b40cf5bf4be78ca19d543d338d6a8535"
+  integrity sha512-7qwg7YONAaT4zWnohLrFdzky+rZegVe76J+Tky/+7tuyvjFpdKgSrdqI/wPDh8aji0ZGZrL4DdGwGfFnZ+uV4w==
   dependencies:
     abort-controller-x "^0.4.3"
     graphql "^16.11.0"
