@@ -1,5 +1,5 @@
 // src/theme/Tabs/index.js
-// This overrides the default Docusaurus Tabs component
+// This overrides the default Docusaurus Tabs component with remote code execution
 
 import React, {
   useState,
@@ -17,15 +17,70 @@ import Link from "@docusaurus/Link";
 
 // Language configuration
 const LANGUAGE_CONFIG = {
-  py: { label: "Python", icon: "/img/site/logo-py.svg" },
-  py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
-  ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
-  ts_agents: { label: "JavaScript/TypeScript (Agents)", icon: "/img/site/logo-ts.svg" },
-  go: { label: "Go", icon: "/img/site/logo-go.svg" },
-  java: { label: "Java", icon: "/img/site/logo-java.svg" },
-  curl: { label: "Curl", icon: null },
-  bash: { label: "Bash", icon: null },
-  shell: { label: "Shell", icon: null },
+  py: {
+    label: "Python",
+    icon: "/img/site/logo-py.svg",
+    runtime: "python3",
+    fileExtension: ".py",
+  },
+  py_agents: {
+    label: "Python (Agents)",
+    icon: "/img/site/logo-py.svg",
+    runtime: "python3",
+    fileExtension: ".py",
+  },
+  ts: {
+    label: "JavaScript/TypeScript",
+    icon: "/img/site/logo-ts.svg",
+    runtime: "node",
+    fileExtension: ".ts",
+  },
+  ts_agents: {
+    label: "JavaScript/TypeScript (Agents)",
+    icon: "/img/site/logo-ts.svg",
+    runtime: "node",
+    fileExtension: ".ts",
+  },
+  go: {
+    label: "Go",
+    icon: "/img/site/logo-go.svg",
+    runtime: "go",
+    fileExtension: ".go",
+  },
+  java: {
+    label: "Java",
+    icon: "/img/site/logo-java.svg",
+    runtime: "java",
+    fileExtension: ".java",
+  },
+  curl: {
+    label: "Curl",
+    icon: null,
+    runtime: "bash",
+    fileExtension: ".sh",
+  },
+  bash: {
+    label: "Bash",
+    icon: null,
+    runtime: "bash",
+    fileExtension: ".sh",
+  },
+  shell: {
+    label: "Shell",
+    icon: null,
+    runtime: "bash",
+    fileExtension: ".sh",
+  },
+};
+
+// Configuration for the remote execution service
+const EXECUTION_CONFIG = {
+  // Replace with your actual GCP Cloud Run service URL
+  API_ENDPOINT:
+    
+    "https://code-executor-YOUR_PROJECT.run.app",
+  MAX_EXECUTION_TIME: 30000, // 30 seconds
+  SUPPORTED_LANGUAGES: ["py", "ts", "go", "java", "curl", "bash", "shell"],
 };
 
 // Context for sharing selected language across all code dropdowns
@@ -75,11 +130,7 @@ const LanguageDropdown = ({ value, onChange, options }) => {
             icon: null,
           };
           return (
-            <option
-              key={opt.value}
-              value={opt.value}
-              disabled={opt.disabled} // Handle disabled state for unavailable options
-            >
+            <option key={opt.value} value={opt.value} disabled={opt.disabled}>
               {optConfig.label}
             </option>
           );
@@ -105,7 +156,181 @@ const LanguageDropdown = ({ value, onChange, options }) => {
   );
 };
 
-// Code dropdown tabs component
+// Extract code from child components
+const extractCodeFromChild = (child) => {
+  if (!isValidElement(child)) return null;
+
+  // Check if it's a FilteredTextBlock
+  if (child.props && child.props.text) {
+    // Extract the filtered text based on markers
+    const {
+      text,
+      startMarker,
+      endMarker,
+      includeStartMarker = "false",
+    } = child.props;
+    const lines = text.split("\n");
+    let withinMarkers = false;
+    const universalStartMarker = "START-ANY";
+    const universalEndMarker = "END-ANY";
+
+    const filteredLines = lines.filter((line) => {
+      if (line.includes(startMarker) || line.includes(universalStartMarker)) {
+        withinMarkers = true;
+        return includeStartMarker === "true";
+      }
+      if (line.includes(endMarker) || line.includes(universalEndMarker)) {
+        withinMarkers = false;
+        return false;
+      }
+      return withinMarkers;
+    });
+
+    return filteredLines.join("\n");
+  }
+
+  // Check for code blocks in markdown
+  if (child.props && child.props.children) {
+    const content = child.props.children;
+    if (typeof content === "string") {
+      // Look for code blocks
+      const codeBlockMatch = content.match(/```[\w]*\n([\s\S]*?)```/);
+      if (codeBlockMatch) {
+        return codeBlockMatch[1];
+      }
+      return content;
+    }
+
+    // Recursively search for code in nested children
+    return Children.toArray(content)
+      .map((c) => extractCodeFromChild(c))
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  return null;
+};
+
+// Remote code execution component
+const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
+  const [output, setOutput] = useState(null);
+  const [error, setError] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const executeCode = async () => {
+    if (!code) {
+      setError("No code to execute");
+      return;
+    }
+
+    setIsRunning(true);
+    setOutput(null);
+    setError(null);
+
+    const langConfig = LANGUAGE_CONFIG[language];
+    if (!langConfig) {
+      setError("Language not supported for execution");
+      setIsRunning(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${EXECUTION_CONFIG.API_ENDPOINT}/execute`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: code,
+          language: langConfig.runtime,
+          fileExtension: langConfig.fileExtension,
+          timeout: EXECUTION_CONFIG.MAX_EXECUTION_TIME / 1000,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setOutput(result.output);
+        if (result.error) {
+          setError(result.error);
+        }
+      } else {
+        setError(result.error || "Execution failed");
+      }
+    } catch (err) {
+      setError(`Failed to connect to execution service: ${err.message}`);
+    } finally {
+      setIsRunning(false);
+      if (onExecute) {
+        onExecute(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isExecuting) {
+      executeCode();
+    }
+  }, [isExecuting]);
+
+  if (!output && !error && !isRunning) {
+    return null;
+  }
+
+  return (
+    <div className={styles.executionOutput}>
+      {isRunning && (
+        <div className={styles.executionLoading}>
+          <div className={styles.spinner}></div>
+          <span>Executing code...</span>
+        </div>
+      )}
+
+      {output && (
+        <div className={styles.outputContainer}>
+          <div className={styles.outputHeader}>
+            <svg
+              className={styles.outputIcon}
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Output
+          </div>
+          <pre className={styles.outputContent}>{output}</pre>
+        </div>
+      )}
+
+      {error && (
+        <div className={styles.errorContainer}>
+          <div className={styles.errorHeader}>
+            <svg
+              className={styles.errorIcon}
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Error
+          </div>
+          <pre className={styles.errorContent}>{error}</pre>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Code dropdown tabs component with execution
 const CodeDropdownTabs = ({
   children,
   className,
@@ -114,7 +339,6 @@ const CodeDropdownTabs = ({
   values,
   ...props
 }) => {
-  // Get tab values and labels from children
   const tabValues =
     values ||
     Children.toArray(children)
@@ -124,7 +348,6 @@ const CodeDropdownTabs = ({
         label: child.props.label || child.props.value,
       }));
 
-  // State for selected tab
   const [selectedValue, setSelectedValue] = useState(() => {
     if (typeof window !== "undefined") {
       const savedValue = localStorage.getItem(
@@ -141,7 +364,8 @@ const CodeDropdownTabs = ({
     return defaultValue || tabValues[0]?.value;
   });
 
-  // Listen for global language changes
+  const [isExecuting, setIsExecuting] = useState(false);
+
   useEffect(() => {
     const handleLanguageChange = (event) => {
       const newLang = event.detail;
@@ -153,9 +377,9 @@ const CodeDropdownTabs = ({
       window.removeEventListener("codeLanguageChange", handleLanguageChange);
   }, []);
 
-  // Handle language change
   const handleChange = (newValue) => {
     setSelectedValue(newValue);
+    setIsExecuting(false); // Reset execution state when changing language
     if (typeof window !== "undefined") {
       if (groupId) {
         localStorage.setItem(`docusaurus.tab.${groupId}`, newValue);
@@ -167,11 +391,14 @@ const CodeDropdownTabs = ({
     }
   };
 
+  const handleExecute = () => {
+    setIsExecuting(true);
+  };
+
   const isLanguageAvailable = tabValues.some(
     (tab) => tab.value === selectedValue
   );
 
-  // If the selected language isn't available, add it to the dropdown list as a disabled option
   let dropdownOptions = tabValues;
   if (!isLanguageAvailable) {
     dropdownOptions = [
@@ -190,6 +417,13 @@ const CodeDropdownTabs = ({
       )
     : null;
 
+  const codeToExecute = selectedChild
+    ? extractCodeFromChild(selectedChild)
+    : null;
+  const canExecute =
+    EXECUTION_CONFIG.SUPPORTED_LANGUAGES.includes(selectedValue) &&
+    codeToExecute;
+
   const docSystem = DOC_SYSTEMS[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const params = new URLSearchParams({
@@ -205,10 +439,37 @@ const CodeDropdownTabs = ({
         <div className={styles.leftSection}>
           <span className={styles.languageLabel}></span>
           <LanguageDropdown
-            value={selectedValue} // Always show the globally selected value
+            value={selectedValue}
             onChange={handleChange}
-            options={dropdownOptions} // Pass the potentially modified list of options
+            options={dropdownOptions}
           />
+
+          {canExecute && (
+            <button
+              className={styles.playButton}
+              onClick={handleExecute}
+              disabled={isExecuting}
+              title="Run this code"
+            >
+              {isExecuting ? (
+                <svg className={styles.playButtonSpinner} viewBox="0 0 24 24">
+                  <circle
+                    className={styles.spinnerPath}
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    fill="none"
+                    strokeWidth="3"
+                  />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                </svg>
+              )}
+              <span>Run</span>
+            </button>
+          )}
         </div>
 
         {docSystem?.baseUrl && (
@@ -286,7 +547,17 @@ const CodeDropdownTabs = ({
       </div>
       <div className={styles.codeContent}>
         {isLanguageAvailable && selectedChild ? (
-          selectedChild
+          <>
+            {selectedChild}
+            {canExecute && (
+              <CodeExecutor
+                code={codeToExecute}
+                language={selectedValue}
+                onExecute={setIsExecuting}
+                isExecuting={isExecuting}
+              />
+            )}
+          </>
         ) : (
           <div className={styles.comingSoon}>
             <p>
@@ -296,7 +567,15 @@ const CodeDropdownTabs = ({
               </strong>{" "}
               is not yet available here.
             </p>
-            <span>Please open a <Link href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}>GitHub issue</Link> so we can prioritize adding support for this language.</span>
+            <span>
+              Please open a{" "}
+              <Link
+                href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}
+              >
+                GitHub issue
+              </Link>{" "}
+              so we can prioritize adding support for this language.
+            </span>
           </div>
         )}
       </div>
@@ -306,13 +585,11 @@ const CodeDropdownTabs = ({
 
 // Main Tabs component wrapper
 export default function Tabs({ className, ...props }) {
-  // Check if this should be rendered as a code dropdown
   const isCodeDropdown = className && className.includes("code");
 
   if (isCodeDropdown) {
     return <CodeDropdownTabs className={className} {...props} />;
   }
 
-  // Otherwise, use the original Tabs component
   return <OriginalTabs className={className} {...props} />;
 }

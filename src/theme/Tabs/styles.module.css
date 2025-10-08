@@ -8,7 +8,7 @@
 .codeDropdownHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Space between left and right sections */
+  justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.25rem;
   border-bottom: 2px solid var(--ifm-color-emphasis-300);
@@ -30,7 +30,6 @@
   gap: 1rem;
 }
 
-/* MODIFIED SECTION */
 .rightSection {
   display: flex;
   align-items: center;
@@ -38,10 +37,214 @@
   margin-left: auto;
   position: relative;
   z-index: 10;
-  flex-wrap: wrap; /* Add this */
-  justify-content: flex-end; /* Add this */
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
+/* Play Button Styles */
+.playButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: var(--site-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 205, 55, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  &:active::before {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+.playButtonSpinner {
+  animation: rotate 1s linear infinite;
+  width: 16px;
+  height: 16px;
+}
+
+.spinnerPath {
+  stroke: white;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+/* Code Execution Output Styles */
+.executionOutput {
+  margin-top: 1rem;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.executionLoading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--ifm-color-emphasis-100);
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--ifm-color-emphasis-300);
+    border-top-color: var(--ifm-color-primary);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  span {
+    font-size: 14px;
+    color: var(--ifm-color-emphasis-700);
+  }
+}
+
+.outputContainer,
+.errorContainer {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid;
+  animation: fadeIn 0.3s ease;
+}
+
+.outputContainer {
+  border-color: var(--ifm-color-success-dark);
+  background-color: var(--ifm-color-success-lightest);
+}
+
+.errorContainer {
+  border-color: var(--ifm-color-danger-dark);
+  background-color: var(--ifm-color-danger-lightest);
+}
+
+.outputHeader,
+.errorHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.outputHeader {
+  background-color: var(--ifm-color-success-light);
+  color: var(--ifm-color-success-darkest);
+}
+
+.errorHeader {
+  background-color: var(--ifm-color-danger-light);
+  color: var(--ifm-color-danger-darkest);
+}
+
+.outputIcon,
+.errorIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.outputIcon {
+  color: var(--ifm-color-success-darkest);
+}
+
+.errorIcon {
+  color: var(--ifm-color-danger-darkest);
+}
+
+.outputContent,
+.errorContent {
+  margin: 0;
+  padding: 1rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: auto;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.outputContent {
+  color: var(--ifm-color-success-darkest);
+}
+
+.errorContent {
+  color: var(--ifm-color-danger-darkest);
+}
+
+/* Existing styles continue below */
 .apiDocsLink {
   display: inline-flex;
   align-items: center;
@@ -202,41 +405,56 @@
 }
 
 /* Dark mode support */
-html[data-theme="dark"] .languageDropdown {
-  background-color: var(--ifm-background-surface-color);
-  border-color: var(--ifm-color-emphasis-300);
-  color: var(--ifm-font-color-base);
-}
+html[data-theme="dark"] {
+  .languageDropdown {
+    background-color: var(--ifm-background-surface-color);
+    border-color: var(--ifm-color-emphasis-300);
+    color: var(--ifm-font-color-base);
+  }
 
-html[data-theme="dark"] .languageDropdown:hover {
-  border-color: var(--ifm-color-primary);
-}
+  .languageDropdown:hover {
+    border-color: var(--ifm-color-primary);
+  }
 
-html[data-theme="dark"] .codeDropdownHeader {
-  border-bottom-color: var(--ifm-color-emphasis-300);
-}
+  .codeDropdownHeader {
+    border-bottom-color: var(--ifm-color-emphasis-300);
+  }
 
-html[data-theme="dark"] .languageLabel {
-  color: var(--ifm-color-emphasis-500);
-}
+  .languageLabel {
+    color: var(--ifm-color-emphasis-500);
+  }
 
-html[data-theme="dark"] .versionLabel {
-  color: var(--ifm-color-emphasis-500);
-}
+  .versionLabel {
+    color: var(--ifm-color-emphasis-500);
+  }
 
-html[data-theme="dark"] .dropdownArrow {
-  color: var(--ifm-color-emphasis-500);
-}
+  .dropdownArrow {
+    color: var(--ifm-color-emphasis-500);
+  }
 
-html[data-theme="dark"] .apiDocsLink {
-  background-color: var(--ifm-color-emphasis-100);
-  border-color: var(--ifm-color-emphasis-400);
-  color: var(--ifm-color-emphasis-700);
-}
+  .apiDocsLink {
+    background-color: var(--ifm-color-emphasis-100);
+    border-color: var(--ifm-color-emphasis-400);
+    color: var(--ifm-color-emphasis-700);
+  }
 
-html[data-theme="dark"] .apiDocsLink:hover {
-  background-color: var(--ifm-color-emphasis-200);
-  border-color: var(--ifm-color-primary);
+  .apiDocsLink:hover {
+    background-color: var(--ifm-color-emphasis-200);
+    border-color: var(--ifm-color-primary);
+  }
+
+  .outputContainer {
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  .errorContainer {
+    background-color: rgba(214, 100, 100, 0.1);
+  }
+
+  .outputContent,
+  .errorContent {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* Responsive design */
@@ -249,8 +467,7 @@ html[data-theme="dark"] .apiDocsLink:hover {
 
   .leftSection {
     width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: space-between;
   }
 
   .rightSection {
@@ -271,11 +488,16 @@ html[data-theme="dark"] .apiDocsLink:hover {
   }
 
   .languageSelector {
-    width: 100%;
+    flex: 1;
   }
 
   .languageDropdown {
+    min-width: unset;
     width: 100%;
+  }
+
+  .playButton {
+    margin-left: auto;
   }
 }
 
@@ -295,49 +517,8 @@ html[data-theme="dark"] .apiDocsLink:hover {
   }
 }
 
-/* Optional: Style for inline code dropdowns */
-.codeDropdownContainer.inline {
-  margin: 0.5rem 0;
-}
-
-.codeDropdownContainer.inline .codeDropdownHeader {
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-/* Optional: Compact mode */
-.codeDropdownContainer.compact .codeDropdownHeader {
-  border-bottom: none;
-  padding-bottom: 0;
-  margin-bottom: 0.5rem;
-}
-
-.codeDropdownContainer.compact .languageLabel {
-  display: none;
-}
-
-/* Loading state (optional) */
-.codeContent.loading {
-  position: relative;
-  min-height: 100px;
-}
-
-.codeContent.loading::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--ifm-color-emphasis-300);
-  border-top-color: var(--ifm-color-primary);
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-
 @keyframes spin {
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
