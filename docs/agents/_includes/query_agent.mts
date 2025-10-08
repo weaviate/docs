@@ -237,7 +237,7 @@ const headers = {
 };
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {
-    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_ADMIN_KEY as string),
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
     headers
 });
 // END InstantiateQueryAgent

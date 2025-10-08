@@ -294,12 +294,19 @@ for (const object of response.objects) {
 // ===== Filters using Id =====
 // ===================================================
 {
-// filterById
-const targetId = '00037775-1432-35e5-bc59-443baaef7d80'
+let targetId = await jeopardy.data.insert({
+properties: {
+  question: 'This is a temporary object to demonstrate deletion',
+  answer: 'EphemeralObject',
+  round: 'Jeopardy!',
+  points: 100,
+}
+})  
 
-result = await article.query.fetchObjects({
+// filterById
+let result = await jeopardy.query.fetchObjects({
   // highlight-start
-  filters: article.filter.byId().equal(targetId),
+  filters: jeopardy.filter.byId().equal(targetId),
   // highlight-end
 })
 
@@ -319,7 +326,7 @@ assert.equal(targetId, result.objects[0].uuid);
 // FilterByTimestamp
 const creationTime = '2020-01-01T00:00:00+00:00'
 
-result = await myArticleCollection.query.fetchObjects({
+let result = await myArticleCollection.query.fetchObjects({
   // highlight-start
   filters: jeopardy.filter.byCreationTime().greaterOrEqual(creationTime),
   // highlight-end
@@ -340,7 +347,7 @@ for (const article of result.objects) {
 // ===================================================
 // ===== FilterByDateDatatype =====
 // ===================================================
-
+await client.collections.delete("CollectionWithDate")
 const collectionWithDate = await client.collections.create({
   name: "CollectionWithDate",
   properties: [
