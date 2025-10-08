@@ -3,7 +3,7 @@ title: Switching vectorizers
 description: Learn two approaches to migrate from one vectorizer to another in Weaviate without service interruption
 sidebar_position: 4
 image: og/docs/tutorials.jpg
-# tags: ['migration', 'vectorizers', 'embeddings', 'named-vectors', 'aliases']
+# tags: ['migration', 'vectorizers', 'embeddings', 'aliases']
 ---
 
 import Tabs from "@theme/Tabs";
@@ -129,7 +129,7 @@ Verify that searches work with your original vectors:
 
 ## Method A: Add new vector
 
-Named vectors allow you to have multiple vector representations in the same collection. Once a new vector is created and all the objects in the database are vectorized, you can use the new vector instead of the original one.
+Weaviate allows you to have multiple vector representations in the same collection. Once a new vector is created and all the objects in the database are vectorized, you can use the new vector instead of the original one.
 
 ![Add new vector to collection](./_includes/add_new_vector.png)
 
