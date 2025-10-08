@@ -175,7 +175,7 @@ Now you can query using the new vector:
 
 ## Method B: Collection aliases migration
 
-Collection aliases allow instant switching between collections with different vectorizers.
+Collection aliases allow instant switching between collections with different vectorizers. Instead of using a collection name in your application, you use the collection alias instead. One you create a new collection with a different embedding mode, you can update the alias to point to the new collection. Now, all of the queries using the alias will be performed with the new vector embeddings.
 
 ![Switch vectorizers with collection aliases](./_includes/switch-vectorizer-collection-alias.png)
 
