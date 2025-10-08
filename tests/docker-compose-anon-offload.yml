@@ -19,7 +19,6 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ASYNC_INDEXING: 'true'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,offload-s3'
-      ENABLE_API_BASED_MODULES: 'true'
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       OFFLOAD_S3_BUCKET_AUTO_CREATE: 'true'
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY:-}
