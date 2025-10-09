@@ -76,11 +76,14 @@ const LANGUAGE_CONFIG = {
 // Configuration for the remote execution service
 const EXECUTION_CONFIG = {
   // Replace with your actual GCP Cloud Run service URL
-  API_ENDPOINT:
-    
-    "https://code-executor-YOUR_PROJECT.run.app",
+  API_ENDPOINT: "http://localhost:8088", //local dev
+  //"https://code-executor-YOUR_PROJECT.run.app",/gcp cloud run
+  API_KEY: "local-dev-api-key-123",
+  //API_KEY: process.env.REACT_APP_CODE_EXECUTOR_API_KEY || null,
+  USE_GOOGLE_AUTH: false,
   MAX_EXECUTION_TIME: 30000, // 30 seconds
-  SUPPORTED_LANGUAGES: ["py", "ts", "go", "java", "curl", "bash", "shell"],
+  SUPPORTED_LANGUAGES: ["py", "ts", "go", "java"],
+  DEVELOPMENT_MODE: true,
 };
 
 // Context for sharing selected language across all code dropdowns
@@ -211,11 +214,30 @@ const extractCodeFromChild = (child) => {
   return null;
 };
 
+// Get Google Auth Token (for authenticated Cloud Run)
+const getGoogleAuthToken = async () => {
+  // This requires the user to be logged in with Google
+  // You can use Firebase Auth or Google Identity Services
+  if (typeof window !== "undefined" && window.gapi && window.gapi.auth2) {
+    try {
+      const auth2 = window.gapi.auth2.getAuthInstance();
+      const user = auth2.currentUser.get();
+      const authResponse = user.getAuthResponse();
+      return authResponse.id_token;
+    } catch (err) {
+      console.error("Failed to get Google auth token:", err);
+      return null;
+    }
+  }
+  return null;
+};
+
 // Remote code execution component
 const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const executeCode = async () => {
     if (!code) {
@@ -226,6 +248,7 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
     setIsRunning(true);
     setOutput(null);
     setError(null);
+    setAuthError(false);
 
     const langConfig = LANGUAGE_CONFIG[language];
     if (!langConfig) {
@@ -235,11 +258,31 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
     }
 
     try {
+      // Prepare headers
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      // Add authentication based on configuration
+      if (EXECUTION_CONFIG.USE_GOOGLE_AUTH) {
+        const token = await getGoogleAuthToken();
+        if (!token) {
+          setAuthError(true);
+          setError(
+            "Authentication required. Please sign in with Google to run code."
+          );
+          setIsRunning(false);
+          return;
+        }
+        headers["Authorization"] = `Bearer ${token}`;
+      } else if (EXECUTION_CONFIG.API_KEY) {
+        console.log("Using API Key for authentication");
+        headers["X-API-Key"] = EXECUTION_CONFIG.API_KEY;
+      }
+
       const response = await fetch(`${EXECUTION_CONFIG.API_ENDPOINT}/execute`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify({
           code: code,
           language: langConfig.runtime,
@@ -247,6 +290,13 @@ const CodeExecutor = ({ code, language, onExecute, isExecuting }) => {
           timeout: EXECUTION_CONFIG.MAX_EXECUTION_TIME / 1000,
         }),
       });
+
+      if (response.status === 401 || response.status === 403) {
+        setAuthError(true);
+        setError("Authentication failed. Please check your credentials.");
+        setIsRunning(false);
+        return;
+      }
 
       const result = await response.json();
 

@@ -4,34 +4,65 @@ description: "A blank docs page for testing purposes"
 image: og/docs/home.jpg
 ---
 
-A blank docs page for testing purposes.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/python/quickstart.is_ready.py';
+import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.is_ready.ts';
+import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/1_is_ready/main.go';
+import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/IsReady.java';
 
-## Heading 1
+## Check if Weaviate is Ready
 
-### Heading 1.1
+First, let's verify that your Weaviate instance is ready to accept requests.
+Click the **Run** button to execute the code with your configured Weaviate instance.
 
-### Heading 1.2
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
 
-## Heading 2
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# InstantiationExample"
+  endMarker="# END InstantiationExample"
+  language="py"
+  title="quickstart_check_readiness.py"
+  executable={true}
+/>
 
-### Heading 2.1
+</TabItem>
 
-### Heading 2.2
+<TabItem value="ts" label="JavaScript/TypeScript">
 
-## Heading 3
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// InstantiationExample"
+  endMarker="// END InstantiationExample"
+  language="ts"
+  title="quickstart_check_readiness.ts"
+  executable={true}
+/>
 
-### Heading 3.1
+</TabItem>
 
-### Heading 3.2
+<TabItem value="go" label="Go">
+<FilteredTextBlock
+  text={GoCode}
+  startMarker="// START InstantiationExample"
+  endMarker="// END InstantiationExample"
+  language="goraw"
+  title="quickstart/1_check_readiness/main.go"
+  executable={true}
+/>
+</TabItem>
 
-## Heading 4
-
-### Heading 4.1
-
-### Heading 4.2
-
-## Heading 5
-
-### Heading 5.1
-
-### Heading 5.2
+<TabItem value="java" label="Java">
+<FilteredTextBlock
+  text={JavaCode}
+  startMarker="// START InstantiationExample"
+  endMarker="// END InstantiationExample"
+  language="javaraw"
+  title="quickstart/IsReady.java"
+  executable={true}
+/>
+</TabItem>
+</Tabs>
