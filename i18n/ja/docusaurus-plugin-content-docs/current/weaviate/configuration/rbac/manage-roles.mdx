@@ -1,0 +1,772 @@
+---
+title: ロールの管理
+sidebar_label: Manage roles
+sidebar_position: 1
+image: og/docs/configuration.jpg
+# tags: ['rbac', 'roles', 'configuration', 'authorization']
+---
+
+import Link from '@docusaurus/Link';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.permissions.py';
+import TSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.permissions.ts';
+import RolePyCode from '!!raw-loader!/_includes/code/python/howto.configure.rbac.roles.py';
+import RoleTSCode from '!!raw-loader!/_includes/code/typescript/howto.configure.rbac.roles.ts';
+
+:::info Added in `v1.29`
+ロールベースアクセス制御 (RBAC) は、Weaviate ではバージョン `v1.29` から一般公開されています。
+:::
+
+Weaviate における RBAC では、ロールを定義し、そのロールに権限を割り当てることができます。ユーザーをロールに割り当てることで、そのロールに付与された権限を継承できます。
+
+このページでは、Weaviate クライアントライブラリを使用して **ロールと権限を管理** する方法の例を紹介します。
+
+import ConfigureRbac from '/_includes/configuration/configure-rbac.mdx';
+
+<ConfigureRbac />
+
+## ロール管理の前提条件 <i class="fa-solid fa-key"></i> {#requirements}
+
+ロール管理には、以下の方法で取得できる適切な `role` リソース権限が必要です。
+
+- [RBAC を構成](/deploy/configuration/configuring-rbac.md) する際に定義された `root` ロール
+- [`Role Management`](#role-management-permissions) 権限が付与されたロール
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AdminClient"
+      endMarker="# END AdminClient"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+      text={RoleTSCode}
+      startMarker="// START AdminClient"
+      endMarker="// END AdminClient"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+## ロール管理 <i class="fa-solid fa-user-shield"></i> {#role-management}
+
+### 権限付きの新しいロールの作成
+
+次のリソースタイプに対する権限をロールに割り当てることができます。
+
+1. [**Role Management**](#role-management-permissions)
+
+1. [**User Management**](#user-management-permissions)
+
+1. [**Collections**](#collections-permissions)（コレクション定義のみ。データオブジェクトの権限は別途設定）
+
+1. [**Tenants**](#tenants-permissions)
+
+1. [**Data Objects**](#data-permissions)
+
+1. [**Backup**](#backups-permissions)
+
+1. [**Cluster Data Access**](#clusters-permissions)
+
+1. [**Node Data Access**](#nodes-permissions)
+
+#### `Role Management` 権限を持つロールの作成 {#role-management-permissions}
+
+この例では、`testRole` というロールを作成し、以下の権限を付与します。
+
+- `testRole*` で始まるすべてのロールを作成、読み取り、更新、削除できます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddManageRolesPermission"
+      endMarker="# END AddManageRolesPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddManageRolesPermission"
+          endMarker="// END AddManageRolesPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+
+
+#### `User Management` パーミッションを持つロールの作成 {#user-management-permissions}
+
+この例では、`testRole` というロールを作成し、次の権限を付与します:
+
+- `testUser*` で始まるすべてのユーザーの作成、読み取り、更新、および削除。
+- `testUser*` で始まるユーザーへのロールの付与および取り消し。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddManageUsersPermission"
+      endMarker="# END AddManageUsersPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Collections` パーミッションを持つロールの作成 {#collections-permissions}
+
+この例では、`testRole` というロールを作成し、次の権限を付与します:
+
+- `TargetCollection` で始まるすべてのコレクションの作成、読み取り、更新、および削除。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddCollectionsPermission"
+      endMarker="# END AddCollectionsPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddCollectionsPermission"
+          endMarker="// END AddCollectionsPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Tenant` パーミッションを持つロールの作成 {#tenants-permissions}
+
+この例では、`testRole` というロールを作成し、次の権限を付与します:
+
+- `TargetCollection` で始まるコレクション内で、`TargetTenant` で始まるテナントの作成および削除。
+- `TargetCollection` で始まるコレクション内で、`TargetTenant` で始まるテナントのメタデータ（テナント名やステータスなど）の読み取り。
+- `TargetCollection` で始まるコレクション内で、`TargetTenant` で始まるテナントのステータスの更新。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddTenantPermission"
+      endMarker="# END AddTenantPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddTenantPermission"
+          endMarker="// END AddTenantPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Data Objects` パーミッションを持つロールの作成 {#data-permissions}
+
+この例では、`testRole` というロールを作成し、次の権限を付与します:
+
+- `TargetCollection` で始まるコレクションのデータの作成、読み取り、更新、および削除。
+- マルチテナンシーが有効で `tenant` フィルターが設定されている場合、この権限は `TargetTenant` で始まるテナントにのみ適用されます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddDataObjectPermission"
+      endMarker="# END AddDataObjectPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddDataObjectPermission"
+          endMarker="// END AddDataObjectPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Backups` 権限を持つロールの作成 {#backups-permissions}
+
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
+
+- `TargetCollection` で始まるコレクションのバックアップを管理します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddBackupPermission"
+      endMarker="# END AddBackupPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddBackupPermission"
+          endMarker="// END AddBackupPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Cluster Data Access` 権限を持つロールの作成 {#clusters-permissions}
+
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
+
+- クラスター メタデータを読み取ります。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddClusterPermission"
+      endMarker="# END AddClusterPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddClusterPermission"
+          endMarker="// END AddClusterPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Node Data Access` 権限を持つロールの作成 {#nodes-permissions}
+
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
+
+- `TargetCollection` で始まるコレクションについて、指定した詳細レベルでノード メタデータを読み取ります。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddNodesPermission"
+      endMarker="# END AddNodesPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddNodesPermission"
+          endMarker="// END AddNodesPermission"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+#### `Collection Aliases` 権限を持つロールの作成 {#aliases-permissions}
+
+この例では、 `testRole` というロールを作成し、以下の権限を付与します:
+
+- `TargetAlias` で始まるコレクション エイリアスの作成、読み取り、更新、削除を行います。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddAliasPermission"
+      endMarker="# END AddAliasPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+
+#### `Replications` パーミッションを持つロールの作成 {#replications-permissions}
+
+この例では、 `testRole` という名前のロールを作成し、以下のパーミッションを付与します。
+
+- `TargetCollection` で始まるコレクションおよび `TargetShard` で始まるシャードに対するレプリカ移動操作の作成・読み取り・更新・削除
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddReplicationsPermission"
+      endMarker="# END AddReplicationsPermission"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+
+```typescript
+// TS/JS support coming soon
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### 追加パーミッションの付与
+
+追加パーミッションはいつでもロールに付与できます。対象のロールは既に存在している必要があります。
+
+この例では、ロール `testRole` に以下の追加パーミッションを付与します。
+
+- `TargetCollection` で始まるコレクションに **新しいデータを作成** する
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AddRoles"
+      endMarker="# END AddRoles"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START AddRoles"
+          endMarker="// END AddRoles"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### ロールからのパーミッション削除
+
+パーミッションはいつでもロールから取り消すことができます。すべてのパーミッションを削除すると、そのロール自体も削除されます。
+
+この例では、ロール `testRole` から以下のパーミッションを削除します。
+
+- `TargetCollection` で始まるコレクションのデータを読み取る
+- `TargetCollection` で始まるコレクションを作成および削除する
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START RemovePermissions"
+      endMarker="# END RemovePermissions"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+        text={RoleTSCode}
+        startMarker="// START RemovePermissions"
+        endMarker="// END RemovePermissions"
+        language="ts"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### ロールの存在確認
+
+ロール `testRole` が存在するかどうかを確認します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START CheckRoleExists"
+      endMarker="# END CheckRoleExists"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START CheckRoleExists"
+          endMarker="// END CheckRoleExists"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+
+
+### ロールの確認
+
+ロールに割り当てられている権限を表示します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START InspectRole"
+      endMarker="# END InspectRole"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START InspectRole"
+          endMarker="// END InspectRole"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### すべてのロールの一覧
+
+システム内のすべてのロールとそれらの権限を表示します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START ListAllRoles"
+      endMarker="# END ListAllRoles"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+    <FilteredTextBlock
+          text={RoleTSCode}
+          startMarker="// START ListAllRoles"
+          endMarker="// END ListAllRoles"
+          language="ts"
+        />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### ロールを持つユーザーの一覧
+
+`testRole` を持つすべてのユーザーを一覧表示します。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START AssignedUsers"
+      endMarker="# END AssignedUsers"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+        text={RoleTSCode}
+        startMarker="// START AssignedUsers"
+        endMarker="// END AssignedUsers"
+        language="ts"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+### ロールの削除
+
+ロールを削除すると、システムからそのロールが削除され、該当するユーザーから関連する権限が取り消されます。
+
+<Tabs groupId="languages">
+  <TabItem value="py" label="Python Client v4">
+    <FilteredTextBlock
+      text={RolePyCode}
+      startMarker="# START DeleteRole"
+      endMarker="# END DeleteRole"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="js" label="JS/TS Client v3">
+  <FilteredTextBlock
+        text={RoleTSCode}
+        startMarker="// START DeleteRole"
+        endMarker="// END DeleteRole"
+        language="ts"
+      />
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+// Java support coming soon
+```
+
+  </TabItem>
+</Tabs>
+
+## ユーザー管理 <i class="fas fa-user-edit"></i> {#user-management}
+
+ユーザーにロールを割り当てたり、ユーザーの作成・更新・削除について詳しく知るには、[ユーザー管理](./manage-users.mdx) ページをご覧ください。
+
+## 追加リソース
+
+- [ RBAC: 概要](./index.mdx)
+- [ RBAC: 設定](/deploy/configuration/configuring-rbac.md)
+- [ RBAC: ユーザー管理](./manage-users.mdx)
+
+## ご質問・フィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback />
+
+

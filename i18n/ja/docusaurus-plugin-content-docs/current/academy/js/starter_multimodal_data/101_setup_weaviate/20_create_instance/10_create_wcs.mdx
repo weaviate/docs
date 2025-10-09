@@ -1,0 +1,67 @@
+---
+title: "オプション 1: WCD クラウドインスタンス"
+description: "スケーラブルなクラウドベースのデータプロジェクト向けに WCS 上で Weaviate インスタンスを作成します。"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import TSCode from '!!raw-loader!../../_snippets/101_connect.mts';
+
+ここでは、Weaviate Cloud (WCD) インスタンスを作成します。WCD はクラウドで稼働する完全マネージドの Weaviate インスタンスで、インストールや保守が不要なため Weaviate を始めるのに最適です。
+
+### <i class="fa-solid fa-chalkboard"></i> WCD Console にログインする
+
+[WCD Console](https://console.weaviate.cloud/) にアクセスし、認証情報でログインします。まだアカウントをお持ちでない場合は、ログイン画面の <kbd>Register here</kbd> リンクからサインアップできます。
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスを作成する
+
+コンソールで Dashboard に移動し、<kbd>Create cluster</kbd> ボタンをクリックします。次の画面で以下を設定します。
+
+- 「Free sandbox」タブを選択
+- クラスター名を入力
+- 「Enable authentication」を「Yes」に設定
+
+<kbd>Create</kbd> ボタンをクリックして Weaviate インスタンスを作成します。完了まで数分かかります。
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細を取得する
+
+インスタンスが作成されたら、<kbd>Details</kbd> ボタンをクリックして詳細を確認できます。クラスター URL と API キーを探してください。
+
+これらの情報は Weaviate インスタンスへ接続する際に必要です。
+
+### <i class="fa-solid fa-code"></i> WCD インスタンスへ接続する
+
+Weaviate Cloud (WCD) インスタンスへ接続するには、クラスター URL と API キーが必要です。これらは WCD Console で確認できます。
+
+`connectToWeaviateCloud()` 関数を使用して WCD インスタンスへ接続します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// WCDInstantiation"
+  endMarker="// END WCDInstantiation"
+  language="ts"
+/>
+
+#### 推論 API キーを設定する
+
+一部の Weaviate モジュールでは、データのベクトル化や大規模言語モデル統合のために推論 API を利用できます。これらのサービス用 API キーは、インスタンス生成時に Weaviate へ渡せます。
+
+この講座では VoyageAI を使用するため、以下のように `headers: {"X-VoyageAI-Api-Key": <YOUR_KEY>}` を通じて VoyageAI API キーを Weaviate に提供してください。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// WCDAPIKeyInstantiation"
+  endMarker="// END WCDAPIKeyInstantiation"
+  language="ts"
+/>
+
+:::note 次のステップ
+これが完了したら、次のページ [オプション 2: ローカル Weaviate インスタンス](./20_create_docker.mdx) をスキップし、[Weaviate との通信](../30_communicate.mdx) へ進んでください。
+:::
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

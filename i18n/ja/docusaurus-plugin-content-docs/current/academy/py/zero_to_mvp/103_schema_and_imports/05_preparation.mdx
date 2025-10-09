@@ -1,0 +1,108 @@
+---
+title: 準備
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCodeExample from '!!raw-loader!./_snippets/05_create_instance.py';
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate インスタンスの作成
+
+このユニットでは、独自の Weaviate インスタンスが必要です。
+
+まだお持ちでない場合は、[Weaviate Cloud (WCD)](https://console.weaviate.cloud/) にセットアップすることをおすすめします。**無料の Sandbox インスタンスで十分です。**
+
+[このページ](../101_hello_weaviate/40_set_up.mdx#--get-started-with-wcd) の「Get Started with WCD」セクションに従って設定し、戻ってきてください。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate インスタンスへのアクセス
+
+以下の例に従って、Weaviate インスタンスにアクセスできることを確認しましょう。
+
+:::tip Weaviate インスタンスのアドレスは？
+Weaviate インスタンスのアドレスを把握しておきましょう。次のような形式です：
+```
+https://your-instance-name.weaviate.network
+```
+WCD ダッシュボードで確認できます。
+:::
+
+アクセス方法は、認証が有効か無効かによって異なります。わからない場合は WCD ダッシュボードで「Authentication」の表示を確認してください。
+
+### <i class="fa-solid fa-code"></i> API キー認証あり (推奨)
+
+認証が有効な場合は、以下のようにクライアントを初期化します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Instantiate Weaviate client w/ auth config ====="
+  endMarker="# ===== END Instantiate Weaviate client w/ auth config ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+### <i class="fa-solid fa-code"></i> 認証なし
+
+インスタンスで認証が無効になっている場合、認証パラメーターは不要です。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Instantiate Weaviate client w/o auth ====="
+  endMarker="# ===== END Instantiate Weaviate client w/o auth ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+## <i class="fa-solid fa-square-chevron-right"></i> アクセスの確認
+
+クライアントを初期化したら、次のコードを実行して Weaviate インスタンスへ書き込みが可能か確認します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Confirm that the client can access the instance ====="
+  endMarker="# ===== END Confirm that the client can access the instance ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+画面に `"59340403-4bcd-479f-ae9c-de5da039ac0e"` のような長い英数字の文字列が表示されれば成功です。
+
+表示されたら、Weaviate インスタンスへアクセスでき、書き込み権限があることが確認できました。これで次に進む準備が整いました。
+
+ただし、先に進む前にもうひとつだけ、先ほど作成したテストデータをクリーンアップしておきましょう。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# ===== Delete our test object ====="
+  endMarker="# ===== END Delete our test object ====="
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+次のセクションでお会いしましょう。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- このユニットでは、WCD などで Weaviate インスタンスを作成する必要があります。  
+- Weaviate インスタンスへは、設定に応じて API キー認証あり、または認証なしでアクセスします。  
+- 提供されたコードスニペットを実行し、Weaviate インスタンスへアクセスできることを確認します。  
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

@@ -1,0 +1,76 @@
+---
+title: Weaviate 用 JavaScript / TypeScript セットアップ
+sidebar_position: 10
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import WeaviateTypescriptImgUrl from './img/js-ts-weaviate.png';
+
+この短いガイドでは、TypeScript / JavaScript クライアントで Weaviate を利用できるよう、セットアップ方法を説明します。
+
+<!-- todo -->
+<img src={WeaviateTypescriptImgUrl} alt="Image alt" width="75%"/>
+
+## <i class="fa-solid fa-square-chevron-right"></i> Node.js のインストール
+
+### <i class="fa-solid fa-code"></i> Node.js インストール確認
+
+ターミナルウィンドウ（例: bash、zsh、Windows PowerShell、Windows Terminal）を開き、次を実行します。
+
+```shell
+node --version # or node -v
+```
+
+Node.js がインストールされている場合、`v22.3.0` のような応答が表示されます。Weaviate TypeScript / JavaScript ライブラリがサポートする Node.js の最小バージョンは `v18` です。 
+
+
+### <i class="fa-solid fa-code"></i> Node.js のインストール
+
+インストールするには、[nodejs.org](https://nodejs.org/en/download/package-manager) にあるシステム別の手順に従ってください。
+
+Node.js のインストール後、再度バージョンを確認し、推奨バージョンが入っていることを確かめましょう。
+
+:::tip Advanced option: `nvm`
+Python をインストールするもう一つの良い方法は `nvm` をインストールすることです。これにより、システム上で複数バージョンの Node.js を管理できます。`nvm` のインストール方法は [こちら](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) を参照してください。
+:::
+
+
+### <i class="fa-solid fa-code"></i> (任意) TypeScript のセットアップ
+
+インストール方法は [typescriptlang.org](https://www.typescriptlang.org/download/) にあるシステム別ガイドをご覧ください。インストール後、Weaviate クライアントで TypeScript を利用するための設定方法は [こちら](../../weaviate/client-libraries/typescript/index.mdx) に記載されています。
+
+これで TypeScript を Weaviate クライアントと一緒に使用する準備ができました。
+
+## <i class="fa-solid fa-square-chevron-right"></i> Weaviate クライアントのインストール
+
+次に、[Weaviate クライアントライブラリ](../../weaviate/client-libraries/index.mdx) をインストールします。これにより、TypeScript で Weaviate とやり取りするのが格段に簡単になります。
+
+プロジェクト用の新しいフォルダーで、次を実行して Weaviate クライアントをインストールします。
+
+```shell
+npm install weaviate-client
+```
+
+### <i class="fa-solid fa-code"></i> インストール確認
+
+Weaviate クライアントがインストールされているか確認するには、ターミナルで次を実行してください。
+
+```shell
+npm view weaviate-client
+```
+
+以下のような出力が得られます。
+
+```text
+3.1.4.
+```
+
+これで Weaviate TypeScript / JavaScript クライアントライブラリを使用するための準備が完了しました。おめでとうございます！
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

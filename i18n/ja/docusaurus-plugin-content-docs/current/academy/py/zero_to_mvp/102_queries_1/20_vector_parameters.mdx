@@ -1,0 +1,297 @@
+---
+title: 検索オペレーター
+description: Weaviate でデータ検索を最適化するために ベクトル パラメーターを調整する方法を学びます。
+---
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/VgCSvgx9GWc' controls='true' />
+<br/>
+
+Weaviate では複数の ベクトル 検索「オペレーター」を提供しており、それらを使って ベクトル 検索を実行できます。一般的にユーザーは `nearVector`、`nearObject`、または `near<Media>`（例: `nearText`）のいずれかを使用します。本章ではこれらのメソッドを順に確認します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> `nearVector`
+
+`nearVector` オペレーターは、明示的に指定した ベクトル に最も類似したオブジェクトを検索する際に使用します。
+
+以下のように `vector` 引数で ベクトル 値を渡します。
+
+### <i class="fa-solid fa-code"></i> 例
+
+:::note Vector truncated for brevity
+以下の ベクトル は省略表示されています。セルを実行したい場合は、下記に完全な ベクトル を確認できます。
+:::
+
+<details>
+  <summary>完全な ベクトル を表示</summary>
+
+[0.023932384327054024, -0.014095712453126907, 0.013304559513926506, -0.01155742909759283, -0.01147831417620182, 0.015321999788284302, -0.025013625621795654, -0.04198386147618294, 0.0006061387248337269, -0.008940030820667744, ... 省略 ...]
+</details>
+
+import NearVectorSimple from './_snippets/academy.queries.nearVector.simple.mdx';
+
+<NearVectorSimple/>
+
+レスポンスを確認したりクエリを実行したりする前に、次の点を考えてみてください。
+- レスポンスには何件のオブジェクトが含まれると予想しますか？
+- 各オブジェクトにはどのプロパティが含まれると思いますか？
+- この ベクトル が何を表しているか分かりますか？
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "escaping the Earth's gravity (and go off into outer space, on your way to the moon, for instance)",
+          "question": "It takes approximately 24,840 MPH to achieve this"
+        },
+        {
+          "answer": "the Milky Way",
+          "question": "This is the name of our own galaxy"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+- `limit` を 2 に設定したため、結果には最大 2 件のオブジェクトが含まれます。  
+- 各オブジェクトには `Get` 関数で指定した `question` と `answer` プロパティが含まれます。  
+- ベクトル は外部から提供されたため、それが何を表すかを判断する方法はありません。（結果から宇宙に関連する内容だと推測はできます。）  
+
+</details>
+
+## <i class="fa-solid fa-square-chevron-right"></i> `nearObject`
+
+`nearObject` オペレーターは、既存の Weaviate オブジェクトに最も類似したオブジェクトを検索する際に使用します。
+
+対象オブジェクトの識別子は、以下のように `id` 引数で渡します。
+
+### <i class="fa-solid fa-code"></i> 例
+
+import NearObjectSimple from './_snippets/academy.queries.nearObject.simple.mdx';
+
+<NearObjectSimple/>
+
+レスポンスを確認したりクエリを実行したりする前に、次の点を考えてみてください。
+- ここでは ベクトル を提供していません。 ベクトル はどこから来るのでしょうか？
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "escaping the Earth's gravity (and go off into outer space, on your way to the moon, for instance)",
+          "question": "It takes approximately 24,840 MPH to achieve this"
+        },
+        {
+          "answer": "66,000",
+          "question": "Of 6,000, 66,000 or 666,000 MPH, the closest to the speed of the Earth around the sun"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+- `nearObject` クエリでは、指定したオブジェクト自身の ベクトル がクエリ ベクトル として使用されます。  
+
+</details>
+
+## <i class="fa-solid fa-square-chevron-right"></i> `nearText`
+
+`nearText` オペレーターは、テキスト入力に最も類似したオブジェクトを検索する際に使用します。
+
+以下のように `concept` 引数でテキストを渡します。
+
+### <i class="fa-solid fa-code"></i> 例
+
+import NearTextSimple from './_snippets/academy.queries.nearText.simple.mdx';
+
+<NearTextSimple/>
+
+レスポンスを確認したりクエリを実行したりする前に、次の点を考えてみてください。
+- ここでも ベクトル を提供していません。今回は ベクトル はどこから来るのでしょうか？
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを見る</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "answer": "escaping the Earth's gravity (and go off into outer space, on your way to the moon, for instance)",
+          "question": "It takes approximately 24,840 MPH to achieve this"
+        },
+        {
+          "answer": "the Milky Way",
+          "question": "This is the name of our own galaxy"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+  <summary><i class="fa-solid fa-lightbulb"></i> このクエリの説明</summary>
+
+`nearText` では、入力されたテキストを Weaviate が ベクトル に変換します。
+
+そのため `nearText` には、入力メディアを ベクトル に変換する仕組みが必要です。Weaviate ではこれを `vectorizer` と呼びます。
+
+:::info ベクトライザーはどのように機能しますか?
+Weaviate では、ベクトライザーはオプションの `modules` として追加されます。モジュールと ベクトライザー については後のユニットで学びます。
+:::
+
+</details>
+### <i class="fa-solid fa-chalkboard"></i> `near<Media>`
+
+`nearText` はテキストを扱うためにここで使用しました。画像用の `nearImage` など、他のメディア向けの演算子もあります。これらを総称して `near<Media>` 演算子と呼びます。
+
+これらすべての演算子の原理は同じで、入力メディアに最も近い結果を取得します。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 閾値の追加
+
+ベクトル検索は類似度に基づいており、結果を自動的に除外することはありません。デフォルトでは、ベクトル検索はシステムで定義された最大件数の結果を返します。結果数を制限するには、閾値または limit を設定します。
+
+### <i class="fa-solid fa-code"></i> 距離の閾値
+
+`distance` や `certainty` のような閾値は、オブジェクトを取得するために必要な最大距離（言い換えると最小類似度）を指定します。この例では、`distance` が結果を制限する `additional` パラメーターとして使われています。
+
+import GetWithAdditional from './_snippets/academy.queries.get.with.additional.mdx';
+
+<GetWithAdditional/>
+
+これは返却例です。
+
+<details>
+  <summary><i class="fa-solid fa-radar"></i> JSON レスポンスを表示</summary>
+
+```json
+{
+  "data": {
+    "Get": {
+      "JeopardyQuestion": [
+        {
+          "_additional": {
+            "distance": 0.1791926,
+            "id": "b1645a32-0c22-5814-8f35-58f142eadf7e"
+          },
+          "answer": "escaping the Earth's gravity (and go off into outer space, on your way to the moon, for instance)",
+          "question": "It takes approximately 24,840 MPH to achieve this"
+        },
+        {
+          "_additional": {
+            "distance": 0.18123823,
+            "id": "ef263438-b152-5540-97f7-99f4076bd124"
+          },
+          "answer": "the Milky Way",
+          "question": "This is the name of our own galaxy"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+:::tip Exercise: Threshold distances
+次のいずれかを変更して試してみましょう  
+- `distance` ではなく `certainty` の閾値を使用する  
+- `distance` に加えて `certainty` も返す  
+期待どおりの動作になりましたか？
+:::
+
+この文脈では、`distance` は差異の度合いを測定します。場合によっては `certainty` が使われることもあります。これは `distance` とは逆で、値が大きいほど意味の差が大きいことを示します。
+
+これらの値が正確には何を意味し、どこから来るのかについては後ほど説明します。現時点では次の点を覚えておいてください。
+
+- `distance` は非類似度の指標です（値が小さいほど類似しています）
+- `certainty` は類似度の指標です（値が大きいほど類似しています）
+
+### <i class="fa-solid fa-code"></i> `limit` 閾値
+
+前述の例のいくつかでは `limit` 句を使用しています。`limit` を使うと、返されるオブジェクト数を制限できます。
+
+この Python の例では、`with_limit()` が 2 件の応答に制限しています。
+
+```
+response = client.query.get(
+    "JeopardyQuestion",
+    ["question", "answer"]
+).with_limit(2)
+```
+
+
+## <i class="fa-solid fa-square-chevron-right"></i> おさらい
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習問題
+
+<Quiz questions={nearVectorFunction} />
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+:::info `nearVector` / `nearObject` availability
+`nearVector` と `nearObject` は常に Weaviate で利用可能ですが、`nearText` はベクトライザー モジュールが有効で使用されている場合にのみ利用できます。
+:::
+
+- ベクトル検索を実行するために複数の検索演算子が利用できます。  
+- `nearVector` は入力ベクトルに最も近いオブジェクトを検索できます。  
+- `nearObject` は既存の Weaviate オブジェクトに最も近いオブジェクトを検索できます。  
+- `nearText` は入力テキストに最も近いオブジェクトを検索できます。  
+    - 他のオブジェクト型向けには、対応する `near<Media>` 演算子があります。  
+- 独自のベクトライザーを使用する場合やすでにベクトルのライブラリを持っている場合は、`nearVector` クエリを使用することがあります。既存のオブジェクトに類似したオブジェクトを探したい場合には `nearObject` が便利です。
+
+import Quiz from '/src/components/Academy/quiz.js'
+export const nearVectorFunction = [{
+  questionText: 'On what basis does the nearVector operator perform a search?',
+  answerOptions: [
+    {
+      answerText: 'Similarity to a given text input',
+      isCorrect: false,
+      feedback: 'That would be nearText',
+    },
+    {
+      answerText: 'Similarity to a provided vector',
+      isCorrect: true,
+      feedback: 'So if you have the query vector handy, nearVector is the operator to use.',
+    },
+    {
+      answerText: 'Similarity to an existing Weaviate object',
+      isCorrect: false,
+      feedback: 'That would be nearObject',
+    },
+  ]
+}];
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

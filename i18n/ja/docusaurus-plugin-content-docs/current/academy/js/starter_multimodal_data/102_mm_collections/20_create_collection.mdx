@@ -1,0 +1,89 @@
+---
+title: コレクションの作成
+description: マルチモーダルデータコレクションの作成
+---
+
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';  
+import TSCode from '!!raw-loader!../_snippets/102_collection.mts';  
+
+ Weaviate はデータを「コレクション」に保存します。コレクションとは、同じデータ構造を共有するオブジェクトの集合です。映画データベースでは、映画のコレクション、俳優のコレクション、レビューのコレクションなどを作成できます。  
+
+ここでは映画のコレクションを作成します。  
+
+## <i class="fa-solid fa-code"></i> コード
+
+次の例では、映画データ用のコレクションを作成しています。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// CreateMovieCollection"
+  endMarker="// END CreateMovieCollection"
+  language="ts"
+/>
+
+各コレクション定義には名前が必須です。そのうえで、この例のように追加パラメーターを設定できます。  
+
+## <i class="fa-solid fa-chalkboard"></i> コードの説明
+
+### <i class="fa-solid fa-chalkboard"></i> プロパティ
+
+プロパティは、コレクションに保存したいオブジェクト属性です。各プロパティには名前とデータ型があります。  
+
+映画データベースでは、`title`、`release_date`、`genre_ids` といったプロパティがあり、データ型は `TEXT`（文字列）、`DATE`（日付）、`INT`（整数）などです。`genre_ids` のように整数の配列を持つことも可能です。  
+
+マルチモーダルオブジェクトとして、画像データである `poster` プロパティもあり、これは `BLOB`（バイナリ大規模オブジェクト）型で保存されます。  
+
+#### 自動スキーマ
+
+ Weaviate はデータから自動で [スキーマを推論](/weaviate/config-refs/collections#auto-schema)できます。ただし、制御性を高め予期せぬ挙動を防ぐために、プロパティを明示的に定義することを推奨します。  
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトライザー設定
+
+自分でベクトルを指定しない場合、 Weaviate は指定された ベクトライザー を使用してデータからベクトル埋め込みを生成します。  
+
+このコード例では `multi2vec-voyageai` モジュールを指定しています。このモジュールは **voyage-multimodal-3** モデルを用いてテキストと画像データからベクトル埋め込みを生成します。  
+
+ベクトル化に利用するテキストおよび画像プロパティを任意の数だけ指定でき、それぞれに異なる重みを設定できます。重みは、ベクトル埋め込み生成プロセスにおける各プロパティの相対的重要度を決定します。この例では、`poster` プロパティ（画像）に 90% の重み、`title` プロパティ（文字列）に 10% の重みを設定しています。  
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Define the vectorizer module"
+  endMarker="// Define the generative module"
+  language="ts"
+/>
+
+### <i class="fa-solid fa-chalkboard"></i> 生成設定
+
+コレクションを生成モデル（例: 大規模言語モデル）で使用する場合、生成モジュールの指定が必要です。  
+
+このコード例では、`cohere` モジュール（正式名称は `generative-cohere`）をデフォルト設定で指定しています。  
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// Define the generative module"
+  endMarker="// END generativeDefinition"
+  language="ts"
+/>
+
+import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';  
+
+<MutableGenerativeConfig />
+
+### <i class="fa-solid fa-code"></i> TypeScript の名前付きインポート
+
+このコード例では、`vectorizer` や `configure` などの名前付きインポートを使用しています。これらは `weaviate` モジュールで定義されており、コレクション定義時に利用します。
+
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// SubmoduleImport"
+  endMarker="// END SubmoduleImport"
+  language="ts"
+/>
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';  
+
+<DocsFeedback/>

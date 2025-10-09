@@ -1,0 +1,98 @@
+---
+title: ローカル Docker インスタンスの作成
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PyCode from '!!raw-loader!../_snippets/101_connect.py';
+
+:::note クラウドインスタンスは使えますか？
+マルチモーダル ベクトルの生成は現在ローカルモデルのみで可能です。そのため、本コースではローカルの Docker インスタンスの Weaviate を使用します。Weaviate の外部でベクトルを生成する場合は、クラウドインスタンスを利用できます。詳細は [Work with: your own vectors](../../starter_custom_vectors/index.md) コースをご覧ください。
+:::
+
+ここでは、Docker を使用して Weaviate インスタンスとマルチモーダル ベクトライザーコンテナを作成します。
+
+### <i class="fa-solid fa-chalkboard"></i> docker-compose ファイルのダウンロードと実行
+
+お使いのマシンに Docker をインストールします。[公式 Docker インストールガイド](https://docs.docker.com/get-docker/) に従うことを推奨します。
+
+新しいディレクトリを作成し、ターミナルでそのディレクトリに移動します。その後、`docker-compose.yml` という新しいファイルを作成し、次の内容を追加します。
+
+```yaml
+---
+services:
+  weaviate:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+    ports:
+    - 8080:8080
+    - 50051:50051
+    volumes:
+    - weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      CLIP_INFERENCE_API: 'http://multi2vec-clip:8080'
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      ENABLE_MODULES: 'multi2vec-clip'
+      ENABLE_API_BASED_MODULES: 'true'
+      CLUSTER_HOSTNAME: 'node1'
+  multi2vec-clip:
+    image: cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1
+    environment:
+      ENABLE_CUDA: '0'
+volumes:
+  weaviate_data:
+...
+
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの作成
+
+次のコマンドを実行して Weaviate を起動します。
+
+```bash
+docker compose up
+```
+
+### <i class="fa-solid fa-chalkboard"></i> Weaviate インスタンスの詳細
+
+インスタンスが作成されたら、`http://localhost:8080` でアクセスできます。
+
+### <i class="fa-solid fa-code"></i> Weaviate インスタンスへの接続
+
+Weaviate インスタンスに接続するには、`connect_to_local` 関数を使用します。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DockerInstantiation"
+  endMarker="# END DockerInstantiation"
+  language="py"
+/>
+
+#### 推論 API キーの提供
+
+一部の Weaviate モジュールは、データのベクトル化や大規模言語モデル統合のために推論 API を使用できます。これらのサービスの API キーは、インスタンス作成時に Weaviate へ渡すことができます。
+
+本コースでは OpenAI（検索拡張生成に使用）を利用するため、以下のように `headers={"X-OpenAI-Api-Key": <YOUR_KEY>}` を指定して OpenAI API キーを Weaviate に渡してください。
+
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# DockerAPIKeyInstantiation"
+  endMarker="# END DockerAPIKeyInstantiation"
+  language="py"
+/>
+
+## 質問やフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

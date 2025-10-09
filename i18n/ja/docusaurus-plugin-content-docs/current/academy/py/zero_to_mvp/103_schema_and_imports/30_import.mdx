@@ -1,0 +1,188 @@
+---
+title: データのインポート方法
+description: Weaviate におけるデータインポート手法を学び、シームレスなデータ統合を実現します。
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
+import PythonCodeExample from '!!raw-loader!./_snippets/30_import.py';
+
+## <i class="fa-solid fa-square-chevron-right"></i> 概要
+
+import ReactPlayer from 'react-player/lazy'
+
+<ReactPlayer className="react-player" url='https://youtu.be/fpmjEN-93Og' controls='true' />
+<br/>
+
+これまでに、データは  Weaviate ではオブジェクトとして表され、それらは `class` に属し、複数の `properties` を持つことを学習しました。前の `schema` セクションでは、この構造のための枠組みを作成する方法を学びました。
+
+このセクションでは、  Weaviate へのデータインポート方法を、推奨されるベストプラクティスと重要な考慮事項とともに学びます。このセクションを終えると、スキーマとインポートについて学んだ内容を組み合わせ、実際のデータセットを  Weaviate へインポートできるようになります。
+
+## <i class="fa-solid fa-square-chevron-right"></i> インポート : ハイレベルビュー
+
+### <i class="fa-solid fa-chalkboard"></i> オブジェクト作成
+
+ Weaviate オブジェクトを作成するには、以下を行います。
+
+- ソースデータを読み込む  
+- 必要なプロパティを含むデータオブジェクトを構築する  
+-  Weaviate の目的のクラスに追加する  
+
+必要に応じて、次も手動で指定できます。
+
+- オブジェクト ID
+- ベクトル
+
+:::info Optional properties
+
+- オブジェクト ID は必須です。そのため、指定しない場合は  Weaviate が自動生成します。  
+- ベクトルを指定しない場合、クラスにベクトライザーが設定されていれば  Weaviate が生成します。  
+
+これらについては後ほど詳しく説明します。  
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> バッチインポートを使用する
+
+ Weaviate ではインポート速度を最大化するために「バッチインポート」プロセスを提供しています。以下の図はオブジェクト作成プロセスを示しています。
+
+import ImportConceptualImg from './images/academy_103_import_process_conceptual.png';
+
+<img src={ImportConceptualImg} alt="Conceptual diagram of the import process" width="100%"/>
+
+図では、指定されたデータを基にオブジェクトを作成するリクエストが送信されています。
+
+ベクトルが提供されず、かつベクトライザーが指定されている場合、  Weaviate (core) はベクトル埋め込みを取得するためにベクトライザーモジュールへリクエストを送信します。そのモジュールが `text2vec-cohere` のような推論 API ベースのモジュールである場合、さらに該当の推論 API へベクトルを要求する必要があります。
+
+このような構成では、ネットワーク遅延が大規模データセットに対して大きな時間を要したり、ボトルネックになる可能性があります。
+
+バッチインポートは 1 つのリクエストで複数のオブジェクトを処理することでネットワーク遅延の影響を大幅に低減し、クライアント（例 : Python クライアント）はさらに処理を並列化できます。特別な理由がない限りバッチインポートを使用することを推奨します。データ取り込み速度が大きく向上します。
+
+### <i class="fa-solid fa-code"></i> バッチインポート構文
+
+以下に、いくつかのパラメータを含むバッチ構文を示します。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Batch import example"
+  endMarker="# END Batch import example"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+ここで各 `data_object` はクラスのプロパティに対応するキーを持つ Python の辞書である点に注意してください。
+
+:::tip `data_object` の一部としてベクトルを指定 *しない*  
+ベクトルは別項目として指定してください。  Weaviate がそれを **オブジェクトのベクトル** と認識し、インデックス化できるようにするためです。ベクトルを指定する正しい構文は [下記](#-example-with-id--vector) を参照してください。  
+:::
+
+### <i class="fa-solid fa-chalkboard"></i> エラーハンドリング
+
+バッチインポートプロセスは、バッチレベルおよび個別オブジェクトレベルでエラーを処理するよう設定されています。
+
+#### バッチレベルのエラー
+
+バッチレベルのエラーはバッチリクエストの HTTP レスポンスコードで示されます。  
+- 200 レスポンスコード : バッチが正常に送信・接続・処理された  
+- 4xx ステータスコード : リクエストが不正
+
+#### オブジェクトレベルのエラー
+
+バッチには複数のオブジェクトが含まれるため、リクエストが成功しても個々のオブジェクトでエラーが発生する場合があります。
+
+そのため、オブジェクトレベルのエラーはバッチ作成リクエストのレスポンス内で返されます。
+
+### <i class="fa-solid fa-code"></i> エラーハンドリング構文
+
+インポート中にオブジェクトレベルのエラーが発生した場合、それらは `batch.create_objects()` または `batch.create_references()` へのレスポンス内で確認できます。
+
+レスポンスでは各オブジェクトの `result["result"]["errors"]` 値を調べることでエラーの有無を確認できます。
+
+便利な方法として、コールバック関数を定義しバッチ初期化時に指定する方法があります。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Example with callback"
+  endMarker="# END Example with callback"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+このパターンを使うことで、インポート処理中に発生したオブジェクトレベルのエラーを捕捉して表示できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> オプションパラメータ
+### <i class="fa-solid fa-chalkboard"></i> ID
+
+Weaviate の各オブジェクトには一意の識別子があります。 この ID は [ UUID ](https://en.wikipedia.org/wiki/Universally_unique_identifier) である必要があり、ユーザーが指定することもできますが、指定しない場合は Weaviate がランダムな UUID を生成します。
+
+Weaviate は重複オブジェクトが作成されているかどうかをチェックしません。 その結果、決定論的な UUID を使用すると、誤って重複オブジェクトを作成することを防げる場合があります。
+
+### <i class="fa-solid fa-chalkboard"></i> ベクトル
+
+Weaviate の各オブジェクトは、それを表すベクトル埋め込みを持つことができますが、必須ではありません。
+
+- 作成時にベクトルを指定した場合、 Weaviate はそのベクトルをオブジェクトの表現として使用します。  
+- ベクトルを指定しなかった場合、 Weaviate は関連クラスにベクトライザー設定が適用されるかどうかを確認します。  
+    - 適用される場合、 Weaviate はそのベクトライザーモジュールにベクトル埋め込みのリクエストを送信します。  
+    - 適用されない場合、オブジェクトはベクトル表現を持ちません。  
+
+:::info クラスのベクトライザーはどのように決まるのですか？
+- スキーマでクラスにベクトライザーが設定されている場合、そのベクトライザーが使用されます。  
+- 設定されていない場合、 Weaviate はそのインスタンスのデフォルトベクトライザー設定を確認します。  
+:::
+
+:::note ベクトルをアップロードしてベクトライザーを使用する
+独自のベクトルをアップロードしつつ、ベクトライザーも指定することが可能です。 例えば、大規模データセットをインポートする際に、 Weaviate でも利用可能なベクトライザーで事前にベクトル化している場合に便利です。 これにより、データセットの更新を Weaviate でベクトル化できるほか、クエリも必要に応じてベクトル化できます。  
+:::
+
+これらのオプションについては別のユニットで詳しく説明します。
+
+### <i class="fa-solid fa-code"></i> id & ベクトルを指定した例
+
+オブジェクトの ID とベクトルを手動で指定する場合、構文は以下のとおりです。
+
+<Tabs groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PythonCodeExample}
+  startMarker="# Example with additional properties"
+  endMarker="# END Example with additional properties"
+  language="py"
+/>
+</TabItem>
+</Tabs>
+
+これらのパラメーターを使うことで、オブジェクトごとに ID とベクトルを手動で指定できます。
+
+## <i class="fa-solid fa-square-chevron-right"></i> 復習
+
+### <i class="fa-solid fa-pen-to-square"></i> 復習課題
+
+:::note <i class="fa-solid fa-square-terminal"></i> 演習
+- バッチインポートプロセスを学習したあと、自分の言葉で説明してみましょう。  
+    - バッチインポートプロセスとは何か、なぜ使用するのか、そしてデータ取り込み速度をどのように向上させるのかを含めてください。  
+- オブジェクト作成時にオプションだったパラメーターを思い出せますか？  
+    - それらのパラメーターを指定したい場合、または指定したくない場合のシナリオを想像できますか？  
+:::
+
+### <i class="fa-solid fa-lightbulb-on"></i> 重要なポイント
+
+- Weaviate オブジェクトを作成するには、プロパティを持つデータオブジェクトを構築し、目的のクラスに追加します。  
+- インポート速度を最大化しネットワーク遅延を最小化するには、バッチインポートを使用します。バッチインポートは 1 リクエストで複数オブジェクトを処理でき、クライアント側で並列化も可能です。  
+- インポート中のエラーハンドリングは、バッチ単位または個々のオブジェクト単位で行えます。  
+- Weaviate では各オブジェクトに対して ID とベクトルを手動で指定できます。  
+    - ID を指定しない場合、 Weaviate が生成します。  
+    - ベクトルを指定しない場合、ベクトライザーが設定されていれば Weaviate が生成します。  
+    - ベクトライザー設定はスキーマ内で指定できます。  
+
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

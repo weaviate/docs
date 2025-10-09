@@ -1,0 +1,142 @@
+---
+title: 一般的な AI モデル
+description: AI モデルの内部を覗く
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+現代の AI モデルの大部分はディープラーニングモデルです。多くの生成モデルや埋め込みモデルがこのカテゴリに含まれ、回帰モデルや分類モデルの多くも同様です。
+
+では、これらの共通点をいくつか見てみましょう。
+
+## <i class="fa-solid fa-chalkboard-user"></i> ディープラーニングモデル
+
+次のようなディープラーニングモデルの図を目にしたことがあるかもしれません。
+
+<!-- Source for figures: https://link.excalidraw.com/l/4CqHmtSPftM/5wFoOmDz8oT -->
+
+import NNBasicLight from './_img/nn_explained_01_basic.png';
+import NNBasicDark from './_img/nn_explained_01_basic_dark.png';
+
+<ThemedImage
+  alt="ニューラルネットワークの基本図"
+  sources={{
+    light: NNBasicLight,
+    dark: NNBasicDark,
+  }}
+  width="300"
+/>
+
+見た目はシンプルですが、これはディープラーニングモデルをかなり正確に表しています。詳細を見ていきましょう。
+
+この図に詳細を追加すると、次のようになります。モデルは入力（この例では配列 `[x1, x2, x3]`）を取り、出力（同じく配列 `[y1, y2, y3]`）へと変換します。
+
+import NNBasicLabellingLight from './_img/nn_explained_05_basic_labelling.png';
+import NNBasicLabellingDark from './_img/nn_explained_05_basic_labelling_dark.png';
+
+<ThemedImage
+  alt="ラベル付きニューラルネットワーク基本図"
+  sources={{
+    light: NNBasicLabellingLight,
+    dark: NNBasicLabellingDark,
+  }}
+  width="350"
+/>
+
+この変換は「ノード」と呼ばれる要素、通常「隠れ層」と呼ばれる層によって実行されます。
+
+## <i class="fa-solid fa-chalkboard-user"></i> 入力と出力
+
+前述のとおり、入力と出力はさまざまな形式を取り、さまざまな事柄を表現できます。そして、まさにここでそれが当てはまります。
+
+例では 3 つの値の配列を入力・出力としていますが、実際には任意の長さの配列を扱えます。
+
+たとえば回帰モデルなら、`[<number of rooms>, <postcode>, <house size>, <house type>, <land size>, <number of garages>, <house age>, ...]` のような入力を取り、ドル建ての金額を出力します。一方、分類モデルでは同じ入力を受け取りつつ、`[0.05, 0.65, 0.20, 0.10]` のような確率の配列を出力し、住宅が「低価格」「中価格」「高級」「超高級」といった価格帯に入る可能性を示します。
+
+import NNInputsOutputsLight from './_img/nn_explained_10_inputs_and_outputs.png';
+import NNInputsOutputsDark from './_img/nn_explained_10_inputs_and_outputs_dark.png';
+
+<ThemedImage
+  alt="ニューラルネットワークの入力と出力"
+  sources={{
+    light: NNInputsOutputsLight,
+    dark: NNInputsOutputsDark,
+  }}
+  width="700"
+/>
+
+これらのモデルの制約のひとつは、入力と出力の両方が数値でなければならない点です。これは、入力を出力へ変換するために必要です。（テキストや画像などをどのように数値化するかは後で説明します。）
+
+それでは、モデルは実際にどのように入力を出力へ変換しているのでしょうか。実際には、以下に示すような計算を一連で行っています。この図では、特定のノード（行 1、列 1 のノード `h11`）の値がどのように計算されるかを示しています。
+
+import NNNodeCalcsLight from './_img/nn_explained_20_node_calculation.png';
+import NNNodeCalcsDark from './_img/nn_explained_20_node_calculation_dark.png';
+
+<ThemedImage
+  alt="ニューラルネットワークのノード計算"
+  sources={{
+    light: NNNodeCalcsLight,
+    dark: NNNodeCalcsDark,
+  }}
+  width="450"
+/>
+
+ご覧のように、計算自体は比較的シンプルです。前の層にある接続ノードの値を線形代数で組み合わせてノードの値を算出し、その過程で「重み」と「バイアス」を適用します。
+
+その後に「活性化関数」を適用して非線形性を導入し、ネットワークが複雑なパターンを学習できるようにします。活性化関数がなければ、追加した層は無駄になってしまいます。
+
+ディープラーニングモデルが行うことは、実のところこれだけです。ただし ―― 大規模に行います。
+
+## <i class="fa-solid fa-chalkboard-user"></i> パラメータ
+
+ご覧のように、各ノードの値は前の層およびその重み・バイアスによって決まります。これらの重みとバイアスそれぞれがパラメータと呼ばれます。モデル内のすべてのパラメータを合計したものがパラメータ数であり、モデルのサイズを示す指標として使われます。
+
+import NNTotalParamsLight from './_img/nn_explained_25_total_parameters.png';
+import NNTotalParamsDark from './_img/nn_explained_25_total_parameters_dark.png';
+
+<ThemedImage
+  alt="ニューラルネットワークのパラメータ"
+  sources={{
+    light: NNTotalParamsLight,
+    dark: NNTotalParamsDark,
+  }}
+  width="450"
+/>
+
+大規模な AI モデルは数十億ものパラメータを持ちます。Meta の Llama3 最大モデルは 4050 億パラメータを持ち、初期の GPT-4 モデルは約 1.8 兆パラメータと言われています。
+
+こうしてモデルは内部で入力の集合を出力へと変換します。
+
+import NNFinalOutputLight from './_img/nn_explained_30_final_output.png';
+import NNFinalOutputDark from './_img/nn_explained_30_final_output_dark.png';
+
+<ThemedImage
+  alt="ニューラルネットワークの最終出力"
+  sources={{
+    light: NNFinalOutputLight,
+    dark: NNFinalOutputDark,
+  }}
+  width="550"
+/>
+
+十分なパラメータ数を与えられると、それらを調整することでモデルに驚異的な能力を持たせることができます。
+
+:::info より大きなモデルが常に優れているのでしょうか？
+
+必ずしもそうではありません。モデルを構築・学習しない場合でも、巨大なモデルを利用するにはオーバーヘッドがあります。大きなモデルは実行に多くのリソース（メモリ）を必要とし、出力生成が遅く、その分コストも高くなります。平均的には大型モデルのほうが高性能ですが、特定の用途では同等に機能する小型モデルを見つけられる場合もあります。
+<br/>
+
+AI モデル選定に関しては、後ほど詳しく取り上げます。
+
+:::
+
+住宅の特徴を表す数値列を入力として、価格を予測（回帰）したり、特定のクラスに属する確率を算出したりできることは、ある程度直感的かもしれません。
+
+しかし、この考え方がどのように `gpt` のような生成 AI モデルや埋め込みモデルへとつながるのでしょうか。実は、思っているよりも似ています。
+
+次のセクションでこれを詳しく見ていきましょう。
+## 質問とフィードバック
+
+import DocsFeedback from '/_includes/docs-feedback.mdx';
+
+<DocsFeedback/>

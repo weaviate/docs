@@ -1,0 +1,22 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+#### トラブルシューティング：`pip` で最新版をインストールする
+
+既存のインストール環境では、`pip install -U "weaviate-client[agents]"` を実行しても `weaviate-agents` が [最新バージョン](https://pypi.org/project/weaviate-agents/) に更新されない場合があります。このような場合は、`weaviate-agents` パッケージを明示的にアップグレードしてみてください。
+
+<Tabs groupId="languages">
+<TabItem value="py_agents" label="Python">
+
+```shell
+pip install -U weaviate-agents
+```
+
+または、[特定のバージョン](https://github.com/weaviate/weaviate-agents-python-client/tags) をインストールします：
+
+```shell
+pip install -U weaviate-agents==||site.weaviate_agents_version||
+```
+
+</TabItem>
+</Tabs>
