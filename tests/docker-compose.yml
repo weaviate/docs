@@ -20,7 +20,6 @@ services:
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       ASYNC_INDEXING: 'true'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,offload-s3'
-      ENABLE_API_BASED_MODULES: 'true'
       CLUSTER_HOSTNAME: 'node1'
 
       # Enables API key authentication.

@@ -16,10 +16,6 @@ Weaviate supports these vector index types:
 * [HNSW index](#hierarchical-navigable-small-world-hnsw-index): a more complex index that is slower to build, but it scales well to large datasets as queries have a logarithmic time complexity.
 * [dynamic index](#dynamic-index): allows you to automatically switch from a flat index to an HNSW index as object count scales
 
-:::caution Experimental feature
-Available starting in `v1.25`. This is an experimental feature. Use with caution.
-:::
-
 This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
 :::info What is a vector index?
@@ -152,10 +148,6 @@ To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you 
 Cleanup is an async process runs that rebuilds the HNSW graph after deletes and updates. Prior to cleanup, objects are marked as deleted, but they are still connected to the HNSW graph. During cleanup, the edges are reassigned and the objects are deleted for good.
 
 ### Asynchronous indexing
-
-:::caution Experimental
-Available starting in `v1.22`. This is an experimental feature. Use with caution.
-:::
 
 This feature relates to the vector index, specifically only to the HNSW index.
 

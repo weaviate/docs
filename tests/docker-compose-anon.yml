@@ -19,7 +19,6 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ASYNC_INDEXING: 'true'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem,text2vec-contextionary'
-      ENABLE_API_BASED_MODULES: 'true'
       BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
       CLUSTER_HOSTNAME: 'node1'
       OLLAMA_API_ENDPOINT: 'http://ollama:11434'
