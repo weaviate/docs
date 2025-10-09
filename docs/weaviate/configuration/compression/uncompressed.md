@@ -32,6 +32,15 @@ When creating the collection, you can choose not to use quantization through the
         language="py"
       />
   </TabItem>
+
+  <TabItem value="ts" label="JS/TS">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START Uncompressed"
+        endMarker="// END Uncompressed"
+        language="ts"
+      />
+  </TabItem>
 </Tabs>
 
 ## Additional considerations

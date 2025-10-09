@@ -40,6 +40,7 @@ export const DOC_SYSTEMS = {
 };
 
 DOC_SYSTEMS.python = DOC_SYSTEMS.py;
+DOC_SYSTEMS.tsindent = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
 DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;

@@ -1,4 +1,4 @@
-name: Documentation Code Tests - Weekly
+name: Docs Code Tests
 
 permissions:
   contents: read
@@ -22,9 +22,121 @@ env:
   KEYCLOAK_VERSION: "24.0.3"
 
 jobs:
-  test:
+  test-agents:
+    name: Test Agents
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+        run: |
+          echo "🧪 Running agents tests..."
+          source .venv/bin/activate
+          pytest -m "agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Agents'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-agents'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+  test-database-cloud:
+    name: Test Database-Cloud
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+        run: |
+          echo "🧪 Running WCD tests..."
+          source .venv/bin/activate
+          pytest -m "wcd" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Database-Cloud'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-wcd'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+  test-database-local:
+    name: Test Database-Local
+    runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
@@ -36,56 +148,27 @@ jobs:
           echo "=== Initial disk usage ==="
           df -h
 
-          echo "=== Removing unnecessary software ==="
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          sudo rm -rf /opt/hostedtoolcache
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/lib/node_modules
-
-          echo "=== Docker cleanup ==="
-          docker system prune -af --volumes || true
-          docker builder prune -af || true
+          # Run deletions in parallel with background jobs
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
+          sudo rm -rf /usr/local/lib/android &
+          sudo rm -rf /usr/local/share/powershell &
+          sudo rm -rf /usr/local/share/chromium &
+          sudo rm -rf /usr/local/lib/node_modules &
+          
+          # Wait for all background deletions to complete
+          wait
 
           echo "=== Final disk usage ==="
           df -h
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+          
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python dependencies
-        uses: actions/cache@v4
-        id: cache-python
-        with:
-          path: |
-            ~/.cache/pip
-            .venv
-          key: ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-python-${{ env.PYTHON_VERSION }}-
-
-      - name: Install Python dependencies
-        run: |
-          echo "📦 Setting up Python environment..."
-          if [[ "${{ steps.cache-python.outputs.cache-hit }}" != "true" ]]; then
-            echo "Creating virtual environment and installing dependencies..."
-            python -m venv .venv
-          fi
-
-          source .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r tests/requirements.txt
-
-          echo "✅ Python environment ready. Installed packages:"
-          pip list | head -20
-
-      # Separate cache for each image with compression
       - name: Cache Weaviate image
         uses: actions/cache@v4
         id: cache-weaviate
@@ -94,15 +177,6 @@ jobs:
           key: ${{ runner.os }}-weaviate-${{ env.WEAVIATE_VERSION }}-v2
           restore-keys: |
             ${{ runner.os }}-weaviate-
-
-      - name: Cache CLIP image
-        uses: actions/cache@v4
-        id: cache-clip
-        with:
-          path: /tmp/clip.tar.gz
-          key: ${{ runner.os }}-clip-${{ env.CLIP_MODEL_TAG }}-v2
-          restore-keys: |
-            ${{ runner.os }}-clip-
 
       - name: Cache Ollama image
         uses: actions/cache@v4
@@ -122,7 +196,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-keycloak-
 
-      # Optimized image loading with compression and size checks
       - name: Load or pull Docker images
         run: |
           echo "🐳 Managing Docker images..."
@@ -156,16 +229,14 @@ jobs:
             fi
           }
 
+          echo "⬇️ Pulling CLIP (no cache due to size)..."
+          docker pull "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}"
+
           # Process images with their individual cache status
           load_or_pull_image \
             "cr.weaviate.io/semitechnologies/weaviate:${{ env.WEAVIATE_VERSION }}" \
             "/tmp/weaviate.tar.gz" \
             "${{ steps.cache-weaviate.outputs.cache-hit }}"
-
-          load_or_pull_image \
-            "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}" \
-            "/tmp/clip.tar.gz" \
-            "${{ steps.cache-clip.outputs.cache-hit }}"
 
           load_or_pull_image \
             "ollama/ollama:${{ env.OLLAMA_VERSION }}" \
@@ -180,7 +251,7 @@ jobs:
           echo "✅ All Docker images ready"
           echo "Final disk space:"
           df -h | grep -E "^/dev|Filesystem"
-
+          
           echo "📊 Cache file sizes:"
           ls -lh /tmp/*.tar.gz 2>/dev/null || echo "No cache files found"
 
@@ -205,7 +276,7 @@ jobs:
           ./tests/start-weaviate.sh
 
           # Wait for Ollama to be ready before pulling models
-          sleep 5  # Wait for Ollama service to be ready
+          sleep 5
           echo "✅ Services started:"
           docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
@@ -263,9 +334,9 @@ jobs:
 
           # Wait a bit more to ensure Keycloak is fully ready
           sleep 5
-
+          
           python _includes/code/python/keycloak_helper_script.py
-
+          
           echo "✅ Keycloak configuration completed"
 
       - name: Record test start time
@@ -273,7 +344,7 @@ jobs:
 
       - name: Run tests
         id: run-tests
-        continue-on-error: true  # NEW: Don't fail workflow on test failure
+        continue-on-error: true
         env:
           DOCS_GITHUB_ENV: "true"
           # Weaviate connection settings
@@ -284,7 +355,7 @@ jobs:
           WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
           WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
           WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
-          # API Keys - using consistent naming
+          # API Keys
           COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
           OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
@@ -295,57 +366,27 @@ jobs:
           WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
           WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
         run: |
-          echo "🧪 Running tests..."
+          echo "🧪 Running PyV4 and TypeScript tests..."
           source .venv/bin/activate
-
-          pytest -m pyv4 -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
-
+          pytest -m "(pyv4 or ts) and not (agents or wcd)" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
           echo "✅ Tests completed"
 
-      # Cleanup steps with consistent error handling
       - name: Stop services
         if: always()
         run: |
           echo "🛑 Stopping services..."
           ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
 
-      - name: Calculate test results
+      - name: Handle test results
         if: always()
-        run: |
-          # Calculate duration
-          TEST_END_TIME=$(date +%s)
-          TEST_DURATION=$((TEST_END_TIME - TEST_START_TIME))
-          
-          # Format duration
-          if [ $TEST_DURATION -ge 60 ]; then
-            MINUTES=$((TEST_DURATION / 60))
-            SECONDS=$((TEST_DURATION % 60))
-            DURATION_FORMATTED="${MINUTES}m ${SECONDS}s"
-          else
-            DURATION_FORMATTED="${TEST_DURATION}s"
-          fi
-          
-          echo "TEST_DURATION=$DURATION_FORMATTED" >> $GITHUB_ENV
-          
-          # Set test status
-          if [ "${{ steps.run-tests.outcome }}" = "success" ]; then
-            echo "TEST_STATUS=success" >> $GITHUB_ENV
-          else
-            echo "TEST_STATUS=failure" >> $GITHUB_ENV
-          fi
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Database-Local'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-pyv4-ts'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
 
-      - name: Send Slack notification
-        if: always()
-        env:
-          SLACK_BOT: ${{ secrets.SLACK_BOT }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_REF: ${{ github.ref }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-        run: |
-          source _build_scripts/slack-test-results.sh
-
-      # Verify what will be cached
       - name: Verify cache contents
         if: always()
         run: |
@@ -373,13 +414,3 @@ jobs:
           docker system prune -f --volumes 2>/dev/null || true
 
           echo "✅ Cleanup completed"
-
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            pytest-results.xml
-            .pytest_cache/
-          retention-days: 9 # Retain for 9 days in order to debug issues

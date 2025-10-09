@@ -215,6 +215,67 @@ if (getNodePermissions) {
 
 await client.roles.delete("testRole")
 
+// START AddAliasPermission
+
+const aliasPermissions = [
+    permissions.aliases({
+        alias: "TargetAlias*",  // Applies to all aliases starting with "TargetAlias"
+        collection: "TargetCollection*",  // Applies to all collections starting with "TargetCollection"
+        create: true,  // Allow alias creation
+        read: true,  // Allow listing aliases
+        update: true,  // Allow updating aliases
+        delete: false,  // Allow deleting aliases
+    }),
+]
+
+await client.roles.create("testRole", aliasPermissions)
+// END AddAliasPermission
+
+const getAliasPermissions = await client.roles.byName("testRole")
+
+
+if (getAliasPermissions) {
+    assert.equal((getAliasPermissions.aliasPermissions.some(
+        permission => permission.alias == "TargetAlias*"
+    )), true)
+}
+
+client.roles.delete("testRole")
+
+// START AddReplicationsPermission
+// todo
+const replicationPermissions = [
+    permissions.replicate({
+        collection: "TargetCollection*",  // Applies to all collections starting with "TargetCollection"
+        shard: "TargetShard*",  // Applies to all shards starting with "TargetShard"
+        create: true,  // Allow replica movement operations
+        read: true,  // Allow retrieving replication status
+        update: true,  // Allow cancelling replication operations
+        delete: false,  // Allow deleting replication operations
+    }),
+]
+
+await client.roles.create("testRole", replicationPermissions)
+// END AddReplicationsPermission
+
+const getReplicationPermissions = client.roles.byName("testRole")
+
+// assert any(
+//     permission.collection == "TargetCollection*" and
+//     permission.shard == "TargetShard*"
+//     for permission in permissions.replicate_permissions
+// )
+
+if (getAliasPermissions) {
+    assert.equal((getAliasPermissions.aliasPermissions.some(
+        permission => permission.alias == "TargetAlias*"
+    )), true)
+}
+
+// todo
+
+await client.roles.delete("testRole")
+
 // This is to add additional permission to below
 const dummyPermission = [
     permissions.collections({
