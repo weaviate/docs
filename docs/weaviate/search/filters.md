@@ -134,8 +134,8 @@ The `v4` Python client API provides filtering by `any_of`, or `all_of`, as well 
   </TabItem>
   <TabItem value="js" label="JS/TS">
 
-Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API.
-<br/>
+  Use `Filters.and` and `Filters.or` methods to combine filters in the JS/TS `v3` API. `Filters.not` is used to negate a filter using the logical NOT operator.
+  <br/>
 
 These methods take variadic arguments (e.g. `Filters.and(f1, f2, f3, ...)`). To pass an array (e.g. `fs`) as an argument, provide it like so: `Filters.and(...fs)` which will spread the array into its elements.
 <br/>
@@ -499,11 +499,12 @@ The `ContainsNone` operator works on text properties and take an array of values
     />
   </TabItem>
   <TabItem value="js" label="JS/TS">
-
-```typescript
-// TypeScript/JavaScript support coming soon
-```
-
+    <FilteredTextBlock
+      text={JavaScriptCode}
+      startMarker="// START ContainsNoneFilter"
+      endMarker="// END ContainsNoneFilter"
+      language="ts"
+    />
   </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock

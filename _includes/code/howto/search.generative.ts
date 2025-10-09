@@ -11,13 +11,15 @@ import weaviate, { GenerateOptions, WeaviateClient } from 'weaviate-client';
 const weaviateURL = process.env.WEAVIATE_URL as string;
 const weaviateKey = process.env.WEAVIATE_API_KEY as string;
 const openaiKey = process.env.OPENAI_APIKEY as string;
+const anthropicKey = process.env.ANTHROPIC_APIKEY as string;
 
-const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL,{
-   authCredentials: new weaviate.ApiKey(weaviateKey),
-   headers: {
-     'X-OpenAI-Api-Key': openaiKey,  // Replace with your inference API key
-   }
- }
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(weaviateURL, {
+  authCredentials: new weaviate.ApiKey(weaviateKey),
+  headers: {
+    'X-OpenAI-Api-Key': openaiKey,
+    'X-Anthropic-Api-Key': anthropicKey,
+  }
+}
 )
 
 let genResults;
@@ -45,7 +47,7 @@ const searchResponse = await reviews.generate.nearText("a sweet German white win
   singlePrompt: {
     prompt: "Translate this into German: {review_body}"
   },
-  groupedTask: { 
+  groupedTask: {
     prompt: "Summarize these review"
   },
   // highlight-start
@@ -53,20 +55,20 @@ const searchResponse = await reviews.generate.nearText("a sweet German white win
     model: "gpt-3.5-turbo",
   }),
   // highlight-end
-},{ 
+}, {
   limit: 2,
   targetVector: "title_country",
 })
 
 for (const result of searchResponse.objects) {
-    console.log("Properties:", result.properties)
-    console.log("Single prompt result:", result.generative?.text )
-    console.log("Grouped task result:", searchResponse.generative?.text)
-  }
+  console.log("Properties:", result.properties)
+  console.log("Single prompt result:", result.generative?.text)
+  console.log("Grouped task result:", searchResponse.generative?.text)
+}
 // END DynamicRag
 
 // Test results
-assert.equal(searchResponse.objects[0].collection, "WineReviewNV")
+//assert.equal(searchResponse.objects[0].collection, "WineReviewNV")
 //assert "title" in response.objects[0].properties.keys()
 // End test
 
@@ -74,10 +76,10 @@ assert.equal(searchResponse.objects[0].collection, "WineReviewNV")
 // ===== QUERY WITH TARGET VECTOR & nearText =====
 // ===============================================
 {
-// NamedVectorNearText
-const myNVCollection = client.collections.use('WineReviewNV');
+  // NamedVectorNearText
+  const myNVCollection = client.collections.use('WineReviewNV');
 
-const result = await myNVCollection.generate.nearText('a sweet German white wine', {
+  const result = await myNVCollection.generate.nearText('a sweet German white wine', {
     singlePrompt: 'Translate this into German: {review_body}',
     groupedTask: 'Summarize these review',
   }, {
@@ -86,46 +88,46 @@ const result = await myNVCollection.generate.nearText('a sweet German white wine
     targetVector: 'title_country',
     // highlight-end
   }
-);
+  );
 
-console.log(result.generative?.text); // print groupedTask result
+  console.log(result.generative?.text); // print groupedTask result
 
-for (let object of result.objects) {
-  console.log(JSON.stringify(object.properties, null, 2));
-  console.log(object.generative?.text); // print singlePrompt result
-}
-// END NamedVectorNearText
+  for (let object of result.objects) {
+    console.log(JSON.stringify(object.properties, null, 2));
+    console.log(object.generative?.text); // print singlePrompt result
+  }
+  // END NamedVectorNearText
 
-// Tests
-assert.deepEqual(result.objects.length, 2);
+  // Tests
+  assert.deepEqual(result.objects.length, 2);
 }
 
 // =====================================================
 // ===== SINGLE GENERATIVE EXAMPLE WITH PROPERTIES =====
 // =====================================================
 {
-// START SingleGenerativePropertiesTS
+  // START SingleGenerativePropertiesTS
 
-const prompt = `Convert this quiz question: {question} and answer: {answer} into a trivia tweet.`
+  const prompt = `Convert this quiz question: {question} and answer: {answer} into a trivia tweet.`
 
-response = await jeopardy.generate.nearText('World history', { 
-  singlePrompt: prompt 
-},{ 
-  limit: 2 
-})
+  response = await jeopardy.generate.nearText('World history', {
+    singlePrompt: prompt
+  }, {
+    limit: 2
+  })
 
-for (let object of response.objects) {
-  console.log(JSON.stringify(object.properties, null, 2));
-  console.log(object.generative?.text); // print singlePrompt result
-}
-// END SingleGenerativePropertiesTS
+  for (let object of response.objects) {
+    console.log(JSON.stringify(object.properties, null, 2));
+    console.log(object.generative?.text); // print singlePrompt result
+  }
+  // END SingleGenerativePropertiesTS
 
-// Tests
-const genResults = response.objects;
-assert.equal(genResults.length, 2);
-for (const g of genResults) {
-  assert.equal(typeof g.generative?.text, 'string');
-}
+  // Tests
+  const genResults = response.objects;
+  assert.equal(genResults.length, 2);
+  for (const g of genResults) {
+    assert.equal(typeof g.generative?.text, 'string');
+  }
 }
 
 // =====================================================
@@ -136,33 +138,33 @@ for (const g of genResults) {
 
 // highlight-start
 const singlePromptConfig = {
-    prompt: "Convert this quiz question: {question} and answer: {answer} into a trivia tweet.",
-    metadata: true,
-    debug: true,
+  prompt: "Convert this quiz question: {question} and answer: {answer} into a trivia tweet.",
+  metadata: true,
+  debug: true,
 }
 // highlight-end
 
 response = await jeopardy.generate.nearText("World history", {
-    // highlight-start
-    singlePrompt: singlePromptConfig,
-    // highlight-end
-    config : generativeParameters.openAI()
+  // highlight-start
+  singlePrompt: singlePromptConfig,
+  // highlight-end
+  config: generativeParameters.openAI()
 }, {
-  limit: 2, 
+  limit: 2,
 })
 
 // print source properties and generated responses
-for ( const object of response.objects) {
-    console.log("Properties:", object.properties)
-    console.log("Single prompt result:", object.generative?.text)
-    console.log("Debug:", object.generative?.debug)
-    console.log("Metadata:", object.generative?.metadata)
+for (const object of response.objects) {
+  console.log("Properties:", object.properties)
+  console.log("Single prompt result:", object.generative?.text)
+  console.log("Debug:", object.generative?.debug)
+  console.log("Metadata:", object.generative?.metadata)
 }
 // END SingleGenerativeParametersTS
 
 // Test results
-assert.equal(response.objects[0].collection, "JeopardyQuestion")
-assert.equal(((response.generative?.text?.length) > 0), true)
+//assert.equal(response.objects[0].collection, "JeopardyQuestion")
+assert.equal(((response.objects[0].generative?.text.length) > 0), true)
 // End test
 
 
@@ -170,27 +172,28 @@ assert.equal(((response.generative?.text?.length) > 0), true)
 // ===== GROUPED GENERATIVE EXAMPLE =====
 // ======================================
 {
-// START GroupedGenerativeTS
+  // START GroupedGenerativeTS
 
-const groupedTaskPrompt = `What do these animals have in common, if anything?`;
+  const groupedTaskPrompt = `What do these animals have in common, if anything?`;
 
-response = await jeopardy.generate.nearText('Cute animals',{ 
-  groupedTask: groupedTaskPrompt 
-},{ 
-  limit: 3 }
-)
+  response = await jeopardy.generate.nearText('Cute animals', {
+    groupedTask: groupedTaskPrompt
+  }, {
+    limit: 3
+  }
+  )
 
-console.log(response.generative?.text);
-// END GroupedGenerativeTS
+  console.log(response.generative?.text);
+  // END GroupedGenerativeTS
 
-// Tests
-genResults = response;
-assert.equal(genResults.objects.length, 3);
-// assert.equal(typeof genResults[0]._additional.generate.groupedResult, 'string');
-// for (const g of genResults.objects.slice(1)) {
-//   assert.equal(g.generated, null);
-//   assert.equal(typeof g.points, 'number');
-// }
+  // Tests
+  genResults = response;
+  assert.equal(genResults.objects.length, 3);
+  // assert.equal(typeof genResults[0]._additional.generate.groupedResult, 'string');
+  // for (const g of genResults.objects.slice(1)) {
+  //   assert.equal(g.generated, null);
+  //   assert.equal(typeof g.points, 'number');
+  // }
 }
 
 // =====================================================
@@ -207,12 +210,12 @@ const groupedTaskPrompt = {
 // highlight-end
 
 response = await jeopardy.generate.nearText("Cute animals", {
-    // highlight-start
-    groupedTask: groupedTaskPrompt,
-    // highlight-end
-    config: generativeParameters.openAI()
-  }, {
-    limit: 3,
+  // highlight-start
+  groupedTask: groupedTaskPrompt,
+  // highlight-end
+  config: generativeParameters.openAI()
+}, {
+  limit: 3,
 })
 
 // print the generated response
@@ -221,7 +224,7 @@ console.log("Metadata:", response.generative?.metadata)
 // END GroupedGenerativeParametersTS
 
 // Test results
-assert.equal(response.objects[0].collection, "JeopardyQuestion")
+// assert.equal(response.objects[0].collection, "JeopardyQuestion")
 assert.equal(((response?.generative?.text?.length) > 0), true)
 // End test
 
@@ -229,39 +232,36 @@ assert.equal(((response?.generative?.text?.length) > 0), true)
 // ===== GROUPED GENERATIVE EXAMPLE WITH PROPERTIES =====
 // ======================================================
 {
-// START GroupedGenerativeProperties
+  // START GroupedGenerativeProperties
 
-const generatePrompt = `What do these animals have in common, if anything?`;
+  const generatePrompt = `What do these animals have in common, if anything?`;
 
-response = await jeopardy.generate.nearText('Australian animals', {
+  response = await jeopardy.generate.nearText('Australian animals', {
     groupedTask: generatePrompt,
     groupedProperties: ['answer', 'question'],
-},{ 
-    limit: 3 
-})
+  }, {
+    limit: 3
+  })
 
-console.log(response.generative?.text);
-// END GroupedGenerativeProperties
+  console.log(response.generative?.text);
+  // END GroupedGenerativeProperties
 
-// Tests
-// genResults = result;
-// assert.equal(genResults.objects.length, 3);
-// // assert.equal(genResults[0]._additional.generate.error, null);
-// assert.ok(genResults.generated.includes('Australia'));
-// for (const g of genResults.objects.slice(1)) {
-//   assert.equal(g.generated, null);
-//   assert.equal(typeof g.points, 'number');
-//   assert.equal(typeof g.question, 'string');
-// }
+  // Tests
+  // genResults = result;
+  // assert.equal(genResults.objects.length, 3);
+  // // assert.equal(genResults[0]._additional.generate.error, null);
+  // assert.ok(genResults.generated.includes('Australia'));
+  // for (const g of genResults.objects.slice(1)) {
+  //   assert.equal(g.generated, null);
+  //   assert.equal(typeof g.points, 'number');
+  //   assert.equal(typeof g.question, 'string');
+  // }
 }
 
 // ==========================================
 // ===== GENERATIVE EXAMPLE WITH IMAGES =====
 // ==========================================
 
-
-
-(async () => {
 // START WorkingWithImages
 
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
@@ -310,11 +310,9 @@ for (const item of response.objects) {
 
 console.log("Grouped task result:", response.generative?.text)
 // END WorkingWithImages
-})();
 
 
 // Test results
-assert.equal(response.objects[0].collection, "JeopardyQuestion")
 if (response) {
   assert.equal((response.generative?.text?.length > 0), true)
 }

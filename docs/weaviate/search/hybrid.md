@@ -395,6 +395,14 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="python"
     />
   </TabItem>
+  <TabItem value="ts" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">
     <FilteredTextBlock
       text={JavaV6Code}
@@ -432,6 +440,14 @@ With the `and` operator, the search returns objects that contain all tokens in t
       startMarker="# START HybridWithBM25OperatorAnd"
       endMarker="# END HybridWithBM25OperatorAnd"
       language="python"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">

@@ -1018,7 +1018,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.ollama({
-    apiEndpoint: 'http://host.docker.internal:11434',  // If using Docker, use this to contact your local Ollama instance
+    apiEndpoint: 'http://ollama:11434',  // If using Docker you might need: http://host.docker.internal:11434
     model: 'llama3',  // The model to use, e.g. 'phi3', or 'mistral', 'command-r-plus', 'gemma'
   }),
   // highlight-end
@@ -1034,7 +1034,7 @@ await client.collections.create({
   name: 'DemoCollection',
   // highlight-start
   generative: weaviate.configure.generative.ollama({
-    apiEndpoint: 'http://host.docker.internal:11434',  // If using Docker, use this to contact your local Ollama instance
+    apiEndpoint: 'http://ollama:11434',  // If using Docker you might need: http://host.docker.internal:11434
     model: 'llama3',  // The model to use, e.g. 'phi3', or 'mistral', 'command-r-plus', 'gemma'
   }),
   // highlight-end
@@ -1047,7 +1047,7 @@ response = await myCollection.generate.nearText("A holiday film", {
   // highlight-start
   groupedTask: "Write a tweet promoting these two movies",
   config: generativeParameters.ollama({
-    apiEndpoint: 'http://host.docker.internal:11434',  // If using Docker, use this to contact your local Ollama instance
+    apiEndpoint: 'http://ollama:11434',  // If using Docker you might need: http://host.docker.internal:11434
     model: 'llama3',  // The model to use, e.g. 'phi3', or 'mistral', 'command-r-plus', 'gemma'
   }),
   // highlight-end
