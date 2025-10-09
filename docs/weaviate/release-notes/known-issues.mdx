@@ -10,13 +10,13 @@ image: og/docs/more-resources.jpg
 
 # Known Issues
 
-This page documents significant known issues in Weaviate, their symptoms, and recommended resolutions. Use the table below to find issues relevant to your version.
+This page documents significant known issues in Weaviate, their symptoms, and recommended resolutions. Use the table below to find issues that may be affecting you, and their status.
 
 ## Quick Reference
 
 | Issue | Affected Versions | Resolution | Fixed In |
 |-------|-------------------|--------|----------|
-| [Multiple vectors with quantization](#multiple-vectors-with-quantization) | 1.25.0-1.33.0 | In progress | - |
+<!-- | [Multiple vectors per object with quantization](#multiple-vectors-per-object-with-quantization) | 1.25.0-1.33.0 | In progress | - | -->
 | [Empty Collections Panic](#empty-collections-panic) | 1.28 - 1.31 | In Progress | - |
 | [Database Restoration Blocked](#database-restoration-blocked) | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3 | Fixed | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
 | [Raft Snapshot Compatibility on Downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed | 1.27.26 |
@@ -46,7 +46,7 @@ This page documents significant known issues in Weaviate, their symptoms, and re
 #### Root Cause
 #### Resolution -->
 
-### Multiple Vectors with Quantization
+<!-- ### Multiple Vectors Per Object with Quantization
 
 :::info Impact summary
 - **Affected versions:** 1.25.0-1.33.0
@@ -65,7 +65,7 @@ A bug in the handling of multiple vectors with quantization causes the same vect
 
 #### Resolution
 
-The Weaviate team is actively working on a fix. A patched version will be released as soon as possible.
+The Weaviate team is actively working on a fix. A patched version will be released as soon as possible. -->
 
 ### Database Restoration Blocked
 
