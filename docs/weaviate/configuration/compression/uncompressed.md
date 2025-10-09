@@ -57,7 +57,7 @@ When creating the collection, you can choose not to use quantization through the
       endMarker="// END Uncompressed"
       language="csharp"
     />
-    </TabItem>ƒ
+    </TabItem>
 </Tabs>
 
 ## Additional considerations
