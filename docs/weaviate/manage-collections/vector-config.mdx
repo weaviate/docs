@@ -212,7 +212,9 @@ Named vectors can be added to existing collection definitions with named vectors
 </Tabs>
 
 :::caution Objects aren't automatically revectorized
-Adding a new named vector to the collection definition [won't trigger vectorization for existing objects](../concepts/data.md#adding-a-named-vector-after-collection-creation). Only new or updated objects will receive embeddings for the newly added named vector definition.
+
+Adding a new vector to the collection definition [won't trigger vectorization for existing objects](../concepts/data.md#adding-a-named-vector-after-collection-creation). Only objects created after the vector addition will receive these new vector embeddings.
+
 :::
 
 ## Define multi-vector embeddings (e.g. ColBERT, ColPali)
