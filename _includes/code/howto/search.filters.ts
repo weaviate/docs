@@ -7,10 +7,10 @@ import { vectors, dataType } from 'weaviate-client';
 // ===== INSTANTIATION-COMMON =====
 // ================================
 
-// searchMultipleFiltersAnd // searchMultipleFiltersNested
+// searchMultipleFiltersAnd // searchMultipleFiltersNested // START ContainsNoneFilter
 import weaviate, { Filters } from 'weaviate-client';
 
-// END searchMultipleFiltersAnd // END searchMultipleFiltersNested
+// END searchMultipleFiltersAnd // END searchMultipleFiltersNested // END ContainsNoneFilter
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {
    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
@@ -20,10 +20,10 @@ const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as
  }
 )
 
-// searchSingleFilter // searchLikeFilter // ContainsAnyFilter // ContainsAllFilter // searchMultipleFiltersNested // searchMultipleFiltersAnd // searchFilterNearText // FilterByPropertyLength // searchCrossReference  // searchCrossReference // searchMultipleFiltersNested
+// START ContainsNoneFilter // searchSingleFilter // searchLikeFilter // ContainsAnyFilter // ContainsAllFilter // searchMultipleFiltersNested // searchMultipleFiltersAnd // searchFilterNearText // FilterByPropertyLength // searchCrossReference  // searchCrossReference // searchMultipleFiltersNested
 const jeopardy = client.collections.use('JeopardyQuestion');
 
-// END searchSingleFilter // END searchLikeFilter // END ContainsAnyFilter // END ContainsAllFilter // END searchMultipleFiltersNested // END searchMultipleFiltersAnd // END searchFilterNearText // END FilterByPropertyLength // END searchCrossReference // END searchCrossReference // END searchMultipleFiltersNested
+// END ContainsNoneFilter // END searchSingleFilter // END searchLikeFilter // END ContainsAnyFilter // END ContainsAllFilter // END searchMultipleFiltersNested // END searchMultipleFiltersAnd // END searchFilterNearText // END FilterByPropertyLength // END searchCrossReference // END searchCrossReference // END searchMultipleFiltersNested
 
 // FilterByTimestamp // filterById
 const myArticleCollection = client.collections.use('Article');
@@ -175,7 +175,8 @@ const result = await jeopardy.query.fetchObjects({
   // highlight-start
   filters: Filters.and(
     jeopardy.filter.byProperty('round').equal('Double Jeopardy!'),
-    jeopardy.filter.byProperty('points').lessThan(600)
+    jeopardy.filter.byProperty('points').lessThan(600),
+    Filters.not(jeopardy.filter.byProperty("answer").equal("Yucatan"))
   ),
   // highlight-end
   limit: 3,
@@ -261,16 +262,51 @@ for (let object of result.objects) {
 // }
 }
 
+// ==========================================
+// ===== ContainsNoneFilter =====
+// ==========================================
+
+// START ContainsNoneFilter
+
+// highlight-start
+const tokenList = ["bird", "animal"]
+// highlight-end
+
+const response = await jeopardy.query.fetchObjects({
+    // highlight-start
+    // Find objects where the `question` property contains none of the strings in `token_list`
+    filters: jeopardy.filter.byProperty("question").containsNone(tokenList),
+    // highlight-end
+    limit: 3
+})
+
+for (const object of response.objects) {
+    console.log(object.properties)
+}
+// END ContainsNoneFilter
+
+// Test results
+// assert response.objects[0].collection == "JeopardyQuestion"
+// assert (token_list[0] not in response.objects[0].properties["question"].lower() and token_list[1] not in response.objects[0].properties["question"].lower())
+// End test
+
 // ===================================================
 // ===== Filters using Id =====
 // ===================================================
 {
-// filterById
-const targetId = '00037775-1432-35e5-bc59-443baaef7d80'
+let targetId = await jeopardy.data.insert({
+properties: {
+  question: 'This is a temporary object to demonstrate deletion',
+  answer: 'EphemeralObject',
+  round: 'Jeopardy!',
+  points: 100,
+}
+})  
 
-result = await article.query.fetchObjects({
+// filterById
+let result = await jeopardy.query.fetchObjects({
   // highlight-start
-  filters: article.filter.byId().equal(targetId),
+  filters: jeopardy.filter.byId().equal(targetId),
   // highlight-end
 })
 
@@ -290,7 +326,7 @@ assert.equal(targetId, result.objects[0].uuid);
 // FilterByTimestamp
 const creationTime = '2020-01-01T00:00:00+00:00'
 
-result = await myArticleCollection.query.fetchObjects({
+let result = await myArticleCollection.query.fetchObjects({
   // highlight-start
   filters: jeopardy.filter.byCreationTime().greaterOrEqual(creationTime),
   // highlight-end
@@ -311,7 +347,7 @@ for (const article of result.objects) {
 // ===================================================
 // ===== FilterByDateDatatype =====
 // ===================================================
-
+await client.collections.delete("CollectionWithDate")
 const collectionWithDate = await client.collections.create({
   name: "CollectionWithDate",
   properties: [

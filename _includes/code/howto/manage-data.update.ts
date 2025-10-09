@@ -9,7 +9,7 @@ import weaviate, { WeaviateClient } from 'weaviate-client';
 
 const client = await weaviate.connectToLocal({
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_API_KEY || '',  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
  } 
 )
@@ -27,7 +27,7 @@ const myCollection = client.collections.use('JeopardyQuestion')
 const collectionDefinition = {
   name: 'JeopardyQuestion',
   description: 'A Jeopardy! question',
-  vectorizers: weaviate.configure.vectors.text2VecCohere(),
+  vectorizers: weaviate.configure.vectors.text2VecOpenAI(),
 };
 
 // Clean slate
@@ -39,7 +39,12 @@ try {
   await client.collections.create(collectionDefinition)
 }
 
-
+await myCollection.data.insert({
+  id: 'ed89d9e7-4c9d-4a6a-8d20-095cb0026f54',
+  properties: {
+    'points': 100,
+  },
+})
 // =============================
 // ===== Update properties =====
 // =============================
@@ -68,7 +73,7 @@ console.log(response)
 // =========================
 {
 // UpdateVector START
-const jeopardy = client.collections.use('Jeopardy')
+const jeopardy = client.collections.use('JeopardyQuestion')
 const response = await jeopardy.data.update({
   id: 'ed89d9e7-4c9d-4a6a-8d20-095cb0026f54',
   // highlight-start
@@ -122,7 +127,7 @@ async function deleteProperties(client: WeaviateClient, uuidToUpdate: string, co
         }
     }
   
-    result = await collection.data.replace({
+    let result = await collection.data.replace({
       id: uuidToUpdate,
       properties: propertiesToUpdate
     })

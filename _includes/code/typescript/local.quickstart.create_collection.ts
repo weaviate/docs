@@ -11,9 +11,9 @@ await client.collections.delete('Question');
 // highlight-start
 await client.collections.create({
   name: 'Question',
-  vectorizers: vectors.text2VecOllama({              // Configure the Ollama embedding integration
-    apiEndpoint: 'http://host.docker.internal:11434',   // Allow Weaviate from within a Docker container to contact your Ollama instance
-    model: 'nomic-embed-text',                          // The model to use
+  vectorizers: vectors.text2VecOllama({  // Configure the Ollama embedding integration
+    apiEndpoint: 'http://ollama:11434',  // If using Docker you might need: http://host.docker.internal:11434
+    model: 'nomic-embed-text',           // The model to use
   }),
 });
 // highlight-end

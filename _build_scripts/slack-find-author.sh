@@ -18,6 +18,7 @@ git_slack_map=(
     ["iamleonie"]="<@U05EG4DEJMC>"
     ["Igor Lamas"]="<@U04MGB80F45>"
     ["Ivan Despot"]="<@U0872JK65FU>"
+    ["g-despot"]="<@U0872JK65FU>"
     ["John Trengrove"]="<@U03KPAE8Y7K>"
     ["JP Hwang"]="<@U0441J6PYGN>"
     ["Leonie"]="<@U05EG4DEJMC>"
@@ -40,8 +41,11 @@ git_slack_map=(
 git_hash=$(echo "$GITHUB_SHA" | cut -c1-7)
 github_name="$(git log -1 $git_hash --pretty="%aN")"
 
+# Check if the author is in the map and write the result to GITHUB_ENV
 if [ ${git_slack_map[$github_name]+_} ]; then
     export AUTHOR_NAME=${git_slack_map[$github_name]}
+    echo "AUTHOR_NAME=${git_slack_map[$github_name]}" >> $GITHUB_ENV
 else
     export AUTHOR_NAME=$github_name
+    echo "AUTHOR_NAME=$github_name" >> $GITHUB_ENV
 fi
