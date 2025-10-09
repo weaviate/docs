@@ -226,7 +226,7 @@ import ModelProvider from "/_includes/embedding-model-providers.mdx";
 
 ### Step 2: Trigger vectorization
 
-Update all objects to generate embeddings with the new vectorizer. We use a minimal update that doesn't change properties:
+To trigger vectorization with the new embedding model, you will need to delete and reinsert the objects in question. We are going to delete and insert the whole dataset. 
 
 <FilteredTextBlock
   text={PyCode}
@@ -250,15 +250,15 @@ Now you can query using the new vector:
 
 A critical point to remember is that you **cannot delete a named vector** from a collection once it has been added. Both the original and new vectors will coexist for each object.
 
-This means your **storage usage for this collection will permanently increase**. Due to this limitation, Method A is best suited for temporary testing or when a permanent increase in storage is acceptable, rather than for production migrations where a clean state is desirable.
+This means your **storage usage for this collection will permanently increase**. Due to this limitation, adding new vectors best suited for temporary testing or when a permanent increase in storage is acceptable, rather than for production migrations where a clean state is needed.
 
 ---
 
 ## Choosing the right method
 
-:::Recommendation: Use collection aliases for production
+:::tip Recommendation: Use collection aliases for production
 
-While both methods achieve the goal of switching vectorizers, **we strongly recommend using collection aliases (Method B) for production migrations**. This approach provides a reversible and efficient way to upgrade your embedding models without long-term side effects like increased storage.
+While both methods achieve the goal of switching vectorizers, **we strongly recommend using collection aliases for production migrations**. This approach provides a reversible and efficient way to upgrade your embedding models without long-term side effects like increased storage.
 
 :::
 

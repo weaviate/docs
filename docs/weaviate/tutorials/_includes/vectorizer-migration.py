@@ -17,7 +17,7 @@ def load_ecommerce_data():
     # In production, process the full dataset or use batching
     ecommerce_data = []
     for i, item in enumerate(dataset):
-        if i >= 100:  # Limit for demo - remove this for full dataset
+        if i >= 10:
             break
         ecommerce_data.append(
             {"properties": item["properties"], "vector": item["vector"]}
@@ -62,22 +62,14 @@ from weaviate.classes.config import Configure, DataType, Property
 products = client.collections.create(
     name="ECommerceProducts",
     vector_config=[
-        Configure.Vectors.self_provided(
+        Configure.Vectors.text2vec_weaviate(
             name="original_vector",  # Name for existing vectors
         )
     ],
     properties=[
-        Property(name="collection", data_type=DataType.TEXT),
         Property(name="category", data_type=DataType.TEXT),
-        Property(name="tags", data_type=DataType.TEXT_ARRAY),
-        Property(name="subcategory", data_type=DataType.TEXT),
         Property(name="name", data_type=DataType.TEXT),
         Property(name="description", data_type=DataType.TEXT),
-        Property(name="brand", data_type=DataType.TEXT),
-        Property(name="product_id", data_type=DataType.UUID),
-        Property(name="colors", data_type=DataType.TEXT_ARRAY),
-        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
-        Property(name="image_url", data_type=DataType.TEXT),
         Property(name="price", data_type=DataType.NUMBER),
     ],
 )
@@ -91,7 +83,7 @@ with products.batch.fixed_size(batch_size=200) as batch:
     for item in ecommerce_data:
         batch.add_object(
             properties=item["properties"],
-            vector={"original_vector": item["vector"]},  # Use existing vectors
+            vector={"original_vector": item["vector"]},
         )
 
 failed_objects = products.batch.failed_objects
@@ -105,10 +97,7 @@ else:
 # Query using original vectors
 products = client.collections.use("ECommerceProducts")
 
-# Use a vector from one of our items as a query vector
-# In production, this would be from your query encoder
-query_text = "comfortable athletic wear"
-# For demo: use the first item's vector as a query vector
+# For the demo get the first item's vector and search for
 query_vector = ecommerce_data[0]["vector"]
 
 results = products.query.near_vector(
@@ -126,11 +115,11 @@ for obj in results.objects:
 # END Method1QueryOriginal
 
 # ============================================
-# METHOD 1: NAMED VECTORS MIGRATION
+# METHOD 1: NEW VECTORS MIGRATION
 # ============================================
 
 # START Method1AddNewVector
-# Add a new named vector with Weaviate Embeddings
+# Add a new vector with Weaviate Embeddings vectorizer
 from weaviate.classes.config import Configure
 
 # Add new vector configuration to existing collection
@@ -145,27 +134,40 @@ print("Added new Weaviate Embeddings vector to collection")
 # END Method1AddNewVector
 
 # START Method1TriggerVectorization
-# Update all objects to trigger vectorization with new vectorizer
+# Re-insert all objects to trigger vectorization with new vectorizer
+from weaviate.classes.query import Filter
+
 products = client.collections.use("ECommerceProducts")
 
-# Fetch all objects
-all_objects = products.query.fetch_objects(limit=10000).objects
+# Fetch all object UUIDs to delete them
+all_objects = products.query.fetch_objects().objects
+products.data.delete_many(
+    where=Filter.by_id().contains_any([obj.uuid for obj in all_objects])
+)
+
+# Insert all objects into the collection to re-calculate the vector embeddings
+# for the new vector "new_vector"
+with products.batch.fixed_size(batch_size=200) as batch:
+    for item in ecommerce_data:
+        batch.add_object(
+            properties=item["properties"],
+            vector={"original_vector": item["vector"]},  
+        )
+
+print(f"Triggered vectorization for all objects")
+# END Method1TriggerVectorization
 
 # Update each object to trigger vectorization
-# We're not changing any properties, just triggering the update
-update_count = 0
-for obj in all_objects:
-    # Update with a minimal property change to trigger vectorization
-    products.data.update(
-        uuid=obj.uuid,
-        properties={
-            "name": obj.properties["name"],  # Same value
-        },
-    )
-    update_count += 1
-
-print(f"Triggered vectorization for {update_count} objects")
-# END Method1TriggerVectorization
+# We're adding a new property to trigger re-vectorization
+# products.config.add_property(Property(name="vectorized", data_type=DataType.BOOL))
+# update_count = 0
+# for obj in all_objects:
+#     # Update with no changes to trigger vectorization
+#     products.data.update(
+#         uuid=obj.uuid,
+#         properties={"vectorized": True},  # Set new property
+#     )
+#     update_count += 1
 
 # START Method1QueryNewVector
 # Query using the new Weaviate Embeddings vector
@@ -184,22 +186,9 @@ for obj in results.objects:
     print(
         f"- {obj.properties['name']} ({obj.properties['category']}): ${obj.properties['price']}"
     )
-
-# You can still query with the original vector
-# Use the first item's vector as query
-query_vector = ecommerce_data[0]["vector"]
-results_original = products.query.near_vector(
-    near_vector=query_vector,
-    target_vector="original_vector",
-    limit=3,
-    return_properties=["name", "category"],
-)
-
-print("\nComparison - Original vectors still work:")
-for obj in results_original.objects:
-    print(f"- {obj.properties['name']} ({obj.properties['category']})")
 # END Method1QueryNewVector
 
+assert len(results.objects) == 3
 # ============================================
 # METHOD 2: COLLECTION ALIASES MIGRATION
 # ============================================
@@ -247,17 +236,9 @@ products_v2 = client.collections.create(
         source_properties=["name", "description"],  # Properties to vectorize
     ),
     properties=[
-        Property(name="collection", data_type=DataType.TEXT),
         Property(name="category", data_type=DataType.TEXT),
-        Property(name="tags", data_type=DataType.TEXT_ARRAY),
-        Property(name="subcategory", data_type=DataType.TEXT),
         Property(name="name", data_type=DataType.TEXT),
         Property(name="description", data_type=DataType.TEXT),
-        Property(name="brand", data_type=DataType.TEXT),
-        Property(name="product_id", data_type=DataType.UUID),
-        Property(name="colors", data_type=DataType.TEXT_ARRAY),
-        Property(name="reviews", data_type=DataType.TEXT_ARRAY),
-        Property(name="image_url", data_type=DataType.TEXT),
         Property(name="price", data_type=DataType.NUMBER),
     ],
 )
@@ -299,7 +280,6 @@ print("Switched alias 'ECommerceProduction' -> 'ECommerce_v2'")
 # Now queries using the alias automatically use the new collection
 products = client.collections.use("ECommerceProduction")
 
-# Can now use text search (wasn't possible with self-provided vectors)
 results = products.query.near_text(
     query="comfortable athletic wear",
     target_vector="new_vector",
