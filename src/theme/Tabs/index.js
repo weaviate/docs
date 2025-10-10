@@ -4,9 +4,9 @@
 import React, {
   useState,
   useEffect,
-  cloneElement,
   isValidElement,
   Children,
+  useRef,
 } from "react";
 import OriginalTabs from "@theme-original/Tabs";
 import clsx from "clsx";
@@ -20,7 +20,10 @@ const LANGUAGE_CONFIG = {
   py: { label: "Python", icon: "/img/site/logo-py.svg" },
   py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
   ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
-  ts_agents: { label: "JavaScript/TypeScript (Agents)", icon: "/img/site/logo-ts.svg" },
+  ts_agents: {
+    label: "JavaScript/TypeScript (Agents)",
+    icon: "/img/site/logo-ts.svg",
+  },
   go: { label: "Go", icon: "/img/site/logo-go.svg" },
   java: { label: "Java", icon: "/img/site/logo-java.svg" },
   curl: { label: "Curl", icon: null },
@@ -125,36 +128,90 @@ const CodeDropdownTabs = ({
       }));
 
   // State for selected tab
+  const isInternalChange = useRef(false);
+
   const [selectedValue, setSelectedValue] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedValue = localStorage.getItem(
-        `docusaurus.tab.${groupId || "languages"}`
-      );
-      if (savedValue && tabValues.some((t) => t.value === savedValue)) {
-        return savedValue;
-      }
-      const globalLang = localStorage.getItem("selectedCodeLanguage");
-      if (globalLang) {
-        return globalLang;
-      }
+    if (typeof window === "undefined") {
+      return defaultValue || tabValues[0]?.value;
     }
+
+    const groupValue = localStorage.getItem(
+      `docusaurus.tab.${groupId || "languages"}`
+    );
+    const globalValue = localStorage.getItem("selectedCodeLanguage");
+    const targetLang = groupValue || globalValue;
+
+    if (targetLang) {
+      const availableLangs = tabValues.map((t) => t.value);
+
+      if (availableLangs.includes(targetLang)) {
+        return targetLang;
+      }
+
+      if (targetLang === "py" && availableLangs.includes("py_agents")) {
+        return "py_agents";
+      }
+      if (targetLang === "py_agents" && availableLangs.includes("py")) {
+        return "py";
+      }
+
+      if (targetLang === "ts" && availableLangs.includes("ts_agents")) {
+        return "ts_agents";
+      }
+      if (targetLang === "ts_agents" && availableLangs.includes("ts")) {
+        return "ts";
+      }
+
+      return targetLang;
+    }
+
     return defaultValue || tabValues[0]?.value;
   });
 
   // Listen for global language changes
   useEffect(() => {
     const handleLanguageChange = (event) => {
-      const newLang = event.detail;
-      setSelectedValue(newLang);
+      if (isInternalChange.current) {
+        isInternalChange.current = false;
+        return;
+      }
+
+      const newGlobalLang = event.detail;
+      const availableLangs = tabValues.map((t) => t.value);
+      let valueToSet = newGlobalLang;
+
+      if (!availableLangs.includes(newGlobalLang)) {
+        if (newGlobalLang === "py" && availableLangs.includes("py_agents")) {
+          valueToSet = "py_agents";
+        } else if (
+          newGlobalLang === "py_agents" &&
+          availableLangs.includes("py")
+        ) {
+          valueToSet = "py";
+        } else if (
+          newGlobalLang === "ts" &&
+          availableLangs.includes("ts_agents")
+        ) {
+          valueToSet = "ts_agents";
+        } else if (
+          newGlobalLang === "ts_agents" &&
+          availableLangs.includes("ts")
+        ) {
+          valueToSet = "ts";
+        }
+      }
+
+      setSelectedValue(valueToSet);
     };
 
     window.addEventListener("codeLanguageChange", handleLanguageChange);
     return () =>
       window.removeEventListener("codeLanguageChange", handleLanguageChange);
-  }, []);
+  }, [tabValues]);
 
   // Handle language change
   const handleChange = (newValue) => {
+    isInternalChange.current = true;
     setSelectedValue(newValue);
     if (typeof window !== "undefined") {
       if (groupId) {
@@ -296,7 +353,15 @@ const CodeDropdownTabs = ({
               </strong>{" "}
               is not yet available here.
             </p>
-            <span>Please open a <Link href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}>GitHub issue</Link> so we can prioritize adding support for this language.</span>
+            <span>
+              Please open a{" "}
+              <Link
+                href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}
+              >
+                GitHub issue
+              </Link>{" "}
+              so we can prioritize adding support for this language.
+            </span>
           </div>
         )}
       </div>
