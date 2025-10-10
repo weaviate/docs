@@ -33,7 +33,7 @@ A BM25 query is shown below. Each BM25 query:
 - **Can optionally** include weights for each searched property, and
 - **Can optionally** request a `score` for each result.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -80,7 +80,7 @@ More concretely, let's take a look at some examples.
 
 In this example, we search through the `question` property with the query string `Jeopardy`. The `question` property is tokenized with the `word` tokenization option.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -111,7 +111,7 @@ Now, let's take a look at the same query, but with the `field` tokenization opti
 
 In this example, the query string remains the same (`Jeopardy`), however we are now searching the `round` property, which is tokenized with the `field` tokenization option.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}

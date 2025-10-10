@@ -41,7 +41,7 @@ Multi-target vector search is available for `near_xxx` queries (from `v1.26`), a
 
 As a minimum, specify the target vector names as an array of named vectors. This will use the [default join strategy](#available-join-strategies).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -50,12 +50,12 @@ As a minimum, specify the target vector names as an array of named vectors. This
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiBasic"
   endMarker="// END MultiBasic"
-  language="js"
+  language="ts"
 />
 </TabItem>
 <TabItem value="go" label="Go">
@@ -81,7 +81,7 @@ As a minimum, specify the target vector names as an array of named vectors. This
 
 You can specify multiple query vectors in the search query with a `nearVector` search. This allows use of a different query vector for each corresponding target vector.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -90,7 +90,7 @@ You can specify multiple query vectors in the search query with a `nearVector` s
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetNearVector"
@@ -115,7 +115,7 @@ The query vectors in this case are specified as an array of vectors. There are m
 
 The target vectors can be specified as an array as shown here.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -125,7 +125,7 @@ The target vectors can be specified as an array as shown here.
 />
 </TabItem>
 
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetMultipleNearVectorsV1"
@@ -139,7 +139,7 @@ The target vectors can be specified as an array as shown here.
 
 If you want to provide weights for each target vector you can do it as shown here.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -149,7 +149,7 @@ If you want to provide weights for each target vector you can do it as shown her
 />
 </TabItem>
 
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetMultipleNearVectorsV2"
@@ -165,7 +165,7 @@ Specify target vectors as an array of named vectors and how to join the result s
 
 The `sum`, `average`, `minimum` join strategies only require the name of the strategy and the target vectors.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -174,7 +174,7 @@ The `sum`, `average`, `minimum` join strategies only require the name of the str
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetWithSimpleJoin"
@@ -195,7 +195,7 @@ Each distance between the query vector and the target vector is multiplied by th
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -204,7 +204,7 @@ Each distance between the query vector and the target vector is multiplied by th
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetManualWeights"
@@ -226,7 +226,7 @@ Each distance is normalized against other results for that target vector. Each n
 For a more detailed explanation of how scores are normalized, see the blog post on [hybrid relative score fusion](https://weaviate.io/blog/hybrid-search-fusion-algorithms#relative-score-fusion)
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCodeV4}
@@ -235,7 +235,7 @@ For a more detailed explanation of how scores are normalized, see the blog post 
   language="python"
 />
 </TabItem>
-<TabItem value="ts" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCodeV3}
   startMarker="// START MultiTargetRelativeScore"

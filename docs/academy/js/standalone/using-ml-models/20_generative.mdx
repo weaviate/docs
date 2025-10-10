@@ -64,12 +64,12 @@ In Weaviate, generative models power RAG (generative search). Lets walk through 
 
 ## Step 1: Connect to a Weaviate instance
 
- <TabItem value="js" label="app.js">
+ <TabItem value="ts" label="app.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Connect"
       endMarker="// END Connect"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -77,12 +77,12 @@ Initialize your connection with Weaviate and add relevant environment variables 
 
 ## Step 2: Define a Collection and Generative Model 
 
- <TabItem value="js" label="app.js">
+ <TabItem value="ts" label="app.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Collection"
       endMarker="// END Collection"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -90,12 +90,12 @@ When creating a collection in Weaviate, we define what generative model we want 
 
 ## Step 3: Importing data 
 
- <TabItem value="js" label="app.js">
+ <TabItem value="ts" label="app.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Importing"
       endMarker="// END Importing"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -103,12 +103,12 @@ Once our collection is created, we import data. It is at import time where we in
 
 ## Step 4: Making a Single Task Generative Search
 
- <TabItem value="js" label="app.js">
+ <TabItem value="ts" label="app.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SingleGenerative"
       endMarker="// END SingleGenerative"
-      language="js"
+      language="ts"
     />
   </TabItem>
 
@@ -117,12 +117,12 @@ Here we use a `singlePrompt` to make `n` requests to the language model where `n
 ## Step 5: Making a grouped Generative Search
 
 
- <TabItem value="js" label="app.js">
+ <TabItem value="ts" label="app.js">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedGenerative"
       endMarker="// END GroupedGenerative"
-      language="js"
+      language="ts"
     />
   </TabItem>
 

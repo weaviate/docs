@@ -14,7 +14,7 @@ import TSCode from '!!raw-loader!/\_includes/code/howto/search.basics.ts';
 import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-basic_test.go';
 import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchBasicTest.java";
 import JavaCode from '!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/search/BasicSearchTest.java';
-import CSharpCode from "!!raw-loader!/_includes/code/csharp/SearchBasicTest.cs";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchBasicTest.cs";
 
 With Weaviate you can query your data using [vector similarity search](./similarity.md), [keyword search](./bm25.md), or a mix of both with [hybrid search](./hybrid.md). You can control what object [properties](#specify-object-properties) and [metadata](#retrieve-metadata-values) to return.
 
@@ -24,8 +24,9 @@ This page provides fundamental search syntax to get you started.
 
 You can get objects without specifying any parameters. This returns objects in ascending UUID order.
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
+<Tabs className="code" groupId="languages">
+
+ <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# BasicGetPython"
@@ -33,14 +34,14 @@ You can get objects without specifying any parameters. This returns objects in a
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// BasicGetJS"
-      endMarker="// END BasicGetJS"
-      language="js"
-    />
-  </TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// BasicGetJS"
+  endMarker="// END BasicGetJS"
+  language="ts"
+/> 
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -104,42 +105,27 @@ Specify the information that you want your query to return. You can return objec
 
 </details>
 
-## Fetch objects by ID
-
-Fetch an object by its UUID:
-
-<Tabs groupId="languages">
-  <TabItem value="csharp" label="C# (Beta)">
-    <FilteredTextBlock
-      text={CSharpCode}
-      startMarker="// START FetchById"
-      endMarker="// END FetchById"
-      language="csharp"
-    />
-  </TabItem>
-</Tabs>
-
 ## `limit` returned objects
 
 Use `limit` to set a fixed maximum number of objects to return.
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetWithLimitPython"
-      endMarker="# END GetWithLimitPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetWithLimitJS"
-      endMarker="// END GetWithLimitJS"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetWithLimitPython"
+  endMarker="# END GetWithLimitPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetWithLimitJS"
+  endMarker="// END GetWithLimitJS"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -200,23 +186,23 @@ The output is like this:
 
 To start in the middle of your result set, define an `offset`. Set a `limit` to return objects starting at the offset.
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetWithLimitOffsetPython"
-      endMarker="# END GetWithLimitOffsetPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetWithLimitOffsetJS"
-      endMarker="// END GetWithLimitOffsetJS"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetWithLimitOffsetPython"
+  endMarker="# END GetWithLimitOffsetPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetWithLimitOffsetJS"
+  endMarker="// END GetWithLimitOffsetJS"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -279,23 +265,23 @@ To paginate through the entire database, use a [cursor](../manage-objects/read-a
 
 You can specify which object properties to return.
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetPropertiesPython"
-      endMarker="# END GetPropertiesPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetPropertiesJS"
-      endMarker="// END GetPropertiesJS"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetPropertiesPython"
+  endMarker="# END GetPropertiesPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetPropertiesJS"
+  endMarker="// END GetPropertiesJS"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -356,23 +342,23 @@ The output is like this:
 
 You can retrieve the object vector. (Also applicable where [named vectors](../config-refs/collections.mdx#named-vectors) are used.)
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetObjectVectorPython"
-      endMarker="# END GetObjectVectorPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetObjectVectorJS"
-      endMarker="// END GetObjectVectorJS"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetObjectVectorPython"
+  endMarker="# END GetObjectVectorPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetObjectVectorJS"
+  endMarker="// END GetObjectVectorJS"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -433,23 +419,23 @@ The output is like this:
 
 You can retrieve the object `id` (uuid).
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetObjectIdPython"
-      endMarker="# END GetObjectIdPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetObjectIdJS"
-      endMarker="// END GetObjectIdJS"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetObjectIdPython"
+  endMarker="# END GetObjectIdPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetObjectIdJS"
+  endMarker="// END GetObjectIdJS"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -518,23 +504,23 @@ To retrieve properties from cross-referenced objects, specify:
 - The target cross-referenced collection
 - The properties to retrieve
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetWithCrossRefsPython"
-      endMarker="# END GetWithCrossRefsPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetWithCrossRefs"
-      endMarker="// END GetWithCrossRefs"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetWithCrossRefsPython"
+  endMarker="# END GetWithCrossRefsPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// GetWithCrossRefs"
+        endMarker="// END GetWithCrossRefs"
+        language="ts"
+      />
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -587,23 +573,23 @@ The output is like this:
 
 You can specify metadata fields to be returned.
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# GetWithMetadataPython"
-      endMarker="# END GetWithMetadataPython"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// GetWithMetadataJS"
-      endMarker="// END GetWithMetadataJS"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# GetWithMetadataPython"
+  endMarker="# END GetWithMetadataPython"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// GetWithMetadataJS"
+  endMarker="// END GetWithMetadataJS"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -652,23 +638,23 @@ For a comprehensive list of metadata fields, see [GraphQL: Additional properties
 
 If [multi-tenancy](../concepts/data.md#multi-tenancy) is enabled, specify the tenant parameter in each query.
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# MultiTenancy"
-      endMarker="# END MultiTenancy"
-      language="py"
-    />
-  </TabItem>
-  <TabItem value="js" label="JS/TS">
-    <FilteredTextBlock
-      text={TSCode}
-      startMarker="// MultiTenancy"
-      endMarker="// END MultiTenancy"
-      language="js"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+<FilteredTextBlock
+  text={PyCode}
+  startMarker="# MultiTenancy"
+  endMarker="# END MultiTenancy"
+  language="py"
+/>
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// MultiTenancy"
+  endMarker="// END MultiTenancy"
+  language="ts"
+/>
+</TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}

@@ -34,7 +34,7 @@ Here, we retrieve the source data from the Pro Git book, using the `requests` li
 The details here aren't important, as the source could be anything, such as a database, PDFs, or even videos. The important thing is to obtain a set of texts for us to try various chunking strategies.
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -77,7 +77,7 @@ One implementation is shown below:
 <details>
   <summary>Helper functions</summary>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -90,7 +90,7 @@ One implementation is shown below:
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -103,7 +103,7 @@ One implementation is shown below:
 
 We now have four sets of chunks, according to the four chunking methods we used. Take a look:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="fixed_size_25" label="25 word chunks">
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -142,7 +142,7 @@ We now have four sets of chunks, according to the four chunking methods we used.
 
 We can now import the chunks into Weaviate. To allow for easy comparisons, we'll import each set of chunks into the same collection, while adding a `chunking_method` property to each chunk for easy filtering.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -157,7 +157,7 @@ We can now import the chunks into Weaviate. To allow for easy comparisons, we'll
 
 Before we move on, let's check that the chunks were imported correctly. We'll retrieve the total count of objects, as well as object counts according to each chunking strategy.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}

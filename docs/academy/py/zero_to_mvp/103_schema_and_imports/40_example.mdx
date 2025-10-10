@@ -53,7 +53,7 @@ You saw above that we'll be populating Weaviate with `Round`, `Value`, `Question
 
 Then, we should select datatypes. All of `round`, `question` and `answer` are text, so we can simply choose `text` as our datatype. `value` is a number, but I know that values in *Jeopardy!* represent dollar amounts, meaning that they are always integers. So we'll use `int`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -68,7 +68,7 @@ Then, we should select datatypes. All of `round`, `question` and `answer` are te
 
 For this example, we will obtain our object vectors using an inference service. So to do that, we must set the `vectorizer` for the class. We'll use `text2vec-openai` in this case, and we can configure the module also at the class-level.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -83,7 +83,7 @@ For this example, we will obtain our object vectors using an inference service. 
 
 You might have noticed the property-level module configuration here:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -136,7 +136,7 @@ Importantly, excluding the `round` column from vectorization will have no impact
 
 We can now add the class to the schema.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -149,7 +149,7 @@ We can now add the class to the schema.
 
 Now, you can check that the class has been created successfully by retrieving its schema:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}

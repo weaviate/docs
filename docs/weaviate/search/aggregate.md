@@ -41,7 +41,7 @@ For details, see [Aggregate](/weaviate/api/graphql/aggregate).
 
 Return the number of objects matched by the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -50,12 +50,12 @@ Return the number of objects matched by the query.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// MetaCount TS"
       endMarker="// END MetaCount TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -110,7 +110,7 @@ The output is like this:
 
 This example counts occurrence frequencies:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -119,12 +119,12 @@ This example counts occurrence frequencies:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// TextProp TS"
       endMarker="// END TextProp TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -179,7 +179,7 @@ The output is like this:
 
 This example shows aggregation with integers.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -188,12 +188,12 @@ This example shows aggregation with integers.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// IntProp TS"
       endMarker="// END IntProp TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -250,7 +250,7 @@ To group your results, use `groupBy` in the query.
 
 To retrieve aggregate data for each group, use the `groupedBy` properties.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -259,12 +259,12 @@ To retrieve aggregate data for each group, use the `groupedBy` properties.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// groupBy TS"
       endMarker="// END groupBy TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -327,7 +327,7 @@ You can use `Aggregate` with a [similarity search](./similarity.md) operator (on
 
 Use `objectLimit` to specify the maximum number of objects to aggregate.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -336,12 +336,12 @@ Use `objectLimit` to specify the maximum number of objects to aggregate.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// nearTextWithLimit TS"
       endMarker="// END nearTextWithLimit TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -402,7 +402,7 @@ Use `distance` to specify how similar the objects should be.
 
 <!-- If you use `Aggregate` with a [similarity search](./similarity.md) operator (one of the `nearXXX` operators), [limit your search results](../api/graphql/aggregate.md#limiting-the-search-space). To specify how similar the objects should be, use the `distance` operator. -->
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -411,12 +411,12 @@ Use `distance` to specify how similar the objects should be.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// nearTextWithDistance TS"
       endMarker="// END nearTextWithDistance TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -471,7 +471,7 @@ The output is like this:
 
 You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -480,12 +480,12 @@ You can use `Aggregate` with a [hybrid search](./hybrid.md) operator.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// HybridExample"
       endMarker="// END HybridExample"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -540,7 +540,7 @@ The output is like this:
 
 For more specific results, use a `filter` to narrow your search.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -549,12 +549,12 @@ For more specific results, use a `filter` to narrow your search.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// whereFilter TS"
       endMarker="// END whereFilter TS"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">

@@ -1,0 +1,355 @@
+/* src/theme/Tabs/styles.module.scss */
+
+.codeDropdownContainer {
+  margin: 2rem 0;
+  position: relative;
+}
+
+.codeDropdownHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between left and right sections */
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--ifm-color-emphasis-300);
+  padding-bottom: 1rem;
+  background-color: var(--ifm-code-background);
+  padding: 1rem;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(
+    to right,
+    var(--ifm-code-background),
+    transparent
+  );
+  position: relative;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* MODIFIED SECTION */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+  position: relative;
+  z-index: 10;
+  flex-wrap: wrap; /* Add this */
+  justify-content: flex-end; /* Add this */
+}
+
+.apiDocsLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.875rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ifm-color-emphasis-700);
+  background-color: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.apiDocsLink:hover {
+  color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.versionInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.versionLabel {
+  font-size: 13px;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  position: relative;
+}
+
+.infoIcon {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  cursor: help;
+  flex-shrink: 0;
+}
+
+.infoIcon:hover {
+  opacity: 1;
+}
+
+.docSystemIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.languageLabel {
+  font-size: 14px;
+  color: var(--ifm-color-emphasis-700);
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  font-weight: 700;
+}
+
+.languageSelector {
+  position: relative;
+  display: inline-block;
+}
+
+.languageDropdown {
+  padding: 0.625rem 3rem;
+  font-size: 15px;
+  border: 2px solid var(--ifm-color-emphasis-400);
+  border-radius: 8px;
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  appearance: none;
+  min-width: 180px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.languageDropdown:hover {
+  border-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-100);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.languageDropdown:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.languageIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.dropdownArrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.codeContent {
+  animation: fadeIn 0.2s ease;
+}
+
+/* Tab panel styles for scrapable content */
+.tabPanel {
+  /* All tab panels are rendered in the DOM */
+  width: 100%;
+}
+
+.tabPanelHidden {
+  /* Hidden tabs are still in DOM but not visible */
+  /* The inline display:none handles the hiding */
+  /* This class exists for potential future enhancements */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comingSoon {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border: 1px dashed var(--ifm-color-emphasis-400);
+  border-radius: var(--ifm-code-border-radius);
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-emphasis-700);
+
+  p {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+  }
+
+  span {
+    font-size: 0.9rem;
+    color: var(--ifm-color-emphasis-600);
+  }
+}
+
+/* Dark mode support */
+html[data-theme="dark"] .languageDropdown {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+  color: var(--ifm-font-color-base);
+}
+
+html[data-theme="dark"] .languageDropdown:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+html[data-theme="dark"] .codeDropdownHeader {
+  border-bottom-color: var(--ifm-color-emphasis-300);
+}
+
+html[data-theme="dark"] .languageLabel {
+  color: var(--ifm-color-emphasis-500);
+}
+
+html[data-theme="dark"] .versionLabel {
+  color: var(--ifm-color-emphasis-500);
+}
+
+html[data-theme="dark"] .dropdownArrow {
+  color: var(--ifm-color-emphasis-500);
+}
+
+html[data-theme="dark"] .apiDocsLink {
+  background-color: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-color-emphasis-400);
+  color: var(--ifm-color-emphasis-700);
+}
+
+html[data-theme="dark"] .apiDocsLink:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .codeDropdownHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .leftSection {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rightSection {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .versionInfo {
+    width: 100%;
+  }
+
+  .apiDocsLink {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .languageSelector {
+    width: 100%;
+  }
+
+  .languageDropdown {
+    width: 100%;
+  }
+}
+
+/* Smooth transitions for content changes */
+.codeContent > * {
+  animation: slideIn 0.15s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0.8;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Optional: Style for inline code dropdowns */
+.codeDropdownContainer.inline {
+  margin: 0.5rem 0;
+}
+
+.codeDropdownContainer.inline .codeDropdownHeader {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Optional: Compact mode */
+.codeDropdownContainer.compact .codeDropdownHeader {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0.5rem;
+}
+
+.codeDropdownContainer.compact .languageLabel {
+  display: none;
+}
+
+/* Loading state (optional) */
+.codeContent.loading {
+  position: relative;
+  min-height: 100px;
+}
+
+.codeContent.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-top-color: var(--ifm-color-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

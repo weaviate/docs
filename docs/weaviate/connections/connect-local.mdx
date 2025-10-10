@@ -17,7 +17,7 @@ import PyCodeV4 from "!!raw-loader!/_includes/code/connections/connect-python-v4
 import TsCodeV3 from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts";
 import JavaCode from "!!raw-loader!/_includes/code/connections/connect.java";
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
-import CSharpCode from '!!raw-loader!/_includes/code/csharp/ConnectionTest.cs';
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 import ShellCode from "!!raw-loader!/_includes/code/connections/connect.sh";
 import GoCode from "!!raw-loader!/_includes/code/connections/connect.go";
 
@@ -33,8 +33,8 @@ If your instance runs on Kubernetes, see the `host` and `port` values in your He
 
 To connect to a local instance without authentication, follow these examples.
 
-<Tabs groupId="languages">
-  <TabItem value="py4" label="Python">
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeV4}
       startMarker="# START LocalNoAuth"
@@ -42,12 +42,12 @@ To connect to a local instance without authentication, follow these examples.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts3" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TsCodeV3}
       startMarker="// START LocalNoAuth"
       endMarker="// END LocalNoAuth"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -55,7 +55,7 @@ To connect to a local instance without authentication, follow these examples.
       text={GoCode}
       startMarker="// START LocalNoAuth"
       endMarker="// END LocalNoAuth"
-      language="js"
+      language="go"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">
@@ -96,8 +96,8 @@ To connect to a local instance without authentication, follow these examples.
 
 To change the default URL or port number, follow these examples.
 
-<Tabs groupId="languages">
-  <TabItem value="py4" label="Python">
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeV4}
       startMarker="# START CustomURL"
@@ -105,12 +105,12 @@ To change the default URL or port number, follow these examples.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts3" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TsCodeV3}
       startMarker="// START CustomURL"
       endMarker="// END CustomURL"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -118,7 +118,7 @@ To change the default URL or port number, follow these examples.
       text={GoCode}
       startMarker="// START CustomURL"
       endMarker="// END CustomURL"
-      language="py"
+      language="go"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">
@@ -138,12 +138,12 @@ To change the default URL or port number, follow these examples.
     />
   </TabItem>
   <TabItem value="csharp" label="C# (Beta)">
-   <FilteredTextBlock
-     text={CSharpCode}
-     startMarker="// START CustomURL"
-     endMarker="// END CustomURL"
-     language="csharp"
-   />
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CustomURL"
+      endMarker="// END CustomURL"
+      language="csharp"
+    />
   </TabItem>
   <TabItem value="shell" label="cURL">
     <FilteredTextBlock
@@ -159,8 +159,8 @@ To change the default URL or port number, follow these examples.
 
 To authenticate with a Weaviate API key, follow these examples.
 
-<Tabs groupId="languages">
-  <TabItem value="py4" label="Python">
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeV4}
       startMarker="# START LocalAuth"
@@ -168,12 +168,12 @@ To authenticate with a Weaviate API key, follow these examples.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts3" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TsCodeV3}
       startMarker="// START LocalAuth"
       endMarker="// END LocalAuth"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -181,7 +181,7 @@ To authenticate with a Weaviate API key, follow these examples.
       text={GoCode}
       startMarker="// START LocalAuth"
       endMarker="// END LocalAuth"
-      language="py"
+      language="go"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">
@@ -201,12 +201,12 @@ To authenticate with a Weaviate API key, follow these examples.
     />
   </TabItem>
   <TabItem value="csharp" label="C# (Beta)">
-   <FilteredTextBlock
-     text={CSharpCode}
-     startMarker="// START LocalAuth"
-     endMarker="// END LocalAuth"
-     language="csharp"
-   />
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START LocalAuth"
+      endMarker="// END LocalAuth"
+      language="csharp"
+    />
   </TabItem>
   <TabItem value="shell" label="cURL">
     <FilteredTextBlock
@@ -230,8 +230,8 @@ For additional client examples, see [OIDC authentication](/weaviate/connections/
 
 Integrations that use external APIs often need API keys. To add third party API keys, follow these examples:
 
-<Tabs groupId="languages">
-  <TabItem value="py4" label="Python">
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeV4}
       startMarker="# START LocalThirdPartyAPIKeys"
@@ -239,12 +239,12 @@ Integrations that use external APIs often need API keys. To add third party API 
       language="py"
     />
   </TabItem>
-  <TabItem value="ts3" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TsCodeV3}
       startMarker="// START LocalThirdPartyAPIKeys"
       endMarker="// END LocalThirdPartyAPIKeys"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="go" label="Go">
@@ -252,7 +252,7 @@ Integrations that use external APIs often need API keys. To add third party API 
       text={GoCode}
       startMarker="// START LocalThirdPartyAPIKeys"
       endMarker="// END LocalThirdPartyAPIKeys"
-      language="js"
+      language="go"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">

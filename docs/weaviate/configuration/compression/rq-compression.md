@@ -43,7 +43,7 @@ RQ is currently not supported for the flat index type.
 
 RQ can be enabled at collection creation time through the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -52,7 +52,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START EnableRQ"
@@ -98,7 +98,7 @@ RQ can be enabled at collection creation time through the collection definition:
 
 RQ can also be enabled for an existing collection by updating the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -166,7 +166,7 @@ This means that the feature is still under development and may change in future 
 
 RQ can be enabled at collection creation time through the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -175,7 +175,7 @@ RQ can be enabled at collection creation time through the collection definition:
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START 1BitEnableRQ"
@@ -221,7 +221,7 @@ RQ can be enabled at collection creation time through the collection definition:
 
 RQ can also be enabled for an existing collection by updating the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -280,7 +280,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
 
 <RQParameters />
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -289,7 +289,7 @@ import RQParameters from '/\_includes/configuration/rq-compression-parameters.md
         language="py"
       />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START RQWithOptions"

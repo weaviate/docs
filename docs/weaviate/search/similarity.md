@@ -22,7 +22,7 @@ Vector search returns the objects with most similar vectors to that of the query
 
 Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to find objects with the nearest vector to an input text.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -31,7 +31,7 @@ Use the [`Near Text`](../api/graphql/search-operators.md#neartext) operator to f
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetNearText"
@@ -105,7 +105,7 @@ import ImgSrchJavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/ja
 Use the [`Near Image`](../api/graphql/search-operators.md) operator to find objects with the nearest vector to an image.<br/>
 This example uses a base64 representation of an image.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ImgSrchPyCode}
@@ -114,7 +114,7 @@ This example uses a base64 representation of an image.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={ImgSrchTSCode}
       startMarker="// START search with base64"
@@ -154,7 +154,7 @@ See [Image search](./image.md) for more information.
 
 If you have an object ID, use the [`Near Object`](../api/graphql/search-operators.md#nearobject) operator to find similar objects to that object.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -163,7 +163,7 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetNearObject"
@@ -226,7 +226,7 @@ If you have an object ID, use the [`Near Object`](../api/graphql/search-operator
 
 If you have an input vector, use the [`Near Vector`](../api/graphql/search-operators.md#nearvector) operator to find objects with similar vectors
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -235,7 +235,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetNearVector"
@@ -302,7 +302,7 @@ If you have an input vector, use the [`Near Vector`](../api/graphql/search-opera
 
 To search a collection that has [named vectors](../config-refs/collections.mdx#named-vectors), use the `target vector` field to specify which named vector to search.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -311,7 +311,7 @@ To search a collection that has [named vectors](../config-refs/collections.mdx#n
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// NamedVectorNearText"
@@ -379,7 +379,7 @@ The output is like this:
 
 To set a similarity threshold between the search and target vectors, define a maximum `distance` (or `certainty`).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -388,7 +388,7 @@ To set a similarity threshold between the search and target vectors, define a ma
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetWithDistance"
@@ -453,7 +453,7 @@ Use `limit` to set a fixed maximum number of objects to return.
 
 Optionally, use `offset` to paginate the results.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -462,7 +462,7 @@ Optionally, use `offset` to paginate the results.
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetLimitOffset"
@@ -516,7 +516,7 @@ Optionally, use `offset` to paginate the results.
 
 To limit results to groups of similar distances to the query, use the [`autocut`](../api/graphql/additional-operators.md#autocut) filter to set the number of groups to return.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -525,7 +525,7 @@ To limit results to groups of similar distances to the query, use the [`autocut`
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Autocut"
@@ -593,7 +593,7 @@ The output is like this:
 
 Use a property or a cross-reference to group results. To group returned objects, the query must include a `Near` search operator, such as `Near Text` or `Near Object`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -602,7 +602,7 @@ Use a property or a cross-reference to group results. To group returned objects,
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetWithGroupBy"
@@ -670,7 +670,7 @@ The output is like this:
 
 For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow your search.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -679,7 +679,7 @@ For more specific results, use a [`filter`](../api/graphql/filters.md) to narrow
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// GetWithFilter"

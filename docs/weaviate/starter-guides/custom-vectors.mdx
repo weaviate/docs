@@ -44,9 +44,10 @@ The example data is based on a set of ten questions from the "Jeopardy!" televis
 The JSON file is based on this data. The vector embeddings are generated with the OpenAI API [`text-embedding-ada-002` model](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings).
 
 {" "}
+
 <br />
-Your vectors can come from any source, including your own vectorizer model or
-another model provider such as Cohere or Hugging Face.
+Your vectors can come from any source, including your own vectorizer model or another
+model provider such as Cohere or Hugging Face.
 <br />
 
 | Category | Question                                                                                                          | Answer                  | Vector                                             |
@@ -74,7 +75,7 @@ Weaviate is open source. You can [run Weaviate](/deploy/index.mdx) locally, in t
 
 To install a client library, use the installer for the client language:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 The v4 client requires Weaviate 1.23.7 or higher.<br/><br/>
 
@@ -83,7 +84,7 @@ pip install -U weaviate-client
 ```
 
 </TabItem>
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```bash
 npm install weaviate-client
@@ -155,7 +156,7 @@ When you create a query vector, use the same vectorizer that you use to create t
 
 This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supplies a query vector. The query vector is an embedding of the query string, "biology".
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ByovAllPyCode}
@@ -164,7 +165,7 @@ This [`nearVector`](/weaviate/search/similarity#search-with-a-vector) query supp
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={ByovAllTsCode}
       startMarker="// Query using nearVector"

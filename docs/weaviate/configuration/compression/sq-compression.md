@@ -27,7 +27,7 @@ To use SQ, enable it in the collection definition, then add data to the collecti
 
 SQ can be enabled at collection creation time through the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -78,7 +78,7 @@ The ability to enable SQ compression after collection creation was added in Weav
 
 SQ can also be enabled for an existing collection by updating the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -129,7 +129,7 @@ import SQParameters from '/\_includes/configuration/sq-compression-parameters.md
 
 <SQParameters />
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}

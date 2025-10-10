@@ -45,7 +45,7 @@ During restoration, restore the cross-referenced (i.e. "to") object first, then 
 
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -54,7 +54,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionCollectionToCollection"
@@ -87,7 +87,7 @@ Migrate:
 - The `source collection` data in the `client_src` instance
 - to `target collection` in the `client_tgt` instance
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -96,7 +96,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CollectionToCollection"
@@ -128,7 +128,7 @@ Migrate:
 
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance, and enable multi-tenancy for the target collection.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -137,7 +137,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionCollectionToTenant"
@@ -167,7 +167,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
 
 Add tenants at the target instance before adding data objects.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -176,7 +176,7 @@ Add tenants at the target instance before adding data objects.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateTenants"
@@ -209,7 +209,7 @@ Migrate:
 - The `source collection` data in the `client_src` instance
 - to `target tenant` data from `target collection` in the `client_tgt` instance
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -218,7 +218,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CollectionToTenant"
@@ -250,7 +250,7 @@ Migrate:
 
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance, and enable multi-tenancy for the target collection.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -259,7 +259,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionTenantToCollection"
@@ -292,7 +292,7 @@ Migrate:
 - The `source tenant` data from `source collection` in the `client_src` instance
 - to `target collection` in the `client_tgt` instance
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -301,7 +301,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START TenantToCollection"
@@ -333,7 +333,7 @@ Migrate:
 
 Create a collection (e.g. `WineReview`) at the target instance, matching the collection (e.g. `WineReview`) at the source instance including enabling multi-tenancy.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -342,7 +342,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionTenantToTenant"
@@ -372,7 +372,7 @@ Create a collection (e.g. `WineReview`) at the target instance, matching the col
 
 Add tenants at the target instance before adding data objects.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -381,7 +381,7 @@ Add tenants at the target instance before adding data objects.
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateTenants"
@@ -414,7 +414,7 @@ Migrate:
 - The `source tenant` data from `source collection` in the `client_src` instance
 - to `target tenant` data from `target collection` in the `client_tgt` instance
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -423,7 +423,7 @@ Migrate:
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START TenantToTenant"

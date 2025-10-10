@@ -7,8 +7,8 @@ import TsV3Code from "!!raw-loader!/_includes/code/connections/connect-ts-v3.ts"
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ConnectionTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
 
-<Tabs groupId="languages">
-  <TabItem value="py4" label="Python">
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyV4Code}
       startMarker="# START TimeoutLocal"
@@ -16,12 +16,12 @@ import CSharpCode from "!!raw-loader!/_includes/code/csharp/ConnectionTest.cs";
       language="py"
     />
   </TabItem>
-  <TabItem value="ts3" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TsV3Code}
       startMarker="// START TimeoutLocal"
       endMarker="// END TimeoutLocal"
-      language="js"
+      language="ts"
     />
   </TabItem>
   <TabItem value="java6" label="Java v6 (Beta)">

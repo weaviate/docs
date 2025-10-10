@@ -36,7 +36,7 @@ import RestObjectsCRUDClassnameNote from "/_includes/rest-objects-crud-classname
 
 To delete by id, specify the collection name and the object id.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -45,7 +45,7 @@ To delete by id, specify the collection name and the object id.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeleteObject"
@@ -93,7 +93,7 @@ If the id doesn't exist in the specified class, a 404 error will be returned.
 
 You can handle errors as follows:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -109,7 +109,7 @@ You can handle errors as follows:
 
 To delete objects that match a set of criteria, specify the collection and a [`where` filter](../search/similarity.md).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -118,7 +118,7 @@ To delete objects that match a set of criteria, specify the collection and a [`w
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeleteBatch"
@@ -173,7 +173,7 @@ To delete objects that match a set of criteria, specify the collection and a [`w
 
 Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects by a set of criteria.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -182,7 +182,7 @@ Use `ContainsAny` / `ContainsAll` / `ContainsNone` filters to delete of objects 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
         text={TSCode}
         startMarker="// START DeleteContain"
@@ -262,7 +262,7 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -271,7 +271,7 @@ The default `QUERY_MAXIMUM_RESULTS` value is 10,000. This may be configurable, e
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
           text={TSCode}
           startMarker="// START DeleteByIDBatch"
@@ -338,7 +338,7 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
 - You can use `dryRun` to check how many objects would be deleted, without actually performing the deletion.
 - Set `output` to `'verbose'` to see more details (ID and deletion status) for each deletion.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -347,7 +347,7 @@ Objects must belong to a collection in Weaviate. Accordingly [deleting collectio
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DryRun"

@@ -1,0 +1,23 @@
+If you prefer a different model provider integration, or prefer to import your own vectors, see one of the following guides:
+
+import CardsSection from "/src/components/CardsSection";
+import styles from "/src/components/CardsSection/styles.module.scss";
+
+export const specificGuidesData = [
+  {
+    title: "Prefer a different model provider?",
+    description:
+      "See the embedding model providers page for information on other available vectorizers, such as AWS, Cohere, Google, and many more.",
+    link: "/weaviate/model-providers",
+    icon: "fas fa-puzzle-piece", // Icon representing data management
+  },
+  {
+    title: "You have precomputed embeddings?",
+    description:
+      "If you prefer to add custom vectors yourself along with the object data, see the Bring Your Own Vectors starter guide.",
+    link: "/weaviate/starter-guides/custom-vectors",
+    icon: "fas fa-project-diagram", // Icon representing vector relationships/structure
+  },
+];
+
+<CardsSection items={specificGuidesData} className={styles.smallCards}/>

@@ -43,7 +43,7 @@ In defining a class, the only required parameter is `class`, as the rest can be 
 
 To define a class, you can use this syntax.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -69,7 +69,7 @@ import DataTypes from '/_includes/datatypes.mdx';
 
 Note that most data types can include one such instance, or an array of instances, such as `text` or `text[]`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -85,7 +85,7 @@ If you ran the first class creation command shown, and this command, Weaviate wi
 
 **Deleting a class should not be done lightly, as deleting a class will delete all of its objects.**
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PythonCodeExample}
@@ -106,7 +106,7 @@ For text objects, you would typically select one of the `text2vec` modules - suc
 
 Modules are enabled at the instance level through its configuration. You can see the list of available modules for your particular instance by running the following command.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -158,7 +158,7 @@ WCD instances come pre-configured with a number of modules. For example, the res
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -181,7 +181,7 @@ In some cases, you can use a vectorizer while uploading them at import time. In 
 
 You can set the `moduleConfig` parameter at the class-level to set class-wide settings for module behavior. For example, the vectorizer could be configured to set the model used (`model`), or whether to vectorize the class name (`vectorizeClassName`).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock
@@ -200,7 +200,7 @@ You can also set the `moduleConfig` parameter at the property level to set modul
 
 In the following example, the `skip` parameter is set to `True` for the `url` property, so that the URL text will be skipped when producing a vector embedding for the object.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <FilteredTextBlock

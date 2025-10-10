@@ -25,7 +25,7 @@ For creating multiple objects at once, see [How-to: Batch Import](./import.mdx).
 
 This example creates an object in the `JeopardyQuestion` collection.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -34,7 +34,7 @@ This example creates an object in the `JeopardyQuestion` collection.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObject START"
@@ -95,7 +95,7 @@ By default, [auto-schema](/weaviate/config-refs/collections.mdx#auto-schema) cre
 
 When you create an object, you can provide a vector. (For specifying multiple, named vectors, see [below](#create-an-object-with-named-vectors).)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -104,7 +104,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithVector START"
@@ -153,7 +153,7 @@ When you create an object, you can provide a vector. (For specifying multiple, n
 
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -162,7 +162,7 @@ When you create an object, you can specify named vectors (if [configured in your
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectNamedVectors START"
@@ -196,7 +196,7 @@ When you create an object, you can specify an [ID](../api/graphql/additional-pro
 If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -205,7 +205,7 @@ If no ID is provided, Weaviate will generate a random [UUID](https://en.wikipedi
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithId START"
@@ -255,7 +255,7 @@ You can generate an ID based on your data object.
 Object IDs are not randomly generated. The same value always generates the same ID.<br/>Weaviate throws an error if you provide a duplicate ID. Use deterministic IDs to avoid inserting duplicate objects.
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -264,7 +264,7 @@ Object IDs are not randomly generated. The same value always generates the same 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// CreateObjectWithDeterministicId START"
@@ -320,7 +320,7 @@ import XrefJavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/M
 
 You can create an object with cross-references to other objects.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={XrefPyCode}
@@ -329,7 +329,7 @@ You can create an object with cross-references to other objects.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={XrefTSCode}
       startMarker="// START ObjectWithCrossRef"
@@ -375,7 +375,7 @@ import CreateWithGeo from "/_includes/code/howto/manage-data.create.with.geo.mdx
 
 Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/objects/post/objects/validate">validate</SkipLink> it against the collection definition.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -384,7 +384,7 @@ Before you create an object, you can <SkipLink href="/weaviate/api/rest#tag/obje
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// ValidateObject START"

@@ -109,7 +109,7 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
 
 Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud credentials will be used to authorize your Weaviate Cloud instance's access for Weaviate Embeddings.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyConnect}
@@ -118,7 +118,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START WeaviateInstantiation"
@@ -150,7 +150,7 @@ Weaviate Embeddings is integrated with Weaviate Cloud. Your Weaviate Cloud crede
 
 Now we can define a collection that will store our data. When creating a collection, you need to specify one of the [available models](/cloud/embeddings/models) for the vectorizer to use. This model will be used to create vector embeddings from your data.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -159,7 +159,7 @@ Now we can define a collection that will store our data. When creating a collect
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SnowflakeArcticEmbedLV20"
@@ -191,7 +191,7 @@ For more information about the available model options visit the [Choose a model
 
 After configuring the vectorizer, [import data](/weaviate/manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -200,7 +200,7 @@ After configuring the vectorizer, [import data](/weaviate/manage-objects/import.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportExample"
@@ -236,7 +236,7 @@ When you perform a [vector search](/weaviate/search/similarity.md#search-with-te
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -245,7 +245,7 @@ The query below returns the `n` most similar objects from the database, set by `
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"

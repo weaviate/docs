@@ -39,7 +39,7 @@ In `v1.26`, the `HOT` status was renamed to `ACTIVE` and the `COLD` status was r
 
 Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancyConfig`in the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -48,7 +48,7 @@ Multi-tenancy is disabled by default. To enable multi-tenancy, set `multiTenancy
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableMultiTenancy"
@@ -98,7 +98,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
 
 ### Create a collection
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -107,7 +107,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START EnableAutoMT"
@@ -139,7 +139,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
       language="csharp"
     />
   </TabItem>
-  <TabItem value="cURL" label="cURL">
+  <TabItem value="curl" label="cURL">
     <FilteredTextBlock
       text={CurlCode}
       startMarker="# START CreateWithAMT"
@@ -153,7 +153,7 @@ import AutoTenant from "/_includes/auto-tenant.mdx";
 
 Use the client to update the auto-tenant creation setting. Auto-tenant is only available for batch inserts.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -162,7 +162,7 @@ Use the client to update the auto-tenant creation setting. Auto-tenant is only a
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START UpdateAutoMT"
@@ -217,7 +217,7 @@ Tenant status is available from Weaviate `1.21` onwards.
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -226,7 +226,7 @@ Tenant status is available from Weaviate `1.21` onwards.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AddTenantsToClass"
@@ -274,7 +274,7 @@ List existing tenants in a collection.
 
 This example lists the tenants in the `MultiTenancyCollection` collection:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -283,7 +283,7 @@ This example lists the tenants in the `MultiTenancyCollection` collection:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ListTenants"
@@ -331,7 +331,7 @@ Get tenants from a collection by name. Note that non-existent tenant names are i
 
 This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` collection:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -340,7 +340,7 @@ This example returns `tenantA` and `tenantB` from the `MultiTenancyCollection` c
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GetTenantsByName"
@@ -372,7 +372,7 @@ Get a particular tenant from a collection.
 
 This example returns a tenant from the `MultiTenancyCollection` collection:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -381,7 +381,7 @@ This example returns a tenant from the `MultiTenancyCollection` collection:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GetOneTenant"
@@ -415,7 +415,7 @@ To delete tenants from a collection, specify the collection (e.g. `MultiTenancyC
 Deleting a tenant deletes all associated objects.
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -424,7 +424,7 @@ Deleting a tenant deletes all associated objects.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RemoveTenants"
@@ -470,7 +470,7 @@ Deleting a tenant deletes all associated objects.
 
 Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -479,7 +479,7 @@ Change a tenant state between `ACTIVE`, `INACTIVE`, and `OFFLOADED`.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ChangeTenantState"
@@ -499,7 +499,7 @@ See [How-to: Manage tenant states](./tenant-states.mdx) for more hands-on exampl
 
 Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD operation, as shown in the object creation example below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -508,7 +508,7 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateMtObject"
@@ -538,7 +538,7 @@ Multi-tenancy collections require tenant name (e.g. `tenantA`) with each CRUD op
 
 Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Get` and `Aggregate` query operation.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -547,7 +547,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) with each `Ge
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Search"
@@ -586,7 +586,7 @@ A cross-reference can be added from a multi-tenancy collection object to:
 
 Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating, updating or deleting cross-references.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -595,7 +595,7 @@ Multi-tenancy collections require the tenant name (e.g. `tenantA`) when creating
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AddCrossRef"

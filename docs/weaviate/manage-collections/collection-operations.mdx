@@ -34,7 +34,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
 
 <InitialCaps />
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -43,7 +43,7 @@ import InitialCaps from "/_includes/schemas/initial-capitalization.md";
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicCreateCollection"
@@ -120,7 +120,7 @@ For details, see:
 
 </details>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -129,7 +129,7 @@ For details, see:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CreateCollectionWithProperties"
@@ -175,7 +175,7 @@ For details, see:
 
 Specify a `vectorizer` for a collection that will generate vector embeddings when creating objects and executing vector search queries.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -184,7 +184,7 @@ Specify a `vectorizer` for a collection that will generate vector embeddings whe
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START Vectorizer"
@@ -242,7 +242,7 @@ To disable [`auto-schema`](https://www.google.com/search?q=../config-refs/collec
 
 Get a boolean indicating whether a given collection exists.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -251,7 +251,7 @@ Get a boolean indicating whether a given collection exists.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START CheckIfExists"
@@ -265,7 +265,7 @@ Get a boolean indicating whether a given collection exists.
 
 Retrieve a collection definition from the schema.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -274,7 +274,7 @@ Retrieve a collection definition from the schema.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadOneCollection"
@@ -492,7 +492,7 @@ For image searches, see [Image search](https://www.google.com/search?q=../search
 
 Fetch the database schema to retrieve all of the collection definitions.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -501,7 +501,7 @@ Fetch the database schema to retrieve all of the collection definitions.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadAllCollections"
@@ -551,7 +551,7 @@ import RaftRFChangeWarning from "/_includes/1-25-replication-factor.mdx";
 
 You can update a collection definition to change the [mutable collection settings](https://www.google.com/search?q=../config-refs/collections.mdx%23mutability).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -560,7 +560,7 @@ You can update a collection definition to change the [mutable collection setting
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START UpdateCollection"

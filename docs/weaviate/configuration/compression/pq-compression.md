@@ -54,7 +54,7 @@ AutoPQ requires asynchronous indexing.
 
 To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-parameters).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
@@ -63,7 +63,7 @@ To configure PQ in a collection, use the [PQ parameters](./pq-compression.md#pq-
        language="py"
      />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
      <FilteredTextBlock
        text={TSCodeAutoPQ}
        startMarker="// START CollectionWithAutoPQ"
@@ -123,7 +123,7 @@ Follow these steps to manually enable PQ.
 
 [Create a collection](../../manage-collections/collection-operations.mdx#create-a-collection) without specifying a quantizer.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
@@ -132,7 +132,7 @@ Follow these steps to manually enable PQ.
        language="py"
      />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START InitClassDef"
@@ -192,7 +192,7 @@ import PQMakesCodebook from '/\_includes/configuration/pq-compression/makes-a-co
 
 To enable PQ, update your collection definition as shown below. For additional configuration options, see the [PQ parameter table](./pq-compression.md#pq-parameters).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
      <FilteredTextBlock
        text={PyCode}
@@ -201,7 +201,7 @@ To enable PQ, update your collection definition as shown below. For additional c
        language="py"
      />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
      <FilteredTextBlock
        text={TSCodeManualPQ}
        startMarker="// START UpdateSchema"
@@ -291,7 +291,7 @@ docker inspect --format='{{.LogPath}}' <your-weaviate-container-id>
 
 To review the current `pq` configuration, you can retrieve it as shown below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -300,7 +300,7 @@ To review the current `pq` configuration, you can retrieve it as shown below.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCodeManualPQ}
       startMarker="// START ViewConfig"

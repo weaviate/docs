@@ -39,7 +39,7 @@ First of all, we'll retrieve information from our Weaviate instance using variou
 
 The search is carried out as follows, looping through each chunking strategy by filtering our dataset. We'll obtain a couple of top results for each search term.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}
@@ -167,7 +167,7 @@ One is that to account for varying chunk sizes, we will retrieve more chunks whe
 
 The other is that the query has been modified to perform RAG, rather than a simple retrieval. The query asks the target LLM to summarize the results into point form.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={CodePracticalExample}

@@ -8,17 +8,17 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
 import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
-<Tabs groupId="languages">
-  <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="START UpdateCollectionShards"
-      endMarker="END UpdateCollectionShards"
-      language="py"
-    />
-  </TabItem>
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="START UpdateCollectionShards"
+    endMarker="END UpdateCollectionShards"
+    language="py"
+  />
+</TabItem>
 
-  <TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
 let articles = client.collections.use("Article");
