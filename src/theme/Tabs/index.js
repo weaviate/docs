@@ -241,12 +241,6 @@ const CodeDropdownTabs = ({
     ];
   }
 
-  const selectedChild = isLanguageAvailable
-    ? Children.toArray(children).find(
-        (child) => isValidElement(child) && child.props.value === selectedValue
-      )
-    : null;
-
   const docSystem = DOC_SYSTEMS[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const params = new URLSearchParams({
@@ -342,8 +336,26 @@ const CodeDropdownTabs = ({
         )}
       </div>
       <div className={styles.codeContent}>
-        {isLanguageAvailable && selectedChild ? (
-          selectedChild
+        {isLanguageAvailable ? (
+          // Render ALL children, but hide non-selected ones with CSS
+          Children.map(children, (child) => {
+            if (!isValidElement(child)) return null;
+
+            const isSelected = child.props.value === selectedValue;
+
+            return (
+              <div
+                key={child.props.value}
+                className={clsx(styles.tabPanel, {
+                  [styles.tabPanelHidden]: !isSelected,
+                })}
+                style={{ display: isSelected ? "block" : "none" }}
+                aria-hidden={!isSelected}
+              >
+                {child}
+              </div>
+            );
+          })
         ) : (
           <div className={styles.comingSoon}>
             <p>
