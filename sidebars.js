@@ -528,6 +528,7 @@ const sidebars = {
       },
       items: [
         "weaviate/tutorials/multi-vector-embeddings",
+        "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
         "weaviate/tutorials/collection-aliases",
         "weaviate/tutorials/cross-references",

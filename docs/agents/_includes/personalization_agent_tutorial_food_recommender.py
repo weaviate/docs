@@ -99,6 +99,7 @@ if agent_exists:
     agent = PersonalizationAgent.connect(
         client=client,
         reference_collection="Recipes",
+        vector_name="default"
     )
     print("Connected to existing agent.")
 else:
@@ -106,6 +107,7 @@ else:
     agent = PersonalizationAgent.create(
         client=client,
         reference_collection="Recipes",
+        vector_name="default",
         user_properties={
             "favorite_cuisines": DataType.TEXT_ARRAY,
             "likes": DataType.TEXT_ARRAY,

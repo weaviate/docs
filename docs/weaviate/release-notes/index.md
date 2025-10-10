@@ -11,6 +11,11 @@ import QuickLinks from "/src/components/QuickLinks";
 
 export const pythonCardsData = [
   {
+  title: "v1.33",
+  link: "https://weaviate.io/blog/weaviate-1-33-release",
+  icon: "fa fa-tags",
+  },
+  {
   title: "v1.32",
   link: "https://weaviate.io/blog/weaviate-1-32-release",
   icon: "fa fa-tags",
@@ -28,11 +33,6 @@ export const pythonCardsData = [
   {
   title: "v1.29",
   link: "https://weaviate.io/blog/weaviate-1-29-release",
-  icon: "fa fa-tags",
-  },
-  {
-  title: "v1.28",
-  link: "https://weaviate.io/blog/weaviate-1-28-release",
   icon: "fa fa-tags",
   },
 ];
