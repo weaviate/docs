@@ -760,7 +760,7 @@ For the full list, see [API references: Filters](../api/graphql/filters.md#speci
 
 ### By object timestamp
 
-This filter requires the [property timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property timestamp](../config-refs/indexing/inverted-index.mdx#indextimestamps) to [be indexed](../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -810,7 +810,7 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
 
 ### By object property length
 
-This filter requires the [property length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property length](../config-refs/indexing/inverted-index.mdx#indexpropertylength) to [be indexed](../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -852,7 +852,7 @@ This filter requires the [property length](../config-refs/indexing/inverted-inde
 
 ### By object null state
 
-This filter requires the [property null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) to [be indexed](../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+This filter requires the [property null state](../config-refs/indexing/inverted-index.mdx#indexnullstate) to [be indexed](../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
