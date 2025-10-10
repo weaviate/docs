@@ -49,9 +49,9 @@
   padding: 0.5rem 1rem;
   font-size: 14px;
   font-weight: 600;
-  color: white;
-  background: var(--site-primary);
-  border: none;
+  color: var(--ifm-color-primary);
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -61,11 +61,16 @@
   svg {
     width: 16px;
     height: 16px;
+    /* Ensures the icon inherits the button's text color */
+    fill: currentColor;
   }
 
   &:hover:not(:disabled) {
+    /* Fills the button on hover for clear feedback */
+    border-color: var(--ifm-color-primary);
+    background-color: var(--ifm-color-emphasis-100);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 205, 55, 0.4);
   }
 
   &:active:not(:disabled) {
@@ -77,6 +82,7 @@
     cursor: not-allowed;
   }
 
+  /* Ripple effect for click feedback */
   &::before {
     content: "";
     position: absolute;

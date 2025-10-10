@@ -32,13 +32,13 @@ const LANGUAGE_CONFIG = {
   ts: {
     label: "JavaScript/TypeScript",
     icon: "/img/site/logo-ts.svg",
-    runtime: "node",
+    runtime: "typescript",
     fileExtension: ".ts",
   },
   ts_agents: {
     label: "JavaScript/TypeScript (Agents)",
     icon: "/img/site/logo-ts.svg",
-    runtime: "node",
+    runtime: "typescript",
     fileExtension: ".ts",
   },
   go: {
