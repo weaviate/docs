@@ -96,7 +96,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 <ApiKeyNote />
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -107,7 +107,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START GoogleInstantiation"
@@ -139,7 +139,7 @@ You can [specify](#vectorizer-parameters) one of the [available models](#availab
 
 Vertex AI users must provide the Google Cloud project ID in the vectorizer configuration.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -149,7 +149,7 @@ Vertex AI users must provide the Google Cloud project ID in the vectorizer confi
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicVectorizerGoogleVertex"
@@ -171,7 +171,7 @@ Vertex AI users must provide the Google Cloud project ID in the vectorizer confi
 
 ### Gemini API
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -181,7 +181,7 @@ Vertex AI users must provide the Google Cloud project ID in the vectorizer confi
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicVectorizerGoogleStudio"
@@ -219,7 +219,7 @@ The following examples show how to configure Google-specific options.
 - `modelId` (Optional): e.g. `gemini-embedding-001`
 <!-- - `titleProperty` (Optional): The Weaviate property name for the `gecko-002` or `gecko-003` model to use as the title. -->
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -229,7 +229,7 @@ The following examples show how to configure Google-specific options.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullVectorizerGoogle"
@@ -253,7 +253,7 @@ The following examples show how to configure Google-specific options.
 
 After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for text objects using the specified model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -264,7 +264,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportExample"
@@ -300,7 +300,7 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -311,7 +311,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -341,7 +341,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts th
 
 The query below returns the `n` best scoring objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -352,7 +352,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"

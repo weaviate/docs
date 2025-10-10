@@ -7,7 +7,8 @@ const GITHUB_CONFIG = {
     branch: 'main',
 };
 
-const DOC_SYSTEMS = {
+// Export DOC_SYSTEMS for use in other components
+export const DOC_SYSTEMS = {
     py: {
         baseUrl:
             'https://weaviate-python-client.readthedocs.io/en/stable',
@@ -199,40 +200,6 @@ const FilteredTextBlock = ({
                         </svg>
                         <span style={{ verticalAlign: 'middle' }}>
                             &nbsp;&nbsp;View full example code
-                        </span>
-                    </a>
-                )}
-                {docSystem?.baseUrl && (
-                    <a
-                        href={docSystem.baseUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="badge badge--secondary"
-                        title="View API documentation"
-                        style={badgeStyles.badge}
-                    >
-                        {docSystem.icon ? (
-                            <img
-                                src={docSystem.icon}
-                                alt={`${language} docs`}
-                                height="16"
-                                width="16"
-                                style={{ verticalAlign: 'middle' }}
-                            />
-                        ) : (
-                            <svg
-                                height="16"
-                                width="16"
-                                aria-hidden="true"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                style={{ verticalAlign: 'middle' }}
-                            >
-                                <path d="M6.5 2h11c.7 0 1.3.6 1.3 1.3v17.4c0 .7-.6 1.3-1.3 1.3h-11c-.7 0-1.3-.6-1.3-1.3V3.3C5.2 2.6 5.8 2 6.5 2zm1 2v16h9V4h-9zm2 3h5v1h-5V7zm0 3h5v1h-5v-1zm0 3h3v1h-3v-1z" />
-                            </svg>
-                        )}
-                        <span style={{ verticalAlign: 'middle' }}>
-                            &nbsp;&nbsp;API docs
                         </span>
                     </a>
                 )}

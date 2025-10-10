@@ -57,7 +57,7 @@ Provide the Friendli token to Weaviate using one of the following methods:
 - Set the `FRIENDLI_TOKEN` environment variable that is available to Weaviate.
 - Provide the token at runtime, as shown in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -68,7 +68,7 @@ Provide the Friendli token to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START FriendliInstantiation"
@@ -87,7 +87,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use a FriendliAI generative AI model:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -97,7 +97,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeFriendliAI"
@@ -112,7 +112,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -122,7 +122,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GenerativeFriendliAICustomModel"
@@ -139,7 +139,7 @@ You can [specify](#generative-parameters) one of the [available models](#availab
 
 Configure the following generative parameters to customize the model behavior.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -149,7 +149,7 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeFriendliAI"
@@ -166,7 +166,7 @@ For further details on model parameters, see the [FriendliAI API documentation](
 
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -175,7 +175,7 @@ Aside from setting the default model provider when creating the collection, you 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RuntimeModelSelectionFriendliAI"
@@ -210,7 +210,7 @@ The example below generates outputs for each of the `n` search results, where `n
 
 When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -221,7 +221,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -240,7 +240,7 @@ To generate one text for the entire set of search results, use the grouped task 
 
 In other words, when you have `n` search results, the generative model generates one output for the entire group.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -251,7 +251,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"
@@ -276,7 +276,7 @@ FriendliAI's provide a wide range of [available models](https://friendli.ai/mode
 
 If using a dedicated FriendliAI endpoint with the Weaviate integration, specify it as shown below:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -287,7 +287,7 @@ If using a dedicated FriendliAI endpoint with the Weaviate integration, specify 
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START FriendliDedicatedInstantiation"
@@ -298,7 +298,7 @@ If using a dedicated FriendliAI endpoint with the Weaviate integration, specify 
 
 </Tabs>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -308,7 +308,7 @@ If using a dedicated FriendliAI endpoint with the Weaviate integration, specify 
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DedicatedGenerativeFriendliAI"

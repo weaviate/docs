@@ -49,7 +49,7 @@ To use this integration, configure the container image of the CLIP model and the
 
 The following example shows how to configure the CLIP integration in Weaviate:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
@@ -109,7 +109,7 @@ Set `tag` from a [list of available models](#available-models) to specify a part
 
 As this integration runs a local container with the CLIP model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -120,7 +120,7 @@ As this integration runs a local container with the CLIP model, no additional cr
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -135,7 +135,7 @@ As this integration runs a local container with the CLIP model, no additional cr
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a CLIP embedding model:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -145,7 +145,7 @@ As this integration runs a local container with the CLIP model, no additional cr
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicMMVectorizerCLIP"
@@ -179,7 +179,7 @@ If no parameters are specified, the default inference URL from the Weaviate conf
 
 Specify `inferenceUrl` for a single inference container.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -189,7 +189,7 @@ Specify `inferenceUrl` for a single inference container.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullMMVectorizerCLIP"
@@ -204,7 +204,7 @@ Specify `inferenceUrl` for a single inference container.
 
 After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for the objects using the specified model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -215,7 +215,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MMBatchImportExample"
@@ -242,7 +242,7 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -253,7 +253,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -274,7 +274,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts th
 
 The query below returns the `n` best scoring objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -285,7 +285,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
@@ -304,7 +304,7 @@ To perform a near media search such as near image search, convert the media quer
 
 The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -315,7 +315,7 @@ The query below returns the `n` most similar objects to the input image from the
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearImageExample"

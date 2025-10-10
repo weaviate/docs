@@ -61,7 +61,7 @@ Provide the API key to Weaviate using one of the following methods:
 - Set the `OCTOAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -72,7 +72,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START OctoAIInstantiation"
@@ -91,7 +91,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 [Configure a Weaviate index](../../manage-collections/generative-reranker-models.mdx#specify-a-generative-model-integration) as follows to use an OctoAI generative AI model:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -101,7 +101,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicGenerativeOctoAI"
@@ -116,7 +116,7 @@ import MutableGenerativeConfig from '/_includes/mutable-generative-config.md';
 
 You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -126,7 +126,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GenerativeOctoAICustomModel"
@@ -143,7 +143,7 @@ You can [specify](#generative-parameters) one of the [available models](#availab
 
 Configure the following generative parameters to customize the model behavior.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -153,7 +153,7 @@ Configure the following generative parameters to customize the model behavior.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeOctoAI"
@@ -180,7 +180,7 @@ The example below generates outputs for each of the `n` search results, where `n
 
 When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -191,7 +191,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -210,7 +210,7 @@ To generate one text for the entire set of search results, use the grouped task 
 
 In other words, when you have `n` search results, the generative model generates one output for the entire group.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -221,7 +221,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"

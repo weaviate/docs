@@ -121,7 +121,7 @@ We will connect to Weaviate with `root-user`, and once we create a new role, we 
 
 Ensure you are connected to Weaviate with a user possessing sufficient permissions to manage roles. You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -130,7 +130,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AdminClient"
@@ -158,7 +158,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 
 This grants read and write permissions for collections starting with `TargetCollection`, and read permissions to nodes and cluster metadata.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -167,7 +167,7 @@ This grants read and write permissions for collections starting with `TargetColl
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadWritePermissionDefinition"
@@ -195,7 +195,7 @@ This grants read and write permissions for collections starting with `TargetColl
 
 First, let's create the new user `custom-user`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UserPyCode}
@@ -204,7 +204,7 @@ First, let's create the new user `custom-user`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```ts
 // TS support coming soon
@@ -229,7 +229,7 @@ First, let's create the new user `custom-user`:
 
 Now, you can assign the role `rw_role` to `custom-user`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -238,7 +238,7 @@ Now, you can assign the role `rw_role` to `custom-user`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ReadWritePermissionAssignment"
@@ -270,7 +270,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac) 
 or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles#role-management).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -279,7 +279,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AdminClient"
@@ -307,7 +307,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
 
 This grants viewer permissions for collections starting with `TargetCollection`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -316,7 +316,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ViewerPermissionDefinition"
@@ -344,7 +344,7 @@ This grants viewer permissions for collections starting with `TargetCollection`.
 
 First, let's create the new user `custom-user`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UserPyCode}
@@ -353,7 +353,7 @@ First, let's create the new user `custom-user`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```ts
 // TS support coming soon
@@ -378,7 +378,7 @@ First, let's create the new user `custom-user`:
 
 Now, you can assign the role `viewer_role` to `custom-user`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -387,7 +387,7 @@ Now, you can assign the role `viewer_role` to `custom-user`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ViewerPermissionAssignment"
@@ -419,7 +419,7 @@ Ensure you are connected to Weaviate with a user possessing sufficient permissio
 You can achieve this by either using the predefined `root` role during [Weaviate configuration](/deploy/configuration/configuring-rbac.md) 
 or by granting a user the [`manage_roles` permission](/weaviate/configuration/rbac/manage-roles.mdx#role-management-permissions).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={RolePyCode}
@@ -428,7 +428,7 @@ or by granting a user the [`manage_roles` permission](/weaviate/configuration/rb
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={RoleTSCode}
       startMarker="// START AdminClient"
@@ -458,7 +458,7 @@ This grants permissions to:
 - Completely manage tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
 - Create, read, update and delete data for tenants starting with `TargetTenant` in collections starting with `TargetCollection`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -467,7 +467,7 @@ This grants permissions to:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MTPermissionsExample"
@@ -495,7 +495,7 @@ This grants permissions to:
 
 First, let's create the new user `custom-user`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UserPyCode}
@@ -504,7 +504,7 @@ First, let's create the new user `custom-user`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```ts
 // TS support coming soon
@@ -529,7 +529,7 @@ First, let's create the new user `custom-user`:
 
 Now, you can assign the role `tenant_manager` to `custom-user`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -538,7 +538,7 @@ Now, you can assign the role `tenant_manager` to `custom-user`:
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MTPermissionsAssignment"

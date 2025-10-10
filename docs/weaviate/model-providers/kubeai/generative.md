@@ -58,7 +58,7 @@ Provide the API key to Weaviate using one of the following methods:
 - Set the `OPENAI_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -69,7 +69,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START OpenAIInstantiation"
@@ -84,7 +84,7 @@ Provide the API key to Weaviate using one of the following methods:
 
 Configure Weaviate to use a KubeAI generative AI model:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -94,7 +94,7 @@ Configure Weaviate to use a KubeAI generative AI model:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullGenerativeKubeAI"
@@ -113,7 +113,7 @@ Refer to the [KubeAI docs on model management](https://www.kubeai.org/how-to/ins
 
 Aside from setting the default model provider when creating the collection, you can also override it at query time.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -122,7 +122,7 @@ Aside from setting the default model provider when creating the collection, you 
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RuntimeModelSelectionKubeAI"
@@ -146,7 +146,7 @@ The example below generates outputs for each of the `n` search results, where `n
 
 When creating a single prompt query, use braces `{}` to interpolate the object properties you want Weaviate to pass on to the language model. For example, to pass on the object's `title` property, include `{title}` in the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -157,7 +157,7 @@ When creating a single prompt query, use braces `{}` to interpolate the object p
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START SinglePromptExample"
@@ -176,7 +176,7 @@ To generate one text for the entire set of search results, use the grouped task 
 
 In other words, when you have `n` search results, the generative model generates one output for the entire group.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -187,7 +187,7 @@ In other words, when you have `n` search results, the generative model generates
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START GroupedTaskExample"

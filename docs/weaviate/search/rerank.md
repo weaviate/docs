@@ -40,7 +40,7 @@ A collection can have multiple rerankers. If multiple `reranker` modules are ena
 
 Any vector-based search on collections with [named vectors](../config-refs/collections.mdx#named-vectors) configured must include a `target` vector name in the query. This allows Weaviate to find the correct vector to compare with the query vector.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={SimilarityPyCode}
@@ -51,7 +51,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={SimilarityTSCode}
       startMarker="// NamedVectorNearText"
@@ -84,7 +84,7 @@ Any vector-based search on collections with [named vectors](../config-refs/colle
 
 To rerank the results of a vector search, configure the object properties to sort on.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -95,7 +95,7 @@ To rerank the results of a vector search, configure the object properties to sor
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankNearText"
@@ -142,7 +142,7 @@ The response should look like this:
 
 To rerank the results of a keyword search, configure the object properties to sort on.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -153,7 +153,7 @@ To rerank the results of a keyword search, configure the object properties to so
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START bm25Rerank"

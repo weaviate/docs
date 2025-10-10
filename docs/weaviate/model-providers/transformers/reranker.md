@@ -49,7 +49,7 @@ To use this integration, configure the container image of the Hugging Face Trans
 
 The following example shows how to configure the Hugging Face Transformers integration in Weaviate:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
@@ -109,7 +109,7 @@ Set `tag` from a [list of available models](#available-models) to specify a part
 
 As this integration runs a local container with the transformers model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -120,7 +120,7 @@ As this integration runs a local container with the transformers model, no addit
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -139,7 +139,7 @@ import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 
 Configure a Weaviate collection to use a Transformer reranker model as follows:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -149,7 +149,7 @@ Configure a Weaviate collection to use a Transformer reranker model as follows:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerTransformersBasic"
@@ -174,7 +174,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ![Reranker integration illustration](../_includes/integration_transformers_reranker.png)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -185,7 +185,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerQueryExample"

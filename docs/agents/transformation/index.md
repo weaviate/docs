@@ -89,7 +89,7 @@ And then start the operations.
 
 Transformation operations are asynchronous. Each operation will return a workflow ID to the user. The user can then use this ID to check its status.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}

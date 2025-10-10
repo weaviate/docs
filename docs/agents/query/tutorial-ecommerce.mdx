@@ -69,7 +69,7 @@ If you want to use another vectorizer, check out the list of supported [model pr
 
 In order to install the Weaviate Python client together with the `agents` component, run:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```
@@ -81,7 +81,7 @@ pip install "weaviate-client[agents]"
 
 You will also need `datasets`, a lightweight library providing access to the publicly hosted datasets on HuggingFace.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```
@@ -99,7 +99,7 @@ import ForcePipInstall from "../_includes/_force_pip_install.mdx";
 
 Now, you can finally connect to your Weaviate Cloud instance with the parameters from the first step:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -142,7 +142,7 @@ This is why it's recommended to manually define the data schema and add the prop
 
 For example, below we make sure that the Query Agent knows that prices are all in USD, which is information that would otherwise be unavailable.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -157,7 +157,7 @@ For example, below we make sure that the Query Agent knows that prices are all i
 
 Now, we can import the pre-vectorized data ([E-Commerce](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-ecommerce) and [Brands](https://huggingface.co/datasets/weaviate/agents/viewer/query-agent-brands)) into our Weaviate Cloud instance:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -188,7 +188,7 @@ When setting up the query agent, we have to provide a few things:
 
 Let's start with a simple agent. Here, we're creating a `qa` agent that has access to our `Brands` and `ECommerce` datasets.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -205,7 +205,7 @@ And that's about it! Now, you can start using the Query Agent.
 
 In some cases, you may want to define a custom `system_prompt` for your agent. This can help you provide the agent with some default instructions for how to behave. For example, let's create an agent that will always answer the query in the user's language.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -232,7 +232,7 @@ Let's start with a simple question:
 
 - "I like vintage clothes, can you list me some options that are less than $200?"
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -251,7 +251,7 @@ original_query='I like vintage clothes, can you list me some options that are le
 
 But this output is a bit too much, so let's just return the field `final_answer`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -293,7 +293,7 @@ By using the `display()` method on a `QueryAgentResponse`, you can get a user-fr
 - 📊 Usage Statistics - `usage`
 - Total Time Taken - `total_time`
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -372,7 +372,7 @@ Total Time Taken: 11.59s
 
 The agent can also be provided with additional context. For example, we can provide the previous response as context using `ChatMessage` objects to create a conversation and get a `new_response`:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -463,7 +463,7 @@ Total Time Taken: 22.77s
 
 Now, let's try a question that requires an aggregation. Let's see which brand lists the most shoes.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -525,7 +525,7 @@ In some cases, we need to combine the results of searches across multiple collec
 
 Let's imagine a scenario where the user would now want to find out more about this company, _as well_ as the items that they sell.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -605,7 +605,7 @@ We are going to use the custom agent from [step 3.2](#system-prompt-agent) with 
 
 For example, try to ask if the brand "Eko & Stitch" has a branch or associated company in the UK but using Japanese instead of English:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

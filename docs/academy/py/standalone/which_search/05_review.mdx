@@ -16,7 +16,7 @@ Weaviate offers three primary search types - namely **vector**, **keyword**, and
 
 These code examples are runnable, with the [`v4` Weaviate Python client](/weaviate/client-libraries/python/index.mdx). Connect to the pre-configured demo instance of Weaviate with the following code, and try the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -39,7 +39,7 @@ In Weaviate, you can search for objects with similar vectors in any of the follo
 
 With a source medium (e.g. text or image):
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -54,7 +54,7 @@ With a source medium (e.g. text or image):
 
 With a vector:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -69,7 +69,7 @@ With a vector:
 
 With an existing Weaviate object:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -88,7 +88,7 @@ A keyword search finds objects whose keywords (i.e. tokens) are the most relevan
 
 Intuitively, the BM25F algorithm determines "relevance" by considering how often a keyword appears in each field of the object, relative to how commonly the keyword appears in the entire dataset.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -105,7 +105,7 @@ Intuitively, the BM25F algorithm determines "relevance" by considering how often
 
 A hybrid search combines the results of a vector search and a keyword search. This is done by performing both searches, and them combining the two search results with a "fusion" algorithm.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
