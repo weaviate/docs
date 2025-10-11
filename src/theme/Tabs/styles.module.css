@@ -380,6 +380,18 @@
   animation: fadeIn 0.2s ease;
 }
 
+/* Tab panel styles for scrapable content */
+.tabPanel {
+  /* All tab panels are rendered in the DOM */
+  width: 100%;
+}
+
+.tabPanelHidden {
+  /* Hidden tabs are still in DOM but not visible */
+  /* The inline display:none handles the hiding */
+  /* This class exists for potential future enhancements */
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

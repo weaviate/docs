@@ -4,9 +4,9 @@
 import React, {
   useState,
   useEffect,
-  cloneElement,
   isValidElement,
   Children,
+  useRef,
 } from "react";
 import OriginalTabs from "@theme-original/Tabs";
 import clsx from "clsx";
@@ -76,14 +76,26 @@ const LANGUAGE_CONFIG = {
 // Configuration for the remote execution service
 const EXECUTION_CONFIG = {
   // Replace with your actual GCP Cloud Run service URL
-  API_ENDPOINT: "http://localhost:8088", //local dev
-  //"https://code-executor-YOUR_PROJECT.run.app",/gcp cloud run
-  API_KEY: "local-dev-api-key-123",
-  //API_KEY: process.env.REACT_APP_CODE_EXECUTOR_API_KEY || null,
+  //API_ENDPOINT: "http://localhost:8088", //local dev
+  API_ENDPOINT: "https://code-executor-orchestrator-something.a.run.app",
+  //API_KEY: "local-dev-api-key-123",
+  API_KEY: "api-key",
   USE_GOOGLE_AUTH: false,
   MAX_EXECUTION_TIME: 30000, // 30 seconds
   SUPPORTED_LANGUAGES: ["py", "ts", "go", "java"],
   DEVELOPMENT_MODE: true,
+  // py: { label: "Python", icon: "/img/site/logo-py.svg" },
+  // py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
+  // ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
+  // ts_agents: {
+  //   label: "JavaScript/TypeScript (Agents)",
+  //   icon: "/img/site/logo-ts.svg",
+  // },
+  // go: { label: "Go", icon: "/img/site/logo-go.svg" },
+  // java: { label: "Java", icon: "/img/site/logo-java.svg" },
+  // curl: { label: "Curl", icon: null },
+  // bash: { label: "Bash", icon: null },
+  // shell: { label: "Shell", icon: null },
 };
 
 // Context for sharing selected language across all code dropdowns
@@ -398,19 +410,44 @@ const CodeDropdownTabs = ({
         label: child.props.label || child.props.value,
       }));
 
+  // State for selected tab
+  const isInternalChange = useRef(false);
+
   const [selectedValue, setSelectedValue] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedValue = localStorage.getItem(
-        `docusaurus.tab.${groupId || "languages"}`
-      );
-      if (savedValue && tabValues.some((t) => t.value === savedValue)) {
-        return savedValue;
-      }
-      const globalLang = localStorage.getItem("selectedCodeLanguage");
-      if (globalLang) {
-        return globalLang;
-      }
+    if (typeof window === "undefined") {
+      return defaultValue || tabValues[0]?.value;
     }
+
+    const groupValue = localStorage.getItem(
+      `docusaurus.tab.${groupId || "languages"}`
+    );
+    const globalValue = localStorage.getItem("selectedCodeLanguage");
+    const targetLang = groupValue || globalValue;
+
+    if (targetLang) {
+      const availableLangs = tabValues.map((t) => t.value);
+
+      if (availableLangs.includes(targetLang)) {
+        return targetLang;
+      }
+
+      if (targetLang === "py" && availableLangs.includes("py_agents")) {
+        return "py_agents";
+      }
+      if (targetLang === "py_agents" && availableLangs.includes("py")) {
+        return "py";
+      }
+
+      if (targetLang === "ts" && availableLangs.includes("ts_agents")) {
+        return "ts_agents";
+      }
+      if (targetLang === "ts_agents" && availableLangs.includes("ts")) {
+        return "ts";
+      }
+
+      return targetLang;
+    }
+
     return defaultValue || tabValues[0]?.value;
   });
 
@@ -418,16 +455,46 @@ const CodeDropdownTabs = ({
 
   useEffect(() => {
     const handleLanguageChange = (event) => {
-      const newLang = event.detail;
-      setSelectedValue(newLang);
+      if (isInternalChange.current) {
+        isInternalChange.current = false;
+        return;
+      }
+
+      const newGlobalLang = event.detail;
+      const availableLangs = tabValues.map((t) => t.value);
+      let valueToSet = newGlobalLang;
+
+      if (!availableLangs.includes(newGlobalLang)) {
+        if (newGlobalLang === "py" && availableLangs.includes("py_agents")) {
+          valueToSet = "py_agents";
+        } else if (
+          newGlobalLang === "py_agents" &&
+          availableLangs.includes("py")
+        ) {
+          valueToSet = "py";
+        } else if (
+          newGlobalLang === "ts" &&
+          availableLangs.includes("ts_agents")
+        ) {
+          valueToSet = "ts_agents";
+        } else if (
+          newGlobalLang === "ts_agents" &&
+          availableLangs.includes("ts")
+        ) {
+          valueToSet = "ts";
+        }
+      }
+
+      setSelectedValue(valueToSet);
     };
 
     window.addEventListener("codeLanguageChange", handleLanguageChange);
     return () =>
       window.removeEventListener("codeLanguageChange", handleLanguageChange);
-  }, []);
+  }, [tabValues]);
 
   const handleChange = (newValue) => {
+    isInternalChange.current = true;
     setSelectedValue(newValue);
     setIsExecuting(false); // Reset execution state when changing language
     if (typeof window !== "undefined") {
@@ -596,18 +663,34 @@ const CodeDropdownTabs = ({
         )}
       </div>
       <div className={styles.codeContent}>
-        {isLanguageAvailable && selectedChild ? (
-          <>
-            {selectedChild}
-            {canExecute && (
-              <CodeExecutor
-                code={codeToExecute}
-                language={selectedValue}
-                onExecute={setIsExecuting}
-                isExecuting={isExecuting}
-              />
-            )}
-          </>
+        {isLanguageAvailable ? (
+          // Render ALL children, but hide non-selected ones with CSS
+          Children.map(children, (child) => {
+            if (!isValidElement(child)) return null;
+
+            const isSelected = child.props.value === selectedValue;
+
+            return (
+              <div
+                key={child.props.value}
+                className={clsx(styles.tabPanel, {
+                  [styles.tabPanelHidden]: !isSelected,
+                })}
+                style={{ display: isSelected ? "block" : "none" }}
+                aria-hidden={!isSelected}
+              >
+                {child}
+                {canExecute && (
+                  <CodeExecutor
+                    code={codeToExecute}
+                    language={selectedValue}
+                    onExecute={setIsExecuting}
+                    isExecuting={isExecuting}
+                  />
+                )}
+              </div>
+            );
+          })
         ) : (
           <div className={styles.comingSoon}>
             <p>
