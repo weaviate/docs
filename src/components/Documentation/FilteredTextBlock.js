@@ -129,7 +129,8 @@ const FilteredTextBlock = ({
   title = "",
   path,
   docRefs = [],
-  executable = true, // New prop to control if code can be executed
+  executable = false, // Prop to control if code can be executed
+  editable = false, // Prop to control if code can be edited
 }) => {
   // Extract filtered code
   const filteredLines = extractFilteredCode(
@@ -176,7 +177,7 @@ const FilteredTextBlock = ({
     : [];
 
   return (
-    <div data-executable-code={executable ? filteredLines : undefined}>
+    <div>
       <CodeBlock
         className={`language-${language2}`}
         title={title}

@@ -41,15 +41,15 @@
   justify-content: flex-end;
 }
 
-/* Play Button Styles */
-.playButton {
+/* ++ ADDED: Shared styles for action buttons */
+.playButton,
+.editButton {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 14px;
   font-weight: 600;
-  color: var(--ifm-color-primary);
   background: transparent;
   border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: 6px;
@@ -61,12 +61,10 @@
   svg {
     width: 16px;
     height: 16px;
-    /* Ensures the icon inherits the button's text color */
     fill: currentColor;
   }
 
   &:hover:not(:disabled) {
-    /* Fills the button on hover for clear feedback */
     border-color: var(--ifm-color-primary);
     background-color: var(--ifm-color-emphasis-100);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -81,27 +79,22 @@
     opacity: 0.6;
     cursor: not-allowed;
   }
-
-  /* Ripple effect for click feedback */
-  &::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-
-  &:active::before {
-    width: 300px;
-    height: 300px;
-  }
 }
 
+/* Specific color for each button */
+.playButton {
+  color: var(--ifm-color-primary);
+}
+
+.editButton {
+  color: var(--ifm-color-emphasis-800);
+}
+
+html[data-theme="dark"] .editButton {
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Play Button Spinner Styles */
 .playButtonSpinner {
   animation: rotate 1s linear infinite;
   width: 16px;
@@ -182,16 +175,17 @@
   overflow: hidden;
   border: 1px solid;
   animation: fadeIn 0.3s ease;
+  margin-top: 1rem; /* Add margin-top for separation */
 }
 
 .outputContainer {
+  /* Keep a subtle green border for success */
   border-color: var(--ifm-color-success-dark);
-  background-color: var(--ifm-color-success-lightest);
 }
 
 .errorContainer {
+  /* Keep a subtle red border for error */
   border-color: var(--ifm-color-danger-dark);
-  background-color: var(--ifm-color-danger-lightest);
 }
 
 .outputHeader,
@@ -204,16 +198,29 @@
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  /* NEW: Use the same background as the codeDropdownHeader */
+  background-color: var(--ifm-code-background);
+  background: linear-gradient(
+    to right,
+    var(--ifm-code-background),
+    transparent
+  );
+  /* NEW: Use the base font color for the header text */
+  color: var(--ifm-font-color-base);
+  border-bottom: 1px solid var(--ifm-color-emphasis-300); /* Separate header from content */
 }
 
+/* Remove separate color settings for outputHeader and errorHeader */
 .outputHeader {
-  background-color: var(--ifm-color-success-light);
-  color: var(--ifm-color-success-darkest);
+  /* No special background, inherits from .outputHeader, .errorHeader */
+  /* Use a subtle success color for the text to indicate status */
+  color: var(--ifm-color-success-dark);
 }
 
 .errorHeader {
-  background-color: var(--ifm-color-danger-light);
-  color: var(--ifm-color-danger-darkest);
+  /* No special background, inherits from .outputHeader, .errorHeader */
+  /* Use a subtle danger color for the text to indicate status */
+  color: var(--ifm-color-danger-dark);
 }
 
 .outputIcon,
@@ -223,11 +230,13 @@
 }
 
 .outputIcon {
-  color: var(--ifm-color-success-darkest);
+  /* Keep success color for the icon */
+  color: var(--ifm-color-success-dark);
 }
 
 .errorIcon {
-  color: var(--ifm-color-danger-darkest);
+  /* Keep danger color for the icon */
+  color: var(--ifm-color-danger-dark);
 }
 
 .outputContent,
@@ -239,14 +248,17 @@
   font-size: 14px;
   line-height: 1.5;
   overflow-x: auto;
-  background-color: rgba(255, 255, 255, 0.7);
+  /* Keep background simple to contrast with header */
+  background-color: var(--ifm-background-color);
 }
 
 .outputContent {
+  /* Use a distinct color for successful output text */
   color: var(--ifm-color-success-darkest);
 }
 
 .errorContent {
+  /* Use a distinct color for error output text */
   color: var(--ifm-color-danger-darkest);
 }
 
@@ -461,17 +473,46 @@ html[data-theme="dark"] {
     border-color: var(--ifm-color-primary);
   }
 
-  .outputContainer {
+  outputContainer {
+    /* Subtle background for the content */
     background-color: rgba(16, 185, 129, 0.1);
   }
 
   .errorContainer {
+    /* Subtle background for the content */
     background-color: rgba(214, 100, 100, 0.1);
+  }
+
+  .outputHeader,
+  .errorHeader {
+    background-color: var(--ifm-code-background);
+    background: linear-gradient(
+      to right,
+      var(--ifm-code-background),
+      transparent
+    );
+    border-bottom-color: var(--ifm-color-emphasis-300);
   }
 
   .outputContent,
   .errorContent {
     background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .outputHeader {
+    color: var(--ifm-color-success-light); /* Lighter green for dark mode header text */
+  }
+
+  .errorHeader {
+    color: var(--ifm-color-danger-light); /* Lighter red for dark mode header text */
+  }
+
+  .outputIcon {
+    color: var(--ifm-color-success-light);
+  }
+
+  .errorIcon {
+    color: var(--ifm-color-danger-light);
   }
 }
 
@@ -538,5 +579,25 @@ html[data-theme="dark"] {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+.codeEditor {
+  width: 100%;
+  padding: var(--ifm-pre-padding);
+  background-color: var(--ifm-code-background);
+  border-radius: var(--ifm-code-border-radius);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  line-height: var(--ifm-pre-line-height);
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--ifm-color-primary-rgb), 0.25);
   }
 }

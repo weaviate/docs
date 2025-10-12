@@ -1,16 +1,16 @@
 ---
-title: Testing
+title: Docs Playground - Testing
 description: "A blank docs page for testing purposes"
 image: og/docs/home.jpg
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/python/quickstart.is_ready.py';
-import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.is_ready.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/1_is_ready/main.go';
-import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/IsReady.java';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/quickstart.is_ready.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.is_ready.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/1_is_ready/main.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/IsReady.java";
 
 ## Check if Weaviate is Ready
 
@@ -18,51 +18,48 @@ First, let's verify that your Weaviate instance is ready to accept requests.
 Click the **Run** button to execute the code with your configured Weaviate instance.
 
 <Tabs className="code" groupId="languages">
-<TabItem value="py" label="Python">
-
-<FilteredTextBlock
-  text={PyCode}
-  startMarker="# InstantiationExample"
-  endMarker="# END InstantiationExample"
-  language="py"
-  title="quickstart_check_readiness.py"
-  executable={true}
-/>
-
-</TabItem>
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-
-<FilteredTextBlock
-  text={TSCode}
-  startMarker="// InstantiationExample"
-  endMarker="// END InstantiationExample"
-  language="ts"
-  title="quickstart_check_readiness.ts"
-  executable={true}
-/>
-
-</TabItem>
-
-<TabItem value="go" label="Go">
-<FilteredTextBlock
-  text={GoCode}
-  startMarker="// START InstantiationExample"
-  endMarker="// END InstantiationExample"
-  language="goraw"
-  title="quickstart/1_check_readiness/main.go"
-  executable={true}
-/>
-</TabItem>
-
-<TabItem value="java" label="Java">
-<FilteredTextBlock
-  text={JavaCode}
-  startMarker="// START InstantiationExample"
-  endMarker="// END InstantiationExample"
-  language="javaraw"
-  title="quickstart/IsReady.java"
-  executable={true}
-/>
-</TabItem>
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# InstantiationExample"
+      endMarker="# END InstantiationExample"
+      language="py"
+      title="quickstart_check_readiness.py"
+      executable={true}
+      editable={true}
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// InstantiationExample"
+      endMarker="// END InstantiationExample"
+      language="ts"
+      title="quickstart_check_readiness.ts"
+      executable={true}
+      editable={true}
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START InstantiationExample"
+      endMarker="// END InstantiationExample"
+      language="goraw"
+      title="quickstart/1_check_readiness/main.go"
+      executable={true}
+      editable={true}
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START InstantiationExample"
+      endMarker="// END InstantiationExample"
+      language="javaraw"
+      title="quickstart/IsReady.java"
+      executable={true}
+      editable={true}
+    />
+  </TabItem>
 </Tabs>

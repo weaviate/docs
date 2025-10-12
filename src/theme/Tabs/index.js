@@ -9,6 +9,7 @@ import React, {
   useRef,
 } from "react";
 import OriginalTabs from "@theme-original/Tabs";
+import CodeBlock from "@theme/CodeBlock"; // Import CodeBlock
 import clsx from "clsx";
 import styles from "./styles.module.css";
 import { DOC_SYSTEMS } from "../../components/Documentation/FilteredTextBlock";
@@ -84,6 +85,7 @@ const EXECUTION_CONFIG = {
   MAX_EXECUTION_TIME: 30000, // 30 seconds
   SUPPORTED_LANGUAGES: ["py", "ts", "go", "java"],
   DEVELOPMENT_MODE: true,
+
   // py: { label: "Python", icon: "/img/site/logo-py.svg" },
   // py_agents: { label: "Python (Agents)", icon: "/img/site/logo-py.svg" },
   // ts: { label: "JavaScript/TypeScript", icon: "/img/site/logo-ts.svg" },
@@ -100,7 +102,6 @@ const EXECUTION_CONFIG = {
 
 // Context for sharing selected language across all code dropdowns
 const CodeLanguageContext = React.createContext();
-
 export const CodeLanguageProvider = ({ children }) => {
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
     if (typeof window !== "undefined") {
@@ -423,35 +424,50 @@ const CodeDropdownTabs = ({
     );
     const globalValue = localStorage.getItem("selectedCodeLanguage");
     const targetLang = groupValue || globalValue;
-
     if (targetLang) {
       const availableLangs = tabValues.map((t) => t.value);
-
-      if (availableLangs.includes(targetLang)) {
-        return targetLang;
-      }
-
-      if (targetLang === "py" && availableLangs.includes("py_agents")) {
+      if (availableLangs.includes(targetLang)) return targetLang;
+      if (targetLang === "py" && availableLangs.includes("py_agents"))
         return "py_agents";
-      }
-      if (targetLang === "py_agents" && availableLangs.includes("py")) {
+      if (targetLang === "py_agents" && availableLangs.includes("py"))
         return "py";
-      }
-
-      if (targetLang === "ts" && availableLangs.includes("ts_agents")) {
+      if (targetLang === "ts" && availableLangs.includes("ts_agents"))
         return "ts_agents";
-      }
-      if (targetLang === "ts_agents" && availableLangs.includes("ts")) {
+      if (targetLang === "ts_agents" && availableLangs.includes("ts"))
         return "ts";
-      }
-
       return targetLang;
     }
-
     return defaultValue || tabValues[0]?.value;
   });
 
   const [isExecuting, setIsExecuting] = useState(false);
+  // State for editing mode
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedCode, setEditedCode] = useState(null);
+  const [editorRows, setEditorRows] = useState(10);
+
+  const selectedChild = Children.toArray(children).find(
+    (child) => isValidElement(child) && child.props.value === selectedValue
+  );
+
+  const originalCode = selectedChild
+    ? extractCodeFromChild(selectedChild)
+    : null;
+  const codeToUse = editedCode ?? originalCode;
+
+  // Get the actual content block (e.g., FilteredTextBlock) inside the selected TabItem
+  const contentBlock =
+    selectedChild && React.Children.only(selectedChild.props.children);
+
+  // Check the props of the content block to see if it's executable or editable
+  const isExecutable = contentBlock?.props?.executable === true;
+  const isEditable = contentBlock?.props?.editable === true;
+
+  // Reset editing state when language changes
+  useEffect(() => {
+    setIsEditing(false);
+    setEditedCode(null);
+  }, [selectedValue]);
 
   useEffect(() => {
     const handleLanguageChange = (event) => {
@@ -459,35 +475,21 @@ const CodeDropdownTabs = ({
         isInternalChange.current = false;
         return;
       }
-
       const newGlobalLang = event.detail;
       const availableLangs = tabValues.map((t) => t.value);
       let valueToSet = newGlobalLang;
-
       if (!availableLangs.includes(newGlobalLang)) {
-        if (newGlobalLang === "py" && availableLangs.includes("py_agents")) {
+        if (newGlobalLang === "py" && availableLangs.includes("py_agents"))
           valueToSet = "py_agents";
-        } else if (
-          newGlobalLang === "py_agents" &&
-          availableLangs.includes("py")
-        ) {
+        else if (newGlobalLang === "py_agents" && availableLangs.includes("py"))
           valueToSet = "py";
-        } else if (
-          newGlobalLang === "ts" &&
-          availableLangs.includes("ts_agents")
-        ) {
+        else if (newGlobalLang === "ts" && availableLangs.includes("ts_agents"))
           valueToSet = "ts_agents";
-        } else if (
-          newGlobalLang === "ts_agents" &&
-          availableLangs.includes("ts")
-        ) {
+        else if (newGlobalLang === "ts_agents" && availableLangs.includes("ts"))
           valueToSet = "ts";
-        }
       }
-
       setSelectedValue(valueToSet);
     };
-
     window.addEventListener("codeLanguageChange", handleLanguageChange);
     return () =>
       window.removeEventListener("codeLanguageChange", handleLanguageChange);
@@ -508,8 +510,26 @@ const CodeDropdownTabs = ({
     }
   };
 
+  // Save code if editing, then run
   const handleExecute = () => {
+    if (isEditing) {
+      setIsEditing(false);
+    }
     setIsExecuting(true);
+  };
+
+  // This handler now calculates and sets the editor's height
+  const handleEditToggle = () => {
+    if (isEditing) {
+      setIsEditing(false); // Save changes
+    } else {
+      const currentCode = codeToUse || "";
+      const numLines = currentCode.split("\n").length;
+      // Set editor height based on code lines, with a minimum of 10
+      setEditorRows(Math.max(10, numLines));
+      setEditedCode(currentCode);
+      setIsEditing(true);
+    }
   };
 
   const isLanguageAvailable = tabValues.some(
@@ -528,18 +548,11 @@ const CodeDropdownTabs = ({
     ];
   }
 
-  const selectedChild = isLanguageAvailable
-    ? Children.toArray(children).find(
-        (child) => isValidElement(child) && child.props.value === selectedValue
-      )
-    : null;
-
-  const codeToExecute = selectedChild
-    ? extractCodeFromChild(selectedChild)
-    : null;
   const canExecute =
+    isExecutable &&
     EXECUTION_CONFIG.SUPPORTED_LANGUAGES.includes(selectedValue) &&
-    codeToExecute;
+    codeToUse;
+  const canEdit = isEditable && originalCode !== null;
 
   const docSystem = DOC_SYSTEMS[selectedValue];
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -587,6 +600,24 @@ const CodeDropdownTabs = ({
               <span>Run</span>
             </button>
           )}
+
+          {/* ++ Edit/Save Button */}
+          {canEdit && (
+            <button
+              className={styles.editButton}
+              onClick={handleEditToggle}
+              title={isEditing ? "Save code" : "Edit this code snippet"}
+            >
+              <svg viewBox="0 0 20 20" fill="currentColor">
+                {isEditing ? (
+                  <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                ) : (
+                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM5 14H3a1 1 0 00-1 1v2a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 00-1-1z" />
+                )}
+              </svg>
+              <span>{isEditing ? "Save" : "Edit"}</span>
+            </button>
+          )}
         </div>
 
         {docSystem?.baseUrl && (
@@ -624,29 +655,30 @@ const CodeDropdownTabs = ({
             </a>
 
             <div className={styles.versionInfo}>
-              <span className={styles.versionLabel}>
-                More info
-                <Tooltip
-                  content={
-                    <>
-                      Code snippets in the documentation reflect the latest
-                      client library and Weaviate Database version. Check the{" "}
-                      <Link href="/weaviate/release-notes">Release notes</Link>{" "}
-                      for specific versions.
-                      <br />
-                      <br />
-                      If a snippet doesn't work or you have feedback, please
-                      open a{" "}
-                      <Link
-                        href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}
-                      >
-                        GitHub issue
-                      </Link>
-                      .
-                    </>
-                  }
-                  position="left"
-                >
+              {/* The Tooltip now wraps the text and the icon */}
+              <Tooltip
+                content={
+                  <>
+                    Code snippets in the documentation reflect the latest client
+                    library and Weaviate Database version. Check the{" "}
+                    <Link href="/weaviate/release-notes">Release notes</Link>{" "}
+                    for specific versions.
+                    <br />
+                    <br />
+                    If a snippet doesn't work or you have feedback, please open
+                    a{" "}
+                    <Link
+                      href={`https://github.com/weaviate/docs/issues/new?${params.toString()}`}
+                    >
+                      GitHub issue
+                    </Link>
+                    .
+                  </>
+                }
+                position="left"
+              >
+                <span className={styles.versionLabel}>
+                  More info
                   <svg
                     width="14"
                     height="14"
@@ -656,41 +688,77 @@ const CodeDropdownTabs = ({
                   >
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
                   </svg>
-                </Tooltip>
-              </span>
+                </span>
+              </Tooltip>
             </div>
           </div>
         )}
       </div>
+
+      {/* Conditionally render editor, saved code, or original content */}
       <div className={styles.codeContent}>
         {isLanguageAvailable ? (
           // Render ALL children, but hide non-selected ones with CSS
-          Children.map(children, (child) => {
-            if (!isValidElement(child)) return null;
+          isEditing ? (
+            // In edit mode, show a textarea and the executor
+            <>
+              <textarea
+                className={styles.codeEditor}
+                value={editedCode}
+                onChange={(e) => setEditedCode(e.target.value)}
+                spellCheck="false"
+                rows={editorRows}
+              />
+              {canExecute && (
+                <CodeExecutor
+                  code={codeToUse}
+                  language={selectedValue}
+                  onExecute={setIsExecuting}
+                  isExecuting={isExecuting}
+                />
+              )}
+            </>
+          ) : (
+            // Not editing: map over children and show the correct one
+            Children.map(children, (child) => {
+              if (!isValidElement(child)) return null;
 
-            const isSelected = child.props.value === selectedValue;
+              const isSelected = child.props.value === selectedValue;
 
-            return (
-              <div
-                key={child.props.value}
-                className={clsx(styles.tabPanel, {
-                  [styles.tabPanelHidden]: !isSelected,
-                })}
-                style={{ display: isSelected ? "block" : "none" }}
-                aria-hidden={!isSelected}
-              >
-                {child}
-                {canExecute && (
-                  <CodeExecutor
-                    code={codeToExecute}
-                    language={selectedValue}
-                    onExecute={setIsExecuting}
-                    isExecuting={isExecuting}
-                  />
-                )}
-              </div>
-            );
-          })
+              // Normalize language for CodeBlock display
+              let langClass = selectedValue.replace(/_agents|_v\d+/, "");
+
+              return (
+                <div
+                  key={child.props.value}
+                  className={clsx(styles.tabPanel, {
+                    [styles.tabPanelHidden]: !isSelected,
+                  })}
+                  style={{ display: isSelected ? "block" : "none" }}
+                  aria-hidden={!isSelected}
+                >
+                  {isSelected && editedCode !== null ? (
+                    // If saved, show a simple CodeBlock with the edited code
+                    <CodeBlock className={`language-${langClass}`}>
+                      {editedCode}
+                    </CodeBlock>
+                  ) : (
+                    // Otherwise, show the original child content
+                    child
+                  )}
+
+                  {isSelected && canExecute && (
+                    <CodeExecutor
+                      code={codeToUse}
+                      language={selectedValue}
+                      onExecute={setIsExecuting}
+                      isExecuting={isExecuting}
+                    />
+                  )}
+                </div>
+              );
+            })
+          )
         ) : (
           <div className={styles.comingSoon}>
             <p>
