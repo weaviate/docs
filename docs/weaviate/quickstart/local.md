@@ -82,7 +82,7 @@ ollama pull nomic-embed-text
 ollama pull llama3.2
 ```
 
-We will be running Weaviate and language models locally. We recommend that you use a modern computer with at least 8GB or RAM, preferably 16GB or more.
+We will be running Weaviate and language models locally. We recommend that you use a modern computer with at least 8GB of RAM, preferably 16GB or more.
 
 <hr/>
 
