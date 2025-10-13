@@ -1,0 +1,112 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+
+```python
+import weaviate
+from weaviate.classes.init import Auth
+from weaviate.classes.config import Configure
+from weaviate.classes.generate import GenerativeConfig
+import requests, json, os
+
+# Connect to Weaviate Cloud
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=os.environ["WEAVIATE_URL"],
+    auth_credentials=Auth.api_key(os.environ["WEAVIATE_API_KEY"]),
+    headers={"X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"]},
+)
+
+# Create collection
+questions = client.collections.create(
+    name="Question",
+    vector_config=Configure.Vectors.text2vec_weaviate(),
+)
+
+# Import data
+data = json.loads(requests.get(
+    "https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json"
+).text)
+
+with questions.batch.fixed_size(batch_size=200) as batch:
+    for d in data:
+        batch.add_object({
+            "answer": d["Answer"],
+            "question": d["Question"],
+            "category": d["Category"],
+        })
+
+# Search
+response = questions.query.near_text(query="biology", limit=2)
+for obj in response.objects:
+    print(json.dumps(obj.properties, indent=2))
+
+# RAG
+response = questions.generate.near_text(
+    query="biology",
+    limit=2,
+    grouped_task="Write a tweet with emojis about these facts.",
+    generative_provider=GenerativeConfig.openai(),
+)
+print(response.generative.text)
+
+client.close()
+```
+
+</TabItem>
+
+<TabItem value="ts" label="JavaScript/TypeScript">
+
+```typescript
+import weaviate, { WeaviateClient, generateCollection, configure } from 'weaviate-client';
+
+// Connect to Weaviate Cloud
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
+  process.env.WEAVIATE_URL!,
+  {
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY!),
+    headers: { 'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY! },
+  }
+);
+
+// Create collection
+const questions = await client.collections.create({
+  name: 'Question',
+  vectorizers: weaviate.configure.vectorizer.text2VecWeaviate(),
+});
+
+// Import data
+const response = await fetch(
+  'https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json'
+);
+const data = await response.json();
+
+await questions.data.insertMany(
+  data.map((d: any) => ({
+    answer: d.Answer,
+    question: d.Question,
+    category: d.Category,
+  }))
+);
+
+// Search
+const searchResult = await questions.query.nearText('biology', { limit: 2 });
+searchResult.objects.forEach((obj) => console.log(JSON.stringify(obj.properties, null, 2)));
+
+// RAG
+const ragResult = await questions.generate.nearText(
+  'biology',
+  {
+    singlePrompt: 'Write a tweet with emojis about these facts.',
+    limit: 2,
+  },
+  { generativeProvider: weaviate.configure.generative.openai() }
+);
+console.log(ragResult.generated);
+
+client.close();
+```
+
+</TabItem>
+</Tabs>
