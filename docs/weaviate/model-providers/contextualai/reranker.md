@@ -2,7 +2,8 @@
 title: Reranker
 description: Contextual AI Reranker Model Provider
 sidebar_position: 70
-image: og/docs/integrations/provider_integrations_generic.jpg
+image: og/docs/integrations/provider_integrations_contextualai.jpg
+tags: ['model providers', 'contextual ai', 'reranker']
 ---
 
 # Contextual AI Reranker Models with Weaviate
@@ -15,7 +16,9 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.reranker.py';
 import TSCode from '!!raw-loader!../_includes/provider.reranker.ts';
 
-Weaviate's integration with Contextual AI rerankers allows you to rerank search results using their models.
+Weaviate's integration with [Contextual AI rerankers](https://contextual.ai/blog/rerank-v2/?utm_campaign=contextual-ai-integration&utm_source=weaviate&utm_medium=github&utm_content=repo) allows you to rerank search results using their models with custom instructions for recency, document type, source, and metadata.
+
+![Reranker integration illustration](../_includes/integration_contextualai_reranker.png)
 
 ## Requirements
 
@@ -172,7 +175,9 @@ Any search can be combined with a reranker.
 
 ## Further resources
 
-- Contextual AI Reranker API docs: `https://docs.contextual.ai/api-reference/rerank/rerank`
+- [Contextual AI Reranker API docs](https://docs.contextual.ai/api-reference/rerank/rerank)
+- [Introducing the instruction-following reranker](https://contextual.ai/blog/introducing-instruction-following-reranker)
+- [Contextual AI Reranker v2 Blog Post](https://contextual.ai/blog/rerank-v2/?utm_campaign=contextual-ai-integration&utm_source=weaviate&utm_medium=github&utm_content=repo)
 - [Contextual AI Generative AI + Weaviate](./generative.md)
 
 ## Questions and feedback

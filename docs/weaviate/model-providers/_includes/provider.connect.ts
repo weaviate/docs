@@ -16,10 +16,10 @@ const aws_secret_key = process.env.AWS_SECRET_KEY || '';  // Replace with your A
 // START CohereInstantiation
 const cohereApiKey = process.env.COHERE_APIKEY || '';  // Replace with your inference API key
 // END CohereInstantiation
-// START DatabricksInstantiation
 // START ContextualAIInstantiation
 const contextualApiKey = process.env.CONTEXTUAL_API_KEY || '';
 // END ContextualAIInstantiation
+// START DatabricksInstantiation
 const databricksToken = process.env.DATABRICKS_TOKEN || '';  // Replace with your inference API key
 // END DatabricksInstantiation
 // START FriendliInstantiation

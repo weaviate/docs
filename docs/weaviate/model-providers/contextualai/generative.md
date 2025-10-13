@@ -1,7 +1,9 @@
 ---
 title: Generative AI
+description: Contextual AI Generative Model Provider
 sidebar_position: 50
-image: og/docs/integrations/provider_integrations_generic.jpg
+image: og/docs/integrations/provider_integrations_contextualai.jpg
+tags: ['model providers', 'contextual ai', 'generative', 'rag']
 ---
 
 # Contextual AI's Generative AI with Weaviate
@@ -14,7 +16,15 @@ import TSConnect from '!!raw-loader!../_includes/provider.connect.ts';
 import PyCode from '!!raw-loader!../_includes/provider.generative.py';
 import TSCode from '!!raw-loader!../_includes/provider.generative.ts';
 
-Weaviate's integration with Contextual AI lets you use GLM models directly from Weaviate.
+Contextual AI allows you to access their [Grounded Language Model (GLM)](https://contextual.ai/blog/introducing-grounded-language-model?utm_campaign=GLM-integration&utm_source=weaviate&utm_medium=github&utm_content=repo) directly from Weaviate.
+
+[Configure a Weaviate collection](#configure-collection) to use a generative AI model with Contextual AI. Weaviate will perform retrieval augmented generation (RAG) using the specified model and your Contextual AI API key.
+
+[Configure collection](#configure-collection) • [Select a model](#select-a-model) • [Parameters](#generative-parameters) • [Runtime selection](#select-a-model-at-runtime) • [Headers](#header-parameters) • [RAG](#retrieval-augmented-generation)
+
+More specifically, Weaviate will perform a search, retrieve the most relevant objects, and then pass them to the Contextual AI generative model to generate outputs.
+
+![RAG integration illustration](../_includes/integration_contextualai_rag.png)
 
 ## Requirements
 
@@ -193,6 +203,12 @@ Any additional headers provided at runtime override existing configuration.
 
 Use either the single prompt or grouped task method.
 
+### Single prompt
+
+![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_contextualai_rag_single.png)
+
+To generate text for each object in the search results, use the single prompt method.
+
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
     <FilteredTextBlock
@@ -211,6 +227,12 @@ Use either the single prompt or grouped task method.
     />
   </TabItem>
 </Tabs>
+
+### Grouped task
+
+Generates a single output for the entire result set.
+
+![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_contextualai_rag_grouped.png)
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -235,6 +257,9 @@ Use either the single prompt or grouped task method.
 
 - Contextual AI API docs: `https://docs.contextual.ai/user-guides/beginner-guide`
 - [Contextual AI Reranker Models + Weaviate](./reranker.md)
+- [Introducing the most grounded language model (GLM)](https://contextual.ai/blog/introducing-grounded-language-model?utm_campaign=GLM-integration&utm_source=weaviate&utm_medium=github&utm_content=repo)
+- [How-to: Manage collections](../../manage-collections/index.mdx)
+- [How-to: Query & Search](../../search/index.mdx)
 
 ## Questions and feedback
 
