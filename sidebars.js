@@ -15,7 +15,10 @@ const sidebars = {
         type: "doc",
         id: "weaviate/quickstart/index",
       },
-      items: ["weaviate/quickstart/local"],
+      items: [
+        "weaviate/quickstart/explanatory",
+        "weaviate/quickstart/local"
+      ],
     },
     {
       type: "link",
