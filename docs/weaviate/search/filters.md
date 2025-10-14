@@ -926,14 +926,6 @@ This filter requires the [property timestamp](../config-refs/indexing/inverted-i
       language="ts"
     />
   </TabItem>
-   <TabItem value="ts" label="JavaScript/TypeScript">
-    <FilteredTextBlock
-      text={JavaScriptCodeLegacy}
-      startMarker="// FilterByTimestamp"
-      endMarker="// END FilterByTimestamp"
-      language="ts"
-    />
-  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
