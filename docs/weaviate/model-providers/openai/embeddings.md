@@ -272,9 +272,11 @@ Any additional headers provided at runtime will override the existing Weaviate c
 
 Provide the headers as shown in the [API credentials examples](#api-credentials) above.
 
-> Note: by passing the `X-OpenAI-Baseurl` you can use an OpenAI API Compatible endpoint. Weaviate appends `/v1/embeddings` to this baseurl.
-> If this isn't supported you can run your own proxy to do path rewriting (e.g. your.domain.com/v1/embeddings -> api.deepinfra.com/v1/openai/embeddings)
+:::note
 
+By passing the `X-OpenAI-Baseurl`, you can use an endpoint compatible with the OpenAI API. Weaviate appends `/v1/embeddings` to this base URL. If this doesn't match your endpoint, you can rewrite the path with a proxy (e.g., `your.domain.com/v1/embeddings` -> `api.deepinfra.com/v1/openai/embeddings`).
+
+:::
 
 ## Data import
 
