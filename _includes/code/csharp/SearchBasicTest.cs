@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Linq;
 
 // Note: This code assumes the existence of a Weaviate instance populated
-// with 'JeopardyQuestion' and 'WineReviewMT' collections as per the Python examples.
+// with 'JeopardyQuestion' and 'WineReviewMT' collections
 public class SearchBasicTest : IAsyncLifetime
 {
     private WeaviateClient client;
@@ -47,7 +47,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== BASIC GET EXAMPLES =====
         // ==============================
 
-        // BasicGetPython
+        // START BasicGet
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         // highlight-start
         var response = await jeopardy.Query.FetchObjects();
@@ -57,7 +57,7 @@ public class SearchBasicTest : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END BasicGetPython
+        // END BasicGet
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.True(response.Objects.First().Properties.ContainsKey("question"));
@@ -70,7 +70,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== BASIC GET LIMIT EXAMPLES =====
         // ====================================
 
-        // GetWithLimitPython
+        // START GetWithLimit
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
@@ -82,7 +82,7 @@ public class SearchBasicTest : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END GetWithLimitPython
+        // END GetWithLimit
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.True(response.Objects.First().Properties.ContainsKey("question"));
@@ -96,7 +96,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== GET OBJECT PROPERTIES EXAMPLES =====
         // ==========================================
 
-        // GetPropertiesPython
+        // START GetProperties
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
@@ -109,7 +109,7 @@ public class SearchBasicTest : IAsyncLifetime
         {
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));
         }
-        // END GetPropertiesPython
+        // END GetProperties
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         foreach (var propName in new[] { "question", "answer", "points" })
@@ -125,7 +125,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== GET OBJECT VECTOR EXAMPLES =====
         // ======================================
 
-        // GetObjectVectorPython
+        // START GetObjectVector
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
@@ -139,7 +139,7 @@ public class SearchBasicTest : IAsyncLifetime
         //TODO[g-despot]: Why is vector not returned?
         Console.WriteLine("Vector for 'default':");
         Console.WriteLine(JsonSerializer.Serialize(response.Objects.First()));
-        // END GetObjectVectorPython
+        // END GetObjectVector
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.IsType<float[]>(response.Objects.First().Vectors["default"]);
@@ -152,7 +152,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== GET OBJECT ID EXAMPLES =====
         // ==================================
 
-        // GetObjectIdPython
+        // START GetObjectId
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // Object IDs are included by default with the Weaviate C# client! :)
@@ -163,7 +163,7 @@ public class SearchBasicTest : IAsyncLifetime
         {
             Console.WriteLine(o.ID);
         }
-        // END GetObjectIdPython
+        // END GetObjectId
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.IsType<Guid>(response.Objects.First().ID);
@@ -175,7 +175,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ==============================
         // ===== GET WITH CROSS-REF EXAMPLES =====
         // ==============================
-        // GetWithCrossRefsPython
+        // START GetWithCrossRefs
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             // highlight-start
@@ -199,7 +199,7 @@ public class SearchBasicTest : IAsyncLifetime
                 Console.WriteLine(JsonSerializer.Serialize(refObj.Properties));
             }
         }
-        // END GetWithCrossRefsPython
+        // END GetWithCrossRefs
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.True(response.Objects.First().References["hasCategory"].Count > 0);
@@ -212,7 +212,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== GET WITH METADATA EXAMPLE =====
         // ====================================
 
-        // GetWithMetadataPython
+        // START GetWithMetadata
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
         var response = await jeopardy.Query.FetchObjects(
             limit: 1,
@@ -226,7 +226,7 @@ public class SearchBasicTest : IAsyncLifetime
             Console.WriteLine(JsonSerializer.Serialize(o.Properties));  // View the returned properties
             Console.WriteLine(o.Metadata.CreationTime);  // View the returned creation time
         }
-        // END GetWithMetadataPython
+        // END GetWithMetadata
 
         Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
         Assert.NotNull(response.Objects.First().Metadata.CreationTime);
@@ -239,7 +239,7 @@ public class SearchBasicTest : IAsyncLifetime
         // ===== MULTI-TENANCY =====
         // =========================
 
-        // MultiTenancy
+        // START MultiTenancy
         var mtCollection = client.Collections.Use<Dictionary<string, object>>("WineReviewMT");
 
         // In the C# client, the tenant is specified directly in the query method

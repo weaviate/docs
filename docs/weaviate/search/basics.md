@@ -25,7 +25,6 @@ This page provides fundamental search syntax to get you started.
 You can get objects without specifying any parameters. This returns objects in ascending UUID order.
 
 <Tabs className="code" groupId="languages">
-
  <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

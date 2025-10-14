@@ -101,6 +101,7 @@ import ImgSrchPyCode from '!!raw-loader!/\_includes/code/howto/search.image.py';
 import ImgSrchPyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.image-v3.py';
 import ImgSrchTSCode from '!!raw-loader!/\_includes/code/howto/search.image.ts';
 import ImgSrchJavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchImageTest.java";
+import ImgSrchCSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchImageTest.cs";
 
 Use the [`Near Image`](../api/graphql/search-operators.md) operator to find objects with the nearest vector to an image.<br/>
 This example uses a base64 representation of an image.
@@ -140,7 +141,7 @@ This example uses a base64 representation of an image.
   </TabItem>
   <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={CSharpCode}
+      text={ImgSrchCSharpCode}
       startMarker="// START search with base64"
       endMarker="// END search with base64"
       language="csharp"

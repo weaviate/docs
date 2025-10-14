@@ -78,6 +78,33 @@ public class ManageCollectionsTest : IAsyncLifetime
         Assert.Equal(2, config.Properties.Count);
     }
 
+    public class Article
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
+    }
+
+    [Fact]
+    public async Task TestCreateCollectionWithPropertiesFromClass()
+    {
+        // START CreateCollectionWithClassProperties
+        // public class Article
+        // {
+        //     public string Title { get; set; }
+        //     public string Body { get; set; }
+        // }
+    
+        await client.Collections.Create(new Collection
+        {
+            Name = "Article",
+            Properties = [.. Property.FromClass<Article>()],
+        });
+        // END CreateCollectionWithClassProperties
+
+        var config = await client.Collections.Export("Article");
+        Assert.Equal(2, config.Properties.Count);
+    }
+
     [Fact]
     public async Task TestAddProperties()
     {
