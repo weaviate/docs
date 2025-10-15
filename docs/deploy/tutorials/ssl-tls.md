@@ -5,7 +5,7 @@ description: Learn the various techniques to secure your Weaviate deployment and
 
 ## Your Weaviate needs a bodyguard!
 
-Let's imagine your Weaviate database as a high-security vault that contains your most valuable data treasures. When it's within your VPC, it's relatively safe from outside threats. But the moment you need to expose your vault to the outside world (the internet), it needs to secured. 
+Let's imagine your Weaviate database as a high-security vault that contains your most valuable data treasures. When it's within your VPC, it's relatively safe from outside threats. But the moment you need to expose your vault to the outside world (the internet), it needs to be secured. 
 
 Weaviate communicates through two ports, or doors if you will, port 8080(for HTTP) and port 50051 (for gRPC). Both doors need to be secured with encryption protocols in place.
 
