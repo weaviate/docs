@@ -1,0 +1,416 @@
+name: Docs Code Tests
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # Run every Sunday at midnight CET
+    - cron: "0 23 * * 6"
+  push:
+    # Only run when pushed to the testing-ci branch
+    branches:
+      - testing-ci
+  workflow_dispatch: # Manual trigger option
+
+env:
+  # Centralize versions for easier maintenance
+  PYTHON_VERSION: "3.10"
+  WEAVIATE_VERSION: "1.33.0"
+  OLLAMA_VERSION: "0.9.6"
+  CLIP_MODEL_TAG: "sentence-transformers-clip-ViT-B-32"
+  KEYCLOAK_VERSION: "24.0.3"
+
+jobs:
+  test-agents:
+    name: Test Agents
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+        run: |
+          echo "🧪 Running agents tests..."
+          source .venv/bin/activate
+          pytest -m "agents" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Agents'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-agents'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+  test-database-cloud:
+    name: Test Database-Cloud
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+        run: |
+          echo "🧪 Running WCD tests..."
+          source .venv/bin/activate
+          pytest -m "wcd" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Database-Cloud'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-wcd'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+  test-database-local:
+    name: Test Database-Local
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          echo "=== Initial disk usage ==="
+          df -h
+
+          # Run deletions in parallel with background jobs
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /usr/local/share/boost &
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY" &
+          sudo rm -rf /usr/local/lib/android &
+          sudo rm -rf /usr/local/share/powershell &
+          sudo rm -rf /usr/local/share/chromium &
+          sudo rm -rf /usr/local/lib/node_modules &
+          
+          # Wait for all background deletions to complete
+          wait
+
+          echo "=== Final disk usage ==="
+          df -h
+          
+      - name: Setup test environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache Weaviate image
+        uses: actions/cache@v4
+        id: cache-weaviate
+        with:
+          path: /tmp/weaviate.tar.gz
+          key: ${{ runner.os }}-weaviate-${{ env.WEAVIATE_VERSION }}-v2
+          restore-keys: |
+            ${{ runner.os }}-weaviate-
+
+      - name: Cache Ollama image
+        uses: actions/cache@v4
+        id: cache-ollama
+        with:
+          path: /tmp/ollama.tar.gz
+          key: ${{ runner.os }}-ollama-${{ env.OLLAMA_VERSION }}-v2
+          restore-keys: |
+            ${{ runner.os }}-ollama-
+
+      - name: Cache Keycloak image
+        uses: actions/cache@v4
+        id: cache-keycloak
+        with:
+          path: /tmp/keycloak.tar.gz
+          key: ${{ runner.os }}-keycloak-${{ env.KEYCLOAK_VERSION }}-v2
+          restore-keys: |
+            ${{ runner.os }}-keycloak-
+
+      - name: Load or pull Docker images
+        run: |
+          echo "🐳 Managing Docker images..."
+          echo "Initial disk space:"
+          df -h | grep -E "^/dev|Filesystem"
+
+          # Function to handle image loading/pulling with compression
+          load_or_pull_image() {
+            local image_name=$1
+            local tar_file=$2
+            local cache_hit=$3
+            
+            if [[ "$cache_hit" == "true" ]] && [[ -f "$tar_file" ]]; then
+              echo "✅ Loading $image_name from compressed cache..."
+              gunzip -c "$tar_file" | docker load
+              echo "📊 Cache file size: $(du -h "$tar_file" | cut -f1)"
+            else
+              echo "⬇️ Pulling $image_name..."
+              docker pull "$image_name"
+              
+              echo "💾 Saving and compressing image..."
+              docker save "$image_name" | gzip -1 > "$tar_file"
+              
+              # Check if file exceeds reasonable size (8GB compressed ~= reasonable limit)
+              local size_mb=$(du -m "$tar_file" | cut -f1)
+              if [ $size_mb -gt 8192 ]; then
+                echo "⚠️ Warning: Compressed image size is ${size_mb}MB, may exceed cache limits"
+              else
+                echo "✅ Saved compressed image (${size_mb}MB)"
+              fi
+            fi
+          }
+
+          echo "⬇️ Pulling CLIP (no cache due to size)..."
+          docker pull "cr.weaviate.io/semitechnologies/multi2vec-clip:${{ env.CLIP_MODEL_TAG }}"
+
+          # Process images with their individual cache status
+          load_or_pull_image \
+            "cr.weaviate.io/semitechnologies/weaviate:${{ env.WEAVIATE_VERSION }}" \
+            "/tmp/weaviate.tar.gz" \
+            "${{ steps.cache-weaviate.outputs.cache-hit }}"
+
+          load_or_pull_image \
+            "ollama/ollama:${{ env.OLLAMA_VERSION }}" \
+            "/tmp/ollama.tar.gz" \
+            "${{ steps.cache-ollama.outputs.cache-hit }}"
+
+          load_or_pull_image \
+            "quay.io/keycloak/keycloak:${{ env.KEYCLOAK_VERSION }}" \
+            "/tmp/keycloak.tar.gz" \
+            "${{ steps.cache-keycloak.outputs.cache-hit }}"
+
+          echo "✅ All Docker images ready"
+          echo "Final disk space:"
+          df -h | grep -E "^/dev|Filesystem"
+          
+          echo "📊 Cache file sizes:"
+          ls -lh /tmp/*.tar.gz 2>/dev/null || echo "No cache files found"
+
+      - name: Cache Ollama models
+        uses: actions/cache@v4
+        id: cache-ollama-models
+        with:
+          path: |
+            ~/.ollama/models
+            ~/.ollama/cache
+            !~/.ollama/id_*
+            !~/.ollama/*.key
+            !~/.ollama/*.pem
+          key: ${{ runner.os }}-ollama-models-snowflake-nomic-llama32-v2
+          restore-keys: |
+            ${{ runner.os }}-ollama-models-
+
+      - name: Start services
+        run: |
+          echo "🚀 Starting Weaviate and Ollama services..."
+          mkdir -p ~/.ollama
+          ./tests/start-weaviate.sh
+
+          # Wait for Ollama to be ready before pulling models
+          sleep 5
+          echo "✅ Services started:"
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+      - name: Ensure Ollama models are available
+        run: |
+          echo "🤖 Checking Ollama models..."
+
+          declare -a models=("snowflake-arctic-embed" "nomic-embed-text" "llama3.2")
+
+          for model in "${models[@]}"; do
+            if docker exec tests-ollama-1 ollama list 2>/dev/null | grep -q "$model"; then
+              echo "✅ Model $model already available"
+            else
+              echo "⬇️ Pulling model: $model"
+              docker exec tests-ollama-1 ollama pull "$model"
+            fi
+          done
+
+          echo "✅ All models ready:"
+          docker exec tests-ollama-1 ollama list
+
+      - name: Wait for all services to be ready
+        run: |
+          echo "⏳ Waiting for services to be ready..."
+
+          # Define services with their health check endpoints
+          declare -A services=(
+            ["8099"]="Weaviate Main"
+            ["8580"]="Weaviate RBAC"
+            ["8080"]="Weaviate Instance 1"
+            ["8090"]="Weaviate Instance 2"
+            ["8280"]="Weaviate Instance 3"
+            ["8180"]="Weaviate Instance 4"
+            ["8181"]="Weaviate Instance 5"
+            ["8182"]="Weaviate Instance 6"
+          )
+
+          for port in "${!services[@]}"; do
+            service_name="${services[$port]}"
+            echo -n "Checking $service_name (port $port)... "
+            
+            if timeout 60 bash -c "until curl -sf http://localhost:$port/v1/.well-known/ready &>/dev/null; do sleep 2; done"; then
+              echo "✅ Ready"
+            else
+              echo "⚠️ Not responding (may be optional)"
+            fi
+          done
+
+          echo "✅ Service check completed"
+
+      - name: Configure Keycloak
+        run: |
+          echo "🔧 Configuring Keycloak..."
+          source .venv/bin/activate
+
+          # Wait a bit more to ensure Keycloak is fully ready
+          sleep 5
+          
+          python _includes/code/python/keycloak_helper_script.py
+          
+          echo "✅ Keycloak configuration completed"
+
+      - name: Record test start time
+        run: echo "TEST_START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Run tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          DOCS_GITHUB_ENV: "true"
+          # Weaviate connection settings
+          WEAVIATE_URL: ${{ secrets.WEAVIATE_URL }}
+          WEAVIATE_HOST: ${{ secrets.WEAVIATE_HOST }}
+          WEAVIATE_HOSTNAME: ${{ secrets.WEAVIATE_HOSTNAME }}
+          WEAVIATE_HTTP_HOST: ${{ secrets.WEAVIATE_HTTP_HOST }}
+          WEAVIATE_GRPC_HOST: ${{ secrets.WEAVIATE_GRPC_HOST }}
+          WEAVIATE_API_KEY: ${{ secrets.WEAVIATE_API_KEY }}
+          WEAVIATE_LOCAL_API_KEY: ${{ secrets.WEAVIATE_LOCAL_API_KEY }}
+          # API Keys
+          COHERE_APIKEY: ${{ secrets.COHERE_APIKEY }}
+          OPENAI_APIKEY: ${{ secrets.OPENAI_APIKEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HUGGINGFACE_APIKEY: ${{ secrets.HUGGINGFACE_APIKEY }}
+          ANTHROPIC_APIKEY: ${{ secrets.ANTHROPIC_APIKEY }}
+          # WCD credentials
+          WCD_USERNAME: ${{ secrets.WCD_USERNAME }}
+          WCD_PASSWORD: ${{ secrets.WCD_PASSWORD }}
+        run: |
+          echo "🧪 Running PyV4 and TypeScript tests..."
+          source .venv/bin/activate
+          pytest -m "(pyv4 or ts) and not (agents or wcd)" -v --tb=short --durations=10 -s --junitxml=pytest-results.xml
+          echo "✅ Tests completed"
+
+      - name: Stop services
+        if: always()
+        run: |
+          echo "🛑 Stopping services..."
+          ./tests/stop-weaviate.sh 2>/dev/null || echo "⚠️ Some services may have already stopped"
+
+      - name: Handle test results
+        if: always()
+        uses: ./.github/actions/handle-test-results
+        with:
+          test-outcome: ${{ steps.run-tests.outcome }}
+          test-type: 'Database-Local'
+          languages-tested: 'Python, TypeScript'
+          artifact-name: 'test-results-pyv4-ts'
+          slack-bot-token: ${{ secrets.SLACK_BOT }}
+
+      - name: Verify cache contents
+        if: always()
+        run: |
+          echo "📦 Verifying cache contents before save..."
+          for file in /tmp/*.tar.gz; do
+            if [ -f "$file" ]; then
+              size_mb=$(du -m "$file" | cut -f1)
+              echo "  $file: ${size_mb}MB"
+            fi
+          done
+
+      - name: Cleanup Docker resources
+        if: always()
+        run: |
+          echo "🧹 Cleaning up Docker resources..."
+
+          # Stop any remaining containers from compose files
+          for compose_file in tests/docker-compose*.yml; do
+            if [[ -f "$compose_file" ]]; then
+              docker compose -f "$compose_file" down -v --remove-orphans 2>/dev/null || true
+            fi
+          done
+
+          # Clean up dangling resources
+          docker system prune -f --volumes 2>/dev/null || true
+
+          echo "✅ Cleanup completed"

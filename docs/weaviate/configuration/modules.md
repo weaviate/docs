@@ -45,7 +45,12 @@ services:
 
 ### Enable all API-based modules
 
+<<<<<<< HEAD
 You can enable all API-based modules by setting the `ENABLE_API_BASED_MODULES` variable to `true`. This will enable all API-based [model integrations](../model-providers/index.md), such as those for Anthropic, Cohere, OpenAI and so on by enabling the relevant modules. These modules are lightweight, so enabling them all will not significantly increase resource usage.
+=======
+All API-based model integrations are available by default starting with Weaviate `v1.33`.
+For older versions, you can enable all API-based modules by setting the `ENABLE_API_BASED_MODULES` variable to `true`. This will enable all API-based [model integrations](../model-providers/index.md), such as those for Anthropic, Cohere, OpenAI and so on by enabling the relevant modules. These modules are lightweight, so enabling them all will not significantly increase resource usage.
+>>>>>>> main
 
 ```yaml
 services:

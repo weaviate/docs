@@ -122,7 +122,7 @@ flowchart LR
     linkStyle default stroke:#718096,stroke-width:3px,fill:none,background-color:white
 ```
 
-Set custom `k1` and `b` values [for a collection](../../manage-collections/collection-operations.mdx#set-inverted-index-parameters).
+Set custom `k1` and `b` values [for a collection](../../manage-collections/inverted-index.mdx#set-inverted-index-parameters).
 
 <!-- Set custom `k1` and `b` values [for a collection](../../manage-data/collections.mdx#set-inverted-index-parameters), or override values for each property. -->
 

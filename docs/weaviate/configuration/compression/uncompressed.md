@@ -23,13 +23,22 @@ You can opt-out of using vector quantization to compress your vector data.
 
 When creating the collection, you can choose not to use quantization through the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
         startMarker="# START Uncompressed"
         endMarker="# END Uncompressed"
         language="py"
+      />
+  </TabItem>
+
+  <TabItem value="ts" label="JS/TS">
+      <FilteredTextBlock
+        text={TSCode}
+        startMarker="// START Uncompressed"
+        endMarker="// END Uncompressed"
+        language="ts"
       />
   </TabItem>
 </Tabs>

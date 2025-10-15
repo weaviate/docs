@@ -21,7 +21,7 @@ Compression techniques become especially crucial for multi-vector systems to man
 
 <!-- TODO[g-despot]: Add link to blog post: Read more about it in this blog post. -->
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -30,7 +30,7 @@ Compression techniques become especially crucial for multi-vector systems to man
       language="py"
     />
   </TabItem>
-  <TabItem value="ts" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MultiValueVectorMuvera"

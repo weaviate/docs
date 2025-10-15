@@ -72,7 +72,7 @@ This Agent is available exclusively for use with a [Weaviate Cloud](/cloud/index
 
 Pass an instance of the Weaviate client to the Query Agent, and the Query Agent will extract the necessary information from the client to perform the query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -96,7 +96,7 @@ Then, provide a natural language query input. The Query Agent will process the q
 
 ### `Search` (retrieval only)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -118,7 +118,7 @@ Then, provide a natural language query input. The Query Agent will process the q
 
 The Query Agent can even handle follow-up queries, using the previous response as additional context.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -140,7 +140,7 @@ The Query Agent can even handle follow-up queries, using the previous response a
 
 ### `Ask` (with answer generation)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}

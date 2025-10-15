@@ -237,7 +237,7 @@ const headers = {
 };
 
 const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {
-    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_ADMIN_KEY as string),
+    authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
     headers
 });
 // END InstantiateQueryAgent
@@ -456,7 +456,10 @@ pages.forEach((pageResponse, index) => {
 // Perform a follow-up query and include the answer from the previous query
 
 const basicConversation: ChatMessage[] = [
-    {   role: "assistant", content: basicResponse.finalAnswer },
+    {   
+        role: "assistant", 
+        content: basicResponse.finalAnswer 
+    },
     {
         role: "user",
         content: "I like the vintage clothes options, can you do the same again but above $200?",
@@ -472,8 +475,14 @@ followingResponse.display()
 // START ConversationalQuery
 // Create a conversation with multiple turns
 const conversation: ChatMessage[] = [
-    {   role: "user", content: "Hi!"},
-    {   role: "assistant", content: "Hello! How can I assist you today?"},
+    {   
+        role: "user", 
+        content: "Hi!"
+    },
+    {   
+        role: "assistant", 
+        content: "Hello! How can I assist you today?"
+    },
     {
         role: "user",
         content:  "I have some questions about the weather data. You can assume the temperature is in Fahrenheit and the wind speed is in mph.",

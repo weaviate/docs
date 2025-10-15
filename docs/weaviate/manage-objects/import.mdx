@@ -32,7 +32,7 @@ To create a bulk import job, follow these steps:
 
 The following example adds objects to the `MyCollection` collection.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -52,7 +52,7 @@ This counter can be used to stop the import process in order to investigate the 
 Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python).
 
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicBatchImportExample"
@@ -82,35 +82,23 @@ Find out more about error handling on the Python client [reference page](/weavia
 
 :::caution Preview
 
-Server-side batching was added in **`v1.33`** as a **preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+Server-side batching was added in **`v1.33`** as a **preview** and is **not yet supported in our client libraries**.<br/><br/>
 
 :::
 
+<!--
 Here's how to import objects into a collection named `MyCollection` using [server-side batch imports](../concepts/data-import.mdx#server-side-batching). The client will send data in batch sizes using feedback from the server.
+-->
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-    <FilteredTextBlock
-      text={PyCode}
-      startMarker="# START ServerSideBatchImportExample"
-      endMarker="# END ServerSideBatchImportExample"
-      language="py"
-    />
 
-### Error handling
-
-<!-- TODO[g-despot]: Add link to external Python references once created for "reference page" -->
-
-During a batch import, any failed objects or references will be stored and can be obtained through `batch.failed_objects` and `batch.failed_references`.
-Additionally, a running count of failed objects and references is maintained and can be accessed through `batch.number_errors` within the context manager.
-This counter can be used to stop the import process in order to investigate the failed objects or references.
-
-Find out more about error handling on the Python client [reference page](/weaviate/client-libraries/python).
+```python
+# Python support coming soon
+```
 
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 ```typescript
 // TypeScript support coming soon
@@ -140,7 +128,7 @@ Find out more about error handling on the Python client [reference page](/weavia
 
 The [gRPC API](../api/index.mdx) is faster than the REST API. Use the gRPC API to improve import speeds.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 <!-- TODO[g-despot]: Add link to external Python references once created for "batch import configuration options" -->
@@ -152,7 +140,7 @@ The Python client uses gRPC by default.
 The legacy Python client does not support gRPC.
 
 </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
 The TypeScript client v3 uses gRPC by default.
 
@@ -222,7 +210,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
 - `generate_uuid5` (Python)
 - `generateUuid5` (TypeScript)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -231,7 +219,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportWithIDExample"
@@ -261,7 +249,7 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
 
 Use the `vector` property to specify a vector for each object.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -270,7 +258,7 @@ Use the `vector` property to specify a vector for each object.
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportWithVectorExample"
@@ -303,7 +291,7 @@ Use the `vector` property to specify a vector for each object.
 
 When you create an object, you can specify named vectors (if [configured in your collection](../manage-collections/vector-config.mdx#define-named-vectors)).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -312,7 +300,7 @@ When you create an object, you can specify named vectors (if [configured in your
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BatchImportWithNamedVectors"
@@ -326,7 +314,7 @@ When you create an object, you can specify named vectors (if [configured in your
 
 You can batch create links from an object to another other object through cross-references.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -357,7 +345,7 @@ To try the example code, download the sample data and create the sample input fi
 <details>
   <summary>Get the sample data</summary>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="pycsv" label="Python">
     <FilteredTextBlock
       text={PySuppCode}
@@ -381,7 +369,7 @@ To try the example code, download the sample data and create the sample input fi
 <details>
   <summary>Stream JSON files example code</summary>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
@@ -405,7 +393,7 @@ To try the example code, download the sample data and create the sample input fi
 <details>
   <summary>Stream CSV files example code</summary>
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="pycsv" label="Python">
   <FilteredTextBlock
     text={PyCode}
@@ -441,7 +429,7 @@ You can configure the batch vectorization settings for each model provider, such
 
 Note that each provider exposes different configuration options.
 
- <Tabs groupId="languages">
+ <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

@@ -207,23 +207,12 @@ If you did not see any errors, you are ready to proceed. We will replace the sim
 The following example creates a _collection_ called `Question` with:
 
 - The [Weaviate Embeddings model integration](/weaviate/model-providers/weaviate/embeddings.md) to create vectors during ingestion & queries.
-- Cohere [generative AI integrations](/weaviate/model-providers/cohere/generative.md) for retrieval augmented generation (RAG).
 
 import CreateCollection from '/_includes/code/quickstart/quickstart.create_collection.mdx';
 
 <CreateCollection />
 
 Run this code to create the collection to which you can add data.
-
-:::info What models are being used?
-
-You can optionally specify the model in the collection definition. As we did not specify models in the collection definition above, these integrations will use the Weaviate-defined default models.
-
-<br />
-
-See the [model providers integration](/weaviate/model-providers/index.md) section for more information.
-
-:::
 
 ### 2.2 Load the data
 

@@ -41,7 +41,7 @@ For Python, you can install the Weaviate client library with the optional `agent
 
 Install the client library using the following command:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```shell
@@ -82,7 +82,7 @@ Provide:
 - Target [Weaviate Cloud instance details](/cloud/manage-clusters/connect.mdx) (e.g. the `WeaviateClient` object).
 - A default list of the collections to be queried
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -111,7 +111,7 @@ The list of collections to be queried are further configurable with:
 - List of property names for the agent to use (optional)
 - [Additional filters](#user-defined-filters) to always apply on top of agent-generated ones (optional)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -150,7 +150,7 @@ The Query Agent can be instantiated with additional options, such as:
 
 You can provide a custom system prompt to guide the Query Agent's behavior:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -174,7 +174,7 @@ You can provide a custom system prompt to guide the Query Agent's behavior:
 
 You can apply persistent filters that will always be combined with any agent-generated filters using logical `AND` operations.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -209,7 +209,7 @@ The Query Agent supports two query types:
 
 `Search` Weaviate with the Query Agent using natural langauge. The Query Agent will process the question, perform the necessary searches in Weaviate, and return the relevant objects.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -231,7 +231,7 @@ The Query Agent supports two query types:
 
 #### `Search` response structure
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -277,7 +277,7 @@ Metadata: {'creation_time': None, 'last_update_time': None, 'distance': None, 'c
 
 `Search` supports pagination to handle large result sets efficiently:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -327,7 +327,7 @@ Page 3:
 The Query Agent will formulate its strategy based on your query. So, aim to be unambiguous, complete, yet concise in your query as much as possible.
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -355,7 +355,7 @@ The list of collections to be queried can be overridden at query time, as a list
 
 This example overrides the configured Query Agent collections for this query only.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -384,7 +384,7 @@ This example overrides the configured Query Agent collections for this query onl
 - Target tenant
 - Additional filters
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -415,7 +415,7 @@ When building conversations with `ChatMessage` there are two available roles for
 
 The conversation history helps the Query Agent understand context from previous exchanges, enabling more coherent multi-turn dialogues. Always alternate between user and assistant roles to maintain a proper conversation flow.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -446,7 +446,7 @@ A streaming response can be requested with the following optional parameters:
 
 If both `include_progress` and `include_final_state` are set to `False`, the Query Agent will only include the answer tokens as they are generated, without any progress updates or final state.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -475,7 +475,7 @@ The supporting information may include searches or aggregations carried out, wha
 
 Try the provided helper functions (e.g. `.display()` method) to display the response in a readable format.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -560,7 +560,7 @@ This example outputs:
 - Searches & aggregations (if any) conducted by the Query Agent
 - Any missing information
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -577,8 +577,38 @@ This example outputs:
             language="ts"
         />
     </TabItem>
-
 </Tabs>
+
+<details>
+  <summary>Example output</summary>
+
+```
+=== Query Agent Response ===
+Original Query: vintage style clothing
+
+🔍 Final Answer Found:
+For vintage-style clothing under $60, I recommend the Vintage Scholar Turtleneck priced at $55. It features a soft, stretchable fabric with timeless pleated details, perfect for a Dark Academia-inspired intellectual and moody look, whether layered or worn solo.
+
+However, based on the available information, no shoes under $60 were found. If you want, I can help search further for nice shoes within your budget. Let me know!
+
+🔍 Searches Executed:
+- ('query', 'vintage style clothing')
+
+- ('filters', IntegerPropertyFilter(property_name='price', operator=<ComparisonOperator.LESS_THAN: '<'>, value=60.0))
+
+- ('collection', 'ECommerce')
+
+- ('query', 'nice shoes')
+
+- ('filters', IntegerPropertyFilter(property_name='price', operator=<ComparisonOperator.LESS_THAN: '<'>, value=60.0))
+
+- ('collection', 'ECommerce')
+
+⚠️ Answer is Partial - Missing Information:
+- No recommendations were provided for nice shoes under $60, though the user specifically requested shoes as well as vintage clothes.
+```
+
+</details>
 
 ## Usage - Async Python client
 
@@ -586,7 +616,7 @@ If you are using the async Python Weaviate client, the instantiation pattern rem
 
 The resulting async pattern works as shown below:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -601,7 +631,7 @@ The resulting async pattern works as shown below:
 
 The async Query Agent can also stream responses, allowing you to receive the answer as it is being generated.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}

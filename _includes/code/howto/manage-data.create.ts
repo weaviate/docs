@@ -192,11 +192,9 @@ console.log('UUID: ', uuid)
 // CreateObjectWithId END
 // jeopardy = client.collections.use(wineRewiews)
 
-result = await reviews.query.fetchObjectById('12345678-e64f-5d94-90db-c8cfa3fc1234')
-assert.equal(result?.properties, {
-  'question': 'This vector DB is OSS and supports automatic property type inference on import',
-  'answer': 'Weaviate',
-});
+result = await jeopardy.query.fetchObjectById('12345678-e64f-5d94-90db-c8cfa3fc1234')
+assert.equal(result?.properties.question, 'This vector DB is OSS and supports automatic property type inference on import');
+assert.equal(result?.properties.answer, 'Weaviate');
 
 // ===============================================
 // ===== Create object with deterministic id =====
@@ -208,10 +206,11 @@ const dataObject = {
   'answer': 'Weaviate',
 }
 
+const newUuid = generateUuid5('Article', JSON.stringify(dataObject)) // use the whole object to generate a uuid
 uuid = await jeopardy.data.insert({
   properties: dataObject,
   // highlight-start
-  id: generateUuid5('Article', JSON.stringify(dataObject)) // use the whole object to generate a uuid
+  id: newUuid
   // highlight-end
   // id: generateUuid5(dataObject.answer)                  // use a specific property to generate a uuid
 })
@@ -219,8 +218,8 @@ uuid = await jeopardy.data.insert({
 console.log('UUID: ', uuid)
 // CreateObjectWithDeterministicId END
 
-result = await reviews.query.fetchObjectById(uuid)
-assert.equal(result?.uuid, generateUuid5(JSON.stringify(dataObject)));
+result = await jeopardy.query.fetchObjectById(uuid)
+assert.equal(result?.uuid, newUuid);
 
 
 // ===========================

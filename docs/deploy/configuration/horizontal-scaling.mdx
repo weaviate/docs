@@ -255,7 +255,7 @@ Sharding divides data across nodes, it is useful when your dataset is too large 
 You've made the decision to shard your data, now let's get it configured:
 
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -265,7 +265,7 @@ You've made the decision to shard your data, now let's get it configured:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ShardingSettings"
@@ -298,7 +298,7 @@ import RaftRFChangeWarning from '/_includes/1-25-replication-factor.mdx';
 
 Configure replication settings, such as [async replication](/deploy/configuration/replication.md#async-replication-settings) and [deletion resolution strategy](/weaviate/concepts/replication-architecture/consistency.md#deletion-resolution-strategies).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -311,7 +311,7 @@ Configure replication settings, such as [async replication](/deploy/configuratio
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START AllReplicationSettings"

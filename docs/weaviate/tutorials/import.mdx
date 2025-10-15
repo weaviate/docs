@@ -43,7 +43,7 @@ Let's walk through importing data using both approaches. We'll create a collecti
 
 First, connect to your Weaviate instance.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -62,7 +62,7 @@ This is what our data looks like:
 
 Create a collection to store the Jeopardy questions. 
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -77,7 +77,7 @@ Create a collection to store the Jeopardy questions.
 
 Load the data from the JSON file.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -90,16 +90,15 @@ Load the data from the JSON file.
 
 ## Step 4: Import the data
 
-### Option A: Server-side batching (Recommended)
+### Option A: Server-side batching
 
 :::caution Preview
 
-Server-side batching was added in **`v1.33`** as a **preview**.<br/><br/>
-This means that the feature is still under development and may change in future releases, including potential breaking changes.
-**We do not recommend using this feature in production environments at this time.**
+Server-side batching was added in **`v1.33`** as a **preview** and is **not yet supported in our client libraries**.<br/><br/>
 
 :::
 
+<!--
 Server-side batching automatically manages the import flow using a feedback loop between client and server. The server monitors its workload and tells the client how much data to send next.
 
 - Client opens a persistent connection to the server
@@ -107,7 +106,7 @@ Server-side batching automatically manages the import flow using a feedback loop
 - Server manages an internal queue and applies backpressure when needed
 - Errors are streamed back asynchronously without interrupting the flow
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -124,12 +123,13 @@ The benefits of server-side batching are:
 - **Automatic backpressure**: Prevents server overload during heavy operations
 - **Better resilience**: Handles cluster scaling events gracefully
 - **Simplified code**: Less configuration needed
+-->
 
 ### Option B: Client-side batching
 
 Client-side batching gives you direct control over batch size and timing. You configure parameters like batch size and manage the import flow manually.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -151,7 +151,7 @@ Use the following tips for configuring client-side batching:
 
 Proper error handling is crucial for batch imports. A `200` HTTP status only means the request was received - individual objects may still fail.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -166,7 +166,7 @@ Proper error handling is crucial for batch imports. A `200` HTTP status only mea
 
 After importing, verify the data was successfully added.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -181,7 +181,7 @@ After importing, verify the data was successfully added.
 
 If you have pre-computed vectors, you can include them in the import.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -225,7 +225,7 @@ When importing millions of objects:
 
 Example of chunked import with progress tracking:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

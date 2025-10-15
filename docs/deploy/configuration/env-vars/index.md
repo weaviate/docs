@@ -30,16 +30,22 @@ import APITable from '@site/src/components/APITable';
 
 | Variable | Description | Type | Example Value |
 | --- | --- | --- | --- |
-| `ASYNC_INDEXING` | (Experimental, added in `v1.22`.) <br/><br/>If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
+| `ASYNC_INDEXING` | If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
 | `DEFAULT_QUANTIZATION` | Default quantization technique - can be overridden by the quantization method specified in the collection definition. Available values: `rq-8`, `rq-1`, `pq`, `bq`, `sq` and `none`. Default: `rq-8`.<br/>Added in `v1.33` | `string` | `rq-8` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - can be overridden by the vectorizer in the collection definition. | `string` | `text2vec-contextionary` |
+| `API_BASED_MODULES_DISABLED` | Weaviate automatically enables the usage of all [API based modules](../../../weaviate/model-providers/index.md#api-based). Set this variable to `true` in order to limit access and only allow specific modules through the [`ENABLE_MODULES`](#ENABLE_MODULES) variable. Default: `false`<br/> Added in `v1.33` | `boolean` | `true` |
 | `DISABLE_LAZY_LOAD_SHARDS` | New in v1.23. When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. | `string` | `false` |
 | `DISABLE_TELEMETRY` | Disable [telemetry](/deploy/configuration/telemetry.md) data collection | boolean | `false` |
 | `DISK_USE_READONLY_PERCENTAGE` | If disk usage is higher than the given percentage all shards on the affected node will be marked as `READONLY`, meaning all future write requests will fail. See [Disk Pressure Warnings and Limits for details](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `90` |
 | `DISK_USE_WARNING_PERCENTAGE` | If disk usage is higher than the given percentage a warning will be logged by all shards on the affected node's disk. See [Disk Pressure Warnings and Limits for details](/deploy/configuration/persistence.md#disk-pressure-warnings-and-limits). | `string - number` | `80` |
+<<<<<<< HEAD
 | `ENABLE_API_BASED_MODULES` | Enable all API-based modules. | `boolean` | `true` |
 | `ENABLE_MODULES` | Specify Weaviate modules to enable | `string - comma separated names` | `text2vec-openai,generative-openai` |
+=======
+| `ENABLE_API_BASED_MODULES` | Enable all API-based modules. Removed as of `v1.33` | `boolean` | `true` |
+| `ENABLE_MODULES` | Specify which modules are enabled and can be used. | `string - comma separated names` | `text2vec-openai,generative-openai` |
+>>>>>>> main
 | `ENABLE_TOKENIZER_GSE` | Enable the [`GSE` tokenizer](/weaviate/config-refs/collections.mdx) for use | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_JA` | Enable the [`Kagome` tokenizer for Japanese](/weaviate/config-refs/collections.mdx) for use (Experimental as of `v1.28.0`) | `boolean` | `true` |
 | `ENABLE_TOKENIZER_KAGOME_KR` | Enable the [`Kagome` tokenizer for Korean](/weaviate/config-refs/collections.mdx#) for use (Experimental as of `v1.25.7`) | `boolean` | `true` |
