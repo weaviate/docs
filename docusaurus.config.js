@@ -64,7 +64,7 @@ const config = {
           "Comprehensive guides and references for Weaviate, the open-source vector database.",
         depth: 3,
         content: {
-          //excludeRoutes: ["/academy/**", "/contributor-guide/**"], // Throwing an error in GitHub Actions
+          //excludeRoutes: ["/contributor-guide/**"], // Throwing an error in GitHub Actions
           enableMarkdownFiles: false,
         },
         //logLevel: 3, // Uncomment to enable debug logging
@@ -116,7 +116,7 @@ const config = {
       image: "og/default.jpg",
       announcementBar: {
         id: "announcement-bar-september-2025",
-        content: `<a href="https://docs.weaviate.io/agents/query">Product update: The Weaviate Query Agent has been released!</a>`,
+        content: `<a href="https://academy.weaviate.io/">The new <b>Weaviate Academy</b> learning platform is here!</a>`,
         backgroundColor: "#1C1468",
         textColor: "#F5F5F5",
         isCloseable: true,
@@ -136,8 +136,14 @@ const config = {
             position: "right",
           },
           {
+            label: "Weaviate Academy",
+            className: "academy-button",
+            to: "https://academy.weaviate.io",
+            position: "right",
+          },
+          {
             label: "Weaviate Cloud",
-            className: "modern-button",
+            className: "cloud-button",
             to: "https://console.weaviate.cloud",
             position: "right",
           },

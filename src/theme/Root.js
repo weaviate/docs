@@ -51,7 +51,7 @@ export default function Root({ children }) {
         script.setAttribute("data-font-size-xl", "1.35rem");
         script.setAttribute(
           "data-modal-disclaimer",
-          "This is a custom LLM for Weaviate with access to all developer docs, Cloud docs, academy lessons, contributor guides, GitHub issues, and forum questions."
+          "This is a custom LLM for Weaviate with access to all developer docs, Cloud docs, contributor guides, GitHub issues, and forum questions."
         );
         script.setAttribute("data-modal-disclaimer-bg-color", "white");
         script.setAttribute("data-modal-disclaimer-text-color", "black");

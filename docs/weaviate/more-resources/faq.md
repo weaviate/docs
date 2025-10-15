@@ -621,6 +621,21 @@ Keep in mind that we don't offer native Windows support at this time and deploym
 
 </details>
 
+#### Q: What is Weaviate Academy?
+
+<details>
+  <summary>Answer</summary>
+
+Weaviate Academy is a full-fledged learning platform available at [academy.weaviate.io](https://academy.weaviate.io). 
+
+:::note
+
+If you need resources from the previous version of Weaviate Academy, check out the [documentation archive](https://archive.docs.weaviate.io/academy)
+
+:::
+
+</details>
+
 ## Questions and feedback
 
 import DocsFeedback from '/_includes/docs-feedback.mdx';
