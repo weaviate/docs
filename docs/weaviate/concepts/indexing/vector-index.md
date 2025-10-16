@@ -1,7 +1,7 @@
 ---
 title: Vector Indexing
 sidebar_position: 1
-description: "Dynamic vector indexing with HNSW and flat indexes for speed-optimized similarity search operations."
+description: "Dynamic vector indexing with HNSW, flat, SPFresh indexes for speed-optimized similarity search operations."
 image: og/docs/concepts.jpg
 slug: /weaviate/concepts/vector-index
 # tags: ['vector index plugins']
@@ -9,17 +9,21 @@ slug: /weaviate/concepts/vector-index
 
 What is vector indexing? It's a key component of vector databases that helps to [significantly **increase the speed** of the search process of similarity search](https://weaviate.io/blog/vector-search-explained) with only a minimal tradeoff in search accuracy ([HNSW index](#hierarchical-navigable-small-world-hnsw-index)), or efficiently store many subsets of data in a small memory footprint ([flat index](#flat-index)). The [dynamic index](#dynamic-index) can even start off as a flat index and then dynamically switch to the HNSW index as it scales past a threshold.
 
-Weaviate's vector-first storage system takes care of all storage operations with a vector index. Storing data in a vector-first manner not only allows for semantic or context-based search, but also makes it possible to store *very* large amounts of data without decreasing performance (assuming scaled well horizontally or having sufficient shards for the indexes).
+Weaviate's vector-first storage system takes care of all storage operations with a vector index. Storing data in a vector-first manner not only allows for semantic or context-based search, but also makes it possible to store _very_ large amounts of data without decreasing performance (assuming scaled well horizontally or having sufficient shards for the indexes).
 
 Weaviate supports these vector index types:
-* [flat index](#flat-index): a simple, lightweight index that is designed for small datasets.
-* [HNSW index](#hierarchical-navigable-small-world-hnsw-index): a more complex index that is slower to build, but it scales well to large datasets as queries have a logarithmic time complexity.
-* [dynamic index](#dynamic-index): allows you to automatically switch from a flat index to an HNSW index as object count scales
+
+- [HNSW index](#hierarchical-navigable-small-world-hnsw-index): a more complex index that is slower to build, but it scales well to large datasets as queries have a logarithmic time complexity.
+- [Flat index](#flat-index): a simple, lightweight index that is designed for small datasets.
+- [Dynamic index](#dynamic-index): allows you to automatically switch from a flat index to an HNSW index as object count scales
+- [SPFresh index](#spfresh-index): an experimental disk-based index that uses clustering to reduce memory footprint while maintaining search performance
 
 This page explains what vector indexes are, and what purpose they serve in the Weaviate vector database.
 
 :::info What is a vector index?
-In vector databases, a vector index is a data structure that organizes vector embeddings to enable efficient similarity search. Indexing vector databases properly is crucial for performance, and different index types serve different purposes - from the simple flat index to more sophisticated approaches like HNSW.
+
+In vector databases, a vector index is a data structure that organizes vector embeddings to enable efficient similarity search. Indexing vector databases properly is crucial for performance, and different index types serve different purposes - from the simple flat index to more sophisticated approaches like HNSW and SPFresh.
+
 :::
 
 ## Why do you need vector indexing?
@@ -28,7 +32,7 @@ In vector databases, a vector index is a data structure that organizes vector em
 
 Vector databases make it easier to work with high dimensional vectors. Consider search; Vector databases efficiently measure semantic similarity between data objects. When you run a [similarity search](../../search/similarity.md), a vector database like Weaviate uses a vectorized version of the query to find objects in the database that have vectors similar to the query vector.
 
-Vectors are like coordinates in a multi-dimensional space. A very simple vector might represent objects, *words* in this case, in a 2-dimensional space.
+Vectors are like coordinates in a multi-dimensional space. A very simple vector might represent objects, _words_ in this case, in a 2-dimensional space.
 
 In the graph below, the words `Apple` and `Banana` are shown close to each other. `Newspaper` and `Magazine` are also close to each other, but they are far away from `Apple` and `Banana` in the same vector space.
 
@@ -43,7 +47,9 @@ Another way to think of this is how products are placed in a supermarket. You'd 
 ![Supermarket map visualization as analogy for vector indexing](../img/supermarket.svg "Supermarket map visualization")
 
 :::tip
+
 You might be also interested in our blog post [Vector search explained](https://weaviate.io/blog/vector-search-explained).
+
 :::
 
 Let's explore how to index a vector using different approaches supported by Weaviate. The first method is the HNSW index.
@@ -134,7 +140,7 @@ Imagine the collection has dynamic `ef` configured.
 
 The resulting search list has these characteristics.
 
-- A potential length of 40 objects ( ("dynamicEfFactor": 10) * (limit: 4) ).
+- A potential length of 40 objects ( ("dynamicEfFactor": 10) \* (limit: 4) ).
 - A minimum length of 5 objects ("dynamicEfMin": 5).
 - A maximum length of 25 objects ("dynamicEfMax": 25).
 - An actual size of 5 to 25 objects.
@@ -147,11 +153,82 @@ To change the default limit, edit the value for `QUERY_DEFAULTS_LIMIT` when you 
 
 Cleanup is an async process runs that rebuilds the HNSW graph after deletes and updates. Prior to cleanup, objects are marked as deleted, but they are still connected to the HNSW graph. During cleanup, the edges are reassigned and the objects are deleted for good.
 
-### Asynchronous indexing
+## Flat index
 
-This feature relates to the vector index, specifically only to the HNSW index.
+The **flat index** is one of the fundamental ways to implement vector indexing in databases. As the name suggests, it's a simple, lightweight index that is fast to build and has a very small memory footprint. This index type is a good choice for use cases where each end user (i.e. tenant) has their own, isolated, dataset, such as in a SaaS product for example, or a database of isolated record sets.
+
+As the name suggests, the flat index is a single layer of disk-backed data objects and thus a very small memory footprint. The flat index is a good choice for small collections, such as for multi-tenancy use cases.
+
+A drawback of the flat index is that it does not scale well to large collections as it has a linear time complexity as a function of the number of data objects, unlike the `hnsw` index which has a logarithmic time complexity.
+
+## Dynamic index
+
+:::caution Experimental feature
+
+Available starting in `v1.25`. This is an experimental feature. Use with caution.
+
+:::
+
+import DynamicAsyncRequirements from '/\_includes/dynamic-index-async-req.mdx';
+
+<DynamicAsyncRequirements/>
+
+The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale.
+
+By configuring a dynamic index, you can automatically switch from flat to HNSW indexes. This switch occurs when the object count exceeds a specified threshold (by default 10,000). This functionality only works with async indexing enabled. When the threshold is hit while importing, all the data piles up in the async queue, the HNSW index is constructed in the background and when ready the swap from flat to HNSW is completed.
+
+Currently, this is only a one-way upgrade from a flat to an HNSW index, it does not support changing back to a flat index even if the object count goes below the threshold due to deletion.
+
+This is particularly useful in a multi-tenant setup where building an HNSW index per tenant would introduce extra overhead. With a dynamic index, as individual tenants grow their index will switch from flat to HNSW, while smaller tenants' indexes remain flat.
+
+## SPFresh index
+
+:::caution Experimental feature
+
+Available starting in `v1.34`. This is an experimental feature that requires the `EXPERIMENTAL_SPFRESH_ENABLED=true` environment variable. Use with caution.
+
+:::
+
+The **SPFresh index** is a disk-based vector index inspired by SPANN (Space-Partition-based Approximate Nearest Neighbor) with efficient update mechanisms. It reduces memory footprint while maintaining strong search performance by organizing vectors into clusters on disk. Read more about it in [SPFresh: Incremental In-Place Update for
+Billion-Scale Vector Search](https://arxiv.org/pdf/2410.14452).
+
+SPFresh uses a clustering-based approach to organize vectors:
+
+1. **Clustered storage**: Vectors are assigned to clusters based on their similarity. Each cluster contains vectors that are close to each other in the vector space.
+
+2. **Centroid graph**: A graph index is built over cluster centroids (representative vectors for each cluster) to enable fast candidate cluster selection during search. Internally, HNSW may be used for the centroid-layer graph.
+
+3. **Disk-oriented layout**: Clusters are stored contiguously on disk, which improves locality and enables efficient brute-force search within clusters.
+
+When a search query comes in, SPFresh:
+
+- Uses the centroid graph to identify the most relevant clusters
+- Probes only the closest clusters rather than scanning all vectors
+- Performs brute-force search within the selected clusters to find the nearest neighbors
+
+This approach provides a middle ground between the memory-intensive HNSW index and the slower flat index, especially for large datasets. SPFresh is particularly well-suited for:
+
+- **Large-scale datasets with memory constraints**: Reduces memory usage by keeping most vectors on disk while maintaining good search performance
+- **Cost-sensitive deployments**: Lower memory requirements can reduce infrastructure costs
+- **Mixed workload patterns**: Balances import performance with query performance
+- **Quantization-friendly scenarios**: Works efficiently with Product Quantization (PQ) and Residual Quantization (RQ) due to the clustered organization
+
+## Vector cache considerations
+
+For optimal search and import performance, previously imported vectors need to be in memory. A disk lookup for a vector is orders of magnitudes slower than memory lookup, so the disk cache should be used sparingly. However, Weaviate can limit the number of vectors in memory. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created.
+
+During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drops drastically when there isn't enough memory to hold all of the vectors in the cache.
+
+After import, when your workload is mostly querying, experiment with vector cache limits that are less than your total dataset size.
+
+Vectors that aren't currently in cache are added to the cache if there is still room. If the cache fills, Weaviate drops the whole cache. All future vectors have to be read from disk for the first time. Then, subsequent queries run against the cache until it fills again and the procedure repeats. Note that the cache can be a very valuable tool if you have a large dataset, and a large percentage of users only query a specific subset of vectors. In this case you might be able to serve the largest user group from cache while requiring disk lookups for "irregular" queries.
+
+## Asynchronous indexing
+
+This feature relates to the vector index, specifically only to the HNSW and SPFresh indexes.
 
 Asynchronous indexing can be enabled by opting in as follows:
+
 - Open-source users can do this by setting the `ASYNC_INDEXING` environment variable to `true`.
 - Weaviate Cloud users can do this by toggling the `Enable async indexing` switch in the Weaviate Cloud Console.
 
@@ -164,6 +241,7 @@ This means that the object store can be updated quickly to finish performing use
 This means that there will be a short delay between object creation and the object being available for vector search using the HNSW index. The number of objects in the queue can be monitored per node [as shown here](/deploy/configuration/nodes.md).
 
 :::info Changes in `v1.28`
+
 In Weaviate `v1.22` to `v1.27`, the async indexing feature only affected batch import operations, using an in-memory queue.
 <br/>
 
@@ -171,46 +249,8 @@ Starting in `v1.28`, the async indexing feature has been expanded to include sin
 <br/>
 
 The use of an on-disk queue may result in a slight increase in disk usage, however this is expected to be a small percentage of the total disk usage.
+
 :::
-
-## Flat index
-
-:::info Added in `v1.23`
-:::
-
-The **flat index** is one of the fundamental ways to implement vector indexing in databases. As the name suggests, it's a simple, lightweight index that is fast to build and has a very small memory footprint. This index type is a good choice for use cases where each end user (i.e. tenant) has their own, isolated, dataset, such as in a SaaS product for example, or a database of isolated record sets.
-
-As the name suggests, the flat index is a single layer of disk-backed data objects and thus a very small memory footprint. The flat index is a good choice for small collections, such as for multi-tenancy use cases.
-
-A drawback of the flat index is that it does not scale well to large collections as it has a linear time complexity as a function of the number of data objects, unlike the `hnsw` index which has a logarithmic time complexity.
-
-## Dynamic index
-
-:::caution Experimental feature
-Available starting in `v1.25`. This is an experimental feature. Use with caution.
-:::
-
-import DynamicAsyncRequirements from '/_includes/dynamic-index-async-req.mdx';
-
-<DynamicAsyncRequirements/>
-
-The flat index is ideal for use cases with a small object count and provides lower memory overhead and good latency. As the object count increases the HNSW index provides a more viable solution as HNSW speeds up search. The goal of the dynamic index is to shorten latencies during querying time at the cost of a larger memory footprint as you scale.
-
-By configuring a dynamic index, you can automatically switch from flat to HNSW indexes. This switch occurs when the object count exceeds a prespecified threshold (by default 10,000). This functionality only works with async indexing enabled. When the threshold is hit while importing, all the data piles up in the async queue, the HNSW index is constructed in the background and when ready the swap from flat to HNSW is completed.
-
-Currently, this is only a one-way upgrade from a flat to an HNSW index, it does not support changing back to a flat index even if the object count goes below the threshold due to deletion.
-
-This is particularly useful in a multi-tenant setup where building an HNSW index per tenant would introduce extra overhead. With a dynamic index, as individual tenants grow their index will switch from flat to HNSW, while smaller tenants' indexes remain flat.
-
-## Vector cache considerations
-
-For optimal search and import performance, previously imported vectors need to be in memory. A disk lookup for a vector is orders of magnitudes slower than memory lookup, so the disk cache should be used sparingly. However, Weaviate can limit the number of vectors in memory. By default, this limit is set to one trillion (`1e12`) objects when a new collection is created.
-
-During import set `vectorCacheMaxObjects` high enough that all vectors can be held in memory. Each import requires multiple searches. Import performance drops drastically when there isn't enough memory to hold all of the vectors in the cache.
-
-After import, when your workload is mostly querying, experiment with vector cache limits that are less than your total dataset size.
-
-Vectors that aren't currently in cache are added to the cache if there is still room. If the cache fills, Weaviate drops the whole cache. All future vectors have to be read from disk for the first time. Then, subsequent queries run against the cache until it fills again and the procedure repeats. Note that the cache can be a very valuable tool if you have a large dataset, and a large percentage of users only query a specific subset of vectors. In this case you might be able to serve the largest user group from cache while requiring disk lookups for "irregular" queries.
 
 ## Vector indexing FAQ
 
@@ -220,9 +260,27 @@ Yes, you can read more about it in [vector quantization (compression)](../vector
 
 ### Which vector index is right for me?
 
-A simple heuristic is that for use cases such as SaaS products where each end user (i.e. tenant) has their own, isolated, dataset, the `flat` index is a good choice. For use cases with large collections, the `hnsw` index may be a better choice.
+Here's a quick guide to choosing the right index:
 
-Note that the vector index type parameter only specifies how the vectors of data objects are *indexed*. The index is used for data retrieval and similarity search.
+- **Flat index**: Best for SaaS products where each end user (tenant) has their own isolated, small dataset. Fast for small collections with minimal memory overhead.
+
+- **HNSW index**: Best for large collections requiring high query throughput and low latency. Requires more memory but provides excellent search performance.
+
+- **Dynamic index**: Best for collections that start small but may grow significantly over time. Automatically transitions from flat to HNSW as data scales.
+
+- **SPFresh index** _(experimental)_: Best for large-scale datasets with memory constraints. Provides a balance between memory usage and search performance through disk-based clustering.
+
+#### Comparison between index types
+
+| Feature                       | Flat                             | HNSW                        | SPFresh                                   |
+| ----------------------------- | -------------------------------- | --------------------------- | ----------------------------------------- |
+| Memory usage                  | Very low                         | High                        | Low                                       |
+| Search speed (small datasets) | Fast                             | Very fast                   | Moderate                                  |
+| Search speed (large datasets) | Slow                             | Very fast                   | Fast                                      |
+| Disk usage                    | Low                              | Moderate                    | Moderate to high                          |
+| Best for                      | Small collections, multi-tenancy | Large collections, high QPS | Large collections with memory constraints |
+
+Note that the vector index type parameter only specifies how the vectors of data objects are _indexed_. The index is used for data retrieval and similarity search.
 
 The `vectorizer` parameter determines how the data vectors are created (which numbers the vectors contain). `vectorizer` specifies a [module](/weaviate/modules/index.md), such as `text2vec-contextionary`, that Weaviate uses to create the vectors. (You can also set to `vectorizer` to `none` if you want to import your own vectors).
 
@@ -255,13 +313,15 @@ The [ANN benchmark page](/weaviate/benchmarks/ann.md) contains a wide variety of
 ## Further resources
 
 :::info Related pages
+
 - [Concepts: Vector quantization (compression)](../vector-quantization.md)
 - [Configuration: Vector index](../../config-refs/indexing/vector-index.mdx)
 - [Configuration: Schema (Configure semantic indexing)](../../config-refs/indexing/vector-index.mdx#configure-semantic-indexing)
+
 :::
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
