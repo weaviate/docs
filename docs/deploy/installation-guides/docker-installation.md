@@ -135,6 +135,15 @@ To start your Weaviate instance, run this command from your shell:
 docker compose up -d
 ```
 
+## Hosting
+
+Making Weaviate accessible over both http and grpc requires exposing both ports 8080 and 50051. To make them accessible to over a domain, configure your reverse proxy to forward
+traffic to both ports. To do so it's best to prefix the traffic with `grpc-` for grpc traffic to the http endpoint, this will be compatible most Weaviate clients.
+
+For example, when your domain is `weaviate.example.com`, you can configure your reverse proxy to forward:
+- `weaviate.example.com` to `localhost:8080` (http://)
+- `grpc-weaviate.example.com` to `localhost:50051` (grpc often h2c://)
+
 ## Configurator
 
 The Configurator can generate a `docker-compose.yml` file for you. Use the Configurator to select specific Weaviate modules, including vectorizers that run locally (i.e. `text2vec-transformers`, or `multi2vec-clip`)
