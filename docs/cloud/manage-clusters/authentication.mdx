@@ -5,14 +5,15 @@ description: "Configure authentication options for Weaviate Cloud clusters by ad
 image: og/wcd/user_guides.jpg
 ---
 
-import WCDAPIKeys from '/docs/cloud/img/wcs-api-keys.jpg';
-import WCDAddAPIKeys from '/docs/cloud/img/wcs-add-key-details.jpg';
-import WCDDelAPIKeys from '/docs/cloud/img/wcs-delete-api-key.jpg';
-import RestartTheCluster from '/_includes/wcs/restart-warning.mdx';
+import WCDAPIKeys from "/docs/cloud/img/wcs-api-keys.jpg";
+import WCDAddAPIKeys from "/docs/cloud/img/wcs-add-key-details.jpg";
+import WCDDelAPIKeys from "/docs/cloud/img/wcs-delete-api-key.jpg";
+import RestartTheCluster from "/_includes/wcs/restart-warning.mdx";
 
 There are two options for managing cluster authentication depending on [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) being enabled:
+
 - [Authentication with RBAC enabled](#authentication-with-rbac-enabled)
-- [Authentication with RBAC disabled](#authentication-with-rbac-disabled)
+- [Authentication with RBAC disabled](#authentication-with-rbac-disabled-deprecated) (_deprecated_)
 
 ## Authentication with RBAC enabled
 
@@ -55,11 +56,11 @@ If you don't have an existing API key, you'll need to create one. Follow these s
 
 To create an API key, follow these steps:
 
-1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud) and [select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster).
+1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud) and [select your cluster](/cloud/manage-clusters/status#select-a-cluster).
 2.  Navigate to the `API Keys` section, found in the `Cluster details` panel.
 3.  If you need a new API key, click the `New key` button.
 4.  In the `Create API Key` form, provide a descriptive name for your key.
-5.  Choose the role for this API key. You can either select an existing role like `admin` or `viewer`, or [create a new role](https://www.google.com/search?q=/cloud/manage-clusters/authorization) with specific permissions.
+5.  Choose the role for this API key. You can either select an existing role like `admin` or `viewer`, or [create a new role](/cloud/manage-clusters/authorization) with specific permissions.
 6.  Click the `Create key` button.
 7.  **Important:** This is the only time your API key will be displayed. Make sure to copy it or download it and store it in a secure location immediately after creation. You will not be able to retrieve the full key again.
 
@@ -103,7 +104,7 @@ Rotating an API key allows you to generate a new key while invalidating the old 
 To rotate an API key, follow these steps:
 
 1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud).
-2.  [Select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster) and navigate to the `API Keys` section.
+2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `API Keys` section.
 3.  Locate the API key you want to rotate and click the `Rotate` button next to it.
 4.  A confirmation dialog will appear, explaining that the old key will be invalidated. Click `Rotate key` to proceed.
 5.  **Important:** This is the only time your API key will be displayed. Make sure to copy it or download it and store it in a secure location immediately after creation. You will not be able to retrieve the full key again.
@@ -148,10 +149,10 @@ Editing an API key allows you to modify its assigned roles. To edit an API key f
 To edit an API key's roles and permissions, follow these steps:
 
 1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud).
-2.  [Select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster) and navigate to the `API Keys` section.
+2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `API Keys` section.
 3.  Locate the API key you want to edit and click the `Edit` button next to it.
 4.  In the `Edit API key` form, you can modify the key's description/name.
-5.  You can also update the roles associated with this API key. Choose from the existing roles or [assign different roles](https://www.google.com/search?q=/cloud/manage-clusters/authorization).
+5.  You can also update the roles associated with this API key. Choose from the existing roles or [assign different roles](/cloud/manage-clusters/authorization).
 6.  Click the `Save` button to apply your changes.
 
 </details>
@@ -194,7 +195,7 @@ To delete an API key, follow these steps:
 To delete an API key, follow these steps:
 
 1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud).
-2.  [Select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster) and navigate to the `API Keys` section.
+2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `API Keys` section.
 3.  Locate the API key you want to delete and click the `Trash can` button next to it.
 4.  A confirmation dialog will appear. Enter the necessary text (usually the API key name or a confirmation phrase) to confirm the deletion.
 5.  Click on the `Delete key` button.
@@ -218,13 +219,20 @@ If you have a Serverless cluster, you can create, delete, edit, and rotate API k
 When connecting to a Weaviate Cloud cluster, you need an API key and the REST endpoint URL for authentication.
 To retrieve your connection details, follow these steps:
 
-import Link from '@docusaurus/Link';
-import Register from '/docs/cloud/img/weaviate-cloud-api-keys.png';
+import Link from "@docusaurus/Link";
+import Register from "/docs/cloud/img/weaviate-cloud-api-keys.png";
 
 <div class="row">
   <ol>
     <li className="inline-content">
-      Open the <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link> and <Link to="/cloud/manage-clusters/status#select-your-cluster"> ssselect your cluster</Link>.
+      Open the{" "}
+      <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>{" "}
+      and{" "}
+      <Link to="/cloud/manage-clusters/status#select-a-cluster">
+        {" "}
+        ssselect your cluster
+      </Link>
+      .
     </li>
     <li>
       On the <code>Cluster details</code> page, find the <code>Admin</code> API
@@ -234,8 +242,8 @@ import Register from '/docs/cloud/img/weaviate-cloud-api-keys.png';
   </ol>
 </div>
 
-import WCDClusterURL from '/docs/weaviate/quickstart/img/cluster_url.png';
-import WCDClusterAdminKey from '/docs/weaviate/quickstart/img/cluster_admin_key.png';
+import WCDClusterURL from "/docs/weaviate/quickstart/img/cluster_url.png";
+import WCDClusterAdminKey from "/docs/weaviate/quickstart/img/cluster_admin_key.png";
 
 <div class="row">
   <div class="col col--6">
@@ -280,19 +288,19 @@ When using an official Weaviate [client library](/weaviate/client-libraries), yo
 
 If you have a Serverless cluster, you can create new API keys. To create a new API key, follow these steps:
 
-import NewAPIKey from '/docs/cloud/img/weaviate-cloud-new-api-key.png';
+import NewAPIKey from "/docs/cloud/img/weaviate-cloud-new-api-key.png";
 
 <div class="row">
   <div class="col col--4">
     <ol>
       <li>
-        Open the{' '}
+        Open the{" "}
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-a-cluster">
           Select your cluster
-        </Link>{' '}
+        </Link>{" "}
         and find the <code>API Keys</code> section.
       </li>
       <li>
@@ -312,7 +320,7 @@ import NewAPIKey from '/docs/cloud/img/weaviate-cloud-new-api-key.png';
 </div>
 <br />
 
-import NewAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-new-api-key-confirm.png';
+import NewAPIKeyConfirm from "/docs/cloud/img/weaviate-cloud-new-api-key-confirm.png";
 
 <div class="row">
   <div class="col col--4">
@@ -351,19 +359,19 @@ import NewAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-new-api-key-confirm
 
 If you have a Serverless cluster, you can delete API keys. To delete an API key, follow these steps:
 
-import DeleteAPIKey from '/docs/cloud/img/weaviate-cloud-delete-api-key.png';
+import DeleteAPIKey from "/docs/cloud/img/weaviate-cloud-delete-api-key.png";
 
 <div class="row">
   <div class="col col--4">
     <ol>
       <li>
-        Open the{' '}
+        Open the{" "}
         <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
       </li>
       <li>
-        <Link to="/cloud/manage-clusters/status#select-your-cluster">
+        <Link to="/cloud/manage-clusters/status#select-a-cluster">
           Select your cluster
-        </Link>{' '}
+        </Link>{" "}
         and find the <code>API Keys</code> section.
       </li>
       <li>
@@ -383,7 +391,7 @@ import DeleteAPIKey from '/docs/cloud/img/weaviate-cloud-delete-api-key.png';
 </div>
 <br />
 
-import DeleteAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-delete-api-key-confirm.png';
+import DeleteAPIKeyConfirm from "/docs/cloud/img/weaviate-cloud-delete-api-key-confirm.png";
 
 <div class="row">
   <div class="col col--4">
@@ -420,6 +428,6 @@ import DeleteAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-delete-api-key-c
 
 ## Support
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />
