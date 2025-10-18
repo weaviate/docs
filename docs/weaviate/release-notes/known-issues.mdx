@@ -1,6 +1,5 @@
 ---
 title: Known Issues
-sidebar_position: 50
 image: og/docs/more-resources.jpg
 # tags: ['release notes', 'known issues']
 ---
@@ -15,20 +14,27 @@ This page documents significant known issues in Weaviate, their symptoms, and re
 ## Quick Reference
 
 <!-- | [Multiple vectors per object with quantization](#multiple-vectors-per-object-with-quantization) | 1.25.0-1.33.0 | In progress | - | -->
-| Issue | Affected Versions | Resolution | Fixed In |
-|-------|-------------------|--------|----------|
-| [Empty Collections Panic](#empty-collections-panic) | 1.28 - 1.31 | In Progress | - |
-| [Database Restoration Blocked](#database-restoration-blocked) | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3 | Fixed | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
-| [Raft Snapshot Compatibility on Downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed | 1.27.26 |
-| [RAFT Bootstrap Timeout](#raft-bootstrap-timeout) | 1.25 - 1.28 | Workaround | - |
-| [RAFT Timeouts Under Heavy Load](#raft-timeouts-under-heavy-load) | 1.25 and later | Configuration | - |
-| [Invalid Port 99999999 Error](#invalid-port-99999999) | 1.25 - 1.28 | By Design | - |
-| [Context Deadline on Tenant Deletion](#context-deadline-tenant-deletion) | 1.26 - 1.28 | Fixed | 1.26.14, 1.27.11, 1.28.5 |
-| [Memory Pressure: Shard Init Failure](#memory-pressure-shard-init-failure) | All | Configuration | - |
-| [RAFT Snapshot Cannot Be Created](#raft-snapshot-cannot-be-created) | 1.25 - 1.28 | Workaround | - |
-| [Failed to Decode Incoming Command](#failed-to-decode-incoming-command) | 1.25 - 1.29 | Configuration | - |
+
+| Issue                                                                                 | Affected Versions                                                   | Resolution    | Fixed In                         |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------- | -------------------------------- |
+| [Empty Collections Panic](#empty-collections-panic)                                   | 1.28 - 1.31                                                         | In Progress   | -                                |
+| [Database Restoration Blocked](#database-restoration-blocked)                         | 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3                            | Fixed         | 1.27.27, 1.28.16, 1.29.8, 1.30.4 |
+| [Raft Snapshot Compatibility on Downgrade](#raft-snapshot-compatibility-on-downgrade) | 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier) | Fixed         | 1.27.26                          |
+| [RAFT Bootstrap Timeout](#raft-bootstrap-timeout)                                     | 1.25 - 1.28                                                         | Workaround    | -                                |
+| [RAFT Timeouts Under Heavy Load](#raft-timeouts-under-heavy-load)                     | 1.25 and later                                                      | Configuration | -                                |
+| [Invalid Port 99999999 Error](#invalid-port-99999999)                                 | 1.25 - 1.28                                                         | By Design     | -                                |
+| [Context Deadline on Tenant Deletion](#context-deadline-on-tenant-deletion)           | 1.26 - 1.28                                                         | Fixed         | 1.26.14, 1.27.11, 1.28.5         |
+| [Memory Pressure: Shard Init Failure](#memory-pressure-shard-init-failure)            | All                                                                 | Configuration | -                                |
+| [RAFT Snapshot Cannot Be Created](#raft-snapshot-cannot-be-created)                   | 1.25 - 1.28                                                         | Workaround    | -                                |
+| [Failed to Decode Incoming Command](#failed-to-decode-incoming-command)               | 1.25 - 1.29                                                         | Configuration | -                                |
 
 ---
+
+:::tip Don't see your issue in the table?
+
+If you can't find the issue you are experiencing, you can always [open a new one](#getting-help).
+
+:::
 
 ## Known Issues in Detail
 
@@ -70,11 +76,14 @@ The Weaviate team is actively working on a fix. A patched version will be releas
 ### Database Restoration Blocked
 
 :::info Impact summary
+
 - **Affected versions:** 1.27.23-26, 1.28.14-15, 1.29.5-7, 1.30.3
 - **Resolution:** Fixed in 1.27.27, 1.28.16, 1.29.8, 1.30.4
+
 :::
 
 #### Symptoms
+
 - Nodes fail to start and remain indefinitely in initialization
 - Repeated log messages: `waiting for database to be restored`
 - May show schema update errors during RAFT command replay:
@@ -83,10 +92,13 @@ The Weaviate team is actively working on a fix. A patched version will be releas
   ```
 
 #### Root Cause
+
 A regression introduced in schema catch-up handling caused invalid RAFT commands to block database initialization. The system would continuously retry these invalid commands, preventing marking the database as ready.
 
 #### Resolution
+
 **Upgrade to the fixed version:**
+
 - If on 1.27.x → upgrade to 1.27.27 or higher
 - If on 1.28.x → upgrade to 1.28.16 or higher
 - If on 1.29.x → upgrade to 1.29.8 or higher
@@ -97,22 +109,28 @@ A regression introduced in schema catch-up handling caused invalid RAFT commands
 ### Raft Snapshot Compatibility on Downgrade
 
 :::info Impact summary
+
 - **Affected versions:** 1.28.13+, 1.29.5+, 1.30.2+ (when downgrading to 1.27.25 or earlier)
 - **Resolution:** Fixed in 1.27.26
+
 :::
 
 #### Symptoms
+
 After downgrading from 1.28+ to older 1.27.x versions:
+
 - RAFT snapshots fail to load
 - Cluster cannot reach Ready state
 - Node initialization failures
 
 #### Root Cause
+
 RAFT snapshot format changes introduced in 1.28.13, 1.29.5, and 1.30.2 are not backward compatible with 1.27 releases prior to 1.27.26.
 
 #### Resolution
 
 When downgrading from 1.28.13+, 1.29.5+, or 1.30.2+:
+
 - **Ensure you downgrade to version 1.27.26 or higher**
 - Do not downgrade to 1.27.25 or earlier
 
@@ -121,11 +139,14 @@ When downgrading from 1.28.13+, 1.29.5+, or 1.30.2+:
 ### RAFT Bootstrap Timeout
 
 :::info Impact summary
+
 - **Affected versions:** 1.25, 1.26, 1.27, 1.28
 - **Resolution:** Workaround available
+
 :::
 
 #### Symptoms
+
 - Nodes stuck in crash loop with consistent restart intervals
 - Logs show schema catch-up in progress but never complete:
   ```
@@ -134,6 +155,7 @@ When downgrading from 1.28.13+, 1.29.5+, or 1.30.2+:
 - Startup probe failures in Kubernetes
 
 #### Root Cause
+
 During cluster initialization or node recovery, applying accumulated RAFT log entries (especially with large schemas or many collections) may exceed the default 600-second bootstrap timeout.
 
 #### Resolution
@@ -143,10 +165,10 @@ During cluster initialization or node recovery, applying accumulated RAFT log en
 ```yaml
 env:
   - name: RAFT_BOOTSTRAP_TIMEOUT
-    value: "900"  # 15 minutes
+    value: "900" # 15 minutes
 
 startupProbe:
-  failureThreshold: 90  # 90 * 10 = 900 seconds
+  failureThreshold: 90 # 90 * 10 = 900 seconds
   periodSeconds: 10
   httpGet:
     path: /v1/.well-known/ready
@@ -154,6 +176,7 @@ startupProbe:
 ```
 
 **Calculate appropriate timeout:**
+
 - Small clusters (< 10 collections): 600s default usually sufficient
 - Medium clusters (10-100 collections): 900-1800s
 - Large clusters (100+ collections): 1800-3600s
@@ -161,6 +184,7 @@ startupProbe:
 **Note:** Versions 1.27.4+, 1.26.11+, and 1.25.26+ include optimizations that reduce schema rebuild time during catch-up.
 
 #### Prevention
+
 - Monitor cluster scale and adjust timeouts proactively
 - Use WCS tool: `wcs startup-count <failure-threshold> --apply; wcs sync`
 
@@ -169,11 +193,14 @@ startupProbe:
 ### RAFT Timeouts Under Heavy Load
 
 :::info Impact summary
+
 - **Affected versions:** 1.25 and later
 - **Resolution:** Configuration available (default improved in 1.31+)
+
 :::
 
 #### Symptoms
+
 - Frequent leader elections and cluster instability
 - Logs showing timeout errors:
   ```
@@ -185,6 +212,7 @@ startupProbe:
 - Performance degradation during normal operations
 
 #### Root Cause
+
 Under heavy load or network latency, nodes cannot respond to RAFT heartbeats and memberlist pings within default timeout windows. This causes false failure detection, unnecessary leader elections, and cascading performance issues.
 
 The issue is typically a symptom of underlying resource pressure rather than a RAFT problem itself.
@@ -205,6 +233,7 @@ RAFT_TIMEOUTS_MULTIPLIER=15
 ```
 
 This multiplies all timeout values:
+
 - Heartbeat timeout: 1s → 5s (with multiplier of 5)
 - Election timeout: 1s → 5s
 - Leader lease timeout: 0.5s → 2.5s
@@ -213,6 +242,7 @@ This multiplies all timeout values:
 **2. Investigate root cause:**
 
 Check for underlying issues:
+
 - Memory pressure or OOM events
 - CPU saturation
 - Network latency or packet loss
@@ -221,11 +251,13 @@ Check for underlying issues:
 **3. If too many collections:**
 
 Reduce Go scheduler load:
+
 ```bash
 GOMAXPROCS=<value less than available CPUs>
 ```
 
 #### Best Practices
+
 - Start with default multiplier (5) for most environments
 - Increase gradually if seeing frequent elections
 - Monitor cluster stability after changes
@@ -236,26 +268,33 @@ GOMAXPROCS=<value less than available CPUs>
 ### Invalid Port 99999999
 
 :::info Impact summary
+
 - **Affected versions:** 1.25, 1.26, 1.27, 1.28
 - **Resolution:** By design (not a bug)
+
 :::
 
 #### Symptoms
+
 Error message in logs:
+
 ```
 dial tcp: address 99999999: invalid port
 ```
 
 Often accompanied by memberlist instability messages:
+
 ```
 memberlist: Suspect weaviate-0 has failed, no acks received
 memberlist: Marking weaviate-0 as failed, suspect timeout reached
 ```
 
 #### Root Cause
+
 This is not a RAFT problem but a symptom of memberlist instability. The invalid port `99999999` is intentionally returned to prevent RAFT from communicating with nodes that are not part of the memberlist, which prevents cross-talk issues where RAFT might contact old IP addresses from previous cluster configurations.
 
 The underlying cause is typically:
+
 1. Too many collections causing Go scheduler slowdown and network I/O delays
 2. Network connectivity issues preventing memberlist health checks
 
@@ -264,6 +303,7 @@ The underlying cause is typically:
 **Address underlying causes:**
 
 1. If too many collections:
+
    ```bash
    GOMAXPROCS=<value less than available CPUs>
    ```
@@ -278,12 +318,16 @@ The underlying cause is typically:
 ### Context Deadline on Tenant Deletion
 
 :::info Impact summary
+
 - **Affected versions:** 1.26, 1.27, 1.28
 - **Resolution:** Fixed in 1.26.14, 1.27.11, 1.28.5
+
 :::
 
 #### Symptoms
+
 Tenant deletion fails with timeout errors:
+
 ```
 context deadline exceeded
 session: fetching region failed: RequestCanceled: request context canceled
@@ -293,6 +337,7 @@ caused by: context deadline exceeded
 Occurs only when tenant offloading module (`offload-s3`) is enabled.
 
 #### Root Cause
+
 When tenant offloading is enabled and AWS credentials are misconfigured, the deletion process attempts to delete cloud resources but times out waiting for AWS responses.
 
 #### Resolution
@@ -300,11 +345,13 @@ When tenant offloading is enabled and AWS credentials are misconfigured, the del
 **Temporary workaround (if upgrade not immediately possible):**
 
 Option 1: Disable tenant offloading
+
 ```bash
 # Remove or disable tenant offloading module configuration
 ```
 
 Option 2: Correct AWS credentials
+
 ```bash
 # Provide valid AWS credentials for tenant offloading
 AWS_ACCESS_KEY_ID=<valid_key>
@@ -313,6 +360,7 @@ AWS_SECRET_ACCESS_KEY=<valid_secret>
 
 **Permanent fix:**
 Upgrade to fixed version:
+
 - 1.26.x → 1.26.14 or higher
 - 1.27.x → 1.27.11 or higher
 - 1.28.x → 1.28.5 or higher
@@ -322,11 +370,14 @@ Upgrade to fixed version:
 ### Memory Pressure: Shard Init Failure
 
 :::info Impact summary
+
 - **Affected versions:** All versions
 - **Resolution:** Configuration required
+
 :::
 
 #### Symptoms
+
 - Shard initialization failures during tenant activation
 - Errors in logs:
   ```
@@ -336,6 +387,7 @@ Upgrade to fixed version:
 - Tenant activation failures
 
 #### Root Cause
+
 The system has reached the operating system limit for memory-mapped files (`vm.max_map_count`). Each shard requires multiple memory mappings, and the default OS limit may be insufficient for large multi-tenant deployments.
 
 #### Resolution
@@ -365,12 +417,16 @@ echo "vm.max_map_count=8388608" >> /etc/sysctl.conf
 ### Empty Collections Panic
 
 :::info Impact summary
+
 - **Affected versions:** 1.28, 1.29, 1.30, 1.31
 - **Resolution:** In progress
+
 :::
 
 #### Symptoms
+
 Single-node clusters panic on startup with:
+
 ```
 Recovered from panic: assignment to entry in nil map
 [...stack trace...]
@@ -378,6 +434,7 @@ github.com/weaviate/weaviate/cluster/schema.(*schema).addClass
 ```
 
 #### Root Cause
+
 RAFT snapshots with no collections (previously called classes) cause a nil map assignment during restoration due to JSON unmarshaler `omitempty` behavior. This edge case occurs when snapshots are created before any collections are added.
 
 #### Resolution
@@ -401,6 +458,7 @@ rm -rf <snapshot-directory>
 ```
 
 Example structure:
+
 ```
 raft/
 ├── db_users/
@@ -411,6 +469,7 @@ raft/
 ```
 
 #### Prevention
+
 This issue should not occur in normal operations. It typically happens only if a snapshot is created before any schema is defined.
 
 ---
@@ -418,15 +477,20 @@ This issue should not occur in normal operations. It typically happens only if a
 ### RAFT Snapshot Cannot Be Created
 
 :::info Impact summary
+
 - **Affected versions:** 1.25, 1.26, 1.27, 1.28
 - **Resolution:** Workaround available
+
 :::
 
 #### Symptoms
+
 Node stuck during bootstrap with error messages indicating snapshot threshold reached but unable to create snapshot. This typically occurs only during initial cluster setup with rapid configuration changes.
 
 #### Root Cause
+
 During bootstrap, many configuration changes in short succession increase RAFT log size and trigger snapshot threshold before the node has fully initialized. The cluster becomes stuck because:
+
 1. It cannot create a snapshot (requires bootstrap completion)
 2. It cannot apply new configurations (requires snapshot first)
 
@@ -444,10 +508,12 @@ RAFT_SNAPSHOT_THRESHOLD=24576  # entries (default: 8192)
 This allows the node to apply all RAFT log entries before triggering snapshot creation.
 
 **After node reports healthy:**
+
 1. Remove the custom configuration
 2. Restart the node to return to defaults
 
 #### Prevention
+
 - Avoid making many rapid configuration changes during initial cluster bootstrap
 - Stage large schema deployments rather than applying all at once
 
@@ -456,12 +522,16 @@ This allows the node to apply all RAFT log entries before triggering snapshot cr
 ### Failed to Decode Incoming Command
 
 :::info Impact summary
+
 - **Affected versions:** 1.25, 1.26, 1.27, 1.28, 1.29
 - **Resolution:** Configuration
+
 :::
 
 #### Symptoms
+
 Log entries showing:
+
 ```
 failed to decode incoming command
 error: unknown rpc type 71
@@ -471,6 +541,7 @@ remote-address: 10.0.104.114:42128
 Note: `71` represents ASCII 'G' (GET), `80` represents ASCII 'P' (POST)
 
 #### Root Cause
+
 HTTP requests being sent to RAFT's internal TCP endpoint (port 8300). This commonly occurs when Prometheus or other monitoring tools auto-discover and attempt to scrape all open ports, including internal RAFT ports.
 
 #### Resolution
@@ -478,19 +549,21 @@ HTTP requests being sent to RAFT's internal TCP endpoint (port 8300). This commo
 **Configure monitoring to exclude RAFT ports:**
 
 Update Prometheus scrape configuration to skip internal cluster ports:
+
 - Port 7000: Memberlist
 - Port 7100-7103: Memberlist gossip
 - Port 8300: RAFT
 
 **For Prometheus Operator:**
+
 ```yaml
 additionalScrapeConfigs:
-  - job_name: 'weaviate'
+  - job_name: "weaviate"
     kubernetes_sd_configs:
       - role: pod
     relabel_configs:
       - source_labels: [__meta_kubernetes_pod_container_port_number]
-        regex: '(7000|7100|7101|7102|7103|8300)'
+        regex: "(7000|7100|7101|7102|7103|8300)"
         action: drop
 ```
 
@@ -502,15 +575,13 @@ This is informational only and does not impact cluster functionality.
 
 If you encounter an issue not listed here:
 
-1. Check the [Troubleshooting Guide](#) for diagnostic steps
-2. Search [GitHub Issues](https://github.com/weaviate/weaviate/issues)
-3. Ask in the [Weaviate Community Forum](https://forum.weaviate.io)
+1. Search [GitHub Issues](https://github.com/weaviate/weaviate/issues)
+2. Ask in the [Weaviate Community Forum](https://forum.weaviate.io)
 
-When reporting issues, include:
+If you can't find an existing issue, please [open a new one](https://github.com/weaviate/weaviate/issues). Try to include the following information:
+
 - Weaviate version
 - Deployment environment (cloud, on-prem, Kubernetes, etc.)
 - Relevant log excerpts
 - Steps to reproduce
 - Impact on your workload
-
----
