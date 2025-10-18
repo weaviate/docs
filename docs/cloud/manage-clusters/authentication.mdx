@@ -20,203 +20,188 @@ This section only applies to clusters that have [RBAC (Role-Based Access Control
 
 ### Create an API key
 
-import CreateAPIKeys from '/_includes/wcs/create-api-keys.mdx';
+If you don't have an existing API key, you'll need to create one. Follow these steps to find the API keys section and create a new key if necessary:
 
-<CreateAPIKeys />
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="dkd8z43f9r"
+    src="https://app.guideflow.com/embed/dkd8z43f9r"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="dkd8z43f9r"
+  ></script>
+</div>
+
+<br />
+
+<details>
+    <summary>Steps to create a new API key</summary>
+
+To create an API key, follow these steps:
+
+1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud) and [select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster).
+2.  Navigate to the `API Keys` section, found in the `Cluster details` panel.
+3.  If you need a new API key, click the `Create API key` button.
+4.  In the `Create API Key` form, provide a descriptive name for your key.
+5.  Choose the role for this API key. You can either select an existing role like `admin` or `viewer`, or [create a new role](https://www.google.com/search?q=/cloud/manage-clusters/authorization) with specific permissions.
+6.  Click the `Create` button.
+7.  **Important:** This is the only time your API key will be displayed. Make sure to copy it or download it and store it in a secure location immediately after creation. You will not be able to retrieve the full key again.
+
+</details>
 
 ### Rotate an API key
 
 Rotating an API key allows you to generate a new key while invalidating the old one, enhancing security.
 
-import RotateAPIKey from '/docs/cloud/img/weaviate-cloud-api-key-management.png';
-import RotateAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-api-key-rotate.png';
-
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-your-cluster">
-          Select your cluster
-        </Link>{' '}
-        and navigate to the <code>API Keys</code> section.
-      </li>
-      <li>
-        Locate the API key you want to rotate and click the <code>Rotate</code>{' '}
-        button next to it (<span class="callout">1</span> in the image below).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={RotateAPIKey} alt="Rotate an API key in Weaviate Cloud" />
-      </div>
-      <div class="card__body">Rotate an API key in Weaviate Cloud.</div>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="zkloxd4iok"
+    src="https://app.guideflow.com/embed/zkloxd4iok"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="zkloxd4iok"
+  ></script>
 </div>
+
 <br />
 
-<div class="row">
-  <div class="col col--4">
-    <ol start="4">
-      <li>
-        A confirmation dialog will appear, explaining that the old key will be
-        invalidated. Click <code>Rotate key</code> to proceed (
-        <span class="callout">1</span> in the image below).
-      </li>
-      <li>
-        A new API key will be generated. <span class="callout">2</span> Make
-        sure to copy and save the new key immediately, as you won't be able to
-        see it again.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={RotateAPIKeyConfirm} alt="Confirm API key rotation" />
-      </div>
-      <div class="card__body">Confirm API key rotation.</div>
-    </div>
-  </div>
-</div>
+<details>
+    <summary>Steps to rotate an API key</summary>
+
+To rotate an API key, follow these steps:
+
+1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud).
+2.  [Select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster) and navigate to the `API Keys` section.
+3.  Locate the API key you want to rotate and click the `Rotate` button next to it.
+4.  A confirmation dialog will appear, explaining that the old key will be invalidated. Click `Rotate key` to proceed.
+5.  **Important:** This is the only time your API key will be displayed. Make sure to copy it or download it and store it in a secure location immediately after creation. You will not be able to retrieve the full key again.
+
+</details>
 
 ### Edit an API key
 
-Editing an API key allows you to modify its name or associated roles. To edit an API key for a cluster:
+Editing an API key allows you to modify its assigned roles. To edit an API key for a cluster:
 
-import EditAPIKey from '/docs/cloud/img/weaviate-cloud-api-key-management.png';
-import EditAPIKeyForm from '/docs/cloud/img/weaviate-cloud-api-key-edit.png';
-
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-your-cluster">
-          Select your cluster
-        </Link>{' '}
-        and navigate to the <code>API Keys</code> section.
-      </li>
-      <li>
-        Locate the API key you want to edit and click the <code>Edit</code>{' '}
-        button next to it (<span class="callout">1</span> in the image below).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={EditAPIKey} alt="Edit an API key in Weaviate Cloud" />
-      </div>
-      <div class="card__body">Edit an API key in Weaviate Cloud.</div>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="zkloxd4iok"
+    src="https://app.guideflow.com/embed/zkloxd4iok"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="zkloxd4iok"
+  ></script>
 </div>
+
 <br />
 
-<div class="row">
-  <div class="col col--4">
-    <ol start="4">
-      <li>
-        In the <code>Edit API key</code> form, you can modify the key's
-        description/name (<span class="callout">1</span>).
-      </li>
-      <li>
-        You can also update the roles associated with this API key. Choose from
-        the existing roles or{' '}
-        <Link to="/cloud/manage-clusters/authorization">
-          assign different roles
-        </Link>{' '}
-        (<span class="callout">2</span>).
-      </li>
-      <li>
-        Click the <code>Save</code> button (<span class="callout">3</span>) to
-        apply your changes.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={EditAPIKeyForm} alt="Edit API key details" />
-      </div>
-      <div class="card__body">Edit API key details.</div>
-    </div>
-  </div>
-</div>
+<details>
+    <summary>Steps to rotate an API key</summary>
+
+To edit an API key's roles and permissions, follow these steps:
+
+1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud).
+2.  [Select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster) and navigate to the `API Keys` section.
+3.  Locate the API key you want to edit and click the `Edit` button next to it.
+4.  In the `Edit API key` form, you can modify the key's description/name.
+5.  You can also update the roles associated with this API key. Choose from the existing roles or [assign different roles](https://www.google.com/search?q=/cloud/manage-clusters/authorization).
+6.  Click the `Save` button to apply your changes.
+
+</details>
 
 ### Delete an API key
 
 To delete an API key, follow these steps:
 
-import DeleteAPIKeyRBAC from '/docs/cloud/img/weaviate-cloud-delete-api-key.png';
-
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-your-cluster">
-          Select your cluster
-        </Link>{' '}
-        and navigate to the <code>API Keys</code> section.
-      </li>
-      <li>
-        Locate the API key you want to delete and click the <code>Delete</code>{' '}
-        button next to it (<span class="callout">1</span>).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={DeleteAPIKeyRBAC} alt="Delete an API key in Weaviate Cloud" />
-      </div>
-      <div class="card__body">Delete an API key in Weaviate Cloud.</div>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="1pzvzx6bvr"
+    src="https://app.guideflow.com/embed/1pzvzx6bvr"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="1pzvzx6bvr"
+  ></script>
 </div>
+
 <br />
 
-import DeleteAPIKeyConfirmRBAC from '/docs/cloud/img/weaviate-cloud-delete-api-key-confirm.png';
+<details>
+    <summary>Steps to delete an API key</summary>
 
-<div class="row">
-  <div class="col col--4">
-    <ol start="4">
-      <li>
-        A confirmation dialog will appear. Enter the necessary text (usually the
-        API key name or a confirmation phrase) to confirm the deletion (
-        <span class="callout">1</span>).
-      </li>
-      <li>
-        Click on the <code>Confirm and delete</code> button (
-        <span class="callout">2</span>).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={DeleteAPIKeyConfirmRBAC} alt="Confirm API key deletion" />
-      </div>
-      <div class="card__body">Confirm API key deletion.</div>
-    </div>
-  </div>
-</div>
+To delete an API key, follow these steps:
 
-## Authentication with RBAC disabled
+1.  Open the [Weaviate Cloud console](https://console.weaviate.cloud).
+2.  [Select your cluster](https://www.google.com/search?q=/cloud/manage-clusters/status%23select-your-cluster) and navigate to the `API Keys` section.
+3.  Locate the API key you want to delete and click the `Trash can` button next to it.
+4.  A confirmation dialog will appear. Enter the necessary text (usually the API key name or a confirmation phrase) to confirm the deletion.
+5.  Click on the `Delete key` button.
+
+</details>
+
+## Authentication with RBAC disabled (deprecated)
 
 If [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) is not enabled, there will be two default API keys, `ReadOnly` and `Admin`:
 
@@ -225,10 +210,10 @@ If [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) is
 
 If you have a Serverless cluster, you can create, delete, edit, and rotate API keys. You cannot modify the Sandbox cluster keys.
 
-### Retrieve an API key
-
 <details>
     <summary>Steps to retrieve an API key</summary>
+
+#### Retrieve an API key
 
 When connecting to a Weaviate Cloud cluster, you need an API key and the REST endpoint URL for authentication.
 To retrieve your connection details, follow these steps:
@@ -288,10 +273,10 @@ When using an official Weaviate [client library](/weaviate/client-libraries), yo
 
 </details>
 
-### Create an API key
-
 <details>
     <summary>Steps to create an API key</summary>
+
+#### Create an API key
 
 If you have a Serverless cluster, you can create new API keys. To create a new API key, follow these steps:
 
@@ -359,10 +344,10 @@ import NewAPIKeyConfirm from '/docs/cloud/img/weaviate-cloud-new-api-key-confirm
 
 </details>
 
-### Delete an API key
-
 <details>
     <summary>Steps to delete an API key</summary>
+
+#### Delete an API key
 
 If you have a Serverless cluster, you can delete API keys. To delete an API key, follow these steps:
 
