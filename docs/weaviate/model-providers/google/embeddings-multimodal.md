@@ -91,7 +91,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 <ApiKeyNote />
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -102,7 +102,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START GoogleVertexInstantiation"
@@ -117,7 +117,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Google embedding model:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -127,7 +127,7 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicMMVectorizerGoogleVertex"
@@ -161,7 +161,7 @@ The following examples show how to configure Google-specific options.
 - `modelId` (Optional): e.g. `multimodalembedding@001`
 - `dimensions` (Optional): Must be one of: `128`, `256`, `512`, `1408`. Default is `1408`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -171,7 +171,7 @@ The following examples show how to configure Google-specific options.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullMMVectorizerGoogle"
@@ -186,7 +186,7 @@ The following examples show how to configure Google-specific options.
 
 After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for the objects using the specified model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -197,7 +197,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MMBatchImportExample"
@@ -224,7 +224,7 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -235,7 +235,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -256,7 +256,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts th
 
 The query below returns the `n` best scoring objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -267,7 +267,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
@@ -286,7 +286,7 @@ To perform a near media search such as near image search, convert the media quer
 
 The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -297,7 +297,7 @@ The query below returns the `n` most similar objects to the input image from the
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearImageExample"

@@ -32,7 +32,7 @@ To use BQ, enable it as shown below and add data to the collection.
 
 BQ can be enabled at collection creation time through the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -43,7 +43,7 @@ BQ can be enabled at collection creation time through the collection definition:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCode}
         startMarker="// START EnableBQ"
@@ -80,7 +80,7 @@ The ability to enable BQ compression after collection creation was added in Weav
 
 BQ can also be enabled for an existing collection by updating the collection definition:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -117,7 +117,7 @@ import BQParameters from '/\_includes/configuration/bq-compression-parameters.md
 
 For example:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
       <FilteredTextBlock
         text={PyCode}
@@ -128,7 +128,7 @@ For example:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
       <FilteredTextBlock
         text={TSCodeBQOptions}
         startMarker="// START BQWithOptions"

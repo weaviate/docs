@@ -41,7 +41,7 @@ The steps to build a custom image are:
 
 The `Dockerfile` to create depends on whether you are using a public model from the Hugging Face model hub, or a private or local model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="public" label="Public model">
 
 This example creates a custom image for the [`distilroberta-base` model](https://huggingface.co/distilbert/distilroberta-base). Replace `distilroberta-base` with the model name you want to use.

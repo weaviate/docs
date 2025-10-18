@@ -27,12 +27,12 @@ func main() {
 		Vectorizer: "text2vec-ollama",
 		ModuleConfig: map[string]interface{}{
 			"text2vec-ollama": map[string]interface{}{ // Configure the Ollama embedding integration
-				"apiEndpoint": "http://host.docker.internal:11434", // Allow Weaviate from within a Docker container to contact your Ollama instance
-				"model":       "nomic-embed-text",                  // The model to use
+				"apiEndpoint": "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
+				"model":       "nomic-embed-text",    // The model to use
 			},
 			"generative-ollama": map[string]interface{}{ // Configure the Ollama generative integration
-				"apiEndpoint": "http://host.docker.internal:11434", // Allow Weaviate from within a Docker container to contact your Ollama instance
-				"model":       "llama3.2",                          // The model to use
+				"apiEndpoint": "http://ollama:11434", // If using Docker you might need: http://host.docker.internal:11434
+				"model":       "llama3.2",            // The model to use
 			},
 		},
 	}

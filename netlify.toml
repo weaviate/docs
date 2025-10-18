@@ -763,3 +763,45 @@ status = 301
 from = "/contributor-guide/contextionary/classification-benchmarks"
 to   = "/contributor-guide"
 status = 301
+
+## Academy redirects
+
+[[redirects]]
+from = "/academy/theory/ai_models_deep_dive/*"
+to   = "https://academy.weaviate.io/courses/wa150-py"
+status = 301
+
+[[redirects]]
+from = "/academy/theory/hello_weaviate/*"
+to   = "https://academy.weaviate.io/courses/wa050-py"
+status = 301
+
+[[redirects]]
+from = "/academy/theory/embedding_model_selection/*"
+to   = "https://academy.weaviate.io/courses/wa150-py"
+status = 301
+
+[[redirects]]
+from = "/academy/deployment/k8s/*"
+to   = "/deploy/installation-guides/k8s-installation"
+status = 301
+
+[[redirects]]
+from = "/academy/js/set_up_typescript"
+to   = "/weaviate/client-libraries/typescript"
+status = 301
+
+[[redirects]]
+from = "/academy/js/*"
+to   = "/weaviate/guides"
+status = 301
+
+[[redirects]]
+from = "/academy/py/*"
+to   = "https://academy.weaviate.io/courses/wa101t-py"
+status = 301
+
+[[redirects]]
+from = "/academy/*"
+to   = "https://academy.weaviate.io/"
+status = 301

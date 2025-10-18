@@ -22,7 +22,7 @@ The [fusion method](#change-the-fusion-method) and the [relative weights](#balan
 
 Combine the results of a vector search and a keyword search. The search uses a single query string.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -33,12 +33,12 @@ Combine the results of a vector search and a keyword search. The search uses a s
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridBasic"
   endMarker="// END searchHybridBasic"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -83,7 +83,7 @@ The output is like this:
 
 A hybrid search on a collection that has [named vectors](../config-refs/collections.mdx#named-vectors) must specify a `target` vector. Weaviate uses the query vector to search the target vector space.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -92,7 +92,7 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// NamedVectorHybrid"
@@ -128,7 +128,7 @@ The output is like this:
 
 To see the object rankings, set the `explain score` field in your query. The search rankings are part of the object metadata. Weaviate uses the score to order the search results.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -139,12 +139,12 @@ To see the object rankings, set the `explain score` field in your query. The sea
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithScore"
   endMarker="// END searchHybridWithScore"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -189,7 +189,7 @@ Hybrid search results can favor the keyword component or the vector component. T
 - An `alpha` of `1` is a pure vector search.
 - An `alpha` of `0` is a pure keyword search.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -200,12 +200,12 @@ Hybrid search results can favor the keyword component or the vector component. T
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithAlpha"
   endMarker="// END searchHybridWithAlpha"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -250,7 +250,7 @@ The output is like this:
 - To use the keyword and vector search relative scores instead of the search rankings, use `Relative Score Fusion`.
 - To use [`autocut`](../api/graphql/additional-operators.md#autocut) with the `hybrid` operator, use `Relative Score Fusion`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -261,7 +261,7 @@ The output is like this:
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithFusionType"
@@ -324,13 +324,21 @@ Keyword (BM25) search operators define the minimum number of query [tokens](#tok
 
 With the `or` operator, the search returns objects that contain at least `minimumOrTokensMatch` of the tokens in the search string.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridWithBM25OperatorOrWithMin"
       endMarker="# END HybridWithBM25OperatorOrWithMin"
       language="python"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="ts"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -347,13 +355,21 @@ With the `or` operator, the search returns objects that contain at least `minimu
 
 With the `and` operator, the search returns objects that contain all tokens in the search string.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
       startMarker="# START HybridWithBM25OperatorAnd"
       endMarker="# END HybridWithBM25OperatorAnd"
       language="python"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JS/TS">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="ts"
     />
   </TabItem>
   <TabItem value="graphql" label="GraphQL">
@@ -373,7 +389,7 @@ With the `and` operator, the search returns objects that contain all tokens in t
 
 The keyword search portion of hybrid search can be directed to only search a subset of object properties. This does not affect the vector search portion.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -384,12 +400,12 @@ The keyword search portion of hybrid search can be directed to only search a sub
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithProperties"
   endMarker="// END searchHybridWithProperties"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -431,7 +447,7 @@ The output is like this:
 
 Specify the relative value of an object's `properties` in the keyword search. Higher values increase the property's contribution to the search score.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -442,12 +458,12 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithPropertyWeighting"
   endMarker="// END searchHybridWithPropertyWeighting"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -489,7 +505,7 @@ The output is like this:
 
 The vector component of hybrid search can use a query string or a query vector. To specify a query vector instead of a query string, provide a query vector (for the vector search) and a query string (for the keyword search) in your query.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -500,12 +516,12 @@ The vector component of hybrid search can use a query string or a query vector. 
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithVector"
   endMarker="// END searchHybridWithVector"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -551,7 +567,7 @@ Note that the hybrid threshold (`max_vector_distance`) was introduced later in `
 
 You can specify [vector similarity search](/weaviate/search/similarity) parameters similar to [near text](/weaviate/search/similarity.md#search-with-text) or [near vector](/weaviate/search/similarity.md#search-with-a-vector) searches, such as `group by` and `move to` / `move away`. An equivalent `distance` [threshold for vector search](./similarity.md#set-a-similarity-threshold) can be specified with the `max vector distance` parameter.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -560,12 +576,12 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
       language="python"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// VectorSimilarity"
       endMarker="// END VectorSimilarity"
-      language="js"
+      language="ts"
     />
   </TabItem>
 </Tabs>
@@ -591,7 +607,7 @@ The output is like this:
 
 The only available search threshold is `max vector distance`, which will set the maximum allowable distance for the vector search component.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -601,9 +617,9 @@ The only available search threshold is `max vector distance`, which will set the
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START VectorSimilarityThreshold"
@@ -621,7 +637,7 @@ The only available search threshold is `max vector distance`, which will set the
 
 Define criteria to group search results.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -631,7 +647,7 @@ Define criteria to group search results.
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridGroupBy"
@@ -659,7 +675,7 @@ Use `limit` to set a fixed maximum number of objects to return.
 
 Optionally, use `offset` to paginate the results.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -670,7 +686,7 @@ Optionally, use `offset` to paginate the results.
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START limit"
@@ -711,7 +727,7 @@ To learn more about the different fusion algorithms, visit the [search operators
 
 :::
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -722,7 +738,7 @@ To learn more about the different fusion algorithms, visit the [search operators
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START autocut"
@@ -769,7 +785,7 @@ The output is like this:
 
 To narrow your search results, use a [`filter`](../api/graphql/filters.md).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 <FilteredTextBlock
   text={PyCode}
@@ -780,12 +796,12 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
 </TabItem>
 
 
-<TabItem value="js" label="JS/TS">
+<TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
   startMarker="// searchHybridWithFilter"
   endMarker="// END searchHybridWithFilter"
-  language="js"
+  language="ts"
 />
 </TabItem>
 
@@ -833,7 +849,6 @@ import TokenizationNote from '/_includes/tokenization.mdx'
 
 - [Connect to Weaviate](/weaviate/connections/index.mdx)
 - [API References: Search operators # Hybrid](../api/graphql/search-operators.md#hybrid)
-- [Weaviate Academy: Tokenization](../../academy/py/tokenization/index.md)
 - About [hybrid fusion algorithms](https://weaviate.io/blog/hybrid-search-fusion-algorithms).
 - For tutorials, see [Queries](/weaviate/tutorials/query.md)
 - For search using the GraphQL API, see [GraphQL API](../api/graphql/get.md).

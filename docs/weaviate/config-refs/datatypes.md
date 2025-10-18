@@ -49,7 +49,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={TextTypePy}
@@ -58,7 +58,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TextTypeTs}
       startMarker="// START ConfigureDataType"
@@ -70,7 +70,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={TextTypePy}
@@ -79,7 +79,7 @@ import TextTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TextTypeTs}
       startMarker="// START AddObject"
@@ -100,7 +100,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={NumericalTypePy}
@@ -109,7 +109,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={NumericalTypeTs}
       startMarker="// START ConfigureDataType"
@@ -121,7 +121,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={NumericalTypePy}
@@ -130,7 +130,7 @@ import NumericalTypeTs from '!!raw-loader!/\_includes/code/typescript/config-ref
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={NumericalTypeTs}
       startMarker="// START AddObject"
@@ -165,7 +165,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={DateTypePy}
@@ -174,7 +174,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={DateTypeTs}
       startMarker="// START ConfigureDataType"
@@ -186,7 +186,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={DateTypePy}
@@ -195,7 +195,7 @@ import DateTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={DateTypeTs}
       startMarker="// START AddObject"
@@ -223,7 +223,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UUIDTypePy}
@@ -232,7 +232,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={UUIDTypeTs}
       startMarker="// START ConfigureDataType"
@@ -244,7 +244,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={UUIDTypePy}
@@ -253,7 +253,7 @@ import UUIDTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={UUIDTypeTs}
       startMarker="// START AddObject"
@@ -289,7 +289,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={GeoTypePy}
@@ -298,7 +298,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={GeoTypeTs}
       startMarker="// START ConfigureDataType"
@@ -310,7 +310,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={GeoTypePy}
@@ -319,7 +319,7 @@ import GeoTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.data
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={GeoTypeTs}
       startMarker="// START AddObject"
@@ -365,7 +365,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PhoneTypePy}
@@ -374,7 +374,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={PhoneTypeTs}
       startMarker="// START ConfigureDataType"
@@ -386,7 +386,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PhoneTypePy}
@@ -395,7 +395,7 @@ import PhoneTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.da
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={PhoneTypeTs}
       startMarker="// START AddObject"
@@ -459,7 +459,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={BlobTypePy}
@@ -468,7 +468,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={BlobTypeTs}
       startMarker="// START ConfigureDataType"
@@ -480,7 +480,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={BlobTypePy}
@@ -489,7 +489,7 @@ import BlobTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.dat
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={BlobTypeTs}
       startMarker="// START AddObject"
@@ -521,7 +521,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
 
 #### Property definition
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ObjectTypePy}
@@ -530,7 +530,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={ObjectTypeTs}
       startMarker="// START ConfigureDataType"
@@ -542,7 +542,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
 
 #### Object insertion
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={ObjectTypePy}
@@ -551,7 +551,7 @@ import ObjectTypeTs from '!!raw-loader!/\_includes/code/typescript/config-refs.d
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={ObjectTypeTs}
       startMarker="// START AddObject"

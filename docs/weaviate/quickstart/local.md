@@ -82,7 +82,7 @@ ollama pull nomic-embed-text
 ollama pull llama3.2
 ```
 
-We will be running Weaviate and language models locally. We recommend that you use a modern computer with at least 8GB or RAM, preferably 16GB or more.
+We will be running Weaviate and language models locally. We recommend that you use a modern computer with at least 8GB of RAM, preferably 16GB or more.
 
 <hr/>
 
@@ -114,7 +114,6 @@ services:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      ENABLE_API_BASED_MODULES: 'true'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama'
       CLUSTER_HOSTNAME: 'node1'
 volumes:
@@ -169,34 +168,11 @@ import CreateCollection from '/_includes/code/quickstart/local.quickstart.create
 
 Run this code to create the collection to which you can add data.
 
+import ModelProvider from '/\_includes/embedding-model-providers.mdx'
+
 <details>
   <summary>Do you prefer a different setup?</summary>
-
-Weaviate is very flexible. If you prefer a different model provider integration, or prefer to import your own vectors, see one of the following guides:
-
-<div class="row">
-  <div class="col col--6 margin-top--xs padding-top--xs">
-    <div class="card">
-      <div class="card__header">
-        <h4>Prefer a different model provider?</h4>
-      </div>
-      <div class="card__body">
-        See <Link to="#can-i-use-different-integrations">this section</Link> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
-      </div>
-    </div>
-  </div>
-  <div class="col col--6 margin-top--xs padding-top--xs">
-    <div class="card">
-      <div class="card__header">
-        <h4>Want to specify object vectors?</h4>
-      </div>
-      <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <Link to="/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
-      </div>
-    </div>
-  </div>
-</div>
-
+  <ModelProvider />
 </details>
 
 ### 2.2 Add objects
@@ -431,7 +407,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/academy">Weaviate Academy</Link> unit on <Link to="/academy/py/standalone/chunking">chunking</Link>.
+            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>.
           </p>
         </div>
       </div>

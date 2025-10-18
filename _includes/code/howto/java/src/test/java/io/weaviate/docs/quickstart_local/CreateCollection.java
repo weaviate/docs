@@ -21,11 +21,11 @@ public class CreateCollection {
     // START CreateCollection
     // highlight-start
     Map<String, Object> text2vecOllamaSettings = new HashMap<>();
-    text2vecOllamaSettings.put("apiEndpoint", "http://host.docker.internal:11434"); // Allow Weaviate from within a Docker container to contact your Ollama instance
+    text2vecOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
     text2vecOllamaSettings.put("model", "nomic-embed-text"); // The model to use
 
     Map<String, Object> generativeOllamaSettings = new HashMap<>();
-    generativeOllamaSettings.put("apiEndpoint", "http://host.docker.internal:11434"); // Allow Weaviate from within a Docker container to contact your Ollama instance
+    generativeOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
     generativeOllamaSettings.put("model", "llama3.2"); // The model to use
 
     Map<String, Map<String, Object>> moduleConfig = new HashMap<>();

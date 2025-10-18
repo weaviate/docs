@@ -55,7 +55,7 @@ Provide the API key to Weaviate using one of the following methods:
 - Set the `COHERE_APIKEY` environment variable that is available to Weaviate.
 - Provide the API key at runtime, as shown in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -66,7 +66,7 @@ Provide the API key to Weaviate using one of the following methods:
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START CohereInstantiation"
@@ -85,7 +85,7 @@ import MutableRerankerConfig from '/_includes/mutable-reranker-config.md';
 
 Configure a Weaviate collection to use a Cohere reranker model as follows:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -95,7 +95,7 @@ Configure a Weaviate collection to use a Cohere reranker model as follows:
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerCohereBasic"
@@ -110,7 +110,7 @@ Configure a Weaviate collection to use a Cohere reranker model as follows:
 
 You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -120,7 +120,7 @@ You can specify one of the [available models](#available-models) for Weaviate to
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerCohereCustomModel"
@@ -154,7 +154,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 ![Reranker integration illustration](../_includes/integration_cohere_reranker.png)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -165,7 +165,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START RerankerQueryExample"

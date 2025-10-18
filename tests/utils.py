@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 import tempfile
 import runpy
 from pathlib import Path
@@ -130,3 +131,39 @@ def execute_py_script_as_module(script_content: str, script_name: str = "temp_sc
         runpy.run_path(temp_path)
     finally:
         Path(temp_path).unlink()
+
+def run_script(command: list, script_path: str) -> None:
+    """
+    Run a script command and provide detailed error output on failure.
+    """
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        if result.stdout.strip():
+            print(f"\n--- Output from {script_path} ---")
+            print(result.stdout)
+            
+    except subprocess.CalledProcessError as error:
+        error_details = [
+            f"\nScript execution failed: {script_path}",
+            f"Exit code: {error.returncode}",
+            f"Command: {' '.join(str(c) for c in command)}",  # Convert all to str
+        ]
+        
+        if error.stderr:
+            error_details.extend([
+                "\n--- STDERR ---",
+                error.stderr
+            ])
+        
+        if error.stdout:
+            error_details.extend([
+                "\n--- STDOUT ---", 
+                error.stdout
+            ])
+            
+        raise Exception("\n".join(error_details))

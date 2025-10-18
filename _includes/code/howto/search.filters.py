@@ -416,20 +416,12 @@ for o in response.objects:
     assert o.metadata.creation_time > filter_time
 # End test
 
-client.close()
-
 # ========================================
 # FilterByDateDatatype
 # ========================================
 
 from weaviate.classes.config import Property, DataType, Configure
 from datetime import datetime, timezone
-
-client = weaviate.connect_to_local(
-    headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY"),
-    }
-)
 
 client.collections.delete("CollectionWithDate")
 
@@ -562,18 +554,10 @@ for o in response.objects:
 # FilterByGeolocation
 # ========================================
 
-# Test this on a local instance with a temporary collection
-client.close()
-
-client = weaviate.connect_to_local()
-
-for c in ["Article", "Author", "Publication"]:
-    client.collections.delete(c)
-
-from weaviate.classes.config import Property, DataType
+client.collections.delete("CollectionWithGeolocation")
 
 publications = client.collections.create(
-    "Publication",
+    "CollectionWithGeolocation",
     properties=[
         Property(name="title", data_type=DataType.TEXT),
         Property(name="headquartersGeoLocation", data_type=DataType.GEO_COORDINATES)

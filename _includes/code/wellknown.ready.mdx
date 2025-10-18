@@ -5,7 +5,7 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 
 import PyCode from '!!raw-loader!/_includes/code/rest.well-known.py';
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
@@ -15,7 +15,7 @@ import PyCode from '!!raw-loader!/_includes/code/rest.well-known.py';
   />
 </TabItem>
 
-<TabItem value="js" label="JS/TS Client (v3)">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
 import weaviate from 'weaviate-client';
@@ -24,23 +24,6 @@ const client = await weaviate.connectToLocal()
 const response = await client.isReady()
 
 console.log(response)
-```
-
-</TabItem>
-<TabItem value="js2" label="JS/TS Client (v2)">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.misc
-  .readyChecker()
-  .do();
-console.log(response);
 ```
 
 </TabItem>

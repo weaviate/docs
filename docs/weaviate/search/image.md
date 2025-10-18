@@ -38,7 +38,7 @@ To use images as search inputs, configure an image vectorizer integration for yo
 Use the `Near Image` operator to execute image search.<br/>
 If your query image is stored in a file, you can use the client library to search by its filename.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -49,7 +49,7 @@ If your query image is stored in a file, you can use the client library to searc
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
 
   <FilteredTextBlock
     text={TSCode}
@@ -99,7 +99,7 @@ If your query image is stored in a file, you can use the client library to searc
 
 You can search by a base64 representation of an image:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -110,7 +110,7 @@ You can search by a base64 representation of an image:
   </TabItem>
 
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START search with base64"
@@ -157,7 +157,7 @@ You can search by a base64 representation of an image:
 
 You can create a base64 representation of an online image, and use it as input for similarity search [as shown above](#by-the-base64-representation).
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -166,12 +166,12 @@ You can create a base64 representation of an online image, and use it as input f
       language="py"
     />
   </TabItem>
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START helper base64 functions"
       endMarker="// END helper base64 functions"
-      language="js"
+      language="ts"
     />
   </TabItem>
 

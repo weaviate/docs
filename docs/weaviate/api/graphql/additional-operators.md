@@ -162,7 +162,7 @@ For more `autocut` examples and to learn about the motivation behind this filter
 
 Sample client code:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={AutocutPyCode}
@@ -306,7 +306,7 @@ The sort function takes either an object, or an array of objects, that describe 
 | `order`   | varies by client       | `asc` or `desc` | The sort order, ascending (default) or descending.|
 
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -391,7 +391,7 @@ The sort function takes either an object, or an array of objects, that describe 
 
 To sort by more than one property, pass an array of { `path`, `order` } objects to the sort function:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -451,7 +451,7 @@ To sort with metadata, add an underscore to the property name.
 | `creationTimeUnix` | `_creationTimeUnix` |
 | `lastUpdateTimeUnix` | `_lastUpdateTimeUnix` |
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

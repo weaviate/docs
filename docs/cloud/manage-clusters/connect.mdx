@@ -128,7 +128,7 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCodeSupp from '!!raw-loader!/_includes/code/client-libraries/python_slow_connection.py';
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeSupp}
@@ -141,7 +141,7 @@ import PyCodeSupp from '!!raw-loader!/_includes/code/client-libraries/python_slo
 
 Alternatively, leave the default timeout values, but skip the initial connection checks.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCodeSupp}
@@ -205,7 +205,3 @@ To authenticate with a Weaviate client library, see the following:
 import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
 
 <SupportAndTrouble />
-
-import CustomScriptLoader from '/src/components/scriptSwitch';
-
-<CustomScriptLoader />

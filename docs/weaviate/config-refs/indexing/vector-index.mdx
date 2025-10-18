@@ -247,12 +247,6 @@ To configure vectorization on a per-property basis, use `skip` and `vectorizePro
 
 ## Asynchronous indexing
 
-:::caution Experimental
-Available starting in `v1.22`. This is an experimental feature. Use with caution.
-:::
-
-Starting in Weaviate `1.22`, you can use asynchronous indexing by opting in.
-
 To enable asynchronous indexing, set the `ASYNC_INDEXING` environment variable to `true` in your Weaviate configuration (the `docker-compose.yml` file if you use Docker Compose). This setting enables asynchronous indexing for all collections.
 
 <details>
@@ -279,7 +273,6 @@ services:
       QUERY_MAXIMUM_RESULTS: 10000
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
       PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
-      ENABLE_API_BASED_MODULES: "true"
       CLUSTER_HOSTNAME: "node1"
       AUTOSCHEMA_ENABLED: "false"
       ASYNC_INDEXING: "true"
