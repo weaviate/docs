@@ -10,7 +10,7 @@ image: og/wcd/user_guides.jpg
 - **[Sandbox clusters](#sandbox-clusters)**: Sandbox clusters are small, free clusters designed for learning and experimentation. Sandbox clusters are not scalable and expire after 14 days. You will also have an option to extend their lifetime and convert them into a production ready Serverless cluster.
 - **[Serverless clusters](#serverless-clusters)**: Serverless clusters are robust, paid clusters designed for production use.
 
-When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters (<span class="callout">1</span>). There are no clusters when you log in to a new account.
+When you log into the Weaviate Cloud web console, the `Clusters` panel lists your clusters. There are no clusters when you log in to a new account.
 
 ## Sandbox clusters
 
@@ -47,11 +47,12 @@ When you log into the Weaviate Cloud web console, the `Clusters` panel lists you
 
 To create a Sandbox cluster, follow these steps:
 
-1.  Select the `Sandbox` tab.
-2.  Choose a name for your cluster.
-3.  Select a cloud region from the dropdown.
-4.  Configure the `Advanced configuration` settings if needed.
-5.  Click the `Create` button.
+1. In the clusters sidebar, click the plus button.
+2. Select the `Sandbox` option.
+3. Choose a name for your cluster.
+4. Select a cloud region from the dropdown.
+5. Configure the `Advanced configuration` settings if needed.
+6. Click the `Create cluster` button.
 
 #### Advanced configuration for Serverless clusters
 
@@ -101,12 +102,13 @@ Serverless clusters require billing details. Weaviate Cloud prompts you to add b
 
 To create a Serverless cluster, follow these steps:
 
-1.  Select the `Serverless` tab.
-2.  Choose a name for your cluster.
-3.  Select a cloud region from the dropdown.
-4.  Optionally, enable `High Availability` to reduce downtime during upgrades or scaling.
-5.  Configure the `Advanced configuration` settings if needed.
-6.  Click the `Create` button.
+1. In the clusters sidebar, click the plus button.
+2. Select the `Serverless` option.
+3. Choose a name for your cluster.
+4. Select a cloud region from the dropdown.
+5.  Optionally, enable `High Availability` to reduce downtime during upgrades or scaling.
+6. Configure the `Advanced configuration` settings if needed.
+7. Click the `Create cluster` button.
 
 #### Advanced configuration for Serverless clusters
 
@@ -123,7 +125,7 @@ The following advanced configuration settings are available:
 
 Weaviate Cloud clusters use API key authentication. The authentication approach depends on whether [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac) is enabled:
 
-### Authentication with RBAC enabled
+#### Authentication with RBAC enabled
 
 New clusters with Weaviate version `v1.30` (or later) have RBAC enabled by default. With RBAC enabled, you create API keys with specific roles for granular access control.
 
@@ -131,7 +133,7 @@ When you develop your client application, use an API key to connect your client 
 
 - **[Manage clusters: Authentication](/cloud/manage-clusters/authentication.mdx)**
 
-### Authentication with RBAC disabled
+#### Authentication with RBAC disabled (deprecated)
 
 If RBAC is not enabled (before `v1.30`), clusters use the traditional approach with two default API keys:
 
