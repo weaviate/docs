@@ -15,6 +15,7 @@ Learn about how Weaviate integrates with these solutions:
 * [Cardinal](/integrations/data-platforms/cardinal/)
 * [Confluent](/integrations/data-platforms/confluent)
 * [Context Data](/integrations/data-platforms/context-data/)
+* [Contextual AI](/integrations/data-platforms/contextual-ai/)
 * [Databricks](/integrations/data-platforms/databricks/)
 * [Firecrawl](/integrations/data-platforms/firecrawl/)
 * [IBM](/integrations/data-platforms/ibm/)
