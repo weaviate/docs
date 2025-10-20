@@ -72,7 +72,6 @@ await client.collections.create({
   // highlight-start
   generative: weaviate.configure.generative.contextualai({
     // These parameters are optional
-    // baseURL: 'https://api.contextual.ai',
     // model: 'v2',
     // maxTokens: 1024,
     // temperature: 0.7,
@@ -174,7 +173,6 @@ response = await myCollection.generate.nearText('A holiday film', {
   groupedTask: 'Write a tweet promoting these two movies',
   config: generativeParameters.contextualai({
     // These parameters are optional
-    // baseURL: 'https://api.contextual.ai',
     // model: 'v2',
     // maxTokens: 1024,
     // temperature: 0.7,

@@ -86,7 +86,6 @@ client.collections.create(
     # highlight-start
     generative_config=Configure.Generative.contextualai(
         # # These parameters are optional
-        # base_url="https://api.contextual.ai",
         # model="v2",
         # max_tokens=1024,
         # temperature=0.7,
@@ -115,7 +114,6 @@ response = collection.generate.near_text(
     # highlight-start
     generative_provider=GenerativeConfig.contextualai(
         # # These parameters are optional
-        # base_url="https://api.contextual.ai",
         # model="v2",
         # max_tokens=1024,
         # temperature=0.7,

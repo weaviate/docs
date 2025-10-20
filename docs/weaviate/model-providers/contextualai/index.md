@@ -17,8 +17,6 @@ These integrations empower developers to build sophisticated AI-driven applicati
 
 ![Single prompt RAG integration generates individual outputs per search result](../_includes/integration_contextualai_rag_single.png)
 
-![Grouped task RAG integration generates one output for the set of search results](../_includes/integration_contextualai_rag_grouped.png)
-
 Contextual AI's [Grounded Language Model (GLM)](https://contextual.ai/blog/introducing-grounded-language-model?utm_campaign=GLM-integration&utm_source=weaviate&utm_medium=github&utm_content=repo) can generate human-like text based on given prompts and contexts, prioritizing faithfulness to in-context retrievals to reduce hallucinations.
 
 [Weaviate's generative AI integration](./generative.md) enables users to perform retrieval augmented generation (RAG) directly from the Weaviate Database. This combines Weaviate's efficient storage and fast retrieval capabilities with Contextual AI's generative AI models to generate personalized and context-aware responses.

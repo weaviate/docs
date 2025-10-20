@@ -149,8 +149,6 @@ headers = {
 
 # START ContextualAIInstantiation
     "X-Contextual-Api-Key": contextualai_key,
-    # Optional custom base URL
-    # "X-Contextual-Baseurl": "https://api.contextual.ai",
 # END ContextualAIInstantiation
 
 # START-ANY

@@ -124,7 +124,6 @@ const client = await weaviate.connectToWeaviateCloud(
       // END XaiInstantiation
       // START ContextualAIInstantiation
       'X-Contextual-Api-Key': contextualApiKey,
-      // 'X-Contextual-Baseurl': 'https://api.contextual.ai',  // Optional custom base URL
       // END ContextualAIInstantiation
       // START-ANY
     }

@@ -52,8 +52,7 @@ client.collections.create(
     reranker_config=Configure.Reranker.contextualai(
         model="ctxl-rerank-v2-instruct-multilingual",
         instruction="Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.",
-        top_n=5,
-        base_url="https://api.contextual.ai"
+        top_n=5
     )
     # highlight-end
     # Additional parameters not shown

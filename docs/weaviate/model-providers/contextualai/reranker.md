@@ -117,7 +117,6 @@ You can configure additional parameters for fine-tuned reranking behavior:
 - `model`: The version of the reranker to use. Currently, we have: `ctxl-rerank-v2-instruct-multilingual`, `ctxl-rerank-v2-instruct-multilingual-mini`, `ctxl-rerank-v1-instruct` (defaults to `ctxl-rerank-v2-instruct-multilingual`)
 - `instruction`: Instructions that the reranker references when ranking documents, after considering relevance. We evaluated the model on instructions for recency, document type, source, and metadata, and it can generalize to other instructions as well. For instructions related to recency and timeframe, specify the timeframe (e.g., instead of saying "this year") because the reranker doesn't know the current date. Example: "Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher. Enterprise portal content supersedes distributor communications." (optional)
 - `topN`: The number of top-ranked results to return (optional)
-- `baseURL`: Custom API endpoint URL (optional)
 
 <Tabs groupId="languages">
   <TabItem value="py" label="Python API v4">
@@ -145,7 +144,6 @@ You can configure additional parameters for fine-tuned reranking behavior:
 Runtime headers:
 
 - `X-Contextual-Api-Key`: Contextual AI API key.
-- `X-Contextual-Baseurl`: Optional base URL (e.g., a proxy).
 
 ## Reranking query
 

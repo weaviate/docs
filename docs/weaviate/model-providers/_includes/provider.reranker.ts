@@ -58,7 +58,6 @@ await client.collections.create({
     model: 'ctxl-rerank-v2-instruct-multilingual',
     instruction: 'Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.',
     topN: 5,
-    baseURL: 'https://api.contextual.ai',
   }),
   // highlight-end
 });

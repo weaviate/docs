@@ -142,7 +142,6 @@ Supported parameters include:
 - `maxTokens`: The maximum number of tokens that the model can generate in the response. Range: 1 ≤ x ≤ 2048 (defaults to 1024)
 - `systemPrompt`: Instructions that the model follows when generating responses. Note that we do not guarantee that the model follows these instructions exactly (optional)
 - `avoidCommentary`: Flag to indicate whether the model should avoid providing additional commentary in responses. Commentary is conversational in nature and does not contain verifiable claims; therefore, commentary is not strictly grounded in available context. However, commentary may provide useful context which improves the helpfulness of responses (defaults to `false`)
-- `baseURL`: Custom API endpoint URL (optional)
 
 Additional `knowledge` array can be provided at runtime for RAG scenarios. The knowledge sources the model can use when generating a response are required for proper grounded generation.
 
@@ -195,7 +194,7 @@ You can override the default provider at query time.
 Runtime headers:
 
 - `X-Contextual-Api-Key`: Contextual AI API key.
-- `X-Contextual-Baseurl`: Optional base URL (e.g., a proxy).
+- `X-Contextual-Baseurl`: Optional base URL (e.g., a proxy). This is the only way to customize the API endpoint URL.
 
 Any additional headers provided at runtime override existing configuration.
 
