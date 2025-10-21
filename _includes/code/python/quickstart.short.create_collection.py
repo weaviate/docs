@@ -17,19 +17,19 @@ client = weaviate.connect_to_weaviate_cloud(
 # END CreateCollection
 
 # NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
-client.collections.delete("Question")
+client.collections.delete("Movie")
 
 # START CreateCollection
 # Step 1.2: Create a collection
 # highlight-start
-questions = client.collections.create(
-    name="Question",
+movies = client.collections.create(
+    name="Movie",
     vector_config=Configure.Vectors.text2vec_weaviate(),  # Configure the Weaviate Embeddings vectorizer
     # You can also use auto-schema, here we define the schema manually
     properties=[
-        Property(name="question", data_type=DataType.TEXT),
-        Property(name="answer", data_type=DataType.TEXT),
-        Property(name="category", data_type=DataType.TEXT),
+        Property(name="title", data_type=DataType.TEXT),
+        Property(name="description", data_type=DataType.TEXT),
+        Property(name="genre", data_type=DataType.TEXT),
     ],
 )
 # highlight-end
@@ -40,20 +40,20 @@ questions = client.collections.create(
 # START CreateCollection
 # Step 1.3: Import three objects
 data_objects = [
-    {"properties": {"question": "What is Python?", "answer": "Python is a high-level, interpreted programming language known for its simplicity and readability.", "category": "Programming"}},
-    {"properties": {"question": "What is machine learning?", "answer": "Machine learning is a subset of AI that enables systems to learn and improve from experience without being explicitly programmed.", "category": "AI"}},
-    {"properties": {"question": "What is a vector database?", "answer": "A vector database is a specialized database designed to store and query high-dimensional vectors efficiently.", "category": "Database"}},
+    {"properties": {"title": "The Matrix", "description": "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", "genre": "Science Fiction"}},
+    {"properties": {"title": "Spirited Away", "description": "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.", "genre": "Animation"}},
+    {"properties": {"title": "The Lord of the Rings: The Fellowship of the Ring", "description": "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.", "genre": "Fantasy"}},
 ]
 # END CreateCollection
 # fmt: on
 # START CreateCollection
 
-questions = client.collections.use("Question")
-with questions.batch.dynamic() as batch:
+movies = client.collections.use("Movie")
+with movies.batch.dynamic() as batch:
     for obj in data_objects:
         batch.add_object(properties=obj)
 
-print(f"Imported {len(questions)} objects into the Question collection")
+print(f"Imported {len(movies)} objects into the Movie collection")
 
 client.close()  # Free up resources
 # END CreateCollection

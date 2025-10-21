@@ -41,15 +41,15 @@ questions = client.collections.create(
 # Step 1.3: Import three objects
 data_objects = [
     {
-        "properties": {"question": "What is Python?", "answer": "Python is a high-level, interpreted programming language known for its simplicity and readability.", "category": "Programming"},
+        "properties": {"title": "The Matrix", "description": "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", "genre": "Science Fiction"},
         "vector": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
     },
     {
-        "properties": {"question": "What is machine learning?", "answer": "Machine learning is a subset of AI that enables systems to learn and improve from experience without being explicitly programmed.", "category": "AI"},
+        "properties": {"title": "Spirited Away", "description": "A young girl becomes trapped in a mysterious world of spirits and must find a way to save her parents and return home.", "genre": "Animation"},
         "vector": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     },
     {
-        "properties": {"question": "What is a vector database?", "answer": "A vector database is a specialized database designed to store and query high-dimensional vectors efficiently.", "category": "Database"},
+        "properties": {"title": "The Lord of the Rings: The Fellowship of the Ring", "description": "A meek Hobbit and his companions set out on a perilous journey to destroy a powerful ring and save Middle-earth.", "genre": "Fantasy"},
         "vector": [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     }
 ]
