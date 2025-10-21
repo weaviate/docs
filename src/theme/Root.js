@@ -5,6 +5,7 @@ import FirstVisitModal from "@site/src/components/FirstVisitModal";
 export default function Root({ children }) {
   const location = useLocation();
 
+  // This is your existing hook for the Kapi Widget
   useEffect(() => {
     // Function to manage Kapi Widget
     function manageKapiWidget() {
@@ -80,6 +81,37 @@ export default function Root({ children }) {
 
     manageKapiWidget();
   }, [location]);
+
+  // ==========================================================
+  // 🎃 START: HALLOWEEN SPOOKY THEME ACTIVATOR 🎃
+  // ==========================================================
+  useEffect(() => {
+    const isSpookySeason = true;
+
+    // To test the theme at any time, uncomment the line below:
+    // const isSpookySeason = true;
+
+    if (isSpookySeason) {
+      // Use a setTimeout to push this to the end of the execution queue.
+      // This ensures it runs *after* Docusaurus's own theme/class
+      // management scripts on initial load and page navigation.
+      const timer = setTimeout(() => {
+        document.documentElement.classList.add("halloween-mode");
+        // Also force dark mode, since the spooky theme is dark
+        document.documentElement.setAttribute("data-theme", "dark");
+      }, 0);
+
+      // Return a cleanup function
+      return () => {
+        clearTimeout(timer);
+        // On unmount or re-run, remove the class
+        document.documentElement.classList.remove("halloween-mode");
+      };
+    }
+  }, [location]); // <-- CRITICAL: Re-run this check on every page navigation
+  // ==========================================================
+  // 🎃 END: HALLOWEEN SPOOKY THEME ACTIVATOR 🎃
+  // ==========================================================
 
   return (
     <>

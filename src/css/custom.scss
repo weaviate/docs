@@ -328,7 +328,10 @@
 
 .cloud-button:hover {
   color: var(--site-primary) !important;
-  background-color: rgba(var(--site-primary-rgb), 0.15); // Slightly darker on hover
+  background-color: rgba(
+    var(--site-primary-rgb),
+    0.15
+  ); // Slightly darker on hover
   border-color: rgba(var(--site-primary-rgb), 0.25);
   transform: translateY(-0.5px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -365,12 +368,12 @@
 }
 
 // Dark mode adjustments
-[data-theme='dark'] {
+[data-theme="dark"] {
   .cloud-button {
     color: #86efac; // Light green for dark mode
     background-color: rgba(134, 239, 172, 0.1);
     border-color: rgba(134, 239, 172, 0.2);
-    
+
     &:hover {
       color: #86efac !important;
       background-color: rgba(134, 239, 172, 0.15);
@@ -383,7 +386,7 @@
     color: #c4b5fd; // Light purple for dark mode
     background: rgba(196, 181, 253, 0.1);
     border-color: rgba(196, 181, 253, 0.2);
-    
+
     &:hover {
       color: #c4b5fd !important;
       background: rgba(196, 181, 253, 0.15);
@@ -973,10 +976,196 @@ button.close {
 
 // Target the wrapper for the authentication section
 .scalar-reference-intro-auth {
-    display: none !important;
+  display: none !important;
 }
 
 // Target the wrapper for the client libraries section
 .scalar-reference-intro-clients {
-    display: none !important;
+  display: none !important;
 }
+
+/*
+ * ===================================================================
+ * 🎃 START: WEAVI-HAUNT HALLOWEEN THEME 🎃
+ *
+ * To activate, add `className="halloween-mode"` to the <html> tag.
+ * This theme forces a dark mode and overrides existing colors.
+ * ===================================================================
+ */
+
+/* Import a spooky font for headings */
+@import url("https://fonts.googleapis.com/css2?family=Creepster&display=swap");
+
+html.halloween-mode {
+  /* --- Define Spooky Palette --- */
+  --spooky-orange: #ff7518; /* Pumpkin */
+  --spooky-green: #7fff00; /* Slime */
+  --spooky-purple: #221a2c; /* Midnight */
+  --spooky-dark: #18181b; /* Crypt */
+  --spooky-bone: #f5f5dc; /* Bone */
+
+  /* --- Force Dark Mode & Override Root Variables --- */
+  --ifm-color-primary: var(--spooky-orange);
+  --ifm-color-primary-dark: #e66a16;
+  --ifm-color-primary-darker: #d96315;
+  --ifm-color-primary-darkest: #b35111;
+  --ifm-color-primary-light: #ff832e;
+  --ifm-color-primary-lighter: #ff8b3f;
+  --ifm-color-primary-lightest: #ffa062;
+
+  /* Backgrounds */
+  --ifm-background-color: var(--spooky-dark);
+  --ifm-navbar-background-color: var(--spooky-purple);
+  --ifm-footer-background-color: transparent; /* Footer will be spooky-dark */
+  --docs-sidebar-bg: var(--spooky-purple);
+
+  /* Text, Links, & Headers */
+  --ifm-font-color-base: var(--spooky-bone);
+  --ifm-link-color: var(--spooky-orange);
+  --ifm-heading-color: var(--spooky-orange);
+
+  /* Code Blocks */
+  --docusaurus-highlighted-code-line-bg: rgba(
+    255,
+    117,
+    24,
+    0.2
+  ); /* Orange highlight */
+  --ifm-code-color: var(--spooky-green);
+  --ifm-pre-background: #010101; // Even darker for code
+
+  /* --- Override Site-Specific Variables --- */
+  --site-base-color: var(--spooky-bone);
+  --site-base-color-shade: var(--spooky-bone);
+  --site-accent: var(--spooky-orange);
+  --site-font-main-color: var(--spooky-bone);
+  --site-font-link-color: var(--spooky-orange);
+  --site-font-header-color: var(--spooky-orange);
+  --site-background: var(--spooky-dark);
+  --site-navbar-color: var(--spooky-purple);
+
+  /* --- Spooky Typography --- */
+  /* Only change major headings to the spooky font for readability */
+  h1,
+  .hero__title {
+    font-family: "Creepster", var(--ifm-heading-font-family) !important;
+    font-size: 4rem; /* Make it bigger and spookier! */
+    color: var(--spooky-orange);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    font-weight: 400 !important; /* Creepster is not bold */
+
+    @media screen and (max-width: 768px) {
+      font-size: 2.5rem;
+    }
+  }
+
+  .hero__subtitle {
+    color: var(--spooky-bone);
+  }
+
+  /* --- Navbar & Logo --- */
+  .navbar__logo {
+    /* Make the logo glow with an orange ectoplasm! */
+    filter: drop-shadow(0 0 10px var(--spooky-orange));
+    transform: scale(1.05);
+  }
+
+  /* --- Dark Vignette & Scrollbar --- */
+  body {
+    /* Creates a dark, spooky vignette effect on the edges */
+    box-shadow: inset 0 0 150px 75px rgba(0, 0, 0, 0.5);
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--spooky-dark);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--spooky-orange);
+    border-radius: 6px;
+    border: 2px solid var(--spooky-dark);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #e66a16;
+  }
+
+  /* --- Override Custom Buttons (Cloud/Academy) --- */
+  .cloud-button,
+  .academy-button {
+    color: var(--spooky-dark) !important;
+    font-weight: 700;
+    background-color: var(--spooky-orange) !important;
+    border: 1px solid var(--spooky-orange) !important;
+    box-shadow: 0 2px 6px rgba(255, 117, 24, 0.4);
+
+    &:hover {
+      color: var(--spooky-dark) !important;
+      background-color: #ff832e !important;
+      border-color: #ff832e !important;
+      box-shadow: 0 4px 12px rgba(255, 117, 24, 0.5);
+      transform: translateY(-1px);
+    }
+  }
+
+  /* --- Weaviate Configurator --- */
+  .__ConfigurationOption .__accordion {
+    background-color: rgba(22, 10, 34, 0.5);
+    border: 1px solid var(--spooky-orange);
+    color: var(--spooky-bone);
+  }
+  .__ConfigurationOption .__accordion .__accordionSummary {
+    background-color: var(--spooky-purple);
+    border-bottom: 1px solid var(--spooky-orange);
+    color: var(--spooky-bone);
+  }
+  .__multilineContainer .__multilineSelect {
+    background: var(--spooky-purple);
+    border-bottom-color: var(--spooky-orange);
+    color: var(--spooky-bone);
+  }
+  .__multilineContainer .__opened {
+    border: 3px solid var(--spooky-orange);
+  }
+
+  /* Style for the pumpkin toggle button (always applied) */
+  .halloween-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem; /* Make pumpkin bigger */
+    padding: 0 0.5rem; /* Add some spacing */
+    margin-top: -2px; /* Align with GitHub icon */
+    transition: transform 0.2s ease;
+    display: block; // Ensures it's visible
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  /* --- Spooky Cards Background --- */
+  .card {
+    /* Use a dark, spooky purple from the palette */
+    background: var(--spooky-purple) !important;
+    border-color: var(--spooky-orange);
+
+    &:hover {
+      background: var(--spooky-dark) !important;
+      border-color: var(--spooky-green);
+    }
+  }
+
+  /* --- Style the pumpkin toggle when active --- */
+  #halloween-toggle-button {
+    /* Make it glow! */
+    filter: drop-shadow(0 0 8px var(--spooky-orange));
+    transform: scale(1.1);
+  }
+}
+
+/* ===================================================================
+ * 🎃 END: WEAVI-HAUNT HALLOWEEN THEME 🎃
+ * ===================================================================
+ */

@@ -135,6 +135,13 @@ const config = {
             to: "https://github.com/weaviate/weaviate",
             position: "right",
           },
+          // 🎃 START: HALLOWEEN TOGGLE BUTTON 🎃
+          {
+            html: `<button id="halloween-toggle-button" title="Toggle Spooky Theme" class="halloween-toggle">🎃</button>`,
+            to: '#',
+            position: "right",
+          },
+          // 🎃 END: HALLOWEEN TOGGLE BUTTON 🎃
           {
             label: "Weaviate Academy",
             className: "academy-button",
@@ -165,6 +172,7 @@ const config = {
         },
       },
     }),
+  clientModules: [require.resolve("./src/styles/halloween.js")],
 };
 
 export default config;
