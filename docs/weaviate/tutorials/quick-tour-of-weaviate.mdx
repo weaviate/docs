@@ -7,27 +7,18 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import SkipLink from "/src/components/SkipValidationLink";
 
-<span class="badge badge--secondary">Expected time: 30 minutes</span>
-<span class="badge badge--secondary">Prerequisites: None</span>
+This tutorial will show you how to use Weaviate Cloud to:
 
-<br />
-<br />
-
-:::info What you will learn
-
-This quickstart shows you how to combine Weaviate Cloud and Cohere to:
-
-1. Set up a Weaviate instance. (10 minutes)
-1. Add and vectorize your data. (10 minutes)
-1. Perform a semantic search and retrieval augmented generation (RAG). (10 minutes)
+1. **Set up a Weaviate instance.**
+1. **Import and vectorize your data.**
+1. **Perform a semantic search and retrieval augmented generation (RAG).**
 
 ```mermaid
 flowchart LR
     %% Define nodes with white backgrounds and darker borders
-    A1["Create Weaviate<br> Sandbox"] --> A2["Install client<br> library"]
-    A2 --> A3["Connect to<br> Weaviate"]
-    A3 --> B1["Define collection<br> (with an inference API)"]
-    B1 --> B2["Batch import<br> objects"]
+    A1["Install client<br> library"] --> A2["Connect to<br> Weaviate"]
+    A2 --> B1["Define collection<br> (with an inference API)"]
+    B1 --> B2["Import objects"]
     B2 --> C1["Semantic search<br> (nearText)"]
     C1 --> C2["RAG<br> (Generate)"]
 
@@ -35,7 +26,6 @@ flowchart LR
     subgraph sg1 ["1\. Setup"]
         A1
         A2
-        A3
     end
 
     subgraph sg2 ["2\. Populate"]
@@ -51,7 +41,6 @@ flowchart LR
     %% Style nodes with white background and darker borders
     style A1 fill:#ffffff,stroke:#B9C8DF,color:#130C49
     style A2 fill:#ffffff,stroke:#B9C8DF,color:#130C49
-    style A3 fill:#ffffff,stroke:#B9C8DF,color:#130C49
     style B1 fill:#ffffff,stroke:#B9C8DF,color:#130C49
     style B2 fill:#ffffff,stroke:#B9C8DF,color:#130C49
     style C1 fill:#ffffff,stroke:#B9C8DF,color:#130C49
@@ -63,16 +52,11 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#7AD6EB,stroke-width:2px,color:#130C49
 ```
 
-Notes:
-
-- The code examples here are self-contained. You can copy and paste them into your own environment to try them out.
-<!-- - Python users can try [our Jupyter notebook](https://github.com/weaviate-tutorials/quickstart/blob/main/quickstart_end_to_end.ipynb) locally or on [Google Colab](https://colab.research.google.com/github/weaviate-tutorials/quickstart/blob/main/quickstart_end_to_end.ipynb). -->
-
-:::
-
 <!-- Vectors are mathematical representations of data objects, which enable similarity-based searches in vector databases like Weaviate. -->
 
-### Requirements
+---
+
+### Prerequisites
 
 In order to perform Retrieval Augmented Generation (RAG) in the last step, you will need a [Cohere](https://dashboard.cohere.com/) account. You can use a free Cohere trial API key.
 
@@ -82,7 +66,19 @@ If you have another preferred [model provider](/weaviate/model-providers), you c
 
 ## Step 1: Set up Weaviate
 
-### 1.1 Create a Weaviate database
+### 1.1 Install a client library
+
+We recommend using a [client library](../client-libraries/index.mdx) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+
+import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
+
+<CodeClientInstall />
+
+### 1.2 Connect to Weaviate Cloud
+
+<details>
+
+<summary>How to create a Weaviate Cloud Sandbox</summary>
 
 Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance.
 
@@ -126,16 +122,7 @@ import LatestWeaviateVersion from "/_includes/latest-weaviate-version.mdx";
 
 <LatestWeaviateVersion />
 
-### 1.2 Install a client library
-
-We recommend using a [client library](../client-libraries/index.mdx) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
-
-import CodeClientInstall from "/_includes/code/quickstart/clients.install.mdx";
-
-<CodeClientInstall />
-
-### 1.3 Connect to Weaviate
-
+</details>
 Now you can connect to your Weaviate instance. You will need the:
 
 - **REST Endpoint URL** and the
