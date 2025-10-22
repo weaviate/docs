@@ -9,6 +9,7 @@ import TabItem from "@theme/TabItem";
 import SkipLink from "/src/components/SkipValidationLink";
 import CardsSection from "/src/components/CardsSection";
 import Tooltip from "/src/components/Tooltip";
+import styles from "/src/components/CardsSection/styles.module.scss";
 
 export const quickstartOptions = [
   {
@@ -30,22 +31,20 @@ export const quickstartOptions = [
   },
 ];
 
-Weaviate is an open-source vector database built to power AI applications, from prototypes to production-scale systems. This guide will show you how to connect to a Weaviate Cloud instance, import data, vectorize objects and perform searches.
-
-There are two paths you can choose from: 
-
-<CardsSection items={quickstartOptions} />
-<br/>
-
 :::note Local Quickstart
 
 If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
 
 :::
 
----
+Weaviate is an open-source vector database built to power AI applications, from prototypes to production-scale systems. This guide will show you how to connect to a Weaviate Cloud instance, import data, vectorize objects and perform searches.
 
-<Tabs groupId="import" queryString="import">
+There are two paths you can choose from: 
+
+<CardsSection items={quickstartOptions} className={styles.smallCards} />
+<br/>
+
+<Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
 This quickstart guide will show you how to:
@@ -169,7 +168,7 @@ Once you have the **REST Endpoint URL** and the **admin API key**, you can conne
 
 ## Install a client library
 
-We recommend using a [client library](../client-libraries/index.mdx) to work with Weaviate. Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
 
 import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.mdx";
 
@@ -298,8 +297,6 @@ Are you ready to see how deep the rabbit hole goes? 🔴🔵 #TheMatrix #WakeUp
 ## Next steps
 
 We recommend you check out the following resources to continue learning about Weaviate.
-
-import styles from "/src/components/CardsSection/styles.module.scss";
 
 export const nextStepsCardsData = [
   {

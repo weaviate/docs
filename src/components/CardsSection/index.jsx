@@ -16,7 +16,9 @@ const CardsSection = ({
 
   // Get all query parameters to check against activeTab
   const getCurrentTab = (groupId) => {
-    return searchParams.get(groupId);
+    const param = searchParams.get(groupId);
+    // Default to "vectorization" if no parameter is set
+    return param || "vectorization";
   };
 
   return (
@@ -26,9 +28,11 @@ const CardsSection = ({
       } ${recipeCards ? styles.recipeCards : ""}`}
     >
       {Object.entries(items).map(([key, item]) => {
-        // Check if this card's activeTab matches the current URL parameter
-        const currentTab = getCurrentTab(item.groupId);
-        const isActive = item.activeTab && currentTab === item.activeTab;
+        // Only check activeTab logic if both groupId and activeTab exist
+        const isActive =
+          item.groupId && item.activeTab
+            ? getCurrentTab(item.groupId) === item.activeTab
+            : false;
 
         return (
           <Link

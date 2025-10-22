@@ -48,7 +48,7 @@ data_objects = [
 # START CreateCollection
 
 movies = client.collections.use("Movie")
-with movies.batch.dynamic() as batch:
+with movies.batch.fixed_size(batch_size=200) as batch:
     for obj in data_objects:
         batch.add_object(properties=obj)
 

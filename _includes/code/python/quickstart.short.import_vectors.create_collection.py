@@ -52,7 +52,7 @@ data_objects = [
 
 # Insert the objects with vectors
 movies = client.collections.get("Movie")
-with movies.batch.dynamic() as batch:
+with movies.batch.fixed_size(batch_size=200) as batch:
     for obj in data_objects:
         batch.add_object(properties=obj["properties"], vector=obj["vector"])
 
