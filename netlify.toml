@@ -796,6 +796,53 @@ from = "/academy/js/*"
 to   = "/weaviate/guides"
 status = 301
 
+### Python redirects
+
+[[redirects]]
+from = "/academy/py/starter_text_data/text_searches/*"
+to   = "/weaviate/search"
+status = 301
+
+[[redirects]]
+from = "/academy/py/starter_text_data/text_rag/*"
+to   = "/weaviate/search"
+status = 301
+
+[[redirects]]
+from = "/academy/py/starter_custom_vectors/*"
+to   = "/weaviate/starter-guides/custom-vectors"
+status = 301
+
+[[redirects]]
+from = "/academy/py/named_vectors/*"
+to   = "/weaviate/manage-collections/vector-config"
+status = 301
+
+[[redirects]]
+from = "/academy/py/vector_index/*"
+to   = "/weaviate/config-refs/indexing/vector-index"
+status = 301
+
+[[redirects]]
+from = "/academy/py/compression/*"
+to   = "/weaviate/configuration/compression"
+status = 301
+
+[[redirects]]
+from = "/academy/py/tokenization/*"
+to   = "/weaviate/manage-collections/inverted-index"
+status = 301
+
+[[redirects]]
+from = "/academy/py/multitenancy/*"
+to   = "/weaviate/manage-collections/multi-tenancy"
+status = 301
+
+[[redirects]]
+from = "/academy/py/compression/*"
+to   = "/weaviate/configuration/compression"
+status = 301
+
 [[redirects]]
 from = "/academy/py/*"
 to   = "https://academy.weaviate.io/courses/wa101t-py"
