@@ -32,10 +32,8 @@ The resources are broken into two categories:
 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| Weaviate Query Agent with Crew AI | This notebook will show you how to define the Weaviate Query Agent as a tool through the Crew AI. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/crewai/crewai-query-agent-as-tool.ipynb) | 
-
-
-
+| Weaviate Query Agent with Crew AI | This notebook will show you how to define the Weaviate Query Agent as a tool through the Crew AI. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/crewai/crewai-query-agent-as-tool.ipynb) |
+| CrewAI and Weaviate Getting Started | Build industry-specific agents that use web search and Weaviate blogs to track trends and uncover AI use cases | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/llm-agent-frameworks/crewai/simple-getting-started.ipynb) | 
 
 
 ### Read and Listen
@@ -45,3 +43,4 @@ The resources are broken into two categories:
 | Practical Multi Agent RAG using CrewAI, Weaviate, Groq and ExaTool | Learn how to build RAG powered CrewAI agents that enables code_interpretation, rag, memory, and building a custom tool. | [Blog](https://lorenzejay.dev/articles/practical-agentic-rag) | 
 | Rag Techniques Tutorial for Agentic Rag | A video on RAG techniques for beginners. | [Video](https://youtu.be/zXBlvpaFNxE?si=KkE14m1KngPZvu_W) | 
 |How to Build an Agentic RAG Recommendation Engine | Learn how you can leverage Knowledge to give your crew of agents access to relevant context and information. | [Video](https://youtu.be/2Fu_GgS-Q4s?si=ZnDeucXrGnG7UaQY) | 
+| Building Multi-Agent Systems with Crew AI and Weaviate | Learn about how you can build multi-agent systems with CrewAI and Weaviate | [Blog](https://weaviate.io/blog/building-multi-agent-systems) |
