@@ -18,7 +18,16 @@ movies = client.collections.use("Movie")
 
 # Step 2.3: Perform a semantic search with NearText
 # highlight-start
-response = movies.query.near_text(query="sci-fi", limit=2)
+# END NearText
+# fmt: off
+# NearText
+response = movies.query.near_text(
+    query="sci-fi",
+    limit=2
+)
+# END NearText
+# fmt: on
+# NearText
 # highlight-end
 
 for obj in response.objects:

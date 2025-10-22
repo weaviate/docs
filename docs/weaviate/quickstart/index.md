@@ -35,6 +35,13 @@ Weaviate is an open-source vector database built to power AI applications, from 
 There are two paths you can choose from: 
 
 <CardsSection items={quickstartOptions} />
+<br/>
+
+:::note Local Quickstart
+
+If you don't want to use Weaviate Cloud, check out the [Local Quickstart](local.md) with Docker.
+
+:::
 
 ---
 
@@ -62,6 +69,7 @@ This quickstart guide will show you how to:
 import KapaAI from '/src/components/KapaAI';
 
 If you encounter any issues along the way or have additional questions, use the <KapaAI>Ask AI</KapaAI> feature.
+
 ## Prerequisites
 
 A **[Weaviate Cloud](https://console.weaviate.cloud/)** Sandbox instance - you will need an admin **API key** and a **REST endpoint URL** to connect to your instance. See the instructions below for more info.
@@ -169,12 +177,12 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.md
 
 ## Step 1: Create a collection & import data {#create-a-collection}
 
-We can populate our database by first defining a <Tooltip content="A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>collection</span></Tooltip> and then adding data. You can either **[vectorize each object during the import](?import=vectorization#create-a-collection)** (we will use the Weaviate Embeddings service to vectorize the data), or you can **[import pre-computed vector embeddings](?import=custom-embeddings#create-a-collection)**.
+We can populate our database by first defining a <Tooltip content="A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>collection</span></Tooltip> and then adding data. You can either **[vectorize each object during the import](?import=vectorization#create-a-collection)** (we will use the Weaviate Embeddings service to vectorize the data), or you can **[import pre-computed vector embeddings](?import=custom-embeddings#create-a-collection)**. 
 
 <Tabs groupId="import" queryString="import">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
-The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for creating vectors during ingestion and for querying.
+The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically. 
 
 import CreateCollection from "/_includes/code/quickstart/quickstart.short.create_collection.mdx";
 
@@ -183,7 +191,7 @@ import CreateCollection from "/_includes/code/quickstart/quickstart.short.create
 </TabItem>
 <TabItem value="custom-embeddings" label="Import vectors">
 
-The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data.
+The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically. 
 
 import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.import_vectors.create_collection.mdx";
 
@@ -234,10 +242,16 @@ import QueryNearVectorImportVectors from "/_includes/code/quickstart/quickstart.
 
 </details>
 
+:::tip Weaviate Agents
+
+Try querying your Weaviate Cloud data using the [Query Agent](/agents/query/index.md). You simply provide a prompt/question in natural language, and the Query Agent takes care of all the needed steps to provide an answer.
+
+:::
+
 ## Step 3: Retrieval augmented generation (RAG)
 
-:::note
-For Retrieval Augmented Generation (RAG) in the last step, you will need a [Claude](https://console.anthropic.com/settings/keys) API key. You can also use another [model provider](/weaviate/model-providers) instead.
+:::note Requirement: Claude API key
+For Retrieval Augmented Generation (RAG) in this step, you will need a [Claude API key](https://console.anthropic.com/settings/keys). You can also use another generative [model provider](/weaviate/model-providers) instead.
 :::
 
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
