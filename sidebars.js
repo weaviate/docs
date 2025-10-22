@@ -729,7 +729,7 @@ const sidebars = {
         type: "doc",
         id: "weaviate/release-notes/index",
       },
-      items: [],
+      items: ["weaviate/release-notes/known-issues"],
     },
     {
       type: "category",
