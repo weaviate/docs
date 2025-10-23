@@ -6,64 +6,65 @@ image: og/wcd/user_guides.jpg
 ---
 
 [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) exposes two ways of checking the cluster status:
-- A **[web interface](#cluster-details)** in the Weaviate Cloud console.
+
+- A **[web interface](#select-a-cluster)** in the Weaviate Cloud console.
 - An **[API endpoint](#api-endpoint)** that provides information about your Weaviate instance.
 
-## Cluster status in Weaviate Cloud console {#cluster-details}
+## Select a cluster
 
-### Select your cluster {#select-your-cluster}
-
-import ClusterDetails from '/docs/cloud/img/weaviate-cloud-cluster-details.png';
-
-<ol>
-  <li>
-    Open the <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
-  </li>
-  <li>
-    Open the <code>Clusters</code> list from the left sidebar (
-    <span class="callout">1</span>).
-  </li>
-  <li>
-    Select the cluster you want to inspect(
-    <span class="callout">2</span>).
-  </li>
-  <li>The cluster details panel will open to the right.</li>
-</ol>
-
-<div class="row">
-  <div class="card">
-    <div class="card__image">
-      <img src={ClusterDetails} alt="View cluster status in Weaviate Cloud" />
-    </div>
-    <div class="card__body">
-      <p>View cluster status in Weaviate Cloud.</p>
-    </div>
-  </div>
+<div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
+  <iframe 
+    id="qp7x9q6fjr" 
+    src="https://app.guideflow.com/embed/qp7x9q6fjr" 
+    width="100%" 
+    height="100%" 
+    style={{overflow: "hidden", position: "absolute", border: "none"}} 
+    scrolling="no" 
+    allow="clipboard-read; clipboard-write" 
+    webKitAllowFullScreen 
+    mozAllowFullScreen 
+    allowFullScreen 
+    allowTransparency="true"
+  />
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="qp7x9q6fjr"></script>
 </div>
-<br />
+
+<br/>
+
+<details>
+    <summary>Select your cluster</summary>
+
+1. Open the [Weaviate Cloud console](https://console.weaviate.cloud).
+2. Open the `Clusters` list from the left sidebar.
+3. Select the cluster you want to inspect.
+4. The cluster details panel will open to the right.
+
+</details>
 
 ## Cluster status information
 
 You can see the following cluster statistics at the top of the page:
 
 - `Dimensions stored`
-- `Dimensions queried`
 - `Object count`
-- `Running costs`
+- `Cluster expires on` (only for Sandbox cluster)
 
-The following fields are part of the `Information` section:
+You can find the following information on the cluster details page:
 
-- `Name`
+- `Name of the cluster`
 - `REST Endpoint`
 - `gRPC Endpoint`
+- `API Keys`
+- `Roles`
 - `Weaviate Database version`
+- `Cloud provider`
 - `Cloud region`
 - `Created at`
-- `Type`: Serverless or Sandbox
-- `Support Plan`
-- `High Availability`
+- `Type` (Serverless or Sandbox)
+- `Backup retention days` (only for Serverless cluster)
+- `Availability SLA` (only for Serverless cluster)
 
-Serverless clusters also have an `Advanced configuration` section to configure or check the status of these additional settings:
+Clusters also have an `Advanced configuration` section to configure or check the status of these additional settings:
 
 - `Enable auto schema generation`
 - `Enable async indexing`
@@ -74,7 +75,7 @@ Serverless clusters also have an `Advanced configuration` section to configure o
 
 To get cluster details programmatically, use the [`nodes`](/deploy/configuration/nodes.md) REST endpoint.
 
-import APIOutputs from '/_includes/rest/node-endpoint-info.mdx';
+import APIOutputs from "/_includes/rest/node-endpoint-info.mdx";
 
 <APIOutputs />
 
@@ -84,7 +85,7 @@ Each Weaviate instance has a set of enabled modules. This list will vary dependi
 
 To see the list of enabled modules on a Weaviate Cloud instance:
 
-import ClusterStatusModules from '/docs/cloud/img/cluster-status.modules.png';
+import ClusterStatusModules from "/docs/cloud/img/weaviate-cloud-available-modules.png";
 
 <div class="row">
   <div class="col col--4">
@@ -94,7 +95,11 @@ import ClusterStatusModules from '/docs/cloud/img/cluster-status.modules.png';
         Click on <code>Clusters</code> and select the cluster you want to check.
       </li>
       <li>
-        Scroll to the <code>modules active</code> section.
+        Scroll to the <code>Available modules</code> section under{" "}
+        <code>Advanced options</code>.
+      </li>
+      <li>
+        You can click on a module to open its documentation.
       </li>
     </ol>
   </div>
@@ -103,13 +108,13 @@ import ClusterStatusModules from '/docs/cloud/img/cluster-status.modules.png';
       <div class="card__image">
         <img src={ClusterStatusModules} alt="Create a cluster" />
       </div>
-      <div class="card__body">Available modules on your cluster.</div>
+      <div class="card__body">Available modules for your cluster.</div>
     </div>
   </div>
 </div>
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />
