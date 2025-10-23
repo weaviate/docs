@@ -4,11 +4,12 @@ description: Reference for vector index types and parameters in Weaviate.
 ---
 
 **[Vector indexes](../../concepts/indexing/vector-index.md)** facilitate efficient, vector-first data storage and retrieval.
-There are three supported vector index types:
+There are four supported vector index types:
 
 - **[HNSW index](#hnsw-index)**
 - **[Flat index](#flat-index)**
 - **[Dynamic index](#dynamic-index)**
+- **[SPFresh index](#spfresh-index)**
 
 ## Index configuration parameters
 
@@ -18,10 +19,10 @@ Available starting in `v1.25`. Dynamic indexing is an experimental feature. Use 
 
 Use these parameters to configure the index type and their properties. They can be set in the [collection configuration](../../manage-collections/vector-config.mdx#set-vector-index-type).
 
-| Parameter           | Type   | Default | Details                                                              |
-| :------------------ | :----- | :------ | :------------------------------------------------------------------- |
-| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat` or `dynamic`.       |
-| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type. |
+| Parameter           | Type   | Default | Details                                                                    |
+| :------------------ | :----- | :------ | :------------------------------------------------------------------------- |
+| `vectorIndexType`   | string | `hnsw`  | Optional. The index type - can be `hnsw`, `flat`, `dynamic`, or `spfresh`. |
+| `vectorIndexConfig` | object | -       | Optional. Set parameters that are specific to the vector index type.       |
 
 <details>
   <summary>How to select the index type</summary>
@@ -71,7 +72,7 @@ Note that some database-level parameters are available to configure HNSW indexin
 
   Preferably, the `PERSISTENCE_HNSW_MAX_LOG_SIZE` should set to a value close to the size of the HNSW graph.
 
-- [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) is a database-level parameter that defines which quantization technique will be used by default when creating new collections. 
+- [`DEFAULT_QUANTIZATION`](/deploy/configuration/env-vars/index.md#DEFAULT_QUANTIZATION) is a database-level parameter that defines which quantization technique will be used by default when creating new collections.
 
 ### Tombstone cleanup parameters
 
@@ -165,6 +166,49 @@ The goal of `dynamic` indexing is to shorten latencies during query time at the 
 | `hnsw`      | object  | default HNSW | [HNSW index configuration](#hnsw-index-parameters) to be used.                        |
 | `flat`      | object  | default Flat | [Flat index configuration](#flat-index) to be used.                                   |
 | `threshold` | integer | 10000        | Threshold object count at which `flat` to `hnsw` conversion happens                   |
+
+## SPFresh index
+
+:::caution Experimental feature
+
+Available starting in `v1.34`. This is an experimental feature that requires the `EXPERIMENTAL_SPFRESH_ENABLED=true` environment variable. Use with caution.
+
+:::
+
+The **SPFresh index** is a disk-based vector index inspired by SPANN (Space-Partition-based Approximate Nearest Neighbor) with efficient update mechanisms. It reduces memory footprint while maintaining strong search performance by organizing vectors into clusters on disk. Read more about it in [SPFresh: Incremental In-Place Update for Billion-Scale Vector Search](https://arxiv.org/pdf/2410.14452).
+
+SPFresh uses a clustering-based approach to organize vectors:
+
+1. **Clustered storage**: Vectors are assigned to clusters based on their similarity. Each cluster contains vectors that are close to each other in the vector space.
+
+2. **Centroid graph**: A graph index is built over cluster centroids (representative vectors for each cluster) to enable fast candidate cluster selection during search. Internally, HNSW may be used for the centroid-layer graph.
+
+3. **Disk-oriented layout**: Clusters are stored contiguously on disk, which improves locality and enables efficient brute-force search within clusters.
+
+When a search query comes in, SPFresh:
+
+- Uses the centroid graph to identify the most relevant clusters
+- Probes only the closest clusters rather than scanning all vectors
+- Performs brute-force search within the selected clusters to find the nearest neighbors
+
+This approach provides a middle ground between the memory-intensive HNSW index and the slower flat index, especially for large datasets. SPFresh is particularly well-suited for:
+
+- **Large-scale datasets with memory constraints**: Reduces memory usage by keeping most vectors on disk while maintaining good search performance
+- **Cost-sensitive deployments**: Lower memory requirements can reduce infrastructure costs
+- **Mixed workload patterns**: Balances import performance with query performance
+- **Quantization-friendly scenarios**: Works efficiently with Product Quantization (PQ) and Residual Quantization (RQ) due to the clustered organization
+
+### SPFresh index parameters
+
+| Parameter            | Type    | Description                                                                                                                                                                                 | Default | Mutable |
+| :------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------ | :------ |
+| `distance`           | string  | Distance metric. The metric that measures the distance between two arbitrary vectors. For available distance metrics, see [supported distance metrics](/weaviate/config-refs/distances.md). | TBD     | TBD     |
+| `maxPostingSize`     | integer | Maximum number of vectors that can be stored in a single posting list (cluster). Controls the maximum size of each cluster on disk.                                                         | TBD     | TBD     |
+| `minPostingSize`     | integer | Minimum number of vectors that should be stored in a single posting list (cluster). Helps maintain efficient cluster sizes.                                                                 | TBD     | TBD     |
+| `replicas`           | integer | Number of replicas for each cluster centroid. Higher values improve fault tolerance but increase memory usage.                                                                              | TBD     | TBD     |
+| `rngFactor`          | integer | Random number generator factor used during cluster assignment. Affects the randomness in the clustering process.                                                                            | TBD     | TBD     |
+| `searchProbe`        | integer | Number of clusters to probe during search. Higher values improve recall but increase query latency. Similar to the `ef` parameter in HNSW.                                                  | TBD     | TBD     |
+| `centroidsIndexType` | string  | The index type used for the centroid graph. Can be `hnsw`. Determines how the centroid layer is indexed for efficient cluster selection during search.                                      | TBD     | TBD     |
 
 ## Quantization parameters
 
