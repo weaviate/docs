@@ -29,9 +29,10 @@ RQ is currently not supported for the flat index type.
 
 ## 8-bit RQ
 
-:::info Added in `v1.32`
+:::info Added in `v1.32` and `v1.34`
 
-**8-bit Rotational quantization (RQ)** was added in **`v1.32`**.
+**8-bit Rotational quantization (RQ)** for HNSW indexes was added in **`v1.32`**.<br/>
+**8-bit Rotational quantization (RQ)** for flat indexes was added in **`v1.34`** as a **preview**.<br/>
 
 :::
 
@@ -119,7 +120,8 @@ RQ can also be enabled for an existing collection by updating the collection def
 
 :::caution Preview
 
-**1-bit Rotational quantization (RQ)** was added in **`v1.33`** as a **preview**.<br/>
+**1-bit Rotational quantization (RQ)** for HNSW indexes was added in **`v1.33`** as a **preview**.<br/>
+**1-bit Rotational quantization (RQ)** for flat indexes was added in **`v1.34`** as a **preview**.<br/>
 
 This means that the feature is still under development and may change in future releases, including potential breaking changes.
 **We do not recommend using this feature in production environments at this time.**
