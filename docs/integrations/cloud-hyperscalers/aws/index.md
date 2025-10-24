@@ -12,8 +12,19 @@ Weaviate integrates with [AWS](https://aws.amazon.com/) infrastructure and servi
 * [Run embedding and generative models on SageMaker and Bedrock](/weaviate/model-providers/aws)
 
 ## Our Resources 
-**Hands on Learning**: Build your technical understanding with end-to-end tutorials.
+The resources are broken into two categories:
+1. [**Hands on Learning**](#hands-on-learning): Build your technical understanding with end-to-end tutorials.
+
+2. [**Read and Listen**](#read-and-listen): Develop your conceptual understanding of these technologies.
+
+### Hands on Learning
 
 | Topic | Description | Resource | 
 | --- | --- | --- |
-| RAG with Cohere models on Amazon Bedrock and Weaviate | The example use case generates targeted advertisements for vacation stay listings based on a target audience. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/aws/RAG_Cohere_Weaviate_v4_client.ipynb)
+| RAG with Cohere models on Amazon Bedrock and Weaviate | The example use case generates targeted advertisements for vacation stay listings based on a target audience. | [Notebook](https://github.com/weaviate/recipes/blob/main/integrations/cloud-hyperscalers/aws/RAG_Cohere_Weaviate_v4_client.ipynb) |
+| RAG with AWS Nova Lite on Bedrock and Weaviate | This notebook will show you how to use the dynamic RAG API to define the model provider at query time. | [Notebook](https://github.com/weaviate/recipes/blob/main/weaviate-features/model-providers/aws/rag_nova_lite_bedrock.ipynb) | 
+
+### Read and Listen
+| Topic | Description | Resource |
+| --- | --- | --- |
+| Legacy data to RAG : Modernise Your Apps with Amazon Sagemaker Unified Studio | A guide to seamlessly transform data sitting in lakes and warehouses for GenAI capable applications | [Blog](https://weaviate.io/blog/sagemaker-studio-rag) |

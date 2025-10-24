@@ -15,6 +15,7 @@ Learn how Weaviate integrates with these solutions:
 * [Haystack](/integrations/llm-agent-frameworks/haystack/)
 * [LangChain](/integrations/llm-agent-frameworks/langchain/)
 * [LlamaIndex](/integrations/llm-agent-frameworks/llamaindex/)
+* [Mem0](/integrations/llm-agent-frameworks/mem0/)
 * [N8n](/integrations/llm-agent-frameworks/n8n/)
 * [Semantic Kernel](/integrations/llm-agent-frameworks/semantic-kernel/)
 

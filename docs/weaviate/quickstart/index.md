@@ -89,8 +89,8 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
   <iframe 
-    id="qp7xdo7cjr" 
-    src="https://app.guideflow.com/embed/qp7xdo7cjr" 
+    id="mk6l470aqk" 
+    src="https://app.guideflow.com/embed/mk6l470aqk" 
     width="100%" 
     height="100%" 
     style={{overflow: "hidden", position: "absolute", border: "none"}} 
@@ -101,7 +101,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
     allowFullScreen 
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="qp7xdo7cjr"></script>
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="mk6l470aqk"></script>
 </div>
 
 <br/>
@@ -450,7 +450,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/academy">Weaviate Academy</Link> unit on <Link to="/academy/py/standalone/chunking">chunking</Link>.
+            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>.
           </p>
         </div>
       </div>

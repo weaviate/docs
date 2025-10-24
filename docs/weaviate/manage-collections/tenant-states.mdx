@@ -31,9 +31,9 @@ In multi-tenant collections, you can change tenant states (`Active`, `Inactive`,
 
 The vector index type affects its default resource type.
 
-* [`HNSW` index (default)](/academy/py/vector_index/hnsw) - uses the vector index in RAM, a **Hot** resource.
-* [`Flat` index](/academy/py/vector_index/flat) - uses the vector index on disk, a **Warm** resource.
-* [`Dynamic` index](/academy/py/vector_index/dynamic) - starts as a flat index (using a **Warm** resource), then switches to an HNSW index (a **Hot** resource) at a predetermined threshold.
+* [`HNSW` index (default)](/weaviate/config-refs/indexing/vector-index.mdx#hnsw-index) - uses the vector index in RAM, a **Hot** resource.
+* [`Flat` index](/weaviate/config-refs/indexing/vector-index.mdx#flat-index) - uses the vector index on disk, a **Warm** resource.
+* [`Dynamic` index](/weaviate/config-refs/indexing/vector-index.mdx#dynamic-index) - starts as a flat index (using a **Warm** resource), then switches to an HNSW index (a **Hot** resource) at a predetermined threshold.
 
 </details>
 

@@ -8,6 +8,7 @@ image: og/docs/model-provider-integrations.jpg
 Weaviate integrates with a variety of [self-hosted](#locally-hosted) and [API-based](#api-based) models from a range of providers.
 
 This enables an enhanced developed experience, such as the ability to:
+
 - Import objects directly into Weaviate without having to manually specify embeddings, and
 - Build an integrated retrieval augmented generation (RAG) pipeline with generative AI models.
 
@@ -41,14 +42,20 @@ All API-based model integrations are available by default starting with Weaviate
 
 ### Locally hosted
 
-| Model provider | Embeddings | Generative AI | Others |
-| --- | --- | --- | --- |
-| [GPT4All (Deprecated)](./gpt4all/index.md) | [Text (Deprecated)](./gpt4all/embeddings.md) | - | - |
-| [Hugging Face](./transformers/index.md) | [Text](./transformers/embeddings.md), [Multimodal (CLIP)](./transformers/embeddings-multimodal.md) | - | [Reranker](./transformers/reranker.md) |
-| [KubeAI](./kubeai/index.md) | [Text](./kubeai/embeddings.md) | - | - |
-| [Model2vec](./model2vec/index.md) | [Text](./model2vec/embeddings.md) | - | - |
-| [Meta ImageBind](./imagebind/index.md) | [Multimodal](./imagebind/embeddings-multimodal.md) | - | - |
-| [Ollama](./ollama/index.md) | [Text](./ollama/embeddings.md) | [Text](./ollama/generative.md) | - |
+| Model provider                             | Embeddings                                                                                         | Generative AI                  | Others                                 |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------ | -------------------------------------- |
+| [GPT4All (Deprecated)](./gpt4all/index.md) | [Text (Deprecated)](./gpt4all/embeddings.md)                                                       | -                              | -                                      |
+| [Hugging Face](./transformers/index.md)    | [Text](./transformers/embeddings.md), [Multimodal (CLIP)](./transformers/embeddings-multimodal.md) | -                              | [Reranker](./transformers/reranker.md) |
+| [KubeAI](./kubeai/index.md)                | [Text](./kubeai/embeddings.md)                                                                     | -                              | -                                      |
+| [Model2vec](./model2vec/index.md)          | [Text](./model2vec/embeddings.md)                                                                  | -                              | -                                      |
+| [Meta ImageBind](./imagebind/index.md)     | [Multimodal](./imagebind/embeddings-multimodal.md)                                                 | -                              | -                                      |
+| [Ollama](./ollama/index.md)                | [Text](./ollama/embeddings.md)                                                                     | [Text](./ollama/generative.md) | -                                      |
+
+import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+
+<AcademyAdmonition 
+  courseId="embedding-model-evaluation"
+/>
 
 ## How does Weaviate generate embeddings?
 
@@ -121,6 +128,6 @@ The text is always lowercased for the `text2vec-contextionary` integration.
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
