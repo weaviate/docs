@@ -25,11 +25,6 @@ client.collections.delete("Movie")
 movies = client.collections.create(
     name="Movie",
     vector_config=Configure.Vectors.self_provided(),  # No automatic vectorization since we're providing vectors
-    properties=[
-        Property(name="title", data_type=DataType.TEXT),
-        Property(name="description", data_type=DataType.TEXT),
-        Property(name="genre", data_type=DataType.TEXT),
-    ],  # You can also use auto-schema, here we define the schema manually
 )
 # highlight-end
 # START CreateCollection

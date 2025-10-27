@@ -176,12 +176,15 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.md
 
 ## Step 1: Create a collection & import data {#create-a-collection}
 
+<!--
 We can populate our database by first defining a <Tooltip content="A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>collection</span></Tooltip> and then adding data. You can either **[vectorize each object during the import](?import=vectorization#create-a-collection)** (we will use the Weaviate Embeddings service to vectorize the data), or you can **[import pre-computed vector embeddings](?import=custom-embeddings#create-a-collection)**. 
-
-<Tabs groupId="import" queryString="import">
+-->
+<Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
-The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically. 
+The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying. 
+
+<!--We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically.-->
 
 import CreateCollection from "/_includes/code/quickstart/quickstart.short.create_collection.mdx";
 
