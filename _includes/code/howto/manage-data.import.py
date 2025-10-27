@@ -577,9 +577,9 @@ client.collections.delete("NewCollection")
 # collection = client.collections.get("MyCollection")
 
 # # highlight-start
-# # Use `automatic` for server-side batching. The client will send data
+# # Use `experimental` for server-side batching. The client will send data
 # # in chunks and the server will dynamically manage the import process.
-# with collection.batch.automatic() as batch:
+# with collection.batch.experimental() as batch:
 #     for data_row in data_rows:
 #         batch.add_object(
 #             properties=data_row,

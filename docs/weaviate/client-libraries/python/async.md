@@ -54,7 +54,7 @@ When using the async helper functions, you must call the async `.connect()` meth
 <!-- TODO[g-despot]: Add link to external Python references once created for "external API keys", "connection timeout values" and "authentication details" -->
 The async helper functions take the same parameters for external API keys, connection timeout values and authentication details.
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="custom">
 <TabItem value="wcd" label="WCD">
 
 <FilteredTextBlock
