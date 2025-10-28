@@ -41,6 +41,28 @@ await client.collections.create({
 });
 // END RerankerCohereCustomModel
 
+// START RerankerContextualAIBasic
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  reranker: weaviate.configure.reranker.contextualai(),
+  // highlight-end
+});
+// END RerankerContextualAIBasic
+
+// START RerankerContextualAICustomModel
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  reranker: weaviate.configure.reranker.contextualai({
+    model: 'ctxl-rerank-v2-instruct-multilingual',
+    instruction: 'Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.',
+    topN: 5,
+  }),
+  // highlight-end
+});
+// END RerankerContextualAICustomModel
+
 // START RerankerJinaAIBasic
 await client.collections.create({
   name: 'DemoCollection',
