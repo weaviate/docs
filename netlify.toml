@@ -778,7 +778,7 @@ status = 301
 
 [[redirects]]
 from = "/academy/theory/embedding_model_selection/*"
-to   = "https://academy.weaviate.io/courses/wa150-py"
+to   = "https://academy.weaviate.io/courses/wa260-py"
 status = 301
 
 [[redirects]]
@@ -830,7 +830,7 @@ status = 301
 
 [[redirects]]
 from = "/academy/py/tokenization/*"
-to   = "/weaviate/manage-collections/inverted-index"
+to   = "/weaviate/config-refs/collections#tokenization"
 status = 301
 
 [[redirects]]
@@ -839,8 +839,8 @@ to   = "/weaviate/manage-collections/multi-tenancy"
 status = 301
 
 [[redirects]]
-from = "/academy/py/compression/*"
-to   = "/weaviate/configuration/compression"
+from = "/academy/py/standalone/which_search"
+to   = "/weaviate/search"
 status = 301
 
 [[redirects]]
