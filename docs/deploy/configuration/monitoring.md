@@ -17,7 +17,7 @@ and more.
 ### Enable within Weaviate
 
 To tell Weaviate to collect metrics and expose them in a Prometheus-compatible
-format, all that's required is to set the following environment variable:
+format, all that's required is to set the following [environment variable](./env-vars/index.md#PROMETHEUS_MONITORING_ENABLED):
 
 ```sh
 PROMETHEUS_MONITORING_ENABLED=true
@@ -54,7 +54,7 @@ command. In this setup the following components are used:
 
 ### Multi-tenancy
 
-When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](/deploy/configuration/env-vars/index.md) as `true` so that data across all tenants are grouped together for monitoring.
+When using multi-tenancy, we suggest setting the `PROMETHEUS_MONITORING_GROUP` [environment variable](./env-vars/index.md#PROMETHEUS_MONITORING_GROUP) as `true` so that data across all tenants are grouped together for monitoring.
 
 ## Obtainable Metrics
 
@@ -64,11 +64,14 @@ Be aware that metrics do not follow the semantic versioning guidelines of other 
 
 :::
 
-The list of metrics that are obtainable through Weaviate's metric system is
-constantly being expanded. The complete list is in the [`prometheus.go`](https://github.com/weaviate/weaviate/blob/main/usecases/monitoring/prometheus.go) source code file.
+The list of metrics that are obtainable through Weaviate's metric system is constantly being expanded. The complete list of metrics can be found in the source code files: 
+- [`usecases/monitoring/prometheus.go`](https://github.com/weaviate/weaviate/blob/main/usecases/monitoring/prometheus.go)
+- [`usecases/replica/metrics.go`](https://github.com/weaviate/weaviate/blob/main/usecases/replica/metrics.go)
+- [`adapters/repos/db/metrics.go`](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/metrics.go)
+- [`adapters/repos/db/lsmkv/metrics.go`](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/lsmkv/metrics.go)
+- [`adapters/repos/db/lsmkv/memtable_metrics.go`](https://github.com/weaviate/weaviate/blob/main/adapters/repos/db/lsmkv/memtable_metrics.go)
 
-This page describes metrics and their uses. Typically metrics are quite granular, as they can always be aggregated later on. For example if the granularity is "shard", you could aggregate all "shard" metrics of the same "class" to obtain a class metrics, or aggregate all metrics to obtain the metric for the entire Weaviate instance.
-
+This page describes metrics and their uses. Typically metrics are quite granular, as they can always be aggregated later on. For example if the granularity is "shard", you could aggregate all "shard" metrics of the same "class" (collection) to obtain a class metrics, or aggregate all metrics to obtain the metric for the entire Weaviate instance.
 
 ### General & build information
 
@@ -330,7 +333,7 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `mmap_operations_total`      | Total number of mmap operations       | `operation`, `strategy` | `Counter` |
 | `mmap_proc_maps`             | Number of entries in /proc/self/maps  | None                    | `Gauge`   |
 
-#### Async Operations
+#### Async operations
 
 | Metric                     | Description                                                                                                  | Labels                                          | Type    |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- | ------- |
@@ -400,7 +403,7 @@ These metrics track Write-Ahead Log (WAL) recovery operations during startup.
 | `token_count_total`                     | Number of tokens processed                       | `tokenizer` | `Counter`   |
 | `token_count_per_request`               | Number of tokens processed per request           | `tokenizer` | `Histogram` |
 
-#### Module & External API
+#### Module & external API
 
 | Metric                                     | Description                                                    | Labels                                    | Type        |
 | ------------------------------------------ | -------------------------------------------------------------- | ----------------------------------------- | ----------- |
@@ -471,7 +474,7 @@ These metrics track the replication coordinator's read and write operations acro
 
 ---
 
-Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).
+<!-- TODO[g-despot] First we need to create this guide for adding metrics - Extending Weaviate with new metrics is very easy. To suggest a new metric, see the [contributor guide](/contributor-guide).-->
 
 ## Sample Dashboards
 
