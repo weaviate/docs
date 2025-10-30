@@ -19,7 +19,7 @@ In this section, we will explore how to use multi-vector embeddings in Weaviate.
 
 Before starting this tutorial, ensure you have the following:
 
-- An instance of Weaviate (e.g. on [Weaviate Cloud](https://console.weaviate.cloud), or locally), version `v1.29` or newer.
+- An instance of Weaviate (e.g. on [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=tutorial), or locally), version `v1.29` or newer.
 - Your preferred Weaviate client library installed.
 - An API key for Jina AI
     - A free, "toy" key can be obtained from [Jina AI](https://jina.ai/).
