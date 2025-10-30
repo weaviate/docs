@@ -52,7 +52,7 @@ The [Quickstart guide](/weaviate/quickstart) uses a WCD sandbox and an API based
 
 For development, we recommend using
 
-- [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) or [Docker Compose](/deploy/installation-guides/docker-installation.md).
+- [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=tutorial) or [Docker Compose](/deploy/installation-guides/docker-installation.md).
 - A vectorization strategy that matches your production vectorization strategy.
 
 #### Docker-Compose vs. Weaviate Cloud (WCD)

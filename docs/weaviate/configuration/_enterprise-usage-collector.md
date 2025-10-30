@@ -11,7 +11,7 @@ When using Weaviate Enterprise, a proxy service is placed in between the user (o
 
 ## 1. Collect a Weaviate Enterprise Token
 
-- Login into the [Weaviate Console](https://console.weaviate.cloud).
+- Login into the [Weaviate Console](https://weaviate.io/go/console?utm_source=docs&utm_content=howto).
 - Click the profile symbol in the top menu and collect the key, which is shown to you. Note, this key is a secret, and you should not make this available in public repositories.
 
 ## 2. Add the Weaviate Enterprise Usage Collector to your Docker Compose file
