@@ -212,7 +212,7 @@ client.collections.create(
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
+assert config.vector_config["default"].vector_index_config.filter_strategy == "acorn"
 assert isinstance(
     config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
 )

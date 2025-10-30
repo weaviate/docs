@@ -578,7 +578,7 @@ collection = client.collections.get("MyCollection")
 
 # highlight-start
 # Use `experimental` for server-side batching. The client will send data
-# in chunks and the server will dynamically manage the import process.
+# in batches at a rate specified by the server.
 with collection.batch.experimental() as batch:
     for data_row in data_rows:
         batch.add_object(

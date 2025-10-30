@@ -118,7 +118,7 @@ When SQ is enabled, Weaviate boosts recall by over-fetching compressed results. 
 
 ## Rotational quantization
 
-**Rotational quantization (RQ)** is a quantization technique that provides significant compression while maintaining high recall in internal testing. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in two variants: **8-bit RQ** and **1-bit RQ**.
+**Rotational quantization (RQ)** provides significant compression while maintaining high recall. Unlike SQ, RQ requires no training phase and can be enabled immediately at index creation. RQ is available in: **8-bit** and **1-bit** variants.
 
 ### 8-bit RQ
 
@@ -202,7 +202,7 @@ You might be also interested in our blog post [HNSW+PQ - Exploring ANN algorithm
 
 ### With a flat index
 
-[RQ](#rotational-quantization) and [BQ](#binary-quantization) can use a [flat index](./indexing/inverted-index.md). A flat index search reads from disk, compression reduces the amount of data Weaviate has to read so searches are faster.
+[RQ](#rotational-quantization) and [BQ](#binary-quantization) can be applied to a [flat index](./indexing/inverted-index.md). As a flat index search is a brute-force method, compression reduces the amount of data Weaviate has to read and increases speed.
 
 ## Rescoring
 
