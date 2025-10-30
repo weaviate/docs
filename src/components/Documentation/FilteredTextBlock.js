@@ -46,6 +46,7 @@ DOC_SYSTEMS.js = DOC_SYSTEMS.ts;
 DOC_SYSTEMS.gonew = DOC_SYSTEMS.go;
 DOC_SYSTEMS.goraw = DOC_SYSTEMS.go;
 DOC_SYSTEMS.javaraw = DOC_SYSTEMS.java;
+DOC_SYSTEMS.csharpraw = DOC_SYSTEMS.csharp;
 
 // Custom styles for badges
 const badgeStyles = {
@@ -84,6 +85,14 @@ const FilteredTextBlock = ({
     let withinMarkers = false;
     let format;
     switch (language) {
+        case 'csharp':
+            // remove leading indent of 8 spaces
+            format = (input) => input.replace(/^        /, '');
+            break;
+        case 'csharpraw':
+            // remove leading indent of 4 spaces
+            format = (input) => input.replace(/^    /, '');
+            break;
         case 'tsindent':
             // remove leading indent of 4 spaces
             format = (input) => input.replace(/^  /, '');
@@ -154,6 +163,9 @@ const FilteredTextBlock = ({
             break;
         case 'javaraw':
             language2 = 'java';
+            break;
+        case 'csharpraw':
+            language2 = 'csharp';
             break;
     }
 

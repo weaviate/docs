@@ -9,6 +9,8 @@ import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 import PyCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.multi-tenancy.ts';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/_ManageCollectionsMultiTenancyTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/_ManageCollectionsMultiTenancyTest.cs";
 
 ![Storage Tiers](./img/storage-tiers.jpg)
 
@@ -104,13 +106,28 @@ To activate an `INACTIVE` tenant from disk, or to onload and activate an `OFFLOA
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START ActivateTenants"
       endMarker="// END ActivateTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ActivateTenants"
+      endMarker="// END ActivateTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ActivateTenants"
+      endMarker="// END ActivateTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -131,13 +148,28 @@ To deactivate an `ACTIVE` tenant, or to onload an `OFFLOADED` tenant from cloud 
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START DeactivateTenants"
       endMarker="// END DeactivateTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DeactivateTenants"
+      endMarker="// END DeactivateTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DeactivateTenants"
+      endMarker="// END DeactivateTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -158,13 +190,28 @@ To offload an `ACTIVE` or `INACTIVE` tenant to cloud, call:
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START OffloadTenants"
       endMarker="// END OffloadTenants"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START OffloadTenants"
+      endMarker="// END OffloadTenants"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START OffloadTenants"
+      endMarker="// END OffloadTenants"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -191,7 +238,6 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -200,7 +246,22 @@ Enable this to automatically activate `INACTIVE` or `OFFLOADED` tenants if a sea
       language="ts"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START EnableAutoActivation"
+      endMarker="// END EnableAutoActivation"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START EnableAutoActivation"
+      endMarker="// END EnableAutoActivation"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Questions and feedback

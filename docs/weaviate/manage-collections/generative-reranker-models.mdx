@@ -10,6 +10,8 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
 :::tip Embedding models / Vectorizers
@@ -36,24 +38,36 @@ Configure a [`reranker`](../concepts/search/index.md#rerank) model integration f
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetReranker"
-    endMarker="// END SetReranker"
-    language="ts"
-  />
-</TabItem>
-
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START SetReranker"
       endMarker="// END SetReranker"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SetReranker"
+      endMarker="// END SetReranker"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -75,24 +89,36 @@ Update the [`reranker`](../concepts/search/index.md#rerank) model integration fo
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START UpdateReranker"
-    endMarker="// END UpdateReranker"
-    language="ts"
-  />
-</TabItem>
-
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateReranker"
+      endMarker="// END UpdateReranker"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START UpdateReranker"
       endMarker="// END UpdateReranker"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateReranker"
+      endMarker="// END UpdateReranker"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateReranker"
+      endMarker="// END UpdateReranker"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -115,33 +141,44 @@ Specify a `generative` model integration for a collection (for RAG).
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetGenerative"
-    endMarker="// END SetGenerative"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START SetGenerative"
-    endMarker="// END SetGenerative"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
+      language="gonew"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
       startMarker="// START SetGenModel"
       endMarker="// END SetGenModel"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SetGenerative"
+      endMarker="// END SetGenerative"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -163,24 +200,36 @@ Update a [`generative`](../concepts/search/index.md#retrieval-augmented-generati
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START UpdateGenerative"
-    endMarker="// END UpdateGenerative"
-    language="ts"
-  />
-</TabItem>
-
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START UpdateGenerative"
+      endMarker="// END UpdateGenerative"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START UpdateGenerative"
       endMarker="// END UpdateGenerative"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateGenerative"
+      endMarker="// END UpdateGenerative"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START UpdateGenerative"
+      endMarker="// END UpdateGenerative"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

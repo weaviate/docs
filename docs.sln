@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_includes", "_includes", "{DE45C9AA-DBB3-91F8-540C-03A41DB425DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code", "code", "{9186D019-DB3D-BB6C-536B-D636275C82A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeaviateProject.Tests", "_includes\code\csharp\WeaviateProject.Tests.csproj", "{E1A0B893-B9C7-B0BB-27A1-C94B4D04BC73}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1A0B893-B9C7-B0BB-27A1-C94B4D04BC73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A0B893-B9C7-B0BB-27A1-C94B4D04BC73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A0B893-B9C7-B0BB-27A1-C94B4D04BC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A0B893-B9C7-B0BB-27A1-C94B4D04BC73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9186D019-DB3D-BB6C-536B-D636275C82A4} = {DE45C9AA-DBB3-91F8-540C-03A41DB425DA}
+		{E1A0B893-B9C7-B0BB-27A1-C94B4D04BC73} = {9186D019-DB3D-BB6C-536B-D636275C82A4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E51A6D01-9E9C-4B44-BE15-9ECBB531729D}
+	EndGlobalSection
+EndGlobal
