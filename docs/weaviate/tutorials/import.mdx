@@ -94,11 +94,12 @@ Load the data from the JSON file.
 
 :::caution Preview
 
-Server-side batching was added in **`v1.33`** as a **preview** and is **not yet supported in our client libraries**.<br/><br/>
+Server-side batching was added in **`v1.34`** as a **preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
 
 :::
 
-<!--
 Server-side batching automatically manages the import flow using a feedback loop between client and server. The server monitors its workload and tells the client how much data to send next.
 
 - Client opens a persistent connection to the server
@@ -123,7 +124,6 @@ The benefits of server-side batching are:
 - **Automatic backpressure**: Prevents server overload during heavy operations
 - **Better resilience**: Handles cluster scaling events gracefully
 - **Simplified code**: Less configuration needed
--->
 
 ### Option B: Client-side batching
 

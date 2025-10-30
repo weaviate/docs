@@ -53,37 +53,37 @@ collection = client.collections.create(
 )
 # END CreateCollection
 
-# # START ServerSideBatch
-# # Server-side batching (automatic mode) - Recommended approach
-# # The server manages the import flow automatically
-# with collection.batch.automatic() as batch:
-#     # Import data
-#     for data_row in data_rows:
-#         batch.add_object(
-#             properties=data_row,
-#         )
+# START ServerSideBatch
+# Server-side batching (automatic mode)
+# The server manages the import flow automatically
+with collection.batch.experimental() as batch:
+    # Import data
+    for data_row in data_rows:
+        batch.add_object(
+            properties=data_row,
+        )
 
-#         # Optional: Stop if too many errors
-#         if batch.number_errors > 10:
-#             print("Batch import stopped due to excessive errors.")
-#             break
+        # Optional: Stop if too many errors
+        if batch.number_errors > 10:
+            print("Batch import stopped due to excessive errors.")
+            break
 
-# # Check for failed objects
-# failed_objects = collection.batch.failed_objects
-# if failed_objects:
-#     print(f"Number of failed imports: {len(failed_objects)}")
-#     print(f"First failed object: {failed_objects[0]}")
-# else:
-#     print("All objects imported successfully!")
+# Check for failed objects
+failed_objects = collection.batch.failed_objects
+if failed_objects:
+    print(f"Number of failed imports: {len(failed_objects)}")
+    print(f"First failed object: {failed_objects[0]}")
+else:
+    print("All objects imported successfully!")
 
-# # Verify server-side batch import
-# result = collection.aggregate.over_all(total_count=True)
-# assert len(failed_objects) == 0, f"Server-side batch had {len(failed_objects)} failures"
-# assert (
-#     result.total_count == expected_count
-# ), f"Expected {expected_count} objects, got {result.total_count}"
-# print(f"✓ Server-side batch: {result.total_count} objects imported successfully")
-# # END ServerSideBatch
+# Verify server-side batch import
+result = collection.aggregate.over_all(total_count=True)
+assert len(failed_objects) == 0, f"Server-side batch had {len(failed_objects)} failures"
+assert (
+    result.total_count == expected_count
+), f"Expected {expected_count} objects, got {result.total_count}"
+print(f"✓ Server-side batch: {result.total_count} objects imported successfully")
+# END ServerSideBatch
 
 # Alternative approach - Client-side batching
 # Clean and recreate collection for demo
