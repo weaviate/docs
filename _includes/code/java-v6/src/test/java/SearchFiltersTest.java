@@ -84,7 +84,7 @@ class SearchFilterTest {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
     // highlight-start
-    List<String> tokenList = List.of("australia", "india");
+    String[] tokens = new String[] {"australia", "india"};
     // highlight-end
     var response = jeopardy.query.fetchObjects(
         q -> q
@@ -92,7 +92,7 @@ class SearchFilterTest {
             // Find objects where the `answer` property contains any of the strings in
             // `token_list`
             // TODO[g-despot] containsAny doesn't accept lists?
-            .where(Where.property("answer").containsAny(tokenList.toString()))
+            .where(Where.property("answer").containsAny(tokens))
             // highlight-end
             .limit(3));
 
@@ -108,7 +108,8 @@ class SearchFilterTest {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
     // highlight-start
-    List<String> tokenList = List.of("blue", "red");
+    String[] tokens = new String[] {"blue", "red"};
+
     // highlight-end
 
     var response = jeopardy.query.fetchObjects(
@@ -117,7 +118,7 @@ class SearchFilterTest {
             // Find objects where the `question` property contains all of the strings in
             // `token_list`
             // TODO[g-despot] containsAll doesn't accept lists?
-            .where(Where.property("question").containsAll(tokenList.toString()))
+            .where(Where.property("question").containsAll(tokens))
             // highlight-end
             .limit(3));
 
@@ -133,7 +134,7 @@ class SearchFilterTest {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
 
     // highlight-start
-    List<String> tokenList = List.of("bird", "animal");
+    String[] tokens = new String[] {"bird", "animal"};
     // highlight-end
 
     var response = jeopardy.query.fetchObjects(
@@ -142,7 +143,7 @@ class SearchFilterTest {
             // Find objects where the `question` property contains none of the strings in
             // `token_list`
             // TODO[g-despot] containsNone doesn't accept lists?
-            .where(Where.property("question").containsNone(tokenList.toString()))
+            .where(Where.property("question").containsNone(tokens))
             // highlight-end
             .limit(3));
 
@@ -387,6 +388,7 @@ class SearchFilterTest {
     }
   }
 
+  // TODO[g-despot] Is this implemented yet, length?
   @Test
   void testFilterByPropertyLength() {
     // START FilterByPropertyLength

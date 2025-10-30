@@ -30,7 +30,6 @@ class SearchSimilarityTest {
 
   @AfterAll
   public static void afterAll() throws Exception {
-    client.collections.deleteAll();
     client.close();
   }
 

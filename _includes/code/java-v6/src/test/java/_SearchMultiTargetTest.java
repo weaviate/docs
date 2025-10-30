@@ -120,11 +120,9 @@ class MultiTargetSearchTest {
     var response = collection.query.nearText(
         "a wild animal",
                     // highlight-start
-        Target.average("jeopardy_questions_vector", "jeopardy_answers_vector"),
+        Target.average("jeopardy_questions_vector", "jeopardy_answers_vector")
                     // highlight-end
-        (NearText.Builder q) -> { // <-- Explicitly type the 'q' parameter
         // You can still add configurations here if needed, e.g., q.limit(2);
-    }
     );
 
     for (var o : response.objects()) {
