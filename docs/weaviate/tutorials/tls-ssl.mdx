@@ -12,12 +12,12 @@ When your Weaviate database is exposed to the internet, unencrypted connections 
 - **Authentication credentials** if transmitted without encryption
 - **API keys and tokens** that could grant unauthorized access to your systems
 
-Let's imagine your Weaviate database as a high-security vault that contains your most valuable data treasures. When it's within your VPC, it's relatively safe from outside threats. But the moment you need to expose your vault to the outside world (the internet), it needs to be secured.
+That's exactly why it's important to secure your database using **SSL/TLS (Secure Sockets Layer/Transport Layer Security)** — encryption protocols that create a secure, encrypted connection between your clients and your database. SSL/TLS ensures that even if network traffic is intercepted, the data remains unreadable to unauthorized parties.
 
-That's exactly why it's important to secure your database using **SSL/TLS (Secure Sockets Layer/Transport Layer Security)**—encryption protocols that create a secure, encrypted connection between your clients and your database. SSL/TLS ensures that even if network traffic is intercepted, the data remains unreadable to unauthorized parties.
+:::info Managed Weaviate deployments
 
-:::info
-**Managed deployments:** If you're using **Weaviate Cloud** or other managed Weaviate services, SSL/TLS is already configured and managed for you. This guide is primarily for self-hosted deployments on virtual private servers (VPS), hyperscaler infrastructure (AWS, GCP, Azure), or on-premises environments where you need to expose Weaviate to external networks.
+If you're using **Weaviate Cloud** or other managed Weaviate services, SSL/TLS is already configured and managed for you. This guide is primarily for self-hosted deployments on virtual private servers (VPS), hyperscaler infrastructure (AWS, GCP, Azure), or on-premises environments where you need to expose Weaviate to external networks.
+
 :::
 
 This guide will take you through three different options for securing your self-hosted database. Whether you're a small startup or an enterprise giant - there's a solution for you!
@@ -945,40 +945,6 @@ try:
 finally:
     client.close()
 ```
-
----
-
-## Choosing the right approach for your needs
-
-Now that you've seen all three approaches, let's discuss how to choose between them and some guiding principles for securing your Weaviate deployment:
-
-#### General principles for security decisions:
-
-1. **Start with your infrastructure:** Your current setup (Docker vs. Kubernetes) eliminates or favors certain options
-2. **Consider your team's expertise:** Choose a complexity level your team can confidently maintain
-3. **Plan for growth:** What works for 10 users may not work for 10,000
-4. **Automation matters:** Manual certificate renewal increases risk of outages
-5. **Defense in depth:** SSL/TLS should be one layer in your security strategy (also consider authentication, network policies, etc.)
-
-#### Can you switch later?
-
-Yes! While each approach requires different initial setup:
-
-- **Option 1 → 2:** Relatively easy transition, both use Docker
-- **Option 1 or 2 → 3:** Requires Kubernetes migration, but your SSL understanding carries over
-- **Option 3 → 1 or 2:** Downgrading is rare but possible if Kubernetes proves unnecessary
-
-#### Beyond these three approaches:
-
-While these three approaches cover the majority of use cases, there are countless other ways to secure Weaviate depending on your specific infrastructure:
-
-- Cloud-native load balancers (AWS ALB, GCP Load Balancer, Azure Application Gateway)
-- Service mesh solutions (Istio, Linkerd) for Kubernetes
-- Cloudflare Tunnel or similar zero-trust network access solutions
-- Custom reverse proxy configurations (HAProxy, Envoy)
-- Container orchestration platforms like Nomad with Consul
-
-The principles remain the same across all approaches: encrypt data in transit, automate certificate management, and follow the principle of least privilege for network access.
 
 ---
 
