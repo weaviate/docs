@@ -60,6 +60,38 @@ client.collections.create(
 # Clean up
 client.collections.delete("DemoCollection")
 
+# START RerankerContextualAIBasic
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    reranker_config=Configure.Reranker.contextualai()
+    # highlight-end
+    # Additional parameters not shown
+)
+# END RerankerContextualAIBasic
+
+# Clean up
+client.collections.delete("DemoCollection")
+
+# START RerankerContextualAICustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    reranker_config=Configure.Reranker.contextualai(
+        model="ctxl-rerank-v2-instruct-multilingual"
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END RerankerContextualAICustomModel
+
+# Clean up
+client.collections.delete("DemoCollection")
+
 # START RerankerJinaAIBasic
 from weaviate.classes.config import Configure
 

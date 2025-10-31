@@ -167,6 +167,19 @@ const sidebars = {
         },
         {
           type: "category",
+          label: "Contextual AI",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/model-providers/contextualai/index",
+          },
+          items: [
+            "weaviate/model-providers/contextualai/generative",
+            "weaviate/model-providers/contextualai/reranker",
+          ],
+        },
+        {
+          type: "category",
           label: "Databricks",
           className: "sidebar-item",
           link: {

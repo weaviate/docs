@@ -5,10 +5,10 @@ import assert from 'assert';
 // ================================
 import weaviate from 'weaviate-client';
 
-// START RuntimeModelSelectionAnthropic  // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama // START RuntimeModelSelectionxAI 
+// START RuntimeModelSelectionAnthropic  // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI // START RuntimeModelSelectionAnyscale // START RuntimeModelSelectionMistral // START RuntimeModelSelectionOpenAI // START RuntimeModelSelectionAWS // START RuntimeModelSelectionCohere // START RuntimeModelSelectionDatabricks // START RuntimeModelSelectionFriendliAI // START RuntimeModelSelectionGoogle // START RuntimeModelSelectionNVIDIA // START RuntimeModelSelectionKubeAI // START RuntimeModelSelectionAzureOpenAI // START RuntimeModelSelectionOllama // START RuntimeModelSelectionxAI
 import { generativeParameters } from 'weaviate-client';
 
-// END RuntimeModelSelectionAnthropic  // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama // END RuntimeModelSelectionxAI 
+// END RuntimeModelSelectionAnthropic  // END WorkingWithImagesAnthropic // END WorkingWithImagesAWS // END WorkingWithImagesGoogle // END WorkingWithImagesOpenAI // END RuntimeModelSelectionAnyscale // END RuntimeModelSelectionMistral // END RuntimeModelSelectionOpenAI // END RuntimeModelSelectionAWS // END RuntimeModelSelectionCohere // END RuntimeModelSelectionDatabricks // END RuntimeModelSelectionFriendliAI // END RuntimeModelSelectionGoogle // END RuntimeModelSelectionNVIDIA // END RuntimeModelSelectionKubeAI // END RuntimeModelSelectionAzureOpenAI // END RuntimeModelSelectionOllama // END RuntimeModelSelectionxAI
 
 // START WorkingWithImagesAnthropic // START WorkingWithImagesAWS // START WorkingWithImagesGoogle // START WorkingWithImagesOpenAI
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
@@ -306,7 +306,7 @@ console.log("Grouped task result:", response.generative?.text)
 })();
 
 // Clean up
-  await client.collections.delete('DemoCollection');
+await client.collections.delete('DemoCollection');
 
 // START BasicGenerativeCohere
 await client.collections.create({
@@ -377,6 +377,76 @@ response = await myCollection.generate.nearText("A holiday film", {
 )
 // END RuntimeModelSelectionCohere
 
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START BasicGenerativeContextualAI
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  generative: weaviate.configure.generative.contextualai(),
+  // highlight-end
+  // Additional parameters not shown
+});
+// END BasicGenerativeContextualAI
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+// START GenerativeContextualAICustomModel
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  generative: weaviate.configure.generative.contextualai({
+    model: 'v2'
+  }),
+  // highlight-end
+  // Additional parameters not shown
+});
+// END GenerativeContextualAICustomModel
+
+// Clean up
+await client.collections.delete('DemoCollection');
+
+
+// START FullGenerativeContextualAI
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  generative: weaviate.configure.generative.contextualai({
+    // These parameters are optional
+    model: 'v2',
+    // temperature: 0.7,
+    // maxTokens: 500,
+    // topP: 5,
+    // systemPrompt: 'You are a ...',
+    // avoidCommentary: true,
+  }),
+  // highlight-end
+  // Additional parameters not shown
+});
+// END FullGenerativeContextualAI
+
+// START RuntimeModelSelectionContextualAI
+response = await myCollection.generate.nearText("A holiday film", {
+  // highlight-start
+  groupedTask: "Write a tweet promoting these two movies",
+  config: generativeParameters.contextualai({
+    // These parameters are optional
+    // model: 'v2',
+    // temperature: 0.7,
+    // maxTokens: 500,
+    // topP: 5,
+    // systemPrompt: 'You are a ...',
+    // avoidCommentary: true,
+  }),
+  // highlight-end
+}, {
+  limit: 2,
+}
+  // Additional parameters not shown
+)
+// END RuntimeModelSelectionContextualAI
 
 // Clean up
 await client.collections.delete('DemoCollection');
