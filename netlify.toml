@@ -247,8 +247,8 @@ to   = "/deploy/migration/weaviate-1-30"
 status = 301
 
 [[redirects]]
-from = "/weaviate/tutorials/rbac"
-to   = "/deploy/tutorials/rbac"
+from = "/deploy/tutorials/rbac"
+to   = "/weaviate/tutorials/rbac"
 status = 301
 
 [[redirects]]

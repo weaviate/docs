@@ -122,7 +122,7 @@ Here are some tips to optimize performance when using RBAC:
 - [RBAC: Overview](/weaviate/configuration/rbac/index.mdx)
 - [RBAC: Manage roles](/weaviate/configuration/rbac/manage-roles.mdx)
 - [RBAC: Manage users](/weaviate/configuration/rbac/manage-users.mdx)
-- [RBAC: Tutorial](/deploy/tutorials/rbac.mdx)
+- [RBAC: Tutorial](/weaviate/tutorials/rbac.mdx)
 
 ## Questions and feedback
 
