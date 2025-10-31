@@ -41,6 +41,26 @@ await client.collections.create({
 });
 // END RerankerCohereCustomModel
 
+// START RerankerContextualAIBasic
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  reranker: weaviate.configure.reranker.contextualai(),
+  // highlight-end
+});
+// END RerankerContextualAIBasic
+
+// START RerankerContextualAICustomModel
+await client.collections.create({
+  name: 'DemoCollection',
+  // highlight-start
+  reranker: weaviate.configure.reranker.contextualai({
+    model: 'ctxl-rerank-v2-instruct-multilingual',
+  }),
+  // highlight-end
+});
+// END RerankerContextualAICustomModel
+
 // START RerankerJinaAIBasic
 await client.collections.create({
   name: 'DemoCollection',

@@ -25,6 +25,10 @@ aws_secret_key = os.getenv("AWS_SECRET_KEY")
 # Recommended: save sensitive data as environment variables
 cohere_key = os.getenv("COHERE_APIKEY")
 # END CohereInstantiation
+# START ContextualAIInstantiation
+# Recommended: save sensitive data as environment variables
+contextual_key = os.getenv("CONTEXTUAL_API_KEY")
+# END ContextualAIInstantiation
 # START DatabricksInstantiation
 # Recommended: save sensitive data as environment variables
 databricks_token = os.getenv("DATABRICKS_TOKEN")
@@ -100,6 +104,9 @@ headers = {
 # START CohereInstantiation
     "X-Cohere-Api-Key": cohere_key,
 # END CohereInstantiation
+# START ContextualAIInstantiation
+    "X-ContextualAI-Api-Key": contextual_key,
+# END ContextualAIInstantiation
 # START DatabricksInstantiation
     "X-Databricks-Token": databricks_token,
 # END DatabricksInstantiation
