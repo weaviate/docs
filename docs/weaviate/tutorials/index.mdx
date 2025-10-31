@@ -18,7 +18,7 @@ import CardsSection from "/src/components/CardsSection";
 
 export const advancedFeaturesData = [
   {
-    title: "Use Multi-Vector Embeddings (ColBERT, etc.)",
+    title: "Use multi-vector embeddings (ColBERT, etc.)",
     description:
       "Implement advanced multi-vector representations for improved search relevance using models like ColBERT.",
     link: "/weaviate/tutorials/multi-vector-embeddings",
@@ -39,16 +39,16 @@ export const advancedFeaturesData = [
     icon: "fas fa-file-import",
   },
   {
-    title: "Manage Relationships with Cross-References",
+    title: "Manage relationships with cross-references",
     description:
       "Define, create, and query links between objects to model complex data relationships effectively.",
     link: "/weaviate/tutorials/cross-references",
     icon: "fas fa-link",
   },
   {
-    title: "Load Data into Weaviate with Spark",
+    title: "Load data into Weaviate with Spark",
     description:
-      "Use the Spark Connector to efficiently import large datasets from Apache Spark into Weaviate with batch processing and vectorization options.",
+      "Use the Spark Connector to import large datasets from Apache Spark into Weaviate with batch processing.",
     link: "/weaviate/tutorials/spark-connector",
     icon: "fas fa-fire",
   },
@@ -56,14 +56,21 @@ export const advancedFeaturesData = [
     title: "Set up Role-Based Access Control (RBAC)",
     description:
       "Configure roles, permissions, and user assignments for secure access control in Weaviate.",
-    link: "/deploy/tutorials/rbac",
+    link: "/weaviate/tutorials/rbac",
     icon: "fas fa-user-shield",
   },
   {
     title: "Secure Weaviate with TLS",
     description:
       "Navigate three paths to securing your Weaviate deployment using TLS.",
-    link: "/deploy/tutorials/tls-ssl",
+    link: "/weaviate/tutorials/tls-ssl",
+    icon: "fas fa-lock",
+  },
+  {
+    title: "Switch vectorizers",
+    description:
+      "Learn how to update the embedding model in order to improve performance.",
+    link: "/weaviate/tutorials/vectorizer-migration",
     icon: "fas fa-lock",
   },
 ];

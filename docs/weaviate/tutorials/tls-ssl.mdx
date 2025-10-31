@@ -3,7 +3,7 @@ title: Securing Weaviate with SSL/TLS
 description: Learn the various techniques to secure your Weaviate deployment and go from Zero to Hero!
 ---
 
-Let's imagine your Weaviate database as a high-security vault that contains your most valuable data treasures. When it's within your VPC, it's relatively safe from outside threats. But the moment you need to expose your vault to the outside world (the internet), it needs to be secured. :lock:
+Let's imagine your Weaviate database as a high-security vault that contains your most valuable data treasures. When it's within your VPC, it's relatively safe from outside threats. But the moment you need to expose your vault to the outside world (the internet), it needs to be secured.
 
 Weaviate communicates through two ports, or doors if you will, port 8080(for HTTP) and port 50051 (for gRPC). Both doors need to be secured with encryption protocols in place.
 
@@ -11,7 +11,7 @@ That's exactly why it's important to secure your database using SSL/TLS. This gu
 
 Are you ready to embark on this security journey and turn your Weaviate database into an impenetrable digital fortress?
 
-### When is SSL/TLS required?
+## When is SSL/TLS required?
 
 #### There are some occasions where encryption is *optional:*
 
@@ -27,7 +27,7 @@ Data transmitted over networks is vulnerable to interception. Network packets ca
 - **Multi-network architectures:** Application and Weaviate on separate networks
 - **Remote client connections:** Mobile apps, external services, or distributed systems
 
-### Understanding Weaviate's dual-port architecture
+## Understanding Weaviate's dual-port architecture
 
 Before we dive into implementation, it's important to understand that Weaviate requires **two separate endpoints**, both of which need SSL/TLS protection:
 
@@ -38,11 +38,11 @@ Before we dive into implementation, it's important to understand that Weaviate r
 
 This dual-port requirement adds complexity compared to traditional single-port applications, as each endpoint needs its own domain/subdomain and SSL certificate.
 
-### Your three paths to security: Choose your adventure
+## Options for securing Weaviate
 
 While the possibilities are endless for securing your vector database, this page will walk you through 3 approaches with varying levels of complexity and cost. 
 
-### Path 1: Using Nginx
+### Option 1: Using Nginx
 
 - **Complexity level:** Novice
 - **Perfect for:** Small business, teams who prefer ClickOps, or personal projects.
@@ -286,7 +286,7 @@ print(f"✅ Connected: {client.is_ready()}")
 client.close()
 ```
 
-### Path 2: Using Traefik and Docker
+### Option 2: Using Traefik and Docker
 
 - **Complexity level:** Intermediate
 - **Perfect for:** Growing companies, devs who love automation, and container-based infrastructure.
@@ -513,7 +513,7 @@ finally:
 ```
 
 
-### Path 3: Using Kubernetes and Cert-Manager
+### Option 3: Using Kubernetes and Cert-Manager
 
 - **Complexity level:** Advanced
 - **Perfect for:** Scalable applications, production environments, and large enterprises.
