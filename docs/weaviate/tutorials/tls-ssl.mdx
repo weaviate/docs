@@ -3,23 +3,34 @@ title: Securing Weaviate with SSL/TLS
 description: Learn the various techniques to secure your Weaviate deployment and go from Zero to Hero!
 ---
 
+## Why security matters: Understanding the risks
+
+When your Weaviate database is exposed to the internet, unencrypted connections create serious vulnerabilities. Network packets can be intercepted at various points along their journey, exposing:
+
+- **Sensitive queries and search terms** revealing what data you're working with
+- **Vector embeddings and data payloads** containing your proprietary information
+- **Authentication credentials** if transmitted without encryption
+- **API keys and tokens** that could grant unauthorized access to your systems
+
 Let's imagine your Weaviate database as a high-security vault that contains your most valuable data treasures. When it's within your VPC, it's relatively safe from outside threats. But the moment you need to expose your vault to the outside world (the internet), it needs to be secured.
 
-Weaviate communicates through two ports, or doors if you will, port 8080(for HTTP) and port 50051 (for gRPC). Both doors need to be secured with encryption protocols in place.
+That's exactly why it's important to secure your database using **SSL/TLS (Secure Sockets Layer/Transport Layer Security)**—encryption protocols that create a secure, encrypted connection between your clients and your database. SSL/TLS ensures that even if network traffic is intercepted, the data remains unreadable to unauthorized parties.
 
-That's exactly why it's important to secure your database using SSL/TLS. This guide will take you through three different options on securing your database. Whether you're a small startup or an enterprise giant - there's a solution for you!
+:::info
+**Managed deployments:** If you're using **Weaviate Cloud** or other managed Weaviate services, SSL/TLS is already configured and managed for you. This guide is primarily for self-hosted deployments on virtual private servers (VPS), hyperscaler infrastructure (AWS, GCP, Azure), or on-premises environments where you need to expose Weaviate to external networks.
+:::
 
-Are you ready to embark on this security journey and turn your Weaviate database into an impenetrable digital fortress?
+This guide will take you through three different options for securing your self-hosted database. Whether you're a small startup or an enterprise giant - there's a solution for you!
 
 ## When is SSL/TLS required?
 
-#### There are some occasions where encryption is *optional:*
+#### There are some occasions where encryption is _optional:_
 
-- **Co-located deployments:** Weaviate and your application are in the same protected environment. 
+- **Co-located deployments:** Weaviate and your application are in the same protected environment.
 - **Internal-only access:** Your traffic never leaves the secure network perimeter.
-- **Localhost development:** You are testing on a local machine. 
+- **Localhost development:** You are testing on a local machine.
 
-#### While in other occasions encryption is *required:*
+#### While in other occasions encryption is _required:_
 
 Data transmitted over networks is vulnerable to interception. Network packets can be inspected at various points, exposing sensitive queries and vector data.
 
@@ -31,21 +42,40 @@ Data transmitted over networks is vulnerable to interception. Network packets ca
 
 Before we dive into implementation, it's important to understand that Weaviate requires **two separate endpoints**, both of which need SSL/TLS protection:
 
-| **Port** | **Purpose** | **Protocol** |
-|---|---|---|
-| 8080 | Rest API and query interface | HTTP |
-| 50051 | High-performance data operations | gRPC |
+| **Port** | **Purpose**                                                    | **Protocol** |
+| -------- | -------------------------------------------------------------- | ------------ |
+| 8080     | REST API and query interface (queries also available via gRPC) | HTTP         |
+| 50051    | High-performance data operations and queries                   | gRPC         |
+
+:::info
+**Port 6060** is used for Go profiling. In production deployments, this port should typically remain internal and not be exposed to the internet. If you need external access, apply the same SSL/TLS principles but ensure proper authentication is also in place.
+:::
 
 This dual-port requirement adds complexity compared to traditional single-port applications, as each endpoint needs its own domain/subdomain and SSL certificate.
 
-## Options for securing Weaviate
+## Choosing your security approach
 
-While the possibilities are endless for securing your vector database, this page will walk you through 3 approaches with varying levels of complexity and cost. 
+While the possibilities are endless for securing your vector database, this guide walks you through **3 approaches** with varying levels of complexity, cost, and scalability. Here's how to choose:
 
-### Option 1: Using Nginx
+| **Approach**                            | **Complexity** | **Best for**                                   | **Infrastructure**          | **Key benefits**                                                  |
+| --------------------------------------- | -------------- | ---------------------------------------------- | --------------------------- | ----------------------------------------------------------------- |
+| **Option 1: Nginx Proxy Manager**       | Novice         | Small teams, personal projects, GUI preference | Docker-based deployments    | Easy GUI configuration, visual certificate management             |
+| **Option 2: Traefik**                   | Intermediate   | Growing companies, IaC workflows               | Docker Compose environments | Automated configuration, Infrastructure as Code, container-native |
+| **Option 3: Kubernetes + Cert-Manager** | Advanced       | Enterprise, production scale                   | Kubernetes clusters         | Auto-renewal, high availability, enterprise-grade orchestration   |
+
+:::tip **Infrastructure compatibility:**
+
+- **Options 1 & 2** are designed for Docker and Docker Compose deployments
+- **Option 3** is exclusively for Kubernetes environments
+  :::
+
+---
+
+### Option 1: Using Nginx Proxy Manager
 
 - **Complexity level:** Novice
-- **Perfect for:** Small business, teams who prefer ClickOps, or personal projects.
+- **Perfect for:** Small business, teams who prefer ClickOps (GUI-based operations), or personal projects.
+- **Infrastructure:** Docker and Docker Compose required. This approach is specifically for Docker-based deployments and is not compatible with Kubernetes.
 
 What you'll need:
 
@@ -67,7 +97,7 @@ A Record:    grpc.yourdomain.com        → Your-Server-IP
 Use a wildcard DNS record (`*.yourdomain.com`) for easier subdomain management.
 :::
 
-Make sure to wait for DNS propagation before proceeding. 
+Make sure to wait for DNS propagation before proceeding.
 
 #### Step 2: Create your shared Docker network
 
@@ -103,10 +133,10 @@ services:
       - weaviate-network
     environment:
       QUERY_DEFAULTS_LIMIT: 25
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'false'
-      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: 'none'
-      CLUSTER_HOSTNAME: 'node1'
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "false"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      DEFAULT_VECTORIZER_MODULE: "none"
+      CLUSTER_HOSTNAME: "node1"
     volumes:
       - weaviate_data:/var/lib/weaviate
 
@@ -135,12 +165,12 @@ curl http://localhost:8080/v1/meta
 ```
 
 :::tip
-**Expected Result:** The internal test succeeds, but the host test fails. 
+**Expected Result:** The internal test succeeds, but the host test fails.
 
 This confirms Weaviate is only accessible within the Docker network, not from the host or internet.
 :::
 
-#### Step 3: Install Nginx Proxy Manager
+#### Step 4: Install Nginx Proxy Manager
 
 1. Create a separate directory:
 
@@ -154,18 +184,24 @@ cd ~/nginx-proxy-manager
 ```yaml
 services:
   app:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: "jc21/nginx-proxy-manager:latest"
     container_name: nginx-proxy-manager
     restart: unless-stopped
+    networks:
+      - weaviate-network
     ports:
-      - '80:80'      # HTTP
-      - '81:81'      # Admin UI
-      - '443:443'    # HTTPS
+      - "80:80" # HTTP
+      - "81:81" # Admin UI
+      - "443:443" # HTTPS
     environment:
       DB_SQLITE_FILE: "/data/database.sqlite"
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
+
+networks:
+  weaviate-network:
+    external: true
 ```
 
 3. Start Nginx Proxy Manager
@@ -174,11 +210,12 @@ services:
 docker-compose up -d
 ```
 
-#### Step 4: Access the admin interface
+#### Step 5: Access the admin interface
 
 1. Navigate to `http://your-server-ip:81`
 
 **Default credentials**
+
 ```
 Email:    admin@example.com
 Password: changeme
@@ -188,59 +225,58 @@ Password: changeme
 Change these credentials **immediately** after first login!
 :::
 
-#### Step 5: Secure the HTTP endpoint
+#### Step 6: Secure the HTTP endpoint
 
 1. Click **Hosts** -> **Proxy hosts** -> **Add proxy host**
 
 #### Details Tab
 
-| **Field** | **Value** |
-|---|---|
-| Domain names | `weaviate.yourdomain.com` |
-| Scheme | `http` |
-| Forward Hostname/IP | `weaviate` |
-| Forward Port | `8080` |
-| Cache Assets | ✅ Checked |
-| Block Common Exploits | ✅ Checked |
-| Websockets Support | ✅ Checked |
+| **Field**             | **Value**                 |
+| --------------------- | ------------------------- |
+| Domain names          | `weaviate.yourdomain.com` |
+| Scheme                | `http`                    |
+| Forward Hostname/IP   | `weaviate`                |
+| Forward Port          | `8080`                    |
+| Cache Assets          | ✅ Checked                |
+| Block Common Exploits | ✅ Checked                |
+| Websockets Support    | ✅ Checked                |
 
 :::info
 **Why "weaviate"?** Docker's internal DNS resolves container names within the same network. Nginx Proxy Manager can reach Weaviate at `http://weaviate:8080` internally through the shared `weaviate-network`.
 :::
 
-
 #### SSL Tab
 
-| **Field** | **Value** |
-|---|---|
+| **Field**       | **Value**                     |
+| --------------- | ----------------------------- |
 | SSL Certificate | Request a new SSL Certificate |
-| Force SSL | ✅ Checked |
-| HTTP/2 Support | ✅ Checked |
-| HSTS Enabled | ✅ Checked |
-| Email Address | `your-email@example.com` |
+| Force SSL       | ✅ Checked                    |
+| HTTP/2 Support  | ✅ Checked                    |
+| HSTS Enabled    | ✅ Checked                    |
+| Email Address   | `your-email@example.com`      |
 
 2. Agree to the TOS.
 3. Click Save and wait 30-60 seconds for certificate provisioning.
 
-#### Step 6: Secure the gRPC endpoints
+#### Step 7: Secure the gRPC endpoints
 
 1. Create a second proxy host for gRPC:
 
 **Details tab**
 
-| **Field** | **Value** |
-|---|---|
-| Domain Names | `grpc.yourdomain.com` |
-| Scheme | `http` |
-| Forward Hostname/IP | `weaviate` |
-| Forward Port | `50051` |
-| Block Common Exploits | ✅ Checked |
-| Websockets Support | ✅ Checked |
+| **Field**             | **Value**             |
+| --------------------- | --------------------- |
+| Domain Names          | `grpc.yourdomain.com` |
+| Scheme                | `http`                |
+| Forward Hostname/IP   | `weaviate`            |
+| Forward Port          | `50051`               |
+| Block Common Exploits | ✅ Checked            |
+| Websockets Support    | ✅ Checked            |
 
 **SSL Tab**
 Configure SSL the same way as the [HTTP endpoint](#ssl-tab)
 
-#### Advanced Tab (*Critical for gRPC*)
+**Advanced Tab** (_Critical for gRPC_)
 
 Add this custom Nginx configuration:
 
@@ -251,7 +287,7 @@ grpc_set_header Host $host;
 
 Click **Save.**
 
-#### Step 7: Test your secure connection
+#### Step 8: Test your secure connection
 
 #### Test from command line
 
@@ -267,6 +303,7 @@ openssl s_client -connect weaviate.yourdomain.com:443 -servername weaviate.yourd
 ```
 
 #### Test with Python client
+
 ```python
 import weaviate
 
@@ -286,12 +323,15 @@ print(f"✅ Connected: {client.is_ready()}")
 client.close()
 ```
 
+---
+
 ### Option 2: Using Traefik and Docker
 
 - **Complexity level:** Intermediate
 - **Perfect for:** Growing companies, devs who love automation, and container-based infrastructure.
+- **Infrastructure:** Docker and Docker Compose required. This approach uses Infrastructure as Code (IaC) principles and is designed for Docker environments, not Kubernetes.
 
-This method introduces Infrastructure as Code (IaC) principles while remaining manageable, Traefik was built specifically for containerized environments. This approach is the perfect intermediary between the GUI of Path 1 and the pure Kubernetes of Path 3. You can think of this as the progression of learning another language, Path 1 was like using Duolingo or using a translation app, Path 2 is learning to speak the language without the use of a translation app, and Path 3 is becoming fluent. 
+This method introduces Infrastructure as Code (IaC) principles while remaining manageable. Traefik was built specifically for containerized environments. This approach is the perfect intermediary between the GUI of Option 1 and the pure Kubernetes of Option 3. You can think of this as the progression of learning another language: Option 1 was like using Duolingo or using a translation app, Option 2 is learning to speak the language without the use of a translation app, and Option 3 is becoming fluent.
 
 What you'll need:
 
@@ -314,12 +354,14 @@ cd ~/weaviate-traefik
 #### Step 2: Configure DNS records
 
 Before deploying, configure your DNS records to point to your server:
+
 ```
 A Record:    weaviate.yourdomain.com    → Your-Server-IP
 A Record:    grpc.yourdomain.com        → Your-Server-IP
 ```
 
 DNS propagation can take 5-60 minutes. Verify with:
+
 ```bash
 dig weaviate.yourdomain.com
 dig grpc.yourdomain.com
@@ -345,7 +387,7 @@ entryPoints:
         entryPoint:
           to: websecure
           scheme: https
-  
+
   websecure:
     address: ":443"
     http:
@@ -406,31 +448,31 @@ services:
     restart: unless-stopped
     environment:
       QUERY_DEFAULTS_LIMIT: 25
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'false'
-      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: 'none'
-      CLUSTER_HOSTNAME: 'node1'
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "false"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      DEFAULT_VECTORIZER_MODULE: "none"
+      CLUSTER_HOSTNAME: "node1"
     volumes:
       - weaviate_data:/var/lib/weaviate
     networks:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      
+
       # HTTP/REST API endpoint
       - "traefik.http.routers.weaviate-http.rule=Host(`weaviate.yourdomain.com`)"
       - "traefik.http.routers.weaviate-http.entrypoints=websecure"
       - "traefik.http.routers.weaviate-http.tls.certresolver=letsencrypt"
       - "traefik.http.routers.weaviate-http.service=weaviate-http"
       - "traefik.http.services.weaviate-http.loadbalancer.server.port=8080"
-      
+
       # gRPC endpoint
       - "traefik.http.routers.weaviate-grpc.rule=Host(`grpc.yourdomain.com`)"
       - "traefik.http.routers.weaviate-grpc.entrypoints=websecure"
       - "traefik.http.routers.weaviate-grpc.tls.certresolver=letsencrypt"
       - "traefik.http.routers.weaviate-grpc.service=weaviate-grpc"
       - "traefik.http.services.weaviate-grpc.loadbalancer.server.port=50051"
-      - "traefik.http.services.weaviate-grpc.loadbalancer.server.scheme=h2c"  # Enables HTTP/2 Cleartext for gRPC
+      - "traefik.http.services.weaviate-grpc.loadbalancer.server.scheme=h2c" # Enables HTTP/2 Cleartext for gRPC
 
 volumes:
   weaviate_data:
@@ -440,10 +482,10 @@ volumes:
 Don't forget to replace `yourdomain.com` with your actual domain!
 :::
 
-
-#### Step 4: Set permissions and deploy
+#### Step 5: Set permissions and deploy
 
 Before deploying, configure your DNS records to point to your server:
+
 ```
 A Record:    weaviate.yourdomain.com    → Your-Server-IP
 A Record:    grpc.yourdomain.com        → Your-Server-IP
@@ -470,9 +512,9 @@ docker-compose up -d
 docker-compose logs -f traefik
 ```
 
-Be sure to check for  messages indicating successful certificate issuance.
+Be sure to check for messages indicating successful certificate issuance.
 
-#### Step 5: Verify your deployment
+#### Step 6: Verify your deployment
 
 ```bash
 # Check running containers
@@ -488,7 +530,7 @@ curl https://weaviate.yourdomain.com/v1/meta
 openssl s_client -connect weaviate.yourdomain.com:443 -servername weaviate.yourdomain.com < /dev/null 2>/dev/null | grep "Verify return code"
 ```
 
-#### Step 6: Connect with your application
+#### Step 7: Connect with your application
 
 ```python
 import weaviate
@@ -504,7 +546,7 @@ client = weaviate.connect_to_custom(
 
 try:
     print(f"✅ Connected: {client.is_ready()}")
-    
+
     # Test basic operation
     collections = client.collections.list_all()
     print(f"Collections: {collections}")
@@ -512,13 +554,15 @@ finally:
     client.close()
 ```
 
+---
 
 ### Option 3: Using Kubernetes and Cert-Manager
 
 - **Complexity level:** Advanced
 - **Perfect for:** Scalable applications, production environments, and large enterprises.
+- **Infrastructure:** Kubernetes cluster required. This approach is exclusively for Kubernetes deployments and cannot be used with standalone Docker or Docker Compose setups.
 
-What you'll need: 
+What you'll need:
 
 - Running Kubernetes cluster
 - kubectl configured with cluster access
@@ -556,6 +600,7 @@ kubectl wait --for=condition=ready pod \
 ```
 
 The expected output of this:
+
 ```
 ✅ cert-manager-xxxxxxxxx-xxxxx        1/1     Running
 ✅ cert-manager-cainjector-xxxxxxxxx-xxxxx   1/1     Running
@@ -564,9 +609,9 @@ The expected output of this:
 
 #### Step 3: Install Traefik Ingress Controller
 
-:::tip 
+:::tip
 Before proceeding with installation, configure your DNS records:
- 
+
 ```
 A Record:    weaviate.yourdomain.com    → [Pending LoadBalancer IP]
 A Record:    grpc.yourdomain.com        → [Pending LoadBalancer IP]
@@ -600,7 +645,7 @@ kubectl get svc -n traefik traefik -w
 ```
 
 :::warning
-Stop! Update your DNS records to point ot the LoadBalancer IP before continuing!
+Stop! Update your DNS records to point to the LoadBalancer IP before continuing!
 :::
 
 #### Step 4: Create Let's Encrypt ClusterIssuer
@@ -616,19 +661,19 @@ spec:
   acme:
     # Let's Encrypt production server
     server: https://acme-v02.api.letsencrypt.org/directory
-    
+
     # Email for renewal and security notices
     email: your-email@example.com
-    
+
     # Secret to store ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod-account-key
-    
+
     # HTTP-01 challenge
     solvers:
-    - http01:
-        ingress:
-          class: traefik
+      - http01:
+          ingress:
+            class: traefik
 ```
 
 2. Apply the issuer
@@ -683,50 +728,50 @@ spec:
         app: weaviate
     spec:
       containers:
-      - name: weaviate
-        image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
-        ports:
-        - containerPort: 8080
-          name: http
-        - containerPort: 50051
-          name: grpc
-        env:
-        - name: QUERY_DEFAULTS_LIMIT
-          value: "25"
-        - name: AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED
-          value: "false"
-        - name: PERSISTENCE_DATA_PATH
-          value: "/var/lib/weaviate"
-        - name: DEFAULT_VECTORIZER_MODULE
-          value: "none"
-        - name: CLUSTER_HOSTNAME
-          value: "node1"
-        volumeMounts:
-        - name: weaviate-data
-          mountPath: /var/lib/weaviate
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1000m"
-          limits:
-            memory: "4Gi"
-            cpu: "2000m"
-        livenessProbe:
-          httpGet:
-            path: /v1/.well-known/live
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /v1/.well-known/ready
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 5
+        - name: weaviate
+          image: cr.weaviate.io/semitechnologies/weaviate:||site.weaviate_version||
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 50051
+              name: grpc
+          env:
+            - name: QUERY_DEFAULTS_LIMIT
+              value: "25"
+            - name: AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED
+              value: "false"
+            - name: PERSISTENCE_DATA_PATH
+              value: "/var/lib/weaviate"
+            - name: DEFAULT_VECTORIZER_MODULE
+              value: "none"
+            - name: CLUSTER_HOSTNAME
+              value: "node1"
+          volumeMounts:
+            - name: weaviate-data
+              mountPath: /var/lib/weaviate
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "2000m"
+          livenessProbe:
+            httpGet:
+              path: /v1/.well-known/live
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /v1/.well-known/ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
       volumes:
-      - name: weaviate-data
-        persistentVolumeClaim:
-          claimName: weaviate-data
+        - name: weaviate-data
+          persistentVolumeClaim:
+            claimName: weaviate-data
 
 ---
 apiVersion: v1
@@ -739,12 +784,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
-    targetPort: 8080
-    name: http
-  - port: 50051
-    targetPort: 50051
-    name: grpc
+    - port: 8080
+      targetPort: 8080
+      name: http
+    - port: 50051
+      targetPort: 50051
+      name: grpc
   selector:
     app: weaviate
 ```
@@ -774,7 +819,7 @@ kubectl logs -n weaviate -l app=weaviate --tail=50
 Kubernetes standard Ingress has limited gRPC support, in production Traefik's IngressRoute CRD is recommended. It provides native gRPC support with proper HTTP/2 handling, so it's more reliable for production deployments than standard Kubernetes Ingress.
 :::
 
-1. Create weaviate-ingressroute.yaml:
+1. Create `weaviate-ingressroute.yaml`:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -837,7 +882,7 @@ spec:
       services:
         - name: weaviate
           port: 50051
-          scheme: h2c  # HTTP/2 Cleartext for gRPC
+          scheme: h2c # HTTP/2 Cleartext for gRPC
   tls:
     secretName: weaviate-grpc-tls
 ```
@@ -875,7 +920,7 @@ kubectl get secret weaviate-http-tls -n weaviate -o jsonpath='{.data.tls\.crt}' 
   openssl x509 -noout -enddate
 ```
 
-#### Test your secure Weaviate
+#### Step 8: Test your secure Weaviate
 
 ```python
 import weaviate
@@ -892,18 +937,53 @@ client = weaviate.connect_to_custom(
 
 try:
     print(f"✅ Connected: {client.is_ready()}")
-    
+
     # Get metadata
     meta = client.get_meta()
     print(f"Weaviate version: {meta.get('version')}")
-    
+
 finally:
     client.close()
 ```
 
+---
+
+## Choosing the right approach for your needs
+
+Now that you've seen all three approaches, let's discuss how to choose between them and some guiding principles for securing your Weaviate deployment:
+
+#### General principles for security decisions:
+
+1. **Start with your infrastructure:** Your current setup (Docker vs. Kubernetes) eliminates or favors certain options
+2. **Consider your team's expertise:** Choose a complexity level your team can confidently maintain
+3. **Plan for growth:** What works for 10 users may not work for 10,000
+4. **Automation matters:** Manual certificate renewal increases risk of outages
+5. **Defense in depth:** SSL/TLS should be one layer in your security strategy (also consider authentication, network policies, etc.)
+
+#### Can you switch later?
+
+Yes! While each approach requires different initial setup:
+
+- **Option 1 → 2:** Relatively easy transition, both use Docker
+- **Option 1 or 2 → 3:** Requires Kubernetes migration, but your SSL understanding carries over
+- **Option 3 → 1 or 2:** Downgrading is rare but possible if Kubernetes proves unnecessary
+
+#### Beyond these three approaches:
+
+While these three approaches cover the majority of use cases, there are countless other ways to secure Weaviate depending on your specific infrastructure:
+
+- Cloud-native load balancers (AWS ALB, GCP Load Balancer, Azure Application Gateway)
+- Service mesh solutions (Istio, Linkerd) for Kubernetes
+- Cloudflare Tunnel or similar zero-trust network access solutions
+- Custom reverse proxy configurations (HAProxy, Envoy)
+- Container orchestration platforms like Nomad with Consul
+
+The principles remain the same across all approaches: encrypt data in transit, automate certificate management, and follow the principle of least privilege for network access.
+
+---
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
