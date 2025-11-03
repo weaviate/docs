@@ -1,5 +1,5 @@
 ---
-title: Network Security Best Practices
+title: AWS network security - Best practices
 description: "Expert recommendations for maximizing network security in your Weaviate deployment."
 
 ---
@@ -252,9 +252,9 @@ Our AWS-specific best practices are aligned with the following security framewor
 
 ### Additional resources and information
 
-- [Monitoring documentation](../configuration/monitoring.md)
-- [Replication documentation](../configuration/replication.md)
-- [Backups documentation](../configuration/backups.md)
+- [Monitoring documentation](../../configuration/monitoring.md)
+- [Replication documentation](../../configuration/replication.md)
+- [Backups documentation](../../configuration/backups.md)
 
 ## Questions and feedback
 
