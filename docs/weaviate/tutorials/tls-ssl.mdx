@@ -22,30 +22,18 @@ If you're using **Weaviate Cloud** or other managed Weaviate services, SSL/TLS i
 
 This guide will take you through three different options for securing your self-hosted database. Whether you're a small startup or an enterprise giant - there's a solution for you!
 
-## When is SSL/TLS required?
+### When is SSL/TLS required?
 
-#### There are some occasions where encryption is _optional:_
-
-- **Co-located deployments:** Weaviate and your application are in the same protected environment.
-- **Internal-only access:** Your traffic never leaves the secure network perimeter.
-- **Localhost development:** You are testing on a local machine.
-
-#### While in other occasions encryption is _required:_
-
-Data transmitted over networks is vulnerable to interception. Network packets can be inspected at various points, exposing sensitive queries and vector data.
-
-- **Internet-exposed deployments:** Weaviate accessible from external networks
-- **Multi-network architectures:** Application and Weaviate on separate networks
-- **Remote client connections:** Mobile apps, external services, or distributed systems
+Although testing and local deployments might not necessitate network encryption, **enabling SSL/TLS is considered a best practice for any production deployment**, internal or external.
 
 ## Understanding Weaviate's dual-port architecture
 
 Before we dive into implementation, it's important to understand that Weaviate requires **two separate endpoints**, both of which need SSL/TLS protection:
 
-| **Port** | **Purpose**                                                    | **Protocol** |
-| -------- | -------------------------------------------------------------- | ------------ |
-| 8080     | REST API and query interface (queries also available via gRPC) | HTTP         |
-| 50051    | High-performance data operations and queries                   | gRPC         |
+| **Default port** | **Purpose**                                                    | **Protocol** |
+| ---------------- | -------------------------------------------------------------- | ------------ |
+| 8080             | REST API and query interface (queries also available via gRPC) | HTTP         |
+| 50051            | High-performance data operations and queries                   | gRPC         |
 
 :::info
 **Port 6060** is used for Go profiling. In production deployments, this port should typically remain internal and not be exposed to the internet. If you need external access, apply the same SSL/TLS principles but ensure proper authentication is also in place.
@@ -57,11 +45,11 @@ This dual-port requirement adds complexity compared to traditional single-port a
 
 While the possibilities are endless for securing your vector database, this guide walks you through **3 approaches** with varying levels of complexity, cost, and scalability. Here's how to choose:
 
-| **Approach**                            | **Complexity** | **Best for**                                   | **Infrastructure**          | **Key benefits**                                                  |
-| --------------------------------------- | -------------- | ---------------------------------------------- | --------------------------- | ----------------------------------------------------------------- |
-| **Option 1: Nginx Proxy Manager**       | Novice         | Small teams, personal projects, GUI preference | Docker-based deployments    | Easy GUI configuration, visual certificate management             |
-| **Option 2: Traefik**                   | Intermediate   | Growing companies, IaC workflows               | Docker Compose environments | Automated configuration, Infrastructure as Code, container-native |
-| **Option 3: Kubernetes + Cert-Manager** | Advanced       | Enterprise, production scale                   | Kubernetes clusters         | Auto-renewal, high availability, enterprise-grade orchestration   |
+| **Approach**                            | **Complexity** | **Best for**                      | **Infrastructure**          | **Key benefits**                                                  |
+| --------------------------------------- | -------------- | --------------------------------- | --------------------------- | ----------------------------------------------------------------- |
+| **Option 1: Nginx Proxy Manager**       | Novice         | Personal projects, GUI preference | Docker-based deployments    | Easy GUI configuration, visual certificate management             |
+| **Option 2: Traefik**                   | Intermediate   | Growing companies, IaC workflows  | Docker Compose environments | Automated configuration, Infrastructure as Code, container-native |
+| **Option 3: Kubernetes + Cert-Manager** | Advanced       | Enterprise, production scale      | Kubernetes clusters         | Auto-renewal, high availability, enterprise-grade orchestration   |
 
 :::tip **Infrastructure compatibility:**
 
@@ -190,7 +178,7 @@ services:
     networks:
       - weaviate-network
     ports:
-      - "80:80" # HTTP
+      - "8080:80" # HTTP
       - "81:81" # Admin UI
       - "443:443" # HTTPS
     environment:
@@ -559,7 +547,7 @@ finally:
 ### Option 3: Using Kubernetes and Cert-Manager
 
 - **Complexity level:** Advanced
-- **Perfect for:** Scalable applications, production environments, and large enterprises.
+- **Perfect for:** Scalable applications, production environments and production environments.
 - **Infrastructure:** Kubernetes cluster required. This approach is exclusively for Kubernetes deployments and cannot be used with standalone Docker or Docker Compose setups.
 
 What you'll need:
@@ -580,7 +568,7 @@ kubectl cluster-info
 kubectl auth can-i create namespace
 
 # Check cluster version
-kubectl version --short
+kubectl version
 ```
 
 #### Step 2: Install Cert-Manager
@@ -599,26 +587,7 @@ kubectl wait --for=condition=ready pod \
   --timeout=300s
 ```
 
-The expected output of this:
-
-```
-✅ cert-manager-xxxxxxxxx-xxxxx        1/1     Running
-✅ cert-manager-cainjector-xxxxxxxxx-xxxxx   1/1     Running
-✅ cert-manager-webhook-xxxxxxxxx-xxxxx      1/1     Running
-```
-
 #### Step 3: Install Traefik Ingress Controller
-
-:::tip
-Before proceeding with installation, configure your DNS records:
-
-```
-A Record:    weaviate.yourdomain.com    → [Pending LoadBalancer IP]
-A Record:    grpc.yourdomain.com        → [Pending LoadBalancer IP]
-```
-
-You'll update these with the actual LoadBalancer IP after Step 3. DNS propagation can take 5-60 minutes, so configure these early.
-:::
 
 1. Install Traefik:
 
@@ -644,8 +613,17 @@ kubectl get svc -n traefik
 kubectl get svc -n traefik traefik -w
 ```
 
-:::warning
-Stop! Update your DNS records to point to the LoadBalancer IP before continuing!
+:::tip Configure DNS
+
+After the installation, configure your DNS records:
+
+```
+A Record:    weaviate.yourdomain.com    → [Pending LoadBalancer IP]
+A Record:    grpc.yourdomain.com        → [Pending LoadBalancer IP]
+```
+
+You'll update these with the actual LoadBalancer IP. DNS propagation can take a while, so configure these on time.
+
 :::
 
 #### Step 4: Create Let's Encrypt ClusterIssuer
