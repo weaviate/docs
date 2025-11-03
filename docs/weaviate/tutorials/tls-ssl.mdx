@@ -599,11 +599,11 @@ helm repo update
 # Create namespace
 kubectl create namespace traefik
 
-# Install Traefik with HTTPS redirect enabled
+# Install Traefik with HTTPS redirect enabled (v34+ syntax)
 helm install traefik traefik/traefik \
   --namespace traefik \
-  --set ports.web.redirectTo=websecure \
-  --set ports.websecure.tls.enabled=true
+  --set ports.websecure.tls.enabled=true \
+  --set "additionalArguments={--entrypoints.web.http.redirections.entrypoint.to=websecure,--entrypoints.web.http.redirections.entrypoint.scheme=https}"
 
 # Verify installation
 kubectl get pods -n traefik
@@ -828,7 +828,7 @@ spec:
     - grpc.yourdomain.com
 
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1 
 kind: IngressRoute
 metadata:
   name: weaviate-http
@@ -846,7 +846,7 @@ spec:
     secretName: weaviate-http-tls
 
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1  
 kind: IngressRoute
 metadata:
   name: weaviate-grpc
