@@ -8,19 +8,17 @@ import assert from 'assert';
 
 import weaviate from 'weaviate-client';
 
-const client = await weaviate.connectToWeaviateCloud(
-  process.env.WEAVIATE_URL,
- {
-   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY),
+const client = await weaviate.connectToWeaviateCloud(process.env.WEAVIATE_URL as string, {
+   authCredentials: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY as string),
    headers: {
-     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY,  // Replace with your inference API key
+     'X-OpenAI-Api-Key': process.env.OPENAI_APIKEY as string,  // Replace with your inference API key
    }
- } 
+ }
 )
 
-// START Basic // START Score // START Properties // START Boost // START Filter // START autocut // START limit
+// START BM25GroupBy // START Basic // START Score // START Properties // START Boost // START Filter // START autocut // START limit
 const jeopardy = client.collections.use('JeopardyQuestion');
-// END Basic // END Score // END Properties // END Boost // END Filter // END autocut // END limit
+// END BM25GroupBy // END Basic // END Score // END Properties // END Boost // END Filter // END autocut // END limit
 
 
 // ============================
@@ -249,4 +247,30 @@ for (let object of result.objects) {
 // assert.deepEqual(additionalKeys, new Set(['score']));
 // assert.deepEqual(result.objects.length, 1);
 // assert(result.objects[0].properties['answer'].includes('OSHA'));
+}
+
+// START BM25GroupBy
+
+// Grouping parameters
+const groupByProperties = {
+  property: "round", // group by this property
+  objectsPerGroup: 3, // maximum objects per group
+  numberOfGroups: 2 // maximum number of groups
+}
+
+// Query
+const response = await jeopardy.query.bm25("California", {
+    groupBy: groupByProperties
+})
+
+for (let groupName in response.groups) {
+  console.log(groupName)
+  // Uncomment to view group objects 
+  // console.log(response.groups[groupName].objects)
+}
+// END BM25GroupBy
+
+for (let groupName in response.groups) {
+  assert.equal(response.groups[groupName].numberOfObjects > 0, true)
+  assert.equal(response.groups[groupName].numberOfObjects <= 3, true)
 }

@@ -20,11 +20,13 @@ Before beginning, ensure that you have the following:
 - Basic Kubernetes and containerization conceptual knowledge
 - Basic experience with Helm and `kubectl`
 
+<!-- TODO[g-despot] This needs to be replaced with something else
 :::note
 
 Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.weaviate.io/academy/deployment/k8s) if you need assistance. 
 
 :::
+-->
 
 #### Required Tools
 

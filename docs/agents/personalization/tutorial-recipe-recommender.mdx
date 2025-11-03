@@ -62,7 +62,7 @@ The Personalization Agent:
 
 ## Prerequisites
 
-To use the Weaviate Agents and Weaviate Embedding service, you need to have a **[Weaviate Cloud](https://console.weaviate.cloud)** account.
+To use the Weaviate Agents and Weaviate Embedding service, you need to have a **[Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=agents)** account.
 
 ## Step 1: Set up Weaviate
 
@@ -82,7 +82,7 @@ If you want to use another vectorizer, check out the list of supported [model pr
 
 In order to install the Weaviate Python client together with the `agents` component, run:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```
@@ -94,7 +94,7 @@ pip install "weaviate-client[agents]"
 
 You will also need `datasets`, a lightweight library providing access to the publicly hosted datasets on HuggingFace.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```
@@ -112,7 +112,7 @@ import ForcePipInstall from '../_includes/_force_pip_install.mdx';
 
 Now, you can finally connect to your Weaviate Cloud instance with the parameters from the first step:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -149,7 +149,7 @@ import WeaviateAgentsPersonalizationFoodDataset from '/docs/agents/_includes/per
 
 For the collection `Recipes`, we will manually define the properties and include descriptions. While using [`auto-schema`](../../weaviate/config-refs/collections.mdx#auto-schema) is an option, providing explicit descriptions helps the Personalization Agent (especially the underlying LLM, when used for re-ranking) understand the context of your data better.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -164,7 +164,7 @@ For the collection `Recipes`, we will manually define the properties and include
 
 Now, we can import the recipe data ([Recipes](https://huggingface.co/datasets/weaviate/agents/viewer/personalization-agent-recipes)) into our Weaviate Cloud instance:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -177,7 +177,7 @@ Now, we can import the recipe data ([Recipes](https://huggingface.co/datasets/we
 
 By calling `len()` on our collections, we can check that the import has successfully concluded and see what the size of our collections is:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -200,7 +200,7 @@ When creating a new `PersonalizationAgent` for the first time, we define `user_p
 
 If an agent for this collection already exists (e.g., from a previous run), we can simply connect to it using `PersonalizationAgent.connect()`. The code below handles both cases.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -223,7 +223,7 @@ A "persona" represents a user profile. We use the `agent.add_persona()` method, 
 
 Feel free to modify the example below to represent your own food preferences\!
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -256,7 +256,7 @@ import WeaviateAgentsPersonalizationFoodUser from '/docs/agents/_includes/person
 
 First, we fetch the UUIDs of some specific recipes the user has interacted with. Then, we define the interactions with appropriate weights. Finally, we add them to the agent using `agent.add_interactions()`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -275,7 +275,7 @@ Now for the core functionality: retrieving personalized recommendations using `a
 
 We can set `use_agent_ranking=True` to enable the LLM-based re-ranking. This leverages the persona profile and interaction history to provide a more nuanced ranking and also generates a `ranking_rationale` explaining _why_ certain items were recommended.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

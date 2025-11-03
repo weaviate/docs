@@ -17,7 +17,7 @@ In this tutorial, we will explore how to efficiently import large datasets into 
 
 Before starting this tutorial, ensure you have:
 
-- An instance of Weaviate (e.g. on [Weaviate Cloud](https://console.weaviate.cloud), or locally), version `v1.33` or newer for server-side batching
+- An instance of Weaviate (e.g. on [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=tutorial), or locally), version `v1.33` or newer for server-side batching
 - Your preferred Weaviate [client library](../client-libraries/index.mdx) installed
 - An API key for your inference API (OpenAI, Cohere, etc.) if using vectorization
 - A dataset to import (we'll provide a sample)
@@ -43,7 +43,7 @@ Let's walk through importing data using both approaches. We'll create a collecti
 
 First, connect to your Weaviate instance.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -60,9 +60,9 @@ This is what our data looks like:
 
 ![Jeopardy questions data schema visualization](./_includes/joepardyquestion_dataset.png "Jeopardy questions data schema visualization")
 
-Create a collection to store the Jeopardy questions. 
+Create a collection to store the Jeopardy questions.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -77,7 +77,7 @@ Create a collection to store the Jeopardy questions.
 
 Load the data from the JSON file.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -106,7 +106,7 @@ Server-side batching automatically manages the import flow using a feedback loop
 - Server manages an internal queue and applies backpressure when needed
 - Errors are streamed back asynchronously without interrupting the flow
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -129,7 +129,7 @@ The benefits of server-side batching are:
 
 Client-side batching gives you direct control over batch size and timing. You configure parameters like batch size and manage the import flow manually.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -151,7 +151,7 @@ Use the following tips for configuring client-side batching:
 
 Proper error handling is crucial for batch imports. A `200` HTTP status only means the request was received - individual objects may still fail.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -166,7 +166,7 @@ Proper error handling is crucial for batch imports. A `200` HTTP status only mea
 
 After importing, verify the data was successfully added.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -181,7 +181,7 @@ After importing, verify the data was successfully added.
 
 If you have pre-computed vectors, you can include them in the import.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -225,7 +225,7 @@ When importing millions of objects:
 
 Example of chunked import with progress tracking:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}

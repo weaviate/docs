@@ -48,7 +48,7 @@ This Agent is available exclusively for use with a Weaviate Cloud instance.
 
 Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
+You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=agents).
 
 ### Client library
 
@@ -60,7 +60,7 @@ You can install the Weaviate client library with the optional `agents` extras to
 
 Install the client library using the following command:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```shell
@@ -101,7 +101,7 @@ The Transformation Agent is tightly integrated with Weaviate Cloud. As a result,
 
 You must connect to the Weaviate Cloud instance to use the Transformation Agent. Connect to the Weaviate Cloud instance using the Weaviate client library.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -128,7 +128,7 @@ Example operations are shown below.
 
 New properties can be appended to objects based on existing property values and user instructions.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -144,7 +144,7 @@ New properties can be appended to objects based on existing property values and 
 
 Values of existing properties can be updated on objects based on existing property values and user instructions.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -162,7 +162,7 @@ To start the transformation operations, instantiate the Transformation Agent wit
 
 Instantiate the Transformation Agent with the Weaviate client, the target collection name, and the list of transformation operations.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -178,7 +178,7 @@ Instantiate the Transformation Agent with the Weaviate client, the target collec
 
 You can use the workflow ID to monitor the status of each transformation operation.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}

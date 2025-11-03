@@ -48,7 +48,7 @@ To use this integration, you must configure the container image of the ImageBind
 
 The following example shows how to configure the ImageBind integration in Weaviate:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
@@ -105,7 +105,7 @@ See the [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm/blob/mas
 
 As this integration runs a local container with the ImageBind model, no additional credentials (e.g. API key) are required. Connect to Weaviate as usual, such as in the examples below.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -116,7 +116,7 @@ As this integration runs a local container with the ImageBind model, no addition
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSConnect}
       startMarker="// START BasicInstantiation"
@@ -131,7 +131,7 @@ As this integration runs a local container with the ImageBind model, no addition
 
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use an ImageBind embedding model:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -141,7 +141,7 @@ As this integration runs a local container with the ImageBind model, no addition
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START BasicMMVectorizerBind"
@@ -167,7 +167,7 @@ import VectorizationBehavior from '/_includes/vectorization.behavior.mdx';
 
 The ImageBind vectorizer supports multiple modalities (text, image, audio, video, thermal, IMU and depth). One or more of these can be specified in the vectorizer configuration as shown.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
     <FilteredTextBlock
       text={PyCode}
@@ -177,7 +177,7 @@ The ImageBind vectorizer supports multiple modalities (text, image, audio, video
     />
   </TabItem>
 
-  <TabItem value="js" label="JS/TS">
+  <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START FullMMVectorizerBind"
@@ -192,7 +192,7 @@ The ImageBind vectorizer supports multiple modalities (text, image, audio, video
 
 After configuring the vectorizer, [import data](../../manage-objects/import.mdx) into Weaviate. Weaviate generates embeddings for the objects using the specified model.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -203,7 +203,7 @@ After configuring the vectorizer, [import data](../../manage-objects/import.mdx)
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START MMBatchImportExample"
@@ -230,7 +230,7 @@ When you perform a [vector search](../../search/similarity.md#search-with-text),
 
 The query below returns the `n` most similar objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -241,7 +241,7 @@ The query below returns the `n` most similar objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearTextExample"
@@ -262,7 +262,7 @@ When you perform a [hybrid search](../../search/hybrid.md), Weaviate converts th
 
 The query below returns the `n` best scoring objects from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -273,7 +273,7 @@ The query below returns the `n` best scoring objects from the database, set by `
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridExample"
@@ -292,7 +292,7 @@ To perform a near media search such as near image search, convert the media quer
 
 The query below returns the `n` most similar objects to the input image from the database, set by `limit`.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 
  <TabItem value="py" label="Python">
     <FilteredTextBlock
@@ -303,7 +303,7 @@ The query below returns the `n` most similar objects to the input image from the
     />
   </TabItem>
 
- <TabItem value="js" label="JS/TS">
+ <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START NearImageExample"

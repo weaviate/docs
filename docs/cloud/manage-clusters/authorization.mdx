@@ -25,80 +25,49 @@ This guide only applies to clusters that have [RBAC (Role-Based Access Control)]
 
 Custom roles allow you to define specific permissions for different users or applications accessing your Weaviate cluster. You can control access to collections, tenants, and specific operations.
 
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        Open the{' '}
-        <Link to="https://console.weaviate.cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-your-cluster">
-          Select your cluster
-        </Link>{' '}
-        and navigate to the <code>Roles</code> section.
-      </li>
-      <li>
-        Click on the <code>Create Role</code> button (
-        <span class="callout">1</span>).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img
-          src={WCDCreateRole}
-          alt="Roles management section in Weaviate Cloud"
-        />
-      </div>
-      <div class="card__body">Access the roles management section.</div>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="6kwj5ydhzp"
+    src="https://app.guideflow.com/embed/6kwj5ydhzp"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="6kwj5ydhzp"
+  ></script>
 </div>
+
 <br />
 
-<div class="row">
-  <div class="col col--4">
-    <ol start="4">
-      <li>
-        Enter a descriptive name for your role in the <code>Role name</code>{' '}
-        field (<span class="callout">1</span>).
-      </li>
-      <li>
-        In the <code>Collection</code> section (<span class="callout">2</span>),
-        configure collection-level permissions:
-        <ul>
-          <li>
-            Select the target collection from the dropdown (
-            <span class="callout">3</span>)
-          </li>
-          <li>
-            Choose the appropriate permissions: Create, Read, Update, or Delete
-            Collections (<span class="callout">4</span>)
-          </li>
-        </ul>
-      </li>
-      <li>
-        Optionally, configure <code>Collection Tenants</code> permissions if
-        your collections use multi-tenancy.
-      </li>
-      <li>
-        Click the <code>Create</code> button (<span class="callout">5</span>) to
-        save your new role.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img src={WCDCreateRoleForm} alt="Create new API role form" />
-      </div>
-      <div class="card__body">Configure permissions for your new role.</div>
-    </div>
-  </div>
-</div>
-<br />
+<details>
+    <summary>Steps to create a new role</summary>
+
+To create a new role, follow these steps:
+
+1.  Open the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud).
+2.  [Select your cluster](/cloud/manage-clusters/status#select-a-cluster) and navigate to the `Roles` section.
+3.  Click on the `New role` button.
+4.  Enter a descriptive name for your role in the `Role name` field.
+5.  In the sections below, configure the permissions:
+      * Select which resources the permission applies to (for example, to which collections the role has access to)
+      * Choose the appropriate permissions (create, read, update, etc.)
+6.  Click the `Create` button to save your new role.
+
+</details>
 
 :::info
 
@@ -110,129 +79,92 @@ To find out more about RBAC and available permissions, check out the [RBAC docum
 
 You can modify the permissions and settings of existing custom roles at any time.
 
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>From the roles management page, locate the role you want to edit.</li>
-      <li>
-        Click the <code>Edit</code> button (<span class="callout">1</span>) next
-        to the role you want to modify.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img
-          src={WCDEditRole}
-          alt="Edit role button highlighted"
-        />
-      </div>
-      <div class="card__body">Modify role permissions.</div>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="xrg73x8fwr"
+    src="https://app.guideflow.com/embed/xrg73x8fwr"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="xrg73x8fwr"
+  ></script>
 </div>
-<br />
-<div class="row">
-  <div class="col col--4">
-    <ol start="3">
-      <li>
-        In the role editing interface, you can:
-        <ul>
-          <li>
-            Update collection permissions by checking or unchecking the
-            appropriate boxes for Create, Read, Update, and Delete operations
-          </li>
-          <li>
-            Add or remove additional constraints from the role's scope using the dropdown menus (e.g. which collections the permissions apply to)
-          </li>
-        </ul>
-      </li>
-      <li>
-        After making your changes, click the <code>Update</code> button (
-        <span class="callout">1</span>) to save the modifications.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img
-          src={WCDEditRoleForm}
-          alt="Role editing form with Update button highlighted"
-        />
-      </div>
-      <div class="card__body">
-        Edit role permissions and confirm the updates.
-      </div>
-    </div>
-  </div>
-</div>
+
 <br />
 
-Changes to role permissions take effect immediately for all API keys assigned to
-that role.
+<details>
+    <summary>Steps to edit a role</summary>
+
+To edit a role, follow these steps:
+
+1. From the roles management page, locate the role you want to edit.
+2. Click the `Pencil` button next to the role you want to modify.
+3. In the role editing interface, you can:
+    * Update collection permissions by checking or unchecking the appropriate boxes for Create, Read, Update, and Delete operations
+    * Add or remove additional constraints from the role's scope using the dropdown menus (e.g. which collections the permissions apply to)
+4. After making your changes, click the `Update` button to save the modifications.
+5. Changes to role permissions take effect immediately for all API keys assigned to that role.
+
+</details>
 
 ## Delete a role
 
 When you no longer need a custom role, you can delete it. This action will affect all API keys currently assigned to this role.
 
-<div class="row">
-  <div class="col col--4">
-    <ol>
-      <li>
-        From the roles management page, locate the role you want to delete.
-      </li>
-      <li>
-        Click the <code>Delete</code> button (<span class="callout">1</span>)
-        next to the role you want to remove.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img
-          src={WCDDeleteRole}
-          alt="Delete role button highlighted"
-        />
-      </div>
-      <div class="card__body">
-        Deleting a role.
-      </div>
-    </div>
-  </div>
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "calc(54.10879629629629% + 50px)",
+    height: 0,
+  }}
+>
+  <iframe
+    id="np1y8gycep"
+    src="https://app.guideflow.com/embed/np1y8gycep"
+    width="100%"
+    height="100%"
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
+    allowTransparency="true"
+  />
+  <script
+    src="https://app.guideflow.com/assets/opt.js"
+    data-iframe-id="np1y8gycep"
+  ></script>
 </div>
+
 <br />
-<div class="row">
-  <div class="col col--4">
-    <ol start="3">
-      <li>
-        In the confirmation dialog, type the exact role name (
-        <span class="callout">1</span>) to confirm the deletion. This prevents
-        accidental deletions.
-      </li>
-      <li>
-        Click <code>Confirm and delete</code> (<span class="callout">2</span>)
-        to permanently remove the role.
-      </li>
-    </ol>
-  </div>
-  <div class="col col--8">
-    <div class="card">
-      <div class="card__image">
-        <img
-          src={WCDDeleteRoleForm}
-          alt="Delete role confirmation dialog"
-        />
-      </div>
-      <div class="card__body">
-        Confirm the deletion by typing the role name.
-      </div>
-    </div>
-  </div>
-</div>
-<br />
+
+<details>
+    <summary>Steps to delete a role</summary>
+
+To delete a role, follow these steps:
+
+1. From the roles management page, locate the role you want to delete.
+2. Click the `Trash can` button next to the role you want to remove.
+3. In the confirmation dialog, type the exact role name to confirm the deletion. This prevents accidental deletions.
+4. Click `Confirm and delete` to permanently remove the role.
+
+</details>
 
 Deleting a role is permanent and cannot be undone. This action will:
 

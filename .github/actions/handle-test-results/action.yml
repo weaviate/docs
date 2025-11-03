@@ -1,0 +1,74 @@
+name: 'Handle Test Results'
+description: 'Calculates test results, sends notifications, and uploads artifacts'
+
+inputs:
+  test-outcome:
+    description: 'Outcome of the test step'
+    required: true
+  test-type:
+    description: 'Type of tests run (e.g., Agents, Database-Cloud, Database-Local)'
+    required: true
+  languages-tested:
+    description: 'Languages tested (e.g., Python, TypeScript)'
+    required: true
+  artifact-name:
+    description: 'Name for the test results artifact'
+    required: true
+  slack-bot-token:
+    description: 'Slack bot token for notifications'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Calculate test results
+      shell: bash
+      run: |
+        # Calculate duration
+        TEST_END_TIME=$(date +%s)
+        TEST_DURATION=$((TEST_END_TIME - TEST_START_TIME))
+        
+        # Format duration
+        if [ $TEST_DURATION -ge 60 ]; then
+          MINUTES=$((TEST_DURATION / 60))
+          SECONDS=$((TEST_DURATION % 60))
+          DURATION_FORMATTED="${MINUTES}m ${SECONDS}s"
+        else
+          DURATION_FORMATTED="${TEST_DURATION}s"
+        fi
+        
+        echo "TEST_DURATION=$DURATION_FORMATTED" >> $GITHUB_ENV
+        
+        # Set test status
+        if [ "${{ inputs.test-outcome }}" = "success" ]; then
+          echo "TEST_STATUS=success" >> $GITHUB_ENV
+        else
+          echo "TEST_STATUS=failure" >> $GITHUB_ENV
+        fi
+
+        # Set test type for notifications
+        echo "TEST_TYPE=${{ inputs.test-type }}" >> $GITHUB_ENV
+        echo "LANGUAGES_TESTED=${{ inputs.languages-tested }}" >> $GITHUB_ENV
+
+    - name: Get commit author
+      shell: bash
+      run: |
+        source _build_scripts/slack-find-author.sh
+
+    - name: Send Slack notification
+      if: inputs.slack-bot-token != ''
+      shell: bash
+      env:
+        SLACK_BOT: ${{ inputs.slack-bot-token }}
+      run: |
+        source _build_scripts/slack-test-results.sh
+
+    - name: Upload test results
+      if: inputs.test-outcome != 'success'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: |
+          pytest-results.xml
+          .pytest_cache/
+        retention-days: 9

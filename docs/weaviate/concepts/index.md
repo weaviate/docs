@@ -6,21 +6,19 @@ image: og/docs/concepts.jpg
 # tags: ['getting started']
 ---
 
-
-<!-- :::caution Migrated From:
-- `Core knowledge`
-  - `Data objects` from `Core knowledge/Basics`
-  - `Modules`: Combines theoretical explanations from `Configuration/Modules` + `Modules/Index`
-- `Architecture`
-- `Vector indexing` from `Vector Index (ANN) Plugins:Index` + `HNSW`
-  - Note: Configuration options from `HNSW` are now in `References: Configuration/Vector index#How to configure HNSW`
-::: -->
-
 The **Concepts** section explains various aspects related to Weaviate and its architecture to help you get the most out of it. You can read these sections in any order.
 
-:::info
-If you are after a practical guide, try the [quickstart tutorial](/weaviate/quickstart/index.md).
+:::info Quickstart
+
+If you are after a practical guide with code examples, check out the [quickstart tutorial](/weaviate/quickstart/index.md).
+
 :::
+
+import AcademyAdmonition from '@site/src/components/AcademyAdmonition';
+
+<AcademyAdmonition 
+  courseId="quick-tour-of-weaviate"
+/>
 
 ## Core concepts
 

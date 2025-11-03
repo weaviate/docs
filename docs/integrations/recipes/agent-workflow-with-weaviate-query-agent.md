@@ -17,7 +17,7 @@ tags: ['Query Agent', 'Integration']
 This notebook will show you how to define the Weaviate Query Agent as a tool through LlamaIndex.
 
 ### Requirements
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://console.weaviate.cloud/).
+1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://weaviate.io/go/console?utm_source=docs&utm_content=integrations).
 2. Install LlamaIndex with `pip install llama-index` (we used version `0.12.22` for this notebook)
 3. Install the Weaviate Agents package with `pip install weaviate-agents`
 4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
@@ -61,16 +61,16 @@ def query_agent_request(query: str) -> str:
 
     # connect to your Weaviate Cloud instance
     weaviate_client = weaviate.connect_to_weaviate_cloud(
-        cluster_url=os.getenv("WEAVIATE_URL"), 
+        cluster_url=os.getenv("WEAVIATE_URL"),
         auth_credentials=weaviate.auth.AuthApiKey(os.getenv("WEAVIATE_API_KEY")),
-        headers={ "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY") 
+        headers={ "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
         }
     )
 
     # connect the query agent to your Weaviate collection(s)
     query_agent = QueryAgent(
         client=weaviate_client,
-        collections=["Blogs"] 
+        collections=["Blogs"]
     )
     return query_agent.run(query).final_answer
 ```

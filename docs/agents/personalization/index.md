@@ -128,7 +128,7 @@ To use the Personalization Agent, instantiate it with the following inputs:
 
 Note that the Personalization Agent persists. This means that if you have previously created a Personalization Agent, you can connect to it again without having to create a new one.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -141,7 +141,7 @@ Note that the Personalization Agent persists. This means that if you have previo
 
 Then, add a persona, which will be used to personalize the recommendations.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -154,7 +154,7 @@ Then, add a persona, which will be used to personalize the recommendations.
 
 Then you can add a set of interactions to that persona.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -167,7 +167,7 @@ Then you can add a set of interactions to that persona.
 
 Once user data is added, the Personalization Agent can be used to get personalized recommendations from the Weaviate collection.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}

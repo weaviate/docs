@@ -67,7 +67,6 @@ const secondaryNavbarItems = {
       { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar"},
       /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
       { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
-      { label: "Tutorials", link: "/deploy/tutorials/rbac", sidebar: "deployTutorialSidebar"},
       /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
       { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
@@ -105,21 +104,6 @@ const secondaryNavbarItems = {
         label: "Account management",
         link: "/cloud/platform/billing",
         sidebar: "cloudAccountManagementSidebar",
-      },
-    ],
-  },
-  academy: {
-    title: "Academy",
-    icon: "fa fa-graduation-cap",
-    isSmall: true,
-    description:
-      "Learn about vector search and Weaviate through structured courses",
-    link: "/academy",
-    links: [
-      {
-        label: "Get started",
-        link: "/academy",
-        sidebar: "academySidebar",
       },
     ],
   },
@@ -162,6 +146,14 @@ const secondaryNavbarItems = {
     isSmall: true,
     description: "",
     href: "https://weaviate.io/community/events",
+    links: [],
+  },
+  academy: {
+    title: "Weaviate Academy",
+    icon: "fa-solid fa-graduation-cap",
+    isSmall: true,
+    description: "",
+    href: "https://academy.weaviate.io/",
     links: [],
   },
 };

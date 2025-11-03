@@ -195,7 +195,7 @@ client = weaviate.connect_to_weaviate_cloud(
 # END InstantiateQueryAgent
 
 populate_weaviate(
-    client, overwrite_existing=False
+    client, overwrite_existing=True
 )  # Populate the Weaviate instance with data
 
 # START InstantiateQueryAgent

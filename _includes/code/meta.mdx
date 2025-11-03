@@ -3,9 +3,9 @@ import TabItem from '@theme/TabItem';
 
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
 
-import PyCode from '!!raw-loader!/_includes/code/rest.meta.py';
+import PyCode from '!!raw-loader!/_includes/code/connections/connect-python-v4.py';
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
   <FilteredTextBlock
     text={PyCode}
@@ -14,7 +14,7 @@ import PyCode from '!!raw-loader!/_includes/code/rest.meta.py';
     language="py"
   />
 </TabItem>
-<TabItem value="js" label="JS/TS Client (v3)">
+<TabItem value="ts" label="JavaScript/TypeScript">
 
 ```js
 import weaviate from 'weaviate-client';
@@ -26,25 +26,6 @@ console.log(response)
 ```
 
 </TabItem>
-
-<TabItem value="js2" label="JS/TS Client (v2)">
-
-```js
-import weaviate from 'weaviate-ts-client';
-
-const client = weaviate.client({
-  scheme: 'http',
-  host: 'localhost:8080',
-});
-
-const response = await client.misc
-  .metaGetter()
-  .do();
-console.log(response);
-```
-
-</TabItem>
-
 <TabItem value="go" label="Go">
 
 ```go

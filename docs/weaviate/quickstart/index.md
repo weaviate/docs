@@ -85,23 +85,23 @@ If you have another preferred [model provider](/weaviate/model-providers), you c
 
 ### 1.1 Create a Weaviate database
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance.
+Go to the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=quickstart) and create a free Sandbox instance.
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
-  <iframe 
-    id="qp7xdo7cjr" 
-    src="https://app.guideflow.com/embed/qp7xdo7cjr" 
-    width="100%" 
-    height="100%" 
-    style={{overflow: "hidden", position: "absolute", border: "none"}} 
-    scrolling="no" 
-    allow="clipboard-read; clipboard-write" 
-    webKitAllowFullScreen 
-    mozAllowFullScreen 
-    allowFullScreen 
+  <iframe
+    id="mk6l470aqk"
+    src="https://app.guideflow.com/embed/mk6l470aqk"
+    width="100%"
+    height="100%"
+    style={{overflow: "hidden", position: "absolute", border: "none"}}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
     allowTransparency="true"
   />
-  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="qp7xdo7cjr"></script>
+  <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="mk6l470aqk"></script>
 </div>
 
 <br/>
@@ -133,26 +133,26 @@ Now you can connect to your Weaviate instance. You will need the:
 - **REST Endpoint URL** and the
 - **Administrator API Key**.
 
-You can retrieve them both from the [WCD console](https://console.weaviate.cloud) as shown in the interactive example below.
+You can retrieve them both from the [WCD console](https://weaviate.io/go/console?utm_source=docs&utm_content=quickstart) as shown in the interactive example below.
 
 :::note
 
-New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled by default. These clusters don't come with API keys, you will need to create an API key yourself and assign it a role (`admin`, `viewer` or a custom role). 
+New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Access Control)](/weaviate/configuration/rbac/index.mdx) enabled by default. These clusters don't come with API keys, you will need to create an API key yourself and assign it a role (`admin`, `viewer` or a custom role).
 
 :::
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
-  <iframe 
-    id="ok8l954sxr" 
-    src="https://app.guideflow.com/embed/ok8l954sxr" 
-    width="100%" 
-    height="100%" 
-    style={{overflow: "hidden", position: "absolute", border: "none"}} 
-    scrolling="no" 
-    allow="clipboard-read; clipboard-write" 
-    webKitAllowFullScreen 
-    mozAllowFullScreen 
-    allowFullScreen 
+  <iframe
+    id="ok8l954sxr"
+    src="https://app.guideflow.com/embed/ok8l954sxr"
+    width="100%"
+    height="100%"
+    style={{overflow: "hidden", position: "absolute", border: "none"}}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
     allowTransparency="true"
   />
   <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="ok8l954sxr"></script>
@@ -200,43 +200,11 @@ import CreateCollection from '/\_includes/code/quickstart/quickstart.create_coll
 
 Run this code to create the collection to which you can add data.
 
-:::info What models are being used?
-
-You can optionally specify the model in the collection definition. As we did not specify models in the collection definition above, these integrations will use the Weaviate-defined default models.
-<br/>
-
-See the [model providers integration](../model-providers/index.md) section for more information.
-
-:::
+import ModelProvider from '/\_includes/embedding-model-providers.mdx'
 
 <details>
   <summary>Do you prefer a different setup?</summary>
-
-Weaviate is very flexible. If you prefer a different model provider integration, or prefer to import your own vectors, see one of the following guides:
-
-<div class="row">
-  <div class="col col--6 margin-top--xs padding-top--xs">
-    <div class="card">
-      <div class="card__header">
-        <h4>Prefer a different model provider?</h4>
-      </div>
-      <div class="card__body">
-        See <Link to="#can-i-use-different-integrations">this section</Link> for information on how to user another provider, such as AWS, Cohere, Google, and many more.
-      </div>
-    </div>
-  </div>
-  <div class="col col--6 margin-top--xs padding-top--xs">
-    <div class="card">
-      <div class="card__header">
-        <h4>Want to specify object vectors?</h4>
-      </div>
-      <div class="card__body">
-        If you prefer to add vectors yourself along with the object data, see <Link to="/weaviate/starter-guides/custom-vectors">Starter Guide: Bring Your Own Vectors</Link>.
-      </div>
-    </div>
-  </div>
-</div>
-
+  <ModelProvider />
 </details>
 
 ### 2.2 Add objects
@@ -405,7 +373,7 @@ flowchart LR
     style sg3 fill:#ffffff,stroke:#130C49,stroke-width:2px,color:#130C49
 ```
 
-The following example combines the same search (for `biology`) with a prompt to generate a tweet. 
+The following example combines the same search (for `biology`) with a prompt to generate a tweet.
 
 import QueryRAG from '/\_includes/code/quickstart/quickstart.query.rag.mdx'
 
@@ -482,7 +450,7 @@ Try these additional resources to learn more about Weaviate:
         </div>
         <div class="card__body">
           <p>
-            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>, and the <Link to="/academy">Weaviate Academy</Link> unit on <Link to="/academy/py/standalone/chunking">chunking</Link>.
+            Check out the <Link to="/weaviate/starter-guides/generative">Starter guide: retrieval augmented generation</Link>.
           </p>
         </div>
       </div>

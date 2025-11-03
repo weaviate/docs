@@ -48,7 +48,7 @@ This Agent is available exclusively for use with a Weaviate Cloud instance.
 
 Refer to the [Weaviate Cloud documentation](/cloud/index.mdx) for more information on how to set up a Weaviate Cloud instance.
 
-You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://console.weaviate.cloud/).
+You can try this Weaviate Agent with a free Sandbox instance on [Weaviate Cloud](https://weaviate.io/go/console?utm_source=docs&utm_content=agents).
 
 ### Client library
 
@@ -60,7 +60,7 @@ You can install the Weaviate client library with the optional `agents` extras to
 
 Install the client library using the following command:
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
 <TabItem value="py_agents" label="Python">
 
 ```shell
@@ -108,7 +108,7 @@ The Personalization Agent is tightly integrated with Weaviate Cloud. As a result
 
 You must connect to the Weaviate Cloud instance to use the Personalization Agent. Connect to the Weaviate Cloud instance using the Weaviate client library.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -123,7 +123,7 @@ You must connect to the Weaviate Cloud instance to use the Personalization Agent
 
 Personalization Agents are stateful, with user persona data persisting in Weaviate. As a result, you can create a new Personalization Agent or connect to an existing one.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -144,7 +144,7 @@ Each persona will include a user ID, a set of user properties, and a set of inte
 
 To create a persona, specify a user ID and the set of user properties to be used for personalization.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -163,7 +163,7 @@ You can delete or update an existing user persona, as well as to check if a user
 #### Delete a user persona
 
 To delete a user persona, specify the user ID of the persona to be deleted.
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -178,7 +178,7 @@ To delete a user persona, specify the user ID of the persona to be deleted.
 
 To update a user persona, specify the user ID of the persona to be updated and the new set of user properties.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -193,7 +193,7 @@ To update a user persona, specify the user ID of the persona to be updated and t
 
 To check if a user persona exists, specify the user ID of the persona to be checked.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -208,7 +208,7 @@ To check if a user persona exists, specify the user ID of the persona to be chec
 
 To get a user persona, specify the user ID of the persona to be retrieved.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -233,7 +233,7 @@ The available parameters are:
 - `replace_previous_interaction`: whether to replace the previous interaction with the same item ID
 - `created_at`: timestamp of the interaction (affects how much weight the interaction has)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -251,7 +251,7 @@ Once a user persona has been created, you can get personalized objects.
 
 As a minimum, simply provide the user ID to the Personalization Agent. The Personalization Agent will process the user ID, perform the necessary searches in Weaviate, and return the personalized recommendations.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -287,7 +287,7 @@ The available parameters for getting personalized objects are:
 - `instruction`: custom instructions for the reranking
 - `explain_results`: whether to include explanations for the results
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -309,7 +309,7 @@ In addition to the response objects, the response may include the following info
     - Original rank of the item
     - Personalized rank of the item
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -328,7 +328,7 @@ In contrast to the [`get_objects` method](#get-personalized-objects), a personal
 
 Weaviate's `near_text`, `bm25` and `hybrid` queries can be combined with the Personalization Agent to provide personalized results.
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}
@@ -353,7 +353,7 @@ The available parameters for personalizing a Weaviate query can be specified ups
 - `recent_interactions_count`: number of recent interactions to consider for personalization
 - `decay_rate`: decay rate for older interactions (1.0 = heavily discount older interactions; 0.0 = no discount)
 
-<Tabs groupId="languages">
+<Tabs className="code" groupId="languages">
     <TabItem value="py_agents" label="Python">
         <FilteredTextBlock
             text={PyCode}

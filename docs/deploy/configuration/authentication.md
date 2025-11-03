@@ -75,7 +75,7 @@ API key authentication is a simple and effective way to authenticate users. Each
 
 ### API keys: Database users
 
-When [creating database users programmatically](/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key). 
+When [creating database users programmatically](/weaviate/configuration/rbac/manage-users.mdx#create-a-user), each user is assigned a distinct API key at creation time. These API keys can also be [regenerated (rotated)](/weaviate/configuration/rbac/manage-users.mdx#rotate-user-api-key).
 
 ### API keys: Docker
 
@@ -303,7 +303,7 @@ import WCDOIDCWarning from '/_includes/wcd-oidc.mdx';
 Configuring the OIDC token issuer is outside the scope of this document, but here are a few options as a starting point:
 
 - For simple use-cases such as for a single user, you can use Weaviate Cloud (WCD) as the OIDC token issuer. To do so:
-    - Make sure you have a WCD account (you can [sign up here](https://console.weaviate.cloud/)).
+    - Make sure you have a WCD account (you can [sign up here](https://weaviate.io/go/console?utm_source=docs&utm_content=deploy)).
     - In the Docker Compose file (e.g. `docker-compose.yml`), specify:
       - `https://auth.wcs.api.weaviate.io/auth/realms/SeMI` as the issuer (in `AUTHENTICATION_OIDC_ISSUER`),
       - `wcs` as the client id (in `AUTHENTICATION_OIDC_CLIENT_ID`), and

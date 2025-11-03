@@ -11,7 +11,7 @@ export default function FirstVisitModal() {
     const forceShow = urlParams.get("firstvisit") === "true";
 
     const hasVisited = localStorage.getItem("docs-has-visited");
-    console.log("hasVisited:", hasVisited, "forceShow:", forceShow);
+    //console.log("hasVisited:", hasVisited, "forceShow:", forceShow);
 
     if (!hasVisited || forceShow) {
       const timer = setTimeout(() => {
