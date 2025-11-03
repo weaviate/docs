@@ -30,7 +30,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
             await client.Collections.Delete("WineReview");
         }
 
-        var wineReview = await client.Collections.Create(new Collection { Name = "WineReview" });
+        var wineReview = await client.Collections.Create(new CollectionConfig { Name = "WineReview" });
         await wineReview.Data.InsertMany(new[]
         {
             new { title = "Review A" },
@@ -42,7 +42,7 @@ public class ManageObjectsReadAllTest : IAsyncLifetime
         {
             await client.Collections.Delete("WineReviewMT");
         }
-        var wineReviewMT = await client.Collections.Create(new Collection
+        var wineReviewMT = await client.Collections.Create(new CollectionConfig
         {
             Name = "WineReviewMT",
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true }

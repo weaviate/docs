@@ -35,17 +35,17 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestBasicSchema()
     {
         // START BasicSchema
-        var questionsCollection = await client.Collections.Create(new Collection
+        var questionsCollection = await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Set the vectorizer
-            GenerativeConfig = new Generative.CohereConfig(), // Set the generative module
-            Properties = new()
-            {
+            GenerativeConfig = new GenerativeConfig.Cohere(), // Set the generative module
+            Properties = 
+            [
                 Property.Text("question"),
                 Property.Text("answer"),
                 Property.Text("category")
-            }
+            ]
         });
 
         Console.WriteLine(questionsCollection);
@@ -57,13 +57,13 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestSchemaWithPropertyOptions()
     {
         // START SchemaWithPropertyOptions
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new Generative.CohereConfig(),
-            Properties = new()
-            {
+            GenerativeConfig = new GenerativeConfig.Cohere(),
+            Properties = 
+            [
                 Property.Text(
                     "question",
                     tokenization: PropertyTokenization.Lowercase
@@ -74,7 +74,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                     tokenization: PropertyTokenization.Whitespace
                     // vectorizePropertyName: false // Pass as a simple named argument
                 )
-            }
+            ]
         });
         // END SchemaWithPropertyOptions
     }
@@ -83,16 +83,16 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestSchemaWithMultiTenancy()
     {
         // START SchemaWithMultiTenancy
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()),
-            GenerativeConfig = new Generative.CohereConfig(),
-            Properties = new()
-            {
+            GenerativeConfig = new GenerativeConfig.Cohere(),
+            Properties = 
+            [
                 Property.Text("question"),
                 Property.Text("answer")
-            },
+            ],
             // highlight-start
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = true, AutoTenantCreation = true } // Enable multi-tenancy
             // highlight-end
@@ -104,7 +104,7 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
     public async Task TestSchemaWithIndexSettings()
     {
         // START SchemaWithIndexSettings
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig(
@@ -118,12 +118,12 @@ public class StarterGuidesCollectionsTest : IAsyncLifetime
                 }
                 // highlight-end
             ),
-            GenerativeConfig = new Generative.CohereConfig(),
-            Properties = new()
-            {
+            GenerativeConfig = new GenerativeConfig.Cohere(),
+            Properties = 
+            [
                 Property.Text("question"),
                 Property.Text("answer")
-            },
+            ],
             // highlight-start
             // Configure the inverted index
             InvertedIndexConfig = new InvertedIndexConfig

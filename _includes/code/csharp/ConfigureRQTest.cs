@@ -38,13 +38,13 @@
 //     public async Task TestEnableRQ()
 //     {
 //         // START EnableRQ
-//         await client.Collections.Create(new Collection
+//         await client.Collections.Create(new CollectionConfig
 //         {
 //             Name = "MyCollection",
 //             Properties = [Property.Text("title")],
 //             VectorConfig = new VectorConfig(
 //                 "default",
-//                 new Vectorizer.Text2VecContextionary(),
+//                 new Vectorizer.Text2VecTransformers(),
 //                 new VectorIndex.HNSW
 //                 {
 //                     // highlight-start
@@ -60,13 +60,13 @@
 //     public async Task Test1BitEnableRQ()
 //     {
 //         // START 1BitEnableRQ
-//         await client.Collections.Create(new Collection
+//         await client.Collections.Create(new CollectionConfig
 //         {
 //             Name = "MyCollection",
 //             Properties = [Property.Text("title")],
 //             VectorConfig = new VectorConfig(
 //                 "default",
-//                 new Vectorizer.Text2VecContextionary(),
+//                 new Vectorizer.Text2VecTransformers(),
 //                 new VectorIndex.HNSW
 //                 {
 //                     // highlight-start
@@ -82,13 +82,13 @@
 //     public async Task TestUncompressed()
 //     {
 //         // START Uncompressed
-//         await client.Collections.Create(new Collection
+//         await client.Collections.Create(new CollectionConfig
 //         {
 //             Name = "MyCollection",
 //             Properties = [Property.Text("title")],
 //             VectorConfig = new VectorConfig(
 //                 "default",
-//                 new Vectorizer.Text2VecContextionary(),
+//                 new Vectorizer.Text2VecTransformers(),
 //                 // highlight-start
 //                 // Omitting the Quantizer property results in an uncompressed index.
 //                 new VectorIndex.HNSW()
@@ -102,13 +102,13 @@
 //     public async Task TestRQWithOptions()
 //     {
 //         // START RQWithOptions
-//         await client.Collections.Create(new Collection
+//         await client.Collections.Create(new CollectionConfig
 //         {
 //             Name = "MyCollection",
 //             Properties = [Property.Text("title")],
 //             VectorConfig = new VectorConfig(
 //                 "default",
-//                 new Vectorizer.Text2VecContextionary(),
+//                 new Vectorizer.Text2VecTransformers(),
 //                 new VectorIndex.HNSW
 //                 {
 //                     // highlight-start
@@ -129,11 +129,11 @@
 //     {
 //         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
 //         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
-//         var collection = await client.Collections.Create(new Collection
+//         var collection = await client.Collections.Create(new CollectionConfig
 //         {
 //             Name = "MyCollection",
 //             Properties = [Property.Text("title")],
-//             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+//             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
 //         });
 
 //         // START UpdateSchema
@@ -148,11 +148,11 @@
 //     [Fact]
 //     public async Task Test1BitUpdateSchema()
 //     {
-//         var collection = await client.Collections.Create(new Collection
+//         var collection = await client.Collections.Create(new CollectionConfig
 //         {
 //             Name = "MyCollection",
 //             Properties = [Property.Text("title")],
-//             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+//             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
 //         });
 
 //         // START 1BitUpdateSchema

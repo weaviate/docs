@@ -42,15 +42,15 @@ public class StarterGuidesCustomVectorsTest
 
             // START CreateCollection
             // Create the collection.
-            await client.Collections.Create(new Collection
+            await client.Collections.Create(new CollectionConfig
             {
                 Name = collectionName,
-                Properties = new()
-                {
+                Properties = 
+                [
                     Property.Text("answer"),
                     Property.Text("question"),
                     Property.Text("category")
-                },
+                ],
                 VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
             });
             // END CreateCollection

@@ -52,7 +52,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestBasicCreateCollection()
     {
         // START BasicCreateCollection
-        await client.Collections.Create(new Collection { Name = "Article" });
+        await client.Collections.Create(new CollectionConfig { Name = "Article" });
         // END BasicCreateCollection
 
         bool exists = await client.Collections.Exists("Article");
@@ -63,7 +63,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithProperties()
     {
         // START CreateCollectionWithProperties
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             Properties =
@@ -75,7 +75,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         // END CreateCollectionWithProperties
 
         var config = await client.Collections.Export("Article");
-        Assert.Equal(2, config.Properties.Count);
+        Assert.Equal(2, config.Properties.Length);
     }
 
     public class Article
@@ -94,7 +94,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         //     public string Body { get; set; }
         // }
     
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             Properties = [.. Property.FromClass<Article>()],
@@ -102,13 +102,13 @@ public class ManageCollectionsTest : IAsyncLifetime
         // END CreateCollectionWithClassProperties
 
         var config = await client.Collections.Export("Article");
-        Assert.Equal(2, config.Properties.Count);
+        Assert.Equal(2, config.Properties.Length);
     }
 
     [Fact]
     public async Task TestAddProperties()
     {
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             Properties =
@@ -131,12 +131,12 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithVectorizer()
     {
         // START Vectorizer
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
             },
             Properties =
             [
@@ -155,16 +155,16 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithNamedVectors()
     {
         // START BasicNamedVectors
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "ArticleNV",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("title", new Vectorizer.Text2VecContextionary
+                new VectorConfig("title", new Vectorizer.Text2VecTransformers
                 {
                     SourceProperties = ["title"]
                 }, new VectorIndex.HNSW()),
-                new VectorConfig("title_country", new Vectorizer.Text2VecContextionary
+                new VectorConfig("title_country", new Vectorizer.Text2VecTransformers
                 {
                     SourceProperties = ["title", "country"]
                 }, new VectorIndex.HNSW()),
@@ -190,12 +190,12 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task ConfigurePropertyModuleSettings()
     {
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
             },
             Properties =
                     [
@@ -208,7 +208,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         await articles.Config.AddVector(Configure.Vectors.Text2VecCohere().New("body_vector", sourceProperties: "body"));
         // END AddNamedVectors
 
-        Collection config = await client.Collections.Export("Article");
+        CollectionConfig config = await client.Collections.Export("Article");
         Assert.Equal(2, config.VectorConfig.Count);
         //Assert.NotNull(config.VectorConfig["body_vector"]);
     }
@@ -222,7 +222,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task CreateCollectionWithMultiVectors()
     {
         // START MultiValueVectorCollection
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "DemoCollection",
             VectorConfig = new VectorConfigList
@@ -230,14 +230,14 @@ public class ManageCollectionsTest : IAsyncLifetime
             // The factory function will automatically enable multi-vector support for the HNSW index
             // Configure.MultiVectors.Text2VecJinaAI().New("jina_colbert"),
             // Must explicitly enable multi-vector support for the HNSW index
-            Configure.MultiVectors.SelfProvided("custom_multi_vector"),
+            Configure.MultiVectors.SelfProvided().New("custom_multi_vector"),
         },
-            Properties = new List<Property> { Property.Text("text") },
+            Properties = [ Property.Text("text") ],
         });
         // END MultiValueVectorCollection
 
         // Assert
-        Collection config = await client.Collections.Export("DemoCollection");
+        CollectionConfig config = await client.Collections.Export("DemoCollection");
         Assert.True(config.VectorConfig.ContainsKey("jina_colbert"));
         Assert.True(config.VectorConfig.ContainsKey("custom_multi_vector"));
     }
@@ -250,13 +250,13 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetVectorIndexType()
     {
         // START SetVectorIndexType
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
                 new VectorConfig("default",
-                    new Vectorizer.Text2VecContextionary(),
+                    new Vectorizer.Text2VecTransformers(),
                     new VectorIndex.HNSW()
                 )
             },
@@ -276,13 +276,13 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetVectorIndexParams()
     {
         // START SetVectorIndexParams
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
                 new VectorConfig("default",
-                    new Vectorizer.Text2VecContextionary(),
+                    new Vectorizer.Text2VecTransformers(),
                     new VectorIndex.HNSW
                     {
                         EfConstruction = 300,
@@ -307,7 +307,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetInvertedIndexParams()
     {
         // START SetInvertedIndexParams
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             Properties =
@@ -329,19 +329,19 @@ public class ManageCollectionsTest : IAsyncLifetime
         var config = await client.Collections.Export("Article");
         Assert.Equal(1, config.InvertedIndexConfig.Bm25.B);
         Assert.Equal(2, config.InvertedIndexConfig.Bm25.K1);
-        Assert.Equal(3, config.Properties.Count);
+        Assert.Equal(3, config.Properties.Length);
     }
 
     [Fact]
     public async Task TestSetReranker()
     {
         // START SetReranker
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
             },
             RerankerConfig = new Reranker.Cohere(),
             Properties =
@@ -359,7 +359,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateReranker()
     {
-        await client.Collections.Create(new Collection { Name = "Article" });
+        await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START UpdateReranker
         var collection = client.Collections.Use<object>("Article");
@@ -378,14 +378,14 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestSetGenerative()
     {
         // START SetGenerative
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
             },
-            GenerativeConfig = new Generative.CohereConfig(),
+            GenerativeConfig = new GenerativeConfig.Cohere(),
             Properties =
             [
                 Property.Text("title")
@@ -395,25 +395,25 @@ public class ManageCollectionsTest : IAsyncLifetime
 
         var config = await client.Collections.Export("Article");
         Assert.NotNull(config.GenerativeConfig);
-        Assert.Equal("generative-cohere", (config.GenerativeConfig as Generative.CohereConfig)?.Type);
+        Assert.Equal("generative-cohere", (config.GenerativeConfig as GenerativeConfig.Cohere)?.Type);
     }
 
     [Fact]
     public async Task TestUpdateGenerative()
     {
-        await client.Collections.Create(new Collection { Name = "Article" });
+        await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START UpdateGenerative
         var collection = client.Collections.Use<object>("Article");
         await collection.Config.Update(c =>
         {
-            c.GenerativeConfig = new Generative.CohereConfig();
+            c.GenerativeConfig = new GenerativeConfig.Cohere();
         });
         // END UpdateGenerative
 
         var config = await client.Collections.Export("Article");
         Assert.NotNull(config.GenerativeConfig);
-        Assert.Equal("generative-cohere", (config.GenerativeConfig as Generative.CohereConfig)?.Type);
+        Assert.Equal("generative-cohere", (config.GenerativeConfig as GenerativeConfig.Cohere)?.Type);
     }
 
     // START ModuleSettings
@@ -425,11 +425,11 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestCreateCollectionWithPropertyConfig()
     {
         // START PropModuleSettings
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
-            Properties = new List<Property>
-            {
+            Properties = 
+            [
                 Property.Text(
                     "title",
                     // vectorizePropertyName: true,
@@ -440,24 +440,24 @@ public class ManageCollectionsTest : IAsyncLifetime
                     // skipVectorization: true,
                     tokenization: PropertyTokenization.Whitespace
                 ),
-            },
+            ],
         });
         // END PropModuleSettings
 
         var config = await client.Collections.Export("Article");
-        Assert.Equal(2, config.Properties.Count);
+        Assert.Equal(2, config.Properties.Length);
     }
 
     [Fact]
     public async Task TestCreateCollectionWithTrigramTokenization()
     {
         // START TrigramTokenization
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
-                new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+                new VectorConfig("default", new Vectorizer.Text2VecTransformers())
             },
             Properties =
             [
@@ -475,13 +475,13 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestDistanceMetric()
     {
         // START DistanceMetric
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             VectorConfig = new VectorConfigList
             {
                 new VectorConfig("default",
-                    new Vectorizer.Text2VecContextionary(),
+                    new Vectorizer.Text2VecTransformers(),
                     new VectorIndex.HNSW
                     {
                         Distance = VectorIndexConfig.VectorDistance.Cosine
@@ -504,7 +504,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestReplicationSettings()
     {
         // START ReplicationSettings
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             ReplicationConfig = new ReplicationConfig { Factor = 1 }
@@ -519,7 +519,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestAsyncRepair()
     {
         // START AsyncRepair
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             ReplicationConfig = new ReplicationConfig
@@ -538,7 +538,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestAllReplicationSettings()
     {
         // START AllReplicationSettings
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             ReplicationConfig = new ReplicationConfig
@@ -559,7 +559,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestShardingSettings()
     {
         // START ShardingSettings
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             ShardingConfig = new ShardingConfig
@@ -581,7 +581,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestMultiTenancy()
     {
         // START Multi-tenancy
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             MultiTenancyConfig = new MultiTenancyConfig
@@ -600,11 +600,11 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestReadOneCollection()
     {
-        await client.Collections.Create(new Collection { Name = "Article" });
+        await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
         // START ReadOneCollection
         var articles = client.Collections.Use<object>("Article");
-        var articlesConfig = await articles.Get();
+        var articlesConfig = await articles.Config.Get();
 
         Console.WriteLine(articlesConfig);
         // END ReadOneCollection
@@ -616,11 +616,11 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestReadAllCollections()
     {
-        await client.Collections.Create(new Collection { Name = "Article" });
-        await client.Collections.Create(new Collection { Name = "Publication" });
+        await client.Collections.Create(new CollectionConfig { Name = "Article" });
+        await client.Collections.Create(new CollectionConfig { Name = "Publication" });
 
         // START ReadAllCollections
-        var response = new List<Collection>();
+        var response = new List<CollectionConfig>();
         await foreach (var collection in client.Collections.List())
         {
             response.Add(collection);
@@ -636,7 +636,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     [Fact]
     public async Task TestUpdateCollection()
     {
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Article",
             InvertedIndexConfig = new InvertedIndexConfig
@@ -655,7 +655,7 @@ public class ManageCollectionsTest : IAsyncLifetime
         });
         // END UpdateCollection
 
-        var config = await articles.Get();
+        var config = await articles.Config.Get();
         Assert.Equal("An updated collection description.", config.Description);
         Assert.Equal(1.5f, config.InvertedIndexConfig.Bm25.K1);
     }
@@ -664,7 +664,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     public async Task TestDeleteCollection()
     {
         string collectionName = "Article";
-        await client.Collections.Create(new Collection { Name = collectionName });
+        await client.Collections.Create(new CollectionConfig { Name = collectionName });
         Assert.True(await client.Collections.Exists(collectionName));
 
         // START DeleteCollection
@@ -677,7 +677,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // [Fact]
     // public async Task TestInspectCollectionShards()
     // {
-    //     await client.Collections.Create(new Collection { Name = "Article" });
+    //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
 
     //     var articles = client.Collections.Use<object>("Article");
 
@@ -694,7 +694,7 @@ public class ManageCollectionsTest : IAsyncLifetime
     // [Fact]
     // public async Task TestUpdateCollectionShards()
     // {
-    //     await client.Collections.Create(new Collection { Name = "Article" });
+    //     await client.Collections.Create(new CollectionConfig { Name = "Article" });
     //     var initialShards = await client.Collections.Use<object>("Article").Shards.Get();
     //     var shardName = initialShards.First().Name;
 

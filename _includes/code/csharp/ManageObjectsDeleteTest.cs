@@ -28,10 +28,10 @@ public class ManageObjectsDeleteTest : IAsyncLifetime
         {
             await client.Collections.Delete(COLLECTION_NAME);
         }
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = COLLECTION_NAME,
-            Properties = new[] { Property.Text("name") }.ToList()
+            Properties = [ Property.Text("name") ]
         });
     }
 

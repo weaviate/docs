@@ -67,12 +67,12 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // START CollectionWithAutoPQ
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig(
                 "default",
-                new Vectorizer.Text2VecContextionary(),
+                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -99,7 +99,7 @@ public class ConfigurePQTest : IAsyncLifetime
 
         // Confirm that the collection has been created with the right settings
         var collection = client.Collections.Use(COLLECTION_NAME);
-        var config = await collection.Get();
+        var config = await collection.Config.Get();
         Assert.NotNull(config);
         var hnswConfig = config.VectorConfig["default"].VectorIndexConfig as VectorIndex.HNSW;
         Assert.NotNull(hnswConfig?.Quantizer);
@@ -111,11 +111,11 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // START InitialSchema
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             Description = "A Jeopardy! question",
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecContextionary()),
+            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
             Properties =
             [
                 Property.Text("question"),
@@ -126,7 +126,7 @@ public class ConfigurePQTest : IAsyncLifetime
         // END InitialSchema
 
         var collection = client.Collections.Use(COLLECTION_NAME);
-        var initialConfig = await collection.Get();
+        var initialConfig = await collection.Config.Get();
         Assert.NotNull(initialConfig);
 
         // START LoadData
@@ -159,7 +159,7 @@ public class ConfigurePQTest : IAsyncLifetime
         });
         // END UpdateSchema
 
-        var updatedConfig = await collection.Get();
+        var updatedConfig = await collection.Config.Get();
         Assert.NotNull(updatedConfig);
         var hnswConfig = updatedConfig.VectorConfig["default"].VectorIndexConfig as VectorIndex.HNSW;
         Assert.IsType<VectorIndex.Quantizers.PQ>(hnswConfig?.Quantizer);
@@ -171,12 +171,12 @@ public class ConfigurePQTest : IAsyncLifetime
         await BeforeEach();
 
         // Create a collection with PQ enabled to inspect its schema
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Question",
             VectorConfig = new VectorConfig(
                 "default",
-                new Vectorizer.Text2VecContextionary(),
+                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     Quantizer = new VectorIndex.Quantizers.PQ
@@ -200,7 +200,7 @@ public class ConfigurePQTest : IAsyncLifetime
 
         // START GetSchema
         var jeopardy = client.Collections.Use("Question");
-        var config = await jeopardy.Get();
+        var config = await jeopardy.Config.Get();
 
         Console.WriteLine(JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
         // END GetSchema

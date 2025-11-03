@@ -52,17 +52,17 @@ public class QuickstartTest
         }
         // START CreateCollection
         // highlight-start
-        var questions = await client.Collections.Create(new Collection
+        var questions = await client.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
-            Properties = new()
-                {
+            Properties = 
+            [
                     Property.Text("answer"),
                     Property.Text("question"),
                     Property.Text("category")
-                },
+            ],
             VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecWeaviate()), // Configure the Weaviate Embeddings integration
-            GenerativeConfig = new Generative.CohereConfig() // Configure the Cohere generative AI integration
+            GenerativeConfig = new GenerativeConfig.Cohere() // Configure the Cohere generative AI integration
         });
         // highlight-end
         // END CreateCollection

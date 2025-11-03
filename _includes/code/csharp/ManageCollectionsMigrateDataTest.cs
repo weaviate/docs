@@ -72,21 +72,21 @@ public class ManageCollectionsMigrateDataTest : IAsyncLifetime
         // START CreateCollectionCollectionToTenant
         // START CreateCollectionTenantToCollection
         // START CreateCollectionTenantToTenant
-        return await clientIn.Collections.Create(new Collection
+        return await clientIn.Collections.Create(new CollectionConfig
         {
             Name = collectionName,
             MultiTenancyConfig = new MultiTenancyConfig { Enabled = enableMt },
             // Additional settings not shown
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecContextionary()),
-            GenerativeConfig = new Generative.CohereConfig(),
-            Properties = new()
-            {
+            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers()),
+            GenerativeConfig = new GenerativeConfig.Cohere(),
+            Properties = 
+            [
                 Property.Text("review_body"),
                 Property.Text("title"),
                 Property.Text("country"),
                 Property.Int("points"),
                 Property.Number("price")
-            }
+            ]
         });
     }
     // END CreateCollectionCollectionToCollection

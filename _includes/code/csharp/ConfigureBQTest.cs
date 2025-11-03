@@ -38,13 +38,13 @@ public class ConfigureBQTest : IAsyncLifetime
     public async Task TestEnableBQ()
     {
         // START EnableBQ
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
             VectorConfig = new VectorConfig(
                 "default",
-                new Vectorizer.Text2VecContextionary(),
+                new Vectorizer.Text2VecTransformers(),
                 new VectorIndex.HNSW
                 {
                     // highlight-start
@@ -61,11 +61,11 @@ public class ConfigureBQTest : IAsyncLifetime
     {
         // Note: Updating quantization settings on an existing collection is not supported by Weaviate
         // and will result in an error, as noted in the Java test. This test demonstrates the syntax for attempting the update.
-        var collection = await client.Collections.Create(new Collection
+        var collection = await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
         });
 
         // START UpdateSchema
@@ -81,13 +81,13 @@ public class ConfigureBQTest : IAsyncLifetime
     public async Task TestBQWithOptions()
     {
         // START BQWithOptions
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             Properties = [Property.Text("title")],
             VectorConfig = new VectorConfig(
                 "default",
-                new Vectorizer.Text2VecContextionary(),
+                new Vectorizer.Text2VecTransformers(),
                 // highlight-start
                 new VectorIndex.HNSW
                 {

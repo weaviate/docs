@@ -40,15 +40,15 @@ public class SearchImageTest : IAsyncLifetime
             await client.Collections.Delete("Dog");
         }
 
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Dog",
-            Properties = new()
-            {
+            Properties = 
+            [
                 Property.Blob("image"),
                 Property.Text("breed"),
                 Property.Text("description")
-            },
+            ],
             VectorConfig = new VectorConfig(
                 "default",
                 new Vectorizer.Multi2VecClip { ImageFields = new[] { "image" }, TextFields = new[] { "breed", "description" } }

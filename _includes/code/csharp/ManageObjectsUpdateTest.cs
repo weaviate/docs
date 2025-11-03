@@ -31,7 +31,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         {
             await client.Collections.Delete("WineReviewNV");
         }
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "WineReviewNV",
             Properties =
@@ -42,11 +42,11 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
             ],
             VectorConfig = new[]
             {
-                new VectorConfig("title", new Vectorizer.Text2VecContextionary()),
-                new VectorConfig("review_body", new Vectorizer.Text2VecContextionary()),
+                new VectorConfig("title", new Vectorizer.Text2VecTransformers()),
+                new VectorConfig("review_body", new Vectorizer.Text2VecTransformers()),
                 new VectorConfig(
                 "title_country",
-                new Vectorizer.Text2VecContextionary { SourceProperties = ["title", "country"] }
+                new Vectorizer.Text2VecTransformers { SourceProperties = ["title", "country"] }
                 )
             }
         });
@@ -67,7 +67,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
         {
             await client.Collections.Delete("JeopardyQuestion");
         }
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
@@ -77,7 +77,7 @@ public class ManageObjectsUpdateTest : IAsyncLifetime
                 Property.Text("answer", description: "The answer"),
                 Property.Number("points", description: "The points the question is worth")
             ],
-            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecContextionary())
+            VectorConfig = new VectorConfig("default", new Vectorizer.Text2VecTransformers())
         });
         // END Define the class
     }

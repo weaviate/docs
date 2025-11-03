@@ -183,7 +183,7 @@ public class SearchAggregateTest : IDisposable
         var jeopardy = client.Collections.Use("JeopardyQuestion");
         var response = await jeopardy.Aggregate.OverAll(
             // highlight-start
-            filter: Filter.Property("round").Equal("Final Jeopardy!"),
+            filters: Filter.Property("round").Equal("Final Jeopardy!"),
             // highlight-end
             totalCount: true
         );

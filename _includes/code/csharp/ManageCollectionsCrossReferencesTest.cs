@@ -33,27 +33,20 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestCrossRefDefinition()
     {
         // START CrossRefDefinition
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = new() { Property.Text("title") }
+            Properties = [ Property.Text("title") ]
         });
 
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = new()
-            {
-                Property.Text("question"),
-                Property.Text("answer")
-            },
+            Properties = [ Property.Text("question"), Property.Text("answer") ],
             // highlight-start
-            References = new()
-            {
-                new Reference("hasCategory", "JeopardyCategory")
-            }
+            References = [ new Reference("hasCategory", "JeopardyCategory") ]
             // highlight-end
         });
         // END CrossRefDefinition
@@ -118,22 +111,22 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     public async Task TestTwoWay()
     {
         // START TwoWayCategory1CrossReferences
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = new() { Property.Text("title") }
+            Properties = [ Property.Text("title") ]
         });
         // END TwoWayCategory1CrossReferences
 
         // START TwoWayQuestionCrossReferences
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = new() { Property.Text("question"), Property.Text("answer") },
+            Properties = [ Property.Text("question"), Property.Text("answer") ],
             // highlight-start
-            References = new() { new Reference("hasCategory", "JeopardyCategory") }
+            References = [ new Reference("hasCategory", "JeopardyCategory") ]
             // highlight-end
         });
         // END TwoWayQuestionCrossReferences
@@ -299,19 +292,19 @@ public class ManageCollectionsCrossReferencesTest : IAsyncLifetime
     // Helper method to set up collections
     private async Task SetupCollections()
     {
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyCategory",
             Description = "A Jeopardy! category",
-            Properties = new() { Property.Text("title") }
+            Properties = [ Property.Text("title") ]
         });
 
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "JeopardyQuestion",
             Description = "A Jeopardy! question",
-            Properties = new() { Property.Text("question"), Property.Text("answer") },
-            References = new() { new Reference("hasCategory", "JeopardyCategory") }
+            Properties = [ Property.Text("question"), Property.Text("answer") ],
+            References = [ new Reference("hasCategory", "JeopardyCategory") ]
         });
     }
 }

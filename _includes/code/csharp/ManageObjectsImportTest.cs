@@ -93,7 +93,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBasicBatchImport()
     {
         await BeforeEach();
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
@@ -108,13 +108,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         // There is no direct equivalent of the Python client's stateful batch manager.
         // You collect objects and send them in a single request.
         // highlight-start
-        var response = await collection.Data.InsertMany(add =>
-        {
-            foreach (var dataRow in dataRows)
-            {
-                add(dataRow);
-            }
-        });
+        var response = await collection.Data.InsertMany(dataRows);
         // highlight-end
 
         var failedObjects = response.Where(r => r.Error != null).ToList();
@@ -137,7 +131,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithID()
     {
         await BeforeEach();
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
@@ -155,13 +149,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         var collection = client.Collections.Use<object>("MyCollection");
 
         // highlight-start
-        var response = await collection.Data.InsertMany(add =>
-        {
-            foreach (var item in dataToInsert)
-            {
-                add(item.properties, item.uuid);
-            }
-        });
+        var response = await collection.Data.InsertMany(dataToInsert);
         // highlight-end
 
         var failedObjects = response.Where(r => r.Error != null).ToList();
@@ -182,7 +170,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithVector()
     {
         await BeforeEach();
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             VectorConfig = new VectorConfig("default", new Vectorizer.SelfProvided())
@@ -202,13 +190,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
         var collection = client.Collections.Use<object>("MyCollection");
 
         // highlight-start
-        var response = await collection.Data.InsertMany(add =>
-        {
-            foreach (var item in dataToInsert)
-            {
-                add(item.properties, item.uuid, item.vector);
-            }
-        });
+        var response = await collection.Data.InsertMany(dataToInsert);
         // highlight-end
 
         var failedObjects = response.Where(r => r.Error != null).ToList();
@@ -227,8 +209,8 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestBatchImportWithCrossReference()
     {
         await BeforeEach();
-        await client.Collections.Create(new Collection { Name = "Publication", Properties = [Property.Text("title")] });
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig { Name = "Publication", Properties = [Property.Text("title")] });
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "Author",
             Properties = [Property.Text("name")],
@@ -262,7 +244,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestImportWithNamedVectors()
     {
         await BeforeEach();
-        await client.Collections.Create(new Collection
+        await client.Collections.Create(new CollectionConfig
         {
             Name = "MyCollection",
             VectorConfig = new[]
@@ -295,13 +277,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         // Insert the data using InsertMany
         // highlight-start
-        var response = await collection.Data.InsertMany(add =>
-        {
-            foreach (var item in dataToInsert)
-            {
-                add(item.properties, vectors: item.vectors);
-            }
-        });
+        var response = await collection.Data.InsertMany(dataToInsert);
         // highlight-end
 
         // Check for errors
@@ -318,7 +294,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
     public async Task TestJsonStreaming()
     {
         await BeforeEach();
-        await client.Collections.Create(new Collection { Name = "JeopardyQuestion" });
+        await client.Collections.Create(new CollectionConfig { Name = "JeopardyQuestion" });
 
         // START JSON streaming
         int batchSize = 100;
@@ -337,26 +313,16 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
             if (batch.Count == batchSize)
             {
-                await collection.Data.InsertMany(add =>
-                {
-                    foreach (var item in batch)
-                    {
-                        add(item);
-                    }
-                }); Console.WriteLine($"Imported {batch.Count} articles...");
+                await collection.Data.InsertMany(batch);
+                Console.WriteLine($"Imported {batch.Count} articles...");
                 batch.Clear();
             }
         }
 
         if (batch.Any())
         {
-            await collection.Data.InsertMany(add =>
-            {
-                foreach (var item in batch)
-                {
-                    add(item);
-                }
-            }); Console.WriteLine($"Imported remaining {batch.Count} articles...");
+            await collection.Data.InsertMany(batch);
+            Console.WriteLine($"Imported remaining {batch.Count} articles...");
         }
 
         Console.WriteLine("Finished importing articles.");
@@ -388,7 +354,7 @@ public class ManageObjectsImportTest : IAsyncLifetime
             }
         }
 
-        await client.Collections.Create(new Collection { Name = "JeopardyQuestion" });
+        await client.Collections.Create(new CollectionConfig { Name = "JeopardyQuestion" });
 
         // START CSV streaming
         int batchSize = 100;
@@ -407,13 +373,8 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
                 if (batch.Count == batchSize)
                 {
-                    await collection.Data.InsertMany(add =>
-                    {
-                        foreach (var item in batch)
-                        {
-                            add(item);
-                        }
-                    }); Console.WriteLine($"Imported {batch.Count} articles...");
+                    await collection.Data.InsertMany(batch);
+                    Console.WriteLine($"Imported {batch.Count} articles...");
                     batch.Clear();
                 }
             }
@@ -421,13 +382,8 @@ public class ManageObjectsImportTest : IAsyncLifetime
 
         if (batch.Any())
         {
-            await collection.Data.InsertMany(add =>
-            {
-                foreach (var item in batch)
-                {
-                    add(item);
-                }
-            }); Console.WriteLine($"Imported remaining {batch.Count} articles...");
+            await collection.Data.InsertMany(batch);
+            Console.WriteLine($"Imported remaining {batch.Count} articles...");
         }
 
         Console.WriteLine("Finished importing articles.");
