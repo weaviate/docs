@@ -1005,7 +1005,7 @@ const sidebars = {
     },
   ],
   deployProductionSidebar: [
-    "deploy/production/index",
+    "deploy/production/index", 
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",
