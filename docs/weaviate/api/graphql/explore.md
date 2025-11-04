@@ -11,7 +11,7 @@ image: og/docs/api.jpg
 
 The `Explore` function is disabled where multiple inference (e.g. `text2vec-xxx`) modules are enabled.
 
-As a result, `Explore` is not available on [Weaviate Cloud (WCD)](https://console.weaviate.cloud/) as its clusters are pre-configured with multiple inference modules for AWS, Cohere, Google, OpenAI and so on.
+As a result, `Explore` is not available on [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=api) as its clusters are pre-configured with multiple inference modules for AWS, Cohere, Google, OpenAI and so on.
 
 :::
 

@@ -16,7 +16,7 @@ This recipe will show you how to run hybrid search with embeddings from Mistral.
 ## Requirements
 
 1. Weaviate cluster
-    1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
+    1. You can create a 14-day free sandbox on [WCD](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
     2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
     3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
     4. [Other options](https://docs.weaviate.io/deploy)
@@ -104,9 +104,9 @@ client.collections.create(
     ),
 
     properties=[ # defining properties (data schema) is optional
-        wc.Property(name="Question", data_type=wc.DataType.TEXT), 
+        wc.Property(name="Question", data_type=wc.DataType.TEXT),
         wc.Property(name="Answer", data_type=wc.DataType.TEXT),
-        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True), 
+        wc.Property(name="Category", data_type=wc.DataType.TEXT, skip_vectorization=True),
     ]
 )
 
@@ -137,13 +137,13 @@ else:
 
 ## Hybrid Search
 
-The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search. 
+The `alpha` parameter determines the weight given to the sparse and dense search methods. `alpha = 0` is pure sparse (bm25) search, whereas `alpha = 1` is pure dense (vector) search.
 
 Alpha is an optional parameter. The default is set to `0.75`.
 
 ### Hybrid Search only
 
-The below query is finding Jeopardy questions about animals and is limiting the output to only two results. Notice `alpha` is set to `0.80`, which means it is weighing the vector search results more than bm25. If you were to set `alpha = 0.25`, you would get different results. 
+The below query is finding Jeopardy questions about animals and is limiting the output to only two results. Notice `alpha` is set to `0.80`, which means it is weighing the vector search results more than bm25. If you were to set `alpha = 0.25`, you would get different results.
 
 ```python
 response = jeopardy.query.hybrid(

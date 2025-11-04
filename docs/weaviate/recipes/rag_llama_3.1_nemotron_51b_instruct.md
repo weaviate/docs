@@ -16,7 +16,7 @@ In this demo, we will use an embedding and generative model on NVIDIA to generat
 ## Requirements
 
 1. Weaviate cluster
-    1. You can create a 14-day free sandbox on [WCD](https://console.weaviate.cloud/)
+    1. You can create a 14-day free sandbox on [WCD](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
     2. [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
     3. [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
     4. [Other options](https://docs.weaviate.io/deploy)
@@ -149,7 +149,7 @@ def split_into_sentences(text):
 def read_and_chunk_index_files(main_folder_path):
     """Read index.md files from subfolders, split into sentences, and chunk every 5 sentences."""
     blog_chunks = []
-    
+
     for file_path in os.listdir("./data"):
         index_file_path = os.path.join("./data", file_path)
         with open(index_file_path, 'r', encoding='utf-8') as file:
@@ -191,11 +191,11 @@ for blog_chunk in blog_chunks:
 
 ```
 
-## Query Time 
+## Query Time
 
 ## Hybrid Search Query
 
-Hybrid search combines BM25 and vector search and weighs the two algorithms depending on the `alpha` parameter. 
+Hybrid search combines BM25 and vector search and weighs the two algorithms depending on the `alpha` parameter.
 
 `alpha`= 0 --> pure BM25
 
@@ -204,7 +204,7 @@ Hybrid search combines BM25 and vector search and weighs the two algorithms depe
 `alpha`= 1 --> pure vector search
 
 ```python
-import json 
+import json
 
 blogs = client.collections.use("BlogChunks")
 

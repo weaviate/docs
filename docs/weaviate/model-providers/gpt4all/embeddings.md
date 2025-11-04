@@ -61,7 +61,7 @@ To use this integration, you must configure the container image of the GPT4All m
 
 The following example shows how to configure the GPT4All integration in Weaviate:
 
-<Tabs className="code" groupId="languages">
+<Tabs groupId="deployments">
 <TabItem value="docker" label="Docker">
 
 #### Docker Option 1: Use a pre-configured `docker-compose.yml` file
