@@ -42,4 +42,14 @@ client.collections.delete("WineReviewNV")
 dataset = wd.WineReviewsNV()  # Instantiate dataset
 dataset.upload_dataset(client)  # Pass the Weaviate client instance
 
+client.collections.delete("WineReviewsMT")
+
+dataset = wd.WineReviewsMT()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
+
+client.collections.delete("WineReviews")
+
+dataset = wd.WineReviews()  # Instantiate dataset
+dataset.upload_dataset(client)  # Pass the Weaviate client instance
+
 client.close()
