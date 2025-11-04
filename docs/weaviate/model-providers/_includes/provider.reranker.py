@@ -60,6 +60,40 @@ client.collections.create(
 # Clean up
 client.collections.delete("DemoCollection")
 
+# START RerankerContextualAIBasic
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    reranker_config=Configure.Reranker.contextualai()
+    # highlight-end
+    # Additional parameters not shown
+)
+# END RerankerContextualAIBasic
+
+# Clean up
+client.collections.delete("DemoCollection")
+
+# START RerankerContextualAICustomModel
+from weaviate.classes.config import Configure
+
+client.collections.create(
+    "DemoCollection",
+    # highlight-start
+    reranker_config=Configure.Reranker.contextualai(
+        model="ctxl-rerank-v2-instruct-multilingual",
+        instruction="Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.",
+        top_n=5
+    )
+    # highlight-end
+    # Additional parameters not shown
+)
+# END RerankerContextualAICustomModel
+
+# Clean up
+client.collections.delete("DemoCollection")
+
 # START RerankerJinaAIBasic
 from weaviate.classes.config import Configure
 
