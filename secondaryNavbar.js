@@ -6,7 +6,7 @@ const secondaryNavbarItems = {
     link: "/weaviate",
     links: [
       {
-        label: "Get Started",
+        label: "Get started",
         link: "/weaviate",
         sidebar: "getStartedSidebar",
       },
@@ -16,7 +16,7 @@ const secondaryNavbarItems = {
         sidebar: "guidesSidebar",
       },
       {
-        label: "Model Integrations",
+        label: "Model integrations",
         link: "/weaviate/model-providers",
         sidebar: "modelProvidersSidebar",
       },
@@ -63,11 +63,10 @@ const secondaryNavbarItems = {
     description: "Deploy, configure, and maintain Weaviate Database",
     link: "/deploy",
     links: [
-      { label: "Get Started", link: "/deploy", sidebar: "deploySidebar" },
+      { label: "Get started", link: "/deploy", sidebar: "deploySidebar" },
       { label: "Configuration", link: "/deploy/configuration", sidebar: "deployConfigSidebar"},
       /*{ label: "Kubernetes", link: "/deploy/k8s", sidebar: "deployK8sSidebar" },*/
-      { label: "Production Guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
-      { label: "AWS", link: "/deploy/aws", sidebar: "deployAwsSidebar" },
+      { label: "Production guides", link: "/deploy/production", sidebar: "deployProductionSidebar"},
       /*{ label: "Scaling Strategies", link: "/deploy/scaling-strategies", sidebar: "deployScalingSidebar"},*/
       /*{ label: "Monitoring and Observability", link: "/deploy/monitoring-obs", sidebar: "deployObservabilitySidebar"},*/
       { label: "FAQs", link: "/deploy/faqs", sidebar: "deployFaqsSidebar"},
@@ -95,7 +94,7 @@ const secondaryNavbarItems = {
     description: "Manage and scale Weaviate in the cloud",
     link: "/cloud",
     links: [
-      { label: "Get Started", link: "/cloud", sidebar: "cloudSidebar" },
+      { label: "Get started", link: "/cloud", sidebar: "cloudSidebar" },
       {
         label: "Weaviate Embeddings",
         link: "/cloud/embeddings",
