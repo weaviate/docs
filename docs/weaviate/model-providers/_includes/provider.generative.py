@@ -464,9 +464,9 @@ client.collections.create(
         # # These parameters are optional
         # model="v2",
         # temperature=0.7,
-        # max_tokens=500,
-        # top_p=0.5,
-        # system_prompt="You are a ..."
+        # max_tokens=1024,
+        # top_p=0.9,
+        # system_prompt="You are a helpful assistant"
         # avoid_commentary=True,
     )
     # highlight-end
@@ -492,9 +492,9 @@ response = collection.generate.near_text(
         # # These parameters are optional
         # model="v2",
         # temperature=0.7,
-        # max_tokens=500,
-        # top_p=0.5,
-        # system_prompt="You are a ..."
+        # max_tokens=1024,
+        # top_p=0.9,
+        # system_prompt="You are a helpful assistant"
         # avoid_commentary=True,
     ),
     # Additional parameters not shown

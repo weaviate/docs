@@ -56,6 +56,8 @@ await client.collections.create({
   // highlight-start
   reranker: weaviate.configure.reranker.contextualai({
     model: 'ctxl-rerank-v2-instruct-multilingual',
+    instruction: 'Prioritize internal sales documents over market analysis reports. More recent documents should be weighted higher.',
+    topN: 5,
   }),
   // highlight-end
 });

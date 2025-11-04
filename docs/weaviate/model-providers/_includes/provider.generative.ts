@@ -417,9 +417,9 @@ await client.collections.create({
     // These parameters are optional
     model: 'v2',
     // temperature: 0.7,
-    // maxTokens: 500,
-    // topP: 5,
-    // systemPrompt: 'You are a ...',
+    // maxTokens: 1024,
+    // topP: 0.9,
+    // systemPrompt: 'You are a helpful assistant',
     // avoidCommentary: true,
   }),
   // highlight-end
@@ -435,9 +435,9 @@ response = await myCollection.generate.nearText("A holiday film", {
     // These parameters are optional
     // model: 'v2',
     // temperature: 0.7,
-    // maxTokens: 500,
-    // topP: 5,
-    // systemPrompt: 'You are a ...',
+    // maxTokens: 1024,
+    // topP: 0.9,
+    // systemPrompt: 'You are a helpful assistant',
     // avoidCommentary: true,
   }),
   // highlight-end

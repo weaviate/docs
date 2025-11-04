@@ -8,6 +8,8 @@ image: og/docs/integrations/provider_integrations_contextualai.jpg
 
 # Contextual AI Reranker Models with Weaviate
 
+:::info Added in `v1.34.0`
+:::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -179,7 +181,7 @@ Any search in Weaviate can be combined with a reranker to perform reranking oper
 
 - `ctxl-rerank-v1-instruct`
 - `ctxl-rerank-v2-instruct-multilingual-mini`
-- `ctxl-rerank-v2-instruct-multilingual`
+- `ctxl-rerank-v2-instruct-multilingual` (default)
 
 ## Further resources
 

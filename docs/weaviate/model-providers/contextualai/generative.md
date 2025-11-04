@@ -8,6 +8,8 @@ image: og/docs/integrations/provider_integrations_contextualai.jpg
 
 # Contextual AI Generative AI with Weaviate
 
+:::info Added in `v1.34.0`
+:::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
