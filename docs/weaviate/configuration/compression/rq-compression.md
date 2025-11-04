@@ -23,10 +23,17 @@ import CompressionByDefault from '/\_includes/compression-by-default.mdx';
 
 ## 8-bit RQ
 
-:::info Added in `v1.32` and `v1.34`
+:::info Added in `v1.32`
 
-**8-bit Rotational quantization (RQ)** for the HNSW vector index was added in **`v1.32`**.<br/>
-**8-bit Rotational quantization (RQ)** for the flat vector index was added in **`v1.34`** as a **preview** and should not be used in production.<br/>
+**8-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.32`**.
+
+:::
+
+:::caution Preview
+
+**8-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.34`** as a **preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
 
 :::
 
@@ -112,10 +119,17 @@ RQ can also be enabled for an existing collection by updating the collection def
 
 ## 1-bit RQ
 
-:::info Added in `v1.33` and `v1.34`
+:::info Added in `v1.32`
 
-**1-bit Rotational quantization (RQ)** for the HNSW vector index was added in **`v1.33`**.<br/>
-**1-bit Rotational quantization (RQ)** for the flat vector index was added in **`v1.34`** as a **preview** and should not be used in production.<br/>
+**1-bit Rotational quantization (RQ)** for the **HNSW vector index** was added in **`v1.33`**.
+
+:::
+
+:::caution Preview
+
+**1-bit Rotational quantization (RQ)** for the **flat vector index** was added in **`v1.34`** as a **preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
 
 :::
 
