@@ -1,5 +1,6 @@
 ---
-title: Hardening your EKS deployment
+title: "AWS: Hardening your EKS deployment"
+sidebar_label: Hardening EKS deployments
 description: Harden your self-hosted Weaviate deployment on Amazon EKS.
 ---
 
@@ -111,7 +112,7 @@ Set up CloudTrail to log all IAM API calls and configure alerts for suspicious a
 ## Network security
 
 :::info AWS Best Practices
-See [AWS network security best practices](./net-security-bp.md) for detailed recommendations.
+See [AWS network security best practices](./network-security.md) for detailed recommendations.
 :::
 
 ### Encrypt all traffic with TLS
@@ -289,7 +290,7 @@ Turn on EKS control plane logging, especially audit logs.
 - [RBAC](../../configuration/configuring-rbac.md)
 - [Backups](../../configuration/backups.md)
 - [Monitoring](../../configuration/monitoring.md)
-- [AWS network security - Best practices](../aws/net-security-bp.md)
+- [AWS network security - Best practices](../aws/network-security.md)
 
 ---
 

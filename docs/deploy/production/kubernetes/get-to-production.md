@@ -1,43 +1,39 @@
-# Building with Weaviate: Getting to Production
+---
+title: "Kubernetes: Getting to production"
+sidebar_label: Getting to production
+description: This guide shows how to get a Weaviate Kubernetes deployment production-ready.
+---
 
-## Introduction
-
-Are you ready to deploy and test Weaviate on a self-managed K8s (Kubernetes) cluster? This guide shows how to validate Weaviate’s capabilities in your enterprise environment.  
+Are you ready to deploy and test Weaviate on a self-managed K8s (Kubernetes) cluster? This guide shows how to validate Weaviate’s capabilities in your enterprise environment.
 
 At the end of this guide, expect to have:
 
 - A configured Helm-based deployment and networking setup
 - Basic scaling, persistent storage, and resource management
-- TLS, RBAC, and security best practices implements
+- TLS, RBAC, and security best practices implemented
 - Monitoring, logging, and backup strategies enabled
 
 ### Prerequisites
 
 Before beginning, ensure that you have the following:
 
-#### Technical Knowledge
-
 - Basic Kubernetes and containerization conceptual knowledge
 - Basic experience with Helm and `kubectl`
-
+- A running Kubernetes cluster with Weaviate installed
+- `kubectl` installed
+- Helm installed
 <!-- TODO[g-despot] This needs to be replaced with something else
 :::note
 
-Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.weaviate.io/academy/deployment/k8s) if you need assistance. 
+Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.weaviate.io/academy/deployment/k8s) if you need assistance.
 
 :::
 -->
 
-#### Required Tools
-
-- A running Kubernetes cluster with Weaviate installed
-- `kubectl` installed
-- Helm installed
-
 ## Step 1: Configure your Helm Chart
 
 - Use the official [Weaviate Helm chart](https://github.com/weaviate/weaviate-helm) for your installation:
- 
+
 ```
   helm repo add weaviate https://weaviate.github.io/weaviate-helm
   helm install my-weaviate weaviate/weaviate
@@ -64,23 +60,25 @@ Check out the Academy course [“Run Weaviate on Kubernetes”](https://docs.wea
     - admin_user1
     - admin_user2
 ```
+
 </details>
 
 <details>
 <summary> An example of admin lists implemented on your Helm chart (if not using RBAC)</summary>
 
 ```yaml
-  admin_list:
-    enabled: true
-    users:
+admin_list:
+  enabled: true
+  users:
     - admin_user1
     - admin_user2
     - api-key-user-admin
-    read_only_users:
+  read_only_users:
     - readonly_user1
     - readonly_user2
     - api-key-user-readOnly
 ```
+
 [Admin List Configuration](/deploy/configuration/authorization.md#admin-list-kubernetes)
 
 </details>
@@ -111,11 +109,12 @@ resources:
     cpu: "2"
     memory: "4Gi"
 ```
+
 </details>
 
 ## Step 4: Monitoring and Logging
 
-- Use Prometheus and Grafana to collect and analyze performance metrics. 
+- Use Prometheus and Grafana to collect and analyze performance metrics.
 - Implement alerting for issue resolution.
 
 <details>
@@ -127,8 +126,8 @@ serviceMonitor:
   interval: 30s
   scrapeTimeout: 10s
 ```
-</details>
 
+</details>
 
 ## Step 5: Upgrades and Backups
 
@@ -144,6 +143,7 @@ updateStrategy:
     maxSurge: 1
     maxUnavailable: 0
 ```
+
 </details>
 
 - Test new Weaviate versions before deploying into production.
@@ -151,12 +151,12 @@ updateStrategy:
 
 ### Conclusion
 
-Voila! You now have a deployment that is *somewhat* ready for production. Your next step will be to complete the self-assessment and identify any gaps. 
+Voila! You now have a deployment that is _somewhat_ ready for production. Your next step will be to complete the self-assessment and identify any gaps.
 
 ### Next Steps: [Production Readiness Self-Assessment](./production-readiness.md)
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

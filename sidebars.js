@@ -1022,7 +1022,7 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "deploy/production/kubernetes/k8s-poc",
+          id: "deploy/production/kubernetes/get-to-production",
           className: "sidebar-item",
         },
         {
@@ -1053,7 +1053,7 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "deploy/production/aws/net-security-bp",
+          id: "deploy/production/aws/network-security",
           className: "sidebar-item",
         },
       ],

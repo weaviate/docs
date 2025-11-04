@@ -1,10 +1,8 @@
 ---
-title: AWS network security - Best practices
+title: "AWS: Network security - Best practices"
+sidebar_label: Network security - Best practices
 description: "Expert recommendations for maximizing network security in your Weaviate deployment."
-
 ---
-
-# Best practices and tips
 
 This page serves as a reference for AWS-specific networking best practices for your Weaviate deployment. It outlines a network security architecture designed to protect your Weaviate deployments.
 

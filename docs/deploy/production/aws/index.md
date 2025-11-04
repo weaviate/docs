@@ -1,21 +1,11 @@
 ---
 title: Deploying Weaviate on AWS
 sidebar_title:
-sidebar_position: 0
 ---
-
 
 This section provides comprehensive guidance for deploying and running Weaviate on Amazon Web Services (AWS). Whether you're setting up a development environment, deploying to production, or integrating with AWS services, you'll find AWS-specific installation guides, tutorials, how-tos, and reference materials tailored for the AWS ecosystem.
 
-
-## What you'll find here:
-
-- **Installation Guides:** Step-by-step instructions for deploying Weaviate using various AWS services.
-- **Tutorials:** End-to-end walkthroughs for common AWS deployment scenarios.
-- **How-to Guides:** Task-focused instructions for specific AWS configurations and integrations.
-- **Reference Documentation:** AWS-specific configuration options, best practices, and troubleshooting guides.
-
-## Deployment methods
+## Deployment options
 
 Weaviate has multiple pathways to deploy on AWS, each suited to different use cases and operational needs:
 
@@ -23,7 +13,7 @@ Weaviate has multiple pathways to deploy on AWS, each suited to different use ca
 
 #### [AWS marketplace - Serverless Cloud](../../installation-guides/aws-marketplace.md)
 
-Deploy Weaviate Serverless Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration. 
+Deploy Weaviate Serverless Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration.
 
 This SaaS solution is specifically built for AWS customers who need:
 
@@ -74,7 +64,6 @@ Create and manage your own EKS cluster using the `eksctl` command-line tool, pro
 
 ![deployment comparison matrix](./img/deployment-matrix.png)
 
-
 Each deployment option offers different levels of management and control:
 
 - **Serverless Cloud:** Fully managed SaaS with automatic scaling and zero infrastructure management.
@@ -82,9 +71,8 @@ Each deployment option offers different levels of management and control:
 - **Marketplace EC2:** Single-instance Docker deployment with monthly billing, ideal for development.
 - **Self-Managed EKS:** Complete control over EKS cluster configuration and management.
 
-
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>
