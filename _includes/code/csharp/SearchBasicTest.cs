@@ -63,6 +63,33 @@ public class SearchBasicTest : IAsyncLifetime
         Assert.True(response.Objects.First().Properties.ContainsKey("question"));
     }
 
+    // TODO[g-despot]: Enable when C# client supports offset
+    // [Fact]
+    // public async Task BasicGetOffset()
+    // {
+    //     // ==============================
+    //     // ===== BASIC GET EXAMPLES =====
+    //     // ==============================
+
+    //     // START 
+    //     var jeopardy = client.Collections.Use("JeopardyQuestion");
+    //     // highlight-start
+    //     var response = await jeopardy.Query.FetchObjects(offset: 1, limit: 1);
+    //     // highlight-end
+
+    //     foreach (var o in response.Objects)
+    //     {
+    //         Console.WriteLine(JsonSerializer.Serialize(o.Properties));
+    //     }
+    //     // END 
+
+    //     Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
+    //     Assert.True(response.Objects.First().Properties.ContainsKey("question"));
+    // }
+    // START GetWithOffset
+    // Coming soon
+    // END GetWithOffset
+
     [Fact]
     public async Task GetWithLimit()
     {
@@ -154,19 +181,12 @@ public class SearchBasicTest : IAsyncLifetime
 
         // START GetObjectId
         var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion");
-        var response = await jeopardy.Query.FetchObjects(
-            // Object IDs are included by default with the Weaviate C# client! :)
-            limit: 1
+        var response = await jeopardy.Query.FetchObjectByID(
+            Guid.Parse("36ddd591-2dee-4e7e-a3cc-eb86d30a4303")
         );
 
-        foreach (var o in response.Objects)
-        {
-            Console.WriteLine(o.ID);
-        }
+        Console.WriteLine(response);
         // END GetObjectId
-
-        Assert.Equal("JeopardyQuestion", response.Objects.First().Collection);
-        Assert.IsType<Guid>(response.Objects.First().ID);
     }
 
     [Fact]
@@ -257,5 +277,30 @@ public class SearchBasicTest : IAsyncLifetime
 
         Assert.True(response.Objects.Count() > 0);
         Assert.Equal("WineReviewMT", response.Objects.First().Collection);
+    }
+
+    [Fact]
+    public async Task GetObjectWithReplication()
+    {
+        // ==================================
+        // ===== GET OBJECT ID EXAMPLES =====
+        // ==================================
+
+        // START QueryWithReplication
+        var jeopardy = client.Collections.Use<Dictionary<string, object>>("JeopardyQuestion").WithConsistencyLevel(ConsistencyLevels.Quorum);
+        var response = await jeopardy.Query.FetchObjectByID(
+            Guid.Parse("36ddd591-2dee-4e7e-a3cc-eb86d30a4303")
+        );
+
+        // The parameter passed to `withConsistencyLevel` can be one of:
+        // * 'ALL',
+        // * 'QUORUM' (default), or
+        // * 'ONE'.
+        //
+        // It determines how many replicas must acknowledge a request
+        // before it is considered successful.
+
+        Console.WriteLine(response);
+        // END QueryWithReplication
     }
 }

@@ -2,12 +2,12 @@ using Weaviate.Client;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using System.Collections.Generic;
 
 namespace WeaviateProject.Examples;
 
 public class ConnectionTest
 {
-    //TODO[g-despot] Replace with readiness check
     [Fact]
     public async Task TestConnectLocalWithCustomUrl()
     {
@@ -19,12 +19,10 @@ public class ConnectionTest
             GrpcAddress = "127.0.0.1",
             GrpcPort = 50051 // Default gRPC port
         };
-        using var client = new WeaviateClient(config);
+        WeaviateClient client = new WeaviateClient(config);
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END CustomURL
     }
 
@@ -44,15 +42,13 @@ public class ConnectionTest
         string weaviateUrl = Environment.GetEnvironmentVariable("WEAVIATE_URL");
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
 
-        using var client = Connect.Cloud(
+        WeaviateClient client = Connect.Cloud(
             weaviateUrl, // Replace with your Weaviate Cloud URL
             weaviateApiKey // Replace with your Weaviate Cloud key
         );
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END APIKeyWCD
     }
 
@@ -74,17 +70,15 @@ public class ConnectionTest
             GrpcAddress = grpcHost,
             GrpcPort = 443,
             Credentials = Auth.ApiKey(weaviateApiKey),
-            // Headers = new Dictionary<string, string>
-            // {
-            //     { "X-Cohere-Api-Key", cohereApiKey }
-            // }
+            Headers = new Dictionary<string, string>
+            {
+                { "X-Cohere-Api-Key", cohereApiKey }
+            }
         };
-        using var client = new WeaviateClient(config);
+        WeaviateClient client = new WeaviateClient(config);
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END CustomConnect
     }
 
@@ -106,17 +100,15 @@ public class ConnectionTest
             GrpcAddress = grpcHost,
             GrpcPort = 443,
             Credentials = Auth.ApiKey(weaviateApiKey),
-            // Headers = new Dictionary<string, string>
-            // {
-            //     { "X-Cohere-Api-Key", cohereApiKey }
-            // }
+            Headers = new Dictionary<string, string>
+            {
+                { "X-Cohere-Api-Key", cohereApiKey }
+            }
         };
-        using var client = new WeaviateClient(config);
+        WeaviateClient client = new WeaviateClient(config);
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END ConnectWithApiKeyExample
     }
 
@@ -124,12 +116,10 @@ public class ConnectionTest
     public async Task TestConnectLocalNoAuth()
     {
         // START LocalNoAuth
-        using var client = Connect.Local();
+        WeaviateClient client = Connect.Local();
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END LocalNoAuth
     }
 
@@ -145,12 +135,10 @@ public class ConnectionTest
         {
             Credentials = Auth.ApiKey(weaviateApiKey)
         };
-        using var client = new WeaviateClient(config);
+        WeaviateClient client = new WeaviateClient(config);
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END LocalAuth
     }
 
@@ -163,17 +151,15 @@ public class ConnectionTest
 
         var config = new ClientConfiguration
         {
-            // Headers = new Dictionary<string, string>
-            // {
-            //     { "X-Cohere-Api-Key", cohereApiKey }
-            // }
+            Headers = new Dictionary<string, string>
+            {
+                { "X-Cohere-Api-Key", cohereApiKey }
+            }
         };
-        using var client = new WeaviateClient(config);
+        WeaviateClient client = new WeaviateClient(config);
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END LocalThirdPartyAPIKeys
     }
 
@@ -186,19 +172,17 @@ public class ConnectionTest
         string weaviateApiKey = Environment.GetEnvironmentVariable("WEAVIATE_API_KEY");
         string cohereApiKey = Environment.GetEnvironmentVariable("COHERE_API_KEY");
 
-        using var client = Connect.Cloud(
+        WeaviateClient client = Connect.Cloud(
             weaviateUrl, // Replace with your Weaviate Cloud URL
-            weaviateApiKey // Replace with your Weaviate Cloud key
-                           // headers: new Dictionary<string, string>
-                           // {
-                           //     { "X-Cohere-Api-Key", cohereApiKey }
-                           // }
+            weaviateApiKey, // Replace with your Weaviate Cloud key
+            new Dictionary<string, string>
+            {
+                { "X-Cohere-Api-Key", cohereApiKey }
+            }
         );
 
-        var meta = await client.GetMeta();
-        Console.WriteLine(meta);
-
-        // The 'using' statement handles freeing up resources automatically.
+        var isReady = await client.IsReady();
+        Console.WriteLine(isReady);
         // END ThirdPartyAPIKeys
     }
 
