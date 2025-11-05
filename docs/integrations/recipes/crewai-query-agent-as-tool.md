@@ -15,7 +15,7 @@ tags: ['Query Agent', 'Integration']
 This notebook will show you how to define the Weaviate Query Agent as a tool through the Crew AI.
 
 ## Requirements
-1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://console.weaviate.cloud/).
+1. Weaviate Cloud instance (WCD): The Weaviate Query Agent is only accessible through WCD at the moment. You can create a serverless cluster or a free 14-day sandbox [here](https://weaviate.io/go/console?utm_source=docs&utm_content=integrations).
 2. Install Crew AI with `pip install crewai`
 3. Install the Weaviate Agents package with `pip install weaviate-agents`
 4. You'll need a Weaviate cluster with data. If you don't have one, check out [this notebook](https://github.com/weaviate/recipes/blob/main/integrations/Weaviate-Import-Example.ipynb) to import the Weaviate Blogs.
@@ -92,12 +92,12 @@ class WeaviateQueryAgentTool(BaseTool):
 
     def _run(self, query: str) -> str:
         return self.send_query_agent_request(query)
-    
+
 
 query_agent_tool = WeaviateQueryAgentTool()
 ```
 
-### 
+###
 
 ```python
 researcher = Agent(
@@ -143,10 +143,10 @@ runner original_query='packaging software applications with Docker' collection_n
 # Agent: Blog Content Researcher
 ## Thought: I need to find relevant blog posts about packaging software applications with Docker. I will formulate a query to search for this topic in the Weaviate database.
 ## Using tool: Weaviate Query Agent
-## Tool Input: 
+## Tool Input:
 "{\"query\": \"packaging software applications with Docker\"}"
-## Tool Output: 
-Docker is a platform that uses OS-level virtualization to package software applications in units called containers. These containers are similar to lightweight virtual machines, possessing their own file systems and operating system libraries, yet sharing the host system's kernel. Containers are beneficial for software application packaging as they provide considerable isolation with reduced overhead compared to traditional virtual machines. 
+## Tool Output:
+Docker is a platform that uses OS-level virtualization to package software applications in units called containers. These containers are similar to lightweight virtual machines, possessing their own file systems and operating system libraries, yet sharing the host system's kernel. Containers are beneficial for software application packaging as they provide considerable isolation with reduced overhead compared to traditional virtual machines.
 
 A standard Docker practice is to package a single application per container, with the container's lifecycle managed by the application's main process. If this process ends, the container typically stops. This approach ensures applications run in isolation with a consistent environment across different systems.
 
@@ -159,8 +159,8 @@ Docker Compose is often used in parallel with Docker to manage multi-container a
   warnings.warn(
 
 # Agent: Blog Content Researcher
-## Final Answer: 
-Docker is a platform that uses OS-level virtualization to package software applications in units called containers. These containers are similar to lightweight virtual machines, possessing their own file systems and operating system libraries, yet sharing the host system's kernel. Containers are beneficial for software application packaging as they provide considerable isolation with reduced overhead compared to traditional virtual machines. 
+## Final Answer:
+Docker is a platform that uses OS-level virtualization to package software applications in units called containers. These containers are similar to lightweight virtual machines, possessing their own file systems and operating system libraries, yet sharing the host system's kernel. Containers are beneficial for software application packaging as they provide considerable isolation with reduced overhead compared to traditional virtual machines.
 
 A standard Docker practice is to package a single application per container, with the container's lifecycle managed by the application's main process. If this process ends, the container typically stops. This approach ensures applications run in isolation with a consistent environment across different systems.
 
@@ -168,7 +168,7 @@ One of the key benefits of using Docker is its portability: as long as the Docke
 
 Docker Compose is often used in parallel with Docker to manage multi-container applications. It allows developers to define and run multi-container Docker applications in a single file, making it easier to manage complex applications that consist of multiple interacting services.
 
-Docker is a platform that uses OS-level virtualization to package software applications in units called containers. These containers are similar to lightweight virtual machines, possessing their own file systems and operating system libraries, yet sharing the host system's kernel. Containers are beneficial for software application packaging as they provide considerable isolation with reduced overhead compared to traditional virtual machines. 
+Docker is a platform that uses OS-level virtualization to package software applications in units called containers. These containers are similar to lightweight virtual machines, possessing their own file systems and operating system libraries, yet sharing the host system's kernel. Containers are beneficial for software application packaging as they provide considerable isolation with reduced overhead compared to traditional virtual machines.
 
 A standard Docker practice is to package a single application per container, with the container's lifecycle managed by the application's main process. If this process ends, the container typically stops. This approach ensures applications run in isolation with a consistent environment across different systems.
 

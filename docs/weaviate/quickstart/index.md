@@ -85,20 +85,20 @@ If you have another preferred [model provider](/weaviate/model-providers), you c
 
 ### 1.1 Create a Weaviate database
 
-Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a free Sandbox instance.
+Go to the [Weaviate Cloud console](https://weaviate.io/go/console?utm_source=docs&utm_content=quickstart) and create a free Sandbox instance.
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
-  <iframe 
-    id="mk6l470aqk" 
-    src="https://app.guideflow.com/embed/mk6l470aqk" 
-    width="100%" 
-    height="100%" 
-    style={{overflow: "hidden", position: "absolute", border: "none"}} 
-    scrolling="no" 
-    allow="clipboard-read; clipboard-write" 
-    webKitAllowFullScreen 
-    mozAllowFullScreen 
-    allowFullScreen 
+  <iframe
+    id="mk6l470aqk"
+    src="https://app.guideflow.com/embed/mk6l470aqk"
+    width="100%"
+    height="100%"
+    style={{overflow: "hidden", position: "absolute", border: "none"}}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
     allowTransparency="true"
   />
   <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="mk6l470aqk"></script>
@@ -133,7 +133,7 @@ Now you can connect to your Weaviate instance. You will need the:
 - **REST Endpoint URL** and the
 - **Administrator API Key**.
 
-You can retrieve them both from the [WCD console](https://console.weaviate.cloud) as shown in the interactive example below.
+You can retrieve them both from the [WCD console](https://weaviate.io/go/console?utm_source=docs&utm_content=quickstart) as shown in the interactive example below.
 
 :::note
 
@@ -142,17 +142,17 @@ New clusters with Weaviate version `v1.30` (or later) have [RBAC (Role-Based Acc
 :::
 
 <div style={{position: "relative", paddingBottom: "calc(54.10879629629629% + 50px)", height: 0}}>
-  <iframe 
-    id="ok8l954sxr" 
-    src="https://app.guideflow.com/embed/ok8l954sxr" 
-    width="100%" 
-    height="100%" 
-    style={{overflow: "hidden", position: "absolute", border: "none"}} 
-    scrolling="no" 
-    allow="clipboard-read; clipboard-write" 
-    webKitAllowFullScreen 
-    mozAllowFullScreen 
-    allowFullScreen 
+  <iframe
+    id="ok8l954sxr"
+    src="https://app.guideflow.com/embed/ok8l954sxr"
+    width="100%"
+    height="100%"
+    style={{overflow: "hidden", position: "absolute", border: "none"}}
+    scrolling="no"
+    allow="clipboard-read; clipboard-write"
+    webKitAllowFullScreen
+    mozAllowFullScreen
+    allowFullScreen
     allowTransparency="true"
   />
   <script src="https://app.guideflow.com/assets/opt.js" data-iframe-id="ok8l954sxr"></script>

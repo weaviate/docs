@@ -334,8 +334,8 @@ torch.Size([2, 22, 128])
 Let's write a class to wrap the multimodal late-interaction model and its embedding functionalities for convenience.
 
 ```python
-# A convenience class to wrap the embedding functionality 
-# of ColVision models like ColPali and ColQwen2 
+# A convenience class to wrap the embedding functionality
+# of ColVision models like ColPali and ColQwen2
 class ColVision:
     def __init__(self, model, processor):
         """Initialize with a loaded model and processor."""
@@ -392,7 +392,7 @@ Now, you will need to connect to a running Weaviate vector database cluster.
 
 You can choose one of the following options:
 
-1. **Option 1:** You can create a 14-day free sandbox on the managed service [Weaviate Cloud (WCD)](https://console.weaviate.cloud/)
+1. **Option 1:** You can create a 14-day free sandbox on the managed service [Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=recipe/)
 2. **Option 2:** [Embedded Weaviate](https://docs.weaviate.io/deploy/installation-guides/embedded)
 3. **Option 3:** [Local deployment](https://docs.weaviate.io/deploy/installation-guides/docker-installation)
 4. [Other options](https://docs.weaviate.io/deploy)
@@ -559,7 +559,7 @@ Python output:
 ```text
 Running cells with 'Python 3.13.5' requires the ipykernel package.
 
-Install 'ipykernel' into the Python environment. 
+Install 'ipykernel' into the Python environment.
 
 Command: '/opt/homebrew/bin/python3 -m pip install ipykernel -U --user --force-reinstall'
 ```
@@ -791,7 +791,7 @@ Python output:
 ```text
 'DeepSeek-V2 achieves significantly stronger performance than the LLaMA family of LLMs, while also saving 42.5% of training costs and boosting the maximum generation throughput to 5.76 times.'
 ```
-As you can see, the multimodal RAG pipeline was able to answer the original query: "How does DeepSeek-V2 compare against the LLaMA family of LLMs?". For this, the ColQwen2 retrieval model retrieved the correct PDF page from the 
+As you can see, the multimodal RAG pipeline was able to answer the original query: "How does DeepSeek-V2 compare against the LLaMA family of LLMs?". For this, the ColQwen2 retrieval model retrieved the correct PDF page from the
 "DeepSeek-V2: A Strong Economical and Efficient Mixture-of-Experts Language Model" paper and used both the text and visual from the retrieved PDF page to answer the question.
 
 ## Summary

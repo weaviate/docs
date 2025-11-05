@@ -247,8 +247,8 @@ to   = "/deploy/migration/weaviate-1-30"
 status = 301
 
 [[redirects]]
-from = "/weaviate/tutorials/rbac"
-to   = "/deploy/tutorials/rbac"
+from = "/deploy/tutorials/rbac"
+to   = "/weaviate/tutorials/rbac"
 status = 301
 
 [[redirects]]
@@ -778,7 +778,7 @@ status = 301
 
 [[redirects]]
 from = "/academy/theory/embedding_model_selection/*"
-to   = "https://academy.weaviate.io/courses/wa150-py"
+to   = "https://academy.weaviate.io/courses/wa260-py"
 status = 301
 
 [[redirects]]
@@ -796,6 +796,53 @@ from = "/academy/js/*"
 to   = "/weaviate/guides"
 status = 301
 
+### Python redirects
+
+[[redirects]]
+from = "/academy/py/starter_text_data/text_searches/*"
+to   = "/weaviate/search"
+status = 301
+
+[[redirects]]
+from = "/academy/py/starter_text_data/text_rag/*"
+to   = "/weaviate/search"
+status = 301
+
+[[redirects]]
+from = "/academy/py/starter_custom_vectors/*"
+to   = "/weaviate/starter-guides/custom-vectors"
+status = 301
+
+[[redirects]]
+from = "/academy/py/named_vectors/*"
+to   = "/weaviate/manage-collections/vector-config"
+status = 301
+
+[[redirects]]
+from = "/academy/py/vector_index/*"
+to   = "/weaviate/config-refs/indexing/vector-index"
+status = 301
+
+[[redirects]]
+from = "/academy/py/compression/*"
+to   = "/weaviate/configuration/compression"
+status = 301
+
+[[redirects]]
+from = "/academy/py/tokenization/*"
+to   = "/weaviate/config-refs/collections#tokenization"
+status = 301
+
+[[redirects]]
+from = "/academy/py/multitenancy/*"
+to   = "/weaviate/manage-collections/multi-tenancy"
+status = 301
+
+[[redirects]]
+from = "/academy/py/standalone/which_search"
+to   = "/weaviate/search"
+status = 301
+
 [[redirects]]
 from = "/academy/py/*"
 to   = "https://academy.weaviate.io/courses/wa101t-py"
@@ -804,4 +851,21 @@ status = 301
 [[redirects]]
 from = "/academy/*"
 to   = "https://academy.weaviate.io/"
+status = 301
+
+## AWS production guides 
+
+[[redirects]]
+from = "/deploy/aws"
+to   = "/deploy/production/aws"
+status = 301
+
+[[redirects]]
+from = "/deploy/aws/net-security-bp"
+to   = "/deploy/production/aws"
+status = 301
+
+[[redirects]]
+from = "/deploy/production/kubernetes/k8s-poc"
+to   = "/deploy/production/kubernetes/get-to-production"
 status = 301
