@@ -12,23 +12,29 @@ import Tooltip from "/src/components/Tooltip";
 import styles from "/src/components/CardsSection/styles.module.scss";
 
 export const quickstartOptions = [
-{
-title: ( <> Vectorize objects during import<br/>(recommended) </>),
-description:
-"Import objects and vectorize them with the Weaviate Embeddings service.",
-link: "?import=vectorization",
-icon: "fas fa-arrows-spin",
-groupId: "import",
-activeTab: "vectorization",
-},
-{
-title: "Import vectors",
-description: "Import pre-computed vector embeddings along with your data.",
-link: "?import=custom-embeddings",
-icon: "fas fa-circle-nodes",
-groupId: "import",
-activeTab: "custom-embeddings",
-},
+  {
+    title: (
+      <>
+        Vectorize objects during import
+        <br />
+        (recommended)
+      </>
+    ),
+    description:
+      "Import objects and vectorize them with the Weaviate Embeddings service.",
+    link: "?import=vectorization",
+    icon: "fas fa-arrows-spin",
+    groupId: "import",
+    activeTab: "vectorization",
+  },
+  {
+    title: "Import vectors",
+    description: "Import pre-computed vector embeddings along with your data.",
+    link: "?import=custom-embeddings",
+    icon: "fas fa-circle-nodes",
+    groupId: "import",
+    activeTab: "custom-embeddings",
+  },
 ];
 
 :::note Local Quickstart
@@ -42,7 +48,7 @@ Weaviate is an open-source vector database built to power AI applications, from 
 There are two paths you can choose from:
 
 <CardsSection items={quickstartOptions} className={styles.smallCards} />
-<br/>
+<br />
 
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
@@ -65,7 +71,7 @@ This quickstart guide will show you how to:
 </TabItem>
 </Tabs>
 
-import KapaAI from '/src/components/KapaAI';
+import KapaAI from "/src/components/KapaAI";
 
 If you encounter any issues along the way or have additional questions, use the <KapaAI>Ask AI</KapaAI> feature.
 
@@ -90,7 +96,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
     src="https://app.guideflow.com/embed/mk6l470aqk"
     width="100%"
     height="100%"
-    style={{overflow: "hidden", position: "absolute", border: "none"}}
+    style={{ overflow: "hidden", position: "absolute", border: "none" }}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
     webKitAllowFullScreen
@@ -170,23 +176,18 @@ Once you have the **REST Endpoint URL** and the **admin API key**, you can conne
 
 Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
 
-import CodeClientInstall from "/\_includes/code/quickstart/clients.install.new.mdx";
+import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.mdx";
 
 <CodeClientInstall />
 
 ## Step 1: Create a collection & import data {#create-a-collection}
 
-<!--
-We can populate our database by first defining a <Tooltip content="A collection is a set of objects that share the same data structure, like a table in relational databases or a collection in NoSQL databases. A collection also includes additional configurations that define how the data objects are stored and indexed." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>collection</span></Tooltip> and then adding data. You can either **[vectorize each object during the import](?import=vectorization#create-a-collection)** (we will use the Weaviate Embeddings service to vectorize the data), or you can **[import pre-computed vector embeddings](?import=custom-embeddings#create-a-collection)**.
--->
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
 The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying.
 
-<!--We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically.-->
-
-import CreateCollection from "/\_includes/code/quickstart/quickstart.short.create_collection.mdx";
+import CreateCollection from "/_includes/code/quickstart/quickstart.short.create_collection.mdx";
 
 <CreateCollection />
 
@@ -195,7 +196,7 @@ import CreateCollection from "/\_includes/code/quickstart/quickstart.short.creat
 
 The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically.
 
-import CreateCollectionCustomVectors from "/\_includes/code/quickstart/quickstart.short.import_vectors.create_collection.mdx";
+import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.import_vectors.create_collection.mdx";
 
 <CreateCollectionCustomVectors />
 
@@ -209,7 +210,7 @@ import CreateCollectionCustomVectors from "/\_includes/code/quickstart/quickstar
 
 Semantic search finds results based on meaning. This is called `nearText` in Weaviate. The following example searches for 2 objects (_limit_) whose meaning is most similar to that of `sci-fi`.
 
-import QueryNearText from "/\_includes/code/quickstart/quickstart.short.query.neartext.mdx";
+import QueryNearText from "/_includes/code/quickstart/quickstart.short.query.neartext.mdx";
 
 <QueryNearText />
 
@@ -218,7 +219,7 @@ import QueryNearText from "/\_includes/code/quickstart/quickstart.short.query.ne
 
 Semantic search finds results based on meaning. This is called `nearVector` in Weaviate. The following example searches for 2 objects (_limit_) whose vector is most similar to the query vector.
 
-import QueryNearVectorImportVectors from "/\_includes/code/quickstart/quickstart.short.import_vectors.query.nearvector.mdx";
+import QueryNearVectorImportVectors from "/_includes/code/quickstart/quickstart.short.import_vectors.query.nearvector.mdx";
 
 <QueryNearVectorImportVectors />
 
@@ -263,7 +264,7 @@ Retrieval augmented generation (RAG), also called generative search, works by pr
 
 The following example combines the semantic search for the query `sci-fi` with a prompt to generate a tweet.
 
-import QueryRAG from "/\_includes/code/quickstart/quickstart.short.query.rag.mdx";
+import QueryRAG from "/_includes/code/quickstart/quickstart.short.query.rag.mdx";
 
 <QueryRAG />
 
@@ -274,7 +275,7 @@ Retrieval augmented generation (RAG), also called generative search, works by pr
 
 The following example combines the vector similarity search with a prompt to generate a tweet.
 
-import QueryRAGCustomVectors from "/\_includes/code/quickstart/quickstart.short.import-vectors.query.rag.mdx";
+import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.import-vectors.query.rag.mdx";
 
 <QueryRAG />
 
@@ -302,30 +303,30 @@ Are you ready to see how deep the rabbit hole goes? 🔴🔵 #TheMatrix #WakeUp
 We recommend you check out the following resources to continue learning about Weaviate.
 
 export const nextStepsCardsData = [
-{
-title: "Quick tour of Weaviate",
-description: (
-<>
-Continue with the{" "}
-<span className={styles.highlight}>Quick tour tutorial</span> – an
-end-to-end guide that covers important topics like configuring
-collections, searches, etc.
-</>
-),
-link: "/weaviate/tutorials/quick-tour-of-weaviate",
-icon: "fas fa-signs-post",
-},
-{
-title: "Weaviate Academy",
-description: (
-<>
-Check out <span className={styles.highlight}>Weaviate Academy</span> – a
-learning platform centered around AI-native development.
-</>
-),
-link: "https://academy.weaviate.io/",
-icon: "fa-solid fa-graduation-cap",
-},
+  {
+    title: "Quick tour of Weaviate",
+    description: (
+      <>
+        Continue with the{" "}
+        <span className={styles.highlight}>Quick tour tutorial</span> – an
+        end-to-end guide that covers important topics like configuring
+        collections, searches, etc.
+      </>
+    ),
+    link: "/weaviate/tutorials/quick-tour-of-weaviate",
+    icon: "fas fa-signs-post",
+  },
+  {
+    title: "Weaviate Academy",
+    description: (
+      <>
+        Check out <span className={styles.highlight}>Weaviate Academy</span> – a
+        learning platform centered around AI-native development.
+      </>
+    ),
+    link: "https://academy.weaviate.io/",
+    icon: "fa-solid fa-graduation-cap",
+  },
 ];
 
 <CardsSection items={nextStepsCardsData} className={styles.smallCards} />
@@ -333,6 +334,6 @@ icon: "fa-solid fa-graduation-cap",
 
 ## Questions and feedback
 
-import DocsFeedback from "/\_includes/docs-feedback.mdx";
+import DocsFeedback from "/_includes/docs-feedback.mdx";
 
 <DocsFeedback />
