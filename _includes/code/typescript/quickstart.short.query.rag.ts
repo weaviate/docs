@@ -1,4 +1,4 @@
-// RAG
+// START RAG
 import weaviate, { WeaviateClient, ApiKey, generativeParameters } from 'weaviate-client';
 
 // Best practice: store your credentials in environment variables

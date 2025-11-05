@@ -1,6 +1,6 @@
 package io.weaviate.docs.quickstart;
 
-// RAG
+// START RAG
 import io.weaviate.client.Config;
 import io.weaviate.client.WeaviateAuthClient;
 import io.weaviate.client.WeaviateClient;

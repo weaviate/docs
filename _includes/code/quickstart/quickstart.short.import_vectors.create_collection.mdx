@@ -2,11 +2,9 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.import_vectors.create_collection.py";
-import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.create_collection.ts";
-import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/2_1_create_collection/main.go";
-import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/CreateCollection.java";
-import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
-import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx";
+import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.import_vectors.create_collection.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_vectors_1/quickstart.short.import_vectors.create_collection.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartCreateVectors.java";
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
@@ -15,16 +13,14 @@ import VectorsAutoSchemaError from "/_includes/error-note-vectors-autoschema.mdx
     startMarker="# START CreateCollection"
     endMarker="# END CreateCollection"
     language="py"
-    title="quickstart_create_collection.py"
   />
 </TabItem>
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
-  startMarker="// CreateCollection"
+  startMarker="// START CreateCollection"
   endMarker="// END CreateCollection"
   language="ts"
-  title="quickstart_create_collection.ts"
 />
 </TabItem>
 
@@ -39,7 +35,6 @@ The collection also contains a configuration for the generative (RAG) integratio
   startMarker="// START CreateCollection"
   endMarker="// END CreateCollection"
   language="goraw"
-  title="quickstart/2_1_create_collection/main.go"
 />
 </TabItem>
 
@@ -54,35 +49,7 @@ The collection also contains a configuration for the generative (RAG) integratio
   startMarker="// START CreateCollection"
   endMarker="// END CreateCollection"
   language="javaraw"
-  title="quickstart/CreateCollection.java"
 />
-
-</TabItem>
-
-<TabItem value="curl" label="Curl">
-
-The collection also contains a configuration for the generative (RAG) integration:
-
-- OpenAI [generative AI integrations](/weaviate/model-providers/openai/generative) for retrieval augmented generation (RAG).
-
-```bash
-# Best practice: store your credentials in environment variables
-# export WEAVIATE_URL="YOUR_INSTANCE_URL"  # Your Weaviate instance URL
-# export WEAVIATE_API_KEY="YOUR_API_KEY"   # Your Weaviate instance API key
-
-curl -X POST \
--H "Content-Type: application/json" \
--H "Authorization: Bearer $WEAVIATE_API_KEY" \
--d '{
-  "class": "Question",
-  "vectorizer": "text2vec-weaviate",
-  "moduleConfig": {
-    "text2vec-weaviate": {},
-    "generative-cohere": {}
-  }
-}' \
-"$WEAVIATE_URL/v1/schema"
-```
 
 </TabItem>
 </Tabs>

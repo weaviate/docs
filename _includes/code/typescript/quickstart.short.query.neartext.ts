@@ -1,4 +1,4 @@
-// NearText
+// START NearText
 import weaviate, { WeaviateClient, ApiKey } from 'weaviate-client';
 
 // Best practice: store your credentials in environment variables
@@ -20,7 +20,7 @@ const movies = client.collections.get('Movie');
 // highlight-start
 // END NearText
 
-// NearText
+// START NearText
 const response = await movies.query.nearText(
   'sci-fi',
   {
@@ -29,7 +29,7 @@ const response = await movies.query.nearText(
 );
 // END NearText
 
-// NearText
+// START NearText
 // highlight-end
 
 for (const obj of response.objects) {

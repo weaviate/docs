@@ -1,6 +1,6 @@
 package main
 
-// NearText
+// START NearText
 import (
 	"context"
 	"encoding/json"
@@ -32,7 +32,7 @@ func main() {
 	// highlight-start
 	// END NearText
 
-	// NearText
+	// START NearText
 	title := graphql.Field{Name: "title"}
 	description := graphql.Field{Name: "description"}
 	genre := graphql.Field{Name: "genre"}
@@ -48,7 +48,7 @@ func main() {
 		Do(context.Background())
 	// END NearText
 
-	// NearText
+	// START NearText
 	// highlight-end
 
 	if err != nil {

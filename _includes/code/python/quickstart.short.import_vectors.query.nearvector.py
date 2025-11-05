@@ -1,4 +1,4 @@
-# NearText
+# START NearText
 import weaviate
 from weaviate.classes.init import Auth
 import os, json
@@ -20,14 +20,14 @@ movies = client.collections.use("Movie")
 # highlight-start
 # END NearText
 # fmt: off
-# NearText
+# START NearText
 response = movies.query.near_vector(
     near_vector=[0.11, 0.21, 0.31, 0.41, 0.51, 0.61, 0.71, 0.81], 
     limit=2
 )
 # END NearText
 # fmt: on
-# NearText
+# START NearText
 # highlight-end
 
 for obj in response.objects:

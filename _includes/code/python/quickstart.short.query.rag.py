@@ -1,4 +1,4 @@
-# RAG
+# START RAG
 import os
 import weaviate
 from weaviate.classes.init import Auth

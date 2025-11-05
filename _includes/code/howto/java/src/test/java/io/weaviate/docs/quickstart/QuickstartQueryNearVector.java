@@ -1,6 +1,6 @@
 package io.weaviate.docs.quickstart;
 
-// NearText
+// START NearText
 import io.weaviate.client.Config;
 import io.weaviate.client.WeaviateAuthClient;
 import io.weaviate.client.WeaviateClient;
@@ -30,7 +30,7 @@ public class QuickstartQueryNearVector {
     // highlight-start
     // END NearText
 
-    // NearText
+    // START NearText
     Field title = Field.builder().name("title").build();
     Field description = Field.builder().name("description").build();
     Field genre = Field.builder().name("genre").build();
@@ -47,7 +47,7 @@ public class QuickstartQueryNearVector {
         .run();
     // END NearText
 
-    // NearText
+    // START NearText
     // highlight-end
 
     // Inspect the results
