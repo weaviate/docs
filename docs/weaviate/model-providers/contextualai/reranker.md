@@ -108,9 +108,9 @@ Configure a Weaviate collection to use a Contextual AI reranker model as follows
 
 </Tabs>
 
-### Select a model
+### Reranker parameters
 
-You can specify one of the [available models](#available-models) for Weaviate to use, as shown in the following configuration example:
+Configure the reranker behavior, including the model to use, through the following parameters:
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -134,6 +134,8 @@ You can specify one of the [available models](#available-models) for Weaviate to
 </Tabs>
 
 The [default model](#available-models) is used if no model is specified.
+
+For further details on model parameters, see the [Contextual AI API documentation](https://docs.contextual.ai/api-reference/rerank/rerank).
 
 ## Header parameters
 

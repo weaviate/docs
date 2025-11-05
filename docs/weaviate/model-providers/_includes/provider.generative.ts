@@ -421,6 +421,7 @@ await client.collections.create({
     // topP: 0.9,
     // systemPrompt: 'You are a helpful assistant',
     // avoidCommentary: true,
+    // knowledge: ['Custom knowledge override', 'Additional context'],
   }),
   // highlight-end
   // Additional parameters not shown
@@ -439,6 +440,7 @@ response = await myCollection.generate.nearText("A holiday film", {
     // topP: 0.9,
     // systemPrompt: 'You are a helpful assistant',
     // avoidCommentary: true,
+    // knowledge: ['Custom knowledge override', 'Additional context'],
   }),
   // highlight-end
 }, {
