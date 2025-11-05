@@ -90,7 +90,7 @@ Go to the [Weaviate Cloud console](https://console.weaviate.cloud) and create a 
     src="https://app.guideflow.com/embed/mk6l470aqk"
     width="100%"
     height="100%"
-    style={{ overflow: "hidden", position: "absolute", border: "none" }}
+    style={{overflow: "hidden", position: "absolute", border: "none"}}
     scrolling="no"
     allow="clipboard-read; clipboard-write"
     webKitAllowFullScreen
@@ -124,7 +124,7 @@ After you create a Weaviate Cloud instance, you will need the:
 - **REST Endpoint URL** and the
 - **Administrator API Key**.
 
-You can retrieve them both from the [WCD console](https://console.weaviate.cloud) as shown in the interactive example below.
+You can retrieve them both from the [WCD console](https://weaviate.io/go/console?utm_source=docs&utm_content=quickstart) as shown in the interactive example below.
 
 <div
   style={{
