@@ -468,6 +468,7 @@ client.collections.create(
         # top_p=0.9,
         # system_prompt="You are a helpful assistant"
         # avoid_commentary=True,
+        # knowledge=["Custom knowledge override", "Additional context"],
     )
     # highlight-end
     # Additional parameters not shown
@@ -496,6 +497,7 @@ response = collection.generate.near_text(
         # top_p=0.9,
         # system_prompt="You are a helpful assistant"
         # avoid_commentary=True,
+        # knowledge=["Custom knowledge override", "Additional context"],
     ),
     # Additional parameters not shown
     # highlight-end

@@ -160,16 +160,17 @@ Configure the following generative parameters to customize the model behavior.
 
 </Tabs>
 
-For further details on model parameters, see the [Contextual AI API documentation](https://docs.contextual.ai/).
+For further details on model parameters, see the [Contextual AI API documentation](https://docs.contextual.ai/api-reference/generate/generate).
 
-If a parameter is not specified, Weaviate uses the server-side default for that parameter. They are documented below.
+If a parameter is not specified, Weaviate uses the server-side default for that parameter. They are:
 
-- `DefaultContextualAIModel`           = `"v2"`
-- `DefaultContextualAITemperature`     = `0.0`
-- `DefaultContextualAITopP`            = `0.9`
-- `DefaultContextualAIMaxNewTokens`    = `1024`
-- `DefaultContextualAISystemPrompt`    = `""`
-- `DefaultContextualAIAvoidCommentary` = `false`
+- model           = `"v2"`
+- temperature     = `0.0`
+- topP            = `0.9`
+- maxNewTokens    = `1024`
+- systemPrompt    = `""`
+- avoidCommentary = `false`
+- knowledge       = `nil`
 
 ## Select a model at runtime
 
