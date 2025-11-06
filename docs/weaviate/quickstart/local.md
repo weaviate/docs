@@ -105,14 +105,27 @@ services:
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama'
       CLUSTER_HOSTNAME: 'node1'
       OLLAMA_API_ENDPOINT: 'http://ollama:11434'
+    depends_on:
+      - ollama
+
   ollama:
     image: ollama/ollama:0.12.9
-    volumes:
-      - ~/.ollama:/root/.ollama
     ports:
       - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
     environment:
       - OLLAMA_HOST=0.0.0.0
+    command: >
+      sh -c "
+        ollama serve &
+        PID=$!
+        sleep 5
+        ollama pull nomic-embed-text
+        ollama pull llama3
+        wait $PID
+      "
+
 volumes:
   weaviate_data:
   ollama_data:
@@ -139,7 +152,7 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.md
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
-The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying.
+The following example creates a collection called `Movie` with the [Ollama](../model-providers/ollama/embeddings.md) embedding model provider (`text2vec-ollama`) for vectorizing data during import and for querying.
 
 import CreateCollection from "/_includes/code/quickstart/quickstart.short.local.create_collection.mdx";
 
@@ -201,15 +214,11 @@ import QueryNearVectorImportVectors from "/_includes/code/quickstart/quickstart.
 
 :::tip Weaviate Agents
 
-Try querying your Weaviate Cloud data using the [Query Agent](/agents/query/index.md). You simply provide a prompt/question in natural language, and the Query Agent takes care of all the needed steps to provide an answer.
+Try the [Query Agent](/agents/query/index.md) with a Weaviate Cloud instance. You simply provide a prompt/question in natural language, and the Query Agent takes care of all the needed steps to provide an answer.
 
 :::
 
 ## Step 3: Retrieval augmented generation (RAG)
-
-:::note Requirement: Claude API key
-For Retrieval Augmented Generation (RAG) in this step, you will need a [Claude API key](https://console.anthropic.com/settings/keys). You can also use another generative [model provider](/weaviate/model-providers) instead.
-:::
 
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
@@ -231,7 +240,7 @@ The following example combines the vector similarity search with a prompt to gen
 
 import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.local.import-vectors.query.rag.mdx";
 
-<QueryRAG />
+<QueryRAGCustomVectors />
 
 </TabItem>
 </Tabs>

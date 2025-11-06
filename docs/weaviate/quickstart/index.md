@@ -277,7 +277,7 @@ The following example combines the vector similarity search with a prompt to gen
 
 import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.import-vectors.query.rag.mdx";
 
-<QueryRAG />
+<QueryRAGCustomVectors />
 
 </TabItem>
 </Tabs>
