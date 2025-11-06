@@ -965,18 +965,6 @@ button.close {
   padding: 0 !important;
 }
 
-/*
- * SCALAR OPENAPI DOCS
- * -------------------------------
- * Hide specific sections from the Scalar OpenAPI docs homepage
- */
-
-// Target the wrapper for the authentication section
-.scalar-reference-intro-auth {
-    display: none !important;
-}
-
-// Target the wrapper for the client libraries section
-.scalar-reference-intro-clients {
-    display: none !important;
+.hidden-tabs .tabs__item {
+  display: none;
 }
