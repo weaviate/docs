@@ -202,7 +202,7 @@ client.collections.create(
         vector_index_config=Configure.VectorIndex.hnsw(
             ef_construction=300,
             distance_metric=VectorDistances.COSINE,
-            filter_strategy=VectorFilterStrategy.SWEEPING,  # or ACORN (Available from Weaviate v1.27.0)
+            filter_strategy=VectorFilterStrategy.ACORN,
         ),
         # highlight-end
     ),
@@ -212,7 +212,7 @@ client.collections.create(
 # Test
 collection = client.collections.use("Article")
 config = collection.config.get()
-assert config.vector_config["default"].vector_index_config.filter_strategy == "sweeping"
+assert config.vector_config["default"].vector_index_config.filter_strategy == "acorn"
 assert isinstance(
     config.vector_config["default"].vector_index_config, _VectorIndexConfigHNSW
 )
