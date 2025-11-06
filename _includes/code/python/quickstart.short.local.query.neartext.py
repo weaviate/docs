@@ -1,16 +1,9 @@
 # START NearText
 import weaviate
-import os, json
+import json
 
-# Best practice: store your credentials in environment variables
-weaviate_url = os.environ["WEAVIATE_URL"]
-weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-
-# Step 2.1: Connect to your Weaviate Cloud instance
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=weaviate_url,
-    auth_credentials=weaviate_api_key,
-)
+# Step 2.1: Connect to your local Weaviate instance
+client = weaviate.connect_to_local()
 
 # Step 2.2: Use this collection
 movies = client.collections.use("Movie")

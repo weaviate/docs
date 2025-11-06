@@ -1,9 +1,7 @@
 # START RAG
 import os
 import weaviate
-from weaviate.classes.init import Auth
 from weaviate.classes.generate import GenerativeConfig
-
 
 # Best practice: store your credentials in environment variables
 weaviate_url = os.environ["WEAVIATE_URL"]
@@ -13,7 +11,7 @@ anthropic_api_key = os.environ["ANTHROPIC_API_KEY"]
 # Step 2.1: Connect to your Weaviate Cloud instance
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,
-    auth_credentials=Auth.api_key(weaviate_api_key),
+    auth_credentials=weaviate_api_key,
     # highlight-start
     headers={"X-Anthropic-Api-Key": anthropic_api_key},
     # highlight-end

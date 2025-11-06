@@ -1,5 +1,5 @@
 ---
-title: Quickstart (with Weaviate Cloud)
+title: "Quickstart: With Cloud resources"
 image: og/docs/quickstart-tutorial.jpg
 # tags: ['getting started']
 ---
@@ -55,7 +55,7 @@ There are two paths you can choose from:
 
 This quickstart guide will show you how to:
 
-1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud users. It generates vector embeddings for your data and queries conveniently and directly from a Weaviate Cloud database instance." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Weaviate Embeddings</span></Tooltip> service. You are also free to use any other available embedding model provider.
+1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud users. It generates vector embeddings for your data and queries conveniently and directly from a Weaviate Cloud database instance." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Weaviate Embeddings</span></Tooltip> service. You are also free to use any other available [embedding model provider](../model-providers/index.md).
 2. **Search** - Perform a similarity (vector) search on your data using a text query.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
 

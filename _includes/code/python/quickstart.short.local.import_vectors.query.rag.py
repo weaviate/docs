@@ -4,14 +4,10 @@ import weaviate
 from weaviate.classes.generate import GenerativeConfig
 
 # Best practice: store your credentials in environment variables
-weaviate_url = os.environ["WEAVIATE_URL"]
-weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
 anthropic_api_key = os.environ["ANTHROPIC_API_KEY"]
 
-# Step 2.1: Connect to your Weaviate Cloud instance
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=weaviate_url,
-    auth_credentials=weaviate_api_key,
+# Step 2.1: Connect to your local Weaviate instance
+client = weaviate.connect_to_local(
     # highlight-start
     headers={"X-Anthropic-Api-Key": anthropic_api_key},
     # highlight-end
@@ -26,7 +22,10 @@ response = movies.generate.near_vector(
     near_vector=[0.11, 0.21, 0.31, 0.41, 0.51, 0.61, 0.71, 0.81],
     limit=1,
     grouped_task="Write a tweet with emojis about this movie.",
-    generative_provider=GenerativeConfig.anthropic(),  # Configure the Anthropic generative integration for RAG
+    generative_provider=GenerativeConfig.ollama(  # Configure the Ollama generative integration
+        api_endpoint="http://ollama:11434",  # If using Docker you might need: http://host.docker.internal:11434
+        model="llama3.2",  # The model to use
+    ),
 )
 # highlight-end
 

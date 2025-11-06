@@ -1,5 +1,5 @@
 ---
-title: 'Quickstart: Locally hosted'
+title: "Quickstart: Locally hosted"
 sidebar_label: Locally hosted
 image: og/docs/quickstart-tutorial.jpg
 # tags: ['getting started']
@@ -50,8 +50,8 @@ There are two paths you can choose from:
 
 This quickstart guide will show you how to:
 
-1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Embedding models are models that are trained specifically to generate vector embeddings: long arrays of numbers that represent semantic meaning for a given object." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Ollama embedding model</span></Tooltip> service. You are also free to use any other available embedding model provider.
-2. **Search** - Perform a similarity (vector) search on your data using a text query.
+1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Embedding models are models that are trained specifically to generate vector embeddings: long arrays of numbers that represent semantic meaning for a given object." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Ollama embedding model</span></Tooltip> service. You are also free to use any other available [embedding model provider](../model-providers/index.md).
+2. **Search** - Perform a similarity (vector) search on your data using a text query. 
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
 
 </TabItem>
@@ -141,7 +141,7 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.md
 
 The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying.
 
-import CreateCollection from "/_includes/code/quickstart/quickstart.short.create_collection.mdx";
+import CreateCollection from "/_includes/code/quickstart/quickstart.short.local.create_collection.mdx";
 
 <CreateCollection />
 
@@ -150,7 +150,7 @@ import CreateCollection from "/_includes/code/quickstart/quickstart.short.create
 
 The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically.
 
-import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.import_vectors.create_collection.mdx";
+import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.local.import_vectors.create_collection.mdx";
 
 <CreateCollectionCustomVectors />
 
@@ -164,7 +164,7 @@ import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart
 
 Semantic search finds results based on meaning. This is called `nearText` in Weaviate. The following example searches for 2 objects (_limit_) whose meaning is most similar to that of `sci-fi`.
 
-import QueryNearText from "/_includes/code/quickstart/quickstart.short.query.neartext.mdx";
+import QueryNearText from "/_includes/code/quickstart/quickstart.short.local.query.neartext.mdx";
 
 <QueryNearText />
 
@@ -173,7 +173,7 @@ import QueryNearText from "/_includes/code/quickstart/quickstart.short.query.nea
 
 Semantic search finds results based on meaning. This is called `nearVector` in Weaviate. The following example searches for 2 objects (_limit_) whose vector is most similar to the query vector.
 
-import QueryNearVectorImportVectors from "/_includes/code/quickstart/quickstart.short.import_vectors.query.nearvector.mdx";
+import QueryNearVectorImportVectors from "/_includes/code/quickstart/quickstart.short.local.import_vectors.query.nearvector.mdx";
 
 <QueryNearVectorImportVectors />
 
@@ -218,7 +218,7 @@ Retrieval augmented generation (RAG), also called generative search, works by pr
 
 The following example combines the semantic search for the query `sci-fi` with a prompt to generate a tweet.
 
-import QueryRAG from "/_includes/code/quickstart/quickstart.short.query.rag.mdx";
+import QueryRAG from "/_includes/code/quickstart/quickstart.short.local.query.rag.mdx";
 
 <QueryRAG />
 
@@ -229,7 +229,7 @@ Retrieval augmented generation (RAG), also called generative search, works by pr
 
 The following example combines the vector similarity search with a prompt to generate a tweet.
 
-import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.import-vectors.query.rag.mdx";
+import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.local.import-vectors.query.rag.mdx";
 
 <QueryRAG />
 

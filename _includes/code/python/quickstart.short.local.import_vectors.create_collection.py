@@ -1,17 +1,9 @@
 # START CreateCollection
 import weaviate
 from weaviate.classes.config import Configure
-import os
 
-# Best practice: store your credentials in environment variables
-weaviate_url = os.environ["WEAVIATE_URL"]
-weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-
-# Step 1.1: Connect to your Weaviate Cloud instance
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=weaviate_url,
-    auth_credentials=weaviate_api_key,
-)
+# Step 1.1: Connect to your local Weaviate instance
+client = weaviate.connect_to_local()
 
 # END CreateCollection
 
