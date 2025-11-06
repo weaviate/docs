@@ -16,6 +16,9 @@ const aws_secret_key = process.env.AWS_SECRET_KEY || '';  // Replace with your A
 // START CohereInstantiation
 const cohereApiKey = process.env.COHERE_APIKEY || '';  // Replace with your inference API key
 // END CohereInstantiation
+// START ContextualAIInstantiation
+const contextualApiKey = process.env.CONTEXTUAL_API_KEY || '';  // Replace with your inference API key
+// END ContextualAIInstantiation
 // START DatabricksInstantiation
 const databricksToken = process.env.DATABRICKS_TOKEN || '';  // Replace with your inference API key
 // END DatabricksInstantiation
@@ -78,6 +81,9 @@ const client = await weaviate.connectToWeaviateCloud(
       // START CohereInstantiation
       'X-Cohere-Api-Key': cohereApiKey,
       // END CohereInstantiation
+      // START ContextualAIInstantiation
+      'X-ContextualAI-Api-Key': contextualApiKey,
+      // END ContextualAIInstantiation
       // START DatabricksInstantiation
       'X-Databricks-Token': databricksToken,
       // END DatabricksInstantiation

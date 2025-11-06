@@ -82,21 +82,22 @@ Find out more about error handling on the Python client [reference page](/weavia
 
 :::caution Preview
 
-Server-side batching was added in **`v1.33`** as a **preview** and is **not yet supported in our client libraries**.<br/><br/>
+Server-side batching was added in **`v1.34`** as a **preview**.<br/><br/>
+This means that the feature is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this feature in production environments at this time.**
 
 :::
 
-<!--
 Here's how to import objects into a collection named `MyCollection` using [server-side batch imports](../concepts/data-import.mdx#server-side-batching). The client will send data in batch sizes using feedback from the server.
--->
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
-
-```python
-# Python support coming soon
-```
-
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START ServerSideBatchImportExample"
+      endMarker="# END ServerSideBatchImportExample"
+      language="py"
+    />
   </TabItem>
   <TabItem value="ts" label="JavaScript/TypeScript">
 
