@@ -300,37 +300,9 @@ Are you ready to see how deep the rabbit hole goes? 🔴🔵 #TheMatrix #WakeUp
 
 ## Next steps
 
-We recommend you check out the following resources to continue learning about Weaviate.
+import NextSteps from "/_includes/quickstart.short.nextsteps.mdx";
 
-export const nextStepsCardsData = [
-  {
-    title: "Quick tour of Weaviate",
-    description: (
-      <>
-        Continue with the{" "}
-        <span className={styles.highlight}>Quick tour tutorial</span> – an
-        end-to-end guide that covers important topics like configuring
-        collections, searches, etc.
-      </>
-    ),
-    link: "/weaviate/tutorials/quick-tour-of-weaviate",
-    icon: "fas fa-signs-post",
-  },
-  {
-    title: "Weaviate Academy",
-    description: (
-      <>
-        Check out <span className={styles.highlight}>Weaviate Academy</span> – a
-        learning platform centered around AI-native development.
-      </>
-    ),
-    link: "https://academy.weaviate.io/",
-    icon: "fa-solid fa-graduation-cap",
-  },
-];
-
-<CardsSection items={nextStepsCardsData} className={styles.smallCards} />
-<br />
+<NextSteps />
 
 ## Questions and feedback
 
