@@ -1,17 +1,9 @@
 # START RAG
-import os
 import weaviate
 from weaviate.classes.generate import GenerativeConfig
 
-# Best practice: store your credentials in environment variables
-anthropic_api_key = os.environ["ANTHROPIC_API_KEY"]
-
 # Step 2.1: Connect to your local Weaviate instance
-client = weaviate.connect_to_local(
-    # highlight-start
-    headers={"X-Anthropic-Api-Key": anthropic_api_key},
-    # highlight-end
-)
+client = weaviate.connect_to_local()
 
 # Step 2.2: Use this collection
 movies = client.collections.use("Movie")

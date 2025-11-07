@@ -24,14 +24,22 @@ public class QuickstartLocalCreate {
 
     // START CreateCollection
     // Step 1.2: Create a collection
-    Map<String, Object> moduleConfig = new HashMap<>();
-    Map<String, Object> generativeAnthropicSettings = new HashMap<>();
-    moduleConfig.put("generative-anthropic", generativeAnthropicSettings);
+    Map<String, Object> text2vecOllamaSettings = new HashMap<>();
+    text2vecOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
+    text2vecOllamaSettings.put("model", "nomic-embed-text"); // The model to use
+
+    Map<String, Object> generativeOllamaSettings = new HashMap<>();
+    generativeOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
+    generativeOllamaSettings.put("model", "llama3.2"); // The model to use
+
+    Map<String, Map<String, Object>> moduleConfig = new HashMap<>();
+    moduleConfig.put("text2vec-ollama", text2vecOllamaSettings);
+    moduleConfig.put("generative-ollama", generativeOllamaSettings);
     
     // highlight-start
     WeaviateClass movieClass = WeaviateClass.builder()
         .className("Movie")
-        .vectorizer("text2vec-weaviate")
+        .vectorizer("text2vec-ollama")
         .moduleConfig(moduleConfig)
         .build();
 

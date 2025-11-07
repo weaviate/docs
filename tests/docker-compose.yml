@@ -30,17 +30,6 @@ services:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-    command: >
-      sh -c "
-        ollama serve &
-        PID=$!
-        sleep 5
-        ollama pull nomic-embed-text
-        ollama pull llama3
-        wait $PID
-      "
 
 volumes:
   weaviate_data:

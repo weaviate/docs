@@ -24,9 +24,12 @@ public class QuickstartLocalCreateVectors {
 
     // START CreateCollection
     // Step 1.2: Create a collection
-    Map<String, Object> moduleConfig = new HashMap<>();
-    Map<String, Object> generativeAnthropicSettings = new HashMap<>();
-    moduleConfig.put("generative-anthropic", generativeAnthropicSettings);
+    Map<String, Object> generativeOllamaSettings = new HashMap<>();
+    generativeOllamaSettings.put("apiEndpoint", "http://ollama:11434"); // If using Docker you might need: http://host.docker.internal:11434
+    generativeOllamaSettings.put("model", "llama3.2"); // The model to use
+
+    Map<String, Map<String, Object>> moduleConfig = new HashMap<>();
+    moduleConfig.put("generative-ollama", generativeOllamaSettings);
 
     // highlight-start
     WeaviateClass movieClass = WeaviateClass.builder()

@@ -26,7 +26,9 @@ response = movies.generate.near_vector(
     near_vector=[0.11, 0.21, 0.31, 0.41, 0.51, 0.61, 0.71, 0.81],
     limit=1,
     grouped_task="Write a tweet with emojis about this movie.",
-    generative_provider=GenerativeConfig.anthropic(),  # Configure the Anthropic generative integration for RAG
+    generative_provider=GenerativeConfig.anthropic(
+        model="claude-3-5-haiku-latest"
+    ),  # Configure the Anthropic generative integration for RAG
 )
 # highlight-end
 

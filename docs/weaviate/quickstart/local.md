@@ -131,10 +131,17 @@ volumes:
   ollama_data:
 ```
 
-Run the following command to start a Weaviate instance and Ollama using Docker:
+Run the following command to start a Weaviate instance and the Ollama server inside Docker containers:
 
 ```bash
 docker-compose up -d
+```
+
+Now you can pull the required Ollama models in the container:
+
+```bash
+docker compose exec ollama ollama pull nomic-embed-text
+docker compose exec ollama ollama pull llama3
 ```
 
 ---

@@ -13,10 +13,8 @@ import io.weaviate.client.v1.graphql.query.fields.GenerativeSearchBuilder;
 public class QuickstartLocalQueryNearTextRAG {
   public static void main(String[] args) throws AuthException {
     // Step 2.1: Connect to your local Weaviate instance
-    // highlight-start
     Config config = new Config("http", "localhost:8080");
     WeaviateClient client = new WeaviateClient(config);
-    // highlight-end
 
     // Step 2.2: Perform RAG with NearVector results
     // highlight-start

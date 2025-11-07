@@ -39,7 +39,9 @@ func main() {
 		Class:      "Movie",
 		Vectorizer: "none", // No automatic vectorization since we're providing vectors
 		ModuleConfig: map[string]interface{}{
-			"generative-anthropic": map[string]interface{}{},
+			"generative-anthropic": map[string]interface{}{
+				"model": "claude-3-5-haiku-latest",
+			},
 		},
 	}
 

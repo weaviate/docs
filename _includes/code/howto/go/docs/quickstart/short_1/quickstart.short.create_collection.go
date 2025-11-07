@@ -39,7 +39,9 @@ func main() {
 		Class:      "Movie",
 		Vectorizer: "text2vec-weaviate",
 		ModuleConfig: map[string]interface{}{
-			"generative-anthropic": map[string]interface{}{},
+			"generative-anthropic": map[string]interface{}{
+				"model": "claude-3-5-haiku-latest",
+			},
 		},
 	}
 
