@@ -55,7 +55,7 @@ There are two paths you can choose from:
 
 This quickstart guide will show you how to:
 
-1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud users. It generates vector embeddings for your data and queries conveniently and directly from a Weaviate Cloud database instance." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Weaviate Embeddings</span></Tooltip> service. You are also free to use any other available [embedding model provider](../model-providers/index.md).
+1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Weaviate Embeddings is a managed embedding inference service for Weaviate Cloud users (embedding model provider). It generates vector embeddings for your data and queries conveniently and directly from a Weaviate Cloud database instance." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Weaviate Embeddings</span></Tooltip> model provider. You are also free to use any other available [embedding model provider](../model-providers/index.md).
 2. **Search** - Perform a similarity (vector) search on your data using a text query.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
 
@@ -185,7 +185,7 @@ import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.md
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
-The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) service for vectorizing data during import and for querying.
+The following example creates a collection called `Movie` with the [Weaviate Embeddings](/weaviate/model-providers/weaviate/embeddings.md) model provider (`text2vec-weaviate`) for vectorizing data during import and for querying.
 
 import CreateCollection from "/_includes/code/quickstart/quickstart.short.create_collection.mdx";
 
@@ -194,7 +194,7 @@ import CreateCollection from "/_includes/code/quickstart/quickstart.short.create
 </TabItem>
 <TabItem value="custom-embeddings" label="Import vectors">
 
-The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically.
+The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data.
 
 import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.import_vectors.create_collection.mdx";
 
@@ -208,7 +208,7 @@ import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
-Semantic search finds results based on meaning. This is called `nearText` in Weaviate. The following example searches for 2 objects (_limit_) whose meaning is most similar to that of `sci-fi`.
+Semantic search finds results based on meaning. This is called `nearText` in Weaviate. The following example searches for 2 objects (_limit_) whose meaning is most similar to that of `sci-fi`. 
 
 import QueryNearText from "/_includes/code/quickstart/quickstart.short.query.neartext.mdx";
 
@@ -262,7 +262,7 @@ For Retrieval Augmented Generation (RAG) in this step, you will need a [Claude A
 
 Retrieval augmented generation (RAG), also called generative search, works by prompting a large language model (LLM) with a combination of a _user query_ and _data retrieved from a database_.
 
-The following example combines the semantic search for the query `sci-fi` with a prompt to generate a tweet.
+The following example combines the semantic search for the query `sci-fi` with a prompt to generate a tweet using the Anthropic generative model ([`generative-anthropic`](../model-providers/anthropic/generative.md)).
 
 import QueryRAG from "/_includes/code/quickstart/quickstart.short.query.rag.mdx";
 
@@ -273,7 +273,7 @@ import QueryRAG from "/_includes/code/quickstart/quickstart.short.query.rag.mdx"
 
 Retrieval augmented generation (RAG), also called generative search, works by prompting a large language model (LLM) with a combination of a _user query_ and _data retrieved from a database_.
 
-The following example combines the vector similarity search with a prompt to generate a tweet.
+The following example combines the vector similarity search with a prompt to generate a tweet using the Anthropic generative model ([`generative-anthropic`](../model-providers/anthropic/generative.md)).
 
 import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.import-vectors.query.rag.mdx";
 

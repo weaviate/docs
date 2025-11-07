@@ -11,7 +11,6 @@ import (
 
 func main() {
 	// Step 2.1: Connect to your local Weaviate instance
-	// highlight-start
 	cfg := weaviate.Config{
 		Host:   "localhost:8080",
 		Scheme: "http",
@@ -20,7 +19,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	// highlight-end
 
 	// Step 2.2: Perform RAG with NearText results
 	// highlight-start

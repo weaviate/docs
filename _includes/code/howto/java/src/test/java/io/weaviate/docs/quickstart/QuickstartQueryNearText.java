@@ -20,7 +20,7 @@ public class QuickstartQueryNearText {
     Config config = new Config("https", weaviateUrl.replace("https://", ""));
     WeaviateClient client = WeaviateAuthClient.apiKey(config, weaviateApiKey);
 
-    // Step 2.2 & 2.3: Perform a semantic search with NearText
+    // Step 2.2: Perform a semantic search with NearText
     // highlight-start
     // END NearText
 

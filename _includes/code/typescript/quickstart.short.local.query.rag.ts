@@ -1,15 +1,8 @@
 // START RAG
 import weaviate, { WeaviateClient, generativeParameters } from 'weaviate-client';
 
-// Best practice: store your credentials in environment variables
-const anthropicApiKey = process.env.ANTHROPIC_API_KEY!;
-
 // Step 2.1: Connect to your local Weaviate instance
-const client: WeaviateClient = await weaviate.connectToLocal(
-  // highlight-start
-  { headers: { 'X-Anthropic-Api-Key': anthropicApiKey } },
-  // highlight-end
-);
+const client: WeaviateClient = await weaviate.connectToLocal();
 
 // Step 2.2: Use this collection
 const movies = client.collections.get('Movie');

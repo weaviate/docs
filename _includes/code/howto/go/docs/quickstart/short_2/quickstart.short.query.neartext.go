@@ -28,7 +28,7 @@ func main() {
 		panic(err)
 	}
 
-	// Step 2.2 & 2.3: Perform a semantic search with NearText
+	// Step 2.2: Perform a semantic search with NearText
 	// highlight-start
 	// END NearText
 

@@ -50,7 +50,7 @@ There are two paths you can choose from:
 
 This quickstart guide will show you how to:
 
-1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Embedding models are models that are trained specifically to generate vector embeddings: long arrays of numbers that represent semantic meaning for a given object." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Ollama embedding model</span></Tooltip> service. You are also free to use any other available [embedding model provider](../model-providers/index.md).
+1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Embedding models are models that are trained specifically to generate vector embeddings: long arrays of numbers that represent semantic meaning for a given object." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Ollama embedding model provider</span></Tooltip>. You are also free to use any other available [embedding model provider](../model-providers/index.md).
 2. **Search** - Perform a similarity (vector) search on your data using a text query. 
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
 
@@ -99,7 +99,6 @@ services:
     - weaviate_data:/var/lib/weaviate
     restart: on-failure:0
     environment:
-      QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       ENABLE_MODULES: 'text2vec-ollama,generative-ollama'
@@ -114,17 +113,6 @@ services:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-    command: >
-      sh -c "
-        ollama serve &
-        PID=$!
-        sleep 5
-        ollama pull nomic-embed-text
-        ollama pull llama3
-        wait $PID
-      "
 
 volumes:
   weaviate_data:
@@ -137,11 +125,11 @@ Run the following command to start a Weaviate instance and the Ollama server ins
 docker-compose up -d
 ```
 
-Now you can pull the required Ollama models in the container:
+Once the Ollama service starts, you can pull the required embedding model ([`nomic-embed-text`](https://ollama.com/library/nomic-embed-text)) and generative model ([`llama3.2`](https://ollama.com/library/llama3.2)) in the `ollama` container:
 
 ```bash
 docker compose exec ollama ollama pull nomic-embed-text
-docker compose exec ollama ollama pull llama3
+docker compose exec ollama ollama pull llama3.2
 ```
 
 ---
@@ -168,7 +156,7 @@ import CreateCollection from "/_includes/code/quickstart/quickstart.short.local.
 </TabItem>
 <TabItem value="custom-embeddings" label="Import vectors">
 
-The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. We will define the collection properties explicitly, but you can also use the [auto-schema](../config-refs/collections.mdx#auto-schema) feature to infer the data schema automatically.
+The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. 
 
 import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.local.import_vectors.create_collection.mdx";
 
@@ -232,7 +220,7 @@ Try the [Query Agent](/agents/query/index.md) with a Weaviate Cloud instance. Yo
 
 Retrieval augmented generation (RAG), also called generative search, works by prompting a large language model (LLM) with a combination of a _user query_ and _data retrieved from a database_.
 
-The following example combines the semantic search for the query `sci-fi` with a prompt to generate a tweet.
+The following example combines the semantic search for the query `sci-fi` with a prompt to generate a tweet using the Ollama generative model (`generative-ollama`).
 
 import QueryRAG from "/_includes/code/quickstart/quickstart.short.local.query.rag.mdx";
 
@@ -243,7 +231,7 @@ import QueryRAG from "/_includes/code/quickstart/quickstart.short.local.query.ra
 
 Retrieval augmented generation (RAG), also called generative search, works by prompting a large language model (LLM) with a combination of a _user query_ and _data retrieved from a database_.
 
-The following example combines the vector similarity search with a prompt to generate a tweet.
+The following example combines the vector similarity search with a prompt to generate a tweet using the Ollama generative model (`generative-ollama`).
 
 import QueryRAGCustomVectors from "/_includes/code/quickstart/quickstart.short.local.import-vectors.query.rag.mdx";
 

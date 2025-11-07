@@ -26,7 +26,7 @@ public class QuickstartQueryNearVector {
     Config config = new Config("https", weaviateUrl.replace("https://", ""));
     WeaviateClient client = WeaviateAuthClient.apiKey(config, weaviateApiKey);
 
-    // Step 2.2 & 2.3: Perform a vector search with NearVector
+    // Step 2.2: Perform a vector search with NearVector
     // highlight-start
     // END NearText
 

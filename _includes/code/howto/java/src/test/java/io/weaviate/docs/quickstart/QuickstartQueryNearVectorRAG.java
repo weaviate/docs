@@ -31,7 +31,7 @@ public class QuickstartQueryNearVectorRAG {
     WeaviateClient client = WeaviateAuthClient.apiKey(config, weaviateApiKey);
     // highlight-end
 
-    // Step 2.2 & 2.3: Perform RAG with NearVector results
+    // Step 2.2: Perform RAG with NearVector results
     // highlight-start
     Field title = Field.builder().name("title").build();
     Field description = Field.builder().name("description").build();

@@ -35,7 +35,7 @@ func main() {
 	}
 	// highlight-end
 
-	// Step 2.2 & 2.3: Perform RAG with NearText results
+	// Step 2.2: Perform RAG with NearText results
 	// highlight-start
 	title := graphql.Field{Name: "title"}
 	description := graphql.Field{Name: "description"}
