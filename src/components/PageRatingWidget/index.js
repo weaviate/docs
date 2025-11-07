@@ -56,7 +56,7 @@ export default function PageRatingWidget() {
         <p className={styles.text}>Was this page helpful?</p>
         <div className={styles.buttonContainer}>
           <button
-            className={`${styles.voteButton} ${
+            className={`${styles.voteButton} ${styles.voteButtonYes} ${
               vote === "up" ? styles.selected : ""
             }`}
             onClick={() => handleVote("up")}
@@ -66,7 +66,7 @@ export default function PageRatingWidget() {
             Yes
           </button>
           <button
-            className={`${styles.voteButton} ${
+            className={`${styles.voteButton} ${styles.voteButtonNo} ${
               vote === "down" ? styles.selected : ""
             }`}
             onClick={() => handleVote("down")}

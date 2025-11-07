@@ -7,7 +7,6 @@
   min-width: 100px;
   margin-top: 0;
   margin-bottom: 0;
-  margin-left: 0.5rem;
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: var(--ifm-card-border-radius);
   // box-shadow: var(--ifm-global-shadow-lw);
@@ -31,12 +30,14 @@
 .voteButton {
   background-color: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-300);
-  color: var(--ifm-color-emphasis-800);
+  // color: var(--ifm-color-emphasis-800);
+  color: #262262;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   padding: 0.25rem 0.6rem;
   font-size: 0.8rem !important;
   border-radius: var(--ifm-button-border-radius);
+  border-color: #262262;
   display: flex;
   align-items: center;
   justify-content: center;
