@@ -73,9 +73,10 @@ export default function DocItemLayout({ children }) {
           <div className="col col--3">
             {/* ---- START: Customizations ---- */}
             {/* TOC in sticky container */}
+            <div className={styles.tocStickyContainer}>{docTOC.desktop}</div>
+            {/* Separate sticky container for the rating widget */}
             <div className={styles.tocStickyContainer}>
               <PageRatingWidget />
-              {docTOC.desktop}
             </div>
             {/* Feedback component aligned with TOC column */}
             {showFeedback && (

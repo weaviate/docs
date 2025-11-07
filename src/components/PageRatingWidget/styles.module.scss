@@ -1,25 +1,29 @@
 .container {
   background-color: var(--ifm-background-surface-color);
-  padding: 0.75rem;
+  padding: 0.5rem;
   text-align: left;
   width: 100%;
-  max-width: 260px;
-  min-width: 200px;
-  margin-bottom: 1.5rem;
+  max-width: 160px;
+  min-width: 100px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0.5rem;
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: var(--ifm-card-border-radius);
-  box-shadow: var(--ifm-global-shadow-lw);
+  // box-shadow: var(--ifm-global-shadow-lw);
 }
 
 .text {
   margin-bottom: 0.5rem;
-  font-size: 12px; /* Made text smaller */
-  line-height: 1.3;
+  margin-left: 0.5rem;
+  font-size: 12px !important;
+  line-height: 1.5;
   color: var(--ifm-color-emphasis-700);
   font-weight: 500;
 }
 
 .buttonContainer {
+  margin-left: 0.5rem;
   display: flex;
   gap: 8px;
 }
