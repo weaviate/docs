@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "@docusaurus/router";
 import styles from "./styles.module.scss";
 import FeedbackModal from "../FeedbackModal";
+import ThumbsUp from "../Icons/ThumbsUp";
+import ThumbsDown from "../Icons/ThumbsDown";
 
 export default function PageRatingWidget() {
   const [vote, setVote] = useState(null);
@@ -60,6 +62,7 @@ export default function PageRatingWidget() {
             onClick={() => handleVote("up")}
             aria-label="Vote up"
           >
+            <ThumbsUp />
             Yes
           </button>
           <button
@@ -69,6 +72,7 @@ export default function PageRatingWidget() {
             onClick={() => handleVote("down")}
             aria-label="Vote down"
           >
+            <ThumbsDown />
             No
           </button>
         </div>
