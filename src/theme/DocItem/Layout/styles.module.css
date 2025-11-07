@@ -50,15 +50,9 @@
   position: sticky;
   top: var(--ifm-navbar-height);
   max-height: calc(100vh - var(--ifm-navbar-height));
-  overflow-y: visible; /* Allow content to flow */
 
-  /* Ensure direct children stack vertically */
-  & > * {
-    margin-bottom: 1.5rem;
-  }
-
-  /* Remove margin from the last child to prevent extra space */
-  & > *:last-child {
-    margin-bottom: 0;
-  }
+  /* Flexbox for stable layout */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Use gap for spacing instead of margin */
 }
