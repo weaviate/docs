@@ -12,6 +12,7 @@ import DocItemContent from "@theme/DocItem/Content";
 import DocBreadcrumbs from "@theme/DocBreadcrumbs";
 import ContentVisibility from "@theme/ContentVisibility";
 import styles from "./styles.module.css";
+import PageRatingWidget from "@site/src/components/PageRatingWidget";
 
 /* ---- START: Customizations ---- */
 import FeedbackComponent from "@site/src/components/Feedback";
@@ -72,7 +73,10 @@ export default function DocItemLayout({ children }) {
           <div className="col col--3">
             {/* ---- START: Customizations ---- */}
             {/* TOC in sticky container */}
-            <div className={styles.tocStickyContainer}>{docTOC.desktop}</div>
+            <div className={styles.tocStickyContainer}>
+              <PageRatingWidget />
+              {docTOC.desktop}
+            </div>
             {/* Feedback component aligned with TOC column */}
             {showFeedback && (
               <div className={styles.feedbackWrapper}>

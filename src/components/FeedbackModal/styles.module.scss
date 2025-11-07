@@ -1,0 +1,82 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--ifm-background-surface-color);
+  padding: 1.5rem;
+  border-radius: var(--ifm-card-border-radius);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: var(--ifm-color-emphasis-600);
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+}
+
+.commentLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: var(--ifm-global-border-radius);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    background-color: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: var(--ifm-color-primary);
+    }
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
