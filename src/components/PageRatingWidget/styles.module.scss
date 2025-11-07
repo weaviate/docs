@@ -41,22 +41,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem; /* Add gap for icon */
+  gap: 0.4rem;
 
   &:hover {
-    background-color: var(--ifm-hover-overlay);
-    border-color: var(--ifm-color-emphasis-500);
+    background-color: #f0f2f5; /* Consistent hover state */
   }
+}
 
-  &.selected {
-    background-color: #ecf4f8;
-    border-color: #61bd73;
-    color: #130c49;
-    cursor: default;
+.selected {
+  background-color: #e2e8f0; /* Consistent click/selected state */
+  cursor: default;
 
-    &:hover {
-      background-color: #ecf4f8;
-      border-color: #61bd73;
-    }
+  &:hover {
+    background-color: #e2e8f0; /* Keep selected style on hover */
   }
 }
