@@ -32,7 +32,7 @@ import APITable from '@site/src/components/APITable';
 | --- | --- | --- | --- |
 | `ASYNC_INDEXING` | If set, Weaviate creates vector indexes asynchronously to the object creation process. This can be useful for importing large amounts of data. (default: `false`) | `boolean` | `false` |
 | `AUTOSCHEMA_ENABLED` | Whether to infer the schema where necessary with the autoschema (default: `true`) | `boolean` | `true` |
-| `DEFAULT_QUANTIZATION` | Default quantization technique - can be overridden by the quantization method specified in the collection definition. Available values: `rq-8`, `rq-1`, `pq`, `bq`, `sq` and `none`. Default: `rq-8`.<br/>Added in `v1.33` | `string` | `rq-8` |
+| `DEFAULT_QUANTIZATION` | Default quantization technique - can be overridden by the quantization method specified in the collection definition. Available values: `rq-8`, `rq-1`, `pq`, `bq`, `sq` and `none`. Default: `rq-8`.<br/>Note: Currently only applies for the HNSW vector index type.<br/><br/>Added in `v1.33` | `string` | `rq-8` |
 | `DEFAULT_VECTORIZER_MODULE` | Default vectorizer module - can be overridden by the vectorizer in the collection definition. | `string` | `text2vec-contextionary` |
 | `API_BASED_MODULES_DISABLED` | Weaviate automatically enables the usage of all [API based modules](../../../weaviate/model-providers/index.md#api-based). Set this variable to `true` in order to limit access and only allow specific modules through the [`ENABLE_MODULES`](#ENABLE_MODULES) variable. Default: `false`<br/> Added in `v1.33` | `boolean` | `true` |
 | `DISABLE_LAZY_LOAD_SHARDS` | New in v1.23. When `false`, enable lazy shard loading to improve mean time to recovery in multi-tenant deployments. | `string` | `false` |
@@ -75,7 +75,7 @@ import APITable from '@site/src/components/APITable';
 | `QUERY_MAXIMUM_RESULTS` | Sets the maximum total number of objects that can be retrieved. | `string - number` | `10000` |
 | `QUERY_SLOW_LOG_ENABLED` | Log slow queries for debugging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `boolean` | `False` |
 | `QUERY_SLOW_LOG_THRESHOLD` | Set a threshold time for slow query logging. Requires a restart to update. <br/> (New in 1.24.16, 1.25.3) | `string` | `2s` <br/> Values are times: `3h`, `2s`, `100ms` |
-| `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to [use Roaring Bitmaps](/weaviate/concepts/filtering.md#migration-to-indexFilterable). <br/><br/>Available in versions `1.18` and higher. | `boolean` | `true` |
+| `REINDEX_SET_TO_ROARINGSET_AT_STARTUP` | Allow Weaviate to perform a one-off re-indexing to use Roaring Bitmaps. <br/><br/>Available in versions `1.18` and higher. | `boolean` | `true` |
 | `TOKENIZER_CONCURRENCY_COUNT` | Limit the combined number of GSE and Kagome tokenizers running at the same time. Default: `GOMAXPROCS` | `string - number` | `NUMBER_OF_CPU_CORES` |
 | `TOMBSTONE_DELETION_CONCURRENCY` | The maximum number of cores to use for tombstone deletion. Set this to limit the number of cores used for cleanup. Default: Half of the available cores. (New in `v1.24.0`) | `string - int` | `4` |
 | `TOMBSTONE_DELETION_MAX_PER_CYCLE` | Maximum number of tombstones to delete per cleanup cycle. Set this to limit cleanup cycles, as they are resource-intensive. As an example, set a maximum of 10000000 (10M) for a cluster with 300 million-object shards. Default: none | `string - int` (New in `v1.24.15` / `v1.25.2`) | `10000000` |

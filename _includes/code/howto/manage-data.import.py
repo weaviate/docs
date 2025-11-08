@@ -558,48 +558,48 @@ assert response.total_count == 5
 client.collections.delete("NewCollection")
 
 
-# # ==================================================
-# # ===== Server-side (automatic) batch import =====
-# # ==================================================
+# ==================================================
+# ===== Server-side (automatic) batch import =====
+# ==================================================
 
-# # Re-create the collection
-# client.collections.delete("MyCollection")
-# client.collections.create(
-#     "MyCollection",
-#     vector_config=Configure.Vectors.self_provided()
-# )
+# Re-create the collection
+client.collections.delete("MyCollection")
+client.collections.create(
+    "MyCollection",
+    vector_config=Configure.Vectors.self_provided()
+)
 
-# # START ServerSideBatchImportExample
-# data_rows = [
-#     {"title": f"Object {i+1}"} for i in range(5)
-# ]
+# START ServerSideBatchImportExample
+data_rows = [
+    {"title": f"Object {i+1}"} for i in range(5)
+]
 
-# collection = client.collections.get("MyCollection")
+collection = client.collections.get("MyCollection")
 
-# # highlight-start
-# # Use `automatic` for server-side batching. The client will send data
-# # in chunks and the server will dynamically manage the import process.
-# with collection.batch.automatic() as batch:
-#     for data_row in data_rows:
-#         batch.add_object(
-#             properties=data_row,
-#         )
-# # highlight-end
-#         if batch.number_errors > 10:
-#             print("Batch import stopped due to excessive errors.")
-#             break
+# highlight-start
+# Use `experimental` for server-side batching. The client will send data
+# in batches at a rate specified by the server.
+with collection.batch.experimental() as batch:
+    for data_row in data_rows:
+        batch.add_object(
+            properties=data_row,
+        )
+# highlight-end
+        if batch.number_errors > 10:
+            print("Batch import stopped due to excessive errors.")
+            break
 
-# failed_objects = collection.batch.failed_objects
-# if failed_objects:
-#     print(f"Number of failed imports: {len(failed_objects)}")
-#     print(f"First failed object: {failed_objects[0]}")
-# # END ServerSideBatchImportExample
+failed_objects = collection.batch.failed_objects
+if failed_objects:
+    print(f"Number of failed imports: {len(failed_objects)}")
+    print(f"First failed object: {failed_objects[0]}")
+# END ServerSideBatchImportExample
 
-# result = collection.aggregate.over_all(total_count=True)
-# assert result.total_count == 5
+result = collection.aggregate.over_all(total_count=True)
+assert result.total_count == 5
 
-# # Clean up
-# client.collections.delete(collection.name)
+# Clean up
+client.collections.delete(collection.name)
 
 
 client.close()
