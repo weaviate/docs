@@ -25,8 +25,10 @@ exports.handler = async (event) => {
 
   try {
     const data = JSON.parse(event.body);
-    const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
-      process.env;
+    // const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
+    //   process.env;
+    const { WEAVIATE_DOCFEEDBACK_URL } = process.env;
+    const WEAVIATE_DOCFEEDBACK_API_KEY = "dkUrR284VTJkNFZCeG1mZ19XSi9JNkY1N0VwNDZEam1yRzNGeDBCOEY3YTVkU0NSejczNXZ4NnQ5SUwwPV92MjAw"; // Hardcoded temporary key for testing
 
     // Basic server-side validation
     if (!data.page || !data.vote) {
@@ -39,7 +41,8 @@ exports.handler = async (event) => {
       };
     }
 
-    if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
+    // if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
+    if (!WEAVIATE_DOCFEEDBACK_URL) {
       console.error('Missing Weaviate environment variables.');
       return {
         statusCode: 500,
