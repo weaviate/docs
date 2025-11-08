@@ -24,13 +24,27 @@ export default function PageRatingWidget() {
   }, [location.pathname]);
 
   const submitFeedback = async (payload) => {
+    const PROD_HOSTNAME = 'docs.weaviate.io'; // <-- Important: Update if your production hostname is different
+    const isTestData = window.location.hostname !== PROD_HOSTNAME;
+
+    const finalPayload = {
+      ...payload,
+      testData: isTestData,
+      hostname: window.location.hostname,
+    };
+
+    // Debug mode: Log the payload to the console on non-production hostnames.
+    if (isTestData) {
+      console.log('Feedback Widget [Debug Mode]: Payload:', finalPayload);
+    }
+
     try {
       const response = await fetch('/.netlify/functions/submit-feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(finalPayload),
       });
 
       if (!response.ok) {
