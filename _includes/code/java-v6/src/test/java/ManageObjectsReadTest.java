@@ -52,7 +52,7 @@ class ManageObjectsReadTest {
 
     var dataObjectOpt = jeopardy.query.byId("00ff6900-e64f-5d94-90db-c8cfa3fc851b",
         // highlight-start
-        q -> q.returnMetadata(Metadata.VECTOR)
+        q -> q.includeVector()
     // highlight-end
     );
 
@@ -62,7 +62,6 @@ class ManageObjectsReadTest {
   }
 
   @Test
-  // TODO[g-despot] Should be able to specify which vectors to return
   void testReadObjectNamedVectors() {
     // START ReadObjectNamedVectors
     CollectionHandle<Map<String, Object>> reviews = client.collections.use("WineReviewNV"); // Collection with named
@@ -79,7 +78,7 @@ class ManageObjectsReadTest {
     // START ReadObjectNamedVectors
     var dataObjectOpt = reviews.query.byId(objUuid, // Object UUID
         // highlight-start
-        q -> q.returnMetadata(Metadata.VECTOR) // Specify to include vectors
+        q -> q.includeVector(vectorNames) // Specify to include vectors
     // highlight-end
     );
 

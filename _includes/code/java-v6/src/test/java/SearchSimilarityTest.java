@@ -90,12 +90,11 @@ class SearchSimilarityTest {
     // END GetNearObject
   }
 
-  // TODO[g-despot] Why do some argument accept Vector.of while other float[]?
   @Test
   void testGetNearVector() {
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var initialResponse =
-        jeopardy.query.fetchObjects(q -> q.limit(1).returnMetadata(Metadata.VECTOR));
+        jeopardy.query.fetchObjects(q -> q.limit(1).includeVector());
     if (initialResponse.objects().isEmpty())
       return; // Skip test if no data
     var queryVector = initialResponse.objects().get(0).metadata().vectors().getSingle("default");

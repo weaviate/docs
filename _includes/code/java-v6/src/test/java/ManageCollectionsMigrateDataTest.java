@@ -87,7 +87,7 @@ class ManageCollectionsMigrateDataTest {
     // START CreateCollectionCollectionToCollection // START CreateCollectionCollectionToTenant // START CreateCollectionTenantToCollection // START CreateCollectionTenantToTenant
     clientIn.collections.create(collectionName, col -> col.multiTenancy(c -> c.enabled(enableMt))
         // Additional settings not shown
-        .vectorConfig(VectorConfig.text2vecContextionary()).generativeModule(Generative.cohere())
+        .vectorConfig(VectorConfig.text2vecTransformers()).generativeModule(Generative.cohere())
         .properties(Property.text("review_body"), Property.text("title"), Property.text("country"),
             Property.integer("points"), Property.number("price")));
 
@@ -96,13 +96,14 @@ class ManageCollectionsMigrateDataTest {
 
   // END CreateCollectionCollectionToCollection // END CreateCollectionCollectionToTenant // END CreateCollectionTenantToCollection // END CreateCollectionTenantToTenant
 
+  // TODO[g-despot] No include vector in paginate
   // START CollectionToCollection // START TenantToCollection // START CollectionToTenant // START TenantToTenant
   private void migrateData(CollectionHandle<Map<String, Object>> collectionSrc,
       CollectionHandle<Map<String, Object>> collectionTgt) {
     System.out.println("Starting data migration...");
     List<WeaviateObject<Map<String, Object>, Reference, ObjectMetadata>> sourceObjects =
         StreamSupport
-            .stream(collectionSrc.paginate(p -> p.returnMetadata(Metadata.VECTOR)).spliterator(),
+            .stream(collectionSrc.paginate(p -> p.returnMetadata()).spliterator(),
                 false)
             .map((
                 WeaviateObject<Map<String, Object>, Object, QueryMetadata> obj) -> new WeaviateObject.Builder<Map<String, Object>, Reference, ObjectMetadata>()

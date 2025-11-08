@@ -33,8 +33,9 @@ class ConfigurePQTest {
   public static void beforeAll() throws IOException, InterruptedException {
     // START DownloadData
     HttpClient httpClient = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder().uri(URI.create(
-        "https://raw.githubusercontent.com/weaviate-tutorials/intro-workshop/main/data/jeopardy_1k.json"))
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(
+            "https://raw.githubusercontent.com/weaviate-tutorials/intro-workshop/main/data/jeopardy_1k.json"))
         .build();
     HttpResponse<String> responseHttp =
         httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -43,15 +44,16 @@ class ConfigurePQTest {
     ObjectMapper objectMapper = new ObjectMapper();
     data = objectMapper.readValue(responseBody, new TypeReference<>() {});
 
-    System.out.printf("Data type: %s, Length: %d\n", data.getClass().getName(), data.size());
-    System.out
-        .println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(data.get(1)));
+    System.out.printf("Data type: %s, Length: %d\n", data.getClass().getName(),
+        data.size());
+    System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
+        .writeValueAsString(data.get(1)));
     // END DownloadData
 
     // START ConnectCode
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
 
     assertThat(client.isReady()).isTrue();
     // END ConnectCode
@@ -73,9 +75,10 @@ class ConfigurePQTest {
   void testCollectionWithAutoPQ() throws IOException {
     // START CollectionWithAutoPQ
     client.collections.create("Question",
-        col -> col.vectorConfig(VectorConfig.text2VecWeaviate("default",
+        col -> col.vectorConfig(VectorConfig.text2vecWeaviate("default",
             // highlight-start
-            vc -> vc.quantization(Quantization.pq(pq -> pq.trainingLimit(50000))) // Set the threshold to begin training
+            vc -> vc
+                .quantization(Quantization.pq(pq -> pq.trainingLimit(50000))) // Set the threshold to begin training
         // highlight-end
         )));
     // END CollectionWithAutoPQ
@@ -84,14 +87,16 @@ class ConfigurePQTest {
     var collection = client.collections.use(COLLECTION_NAME);
     var config = collection.config.get();
     assertThat(config).isPresent();
-    assertThat(config.get().vectors().get("default").quantization()).isNotNull();
+    assertThat(config.get().vectors().get("default").quantization())
+        .isNotNull();
   }
 
   @Test
   void testUpdateSchemaWithPQ() throws IOException {
     // START InitialSchema
-    client.collections.create("Question", col -> col.description("A Jeopardy! question")
-        .vectorConfig(VectorConfig.text2VecWeaviate()));
+    client.collections.create("Question",
+        col -> col.description("A Jeopardy! question")
+            .vectorConfig(VectorConfig.text2vecWeaviate()));
     // END InitialSchema
 
     var collection = client.collections.use(COLLECTION_NAME);
@@ -111,12 +116,14 @@ class ConfigurePQTest {
     collection.data.insertMany(objectList.toArray(new Map[0]));
     // END LoadData
 
-    var aggregateResponse = collection.aggregate.overAll(a -> a.includeTotalCount(true));
+    var aggregateResponse =
+        collection.aggregate.overAll(a -> a.includeTotalCount(true));
     assertThat(aggregateResponse.totalCount()).isEqualTo(1000);
 
     // START UpdateSchema
-    collection.config.update("Question", c -> c.vectorConfig(VectorConfig
-        .text2VecWeaviate(vc -> vc.quantization(Quantization.pq(pq -> pq.trainingLimit(50000))))));
+    collection.config
+        .update(c -> c.vectorConfig(VectorConfig.text2vecWeaviate(vc -> vc
+            .quantization(Quantization.pq(pq -> pq.trainingLimit(50000))))));
     // END UpdateSchema
 
     var updatedConfig = collection.config.get();
@@ -129,11 +136,13 @@ class ConfigurePQTest {
   @Test
   void testGetSchema() throws IOException {
     // Create a collection with PQ enabled to inspect its schema
-    client.collections.create("Question", col -> col.vectorConfig(VectorConfig
-        .text2VecWeaviate(vc -> vc.quantization(Quantization.pq(pq -> pq.trainingLimit(50000))))));
+    client.collections.create("Question",
+        col -> col.vectorConfig(VectorConfig.text2vecWeaviate(vc -> vc
+            .quantization(Quantization.pq(pq -> pq.trainingLimit(50000))))));
 
     // START GetSchema
-    CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("Question");
+    CollectionHandle<Map<String, Object>> jeopardy =
+        client.collections.use("Question");
     Optional<CollectionConfig> configOpt = jeopardy.config.get();
 
     System.out.println(configOpt);

@@ -70,7 +70,7 @@ class ManageCollectionsTest {
   void testCreateCollectionWithVectorizer() throws IOException {
     // START Vectorizer
     client.collections.create("Article",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary())
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers())
             .properties(Property.text("title"), Property.text("body")));
     // END Vectorizer
 
@@ -88,10 +88,10 @@ class ManageCollectionsTest {
         .create("ArticleNV",
             col -> col
                 .vectorConfig(
-                    VectorConfig.text2vecContextionary("title",
+                    VectorConfig.text2vecTransformers("title",
                         c -> c.sourceProperties("title")
                             .vectorIndex(Hnsw.of())),
-                    VectorConfig.text2vecContextionary("title_country",
+                    VectorConfig.text2vecTransformers("title_country",
                         c -> c.sourceProperties("title", "country")
                             .vectorIndex(Hnsw.of())),
                     VectorConfig.selfProvided("custom_vector",
@@ -122,7 +122,7 @@ class ManageCollectionsTest {
     client.collections.create("Article",
         col -> col
             .vectorConfig(VectorConfig
-                .text2vecContextionary(vec -> vec.vectorIndex(Hnsw.of())))
+                .text2vecTransformers(vec -> vec.vectorIndex(Hnsw.of())))
             .properties(Property.text("title"), Property.text("body")));
     // END SetVectorIndexType
 
@@ -136,7 +136,7 @@ class ManageCollectionsTest {
     // START SetVectorIndexParams
     client.collections.create("Article", col -> col
         .vectorConfig(
-            VectorConfig.text2vecContextionary(vec -> vec.vectorIndex(Hnsw.of(
+            VectorConfig.text2vecTransformers(vec -> vec.vectorIndex(Hnsw.of(
                 hnsw -> hnsw.efConstruction(300).distance(Distance.COSINE)))))
         .properties(Property.text("title")));
     // END SetVectorIndexParams
@@ -174,7 +174,7 @@ class ManageCollectionsTest {
   void testSetReranker() throws IOException {
     // START SetReranker
     client.collections.create("Article",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary())
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers())
             .rerankerModules(Reranker.cohere())
             .properties(Property.text("title")));
     // END SetReranker
@@ -186,14 +186,12 @@ class ManageCollectionsTest {
   }
 
   // TODO[g-despot] Update when more rerankers available
-  // TODO[g-despot] Why does update need collection name?
   // TODO[g-despot] NoSuchElement No value present
   @Test
   void testUpdateReranker() throws IOException {
     // START UpdateReranker
     var collection = client.collections.use("Article");
-    collection.config.update("Article",
-        col -> col.rerankerModules(Reranker.cohere()));
+    collection.config.update(col -> col.rerankerModules(Reranker.cohere()));
     // END UpdateReranker
 
     var config = client.collections.getConfig("Article").get();
@@ -206,7 +204,7 @@ class ManageCollectionsTest {
   void testSetGenerative() throws IOException {
     // START SetGenerative
     client.collections.create("Article",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary())
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers())
             .generativeModule(Generative.cohere())
             .properties(Property.text("title")));
     // END SetGenerative
@@ -223,8 +221,7 @@ class ManageCollectionsTest {
   void testUpdateGenerative() throws IOException {
     // START UpdateGenerative
     var collection = client.collections.use("Article");
-    collection.config.update("Article",
-        col -> col.generativeModule(Generative.cohere()));
+    collection.config.update(col -> col.generativeModule(Generative.cohere()));
     // END UpdateGenerative
 
     var config = client.collections.getConfig("Article").get();
@@ -238,7 +235,7 @@ class ManageCollectionsTest {
   // @Test
   // void testModuleSettings() throws IOException {
   //   client.collections.create("Article",
-  //       col -> col.vectorConfig(VectorConfig.text2vecContextionary()));
+  //       col -> col.vectorConfig(VectorConfig.text2vecTransformers()));
 
   //   var config = client.collections.getConfig("Article").get();
   // }
@@ -267,7 +264,7 @@ class ManageCollectionsTest {
   void testCreateCollectionWithTrigramTokenization() throws IOException {
     // START TrigramTokenization
     client.collections.create("Article", col -> col
-        .vectorConfig(VectorConfig.text2vecContextionary())
+        .vectorConfig(VectorConfig.text2vecTransformers())
         .properties(
             Property.text("title", p -> p.tokenization(Tokenization.TRIGRAM))));
     // END TrigramTokenization
@@ -281,7 +278,7 @@ class ManageCollectionsTest {
     // START DistanceMetric
     client.collections.create("Article",
         col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary(vec -> vec
+            .vectorConfig(VectorConfig.text2vecTransformers(vec -> vec
                 .vectorIndex(Hnsw.of(hnsw -> hnsw.distance(Distance.COSINE)))))
             .properties(Property.text("title")));
     // END DistanceMetric
@@ -394,10 +391,9 @@ class ManageCollectionsTest {
     CollectionHandle<Map<String, Object>> articles =
         client.collections.use("Article");
 
-    articles.config.update("Article",
-        col -> col.description("An updated collection description.")
-            .invertedIndex(
-                idx -> idx.bm25(bm25Builder -> bm25Builder.k1(1.5f))));
+    articles.config.update(col -> col
+        .description("An updated collection description.")
+        .invertedIndex(idx -> idx.bm25(bm25Builder -> bm25Builder.k1(1.5f))));
     // END UpdateCollection
 
     var config = articles.config.get().get();

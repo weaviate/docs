@@ -18,8 +18,8 @@ class ConfigureRQTest {
   public static void beforeAll() {
     // START ConnectCode
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END ConnectCode
   }
 
@@ -37,7 +37,7 @@ class ConfigureRQTest {
 
     // START EnableRQ
     client.collections.create("MyCollection",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
             // highlight-start
             .quantization(Quantization.rq())
         // highlight-end
@@ -54,7 +54,7 @@ class ConfigureRQTest {
 
     // START 1BitEnableRQ
     client.collections.create("MyCollection",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
             // highlight-start
             .quantization(Quantization.rq(q -> q.bits(1)))
         // highlight-end
@@ -71,7 +71,7 @@ class ConfigureRQTest {
 
     // START Uncompressed
     client.collections.create("MyCollection",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
             // highlight-start
             .quantization(Quantization.uncompressed())
         // highlight-end
@@ -88,7 +88,7 @@ class ConfigureRQTest {
 
     // START RQWithOptions
     client.collections.create("MyCollection",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
             // highlight-start
             .quantization(Quantization.rq(q -> q.bits(8) // Optional: Number of bits
                 .rescoreLimit(20) // Optional: Number of candidates to fetch before rescoring
@@ -109,14 +109,15 @@ class ConfigureRQTest {
     }
     client.collections.create(collectionName,
         col -> col
-            .vectorConfig(VectorConfig
-                .text2vecContextionary(vc -> vc.quantization(Quantization.uncompressed())))
+            .vectorConfig(VectorConfig.text2vecTransformers(
+                vc -> vc.quantization(Quantization.uncompressed())))
             .properties(Property.text("title")));
 
     // START UpdateSchema
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
-    collection.config.update(collectionName, c -> c.vectorConfig(
-        VectorConfig.text2vecContextionary(vc -> vc.quantization(Quantization.rq()))));
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("MyCollection");
+    collection.config.update(c -> c.vectorConfig(VectorConfig
+        .text2vecTransformers(vc -> vc.quantization(Quantization.rq()))));
     // END UpdateSchema
     // TODO[g-despot]: Verify the update
   }
@@ -129,14 +130,16 @@ class ConfigureRQTest {
     }
     client.collections.create(collectionName,
         col -> col
-            .vectorConfig(VectorConfig
-                .text2vecContextionary(vc -> vc.quantization(Quantization.uncompressed())))
+            .vectorConfig(VectorConfig.text2vecTransformers(
+                vc -> vc.quantization(Quantization.uncompressed())))
             .properties(Property.text("title")));
 
     // START 1BitUpdateSchema
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
-    collection.config.update(collectionName, c -> c.vectorConfig(VectorConfig
-        .text2vecContextionary(vc -> vc.quantization(Quantization.rq(q -> q.bits(1))))));
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("MyCollection");
+    collection.config
+        .update(c -> c.vectorConfig(VectorConfig.text2vecTransformers(
+            vc -> vc.quantization(Quantization.rq(q -> q.bits(1))))));
     // END 1BitUpdateSchema
   }
 }

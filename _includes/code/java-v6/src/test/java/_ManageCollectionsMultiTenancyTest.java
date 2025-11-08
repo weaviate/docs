@@ -24,8 +24,8 @@ class _ManageCollectionsMultiTenancyTest {
     assertThat(openaiApiKey).isNotBlank()
         .withFailMessage("Please set the OPENAI_API_KEY environment variable.");
 
-    client = WeaviateClient.connectToLocal(config -> config
-        .setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
   }
 
   @AfterEach
@@ -37,8 +37,8 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testEnableMultiTenancy() throws IOException {
     // START EnableMultiTenancy
-    client.collections.create("MultiTenancyCollection", col -> col
-        .multiTenancy(mt -> mt.enabled(true)));
+    client.collections.create("MultiTenancyCollection",
+        col -> col.multiTenancy(mt -> mt.enabled(true)));
     // END EnableMultiTenancy
 
     var config = client.collections.getConfig("MultiTenancyCollection").get();
@@ -48,8 +48,8 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testEnableAutoActivationMultiTenancy() throws IOException {
     // START EnableAutoActivation
-    client.collections.create("MultiTenancyCollection", col -> col
-        .multiTenancy(mt -> mt.autoTenantActivation(true)));
+    client.collections.create("MultiTenancyCollection",
+        col -> col.multiTenancy(mt -> mt.autoTenantActivation(true)));
     // END EnableAutoActivation
 
     var config = client.collections.getConfig("MultiTenancyCollection").get();
@@ -59,26 +59,26 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testEnableAutoMT() throws IOException {
     // START EnableAutoMT
-    client.collections.create("CollectionWithAutoMTEnabled", col -> col
-        .multiTenancy(mt -> mt
-            .autoTenantCreation(true)));
+    client.collections.create("CollectionWithAutoMTEnabled",
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
     // END EnableAutoMT
 
-    var config = client.collections.getConfig("CollectionWithAutoMTEnabled").get();
+    var config =
+        client.collections.getConfig("CollectionWithAutoMTEnabled").get();
     assertThat(config.multiTenancy().createAutomatically()).isTrue();
   }
 
   @Test
   void testUpdateAutoMT() throws IOException {
     String collectionName = "MTCollectionNoAutoMT";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt
-            .autoTenantActivation(false)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantActivation(false)));
 
     // START UpdateAutoMT
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
-    collection.config.update(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
+    collection.config
+        .update(col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
     // END UpdateAutoMT
 
     var config = client.collections.getConfig(collectionName).get();
@@ -88,32 +88,31 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testAddTenantsToClass() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
 
     // START AddTenantsToClass
-    collection.tenants.create(
-        Tenant.active("tenantA"),
+    collection.tenants.create(Tenant.active("tenantA"),
         Tenant.active("tenantB"));
     // END AddTenantsToClass
 
     List<Tenant> tenants = collection.tenants.get();
     assertThat(tenants).hasSize(2);
-    assertThat(tenants.get(0).name())
-        .containsAnyOf("tenantA", "tenantB");
+    assertThat(tenants.get(0).name()).containsAnyOf("tenantA", "tenantB");
   }
 
   @Test
   void testListTenants() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
-    collection.tenants.create(
-        Tenant.active("tenantA"),
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
+    collection.tenants.create(Tenant.active("tenantA"),
         Tenant.active("tenantB"));
 
     // START ListTenants
@@ -127,17 +126,17 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testGetTenantsByName() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
-    collection.tenants.create(
-        Tenant.active("tenantA"),
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
+    collection.tenants.create(Tenant.active("tenantA"),
         Tenant.active("tenantB"));
 
     // // START GetTenantsByName
-    List<String> tenantNames = Arrays.asList("tenantA", "tenantB",
-        "nonExistentTenant");
+    List<String> tenantNames =
+        Arrays.asList("tenantA", "tenantB", "nonExistentTenant");
     List<Tenant> tenants = collection.tenants.get(tenantNames);
     System.out.println(tenants);
     // // END GetTenantsByName
@@ -148,10 +147,11 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testGetOneTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
     collection.tenants.create(Tenant.active("tenantA"));
 
     // // START GetOneTenant
@@ -166,12 +166,13 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testActivateTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     // // START ActivateTenants
     String tenantName = "tenantA";
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
     collection.tenants.activate(tenantName);
     // // END ActivateTenants
 
@@ -182,12 +183,13 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testDeactivateTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     // // START DeactivateTenants
     String tenantName = "tenantA";
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
     collection.tenants.deactivate(tenantName);
     // // END DeactivateTenants
 
@@ -198,12 +200,13 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testOffloadTenant() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
     // // START OffloadTenants
     String tenantName = "tenantA";
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
     collection.tenants.offload(tenantName);
     // // END OffloadTenants
 
@@ -214,12 +217,12 @@ class _ManageCollectionsMultiTenancyTest {
   @Test
   void testRemoveTenants() throws IOException {
     String collectionName = "MultiTenancyCollection";
-    client.collections.create(collectionName, col -> col
-        .multiTenancy(mt -> mt.autoTenantCreation(true)));
+    client.collections.create(collectionName,
+        col -> col.multiTenancy(mt -> mt.autoTenantCreation(true)));
 
-    CollectionHandle<Map<String, Object>> collection = client.collections.use(collectionName);
-    collection.tenants.create(
-        Tenant.active("tenantA"),
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use(collectionName);
+    collection.tenants.create(Tenant.active("tenantA"),
         Tenant.active("tenantB"));
 
     // // START RemoveTenants
@@ -228,7 +231,6 @@ class _ManageCollectionsMultiTenancyTest {
 
     List<Tenant> tenants = collection.tenants.get();
     assertThat(tenants).hasSize(1);
-    assertThat(tenants.get(0).name())
-        .containsAnyOf("tenantA");
+    assertThat(tenants.get(0).name()).containsAnyOf("tenantA");
   }
 }

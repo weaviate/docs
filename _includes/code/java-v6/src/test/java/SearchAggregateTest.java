@@ -53,12 +53,12 @@ class SearchAggregateTest {
     // START TextProp
     CollectionHandle<Map<String, Object>> jeopardy = client.collections.use("JeopardyQuestion");
     var response = jeopardy.aggregate.overAll(
-        // TODO[g-despot] Count, value and min occurences?
         // highlight-start
         a -> a.metrics(
             Aggregate.text("answer", m -> m
-                .topOccurences()
-                .topOccurencesCutoff(5) // Threshold minimum count
+                .topOccurrencesValue()
+                .topOccurrencesCount()
+                .minOccurrences(5)  // Threshold minimum count
             ))
     // highlight-end
     );

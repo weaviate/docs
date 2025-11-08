@@ -38,7 +38,7 @@ class ManageObjectsCreateTest {
     // START Define the class
     client.collections.create("JeopardyQuestion",
         col -> col.properties(Property.text("title", p -> p.description("Name of the wine")))
-            .vectorConfig(VectorConfig.text2vecContextionary()));
+            .vectorConfig(VectorConfig.text2vecTransformers()));
 
     // TODO[g-despot]: Add source properties
     client.collections.create("WineReviewNV",
@@ -46,9 +46,9 @@ class ManageObjectsCreateTest {
             .properties(Property.text("review_body", p -> p.description("Review body")),
                 Property.text("title", p -> p.description("Name of the wine")),
                 Property.text("country", p -> p.description("Originating country")))
-            .vectorConfig(VectorConfig.text2vecContextionary("title"),
-                VectorConfig.text2vecContextionary("review_body"),
-                VectorConfig.text2vecContextionary("title_country")));
+            .vectorConfig(VectorConfig.text2vecTransformers("title"),
+                VectorConfig.text2vecTransformers("review_body"),
+                VectorConfig.text2vecTransformers("title_country")));
     // END Define the class
 
     // Additional collections for other tests
@@ -121,7 +121,7 @@ class ManageObjectsCreateTest {
     System.out.println(uuid); // the return value is the object's UUID
     // END CreateObjectNamedVectors
 
-    var result = reviews.query.byId(uuid, q -> q.returnMetadata(Metadata.VECTOR));
+    var result = reviews.query.byId(uuid, q -> q.includeVector(List.of("review_body", "title", "title_country")));
     assertThat(result).isPresent();
     // assertThat(result.get().metadata().vectors().getVectors()).containsOnlyKeys("title",
     // "review_body",

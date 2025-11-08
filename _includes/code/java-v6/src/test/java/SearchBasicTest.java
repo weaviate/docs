@@ -100,7 +100,6 @@ class SearchBasicTest {
     // END GetProperties
   }
 
-  // TODO[g-despot] Vector shoudn't be in metadata
   @Test
   void testGetObjectVector() {
     // START GetObjectVector
@@ -108,7 +107,7 @@ class SearchBasicTest {
     var response = jeopardy.query.fetchObjects(
         q -> q
             // highlight-start
-            .returnMetadata(Metadata.VECTOR)
+            .includeVector()
             // highlight-end
             .limit(1));
 

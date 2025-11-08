@@ -19,8 +19,8 @@ class ConfigureSQTest {
   public static void beforeAll() {
     // START ConnectCode
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
     // END ConnectCode
   }
 
@@ -38,7 +38,7 @@ class ConfigureSQTest {
 
     // START EnableSQ
     client.collections.create("MyCollection",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
             // highlight-start
             .quantization(Quantization.sq())
         // highlight-end
@@ -57,14 +57,15 @@ class ConfigureSQTest {
     }
     client.collections.create(collectionName,
         col -> col
-            .vectorConfig(VectorConfig
-                .text2vecContextionary(vc -> vc.quantization(Quantization.uncompressed())))
+            .vectorConfig(VectorConfig.text2vecTransformers(
+                vc -> vc.quantization(Quantization.uncompressed())))
             .properties(Property.text("title")));
 
     // START UpdateSchema
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("MyCollection");
-    collection.config.update(collectionName, c -> c.vectorConfig(
-        VectorConfig.text2vecContextionary(vc -> vc.quantization(Quantization.sq()))));
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("MyCollection");
+    collection.config.update(c -> c.vectorConfig(VectorConfig
+        .text2vecTransformers(vc -> vc.quantization(Quantization.sq()))));
     // END UpdateSchema
     // TODO[g-despot]: Verify the update
   }
@@ -78,10 +79,10 @@ class ConfigureSQTest {
 
     // START SQWithOptions
     client.collections.create("MyCollection",
-        col -> col.vectorConfig(VectorConfig.text2vecContextionary(vc -> vc
+        col -> col.vectorConfig(VectorConfig.text2vecTransformers(vc -> vc
             // highlight-start
-            .quantization(
-                Quantization.sq(q -> q.cache(true).trainingLimit(50000).rescoreLimit(200)))
+            .quantization(Quantization
+                .sq(q -> q.cache(true).trainingLimit(50000).rescoreLimit(200)))
             .vectorIndex(Hnsw.of(c -> c.vectorCacheMaxObjects(100000)))
         // highlight-end
         )).properties(Property.text("title")));

@@ -42,9 +42,9 @@ class ManageObjectsUpdateTest {
             .properties(Property.text("review_body", p -> p.description("Review body")),
                 Property.text("title", p -> p.description("Name of the wine")),
                 Property.text("country", p -> p.description("Originating country")))
-            .vectorConfig(VectorConfig.text2vecContextionary("title"),
-                VectorConfig.text2vecContextionary("review_body"),
-                VectorConfig.text2vecContextionary("title_country",
+            .vectorConfig(VectorConfig.text2vecTransformers("title"),
+                VectorConfig.text2vecTransformers("review_body"),
+                VectorConfig.text2vecTransformers("title_country",
                     vc -> vc.sourceProperties("title", "country"))));
 
     // highlight-start
@@ -68,7 +68,7 @@ class ManageObjectsUpdateTest {
             .properties(Property.text("question", p -> p.description("The question")),
                 Property.text("answer", p -> p.description("The answer")),
                 Property.number("points", p -> p.description("The points the question is worth")))
-            .vectorConfig(VectorConfig.text2vecContextionary()));
+            .vectorConfig(VectorConfig.text2vecTransformers()));
     // END Define the class
   }
 
@@ -135,7 +135,7 @@ class ManageObjectsUpdateTest {
     // END UpdateVector
 
     Optional<WeaviateObject<Map<String, Object>, Object, QueryMetadata>> result2 =
-        jeopardy.query.byId(uuid, q -> q.returnMetadata(Metadata.VECTOR));
+        jeopardy.query.byId(uuid, q -> q.includeVector());
     assertThat(result2).isPresent();
     assertThat(result2.get().metadata().vectors().getSingle("default")).hasSize(300);
 

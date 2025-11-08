@@ -43,7 +43,7 @@ class QuickstartLocalTest {
     client.collections.create(
         collectionName,
         col -> col
-            .vectorConfig(VectorConfig.text2vecContextionary()) // Configure the Weaviate Embeddings integration
+            .vectorConfig(VectorConfig.text2vecTransformers()) // Configure the Weaviate Embeddings integration
             .generativeModule(Generative.cohere()) // Configure the Cohere generative AI integration
             .properties(Property.text("answer"), Property.text("question"), Property.text("category")));
     CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);
@@ -69,7 +69,7 @@ class QuickstartLocalTest {
             Property.text("answer"),
             Property.text("question"),
             Property.text("category"))
-        .vectorConfig(VectorConfig.text2vecContextionary())); // Configure the Weaviate Embeddings integration;
+        .vectorConfig(VectorConfig.text2vecTransformers())); // Configure the Weaviate Embeddings integration;
 
     // Get JSON data using HttpURLConnection
     URL url = new URL("https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/jeopardy_tiny.json");

@@ -39,7 +39,7 @@ class GetStartedTest {
           col -> col.properties(Property.text("answer"),
               Property.text("question"),
               Property.text("category"))
-              .vectorConfig(VectorConfig.text2vecContextionary()) // Configure the Contextionary embedding model
+              .vectorConfig(VectorConfig.text2vecTransformers()) // Configure the Contextionary embedding model
       );
       CollectionHandle<Map<String, Object>> questions = client.collections.use(collectionName);
       // highlight-end

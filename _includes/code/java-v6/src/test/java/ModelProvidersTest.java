@@ -64,7 +64,7 @@ class ModelProvidersTest {
     client.collections.create("DemoCollection",
         col -> col
             .vectorConfig(
-                VectorConfig.text2VecWeaviate("title_vector", c -> c.sourceProperties("title")))
+                VectorConfig.text2vecWeaviate("title_vector", c -> c.sourceProperties("title")))
             .properties(Property.text("title"), Property.text("description")));
     // END BasicVectorizerWeaviate
 
@@ -82,7 +82,7 @@ class ModelProvidersTest {
     client.collections
         .create("DemoCollection",
             col -> col
-                .vectorConfig(VectorConfig.text2VecWeaviate("title_vector",
+                .vectorConfig(VectorConfig.text2vecWeaviate("title_vector",
                     c -> c.sourceProperties("title")
                         .model("Snowflake/snowflake-arctic-embed-l-v2.0")))
                 .properties(Property.text("title"), Property.text("description")));
@@ -100,7 +100,7 @@ class ModelProvidersTest {
   void testWeaviateVectorizerParameters() throws IOException {
     // START SnowflakeArcticEmbedMV15
     client.collections.create("DemoCollection",
-        col -> col.vectorConfig(VectorConfig.text2VecWeaviate("title_vector",
+        col -> col.vectorConfig(VectorConfig.text2vecWeaviate("title_vector",
             c -> c.sourceProperties("title").model("Snowflake/snowflake-arctic-embed-m-v1.5")
         // .inferenceUrl(null)
         // .dimensions(0)

@@ -20,8 +20,8 @@ class ManageObjectsReadAllTest {
   public static void beforeAll() throws IOException {
     // Instantiate the client
     String openaiApiKey = System.getenv("OPENAI_API_KEY");
-    client = WeaviateClient
-        .connectToLocal(config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
+    client = WeaviateClient.connectToLocal(
+        config -> config.setHeaders(Map.of("X-OpenAI-Api-Key", openaiApiKey)));
 
     // Simulate weaviate-datasets by creating and populating collections
     // Create WineReview collection
@@ -32,7 +32,8 @@ class ManageObjectsReadAllTest {
     // TODO[g-despot] Collection create doesn't return handle
     client.collections.create("WineReview");
     var wineReview = client.collections.use("WineReview");
-    wineReview.data.insertMany(Map.of("title", "Review A"), Map.of("title", "Review B"));
+    wineReview.data.insertMany(Map.of("title", "Review A"),
+        Map.of("title", "Review B"));
 
     // Create WineReviewMT collection
     if (client.collections.exists("WineReviewMT")) {
@@ -43,10 +44,13 @@ class ManageObjectsReadAllTest {
     var wineReviewMT = client.collections.use("WineReviewMT");
 
     // Create and populate tenants
-    List<Tenant> tenants = List.of(Tenant.active("tenantA"), Tenant.active("tenantB"));
+    List<Tenant> tenants =
+        List.of(Tenant.active("tenantA"), Tenant.active("tenantB"));
     wineReviewMT.tenants.create(tenants);
-    wineReviewMT.withTenant("tenantA").data.insert(Map.of("title", "Tenant A Review 1"));
-    wineReviewMT.withTenant("tenantB").data.insert(Map.of("title", "Tenant B Review 1"));
+    wineReviewMT.withTenant("tenantA").data
+        .insert(Map.of("title", "Tenant A Review 1"));
+    wineReviewMT.withTenant("tenantB").data
+        .insert(Map.of("title", "Tenant B Review 1"));
   }
 
   @AfterAll
@@ -59,27 +63,31 @@ class ManageObjectsReadAllTest {
   @Test
   void testReadAllProps() {
     // START ReadAllProps
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("WineReview");
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("WineReview");
 
     // highlight-start
-    for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : collection.paginate()) {
+    for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : collection
+        .paginate()) {
       // highlight-end
       System.out.printf("%s %s\n", item.uuid(), item.properties());
     }
     // END ReadAllProps
   }
 
-  // TODO[g-despot] Vector shoudn't be in metadata
+  // TODO[g-despot] Don't see include vector
   @Test
   void testReadAllVectors() {
     // START ReadAllVectors
-    CollectionHandle<Map<String, Object>> collection = client.collections.use("WineReview");
+    CollectionHandle<Map<String, Object>> collection =
+        client.collections.use("WineReview");
 
-    for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : collection.paginate(
-        // highlight-start
-        i -> i.returnMetadata(Metadata.VECTOR) // If using named vectors, you can specify ones to include
-    // highlight-end
-    )) {
+    for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : collection
+        .paginate(
+            // highlight-start
+            i -> i.returnMetadata() // If using named vectors, you can specify ones to include
+        // highlight-end
+        )) {
       System.out.println(item.properties());
       // highlight-start
       System.out.println(item.vectors());
@@ -91,7 +99,8 @@ class ManageObjectsReadAllTest {
   @Test
   void testReadAllTenants() {
     // START ReadAllTenants
-    CollectionHandle<Map<String, Object>> multiCollection = client.collections.use("WineReviewMT");
+    CollectionHandle<Map<String, Object>> multiCollection =
+        client.collections.use("WineReviewMT");
 
     // Get a list of tenants
     // highlight-start
@@ -103,7 +112,8 @@ class ManageObjectsReadAllTest {
       // Iterate through objects within each tenant
       // highlight-start
       for (WeaviateObject<Map<String, Object>, Object, QueryMetadata> item : multiCollection
-          .withTenant(tenant.name()).paginate()) {
+          .withTenant(tenant.name())
+          .paginate()) {
         // highlight-end
         System.out.printf("%s: %s\n", tenant.name(), item.properties());
       }
