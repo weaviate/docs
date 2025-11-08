@@ -1,10 +1,30 @@
-# Documentation Feedback Widget (Internal MVP)
+# Documentation Feedback Widget
 
-This document provides a brief overview of the MVP feedback widget and how to test it locally.
+This document provides a brief overview of the feedback widget and how to test it locally.
 
 ## What It Is
 
-The feedback widget is a small component that appears on documentation pages, allowing internal team members to submit quick feedback. This feedback is stored in a dedicated Weaviate instance for analysis.
+The feedback widget is a component that appears on documentation pages, allowing internal team members to submit feedback.
+
+When a user clicks "Yes" or "No", a modal opens for optional, detailed feedback. Upon submission, a single data object is sent to a Netlify serverless function, which then stores it in a dedicated Weaviate instance.
+
+## Data Payload
+
+The JSON payload sent to the Weaviate instance has the following structure:
+
+```json
+{
+  "page": "/weaviate/installation",
+  "vote": "down",
+  "feedbackType": "Content is hard to understand, Other",
+  "comments": "The explanation was confusing.",
+  "timestamp": "2023-10-27T10:00:00.000Z",
+  "testData": true,
+  "hostname": "localhost:8888"
+}
+```
+-   `testData` is `true` for any non-production hostname (e.g., localhost, deploy previews).
+-   `feedbackType` is a comma-separated string of the selected checkbox options.
 
 ## How to Test Locally
 
@@ -38,3 +58,23 @@ netlify dev
 ```
 
 The CLI will automatically start the Docusaurus site and the serverless function, loading your local environment variables. You can now navigate to the local site (usually at `http://localhost:8888`) and test the feedback widget. Submissions will be sent to the configured Weaviate instance.
+
+### 4. Create the Weaviate Collection
+
+Ensure the `DocFeedback` class exists in your Weaviate instance. It should look like this:
+
+```python
+client.collections.create(
+    "DocFeedback",
+    properties=[
+        Property(name="page", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
+        Property(name="vote", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
+        Property(name="feedbackType", data_type=DataType.TEXT),
+        Property(name="comments", data_type=DataType.TEXT),
+        Property(name="timestamp", data_type=DataType.DATE),
+        Property(name="testData", data_type=DataType.BOOL),
+        Property(name="hostname", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
+    ],
+    vector_config=[Configure.Vectors.self_provided(name="default")],
+)
+```
