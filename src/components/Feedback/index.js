@@ -94,7 +94,7 @@ export default function FeedbackComponent() {
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
-      <p className={styles.text}>Need help? Ask AI:</p>
+      <p className={styles.text}>Need help?</p>
       <div className={styles.buttonContainer}>
         <a
           className={`button button--primary button--sm ${styles.askAiButton}`}

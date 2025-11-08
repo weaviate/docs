@@ -68,6 +68,12 @@ export default function DocItemLayout({ children }) {
             </article>
             <DocItemPaginator />
           </div>
+          {/* Feedback component moved to main column */}
+          {showFeedback && (
+            <div className={styles.feedbackWrapper}>
+              <FeedbackComponent />
+            </div>
+          )}
         </div>
         {docTOC.desktop && (
           <div className="col col--3">
@@ -77,11 +83,6 @@ export default function DocItemLayout({ children }) {
               <PageRatingWidget />
             </div>
             {/* Feedback component aligned with TOC column */}
-            {showFeedback && (
-              <div className={styles.feedbackWrapper}>
-                <FeedbackComponent />
-              </div>
-            )}
             {/* ---- END: Customizations ---- */}
           </div>
         )}

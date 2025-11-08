@@ -7,8 +7,8 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
   width: 100%;
-  max-width: 260px;
-  min-width: 200px;
+  max-width: 180px;
+  min-width: 150px;
   position: relative; // Added for positioning the close button
 
   // Add hover effect for the entire container
@@ -20,8 +20,8 @@
   // For tablets and smaller desktops (when placed at bottom-right)
   @media (min-width: 997px) and (max-width: 1320px) {
     width: 100%;
-    max-width: 260px;
-    min-width: 200px;
+    max-width: 180px;
+    min-width: 150px;
   }
 
   // Mobile - show as fixed at bottom
@@ -32,6 +32,7 @@
     width: auto;
     z-index: 100;
     min-width: unset;
+    margin-right: 0; // Reset margin for mobile
   }
 }
 
