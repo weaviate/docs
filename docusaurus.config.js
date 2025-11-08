@@ -45,14 +45,9 @@ const config = {
         route: "/weaviate/api/rest",
         configuration: {
           spec: {
-            // Last updated: 2025-02-15 TODO[g-despot] Update to correct openapi_docs branch
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
           },
           hideModels: true,
-          // This feature currently broken - potentially fixed in: https://github.com/scalar/scalar/pull/1387
-          // hiddenClients: [...],
-          showAuthentication: false,
-          showRequestSamples: false,
         },
       },
     ],
@@ -157,7 +152,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
-        additionalLanguages: ['java', 'csharp'],
+        additionalLanguages: ["java", "csharp"],
       },
       docs: {
         sidebar: {
