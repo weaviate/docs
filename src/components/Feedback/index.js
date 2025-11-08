@@ -94,7 +94,7 @@ export default function FeedbackComponent() {
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
-      <p className={styles.text}>Need help or you have feedback?</p>
+      <p className={styles.text}>Need help? Ask AI:</p>
       <div className={styles.buttonContainer}>
         <a
           className={`button button--primary button--sm ${styles.askAiButton}`}
@@ -108,13 +108,13 @@ export default function FeedbackComponent() {
         >
           Ask AI
         </a>
-        <button
+        {/* <button
           onClick={openGithubFeedback}
           className={`button button--outline button--primary button--sm ${styles.feedbackButton}`}
           aria-label="Provide documentation feedback"
         >
           Feedback
-        </button>
+        </button> */}
       </div>
     </div>
   );
