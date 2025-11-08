@@ -27,7 +27,7 @@ exports.handler = async (event) => {
     const data = JSON.parse(event.body);
     // const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
     //   process.env;
-    const { WEAVIATE_DOCFEEDBACK_URL } = process.env;
+    const WEAVIATE_DOCFEEDBACK_URL = "https://nkavjoqdmjfz86anuo4a.c0.europe-west3.gcp.weaviate.cloud";
     const WEAVIATE_DOCFEEDBACK_API_KEY = "dkUrR284VTJkNFZCeG1mZ19XSi9JNkY1N0VwNDZEam1yRzNGeDBCOEY3YTVkU0NSejczNXZ4NnQ5SUwwPV92MjAw"; // Hardcoded temporary key for testing
 
     // Basic server-side validation
