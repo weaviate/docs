@@ -12,6 +12,8 @@ import PySuppCode from '!!raw-loader!/_includes/code/howto/sample-data.py';
 import TSCode from '!!raw-loader!/_includes/code/howto/manage-data.import.ts';
 import TsSuppCode from '!!raw-loader!/_includes/code/howto/sample-data.ts';
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.import.java';
+import JavaV6Code from '!!raw-loader!/_includes/code/java-v6/src/test/java/ManageObjectsImportTest.java';
+import CSharpCode from '!!raw-loader!/_includes/code/csharp/ManageObjectsImportTest.cs';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/manage-data.import_test.go';
 import SkipLink from '/src/components/SkipValidationLink'
 
@@ -60,6 +62,22 @@ Find out more about error handling on the Python client [reference page](/weavia
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BasicBatchImportExample"
+      endMarker="// END BasicBatchImportExample"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -68,12 +86,12 @@ Find out more about error handling on the Python client [reference page](/weavia
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START BasicBatchImportExample"
       endMarker="// END BasicBatchImportExample"
-      language="go"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -106,6 +124,21 @@ Here's how to import objects into a collection named `MyCollection` using [serve
 ```
 
   </TabItem>
+    <TabItem value="go" label="Go">
+
+```go
+// Go support coming soon
+```
+
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
 
 ```java
@@ -113,12 +146,13 @@ Here's how to import objects into a collection named `MyCollection` using [serve
 ```
 
   </TabItem>
-  <TabItem value="go" label="Go">
-
-```go
-// Go support coming soon
-```
-
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ServerSideBatchImportExample"
+      endMarker="// END ServerSideBatchImportExample"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -148,6 +182,11 @@ The TypeScript client v3 uses gRPC by default.
 <br />
 The legacy TypeScript client does not support gRPC.
 
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+
+The Java client v6 uses gRPC by default.
+  
   </TabItem>
   <TabItem value="java" label="Java">
 
@@ -182,6 +221,11 @@ if err != nil {
   }
 ```
 
+  </TabItem>
+    <TabItem value="csharp" label="C# (Beta)">
+
+The C# uses gRPC by default.
+  
   </TabItem>
   <TabItem value="spark" label="Spark">
 
@@ -228,6 +272,22 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithIDExample"
+      endMarker="// END BatchImportWithIDExample"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -236,12 +296,12 @@ Weaviate generates an UUID for each object. Object IDs must be unique. If you se
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START BatchImportWithIDExample"
       endMarker="// END BatchImportWithIDExample"
-      language="go"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -267,6 +327,22 @@ Use the `vector` property to specify a vector for each object.
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithVectorExample"
+      endMarker="// END BatchImportWithVectorExample"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -275,12 +351,12 @@ Use the `vector` property to specify a vector for each object.
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START BatchImportWithVectorExample"
       endMarker="// END BatchImportWithVectorExample"
-      language="go"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -309,6 +385,22 @@ When you create an object, you can specify named vectors (if [configured in your
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithNamedVectors"
+      endMarker="// END BatchImportWithNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportWithNamedVectors"
+      endMarker="// END BatchImportWithNamedVectors"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Import with references
@@ -322,6 +414,22 @@ You can batch create links from an object to another other object through cross-
       startMarker="# BatchImportWithRefExample"
       endMarker="# END BatchImportWithRefExample"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchImportWithRefExample"
+      endMarker="// END BatchImportWithRefExample"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchImportWithRefExample"
+      endMarker="// END BatchImportWithRefExample"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -363,6 +471,22 @@ To try the example code, download the sample data and create the sample input fi
       language="py"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetData"
+      endMarker="// END GetData"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetData"
+      endMarker="// END GetData"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 </details>
@@ -387,6 +511,22 @@ To try the example code, download the sample data and create the sample input fi
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START JSON streaming"
+      endMarker="// END JSON streaming"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START JSON streaming"
+      endMarker="// END JSON streaming"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 </details>
@@ -409,6 +549,22 @@ To try the example code, download the sample data and create the sample input fi
       startMarker="// START CSV streaming"
       endMarker="// END CSV streaming"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CSV streaming"
+      endMarker="// END CSV streaming"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START CSV streaming"
+      endMarker="// END CSV streaming"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -437,6 +593,22 @@ Note that each provider exposes different configuration options.
       startMarker="# START BatchVectorizationClientModify"
       endMarker="# END BatchVectorizationClientModify"
       language="py"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BatchVectorizationClientModify"
+      endMarker="// END BatchVectorizationClientModify"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BatchVectorizationClientModify"
+      endMarker="// END BatchVectorizationClientModify"
+      language="csharp"
     />
   </TabItem>
 </Tabs>

@@ -4,6 +4,8 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/_includes/code/python/quickstart.query.rag.py';
 import TSCode from '!!raw-loader!/_includes/code/typescript/quickstart.query.rag.ts';
 import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/quickstart/3_2_rag/main.go';
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
 import JavaCode from '!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/RAG.java';
 
 
@@ -46,6 +48,15 @@ We are using the OpenAI [generative AI integrations](/weaviate/model-providers/o
 />
 </TabItem>
 
+<TabItem value="java6" label="Java v6 (Beta)">
+<FilteredTextBlock
+  text={JavaV6Code}
+  startMarker="// START RAG"
+  endMarker="// END RAG"
+  language="java"
+/>
+</TabItem>
+
 <TabItem value="java" label="Java">
 <FilteredTextBlock
   text={JavaCode}
@@ -55,6 +66,14 @@ We are using the OpenAI [generative AI integrations](/weaviate/model-providers/o
   title="quickstart/RAG.java"
 />
 </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RAG"
+      endMarker="// END RAG"
+      language="csharp"
+    />
+  </TabItem>
 
 <TabItem value="curl" label="Curl">
 
