@@ -23,13 +23,37 @@ export default function PageRatingWidget() {
     setIsVisible(!(pageUrl === "/" || pageUrl === "/weaviate/"));
   }, [location.pathname]);
 
+  const submitFeedback = async (payload) => {
+    try {
+      const response = await fetch('/.netlify/functions/submit-feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        // Log the error response text for debugging
+        const errorText = await response.text();
+        console.error('Feedback submission failed:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      console.log('Feedback submitted successfully.');
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
+    }
+  };
+
   const handleVote = (newVote) => {
     setVote(newVote);
 
-    console.log({
+    const feedbackPayload = {
       page: location.pathname,
-      helpful: newVote === "up",
-    });
+      vote: newVote,
+    };
+    submitFeedback(feedbackPayload);
 
     if (!modalHasOpened) {
       setModalOpen(true);
@@ -38,11 +62,12 @@ export default function PageRatingWidget() {
   };
 
   const handleModalSubmit = (feedback) => {
-    console.log({
+    const feedbackPayload = {
       page: location.pathname,
       vote: vote,
       ...feedback,
-    });
+    };
+    submitFeedback(feedbackPayload);
     setModalOpen(false);
   };
 
@@ -57,9 +82,9 @@ export default function PageRatingWidget() {
         <div className={styles.buttonContainer}>
           <button
             className={`${styles.voteButton} ${styles.voteButtonYes} ${
-              vote === "up" ? styles.selected : ""
+              vote === 'up' ? styles.selected : ''
             }`}
-            onClick={() => handleVote("up")}
+            onClick={() => handleVote('up')}
             aria-label="Vote up"
           >
             <ThumbsUp />
@@ -67,9 +92,9 @@ export default function PageRatingWidget() {
           </button>
           <button
             className={`${styles.voteButton} ${styles.voteButtonNo} ${
-              vote === "down" ? styles.selected : ""
+              vote === 'down' ? styles.selected : ''
             }`}
-            onClick={() => handleVote("down")}
+            onClick={() => handleVote('down')}
             aria-label="Vote down"
           >
             <ThumbsDown />
