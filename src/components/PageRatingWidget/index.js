@@ -47,14 +47,10 @@ export default function PageRatingWidget() {
   };
 
   const handleVote = (newVote) => {
+    // Set the vote state, which will be used when the modal is submitted.
     setVote(newVote);
 
-    const feedbackPayload = {
-      page: location.pathname,
-      vote: newVote,
-    };
-    submitFeedback(feedbackPayload);
-
+    // Do not submit feedback here. Only open the modal.
     if (!modalHasOpened) {
       setModalOpen(true);
       setModalHasOpened(true);
@@ -62,9 +58,10 @@ export default function PageRatingWidget() {
   };
 
   const handleModalSubmit = (feedback) => {
+    // This is now the single point of submission.
     const feedbackPayload = {
       page: location.pathname,
-      vote: vote,
+      vote: vote, // The vote is read from the state set in handleVote
       ...feedback,
     };
     submitFeedback(feedbackPayload);
