@@ -82,7 +82,26 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+.githubContainer {
+  margin-top: 0.75rem;
+  text-align: right;
+}
+
+.githubButton {
+  background: none;
+  border: none;
+  color: var(--ifm-link-color);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 0.9rem;
+
+  &:hover {
+    color: var(--ifm-link-hover-color);
+  }
 }
 
 .submitButton {

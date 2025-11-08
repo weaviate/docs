@@ -6,7 +6,6 @@ const positiveFeedbackOptions = [
   "Clear explanation",
   "Good code examples",
   "Learned something new",
-  "Other",
 ];
 
 const negativeFeedbackOptions = [
@@ -14,7 +13,6 @@ const negativeFeedbackOptions = [
   "Code example or procedure doesn't work",
   "Couldn't find what I need",
   "Missing / outdated information",
-  "Other",
 ];
 
 export default function FeedbackModal({
@@ -29,6 +27,19 @@ export default function FeedbackModal({
   if (!isOpen) {
     return null;
   }
+
+  const openGithubFeedback = () => {
+    const currentUrl =
+      typeof window !== "undefined" ? window.location.href : "";
+    const params = new URLSearchParams({
+      template: "doc_feedback.yml",
+      title: "[Documentation Feedback]: ",
+      labels: "user-feedback",
+      "page-url": currentUrl,
+    });
+    const githubUrl = `https://github.com/weaviate/docs/issues/new?${params.toString()}`;
+    window.open(githubUrl, "_blank", "noopener,noreferrer");
+  };
 
   const options =
     voteType === "up" ? positiveFeedbackOptions : negativeFeedbackOptions;
@@ -69,7 +80,7 @@ export default function FeedbackModal({
             </label>
           ))}
         </div>
-        <label className={styles.commentLabel}>
+        {/* <label className={styles.commentLabel}>
           Tell us more (optional)
           <textarea
             value={comment}
@@ -77,7 +88,7 @@ export default function FeedbackModal({
             placeholder="Please tell us more so we can improve."
             rows="4"
           />
-        </label>
+        </label> */}
         <div className={styles.buttonContainer}>
           <button
             className={`button button--primary ${styles.submitButton}`}
@@ -90,6 +101,14 @@ export default function FeedbackModal({
             onClick={onClose}
           >
             Cancel
+          </button>
+        </div>
+        <div className={styles.githubContainer}>
+          <button
+            className={`button button--secondary ${styles.githubButton}`}
+            onClick={openGithubFeedback}
+          >
+            Other - create issue
           </button>
         </div>
       </div>
