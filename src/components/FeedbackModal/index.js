@@ -103,14 +103,16 @@ export default function FeedbackModal({
             Cancel
           </button>
         </div>
-        <div className={styles.githubContainer}>
-          <button
-            className={`button button--secondary ${styles.githubButton}`}
-            onClick={openGithubFeedback}
-          >
-            Other - create issue
-          </button>
-        </div>
+        {voteType !== "up" && (
+          <div className={styles.githubContainer}>
+            <button
+              className={`button button--secondary ${styles.githubButton}`}
+              onClick={openGithubFeedback}
+            >
+              Other - create issue
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
