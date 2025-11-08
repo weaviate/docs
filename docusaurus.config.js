@@ -46,8 +46,8 @@ const config = {
         configuration: {
           spec: {
             url: "https://raw.githubusercontent.com/weaviate/weaviate/openapi-for-docs/openapi-specs/schema.json",
-            hideModels: true,
           },
+          hideModels: true,
         },
       },
     ],
