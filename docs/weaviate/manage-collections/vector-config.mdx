@@ -11,7 +11,9 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 
 import VectorConfigSyntax from "/_includes/vector-config-syntax.mdx";
 
@@ -40,36 +42,46 @@ Collection level settings override default values and general configuration para
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START Vectorizer"
-    endMarker="// END Vectorizer"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START CreateCollectionWithVectorizer"
-    endMarker="// END CreateCollectionWithVectorizer"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START CreateCollectionWithVectorizer"
-    endMarker="// END CreateCollectionWithVectorizer"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START Vectorizer"
+      endMarker="// END Vectorizer"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START Vectorizer"
+      endMarker="// END Vectorizer"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateCollectionWithVectorizer"
+      endMarker="// END CreateCollectionWithVectorizer"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START Vectorizer"
+      endMarker="// END Vectorizer"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Specify vectorizer settings
@@ -89,36 +101,46 @@ To configure how a vectorizer works (i.e. what model to use) with a specific col
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START ModuleSettings"
-    endMarker="// END ModuleSettings"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START ModuleSettings"
+      endMarker="// END ModuleSettings"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START ModuleSettings"
+      endMarker="// END ModuleSettings"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ModuleSettings"
+      endMarker="// END ModuleSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START ModuleSettings"
+      endMarker="// END ModuleSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START ModuleSettings"
+      endMarker="// END ModuleSettings"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Define named vectors
@@ -139,36 +161,46 @@ As such, each named vector configuration can include its own vectorizer and vect
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START BasicNamedVectors"
-    endMarker="// END BasicNamedVectors"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START CreateCollectionWithNamedVectors"
-    endMarker="// END CreateCollectionWithNamedVectors"
-    language="java"
-  />
-</TabItem>
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START CreateCollectionWithNamedVectors"
-    endMarker="// END CreateCollectionWithNamedVectors"
-    language="gonew"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START BasicNamedVectors"
+      endMarker="// END BasicNamedVectors"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START BasicNamedVectors"
+      endMarker="// END BasicNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START CreateCollectionWithNamedVectors"
+      endMarker="// END CreateCollectionWithNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START BasicNamedVectors"
+      endMarker="// END BasicNamedVectors"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 ## Add new named vectors
@@ -195,19 +227,28 @@ Named vectors can be added to existing collection definitions with named vectors
       language="ts"
     />
   </TabItem>
-  <TabItem value="java" label="Java">
-
-```java
-// Java support coming soon
-```
-
-  </TabItem>
   <TabItem value="go" label="Go">
 
 ```go
 // Go support coming soon
 ```
 
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START AddNamedVectors"
+      endMarker="// END AddNamedVectors"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START AddNamedVectors"
+      endMarker="// END AddNamedVectors"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -233,13 +274,21 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       language="py"
     />
   </TabItem>
-    <TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-        text={TSCode}
-        startMarker="// START MultiValueVectorCollection"
-        endMarker="// END MultiValueVectorCollection"
-        language="ts"
-      />
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START MultiValueVectorCollection"
+      endMarker="// END MultiValueVectorCollection"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START MultiValueVectorCollection"
+      endMarker="// END MultiValueVectorCollection"
+      language="java"
+    />
   </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
@@ -247,6 +296,14 @@ Multi-vector embeddings, also known as multi-vectors, represent a single object 
       startMarker="// START MultiValueVectorCollection"
       endMarker="// END MultiValueVectorCollection"
       language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START MultiValueVectorCollection"
+      endMarker="// END MultiValueVectorCollection"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -268,33 +325,44 @@ The vector index type can be set for each collection at creation time, between `
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetVectorIndexType"
-    endMarker="// END SetVectorIndexType"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START SetVectorIndexType"
-    endMarker="// END SetVectorIndexType"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START SetVectorIndexType"
       endMarker="// END SetVectorIndexType"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SetVectorIndexType"
+      endMarker="// END SetVectorIndexType"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -319,33 +387,44 @@ Set vector index parameters such as [compression](../configuration/compression/i
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START SetVectorIndexParams"
-    endMarker="// END SetVectorIndexParams"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START SetVectorIndexParams"
-    endMarker="// END SetVectorIndexParams"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START SetVectorIndexParams"
       endMarker="// END SetVectorIndexParams"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START SetVectorIndexParams"
+      endMarker="// END SetVectorIndexParams"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -374,33 +453,44 @@ Configure individual properties in a collection. Each property can have it's own
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START PropModuleSettings"
-    endMarker="// END PropModuleSettings"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START PropModuleSettings"
-    endMarker="// END PropModuleSettings"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -418,33 +508,44 @@ If you choose to bring your own vectors, you should specify the `distance metric
       language="py"
     />
   </TabItem>
-
-
-<TabItem value="ts" label="JavaScript/TypeScript">
-  <FilteredTextBlock
-    text={TSCode}
-    startMarker="// START DistanceMetric"
-    endMarker="// END DistanceMetric"
-    language="ts"
-  />
-</TabItem>
-
-
-<TabItem value="java" label="Java">
-  <FilteredTextBlock
-    text={JavaCode}
-    startMarker="// START DistanceMetric"
-    endMarker="// END DistanceMetric"
-    language="java"
-  />
-</TabItem>
-
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="ts"
+    />
+  </TabItem>
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START DistanceMetric"
       endMarker="// END DistanceMetric"
       language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START DistanceMetric"
+      endMarker="// END DistanceMetric"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -463,7 +564,9 @@ For details on the configuration parameters, see the following:
 
 ## Further resources
 
-- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">API References: REST: Schema</SkipLink>
+- <SkipLink href="/weaviate/api/rest#tag/schema/post/schema">
+    API References: REST: Schema
+  </SkipLink>
 - [References: Configuration: Schema](/weaviate/config-refs/collections.mdx)
 - [Concepts: Data structure](../concepts/data.md)
 

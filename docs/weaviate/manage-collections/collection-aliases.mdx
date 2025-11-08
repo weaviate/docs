@@ -12,6 +12,8 @@ import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.aliases.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.aliases_test.go";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.collection-aliases.java";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsAliasTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsAliasTest.cs";
 
 :::info Added in `v1.32`
 :::
@@ -43,6 +45,22 @@ To create an alias, specify the alias name and the target collection it should p
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// CreateAlias START"
+      endMarker="// CreateAlias END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -51,12 +69,12 @@ To create an alias, specify the alias name and the target collection it should p
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// CreateAlias START"
-      endMarker="// CreateAlias END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START CreateAlias"
+      endMarker="// END CreateAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -90,6 +108,22 @@ Retrieve all aliases in your Weaviate instance.
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ListAllAliases START"
+      endMarker="// ListAllAliases END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -98,12 +132,12 @@ Retrieve all aliases in your Weaviate instance.
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// ListAllAliases START"
-      endMarker="// ListAllAliases END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START ListAllAliases"
+      endMarker="// END ListAllAliases"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -129,6 +163,22 @@ Get all aliases that point to a specific collection.
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// ListCollectionAliases START"
+      endMarker="// ListCollectionAliases END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -137,12 +187,12 @@ Get all aliases that point to a specific collection.
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// ListCollectionAliases START"
-      endMarker="// ListCollectionAliases END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START ListCollectionAliases"
+      endMarker="// END ListCollectionAliases"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -168,6 +218,22 @@ Retrieve information about a specific alias.
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// GetAlias START"
+      endMarker="// GetAlias END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -176,12 +242,12 @@ Retrieve information about a specific alias.
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// GetAlias START"
-      endMarker="// GetAlias END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START GetAlias"
+      endMarker="// END GetAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -207,6 +273,22 @@ Change the target collection that an alias points to. This operation is atomic a
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UpdateAlias START"
+      endMarker="// UpdateAlias END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -215,12 +297,12 @@ Change the target collection that an alias points to. This operation is atomic a
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// UpdateAlias START"
-      endMarker="// UpdateAlias END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START UpdateAlias"
+      endMarker="// END UpdateAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -259,6 +341,22 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// DeleteAlias START"
+      endMarker="// DeleteAlias END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -267,12 +365,12 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// DeleteAlias START"
-      endMarker="// DeleteAlias END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START DeleteAlias"
+      endMarker="// END DeleteAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -285,7 +383,7 @@ Remove an alias. This only deletes the alias pointer, not the underlying collect
 
 ## Using aliases in operations
 
-Once created, aliases can be used instead of collection names in all object-related operations, like data import and querying. 
+Once created, aliases can be used instead of collection names in all object-related operations, like data import and querying.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">
@@ -304,6 +402,22 @@ Once created, aliases can be used instead of collection names in all object-rela
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// UseAlias START"
+      endMarker="// UseAlias END"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -312,12 +426,12 @@ Once created, aliases can be used instead of collection names in all object-rela
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
-      startMarker="// UseAlias START"
-      endMarker="// UseAlias END"
-      language="go"
+      text={CSharpCode}
+      startMarker="// START UseAlias"
+      endMarker="// END UseAlias"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
