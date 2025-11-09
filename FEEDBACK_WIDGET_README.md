@@ -49,7 +49,7 @@ Add the credentials to your `.env` file like this:
 ```
 WEAVIATE_DOCFEEDBACK_URL="https://your-weaviate-instance.weaviate.cloud"
 WEAVIATE_DOCFEEDBACK_API_KEY="YourSecretWeaviateApiKey"
-ALLOWED_ORIGIN="http://localhost:8888"
+ALLOWED_ORIGIN="http://localhost:8888"  # Set "https://docs.weaviate.io" for prod, "*.netlify.app" for staging and "http://localhost:8888" for local testing
 ```
 
 For production, `ALLOWED_ORIGIN` should be set to `https://docs.weaviate.io`.

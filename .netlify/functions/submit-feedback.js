@@ -1,22 +1,43 @@
 exports.handler = async (event) => {
-  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  const allowedOriginPattern = process.env.ALLOWED_ORIGIN || '*';
+  const requestOrigin = event.headers.origin;
 
-  // Server-side check to reject requests from unauthorized origins
-  if (allowedOrigin !== '*' && event.headers.origin !== allowedOrigin) {
+  const isAllowed = () => {
+    if (allowedOriginPattern === '*') {
+      return true;
+    }
+    if (!requestOrigin) {
+      return false;
+    }
+    if (requestOrigin === allowedOriginPattern) {
+      return true;
+    }
+    if (allowedOriginPattern.startsWith('*.')) {
+      const baseDomain = allowedOriginPattern.substring(1);
+      const requestHostname = new URL(requestOrigin).hostname;
+      return requestHostname.endsWith(baseDomain);
+    }
+    return false;
+  };
+
+  if (!isAllowed()) {
     return {
       statusCode: 403,
       body: JSON.stringify({ error: 'Origin not allowed' }),
-      // It's good practice to still include CORS headers in the error response
       headers: {
-        'Access-Control-Allow-Origin': allowedOrigin,
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Origin': allowedOriginPattern.startsWith('*')
+          ? null
+          : allowedOriginPattern,
       },
     };
   }
 
+  const accessControlOrigin = allowedOriginPattern.startsWith('*.')
+    ? requestOrigin
+    : allowedOriginPattern;
+
   const headers = {
-    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Origin': accessControlOrigin,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
