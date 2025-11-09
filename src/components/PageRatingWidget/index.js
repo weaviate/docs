@@ -9,7 +9,6 @@ export default function PageRatingWidget() {
   const [vote, setVote] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHasOpened, setModalHasOpened] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -17,10 +16,6 @@ export default function PageRatingWidget() {
     setVote(null);
     setModalOpen(false);
     setModalHasOpened(false);
-
-    // Hide on homepage, show everywhere else immediately
-    const pageUrl = location.pathname;
-    setIsVisible(!(pageUrl === "/" || pageUrl === "/weaviate/"));
   }, [location.pathname]);
 
   const submitFeedback = async (payload) => {
@@ -72,7 +67,7 @@ export default function PageRatingWidget() {
   };
 
   const handleModalSubmit = (feedback) => {
-    // This is now the single point of submission.
+    // Single point of submission.
     const feedbackPayload = {
       page: location.pathname,
       vote: vote, // The vote is read from the state set in handleVote
@@ -81,10 +76,6 @@ export default function PageRatingWidget() {
     submitFeedback(feedbackPayload);
     setModalOpen(false);
   };
-
-  if (!isVisible) {
-    return null;
-  }
 
   return (
     <>

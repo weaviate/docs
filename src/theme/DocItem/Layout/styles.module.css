@@ -31,7 +31,7 @@
 }
 
 .feedbackWrapper > * {
-  pointer-events: auto; /* Re-enable pointer events for direct children */
+  pointer-events: auto;
 }
 
 .customTocStickyContainer {

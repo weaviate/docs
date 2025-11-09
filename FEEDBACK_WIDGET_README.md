@@ -24,6 +24,7 @@ The JSON payload sent to the Weaviate instance has the following structure:
 }
 ```
 -   `testData` is `true` for any non-production hostname (e.g., localhost, deploy previews).
+    - Update `PROD_HOSTNAME = 'docs.weaviate.io'` in `src/components/PageRatingWidget/index.js` if the production hostname changes
 -   `feedbackType` is a comma-separated string of the selected checkbox options.
 
 ## How to Test Locally
@@ -78,3 +79,7 @@ client.collections.create(
     vector_config=[Configure.Vectors.self_provided(name="default")],
 )
 ```
+
+## Notes
+
+- Thumbs up & down icons: from Lucide (https://lucide.dev/)

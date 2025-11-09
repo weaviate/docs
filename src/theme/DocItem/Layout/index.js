@@ -12,10 +12,10 @@ import DocItemContent from "@theme/DocItem/Content";
 import DocBreadcrumbs from "@theme/DocBreadcrumbs";
 import ContentVisibility from "@theme/ContentVisibility";
 import styles from "./styles.module.css";
-import PageRatingWidget from "@site/src/components/PageRatingWidget";
 
 /* ---- START: Customizations ---- */
 import FeedbackComponent from "@site/src/components/Feedback";
+import PageRatingWidget from "@site/src/components/PageRatingWidget";
 /* ---- END: Customizations ---- */
 
 /**
@@ -68,12 +68,14 @@ export default function DocItemLayout({ children }) {
             </article>
             <DocItemPaginator />
           </div>
-          {/* Feedback component moved to main column */}
+          {/* ---- START: Customizations ---- */}
+          {/* Feedback component in the main column */}
           {showFeedback && (
             <div className={styles.feedbackWrapper}>
               <FeedbackComponent />
             </div>
           )}
+          {/* ---- END: Customizations ---- */}
         </div>
         {docTOC.desktop && (
           <div className="col col--3">
@@ -82,7 +84,6 @@ export default function DocItemLayout({ children }) {
               {docTOC.desktop}
               <PageRatingWidget />
             </div>
-            {/* Feedback component aligned with TOC column */}
             {/* ---- END: Customizations ---- */}
           </div>
         )}

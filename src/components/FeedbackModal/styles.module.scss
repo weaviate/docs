@@ -15,22 +15,22 @@
   background-color: var(--ifm-background-surface-color);
   padding: 1.5rem;
   border-radius: 8px;
-  max-width: 360px; // Made 20% narrower
+  max-width: 360px;
   width: 90%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   color: var(--ifm-font-color-base);
-  position: relative; // Needed for positioning the close button
+  position: relative; // For positioning the close button
 
   h3 {
     margin-top: 0;
     padding-top: 0.25rem;
-    margin-bottom: 0.25rem; // Reduced spacing
+    margin-bottom: 0.25rem;
     font-size: 1.25rem;
   }
 
   p {
     margin-top: 0;
-    margin-bottom: 1rem; // Reduced spacing
+    margin-bottom: 1rem;
     font-size: 0.9rem;
     color: var(--ifm-color-emphasis-700);
   }
@@ -39,7 +39,7 @@
 .optionsContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem; // Reduced vertical spacing
+  gap: 0.1rem;
   margin-bottom: 1rem;
 }
 
@@ -59,7 +59,7 @@
   display: block;
   font-size: 0.9rem;
   font-weight: 500;
-  margin-bottom: 0.5rem; // Reduced spacing
+  margin-bottom: 0.5rem;
 
   textarea {
     width: 100%;

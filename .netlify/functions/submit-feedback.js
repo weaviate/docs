@@ -1,6 +1,6 @@
 exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*', // This should be locked down in production
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
@@ -25,10 +25,8 @@ exports.handler = async (event) => {
 
   try {
     const data = JSON.parse(event.body);
-    // const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
-    //   process.env;
-    const WEAVIATE_DOCFEEDBACK_URL = "https://nkavjoqdmjfz86anuo4a.c0.europe-west3.gcp.weaviate.cloud";
-    const WEAVIATE_DOCFEEDBACK_API_KEY = "dkUrR284VTJkNFZCeG1mZ19XSi9JNkY1N0VwNDZEam1yRzNGeDBCOEY3YTVkU0NSejczNXZ4NnQ5SUwwPV92MjAw"; // Hardcoded temporary key for testing
+    const { WEAVIATE_DOCFEEDBACK_URL, WEAVIATE_DOCFEEDBACK_API_KEY } =
+      process.env;
 
     // Basic server-side validation
     if (!data.page || !data.vote) {
@@ -41,8 +39,7 @@ exports.handler = async (event) => {
       };
     }
 
-    // if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
-    if (!WEAVIATE_DOCFEEDBACK_URL) {
+    if (!WEAVIATE_DOCFEEDBACK_URL || !WEAVIATE_DOCFEEDBACK_API_KEY) {
       console.error('Missing Weaviate environment variables.');
       return {
         statusCode: 500,
@@ -58,7 +55,7 @@ exports.handler = async (event) => {
         vote: data.vote,
         // The frontend sends an array of 'options'. Join it into a string.
         feedbackType: data.options ? data.options.join(', ') : undefined,
-        // The frontend sends 'comment' (singular).
+        // The frontend can send 'comment' (singular).
         comments: data.comment,
         timestamp: new Date().toISOString(),
         testData: data.testData, // Add the testData flag

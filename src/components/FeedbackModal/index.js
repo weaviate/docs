@@ -28,6 +28,7 @@ export default function FeedbackModal({
     return null;
   }
 
+  // Function to open GitHub issue with pre-filled template
   const openGithubFeedback = () => {
     const currentUrl =
       typeof window !== "undefined" ? window.location.href : "";
@@ -43,8 +44,10 @@ export default function FeedbackModal({
 
   const options =
     voteType === "up" ? positiveFeedbackOptions : negativeFeedbackOptions;
+  // Load appropriate title based on vote type
   const title = voteType === "up" ? "What helped?" : "What went wrong?";
 
+  // Update selected options on checkbox change
   const handleOptionChange = (option) => {
     setSelectedOptions((prev) =>
       prev.includes(option)
@@ -53,6 +56,7 @@ export default function FeedbackModal({
     );
   };
 
+  // Handle form submission
   const handleSubmit = () => {
     onSubmit({
       options: selectedOptions,
@@ -80,6 +84,7 @@ export default function FeedbackModal({
             </label>
           ))}
         </div>
+        {/* Disable comment for now, until adding in input validation / sanitization for security */}
         {/* <label className={styles.commentLabel}>
           Tell us more (optional)
           <textarea
