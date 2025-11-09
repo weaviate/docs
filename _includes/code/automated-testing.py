@@ -4,7 +4,7 @@ import weaviate_datasets as wd
 from weaviate.classes.init import Auth
 
 # Get credentials from environment variables
-wcd_url = os.environ["WEAVIATE_HOST"]
+wcd_url = os.environ["WEAVIATE_URL"]
 wcd_api_key = os.environ["WEAVIATE_API_KEY"]
 openai_api = os.environ["OPENAI_APIKEY"]
 

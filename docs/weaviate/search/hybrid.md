@@ -8,11 +8,13 @@ image: og/docs/howto.jpg
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBlock';
-import PyCode from '!!raw-loader!/_includes/code/howto/search.hybrid.py';
-import PyCodeV3 from '!!raw-loader!/_includes/code/howto/search.hybrid-v3.py';
-import TSCode from '!!raw-loader!/_includes/code/howto/search.hybrid.ts';
-import GoCode from '!!raw-loader!/_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
-import GQLCode from '!!raw-loader!/_includes/code/howto/search.hybrid.gql.py';
+import PyCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.py';
+import PyCodeV3 from '!!raw-loader!/\_includes/code/howto/search.hybrid-v3.py';
+import TSCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.ts';
+import GoCode from '!!raw-loader!/\_includes/code/howto/go/docs/mainpkg/search-hybrid_test.go';
+import JavaV6Code from "!!raw-loader!/\_includes/code/java-v6/src/test/java/SearchHybridTest.java";
+import CSharpCode from "!!raw-loader!/\_includes/code/csharp/SearchHybridTest.cs";
+import GQLCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.gql.py';
 
 `Hybrid` search combines the results of a vector search and a keyword (BM25F) search by fusing the two result sets.
 
@@ -31,8 +33,6 @@ Combine the results of a vector search and a keyword search. The search uses a s
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -41,25 +41,38 @@ Combine the results of a vector search and a keyword search. The search uses a s
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
-  <FilteredTextBlock
-    text={GoCode}
-    startMarker="// START Basic"
-    endMarker="// END Basic"
-    language="go"
-  />
-</TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridBasicGraphQL"
-  endMarker="# END HybridBasicGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START Basic"
+      endMarker="// END Basic"
+      language="go"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridBasic"
+      endMarker="// END HybridBasic"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridBasic"
+      endMarker="// END HybridBasic"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridBasicGraphQL"
+      endMarker="# END HybridBasicGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -100,6 +113,22 @@ A hybrid search on a collection that has [named vectors](../config-refs/collecti
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START NamedVectorHybrid"
+      endMarker="// END NamedVectorHybrid"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START NamedVectorHybrid"
+      endMarker="// END NamedVectorHybrid"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -137,8 +166,6 @@ To see the object rankings, set the `explain score` field in your query. The sea
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -147,9 +174,7 @@ To see the object rankings, set the `explain score` field in your query. The sea
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithScore"
@@ -157,15 +182,30 @@ To see the object rankings, set the `explain score` field in your query. The sea
       language="go"
     />
   </TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithScoreGraphQL"
-  endMarker="# END HybridWithScoreGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithScore"
+      endMarker="// END HybridWithScore"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithScore"
+      endMarker="// END HybridWithScore"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithScoreGraphQL"
+      endMarker="# END HybridWithScoreGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -198,8 +238,6 @@ Hybrid search results can favor the keyword component or the vector component. T
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -208,25 +246,38 @@ Hybrid search results can favor the keyword component or the vector component. T
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithAlpha"
       endMarker="// END WithAlpha"
       language="go"
     />
-</TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithAlphaGraphQL"
-  endMarker="# END HybridWithAlphaGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithAlpha"
+      endMarker="// END HybridWithAlpha"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithAlpha"
+      endMarker="// END HybridWithAlpha"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithAlphaGraphQL"
+      endMarker="# END HybridWithAlphaGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -259,8 +310,6 @@ The output is like this:
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -269,25 +318,38 @@ The output is like this:
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithFusionType"
       endMarker="// END WithFusionType"
       language="go"
     />
-</TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithFusionTypeGraphQL"
-  endMarker="# END HybridWithFusionTypeGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithFusionType"
+      endMarker="// END HybridWithFusionType"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithFusionType"
+      endMarker="// END HybridWithFusionType"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithFusionTypeGraphQL"
+      endMarker="# END HybridWithFusionTypeGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -341,6 +403,22 @@ With the `or` operator, the search returns objects that contain at least `minimu
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithBM25OperatorOrWithMin"
+      endMarker="// END HybridWithBM25OperatorOrWithMin"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={GQLCode}
@@ -372,6 +450,22 @@ With the `and` operator, the search returns objects that contain all tokens in t
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithBM25OperatorAnd"
+      endMarker="// END HybridWithBM25OperatorAnd"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={GQLCode}
@@ -398,8 +492,6 @@ The keyword search portion of hybrid search can be directed to only search a sub
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -408,25 +500,38 @@ The keyword search portion of hybrid search can be directed to only search a sub
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithProperties"
       endMarker="// END WithProperties"
       language="go"
     />
-</TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithPropertiesGraphQL"
-  endMarker="# END HybridWithPropertiesGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithProperties"
+      endMarker="// END HybridWithProperties"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithProperties"
+      endMarker="// END HybridWithProperties"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithPropertiesGraphQL"
+      endMarker="# END HybridWithPropertiesGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -456,8 +561,6 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -466,25 +569,38 @@ Specify the relative value of an object's `properties` in the keyword search. Hi
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithPropertyWeighting"
       endMarker="// END WithPropertyWeighting"
       language="go"
     />
-</TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithPropertyWeightingGraphQL"
-  endMarker="# END HybridWithPropertyWeightingGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithPropertyWeighting"
+      endMarker="// END HybridWithPropertyWeighting"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithPropertyWeighting"
+      endMarker="// END HybridWithPropertyWeighting"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithPropertyWeightingGraphQL"
+      endMarker="# END HybridWithPropertyWeightingGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -514,8 +630,6 @@ The vector component of hybrid search can use a query string or a query vector. 
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -524,25 +638,38 @@ The vector component of hybrid search can use a query string or a query vector. 
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithVector"
       endMarker="// END WithVector"
       language="go"
     />
-</TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithVectorGraphQL"
-  endMarker="# END HybridWithVectorGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithVector"
+      endMarker="// END HybridWithVector"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithVector"
+      endMarker="// END HybridWithVector"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithVectorGraphQL"
+      endMarker="# END HybridWithVectorGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -584,6 +711,22 @@ You can specify [vector similarity search](/weaviate/search/similarity) paramete
       language="ts"
     />
   </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START VectorParameters"
+      endMarker="// END VectorParameters"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START VectorParameters"
+      endMarker="// END VectorParameters"
+      language="csharp"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -616,9 +759,6 @@ The only available search threshold is `max vector distance`, which will set the
       language="python"
     />
   </TabItem>
-
-  <TabItem value="ts" label="JavaScript/TypeScript">
-
 <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -627,6 +767,21 @@ The only available search threshold is `max vector distance`, which will set the
       language="ts"
     />
   </TabItem>
+   <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START VectorSimilarity"
+      endMarker="// END VectorSimilarity"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START VectorSimilarity"
+      endMarker="// END VectorSimilarity"
+      language="csharp"
+    />
   </TabItem>
 </Tabs>
 
@@ -646,13 +801,28 @@ Define criteria to group search results.
       language="py"
     />
   </TabItem>
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
       startMarker="// START HybridGroupBy"
       endMarker="// END HybridGroupBy"
       language="ts"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridGroupBy"
+      endMarker="// END HybridGroupBy"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridGroupBy"
+      endMarker="// END HybridGroupBy"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -684,8 +854,6 @@ Optionally, use `offset` to paginate the results.
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -694,8 +862,6 @@ Optionally, use `offset` to paginate the results.
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -704,7 +870,22 @@ Optionally, use `offset` to paginate the results.
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START limit"
+      endMarker="// END limit"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START limit"
+      endMarker="// END limit"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -736,8 +917,6 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="py"
     />
   </TabItem>
-
-
   <TabItem value="ts" label="JavaScript/TypeScript">
     <FilteredTextBlock
       text={TSCode}
@@ -746,8 +925,6 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="ts"
     />
   </TabItem>
-
-
   <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
@@ -756,7 +933,22 @@ To learn more about the different fusion algorithms, visit the [search operators
       language="go"
     />
   </TabItem>
-
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START autocut"
+      endMarker="// END autocut"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START autocut"
+      endMarker="// END autocut"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="graphql" label="GraphQL">
     <FilteredTextBlock
       text={PyCodeV3}
@@ -794,8 +986,6 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
   language="python"
 />
 </TabItem>
-
-
 <TabItem value="ts" label="JavaScript/TypeScript">
 <FilteredTextBlock
   text={TSCode}
@@ -804,9 +994,7 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
   language="ts"
 />
 </TabItem>
-
-
-<TabItem value="go" label="Go">
+  <TabItem value="go" label="Go">
     <FilteredTextBlock
       text={GoCode}
       startMarker="// START WithFilter"
@@ -814,15 +1002,30 @@ To narrow your search results, use a [`filter`](../api/graphql/filters.md).
       language="go"
     />
   </TabItem>
-
-<TabItem value="graphql" label="GraphQL">
-<FilteredTextBlock
-  text={PyCodeV3}
-  startMarker="# HybridWithFilterGraphQL"
-  endMarker="# END HybridWithFilterGraphQL"
-  language="graphql"
-/>
-</TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START HybridWithFilter"
+      endMarker="// END HybridWithFilter"
+      language="java"
+    />
+  </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START HybridWithFilter"
+      endMarker="// END HybridWithFilter"
+      language="csharp"
+    />
+  </TabItem>
+  <TabItem value="graphql" label="GraphQL">
+    <FilteredTextBlock
+      text={PyCodeV3}
+      startMarker="# HybridWithFilterGraphQL"
+      endMarker="# END HybridWithFilterGraphQL"
+      language="graphql"
+    />
+  </TabItem>
 </Tabs>
 
 <details>
@@ -841,7 +1044,7 @@ The output is like this:
 
 ### Tokenization
 
-import TokenizationNote from '/_includes/tokenization.mdx'
+import TokenizationNote from '/\_includes/tokenization.mdx'
 
 <TokenizationNote />
 
@@ -855,6 +1058,6 @@ import TokenizationNote from '/_includes/tokenization.mdx'
 
 ## Questions and feedback
 
-import DocsFeedback from '/_includes/docs-feedback.mdx';
+import DocsFeedback from '/\_includes/docs-feedback.mdx';
 
 <DocsFeedback/>

@@ -167,6 +167,19 @@ const sidebars = {
         },
         {
           type: "category",
+          label: "Contextual AI",
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/model-providers/contextualai/index",
+          },
+          items: [
+            "weaviate/model-providers/contextualai/generative",
+            "weaviate/model-providers/contextualai/reranker",
+          ],
+        },
+        {
+          type: "category",
           label: "Databricks",
           className: "sidebar-item",
           link: {
@@ -643,8 +656,21 @@ const sidebars = {
           ],
         },
         {
+          type: "category",
+          label: "Java",
+          collapsed: false,
+          className: "sidebar-item",
+          link: {
+            type: "doc",
+            id: "weaviate/client-libraries/java/index",
+          },
+          items: [
+            "weaviate/client-libraries/java/java-v6",
+          ],
+        },
+        {
           type: "doc",
-          id: "weaviate/client-libraries/java",
+          id: "weaviate/client-libraries/csharp",
           className: "sidebar-item",
         },
         {

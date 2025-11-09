@@ -1,11 +1,10 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">
 
 Install the latest, [Python client `v4`](/weaviate/client-libraries/python), by adding `weaviate-client` to your Python environment with `pip`:<br/><br/>
-
 
 ```bash
 pip install -U weaviate-client
@@ -30,6 +29,19 @@ go get github.com/weaviate/weaviate-go-client/v5
 ```
 
 </TabItem>
+<TabItem value="java6" label="Java v6 (Beta)">
+
+Add this dependency to your project:<br/><br/>
+
+```xml
+<dependency>
+  <groupId>io.weaviate</groupId>
+  <artifactId>client6</artifactId>
+  <version>6.0.0-M2</version> <!-- Check latest version: https://github.com/weaviate/java-client -->
+</dependency>
+```
+
+</TabItem>
 <TabItem value="java" label="Java">
 
 Add this dependency to your project:<br/><br/>
@@ -40,6 +52,15 @@ Add this dependency to your project:<br/><br/>
   <artifactId>client</artifactId>
   <version>4.8.3</version>  <!-- Check latest version: https://github.com/weaviate/java-client -->
 </dependency>
+```
+
+</TabItem>
+<TabItem value="csharp" label="C# (Beta)">
+
+Add this package to your project:<br/><br/>
+
+```xml
+<PackageReference Include="Weaviate.Client" Version="0.0.1-beta.4" />   <!-- Check latest version: https://github.com/weaviate/java-client -->
 ```
 
 </TabItem>

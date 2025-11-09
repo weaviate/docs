@@ -965,6 +965,10 @@ button.close {
   padding: 0 !important;
 }
 
+.hidden-tabs .tabs__item {
+  display: none;
+}
+
 /*
  * SCALAR OPENAPI DOCS
  * -------------------------------
