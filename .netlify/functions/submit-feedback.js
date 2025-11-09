@@ -1,5 +1,20 @@
 exports.handler = async (event) => {
   const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+
+  // Server-side check to reject requests from unauthorized origins
+  if (allowedOrigin !== '*' && event.headers.origin !== allowedOrigin) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ error: 'Origin not allowed' }),
+      // It's good practice to still include CORS headers in the error response
+      headers: {
+        'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      },
+    };
+  }
+
   const headers = {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'Content-Type',
