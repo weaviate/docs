@@ -42,13 +42,17 @@ The widget's backend is a Netlify serverless function. To run this function loca
 ### 2. Create a Local Environment File
 
 Create a file named `.env` at the root of the project. **This file should not be committed to git.**
+See `.env.example` for an example of the required environment variables.
 
 Add the credentials to your `.env` file like this:
 
 ```
-WEAVIATE_DOCFEEDBACK_URL="https://your-weaviate-instance.weaviate.network"
+WEAVIATE_DOCFEEDBACK_URL="https://your-weaviate-instance.weaviate.cloud"
 WEAVIATE_DOCFEEDBACK_API_KEY="YourSecretWeaviateApiKey"
+ALLOWED_ORIGIN="http://localhost:8888"
 ```
+
+For production, `ALLOWED_ORIGIN` should be set to `https://docs.weaviate.io`.
 
 ### 3. Run the Development Server
 
