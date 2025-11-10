@@ -1,56 +1,53 @@
 You can always [contact our sales team](https://weaviate.io/pricing#contact-sales) to discuss which solution is right for you.  
 Weaviate Cloud offers two types of cloud hosting:
 
-import DetailedOptions from "/src/components/DetailedOptions";
+import DeploymentCards from "/src/components/DeploymentCards";
 
-export const cardsData = [
+export const deploymentCardsData = [
   {
-    title: (
-      <span>
-        <i className="fa fa-cloud" aria-hidden="true"></i> Shared Cloud
-      </span>
-    ),
-    description: (
-      <span>
-        <ul>
-          <li>
-            Weaviate manages a fully-managed SaaS deployment on shared
-            infrastructure.
-          </li>
-          <li>
-            Automatic scalability based on your vector memory requirements.
-          </li>
-          <li>Simple one-click cluster management through Weaviate Console.</li>
-          <li>Consumption-based pricing model for storage and compute.</li>
-          <li>Available across five cloud regions.</li>
-        </ul>
-      </span>
-    ),
-    link: "https://weaviate.io/deployment/shared",
+    tabs: [
+      { label: "Evaluation", active: true },
+      { label: "Development", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Shared Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "Fully-managed SaaS on shared infrastructure",
+      "Automatic scalability based on vector memory",
+      "Simple one-click cluster management",
+      "Consumption-based pricing (vector dimensions, storage, backups)",
+      "Available across five cloud regions",
+      "99.5% - 99.9% uptime SLA",
+    ],
+    button: {
+      text: "Learn about Shared Cloud",
+      link: "https://weaviate.io/deployment/shared",
+    },
   },
   {
-    title: (
-      <span>
-        <i className="fa fa-building" aria-hidden="true"></i> Dedicated Cloud
-      </span>
-    ),
-    description: (
-      <span>
-        <ul>
-          <li>
-            Weaviate manages a dedicated instance for you in the Weaviate Cloud.
-          </li>
-          <li>Data and operations isolated within a dedicated tenant.</li>
-          <li>Enhanced security and compliance (SOC II, HIPAA).</li>
-          <li>Predictable performance with pre-scoped resources.</li>
-          <li>
-            Includes Dedicated Success Manager and 24/7 professional support.
-          </li>
-        </ul>
-      </span>
-    ),
-    link: "https://weaviate.io/deployment/dedicated",
+    tabs: [
+      { label: "Evaluation", active: false },
+      { label: "Development", active: true },
+      { label: "Production", active: true },
+    ],
+    header: "Dedicated Cloud",
+    bgImage: "/img/site/hex-weaviate.svg",
+    bgImageLight: "/img/site/hex-weaviate-light.svg",
+    listItems: [
+      "Dedicated instance with isolated infrastructure",
+      "Enhanced security and compliance (SOC II, HIPAA)",
+      "Predictable performance with dedicated resources",
+      "99.9% - 99.95% uptime SLA",
+      "Dedicated Success Manager included",
+      "24/7 professional support",
+    ],
+    button: {
+      text: "Learn about Dedicated Cloud",
+      link: "https://weaviate.io/deployment/dedicated",
+    },
   },
 ];
 
-<DetailedOptions cards={cardsData} />
+<DeploymentCards items={deploymentCardsData} />
