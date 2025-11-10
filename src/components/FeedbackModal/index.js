@@ -114,7 +114,7 @@ export default function FeedbackModal({
               className={`button button--secondary ${styles.githubButton}`}
               onClick={openGithubFeedback}
             >
-              Other - create issue
+              Other - create a GitHub issue
             </button>
           </div>
         )}
