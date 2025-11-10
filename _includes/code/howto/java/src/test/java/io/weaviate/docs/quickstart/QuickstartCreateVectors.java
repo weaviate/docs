@@ -17,9 +17,16 @@ public class QuickstartCreateVectors {
     // Best practice: store your credentials in environment variables
     String weaviateUrl = System.getenv("WEAVIATE_URL");
     String weaviateApiKey = System.getenv("WEAVIATE_API_KEY");
+    String anthropicApiKey = System.getenv("ANTHROPIC_API_KEY");
+
+    Map<String, String> headers = new HashMap<String, String>() {
+      {
+        put("X-Anthropic-Api-Key", anthropicApiKey);
+      }
+    };
 
     // Step 1.1: Connect to your Weaviate Cloud instance
-    Config config = new Config("https", weaviateUrl.replace("https://", ""));
+    Config config = new Config("https", weaviateUrl.replace("https://", ""), headers);
     WeaviateClient client = WeaviateAuthClient.apiKey(config, weaviateApiKey);
 
     // END CreateCollection

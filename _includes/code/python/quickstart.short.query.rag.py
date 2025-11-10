@@ -12,7 +12,9 @@ anthropic_api_key = os.environ["ANTHROPIC_API_KEY"]
 client = weaviate.connect_to_weaviate_cloud(
     cluster_url=weaviate_url,
     auth_credentials=weaviate_api_key,
-
+    # highlight-start
+    headers={"X-Anthropic-Api-Key": anthropic_api_key},
+    # highlight-end
 )
 
 # Step 2.2: Use this collection
