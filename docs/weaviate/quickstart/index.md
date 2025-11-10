@@ -174,7 +174,7 @@ Once you have the **REST Endpoint URL** and the **admin API key**, you can conne
 
 ## Install a client library
 
-Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java/index.mdx).
 
 import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.mdx";
 
