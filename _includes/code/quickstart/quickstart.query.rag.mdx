@@ -4,6 +4,8 @@ import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBl
 import PyCode from "!!raw-loader!/_includes/code/python/quickstart.query.rag.py";
 import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.query.rag.ts";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/3_2_rag/main.go";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/QuickstartTest.cs";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/QuickstartTest.java";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/RAG.java";
 
 <Tabs className="code" groupId="languages">
@@ -34,6 +36,16 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
       title="quickstart/3_2_rag/main.go"
     />
   </TabItem>
+
+  <TabItem value="java6" label="Java v6 (Beta)">
+  <FilteredTextBlock
+    text={JavaV6Code}
+    startMarker="// START RAG"
+    endMarker="// END RAG"
+    language="java"
+  />
+  </TabItem>
+
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -43,8 +55,16 @@ import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/w
       title="quickstart/RAG.java"
     />
   </TabItem>
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START RAG"
+      endMarker="// END RAG"
+      language="csharp"
+    />
+  </TabItem>
   <TabItem value="curl" label="Curl">
-  
+
 ```bash
 # Best practice: store your credentials in environment variables
 # export WEAVIATE_URL="YOUR_INSTANCE_URL"    # Your Weaviate instance URL
@@ -86,6 +106,6 @@ echo '{
     -d @- \
     $WEAVIATE_URL/v1/graphql
 ```
-  
+
   </TabItem>
 </Tabs>

@@ -208,7 +208,7 @@ import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart
 <Tabs groupId="import" queryString="import" className="hidden-tabs">
 <TabItem value="vectorization" label="Vectorize objects during import">
 
-Semantic search finds results based on meaning. This is called `nearText` in Weaviate. The following example searches for 2 objects (_limit_) whose meaning is most similar to that of `sci-fi`. 
+Semantic search finds results based on meaning. This is called `nearText` in Weaviate. The following example searches for 2 objects (_limit_) whose meaning is most similar to that of `sci-fi`.
 
 import QueryNearText from "/_includes/code/quickstart/quickstart.short.query.neartext.mdx";
 

@@ -51,7 +51,7 @@ There are two paths you can choose from:
 This quickstart guide will show you how to:
 
 1. **Create a collection & import data** - Create a collection and import data into it. The data will be vectorized with the <Tooltip content="Embedding models are models that are trained specifically to generate vector embeddings: long arrays of numbers that represent semantic meaning for a given object." position="top"><span style={{ textDecoration: "underline", cursor: "help" }}>Ollama embedding model provider</span></Tooltip>. You are also free to use any other available [embedding model provider](../model-providers/index.md).
-2. **Search** - Perform a similarity (vector) search on your data using a text query. 
+2. **Search** - Perform a similarity (vector) search on your data using a text query.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
 
 </TabItem>
@@ -136,7 +136,7 @@ docker compose exec ollama ollama pull llama3.2
 
 ## Install a client library
 
-Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md).
+Follow the instructions below to install one of the official client libraries, available in [Python](../client-libraries/python/index.mdx), [JavaScript/TypeScript](../client-libraries/typescript/index.mdx), [Go](../client-libraries/go.md), and [Java](../client-libraries/java.md/index.mdx).
 
 import CodeClientInstall from "/_includes/code/quickstart/clients.install.new.mdx";
 
@@ -156,7 +156,7 @@ import CreateCollection from "/_includes/code/quickstart/quickstart.short.local.
 </TabItem>
 <TabItem value="custom-embeddings" label="Import vectors">
 
-The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data. 
+The following example creates a collection called `Movie` and imports pre-computed vectors along with the movie data.
 
 import CreateCollectionCustomVectors from "/_includes/code/quickstart/quickstart.short.local.import_vectors.create_collection.mdx";
 

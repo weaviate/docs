@@ -10,6 +10,8 @@ import TabItem from "@theme/TabItem";
 import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
 import PyCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.py";
 import TSCode from "!!raw-loader!/_includes/code/howto/manage-data.collections.ts";
+import JavaV6Code from "!!raw-loader!/_includes/code/java-v6/src/test/java/ManageCollectionsTest.java";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/ManageCollectionsTest.cs";
 import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/manage-data.classes.java";
 import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/manage-data.classes_test.go";
 
@@ -58,6 +60,22 @@ The inverted index in Weaviate can be enabled through parameters at the property
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -66,12 +84,12 @@ The inverted index in Weaviate can be enabled through parameters at the property
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
-      language="gonew"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -114,6 +132,22 @@ The inverted index in Weaviate can be configured through various parameters at t
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START SetInvertedIndexParams"
+      endMarker="// END SetInvertedIndexParams"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -122,12 +156,12 @@ The inverted index in Weaviate can be configured through various parameters at t
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START SetInvertedIndexParams"
       endMarker="// END SetInvertedIndexParams"
-      language="gonew"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
@@ -172,6 +206,22 @@ Tokenization determines how text content is broken down into individual terms th
       language="ts"
     />
   </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="gonew"
+    />
+  </TabItem>
+  <TabItem value="java6" label="Java v6 (Beta)">
+    <FilteredTextBlock
+      text={JavaV6Code}
+      startMarker="// START PropModuleSettings"
+      endMarker="// END PropModuleSettings"
+      language="java"
+    />
+  </TabItem>
   <TabItem value="java" label="Java">
     <FilteredTextBlock
       text={JavaCode}
@@ -180,12 +230,12 @@ Tokenization determines how text content is broken down into individual terms th
       language="java"
     />
   </TabItem>
-  <TabItem value="go" label="Go">
+  <TabItem value="csharp" label="C# (Beta)">
     <FilteredTextBlock
-      text={GoCode}
+      text={CSharpCode}
       startMarker="// START PropModuleSettings"
       endMarker="// END PropModuleSettings"
-      language="gonew"
+      language="csharp"
     />
   </TabItem>
 </Tabs>
