@@ -34,7 +34,7 @@ Your Weaviate instance must be configured with the Hugging Face Transformers vec
 <details>
   <summary>For Weaviate Cloud (WCD) users</summary>
 
-This integration is not available for Weaviate Cloud (WCD) serverless instances, as it requires spinning up a container with the Hugging Face model.
+This integration is not available for Weaviate Cloud (WCD) instances, as it requires spinning up a container with the Hugging Face model.
 
 </details>
 

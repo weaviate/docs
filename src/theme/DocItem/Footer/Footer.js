@@ -153,40 +153,31 @@ function Footer() {
                 </li>
               </ul>
             </div>
-            {/* 
-            <div className={styles.footerSection}>
-              <h5>Deployment options</h5>
-              <ul>
-                <li>
-                  <Link
-                    to="https://weaviate.io/deployment/serverless"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Serverless Cloud
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="https://weaviate.io/deployment/enterprise-cloud"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Enterprise Cloud
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="https://weaviate.io/deployment/byoc"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Bring Your Own Cloud
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            */}
+            {
+              <div className={styles.footerSection}>
+                <h5>Deployment options</h5>
+                <ul>
+                  <li>
+                    <Link
+                      to="https://weaviate.io/deployment/shared"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Shared Cloud
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="https://weaviate.io/deployment/dedicated"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Dedicated Cloud
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            }
           </div>
         </div>
         {/*

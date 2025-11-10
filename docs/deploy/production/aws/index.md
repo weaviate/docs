@@ -11,9 +11,9 @@ Weaviate has multiple pathways to deploy on AWS, each suited to different use ca
 
 ### Marketplace offerings
 
-#### [AWS marketplace - Serverless Cloud](../../installation-guides/aws-marketplace.md)
+#### [AWS marketplace - Shared Cloud](../../installation-guides/aws-marketplace.md)
 
-Deploy Weaviate Serverless Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration.
+Deploy Weaviate Shared Cloud directly through the AWS Marketplace for quick cloud deployment with AWS billing integration.
 
 This SaaS solution is specifically built for AWS customers who need:
 
@@ -66,7 +66,7 @@ Create and manage your own EKS cluster using the `eksctl` command-line tool, pro
 
 Each deployment option offers different levels of management and control:
 
-- **Serverless Cloud:** Fully managed SaaS with automatic scaling and zero infrastructure management.
+- **Shared Cloud:** Fully managed SaaS with automatic scaling and zero infrastructure management.
 - **Marketplace EKS:** Managed Kubernetes control plane with pre-configured infrastructure via CloudFormation.
 - **Marketplace EC2:** Single-instance Docker deployment with monthly billing, ideal for development.
 - **Self-Managed EKS:** Complete control over EKS cluster configuration and management.

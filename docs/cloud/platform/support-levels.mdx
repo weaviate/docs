@@ -5,159 +5,136 @@ description: "Available support tiers and plans for Weaviate Cloud users with di
 image: og/wcd/user_guides.jpg
 ---
 
-[Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) offers multiple levels of support. You have the flexibility to choose the support plan that meets your needs.
+[Weaviate Cloud (WCD)](https://weaviate.io/go/console?utm_source=docs&utm_content=cloud) offers multiple levels of support integrated into each pricing plan. Choose the plan that best meets your needs.
 
-## Change your support plan
+## Available plans
 
-To update your support plan, follow these steps:
+Sandboxes are not eligible for paid support. Paid support is available for **Shared Cloud** and **Dedicated Cloud** clusters with Flex, Plus, and Premium plans.
 
-import Link from '@docusaurus/Link';
-import EditSupportPlan from '/docs/cloud/img/weaviate-cloud-edit-support-plan.png';
-import SelectSupportPlan from '/docs/cloud/img/weaviate-cloud-select-support-plan.png';
+All paid plans include highly available (HA) clusters as standard.
 
-<div class="row">
-  <div class="col col--6">
-    <ol>
-      <li>
-        Open the{' '}
-        <Link to="https://weaviate.io/go/console?utm_source=docs&utm_content=cloud">Weaviate Cloud console</Link>.
-      </li>
-      <li>
-        <Link to="/cloud/manage-clusters/status#select-a-cluster">
-          Select your cluster
-        </Link>{' '}
-        and find the <code>Support Plan</code> field.
-      </li>
-      <li>
-        Click on the <code>Edit</code> button (<span class="callout">1</span>).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={EditSupportPlan} alt="Edit support plan" />
-      </div>
-      <div class="card__body">Edit support plan</div>
-    </div>
-  </div>
-</div>
-<br />
+| Plan    | Deployment Options              | Availability | Monthly Minimum |
+| ------- | ------------------------------- | ------------ | --------------- |
+| Sandbox | Shared Cloud                    | N/A          | Free            |
+| Flex    | Shared Cloud                    | 99.5%        | $45             |
+| Plus    | Shared Cloud or Dedicated Cloud | 99.9%        | $280            |
+| Premium | Dedicated Cloud                 | 99.95%       | Variable        |
 
-<div class="row">
-  <div class="col col--6">
-    <ol>
-      <li>
-        Select a support plan from the <code>dropdown menu</code> (
-        <span class="callout">2</span>).
-      </li>
-      <li>
-        Click on the <code>Change plan</code> button (
-        <span class="callout">3</span>).
-      </li>
-    </ol>
-  </div>
-  <div class="col col--6">
-    <div class="card">
-      <div class="card__image">
-        <img src={SelectSupportPlan} alt="Select support plan" />
-      </div>
-      <div class="card__body">Select support plan</div>
-    </div>
-  </div>
-</div>
-<br />
+### Sandbox
 
-## Available support plans
+Free sandbox clusters for experimentation and prototyping.
 
-Sandboxes and self-hosted clusters are not eligible for paid support.
+**Features:**
 
-Paid support is available for **Serverless Cloud** and **Enterprise Cloud** clusters.
+- Full core database toolkit (hybrid search, dynamic index, compression, multi-tenancy)
+- Baseline security with RBAC
+- Community support only
 
-| Cluster Type                         | Standard | Professional | Business Critical |
-| ------------------------------------ | -------- | ------------ | ----------------- |
-| Serverless _(High availability)_     | ✅       | ✅           | ✅                |
-| Enterprise _(High availability)_     | ✅       | ✅           | ✅                |
-| Serverless _(Non-High availability)_ | ✅       | ❌           | ❌                |
-| Enterprise _(Non-High availability)_ | ✅       | ❌           | ❌                |
-| Sandbox                              | N/A      | N/A          | N/A               |
-
-### Standard support
-
-- Standard support is email-based and is available during business hours.
-
-- Monitoring. The Weaviate Cloud team monitors your cluster.
-
-- Severity determines incident response time:
-
-| Severity     | Criteria                                                                                                                    | Response Time  |
-| :----------- | :-------------------------------------------------------------------------------------------------------------------------- | :------------- |
-| 1 - Critical | Issues that are critical and require immediate attention,<br /> causing widespread disruption or outages.                   | 1 business day |
-| 2 - High     | High-priority problems that can impact service functionality<br /> or performance for a subset of users.                    | 2 business day |
-| 3 - Medium   | Medium-priority concerns that affect service functionality<br /> or performance for a limited number of users or use cases. | 3 business day |
-| 4 - Low      | Lower urgency and impact, causing minor inconveniences or<br /> issues for individual users.                                | 5 business day |
-
-### Professional support
-
-- Professional support is email-based and is available 24 hours a day, seven days a week.
-
-- Severity 1 and Severity 2 incident response includes a follow-up phone call.
-
-- Monitoring The Weaviate Cloud team monitors your cluster.
-
-- Severity determines incident response time:
-
-| Severity     | Criteria                                                                                                                    | Response Time   |
-| :----------- | :-------------------------------------------------------------------------------------------------------------------------- | :-------------- |
-| 1 - Critical | Issues that are critical and require immediate attention,<br /> causing widespread disruption or outages.                   | 4 hours         |
-| 2 - High     | High-priority problems that can impact service functionality<br /> or performance for a subset of users.                    | 8 hours         |
-| 3 - Medium   | Medium-priority concerns that affect service functionality<br /> or performance for a limited number of users or use cases. | 1 business day  |
-| 4 - Low      | Lower urgency and impact, causing minor inconveniences or<br /> issues for individual users.                                | 2 business days |
-
-For details, refer to your support agreement.
-
-### Business critical support
-
-- Business critical support is available 24 hours a day, seven days a week. Support is email-based.
-
-- Telephone hotline available 24 hours a day, seven days a week for escalations.
-
-- Severity 1, Severity 2, and Severity 3 incident response includes a follow-up phone call.
-
-- Monitoring. The Weaviate Cloud team monitors your cluster.
-
-- Severity determines incident response time:
-
-| Severity     | Criteria                                                                                                                    | Response Time  |
-| :----------- | :-------------------------------------------------------------------------------------------------------------------------- | :------------- |
-| 1 - Critical | Issues that are critical and require immediate attention,<br /> causing widespread disruption or outages.                   | 1 hour         |
-| 2 - High     | High-priority problems that can impact service functionality<br /> or performance for a subset of users.                    | 4 hours        |
-| 3 - Medium   | Medium-priority concerns that affect service functionality<br /> or performance for a limited number of users or use cases. | 8 hours        |
-| 4 - Low      | Lower urgency and impact, causing minor inconveniences or<br /> issues for individual users.                                | 1 business day |
-
-For details, refer to your support agreement.
-
-### Sandboxes
-
-Sandboxes are not eligible for paid support. For help with a sandbox instance, try one of these resources:
+**Support channels:**
 
 - [Community forum](https://forum.weaviate.io)
 - [Slack](https://weaviate.io/slack)
 
+Sandboxes are not eligible for paid support.
+
+### Flex
+
+The most versatile pay-as-you-go plan for prototypes, pilots, and small production use cases.
+
+**Features:**
+
+- Shared Cloud deployment
+- All core database features
+- Built-in RBAC
+- AI-native services (Embeddings and Agents)
+- Automated upgrades
+- Various compression techniques
+- Daily full backup, stored in the same region for 7 days
+- 99.5% availability per quarter
+
+**Support:**
+
+- Email-based support during business hours
+- Public status page monitoring
+- Response times based on severity
+
+### Plus
+
+Everything in Flex, plus annual commitment options, enhanced security, and stronger SLAs for mission-critical workloads.
+
+**Features:**
+
+- Choice of Shared or Dedicated Cloud deployment
+- All Flex features
+- Annual commitment options for predictable billing
+- Enhanced security features
+- Metrics endpoint for external monitoring
+- Daily full backup, stored in the same region for 30 days
+- 99.9% availability per quarter
+
+**Support:**
+
+- Enterprise support available 24/7
+- Email-based support with priority response
+- Enhanced incident response times
+
+### Premium
+
+For teams with the highest requirements around security, compliance, and performance.
+
+**Features:**
+
+- Dedicated Cloud infrastructure only
+- All Plus features
+- Premium security: RBAC, SSO/SAML, PrivateLink (AWS), Bring Your Own Key, bring-your-own IdP
+- HIPAA compliant (AWS, with Azure and GCP in development)
+- Any region on AWS, GCP, or Azure
+- Daily full backup, stored in the same region for 45 days
+- 99.95% availability per quarter
+
+**Support:**
+
+- White-glove support available 24/7
+- Email-based and telephone hotline
+- Technical Account Team
+- Access to training and experts
+- All severity incidents include follow-up phone call
+- Priority incident response times
+
+## Service Level Agreement
+
+Weaviate provides comprehensive service level agreements (SLAs) that define availability guarantees, backup policies, and service credits.
+
+### Availability guarantees
+
+| Plan    | Availability per Quarter | Deployment                      |
+| :------ | :----------------------- | :------------------------------ |
+| Flex    | 99.5%                    | Shared Cloud                    |
+| Plus    | 99.9%                    | Shared Cloud or Dedicated Cloud |
+| Premium | 99.95%                   | Dedicated Cloud                 |
+
+Exclusions from availability calculations include planned maintenance windows (announced at least one week in advance), customer-requested maintenance, and downtime resulting from third-party interruptions or factors beyond Weaviate's control.
+
 ## Pricing
 
-Serverless clusters are billed monthly. The monthly charge for a cluster depends on resource usage. Your support plan is a factor in the monthly cost, but you are not charged per support incident.
+Weaviate Cloud uses transparent, metric-based pricing based on three dimensions:
 
-Each support plan has a billing rate. Weaviate Cloud counts the objects in your cluster and multiples that number by the rate for your support plan. Weaviate Cloud adjusts the number if compression is enabled. The result is your usage charge.
+- **Vector dimensions**: Number of objects × vector dimensionality × replication factor (varies by index type and compression)
+- **Storage**: Total disk space for indexes, metadata, and database state
+- **Backups**: Volume of snapshots and retention period
 
-If you have a high availability cluster (HA), Weaviate Cloud multiples the usage charge by three to account for the additional resources.
+Pricing varies by cloud provider, region, and deployment type. All paid plans include highly available clusters as standard.
 
-There is a minimum monthly charge for each support plan. If your usage charge is less than the monthly minimum, Weaviate charges you the monthly minimum cost. If your usage charge is higher than the minimum value for your plan, Weaviate charges you for your cluster usage.
+### Payment options
 
-To estimate costs for different combinations of usage levels and support plans, see the [pricing calculator](https://weaviate.io/services/serverless).
+- **Flex**: Pay-as-you-go, monthly billing
+- **Plus**: Pay-as-you-go or annual commitment (available for both Shared Cloud and Dedicated Cloud)
+- **Premium**: Annual contracts with predictable spend
+
+To estimate costs for your specific use case, visit the [pricing page](https://weaviate.io/pricing).
 
 ## Support & feedback
 
-import SupportAndTrouble from '/_includes/wcs/support-and-troubleshoot.mdx';
+import SupportAndTrouble from "/_includes/wcs/support-and-troubleshoot.mdx";
 
 <SupportAndTrouble />

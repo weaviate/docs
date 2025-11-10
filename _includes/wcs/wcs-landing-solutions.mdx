@@ -1,68 +1,55 @@
 You can always [contact our sales team](https://weaviate.io/pricing#contact-sales) to discuss which solution is right for you.  
-Weaviate Cloud offers three types of cloud hosting:
+Weaviate Cloud offers two types of cloud hosting:
 
-import DetailedOptions from '/src/components/DetailedOptions';
+import DetailedOptions from "/src/components/DetailedOptions";
 
 export const cardsData = [
   {
     title: (
       <span>
-        <i className="fa fa-cloud" aria-hidden="true"></i> Serverless Cloud
+        <i className="fa fa-cloud" aria-hidden="true"></i> Shared Cloud
       </span>
     ),
     description: (
       <span>
         <ul>
-          <li>Weaviate Cloud manages a serverless SaaS deployment.</li>
           <li>
-            Storage pricing is based on the vectors and objects you store.
+            Weaviate manages a fully-managed SaaS deployment on shared
+            infrastructure.
           </li>
-          <li>Compute costs follow a consumption model.</li>
-          <li>Multiple support plans are available.</li>
+          <li>
+            Automatic scalability based on your vector memory requirements.
+          </li>
+          <li>Simple one-click cluster management through Weaviate Console.</li>
+          <li>Consumption-based pricing model for storage and compute.</li>
+          <li>Available across five cloud regions.</li>
         </ul>
       </span>
     ),
-    link: 'https://weaviate.io/deployment/serverless',
+    link: "https://weaviate.io/deployment/shared",
   },
   {
     title: (
       <span>
-        <i className="fa fa-building" aria-hidden="true"></i> Enterprise Cloud
+        <i className="fa fa-building" aria-hidden="true"></i> Dedicated Cloud
       </span>
     ),
     description: (
       <span>
         <ul>
           <li>
-            Weaviate Cloud manages an instance for you in the Weaviate Cloud.
+            Weaviate manages a dedicated instance for you in the Weaviate Cloud.
           </li>
-          <li>Pricing is based on the host cluster.</li>
-          <li>Choose an optional high-availability architecture.</li>
-          <li>Annual contracts provide predictable billing.</li>
-          <li>Multiple support plans are available.</li>
-        </ul>
-      </span>
-    ),
-    link: 'https://weaviate.io/deployment/enterprise-cloud',
-  },
-  {
-    title: (
-      <span>
-        <i className="fa fa-server" aria-hidden="true"></i> Bring Your Own Cloud
-      </span>
-    ),
-    description: (
-      <span>
-        <ul>
-          <li>Weaviate manages the data plane and you manage your VPC.</li>
+          <li>Data and operations isolated within a dedicated tenant.</li>
+          <li>Enhanced security and compliance (SOC II, HIPAA).</li>
+          <li>Predictable performance with pre-scoped resources.</li>
           <li>
-            Weaviate provides 24/7 support, monitoring, and troubleshooting.
+            Includes Dedicated Success Manager and 24/7 professional support.
           </li>
-          <li>Pricing is based on CPU and RAM utilization.</li>
         </ul>
       </span>
     ),
-    link: 'https://weaviate.io/deployment/byoc',
+    link: "https://weaviate.io/deployment/dedicated",
   },
 ];
 

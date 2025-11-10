@@ -360,7 +360,7 @@ The power of RAG comes from the ability to transform your own data. Weaviate hel
 
 In this quickstart guide, you:
 
-- Created a Serverless Weaviate sandbox instance on Weaviate Cloud.
+- Created a Weaviate sandbox instance on Weaviate Cloud.
 - Defined a collection and added data.
 - Performed queries, including:
     - Semantic search, and

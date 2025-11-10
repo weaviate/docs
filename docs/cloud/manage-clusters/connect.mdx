@@ -24,7 +24,7 @@ The guide below applies to clusters that have [RBAC (Role-Based Access Control)]
 <details>
     <summary>Connecting with API keys when RBAC is disabled</summary>
 
-The Weaviate client libraries use API keys to authenticate to Weaviate Cloud instances. If RBAC is disabled, two API keys are created by default. Both **Serverless** and **Sandbox** clusters have these two types of keys:
+The Weaviate client libraries use API keys to authenticate to Weaviate Cloud instances. If RBAC is disabled, two API keys are created by default. Both **Shared Cloud** and **Sandbox** clusters have these two types of keys:
 
 - `Admin key`: An administrator that enables read-write access to the cluster.
 - `ReadOnly key`: A viewer key that only allows read access to the cluster.
@@ -202,7 +202,7 @@ Alternatively, leave the default timeout values, but skip the initial connection
 
 ### gRPC health check error
 
-**Problem**: gRPC returns a health check error after you update a Serverless cluster.
+**Problem**: gRPC returns a health check error after you update a Shared Cloud cluster.
 
 ```
 weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be completed.
@@ -210,7 +210,7 @@ weaviate.exceptions.WeaviateGRPCUnavailableError: gRPC health check could not be
 
 **Solution**: Verify the cluster URL is correct and update the URL if needed.
 
-When a Serverless cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections work, however the new gRPC and the old HTTP URLS are different so connections that require gRCP fail.
+When a Shared Cloud cluster is updated, the cluster URL may change slightly. Weaviate Cloud still routes the old URL, so some connections work, however the new gRPC and the old HTTP URLS are different so connections that require gRCP fail.
 
 To check the URLs, open the Weaviate Cloud Console and check the details panel for your cluster. If you prefix Cluster URL with `grpc-`, the Cluster URL and the Cluster gRPC URL should match. Compare the Cluster URL with the connection URL in your application. The old URL and the new URL are similar, but the new one may have an extra subdomain such as `.c0.region`. If the URLs are different, update your application's connection code to use the new Cluster URL.
 
