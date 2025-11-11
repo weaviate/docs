@@ -15,8 +15,8 @@ The JSON payload sent to the Weaviate instance has the following structure:
 ```json
 {
   "page": "/weaviate/installation",
-  "vote": "down",
-  "feedbackType": "Content is hard to understand, Other",
+  "isPositive": false,
+  "options": [0, 3],
   "comments": "The explanation was confusing.",
   "timestamp": "2023-10-27T10:00:00.000Z",
   "testData": true,
@@ -25,7 +25,8 @@ The JSON payload sent to the Weaviate instance has the following structure:
 ```
 -   `testData` is `true` for any non-production hostname (e.g., localhost, deploy previews).
     - Update `PROD_HOSTNAME = 'docs.weaviate.io'` in `src/components/PageRatingWidget/index.js` if the production hostname changes
--   `feedbackType` is a comma-separated string of the selected checkbox options.
+-   `isPositive` is a boolean indicating whether the user voted thumbs up (`true`) or thumbs down (`false`).
+-   `options` is an array of integers representing the indexes of selected feedback options from the modal.
 
 ## How to Test Locally
 
@@ -73,8 +74,8 @@ client.collections.create(
     "DocFeedback",
     properties=[
         Property(name="page", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
-        Property(name="vote", data_type=DataType.TEXT, tokenization=Tokenization.FIELD),
-        Property(name="feedbackType", data_type=DataType.TEXT),
+        Property(name="isPositive", data_type=DataType.BOOL),
+        Property(name="options", data_type=DataType.INT_ARRAY),
         Property(name="comments", data_type=DataType.TEXT),
         Property(name="timestamp", data_type=DataType.DATE),
         Property(name="testData", data_type=DataType.BOOL),
