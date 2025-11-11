@@ -524,6 +524,7 @@ const sidebars = {
         "weaviate/search/similarity",
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
+        "weaviate/search/query-agent",
         "weaviate/search/image",
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
