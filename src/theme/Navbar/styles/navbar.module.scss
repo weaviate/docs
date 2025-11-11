@@ -1,6 +1,6 @@
 /* Define common values as CSS custom properties */
 :root {
-  --secondary-navbar-height: 60px;
+  --secondary-navbar-height: 48px;
   --docs-divider-color: #ccc;
 }
 
@@ -24,8 +24,9 @@
   border-bottom: 1px solid var(--ifm-toc-border-color);
   position: sticky;
   width: 100%;
-  height: var(--secondary-navbar-height);
-  font-size: 1rem !important;
+  height: 48px; /* Reduced from 60px */
+  font-size: 0.875rem !important; /* Reduced from 1rem */
+  font-weight: 600; /* Increased weight */
   z-index: 1001; /* Higher than defaultNavbar to be on top if they overlap */
 }
 

@@ -406,7 +406,8 @@
 }
 
 .theme-doc-sidebar-menu {
-  font-size: 0.95rem !important;
+  font-size: 0.875rem !important; /* Reduced from 0.95rem (1px less) */
+  font-weight: 500; /* Increased weight for main items */
 }
 
 [data-theme="light"] img[src$="#gh-dark-mode-only"],
@@ -892,7 +893,7 @@ button.close {
 }
 
 #kapa-modal-content {
-  top: 60px !important;
+  top: 48px !important;
   /* other styles… */
 }
 
@@ -955,6 +956,34 @@ button.close {
   border: 0;
   height: 1px;
   background-color: var(--ifm-toc-border-color);
+}
+
+/* Nested sidebar items - reduced size */
+.menu__list .menu__list {
+  font-size: 0.8125rem !important; /* Smaller than parent 0.875rem */
+  font-weight: 400; /* Normal weight for nested */
+}
+
+/* Active sidebar item - add left border accent */
+.menu__link--active {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+  padding-left: 0.75rem !important; /* Adjust padding to account for border */
+  background-color: rgba(0, 161, 66, 0.05) !important; /* Very subtle green tint */
+}
+
+/* Ensure the border doesn't get overridden */
+.menu__link--active:not(.menu__link--sublist) {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+}
+
+/* Style parent/upper level items when they have an active child */
+.menu__link--sublist.menu__link--active {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+  padding-left: 0.75rem !important;
+  background-color: rgba(0, 161, 66, 0.05) !important;
 }
 
 .inline-content p,
