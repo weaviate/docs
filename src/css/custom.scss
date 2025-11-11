@@ -937,6 +937,22 @@ button.close {
   background-color: var(--docs-sidebar-bg) !important;
 }
 
+/* Sidebar category collapse chevrons - make smaller and more refined */
+.menu__caret::before,
+.menu__link--sublist-caret::after {
+  background-size: 1.25rem 1.25rem !important; /* Smaller chevron */
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  opacity: 0.8; /* Slightly more subtle */
+  transition: opacity 0.2s ease;
+}
+
+/* Hover state for chevrons */
+.menu__list-item-collapsible:hover .menu__caret::before,
+.menu__link--sublist:hover::after {
+  opacity: 0.9;
+}
+
 :root nav.navbar {
   background-color: var(--site-navbar-color);
 }
@@ -964,6 +980,14 @@ button.close {
   font-weight: 400; /* Normal weight for nested */
 }
 
+/* Ensure consistent line height and spacing for all menu items */
+.menu__link {
+  line-height: 1.5 !important;
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  margin-bottom: 0.1rem !important; /* Small gap between items */
+}
+
 /* Active sidebar item - add left border accent */
 .menu__link--active {
   color: var(--ifm-navbar-link-active-color) !important;
@@ -972,7 +996,7 @@ button.close {
   background-color: rgba(0, 161, 66, 0.05) !important; /* Very subtle green tint */
 }
 
-/* Ensure the border doesn't get overridden */
+/* Ensure the border doesn't get overridden for leaf items */
 .menu__link--active:not(.menu__link--sublist) {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
@@ -980,6 +1004,15 @@ button.close {
 
 /* Style parent/upper level items when they have an active child */
 .menu__link--sublist.menu__link--active {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+  padding-left: 0.75rem !important;
+  background-color: rgba(0, 161, 66, 0.05) !important;
+}
+
+/* Apply highlighting to ALL category items that contain active pages */
+.menu__list-item--collapsed .menu__link--active,
+.menu__list-item .menu__link--active {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important;
