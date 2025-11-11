@@ -14,7 +14,7 @@
   --ifm-h2-font-size: 2rem;
   --docusaurus-announcement-bar-height: 50px !important;
 
-  --ifm-navbar-height: 4.5rem;
+  --ifm-navbar-height: 3.4rem;
   --ifm-navbar-link-color: var(--site-base-color-shade);
   --ifm-color-primary: var(--site-accent);
 
@@ -370,7 +370,7 @@
     color: #86efac; // Light green for dark mode
     background-color: rgba(134, 239, 172, 0.1);
     border-color: rgba(134, 239, 172, 0.2);
-    
+
     &:hover {
       color: #86efac !important;
       background-color: rgba(134, 239, 172, 0.15);
@@ -383,7 +383,7 @@
     color: #c4b5fd; // Light purple for dark mode
     background: rgba(196, 181, 253, 0.1);
     border-color: rgba(196, 181, 253, 0.2);
-    
+
     &:hover {
       color: #c4b5fd !important;
       background: rgba(196, 181, 253, 0.15);
@@ -889,7 +889,7 @@ button.close {
 
 /*This is because of the secondary navbar taking up space*/
 .theme-doc-sidebar-menu {
-  padding-top: 10px; /* Adjust this value as needed */
+  padding-top: 5px; /* Adjust this value as needed */
 }
 
 #kapa-modal-content {
