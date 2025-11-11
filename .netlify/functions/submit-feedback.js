@@ -89,9 +89,9 @@ exports.handler = async (event) => {
       class: 'DocFeedback',
       properties: {
         page: data.page,
-        vote: data.vote,
-        // The frontend sends an array of 'options'. Join it into a string.
-        feedbackType: data.options ? data.options.join(', ') : undefined,
+        isPositive: data.isPositive,
+        // The frontend sends an array of option indexes as integers
+        options: data.options || [],
         // The frontend can send 'comment' (singular).
         comments: data.comment,
         timestamp: new Date().toISOString(),
