@@ -66,11 +66,11 @@ exports.handler = async (event) => {
       process.env;
 
     // Basic server-side validation
-    if (!data.page || !data.vote) {
+    if (!data.page || typeof data.isPositive !== 'boolean') {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: 'Missing required fields: page and vote.',
+          error: 'Missing required fields: page and isPositive.',
         }),
         headers,
       };

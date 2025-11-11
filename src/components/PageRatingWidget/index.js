@@ -70,7 +70,7 @@ export default function PageRatingWidget() {
     // Single point of submission.
     const feedbackPayload = {
       page: location.pathname,
-      vote: vote, // The vote is read from the state set in handleVote
+      isPositive: vote === 'up', // Convert vote to boolean
       ...feedback,
     };
     submitFeedback(feedbackPayload);

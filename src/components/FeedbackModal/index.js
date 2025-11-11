@@ -48,11 +48,11 @@ export default function FeedbackModal({
   const title = voteType === "up" ? "What helped?" : "What went wrong?";
 
   // Update selected options on checkbox change
-  const handleOptionChange = (option) => {
+  const handleOptionChange = (optionIndex) => {
     setSelectedOptions((prev) =>
-      prev.includes(option)
-        ? prev.filter((item) => item !== option)
-        : [...prev, option]
+      prev.includes(optionIndex)
+        ? prev.filter((item) => item !== optionIndex)
+        : [...prev, optionIndex]
     );
   };
 
@@ -73,12 +73,12 @@ export default function FeedbackModal({
         <h3>{title}</h3>
         <p>(optional - select all that apply)</p>
         <div className={styles.optionsContainer}>
-          {options.map((option) => (
+          {options.map((option, index) => (
             <label key={option} className={styles.checkboxLabel}>
               <input
                 type="checkbox"
-                checked={selectedOptions.includes(option)}
-                onChange={() => handleOptionChange(option)}
+                checked={selectedOptions.includes(index)}
+                onChange={() => handleOptionChange(index)}
               />
               {option}
             </label>
