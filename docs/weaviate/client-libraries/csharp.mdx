@@ -1,0 +1,133 @@
+---
+title: C# - Beta release
+sidebar_label: C# 🚧
+description: "Official C# client library documentation for integrating Weaviate with .NET applications and services."
+image: og/docs/client-libraries.jpg
+# tags: ['c#', 'csharp', 'client library', 'experimental']
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import CSharpCode from "!!raw-loader!/_includes/code/csharp/GetStartedTest.cs";
+import QuickLinks from "/src/components/QuickLinks";
+
+:::caution Preview
+
+The `C#` client is available as a beta release.<br/>
+
+This means that the library is still under development and may change in future releases, including potential breaking changes.
+**We do not recommend using this client library in production environments at this time.**
+
+:::
+
+export const csharpCardsData = [
+  {
+    title: "weaviate/csharp-client",
+    link: "https://github.com/weaviate/csharp-client/tree/mvp",
+    icon: "fa-brands fa-github",
+  },
+  /*{
+    title: "Reference manual",
+    link: "https://javadoc.io/doc/io.weaviate/client/latest/index.html",
+    icon: "fa-solid fa-book",
+  },*/
+];
+
+:::note C# client (SDK)
+
+The latest C# client is version `v||site.csharp_client_version||`.
+
+<QuickLinks items={csharpCardsData} />
+
+:::
+
+This page broadly covers the Weaviate C# (beta release). For usage information not specific to the C# client, such as code examples, see the relevant pages in the [How-to manuals & Guides](../guides.mdx).
+
+## Installation
+
+```xml
+<PackageReference Include="Weaviate.Client" Version="0.0.1-beta.4" />
+```
+
+<details>
+  <summary>Requirements:  Weaviate version compatibility & gRPC</summary>
+
+#### Weaviate version compatibility
+
+The C# client requires Weaviate `1.33.0` or higher. Generally, we encourage you to use the latest version of the C# client and the Weaviate Database.
+
+#### gRPC
+
+The C# client uses remote procedure calls (RPCs) under-the-hood. Accordingly, a port for gRPC must be open to your Weaviate server.
+
+<details>
+  <summary>docker-compose.yml example</summary>
+
+If you are running Weaviate with Docker, you can map the default port (`50051`) by adding the following to your `docker-compose.yml` file:
+
+```yaml
+ports:
+  - 8080:8080
+  - 50051:50051
+```
+
+</details>
+</details>
+
+## Get started
+
+import BasicPrereqs from "/_includes/prerequisites-quickstart.md";
+
+<BasicPrereqs />
+
+Get started with Weaviate using this C# example. The code walks you through these key steps:
+
+1. **[Connect to Weaviate](docs/weaviate/connections/index.mdx)**: Establish a connection to a local (or Cloud) Weaviate instance.
+1. **[Create a collection](../manage-collections/index.mdx)**: Define the data schema for a `Question` collection, using an Ollama model to vectorize the data.
+1. **[Import data](../manage-objects/import.mdx)**: Fetch sample Jeopardy questions and use Weaviate's batch import for efficient ingestion and automatic vector embedding generation.
+1. **[Search/query the database](../search/index.mdx)**: Execute a vector search to find questions semantically similar to the query `biology`.
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="csharp" label="C# (Beta)">
+    <FilteredTextBlock
+      text={CSharpCode}
+      startMarker="// START GetStarted"
+      endMarker="// END GetStarted"
+      language="csharp"
+    />
+  </TabItem>
+</Tabs>
+
+For more code examples, check out the [How-to manuals & Guides](../guides.mdx) section.
+
+## Asynchronous usage
+
+_Coming soon_
+
+<!-- TODO[g-despot] Add section -->
+
+## Releases
+
+Go to the [GitHub releases page](https://github.com/weaviate/csharp-client/releases) to see the history of the C# client library releases and change logs.
+
+<details>
+  <summary>Click here for a table of Weaviate and corresponding client versions</summary>
+
+import ReleaseHistory from "/_includes/release-history.md";
+
+<ReleaseHistory />
+
+</details>
+
+## Code examples & further resources
+
+import CodeExamples from "/_includes/clients/code-examples.mdx";
+
+<CodeExamples />
+
+## Questions and feedback
+
+import DocsFeedback from "/_includes/docs-feedback.mdx";
+
+<DocsFeedback />
