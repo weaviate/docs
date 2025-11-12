@@ -52,16 +52,16 @@ const CardsSection = ({
               <span className={styles.cardTitle}>{item.title}</span>
             </div>
             <p className={styles.cardDescription}>{item.description}</p>
-            {recipeCards && item.tags && (
+            {recipeCards && (item.tags || item.cloudOnly) && (
               <div className={styles.cardTags}>
-                {item.tags.map((tag, index) => (
+                {item.tags && item.tags.map((tag, index) => (
                   <span key={index} className={styles.tag}>
                     {tag}
                   </span>
                 ))}
                 {item.cloudOnly && (
                   <div className={styles.cardBadge}>
-                    <CloudOnlyBadge />
+                    <CloudOnlyBadge compact />
                   </div>
                 )}
               </div>
