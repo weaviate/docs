@@ -115,6 +115,9 @@ const sidebars = {
             type: "doc",
             id: "weaviate/model-providers/weaviate/index",
           },
+          customProps: {
+            cloudOnly: true,
+          },
           items: ["weaviate/model-providers/weaviate/embeddings"],
         },
         {
