@@ -370,7 +370,7 @@
     color: #86efac; // Light green for dark mode
     background-color: rgba(134, 239, 172, 0.1);
     border-color: rgba(134, 239, 172, 0.2);
-    
+
     &:hover {
       color: #86efac !important;
       background-color: rgba(134, 239, 172, 0.15);
@@ -383,7 +383,7 @@
     color: #c4b5fd; // Light purple for dark mode
     background: rgba(196, 181, 253, 0.1);
     border-color: rgba(196, 181, 253, 0.2);
-    
+
     &:hover {
       color: #c4b5fd !important;
       background: rgba(196, 181, 253, 0.15);
@@ -406,7 +406,8 @@
 }
 
 .theme-doc-sidebar-menu {
-  font-size: 0.95rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 500; /* Increased weight for main items */
 }
 
 [data-theme="light"] img[src$="#gh-dark-mode-only"],
@@ -888,7 +889,7 @@ button.close {
 
 /*This is because of the secondary navbar taking up space*/
 .theme-doc-sidebar-menu {
-  padding-top: 10px; /* Adjust this value as needed */
+  padding-top: 5px; /* Adjust this value as needed */
 }
 
 #kapa-modal-content {
@@ -936,6 +937,22 @@ button.close {
   background-color: var(--docs-sidebar-bg) !important;
 }
 
+/* Sidebar category chevrons */
+.menu__caret::before,
+.menu__link--sublist-caret::after {
+  background-size: 1.25rem 1.25rem !important; /* Smaller chevron */
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  opacity: 0.8; /* Slightly more subtle */
+  transition: opacity 0.2s ease;
+}
+
+/* Hover state for chevrons */
+.menu__list-item-collapsible:hover .menu__caret::before,
+.menu__link--sublist:hover::after {
+  opacity: 0.9;
+}
+
 :root nav.navbar {
   background-color: var(--site-navbar-color);
 }
@@ -955,6 +972,51 @@ button.close {
   border: 0;
   height: 1px;
   background-color: var(--ifm-toc-border-color);
+}
+
+/* Nested sidebar items - reduced size */
+.menu__list .menu__list {
+  font-size: 0.85rem !important; /* Smaller than parent 0.875rem */
+  font-weight: 400; /* Normal weight for nested */
+}
+
+/* Ensure consistent line height and spacing for all menu items */
+.menu__link {
+  line-height: 1.5 !important;
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  margin-bottom: 0.1rem !important; /* Small gap between items */
+}
+
+/* Active sidebar item - add left border accent */
+.menu__link--active {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+  padding-left: 0.75rem !important; /* Adjust padding to account for border */
+  background-color: rgba(0, 161, 66, 0.05) !important; /* Very subtle green tint */
+}
+
+/* Ensure the border doesn't get overridden for leaf items */
+.menu__link--active:not(.menu__link--sublist) {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+}
+
+/* Style parent/upper level items when they have an active child */
+.menu__link--sublist.menu__link--active {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+  padding-left: 0.75rem !important;
+  background-color: rgba(0, 161, 66, 0.05) !important;
+}
+
+/* Apply highlighting to ALL category items that contain active pages */
+.menu__list-item--collapsed .menu__link--active,
+.menu__list-item .menu__link--active {
+  color: var(--ifm-navbar-link-active-color) !important;
+  border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
+  padding-left: 0.75rem !important;
+  background-color: rgba(0, 161, 66, 0.05) !important;
 }
 
 .inline-content p,
