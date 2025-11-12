@@ -11,14 +11,12 @@ import FilteredTextBlock from '@site/src/components/Documentation/FilteredTextBl
 import PyCode from '!!raw-loader!/docs/agents/_includes/query_agent.py';
 import TSCode from '!!raw-loader!/docs/agents/_includes/query_agent.mts';
 
-<span class="badge badge--primary">Weaviate Cloud only</span>
+<CloudOnlyBadge />
 
-The Weaviate Query Agent answers natural language queries by automatically translating them into Weaviate searches.
+The Weaviate Query Agent enables users to perform Weaviate searches or ask questions about their data using natural language.
 
-Instead of manually constructing search queries, you provide a question in natural language, and the Query Agent handles query planning, execution, and response generation.
-
-:::info Prerequisites
-The Query Agent requires a Weaviate Cloud instance and the Query Agent client library. See the [full setup guide](/agents/query/usage) for installation and instantiation details.
+:::info First time using Weaviate Agents?
+Weaviate Agents are only available for Weaviate Cloud instances. See the [full setup guide](../../agents/query/usage.md) for setup and instantiation details.
 :::
 
 ## Basic search
