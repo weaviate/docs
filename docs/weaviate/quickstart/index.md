@@ -281,15 +281,11 @@ import QueryAgentQuickstart from "/_includes/code/quickstart/quickstart.short.qu
 
 <QueryAgentQuickstart />
 
-<details>
-
-<summary>Example response</summary>
+Here is the printed response:
 
 ```json
 Movie: The Matrix - A computer hacker learns about the true nature of reality and his role in the war against its controllers.
 ```
-
-</details>
 
 ## Next steps
 
