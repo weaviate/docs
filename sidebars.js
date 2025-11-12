@@ -521,10 +521,10 @@ const sidebars = {
       },
       items: [
         "weaviate/search/basics",
+        "weaviate/search/query-agent",
         "weaviate/search/similarity",
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
-        "weaviate/search/query-agent",
         "weaviate/search/image",
         "weaviate/search/multi-vector",
         "weaviate/search/generative",
@@ -1032,7 +1032,7 @@ const sidebars = {
     },
   ],
   deployProductionSidebar: [
-    "deploy/production/index", 
+    "deploy/production/index",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",

@@ -102,6 +102,16 @@
   margin: 12px 6px;
 }
 
+.cardBadge {
+  margin: 8px 0;
+
+  // Override badge margins for card context
+  :global(.cloudOnlyBadge) {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .cardDescription {
   font-family: Inter;
   font-size: 0.875rem;

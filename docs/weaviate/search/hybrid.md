@@ -20,6 +20,10 @@ import GQLCode from '!!raw-loader!/\_includes/code/howto/search.hybrid.gql.py';
 
 The [fusion method](#change-the-fusion-method) and the [relative weights](#balance-keyword-and-vector-search) are configurable.
 
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
+
 ## Basic hybrid search
 
 Combine the results of a vector search and a keyword search. The search uses a single query string.

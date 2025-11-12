@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
+import CloudOnlyBadge from "@site/src/components/CloudOnlyBadge";
 import styles from "./styles.module.scss";
 
 const CardsSection = ({
@@ -34,6 +35,11 @@ const CardsSection = ({
                   {tag}
                 </span>
               ))}
+            </div>
+          )}
+          {item.cloudOnly && (
+            <div className={styles.cardBadge}>
+              <CloudOnlyBadge />
             </div>
           )}
         </Link>
