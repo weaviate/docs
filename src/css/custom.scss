@@ -310,7 +310,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 4px 10px 4px 8px; // Slightly less padding on left for icon
   font-size: 0.875rem; // Slightly smaller font
   color: #0066cc; // Blue to match CloudOnlyBadge
   font-weight: 600;
@@ -321,6 +321,21 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  // Add cloud icon before text using SVG file
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    background-image: url("/img/cloud-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(29%) sepia(91%) saturate(1771%) hue-rotate(197deg) brightness(95%) contrast(101%);
+    // This filter converts black SVG to #0066cc blue
+  }
 
   @media screen and (max-width: 1150px) {
     display: none;
@@ -372,6 +387,12 @@
     background: #1a1a1a;
     border-color: #4d94ff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+
+    // Update SVG color for dark mode
+    &::before {
+      filter: invert(70%) sepia(51%) saturate(494%) hue-rotate(185deg) brightness(103%) contrast(101%);
+      // This filter converts black SVG to #66b3ff light blue
+    }
 
     &:hover {
       color: #80c0ff !important;

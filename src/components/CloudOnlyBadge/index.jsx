@@ -14,7 +14,7 @@ const CloudOnlyBadge = ({
       className={`${styles.cloudOnlyBadge} ${compact ? styles.compact : ""} ${iconOnly ? styles.iconOnly : ""} ${className}`}
       title={iconOnly ? "Weaviate Cloud only" : undefined}
     >
-      <i className="fa-regular fa-cloud"></i>
+      <img src="/img/cloud-icon.svg" alt="" className={styles.cloudIcon} />
       {!iconOnly && <span>{compact ? compactText : text}</span>}
     </span>
   );

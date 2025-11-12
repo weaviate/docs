@@ -18,9 +18,11 @@
   border: 1px solid #0066cc;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
-  i {
-    font-size: 0.8rem;
-    opacity: 0.95;
+  .cloudIcon {
+    width: 0.8rem;
+    height: 0.8rem;
+    filter: invert(29%) sepia(91%) saturate(1771%) hue-rotate(197deg) brightness(95%) contrast(101%);
+    // This filter converts black SVG to #0066cc blue
   }
 }
 
@@ -34,8 +36,9 @@
   vertical-align: middle;
   letter-spacing: 0.02em;
 
-  i {
-    font-size: 0.7rem;
+  .cloudIcon {
+    width: 0.7rem;
+    height: 0.7rem;
   }
 }
 
@@ -48,8 +51,9 @@
   vertical-align: middle;
   gap: 0;
 
-  i {
-    font-size: 0.75rem;
+  .cloudIcon {
+    width: 0.75rem;
+    height: 0.75rem;
   }
 }
 
@@ -59,4 +63,9 @@
   color: #66b3ff;
   border-color: #4d94ff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+
+  .cloudIcon {
+    filter: invert(70%) sepia(51%) saturate(494%) hue-rotate(185deg) brightness(103%) contrast(101%);
+    // This filter converts black SVG to #66b3ff light blue
+  }
 }
