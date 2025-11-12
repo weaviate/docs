@@ -1,0 +1,22 @@
+// Wrapper for sidebar link with badge
+.sidebarLinkWrapper {
+  position: relative;
+  width: 100%;
+
+  // Make the wrapper behave like the original menu item
+  :global(.menu__link) {
+    width: 100%;
+    display: block;
+  }
+}
+
+.badgeContainer {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none; // Allow clicks to pass through to the link
+  z-index: 1;
+}

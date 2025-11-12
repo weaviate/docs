@@ -39,6 +39,20 @@
   }
 }
 
+/* Icon only variant for sidebar use */
+.iconOnly {
+  padding: 0.15rem 0.35rem;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: inline-flex;
+  vertical-align: middle;
+  gap: 0;
+
+  i {
+    font-size: 0.75rem;
+  }
+}
+
 /* Dark theme support */
 [data-theme="dark"] .cloudOnlyBadge {
   background: #1a1a1a;

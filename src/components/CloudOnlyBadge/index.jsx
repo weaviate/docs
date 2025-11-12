@@ -6,14 +6,16 @@ const CloudOnlyBadge = ({
   text = "Weaviate Cloud only",
   compactText = "Cloud only",
   compact = false,
+  iconOnly = false,
   className = ""
 }) => {
   return (
     <span
-      className={`${styles.cloudOnlyBadge} ${compact ? styles.compact : ""} ${className}`}
+      className={`${styles.cloudOnlyBadge} ${compact ? styles.compact : ""} ${iconOnly ? styles.iconOnly : ""} ${className}`}
+      title={iconOnly ? "Weaviate Cloud only" : undefined}
     >
       <i className="fa-regular fa-cloud"></i>
-      <span>{compact ? compactText : text}</span>
+      {!iconOnly && <span>{compact ? compactText : text}</span>}
     </span>
   );
 };
