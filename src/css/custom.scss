@@ -354,18 +354,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 6px 12px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   margin-right: 5px;
-  color: #6b46c1; // Purple text instead of white
-  font-weight: 500; // Slightly lighter weight
-  letter-spacing: 0.01em;
-  border-radius: 8px;
-  background: rgba(107, 70, 193, 0.08); // Light purple tint
-  border: 1px solid rgba(107, 70, 193, 0.15); // Subtle purple border
+  font-size: 0;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--ifm-navbar-link-color);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: none; // Remove initial shadow
+  color: var(--ifm-navbar-link-color);
+
+  // Add graduation cap icon using SVG
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("/img/graduation-cap-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.8;
+  }
 
   @media screen and (max-width: 1150px) {
     display: none;
@@ -373,11 +385,13 @@
 }
 
 .academy-button:hover {
-  color: #6b46c1 !important;
-  background: rgba(107, 70, 193, 0.15); // Slightly darker purple on hover
-  border-color: rgba(107, 70, 193, 0.25);
+  background: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-navbar-link-color);
   transform: translateY(-0.5px);
-  box-shadow: 0 2px 6px rgba(107, 70, 193, 0.15);
+
+  &::before {
+    opacity: 1;
+  }
 }
 
 // Dark mode adjustments
@@ -403,15 +417,22 @@
   }
 
   .academy-button {
-    color: #c4b5fd; // Light purple for dark mode
-    background: rgba(196, 181, 253, 0.1);
-    border-color: rgba(196, 181, 253, 0.2);
+    border-color: var(--ifm-navbar-link-color);
+    color: var(--ifm-navbar-link-color);
+
+    &::before {
+      // Invert and adjust brightness to make the icon white in dark mode
+      filter: invert(1) brightness(1.2);
+      opacity: 0.8;
+    }
 
     &:hover {
-      color: #c4b5fd !important;
-      background: rgba(196, 181, 253, 0.15);
-      border-color: rgba(196, 181, 253, 0.3);
-      box-shadow: 0 2px 6px rgba(196, 181, 253, 0.1);
+      background: var(--ifm-color-emphasis-200);
+      border-color: var(--ifm-navbar-link-color);
+
+      &::before {
+        opacity: 1;
+      }
     }
   }
 }
