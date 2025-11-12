@@ -226,7 +226,7 @@ Philosopher Midi Dress... by Echo & Stitch...
 
 ## Override collections at query time
 
-Override the configured collections for a specific query:
+Override the agent-configured collections for a specific query:
 
 <Tabs className="code" groupId="languages">
 <TabItem value="py" label="Python">

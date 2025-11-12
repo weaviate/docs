@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 
 const CloudOnlyBadge = ({
   text = "Weaviate Cloud only",
-  tooltip = "This feature is only available for Weaviate Cloud instances.",
+  tooltip = "This feature requires Weaviate Cloud - a fully managed service with automatic scaling, backups, and monitoring. Click to learn more.",
   href = "/cloud",
   position = "top",
   className = ""
