@@ -115,6 +115,9 @@ const sidebars = {
             type: "doc",
             id: "weaviate/model-providers/weaviate/index",
           },
+          customProps: {
+            cloudOnly: true,
+          },
           items: ["weaviate/model-providers/weaviate/embeddings"],
         },
         {
@@ -521,6 +524,13 @@ const sidebars = {
       },
       items: [
         "weaviate/search/basics",
+        {
+          type: "doc",
+          id: "weaviate/search/query-agent",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/search/similarity",
         "weaviate/search/bm25",
         "weaviate/search/hybrid",

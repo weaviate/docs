@@ -14,6 +14,8 @@ import PyCode from '!!raw-loader!/docs/agents/_includes/transformation_agent.py'
 
 # Weaviate Transformation Agent: Usage
 
+<CloudOnlyBadge />
+
 :::caution Technical Preview
 
 ![This Weaviate Agent is in technical preview.](../_includes/agents_tech_preview_light.png#gh-light-mode-only "This Weaviate Agent is in technical preview.")

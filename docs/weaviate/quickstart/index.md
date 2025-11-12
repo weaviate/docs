@@ -39,10 +39,10 @@ export const quickstartOptions = [
 
 Weaviate is an open-source vector database built to power AI applications. This quickstart guide will show you how to:
 
-1. **Set up a collection** - Create a collection and import data into it. 
+1. **Set up a collection** - Create a collection and import data into it.
 2. **Search** - Perform a similarity (vector) search on your data.
 3. **RAG** - Perform Retrieval Augmented Generation (RAG) with a generative model.
-4. **Query Agent** - Get answers from you data by using a natural language prompt/question.
+4. **Query Agent** - Get answers from you data by using a natural language prompt/question. <CloudOnlyBadge compact />
 
 import KapaAI from "/src/components/KapaAI";
 
@@ -274,6 +274,7 @@ Are you ready to see how deep the rabbit hole goes? 🔴🔵 #TheMatrix #WakeUp
 
 ## Step 4: Query Agent
 
+<CloudOnlyBadge />
 
 The [Weaviate Query Agent](/agents/query/index.md) is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud. The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.
 

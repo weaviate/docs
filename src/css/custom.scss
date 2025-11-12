@@ -309,17 +309,33 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 6px 12px;
-  color: var(--site-primary); // Use primary color for text instead of white
-  font-weight: 600; // Slightly lighter weight
+  gap: 6px;
+  padding: 4px 10px 4px 8px; // Slightly less padding on left for icon
+  font-size: 0.875rem; // Slightly smaller font
+  color: #0066cc; // Blue to match CloudOnlyBadge
+  font-weight: 600;
   letter-spacing: 0.01em;
-  border-radius: 8px;
-  background-color: rgba(0, 140, 58, 0.08); // Very light tinted background
-  border: 1px solid rgba(0, 161, 66, 0.15); // Subtle border
+  border-radius: 6px;
+  background: white;
+  border: 1px solid #0066cc;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: none; // Remove initial shadow for cleaner look
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  // Add cloud icon before text using SVG file
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    background-image: url("/img/cloud-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(29%) sepia(91%) saturate(1771%) hue-rotate(197deg) brightness(95%) contrast(101%);
+    // This filter converts black SVG to #0066cc blue
+  }
 
   @media screen and (max-width: 1150px) {
     display: none;
@@ -327,29 +343,41 @@
 }
 
 .cloud-button:hover {
-  color: var(--site-primary) !important;
-  background-color: rgba(var(--site-primary-rgb), 0.15); // Slightly darker on hover
-  border-color: rgba(var(--site-primary-rgb), 0.25);
+  color: #0052a3 !important; // Darker blue on hover
+  background: #f0f7ff;
+  border-color: #0052a3;
   transform: translateY(-0.5px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 102, 204, 0.15);
 }
 
 .academy-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 6px 12px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   margin-right: 5px;
-  color: #6b46c1; // Purple text instead of white
-  font-weight: 500; // Slightly lighter weight
-  letter-spacing: 0.01em;
-  border-radius: 8px;
-  background: rgba(107, 70, 193, 0.08); // Light purple tint
-  border: 1px solid rgba(107, 70, 193, 0.15); // Subtle purple border
+  font-size: 0;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--ifm-navbar-link-color);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: none; // Remove initial shadow
+  color: var(--ifm-navbar-link-color);
+
+  // Add graduation cap icon using SVG
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("/img/graduation-cap-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.8;
+  }
 
   @media screen and (max-width: 1150px) {
     display: none;
@@ -357,38 +385,54 @@
 }
 
 .academy-button:hover {
-  color: #6b46c1 !important;
-  background: rgba(107, 70, 193, 0.15); // Slightly darker purple on hover
-  border-color: rgba(107, 70, 193, 0.25);
+  background: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-navbar-link-color);
   transform: translateY(-0.5px);
-  box-shadow: 0 2px 6px rgba(107, 70, 193, 0.15);
+
+  &::before {
+    opacity: 1;
+  }
 }
 
 // Dark mode adjustments
 [data-theme='dark'] {
   .cloud-button {
-    color: #86efac; // Light green for dark mode
-    background-color: rgba(134, 239, 172, 0.1);
-    border-color: rgba(134, 239, 172, 0.2);
+    color: #66b3ff; // Light blue to match CloudOnlyBadge dark mode
+    background: #1a1a1a;
+    border-color: #4d94ff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+
+    // Update SVG color for dark mode
+    &::before {
+      filter: invert(70%) sepia(51%) saturate(494%) hue-rotate(185deg) brightness(103%) contrast(101%);
+      // This filter converts black SVG to #66b3ff light blue
+    }
 
     &:hover {
-      color: #86efac !important;
-      background-color: rgba(134, 239, 172, 0.15);
-      border-color: rgba(134, 239, 172, 0.3);
-      box-shadow: 0 2px 6px rgba(134, 239, 172, 0.1);
+      color: #80c0ff !important;
+      background: #252525;
+      border-color: #66b3ff;
+      box-shadow: 0 2px 6px rgba(102, 179, 255, 0.2);
     }
   }
 
   .academy-button {
-    color: #c4b5fd; // Light purple for dark mode
-    background: rgba(196, 181, 253, 0.1);
-    border-color: rgba(196, 181, 253, 0.2);
+    border-color: var(--ifm-navbar-link-color);
+    color: var(--ifm-navbar-link-color);
+
+    &::before {
+      // Invert and adjust brightness to make the icon white in dark mode
+      filter: invert(1) brightness(1.2);
+      opacity: 0.8;
+    }
 
     &:hover {
-      color: #c4b5fd !important;
-      background: rgba(196, 181, 253, 0.15);
-      border-color: rgba(196, 181, 253, 0.3);
-      box-shadow: 0 2px 6px rgba(196, 181, 253, 0.1);
+      background: var(--ifm-color-emphasis-200);
+      border-color: var(--ifm-navbar-link-color);
+
+      &::before {
+        opacity: 1;
+      }
     }
   }
 }
@@ -993,7 +1037,6 @@ button.close {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important; /* Adjust padding to account for border */
-  background-color: rgba(0, 161, 66, 0.05) !important; /* Very subtle green tint */
 }
 
 /* Ensure the border doesn't get overridden for leaf items */
@@ -1007,7 +1050,6 @@ button.close {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important;
-  background-color: rgba(0, 161, 66, 0.05) !important;
 }
 
 /* Apply highlighting to ALL category items that contain active pages */
@@ -1016,7 +1058,6 @@ button.close {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important;
-  background-color: rgba(0, 161, 66, 0.05) !important;
 }
 
 .inline-content p,

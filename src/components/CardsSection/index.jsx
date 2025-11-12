@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
+import CloudOnlyBadge from "@site/src/components/CloudOnlyBadge";
 import { useLocation } from "@docusaurus/router";
 import styles from "./styles.module.scss";
 
@@ -51,13 +52,18 @@ const CardsSection = ({
               <span className={styles.cardTitle}>{item.title}</span>
             </div>
             <p className={styles.cardDescription}>{item.description}</p>
-            {recipeCards && item.tags && (
+            {recipeCards && (item.tags || item.cloudOnly) && (
               <div className={styles.cardTags}>
-                {item.tags.map((tag, index) => (
+                {item.tags && item.tags.map((tag, index) => (
                   <span key={index} className={styles.tag}>
                     {tag}
                   </span>
                 ))}
+                {item.cloudOnly && (
+                  <div className={styles.cardBadge}>
+                    <CloudOnlyBadge compact />
+                  </div>
+                )}
               </div>
             )}
           </Link>

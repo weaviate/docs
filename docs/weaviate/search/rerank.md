@@ -33,6 +33,10 @@ A collection can have multiple rerankers. If multiple `reranker` modules are ena
 
 </details>
 
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
+
 ## Named vectors
 
 :::info Added in `v1.24`
