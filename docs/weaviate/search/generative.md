@@ -17,6 +17,10 @@ Retrieval Augmented Generation (RAG) combines information retrieval with generat
 
 In Weaviate, a RAG query consists of two parts: *a search query*, and a *prompt for the model*. Weaviate first performs the search, then passes both the search results and your prompt to a generative AI model before returning the generated response.
 
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
+
 ## Configure a generative model provider
 
 :::info Added in `v1.30`

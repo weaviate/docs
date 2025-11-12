@@ -277,14 +277,14 @@ const CodeDropdownTabs = ({
                 <img
                   src={docSystem.icon}
                   alt={`${selectedValue} docs`}
-                  height="18"
-                  width="18"
+                  height="12"
+                  width="12"
                   style={{ verticalAlign: "middle" }}
                 />
               ) : (
                 <svg
-                  height="18"
-                  width="18"
+                  height="12"
+                  width="12"
                   aria-hidden="true"
                   viewBox="0 0 24 24"
                   fill="currentColor"
@@ -323,8 +323,8 @@ const CodeDropdownTabs = ({
                   position="left"
                 >
                   <svg
-                    width="14"
-                    height="14"
+                    width="11"
+                    height="11"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     className={styles.infoIcon}

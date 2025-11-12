@@ -115,6 +115,9 @@ const sidebars = {
             type: "doc",
             id: "weaviate/model-providers/weaviate/index",
           },
+          customProps: {
+            cloudOnly: true,
+          },
           items: ["weaviate/model-providers/weaviate/embeddings"],
         },
         {
@@ -521,6 +524,13 @@ const sidebars = {
       },
       items: [
         "weaviate/search/basics",
+        {
+          type: "doc",
+          id: "weaviate/search/query-agent",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/search/similarity",
         "weaviate/search/bm25",
         "weaviate/search/hybrid",
@@ -540,6 +550,7 @@ const sidebars = {
         id: "weaviate/tutorials/index",
       },
       items: [
+        "weaviate/tutorials/quick-tour-of-weaviate",
         "weaviate/tutorials/multi-vector-embeddings",
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",
@@ -1031,7 +1042,7 @@ const sidebars = {
     },
   ],
   deployProductionSidebar: [
-    "deploy/production/index", 
+    "deploy/production/index",
     {
       type: "html",
       value: "<hr class='sidebar-divider' />",

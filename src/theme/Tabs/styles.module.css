@@ -1,40 +1,33 @@
 /* src/theme/Tabs/styles.module.scss */
 
 .codeDropdownContainer {
-  margin: 2rem 0;
+  margin: 1rem 0;
   position: relative;
+  max-width: 95%;
 }
 
 .codeDropdownHeader {
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between left and right sections */
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  border-bottom: 2px solid var(--ifm-color-emphasis-300);
-  padding-bottom: 1rem;
-  background-color: var(--ifm-code-background);
-  padding: 1rem;
-  border-radius: 8px 8px 0 0;
-  background: linear-gradient(
-    to right,
-    var(--ifm-code-background),
-    transparent
-  );
+  gap: 0.5rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  padding: 0.5rem 0;
   position: relative;
 }
 
 .leftSection {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 /* MODIFIED SECTION */
 .rightSection {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.75rem;
   margin-left: auto;
   position: relative;
   z-index: 10;
@@ -45,13 +38,13 @@
 .apiDocsLink {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 0.875rem;
-  font-size: 14px;
+  padding: 0.25rem 0.5rem;
+  font-size: 11px;
   font-weight: 500;
   color: var(--ifm-color-emphasis-700);
   background-color: var(--ifm-color-emphasis-100);
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 6px;
+  border-radius: 4px;
   text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -69,18 +62,18 @@
 .versionInfo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
   position: relative;
   z-index: 10;
 }
 
 .versionLabel {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--ifm-color-emphasis-600);
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
   white-space: nowrap;
   position: relative;
 }
@@ -97,16 +90,16 @@
 }
 
 .docSystemIcon {
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
 }
 
 .languageLabel {
-  font-size: 14px;
+  font-size: 11px;
   color: var(--ifm-color-emphasis-700);
   text-transform: uppercase;
-  letter-spacing: 0.75px;
+  letter-spacing: 0.5px;
   font-weight: 700;
 }
 
@@ -116,19 +109,19 @@
 }
 
 .languageDropdown {
-  padding: 0.625rem 3rem;
-  font-size: 15px;
-  border: 2px solid var(--ifm-color-emphasis-400);
-  border-radius: 8px;
+  padding: 0.35rem 2rem;
+  font-size: 12px;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 4px;
   background-color: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
   cursor: pointer;
   appearance: none;
-  min-width: 180px;
+  min-width: 140px;
   font-weight: 600;
   transition: all 0.2s ease;
   font-family: inherit;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -148,27 +141,32 @@
 
 .languageIcon {
   position: absolute;
-  left: 10px;
+  left: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: 12px;
+  height: 12px;
   pointer-events: none;
 }
 
 .dropdownArrow {
   position: absolute;
-  right: 10px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   pointer-events: none;
   color: var(--ifm-color-emphasis-600);
 }
 
 .codeContent {
   animation: fadeIn 0.2s ease;
+}
+
+.codeContent pre,
+.codeContent code {
+  font-size: 0.85rem;
 }
 
 /* Tab panel styles for scrapable content */

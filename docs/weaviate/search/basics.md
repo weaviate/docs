@@ -20,6 +20,10 @@ With Weaviate you can query your data using [vector similarity search](./similar
 
 This page provides fundamental search syntax to get you started.
 
+import QueryAgentTip from '/_includes/query-agent-tip.mdx';
+
+<QueryAgentTip/>
+
 ## List objects
 
 You can get objects without specifying any parameters. This returns objects in ascending UUID order.
