@@ -309,17 +309,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 6px 12px;
-  color: var(--site-primary); // Use primary color for text instead of white
-  font-weight: 600; // Slightly lighter weight
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 0.875rem; // Slightly smaller font
+  color: #0066cc; // Blue to match CloudOnlyBadge
+  font-weight: 600;
   letter-spacing: 0.01em;
-  border-radius: 8px;
-  background-color: rgba(0, 140, 58, 0.08); // Very light tinted background
-  border: 1px solid rgba(0, 161, 66, 0.15); // Subtle border
+  border-radius: 6px;
+  background: white;
+  border: 1px solid #0066cc;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: none; // Remove initial shadow for cleaner look
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   @media screen and (max-width: 1150px) {
     display: none;
@@ -327,11 +328,11 @@
 }
 
 .cloud-button:hover {
-  color: var(--site-primary) !important;
-  background-color: rgba(var(--site-primary-rgb), 0.15); // Slightly darker on hover
-  border-color: rgba(var(--site-primary-rgb), 0.25);
+  color: #0052a3 !important; // Darker blue on hover
+  background: #f0f7ff;
+  border-color: #0052a3;
   transform: translateY(-0.5px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 102, 204, 0.15);
 }
 
 .academy-button {
@@ -367,15 +368,16 @@
 // Dark mode adjustments
 [data-theme='dark'] {
   .cloud-button {
-    color: #86efac; // Light green for dark mode
-    background-color: rgba(134, 239, 172, 0.1);
-    border-color: rgba(134, 239, 172, 0.2);
+    color: #66b3ff; // Light blue to match CloudOnlyBadge dark mode
+    background: #1a1a1a;
+    border-color: #4d94ff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 
     &:hover {
-      color: #86efac !important;
-      background-color: rgba(134, 239, 172, 0.15);
-      border-color: rgba(134, 239, 172, 0.3);
-      box-shadow: 0 2px 6px rgba(134, 239, 172, 0.1);
+      color: #80c0ff !important;
+      background: #252525;
+      border-color: #66b3ff;
+      box-shadow: 0 2px 6px rgba(102, 179, 255, 0.2);
     }
   }
 

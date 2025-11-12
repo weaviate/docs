@@ -130,12 +130,12 @@ const config = {
             to: "https://github.com/weaviate/weaviate",
             position: "right",
           },
-          {
-            label: "Weaviate Academy",
-            className: "academy-button",
-            to: "https://academy.weaviate.io",
-            position: "right",
-          },
+          // {
+          //   label: "Academy",
+          //   className: "academy-button",
+          //   to: "https://academy.weaviate.io",
+          //   position: "right",
+          // },
           {
             label: "Weaviate Cloud",
             className: "cloud-button",
