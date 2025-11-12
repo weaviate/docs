@@ -1,25 +1,22 @@
 // src/components/CloudOnlyBadge/index.jsx
 import React from "react";
-import Link from "@docusaurus/Link";
 import Tooltip from "@site/src/components/Tooltip";
 import styles from "./styles.module.scss";
 
 const CloudOnlyBadge = ({
   text = "Weaviate Cloud only",
-  tooltip = "This feature requires Weaviate Cloud - a fully managed service with automatic scaling, backups, and monitoring. Click to learn more.",
-  href = "/cloud",
+  tooltip = "This feature requires Weaviate Cloud - a fully managed service with automatic scaling, backups, and monitoring.",
   position = "top",
   compact = false,
   className = ""
 }) => {
   const badgeContent = (
-    <Link
-      to={href}
+    <span
       className={`${styles.cloudOnlyBadge} ${compact ? styles.compact : ""} ${className}`}
     >
       <i className="fa-regular fa-cloud"></i>
       <span>{text}</span>
-    </Link>
+    </span>
   );
 
   return (
@@ -36,7 +33,7 @@ export default CloudOnlyBadge;
 /*
 import CloudOnlyBadge from '@site/src/components/CloudOnlyBadge';
 
-// Simple usage - shows "Weaviate Cloud only", links to /cloud
+// Simple usage - shows "Weaviate Cloud only" with default tooltip
 <CloudOnlyBadge />
 
 // Custom text
@@ -45,17 +42,17 @@ import CloudOnlyBadge from '@site/src/components/CloudOnlyBadge';
 // Custom tooltip
 <CloudOnlyBadge tooltip="Available only on Weaviate Cloud Services" />
 
-// Custom link
-<CloudOnlyBadge href="/cloud/manage-clusters" />
-
 // Custom tooltip position (top, bottom, left, right, top-left, top-right, etc.)
 <CloudOnlyBadge position="bottom" />
+
+// Compact variant for inline use
+<CloudOnlyBadge compact />
 
 // All custom
 <CloudOnlyBadge
   text="Cloud only"
   tooltip="Learn more about cloud features"
-  href="/cloud/features"
   position="bottom-right"
+  compact
 />
 */
