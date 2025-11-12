@@ -937,7 +937,7 @@ button.close {
   background-color: var(--docs-sidebar-bg) !important;
 }
 
-/* Sidebar category collapse chevrons - make smaller and more refined */
+/* Sidebar category chevrons */
 .menu__caret::before,
 .menu__link--sublist-caret::after {
   background-size: 1.25rem 1.25rem !important; /* Smaller chevron */
