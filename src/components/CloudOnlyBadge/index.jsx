@@ -9,12 +9,13 @@ const CloudOnlyBadge = ({
   tooltip = "This feature requires Weaviate Cloud - a fully managed service with automatic scaling, backups, and monitoring. Click to learn more.",
   href = "/cloud",
   position = "top",
+  compact = false,
   className = ""
 }) => {
   const badgeContent = (
     <Link
       to={href}
-      className={`${styles.cloudOnlyBadge} ${className}`}
+      className={`${styles.cloudOnlyBadge} ${compact ? styles.compact : ""} ${className}`}
     >
       <i className="fa-regular fa-cloud"></i>
       <span>{text}</span>

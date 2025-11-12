@@ -4,51 +4,106 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  /* GitHub-style matte badge using Weaviate teal */
-  background: #0069B4;
+  /* Premium matte badge with Weaviate brand green - darker for contrast */
+  background: linear-gradient(180deg, #4fb368 0%, #3a9e54 100%);
   color: white !important;
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 6px;
   font-weight: 600;
   font-size: 0.8125rem;
   line-height: 1.3;
+  letter-spacing: 0.01em;
   margin-bottom: 1.5rem;
   margin-top: 0.5rem;
-  border: 1px solid rgba(0, 105, 180, 0.3);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  transition: all 0.2s ease;
+  border: 1.5px solid rgba(58, 158, 84, 0.5);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   cursor: pointer;
   position: relative;
 
+  /* Subtle top highlight for depth */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+    border-radius: 5px 5px 0 0;
+    pointer-events: none;
+  }
+
   i {
     font-size: 0.95rem;
+    opacity: 0.95;
   }
 
   &:hover {
     color: white !important;
     text-decoration: none;
-    background: #0080d6;
-    border-color: rgba(0, 128, 214, 0.4);
-    box-shadow: 0 2px 6px rgba(0, 105, 180, 0.2);
+    background: linear-gradient(180deg, #5abc73 0%, #45ad5f 100%);
+    border-color: rgba(69, 173, 95, 0.6);
+    box-shadow:
+      0 2px 8px rgba(79, 179, 104, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.22) inset;
     transform: translateY(-1px);
   }
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   }
 }
 
-/* Dark theme support - matte style with better visibility */
+/* Compact variant for inline use */
+.compact {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.75rem;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: inline-flex;
+  vertical-align: middle;
+  letter-spacing: 0.02em;
+
+  i {
+    font-size: 0.8rem;
+  }
+
+  /* Keep the subtle depth effects */
+  &::before {
+    border-radius: 5px 5px 0 0;
+  }
+}
+
+/* Dark theme support - brighter green for visibility */
 [data-theme="dark"] .cloudOnlyBadge {
-  background: #1a8ccc;
-  border-color: rgba(26, 140, 204, 0.4);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(180deg, #5dc970 0%, #45b359 100%);
+  border-color: rgba(69, 179, 89, 0.4);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+
+  &::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+  }
 
   &:hover {
-    background: #2da3e6;
-    border-color: rgba(45, 163, 230, 0.5);
-    box-shadow: 0 2px 6px rgba(26, 140, 204, 0.3);
+    background: linear-gradient(180deg, #6ed47d 0%, #55c168 100%);
+    border-color: rgba(85, 193, 104, 0.5);
+    box-shadow:
+      0 2px 8px rgba(93, 201, 112, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  }
+
+  &:active {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.08) inset;
   }
 }
