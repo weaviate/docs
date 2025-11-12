@@ -540,6 +540,7 @@ const sidebars = {
         id: "weaviate/tutorials/index",
       },
       items: [
+        "weaviate/tutorials/quick-tour-of-weaviate",
         "weaviate/tutorials/multi-vector-embeddings",
         "weaviate/tutorials/vectorizer-migration",
         "weaviate/tutorials/import",

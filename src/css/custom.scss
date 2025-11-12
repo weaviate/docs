@@ -984,3 +984,7 @@ button.close {
 .scalar-reference-intro-clients {
     display: none !important;
 }
+
+.hidden-tabs .tabs__item {
+  display: none;
+}
