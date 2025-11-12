@@ -406,7 +406,7 @@
 }
 
 .theme-doc-sidebar-menu {
-  font-size: 0.875rem !important; /* Reduced from 0.95rem (1px less) */
+  font-size: 0.9rem !important;
   font-weight: 500; /* Increased weight for main items */
 }
 
@@ -976,7 +976,7 @@ button.close {
 
 /* Nested sidebar items - reduced size */
 .menu__list .menu__list {
-  font-size: 0.8125rem !important; /* Smaller than parent 0.875rem */
+  font-size: 0.85rem !important; /* Smaller than parent 0.875rem */
   font-weight: 400; /* Normal weight for nested */
 }
 
