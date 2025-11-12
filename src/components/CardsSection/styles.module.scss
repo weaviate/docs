@@ -66,7 +66,7 @@
     font-weight: 500;
     padding: 4px 8px;
     border-radius: 4px;
-    border: var(--site-primary-dark) 1px solid;;
+    border: var(--site-primary-dark) 1px solid;
     white-space: nowrap;
   }
 }
@@ -123,4 +123,18 @@
 .highlight {
   color: var(--site-font-accent-color);
   font-weight: 600;
+}
+
+.activeCard {
+  border: 2px solid var(--site-accent) !important;
+  background: var(--docs-cards-hover-bg) !important;
+  box-shadow: 0px 10px 20px 0px rgba(22, 27, 45, 0.15) !important;
+  
+  .cardHeader {
+    color: var(--site-accent);
+  }
+  
+  .cardTitle {
+    color: var(--site-accent);
+  }
 }

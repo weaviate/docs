@@ -1,0 +1,55 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.create_collection.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.create_collection.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_1/quickstart.short.create_collection.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartCreate.java";
+
+<Tabs className="code" groupId="languages">
+<TabItem value="py" label="Python">
+  <FilteredTextBlock
+    text={PyCode}
+    startMarker="# START CreateCollection"
+    endMarker="# END CreateCollection"
+    language="py"
+  />
+</TabItem>
+<TabItem value="ts" label="JavaScript/TypeScript">
+<FilteredTextBlock
+  text={TSCode}
+  startMarker="// START CreateCollection"
+  endMarker="// END CreateCollection"
+  language="ts"
+/>
+</TabItem>
+
+<TabItem value="go" label="Go">
+
+The collection also contains a configuration for the generative (RAG) integration:
+
+- Anthropic [generative AI integrations](/weaviate/model-providers/anthropic/generative) for retrieval augmented generation (RAG).
+
+<FilteredTextBlock
+  text={GoCode}
+  startMarker="// START CreateCollection"
+  endMarker="// END CreateCollection"
+  language="goraw"
+/>
+</TabItem>
+
+<TabItem value="java" label="Java">
+
+The collection also contains a configuration for the generative (RAG) integration:
+
+- Anthropic [generative AI integrations](/weaviate/model-providers/anthropic/generative) for retrieval augmented generation (RAG).
+
+<FilteredTextBlock
+  text={JavaCode}
+  startMarker="// START CreateCollection"
+  endMarker="// END CreateCollection"
+  language="javaraw"
+/>
+
+</TabItem>
+</Tabs>
