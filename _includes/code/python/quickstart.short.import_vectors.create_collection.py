@@ -18,6 +18,7 @@ with weaviate.connect_to_weaviate_cloud(
     client.collections.delete("Movie")
 
     # START CreateCollection
+    
     # Step 1.2: Create a collection
     # highlight-start
     movies = client.collections.create(

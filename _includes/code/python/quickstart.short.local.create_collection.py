@@ -3,23 +3,22 @@ import weaviate
 from weaviate.classes.config import Configure
 
 # Step 1.1: Connect to your local Weaviate instance
-client = weaviate.connect_to_local()
+with weaviate.connect_to_local() as client:
+    # END CreateCollection
 
-# END CreateCollection
+    # NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
+    client.collections.delete("Movie")
 
-# NOT SHOWN TO THE USER - DELETE EXISTING COLLECTION
-client.collections.delete("Movie")
-
-# START CreateCollection
-# Step 1.2: Create a collection
-# highlight-start
-with client.collections.create(
-    name="Movie",
-    vector_config=Configure.Vectors.text2vec_ollama(  # Configure the Ollama embedding integration
-        api_endpoint="http://ollama:11434",  # If using Docker you might need: http://host.docker.internal:11434
-        model="nomic-embed-text",  # The model to use
-    ),
-) as client:
+    # START CreateCollection
+    # Step 1.2: Create a collection
+    # highlight-start
+    movies = client.collections.create(
+        name="Movie",
+        vector_config=Configure.Vectors.text2vec_ollama(  # Configure the Ollama embedding integration
+            api_endpoint="http://ollama:11434",  # If using Docker you might need: http://host.docker.internal:11434
+            model="nomic-embed-text",  # The model to use
+        ),
+    )
     # highlight-end
     # START CreateCollection
 
