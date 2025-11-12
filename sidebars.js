@@ -1347,9 +1347,6 @@ const sidebars = {
           type: "doc",
           id: "cloud/tools/query-agent",
           className: "sidebar-item",
-          customProps: {
-            cloudOnly: true,
-          },
         },
       ],
     },

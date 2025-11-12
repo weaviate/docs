@@ -1016,7 +1016,6 @@ button.close {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important; /* Adjust padding to account for border */
-  background-color: rgba(0, 161, 66, 0.05) !important; /* Very subtle green tint */
 }
 
 /* Ensure the border doesn't get overridden for leaf items */
@@ -1030,7 +1029,6 @@ button.close {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important;
-  background-color: rgba(0, 161, 66, 0.05) !important;
 }
 
 /* Apply highlighting to ALL category items that contain active pages */
@@ -1039,7 +1037,6 @@ button.close {
   color: var(--ifm-navbar-link-active-color) !important;
   border-left: 3px solid var(--ifm-navbar-link-active-color) !important;
   padding-left: 0.75rem !important;
-  background-color: rgba(0, 161, 66, 0.05) !important;
 }
 
 .inline-content p,
