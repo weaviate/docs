@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./styles.module.scss";
 
 const positiveFeedbackOptions = [
@@ -15,12 +16,7 @@ const negativeFeedbackOptions = [
   "Missing / outdated information",
 ];
 
-export default function FeedbackModal({
-  voteType,
-  onSubmit,
-  onClose,
-  isOpen,
-}) {
+export default function FeedbackModal({ voteType, onSubmit, onClose, isOpen }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [comment, setComment] = useState("");
 
@@ -28,7 +24,6 @@ export default function FeedbackModal({
     return null;
   }
 
-  // Function to open GitHub issue with pre-filled template
   const openGithubFeedback = () => {
     const currentUrl =
       typeof window !== "undefined" ? window.location.href : "";
@@ -44,10 +39,8 @@ export default function FeedbackModal({
 
   const options =
     voteType === "up" ? positiveFeedbackOptions : negativeFeedbackOptions;
-  // Load appropriate title based on vote type
   const title = voteType === "up" ? "What helped?" : "What went wrong?";
 
-  // Update selected options on checkbox change
   const handleOptionChange = (optionIndex) => {
     setSelectedOptions((prev) =>
       prev.includes(optionIndex)
@@ -56,7 +49,6 @@ export default function FeedbackModal({
     );
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     onSubmit({
       options: selectedOptions,
@@ -64,10 +56,14 @@ export default function FeedbackModal({
     });
   };
 
-  return (
+  const modalContent = (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close modal">
+        <button
+          className={styles.closeButton}
+          onClick={onClose}
+          aria-label="Close modal"
+        >
           &times;
         </button>
         <h3>{title}</h3>
@@ -84,16 +80,6 @@ export default function FeedbackModal({
             </label>
           ))}
         </div>
-        {/* Disable comment for now, until adding in input validation / sanitization for security */}
-        {/* <label className={styles.commentLabel}>
-          Tell us more (optional)
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Please tell us more so we can improve."
-            rows="4"
-          />
-        </label> */}
         <div className={styles.buttonContainer}>
           <button
             className={`button button--primary ${styles.submitButton}`}
@@ -121,4 +107,9 @@ export default function FeedbackModal({
       </div>
     </div>
   );
+
+  // Render modal at document root level using portal
+  return typeof document !== "undefined"
+    ? createPortal(modalContent, document.body)
+    : null;
 }

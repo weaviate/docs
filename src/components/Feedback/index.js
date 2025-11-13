@@ -50,9 +50,15 @@ export default function FeedbackComponent() {
     return (
       <button
         className={styles.collapsedButton}
-        onClick={() => setIsExpanded(true)}
-        aria-label="Open help and feedback"
-        title="Need help or feedback?"
+        onClick={() => {
+          if (window.Kapa && typeof window.Kapa.open === "function") {
+            window.Kapa.open({ mode: "ai", query: "", submit: false });
+          } else {
+            console.warn("Kapa.ai is not available");
+          }
+        }}
+        aria-label="Ask AI"
+        title="Ask AI"
       >
         <svg
           width="24"
@@ -94,7 +100,6 @@ export default function FeedbackComponent() {
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
-      <p className={styles.text}>Need help?</p>
       <div className={styles.buttonContainer}>
         <a
           className={`button button--primary button--sm ${styles.askAiButton}`}
