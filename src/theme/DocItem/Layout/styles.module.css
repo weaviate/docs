@@ -23,15 +23,27 @@
 }
 
 .feedbackWrapper {
-  display: flex;
-  justify-content: flex-end;
-  position: sticky;
+  position: fixed;
   bottom: 1.5rem;
-  pointer-events: none; /* Allow clicks to pass through wrapper */
-}
+  width: inherit;
+  max-width: 100%;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
 
-.feedbackWrapper > * {
-  pointer-events: auto;
+  /* Handle tablet and smaller desktop screens */
+  @media (min-width: 997px) and (max-width: 1320px) {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: auto;
+    max-width: 260px;
+    padding: 0;
+  }
+
+  /* Hide on mobile - mobile version renders separately */
+  @media (max-width: 996px) {
+    display: none;
+  }
 }
 
 .customTocStickyContainer {
