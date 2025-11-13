@@ -14,6 +14,8 @@ import TSCode from '!!raw-loader!/docs/agents/\_includes/query_agent.mts';
 
 # Weaviate Query Agent: Usage
 
+<CloudOnlyBadge />
+
 The Weaviate Query Agent is a pre-built agentic service designed to answer natural language queries based on the data stored in Weaviate Cloud.
 
 The user simply provides a prompt/question in natural language, and the Query Agent takes care of all intervening steps to provide an answer.

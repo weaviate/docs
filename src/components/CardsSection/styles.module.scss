@@ -66,7 +66,7 @@
     font-weight: 500;
     padding: 4px 8px;
     border-radius: 4px;
-    border: var(--site-primary-dark) 1px solid;;
+    border: var(--site-primary-dark) 1px solid;
     white-space: nowrap;
   }
 }
@@ -102,6 +102,16 @@
   margin: 12px 6px;
 }
 
+.cardBadge {
+  margin: 8px 0;
+
+  // Override badge margins for card context
+  :global(.cloudOnlyBadge) {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .cardDescription {
   font-family: Inter;
   font-size: 0.875rem;
@@ -113,4 +123,18 @@
 .highlight {
   color: var(--site-font-accent-color);
   font-weight: 600;
+}
+
+.activeCard {
+  border: 2px solid var(--site-accent) !important;
+  background: var(--docs-cards-hover-bg) !important;
+  box-shadow: 0px 10px 20px 0px rgba(22, 27, 45, 0.15) !important;
+  
+  .cardHeader {
+    color: var(--site-accent);
+  }
+  
+  .cardTitle {
+    color: var(--site-accent);
+  }
 }

@@ -8,6 +8,8 @@ image: og/docs/agents.jpg
 
 # Weaviate Agents - Introduction
 
+<CloudOnlyBadge />
+
 Weaviate Agents are pre-built agentic services designed for specific tasks. They are available out-of-the-box for Weaviate Cloud users to interact with their data in Weaviate Cloud to simplify data engineering and AI development workflows.
 
 :::info Changelog and feedback

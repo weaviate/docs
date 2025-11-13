@@ -26,7 +26,7 @@ import CSharpCode from "!!raw-loader!/\_includes/code/csharp/ModelProvidersTest.
 import JavaCode from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/UsageWeaviateTextEmbeddingsArcticEmbedLV20.java";
 import JavaImportQueries from "!!raw-loader!/\_includes/code/howto/java/src/test/java/io/weaviate/docs/model_providers/ImportAndQueries.java";
 
-Weaviate Embeddings' models can be accessed directly from a Weaviate Cloud instance.
+<CloudOnlyBadge />
 
 [Configure a Weaviate vector index](#configure-the-vectorizer) to use a Weaviate Embeddings model, and Weaviate will generate embeddings for various operations using the specified model and your Weaviate API key. This feature is called the _vectorizer_.
 

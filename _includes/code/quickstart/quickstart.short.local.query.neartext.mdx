@@ -1,0 +1,42 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import FilteredTextBlock from "@site/src/components/Documentation/FilteredTextBlock";
+import PyCode from "!!raw-loader!/_includes/code/python/quickstart.short.local.query.neartext.py";
+import TSCode from "!!raw-loader!/_includes/code/typescript/quickstart.short.local.query.neartext.ts";
+import GoCode from "!!raw-loader!/_includes/code/howto/go/docs/quickstart/short_local_2/quickstart.short.local.query.neartext.go";
+import JavaCode from "!!raw-loader!/_includes/code/howto/java/src/test/java/io/weaviate/docs/quickstart/QuickstartLocalQueryNearText.java";
+
+<Tabs className="code" groupId="languages">
+  <TabItem value="py" label="Python">
+    <FilteredTextBlock
+      text={PyCode}
+      startMarker="# START NearText"
+      endMarker="# END NearText"
+      language="py"
+    />
+  </TabItem>
+  <TabItem value="ts" label="JavaScript/TypeScript">
+    <FilteredTextBlock
+      text={TSCode}
+      startMarker="// START NearText"
+      endMarker="// END NearText"
+      language="ts"
+    />
+  </TabItem>
+  <TabItem value="go" label="Go">
+    <FilteredTextBlock
+      text={GoCode}
+      startMarker="// START NearText"
+      endMarker="// END NearText"
+      language="goraw"
+    />
+  </TabItem>
+  <TabItem value="java" label="Java">
+    <FilteredTextBlock
+      text={JavaCode}
+      startMarker="// START NearText"
+      endMarker="// END NearText"
+      language="javaraw"
+    />
+  </TabItem>
+</Tabs>
