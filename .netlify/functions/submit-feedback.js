@@ -130,7 +130,14 @@ exports.handler = async (event) => {
       });
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: 'Failed to store feedback.' }),
+        body: JSON.stringify({
+          error: 'Failed to store feedback.',
+          debug: {
+            weaviateStatus: response.status,
+            weaviateStatusText: response.statusText,
+            timestamp: new Date().toISOString(),
+          },
+        }),
         headers,
       };
     }
@@ -146,6 +153,13 @@ exports.handler = async (event) => {
       statusCode: 500,
       body: JSON.stringify({
         error: 'There was an error processing your feedback.',
+        debug: {
+          errorType: error.name,
+          errorMessage: error.message,
+          timestamp: new Date().toISOString(),
+          // Only include stack trace in non-production environments
+          ...(process.env.CONTEXT !== 'production' && { stack: error.stack }),
+        },
       }),
       headers,
     };

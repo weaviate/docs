@@ -43,15 +43,39 @@ export default function PageRatingWidget() {
       });
 
       if (!response.ok) {
-        // Log the error response text for debugging
-        const errorText = await response.text();
-        console.error('Feedback submission failed:', errorText);
+        // Try to parse JSON error response with debug info
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { error: await response.text() };
+        }
+
+        // Log comprehensive error details for debugging
+        console.error('Feedback submission failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          headers: Object.fromEntries(response.headers.entries()),
+          serverError: errorData.error,
+          serverDebug: errorData.debug,
+          url: response.url,
+          payload: finalPayload,
+        });
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      console.log('Feedback submitted successfully.');
+      console.log('Feedback submitted successfully:', {
+        status: response.status,
+        payload: finalPayload,
+      });
     } catch (error) {
-      console.error('Failed to submit feedback:', error);
+      console.error('Failed to submit feedback:', {
+        error: error.message,
+        stack: error.stack,
+        name: error.name,
+        payload: finalPayload,
+        timestamp: new Date().toISOString(),
+      });
     }
   };
 
