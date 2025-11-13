@@ -45,3 +45,14 @@
     display: none;
   }
 }
+
+.customTocStickyContainer {
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  max-height: calc(100vh - var(--ifm-navbar-height));
+
+  /* Flexbox for stable layout */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Use gap for spacing instead of margin */
+}

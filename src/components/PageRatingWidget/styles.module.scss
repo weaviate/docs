@@ -1,0 +1,76 @@
+.container {
+  background-color: var(--ifm-background-surface-color);
+  padding: 0.75rem;
+  text-align: left;
+  width: 100%;
+  max-width: 260px;
+  min-width: 200px;
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+.text {
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  font-size: 12px !important;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-700);
+  font-weight: 500;
+}
+
+.buttonContainer {
+  margin-left: 0.5rem;
+  display: flex;
+  gap: 8px;
+}
+
+.voteButton {
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: #262262;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem !important;
+  border-radius: var(--ifm-button-border-radius);
+  border-color: #262262;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  &:hover {
+    background-color: #f0f2f5;
+  }
+
+  // Dark mode styles
+  [data-theme="dark"] & {
+    color: white;
+    border-color: white;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.selected {
+  background-color: #e2e8f0;
+  cursor: default;
+
+  &:hover {
+    background-color: #e2e8f0;
+  }
+
+  // Dark mode selected state
+  [data-theme="dark"] & {
+    background-color: rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}

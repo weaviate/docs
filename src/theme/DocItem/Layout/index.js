@@ -15,6 +15,7 @@ import styles from "./styles.module.css";
 
 /* ---- START: Customizations ---- */
 import FeedbackComponent from "@site/src/components/Feedback";
+import PageRatingWidget from "@site/src/components/PageRatingWidget";
 /* ---- END: Customizations ---- */
 
 /**
@@ -67,13 +68,16 @@ export default function DocItemLayout({ children }) {
             </article>
             <DocItemPaginator />
           </div>
+          {/* ---- REMOVED: Feedback component from main column ---- */}
         </div>
         {docTOC.desktop && (
           <div className="col col--3">
             {/* ---- START: Customizations ---- */}
-            {/* TOC in sticky container */}
-            <div className={styles.tocStickyContainer}>{docTOC.desktop}</div>
-            {/* Feedback component aligned with TOC column */}
+            <div className={styles.customTocStickyContainer}>
+              {docTOC.desktop}
+              <PageRatingWidget />
+            </div>
+            {/* Feedback component back in TOC column */}
             {showFeedback && (
               <div className={styles.feedbackWrapper}>
                 <FeedbackComponent />
