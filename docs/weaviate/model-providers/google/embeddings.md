@@ -69,8 +69,8 @@ You must provide valid API credentials to Weaviate for the appropriate integrati
 
 #### Google AI Studio (Gemini API)
 
-1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=) to sign up and obtain an API key
-2. In the "Credentials" section, create credentials for "Gemini for Google Cloud API"
+1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey/?utm_source=weaviate&utm_medium=referral&utm_campaign=partnerships&utm_content=)
+2. In the "API Keys" section create a new API key
 3. Use the `X-Goog-Studio-Api-Key` header to provide your API key to Weaviate
 
 #### Vertex AI
@@ -140,8 +140,10 @@ import ApiKeyNote from '../_includes/google-api-key-note.md';
 [Configure a Weaviate index](../../manage-collections/vector-config.mdx#specify-a-vectorizer) as follows to use a Google embedding model:
 
 :::info Important: Different vectorizers for different services
+
 - **Google AI Studio (Gemini API)**: Use `text2vec_google_aistudio()` 
-- **Vertex AI**: Use `text2vec_palm()` or `text2vec_google()`
+- **Vertex AI**: Use `text2vec_google()`
+
 :::
 
 You can [specify](#vectorizer-parameters) one of the [available models](#available-models) for Weaviate to use. The [default model](#available-models) is used if no model is specified.
@@ -182,7 +184,7 @@ For Google AI Studio, use the `text2vec_google_aistudio()` vectorizer. No `proje
 
 ### Vertex AI
 
-For Vertex AI, use the `text2vec_palm()` vectorizer. You must provide your Google Cloud `project_id`.
+For Vertex AI, use the `text2vec_google()` vectorizer. You must provide your Google Cloud `project_id`.
 
 <Tabs className="code" groupId="languages">
   <TabItem value="py" label="Python">

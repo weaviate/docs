@@ -8,8 +8,8 @@ import weaviate
 
 client = weaviate.connect_to_local(
     headers={
-        "X-OpenAI-Api-Key": os.environ["OPENAI_APIKEY"],
-        "X-Cohere-Api-Key": os.environ["COHERE_APIKEY"],
+        "X-OpenAI-Api-Key": os.environ["OPENAI_API_KEY"],
+        "X-Cohere-Api-Key": os.environ["COHERE_API_KEY"],
     }
 )
 
@@ -249,12 +249,12 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_palm(
+    vector_config=Configure.Vectors.text2vec_google(
         name="title_vector",
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # (Optional) To manually set the model ID
-        model_id="gemini-embedding-001"
+        model="gemini-embedding-001"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -274,7 +274,7 @@ client.collections.create(
         name="title_vector",
         source_properties=["title"],
         # (Optional) To manually set the model ID
-        model_id="text-embedding-004"
+        model="text-embedding-004"
     ),
     # highlight-end
     # Additional parameters not shown
@@ -291,13 +291,13 @@ from weaviate.classes.config import Configure
 client.collections.create(
     "DemoCollection",
     # highlight-start
-    vector_config=Configure.Vectors.text2vec_palm(
+    vector_config=Configure.Vectors.text2vec_google(
         name="title_vector",
         source_properties=["title"],
         project_id="<google-cloud-project-id>",  # Required for Vertex AI
         # Further options
-        # model_id="<google-model-id>",
-            # api_endpoint="<google-api-endpoint>",
+        # model="<google-model-id>",
+        # api_endpoint="<google-api-endpoint>",
     ),
     # highlight-end
     # Additional parameters not shown
