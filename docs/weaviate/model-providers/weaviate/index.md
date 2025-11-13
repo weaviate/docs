@@ -5,11 +5,9 @@ image: og/docs/integrations/provider_integrations_wes.jpg
 # tags: ['model providers', 'weaviate', 'weaviate embeddings']
 ---
 
-:::info Access to Weaviate Embeddings
-Weaviate Embeddings is a paid service available through Weaviate Cloud. You can try it out for free by using a Sandbox cluster.
-:::
-
 <!-- Note: for images, use https://docs.google.com/presentation/d/15opIcJuaIjEEcs_1Zm8B6pccox2p7_MHSjCnRv4dPfU/edit?usp=sharing -->
+
+<CloudOnlyBadge />
 
 [Weaviate Embeddings](/cloud/embeddings) offers vectorizer models to Weaviate Cloud users, allowing users to leverage Weaviate Embeddings' models directly from a Weaviate Cloud database instance.
 

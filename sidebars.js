@@ -30,11 +30,23 @@ const sidebars = {
         id: "weaviate/connections/index",
       },
       items: [
-        "weaviate/connections/connect-cloud",
+        {
+          type: "doc",
+          id: "weaviate/connections/connect-cloud",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
         "weaviate/connections/connect-local",
         "weaviate/connections/connect-custom",
         "weaviate/connections/connect-embedded",
-        "weaviate/connections/connect-query",
+        {
+          type: "doc",
+          id: "weaviate/connections/connect-query",
+          customProps: {
+            cloudOnly: true,
+          },
+        },
       ],
     },
     {
@@ -1127,6 +1139,9 @@ const sidebars = {
         type: "doc",
         id: "agents/query/index",
       },
+      customProps: {
+        cloudOnly: true,
+      },
       items: [
         {
           type: "doc",
@@ -1154,6 +1169,9 @@ const sidebars = {
         type: "doc",
         id: "agents/transformation/index",
       },
+      customProps: {
+        cloudOnly: true,
+      },
       items: [
         {
           type: "doc",
@@ -1180,6 +1198,9 @@ const sidebars = {
       link: {
         type: "doc",
         id: "agents/personalization/index",
+      },
+      customProps: {
+        cloudOnly: true,
       },
       items: [
         {
