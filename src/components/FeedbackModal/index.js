@@ -13,7 +13,7 @@ const negativeFeedbackOptions = [
   "Content is hard to understand",
   "Code example or procedure doesn't work",
   "Couldn't find what I need",
-  "Missing / outdated information",
+  "Incomplete / outdated information",
 ];
 
 export default function FeedbackModal({ voteType, onSubmit, onClose, isOpen }) {
